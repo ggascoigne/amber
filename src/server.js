@@ -1,20 +1,45 @@
 'use strict'
 
-import express from 'express'
-import bodyParser from 'body-parser'
 import settings from 'config'
-import routes from './routes'
+import Hapi from 'hapi'
+import loadPlugins from './plugins'
 
-const app = express()
+require('./models')
 
-app.use(bodyParser.urlencoded({extended: true}))
+export function getServer () {
+  const server = new Hapi.Server({
+    connections: {
+      routes: {
+        cors: settings.cors
+      }
+    }
+  })
 
-// const swaggerUi = require('swagger-ui-express')
-// const swaggerDocument = require('./swagger.json')
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+  server.connection({
+    port: settings.port,
+    host: settings.host
+  })
 
-app.use('/', routes)
+  return server
+}
 
-app.listen(settings.port, () => {
-  console.log(`Contacts server listening on port ${settings.port}.`)
-})
+export async function start (server) {
+  return new Promise((resolve, reject) => {
+    server.start(error => {
+      if (error) {
+        return reject(error)
+      }
+      console.log(`Server running at: ${server.info.uri}`)
+      resolve(server)
+    })
+  })
+}
+
+export const server = getServer()
+
+try {
+  loadPlugins(server)
+  start(server)
+} catch (error) {
+  console.error(error)
+}
