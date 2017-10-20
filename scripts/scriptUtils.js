@@ -18,9 +18,9 @@ async function mysqlExecScript (database, user, password, script) {
   return new Promise((resolve, reject) => {
     const child = spawn('/usr/local/bin/mysql', args,
       {env: {MYSQL_PWD: password}})
-      .on('error', function (error) { reject(error) })
-      .on('close', function () { resolve() })
-      .on('exit', function (code) { !code ? resolve() : reject(code) })
+      .on('error', reject)
+      .on('close', resolve)
+      .on('exit', (code) => !code ? resolve() : reject(code))
 
     child.stdout.pipe(process.stdout)
     child.stderr.pipe(process.stderr)

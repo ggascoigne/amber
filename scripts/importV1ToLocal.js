@@ -57,21 +57,15 @@ async function pipeLiveToLocal (databaseName, userName, password) {
         `--user=${process.env.REMOTE_DATABASE_USER}`,
         process.env.REMOTE_DATABASE_NAME]
     )
-      .on('error', function (error) {
-        reject(error)
-      })
+      .on('error', reject)
 
     const importing = spawn(
       '/usr/local/bin/mysql',
       [`--user=${userName}`, '--default-character-set=utf8', `--database=${databaseName}`],
       {env: {MYSQL_PWD: password}}
     )
-      .on('error', function (error) {
-        reject(error)
-      })
-      .on('exit', function (code) {
-        !code ? resolve() : reject(code)
-      })
+      .on('error', reject)
+      .on('exit', (code) => !code ? resolve() : reject(code))
 
     exporting.stdout.pipe(importing.stdin)
 
@@ -81,6 +75,12 @@ async function pipeLiveToLocal (databaseName, userName, password) {
   })
 }
 
+const bail = (reason) => {
+  console.error(chalk.bold.red('error detected'))
+  console.error(reason)
+  process.exit(-1)
+}
+
 async function main () {
   const databaseName = config.get('database.database')
   const userName = config.get('database.username')
@@ -88,37 +88,25 @@ async function main () {
 
   console.log(`Recreating database ${databaseName}`)
   await createCleanDb(databaseName, userName, password)
-    .catch((reason) => {
-      console.error(chalk.bold.red('error detected'))
-      console.error(reason)
-      process.exit(-1)
-    })
+    .catch(bail)
 
   console.log('Inserting knex records')
   // remove if kex-migrate fixes it's issue
   await createKnexMigrationTables(databaseName, userName, password)
-    .catch((reason) => {
-      console.error(chalk.bold.red('error detected'))
-      console.error(reason)
-      process.exit(-1)
-    })
+    .catch(bail)
 
   console.log('Create schema in a acnw-1 format')
   const migration1 = spawnSync('./node_modules/.bin/knex-migrate', ['up', '20171015105936-acnw-1-schema.js'], {stdio: 'inherit'})
-  !migration1.status || (console.log(chalk.bold.red(`EXIT: CODE: ${migration1.status}`)) && process.exit(migration1.status))
+  !migration1.status || bail(migration1.status)
 
   console.log('Loading data from latest live acnw v1 database')
 
   await pipeLiveToLocal(databaseName, userName, password)
-    .catch((reason) => {
-      console.error(chalk.bold.red('error detected'))
-      console.error(reason)
-      process.exit(-1)
-    })
+    .catch(bail)
 
   console.log('Applying the remaining migrators')
   const migration2 = spawnSync('./node_modules/.bin/knex-migrate', ['up'], {stdio: 'inherit'})
-  !migration2.status || (console.log(chalk.bold.red(`EXIT: CODE: ${migration2.status}`)) && process.exit(migration2.status))
+  !migration2.status || bail(migration1.status)
 }
 
 main().then(() => console.log('Complete'))
