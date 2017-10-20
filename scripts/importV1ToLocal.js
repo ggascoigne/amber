@@ -5,36 +5,30 @@ const config = require('config')
 const {spawn, spawnSync} = require('child_process')
 const {createCleanDb} = require('./scriptUtils')
 const chalk = require('chalk')
+const {mysqlExecScript} = require('./scriptUtils')
+const {stripIndent} = require('common-tags')
 
 async function createKnexMigrationTables (databaseName, userName, password) {
-  return new Promise((resolve, reject) => {
-    const child = spawn('/usr/local/bin/mysql',
-      [`--user=${userName}`, '--default-character-set=utf8', `--database=${databaseName}`],
-      {env: {MYSQL_PWD: password}}
-    )
-      .on('error', function (error) { reject(error) })
-      .on('close', function () { resolve() })
-      .on('exit', function (code) { !code ? resolve() : reject(code) })
+  const sql = stripIndent`DROP TABLE IF EXISTS knex_migrations;
+  
+    CREATE TABLE knex_migrations (
+      id int(10) unsigned NOT NULL AUTO_INCREMENT,
+      name varchar(255) DEFAULT NULL,
+      batch int(11) DEFAULT NULL,
+      migration_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      PRIMARY KEY (id)
+    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+    
+    DROP TABLE IF EXISTS knex_migrations_lock;
+    
+    CREATE TABLE knex_migrations_lock (
+      is_locked int(11) DEFAULT NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+      
+    INSERT INTO knex_migrations_lock VALUES (0);
+    `
 
-    const sql = `DROP TABLE IF EXISTS \`knex_migrations\`;
-CREATE TABLE \`knex_migrations\` (
-  \`id\` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  \`name\` varchar(255) DEFAULT NULL,
-  \`batch\` int(11) DEFAULT NULL,
-  \`migration_time\` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (\`id\`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS \`knex_migrations_lock\`;
-CREATE TABLE \`knex_migrations_lock\` (
-  \`is_locked\` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-INSERT INTO \`knex_migrations_lock\` VALUES (0);
-`
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
-    child.stdin.write(sql)
-    child.stdin.end()
-  })
+  return mysqlExecScript(databaseName, userName, password, sql)
 }
 
 async function pipeLiveToLocal (databaseName, userName, password) {
@@ -95,7 +89,8 @@ async function main () {
   console.log(`Recreating database ${databaseName}`)
   await createCleanDb(databaseName, userName, password)
     .catch((reason) => {
-      console.log(chalk.bold.red('error detected'))
+      console.error(chalk.bold.red('error detected'))
+      console.error(reason)
       process.exit(-1)
     })
 
@@ -103,7 +98,8 @@ async function main () {
   // remove if kex-migrate fixes it's issue
   await createKnexMigrationTables(databaseName, userName, password)
     .catch((reason) => {
-      console.log(chalk.bold.red('error detected'))
+      console.error(chalk.bold.red('error detected'))
+      console.error(reason)
       process.exit(-1)
     })
 
@@ -115,7 +111,8 @@ async function main () {
 
   await pipeLiveToLocal(databaseName, userName, password)
     .catch((reason) => {
-      console.log(chalk.bold.red('error detected'))
+      console.error(chalk.bold.red('error detected'))
+      console.error(reason)
       process.exit(-1)
     })
 

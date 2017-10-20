@@ -6,8 +6,8 @@
   "author": "guy@wyrdrune.com",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.0",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -32,6 +32,7 @@
     "body-parser": "^1.15.2",
     "bookshelf": "^0.10.4",
     "boom": "^6.0.0",
+    "common-tags": "^1.4.0",
     "config": "^1.26.2",
     "dotenv": "^4.0.0",
     "good": "^7.3.0",
@@ -39,7 +40,7 @@
     "hapi": "^16.5.0",
     "hapi-auth-basic": "^4.2.0",
     "hapi-auth-jwt2": "^7.3.0",
-    "hapi-swagger": "^7.8.1",
+    "hapi-swagger": "^8.0.0",
     "inert": "^4.2.1",
     "joi": "^13.0.0",
     "jsonwebtoken": "^8.0.1",
@@ -47,7 +48,8 @@
     "lodash": "^4.17.4",
     "mysql": "^2.15.0",
     "require-directory": "^2.1.1",
-    "vision": "^4.1.1"
+    "vision": "^4.1.1",
+    "xregexp": "^3.2.0"
   },
   "scripts": {
     "db:clean": "./scripts/createCleanDb.js",

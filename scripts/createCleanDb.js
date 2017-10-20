@@ -13,6 +13,7 @@ createCleanDb(databaseName, config.get('database.username'), config.get('databas
     console.log('Complete')
   })
   .catch((reason) => {
-    console.log(chalk.bold.red('error detected'))
+    console.error(chalk.bold.red('error detected'))
+    console.error(reason)
     process.exit(-1)
   })
