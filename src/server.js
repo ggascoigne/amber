@@ -1,6 +1,6 @@
 'use strict'
 
-import settings from 'config'
+import config from './utils/config'
 import Hapi from 'hapi'
 import loadPlugins from './plugins'
 
@@ -10,14 +10,14 @@ export function getServer () {
   const server = new Hapi.Server({
     connections: {
       routes: {
-        cors: settings.cors
+        cors: config.cors
       }
     }
   })
 
   server.connection({
-    port: settings.port,
-    host: settings.host
+    port: config.port,
+    host: config.host
   })
 
   return server

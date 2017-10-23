@@ -1,7 +1,7 @@
 'use strict'
 
 import bookshelfFactory from 'bookshelf'
-import config from 'config'
+import config from './utils/config'
 import knexFactory from 'knex'
 import _ from 'lodash'
 
@@ -22,7 +22,7 @@ const options =
       }
     })
 
-const knex = knexFactory(options)
+export const knex = knexFactory(options)
 
 const bookshelf = bookshelfFactory(knex)
 

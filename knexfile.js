@@ -1,5 +1,4 @@
-require('dotenv').config()
-const config = require('config')
+const config = require('./src/utils/config')
 
 module.exports = {
   [config.util.getEnv('NODE_ENV')]: {

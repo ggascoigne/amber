@@ -1,3 +1,5 @@
+import plugin from './profiles'
+
 const serverConfig = [
   {
     register: require('good')
@@ -11,7 +13,8 @@ const serverConfig = [
   {register: require('hapi-auth-basic')},
   {register: require('hapi-auth-jwt2')},
   // endpoints
-  {register: require('./users')},
+  // {register: require('./users')},
+  {register: require('./profiles')},
   // documentation
   {register: require('inert')},
   {register: require('vision')},

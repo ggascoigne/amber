@@ -1,4 +1,6 @@
 'use strict'
 
-const requireDirectory = require('require-directory')
-module.exports = requireDirectory(module)
+import User from './user'
+import Profile from './profile'
+
+export {User, Profile}

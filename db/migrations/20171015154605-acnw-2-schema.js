@@ -58,6 +58,7 @@ exports.up = function (knex) {
     })
     .table('profile', function (table) {
       table.dropColumn('version')
+      table.dropColumn('email_hash')
       table.dropColumn('date_created')
       table.dropColumn('last_updated')
     })
