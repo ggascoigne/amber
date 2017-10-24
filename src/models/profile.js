@@ -1,7 +1,7 @@
 'use strict'
 
-import bookshelf from '../bookshelf'
 import _ from 'lodash'
+import bookshelf from '../bookshelf'
 
 const Profile = bookshelf.Model.extend({
   tableName: 'profile'
@@ -11,9 +11,12 @@ const Profile = bookshelf.Model.extend({
 Profile.deleteAll = async () => {
   return Profile.collection().fetch()
     .then((profiles) => {
-      _.each(profiles.models, function (model) {
-        model.destroy()
-      })
+      Promise.all(_.map(profiles.models, model => model.destroy()))
+        .then(() => {})
+        .catch(reason => {
+          console.log('error cleaning up profiles')
+          console.log(reason)
+        })
     })
 }
 

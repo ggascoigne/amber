@@ -83,6 +83,9 @@ module.exports.register = (server, options, next) => {
         // auth: {
         //   scope: ['iam:profiles:write']
         // },
+        validate: {
+          payload: policyPostPayloadSchema
+        },
         handler: putProfileHandler
       }
     },

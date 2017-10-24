@@ -69,7 +69,7 @@ export async function patchProfileHandler (req, reply) {
 
     reply({
       success: true,
-      prfile: updatedProfile,
+      profile: updatedProfile,
       timestamp: Date.now()
     })
   } catch (error) {
@@ -86,7 +86,7 @@ export async function putProfileHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const profile = new Profile()
+    const profile = await new Profile()
       .where({id})
       .fetch({require: true})
     const updatedProfile = await profile.save(req.payload)
@@ -110,7 +110,7 @@ export async function deleteProfileHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const profile = new Profile()
+    const profile = await new Profile()
       .where({id})
       .fetch({require: true})
     await profile.destroy()
