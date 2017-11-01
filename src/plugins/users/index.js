@@ -1,20 +1,25 @@
-// import Joi from 'joi'
+import Joi from 'joi'
 
 import {
-  // createUserHandler,
-  // deleteUserHandler,
-  // getUserHandler,
-  getUsersHandler
+  createUserHandler,
+  deleteUserHandler,
+  getUserHandler,
+  getUsersHandler,
   // getUserTokensHandler,
   // deleteUserTokenHandler,
-  // patchUserHandler,
-  // putUserHandler
+  patchUserHandler,
+  putUserHandler
 } from './handlers'
 
-// const userPostPayloadSchema = {
-//   email: Joi.string().email().required(),
-//   password: Joi.string().regex(/[a-zA-Z0-9@-_]{3,30}/).required()
-// }
+const userPostPayloadSchema = {
+  username: Joi.string().max(32).required(),
+  password: Joi.string().max(64).regex(/[a-zA-Z0-9@-_]{3,30}/).required()
+}
+
+const userPatchPayloadSchema = {
+  username: Joi.string().max(32),
+  password: Joi.string().max(64).regex(/[a-zA-Z0-9@-_]{3,30}/)
+}
 
 module.exports.register = (server, options, next) => {
   server.route([
@@ -30,79 +35,67 @@ module.exports.register = (server, options, next) => {
         // },
         handler: getUsersHandler
       }
-    // },
-    // {
-    //   method: 'GET',
-    //   path: '/users/{id}',
-    //   config: {
-    //     tags: ['api'],
-    //     auth: {
-    //       scope: ['iam:users:read']
-    //     },
-    //     cache: {
-    //       expiresIn: 10 * SECOND
-    //     },
-    //     handler: getUserHandler
-    //   }
-    // },
-    // {
-    //   method: 'POST',
-    //   path: '/users',
-    //   config: {
-    //     tags: ['api'],
-    //     auth: {
-    //       scope: ['iam:users:write']
-    //     },
-    //     cache: {
-    //       expiresIn: 10 * SECOND
-    //     },
-    //     validate: {
-    //       payload: userPostPayloadSchema
-    //     },
-    //     handler: createUserHandler
-    //   }
-    // },
-    // {
-    //   method: 'PATCH',
-    //   path: '/users/{id}',
-    //   config: {
-    //     tags: ['api'],
-    //     auth: {
-    //       scope: ['iam:users:write']
-    //     },
-    //     cache: {
-    //       expiresIn: 10 * SECOND
-    //     },
-    //     handler: patchUserHandler
-    //   }
-    // },
-    // {
-    //   method: 'PUT',
-    //   path: '/users/{id}',
-    //   config: {
-    //     tags: ['api'],
-    //     auth: {
-    //       scope: ['iam:users:write']
-    //     },
-    //     cache: {
-    //       expiresIn: 10 * SECOND
-    //     },
-    //     handler: putUserHandler
-    //   }
-    // },
-    // {
-    //   method: 'DELETE',
-    //   path: '/users/{id}',
-    //   config: {
-    //     tags: ['api'],
-    //     auth: {
-    //       scope: ['iam:users:delete']
-    //     },
-    //     cache: {
-    //       expiresIn: 10 * SECOND
-    //     },
-    //     handler: deleteUserHandler
-    //   }
+    },
+    {
+      method: 'GET',
+      path: '/users/{id}',
+      config: {
+        tags: ['api'],
+        // auth: {
+        //   scope: ['iam:users:read']
+        // },
+        handler: getUserHandler
+      }
+    },
+    {
+      method: 'POST',
+      path: '/users',
+      config: {
+        tags: ['api'],
+        // auth: {
+        //   scope: ['iam:users:write']
+        // },
+        validate: {
+          payload: userPostPayloadSchema
+        },
+        handler: createUserHandler
+      }
+    },
+    {
+      method: 'PATCH',
+      path: '/users/{id}',
+      config: {
+        tags: ['api'],
+        // auth: {
+        //   scope: ['iam:users:write']
+        // },
+        validate: {
+          payload: userPatchPayloadSchema
+        },
+        handler: patchUserHandler
+      }
+    },
+    {
+      method: 'PUT',
+      path: '/users/{id}',
+      config: {
+        tags: ['api'],
+        // auth: {
+        //   scope: ['iam:users:write']
+        // },
+        handler: putUserHandler
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/users/{id}',
+      config: {
+        tags: ['api'],
+        // auth: {
+        //   scope: ['iam:users:delete']
+        // },
+        handler: deleteUserHandler
+      }
     // },
     // {
     //   method: 'GET',

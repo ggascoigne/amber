@@ -8,7 +8,14 @@ let profile
 let server
 
 describe('profiles', () => {
+  const cleanup = async () => {
+    return Profile.deleteAll()
+  }
+
   beforeEach(async () => {
+    // todo: work out what we need to do this twice for it to be reliable
+    await cleanup()
+    await cleanup()
     profile = await Profile.forge({
       email: 'test@test.com',
       full_name: 'Test Account'
@@ -25,16 +32,8 @@ describe('profiles', () => {
     return loadTestPlugins(server, plugin)
   })
 
-  beforeAll(async () => {
-    return Profile.deleteAll()
-  })
-
-  afterEach(async () => {
-    return Profile.deleteAll()
-  })
-
   afterAll(async () => {
-    // make sure that the knex connection pool shuts down
+    await cleanup()
     await knex.destroy()
   })
 
@@ -123,7 +122,7 @@ describe('profiles', () => {
 
   test('[PATCH] /profiles', async () => {
     const data = {
-      email: 'test3@test.com',
+      email: 'test3@test.com'
     }
     const response = await server.inject({
       method: 'PATCH',

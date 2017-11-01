@@ -7,7 +7,7 @@ export async function getProfileHandler (req, reply) {
   try {
     const profile = await new Profile({id}).fetch({require: true})
     reply({
-      profile: profile,
+      profile,
       success: true,
       timestamp: Date.now()
     })
