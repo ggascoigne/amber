@@ -50,10 +50,7 @@ export function routes (server, options, next) {
         //   scope: ['iam:users:write']
         // },
         validate: {
-          payload: User.requiredSchema,
-          params: {
-            id: Joi.number().integer().required().description('object id')
-          }
+          payload: User.requiredSchema
         },
         handler: createUserHandler
       }
