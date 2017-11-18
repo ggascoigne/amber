@@ -21,6 +21,7 @@ I've decided to look at Knex
 
 * [Knex.js](http://knexjs.org)
 * [Bookshelf.js](http://bookshelfjs.org/)
+* [Objection.js](http://vincit.github.io/objection.js/)
 
 https://labs.mlssoccer.com/how-to-be-a-hapi-developer-8bb844b3d6a
 

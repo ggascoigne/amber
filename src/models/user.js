@@ -1,31 +1,51 @@
 'use strict'
 
-import _ from 'lodash'
-import bookshelf from '../bookshelf'
+import Joi from 'joi'
+import { Model } from '../orm'
 import Profile from './profile'
 
-const config = {
-  tableName: 'user',
-  profile: function () {
-    return this.hasOne(Profile)
+export default class User extends Model {
+  static get tableName () { return 'user' }
+
+  static get relationMappings () {
+    return {
+      profile: {
+        relation: Model.HasOneRelation,
+        modelClass: Profile,
+        join: {
+          from: 'user.profile_id',
+          to: 'profile.id'
+        }
+      }
+    }
+  }
+
+  static async deleteAll () {
+    return User
+      .query()
+      .delete()
+      .then(numDeleted => {
+        // console.log(`deleted ${numDeleted} users`)
+      })
+      .catch(err => {
+        console.error(err.stack)
+      })
+  }
+
+  static get schema () {
+    return {
+      username: Joi.string().max(32),
+      password: Joi.string().max(64).regex(/[a-zA-Z0-9@-_]{3,30}/),
+      profile_id: Joi.number(),
+      account_expired: Joi.boolean(),
+      account_locked: Joi.boolean(),
+      enabled: Joi.boolean(),
+      password_expired: Joi.boolean()
+    }
+  }
+
+  static get requiredSchema () {
+    return Joi.object().keys(User.schema)
+      .requiredKeys('username', 'password', 'profile_id')
   }
 }
-
-const deleteAll = async () => {
-  // Destroy all records - test setup and cleanup only
-  return User.collection().fetch()
-    .then((users) => {
-      Promise.all(_.map(users.models, model => model.destroy()))
-        .then(() => {})
-        .catch(reason => {
-          console.log('error cleaning up users')
-          console.log(reason)
-        })
-    })
-}
-
-const statics = {deleteAll}
-
-const User = bookshelf.Model.extend(config, statics)
-
-export default User

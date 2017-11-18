@@ -5,7 +5,9 @@ export async function getProfileHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const profile = await new Profile({id}).fetch({require: true})
+    const profile = await Profile.query()
+      .findById(id)
+      .throwIfNotFound()
     reply({
       profile,
       success: true,
@@ -23,7 +25,7 @@ export async function getProfileHandler (req, reply) {
 
 export async function getProfilesHandler (req, reply) {
   try {
-    const profiles = await Profile.collection().fetch()
+    const profiles = await Profile.query()
     reply({
       profiles: profiles,
       success: true,
@@ -41,8 +43,8 @@ export async function getProfilesHandler (req, reply) {
 
 export async function createProfileHandler (req, reply) {
   try {
-    const profile = await Profile.forge(req.payload).save()
-
+    const profile = await Profile.query()
+      .insert(req.payload)
     reply({
       success: true,
       profile,
@@ -62,14 +64,13 @@ export async function patchProfileHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const profile = await new Profile()
-      .where({id})
-      .fetch({require: true})
-    const updatedProfile = await profile.save(req.payload, {patch: true})
+    const profile = await Profile.query()
+      .patchAndFetchById(id, req.payload)
+      .throwIfNotFound()
 
     reply({
       success: true,
-      profile: updatedProfile,
+      profile,
       timestamp: Date.now()
     })
   } catch (error) {
@@ -86,14 +87,13 @@ export async function putProfileHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const profile = await new Profile()
-      .where({id})
-      .fetch({require: true})
-    const updatedProfile = await profile.save(req.payload)
+    const profile = await Profile.query()
+      .updateAndFetchById(id, req.payload)
+      .throwIfNotFound()
 
     reply({
       success: true,
-      profile: updatedProfile,
+      profile,
       timestamp: Date.now()
     })
   } catch (error) {
@@ -108,12 +108,10 @@ export async function putProfileHandler (req, reply) {
 
 export async function deleteProfileHandler (req, reply) {
   const {id} = req.params
-
   try {
-    const profile = await new Profile()
-      .where({id})
-      .fetch({require: true})
-    await profile.destroy()
+    await Profile.query()
+      .deleteById(id)
+      .throwIfNotFound()
 
     reply({
       success: true,

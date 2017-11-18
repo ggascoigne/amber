@@ -1,9 +1,9 @@
 'use strict'
 
-import bookshelfFactory from 'bookshelf'
-import config from './utils/config'
 import knexFactory from 'knex'
 import _ from 'lodash'
+import { Model as model } from 'objection'
+import config from './utils/config'
 
 const options =
   _.defaultsDeep(
@@ -23,15 +23,8 @@ const options =
     })
 
 export const knex = knexFactory(options)
+model.knex(knex)
+export const Model = model
 
-const bookshelf = bookshelfFactory(knex)
-
-// prevent cyclical dependencies when creating models
-// https://github.com/tgriesser/bookshelf/wiki/Plugin:-Model-Registry
-bookshelf.plugin('registry')
-
-// allow virtual properties on models (custom getters and setters)
-// https://github.com/tgriesser/bookshelf/wiki/Plugin:-Virtuals
-bookshelf.plugin('virtuals')
-
-export default bookshelf
+const cs = knex.client.connectionSettings
+console.log(`Database: ${knex.client.config.client}://${cs.host}:${cs.port}/${cs.user}@${cs.database}`)

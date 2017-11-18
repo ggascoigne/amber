@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { User } from '../../models'
 import { getErrorCode } from '../../utils/testUtils'
 
@@ -23,9 +24,12 @@ export async function getUserHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const user = await new User({id}).fetch({require: true})
+    const user = await User.query()
+      .findById(id)
+      .eager('profile')
+      .throwIfNotFound()
     reply({
-      user: user.omit(['password']),
+      user: _.omit(user, ['password']),
       success: true,
       timestamp: Date.now()
     })
@@ -41,10 +45,11 @@ export async function getUserHandler (req, reply) {
 
 export async function getUsersHandler (req, reply) {
   try {
-    const users = await User.collection().fetch()
+    const users = await User.query()
+      .eager('profile')
 
     reply({
-      users: users.map(u => u.omit(['password', '_roles'])),
+      users: users.map(u => _.omit(u, ['password', '_roles'])),
       success: true,
       timestamp: Date.now()
     })
@@ -119,11 +124,18 @@ export async function getUsersHandler (req, reply) {
 
 export async function createUserHandler (req, reply) {
   try {
-    const user = await User.forge(req.payload).save()
+    const defaultValues = {
+      'account_expired': false,
+      'account_locked': false,
+      'enabled': true,
+      'password_expired': false
+    }
+    const user = await User.query()
+      .insert({...defaultValues, ...req.payload})
 
     reply({
       success: true,
-      user: user.omit(['password']),
+      user: _.omit(user, ['password']),
       timestamp: Date.now()
     })
   } catch (error) {
@@ -140,14 +152,13 @@ export async function patchUserHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const user = await new User()
-      .where({id})
-      .fetch({require: true})
-    const updatedUser = await user.save(req.payload, {patch: true})
+    const user = await User.query()
+      .patchAndFetchById(id, req.payload)
+      .throwIfNotFound()
 
     reply({
       success: true,
-      user: updatedUser.omit(['password']),
+      user: _.omit(user, ['password']),
       timestamp: Date.now()
     })
   } catch (error) {
@@ -164,14 +175,13 @@ export async function putUserHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const user = new User()
-      .where({id})
-      .fetch({require: true})
-    const updatedUser = await user.save(req.payload)
+    const user = await User.query()
+      .updateAndFetchById(id, req.payload)
+      .throwIfNotFound()
 
     reply({
       success: true,
-      user: updatedUser.omit(['password']),
+      user: _.omit(user, ['password']),
       timestamp: Date.now()
     })
   } catch (error) {
@@ -188,10 +198,9 @@ export async function deleteUserHandler (req, reply) {
   const {id} = req.params
 
   try {
-    const user = new User()
-      .where({id})
-      .fetch({require: true})
-    await user.destroy()
+    await User.query()
+      .deleteById(id)
+      .throwIfNotFound()
 
     reply({
       success: true,

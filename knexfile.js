@@ -11,7 +11,7 @@ module.exports = {
       directory: './db/seeds'
     },
     client: 'mysql',
-    debug: false,
+    debug: config.get('debug'),
     connection: {
       host: config.get('database.host'),
       port: config.get('database.port'),

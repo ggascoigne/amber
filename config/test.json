@@ -1,6 +1,6 @@
 {
   "port": 3000,
-  "debug": true,
+  "debug": false,
   "database": {
     "database": "acnw2_test",
     "host": "127.0.0.1",

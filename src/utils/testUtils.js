@@ -15,7 +15,7 @@ export function loadTestPlugins (server, pluginToTest) {
 }
 
 export const getErrorCode = (error) => {
-  if (error.message === 'EmptyResponse') {
+  if (error.message === 'NotFoundError') {
     return 404 // NOT FOUND
   } else {
     return 400 // bad request

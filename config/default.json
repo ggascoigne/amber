@@ -1,4 +1,5 @@
 {
   "host": "0.0.0.0",
-  "cors": true
+  "cors": true,
+  "debug": false
 }

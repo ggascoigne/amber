@@ -1,6 +1,6 @@
 import hapi from 'hapi'
-import { knex } from '../../bookshelf'
 import { Profile } from '../../models'
+import { knex } from '../../orm'
 import { loadTestPlugins } from '../../utils/testUtils'
 import plugin from './index'
 
@@ -13,18 +13,18 @@ describe('profiles', () => {
   }
 
   beforeEach(async () => {
-    // todo: work out what we need to do this twice for it to be reliable
     await cleanup()
-    await cleanup()
-    profile = await Profile.forge({
-      email: 'test@test.com',
-      full_name: 'Test Account'
-    }).save()
+    profile = await Profile.query()
+      .insert({
+        email: 'test@test.com',
+        full_name: 'Test Account'
+      })
 
-    await Profile.forge({
-      email: 'test2@test.com',
-      full_name: 'Test Account 2'
-    }).save()
+    await Profile.query()
+      .insert({
+        email: 'test2@test.com',
+        full_name: 'Test Account 2'
+      })
 
     server = new hapi.Server()
     server.connection()
@@ -42,6 +42,7 @@ describe('profiles', () => {
       method: 'GET',
       url: `/profiles/${profile.id}`
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
     expect(payload.profile).toHaveProperty('email', 'test@test.com')
@@ -52,6 +53,7 @@ describe('profiles', () => {
       method: 'GET',
       url: `/profiles/999999999`
     })
+    expect(JSON.parse(response.payload).message).toBe('NotFoundError')
     expect(response.statusCode).toBe(404)
   })
 
@@ -60,6 +62,7 @@ describe('profiles', () => {
       method: 'GET',
       url: '/profiles'
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
     expect(payload.profiles.length).toBe(2)
@@ -76,6 +79,7 @@ describe('profiles', () => {
       url: `/profiles`,
       payload: data
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
 
@@ -83,6 +87,7 @@ describe('profiles', () => {
       method: 'GET',
       url: '/profiles'
     })).payload)
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(payload.profiles.length).toBe(3)
     expect(payload.profiles.map(p => p.email))
       .toEqual(expect.arrayContaining(['test@test.com', 'test2@test.com', 'test3@test.com']))
@@ -129,6 +134,7 @@ describe('profiles', () => {
       url: `/profiles/${profile.id}`,
       payload: data
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
 
@@ -136,6 +142,7 @@ describe('profiles', () => {
       method: 'GET',
       url: '/profiles'
     })).payload)
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(payload.profiles.length).toBe(2)
     expect(payload.profiles.map(p => p.email))
       .toEqual(expect.arrayContaining(['test2@test.com', 'test3@test.com']))
@@ -182,6 +189,7 @@ describe('profiles', () => {
       url: `/profiles/${profile.id}`,
       payload: data
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
 
@@ -189,6 +197,7 @@ describe('profiles', () => {
       method: 'GET',
       url: '/profiles'
     })).payload)
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(payload.profiles.length).toBe(2)
     expect(payload.profiles.map(p => p.email))
       .toEqual(expect.arrayContaining(['test2@test.com', 'test3@test.com']))
@@ -213,6 +222,7 @@ describe('profiles', () => {
       method: 'DELETE',
       url: `/profiles/${profile.id}`
     })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).success).toBe(true)
 
@@ -220,6 +230,7 @@ describe('profiles', () => {
       method: 'GET',
       url: '/profiles'
     })).payload)
+    expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(payload.profiles.length).toBe(1)
   })
 })
