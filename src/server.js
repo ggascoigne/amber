@@ -1,8 +1,9 @@
 'use strict'
 
-import config from './utils/config'
 import Hapi from 'hapi'
 import loadPlugins from './plugins'
+import config from './utils/config'
+import { knex } from './orm'
 
 require('./models')
 
@@ -29,7 +30,9 @@ export async function start (server) {
       if (error) {
         return reject(error)
       }
-      console.log(`Server running at: ${server.info.uri}`)
+      const cs = knex.client.connectionSettings
+      server.log('info', `Database: ${knex.client.config.client}://${cs.host}:${cs.port}/${cs.user}@${cs.database}`)
+      server.log('info', `Server running at: ${server.info.uri}`)
       resolve(server)
     })
   })

@@ -11,9 +11,6 @@ export default class Profile extends Model {
     return Profile
       .query()
       .delete()
-      .then(numDeleted => {
-        // console.log(`deleted ${numDeleted} profiles`)
-      })
       .catch(err => {
         console.error(err.stack)
       })

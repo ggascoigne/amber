@@ -24,9 +24,6 @@ export default class User extends Model {
     return User
       .query()
       .delete()
-      .then(numDeleted => {
-        // console.log(`deleted ${numDeleted} users`)
-      })
       .catch(err => {
         console.error(err.stack)
       })

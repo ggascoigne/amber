@@ -1,12 +1,23 @@
 const serverConfig = [
   {
-    register: require('good')
-    // options: {
-    //   reporters: [{
-    //     reporter: require('good-console'),
-    //     args: [{log: '*', request: '*', ops: '*', error: '*'}]
-    //   }]
-    // }
+    register: require('good'),
+    options: {
+      reporters: {
+        console: [{
+          module: 'good-squeeze',
+          name: 'Squeeze',
+          args: [{
+            response: '*',
+            request: '*',
+            log: {
+              include: ['info', 'debug']
+            }
+          }]
+        }, {
+          module: 'good-console'
+        }, 'stdout']
+      }
+    }
   },
   {register: require('hapi-auth-basic')},
   {register: require('hapi-auth-jwt2')},

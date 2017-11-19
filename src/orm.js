@@ -25,6 +25,3 @@ const options =
 export const knex = knexFactory(options)
 model.knex(knex)
 export const Model = model
-
-const cs = knex.client.connectionSettings
-console.log(`Database: ${knex.client.config.client}://${cs.host}:${cs.port}/${cs.user}@${cs.database}`)

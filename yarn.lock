@@ -1937,6 +1937,10 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
 
+fast-safe-stringify@1.1.x:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-1.1.13.tgz#a01e9cd9c9e491715c98a75a42d5f0bbd107ff76"
+
 fast-safe-stringify@^1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/fast-safe-stringify/-/fast-safe-stringify-1.2.1.tgz#c4b2477dd585de4488aa6665d4acfae41462d999"
@@ -2263,6 +2267,13 @@ good-console@^6.4.0:
     joi "8.1.x"
     json-stringify-safe "5.0.x"
     moment "2.15.x"
+
+good-squeeze@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/good-squeeze/-/good-squeeze-5.0.2.tgz#a8e58242b4a0b32cdbdf317b60e73a19a7f0879b"
+  dependencies:
+    fast-safe-stringify "1.1.x"
+    hoek "4.x.x"
 
 good@^7.3.0:
   version "7.3.0"
