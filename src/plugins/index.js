@@ -24,6 +24,7 @@ const serverConfig = [
   // endpoints
   {register: require('./users')},
   {register: require('./profiles')},
+  {register: require('./roles')},
   // documentation
   {register: require('inert')},
   {register: require('vision')},

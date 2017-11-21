@@ -3,6 +3,7 @@
 import Joi from 'joi'
 import { Model } from '../orm'
 import Profile from './profile'
+import Role from './role'
 
 export default class User extends Model {
   static get tableName () { return 'user' }
@@ -15,6 +16,19 @@ export default class User extends Model {
         join: {
           from: 'user.profile_id',
           to: 'profile.id'
+        }
+      },
+      roles: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Role,
+        join: {
+          from: 'user.id',
+          through: {
+            // user_role is the join table.
+            from: 'user_role.user_id',
+            to: 'user_role.role_id'
+          },
+          to: 'role.id'
         }
       }
     }

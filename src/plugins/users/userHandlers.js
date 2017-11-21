@@ -26,7 +26,7 @@ export async function getUserHandler (req, reply) {
   try {
     const user = await User.query()
       .findById(id)
-      .eager('profile')
+      .eager('[profile, roles]')
       .throwIfNotFound()
     reply({
       user: _.omit(user, ['password']),
@@ -46,7 +46,7 @@ export async function getUserHandler (req, reply) {
 export async function getUsersHandler (req, reply) {
   try {
     const users = await User.query()
-      .eager('profile')
+      .eager('[profile, roles]')
 
     reply({
       users: users.map(u => _.omit(u, ['password', '_roles'])),
