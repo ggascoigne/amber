@@ -1,6 +1,7 @@
 import hapi from 'hapi'
 import { Profile } from '../../models'
 import { knex } from '../../orm'
+import { customMatchers } from '../../utils/customMatchers'
 import { loadTestPlugins } from '../../utils/testUtils'
 import plugin from './index'
 
@@ -13,6 +14,7 @@ describe('profiles', () => {
   }
 
   beforeEach(async () => {
+    expect.extend(customMatchers)
     await cleanup()
     profile = await Profile.query()
       .insert({
@@ -94,11 +96,11 @@ describe('profiles', () => {
   })
 
   const postPutData = [
-    {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 400},
-    {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 400},
-    {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400},
-    {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200},
-    {name: 'duplicate email', payload: {full_name: 'name', email: 'test2@test.com'}, statusCode: 400},
+    {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 400, errorType: 'v'},
+    {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 400, errorType: 'v'},
+    {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400, errorType: 'v'},
+    {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
+    {name: 'duplicate email', payload: {full_name: 'name', email: 'test2@test.com'}, statusCode: 400, errorType: 'd'},
     {
       name: 'empty snail mail',
       payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: ''},
@@ -120,7 +122,8 @@ describe('profiles', () => {
           payload: run.payload
         })
         expect(response.statusCode).toBe(run.statusCode)
-        run.statusCode === 400 && expect(response.payload).toMatch(/validation|ER_DUP_ENTRY/)
+        run.errorType === 'd' && expect(response).toHaveDuplicateKey()
+        run.errorType === 'v' && expect(response).toHaveValidationError()
       })
     })
   })
@@ -150,19 +153,21 @@ describe('profiles', () => {
 
   describe('[PATCH /profiles/{id} - validation', () => {
     const runs = [
-      {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 200},
-      {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 200},
-      {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400},
-      {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200},
+      {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 200, errorType: 'n'},
+      {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
+      {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400, errorType: 'v'},
+      {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
       {
         name: 'empty snail mail',
         payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: ''},
-        statusCode: 400
+        statusCode: 400,
+        errorType: 'v'
       },
       {
         name: 'valid snail mail',
         payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: 'some address'},
-        statusCode: 200
+        statusCode: 200,
+        errorType: 'n'
       }
     ]
 
@@ -212,7 +217,8 @@ describe('profiles', () => {
           payload: run.payload
         })
         expect(response.statusCode).toBe(run.statusCode)
-        run.statusCode === 400 && expect(response.payload).toMatch(/validation|ER_DUP_ENTRY/)
+        run.errorType === 'd' && expect(response).toHaveDuplicateKey()
+        run.errorType === 'v' && expect(response).toHaveValidationError()
       })
     })
   })

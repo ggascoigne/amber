@@ -1,37 +1,15 @@
 #!/usr/bin/env node
 
+const {bail} = require('./scriptUtils')
 require('dotenv').config()
 const config = require('config')
 const {spawn, spawnSync} = require('child_process')
-const {createCleanDb} = require('./scriptUtils')
-const chalk = require('chalk')
-const {mysqlExecScript} = require('./scriptUtils')
+const {createCleanDb, createCleanDbMySql, pgloader} = require('./scriptUtils')
+const {createKnexMigrationTables} = require('./scriptUtils')
 const {stripIndent} = require('common-tags')
+const {sleep} = require('./sleep')
 
-async function createKnexMigrationTables (databaseName, userName, password) {
-  const sql = stripIndent`DROP TABLE IF EXISTS knex_migrations;
-  
-    CREATE TABLE knex_migrations (
-      id int(10) unsigned NOT NULL AUTO_INCREMENT,
-      name varchar(255) DEFAULT NULL,
-      batch int(11) DEFAULT NULL,
-      migration_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (id)
-    ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-    
-    DROP TABLE IF EXISTS knex_migrations_lock;
-    
-    CREATE TABLE knex_migrations_lock (
-      is_locked int(11) DEFAULT NULL
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-      
-    INSERT INTO knex_migrations_lock VALUES (0);
-    `
-
-  return mysqlExecScript(databaseName, userName, password, sql)
-}
-
-async function pipeLiveToLocal (databaseName, userName, password) {
+async function pipeLiveToLocalMysql (databaseName, userName, password) {
   return new Promise((resolve, reject) => {
     const exporting = spawn(
       '/usr/local/bin/plink',
@@ -47,17 +25,20 @@ async function pipeLiveToLocal (databaseName, userName, password) {
         '--skip-add-locks',
         '--skip-comments',
         '--skip-extended-insert',
-        '--compress --single-transaction',
+        '--add-drop-table',
+        '--compress',
+        '--create-options',
+        '--single-transaction',
         '--quick',
         '--routines',
         '--triggers',
         '--hex-blob',
-        '--no-create-info',
         '--default-character-set=utf8',
         `--user=${process.env.REMOTE_DATABASE_USER}`,
         process.env.REMOTE_DATABASE_NAME]
     )
       .on('error', reject)
+      .on('exit', (code) => !code ? resolve() : reject(code))
 
     const importing = spawn(
       '/usr/local/bin/mysql',
@@ -75,25 +56,68 @@ async function pipeLiveToLocal (databaseName, userName, password) {
   })
 }
 
-const bail = (reason) => {
-  console.error(chalk.bold.red('error detected'))
-  console.error(reason)
-  process.exit(-1)
+async function pipeTmpToLocal (tmpDbName, databaseName, userName, password) {
+  return new Promise((resolve, reject) => {
+    const exporting = spawn(
+      '/usr/local/bin/pg_dump', ['--schema=public', '-d', tmpDbName, '-a'])
+      .on('error', reject)
+
+    const importing = spawn('/usr/local/bin/psql', ['-d', databaseName, '-v', 'ON_ERROR_STOP=1'])
+      .on('error', reject)
+      .on('exit', (code) => !code ? resolve() : reject(code))
+
+    exporting.stdout.pipe(importing.stdin)
+
+    exporting.stderr.pipe(process.stderr)
+    importing.stdout.pipe(process.stdout)
+    importing.stderr.pipe(process.stderr)
+  })
 }
 
 async function main () {
   const databaseName = config.get('database.database')
   const userName = config.get('database.username')
-  const password = config.get('database.password')
+  const password = config.has('database.password') ? config.get('database.password') : ''
+  const tmpDbName = 'acnw_v1_tmp'
+
+  console.log(`Create tmp mysql database ${tmpDbName}`)
+  createCleanDbMySql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
+
+  console.log(`download data`)
+  await pipeLiveToLocalMysql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
+    .catch(bail)
+
+  // if I don't do this then some of the users don't get copied over and things explode
+  console.log(`pausing to let mySql flush to disk`)
+  await sleep(5000)
+
+  console.log(`Create tmp postgres database ${tmpDbName}`)
+  createCleanDb(tmpDbName, userName, password)
+
+  console.log(`Importing data from tmp mysql to tmp postgres database`)
+  const pgloaderScript = stripIndent`
+    LOAD database  
+      FROM    mysql://${process.env.LOCAL_MYSQL_USER}@localhost/${tmpDbName}  
+      INTO    postgresql://${userName}@localhost/${tmpDbName}
+      
+    WITH include drop, create tables, no truncate,  
+      create indexes, reset sequences, foreign keys
+
+    CAST type bigint  with extra auto_increment  
+            to integer drop typemod keep default keep not null,   
+         type bigint when (= precision 20) to integer drop typemod,
+         type int when (= precision 11) to integer drop typemod
+    ALTER SCHEMA '${tmpDbName}' RENAME TO 'public'
+  ;`
+
+  pgloader(process.env.LOCAL_MYSQL_PASSWORD, pgloaderScript)
 
   console.log(`Recreating database ${databaseName}`)
-  await createCleanDb(databaseName, userName, password)
-    .catch(bail)
+  createCleanDb(databaseName, userName, password)
 
   console.log('Inserting knex records')
   // remove if kex-migrate fixes it's issue
-  await createKnexMigrationTables(databaseName, userName, password)
-    .catch(bail)
+  createKnexMigrationTables(databaseName, userName, password)
 
   console.log('Create schema in a acnw-1 format')
   const migration1 = spawnSync('./node_modules/.bin/knex-migrate', ['up', '20171015105936-acnw-1-schema.js'], {stdio: 'inherit'})
@@ -101,7 +125,7 @@ async function main () {
 
   console.log('Loading data from latest live acnw v1 database')
 
-  await pipeLiveToLocal(databaseName, userName, password)
+  await pipeTmpToLocal(tmpDbName, databaseName, userName, password)
     .catch(bail)
 
   console.log('Applying the remaining migrators')

@@ -10,8 +10,6 @@
 exports.up = function (knex) {
   return knex
     .schema
-    .raw('SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0')
-    .raw('SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0')
     .dropTableIfExists('async_mail_attachment')
     .dropTableIfExists('async_mail_bcc')
     .dropTableIfExists('async_mail_cc')
@@ -91,8 +89,6 @@ exports.up = function (knex) {
       table.dropColumn('date_created')
       table.dropColumn('last_updated')
     })
-    .raw('SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS')
-    .raw('SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS')
 }
 
 exports.down = function (knex) {

@@ -8,7 +8,10 @@ const chalk = require('chalk')
 const databaseName = config.get('database.database')
 console.log(`Recreating database ${databaseName}`)
 
-createCleanDb(databaseName, config.get('database.username'), config.get('database.password'))
+const userName = config.get('database.username')
+const password = config.has('database.password') ? config.get('database.password') : ''
+
+createCleanDb(databaseName, userName, password)
   .then(() => {
     console.log('Complete')
   })

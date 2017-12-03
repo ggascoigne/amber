@@ -10,13 +10,13 @@ module.exports = {
       tableName: './seeds',
       directory: './db/seeds'
     },
-    client: 'mysql',
+    client: 'pg',
     debug: config.get('debug'),
     connection: {
       host: config.get('database.host'),
       port: config.get('database.port'),
       user: config.get('database.username'),
-      password: config.get('database.password'),
+      password: config.has('database.password') ? config.get('database.password') : '',
       database: config.get('database.database'),
       charset: 'utf8'
     }

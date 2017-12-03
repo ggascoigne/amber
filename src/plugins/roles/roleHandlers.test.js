@@ -3,6 +3,7 @@ import { Role } from '../../models'
 import { knex } from '../../orm'
 import { loadTestPlugins } from '../../utils/testUtils'
 import plugin from './index'
+import {customMatchers} from '../../utils/customMatchers'
 
 let role
 let server
@@ -13,6 +14,7 @@ describe('roles', () => {
   }
 
   beforeEach(async () => {
+    expect.extend(customMatchers)
     await cleanup()
     role = await Role.query()
       .insert({
@@ -92,11 +94,11 @@ describe('roles', () => {
   })
 
   const postPutData = [
-    {name: 'missing authority', payload: {}, statusCode: 400},
-    {name: 'null authority', payload: {authority: null}, statusCode: 400},
-    {name: 'invalid authority', payload: {authority: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}, statusCode: 400},
-    {name: 'valid', payload: {authority: 'ROLE_TEST2'}, statusCode: 200},
-    {name: 'duplicate authority', payload: {authority: 'ROLE_USER'}, statusCode: 400}
+    {name: 'missing authority', payload: {}, statusCode: 400, errorType: 'v'},
+    {name: 'null authority', payload: {authority: null}, statusCode: 400, errorType: 'v'},
+    {name: 'invalid authority', payload: {authority: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}, statusCode: 400, errorType: 'v'},
+    {name: 'valid', payload: {authority: 'ROLE_TEST2'}, statusCode: 200, errorType: 'n'},
+    {name: 'duplicate authority', payload: {authority: 'ROLE_USER'}, statusCode: 400, errorType: 'd'}
   ]
 
   describe('[POST /roles - validation', () => {
@@ -108,7 +110,8 @@ describe('roles', () => {
           payload: run.payload
         })
         expect(response.statusCode).toBe(run.statusCode)
-        run.statusCode === 400 && expect(response.payload).toMatch(/validation|ER_DUP_ENTRY/)
+        run.errorType === 'd' && expect(response).toHaveDuplicateKey()
+        run.errorType === 'v' && expect(response).toHaveValidationError()
       })
     })
   })
@@ -168,7 +171,8 @@ describe('roles', () => {
           payload: run.payload
         })
         expect(response.statusCode).toBe(run.statusCode)
-        run.statusCode === 400 && expect(response.payload).toMatch(/validation|ER_DUP_ENTRY/)
+        run.errorType === 'd' && expect(response).toHaveDuplicateKey()
+        run.errorType === 'v' && expect(response).toHaveValidationError()
       })
     })
   })
