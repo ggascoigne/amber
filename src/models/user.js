@@ -34,15 +34,6 @@ export default class User extends Model {
     }
   }
 
-  static async deleteAll () {
-    return User
-      .query()
-      .delete()
-      .catch(err => {
-        console.error(err.stack)
-      })
-  }
-
   static get schema () {
     return {
       username: Joi.string().max(32),

@@ -89,6 +89,28 @@ exports.up = function (knex) {
       table.dropColumn('date_created')
       table.dropColumn('last_updated')
     })
+    .createTable('token', function (table) {
+      table.increments('id').primary()
+      table.integer('user_id').notNullable().references('user.id').unsigned().index()
+      table.text('cuid')
+      table.boolean('active').defaultTo(true)
+      table.dateTime('last_used')
+    })
+    .raw(`CREATE OR REPLACE FUNCTION f_truncate_tables(_username TEXT)
+            RETURNS VOID AS
+            $func$
+            BEGIN
+               EXECUTE
+              (SELECT 'TRUNCATE TABLE '
+                   || string_agg(format('%I.%I', schemaname, tablename), ', ')
+                   || ' CASCADE'
+               FROM   pg_tables
+               WHERE  tableowner = _username
+               AND    schemaname = 'public'
+               );
+            END
+            $func$ LANGUAGE plpgsql;`
+    )
 }
 
 exports.down = function (knex) {

@@ -1,30 +1,23 @@
 import hapi from 'hapi'
 import { Role } from '../../models'
 import { knex } from '../../orm'
-import { loadTestPlugins } from '../../utils/testUtils'
+import { customMatchers } from '../../utils/customMatchers'
+import { fakeRole, loadTestPlugins, truncateTablesOnce } from '../../utils/testUtils'
 import plugin from './index'
-import {customMatchers} from '../../utils/customMatchers'
 
-let role
+let role1
+let role2
 let server
 
 describe('roles', () => {
-  const cleanup = async () => {
-    return Role.deleteAll()
-  }
-
   beforeEach(async () => {
+    await truncateTablesOnce()
     expect.extend(customMatchers)
-    await cleanup()
-    role = await Role.query()
-      .insert({
-        authority: 'ROLE_ADMIN'
-      })
+    role1 = await Role.query()
+      .insert(fakeRole())
 
-    await Role.query()
-      .insert({
-        authority: 'ROLE_USER'
-      })
+    role2 = await Role.query()
+      .insert(fakeRole())
 
     server = new hapi.Server()
     server.connection()
@@ -33,19 +26,18 @@ describe('roles', () => {
   })
 
   afterAll(async () => {
-    await cleanup()
     await knex.destroy()
   })
 
   test('[GET] /roles/{id}', async () => {
     const response = await server.inject({
       method: 'GET',
-      url: `/roles/${role.id}`
+      url: `/roles/${role1.id}`
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
-    expect(payload.role).toHaveProperty('authority', 'ROLE_ADMIN')
+    expect(payload.role).toHaveProperty('authority', role1.authority)
   })
 
   test('[GET] /roles/{id} - invalid id', async () => {
@@ -65,15 +57,12 @@ describe('roles', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
-    expect(payload.roles.length).toBe(2)
     expect(payload.roles.map(r => r.authority))
-      .toEqual(expect.arrayContaining(['ROLE_ADMIN', 'ROLE_USER']))
+      .toEqual(expect.arrayContaining([role1.authority, role2.authority]))
   })
 
   test('[POST] /roles', async () => {
-    const data = {
-      authority: 'ROLE_TEST'
-    }
+    const data = fakeRole()
     const response = await server.inject({
       method: 'POST',
       url: `/roles`,
@@ -81,24 +70,44 @@ describe('roles', () => {
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).role.authority).toBe('ROLE_TEST')
+    expect(JSON.parse(response.payload).role.authority).toBe(data.authority)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/roles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.roles.length).toBe(3)
     expect(payload.roles.map(r => r.authority))
-          .toEqual(expect.arrayContaining(['ROLE_ADMIN', 'ROLE_USER', 'ROLE_TEST']))
+      .toEqual(expect.arrayContaining([data.authority]))
   })
 
   const postPutData = [
     {name: 'missing authority', payload: {}, statusCode: 400, errorType: 'v'},
     {name: 'null authority', payload: {authority: null}, statusCode: 400, errorType: 'v'},
-    {name: 'invalid authority', payload: {authority: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}, statusCode: 400, errorType: 'v'},
-    {name: 'valid', payload: {authority: 'ROLE_TEST2'}, statusCode: 200, errorType: 'n'},
-    {name: 'duplicate authority', payload: {authority: 'ROLE_USER'}, statusCode: 400, errorType: 'd'}
+    {
+      name: 'invalid authority',
+      payload: {authority: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'},
+      statusCode: 400,
+      errorType: 'v'
+    },
+    {
+      name: 'valid',
+      get payload () {
+        return fakeRole()
+      },
+      statusCode: 200,
+      errorType: 'n'
+    },
+    {
+      name: 'duplicate authority',
+      payload: {
+        get authority () {
+          return role2.authority
+        }
+      },
+      statusCode: 400,
+      errorType: 'd'
+    }
   ]
 
   describe('[POST /roles - validation', () => {
@@ -109,6 +118,7 @@ describe('roles', () => {
           url: `/roles`,
           payload: run.payload
         })
+        run.errorType === 'n' && expect(JSON.parse(response.payload).message).toBe(undefined)
         expect(response.statusCode).toBe(run.statusCode)
         run.errorType === 'd' && expect(response).toHaveDuplicateKey()
         run.errorType === 'v' && expect(response).toHaveValidationError()
@@ -117,49 +127,43 @@ describe('roles', () => {
   })
 
   test('[PATCH] /roles', async () => {
-    const data = {
-      authority: 'ROLE_EDITED'
-    }
+    const data = fakeRole()
     const response = await server.inject({
       method: 'PATCH',
-      url: `/roles/${role.id}`,
+      url: `/roles/${role1.id}`,
       payload: data
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).role.authority).toBe('ROLE_EDITED')
+    expect(JSON.parse(response.payload).role.authority).toBe(data.authority)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/roles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.roles.length).toBe(2)
     expect(payload.roles.map(r => r.authority))
-      .toEqual(expect.arrayContaining(['ROLE_EDITED', 'ROLE_USER']))
+      .toEqual(expect.arrayContaining([data.authority]))
   })
 
   test('[PUT] /roles/{id}', async () => {
-    const data = {
-      authority: 'ROLE_EDITED'
-    }
+    const data = fakeRole()
     const response = await server.inject({
       method: 'PUT',
-      url: `/roles/${role.id}`,
+      url: `/roles/${role1.id}`,
       payload: data
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).role.authority).toBe('ROLE_EDITED')
+    expect(JSON.parse(response.payload).role.authority).toBe(data.authority)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/roles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.roles.length).toBe(2)
     expect(payload.roles.map(r => r.authority))
-      .toEqual(expect.arrayContaining(['ROLE_EDITED', 'ROLE_USER']))
+      .toEqual(expect.arrayContaining([data.authority]))
   })
 
   describe('[PUT /roles/{id} - validation', () => {
@@ -167,9 +171,10 @@ describe('roles', () => {
       test(`[PUT] /roles/{id} - validation '${run.name}'`, async () => {
         const response = await server.inject({
           method: 'PUT',
-          url: `/roles/${role.id}`,
+          url: `/roles/${role1.id}`,
           payload: run.payload
         })
+        run.errorType === 'n' && expect(JSON.parse(response.payload).message).toBe(undefined)
         expect(response.statusCode).toBe(run.statusCode)
         run.errorType === 'd' && expect(response).toHaveDuplicateKey()
         run.errorType === 'v' && expect(response).toHaveValidationError()
@@ -180,17 +185,10 @@ describe('roles', () => {
   test('[DELETE] /roles/{id}', async () => {
     const response = await server.inject({
       method: 'DELETE',
-      url: `/roles/${role.id}`
+      url: `/roles/${role1.id}`
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).success).toBe(true)
-
-    const payload = JSON.parse((await server.inject({
-      method: 'GET',
-      url: '/roles'
-    })).payload)
-    expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.roles.length).toBe(1)
   })
 })

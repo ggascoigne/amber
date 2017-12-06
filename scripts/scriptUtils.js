@@ -11,6 +11,7 @@ async function createCleanDbMySql (database, user, password) {
 
   return mysqlExecScript(null, user, password, script)
 }
+
 exports.createCleanDbMySql = createCleanDbMySql
 
 async function createCleanDb (database, user, password) {
@@ -18,6 +19,7 @@ async function createCleanDb (database, user, password) {
   const createdbStatus = spawnSync('createdb', [database], {stdio: 'inherit'})
   !createdbStatus.status || bail(createdbStatus.status)
 }
+
 exports.createCleanDb = createCleanDb
 
 function createKnexMigrationTables (databaseName, userName, password) {
@@ -53,6 +55,7 @@ function createKnexMigrationTables (databaseName, userName, password) {
 
   return psql(databaseName, sql)
 }
+
 exports.createKnexMigrationTables = createKnexMigrationTables
 
 async function mysqlExecScript (database, user, password, script) {
@@ -84,15 +87,15 @@ function forceDropDb (database) {
     DROP DATABASE IF EXISTS ${database};
   `
 
-  psql('postgres', script)
+  psql('postgres', script, 'ignore')
 }
 
-function psql (database, script) {
+function psql (database, script, stdio = 'inherit') {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
   const child = spawnSync('/usr/local/bin/psql', [database, '-f', name],
-    {stdio: 'inherit'}
+    {stdio: stdio}
   )
   !child.status || bail(child.status)
 }
@@ -106,6 +109,7 @@ function pgloader (mySqlPassword, script) {
   )
   !child.status || bail(child.status)
 }
+
 exports.pgloader = pgloader
 
 const bail = (reason) => {

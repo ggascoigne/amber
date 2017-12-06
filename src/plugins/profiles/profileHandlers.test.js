@@ -1,32 +1,24 @@
+import faker from 'faker'
 import hapi from 'hapi'
 import { Profile } from '../../models'
 import { knex } from '../../orm'
 import { customMatchers } from '../../utils/customMatchers'
-import { loadTestPlugins } from '../../utils/testUtils'
+import { fakeProfile, loadTestPlugins, truncateTablesOnce } from '../../utils/testUtils'
 import plugin from './index'
 
 let profile
+let profile2
 let server
 
 describe('profiles', () => {
-  const cleanup = async () => {
-    return Profile.deleteAll()
-  }
-
   beforeEach(async () => {
+    await truncateTablesOnce()
     expect.extend(customMatchers)
-    await cleanup()
     profile = await Profile.query()
-      .insert({
-        email: 'test@test.com',
-        full_name: 'Test Account'
-      })
+      .insert(fakeProfile())
 
-    await Profile.query()
-      .insert({
-        email: 'test2@test.com',
-        full_name: 'Test Account 2'
-      })
+    profile2 = await Profile.query()
+      .insert(fakeProfile())
 
     server = new hapi.Server()
     server.connection()
@@ -35,7 +27,6 @@ describe('profiles', () => {
   })
 
   afterAll(async () => {
-    await cleanup()
     await knex.destroy()
   })
 
@@ -47,7 +38,7 @@ describe('profiles', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
-    expect(payload.profile).toHaveProperty('email', 'test@test.com')
+    expect(payload.profile).toHaveProperty('email', profile.email)
   })
 
   test('[GET] /profiles/{id} - invalid id', async () => {
@@ -67,14 +58,14 @@ describe('profiles', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
-    expect(payload.profiles.length).toBe(2)
-    expect(payload.profiles[0]).toHaveProperty('email', 'test@test.com')
+    expect(payload.profiles.map(p => p.email))
+      .toEqual(expect.arrayContaining([profile.email]))
   })
 
   test('[POST] /profiles', async () => {
     const data = {
-      email: 'test3@test.com',
-      full_name: 'Test Account 3'
+      email: faker.internet.email(),
+      full_name: faker.name.findName()
     }
     const response = await server.inject({
       method: 'POST',
@@ -83,32 +74,57 @@ describe('profiles', () => {
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
+    expect(JSON.parse(response.payload).profile.email).toBe(data.email)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/profiles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.profiles.length).toBe(3)
     expect(payload.profiles.map(p => p.email))
-      .toEqual(expect.arrayContaining(['test@test.com', 'test2@test.com', 'test3@test.com']))
+      .toEqual(expect.arrayContaining([profile.email, profile2.email, data.email]))
   })
 
   const postPutData = [
-    {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 400, errorType: 'v'},
-    {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 400, errorType: 'v'},
-    {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400, errorType: 'v'},
-    {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
-    {name: 'duplicate email', payload: {full_name: 'name', email: 'test2@test.com'}, statusCode: 400, errorType: 'd'},
+    {name: 'missing email', payload: {full_name: faker.name.findName()}, statusCode: 400, errorType: 'v'},
+    {name: 'missing full_name', payload: {email: faker.internet.email()}, statusCode: 400, errorType: 'v'},
+    {name: 'invalid email', payload: {full_name: faker.name.findName(), email: 'foo'}, statusCode: 400, errorType: 'v'},
+    {
+      name: 'valid',
+      payload: {
+        full_name: faker.name.findName(),
+        get email () {
+          return faker.internet.email()
+        }
+      },
+      statusCode: 200,
+      errorType: 'n'
+    },
+    {
+      name: 'duplicate email',
+      payload: {
+        full_name: faker.name.findName(),
+        get email () {
+          return profile2.email
+        }
+      },
+      statusCode: 400,
+      errorType: 'd'
+    },
     {
       name: 'empty snail mail',
-      payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: ''},
+      payload: {full_name: faker.name.findName(), email: faker.internet.email(), snail_mail_address: ''},
       statusCode: 400
     },
     {
       name: 'valid snail mail',
-      payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: 'some address'},
+      payload: {
+        full_name: faker.name.findName(),
+        get email () {
+          return faker.internet.email()
+        },
+        snail_mail_address: 'some address'
+      },
       statusCode: 200
     }
   ]
@@ -121,6 +137,7 @@ describe('profiles', () => {
           url: `/profiles`,
           payload: run.payload
         })
+        run.errorType === 'n' && expect(JSON.parse(response.payload).message).toBe(undefined)
         expect(response.statusCode).toBe(run.statusCode)
         run.errorType === 'd' && expect(response).toHaveDuplicateKey()
         run.errorType === 'v' && expect(response).toHaveValidationError()
@@ -130,7 +147,7 @@ describe('profiles', () => {
 
   test('[PATCH] /profiles', async () => {
     const data = {
-      email: 'test3@test.com'
+      email: faker.internet.email()
     }
     const response = await server.inject({
       method: 'PATCH',
@@ -139,33 +156,42 @@ describe('profiles', () => {
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
+    expect(JSON.parse(response.payload).profile.email).toBe(data.email)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/profiles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.profiles.length).toBe(2)
     expect(payload.profiles.map(p => p.email))
-      .toEqual(expect.arrayContaining(['test2@test.com', 'test3@test.com']))
+      .toEqual(expect.arrayContaining([profile2.email, data.email]))
   })
 
   describe('[PATCH /profiles/{id} - validation', () => {
     const runs = [
-      {name: 'missing email', payload: {full_name: 'Test2 Account'}, statusCode: 200, errorType: 'n'},
-      {name: 'missing full_name', payload: {email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
-      {name: 'invalid email', payload: {full_name: 'name', email: 'foo'}, statusCode: 400, errorType: 'v'},
-      {name: 'valid', payload: {full_name: 'name', email: 'foo@bar.com'}, statusCode: 200, errorType: 'n'},
+      {name: 'missing email', payload: {full_name: faker.name.findName()}, statusCode: 200, errorType: 'n'},
+      {name: 'missing full_name', payload: {email: faker.internet.email()}, statusCode: 200, errorType: 'n'},
+      {
+        name: 'invalid email',
+        payload: {full_name: faker.name.findName(), email: 'foo'},
+        statusCode: 400,
+        errorType: 'v'
+      },
+      {
+        name: 'valid',
+        payload: {full_name: faker.name.findName(), email: faker.internet.email()},
+        statusCode: 200,
+        errorType: 'n'
+      },
       {
         name: 'empty snail mail',
-        payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: ''},
+        payload: {full_name: faker.name.findName(), email: faker.internet.email(), snail_mail_address: ''},
         statusCode: 400,
         errorType: 'v'
       },
       {
         name: 'valid snail mail',
-        payload: {full_name: 'name', email: 'foo@bar.com', snail_mail_address: 'some address'},
+        payload: {full_name: faker.name.findName(), email: faker.internet.email(), snail_mail_address: 'some address'},
         statusCode: 200,
         errorType: 'n'
       }
@@ -178,17 +204,16 @@ describe('profiles', () => {
           url: `/profiles/${profile.id}`,
           payload: run.payload
         })
+        run.errorType === 'n' && expect(JSON.parse(response.payload).message).toBe(undefined)
         expect(response.statusCode).toBe(run.statusCode)
-        run.statusCode === 400 && expect(response.payload).toMatch(/validation|ER_DUP_ENTRY/)
+        run.errorType === 'd' && expect(response).toHaveDuplicateKey()
+        run.errorType === 'v' && expect(response).toHaveValidationError()
       })
     })
   })
 
   test('[PUT] /profiles/{id}', async () => {
-    const data = {
-      email: 'test3@test.com',
-      full_name: 'Test Account 3'
-    }
+    const data = fakeProfile()
     const response = await server.inject({
       method: 'PUT',
       url: `/profiles/${profile.id}`,
@@ -196,16 +221,15 @@ describe('profiles', () => {
     })
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
-    expect(JSON.parse(response.payload).profile.email).toBe('test3@test.com')
+    expect(JSON.parse(response.payload).profile.email).toBe(data.email)
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
       url: '/profiles'
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.profiles.length).toBe(2)
     expect(payload.profiles.map(p => p.email))
-      .toEqual(expect.arrayContaining(['test2@test.com', 'test3@test.com']))
+      .toEqual(expect.arrayContaining([data.email]))
   })
 
   describe('[PUT /profiles/{id} - validation', () => {
@@ -216,6 +240,7 @@ describe('profiles', () => {
           url: `/profiles/${profile.id}`,
           payload: run.payload
         })
+        run.errorType === 'n' && expect(JSON.parse(response.payload).message).toBe(undefined)
         expect(response.statusCode).toBe(run.statusCode)
         run.errorType === 'd' && expect(response).toHaveDuplicateKey()
         run.errorType === 'v' && expect(response).toHaveValidationError()
@@ -231,12 +256,5 @@ describe('profiles', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).success).toBe(true)
-
-    const payload = JSON.parse((await server.inject({
-      method: 'GET',
-      url: '/profiles'
-    })).payload)
-    expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.profiles.length).toBe(1)
   })
 })
