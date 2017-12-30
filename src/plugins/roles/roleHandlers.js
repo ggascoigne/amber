@@ -1,5 +1,5 @@
 import { Role } from '../../models'
-import { getErrorCode } from '../../utils/testUtils'
+import { getError } from '../../utils/errorUtils'
 
 export async function getRoleHandler (req, reply) {
   const {id} = req.params
@@ -10,16 +10,10 @@ export async function getRoleHandler (req, reply) {
       .throwIfNotFound()
     reply({
       role,
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -28,16 +22,10 @@ export async function getRolesHandler (req, reply) {
     const roles = await Role.query()
     reply({
       roles: roles,
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -46,17 +34,11 @@ export async function createRoleHandler (req, reply) {
     const role = await Role.query()
       .insert(req.payload)
     reply({
-      success: true,
       role,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -69,17 +51,11 @@ export async function patchRoleHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
       role,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -92,17 +68,11 @@ export async function putRoleHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
       role,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -114,15 +84,9 @@ export async function deleteRoleHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }

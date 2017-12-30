@@ -23,5 +23,6 @@ I've decided to look at Knex
 * [Bookshelf.js](http://bookshelfjs.org/)
 * [Objection.js](http://vincit.github.io/objection.js/)
 
-https://labs.mlssoccer.com/how-to-be-a-hapi-developer-8bb844b3d6a
+Kudos to https://labs.mlssoccer.com/how-to-be-a-hapi-developer-8bb844b3d6a This article gave me great boost getting 
+started with Hapi.
 

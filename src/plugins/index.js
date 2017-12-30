@@ -19,12 +19,13 @@ const serverConfig = [
       }
     }
   },
-  {register: require('hapi-auth-basic')},
   {register: require('hapi-auth-jwt2')},
+  {register: require('./response-update')},
   // endpoints
   {register: require('./users')},
   {register: require('./profiles')},
   {register: require('./roles')},
+  {register: require('./auth')},
   // documentation
   {register: require('inert')},
   {register: require('vision')},

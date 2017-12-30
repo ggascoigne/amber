@@ -861,6 +861,10 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+bcryptjs@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+
 bignumber.js@4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-4.0.4.tgz#7c40f5abcd2d6623ab7b99682ee7db81b11889a4"
@@ -899,12 +903,6 @@ boom@2.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
   dependencies:
     hoek "2.x.x"
-
-boom@3.x.x:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/boom/-/boom-3.2.2.tgz#0f0cc5d04adc5003b8c7d71f42cca7271fef0e78"
-  dependencies:
-    hoek "4.x.x"
 
 boom@4.x.x:
   version "4.3.1"
@@ -2341,13 +2339,6 @@ handlebars@^4.0.11, handlebars@^4.0.3:
   optionalDependencies:
     uglify-js "^2.6"
 
-hapi-auth-basic@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/hapi-auth-basic/-/hapi-auth-basic-4.2.0.tgz#a2f16b3e14317d44e3ad7934fe833f995ee82fc0"
-  dependencies:
-    boom "3.x.x"
-    hoek "4.x.x"
-
 hapi-auth-jwt2@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/hapi-auth-jwt2/-/hapi-auth-jwt2-7.3.0.tgz#96dd2a09480e9cc94f365d1baec68cd5bc597a37"
@@ -3392,6 +3383,10 @@ jws@^3.1.4:
     base64url "^2.0.0"
     jwa "^1.1.4"
     safe-buffer "^5.0.1"
+
+keymirror@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/keymirror/-/keymirror-0.1.1.tgz#918889ea13f8d0a42e7c557250eee713adc95c35"
 
 kind-of@^3.0.2:
   version "3.2.2"

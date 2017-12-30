@@ -86,6 +86,8 @@ exports.up = function (knex) {
     .table('user', function (table) {
       table.dropColumn('version')
       table.dropColumn('action_hash')
+      table.dropColumn('account_expired')
+      table.dropColumn('password_expired')
       table.dropColumn('date_created')
       table.dropColumn('last_updated')
     })

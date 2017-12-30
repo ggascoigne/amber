@@ -2,7 +2,7 @@ import hapi from 'hapi'
 import { Role } from '../../models'
 import { knex } from '../../orm'
 import { customMatchers } from '../../utils/customMatchers'
-import { fakeRole, loadTestPlugins, truncateTablesOnce } from '../../utils/testUtils'
+import { fakeRole, loadTestPlugins, prepTestDatabaseOnce } from '../../utils/testUtils'
 import plugin from './index'
 
 let role1
@@ -11,7 +11,7 @@ let server
 
 describe('roles', () => {
   beforeEach(async () => {
-    await truncateTablesOnce()
+    await prepTestDatabaseOnce()
     expect.extend(customMatchers)
     role1 = await Role.query()
       .insert(fakeRole())

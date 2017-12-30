@@ -2,5 +2,6 @@
   "database": {
     "username": "LOCAL_USER",
     "password": "LOCAL_PASSWORD"
-  }
+  },
+  "jwt_secret": "JWT_SECRET"
 }

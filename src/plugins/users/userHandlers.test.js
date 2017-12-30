@@ -1,9 +1,11 @@
+import faker from 'faker'
 import hapi from 'hapi'
 import { Profile, User } from '../../models'
+import { userGraphUpdateOptions } from '../../models/user'
 import { knex } from '../../orm'
-import { fakeProfile, loadTestPlugins, truncateTablesOnce } from '../../utils/testUtils'
+import { fakeProfile, fakeUser, loadTestPlugins, prepTestDatabaseOnce, roleUser } from '../../utils/testUtils'
 import plugin from './index'
-import faker from 'faker'
+import { roleNamesToRoles } from './userHandlers'
 
 let profile
 let profile2
@@ -12,7 +14,8 @@ let server
 
 describe('users', () => {
   beforeEach(async () => {
-    await truncateTablesOnce()
+    await prepTestDatabaseOnce()
+
     profile = await Profile.query()
       .insert(fakeProfile())
 
@@ -20,15 +23,7 @@ describe('users', () => {
       .insert(fakeProfile())
 
     user = await User.query()
-      .insert({
-        username: faker.name.findName(),
-        password: 'something',
-        account_expired: false,
-        account_locked: false,
-        enabled: false,
-        password_expired: false,
-        profile_id: profile.id
-      })
+      .upsertGraph(fakeUser(profile.id), userGraphUpdateOptions)
 
     server = new hapi.Server()
     server.connection()
@@ -49,7 +44,10 @@ describe('users', () => {
     expect(response.statusCode).toBe(200)
     const payload = JSON.parse(response.payload)
     expect(payload.user).toHaveProperty('username', user.username)
+    expect(payload.user).not.toHaveProperty('username', user.password)
     expect(payload.user.profile).toHaveProperty('email', profile.email)
+    expect(payload.user.roles.map(r => r.authority))
+      .toEqual(expect.arrayContaining([roleUser.authority]))
   })
 
   test('[GET] /users/{id} - invalid id', async () => {
@@ -74,7 +72,53 @@ describe('users', () => {
       .toEqual(expect.arrayContaining([user.username]))
   })
 
+  describe('roleNamesToRoles', async () => {
+    const data = [
+      {input: [], output: []},
+      {input: null, output: []},
+      {input: undefined, output: []},
+      {input: ['foo'], output: []},
+      {input: ['ROLE_USER'], output: ['ROLE_USER']},
+      {input: ['ROLE_ADMIN'], output: ['ROLE_ADMIN']},
+      {input: ['ROLE_ADMIN', 'ROLE_USER'], output: ['ROLE_USER', 'ROLE_ADMIN']}
+    ]
+    data.forEach(({input, output}, index) => {
+      test(`${index}: ${input}`, async () => {
+        const result = await roleNamesToRoles(input)
+        expect(result.map(r => r.authority)).toEqual(expect.arrayContaining(output))
+      })
+    })
+  })
+
   test('[POST] /users', async () => {
+    const data = {
+      username: faker.name.findName(),
+      password: 'something1',
+      profile_id: profile2.id,
+      roles: ['ROLE_ADMIN', 'ROLE_USER']
+    }
+    const response = await server.inject({
+      method: 'POST',
+      url: `/users`,
+      payload: data
+    })
+    expect(JSON.parse(response.payload).message).toBe(undefined)
+    expect(response.statusCode).toBe(200)
+    expect(JSON.parse(response.payload).user.username).toBe(data.username)
+    const userId = JSON.parse(response.payload).user.id
+
+    const payload = JSON.parse((await server.inject({
+      method: 'GET',
+      url: `/users/${userId}`
+    })).payload)
+    expect(payload.message).toBe(undefined)
+    const newUser = payload.user
+    expect(newUser).not.toBe(undefined)
+    expect(newUser.profile.email).toBe(profile2.email)
+    expect(newUser.roles.map(r => r.authority)).toEqual(expect.arrayContaining(['ROLE_ADMIN', 'ROLE_USER']))
+  })
+
+  test('[POST] /users - no role', async () => {
     const data = {
       username: faker.name.findName(),
       password: 'something1',
@@ -88,16 +132,16 @@ describe('users', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).user.username).toBe(data.username)
+    const userId = JSON.parse(response.payload).user.id
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
-      url: '/users'
+      url: `/users/${userId}`
     })).payload)
     expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.users.map(p => p.username))
-      .toEqual(expect.arrayContaining([user.username, data.username]))
-    expect(payload.users.map(p => p.profile.email))
-      .toEqual(expect.arrayContaining([profile.email, profile2.email]))
+    const newUser = payload.user
+    expect(newUser).not.toBe(undefined)
+    expect(newUser.profile.email).toBe(profile2.email)
   })
 
   describe('[POST /users - validation', () => {
@@ -138,7 +182,8 @@ describe('users', () => {
 
   test('[PATCH] /users', async () => {
     const data = {
-      username: faker.name.findName()
+      username: faker.name.findName(),
+      roles: ['ROLE_ADMIN', 'ROLE_USER']
     }
     const response = await server.inject({
       method: 'PATCH',
@@ -151,18 +196,19 @@ describe('users', () => {
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
-      url: '/users'
+      url: `/users/${user.id}`
     })).payload)
-    expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.users.map(p => p.username))
-      .toEqual(expect.arrayContaining([data.username]))
+    expect(payload.message).toBe(undefined)
+    expect(payload.user.username).toEqual(data.username)
+    expect(payload.user.roles.map(r => r.authority)).toEqual(expect.arrayContaining(['ROLE_ADMIN', 'ROLE_USER']))
   })
 
   test('[PUT] /users', async () => {
     const data = {
       username: faker.name.findName(),
       password: 'something1',
-      profile_id: profile2.id
+      profile_id: profile2.id,
+      roles: ['ROLE_ADMIN']
     }
     const response = await server.inject({
       method: 'PUT',
@@ -175,11 +221,12 @@ describe('users', () => {
 
     const payload = JSON.parse((await server.inject({
       method: 'GET',
-      url: '/users'
+      url: `/users/${user.id}`
     })).payload)
-    expect(JSON.parse(response.payload).message).toBe(undefined)
-    expect(payload.users.map(p => p.username))
-      .toEqual(expect.arrayContaining([data.username]))
+    expect(payload.message).toBe(undefined)
+    expect(payload.user.username).toEqual(data.username)
+    expect(payload.user.profile.email).toBe(profile2.email)
+    expect(payload.user.roles.map(r => r.authority)).toEqual(expect.arrayContaining(['ROLE_ADMIN']))
   })
 
   test('[DELETE] /users/{id}', async () => {
@@ -190,5 +237,9 @@ describe('users', () => {
     expect(JSON.parse(response.payload).message).toBe(undefined)
     expect(response.statusCode).toBe(200)
     expect(JSON.parse(response.payload).success).toBe(true)
+  })
+
+  test('hash', async () => {
+    expect(await User.hashPassword('password')).toEqual('5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8')
   })
 })

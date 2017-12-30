@@ -33,6 +33,7 @@
     "tempy": "^0.2.1"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.15.2",
     "boom": "^6.0.0",
@@ -44,12 +45,12 @@
     "good-console": "^6.4.0",
     "good-squeeze": "^5.0.2",
     "hapi": "^16.6.2",
-    "hapi-auth-basic": "^4.2.0",
     "hapi-auth-jwt2": "^7.3.0",
     "hapi-swagger": "^8.0.0",
     "inert": "^4.2.1",
     "joi": "^13.0.2",
     "jsonwebtoken": "^8.1.0",
+    "keymirror": "^0.1.1",
     "knex": "^0.14.2",
     "lodash": "^4.17.4",
     "mysql": "^2.15.0",
@@ -68,7 +69,7 @@
     "lint": "standard \"src/**/*.js\" \"scripts/**/*.js\"",
     "lint-fix": "standard \"src/**/*.js\" \"scripts/**/*.js\" --fix",
     "start": "nodemon index.js",
-    "test": "NODE_ENV=test yarn db:setup && jest"
+    "test": "NODE_ENV=test yarn db:setup && jest --runInBand"
   },
   "standard": {
     "parser": "babel-eslint",

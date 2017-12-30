@@ -1,5 +1,5 @@
 import { Profile } from '../../models'
-import { getErrorCode } from '../../utils/testUtils'
+import { getError } from '../../utils/errorUtils'
 
 export async function getProfileHandler (req, reply) {
   const {id} = req.params
@@ -10,16 +10,10 @@ export async function getProfileHandler (req, reply) {
       .throwIfNotFound()
     reply({
       profile,
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -28,16 +22,10 @@ export async function getProfilesHandler (req, reply) {
     const profiles = await Profile.query()
     reply({
       profiles: profiles,
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -46,17 +34,11 @@ export async function createProfileHandler (req, reply) {
     const profile = await Profile.query()
       .insert(req.payload)
     reply({
-      success: true,
       profile,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -69,17 +51,11 @@ export async function patchProfileHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
       profile,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -92,17 +68,11 @@ export async function putProfileHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
       profile,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }
 
@@ -114,15 +84,9 @@ export async function deleteProfileHandler (req, reply) {
       .throwIfNotFound()
 
     reply({
-      success: true,
-      timestamp: Date.now()
+      success: true
     })
   } catch (error) {
-    reply({
-      success: false,
-      error: error.name,
-      message: error.message,
-      timestamp: Date.now()
-    }).code(getErrorCode(error))
+    reply(getError(error))
   }
 }

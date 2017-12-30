@@ -3,7 +3,7 @@ import hapi from 'hapi'
 import { Profile } from '../../models'
 import { knex } from '../../orm'
 import { customMatchers } from '../../utils/customMatchers'
-import { fakeProfile, loadTestPlugins, truncateTablesOnce } from '../../utils/testUtils'
+import { fakeProfile, loadTestPlugins, prepTestDatabaseOnce } from '../../utils/testUtils'
 import plugin from './index'
 
 let profile
@@ -12,7 +12,7 @@ let server
 
 describe('profiles', () => {
   beforeEach(async () => {
-    await truncateTablesOnce()
+    await prepTestDatabaseOnce()
     expect.extend(customMatchers)
     profile = await Profile.query()
       .insert(fakeProfile())

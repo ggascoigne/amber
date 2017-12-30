@@ -18,7 +18,9 @@ module.exports = {
       user: config.get('database.username'),
       password: config.has('database.password') ? config.get('database.password') : '',
       database: config.get('database.database'),
-      charset: 'utf8'
+      charset: 'utf8',
+      dateStrings: true,
+      timezone: 'UTC'
     }
   }
 }
