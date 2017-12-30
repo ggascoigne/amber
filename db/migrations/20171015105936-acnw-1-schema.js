@@ -294,7 +294,7 @@ exports.up = function (knex) {
     .createTable('user_role', function (table) {
       table.integer('role_id').notNullable().references('role.id').unsigned().index()
       table.integer('user_id').notNullable().references('user.id').unsigned().index()
-      table.primary([`role_id`,`user_id`])
+      table.primary([`role_id`, `user_id`])
     })
 }
 

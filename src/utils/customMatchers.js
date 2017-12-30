@@ -24,5 +24,8 @@ export const customMatchers = {
         message: () => ('Expected payload with duplicate key exception')
       }
     }
+  },
+  toBeNotFound (actual) {
+    return { pass: actual.message === 'NotFoundError' }
   }
 }

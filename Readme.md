@@ -23,21 +23,6 @@ I've decided to look at Knex
 * [Bookshelf.js](http://bookshelfjs.org/)
 * [Objection.js](http://vincit.github.io/objection.js/)
 
-https://labs.mlssoccer.com/how-to-be-a-hapi-developer-8bb844b3d6a
+Kudos to https://labs.mlssoccer.com/how-to-be-a-hapi-developer-8bb844b3d6a This article gave me great boost getting 
+started with Hapi.
 
-# Moving to Postgres
-
-Looks like I can [pgloader](https://github.com/dimitri/pgloader) to pretty easily migrate everything from 
-MySql to Postgres
-
-Perhaps something like this as a workflow:
-
-1. Copy the database from live to a local mysql temporary clone
-1. Use pgloader to convert all the data over to a temp postgres clone
-1. Create the target database
-1. create the knex records since the knex-migrate fails to initialize things correctly
-1. Create an acnw1 compatible schema using a knex migrator
-1. Import the data by copying it from the temp postgres clone into the target database
-1. run the rest of the migrators converting the data over toacnw2 format
-
-Much of this is very similar to the existing importV1ToLocal script, but targetting postgres rather then MySql.

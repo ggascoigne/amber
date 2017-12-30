@@ -2,11 +2,7 @@ import Joi from 'joi'
 import User from '../../models/user'
 
 import {
-  createUserHandler,
-  deleteUserHandler,
-  getUserHandler,
-  getUsersHandler,
-  patchUserHandler,
+  createUserHandler, deleteUserHandler, getUserHandler, getUsersHandler, patchUserHandler,
   putUserHandler
 } from './userHandlers'
 
@@ -103,34 +99,6 @@ export function routes (server, options, next) {
         },
         handler: deleteUserHandler
       }
-      // },
-      // {
-      //   method: 'GET',
-      //   path: '/users/{id}/tokens',
-      //   config: {
-      //     tags: ['api'],
-      //     auth: {
-      //       scope: ['iam:tokens:read']
-      //     },
-      //     cache: {
-      //       expiresIn: 10 * SECOND
-      //     },
-      //     handler: getUserTokensHandler
-      //   }
-      // },
-      // {
-      //   method: 'DELETE',
-      //   path: '/users/{id}/tokens/{tokenId}',
-      //   config: {
-      //     tags: ['api'],
-      //     auth: {
-      //       scope: ['iam:tokens:delete']
-      //     },
-      //     cache: {
-      //       expiresIn: 10 * SECOND
-      //     },
-      //     handler: deleteUserTokenHandler
-      //   }
     }
   ])
 
