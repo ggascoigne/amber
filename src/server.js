@@ -1,13 +1,13 @@
 'use strict'
 
 import Hapi from 'hapi'
+import { bootstrap } from './bootstrap'
 import loadPlugins from './plugins'
 import config from './utils/config'
-import { knex } from './orm'
 
 require('./models')
 
-export function getServer () {
+function getServer () {
   const server = new Hapi.Server({
     connections: {
       routes: {
@@ -30,9 +30,6 @@ export async function start (server) {
       if (error) {
         return reject(error)
       }
-      const cs = knex.client.connectionSettings
-      server.log('info', `Database: ${knex.client.config.client}://${cs.host}:${cs.port}/${cs.user}@${cs.database}`)
-      server.log('info', `Server running at: ${server.info.uri}`)
       resolve(server)
     })
   })
@@ -42,7 +39,9 @@ export const server = getServer()
 
 try {
   loadPlugins(server)
-  start(server)
+    .then(() => bootstrap(server))
+    .then(() => start(server))
+    .then(() => server.log('info', `Server running at: ${server.info.uri}`))
 } catch (error) {
   console.error(error)
 }

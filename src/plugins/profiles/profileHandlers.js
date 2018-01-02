@@ -25,6 +25,7 @@ export async function getProfilesHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -38,6 +39,7 @@ export async function createProfileHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -55,6 +57,7 @@ export async function patchProfileHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -72,6 +75,7 @@ export async function putProfileHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -87,6 +91,7 @@ export async function deleteProfileHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }

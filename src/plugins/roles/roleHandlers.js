@@ -13,6 +13,7 @@ export async function getRoleHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -25,6 +26,7 @@ export async function getRolesHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -38,6 +40,7 @@ export async function createRoleHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -55,6 +58,7 @@ export async function patchRoleHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -72,6 +76,7 @@ export async function putRoleHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -87,6 +92,7 @@ export async function deleteRoleHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }

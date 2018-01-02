@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Role, User } from '../../models'
 import { userGraphUpdateOptions } from '../../models/user'
 import { getError } from '../../utils/errorUtils'
+import {transaction} from 'objection'
 
 export async function getUserHandler (req, reply) {
   const {id} = req.params
@@ -18,6 +19,7 @@ export async function getUserHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -32,6 +34,7 @@ export async function getUsersHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -61,15 +64,18 @@ export async function createUserHandler (req, reply) {
     }
 
     const data = await processPayload({...defaultValues, ...req.payload})
-    const user = await User.query()
-      .upsertGraph(data, userGraphUpdateOptions)
-      .throwIfNotFound()
+    const user = await transaction(User.knex(), txn => {
+      return User.query(txn)
+        .upsertGraph(data, userGraphUpdateOptions)
+        .throwIfNotFound()
+    })
 
     reply({
       user: _.omit(user, ['password']),
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -79,15 +85,18 @@ const updateUser = async (req, reply) => {
 
   try {
     const data = await processPayload({id, ...req.payload})
-    const user = await User.query()
-      .upsertGraph(data, userGraphUpdateOptions)
-      .throwIfNotFound()
+    const user = await transaction(User.knex(), txn => {
+      return User.query(txn)
+        .upsertGraph(data, userGraphUpdateOptions)
+        .throwIfNotFound()
+    })
 
     reply({
       user: _.omit(user, ['password']),
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }
@@ -119,6 +128,7 @@ export async function deleteUserHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(getError(error))
   }
 }

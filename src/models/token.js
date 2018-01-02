@@ -4,7 +4,6 @@ import cuid from 'cuid'
 import jwt from 'jsonwebtoken'
 import _ from 'lodash'
 import { knex, Model } from '../orm'
-import { roleTokenRefresh } from '../utils/testUtils'
 import User from './user'
 
 const config = require('../utils/config')
@@ -48,7 +47,7 @@ export default class Token extends Model {
           jwt.sign({
             cuid: _.get(token, 'cuid'),
             username: _.get(user, 'username'),
-            roles: [roleTokenRefresh].map(r => r.authority),
+            roles: ['ROLE_TOKEN_REFRESH'],
             iat: Date.now()
           }, config.get('jwt_secret')))
         .then(jwt => resolve(jwt))

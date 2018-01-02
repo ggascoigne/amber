@@ -42,21 +42,25 @@ export async function authLoginHandler (req, reply) {
   const {username, password} = req.payload
   try {
     const user = await User.authenticate(username, password)
+    const roles = user.roles.map(r => r.authority)
+    const accessToken = await Token.accessToken(user)
+    const refreshToken = await Token.refreshToken(user)
 
     if (_.get(user, 'account_locked') || !_.get(user, 'enabled')) {
       reply(Boom.unauthorized())
     } else {
       reply({
         success: true,
-        username: _.get(user, 'username'),
-        roles: _.get(user, 'roles').map(r => r.authority),
+        username: user.username,
+        roles: roles,
         token_type: 'Bearer',
         expires_in: TOKEN_EXPIRATION,
-        access_token: await Token.accessToken(user),
-        refresh_token: await Token.refreshToken(user)
+        access_token: accessToken,
+        refresh_token: refreshToken
       })
     }
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -76,6 +80,7 @@ export async function authValidateHandler (req, reply) {
       access_token: token
     })
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -105,6 +110,7 @@ export async function authRefreshHandler (req, reply) {
       })
     }
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -122,6 +128,7 @@ export async function authRevokeHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -145,6 +152,7 @@ export async function authTokenHandler (req, reply) {
       scope: getScopes(_.get(user, 'roles'))
     })
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -168,6 +176,7 @@ export async function authenticateHandler (req, reply) {
     const inactiveTokens = await user.inactiveTokens().fetch()
     inactiveTokens.invokeThen('destroy')
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }
@@ -192,6 +201,7 @@ export async function passwordResetHandler (req, reply) {
       success: true
     })
   } catch (error) {
+    req.log('error', error)
     reply(Boom.unauthorized())
   }
 }

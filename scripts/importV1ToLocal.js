@@ -4,10 +4,12 @@ const {bail} = require('./scriptUtils')
 require('dotenv').config()
 const config = require('config')
 const {spawn, spawnSync} = require('child_process')
-const {createCleanDb, createCleanDbMySql, pgloader} = require('./scriptUtils')
+const {createCleanDb, createCleanDbMySql, pgloader, psql} = require('./scriptUtils')
 const {createKnexMigrationTables} = require('./scriptUtils')
 const {stripIndent} = require('common-tags')
 const {sleep} = require('./sleep')
+const tempy = require('tempy')
+const fs = require('fs')
 
 async function pipeLiveToLocalMysql (databaseName, userName, password) {
   return new Promise((resolve, reject) => {
@@ -74,6 +76,43 @@ async function pipeTmpToLocal (tmpDbName, databaseName, userName, password) {
   })
 }
 
+/*
+  reset all sequences based on the max index on the table.
+ */
+function fixSequences (databaseName, userName, password) {
+  const q = stripIndent`
+    SELECT 'SELECT SETVAL(' ||
+           quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
+           ', COALESCE(MAX(' ||quote_ident(C.attname)|| '), 1) ) FROM ' ||
+           quote_ident(PGT.schemaname)|| '.'||quote_ident(T.relname)|| ';'
+    FROM pg_class AS S,
+         pg_depend AS D,
+         pg_class AS T,
+         pg_attribute AS C,
+         pg_tables AS PGT
+    WHERE S.relkind = 'S'
+        AND S.oid = D.objid
+        AND D.refobjid = T.oid
+        AND D.refobjid = C.attrelid
+        AND D.refobjsubid = C.attnum
+        AND T.relname = PGT.tablename
+    ORDER BY S.relname;
+    `
+  const name = tempy.file()
+  const name2 = tempy.file()
+  fs.writeFileSync(name, q)
+
+  const child = spawnSync('/usr/local/bin/psql', [databaseName, '-Atq', '-f', name, '-o', name2],
+    {stdio: 'inherit'}
+  )
+  !child.status || bail(child.status)
+
+  const child2 = spawnSync('/usr/local/bin/psql', [databaseName, '-f', name2],
+    {stdio: 'inherit'}
+  )
+  !child2.status || bail(child2.status)
+}
+
 async function main () {
   const databaseName = config.get('database.database')
   const userName = config.get('database.username')
@@ -127,6 +166,9 @@ async function main () {
 
   await pipeTmpToLocal(tmpDbName, databaseName, userName, password)
     .catch(bail)
+
+  console.log('resetting sequences')
+  fixSequences(databaseName, userName, password)
 
   console.log('Applying the remaining migrators')
   const migration2 = spawnSync('./node_modules/.bin/knex-migrate', ['up'], {stdio: 'inherit'})

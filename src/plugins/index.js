@@ -10,7 +10,7 @@ const serverConfig = [
             response: '*',
             request: '*',
             log: {
-              include: ['info', 'debug']
+              include: ['info', 'debug', 'error']
             }
           }]
         }, {
@@ -42,7 +42,15 @@ const serverConfig = [
       },
       'schemes': ['http'],
       // 'host': 'amberconnw.org',
-      'documentationPath': '/api'
+      'documentationPath': '/api',
+      securityDefinitions: {
+        'jwt': {
+          'type': 'apiKey',
+          'name': 'Authorization',
+          'in': 'header'
+        }
+      },
+      security: [{'jwt': []}]
     }
   }
 ]
