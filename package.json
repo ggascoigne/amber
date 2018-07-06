@@ -1,0 +1,57 @@
+{
+  "name": "acnw2",
+  "version": "0.1.0",
+  "description": "AmberCon NW v2 site",
+  "author": "guy@wyrdrune.com",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=8.6.0",
+    "yarn": ">=1.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ggascoigne/acnw2.git"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "circular-json": "^0.5.5",
+    "eslint": "^4.12.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-config-standard-jsx": "^5.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.5.1",
+    "eslint-plugin-standard": "^3.0.1",
+    "prettier-standard": "^8.0.1",
+    "jest": "^21.2.1",
+    "nodemon": "^1.12.1",
+    "standard": "^10.0.3",
+    "husky": "^0.14.3",
+    "npm-run-all": "^4.1.2",
+    "lerna": "^2.11.0",
+    "lint-staged": "^7.0.2",
+    "del-cli": "^1.1.0"
+  },
+  "scripts": {
+    "bootstrap": "lerna bootstrap && lerna link --force-local",
+    "db:setup:production": "lerna exec --scope server yarn db:setup:production",
+    "format": "lerna exec --parallel yarn format",
+    "precommit": "lerna run --concurrency 1 --stream precommit",
+    "start": "lerna exec --parallel yarn start",
+    "start:client": "lerna exec --scope client yarn start",
+    "start:server": "lerna exec --scope server yarn start",
+    "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
+    "test": "lerna exec -- yarn test",
+    "test:client": "lerna exec --scope client yarn test",
+    "test:server": "lerna exec --scope server yarn test"
+  }
+}

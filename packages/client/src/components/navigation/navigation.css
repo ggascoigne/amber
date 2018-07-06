@@ -1,0 +1,37 @@
+@import '../../variables.css';
+
+.desktop_container {
+  & .desktop_container__topbar {
+    min-height: var(--topbarHeight);
+    padding: 1em 0;
+  }
+
+  & .ui.sidebar.desktop_container__sidebar {
+    width: var(--menuWidth);
+  }
+
+  & .desktop_container__content_wrapper {
+    margin-left: var(--menuWidth);
+  }
+}
+
+.mobile_container {
+  & .mobile_container__sidebar {
+    min-height: 100vh;
+  }
+
+  & .ui.segment.mobile_container__topbar {
+    min-height: var(--topbarHeight);
+    padding: 0;
+  }
+
+  & .ui.menu .item.mobile_container__icon_wrapper {
+    padding: 12px 0;
+  }
+}
+
+.topbar__acnw_title {
+  height: var(--topbarHeight);
+  font-weight: bold;
+  font-size: 16px;
+}

@@ -3,6 +3,7 @@
     <words>
       <w>hapi</w>
       <w>knex</w>
+      <w>lerna</w>
       <w>sequelize</w>
     </words>
   </dictionary>
