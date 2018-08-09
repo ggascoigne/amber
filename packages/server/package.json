@@ -38,6 +38,7 @@
     "mysql": "^2.15.0",
     "objection": "^0.9.2",
     "pg": "^7.4.0",
+    "postgraphile": "^4.0.0-rc.1",
     "require-directory": "^2.1.1",
     "vision": "^4.1.1",
     "xregexp": "^3.2.0"
