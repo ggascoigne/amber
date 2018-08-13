@@ -1,11 +1,19 @@
 #!/usr/bin/env node
 
-const { bail } = require('./scriptUtils')
 require('dotenv').config()
 const config = require('config')
 const { spawn, spawnSync } = require('child_process')
-const { createCleanDb, createCleanDbMySql, pgloader, psql } = require('./scriptUtils')
-const { createKnexMigrationTables } = require('./scriptUtils')
+const {
+  bail,
+  MYSQL_PATH,
+  runOrExit,
+  dropKnexMigrationTables,
+  createKnexMigrationTables,
+  createCleanDb,
+  createCleanDbMySql,
+  pgloader,
+  psql
+} = require('./scriptUtils')
 const { stripIndent } = require('common-tags')
 const { sleep } = require('./sleep')
 const tempy = require('tempy')
@@ -45,7 +53,7 @@ async function pipeLiveToLocalMysql (databaseName, userName, password) {
       .on('exit', code => (!code ? resolve() : reject(code)))
 
     const importing = spawn(
-      '/usr/local/bin/mysql',
+      `${MYSQL_PATH}/mysql`,
       [`--user=${userName}`, '--default-character-set=utf8', `--database=${databaseName}`],
       { env: { MYSQL_PWD: password } }
     )
@@ -91,22 +99,19 @@ function fixSequences (databaseName, userName, password) {
          pg_attribute AS C,
          pg_tables AS PGT
     WHERE S.relkind = 'S'
-        AND S.oid = D.objid
-        AND D.refobjid = T.oid
-        AND D.refobjid = C.attrelid
-        AND D.refobjsubid = C.attnum
-        AND T.relname = PGT.tablename
+      AND S.oid = D.objid
+      AND D.refobjid = T.oid
+      AND D.refobjid = C.attrelid
+      AND D.refobjsubid = C.attnum
+      AND T.relname = PGT.tablename
     ORDER BY S.relname;
-    `
+  `
   const name = tempy.file()
   const name2 = tempy.file()
   fs.writeFileSync(name, q)
 
-  const child = spawnSync('/usr/local/bin/psql', [databaseName, '-Atq', '-f', name, '-o', name2], { stdio: 'inherit' })
-  !child.status || bail(child.status)
-
-  const child2 = spawnSync('/usr/local/bin/psql', [databaseName, '-f', name2], { stdio: 'inherit' })
-  !child2.status || bail(child2.status)
+  runOrExit(spawnSync('/usr/local/bin/psql', [databaseName, '-Atq', '-f', name, '-o', name2], { stdio: 'inherit' }))
+  runOrExit(spawnSync('/usr/local/bin/psql', [databaseName, '-f', name2], { stdio: 'inherit' }))
 }
 
 async function main () {
@@ -116,7 +121,7 @@ async function main () {
   const tmpDbName = 'acnw_v1_tmp'
 
   console.log(`Create tmp mysql database ${tmpDbName}`)
-  createCleanDbMySql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
+  await createCleanDbMySql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
 
   console.log(`download data`)
   await pipeLiveToLocalMysql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD).catch(bail)
@@ -126,25 +131,49 @@ async function main () {
   await sleep(5000)
 
   console.log(`Create tmp postgres database ${tmpDbName}`)
-  createCleanDb(tmpDbName, userName, password)
+  await createCleanDb(tmpDbName, userName, password)
 
   console.log(`Importing data from tmp mysql to tmp postgres database`)
-  const pgloaderScript = stripIndent`
+  // note that workers=1 was needed to deal with a hard-to-trace connection error
+  pgloader(
+    process.env.LOCAL_MYSQL_PASSWORD,
+    stripIndent`
     LOAD database  
       FROM    mysql://${process.env.LOCAL_MYSQL_USER}@localhost/${tmpDbName}  
       INTO    postgresql://${userName}@localhost/${tmpDbName}
       
     WITH include drop, create tables, no truncate,  
-      create indexes, reset sequences, foreign keys
+      create indexes, reset sequences, foreign keys,
+      workers = 1, concurrency = 1
 
+    SET MySQL PARAMETERS
+      net_read_timeout  = '120',
+      net_write_timeout = '120'
+
+    EXCLUDING table names matching 'async_mail_attachment', 'async_mail_bcc', 'async_mail_cc', 'async_mail_header',
+      'async_mail_mess', 'async_mail_to', 'databasechangelog', 'databasechangeloglock', 'email_code', 'login_record'
+    
     CAST type bigint  with extra auto_increment  
             to integer drop typemod keep default keep not null,   
          type bigint when (= precision 20) to integer drop typemod,
          type int when (= precision 11) to integer drop typemod
     ALTER SCHEMA '${tmpDbName}' RENAME TO 'public'
   ;`
+  )
 
-  pgloader(process.env.LOCAL_MYSQL_PASSWORD, pgloaderScript)
+  console.log('Inserting knex records into tmpdb')
+  createKnexMigrationTables(tmpDbName, userName, password)
+
+  console.log('Preparing tmpdb for transfer to new database')
+  runOrExit(
+    spawnSync('./node_modules/.bin/knex-migrate', ['up', '--only', '20171015154605_drop_junk.js'], {
+      stdio: 'inherit',
+      env: { ...process.env, NODE_ENV: 'mysql_import' }
+    })
+  )
+
+  console.log('Deleting knex records in tmpdb')
+  dropKnexMigrationTables(tmpDbName, userName, password)
 
   console.log(`Recreating database ${databaseName}`)
   createCleanDb(databaseName, userName, password)
@@ -153,22 +182,14 @@ async function main () {
   // remove if kex-migrate fixes it's issue
   createKnexMigrationTables(databaseName, userName, password)
 
-  console.log('Create schema in a acnw-1 format')
-  const migration1 = spawnSync('./node_modules/.bin/knex-migrate', ['up', '20171015105936-acnw-1-schema.js'], {
-    stdio: 'inherit'
-  })
-  !migration1.status || bail(migration1.status)
+  console.log('Create new schema')
+  runOrExit(spawnSync('./node_modules/.bin/knex-migrate', ['up'], { stdio: 'inherit' }))
 
   console.log('Loading data from latest live acnw v1 database')
-
   await pipeTmpToLocal(tmpDbName, databaseName, userName, password).catch(bail)
 
   console.log('resetting sequences')
   fixSequences(databaseName, userName, password)
-
-  console.log('Applying the remaining migrators')
-  const migration2 = spawnSync('./node_modules/.bin/knex-migrate', ['up'], { stdio: 'inherit' })
-  !migration2.status || bail(migration1.status)
 }
 
 main().then(() => console.log('Complete'))

@@ -7,6 +7,7 @@
         <option name="TAB_SIZE" value="8" />
       </value>
     </option>
+    <option name="FORMATTER_TAGS_ENABLED" value="true" />
     <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
     <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
     <option name="BLANK_LINES_AFTER_CLASS_HEADER" value="1" />

@@ -1,0 +1,7 @@
+{
+  "port": 3001,
+  "debug": true,
+  "database": {
+    "database": "acnw_v1_tmp"
+  }
+}

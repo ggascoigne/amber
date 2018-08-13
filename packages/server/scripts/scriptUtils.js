@@ -4,6 +4,9 @@ const chalk = require('chalk')
 const fs = require('fs')
 const tempy = require('tempy')
 
+const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
+exports.MYSQL_PATH = MYSQL_PATH
+
 async function createCleanDbMySql (database, user, password) {
   const script = stripIndent`
     DROP DATABASE IF EXISTS ${database};
@@ -16,54 +19,70 @@ exports.createCleanDbMySql = createCleanDbMySql
 
 async function createCleanDb (database, user, password) {
   forceDropDb(database)
-  const createdbStatus = spawnSync('createdb', [database], { stdio: 'inherit' })
-  !createdbStatus.status || bail(createdbStatus.status)
+  runOrExit(spawnSync('createdb', [database], { stdio: 'inherit' }))
 }
 
 exports.createCleanDb = createCleanDb
 
 function createKnexMigrationTables (databaseName, userName, password) {
+  // @formatter:off
   const sql = stripIndent`
     DROP TABLE IF EXISTS knex_migrations;
-  
     CREATE TABLE knex_migrations (
-        id integer NOT NULL,
-        name character varying(255),
-        batch integer,
-        migration_time timestamp with time zone
-    );
-    
-    CREATE SEQUENCE knex_migrations_id_seq
-        AS integer
-        START WITH 1
-        INCREMENT BY 1
-        NO MINVALUE
-        NO MAXVALUE
-        CACHE 1;
-    
-    ALTER SEQUENCE knex_migrations_id_seq OWNED BY knex_migrations.id;
-    ALTER TABLE ONLY knex_migrations ALTER COLUMN id SET DEFAULT nextval('knex_migrations_id_seq'::regclass);
-    ALTER TABLE ONLY knex_migrations ADD CONSTRAINT knex_migrations_pkey PRIMARY KEY (id);
-    
-    DROP TABLE IF EXISTS knex_migrations_lock;
-    CREATE TABLE knex_migrations_lock (
-        is_locked integer
+      id             integer NOT NULL,
+      name           character varying(255),
+      batch          integer,
+      migration_time timestamp with time zone
     );
 
-    INSERT INTO knex_migrations_lock VALUES (0);
-    `
+    CREATE SEQUENCE knex_migrations_id_seq
+      AS integer
+      START WITH 1
+      INCREMENT BY 1
+      NO MINVALUE
+      NO MAXVALUE
+      CACHE 1;
+
+    ALTER SEQUENCE knex_migrations_id_seq
+    OWNED BY knex_migrations.id;
+    ALTER TABLE ONLY knex_migrations
+      ALTER COLUMN id SET DEFAULT nextval('knex_migrations_id_seq' ::regclass);
+    ALTER TABLE ONLY knex_migrations
+      ADD CONSTRAINT knex_migrations_pkey PRIMARY KEY (id);
+
+    DROP TABLE IF EXISTS knex_migrations_lock;
+    CREATE TABLE knex_migrations_lock (
+      is_locked integer
+    );
+
+    INSERT INTO knex_migrations_lock
+    VALUES (0);
+  `
+  // @formatter:on
 
   return psql(databaseName, sql)
 }
 
 exports.createKnexMigrationTables = createKnexMigrationTables
 
+function dropKnexMigrationTables (databaseName, userName, password) {
+  const sql = stripIndent`
+    DROP TABLE IF EXISTS knex_migrations;
+    DROP SEQUENCE IF EXISTS knex_migrations_id_seq;
+    DROP TABLE IF EXISTS knex_migrations_lock;
+  `
+
+  return psql(databaseName, sql)
+}
+
+exports.dropKnexMigrationTables = dropKnexMigrationTables
+
 async function mysqlExecScript (database, user, password, script) {
   const args = [`--user=${user}`, '--default-character-set=utf8']
   database && args.push(`--database=${database}`)
 
   return new Promise((resolve, reject) => {
-    const child = spawn('/usr/local/bin/mysql', args, { env: { MYSQL_PWD: password } })
+    const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
       .on('error', reject)
       .on('close', resolve)
       .on('exit', code => (!code ? resolve() : reject(code)))
@@ -93,26 +112,39 @@ function psql (database, script, stdio = 'inherit') {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
-  const child = spawnSync('/usr/local/bin/psql', [database, '-f', name], { stdio: stdio })
-  !child.status || bail(child.status)
+  runOrExit(spawnSync('/usr/local/bin/psql', [database, '-f', name], { stdio: stdio }))
 }
 
 function pgloader (mySqlPassword, script) {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
-  const child = spawnSync('/usr/local/bin/pgloader', ['-v', name], {
-    env: { MYSQL_PWD: mySqlPassword },
-    stdio: 'inherit'
-  })
-  !child.status || bail(child.status)
+  runOrExit(
+    spawnSync('/usr/local/bin/pgloader', ['-v', /* '--debug', */ '--on-error-stop', name], {
+      env: { MYSQL_PWD: mySqlPassword },
+      stdio: 'inherit'
+    })
+  )
 }
 
 exports.pgloader = pgloader
 
 const bail = reason => {
-  console.error(chalk.bold.red('error detected'))
-  console.error(reason)
-  process.exit(-1)
+  if (reason) {
+    console.error(chalk.bold.red('error detected'))
+    console.error(reason)
+    process.exit(-1)
+  }
 }
 exports.bail = bail
+
+const runOrExit = processStatus => {
+  if (processStatus.error) {
+    bail(processStatus.error)
+  }
+  if (processStatus.status) {
+    bail(processStatus.status)
+  }
+}
+
+exports.runOrExit = runOrExit

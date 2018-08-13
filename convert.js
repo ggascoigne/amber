@@ -3,10 +3,10 @@ const fs = require('fs')
 const _ = require('lodash')
 
 const rl = readline.createInterface({
-  input: fs.createReadStream('/Users/ggp/dev/git/hapi/dbtest/local_ggascoig_acnw_schema.10122017.1953.sql')
+  input: fs.createReadStream('./packages/server/db/old_schema/schema_export_08092018.sql')
 })
 
-const out = fs.createWriteStream('/Users/ggp/dev/git/hapi/dbtest/db/migrations/20171014121205-create-schema.js')
+const out = fs.createWriteStream('./packages/server/db/old_schema/schema_08092018.js')
 
 out.write(
   `'use strict'
@@ -32,7 +32,7 @@ rl.on('line', (line) => {
     fields = {}
     primary = null
     uniqueKey = {}
-    out.write(`    .createTable('${table[1]}', function (table) {\n`)
+    out.write(`    .createTable('${table[1]}', table => {\n`)
     return
   }
   if (inTable) {
@@ -94,7 +94,7 @@ const typeFor = (type) => {
       fieldType = 'bigInteger'
       break
     case 'bit':
-      fieldType = 'bit'
+      fieldType = 'boolean'
       break
     case 'varchar':
       fieldType = 'string'
