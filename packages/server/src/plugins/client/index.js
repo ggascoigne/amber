@@ -5,7 +5,7 @@ const config = require('../../utils/config')
 // in production mode, serve up the UI code.
 
 function routes (server, options, next) {
-  if (config.util.getEnv('NODE_ENV') === 'production') {
+  if (config.nodeEnv === 'production') {
     server.route({
       method: 'GET',
       path: '/{path*}',

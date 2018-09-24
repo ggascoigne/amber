@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="ggp">
     <words>
+      <w>dbconfig</w>
       <w>hapi</w>
       <w>knex</w>
       <w>lerna</w>

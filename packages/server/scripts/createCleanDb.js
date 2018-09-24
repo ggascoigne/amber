@@ -1,17 +1,18 @@
 #!/usr/bin/env node
 
-require('dotenv').config()
-const config = require('config')
+const config = require('../src/utils/config')
 const { createCleanDb } = require('./scriptUtils')
 const chalk = require('chalk')
 
-const databaseName = config.get('database.database')
-console.log(`Recreating database ${databaseName}`)
+const database = config.database.database
+console.log(`Recreating database ${database}`)
 
-const userName = config.get('database.username')
-const password = config.has('database.password') ? config.get('database.password') : ''
+const user = config.database.username
+const port = config.database.port
+const host = config.database.host
+const password = config.database.password
 
-createCleanDb(databaseName, userName, password)
+createCleanDb({ database, port, user, password, host })
   .then(() => {
     console.log('Complete')
   })

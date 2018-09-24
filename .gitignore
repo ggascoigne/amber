@@ -12,10 +12,7 @@ packages/server/ui
 # misc
 .DS_Store
 **/.env
-**/.env.local
-**/.env.development.local
-**/.env.test.local
-**/.env.production.local
+**/.env.*
 
 **/npm-debug.log*
 **/lerna-debug.log*

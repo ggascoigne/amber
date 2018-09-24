@@ -17,14 +17,22 @@ async function createCleanDbMySql (database, user, password) {
 
 exports.createCleanDbMySql = createCleanDbMySql
 
-async function createCleanDb (database, user, password) {
-  forceDropDb(database)
-  runOrExit(spawnSync('createdb', [database], { stdio: 'inherit' }))
+function getPostgresArgs (dbconfig) {
+  const { database, host, port, user, password, ssl } = dbconfig
+  return [`postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`]
+}
+
+exports.getPostgresArgs = getPostgresArgs
+
+async function createCleanDb (dbconfig) {
+  forceDropDb(dbconfig)
+  // const args = getPostgresArgs(dbconfig)
+  // runOrExit(spawnSync('createdb', args, { stdio: 'inherit' }))
 }
 
 exports.createCleanDb = createCleanDb
 
-function createKnexMigrationTables (databaseName, userName, password) {
+function createKnexMigrationTables (dbconfig) {
   // @formatter:off
   const sql = stripIndent`
     DROP TABLE IF EXISTS knex_migrations;
@@ -60,19 +68,19 @@ function createKnexMigrationTables (databaseName, userName, password) {
   `
   // @formatter:on
 
-  return psql(databaseName, sql)
+  return psql(dbconfig, sql)
 }
 
 exports.createKnexMigrationTables = createKnexMigrationTables
 
-function dropKnexMigrationTables (databaseName, userName, password) {
+function dropKnexMigrationTables (dbconfig) {
   const sql = stripIndent`
     DROP TABLE IF EXISTS knex_migrations;
     DROP SEQUENCE IF EXISTS knex_migrations_id_seq;
     DROP TABLE IF EXISTS knex_migrations_lock;
   `
 
-  return psql(databaseName, sql)
+  return psql(dbconfig, sql)
 }
 
 exports.dropKnexMigrationTables = dropKnexMigrationTables
@@ -94,7 +102,9 @@ async function mysqlExecScript (database, user, password, script) {
   })
 }
 
-function forceDropDb (database) {
+function forceDropDb (dbconfig) {
+  const { database, user } = dbconfig
+  // useful for tests since it forces dropping local connections
   const script = stripIndent`
     -- Disallow new connections
     UPDATE pg_database SET datallowconn = 'false' WHERE datname = '${database}';
@@ -105,14 +115,30 @@ function forceDropDb (database) {
     DROP DATABASE IF EXISTS ${database};
   `
 
-  psql('postgres', script, 'ignore')
+  // works on RDS
+  const script2 = stripIndent`
+    DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist; 
+    CREATE DATABASE temporary_db_that_shouldnt_exist with OWNER ${user}; 
+    \\connect temporary_db_that_shouldnt_exist 
+    SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${database}'; 
+    DROP DATABASE IF EXISTS ${database}; 
+    CREATE DATABASE ${database} WITH TEMPLATE = template1 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8'; 
+    ALTER DATABASE ${database} OWNER TO ${user}; 
+    \\connect ${database} 
+    DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist;
+ `
+  psql({ ...dbconfig, database: 'postgres' }, script2, 'inherit')
 }
 
-function psql (database, script, stdio = 'inherit') {
+function psql (dbconfig, script, stdio = 'inherit') {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
-  runOrExit(spawnSync('/usr/local/bin/psql', [database, '-f', name], { stdio: stdio }))
+  const args = getPostgresArgs(dbconfig)
+  args.push('-f')
+  args.push(name)
+  console.log(`running psql ${args.join(' ')}`)
+  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: stdio }))
 }
 
 function pgloader (mySqlPassword, script) {
@@ -148,3 +174,9 @@ const runOrExit = processStatus => {
 }
 
 exports.runOrExit = runOrExit
+
+function info (s) {
+  console.log(chalk.bold(s))
+}
+
+exports.info = info

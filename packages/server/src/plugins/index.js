@@ -47,7 +47,7 @@ const serverConfig = [
           email: 'guy@wyrdrune.com'
         }
       },
-      schemes: ['http'],
+      schemes: ['https', 'http'],
       // 'host': 'amberconnw.org',
       documentationPath: '/api',
       securityDefinitions: {

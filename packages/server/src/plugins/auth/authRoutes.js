@@ -43,7 +43,7 @@ async function validate (decoded, request, next) {
 
 export function routes (server, options, next) {
   server.auth.strategy('jwt', 'jwt', {
-    key: config.get('jwt_secret'),
+    key: config.jwtSecret,
     validateFunc: validate,
     verifyOptions: { algorithms: ['HS256'] }
   })

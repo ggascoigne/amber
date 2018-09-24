@@ -24,7 +24,7 @@ describe('tokens', () => {
 
   test('[Token.tokenize]', async () => {
     const token = await Token.tokenize(user.id)
-    const decoded = jwt.verify(token, config.get('jwt_secret'))
+    const decoded = jwt.verify(token, config.jwtSecret)
 
     const expected = user.id
     const actual = decoded.user_id

@@ -38,7 +38,7 @@ export default class Token extends Model {
         exp: expirationDate,
         iat: issueDate
       },
-      config.get('jwt_secret')
+      config.jwtSecret
     )
   }
 
@@ -56,7 +56,7 @@ export default class Token extends Model {
               roles: ['ROLE_TOKEN_REFRESH'],
               iat: Date.now()
             },
-            config.get('jwt_secret')
+            config.jwtSecret
           )
         )
         .then(jwt => resolve(jwt))
@@ -76,7 +76,7 @@ export default class Token extends Model {
               cuid: _.get(token, 'cuid'),
               user_id: _.get(token, 'user_id')
             },
-            config.get('jwt_secret')
+            config.jwtSecret
           )
         )
         .then(jwt => resolve(jwt))

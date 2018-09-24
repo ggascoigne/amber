@@ -8,7 +8,7 @@ export function truncateTables () {
   return knex.transaction(txn => {
     console.log('Cleaning database')
     knex
-      .raw('SELECT f_truncate_tables(?)', [config.get('database.username')])
+      .raw('SELECT f_truncate_tables(?)', [config.database.username])
       .transacting(txn)
       .then(txn.commit)
       .catch(e => {

@@ -6,7 +6,7 @@ import { Model as model } from 'objection'
 import config from './utils/config'
 
 const options = _.defaultsDeep(
-  { ...require('../knexfile')[config.util.getEnv('NODE_ENV')] },
+  { ...require('../knexfile')[config.nodeEnv] },
   {
     connection: {
       typeCast: function (field, next) {
@@ -25,3 +25,8 @@ const options = _.defaultsDeep(
 export const knex = knexFactory(options)
 model.knex(knex)
 export const Model = model
+
+export function getConnectionString () {
+  const c = options.connection
+  return `postgres://${c.user}:${c.password}@${c.host}:${c.port}/${c.database}{c.database.ssl?'sqlmode=require&ssl=1`
+}

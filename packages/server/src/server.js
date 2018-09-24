@@ -11,7 +11,7 @@ function getServer () {
   const server = new Hapi.Server({
     connections: {
       routes: {
-        cors: config.cors
+        cors: true
       }
     }
   })
