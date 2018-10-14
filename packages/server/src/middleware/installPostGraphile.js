@@ -2,7 +2,9 @@ import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector'
 import { postgraphile } from 'postgraphile'
 
 export function installPostGraphile (app, { rootPgPool, config }) {
-  const { database: { connectionString, database } } = config
+  const {
+    database: { connectionString, database }
+  } = config
   app.use((ctx, next) => {
     // PostGraphile deals with (req, res) but we want access to sessions from `pgSettings`, so we make the ctx available on req.
     ctx.req.ctx = ctx

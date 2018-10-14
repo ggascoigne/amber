@@ -27,7 +27,7 @@
     "eslint-config-standard": "^12.0.0",
     "eslint-config-standard-jsx": "^6.0.2",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node":  "^7.0.1",
+    "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
@@ -42,14 +42,31 @@
     "bootstrap": "lerna bootstrap && lerna link --force-local",
     "db:import": "lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
-    "format": "lerna exec --parallel yarn format",
-    "precommit": "lerna run --concurrency 1 --stream precommit",
+    "format": "prettier-standard 'packages/*/{src,script,db}/**/*.{js,scss,json}'",
     "start": "lerna exec --parallel yarn start",
     "start:client": "lerna exec --scope client yarn start",
-    "start:server": "lerna exec --scope server yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
+    "start:server": "lerna exec --scope server yarn start",
     "test": "lerna exec -- yarn test",
     "test:client": "lerna exec --scope client yarn test",
     "test:server": "lerna exec --scope server yarn test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css}": [
+      "prettier-standard",
+      "git add"
+    ]
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "env": {
+      "jasmine": "true",
+      "jest": "true"
+    }
   }
 }

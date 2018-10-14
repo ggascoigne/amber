@@ -65,33 +65,14 @@
   "scripts": {
     "bootstrap": "cd ../../ && yarn bootstrap",
     "build": "react-scripts build && rm -rf ../server/ui && mv build ../server/ui",
-    "format": "prettier-standard '{src,script}/**/*.{js,css}'",
     "start": "react-scripts start",
     "test": "CI=true react-scripts test",
     "test:watch": "react-scripts test"
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "env": {
-      "jasmine": "true",
-      "jest": "true"
-    }
-  },
-  "lint-staged": {
-    "*.{js,css}": [
-      "prettier-standard",
-      "git add"
-    ]
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 10",
     "not op_mini all"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  }
+  ]
 }
