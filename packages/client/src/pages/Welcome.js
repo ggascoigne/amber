@@ -2,7 +2,7 @@ import Flexbox from 'flexbox-react'
 import React from 'react'
 import Image from 'semantic-ui-react/dist/commonjs/elements/Image/Image'
 import Acnw from '../components/Acnw'
-import './pages.css'
+import './pages.scss'
 
 const BannerImage = () => {
   const banner = require('../assets/Banner2017.png')
@@ -36,7 +36,8 @@ const Welcome = () => {
         AmberCon NW announcements also appear on our{' '}
         <a href='https://www.facebook.com/groups/464742576942907/' target='_new'>
           Facebook group page
-        </a>.
+        </a>
+        .
       </p>
       <br />
 
@@ -123,7 +124,8 @@ const Welcome = () => {
         If you are accessing this site after{' '}
         <strong>
           <Acnw.PaymentDeadline />
-        </strong>, please contact the organizers by e-mail at <Acnw.SimoneEmail /> before registering.
+        </strong>
+        , please contact the organizers by e-mail at <Acnw.SimoneEmail /> before registering.
       </p>
       <br />
     </div>

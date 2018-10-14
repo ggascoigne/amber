@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Container, Icon, Menu, Responsive, Segment, Sidebar } from 'semantic-ui-react'
-import './navigation.css'
+import './navigation.scss'
 
 export default class MobileContainer extends Component {
   state = {}

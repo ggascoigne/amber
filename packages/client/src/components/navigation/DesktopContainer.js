@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Menu, Responsive, Segment, Sidebar, Sticky } from 'semantic-ui-react'
-import './navigation.css'
+import './navigation.scss'
 
 export default class DesktopContainer extends Component {
   render () {
