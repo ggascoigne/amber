@@ -42,7 +42,7 @@
     "bootstrap": "lerna bootstrap && lerna link --force-local",
     "db:import": "lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
-    "format": "prettier-standard 'packages/*/{src,script,db}/**/*.{js,scss,json}'",
+    "format": "prettier-standard 'packages/*/{src,script,db}/**/*.{js,css,scss,json}'",
     "start": "lerna exec --parallel yarn start",
     "start:client": "lerna exec --scope client yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
@@ -57,7 +57,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,css}": [
+    "*.{js,css,scss}": [
       "prettier-standard",
       "git add"
     ]
