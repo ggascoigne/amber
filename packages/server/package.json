@@ -52,7 +52,6 @@
     "db:setup": "yarn db:clean && yarn db:migrate:run ",
     "db:setup:production": "NODE_ENV=production yarn db:clean && NODE_ENV=production yarn db:migrate:run ",
     "format": "prettier-standard '{src,scripts,db}/**/*.js'",
-    "precommit": "lint-staged",
     "start": "nodemon index.js",
     "start:production": "NODE_ENV=production node index.js",
     "test": "NODE_ENV=test yarn db:setup && jest --runInBand",
@@ -70,5 +69,10 @@
       "prettier-standard",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
