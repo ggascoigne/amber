@@ -43,6 +43,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna link --force-local",
+    "db:import": "lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "format": "lerna exec --parallel yarn format",
     "precommit": "lerna run --concurrency 1 --stream precommit",

@@ -15,11 +15,11 @@ export default class MobileContainer extends Component {
     return (
       <Responsive className='mobile_container' {...Responsive.onlyMobile}>
         <Sidebar.Pushable>
-          <Sidebar as={Menu} animation='push' inverted vertical visible={sidebarOpened}>
+          <Sidebar as={Menu} animation='overlay' onClick={this.handleToggle} inverted vertical visible={sidebarOpened}>
             {menu}
           </Sidebar>
 
-          <Sidebar.Pusher dimmed={sidebarOpened} onClick={this.handleToggle} className='mobile_container__sidebar'>
+          <Sidebar.Pusher dimmed={sidebarOpened} className='mobile_container__sidebar'>
             <Segment className='mobile_container__topbar' inverted textAlign='center' vertical>
               <Container>
                 <Menu inverted pointing secondary size='small'>

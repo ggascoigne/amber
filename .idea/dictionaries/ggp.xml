@@ -1,10 +1,15 @@
 <component name="ProjectDictionaryState">
   <dictionary name="ggp">
     <words>
+      <w>acnw</w>
+      <w>ambercon</w>
       <w>dbconfig</w>
+      <w>graphiql</w>
       <w>hapi</w>
+      <w>inflector</w>
       <w>knex</w>
       <w>lerna</w>
+      <w>postgraphile</w>
       <w>sequelize</w>
     </words>
   </dictionary>

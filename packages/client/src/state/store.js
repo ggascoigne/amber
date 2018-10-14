@@ -8,7 +8,7 @@ import { isDev } from '../utils/globals'
 import rootEpic from './epic'
 import rootReducer from './reducer'
 
-const epicMiddleware = createEpicMiddleware(rootEpic)
+const epicMiddleware = createEpicMiddleware()
 const loggerMiddleware = createLogger({ collapsed: true })
 
 // Create a history of your choosing (we're using a browser history in this case)
@@ -33,5 +33,7 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middl
 if (module.hot) {
   module.hot.accept('./epic', () => epicMiddleware.replaceEpic(require('./epic').default))
 }
+
+epicMiddleware.run(rootEpic)
 
 export default store
