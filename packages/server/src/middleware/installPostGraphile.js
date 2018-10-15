@@ -11,7 +11,10 @@ export function installPostGraphile (app, { rootPgPool, config }) {
     return next()
   })
 
-  console.log(`postgraphile using ${connectionString}`)
+  if (config.isDev) {
+    // don't print this in production, it contains a password
+    console.log(`postgraphile using ${connectionString}`)
+  }
 
   app.use(
     postgraphile(connectionString, 'public', {
@@ -19,7 +22,7 @@ export function installPostGraphile (app, { rootPgPool, config }) {
       debug: config.isDev,
       disableQueryLog: true,
       enableCors: config.isDev,
-      graphiql: config.isDev,
+      graphiql: true, // need to secure this somehow
       ignoreRBAC: false,
       // pgSettings: opts.pgSettings,
       showErrorStack: config.isDev,

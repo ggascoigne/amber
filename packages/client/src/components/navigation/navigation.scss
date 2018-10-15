@@ -1,9 +1,14 @@
 @import '../../variables';
 
 .desktop_container {
-  & .desktop_container__topbar {
+  & .ui.segment.desktop_container__topbar {
     min-height: var(--topbarHeight);
-    padding: 1em 0;
+    padding: 0 18px;
+    align-items: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    justify-content: flex-end;
   }
 
   & .ui.sidebar.desktop_container__sidebar {
@@ -32,6 +37,14 @@
 
 .topbar__acnw_title {
   height: var(--topbarHeight);
+  width: 100%;
   font-weight: bold;
   font-size: 16px;
+}
+
+.topbar__acnw_login {
+  height: var(--topbarHeight);
+  line-height: var(--topbarHeight);
+  font-weight: bold;
+  font-size: 14px;
 }

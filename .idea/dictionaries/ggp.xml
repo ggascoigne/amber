@@ -11,6 +11,7 @@
       <w>lerna</w>
       <w>postgraphile</w>
       <w>sequelize</w>
+      <w>wyrdrune</w>
     </words>
   </dictionary>
 </component>
