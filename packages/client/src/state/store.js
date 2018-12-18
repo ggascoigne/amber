@@ -30,7 +30,7 @@ if (isDev) {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleware)))
 
-if (module.hot) {
+if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('./epic', () => epicMiddleware.replaceEpic(require('./epic').default))
 }
 

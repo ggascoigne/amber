@@ -10,14 +10,28 @@ import './index.scss'
 import store, { history } from './state/store'
 import registerServiceWorker from './utils/registerServiceWorker'
 
-ReactDOM.render(
-  <Provider store={store}>
-    <Auth>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Auth>
-  </Provider>,
-  document.getElementById('root')
-)
+const rootElement = document.getElementById('root')
+
+const render = Component => {
+  return ReactDOM.render(
+    <Provider store={store}>
+      <Auth>
+        <ConnectedRouter history={history}>
+          <Component />
+        </ConnectedRouter>
+      </Auth>
+    </Provider>,
+    document.getElementById('root')
+  )
+}
+
+render(App)
+
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    render(NextApp, rootElement)
+  })
+}
+
 registerServiceWorker()
