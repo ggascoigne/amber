@@ -1,7 +1,7 @@
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector'
 import { postgraphile } from 'postgraphile'
 
-export function installPostGraphile (app, { rootPgPool, config }) {
+export function installPostGraphile(app, { rootPgPool, config }) {
   const {
     database: { connectionString, database }
   } = config

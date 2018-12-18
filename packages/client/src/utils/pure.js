@@ -1,12 +1,12 @@
 import React from 'react'
 
 // convert a SFC (Stateless Functional Component) into a PureComponent.
-export default function pure (func, shouldCalculateUpdate = true) {
+export default function pure(func, shouldCalculateUpdate = true) {
   if (shouldCalculateUpdate) {
     // use the default shouldComponentUpdate in PureComponent
     // this does a shallow compare on props and state
     class PureComponentWrap extends React.PureComponent {
-      render () {
+      render() {
         return func(this.props, this.context)
       }
     }
@@ -16,11 +16,11 @@ export default function pure (func, shouldCalculateUpdate = true) {
     // simply return false for shouldUpdateComponent
     // faster when you know what there are no relevant props or state.
     class ComponentWrap extends React.Component {
-      shouldComponentUpdate () {
+      shouldComponentUpdate() {
         return false
       }
 
-      render () {
+      render() {
         return func(this.props, this.context)
       }
     }

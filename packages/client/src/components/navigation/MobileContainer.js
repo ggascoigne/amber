@@ -10,7 +10,7 @@ export default class MobileContainer extends Component {
 
   handleToggle = () => this.setState({ sidebarOpened: !this.state.sidebarOpened })
 
-  render () {
+  render() {
     const { children, menu } = this.props
     const { sidebarOpened } = this.state
 

@@ -12,13 +12,15 @@ const MenuItems = withRouter(({ menuItems, location }) => {
   // todo upgrade to babel-7 and then use the <> </> syntax
   return (
     <>
-      {menuItems.filter(menuItem => menuItem.content).map((menuItem, index) => (
-        <Menu.Item name={menuItem.path} active={activeItem === menuItem.path} key={index}>
-          <NavLink activeClassName='active' exact={menuItem.exact} to={menuItem.path}>
-            {menuItem.content}
-          </NavLink>
-        </Menu.Item>
-      ))}
+      {menuItems
+        .filter(menuItem => menuItem.content)
+        .map((menuItem, index) => (
+          <Menu.Item name={menuItem.path} active={activeItem === menuItem.path} key={index}>
+            <NavLink activeClassName='active' exact={menuItem.exact} to={menuItem.path}>
+              {menuItem.content}
+            </NavLink>
+          </Menu.Item>
+        ))}
     </>
   )
 })

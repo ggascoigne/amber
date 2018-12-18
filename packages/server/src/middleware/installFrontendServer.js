@@ -1,6 +1,6 @@
 const httpProxy = require('http-proxy')
 
-export function installFrontendServer (app, server) {
+export function installFrontendServer(app, server) {
   const proxy = httpProxy.createProxyServer({
     target: `http://localhost:${process.env.CLIENT_PORT}`,
     ws: true

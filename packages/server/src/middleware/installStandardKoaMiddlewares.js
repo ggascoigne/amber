@@ -4,7 +4,7 @@ import compress from 'koa-compress'
 import helmet from 'koa-helmet'
 import pinoLogger from 'koa-pino-logger'
 
-export function installStandardKoaMiddlewares (app, { config }) {
+export function installStandardKoaMiddlewares(app, { config }) {
   const loggerConfig = {
     name: 'http-logger',
     level: 'info',

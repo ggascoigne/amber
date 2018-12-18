@@ -24,7 +24,7 @@ const config = {
   }
 }
 
-function getConnectionString (d) {
+function getConnectionString(d) {
   return `postgres://${d.username}:${d.password}@${d.host}:${d.port}/${d.database}${
     d.ssl ? '?sqlmode=require&ssl=1' : ''
   }`

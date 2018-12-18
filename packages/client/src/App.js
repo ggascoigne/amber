@@ -3,7 +3,7 @@ import { MainMenu } from './components/navigation/MainMenu'
 import { menuData } from './Routing'
 
 export default class App extends Component {
-  render () {
+  render() {
     return <MainMenu menuItems={menuData} />
   }
 }

@@ -47,7 +47,7 @@ class Auth extends Component {
     })
   }
 
-  setSession (data) {
+  setSession(data) {
     console.log(data)
     const user = {
       id: data.sub,
@@ -61,7 +61,7 @@ class Auth extends Component {
     })
   }
 
-  render () {
+  render() {
     const authProviderValue = {
       ...this.state,
       initiateLogin: this.initiateLogin,

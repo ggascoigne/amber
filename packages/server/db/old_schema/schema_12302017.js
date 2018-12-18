@@ -1,10 +1,10 @@
 'use strict'
 
-exports.up = function (knex) {
+exports.up = function(knex) {
   return knex.schema
     .raw('SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0')
     .raw('SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0')
-    .createTable('async_mail_attachment', function (table) {
+    .createTable('async_mail_attachment', function(table) {
       table.bigIncrements().primary()
       table.string('attachment_name', 255).notNullable()
       table.specificType('content', 'longblob').notNullable()
@@ -18,22 +18,22 @@ exports.up = function (knex) {
       table.string('mime_type', 255).notNullable()
       table.integer('attachments_idx', 11).defaultTo(null)
     })
-    .createTable('async_mail_bcc', function (table) {
+    .createTable('async_mail_bcc', function(table) {
       table.bigInteger('message_id', 20).notNullable()
       table.string('bcc_string', 320).defaultTo(null)
       table.integer('bcc_idx', 11).defaultTo(null)
     })
-    .createTable('async_mail_cc', function (table) {
+    .createTable('async_mail_cc', function(table) {
       table.bigInteger('message_id', 20).notNullable()
       table.string('cc_string', 320).defaultTo(null)
       table.integer('cc_idx', 11).defaultTo(null)
     })
-    .createTable('async_mail_header', function (table) {
+    .createTable('async_mail_header', function(table) {
       table.bigInteger('message_id', 20).notNullable()
       table.string('header_name', 255).defaultTo(null)
       table.string('header_value', 255).notNullable()
     })
-    .createTable('async_mail_mess', function (table) {
+    .createTable('async_mail_mess', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.bigInteger('attempt_interval', 20).notNullable()
@@ -54,12 +54,12 @@ exports.up = function (knex) {
       table.text('text', 'longtext').notNullable()
       table.string('envelope_from', 256).defaultTo(null)
     })
-    .createTable('async_mail_to', function (table) {
+    .createTable('async_mail_to', function(table) {
       table.bigInteger('message_id', 20).notNullable()
       table.string('to_string', 320).defaultTo(null)
       table.integer('to_idx', 11).defaultTo(null)
     })
-    .createTable('databasechangelog', function (table) {
+    .createTable('databasechangelog', function(table) {
       table.string('ID', 63).notNullable()
       table.string('AUTHOR', 63).notNullable()
       table.string('FILENAME', 200).notNullable()
@@ -73,7 +73,7 @@ exports.up = function (knex) {
       table.string('LIQUIBASE', 20).defaultTo(null)
       table.primary([`ID`, `AUTHOR`, `FILENAME`])
     })
-    .createTable('databasechangeloglock', function (table) {
+    .createTable('databasechangeloglock', function(table) {
       table
         .integer('ID', 11)
         .primary()
@@ -82,7 +82,7 @@ exports.up = function (knex) {
       table.dateTime('LOCKGRANTED').defaultTo(null)
       table.string('LOCKEDBY', 255).defaultTo(null)
     })
-    .createTable('email_code', function (table) {
+    .createTable('email_code', function(table) {
       table.bigIncrements().primary()
       table.dateTime('date_created').notNullable()
       table
@@ -95,7 +95,7 @@ exports.up = function (knex) {
         .notNullable()
         .unique()
     })
-    .createTable('game', function (table) {
+    .createTable('game', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.dateTime('date_created').notNullable()
@@ -141,7 +141,7 @@ exports.up = function (knex) {
         .unsigned()
         .index()
     })
-    .createTable('game_assignment', function (table) {
+    .createTable('game_assignment', function(table) {
       table
         .bigInteger('member_id', 20)
         .notNullable()
@@ -160,7 +160,7 @@ exports.up = function (knex) {
       table.integer('year', 11).notNullable()
       table.primary([`member_id`, `game_id`, `gm`])
     })
-    .createTable('game_choice', function (table) {
+    .createTable('game_choice', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table
@@ -185,7 +185,7 @@ exports.up = function (knex) {
       table.integer('year', 11).notNullable()
       table.bit('returning_player', 1).notNullable()
     })
-    .createTable('game_submission', function (table) {
+    .createTable('game_submission', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.dateTime('date_created').notNullable()
@@ -198,7 +198,7 @@ exports.up = function (knex) {
       table.string('message', 1024).notNullable()
       table.integer('year', 11).notNullable()
     })
-    .createTable('hotel_room', function (table) {
+    .createTable('hotel_room', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.string('description', 150).notNullable()
@@ -208,7 +208,7 @@ exports.up = function (knex) {
       table.string('rate', 255).notNullable()
       table.string('type', 255).notNullable()
     })
-    .createTable('login_record', function (table) {
+    .createTable('login_record', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.dateTime('date_created').defaultTo(null)
@@ -223,7 +223,7 @@ exports.up = function (knex) {
       table.string('remote_host', 255).notNullable()
       table.string('user_agent', 255).notNullable()
     })
-    .createTable('lookup', function (table) {
+    .createTable('lookup', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.string('code_maximum', 255).defaultTo(null)
@@ -243,7 +243,7 @@ exports.up = function (knex) {
       table.integer('value_scale', 11).defaultTo(null)
       table.string('value_type', 7).notNullable()
     })
-    .createTable('lookup_value', function (table) {
+    .createTable('lookup_value', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table
@@ -263,7 +263,7 @@ exports.up = function (knex) {
       table.string('string_sequencer', 255).notNullable()
       table.string('value', 255).notNullable()
     })
-    .createTable('membership', function (table) {
+    .createTable('membership', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.dateTime('arrival_date').notNullable()
@@ -292,7 +292,7 @@ exports.up = function (knex) {
       table.bit('volunteer', 1).notNullable()
       table.integer('year', 11).notNullable()
     })
-    .createTable('profile', function (table) {
+    .createTable('profile', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.dateTime('date_created').notNullable()
@@ -306,13 +306,13 @@ exports.up = function (knex) {
       table.string('phone_number', 32).defaultTo(null)
       table.string('snail_mail_address', 250).defaultTo(null)
     })
-    .createTable('registration_code', function (table) {
+    .createTable('registration_code', function(table) {
       table.bigIncrements().primary()
       table.dateTime('date_created').notNullable()
       table.string('token', 255).notNullable()
       table.string('username', 255).notNullable()
     })
-    .createTable('role', function (table) {
+    .createTable('role', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table
@@ -320,7 +320,7 @@ exports.up = function (knex) {
         .notNullable()
         .unique()
     })
-    .createTable('room', function (table) {
+    .createTable('room', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.string('description', 50).notNullable()
@@ -328,7 +328,7 @@ exports.up = function (knex) {
       table.string('type', 50).notNullable()
       table.bit('updated', 1).notNullable()
     })
-    .createTable('setting', function (table) {
+    .createTable('setting', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table
@@ -340,7 +340,7 @@ exports.up = function (knex) {
       table.string('type', 7).notNullable()
       table.string('value', 100).notNullable()
     })
-    .createTable('shirt_order', function (table) {
+    .createTable('shirt_order', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.string('delivery_method', 255).notNullable()
@@ -353,7 +353,7 @@ exports.up = function (knex) {
         .index()
       table.integer('year', 11).notNullable()
     })
-    .createTable('shirt_order_item', function (table) {
+    .createTable('shirt_order_item', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table
@@ -367,7 +367,7 @@ exports.up = function (knex) {
       table.string('style', 255).notNullable()
       table.integer('items_idx', 11).defaultTo(null)
     })
-    .createTable('slot', function (table) {
+    .createTable('slot', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.integer('slot', 11).notNullable()
@@ -376,7 +376,7 @@ exports.up = function (knex) {
       table.string('length', 20).notNullable()
       table.string('time', 30).notNullable()
     })
-    .createTable('user', function (table) {
+    .createTable('user', function(table) {
       table.bigIncrements().primary()
       table.bigInteger('version', 20).notNullable()
       table.bit('account_expired', 1).notNullable()
@@ -398,7 +398,7 @@ exports.up = function (knex) {
         .notNullable()
         .unique()
     })
-    .createTable('user_role', function (table) {
+    .createTable('user_role', function(table) {
       table
         .bigInteger('role_id', 20)
         .notNullable()
@@ -417,7 +417,7 @@ exports.up = function (knex) {
     .raw('SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS')
 }
 
-exports.down = function (knex) {
+exports.down = function(knex) {
   return knex.schema
     .raw('SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0')
     .dropTableIfExists('async_mail_attachment')

@@ -44,7 +44,7 @@ const getOrdinalWord = number =>
   number < 1 || number > 99
     ? number
     : number <= 20 || number % 10 === 0
-      ? ordinals[number]
-      : prefixes[Math.floor(number / 10)] + '-' + ordinals[number % 10]
+    ? ordinals[number]
+    : prefixes[Math.floor(number / 10)] + '-' + ordinals[number % 10]
 
 export default getOrdinalWord

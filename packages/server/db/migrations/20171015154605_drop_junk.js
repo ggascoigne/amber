@@ -7,7 +7,7 @@
 // the dropped tables are application data rather than domain data and will just
 // be handled a different way
 
-exports.up = function (knex) {
+exports.up = function(knex) {
   return knex.schema
     .dropTableIfExists('async_mail_attachment')
     .dropTableIfExists('async_mail_bcc')
@@ -92,6 +92,6 @@ exports.up = function (knex) {
     })
 }
 
-exports.down = function (knex) {
+exports.down = function(knex) {
   // there's no rolling this back!
 }

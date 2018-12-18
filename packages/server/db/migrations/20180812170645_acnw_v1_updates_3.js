@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.table('hotel_room', table => {
       table.string('type', 255).notNullable()
@@ -12,6 +12,6 @@ exports.up = function (knex, Promise) {
   ])
 }
 
-exports.down = function (knex, Promise) {
+exports.down = function(knex, Promise) {
   // no revert
 }

@@ -5,7 +5,7 @@ import LoginMenu from '../LoginMenu'
 import './navigation.scss'
 
 export default class DesktopContainer extends Component {
-  render () {
+  render() {
     const { children, menu } = this.props
 
     return (
