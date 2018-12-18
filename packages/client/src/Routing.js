@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Header } from 'semantic-ui-react'
 import AboutAmberconNw from './pages/AboutAmberconNw'
 import Welcome from './pages/Welcome'
+import CallbackPage from './pages/CallbackPage'
 
 const { shape, arrayOf } = PropTypes
 
@@ -10,12 +11,12 @@ export const menuData = [
   {
     path: '/',
     content: (
-      <Fragment>
+      <>
         <Header inverted as='h4'>
           Welcome
         </Header>
         <p>Introduction</p>
-      </Fragment>
+      </>
     ),
     exact: true,
     component: Welcome
@@ -23,22 +24,27 @@ export const menuData = [
   {
     path: '/aboutacnw',
     content: (
-      <Fragment>
+      <>
         <Header inverted as='h4'>
           AmberCon NW
         </Header>
         <p>What you get and what it costs</p>
-      </Fragment>
+      </>
     ),
     exact: false,
     component: AboutAmberconNw
+  },
+  {
+    path: '/callback',
+    exact: true,
+    component: CallbackPage
   }
 ]
 
 export const menuDataType = arrayOf(
   shape({
     path: PropTypes.string.isRequired,
-    content: PropTypes.node.isRequired,
+    content: PropTypes.node,
     exact: PropTypes.bool.isRequired,
     component: PropTypes.func.isRequired
   })

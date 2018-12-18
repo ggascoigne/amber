@@ -7,7 +7,7 @@
 // the dropped tables are application data rather than domain data and will just
 // be handled a different way
 
-exports.up = function (knex) {
+exports.up = function(knex) {
   return knex.schema.createTable('token', table => {
     table.increments('id').primary()
     table
@@ -22,4 +22,4 @@ exports.up = function (knex) {
   })
 }
 
-exports.down = function (knex) {}
+exports.down = function(knex) {}

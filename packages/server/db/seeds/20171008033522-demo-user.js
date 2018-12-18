@@ -1,6 +1,6 @@
 'use strict'
 
-exports.seed = function seed (knex) {
+exports.seed = function seed(knex) {
   const tableName = 'user'
 
   const rows = [

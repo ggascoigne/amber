@@ -1,6 +1,6 @@
 'use strict'
 
-exports.up = function (knex) {
+exports.up = function(knex) {
   // create a stored procedure that can be used to quickly drop all data - used for a fast cleanup in tests
   return knex.schema.raw(`CREATE OR REPLACE FUNCTION f_truncate_tables(_username TEXT)
           RETURNS VOID AS
@@ -18,4 +18,4 @@ exports.up = function (knex) {
           $func$ LANGUAGE plpgsql;`)
 }
 
-exports.down = function (knex) {}
+exports.down = function(knex) {}

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { NavLink, Route, Switch, withRouter } from 'react-router-dom'
 import { Header, Menu, Segment } from 'semantic-ui-react'
 import DesktopContainer from '../../components/navigation/DesktopContainer'
@@ -11,16 +11,17 @@ const MenuItems = withRouter(({ menuItems, location }) => {
   const activeItem = location.pathname
   // todo upgrade to babel-7 and then use the <> </> syntax
   return (
-    <Fragment>
-      <Menu.Item className='topbar__acnw_title'>AmberCon NW</Menu.Item>
-      {menuItems.map((menuItem, index) => (
-        <Menu.Item name={menuItem.path} active={activeItem === menuItem.path} key={index}>
-          <NavLink activeClassName='active' exact={menuItem.exact} to={menuItem.path}>
-            {menuItem.content}
-          </NavLink>
-        </Menu.Item>
-      ))}
-    </Fragment>
+    <>
+      {menuItems
+        .filter(menuItem => menuItem.content)
+        .map((menuItem, index) => (
+          <Menu.Item name={menuItem.path} active={activeItem === menuItem.path} key={index}>
+            <NavLink activeClassName='active' exact={menuItem.exact} to={menuItem.path}>
+              {menuItem.content}
+            </NavLink>
+          </Menu.Item>
+        ))}
+    </>
   )
 })
 
@@ -29,10 +30,10 @@ MenuItems.propTypes = {
 }
 
 const ResponsiveContainer = ({ children, menuItems }) => (
-  <Fragment>
+  <>
     <DesktopContainer menu={<MenuItems menuItems={menuItems} />}>{children}</DesktopContainer>
     <MobileContainer menu={<MenuItems menuItems={menuItems} />}>{children}</MobileContainer>
-  </Fragment>
+  </>
 )
 
 ResponsiveContainer.propTypes = {

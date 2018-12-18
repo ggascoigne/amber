@@ -92,6 +92,8 @@ async function pipeTmpToLive (tmpDbConfig, dbconfig) {
   reset all sequences based on the max index on the table.
  */
 function fixSequences (dbconfig) {
+  // @formatter:off
+  // language=PostgreSQL
   const q = stripIndent`
     SELECT 'SELECT SETVAL(' ||
            quote_literal(quote_ident(PGT.schemaname) || '.' || quote_ident(S.relname)) ||
@@ -110,17 +112,23 @@ function fixSequences (dbconfig) {
       AND T.relname = PGT.tablename
     ORDER BY S.relname;
   `
+  // @formatter:on
+
   const name = tempy.file()
   const name2 = tempy.file()
   fs.writeFileSync(name, q)
 
   const args1 = getPostgresArgs(dbconfig)
-  args1.push('-Atq', '-f', name, '-o', name2)
+  args1.push('-XAtq', '-f', name, '-o', name2)
   const args2 = getPostgresArgs(dbconfig)
-  args2.push('-f', name2)
+  args2.push('-X', '-f', name2)
 
   runOrExit(spawnSync('/usr/local/bin/psql', args1, { stdio: 'inherit' }))
   runOrExit(spawnSync('/usr/local/bin/psql', args2, { stdio: 'inherit' }))
+}
+
+function verifyRunning (name) {
+  runOrExit(spawnSync('/usr/bin/pgrep', [name]), `${name} not running`)
 }
 
 async function main () {
@@ -150,6 +158,9 @@ async function main () {
     ssl: 0
   }
 
+  verifyRunning('mysql')
+  verifyRunning('postgres')
+
   if (!process.env.SKIP_DOWNLOAD) {
     info(`Create tmp mysql database ${tmpDbName}`)
     await createCleanDbMySql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
@@ -168,6 +179,10 @@ async function main () {
 
   info(`Importing data from tmp mysql to tmp postgres database`)
   // note that workers=1 was needed to deal with a hard-to-trace connection error
+  // tested with
+  // $ pgloader --version
+  // pgloader version "3.5.2"
+  // compiled with SBCL 1.4.9
   const pgArgs = getPostgresArgs(tmpDbConfig)
   pgloader(
     process.env.LOCAL_MYSQL_PASSWORD,
@@ -218,7 +233,7 @@ async function main () {
   dropKnexMigrationTables(tmpDbConfig)
 
   info(`Recreating database ${databaseName}`)
-  createCleanDb(dbconfig)
+  await createCleanDb(dbconfig)
 
   info('Inserting knex records')
   // remove if kex-migrate fixes it's issue

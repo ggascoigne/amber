@@ -17,41 +17,57 @@
     "packages/*"
   ],
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.2",
-    "babel-jest": "^21.2.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.0",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@commitlint/cli": "^7.2.1",
+    "@commitlint/config-conventional": "^7.1.2",
+    "babel-eslint": "^9.0.0",
     "circular-json": "^0.5.5",
-    "eslint": "^4.12.0",
-    "eslint-config-standard": "^11.0.0",
-    "eslint-config-standard-jsx": "^5.0.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^7.5.1",
-    "eslint-plugin-standard": "^3.0.1",
-    "prettier-standard": "^8.0.1",
-    "jest": "^21.2.1",
-    "nodemon": "^1.12.1",
-    "standard": "^10.0.3",
-    "husky": "^0.14.3",
-    "npm-run-all": "^4.1.2",
-    "lerna": "^2.11.0",
-    "lint-staged": "^7.0.2",
-    "del-cli": "^1.1.0"
+    "cross-env": "^5.2.0",
+    "del-cli": "^1.1.0",
+    "eslint": "5.6.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "husky": "^1.1.2",
+    "lerna": "^3.4.3",
+    "lint-staged": "^7.3.0",
+    "npm-run-all": "^4.1.3",
+    "prettier": "^1.15.3"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap && lerna link --force-local",
+    "db:import": "lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
-    "format": "lerna exec --parallel yarn format",
-    "precommit": "lerna run --concurrency 1 --stream precommit",
+    "format": "prettier --no-color --write 'packages/*/{src,script,db}/**/*.{js,css,scss,json}'",
     "start": "lerna exec --parallel yarn start",
     "start:client": "lerna exec --scope client yarn start",
-    "start:server": "lerna exec --scope server yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
+    "start:server": "lerna exec --scope server yarn start",
     "test": "lerna exec -- yarn test",
     "test:client": "lerna exec --scope client yarn test",
     "test:server": "lerna exec --scope server yarn test"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,css,scss}": [
+      "prettier --xno-color --write",
+      "git add"
+    ]
+  },
+  "standard": {
+    "parser": "babel-eslint",
+    "env": {
+      "jasmine": "true",
+      "jest": "true"
+    }
   }
 }
