@@ -4,7 +4,7 @@ import { AuthConsumer } from '../authContext'
 
 const LoggedInContent = ({ user, logout }) => {
   return (
-    <div className='topbar__acnw_login' onClick={logout}>
+    <div className='topbar__acnw_login' tabIndex={0} role='button' onClick={logout} onKeyPress={logout}>
       {user.email}
     </div>
   )
@@ -12,7 +12,7 @@ const LoggedInContent = ({ user, logout }) => {
 
 const LoggedOutContent = ({ initiateLogin }) => {
   return (
-    <div className='topbar__acnw_login' onClick={initiateLogin}>
+    <div className='topbar__acnw_login' tabIndex={0} role='button' onClick={initiateLogin} onKeyPress={initiateLogin}>
       login
     </div>
   )

@@ -50,6 +50,7 @@
     "db:migrate:run": "knex migrate:latest",
     "db:setup": "yarn db:clean && yarn db:migrate:run ",
     "db:setup:production": "NODE_ENV=production yarn db:clean && NODE_ENV=production yarn db:migrate:run ",
+    "lint": "eslint 'src/**/*.{js,jsx}'",
     "format": "cd ../../ && yarn format",
     "start": "nodemon index.js",
     "start:production": "NODE_ENV=production node index.js",
