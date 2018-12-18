@@ -63,7 +63,7 @@
   "lint-staged": {
     "*.{js,css,scss}": [
       "yarn lint",
-      "prettier --xno-color --write",
+      "prettier --no-color --write",
       "git add"
     ]
   },
