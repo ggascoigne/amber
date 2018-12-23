@@ -1,20 +1,9 @@
-import Flexbox from 'flexbox-react'
 import React from 'react'
-import Image from 'semantic-ui-react/dist/commonjs/elements/Image/Image'
-import { AuthConsumer } from '../authContext'
+import { AuthConsumer } from '../components/Auth/authContext'
 import Acnw from '../components/Acnw'
+import { BannerImage } from '../components/Banner/BannerImage'
 import Login from '../components/Login'
 import Logout from '../components/Logout'
-import './pages.scss'
-
-const BannerImage = () => {
-  const banner = require('../assets/Banner2017.png')
-  return (
-    <Flexbox flex='1 1 auto' className='main_banner'>
-      <Image href='/' src={banner} alt='Ambercon NW' />
-    </Flexbox>
-  )
-}
 
 const Welcome = () => {
   return (

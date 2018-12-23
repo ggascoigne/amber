@@ -1,36 +1,29 @@
 import PropTypes from 'prop-types'
-import React from 'react'
-import { Header } from 'semantic-ui-react'
-import AboutAmberconNw from './pages/AboutAmberconNw'
-import Welcome from './pages/Welcome'
-import CallbackPage from './pages/CallbackPage'
+import AboutAmberconNw from '../../pages/AboutAmberconNw'
+import Welcome from '../../pages/Welcome'
+import CallbackPage from '../../pages/CallbackPage'
 
 const { shape, arrayOf } = PropTypes
 
 export const menuData = [
   {
     path: '/',
-    content: (
-      <>
-        <Header inverted as='h4'>
-          Welcome
-        </Header>
-        <p>Introduction</p>
-      </>
-    ),
+    label: 'Welcome',
+    subText: 'Introduction',
     exact: true,
     component: Welcome
   },
   {
     path: '/aboutacnw',
-    content: (
-      <>
-        <Header inverted as='h4'>
-          AmberCon NW
-        </Header>
-        <p>What you get and what it costs</p>
-      </>
-    ),
+    label: 'AmberCon NW',
+    subText: 'What you get and what it costs',
+    exact: false,
+    component: AboutAmberconNw
+  },
+  {
+    path: '/aboutedge',
+    label: 'Accommodations',
+    subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
     component: AboutAmberconNw
   },

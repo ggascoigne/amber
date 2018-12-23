@@ -57,6 +57,7 @@
     <HTMLCodeStyleSettings>
       <option name="HTML_ALIGN_ATTRIBUTES" value="false" />
       <option name="HTML_SPACE_INSIDE_EMPTY_TAG" value="true" />
+      <option name="HTML_QUOTE_STYLE" value="Single" />
     </HTMLCodeStyleSettings>
     <JSCodeStyleSettings version="0">
       <option name="USE_SEMICOLON_AFTER_STATEMENT" value="false" />

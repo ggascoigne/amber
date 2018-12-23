@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { AuthConsumer } from '../authContext'
+import { AuthConsumer } from './Auth/authContext'
 
 const Login = () => (
   <AuthConsumer>

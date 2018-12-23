@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { AuthConsumer } from '../authContext'
+import { AuthConsumer } from '../components/Auth/authContext'
 
 const CallbackPage = props => (
   <AuthConsumer>

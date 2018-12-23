@@ -1,8 +1,8 @@
 import auth0 from 'auth0-js'
 import React, { Component } from 'react'
 
-import { AUTH_CONFIG } from '../auth0-variables'
-import { AuthProvider } from '../authContext'
+import { AUTH_CONFIG } from '../../auth0-variables'
+import { AuthProvider } from './authContext'
 
 const auth = new auth0.WebAuth({
   domain: AUTH_CONFIG.domain,
