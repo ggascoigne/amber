@@ -12,7 +12,13 @@ export const MenuItems = withRouter(({ menuItems, location }) => {
       {menuItems
         .filter(menuItem => menuItem.label)
         .map((menuItem, index) => (
-          <ListItem button component={Link} to={menuItem.path} selected={activeItem === menuItem.path}>
+          <ListItem
+            key={menuItem.path}
+            button
+            component={Link}
+            to={menuItem.path}
+            selected={activeItem === menuItem.path}
+          >
             <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
           </ListItem>
         ))}

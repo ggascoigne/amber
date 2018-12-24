@@ -1,15 +1,25 @@
 import { withStyles } from '@material-ui/core'
+import contentPageStyles from 'assets/jss/acnw/contentPage'
+import { dangerColor } from 'assets/jss/material-kit-react.jsx'
+import classNames from 'classnames'
+import Acnw from 'components/Acnw'
+import { AuthConsumer } from 'components/Auth/authContext'
+import { BannerImage } from 'components/Banner/BannerImage'
+import Login from 'components/Login'
+import Logout from 'components/Logout'
 import React from 'react'
-import Acnw from '../components/Acnw'
-import { AuthConsumer } from '../components/Auth/authContext'
-import { BannerImage } from '../components/Banner/BannerImage'
-import Login from '../components/Login'
-import Logout from '../components/Logout'
 
 const styles = theme => ({
-  root: {},
+  ...contentPageStyles(theme),
   banner: {
     textAlign: 'center'
+  },
+  deadline: {},
+  deadlineExpired: {
+    color: dangerColor,
+    '&:after': {
+      content: '" - date passed"'
+    }
   }
 })
 
@@ -17,7 +27,7 @@ const Welcome = ({ classes, theme }) => {
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (
-        <div className={classes.root}>
+        <div className={classNames(classes.main, classes.mainRaised)}>
           <div className={classes.banner}>
             <BannerImage />
           </div>
@@ -71,69 +81,69 @@ const Welcome = ({ classes, theme }) => {
           <ul>
             {/* search for Date Edit when changing */}
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Initial registration and deposits: <Acnw.RegistrationDeadline />, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Membership payment in full: <Acnw.PaymentDeadline />, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Games and Events due: <Acnw.GameSubmissionDeadline />, <Acnw.ConventionYear />
               </span>
             </li>
             {/* and on home/gameBookClosed.gsp */}
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Game Book preview to GMs: September 8 &amp; 9, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Game Books open for selections: September 13, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Game Selections due: September 18, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Last date for cancellation with full refund: September 18, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Schedule previews to GMs: September 24, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadlineExpired'>
+              <span className={classes.deadlineExpired}>
                 Schedules SENT to all players: September 26, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadline'>
+              <span className={classes.deadline}>
                 Orders for shirts: October 9, <Acnw.ConventionYear />
               </span>
             </li>
             {/* referenced in shirtOrder / _form.gsp */}
             <li>
-              <span className='deadline'>
+              <span className={classes.deadline}>
                 Travel coordination information due: October 16, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadline'>
+              <span className={classes.deadline}>
                 Last date for cancellation with partial refund: October 20, <Acnw.ConventionYear />
               </span>
             </li>
             <li>
-              <span className='deadline'>
+              <span className={classes.deadline}>
                 Wednesday dinner RSVP: October 23, <Acnw.ConventionYear />
               </span>
             </li>
