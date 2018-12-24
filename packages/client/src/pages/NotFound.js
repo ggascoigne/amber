@@ -1,20 +1,19 @@
-import Typography from '@material-ui/core/Typography'
-import ErrorOutline from '@material-ui/icons/ErrorOutline'
+import withStyles from '@material-ui/core/styles/withStyles'
+import notificationsStyles from 'assets/jss/material-kit-react/views/componentsSections/notificationsStyles.jsx'
+
+import SnackbarContent from 'components/Snackbar/SnackbarContent.jsx'
 import React from 'react'
-import GridContainer from '../components/Grid/GridContainer'
-import GridItem from '../components/Grid/GridItem'
 
 const NotFound = () => (
-  <GridContainer>
-    <GridItem xs={1} sm={1} md={1}>
-      <ErrorOutline style={{ fontSize: '48pt' }} />
-    </GridItem>
-    <GridItem xs={8} sm={8} md={8}>
-      <Typography variant='h1' gutterBottom component='h1'>
-        Page Not Found
-      </Typography>
-    </GridItem>
-  </GridContainer>
+  <SnackbarContent
+    message={
+      <span>
+        <b>404:</b> Page not found...
+      </span>
+    }
+    color='danger'
+    icon='error_outline'
+  />
 )
 
-export default NotFound
+export default withStyles(notificationsStyles)(NotFound)

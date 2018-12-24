@@ -45,7 +45,7 @@
     "db:import": "lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "lint": "lerna exec --parallel yarn lint",
-    "format": "prettier --no-color --write 'packages/*/{src,script,db}/**/*.{js,css,scss,json}'",
+    "format": "prettier --no-color --write 'packages/*/{src,script,db}/**/*.{js,jsx,css,scss,json}'",
     "start": "lerna exec --parallel yarn start",
     "start:client": "lerna exec --scope client yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
@@ -61,11 +61,16 @@
     }
   },
   "lint-staged": {
-    "*.{js,css,scss}": [
+    "*.{js,jsx}": [
       "yarn lint",
       "prettier --no-color --write",
       "git add"
+    ],
+    "*.{css,scss}": [
+      "prettier --no-color --write",
+      "git add"
     ]
+
   },
   "standard": {
     "parser": "babel-eslint",

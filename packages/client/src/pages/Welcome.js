@@ -1,16 +1,26 @@
+import { withStyles } from '@material-ui/core'
 import React from 'react'
-import { AuthConsumer } from '../components/Auth/authContext'
 import Acnw from '../components/Acnw'
+import { AuthConsumer } from '../components/Auth/authContext'
 import { BannerImage } from '../components/Banner/BannerImage'
 import Login from '../components/Login'
 import Logout from '../components/Logout'
 
-const Welcome = () => {
+const styles = theme => ({
+  root: {},
+  banner: {
+    textAlign: 'center'
+  }
+})
+
+const Welcome = ({ classes, theme }) => {
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (
-        <div>
-          <BannerImage />
+        <div className={classes.root}>
+          <div className={classes.banner}>
+            <BannerImage />
+          </div>
           <h1>Welcome!</h1>
 
           {authenticated ? (
@@ -143,4 +153,4 @@ const Welcome = () => {
   )
 }
 
-export default Welcome
+export default withStyles(styles, { withTheme: true })(Welcome)

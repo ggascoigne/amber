@@ -8,6 +8,8 @@ import Auth from './components/Auth/Auth'
 import store, { history } from './state/store'
 import registerServiceWorker from './utils/registerServiceWorker'
 
+import 'assets/scss/material-kit-react.css?v=1.3.0'
+
 const rootElement = document.getElementById('root')
 
 const render = Component => {
