@@ -18,7 +18,8 @@ const drawerWidth = 240
 
 const styles = theme => ({
   root: {
-    display: 'flex'
+    display: 'flex',
+    minHeight: '100vh'
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -43,6 +44,7 @@ const styles = theme => ({
     width: drawerWidth
   },
   content: {
+    minHeight: '100vh',
     flexGrow: 1,
     paddingTop: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit * 3
@@ -51,7 +53,7 @@ const styles = theme => ({
 
 class App extends Component {
   state = {
-    mobileOpen: true
+    mobileOpen: false
   }
 
   handleDrawerToggle = () => {
