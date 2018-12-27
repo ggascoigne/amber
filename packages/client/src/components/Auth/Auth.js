@@ -4,6 +4,8 @@ import { toSnakeCase } from 'utils/object'
 import { AUTH_CONFIG } from '../../auth0-variables'
 import { AuthProvider } from './authContext'
 
+const authExpirationKey = 'acnw:login:expiresAt'
+
 const options = {
   domain: AUTH_CONFIG.domain,
   clientID: AUTH_CONFIG.clientId,
@@ -19,11 +21,25 @@ const defaultState = {
   user: {
     role: 'visitor'
   },
-  accessToken: ''
+  accessToken: '',
+  idToken: '',
+  expiresAt: null,
+  tokenRenewalTimeout: 0
 }
 
 class Auth extends Component {
   state = { ...defaultState }
+
+  constructor(props) {
+    super(props)
+    const expiresAt = localStorage.getItem(authExpirationKey)
+    if (expiresAt) {
+      const timeout = expiresAt - Date.now()
+      if (timeout > 0) {
+        this.renewSession()
+      }
+    }
+  }
 
   initiateLogin = () => {
     auth.popup.authorize({ owp: true }, (error, authResult) => {
@@ -38,7 +54,13 @@ class Auth extends Component {
   }
 
   logout = () => {
+    clearTimeout(this.state.tokenRenewalTimeout)
     this.setState({ ...defaultState })
+    localStorage.setItem(authExpirationKey, undefined)
+    auth.logout({
+      returnTo: AUTH_CONFIG.logoutUrl,
+      clientID: AUTH_CONFIG.clientId
+    })
   }
 
   handleAuthenticationResponse = (error, authResult) => {
@@ -48,34 +70,54 @@ class Auth extends Component {
       return
     }
 
-    this.setSession(authResult.idTokenPayload)
+    this.setSession(authResult)
   }
 
-  /*
-    handleAuthentication = () => {
-      auth.parseHash(handleAuthenticationResponse)
+  scheduleRenewal() {
+    const expiresAt = this.state.expiresAt
+    localStorage.setItem(authExpirationKey, expiresAt)
+    const timeout = expiresAt - Date.now()
+    if (timeout > 0) {
+      const tokenRenewalTimeout = setTimeout(() => {
+        this.renewSession()
+      }, timeout)
+      this.setState({ tokenRenewalTimeout })
     }
-  */
+  }
 
-  setSession(data) {
-    console.log(data)
+  renewSession = () => {
+    auth.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult)
+      } else if (err) {
+        this.logout()
+        console.log(err)
+        alert(`Could not get a new token (${err.error}: ${err.error_description}).`)
+      }
+    })
+  }
+
+  setSession(authResult) {
+    console.log(authResult)
     const user = {
-      id: data.sub,
-      email: data.email,
-      role: data[AUTH_CONFIG.roleUrl]
+      id: authResult.idTokenPayload.sub,
+      email: authResult.idTokenPayload.email,
+      role: authResult.idTokenPayload[AUTH_CONFIG.roleUrl]
     }
     this.setState({
       authenticated: true,
-      accessToken: data.accessToken,
-      user
+      accessToken: authResult.accessToken,
+      user,
+      idToken: authResult.idToken,
+      expiresAt: authResult.expiresIn * 1000 + new Date().getTime()
     })
+    this.scheduleRenewal()
   }
 
   render() {
     const authProviderValue = {
       ...this.state,
       initiateLogin: this.initiateLogin,
-      // handleAuthentication: this.handleAuthentication,
       logout: this.logout
     }
     return <AuthProvider value={authProviderValue}>{this.props.children}</AuthProvider>

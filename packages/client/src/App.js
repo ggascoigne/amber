@@ -9,9 +9,9 @@ import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
 import React, { Component } from 'react'
 import { BannerImage } from './components/Banner/BannerImage'
-import { MenuItems } from './components/navigation/MenuItems'
-import { menuData } from './components/navigation/Routes'
-import { SelectedContent } from './components/navigation/SelectedContent'
+import { MenuItems } from './components/Navigation/MenuItems'
+import { menuData } from './components/Navigation/Routes'
+import { SelectedContent } from './components/Navigation/SelectedContent'
 import withRoot from './utils/withRoot'
 
 const drawerWidth = 240
