@@ -5,8 +5,6 @@ import classNames from 'classnames'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Auth/authContext'
 import { BannerImage } from 'components/Banner/BannerImage'
-import Login from 'components/Login'
-import Logout from 'components/Logout'
 import React from 'react'
 
 const styles = theme => ({
@@ -35,19 +33,19 @@ const Welcome = ({ classes, theme }) => {
 
           {authenticated ? (
             <>
-              <Logout />
               <div>
                 <h2>User Profile</h2>
                 <ul>
                   <li>ID: {user.id}</li>
                   <li>Email: {user.email}</li>
                   <li>Role: {user.role}</li>
+                  <li>Name: {user.name}</li>
+                  <li>Nickname: {user.nickname}</li>
+                  <li>Picture: {user.picture}</li>
                 </ul>
               </div>
             </>
-          ) : (
-            <Login />
-          )}
+          ) : null}
           <p>
             Our <Acnw.Ordinal /> annual AmberCon Northwest is a fully scheduled role-playing game convention devoted to
             Roger Zelazny's worlds of Amber using Phage Press's Amber Diceless RPG by Erick Wujcik, and to diceless and

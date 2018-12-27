@@ -1,24 +1,22 @@
-import React from 'react'
-// nodejs library that concatenates classes
-import classNames from 'classnames'
-// nodejs library to set properties for components
-import PropTypes from 'prop-types'
-
-// @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import Divider from '@material-ui/core/Divider'
+import Grow from '@material-ui/core/Grow'
+import Icon from '@material-ui/core/Icon'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Paper from '@material-ui/core/Paper'
-import Grow from '@material-ui/core/Grow'
-import Divider from '@material-ui/core/Divider'
-import Icon from '@material-ui/core/Icon'
 import Popper from '@material-ui/core/Popper'
-
-// core components
-import Button from 'components/CustomButtons/Button.jsx'
+// @material-ui/core components
+import withStyles from '@material-ui/core/styles/withStyles'
 
 import customDropdownStyle from 'assets/jss/material-kit-react/components/customDropdownStyle.jsx'
+// nodejs library that concatenates classes
+import classNames from 'classnames'
+// core components
+import Button from 'components/CustomButtons/Button.jsx'
+// nodejs library to set properties for components
+import PropTypes from 'prop-types'
+import React from 'react'
 
 class CustomDropdown extends React.Component {
   constructor(props) {
@@ -29,21 +27,25 @@ class CustomDropdown extends React.Component {
     this.handleClick = this.handleClick.bind(this)
     this.handleClose = this.handleClose.bind(this)
   }
+
   handleClick() {
     this.setState(state => ({ open: !state.open }))
   }
+
   handleClose(param) {
     this.setState({ open: false })
     if (this.props && this.props.onClick) {
       this.props.onClick(param)
     }
   }
+
   handleCloseAway = event => {
     if (this.anchorEl.contains(event.target)) {
       return
     }
     this.setState({ open: false })
   }
+
   render() {
     const { open } = this.state
     const {
@@ -57,6 +59,7 @@ class CustomDropdown extends React.Component {
       caret,
       hoverColor,
       left,
+      right,
       rtlActive,
       noLiPadding
     } = this.props
@@ -106,7 +109,19 @@ class CustomDropdown extends React.Component {
           anchorEl={this.anchorEl}
           transition
           disablePortal
-          placement={dropup ? (left ? 'top-start' : 'top') : left ? 'bottom-start' : 'bottom'}
+          placement={
+            dropup
+              ? left
+                ? 'top-start'
+                : right
+                ? 'top-end'
+                : 'top'
+              : left
+              ? 'bottom-start'
+              : right
+              ? 'bottom-end'
+              : 'bottom'
+          }
           className={classNames({
             [classes.popperClose]: !open,
             [classes.pooperResponsive]: true
@@ -122,16 +137,22 @@ class CustomDropdown extends React.Component {
                 <ClickAwayListener onClickAway={this.handleCloseAway}>
                   <MenuList role='menu' className={classes.menuList}>
                     {dropdownHeader !== undefined ? (
-                      <MenuItem onClick={this.handleClose} className={classes.dropdownHeader}>
+                      <MenuItem onClick={() => this.handleClose(dropdownHeader)} className={classes.dropdownHeader}>
                         {dropdownHeader}
                       </MenuItem>
                     ) : null}
                     {dropdownList.map((prop, key) => {
                       if (prop.divider) {
-                        return <Divider key={key} onClick={this.handleClose} className={classes.dropdownDividerItem} />
+                        return (
+                          <Divider
+                            key={key}
+                            onClick={() => this.handleClose('divider')}
+                            className={classes.dropdownDividerItem}
+                          />
+                        )
                       }
                       return (
-                        <MenuItem key={key} onClick={this.handleClose} className={dropdownItem}>
+                        <MenuItem key={key} onClick={() => this.handleClose(prop)} className={dropdownItem}>
                           {prop}
                         </MenuItem>
                       )
@@ -164,6 +185,7 @@ CustomDropdown.propTypes = {
   rtlActive: PropTypes.bool,
   caret: PropTypes.bool,
   left: PropTypes.bool,
+  right: PropTypes.bool,
   noLiPadding: PropTypes.bool,
   // function that retuns the selected item
   onClick: PropTypes.func

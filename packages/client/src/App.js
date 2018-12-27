@@ -3,15 +3,19 @@ import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
 import { withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
+import { defaultFont } from 'assets/jss/material-kit-react.jsx'
+import { BannerImage } from 'components/Banner/BannerImage'
+import LoginMenu from 'components/LoginMenu/LoginMenu'
+import { MenuItems } from 'components/Navigation/MenuItems'
+import { menuData } from 'components/Navigation/Routes'
+import { SelectedContent } from 'components/Navigation/SelectedContent'
 import React, { Component } from 'react'
-import { BannerImage } from './components/Banner/BannerImage'
-import { MenuItems } from './components/Navigation/MenuItems'
-import { menuData } from './components/Navigation/Routes'
-import { SelectedContent } from './components/Navigation/SelectedContent'
 import withRoot from './utils/withRoot'
 
 const drawerWidth = 240
@@ -28,6 +32,10 @@ const styles = theme => ({
     }
   },
   appBar: {
+    flex: '1 1 auto',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginLeft: drawerWidth,
     [theme.breakpoints.up('sm')]: {
       width: `calc(100% - ${drawerWidth}px)`
@@ -48,6 +56,28 @@ const styles = theme => ({
     flexGrow: 1,
     paddingTop: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit * 3
+  },
+  list: {
+    ...defaultFont,
+    fontSize: '14px',
+    margin: 0,
+    paddingLeft: '0',
+    listStyle: 'none',
+    paddingTop: '0',
+    paddingBottom: '0',
+    color: 'inherit'
+  },
+  listItem: {
+    float: 'left',
+    color: 'inherit',
+    position: 'relative',
+    display: 'block',
+    width: 'auto',
+    margin: '0',
+    padding: '0'
+  },
+  listItemText: {
+    padding: '0 !important'
   }
 })
 
@@ -73,6 +103,14 @@ class App extends Component {
       </div>
     )
 
+    const rightLinks = props => (
+      <List className={classes.list}>
+        <ListItem className={classes.listItem}>
+          <LoginMenu {...props} />
+        </ListItem>
+      </List>
+    )
+
     return (
       <div className={classes.root}>
         <AppBar position='fixed' className={classes.appBar}>
@@ -89,6 +127,9 @@ class App extends Component {
               AmberCon Northwest
             </Typography>
           </Toolbar>
+          <Hidden xsDown implementation='css'>
+            {rightLinks({})}
+          </Hidden>
         </AppBar>
         <nav className={classes.drawer}>
           <Hidden smUp>
@@ -106,6 +147,8 @@ class App extends Component {
               }}
             >
               {drawer}
+              <Divider />
+              {rightLinks({ small: true })}
             </Drawer>
           </Hidden>
           <Hidden xsDown>
