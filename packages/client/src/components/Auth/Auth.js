@@ -86,7 +86,7 @@ class Auth extends Component {
   }
 
   renewSession = () => {
-    auth.checkSession({}, (err, authResult) => {
+    auth.checkSession({ scope: 'openid email profile' }, (err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult)
       } else if (err) {
@@ -99,10 +99,14 @@ class Auth extends Component {
 
   setSession(authResult) {
     console.log(authResult)
+    const { sub: id, email, nickname, name, picture } = authResult.idTokenPayload
     const user = {
-      id: authResult.idTokenPayload.sub,
-      email: authResult.idTokenPayload.email,
-      role: authResult.idTokenPayload[AUTH_CONFIG.roleUrl]
+      id,
+      role: authResult.idTokenPayload[AUTH_CONFIG.roleUrl],
+      email,
+      nickname,
+      name,
+      picture
     }
     this.setState({
       authenticated: true,
