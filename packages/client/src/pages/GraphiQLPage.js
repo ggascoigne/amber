@@ -1,16 +1,19 @@
 import HasPermission from 'components/Auth/HasPermission'
-import Loadable from 'components/Loadable/Loadable'
-import React from 'react'
+import Loader from 'components/Loader/Loader'
+import React, { Suspense } from 'react'
 import { Redirect } from 'react-router-dom'
 
-const AsyncGraphiQL = Loadable({
-  loader: () => import('../components/GraphiQL/GraphiQL')
-})
+const GraphiQL = React.lazy(() => import('components/GraphiQL/GraphiQL'))
 
-export const GraphiQLPage = () => {
+const GraphiQLPage = () => {
+  const loader = <Loader />
   return (
     <HasPermission permission={'graphiql:load'} denied={() => <Redirect to='/' />}>
-      <AsyncGraphiQL />
+      <Suspense fallback={loader}>
+        <GraphiQL />
+      </Suspense>
     </HasPermission>
   )
 }
+
+export default GraphiQLPage

@@ -1,6 +1,6 @@
 import AboutAmberconNw from 'pages/AboutAmberconNw'
 import CallbackPage from 'pages/CallbackPage'
-import { GraphiQLPage } from 'pages/GraphiQLPage'
+import GraphiQLPage from 'pages/GraphiQLPage'
 import Welcome from 'pages/Welcome'
 import PropTypes from 'prop-types'
 

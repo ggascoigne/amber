@@ -1,5 +1,5 @@
 import createHistory from 'history/createBrowserHistory'
-import { routerMiddleware } from 'react-router-redux'
+import { routerMiddleware } from 'connected-react-router'
 import { applyMiddleware, compose, createStore } from 'redux'
 import { createLogger } from 'redux-logger'
 import { createEpicMiddleware } from 'redux-observable'
@@ -28,7 +28,7 @@ if (isDev) {
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleware)))
+const store = createStore(rootReducer(history), composeEnhancers(applyMiddleware(...middleware)))
 
 if (process.env.NODE_ENV !== 'production' && module.hot) {
   module.hot.accept('./epic', () => epicMiddleware.replaceEpic(require('./epic').default))
