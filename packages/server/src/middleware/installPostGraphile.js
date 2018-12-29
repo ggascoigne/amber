@@ -1,5 +1,6 @@
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector'
 import { postgraphile } from 'postgraphile'
+import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter'
 
 export function installPostGraphile(app, { rootPgPool, config }) {
   const {
@@ -29,7 +30,7 @@ export function installPostGraphile(app, { rootPgPool, config }) {
       watchPg: config.isDev,
 
       // Since we're using sessions we'll also want our login plugin
-      appendPlugins: [PgSimplifyInflectorPlugin]
+      appendPlugins: [PgSimplifyInflectorPlugin, ConnectionFilterPlugin]
 
       // Given a request object, returns the settings to set within the
       // Postgres transaction used by GraphQL.
