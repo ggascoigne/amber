@@ -1,16 +1,10 @@
-import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import contentPageStyles from 'assets/jss/acnw/contentPage'
-import classNames from 'classnames'
 import SnackbarContent from 'components/Snackbar/SnackbarContent.jsx'
 import React from 'react'
+import Page from 'components/Page/Page'
 
-const styles = theme => ({
-  ...contentPageStyles(theme)
-})
-
-const NotFound = ({ classes }) => (
-  <div className={classNames(classes.main, classes.mainRaised)}>
+const NotFound = () => (
+  <Page>
     <SnackbarContent
       message={
         <span>
@@ -23,7 +17,7 @@ const NotFound = ({ classes }) => (
     <Typography variant='body1' color='inherit'>
       Sorry, that link no longer exists.
     </Typography>
-  </div>
+  </Page>
 )
 
-export default withStyles(styles, { withTheme: true })(NotFound)
+export default NotFound

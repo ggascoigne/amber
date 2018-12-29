@@ -1,21 +1,15 @@
-import { withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import classNames from 'classnames'
 import React from 'react'
-import contentPageStyles from 'assets/jss/acnw/contentPage'
+import Page from 'components/Page/Page'
 
-const styles = theme => ({
-  ...contentPageStyles(theme)
-})
-
-const AboutAmberconNw = ({ classes }) => {
+const AboutAmberconNw = () => {
   return (
-    <div className={classNames(classes.main, classes.mainRaised)}>
+    <Page>
       <Typography variant='h3' color='inherit'>
         About AmberCon NW
       </Typography>
-    </div>
+    </Page>
   )
 }
 
-export default withStyles(styles, { withTheme: true })(AboutAmberconNw)
+export default AboutAmberconNw

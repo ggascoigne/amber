@@ -1,14 +1,12 @@
 import { withStyles } from '@material-ui/core'
-import contentPageStyles from 'assets/jss/acnw/contentPage'
 import { dangerColor } from 'assets/jss/material-kit-react.jsx'
-import classNames from 'classnames'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Auth/authContext'
 import { BannerImage } from 'components/Banner/BannerImage'
 import React from 'react'
+import Page from 'components/Page/Page'
 
 const styles = theme => ({
-  ...contentPageStyles(theme),
   banner: {
     textAlign: 'center'
   },
@@ -25,7 +23,7 @@ const Welcome = ({ classes, theme }) => {
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (
-        <div className={classNames(classes.main, classes.mainRaised)}>
+        <Page>
           <div className={classes.banner}>
             <BannerImage />
           </div>
@@ -155,7 +153,7 @@ const Welcome = ({ classes, theme }) => {
             , please contact the organizers by e-mail at <Acnw.SimoneEmail /> before registering.
           </p>
           <br />
-        </div>
+        </Page>
       )}
     </AuthConsumer>
   )
