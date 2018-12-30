@@ -10,7 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react.jsx'
-import { BannerImage } from 'components/Banner/BannerImage'
+import BannerImage from 'components/Banner/BannerImage'
 import LoginMenu from 'components/LoginMenu/LoginMenu'
 import { MenuItems } from 'components/Navigation/MenuItems'
 import { menuData } from 'components/Navigation/Routes'
@@ -97,7 +97,7 @@ class App extends Component {
     const drawer = (
       <div>
         <div className={classes.toolbar}>
-          <BannerImage />
+          <BannerImage to={'/'} />
         </div>
         <Divider />
         <MenuItems menuItems={menuData} />

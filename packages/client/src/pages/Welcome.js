@@ -2,7 +2,7 @@ import { withStyles } from '@material-ui/core'
 import { dangerColor } from 'assets/jss/material-kit-react.jsx'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Auth/authContext'
-import { BannerImage } from 'components/Banner/BannerImage'
+import BannerImage from 'components/Banner/BannerImage'
 import React from 'react'
 import Page from 'components/Page/Page'
 

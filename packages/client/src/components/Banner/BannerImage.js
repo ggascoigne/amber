@@ -1,5 +1,6 @@
 import withStyles from '@material-ui/core/styles/withStyles'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import configurationService from 'utils/ConfigurationService'
 import GridContainer from '../Grid/GridContainer'
 import GridItem from '../Grid/GridItem'
@@ -286,13 +287,20 @@ const Logo = ({ dates, className }) => {
   )
 }
 
-export const BannerImage = withStyles(styles, { withTheme: true })(props => {
-  const { classes } = props
+const WrappedLogo = ({ classes, to }) => {
+  const logo = <Logo dates={configurationService.dateRange} className={classes.banner} />
+  return to ? <Link to={to}>{logo}</Link> : logo
+}
+
+const BannerImage = props => {
+  const { classes, to } = props
   return (
     <GridContainer justify='center'>
       <GridItem xs={12}>
-        <Logo dates={configurationService.dateRange} className={classes.banner} />
+        <WrappedLogo classes={classes} to={to} />
       </GridItem>
     </GridContainer>
   )
-})
+}
+
+export default withStyles(styles, { withTheme: true })(BannerImage)

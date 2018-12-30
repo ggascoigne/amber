@@ -25,7 +25,7 @@ const render = Component => {
         </Auth>
       </ApolloProvider>
     </Provider>,
-    document.getElementById('root')
+    rootElement
   )
 }
 
