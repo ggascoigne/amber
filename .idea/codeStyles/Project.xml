@@ -127,6 +127,11 @@
         <option name="TAB_SIZE" value="8" />
       </indentOptions>
     </codeStyleSettings>
+    <codeStyleSettings language="GraphQL">
+      <indentOptions>
+        <option name="INDENT_SIZE" value="2" />
+      </indentOptions>
+    </codeStyleSettings>
     <codeStyleSettings language="Groovy">
       <option name="BLANK_LINES_BEFORE_PACKAGE" value="1" />
       <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />

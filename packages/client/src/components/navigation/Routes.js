@@ -3,6 +3,7 @@ import CallbackPage from 'pages/CallbackPage'
 import GraphiQLPage from 'pages/GraphiQLPage'
 import Welcome from 'pages/Welcome'
 import PropTypes from 'prop-types'
+import PastConsPage from 'pages/PastConsPage'
 
 const { shape, arrayOf } = PropTypes
 
@@ -27,6 +28,12 @@ export const menuData = [
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
     component: AboutAmberconNw
+  },
+  {
+    path: '/pastCons',
+    label: 'Past Cons',
+    exact: false,
+    component: PastConsPage
   },
   {
     path: '/graphiql',
