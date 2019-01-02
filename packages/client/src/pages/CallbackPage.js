@@ -1,7 +1,7 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 
-import { AuthConsumer } from 'components/Auth/authContext'
+import { AuthConsumer } from 'components/Acnw/Auth'
 import auth0 from 'auth0-js'
 import { AUTH_CONFIG } from 'auth0-variables'
 

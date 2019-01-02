@@ -7,7 +7,7 @@ import 'react-app-polyfill/ie11'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import App from './App'
-import Auth from './components/Auth/Auth'
+import { Auth } from 'components/Acnw/Auth'
 import store, { history } from './state/store'
 import registerServiceWorker from './utils/registerServiceWorker'
 

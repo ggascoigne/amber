@@ -10,11 +10,11 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react.jsx'
-import BannerImage from 'components/Banner/BannerImage'
-import LoginMenu from 'components/LoginMenu/LoginMenu'
-import { MenuItems } from 'components/Navigation/MenuItems'
-import { menuData } from 'components/Navigation/Routes'
-import { SelectedContent } from 'components/Navigation/SelectedContent'
+import { Banner } from 'components/Acnw/Banner'
+import { LoginMenu } from 'components/Acnw/LoginMenu'
+import { MenuItems } from 'components/Acnw/Navigation'
+import { rootRoutes } from 'components/Acnw/Navigation'
+import { SelectedContent } from 'components/Acnw/Navigation'
 import React, { Component } from 'react'
 import withRoot from './utils/withRoot'
 
@@ -26,7 +26,7 @@ const styles = theme => ({
     minHeight: '100vh'
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: drawerWidth,
       flexShrink: 0
     }
@@ -37,13 +37,13 @@ const styles = theme => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginLeft: drawerWidth,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       width: `calc(100% - ${drawerWidth}px)`
     }
   },
   menuButton: {
     marginRight: 20,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up('md')]: {
       display: 'none'
     }
   },
@@ -97,10 +97,10 @@ class App extends Component {
     const drawer = (
       <div>
         <div className={classes.toolbar}>
-          <BannerImage to={'/'} />
+          <Banner to={'/'} />
         </div>
         <Divider />
-        <MenuItems menuItems={menuData} />
+        <MenuItems menuItems={rootRoutes} />
       </div>
     )
 
@@ -128,12 +128,12 @@ class App extends Component {
               AmberCon Northwest
             </Typography>
           </Toolbar>
-          <Hidden xsDown implementation='css'>
+          <Hidden smDown implementation='css'>
             {rightLinks({})}
           </Hidden>
         </AppBar>
         <nav className={classes.drawer}>
-          <Hidden smUp>
+          <Hidden mdUp>
             <Drawer
               container={this.props.container}
               variant='temporary'
@@ -152,7 +152,7 @@ class App extends Component {
               {rightLinks({ small: true })}
             </Drawer>
           </Hidden>
-          <Hidden xsDown>
+          <Hidden smDown>
             <Drawer
               classes={{
                 paper: classes.drawerPaper
@@ -166,7 +166,7 @@ class App extends Component {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <SelectedContent menuItems={menuData} />
+          <SelectedContent routes={rootRoutes} />
         </main>
       </div>
     )

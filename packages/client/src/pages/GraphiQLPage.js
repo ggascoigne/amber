@@ -1,9 +1,9 @@
-import HasPermission from 'components/Auth/HasPermission'
-import Loader from 'components/Loader/Loader'
+import { HasPermission } from 'components/Acnw/Auth'
+import { Loader } from 'components/Acnw/Loader'
 import React, { Suspense } from 'react'
 import { Redirect } from 'react-router-dom'
 
-const GraphiQL = React.lazy(() => import('components/GraphiQL/GraphiQL'))
+const GraphiQL = React.lazy(() => import('components/Acnw/GraphiQL/GraphiQL'))
 
 const GraphiQLPage = () => {
   const loader = <Loader />

@@ -1,10 +1,10 @@
 import { withStyles } from '@material-ui/core'
 import { dangerColor } from 'assets/jss/material-kit-react.jsx'
 import Acnw from 'components/Acnw'
-import { AuthConsumer } from 'components/Auth/authContext'
-import BannerImage from 'components/Banner/BannerImage'
+import { AuthConsumer } from 'components/Acnw/Auth'
+import { Banner } from 'components/Acnw/Banner'
 import React from 'react'
-import Page from 'components/Page/Page'
+import { Page } from 'components/Acnw/Page'
 
 const styles = theme => ({
   banner: {
@@ -25,7 +25,7 @@ const Welcome = ({ classes, theme }) => {
       {({ authenticated, user }) => (
         <Page>
           <div className={classes.banner}>
-            <BannerImage />
+            <Banner />
           </div>
           <h1>Welcome!</h1>
 

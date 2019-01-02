@@ -1,7 +1,7 @@
 import Typography from '@material-ui/core/Typography'
-import SnackbarContent from 'components/Snackbar/SnackbarContent.jsx'
+import SnackbarContent from 'components/MaterialKitReact/Snackbar/SnackbarContent.jsx'
 import React from 'react'
-import Page from 'components/Page/Page'
+import { Page } from 'components/Acnw/Page'
 
 const NotFound = () => (
   <Page>

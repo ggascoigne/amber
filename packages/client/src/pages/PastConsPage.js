@@ -1,92 +1,51 @@
 import { withStyles } from '@material-ui/core'
-
 import contentPageStyles from 'assets/jss/acnw/contentPage'
-import Game from 'components/Game/Game'
-import Loader from 'components/Loader/Loader'
-import gql from 'graphql-tag'
+import { Game } from 'components/Acnw/Game'
+import { GameQuery } from 'components/Acnw/GameQuery'
+import { Page } from 'components/Acnw/Page'
+import { SlotQuery } from 'components/Acnw/SlotQuery'
+import { SlotSelector } from 'components/Acnw/SlotSelector'
 import React from 'react'
-import { Query } from 'react-apollo'
-import Page from 'components/Page/Page'
 
 const styles = theme => ({
-  ...contentPageStyles(theme)
+  ...contentPageStyles(theme),
+  card: {
+    display: 'inline-block',
+    position: 'relative',
+    width: '100%',
+    margin: '25px 0',
+    boxShadow: '0 1px 4px 0 rgba(0, 0, 0, 0.14)',
+    borderRadius: '3px',
+    color: 'rgba(0, 0, 0, 0.87)',
+    background: '#fff'
+  }
 })
 
-const QUERY_SLOTS = gql`
-  {
-    slots {
-      nodes {
-        id
-        slot
-        day
-        length
-        time
-      }
-    }
-  }
-`
-
-const QUERY_GAMES = gql`
-  query($year: Int!, $slot: Int!) {
-    games(condition: { year: $year, slotId: $slot }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
-      edges {
-        node {
-          id
-          name
-          year
-          slotId
-          gameAssignments(filter: { gm: { lessThan: 0 } }) {
-            nodes {
-              gm
-              member {
-                user {
-                  profile {
-                    fullName
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
+const GamesBySlot = ({ classes, slot, games }) => {
+  return (
+    <React.Fragment key={`slot_${slot.id}`}>
+      {games.map(({ node: game }) => (
+        <Game key={`game_${game.id}`} game={game} />
+      ))}
+    </React.Fragment>
+  )
+}
 
 const PastConsPage = ({ classes }) => {
+  const year = 2017
   return (
     <Page>
-      <Query query={QUERY_SLOTS}>
-        {({ loading, error, data: slot_data }) => {
-          if (loading) {
-            return <Loader />
-          }
-          if (error) {
-            return <p>Error :(</p>
-          }
-
-          return slot_data.slots.nodes.map(slot => (
-            <Query key={`slot_${slot.id}`} query={QUERY_GAMES} variables={{ year: 2017, slot: slot.id }}>
-              {({ loading, error, data: game_data }) => {
-                if (loading) {
-                  return <Loader />
-                }
-                if (error) {
-                  return <p>Error :(</p>
-                }
-                return (
-                  <React.Fragment key={`slot_${slot.id}`}>
-                    <div>Slot {slot.id}</div>
-                    {game_data.games.edges.map(({ node: game }) => (
-                      <Game key={`game_${game.id}`} game={game} />
-                    ))}
-                  </React.Fragment>
-                )
-              }}
-            </Query>
-          ))
-        }}
-      </Query>
+      <SlotQuery year={year}>
+        {({ year, slots }) => (
+          <SlotSelector slots={slots}>
+            {slot => (
+              <GameQuery year={year} slot={slot}>
+                {({ year, slot, games }) => <GamesBySlot classes={classes} slot={slot} games={games} />}
+              </GameQuery>
+            )}
+          </SlotSelector>
+        )}
+      </SlotQuery>
     </Page>
   )
 }
