@@ -1,10 +1,11 @@
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
+import { Page } from 'components/Acnw/Page'
 import RealGraphiQL from 'graphiql'
 import 'graphiql/graphiql.css'
+import { isLeafType, isNonNullType } from 'graphql'
 import fetch from 'isomorphic-fetch'
 import React from 'react'
-import { Page } from 'components/Acnw/Page'
 
 const styles = theme => ({
   graphiQlWrapper: {
@@ -21,10 +22,37 @@ function graphQLFetcher(graphQLParams) {
   }).then(response => response.json())
 }
 
+function getDefaultFieldNames(type) {
+  // If this type cannot access fields, then return an empty set.
+  if (!type.getFields) {
+    return []
+  }
+
+  const fields = type.getFields()
+  if (fields['edges']) {
+    return ['edges']
+  }
+  if (fields['node']) {
+    return ['node']
+  }
+
+  // Include all leaf-type fields.
+  const leafFieldNames = []
+  Object.keys(fields).forEach(fieldName => {
+    if (
+      isLeafType(fields[fieldName].type) ||
+      (isNonNullType(fields[fieldName].type) && isLeafType(fields[fieldName].type.ofType))
+    ) {
+      leafFieldNames.push(fieldName)
+    }
+  })
+  return leafFieldNames
+}
+
 const GraphiQL = ({ classes }) => {
   return (
     <Page className={classNames(classes.graphiQlWrapper)}>
-      <RealGraphiQL fetcher={graphQLFetcher} />
+      <RealGraphiQL fetcher={graphQLFetcher} getDefaultFieldNames={getDefaultFieldNames} />
     </Page>
   )
 }
