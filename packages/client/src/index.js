@@ -1,30 +1,25 @@
-import ApolloClient from 'apollo-boost'
 import 'assets/scss/material-kit-react.css?v=1.3.0'
-import { ConnectedRouter } from 'connected-react-router'
+import client from 'client/client'
+import { Auth } from 'components/Acnw/Auth'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import 'react-app-polyfill/ie11'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App'
-import { Auth } from 'components/Acnw/Auth'
-import store, { history } from './state/store'
 import registerServiceWorker from './utils/registerServiceWorker'
 
-const client = new ApolloClient()
 const rootElement = document.getElementById('root')
 
 const render = Component => {
   return ReactDOM.render(
-    <Provider store={store}>
+    <BrowserRouter>
       <ApolloProvider client={client}>
         <Auth>
-          <ConnectedRouter history={history}>
-            <Component />
-          </ConnectedRouter>
+          <Component />
         </Auth>
       </ApolloProvider>
-    </Provider>,
+    </BrowserRouter>,
     rootElement
   )
 }

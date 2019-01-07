@@ -3,11 +3,13 @@ import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle.jsx'
+import { withGameFilter } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 
 import * as PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import compose from 'recompose/compose'
 
 const styles = theme => ({
   ...customTabsStyle,
@@ -29,7 +31,6 @@ const styles = theme => ({
 
 class _SlotSelector extends Component {
   state = {
-    value: 0,
     scrollButtons: 'off'
   }
 
@@ -41,6 +42,7 @@ class _SlotSelector extends Component {
   componentDidUpdate() {
     this.updateScrollButtons()
   }
+
   componentDidMount() {
     this.updateScrollButtons()
     window.addEventListener('resize', this.updateScrollButtons.bind(this))
@@ -70,12 +72,18 @@ class _SlotSelector extends Component {
   }
 
   handleChange = (event, value) => {
-    this.setState({ value })
+    const { updateGameFilterMutation } = this.props
+    updateGameFilterMutation({ variables: { slot: value + 1 } })
   }
 
   render() {
-    const { classes, slots, children } = this.props
-    const slot = slots.find(s => s.id === this.state.value + 1)
+    const {
+      classes,
+      slots,
+      children,
+      gameFilter: { slot: slotId }
+    } = this.props
+    const slot = slots.find(s => s.id === slotId)
     return (
       <>
         <Card>
@@ -85,7 +93,7 @@ class _SlotSelector extends Component {
                 Slot
               </span>
               <Tabs
-                value={this.state.value}
+                value={slotId - 1}
                 onChange={this.handleChange}
                 scrollable
                 scrollButtons={this.state.scrollButtons}
@@ -125,4 +133,7 @@ _SlotSelector.propTypes = {
   className: PropTypes.any
 }
 
-export const SlotSelector = withStyles(styles, { withTheme: true })(_SlotSelector)
+export const SlotSelector = compose(
+  withGameFilter,
+  withStyles(styles, { withTheme: true })
+)(_SlotSelector)
