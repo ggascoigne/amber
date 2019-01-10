@@ -27,10 +27,7 @@ const render = Component => {
 render(App)
 
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default
-    render(NextApp, rootElement)
-  })
+  module.hot.accept('./App', () => render(require('./App').default))
 }
 
 registerServiceWorker()
