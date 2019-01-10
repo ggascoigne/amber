@@ -273,13 +273,13 @@ const Logo = ({ dates, className }) => {
         d='M 347.19 105.46 C 347.79 106.06 348.37 106.67 348.94 107.29 C 348.44 110.64 347.96 113.93 348.07 117.34 C 347.20 118.70 346.25 120.00 345.26 121.27 C 344.99 115.82 345.56 110.67 347.19 105.46 Z'
         fill={purple}
       />
-      <text id='string' transform='matrix(1.0 0.0 0.0 1.0 6.5 73.0)'>
-        <tspan x='1.0' y='30.0' fontFamily='Tahoma' fontSize='30' fontWeight='700' textDecoration='none' fill={purple}>
+      <text id='string' transform='matrix(1.0 0.0 0.0 1.0 6.5 73.5)'>
+        <tspan x='1.0' y='30.0' fontFamily='Roboto' fontSize='34' fontWeight='700' textDecoration='none' fill={purple}>
           {dates}
         </tspan>
       </text>
-      <text id='stringShadow' transform='matrix(1.0 0.0 0.0 1.0 4.0 70.9853515625)'>
-        <tspan x='1.0' y='30.0' fontFamily='Tahoma' fontSize='30' fontWeight='700' textDecoration='none' fill={yellow}>
+      <text id='stringShadow' transform='matrix(1.0 0.0 0.0 1.0 4.0 71)'>
+        <tspan x='1.0' y='30.0' fontFamily='Roboto' fontSize='34' fontWeight='700' textDecoration='none' fill={yellow}>
           {dates}
         </tspan>
       </text>
