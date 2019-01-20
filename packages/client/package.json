@@ -5,7 +5,7 @@
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "private": true,
-  "proxy": "http://localhost:3001/",
+  "proxy": "http://localhost:30001/",
   "devDependencies": {
     "deep-freeze": "^0.0.1",
     "enzyme": "^3.8.0",
@@ -46,14 +46,14 @@
   "scripts": {
     "analyze": "source-map-explorer build/static/js/main.*",
     "bootstrap": "cd ../../ && yarn bootstrap",
-    "build": "react-scripts build && rm -rf ../server/ui && mv build ../server/ui",
-    "build:stats": "react-scripts build --stats",
+    "build": "NODE_PATH=src react-scripts build && rm -rf ../server/ui && mv build ../server/ui",
+    "build:stats": "NODE_PATH=src react-scripts build --stats",
     "bundle-analyze": "yarn build:stats && webpack-bundle-analyzer build/bundle-stats.json",
     "format": "cd ../../ && yarn format",
     "lint": "eslint 'src/**/*.{js,jsx}'",
-    "start": "react-scripts start",
-    "test": "CI=true react-scripts test",
-    "test:watch": "react-scripts test"
+    "start": "NODE_PATH=src PORT=30000 react-scripts start",
+    "test": "CI=true NODE_PATH=src react-scripts test",
+    "test:watch": "NODE_PATH=src react-scripts test"
   },
   "browserslist": [
     ">0.2%",

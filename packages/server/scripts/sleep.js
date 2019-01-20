@@ -1,4 +1,4 @@
-async function sleep (ms) {
+async function sleep(ms) {
   await new Promise(resolve => {
     setTimeout(() => resolve(ms), ms)
   })

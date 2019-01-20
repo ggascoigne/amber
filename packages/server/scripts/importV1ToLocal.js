@@ -19,19 +19,19 @@ const { sleep } = require('./sleep')
 const tempy = require('tempy')
 const fs = require('fs')
 
-async function pipeLiveToLocalMysql (databaseName, userName, password) {
+async function pipeLiveToLocalMysql(mysqlDbconfig) {
   return new Promise((resolve, reject) => {
     const exporting = spawn('/usr/local/bin/plink', [
       '-ssh',
       '-pw',
-      process.env.KEYSTOR_PASSWORD,
+      process.env.SSH_KEYSTORE_PASSWORD,
       '-P',
-      process.env.ACNW_SSH_PORT,
+      process.env.LEGACY_JUMP_BOX_PORT,
       '-noagent',
       '-l',
-      process.env.REMOTE_USER,
-      process.env.ACNW_HOST,
-      `MYSQL_PWD=${process.env.REMOTE_DATABASE_PASSWORD}`,
+      process.env.LEGACY_JUMP_BOX_USER,
+      process.env.LEGACY_JUMP_BOX_HOST,
+      `MYSQL_PWD=${process.env.LEGACY_LIVE_MYSQL_PASSWORD}`,
       '/usr/bin/mysqldump',
       '--max_allowed_packet=1G',
       '--skip-add-locks',
@@ -46,15 +46,16 @@ async function pipeLiveToLocalMysql (databaseName, userName, password) {
       '--triggers',
       '--hex-blob',
       '--default-character-set=utf8',
-      `--user=${process.env.REMOTE_DATABASE_USER}`,
-      process.env.REMOTE_DATABASE_NAME
+      `--user=${process.env.LEGACY_LIVE_MYSQL_USER}`,
+      process.env.LEGACY_LIVE_MYSQL_DATABASE
     ])
       .on('error', reject)
       .on('exit', code => (!code ? resolve() : reject(code)))
 
+    const { database, host, port, user, password } = mysqlDbconfig
     const importing = spawn(
       `${MYSQL_PATH}/mysql`,
-      [`--user=${userName}`, '--default-character-set=utf8', `--database=${databaseName}`],
+      [`--host=${host}`, `--port=${port}`, `--user=${user}`, '--default-character-set=utf8', `--database=${database}`],
       { env: { MYSQL_PWD: password } }
     )
       .on('error', reject)
@@ -68,7 +69,7 @@ async function pipeLiveToLocalMysql (databaseName, userName, password) {
   })
 }
 
-async function pipeTmpToLive (tmpDbConfig, dbconfig) {
+async function pipeTmpToLive(tmpDbConfig, dbconfig) {
   return new Promise((resolve, reject) => {
     const pgDumpArgs = getPostgresArgs(tmpDbConfig)
     pgDumpArgs.push('--schema=public', '-a')
@@ -91,7 +92,7 @@ async function pipeTmpToLive (tmpDbConfig, dbconfig) {
 /*
   reset all sequences based on the max index on the table.
  */
-function fixSequences (dbconfig) {
+function fixSequences(dbconfig) {
   // @formatter:off
   // language=PostgreSQL
   const q = stripIndent`
@@ -127,46 +128,40 @@ function fixSequences (dbconfig) {
   runOrExit(spawnSync('/usr/local/bin/psql', args2, { stdio: 'inherit' }))
 }
 
-function verifyRunning (name) {
-  runOrExit(spawnSync('/usr/bin/pgrep', [name]), `${name} not running`)
-}
-
-async function main () {
-  const databaseName = config.database.database
-  const userName = config.database.username
-  const port = config.database.port
-  const host = config.database.host
-  const password = config.database.password
-  const ssl = config.database.ssl
-  const tmpDbName = 'acnw_v1_tmp'
-
+async function main() {
   const dbconfig = {
-    database: databaseName,
-    user: userName,
-    port,
-    host,
-    password,
-    ssl
+    database: config.database.database,
+    user: config.database.username,
+    port: config.database.port,
+    host: config.database.host,
+    password: config.database.password,
+    ssl: config.database.ssl
   }
 
   const tmpDbConfig = {
-    database: tmpDbName,
-    user: 'ggp',
-    port: 5432,
-    host: 'localhost',
-    password: '',
-    ssl: 0
+    database: 'acnw_v1_tmp',
+    user: process.env.MIGRATION_POSTGRES_USER,
+    port: process.env.MIGRATION_POSTGRES_PORT,
+    host: process.env.MIGRATION_POSTGRES_HOST,
+    password: process.env.MIGRATION_POSTGRES_PASSWORD,
+    ssl: process.env.MIGRATION_POSTGRES_SSL
   }
 
-  verifyRunning('mysql')
-  verifyRunning('postgres')
+  const mysqlDbconfig = {
+    database: 'acnw_v1_tmp',
+    user: process.env.MIGRATION_MYSQL_USER,
+    port: process.env.MIGRATION_MYSQL_PORT,
+    host: process.env.MIGRATION_MYSQL_HOST,
+    password: process.env.MIGRATION_MYSQL_PASSWORD,
+    ssl: process.env.MIGRATION_MYSQL_SSL
+  }
 
   if (!process.env.SKIP_DOWNLOAD) {
-    info(`Create tmp mysql database ${tmpDbName}`)
-    await createCleanDbMySql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD)
+    info(`Create tmp mysql database ${mysqlDbconfig.database}`)
+    await createCleanDbMySql(mysqlDbconfig)
 
     info(`download data from live mysql to local temp`)
-    await pipeLiveToLocalMysql(tmpDbName, process.env.LOCAL_MYSQL_USER, process.env.LOCAL_MYSQL_PASSWORD).catch(bail)
+    await pipeLiveToLocalMysql(mysqlDbconfig).catch(bail)
 
     // if I don't do this then some of the users don't get copied over and things explode
     info(`pausing to let mysql flush to disk`)
@@ -174,7 +169,7 @@ async function main () {
   } else {
     info('skipping download')
   }
-  info(`Create tmp postgres database ${tmpDbName}`)
+  info(`Create tmp postgres database ${tmpDbConfig.database}`)
   await createCleanDb(tmpDbConfig)
 
   info(`Importing data from tmp mysql to tmp postgres database`)
@@ -185,10 +180,10 @@ async function main () {
   // compiled with SBCL 1.4.9
   const pgArgs = getPostgresArgs(tmpDbConfig)
   pgloader(
-    process.env.LOCAL_MYSQL_PASSWORD,
+    mysqlDbconfig.password,
     stripIndent`
     LOAD database  
-      FROM    mysql://${process.env.LOCAL_MYSQL_USER}@localhost/${tmpDbName}  
+      FROM    mysql://${mysqlDbconfig.user}@${mysqlDbconfig.host}:${mysqlDbconfig.port}/${mysqlDbconfig.database}  
       INTO    ${pgArgs[0]}
       
     WITH include drop, create tables, no truncate,  
@@ -206,7 +201,7 @@ async function main () {
             to integer drop typemod keep default keep not null,   
          type bigint when (= precision 20) to integer drop typemod,
          type int when (= precision 11) to integer drop typemod
-    ALTER SCHEMA '${tmpDbName}' RENAME TO 'public'
+    ALTER SCHEMA '${tmpDbConfig.database}' RENAME TO 'public'
   ;`
   )
 
@@ -232,7 +227,7 @@ async function main () {
   info('Deleting knex records in tmpdb')
   dropKnexMigrationTables(tmpDbConfig)
 
-  info(`Recreating database ${databaseName}`)
+  info(`Recreating database ${dbconfig.database}`)
   await createCleanDb(dbconfig)
 
   info('Inserting knex records')

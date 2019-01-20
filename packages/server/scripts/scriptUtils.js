@@ -7,25 +7,26 @@ const tempy = require('tempy')
 const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
 exports.MYSQL_PATH = MYSQL_PATH
 
-async function createCleanDbMySql (database, user, password) {
+async function createCleanDbMySql(dbconfig) {
+  const { database } = dbconfig
   // language=MySQL
   const script = stripIndent`
     DROP DATABASE IF EXISTS ${database};
     CREATE DATABASE ${database} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
 
-  return mysqlExecScript(null, user, password, script)
+  return mysqlExecScript({ ...dbconfig, database: '' }, script)
 }
 
 exports.createCleanDbMySql = createCleanDbMySql
 
-function getPostgresArgs (dbconfig) {
+function getPostgresArgs(dbconfig) {
   const { database, host, port, user, password, ssl } = dbconfig
   return [`postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`]
 }
 
 exports.getPostgresArgs = getPostgresArgs
 
-async function createCleanDb (dbconfig) {
+async function createCleanDb(dbconfig) {
   const { database, user } = dbconfig
   // useful for tests since it forces dropping local connections
   // const script = stripIndent`
@@ -47,7 +48,7 @@ async function createCleanDb (dbconfig) {
     \\connect temporary_db_that_shouldnt_exist 
     SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '${database}'; 
     DROP DATABASE IF EXISTS ${database}; 
-    CREATE DATABASE ${database} WITH TEMPLATE = template1 ENCODING = 'UTF8' LC_COLLATE = 'en_US.UTF-8' LC_CTYPE = 'en_US.UTF-8'; 
+    CREATE DATABASE ${database} WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'en_US.utf8' LC_CTYPE = 'en_US.utf8'; 
     ALTER DATABASE ${database} OWNER TO ${user}; 
     \\connect ${database} 
     DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist;
@@ -58,7 +59,7 @@ async function createCleanDb (dbconfig) {
 
 exports.createCleanDb = createCleanDb
 
-function createKnexMigrationTables (dbconfig) {
+function createKnexMigrationTables(dbconfig) {
   // @formatter:off
   // language=PostgreSQL
   const sql = stripIndent`
@@ -100,7 +101,7 @@ function createKnexMigrationTables (dbconfig) {
 
 exports.createKnexMigrationTables = createKnexMigrationTables
 
-function dropKnexMigrationTables (dbconfig) {
+function dropKnexMigrationTables(dbconfig) {
   // @formatter:off
   // language=PostgreSQL
   const sql = stripIndent`
@@ -115,8 +116,9 @@ function dropKnexMigrationTables (dbconfig) {
 
 exports.dropKnexMigrationTables = dropKnexMigrationTables
 
-async function mysqlExecScript (database, user, password, script) {
-  const args = [`--user=${user}`, '--default-character-set=utf8']
+async function mysqlExecScript(dbconfig, script) {
+  const { database, host, port, user, password } = dbconfig
+  const args = [`--host=${host}`, `--port=${port}`, `--user=${user}`, '--default-character-set=utf8']
   database && args.push(`--database=${database}`)
 
   return new Promise((resolve, reject) => {
@@ -132,7 +134,7 @@ async function mysqlExecScript (database, user, password, script) {
   })
 }
 
-function psql (dbconfig, script, stdio = 'inherit') {
+function psql(dbconfig, script, stdio = 'inherit') {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
@@ -142,10 +144,11 @@ function psql (dbconfig, script, stdio = 'inherit') {
   runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: stdio }))
 }
 
-function pgloader (mySqlPassword, script) {
+function pgloader(mySqlPassword, script) {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
+  console.log(`setting  MYSQL_PWD: ${mySqlPassword} `)
   runOrExit(
     spawnSync('/usr/local/bin/pgloader', ['-v', /* '--debug', */ '--on-error-stop', name], {
       env: { MYSQL_PWD: mySqlPassword },
@@ -176,7 +179,7 @@ const runOrExit = (processStatus, message = '') => {
 
 exports.runOrExit = runOrExit
 
-function info (s) {
+function info(s) {
   console.log(chalk.bold(s))
 }
 

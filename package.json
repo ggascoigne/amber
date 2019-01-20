@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=10.8.0",
-    "yarn": ">=1.2.0"
+    "node": ">=11.7.0",
+    "yarn": ">=1.13.0"
   },
   "repository": {
     "type": "git",
@@ -41,18 +41,19 @@
     "prettier": "^1.15.3"
   },
   "scripts": {
-    "bootstrap": "lerna bootstrap && lerna link --force-local",
-    "db:import": "lerna exec --scope server yarn db:import",
+    "bootstrap": "yarn && lerna bootstrap && lerna link --force-local",
+    "db:start":"docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
+    "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "lint": "lerna exec --parallel yarn lint",
-    "format": "prettier --no-color --write 'packages/*/{src,script,db}/**/*.{js,jsx,css,scss,json}'",
+    "format": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,css,scss,json}'",
     "start": "lerna exec --parallel yarn start",
-    "start:client": "lerna exec --scope client yarn start",
+    "start:client": "yarn db:start && lerna exec --scope client yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
-    "start:server": "lerna exec --scope server yarn start",
-    "test": "lerna exec -- yarn test",
-    "test:client": "lerna exec --scope client yarn test",
-    "test:server": "lerna exec --scope server yarn test"
+    "start:server": "yarn db:start && lerna exec --scope server yarn start",
+    "test": "yarn db:start && lerna exec -- yarn test",
+    "test:client": "yarn db:start && lerna exec --scope client yarn test",
+    "test:server": "yarn db:start && lerna exec --scope server yarn test"
   },
   "husky": {
     "hooks": {
@@ -70,13 +71,5 @@
       "prettier --no-color --write",
       "git add"
     ]
-
-  },
-  "standard": {
-    "parser": "babel-eslint",
-    "env": {
-      "jasmine": "true",
-      "jest": "true"
-    }
   }
 }

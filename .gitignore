@@ -51,3 +51,5 @@ packages/server/ui
 
 # IntelliJ
 /out/
+
+postgres-data
