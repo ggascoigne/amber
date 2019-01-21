@@ -42,7 +42,7 @@ const Field = ({ label, classes, children, small }) => {
   )
 }
 
-const _Game = ({ classes, game }) => {
+const _Game = ({ classes, game, year, slot }) => {
   const {
     id,
     name,
@@ -60,8 +60,9 @@ const _Game = ({ classes, game }) => {
     gameAssignments: gms,
     setting
   } = game
+
   return slotId ? (
-    <Card key={`game_${id}`} className={classes.card}>
+    <Card key={`game_${id}`} className={classes.card} id={`game/${year}/${slot.id}/${id}`}>
       <CardHeader color='info'>
         <h4>{name}</h4>
       </CardHeader>

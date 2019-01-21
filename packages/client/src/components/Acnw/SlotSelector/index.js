@@ -46,6 +46,10 @@ class _SlotSelector extends Component {
   componentDidMount() {
     this.updateScrollButtons()
     window.addEventListener('resize', this.updateScrollButtons.bind(this))
+
+    const { slots, updateGameFilterMutation, selectedSlotId } = this.props
+    const slot = slots.find(s => s.id === selectedSlotId)
+    updateGameFilterMutation({ variables: { slot } })
   }
 
   componentWillUnmount() {
@@ -72,8 +76,10 @@ class _SlotSelector extends Component {
   }
 
   handleChange = (event, value) => {
-    const { updateGameFilterMutation } = this.props
-    updateGameFilterMutation({ variables: { slot: value + 1 } })
+    const { slots, updateGameFilterMutation } = this.props
+    const slotId = value + 1
+    const slot = slots.find(s => s.id === slotId)
+    updateGameFilterMutation({ variables: { slot } })
   }
 
   render() {
@@ -81,7 +87,9 @@ class _SlotSelector extends Component {
       classes,
       slots,
       children,
-      gameFilter: { slot: slotId }
+      gameFilter: {
+        slot: { id: slotId }
+      }
     } = this.props
     const slot = slots.find(s => s.id === slotId)
     return (
@@ -95,7 +103,7 @@ class _SlotSelector extends Component {
               <Tabs
                 value={slotId - 1}
                 onChange={this.handleChange}
-                scrollable
+                variant='scrollable'
                 scrollButtons={this.state.scrollButtons}
                 classes={{
                   root: classes.tabsRoot,

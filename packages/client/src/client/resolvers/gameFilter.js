@@ -9,7 +9,14 @@ import { dropUnset } from 'utils/dropUnset'
 const gameFilterDefaults = {
   gameFilter: {
     year: 2017,
-    slot: 1,
+    slot: {
+      id: 1,
+      slot: 1,
+      day: 'Thursday',
+      length: '5 hrs',
+      time: '7 pm to midnight',
+      __typename: 'Slot'
+    },
     __typename: 'gameFilter'
   }
 }
@@ -17,13 +24,19 @@ const gameFilterDefaults = {
 export const gameFilterQuery = gql`
   query getGameFilters {
     gameFilter @client {
-      slot
+      slot {
+        id
+        slot
+        day
+        length
+        time
+      }
       year
     }
   }
 `
 export const updateGameFilterQuery = gql`
-  mutation updateGameFilter($year: Int, $slot: Int) {
+  mutation updateGameFilter($year: Int, $slot: Slot) {
     updateGameFilter(year: $year, slot: $slot) @client
   }
 `

@@ -6,8 +6,8 @@ import { Query } from 'react-apollo'
 import { GraphQLError } from '../GraphQLError'
 
 const QUERY_GAMES = gql`
-  query($year: Int!, $slot: Int!) {
-    games(condition: { year: $year, slotId: $slot }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
+  query($year: Int!, $slotId: Int!) {
+    games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
       edges {
         node {
           id
@@ -52,7 +52,7 @@ const QUERY_GAMES = gql`
 
 export const GameQuery = ({ year, slot, children }) => {
   return (
-    <Query key={`slot_${slot.id}`} query={QUERY_GAMES} variables={{ year: year, slot: slot.id }} errorPolicy='all'>
+    <Query key={`slot_${slot.id}`} query={QUERY_GAMES} variables={{ year: year, slotId: slot.id }} errorPolicy='all'>
       {({ loading, error, data }) => {
         if (loading) {
           return <Loader />

@@ -30,7 +30,8 @@ export const rootRoutes = [
     component: AboutAmberconNw
   },
   {
-    path: '/pastCons',
+    path: '/pastCons/:year?/:slot?/:game?',
+    link: '/pastCons',
     label: 'Past Cons',
     exact: false,
     component: PastConsPage
@@ -53,6 +54,7 @@ export const rootRoutes = [
 export const menuDataType = arrayOf(
   shape({
     path: PropTypes.string.isRequired,
+    link: PropTypes.string,
     label: PropTypes.string,
     subText: PropTypes.string,
     exact: PropTypes.bool.isRequired,
