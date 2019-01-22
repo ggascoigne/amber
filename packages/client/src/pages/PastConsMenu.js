@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { GameFilterQuery } from 'client/resolvers/gameFilter'
 import { GameQuery } from 'components/Acnw/GameQuery'
-import React, { Component } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router-dom'
 
 const styles = {
@@ -23,40 +23,44 @@ const styles = {
   }
 }
 
-class _PastConsMenu extends Component {
-  render() {
-    const { classes, history } = this.props
-    return (
-      <GameFilterQuery>
-        {({ year, slot }) => {
-          return (
-            <div>
-              <GameQuery year={year} slot={slot}>
-                {({ year, slot, games }) => {
-                  return (
-                    <List>
-                      {games.map(({ node: game }) => {
-                        return (
-                          <ListItem key={game.id} className={classes.listItem}>
-                            <ListItemText
-                              className={classes.listItemText}
-                              classes={{ primary: classes.listItemTextPrimary }}
-                              onClick={() => history.replace(`/pastCons/${year}/${slot.id}/${game.id}`)}
-                              primary={game.name}
-                            />
-                          </ListItem>
-                        )
-                      })}
-                    </List>
-                  )
-                }}
-              </GameQuery>
-            </div>
-          )
-        }}
-      </GameFilterQuery>
-    )
-  }
+const _PastConsMenu = ({ classes, history, location }) => {
+  return (
+    <GameFilterQuery>
+      {({ year, slot }) => {
+        return (
+          <div>
+            <GameQuery year={year} slot={slot}>
+              {({ year, slot, games }) => {
+                return (
+                  <List>
+                    <ListItem>{location.pathname}</ListItem>
+                    {games.map(({ node: game }) => {
+                      const slug = `/pastCons/${year}/${slot.id}/${game.id}`
+                      return (
+                        <ListItem
+                          key={game.id}
+                          button
+                          className={classes.listItem}
+                          selected={slug === location.pathname}
+                          onClick={() => history.replace(slug)}
+                        >
+                          <ListItemText
+                            className={classes.listItemText}
+                            classes={{ primary: classes.listItemTextPrimary }}
+                            primary={game.name}
+                          />
+                        </ListItem>
+                      )
+                    })}
+                  </List>
+                )
+              }}
+            </GameQuery>
+          </div>
+        )
+      }}
+    </GameFilterQuery>
+  )
 }
 
 export const PastConsMenu = withStyles(styles, { withTheme: true })(withRouter(_PastConsMenu))

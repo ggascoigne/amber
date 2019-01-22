@@ -1,13 +1,14 @@
 import { withStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import { Lookup } from 'components/Acnw/Lookup'
-import React from 'react'
-import maskEmail from 'utils/maskEmail'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
+import React from 'react'
+import Waypoint from 'react-waypoint'
+import maskEmail from 'utils/maskEmail'
 
 const styles = {
   card: {
@@ -42,7 +43,7 @@ const Field = ({ label, classes, children, small }) => {
   )
 }
 
-const _Game = ({ classes, game, year, slot }) => {
+const _Game = ({ classes, game, year, slot, onEnter }) => {
   const {
     id,
     name,
@@ -61,11 +62,21 @@ const _Game = ({ classes, game, year, slot }) => {
     setting
   } = game
 
+  const headerContent = (
+    <CardHeader color='info'>
+      <h4>{name}</h4>
+    </CardHeader>
+  )
+
   return slotId ? (
     <Card key={`game_${id}`} className={classes.card} id={`game/${year}/${slot.id}/${id}`}>
-      <CardHeader color='info'>
-        <h4>{name}</h4>
-      </CardHeader>
+      {onEnter ? (
+        <Waypoint topOffset={100} bottomOffset={'80%'} onEnter={onEnter}>
+          <div>{headerContent}</div>
+        </Waypoint>
+      ) : (
+        { headerContent }
+      )}
       <CardBody>
         <GridContainer>
           <Field label={'Game Master'} classes={classes}>
