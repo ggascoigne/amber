@@ -3,6 +3,7 @@ import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle.jsx'
+import cx from 'classnames'
 import { withGameFilter } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
@@ -26,6 +27,31 @@ const styles = theme => ({
   },
   slot: {
     marginBottom: 55
+  },
+  small: {
+    marginTop: 35,
+    marginRight: 5,
+    marginLeft: 5,
+    marginBottom: 10,
+    width: '95%',
+    '& $tabsRoot': {
+      paddingLeft: 3
+    },
+    '& $cardHeader': {
+      padding: 0
+    },
+    '& $tabRootButton': {
+      padding: '8px 9px'
+    },
+    '& $slot': {
+      marginBottom: 10,
+      marginTop: -16
+    },
+    '& h4': {
+      fontSize: '1em',
+      lineHeight: '1.2em',
+      paddingLeft: '16px'
+    }
   }
 })
 
@@ -58,7 +84,7 @@ class _SlotSelector extends Component {
 
   updateScrollButtons() {
     const container = this.tabsRef.current
-    if (!container) {
+    if (!container || this.props.small) {
       return
     }
     const containerStyles = getComputedStyle(container.children[0])
@@ -89,17 +115,20 @@ class _SlotSelector extends Component {
       children,
       gameFilter: {
         slot: { id: slotId }
-      }
+      },
+      small
     } = this.props
     const slot = slots.find(s => s.id === slotId)
     return (
-      <>
+      <div className={cx({ [classes.small]: small })}>
         <Card>
           <div ref={this.tabsRef}>
             <CardHeader ref={this.tabsRef} color='success' className={classes.cardHeader} plain>
-              <span id='slotLabel' className={classes.slotLabel}>
-                Slot
-              </span>
+              {!small && (
+                <span id='slotLabel' className={classes.slotLabel}>
+                  Slot
+                </span>
+              )}
               <Tabs
                 value={slotId - 1}
                 onChange={this.handleChange}
@@ -131,7 +160,7 @@ class _SlotSelector extends Component {
           {slot.day}, {slot.time}
         </h4>
         {children && children(slot)}
-      </>
+      </div>
     )
   }
 }

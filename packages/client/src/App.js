@@ -47,7 +47,8 @@ const styles = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    overflowX: 'hidden'
   },
   content: {
     minHeight: '100vh',
