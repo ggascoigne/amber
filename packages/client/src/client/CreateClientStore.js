@@ -1,5 +1,6 @@
 import { withClientState } from 'apollo-link-state'
 import { store as gameFilterStore } from 'client/resolvers/gameFilter'
+import { store as urlSourceStore } from 'client/resolvers/urlSource'
 import assignIn from 'lodash/fp/assignIn'
 import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'
@@ -34,7 +35,7 @@ const mergeGet = attributeName =>
 /**
  * Local Data Stores
  */
-const STORES = [gameFilterStore]
+const STORES = [gameFilterStore, urlSourceStore]
 
 /**
  * Map the Mutation handlers and Default Values of our local state to

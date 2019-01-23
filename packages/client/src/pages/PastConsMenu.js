@@ -3,9 +3,11 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { GameFilterQuery } from 'client/resolvers/gameFilter'
+import { URL_SOURCE_JUMP, withUrlSource } from 'client/resolvers/urlSource'
 import { GameQuery } from 'components/Acnw/GameQuery'
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import compose from 'recompose/compose'
 
 const styles = {
   listItem: {
@@ -23,7 +25,7 @@ const styles = {
   }
 }
 
-const _PastConsMenu = ({ classes, history, location }) => {
+const _PastConsMenu = ({ classes, history, location, updateUrlSourceMutation }) => {
   return (
     <GameFilterQuery>
       {({ year, slot }) => {
@@ -42,7 +44,10 @@ const _PastConsMenu = ({ classes, history, location }) => {
                           button
                           className={classes.listItem}
                           selected={slug === location.pathname}
-                          onClick={() => history.replace(slug)}
+                          onClick={() => {
+                            updateUrlSourceMutation({ variables: { source: URL_SOURCE_JUMP, url: slug } })
+                            return history.replace(slug)
+                          }}
                         >
                           <ListItemText
                             className={classes.listItemText}
@@ -63,4 +68,8 @@ const _PastConsMenu = ({ classes, history, location }) => {
   )
 }
 
-export const PastConsMenu = withStyles(styles, { withTheme: true })(withRouter(_PastConsMenu))
+export const PastConsMenu = compose(
+  withStyles(styles, { withTheme: true }),
+  withRouter,
+  withUrlSource
+)(_PastConsMenu)

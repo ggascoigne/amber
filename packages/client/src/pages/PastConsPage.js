@@ -1,3 +1,4 @@
+import { URL_SOURCE_SCROLL, withUrlSource } from 'client/resolvers/urlSource'
 import { Game } from 'components/Acnw/Game'
 import { GameQuery } from 'components/Acnw/GameQuery'
 import { Page } from 'components/Acnw/Page'
@@ -8,7 +9,7 @@ import debounce from 'lodash/debounce'
 import * as PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import qs from 'query-string'
+import compose from 'recompose/compose'
 
 const GamesBySlot = ({ year, slot, games, onEnterGame }) => {
   return (
@@ -20,7 +21,7 @@ const GamesBySlot = ({ year, slot, games, onEnterGame }) => {
             year={year}
             slot={slot}
             game={game}
-            onEnter={() => onEnterGame(`/pastCons/${year}/${slot.id}/${game.id}?s=1`)}
+            onEnter={() => onEnterGame(`/pastCons/${year}/${slot.id}/${game.id}`)}
           />
         )
       })}
@@ -41,15 +42,11 @@ class PastConsPage extends Component {
     this.state = { lastSlug: '' }
   }
 
-  trimQuery = slug => {
-    return slug.replace(/\?.*$/, '')
-  }
-
   setNewUrl = debounce(slug => {
-    const { history } = this.props
-    const trimmedSlug = this.trimQuery(slug)
-    if (this.state.lastSlug !== trimmedSlug) {
-      this.setState({ lastSlug: trimmedSlug })
+    const { history, updateUrlSourceMutation } = this.props
+    if (this.state.lastSlug !== slug) {
+      this.setState({ lastSlug: slug })
+      updateUrlSourceMutation({ variables: { source: URL_SOURCE_SCROLL, url: slug } })
       history.replace(slug)
     }
   }, 200)
@@ -68,15 +65,13 @@ class PastConsPage extends Component {
       match: {
         params: { year, slot, game }
       },
-      location
+      urlSource
     } = this.props
     if (!(year || slot || game)) {
       return
     }
 
-    const queryString = qs.parse(location.search)
-    // if we scrolled to the URL, then don't jump back to it
-    if (queryString.s && queryString.s === '1') {
+    if (urlSource.source === URL_SOURCE_SCROLL) {
       return
     }
 
@@ -131,4 +126,7 @@ class PastConsPage extends Component {
   }
 }
 
-export default withRouter(PastConsPage)
+export default compose(
+  withRouter,
+  withUrlSource
+)(PastConsPage)
