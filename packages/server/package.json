@@ -7,8 +7,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
+    "@babel/preset-env": "^7.3.1",
     "babel-core": "^7.0.0-beta.3",
     "babel-jest": "^23.6.0",
     "chalk": "^2.4.2",
@@ -28,7 +28,7 @@
     "http-proxy": "1.17.0",
     "jest": "^23.6.0",
     "knex": "^0.16.3",
-    "koa": "^2.6.2",
+    "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-compress": "^3.0.0",
     "koa-cors": "^0.0.16",
@@ -40,7 +40,7 @@
     "lodash": "^4.17.11",
     "nodemon": "^1.18.9",
     "pg": "^7.8.0",
-    "postgraphile": "^4.3.1",
+    "postgraphile": "^4.3.2",
     "postgraphile-plugin-connection-filter": "^1.0.0-beta.27",
     "xregexp": "4.2.4"
   },
