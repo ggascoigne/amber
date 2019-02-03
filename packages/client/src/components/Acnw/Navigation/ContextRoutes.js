@@ -1,8 +1,8 @@
-import { PastConsMenu } from 'pages/PastConsMenu'
+import { PastConsMenu } from 'pages/PastCons/PastConsMenu'
 import React from 'react'
 
 const data = {
-  '/pastCons.*': {
+  '/pastCons/\\d+': {
     load: <PastConsMenu />
   }
 }

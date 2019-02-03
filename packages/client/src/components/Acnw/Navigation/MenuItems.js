@@ -15,7 +15,7 @@ export const MenuItems = withRouter(({ menuItems, location }) => {
   } else {
     return (
       <List>
-        <ListItem>{location.pathname}</ListItem>
+        {/*<ListItem>{location.pathname}</ListItem>*/}
         {menuItems
           // only display routes with a label
           .filter(menuItem => menuItem.label)

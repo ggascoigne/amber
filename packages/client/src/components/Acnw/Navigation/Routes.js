@@ -1,11 +1,14 @@
 import AboutAmberconNw from 'pages/AboutAmberconNw'
 import CallbackPage from 'pages/CallbackPage'
 import GraphiQLPage from 'pages/GraphiQLPage'
+import PastConsGamesPage from 'pages/PastCons/PastConsGamesPage'
+import PastConsPage from 'pages/PastCons/PastConsPage'
 import Welcome from 'pages/Welcome'
 import PropTypes from 'prop-types'
-import PastConsPage from 'pages/PastConsPage'
 
 const { shape, arrayOf } = PropTypes
+
+// note that entries are only displayed if they have a label
 
 export const rootRoutes = [
   {
@@ -30,10 +33,16 @@ export const rootRoutes = [
     component: AboutAmberconNw
   },
   {
-    path: '/pastCons/:year?/:slot?/:game?',
+    path: '/pastCons/:year/:slot?/:game?',
+    link: '/pastCons',
+    exact: false,
+    component: PastConsGamesPage
+  },
+  {
+    path: '/pastCons',
     link: '/pastCons',
     label: 'Past Cons',
-    exact: false,
+    exact: true,
     component: PastConsPage
   },
   {
