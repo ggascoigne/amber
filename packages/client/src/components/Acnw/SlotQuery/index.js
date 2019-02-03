@@ -1,11 +1,9 @@
 import { SLOT_FRAGMENT } from 'client/fragments'
-import { GraphQLError } from 'components/Acnw/GraphQLError'
+import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
+import * as PropTypes from 'prop-types'
 import React from 'react'
-import { Query } from 'react-apollo'
-
-import { Loader } from '../Loader'
 
 const QUERY_SLOTS = gql`
   {
@@ -19,17 +17,13 @@ const QUERY_SLOTS = gql`
 `
 export const SlotQuery = ({ year, children }) => {
   return (
-    <Query query={QUERY_SLOTS} errorPolicy='all'>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loader />
-        }
-        if (error) {
-          return <GraphQLError error={error} />
-        }
-        const slots = get(data, 'slots.nodes')
-        return children && children({ year, slots })
-      }}
-    </Query>
+    <GqlQuery query={QUERY_SLOTS} errorPolicy='all'>
+      {data => children && children({ year, slots: get(data, 'slots.nodes') })}
+    </GqlQuery>
   )
+}
+
+SlotQuery.propTypes = {
+  year: PropTypes.number.isRequired,
+  children: PropTypes.func.isRequired
 }

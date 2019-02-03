@@ -1,11 +1,9 @@
 import { GAME_FRAGMENT, PROFILE_FRAGMENT } from 'client/fragments'
+import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
+import * as PropTypes from 'prop-types'
 import React from 'react'
-import { Query } from 'react-apollo'
-
-import { GraphQLError } from '../GraphQLError'
-import { Loader } from '../Loader'
 
 const QUERY_GAMES = gql`
   query($year: Int!, $slotId: Int!) {
@@ -36,17 +34,14 @@ const QUERY_GAMES = gql`
 
 export const GameQuery = ({ year, slot, children }) => {
   return (
-    <Query key={`slot_${slot.id}`} query={QUERY_GAMES} variables={{ year: year, slotId: slot.id }} errorPolicy='all'>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loader />
-        }
-        if (error) {
-          return <GraphQLError error={error} />
-        }
-        const games = get(data, 'games.edges')
-        return children && children({ year, slot, games })
-      }}
-    </Query>
+    <GqlQuery key={`slot_${slot.id}`} query={QUERY_GAMES} variables={{ year: year, slotId: slot.id }} errorPolicy='all'>
+      {data => children && children({ year, slot, games: get(data, 'games.edges') })}
+    </GqlQuery>
   )
+}
+
+GameQuery.propTypes = {
+  year: PropTypes.number.isRequired,
+  slot: PropTypes.object.isRequired,
+  children: PropTypes.func.isRequired
 }

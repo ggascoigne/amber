@@ -1,9 +1,9 @@
 import { SLOT_FRAGMENT } from 'client/fragments'
-import { GraphQLError } from 'components/Acnw/GraphQLError'
-import { Loader } from 'components/Acnw/Loader'
+import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
+import PropTypes from 'prop-types'
 import React from 'react'
-import { Query, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import compose from 'recompose/compose'
 import { dropUnset } from 'utils/dropUnset'
 
@@ -47,21 +47,19 @@ const updateGameFilter = (_obj, data, { cache }) => {
 
 export const GameFilterQuery = ({ children }) => {
   return (
-    <Query query={gameFilterQuery} errorPolicy='all'>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loader />
-        }
-        if (error) {
-          return <GraphQLError error={error} />
-        }
+    <GqlQuery query={gameFilterQuery} errorPolicy='all'>
+      {data => {
         const {
           gameFilter: { year, slot }
         } = data
         return children && children({ year, slot })
       }}
-    </Query>
+    </GqlQuery>
   )
+}
+
+GameFilterQuery.propTypes = {
+  children: PropTypes.func.isRequired
 }
 
 export const store = {

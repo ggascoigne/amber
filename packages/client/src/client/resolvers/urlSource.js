@@ -1,8 +1,8 @@
-import { GraphQLError } from 'components/Acnw/GraphQLError'
-import { Loader } from 'components/Acnw/Loader'
+import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
+import * as PropTypes from 'prop-types'
 import React from 'react'
-import { Query, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import compose from 'recompose/compose'
 import { dropUnset } from 'utils/dropUnset'
 
@@ -39,21 +39,19 @@ const updateUrlSource = (_obj, data, { cache }) => {
 
 export const UrlSourceQuery = ({ children }) => {
   return (
-    <Query query={urlSourceQuery} errorPolicy='all'>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return <Loader />
-        }
-        if (error) {
-          return <GraphQLError error={error} />
-        }
+    <GqlQuery query={urlSourceQuery} errorPolicy='all'>
+      {data => {
         const {
           urlSource: { source, url }
         } = data
         return children && children({ source, url })
       }}
-    </Query>
+    </GqlQuery>
   )
+}
+
+UrlSourceQuery.propTypes = {
+  children: PropTypes.func.isRequired
 }
 
 export const store = {
