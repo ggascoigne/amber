@@ -12,7 +12,7 @@ const auth = new auth0.WebAuth({
   responseType: 'token id_token'
 })
 
-const CallbackPage = props => (
+export const CallbackPage = props => (
   <AuthConsumer>
     {({ handleAuthentication }) => {
       if (/access_token|id_token|error/.test(props.location.hash)) {
@@ -24,5 +24,3 @@ const CallbackPage = props => (
     }}
   </AuthConsumer>
 )
-
-export default CallbackPage

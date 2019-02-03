@@ -7,7 +7,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 
-class PastConsPage extends Component {
+class _PastConsGamesPage extends Component {
   constructor(props) {
     super(props)
     this.state = { lastSlug: '' }
@@ -76,7 +76,7 @@ class PastConsPage extends Component {
   }
 }
 
-export default compose(
+export const PastConsGamesPage = compose(
   withRouter,
   withUrlSource
-)(PastConsPage)
+)(_PastConsGamesPage)

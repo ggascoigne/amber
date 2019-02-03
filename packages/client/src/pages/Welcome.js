@@ -19,7 +19,7 @@ const styles = theme => ({
   }
 })
 
-const Welcome = ({ classes, theme }) => {
+const _Welcome = ({ classes, theme }) => {
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (
@@ -159,4 +159,4 @@ const Welcome = ({ classes, theme }) => {
   )
 }
 
-export default withStyles(styles, { withTheme: true })(Welcome)
+export const Welcome = withStyles(styles, { withTheme: true })(_Welcome)

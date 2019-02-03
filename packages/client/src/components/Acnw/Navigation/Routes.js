@@ -1,9 +1,4 @@
-import AboutAmberconNw from 'pages/AboutAmberconNw'
-import CallbackPage from 'pages/CallbackPage'
-import GraphiQLPage from 'pages/GraphiQLPage'
-import PastConsGamesPage from 'pages/PastCons/PastConsGamesPage'
-import PastConsPage from 'pages/PastCons/PastConsPage'
-import Welcome from 'pages/Welcome'
+import { AboutAmberconNw, CallbackPage, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
 import PropTypes from 'prop-types'
 
 const { shape, arrayOf } = PropTypes

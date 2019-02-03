@@ -1,5 +1,4 @@
-import { GameList } from 'components/Acnw/GameList/GameList'
-import { GameListFull } from 'components/Acnw/GameList/GameListFull'
+import { GameList, GameListFull } from 'components/Acnw/GameList'
 import React from 'react'
 
 export const PastConsPageGameList = ({ year, slotIdStr, onEnterGame }) => (

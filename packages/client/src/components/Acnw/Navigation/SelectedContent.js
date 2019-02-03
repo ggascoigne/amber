@@ -1,5 +1,5 @@
 import { ErrorBoundary } from 'components/Acnw/ErrorBoundary'
-import NotFound from 'pages/NotFound.js'
+import { NotFound } from 'pages'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 

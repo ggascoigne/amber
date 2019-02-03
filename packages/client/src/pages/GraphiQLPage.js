@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 const GraphiQL = React.lazy(() => import('components/Acnw/GraphiQL/GraphiQL'))
 
-const GraphiQLPage = () => {
+export const GraphiQLPage = () => {
   const loader = <Loader />
   return (
     <HasPermission permission={'graphiql:load'} denied={() => <Redirect to='/' />}>
@@ -15,5 +15,3 @@ const GraphiQLPage = () => {
     </HasPermission>
   )
 }
-
-export default GraphiQLPage

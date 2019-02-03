@@ -1,7 +1,7 @@
 import { URL_SOURCE_JUMP, withUrlSource } from 'client/resolvers/urlSource'
-import { GameByYearQuery } from 'components/Acnw/GameByYearQuery/GameByYearQuery'
+import { GameByYearQuery } from 'components/Acnw/GameByYearQuery'
 import { Page } from 'components/Acnw/Page'
-import { YearTile } from 'components/Acnw/YearTile/YearTile'
+import { YearTile } from 'components/Acnw/YearTile'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import range from 'lodash/range'
@@ -10,7 +10,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 
-class PastConsPage extends Component {
+class _PastConsPage extends Component {
   selectYear = year => {
     const { updateUrlSourceMutation, history } = this.props
     const slug = `/pastCons/${year}`
@@ -38,7 +38,7 @@ class PastConsPage extends Component {
   }
 }
 
-export default compose(
+export const PastConsPage = compose(
   withRouter,
   withUrlSource
-)(PastConsPage)
+)(_PastConsPage)

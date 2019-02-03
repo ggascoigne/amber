@@ -2,7 +2,7 @@ import Typography from '@material-ui/core/Typography'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-const AboutAmberconNw = () => {
+export const AboutAmberconNw = () => {
   return (
     <Page>
       <Typography variant='h3' color='inherit'>
@@ -11,5 +11,3 @@ const AboutAmberconNw = () => {
     </Page>
   )
 }
-
-export default AboutAmberconNw

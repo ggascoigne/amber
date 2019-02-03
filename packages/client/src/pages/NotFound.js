@@ -3,7 +3,7 @@ import { Page } from 'components/Acnw/Page'
 import SnackbarContent from 'components/MaterialKitReact/Snackbar/SnackbarContent.jsx'
 import React from 'react'
 
-const NotFound = () => (
+export const NotFound = () => (
   <Page>
     <SnackbarContent
       message={
@@ -19,5 +19,3 @@ const NotFound = () => (
     </Typography>
   </Page>
 )
-
-export default NotFound
