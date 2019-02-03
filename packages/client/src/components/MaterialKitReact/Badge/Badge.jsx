@@ -1,11 +1,9 @@
-import React from 'react'
-// nodejs library to set properties for components
-import PropTypes from 'prop-types'
-
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-
 import badgeStyle from 'assets/jss/material-kit-react/components/badgeStyle.jsx'
+// nodejs library to set properties for components
+import PropTypes from 'prop-types'
+import React from 'react'
 
 function Badge({ ...props }) {
   const { classes, color, children } = props

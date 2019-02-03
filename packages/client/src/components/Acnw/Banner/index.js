@@ -1,9 +1,9 @@
 import withStyles from '@material-ui/core/styles/withStyles'
+import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
+import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import configurationService from 'utils/ConfigurationService'
-import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
-import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 
 const styles = theme => ({
   banner: {

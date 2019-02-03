@@ -1,13 +1,12 @@
-import React from 'react'
+// @material-ui/core components
+import withStyles from '@material-ui/core/styles/withStyles'
+// core components
+import parallaxStyle from 'assets/jss/material-kit-react/components/parallaxStyle.jsx'
 // nodejs library that concatenates classes
 import classNames from 'classnames'
 // nodejs library to set properties for components
 import PropTypes from 'prop-types'
-// @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles'
-
-// core components
-import parallaxStyle from 'assets/jss/material-kit-react/components/parallaxStyle.jsx'
+import React from 'react'
 
 class Parallax extends React.Component {
   constructor(props) {

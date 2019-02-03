@@ -1,10 +1,10 @@
 import {
+  dangerColor,
   grayColor,
-  primaryColor,
   infoColor,
+  primaryColor,
   successColor,
-  warningColor,
-  dangerColor
+  warningColor
 } from 'assets/jss/material-kit-react.jsx'
 
 const paginationStyle = {

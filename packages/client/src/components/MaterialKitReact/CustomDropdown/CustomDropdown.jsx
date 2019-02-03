@@ -8,7 +8,6 @@ import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-
 import customDropdownStyle from 'assets/jss/material-kit-react/components/customDropdownStyle.jsx'
 // nodejs library that concatenates classes
 import classNames from 'classnames'

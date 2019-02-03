@@ -1,13 +1,11 @@
 import { withStyles } from '@material-ui/core'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
-
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle.jsx'
 import cx from 'classnames'
 import { withGameFilter } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
-
 import * as PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import compose from 'recompose/compose'

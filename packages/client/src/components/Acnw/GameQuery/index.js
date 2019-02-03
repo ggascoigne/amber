@@ -1,9 +1,10 @@
-import { Loader } from '../Loader'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
 import React from 'react'
 import { Query } from 'react-apollo'
+
 import { GraphQLError } from '../GraphQLError'
+import { Loader } from '../Loader'
 
 const QUERY_GAMES = gql`
   query($year: Int!, $slotId: Int!) {

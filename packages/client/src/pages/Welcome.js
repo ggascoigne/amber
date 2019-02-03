@@ -3,8 +3,8 @@ import { dangerColor } from 'assets/jss/material-kit-react.jsx'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Acnw/Auth'
 import { Banner } from 'components/Acnw/Banner'
-import React from 'react'
 import { Page } from 'components/Acnw/Page'
+import React from 'react'
 
 const styles = theme => ({
   banner: {

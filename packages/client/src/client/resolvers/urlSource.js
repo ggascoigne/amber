@@ -2,7 +2,7 @@ import { GraphQLError } from 'components/Acnw/GraphQLError'
 import { Loader } from 'components/Acnw/Loader'
 import gql from 'graphql-tag'
 import React from 'react'
-import { graphql, Query } from 'react-apollo'
+import { Query, graphql } from 'react-apollo'
 import compose from 'recompose/compose'
 import { dropUnset } from 'utils/dropUnset'
 

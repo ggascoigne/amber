@@ -1,14 +1,13 @@
-import React from 'react'
+// @material-ui/core components
+import withStyles from '@material-ui/core/styles/withStyles'
+// core components
+import cardFooterStyle from 'assets/jss/material-kit-react/components/cardFooterStyle.jsx'
 // nodejs library that concatenates classes
 import classNames from 'classnames'
 // nodejs library to set properties for components
 import PropTypes from 'prop-types'
-// @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles'
+import React from 'react'
 // @material-ui/icons
-
-// core components
-import cardFooterStyle from 'assets/jss/material-kit-react/components/cardFooterStyle.jsx'
 
 function CardFooter({ ...props }) {
   const { classes, className, children, ...rest } = props

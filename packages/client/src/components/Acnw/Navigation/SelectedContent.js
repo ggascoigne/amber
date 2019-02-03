@@ -1,7 +1,8 @@
-import React from 'react'
-import { Route, Switch } from 'react-router-dom'
 import { ErrorBoundary } from 'components/Acnw/ErrorBoundary'
 import NotFound from 'pages/NotFound.js'
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+
 import { menuDataType } from './Routes'
 
 export const SelectedContent = ({ routes }) => {

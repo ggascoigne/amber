@@ -1,12 +1,14 @@
+import 'graphiql/graphiql.css'
+
 import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
 import { Page } from 'components/Acnw/Page'
 import RealGraphiQL from 'graphiql'
 import GraphiQLExplorer from 'graphiql-explorer'
-import 'graphiql/graphiql.css'
 import { buildClientSchema, getIntrospectionQuery } from 'graphql'
 import fetch from 'isomorphic-fetch'
 import React, { Component } from 'react'
+
 import { getDefaultScalarArgValue, makeDefaultArg } from './CustomArgs'
 
 const styles = theme => ({

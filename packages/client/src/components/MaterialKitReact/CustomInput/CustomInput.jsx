@@ -1,15 +1,14 @@
-import React from 'react'
-// nodejs library to set properties for components
-import PropTypes from 'prop-types'
-// nodejs library that concatenates classes
-import classNames from 'classnames'
+import FormControl from '@material-ui/core/FormControl'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import Input from '@material-ui/core/Input'
-
 import customInputStyle from 'assets/jss/material-kit-react/components/customInputStyle.jsx'
+// nodejs library that concatenates classes
+import classNames from 'classnames'
+// nodejs library to set properties for components
+import PropTypes from 'prop-types'
+import React from 'react'
 
 function CustomInput({ ...props }) {
   const {

@@ -1,6 +1,5 @@
-import { container } from 'assets/jss/material-kit-react.jsx'
-
 import image from 'assets/img/sign.jpg'
+import { container } from 'assets/jss/material-kit-react.jsx'
 
 const loginStyle = {
   section: {

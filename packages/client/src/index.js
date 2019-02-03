@@ -1,11 +1,13 @@
 import 'assets/scss/material-kit-react.css?v=1.3.0'
+import 'react-app-polyfill/ie11'
+
 import client from 'client/client'
 import { Auth } from 'components/Acnw/Auth'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
-import 'react-app-polyfill/ie11'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
+
 import App from './App'
 import registerServiceWorker from './utils/registerServiceWorker'
 

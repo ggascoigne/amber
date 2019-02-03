@@ -1,11 +1,11 @@
 import {
+  dangerColor,
   grayColor,
-  roseColor,
-  primaryColor,
   infoColor,
+  primaryColor,
+  roseColor,
   successColor,
-  warningColor,
-  dangerColor
+  warningColor
 } from 'assets/jss/material-kit-react.jsx'
 
 const buttonStyle = {

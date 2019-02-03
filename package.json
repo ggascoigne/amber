@@ -27,24 +27,31 @@
     "eslint": "5.6.0",
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-jest": "^22.2.1",
     "eslint-plugin-jsx-a11y": "^6.2.0",
+    "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-react": "^7.12.4",
+    "execa": "^0.10.0",
     "husky": "^1.3.1",
+    "import-sort-cli": "^5.2.0",
+    "import-sort-parser-babylon": "^5.2.0",
+    "import-sort-style-module": "^5.0.0",
     "lerna": "^3.10.7",
     "lint-staged": "^8.1.1",
+    "meow": "^5.0.0",
     "prettier": "^1.16.3"
   },
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap && lerna link --force-local",
-    "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
     "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
+    "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
+    "format": "yarn format:sort-imports && yarn format:prettier",
+    "format:prettier": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,css,scss,json}'",
+    "format:sort-imports": "import-sort --write 'packages/*/{src,scripts,db}/**/*.{js,jsx}'",
     "lint": "lerna exec --parallel yarn lint",
-    "format": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,css,scss,json}'",
     "start": "lerna exec --parallel yarn start",
     "start:client": "yarn db:start && lerna exec --scope client yarn start",
     "start:production": "lerna exec --scope client yarn build && lerna exec --scope server yarn start:production",
@@ -52,6 +59,17 @@
     "test": "yarn db:start && lerna exec -- yarn test",
     "test:client": "yarn db:start && lerna exec --scope client yarn test",
     "test:server": "yarn db:start && lerna exec --scope server yarn test"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "semi": false,
+    "jsxSingleQuote": true
+  },
+  "importSort": {
+    ".js, .jsx": {
+      "style": "module"
+    }
   },
   "husky": {
     "hooks": {
@@ -61,6 +79,7 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
+      "import-sort --write",
       "prettier --no-color --write",
       "yarn lint",
       "git add"

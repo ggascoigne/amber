@@ -1,9 +1,9 @@
 import {
-  warningCardHeader,
-  successCardHeader,
   dangerCardHeader,
   infoCardHeader,
-  primaryCardHeader
+  primaryCardHeader,
+  successCardHeader,
+  warningCardHeader
 } from 'assets/jss/material-kit-react.jsx'
 const cardHeaderStyle = {
   cardHeader: {

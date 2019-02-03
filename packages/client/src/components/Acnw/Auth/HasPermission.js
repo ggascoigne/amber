@@ -1,5 +1,6 @@
 // import { find } from 'lodash'
 import * as React from 'react'
+
 import { AuthConsumer } from './authContext'
 import rules from './PermissionRules'
 

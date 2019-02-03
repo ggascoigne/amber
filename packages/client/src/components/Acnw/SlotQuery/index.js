@@ -1,9 +1,10 @@
-import { Loader } from '../Loader'
+import { GraphQLError } from 'components/Acnw/GraphQLError'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
 import React from 'react'
 import { Query } from 'react-apollo'
-import { GraphQLError } from 'components/Acnw/GraphQLError'
+
+import { Loader } from '../Loader'
 
 const QUERY_SLOTS = gql`
   {

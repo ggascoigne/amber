@@ -1,4 +1,4 @@
-import { primaryColor, dangerColor, roseColor, grayColor } from 'assets/jss/material-kit-react.jsx'
+import { dangerColor, grayColor, primaryColor, roseColor } from 'assets/jss/material-kit-react.jsx'
 
 const customCheckboxRadioSwitch = {
   checkRoot: {

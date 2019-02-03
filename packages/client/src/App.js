@@ -12,8 +12,9 @@ import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react.jsx'
 import { Banner } from 'components/Acnw/Banner'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
-import { MenuItems, rootRoutes, SelectedContent } from 'components/Acnw/Navigation'
+import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
 import React, { Component } from 'react'
+
 import withRoot from './utils/withRoot'
 
 const drawerWidth = 240

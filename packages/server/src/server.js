@@ -3,6 +3,7 @@ const Koa = require('koa')
 const pg = require('pg')
 const postgraphileUtils = require('./utils/postgraphile')
 const middleware = require('./middleware')
+
 import config from './utils/config'
 
 const rootPgPool = new pg.Pool({

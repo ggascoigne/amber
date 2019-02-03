@@ -1,12 +1,12 @@
 import {
-  primaryColor,
-  warningColor,
   dangerColor,
-  successColor,
-  infoColor,
-  roseColor,
   grayColor,
-  title
+  infoColor,
+  primaryColor,
+  roseColor,
+  successColor,
+  title,
+  warningColor
 } from 'assets/jss/material-kit-react.jsx'
 
 const infoStyle = {

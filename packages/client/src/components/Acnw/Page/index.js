@@ -1,5 +1,4 @@
 import { withStyles } from '@material-ui/core'
-
 import contentPageStyles from 'assets/jss/acnw/contentPage'
 import classNames from 'classnames'
 import React from 'react'
