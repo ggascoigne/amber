@@ -16,7 +16,8 @@ exports.up = function (knex) {
     .schema
     .raw('SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0')
     .raw('SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0')
-`)
+`
+)
 
 let inTable = false
 let fields = {}
@@ -24,7 +25,7 @@ let primary = null
 let uniqueKey = {}
 let lineNo = 0
 
-rl.on('line', (line) => {
+rl.on('line', line => {
   lineNo += 1
   const table = line.match(/CREATE TABLE `(.*)` \(/i)
   if (table) {
@@ -84,7 +85,7 @@ rl.on('line', (line) => {
   }
 })
 
-const typeFor = (type) => {
+const typeFor = type => {
   const details = type.match(/([^(]*)(?:\((.*)\))?/)
   let fieldType = null
   let precision = details[2]
@@ -104,11 +105,11 @@ const typeFor = (type) => {
       break
     case 'longblob':
       fieldType = 'specificType'
-      precision = '\'longblob\''
+      precision = "'longblob'"
       break
     case 'longtext':
       fieldType = 'text'
-      precision = '\'longtext\''
+      precision = "'longtext'"
       break
     case 'int':
       fieldType = 'integer'
@@ -120,18 +121,22 @@ const typeFor = (type) => {
       fieldType = 'tinyint'
       break
   }
-  return {fieldType, precision}
+  return { fieldType, precision }
 }
 
 const columns = (fields, primary, uniqueKey) => {
-  _.forOwn(fields, (fieldInfo) => {
-    let {fieldType, precision} = typeFor(fieldInfo.type)
+  _.forOwn(fields, fieldInfo => {
+    let { fieldType, precision } = typeFor(fieldInfo.type)
     let precisionString = precision ? `, ${precision}` : ''
     let name = `'${fieldInfo.name}'`
     const isPrimary = fieldInfo.name === primary ? '.primary()' : ''
-    let nullable = fieldInfo.rest.match(/NOT NULL/) ? '.notNullable()' : fieldInfo.rest.match(/DEFAULT NULL/) ? '.defaultTo(null)' : ''
+    let nullable = fieldInfo.rest.match(/NOT NULL/)
+      ? '.notNullable()'
+      : fieldInfo.rest.match(/DEFAULT NULL/)
+      ? '.defaultTo(null)'
+      : ''
     let unique = uniqueKey[fieldInfo.name] && uniqueKey[fieldInfo.name] === fieldInfo.name ? '.unique()' : ''
-    let fk = fieldInfo.fk ? `.references('${fieldInfo.fk.table}.${fieldInfo.fk.column}').unsigned()`:''
+    let fk = fieldInfo.fk ? `.references('${fieldInfo.fk.table}.${fieldInfo.fk.column}').unsigned()` : ''
     let key = fieldInfo.key ? '.index()' : ''
     if (/AUTO_INCREMENT/.test(fieldInfo.rest)) {
       if (fieldType === 'bigInteger') {
