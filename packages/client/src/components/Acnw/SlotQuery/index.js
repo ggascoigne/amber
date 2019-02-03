@@ -1,3 +1,4 @@
+import { SLOT_FRAGMENT } from 'client/fragments'
 import { GraphQLError } from 'components/Acnw/GraphQLError'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
@@ -10,14 +11,11 @@ const QUERY_SLOTS = gql`
   {
     slots {
       nodes {
-        id
-        slot
-        day
-        length
-        time
+        ...slotFields
       }
     }
   }
+  ${SLOT_FRAGMENT}
 `
 export const SlotQuery = ({ year, children }) => {
   return (

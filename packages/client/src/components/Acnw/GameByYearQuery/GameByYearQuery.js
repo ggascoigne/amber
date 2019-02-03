@@ -1,3 +1,4 @@
+import { GAME_FRAGMENT, PROFILE_FRAGMENT } from 'client/fragments'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
 import React from 'react'
@@ -10,35 +11,14 @@ const QUERY_FIRST_SLOT_ONE_GAME = gql`
   query($year: Int!) {
     games(orderBy: NAME_ASC, condition: { slotId: 1, year: $year }, first: 1) {
       nodes {
-        id
-        name
-        year
-        slotId
-        description
-        charInstructions
-        estimatedLength
-        gameContactEmail
-        genre
-        lateFinish
-        lateStart
-        message
-        playerMax
-        playerMin
-        playerPreference
-        playersContactGm
-        returningPlayers
-        slotPreference
-        type
-        teenFriendly
-        slotConflicts
-        setting
+        ...gameFields
         gameAssignments(filter: { gm: { lessThan: 0 } }) {
           nodes {
             gm
             member {
               user {
                 profile {
-                  fullName
+                  ...profileFields
                 }
               }
             }
@@ -47,6 +27,9 @@ const QUERY_FIRST_SLOT_ONE_GAME = gql`
       }
     }
   }
+
+  ${GAME_FRAGMENT}
+  ${PROFILE_FRAGMENT}
 `
 
 export const GameByYearQuery = ({ year, children }) => {

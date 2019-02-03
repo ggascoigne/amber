@@ -1,3 +1,4 @@
+import { SLOT_FRAGMENT } from 'client/fragments'
 import { GraphQLError } from 'components/Acnw/GraphQLError'
 import { Loader } from 'components/Acnw/Loader'
 import gql from 'graphql-tag'
@@ -25,15 +26,12 @@ export const gameFilterQuery = gql`
   query getGameFilters {
     gameFilter @client {
       slot {
-        id
-        slot
-        day
-        length
-        time
+        ...slotFields
       }
       year
     }
   }
+  ${SLOT_FRAGMENT}
 `
 export const updateGameFilterQuery = gql`
   mutation updateGameFilter($year: Int, $slot: Slot) {
