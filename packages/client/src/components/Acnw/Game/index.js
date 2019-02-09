@@ -1,6 +1,6 @@
 import { withStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { Lookup } from 'components/Acnw/Lookup'
+import { LookupValue } from 'components/Acnw/Lookup'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
@@ -127,7 +127,7 @@ const _Game = ({ classes, game, year, slot, onEnter, tiny }) => {
             {playerMin} - {playerMax}
           </Field>
           <Field label={'Player Preference'} classes={classes} small tiny={tiny}>
-            <Lookup realm={'gamePlayerPref'} code={playerPreference} />
+            <LookupValue realm={'gamePlayerPref'} code={playerPreference} />
           </Field>
           <Field label={''} classes={classes} tiny={tiny}>
             {playersContactGm

@@ -1,4 +1,4 @@
-import { AboutAmberconNw, CallbackPage, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
+import { AboutAmberconNw, CallbackPage, GraphiQLPage, Lookups, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
 import PropTypes from 'prop-types'
 
 const { shape, arrayOf } = PropTypes
@@ -35,10 +35,15 @@ export const rootRoutes = [
   },
   {
     path: '/pastCons',
-    link: '/pastCons',
     label: 'Past Cons',
     exact: true,
     component: PastConsPage
+  },
+  {
+    path: '/lookups',
+    label: 'Lookups',
+    exact: true,
+    component: Lookups
   },
   {
     path: '/graphiql',
