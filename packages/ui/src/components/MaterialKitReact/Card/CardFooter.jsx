@@ -1,30 +1,31 @@
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles'
 // core components
-import cardBodyStyle from 'assets/jss/material-kit-react/components/cardBodyStyle.jsx'
+import cardFooterStyle from 'assets/jss/material-kit-react/components/cardFooterStyle.jsx'
 // nodejs library that concatenates classes
 import classNames from 'classnames'
 // nodejs library to set properties for components
 import PropTypes from 'prop-types'
 import React from 'react'
+
 // @material-ui/icons
 
-function CardBody({ ...props }) {
+function CardFooter({ ...props }) {
   const { classes, className, children, ...rest } = props
-  const cardBodyClasses = classNames({
-    [classes.cardBody]: true,
+  const cardFooterClasses = classNames({
+    [classes.cardFooter]: true,
     [className]: className !== undefined
   })
   return (
-    <div className={cardBodyClasses} {...rest}>
+    <div className={cardFooterClasses} {...rest}>
       {children}
     </div>
   )
 }
 
-CardBody.propTypes = {
+CardFooter.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string
 }
 
-export default withStyles(cardBodyStyle)(CardBody)
+export default withStyles(cardFooterStyle)(CardFooter)
