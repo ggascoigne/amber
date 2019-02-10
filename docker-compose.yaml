@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=
     command: -c log_statement=all -c log_min_error_statement=error
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
   mysql:
     container_name: acnw-mysql
     image: mysql:5.7
@@ -23,3 +23,6 @@ services:
     stop_signal: SIGINT
     environment:
       - MYSQL_ROOT_PASSWORD=rootPassword
+
+volumes:
+  postgres-data:
