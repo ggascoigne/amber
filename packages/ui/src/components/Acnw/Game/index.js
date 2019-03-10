@@ -7,7 +7,7 @@ import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import React from 'react'
-import Waypoint from 'react-waypoint'
+import { Waypoint } from 'react-waypoint'
 import maskEmail from 'utils/maskEmail'
 
 const styles = {

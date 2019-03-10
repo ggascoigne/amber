@@ -19,14 +19,14 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@commitlint/cli": "^7.5.1",
+    "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
-    "apollo-link-http": "^1.5.11",
+    "apollo-link-http": "^1.5.12",
     "babel-eslint": "^9.0.0",
     "cross-env": "^5.2.0",
     "del-cli": "^1.1.0",
-    "eslint": "5.6.0",
-    "eslint-config-prettier": "^4.0.0",
+    "eslint": "5.12.0",
+    "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jest": "^22.2.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
@@ -37,17 +37,18 @@
     "execa": "^1.0.0",
     "graphql-tools": "^4.0.4",
     "husky": "^1.3.1",
-    "import-sort-cli": "^5.2.0",
-    "import-sort-parser-babylon": "^5.2.0",
-    "import-sort-style-module": "^5.0.0",
-    "lerna": "^3.11.0",
-    "lint-staged": "^8.1.3",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-parser-babylon": "^6.0.0",
+    "import-sort-style-module": "^6.0.0",
+    "lerna": "^3.13.1",
+    "lint-staged": "^8.1.5",
     "meow": "^5.0.0",
     "node-fetch": "^2.3.0",
     "prettier": "^1.16.4"
   },
   "scripts": {
-    "bootstrap": "yarn && lerna bootstrap && lerna link --force-local && yarn outdated ; yarn audit",
+    "bootstrap": "yarn && yarn outdated ; yarn audit",
+    "clean:install": "rm -rf node_modules packages/*/node_modules yarn.lock && yarn && yarn audit",
     "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
@@ -94,6 +95,7 @@
     ]
   },
   "resolutions": {
-    "**/exec-sh/merge": "1.2.1"
-  }
+    "braces": "2.3.2",
+    "handlebars": "4.1.0"
+    }
 }

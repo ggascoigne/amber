@@ -1,17 +1,49 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from 'apollo-boost'
+import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost'
+import { store as gameFilterStore } from 'client/resolvers/gameFilter'
+import { store as urlSourceStore } from 'client/resolvers/urlSource'
+import assignIn from 'lodash/fp/assignIn'
+import flow from 'lodash/fp/flow'
+import map from 'lodash/fp/map'
+import reduce from 'lodash/fp/reduce'
 
-import CreateClientStore from './CreateClientStore'
+const reduceWithDefault = reduce.convert({ cap: false })
 
-// Set up Cache
+// this pattern is based upon https://hackernoon.com/setting-up-apollo-link-state-for-multiple-stores-4cf54fdb1e00
+
+/**
+ * At a given attribute this will merge all objects
+ * in a list of objects found at that attribute.
+ *
+ * Example
+ * const objectList = [
+ *   {defaults: {x: true}},
+ *   {defaults: {y: "foo"}},
+ *   {defaults: {z: 123}}
+ * ]
+ *
+ * // returns {x: true, y: "foo", z: 123}
+ * mergeGet("defaults")(objectList)
+ */
+const mergeGet = attributeName =>
+  flow(
+    // pick a single attribute from each object
+    map(attributeName),
+    // merge all values into a single object
+    reduceWithDefault(assignIn, {})
+  )
+
+const STORES = [gameFilterStore, urlSourceStore]
+
 const cache = new InMemoryCache()
-
-// Set up Local State
-const stateLink = CreateClientStore(cache)
 
 // Initialize the Apollo Client
 const Client = new ApolloClient({
-  link: ApolloLink.from([stateLink, new HttpLink()]),
-  cache: cache
+  link: new HttpLink(),
+  cache: cache,
+  resolvers: {
+    Mutation: mergeGet('mutations')(STORES)
+  }
 })
+cache.writeData({ data: mergeGet('defaults')(STORES) })
 
 export default Client
