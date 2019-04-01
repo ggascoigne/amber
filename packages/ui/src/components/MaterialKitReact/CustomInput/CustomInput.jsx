@@ -41,7 +41,7 @@ function CustomInput({ ...props }) {
     [classes.input]: true,
     [classes.whiteInput]: white
   })
-  var formControlClasses
+  let formControlClasses
   if (formControlProps !== undefined) {
     formControlClasses = classNames(formControlProps.className, classes.formControl)
   } else {

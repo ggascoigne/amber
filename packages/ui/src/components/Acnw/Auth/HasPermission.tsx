@@ -2,10 +2,10 @@
 import * as React from 'react'
 
 import { AuthConsumer } from './authContext'
-import rules from './PermissionRules'
+import rules, { Perms, Rules } from './PermissionRules'
 
-const check = (rules, role, action, data) => {
-  const permissions = rules[role]
+const check = (rules: Rules, role: string, action: Perms, data?: any) => {
+  const permissions = rules[role] as any
   if (!permissions) {
     // role is not present in the rules
     return false
@@ -14,7 +14,6 @@ const check = (rules, role, action, data) => {
   const staticPermissions = permissions.static
 
   if (staticPermissions && staticPermissions.includes(action)) {
-    // static rule not provided for action
     return true
   }
 
@@ -33,17 +32,34 @@ const check = (rules, role, action, data) => {
 }
 
 /*
-export const checkMany = (rules, roles, action, data) => {
+export const checkMany = (
+  rules: Rules,
+  roles: string[],
+  action: Perms,
+  data?: any
+) => {
   return !!find(roles, role => check(rules, role, action, data))
 }
 */
 
-const nullOp = () => null
+interface IPermissionProps {
+  permission: Perms
+  data?: any
+  denied?: () => React.ReactNode
+}
 
-const HasPermission = ({ permission, data, children = null, denied = nullOp }) => {
+const nullOp = (): null => null
+
+interface IAuth {
+  user: {
+    role?: string
+  }
+}
+
+const HasPermission: React.FC<IPermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
   return (
     <AuthConsumer>
-      {({ user: { role } }) => {
+      {({ user: { role } }: IAuth) => {
         return check(rules, role, permission, data) ? children : denied()
       }}
     </AuthConsumer>

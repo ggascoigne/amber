@@ -1,13 +1,15 @@
-import withStyles from '@material-ui/core/styles/withStyles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import classNames from 'classnames'
-import { Game } from 'components/Acnw/Game'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React from 'react'
 
-const styles = {
+import { Game } from '../Game'
+
+const styles = createStyles({
   card: {
     width: 220,
     margin: '30px auto'
@@ -56,32 +58,41 @@ const styles = {
     zIndex: 8,
     transform: 'rotateZ(5deg)'
   }
+})
+
+interface IFakeTile extends WithStyles<typeof styles> {
+  index: number
 }
 
-const FakeTile = ({ index, classes }) => (
-  <Card className={classNames(classes[`card${index}`], classes.fakeCard)}>
-    <CardHeader className={classes[`fakeHeader${index}`]} />
+const FakeTile = ({ index, classes }: IFakeTile) => (
+  <Card className={classNames((classes as any)[`card${index}`], classes.fakeCard)}>
+    <CardHeader className={(classes as any)[`fakeHeader${index}`]} />
     <CardBody />
   </Card>
 )
 
-const _YearTile = ({ classes, year, game, onClick }) => {
-  return (
-    <Card className={classes.card} onClick={onClick}>
-      <CardBody className={classes.cardBody}>
-        <CardHeader className={classes.greyCardHeader}>
-          <Typography variant='h6' component='h2' className={classes.yearTitle}>
-            {year}
-          </Typography>
-        </CardHeader>
-        <div className={classes.gameWrapper}>
-          <Game game={game} year={year} slot={{ id: 1 }} tiny />
-          <FakeTile index={2} classes={classes} />
-          <FakeTile index={3} classes={classes} />
-        </div>
-      </CardBody>
-    </Card>
-  )
+interface IYearTile extends WithStyles<typeof styles> {
+  year: number
+  game: any
+  onClick: any
 }
 
-export const YearTile = withStyles(styles, { withTheme: true })(_YearTile)
+const _YearTile = ({ classes, year, game, onClick }: IYearTile) => (
+  <Card className={classes.card} onClick={onClick}>
+    {' '}
+    <CardBody className={classes.cardBody}>
+      <CardHeader className={classes.greyCardHeader}>
+        <Typography variant='h6' component='h2' className={classes.yearTitle}>
+          {year}
+        </Typography>
+      </CardHeader>
+      <div className={classes.gameWrapper}>
+        <Game game={game} year={year} slot={{ id: 1 }} tiny />
+        <FakeTile index={2} classes={classes} />
+        <FakeTile index={3} classes={classes} />
+      </div>
+    </CardBody>
+  </Card>
+)
+
+export const YearTile = withStyles(styles)(_YearTile)

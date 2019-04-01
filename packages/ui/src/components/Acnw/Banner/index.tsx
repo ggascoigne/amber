@@ -1,21 +1,23 @@
-import withStyles from '@material-ui/core/styles/withStyles'
+import { Theme, createStyles } from '@material-ui/core'
+import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import configurationService from 'utils/ConfigurationService'
 
-const styles = theme => ({
-  banner: {
-    maxWidth: '100%',
-    width: 'auto',
-    height: 'auto',
-    padding: '5px 5px 0px 12px',
-    marginBottom: '-12px'
-  }
-})
+const styles = (theme: Theme) =>
+  createStyles({
+    banner: {
+      maxWidth: '100%',
+      width: 'auto',
+      height: 'auto',
+      padding: '5px 5px 0px 12px',
+      marginBottom: '-12px'
+    }
+  })
 
-const Logo = ({ dates, className }) => {
+const Logo: React.FC<{ dates: string; className: string }> = ({ dates, className }) => {
   const background = '#ffffff'
   const purple = '#31107b'
   const red = '#ce0000'
@@ -287,12 +289,16 @@ const Logo = ({ dates, className }) => {
   )
 }
 
-const WrappedLogo = ({ classes, to }) => {
+interface BannerProps extends WithStyles<typeof styles> {
+  to?: string
+}
+
+const WrappedLogo: React.FC<BannerProps> = ({ classes, to }) => {
   const logo = <Logo dates={configurationService.dateRange} className={classes.banner} />
   return to ? <Link to={to}>{logo}</Link> : logo
 }
 
-const BannerImage = props => {
+const BannerImage: React.FC<BannerProps> = props => {
   const { classes, to } = props
   return (
     <GridContainer justify='center'>

@@ -1,8 +1,8 @@
 import auth0 from 'auth0-js'
+import { AUTH_CONFIG } from 'auth0-variables'
 import React, { Component } from 'react'
 import { toSnakeCase } from 'utils/object'
 
-import { AUTH_CONFIG } from '../../../auth0-variables'
 import { AuthProvider } from './authContext'
 
 const authExpirationKey = 'acnw:login:expiresAt'

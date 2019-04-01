@@ -40,6 +40,7 @@
     "import-sort-cli": "^6.0.0",
     "import-sort-parser-babylon": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
+    "import-sort-parser-typescript": "^6.0.0",
     "lerna": "^3.13.1",
     "lint-staged": "^8.1.5",
     "meow": "^5.0.0",
@@ -53,9 +54,11 @@
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
     "format": "yarn format:sort-imports && yarn format:prettier",
-    "format:prettier": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,css,scss,json}'",
-    "format:sort-imports": "import-sort --write 'packages/*/{src,scripts,db}/**/*.{js,jsx}'",
-    "lint": "lerna exec --parallel yarn lint",
+    "format:prettier": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
+    "format:sort-imports": "import-sort --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx}'",
+    "lint": "yarn lint:server && yarn lint:ui",
+    "lint:server": "lerna exec --scope server yarn lint",
+    "lint:ui": "lerna exec --scope ui yarn lint",
     "start": "lerna exec --parallel yarn start",
     "start:ui": "yarn db:start && lerna exec --scope ui yarn start",
     "start:production": "lerna exec --scope ui yarn build && lerna exec --scope server yarn start:production",
@@ -63,7 +66,7 @@
     "test": "yarn db:start && lerna exec --concurrency 1 -- yarn test",
     "test:ui": "yarn db:start && lerna exec --scope ui yarn test",
     "test:server": "yarn db:start && lerna exec --scope server yarn test",
-    "saveSchema": "./scripts/saveSchema.js > packages/ui/src/client/schema.graphql"
+    "saveSchema": "lerna exec --scope ui yarn saveSchema"
   },
   "prettier": {
     "printWidth": 120,
@@ -72,7 +75,7 @@
     "jsxSingleQuote": true
   },
   "importSort": {
-    ".js, .jsx": {
+    ".js, .jsx, .ts, .tsx": {
       "style": "module"
     }
   },
@@ -83,10 +86,16 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "packages/server/src/*.{js,jsx}": [
       "import-sort --write",
       "prettier --no-color --write",
-      "yarn lint",
+      "yarn lint:server",
+      "git add"
+    ],
+    "packages/ui/src/*.{js,jsx,ts,tsx}": [
+      "import-sort --write",
+      "prettier --no-color --write",
+      "yarn lint:ui",
       "git add"
     ],
     "*.{css,scss}": [
@@ -95,6 +104,7 @@
     ]
   },
   "resolutions": {
-    "js-yaml": "^3.13.0"
+    "js-yaml": "^3.13.0",
+    "**/graphql": "14.2.0"
   }
 }

@@ -1,13 +1,24 @@
+import { slotFields } from '__generated__/slotFields'
+import { ApolloCache } from 'apollo-cache'
 import { SLOT_FRAGMENT } from 'client/fragments'
 import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
-import PropTypes from 'prop-types'
 import React from 'react'
-import { graphql } from 'react-apollo'
+import { ChildDataProps, graphql } from 'react-apollo'
 import compose from 'recompose/compose'
 import { dropUnset } from 'utils/dropUnset'
 
-const gameFilterDefaults = {
+type IGameFilter = {
+  gameFilter: IGameFilterDetails
+}
+
+type IGameFilterDetails = {
+  year: number
+  slot: slotFields
+  __typename?: string
+}
+
+const gameFilterDefaults: IGameFilter = {
   gameFilter: {
     year: 2017,
     slot: {
@@ -39,16 +50,20 @@ export const updateGameFilterQuery = gql`
   }
 `
 
-const updateGameFilter = (_obj, data, { cache }) => {
-  const currentData = cache.readQuery({ query: gameFilterQuery })
+const updateGameFilter = (_obj: any, data: IGameFilter, { cache }: { cache: ApolloCache<{}> }): any => {
+  const currentData = cache.readQuery({ query: gameFilterQuery }) as IGameFilter
   cache.writeData({ data: { gameFilter: { ...currentData.gameFilter, ...dropUnset(data) } } })
   return null
 }
 
-export const GameFilterQuery = ({ children }) => {
+interface IGameFilterQuery {
+  children(props: IGameFilterDetails): React.ReactNode
+}
+
+export const GameFilterQuery = ({ children }: IGameFilterQuery) => {
   return (
     <GqlQuery query={gameFilterQuery} errorPolicy='all'>
-      {data => {
+      {(data: IGameFilter) => {
         const {
           gameFilter: { year, slot }
         } = data
@@ -58,10 +73,6 @@ export const GameFilterQuery = ({ children }) => {
   )
 }
 
-GameFilterQuery.propTypes = {
-  children: PropTypes.func.isRequired
-}
-
 export const store = {
   defaults: gameFilterDefaults,
   mutations: {
@@ -69,14 +80,24 @@ export const store = {
   }
 }
 
-const gameFilterHandler = {
-  props: ({ ownProps, data: { gameFilter = gameFilterDefaults } }) => ({
-    ...ownProps,
-    gameFilter
-  })
-}
+type ChildProps = ChildDataProps<{}, IGameFilter, {}>
+
+const withGameFilterQuery = graphql<{}, IGameFilter, {}, ChildProps>(gameFilterQuery, {
+  props: ({ data, ownProps }) => {
+    const { gameFilter = gameFilterDefaults } = data
+    return {
+      data, // only here to shut up typescript
+      ...ownProps,
+      gameFilter
+    }
+  }
+})
 
 export const withGameFilter = compose(
-  graphql(gameFilterQuery, gameFilterHandler),
+  withGameFilterQuery,
   graphql(updateGameFilterQuery, { name: 'updateGameFilterMutation' })
 )
+
+export interface WithGameFilter extends IGameFilter {
+  updateGameFilterMutation: (options: { variables: IGameFilterDetails }) => void
+}

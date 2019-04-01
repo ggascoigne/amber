@@ -1,4 +1,5 @@
-import { withStyles } from '@material-ui/core'
+import { GetGames_games_edges_node } from '__generated__/GetGames'
+import { WithStyles, createStyles, withStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import { LookupValue } from 'components/Acnw/Lookup'
 import Card from 'components/MaterialKitReact/Card/Card'
@@ -10,7 +11,7 @@ import React from 'react'
 import { Waypoint } from 'react-waypoint'
 import maskEmail from 'utils/maskEmail'
 
-const styles = {
+const styles = createStyles({
   card: {
     marginBottom: 50
   },
@@ -36,9 +37,9 @@ const styles = {
     overflow: 'hidden',
     height: 200
   }
-}
+})
 
-const MultiLine = ({ text }) => (
+const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   <>
     {text.split('\n').map((i, key) => (
       <p key={key}>{i}</p>
@@ -46,13 +47,23 @@ const MultiLine = ({ text }) => (
   </>
 )
 
-const HeaderContent = ({ name, classes, tiny }) => (
+const HeaderContent: React.FC<WithStyles<typeof styles> & { name: string; tiny: boolean }> = ({
+  name,
+  classes,
+  tiny
+}) => (
   <CardHeader color='info'>
     <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
   </CardHeader>
 )
 
-const Field = ({ label, classes, children, small, tiny }) => {
+const Field: React.FC<WithStyles<typeof styles> & { label: string; small?: boolean; tiny: boolean }> = ({
+  label,
+  classes,
+  children,
+  small,
+  tiny
+}) => {
   return (
     <>
       <GridItem xs={12} sm={2} className={classNames(classes.gridItem, classes.label)}>
@@ -65,7 +76,15 @@ const Field = ({ label, classes, children, small, tiny }) => {
   )
 }
 
-const _Game = ({ classes, game, year, slot, onEnter, tiny }) => {
+interface IGame extends WithStyles<typeof styles> {
+  game: GetGames_games_edges_node
+  year: number
+  slot: { id: number }
+  onEnter?: any
+  tiny?: boolean
+}
+
+const _Game: React.FC<IGame> = ({ classes, game, year, slot, onEnter, tiny }) => {
   const {
     id,
     name,
