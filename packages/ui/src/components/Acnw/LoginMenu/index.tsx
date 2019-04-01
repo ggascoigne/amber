@@ -90,7 +90,7 @@ const MenuButton: React.FC<IMenuButton> = ({ classes, small, user }) => {
 }
 
 interface ILoginMenu extends WithStyles<typeof styles> {
-  small: boolean
+  small?: boolean
 }
 
 const _LoginMenu: React.FC<ILoginMenu> = ({ classes, small }) => (

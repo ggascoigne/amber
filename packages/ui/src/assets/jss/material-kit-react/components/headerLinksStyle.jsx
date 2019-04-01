@@ -1,4 +1,4 @@
-import { defaultFont } from 'assets/jss/material-kit-react.jsx'
+import { defaultFont } from 'assets/jss/material-kit-react'
 import tooltip from 'assets/jss/material-kit-react/tooltipsStyle.jsx'
 
 const headerLinksStyle = theme => ({

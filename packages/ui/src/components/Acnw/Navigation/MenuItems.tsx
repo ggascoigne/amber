@@ -20,7 +20,6 @@ const _MenuItems: React.FC<IMenuItems> = ({ menuItems, location }) => {
   } else {
     return (
       <List>
-        <ListItem>{location.pathname}</ListItem>
         {menuItems
           // only display routes with a label
           .filter(menuItem => menuItem.label)

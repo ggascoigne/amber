@@ -1,4 +1,4 @@
-import { conatinerFluid } from 'assets/jss/material-kit-react.jsx'
+import { conatinerFluid } from 'assets/jss/material-kit-react'
 import imagesStyle from 'assets/jss/material-kit-react/imagesStyles.jsx'
 
 const exampleStyle = {

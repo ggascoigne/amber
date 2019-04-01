@@ -1,7 +1,7 @@
 import auth0 from 'auth0-js'
 import { AUTH_CONFIG } from 'auth0-variables'
 import { AuthConsumer } from 'components/Acnw/Auth'
-import React from 'react'
+import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 
 const auth = new auth0.WebAuth({
@@ -12,13 +12,18 @@ const auth = new auth0.WebAuth({
   responseType: 'token id_token'
 })
 
-export const CallbackPage = props => (
+interface ICallbackPage {
+  location: {
+    hash: string
+  }
+}
+export const CallbackPage: React.FC<ICallbackPage> = props => (
   <AuthConsumer>
     {({ handleAuthentication }) => {
       if (/access_token|id_token|error/.test(props.location.hash)) {
         handleAuthentication()
       }
-      auth.popup.callback()
+      auth.popup.callback({ hash: props.location.hash })
       return <Redirect to='/' />
     }}
   </AuthConsumer>

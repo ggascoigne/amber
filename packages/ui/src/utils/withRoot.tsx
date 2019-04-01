@@ -4,7 +4,7 @@ import purple from '@material-ui/core/colors/purple'
 */
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -26,8 +26,8 @@ const theme = createMuiTheme({
   }*/
 })
 
-function withRoot(Component) {
-  function WithRoot(props) {
+function withRoot(Component: React.ComponentType) {
+  function WithRoot(props: any): ReactElement {
     // MuiThemeProvider makes the theme available down the React tree
     // thanks to React context.
     return (

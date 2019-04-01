@@ -1,5 +1,5 @@
 import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
-import { dangerColor } from 'assets/jss/material-kit-react.jsx'
+import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Acnw/Auth'
 import { Banner } from 'components/Acnw/Banner'

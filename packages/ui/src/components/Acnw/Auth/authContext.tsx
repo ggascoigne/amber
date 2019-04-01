@@ -15,6 +15,7 @@ export interface IAuthConsumer {
   accessToken: string
   initiateLogin: () => void
   logout: () => void
+  handleAuthentication?: () => void
 }
 
 const authContext = React.createContext<IAuthConsumer>({

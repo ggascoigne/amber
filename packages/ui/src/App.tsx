@@ -5,11 +5,11 @@ import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import { withStyles } from '@material-ui/core/styles'
+import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
-import { defaultFont } from 'assets/jss/material-kit-react.jsx'
+import { defaultFont } from 'assets/jss/material-kit-react'
 import { Banner } from 'components/Acnw/Banner'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
 import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
@@ -19,70 +19,77 @@ import withRoot from './utils/withRoot'
 
 const drawerWidth = 240
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    minHeight: '100vh'
-  },
-  drawer: {
-    [theme.breakpoints.up('md')]: {
+const styles = (theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+      minHeight: '100vh'
+    },
+    drawer: {
+      [theme.breakpoints.up('md')]: {
+        width: drawerWidth,
+        flexShrink: 0
+      }
+    },
+    appBar: {
+      flex: '1 1 auto',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginLeft: drawerWidth,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`
+      }
+    },
+    menuButton: {
+      marginRight: 20,
+      [theme.breakpoints.up('md')]: {
+        display: 'none'
+      }
+    },
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
       width: drawerWidth,
-      flexShrink: 0
+      overflowX: 'hidden'
+    },
+    content: {
+      minHeight: '100vh',
+      width: '100%',
+      flexGrow: 1,
+      paddingTop: theme.spacing.unit * 3,
+      paddingBottom: theme.spacing.unit * 3
+    },
+    list: {
+      ...defaultFont,
+      fontSize: '14px',
+      margin: 0,
+      paddingLeft: '0',
+      listStyle: 'none',
+      paddingTop: '0',
+      paddingBottom: '0',
+      color: 'inherit'
+    },
+    listItem: {
+      float: 'left',
+      color: 'inherit',
+      position: 'relative',
+      display: 'block',
+      width: 'auto',
+      margin: '0',
+      padding: '0'
+    },
+    listItemText: {
+      padding: '0 !important'
     }
-  },
-  appBar: {
-    flex: '1 1 auto',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`
-    }
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up('md')]: {
-      display: 'none'
-    }
-  },
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-    overflowX: 'hidden'
-  },
-  content: {
-    minHeight: '100vh',
-    width: '100%',
-    flexGrow: 1,
-    paddingTop: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit * 3
-  },
-  list: {
-    ...defaultFont,
-    fontSize: '14px',
-    margin: 0,
-    paddingLeft: '0',
-    listStyle: 'none',
-    paddingTop: '0',
-    paddingBottom: '0',
-    color: 'inherit'
-  },
-  listItem: {
-    float: 'left',
-    color: 'inherit',
-    position: 'relative',
-    display: 'block',
-    width: 'auto',
-    margin: '0',
-    padding: '0'
-  },
-  listItemText: {
-    padding: '0 !important'
-  }
-})
+  })
 
-class App extends Component {
+interface IApp extends WithStyles<typeof styles, true> {}
+
+interface IAppState {
+  mobileOpen: boolean
+}
+
+class App extends Component<IApp, IAppState> {
   state = {
     mobileOpen: false
   }
@@ -104,7 +111,7 @@ class App extends Component {
       </div>
     )
 
-    const rightLinks = props => (
+    const rightLinks: React.FC<{ small?: boolean }> = props => (
       <List className={classes.list}>
         <ListItem className={classes.listItem}>
           <LoginMenu {...props} />
@@ -135,7 +142,6 @@ class App extends Component {
         <nav className={classes.drawer}>
           <Hidden mdUp>
             <Drawer
-              container={this.props.container}
               variant='temporary'
               anchor={theme.direction === 'rtl' ? 'right' : 'left'}
               open={this.state.mobileOpen}

@@ -1,4 +1,4 @@
-import { dangerColor, defaultFont, primaryColor, successColor } from 'assets/jss/material-kit-react.jsx'
+import { dangerColor, defaultFont, primaryColor, successColor } from 'assets/jss/material-kit-react'
 
 const customInputStyle = {
   disabled: {

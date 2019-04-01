@@ -59,8 +59,8 @@ interface IAuth {
 const HasPermission: React.FC<IPermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
   return (
     <AuthConsumer>
-      {({ user: { role } }: IAuth) => {
-        return check(rules, role, permission, data) ? children : denied()
+      {({ user }: IAuth) => {
+        return check(rules, user && user.role ? user.role : undefined, permission, data) ? children : denied()
       }}
     </AuthConsumer>
   )

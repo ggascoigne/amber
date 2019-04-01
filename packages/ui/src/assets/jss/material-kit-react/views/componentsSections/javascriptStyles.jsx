@@ -1,4 +1,4 @@
-import { container, title } from 'assets/jss/material-kit-react.jsx'
+import { container, title } from 'assets/jss/material-kit-react'
 import modalStyle from 'assets/jss/material-kit-react/modalStyle.jsx'
 import popoverStyles from 'assets/jss/material-kit-react/popoverStyles.jsx'
 import tooltipsStyle from 'assets/jss/material-kit-react/tooltipsStyle.jsx'

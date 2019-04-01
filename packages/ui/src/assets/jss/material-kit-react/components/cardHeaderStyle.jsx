@@ -4,7 +4,7 @@ import {
   primaryCardHeader,
   successCardHeader,
   warningCardHeader
-} from 'assets/jss/material-kit-react.jsx'
+} from 'assets/jss/material-kit-react'
 
 const cardHeaderStyle = {
   cardHeader: {

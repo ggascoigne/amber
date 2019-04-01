@@ -10,7 +10,7 @@ import {
   successColor,
   transition,
   warningColor
-} from 'assets/jss/material-kit-react.jsx'
+} from 'assets/jss/material-kit-react'
 
 const headerStyle = {
   appBar: {

@@ -2,8 +2,8 @@ import getOrdinalWord from './ordinal'
 
 describe('ordinals', () => {
   const data = [
-    { input: 0, output: 0 },
-    { input: 100, output: 100 },
+    { input: 0, output: '0' },
+    { input: 100, output: '100' },
     { input: 1, output: 'first' },
     { input: 10, output: 'tenth' },
     { input: 19, output: 'nineteenth' },

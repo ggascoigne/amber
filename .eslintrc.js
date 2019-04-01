@@ -48,7 +48,8 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         // these are somewhat open to debate but match our current code.
         '@typescript-eslint/interface-name-prefix': 'off',
-        '@typescript-eslint/prefer-interface': 'off'
+        '@typescript-eslint/prefer-interface': 'off',
+        '@typescript-eslint/no-empty-interface': 'off'
       }
     }
   ]

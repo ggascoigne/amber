@@ -6,6 +6,7 @@ import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'
 import reduce from 'lodash/fp/reduce'
 
+// @ts-ignore
 const reduceWithDefault = reduce.convert({ cap: false })
 
 // this pattern is based upon https://hackernoon.com/setting-up-apollo-link-state-for-multiple-stores-4cf54fdb1e00
@@ -24,7 +25,7 @@ const reduceWithDefault = reduce.convert({ cap: false })
  * // returns {x: true, y: "foo", z: 123}
  * mergeGet("defaults")(objectList)
  */
-const mergeGet = attributeName =>
+const mergeGet = (attributeName: any) =>
   flow(
     // pick a single attribute from each object
     map(attributeName),
@@ -40,6 +41,7 @@ const cache = new InMemoryCache()
 const Client = new ApolloClient({
   link: new HttpLink(),
   cache: cache,
+  // @ts-ignore
   resolvers: {
     Mutation: mergeGet('mutations')(STORES)
   }

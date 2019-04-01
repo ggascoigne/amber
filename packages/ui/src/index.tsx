@@ -13,7 +13,7 @@ import registerServiceWorker from './utils/registerServiceWorker'
 
 const rootElement = document.getElementById('root')
 
-const render = Component => {
+const render = (Component: React.ComponentType) => {
   return ReactDOM.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
