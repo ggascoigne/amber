@@ -100,6 +100,18 @@ input BooleanFilter {
 
   # Not included in the specified list.
   notIn: [Boolean!]
+
+  # Less than the specified value.
+  lessThan: Boolean
+
+  # Less than or equal to the specified value.
+  lessThanOrEqualTo: Boolean
+
+  # Greater than the specified value.
+  greaterThan: Boolean
+
+  # Greater than or equal to the specified value.
+  greaterThanOrEqualTo: Boolean
 }
 
 # All input for the create `GameAssignment` mutation.
@@ -814,14 +826,14 @@ input DatetimeFilter {
   greaterThanOrEqualTo: Datetime
 }
 
-# All input for the `deleteGameAssignmentByMemberIdAndGameIdAndGm` mutation.
-input DeleteGameAssignmentByMemberIdAndGameIdAndGmInput {
+# All input for the `deleteGameAssignmentByNodeId` mutation.
+input DeleteGameAssignmentByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  memberId: Int!
-  gameId: Int!
-  gm: Int!
+
+  # The globally unique `ID` which will identify a single `GameAssignment` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteGameAssignment` mutation.
@@ -829,9 +841,9 @@ input DeleteGameAssignmentInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `GameAssignment` to be deleted.
-  nodeId: ID!
+  memberId: Int!
+  gameId: Int!
+  gm: Int!
 }
 
 # The output of our delete `GameAssignment` mutation.
@@ -842,7 +854,7 @@ type DeleteGameAssignmentPayload {
 
   # The `GameAssignment` that was deleted by this mutation.
   gameAssignment: GameAssignment
-  deletedGameAssignmentId: ID
+  deletedGameAssignmentNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -860,20 +872,24 @@ type DeleteGameAssignmentPayload {
   ): GameAssignmentsEdge
 }
 
-# All input for the `deleteGameById` mutation.
-input DeleteGameByIdInput {
+# All input for the `deleteGameByNodeId` mutation.
+input DeleteGameByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Game` to be deleted.
+  nodeId: ID!
 }
 
-# All input for the `deleteGameChoiceById` mutation.
-input DeleteGameChoiceByIdInput {
+# All input for the `deleteGameChoiceByNodeId` mutation.
+input DeleteGameChoiceByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `GameChoice` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteGameChoice` mutation.
@@ -881,9 +897,7 @@ input DeleteGameChoiceInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `GameChoice` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `GameChoice` mutation.
@@ -894,7 +908,7 @@ type DeleteGameChoicePayload {
 
   # The `GameChoice` that was deleted by this mutation.
   gameChoice: GameChoice
-  deletedGameChoiceId: ID
+  deletedGameChoiceNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -920,9 +934,7 @@ input DeleteGameInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Game` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Game` mutation.
@@ -933,7 +945,7 @@ type DeleteGamePayload {
 
   # The `Game` that was deleted by this mutation.
   game: Game
-  deletedGameId: ID
+  deletedGameNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -954,12 +966,14 @@ type DeleteGamePayload {
   ): GamesEdge
 }
 
-# All input for the `deleteGameSubmissionById` mutation.
-input DeleteGameSubmissionByIdInput {
+# All input for the `deleteGameSubmissionByNodeId` mutation.
+input DeleteGameSubmissionByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `GameSubmission` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteGameSubmission` mutation.
@@ -967,9 +981,7 @@ input DeleteGameSubmissionInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `GameSubmission` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `GameSubmission` mutation.
@@ -980,7 +992,7 @@ type DeleteGameSubmissionPayload {
 
   # The `GameSubmission` that was deleted by this mutation.
   gameSubmission: GameSubmission
-  deletedGameSubmissionId: ID
+  deletedGameSubmissionNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -995,20 +1007,24 @@ type DeleteGameSubmissionPayload {
   ): GameSubmissionsEdge
 }
 
-# All input for the `deleteHotelRoomById` mutation.
-input DeleteHotelRoomByIdInput {
+# All input for the `deleteHotelRoomByNodeId` mutation.
+input DeleteHotelRoomByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `HotelRoom` to be deleted.
+  nodeId: ID!
 }
 
-# All input for the `deleteHotelRoomDetailById` mutation.
-input DeleteHotelRoomDetailByIdInput {
+# All input for the `deleteHotelRoomDetailByNodeId` mutation.
+input DeleteHotelRoomDetailByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: BigInt!
+
+  # The globally unique `ID` which will identify a single `HotelRoomDetail` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteHotelRoomDetail` mutation.
@@ -1016,9 +1032,7 @@ input DeleteHotelRoomDetailInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `HotelRoomDetail` to be deleted.
-  nodeId: ID!
+  id: BigInt!
 }
 
 # The output of our delete `HotelRoomDetail` mutation.
@@ -1029,7 +1043,7 @@ type DeleteHotelRoomDetailPayload {
 
   # The `HotelRoomDetail` that was deleted by this mutation.
   hotelRoomDetail: HotelRoomDetail
-  deletedHotelRoomDetailId: ID
+  deletedHotelRoomDetailNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1046,9 +1060,7 @@ input DeleteHotelRoomInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `HotelRoom` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `HotelRoom` mutation.
@@ -1059,7 +1071,7 @@ type DeleteHotelRoomPayload {
 
   # The `HotelRoom` that was deleted by this mutation.
   hotelRoom: HotelRoom
-  deletedHotelRoomId: ID
+  deletedHotelRoomNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1071,12 +1083,14 @@ type DeleteHotelRoomPayload {
   ): HotelRoomsEdge
 }
 
-# All input for the `deleteLookupById` mutation.
-input DeleteLookupByIdInput {
+# All input for the `deleteLookupByNodeId` mutation.
+input DeleteLookupByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Lookup` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteLookupByRealm` mutation.
@@ -1092,9 +1106,7 @@ input DeleteLookupInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Lookup` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Lookup` mutation.
@@ -1105,7 +1117,7 @@ type DeleteLookupPayload {
 
   # The `Lookup` that was deleted by this mutation.
   lookup: Lookup
-  deletedLookupId: ID
+  deletedLookupNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1117,14 +1129,6 @@ type DeleteLookupPayload {
   ): LookupsEdge
 }
 
-# All input for the `deleteLookupValueById` mutation.
-input DeleteLookupValueByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-  id: Int!
-}
-
 # All input for the `deleteLookupValueByLookupIdAndCode` mutation.
 input DeleteLookupValueByLookupIdAndCodeInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
@@ -1134,14 +1138,22 @@ input DeleteLookupValueByLookupIdAndCodeInput {
   code: String!
 }
 
-# All input for the `deleteLookupValue` mutation.
-input DeleteLookupValueInput {
+# All input for the `deleteLookupValueByNodeId` mutation.
+input DeleteLookupValueByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
   # The globally unique `ID` which will identify a single `LookupValue` to be deleted.
   nodeId: ID!
+}
+
+# All input for the `deleteLookupValue` mutation.
+input DeleteLookupValueInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  id: Int!
 }
 
 # The output of our delete `LookupValue` mutation.
@@ -1152,7 +1164,7 @@ type DeleteLookupValuePayload {
 
   # The `LookupValue` that was deleted by this mutation.
   lookupValue: LookupValue
-  deletedLookupValueId: ID
+  deletedLookupValueNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1167,13 +1179,14 @@ type DeleteLookupValuePayload {
   ): LookupValuesEdge
 }
 
-# All input for the `deleteMemberHotelRoomAssignmentByMemberIdAndHotelRoomId` mutation.
-input DeleteMemberHotelRoomAssignmentByMemberIdAndHotelRoomIdInput {
+# All input for the `deleteMemberHotelRoomAssignmentByNodeId` mutation.
+input DeleteMemberHotelRoomAssignmentByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  memberId: BigInt!
-  hotelRoomId: BigInt!
+
+  # The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteMemberHotelRoomAssignment` mutation.
@@ -1181,9 +1194,8 @@ input DeleteMemberHotelRoomAssignmentInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be deleted.
-  nodeId: ID!
+  memberId: BigInt!
+  hotelRoomId: BigInt!
 }
 
 # The output of our delete `MemberHotelRoomAssignment` mutation.
@@ -1194,7 +1206,7 @@ type DeleteMemberHotelRoomAssignmentPayload {
 
   # The `MemberHotelRoomAssignment` that was deleted by this mutation.
   memberHotelRoomAssignment: MemberHotelRoomAssignment
-  deletedMemberHotelRoomAssignmentId: ID
+  deletedMemberHotelRoomAssignmentNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1212,12 +1224,14 @@ type DeleteMemberHotelRoomAssignmentPayload {
   ): MemberHotelRoomAssignmentsEdge
 }
 
-# All input for the `deleteMembershipById` mutation.
-input DeleteMembershipByIdInput {
+# All input for the `deleteMembershipByNodeId` mutation.
+input DeleteMembershipByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Membership` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteMembership` mutation.
@@ -1225,9 +1239,7 @@ input DeleteMembershipInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Membership` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Membership` mutation.
@@ -1238,7 +1250,7 @@ type DeleteMembershipPayload {
 
   # The `Membership` that was deleted by this mutation.
   membership: Membership
-  deletedMembershipId: ID
+  deletedMembershipNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1264,12 +1276,14 @@ input DeleteProfileByEmailInput {
   email: String!
 }
 
-# All input for the `deleteProfileById` mutation.
-input DeleteProfileByIdInput {
+# All input for the `deleteProfileByNodeId` mutation.
+input DeleteProfileByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Profile` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteProfile` mutation.
@@ -1277,9 +1291,7 @@ input DeleteProfileInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Profile` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Profile` mutation.
@@ -1290,7 +1302,7 @@ type DeleteProfilePayload {
 
   # The `Profile` that was deleted by this mutation.
   profile: Profile
-  deletedProfileId: ID
+  deletedProfileNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1302,12 +1314,14 @@ type DeleteProfilePayload {
   ): ProfilesEdge
 }
 
-# All input for the `deleteRegistrationCodeById` mutation.
-input DeleteRegistrationCodeByIdInput {
+# All input for the `deleteRegistrationCodeByNodeId` mutation.
+input DeleteRegistrationCodeByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `RegistrationCode` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteRegistrationCode` mutation.
@@ -1315,9 +1329,7 @@ input DeleteRegistrationCodeInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `RegistrationCode` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `RegistrationCode` mutation.
@@ -1328,7 +1340,7 @@ type DeleteRegistrationCodePayload {
 
   # The `RegistrationCode` that was deleted by this mutation.
   registrationCode: RegistrationCode
-  deletedRegistrationCodeId: ID
+  deletedRegistrationCodeNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1348,12 +1360,14 @@ input DeleteRoleByAuthorityInput {
   authority: String!
 }
 
-# All input for the `deleteRoleById` mutation.
-input DeleteRoleByIdInput {
+# All input for the `deleteRoleByNodeId` mutation.
+input DeleteRoleByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Role` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteRole` mutation.
@@ -1361,9 +1375,7 @@ input DeleteRoleInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Role` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Role` mutation.
@@ -1374,7 +1386,7 @@ type DeleteRolePayload {
 
   # The `Role` that was deleted by this mutation.
   role: Role
-  deletedRoleId: ID
+  deletedRoleNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1386,12 +1398,14 @@ type DeleteRolePayload {
   ): RolesEdge
 }
 
-# All input for the `deleteRoomById` mutation.
-input DeleteRoomByIdInput {
+# All input for the `deleteRoomByNodeId` mutation.
+input DeleteRoomByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Room` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteRoom` mutation.
@@ -1399,9 +1413,7 @@ input DeleteRoomInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Room` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Room` mutation.
@@ -1412,7 +1424,7 @@ type DeleteRoomPayload {
 
   # The `Room` that was deleted by this mutation.
   room: Room
-  deletedRoomId: ID
+  deletedRoomNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1424,12 +1436,14 @@ type DeleteRoomPayload {
   ): RoomsEdge
 }
 
-# All input for the `deleteSettingById` mutation.
-input DeleteSettingByIdInput {
+# All input for the `deleteSettingByNodeId` mutation.
+input DeleteSettingByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Setting` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteSetting` mutation.
@@ -1437,9 +1451,7 @@ input DeleteSettingInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Setting` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Setting` mutation.
@@ -1450,7 +1462,7 @@ type DeleteSettingPayload {
 
   # The `Setting` that was deleted by this mutation.
   setting: Setting
-  deletedSettingId: ID
+  deletedSettingNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1462,16 +1474,8 @@ type DeleteSettingPayload {
   ): SettingsEdge
 }
 
-# All input for the `deleteShirtOrderById` mutation.
-input DeleteShirtOrderByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-  id: Int!
-}
-
-# All input for the `deleteShirtOrder` mutation.
-input DeleteShirtOrderInput {
+# All input for the `deleteShirtOrderByNodeId` mutation.
+input DeleteShirtOrderByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -1480,12 +1484,22 @@ input DeleteShirtOrderInput {
   nodeId: ID!
 }
 
-# All input for the `deleteShirtOrderItemById` mutation.
-input DeleteShirtOrderItemByIdInput {
+# All input for the `deleteShirtOrder` mutation.
+input DeleteShirtOrderInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
   id: Int!
+}
+
+# All input for the `deleteShirtOrderItemByNodeId` mutation.
+input DeleteShirtOrderItemByNodeIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `ShirtOrderItem` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteShirtOrderItem` mutation.
@@ -1493,9 +1507,7 @@ input DeleteShirtOrderItemInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `ShirtOrderItem` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `ShirtOrderItem` mutation.
@@ -1506,7 +1518,7 @@ type DeleteShirtOrderItemPayload {
 
   # The `ShirtOrderItem` that was deleted by this mutation.
   shirtOrderItem: ShirtOrderItem
-  deletedShirtOrderItemId: ID
+  deletedShirtOrderItemNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1529,7 +1541,7 @@ type DeleteShirtOrderPayload {
 
   # The `ShirtOrder` that was deleted by this mutation.
   shirtOrder: ShirtOrder
-  deletedShirtOrderId: ID
+  deletedShirtOrderNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1544,12 +1556,14 @@ type DeleteShirtOrderPayload {
   ): ShirtOrdersEdge
 }
 
-# All input for the `deleteSlotById` mutation.
-input DeleteSlotByIdInput {
+# All input for the `deleteSlotByNodeId` mutation.
+input DeleteSlotByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Slot` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteSlot` mutation.
@@ -1557,9 +1571,7 @@ input DeleteSlotInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Slot` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Slot` mutation.
@@ -1570,7 +1582,7 @@ type DeleteSlotPayload {
 
   # The `Slot` that was deleted by this mutation.
   slot: Slot
-  deletedSlotId: ID
+  deletedSlotNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1582,12 +1594,14 @@ type DeleteSlotPayload {
   ): SlotsEdge
 }
 
-# All input for the `deleteTokenById` mutation.
-input DeleteTokenByIdInput {
+# All input for the `deleteTokenByNodeId` mutation.
+input DeleteTokenByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `Token` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteToken` mutation.
@@ -1595,9 +1609,7 @@ input DeleteTokenInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `Token` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `Token` mutation.
@@ -1608,7 +1620,7 @@ type DeleteTokenPayload {
 
   # The `Token` that was deleted by this mutation.
   token: Token
-  deletedTokenId: ID
+  deletedTokenNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1623,12 +1635,14 @@ type DeleteTokenPayload {
   ): TokensEdge
 }
 
-# All input for the `deleteUserById` mutation.
-input DeleteUserByIdInput {
+# All input for the `deleteUserByNodeId` mutation.
+input DeleteUserByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  id: Int!
+
+  # The globally unique `ID` which will identify a single `User` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteUserByUsername` mutation.
@@ -1644,9 +1658,7 @@ input DeleteUserInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `User` to be deleted.
-  nodeId: ID!
+  id: Int!
 }
 
 # The output of our delete `User` mutation.
@@ -1657,7 +1669,7 @@ type DeleteUserPayload {
 
   # The `User` that was deleted by this mutation.
   user: User
-  deletedUserId: ID
+  deletedUserNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -1672,13 +1684,14 @@ type DeleteUserPayload {
   ): UsersEdge
 }
 
-# All input for the `deleteUserRoleByRoleIdAndUserId` mutation.
-input DeleteUserRoleByRoleIdAndUserIdInput {
+# All input for the `deleteUserRoleByNodeId` mutation.
+input DeleteUserRoleByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-  roleId: Int!
-  userId: Int!
+
+  # The globally unique `ID` which will identify a single `UserRole` to be deleted.
+  nodeId: ID!
 }
 
 # All input for the `deleteUserRole` mutation.
@@ -1686,9 +1699,8 @@ input DeleteUserRoleInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
-
-  # The globally unique `ID` which will identify a single `UserRole` to be deleted.
-  nodeId: ID!
+  roleId: Int!
+  userId: Int!
 }
 
 # The output of our delete `UserRole` mutation.
@@ -1699,7 +1711,7 @@ type DeleteUserRolePayload {
 
   # The `UserRole` that was deleted by this mutation.
   userRole: UserRole
-  deletedUserRoleId: ID
+  deletedUserRoleNodeId: ID
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
@@ -4338,87 +4350,87 @@ type Mutation {
   ): CreateUserRolePayload
 
   # Updates a single `Game` using its globally unique id and a patch.
+  updateGameByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateGameByNodeIdInput!
+  ): UpdateGamePayload
+
+  # Updates a single `Game` using a unique key and a patch.
   updateGame(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateGameInput!
   ): UpdateGamePayload
 
-  # Updates a single `Game` using a unique key and a patch.
-  updateGameById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateGameByIdInput!
-  ): UpdateGamePayload
-
   # Updates a single `GameAssignment` using its globally unique id and a patch.
+  updateGameAssignmentByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateGameAssignmentByNodeIdInput!
+  ): UpdateGameAssignmentPayload
+
+  # Updates a single `GameAssignment` using a unique key and a patch.
   updateGameAssignment(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateGameAssignmentInput!
   ): UpdateGameAssignmentPayload
 
-  # Updates a single `GameAssignment` using a unique key and a patch.
-  updateGameAssignmentByMemberIdAndGameIdAndGm(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateGameAssignmentByMemberIdAndGameIdAndGmInput!
-  ): UpdateGameAssignmentPayload
-
   # Updates a single `GameChoice` using its globally unique id and a patch.
+  updateGameChoiceByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateGameChoiceByNodeIdInput!
+  ): UpdateGameChoicePayload
+
+  # Updates a single `GameChoice` using a unique key and a patch.
   updateGameChoice(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateGameChoiceInput!
   ): UpdateGameChoicePayload
 
-  # Updates a single `GameChoice` using a unique key and a patch.
-  updateGameChoiceById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateGameChoiceByIdInput!
-  ): UpdateGameChoicePayload
-
   # Updates a single `GameSubmission` using its globally unique id and a patch.
+  updateGameSubmissionByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateGameSubmissionByNodeIdInput!
+  ): UpdateGameSubmissionPayload
+
+  # Updates a single `GameSubmission` using a unique key and a patch.
   updateGameSubmission(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateGameSubmissionInput!
   ): UpdateGameSubmissionPayload
 
-  # Updates a single `GameSubmission` using a unique key and a patch.
-  updateGameSubmissionById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateGameSubmissionByIdInput!
-  ): UpdateGameSubmissionPayload
-
   # Updates a single `HotelRoom` using its globally unique id and a patch.
+  updateHotelRoomByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateHotelRoomByNodeIdInput!
+  ): UpdateHotelRoomPayload
+
+  # Updates a single `HotelRoom` using a unique key and a patch.
   updateHotelRoom(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateHotelRoomInput!
   ): UpdateHotelRoomPayload
 
-  # Updates a single `HotelRoom` using a unique key and a patch.
-  updateHotelRoomById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateHotelRoomByIdInput!
-  ): UpdateHotelRoomPayload
-
   # Updates a single `HotelRoomDetail` using its globally unique id and a patch.
+  updateHotelRoomDetailByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateHotelRoomDetailByNodeIdInput!
+  ): UpdateHotelRoomDetailPayload
+
+  # Updates a single `HotelRoomDetail` using a unique key and a patch.
   updateHotelRoomDetail(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateHotelRoomDetailInput!
   ): UpdateHotelRoomDetailPayload
 
-  # Updates a single `HotelRoomDetail` using a unique key and a patch.
-  updateHotelRoomDetailById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateHotelRoomDetailByIdInput!
-  ): UpdateHotelRoomDetailPayload
-
   # Updates a single `Lookup` using its globally unique id and a patch.
-  updateLookup(
+  updateLookupByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateLookupInput!
+    input: UpdateLookupByNodeIdInput!
   ): UpdateLookupPayload
 
   # Updates a single `Lookup` using a unique key and a patch.
-  updateLookupById(
+  updateLookup(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateLookupByIdInput!
+    input: UpdateLookupInput!
   ): UpdateLookupPayload
 
   # Updates a single `Lookup` using a unique key and a patch.
@@ -4428,15 +4440,15 @@ type Mutation {
   ): UpdateLookupPayload
 
   # Updates a single `LookupValue` using its globally unique id and a patch.
-  updateLookupValue(
+  updateLookupValueByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateLookupValueInput!
+    input: UpdateLookupValueByNodeIdInput!
   ): UpdateLookupValuePayload
 
   # Updates a single `LookupValue` using a unique key and a patch.
-  updateLookupValueById(
+  updateLookupValue(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateLookupValueByIdInput!
+    input: UpdateLookupValueInput!
   ): UpdateLookupValuePayload
 
   # Updates a single `LookupValue` using a unique key and a patch.
@@ -4446,39 +4458,39 @@ type Mutation {
   ): UpdateLookupValuePayload
 
   # Updates a single `MemberHotelRoomAssignment` using its globally unique id and a patch.
+  updateMemberHotelRoomAssignmentByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateMemberHotelRoomAssignmentByNodeIdInput!
+  ): UpdateMemberHotelRoomAssignmentPayload
+
+  # Updates a single `MemberHotelRoomAssignment` using a unique key and a patch.
   updateMemberHotelRoomAssignment(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateMemberHotelRoomAssignmentInput!
   ): UpdateMemberHotelRoomAssignmentPayload
 
-  # Updates a single `MemberHotelRoomAssignment` using a unique key and a patch.
-  updateMemberHotelRoomAssignmentByMemberIdAndHotelRoomId(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateMemberHotelRoomAssignmentByMemberIdAndHotelRoomIdInput!
-  ): UpdateMemberHotelRoomAssignmentPayload
-
   # Updates a single `Membership` using its globally unique id and a patch.
+  updateMembershipByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateMembershipByNodeIdInput!
+  ): UpdateMembershipPayload
+
+  # Updates a single `Membership` using a unique key and a patch.
   updateMembership(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateMembershipInput!
   ): UpdateMembershipPayload
 
-  # Updates a single `Membership` using a unique key and a patch.
-  updateMembershipById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateMembershipByIdInput!
-  ): UpdateMembershipPayload
-
   # Updates a single `Profile` using its globally unique id and a patch.
-  updateProfile(
+  updateProfileByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateProfileInput!
+    input: UpdateProfileByNodeIdInput!
   ): UpdateProfilePayload
 
   # Updates a single `Profile` using a unique key and a patch.
-  updateProfileById(
+  updateProfile(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateProfileByIdInput!
+    input: UpdateProfileInput!
   ): UpdateProfilePayload
 
   # Updates a single `Profile` using a unique key and a patch.
@@ -4488,27 +4500,27 @@ type Mutation {
   ): UpdateProfilePayload
 
   # Updates a single `RegistrationCode` using its globally unique id and a patch.
+  updateRegistrationCodeByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateRegistrationCodeByNodeIdInput!
+  ): UpdateRegistrationCodePayload
+
+  # Updates a single `RegistrationCode` using a unique key and a patch.
   updateRegistrationCode(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateRegistrationCodeInput!
   ): UpdateRegistrationCodePayload
 
-  # Updates a single `RegistrationCode` using a unique key and a patch.
-  updateRegistrationCodeById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateRegistrationCodeByIdInput!
-  ): UpdateRegistrationCodePayload
-
   # Updates a single `Role` using its globally unique id and a patch.
-  updateRole(
+  updateRoleByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateRoleInput!
+    input: UpdateRoleByNodeIdInput!
   ): UpdateRolePayload
 
   # Updates a single `Role` using a unique key and a patch.
-  updateRoleById(
+  updateRole(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateRoleByIdInput!
+    input: UpdateRoleInput!
   ): UpdateRolePayload
 
   # Updates a single `Role` using a unique key and a patch.
@@ -4518,87 +4530,87 @@ type Mutation {
   ): UpdateRolePayload
 
   # Updates a single `Room` using its globally unique id and a patch.
+  updateRoomByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateRoomByNodeIdInput!
+  ): UpdateRoomPayload
+
+  # Updates a single `Room` using a unique key and a patch.
   updateRoom(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateRoomInput!
   ): UpdateRoomPayload
 
-  # Updates a single `Room` using a unique key and a patch.
-  updateRoomById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateRoomByIdInput!
-  ): UpdateRoomPayload
-
   # Updates a single `Setting` using its globally unique id and a patch.
+  updateSettingByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateSettingByNodeIdInput!
+  ): UpdateSettingPayload
+
+  # Updates a single `Setting` using a unique key and a patch.
   updateSetting(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateSettingInput!
   ): UpdateSettingPayload
 
-  # Updates a single `Setting` using a unique key and a patch.
-  updateSettingById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateSettingByIdInput!
-  ): UpdateSettingPayload
-
   # Updates a single `ShirtOrder` using its globally unique id and a patch.
+  updateShirtOrderByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateShirtOrderByNodeIdInput!
+  ): UpdateShirtOrderPayload
+
+  # Updates a single `ShirtOrder` using a unique key and a patch.
   updateShirtOrder(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateShirtOrderInput!
   ): UpdateShirtOrderPayload
 
-  # Updates a single `ShirtOrder` using a unique key and a patch.
-  updateShirtOrderById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateShirtOrderByIdInput!
-  ): UpdateShirtOrderPayload
-
   # Updates a single `ShirtOrderItem` using its globally unique id and a patch.
+  updateShirtOrderItemByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateShirtOrderItemByNodeIdInput!
+  ): UpdateShirtOrderItemPayload
+
+  # Updates a single `ShirtOrderItem` using a unique key and a patch.
   updateShirtOrderItem(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateShirtOrderItemInput!
   ): UpdateShirtOrderItemPayload
 
-  # Updates a single `ShirtOrderItem` using a unique key and a patch.
-  updateShirtOrderItemById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateShirtOrderItemByIdInput!
-  ): UpdateShirtOrderItemPayload
-
   # Updates a single `Slot` using its globally unique id and a patch.
+  updateSlotByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateSlotByNodeIdInput!
+  ): UpdateSlotPayload
+
+  # Updates a single `Slot` using a unique key and a patch.
   updateSlot(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateSlotInput!
   ): UpdateSlotPayload
 
-  # Updates a single `Slot` using a unique key and a patch.
-  updateSlotById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateSlotByIdInput!
-  ): UpdateSlotPayload
-
   # Updates a single `Token` using its globally unique id and a patch.
+  updateTokenByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTokenByNodeIdInput!
+  ): UpdateTokenPayload
+
+  # Updates a single `Token` using a unique key and a patch.
   updateToken(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateTokenInput!
   ): UpdateTokenPayload
 
-  # Updates a single `Token` using a unique key and a patch.
-  updateTokenById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateTokenByIdInput!
-  ): UpdateTokenPayload
-
   # Updates a single `User` using its globally unique id and a patch.
-  updateUser(
+  updateUserByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateUserInput!
+    input: UpdateUserByNodeIdInput!
   ): UpdateUserPayload
 
   # Updates a single `User` using a unique key and a patch.
-  updateUserById(
+  updateUser(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateUserByIdInput!
+    input: UpdateUserInput!
   ): UpdateUserPayload
 
   # Updates a single `User` using a unique key and a patch.
@@ -4608,99 +4620,99 @@ type Mutation {
   ): UpdateUserPayload
 
   # Updates a single `UserRole` using its globally unique id and a patch.
+  updateUserRoleByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateUserRoleByNodeIdInput!
+  ): UpdateUserRolePayload
+
+  # Updates a single `UserRole` using a unique key and a patch.
   updateUserRole(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: UpdateUserRoleInput!
   ): UpdateUserRolePayload
 
-  # Updates a single `UserRole` using a unique key and a patch.
-  updateUserRoleByRoleIdAndUserId(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: UpdateUserRoleByRoleIdAndUserIdInput!
-  ): UpdateUserRolePayload
-
   # Deletes a single `Game` using its globally unique id.
+  deleteGameByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteGameByNodeIdInput!
+  ): DeleteGamePayload
+
+  # Deletes a single `Game` using a unique key.
   deleteGame(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteGameInput!
   ): DeleteGamePayload
 
-  # Deletes a single `Game` using a unique key.
-  deleteGameById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteGameByIdInput!
-  ): DeleteGamePayload
-
   # Deletes a single `GameAssignment` using its globally unique id.
+  deleteGameAssignmentByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteGameAssignmentByNodeIdInput!
+  ): DeleteGameAssignmentPayload
+
+  # Deletes a single `GameAssignment` using a unique key.
   deleteGameAssignment(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteGameAssignmentInput!
   ): DeleteGameAssignmentPayload
 
-  # Deletes a single `GameAssignment` using a unique key.
-  deleteGameAssignmentByMemberIdAndGameIdAndGm(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteGameAssignmentByMemberIdAndGameIdAndGmInput!
-  ): DeleteGameAssignmentPayload
-
   # Deletes a single `GameChoice` using its globally unique id.
+  deleteGameChoiceByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteGameChoiceByNodeIdInput!
+  ): DeleteGameChoicePayload
+
+  # Deletes a single `GameChoice` using a unique key.
   deleteGameChoice(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteGameChoiceInput!
   ): DeleteGameChoicePayload
 
-  # Deletes a single `GameChoice` using a unique key.
-  deleteGameChoiceById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteGameChoiceByIdInput!
-  ): DeleteGameChoicePayload
-
   # Deletes a single `GameSubmission` using its globally unique id.
+  deleteGameSubmissionByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteGameSubmissionByNodeIdInput!
+  ): DeleteGameSubmissionPayload
+
+  # Deletes a single `GameSubmission` using a unique key.
   deleteGameSubmission(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteGameSubmissionInput!
   ): DeleteGameSubmissionPayload
 
-  # Deletes a single `GameSubmission` using a unique key.
-  deleteGameSubmissionById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteGameSubmissionByIdInput!
-  ): DeleteGameSubmissionPayload
-
   # Deletes a single `HotelRoom` using its globally unique id.
+  deleteHotelRoomByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteHotelRoomByNodeIdInput!
+  ): DeleteHotelRoomPayload
+
+  # Deletes a single `HotelRoom` using a unique key.
   deleteHotelRoom(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteHotelRoomInput!
   ): DeleteHotelRoomPayload
 
-  # Deletes a single `HotelRoom` using a unique key.
-  deleteHotelRoomById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteHotelRoomByIdInput!
-  ): DeleteHotelRoomPayload
-
   # Deletes a single `HotelRoomDetail` using its globally unique id.
+  deleteHotelRoomDetailByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteHotelRoomDetailByNodeIdInput!
+  ): DeleteHotelRoomDetailPayload
+
+  # Deletes a single `HotelRoomDetail` using a unique key.
   deleteHotelRoomDetail(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteHotelRoomDetailInput!
   ): DeleteHotelRoomDetailPayload
 
-  # Deletes a single `HotelRoomDetail` using a unique key.
-  deleteHotelRoomDetailById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteHotelRoomDetailByIdInput!
-  ): DeleteHotelRoomDetailPayload
-
   # Deletes a single `Lookup` using its globally unique id.
-  deleteLookup(
+  deleteLookupByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteLookupInput!
+    input: DeleteLookupByNodeIdInput!
   ): DeleteLookupPayload
 
   # Deletes a single `Lookup` using a unique key.
-  deleteLookupById(
+  deleteLookup(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteLookupByIdInput!
+    input: DeleteLookupInput!
   ): DeleteLookupPayload
 
   # Deletes a single `Lookup` using a unique key.
@@ -4710,15 +4722,15 @@ type Mutation {
   ): DeleteLookupPayload
 
   # Deletes a single `LookupValue` using its globally unique id.
-  deleteLookupValue(
+  deleteLookupValueByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteLookupValueInput!
+    input: DeleteLookupValueByNodeIdInput!
   ): DeleteLookupValuePayload
 
   # Deletes a single `LookupValue` using a unique key.
-  deleteLookupValueById(
+  deleteLookupValue(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteLookupValueByIdInput!
+    input: DeleteLookupValueInput!
   ): DeleteLookupValuePayload
 
   # Deletes a single `LookupValue` using a unique key.
@@ -4728,39 +4740,39 @@ type Mutation {
   ): DeleteLookupValuePayload
 
   # Deletes a single `MemberHotelRoomAssignment` using its globally unique id.
+  deleteMemberHotelRoomAssignmentByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteMemberHotelRoomAssignmentByNodeIdInput!
+  ): DeleteMemberHotelRoomAssignmentPayload
+
+  # Deletes a single `MemberHotelRoomAssignment` using a unique key.
   deleteMemberHotelRoomAssignment(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteMemberHotelRoomAssignmentInput!
   ): DeleteMemberHotelRoomAssignmentPayload
 
-  # Deletes a single `MemberHotelRoomAssignment` using a unique key.
-  deleteMemberHotelRoomAssignmentByMemberIdAndHotelRoomId(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteMemberHotelRoomAssignmentByMemberIdAndHotelRoomIdInput!
-  ): DeleteMemberHotelRoomAssignmentPayload
-
   # Deletes a single `Membership` using its globally unique id.
+  deleteMembershipByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteMembershipByNodeIdInput!
+  ): DeleteMembershipPayload
+
+  # Deletes a single `Membership` using a unique key.
   deleteMembership(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteMembershipInput!
   ): DeleteMembershipPayload
 
-  # Deletes a single `Membership` using a unique key.
-  deleteMembershipById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteMembershipByIdInput!
-  ): DeleteMembershipPayload
-
   # Deletes a single `Profile` using its globally unique id.
-  deleteProfile(
+  deleteProfileByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteProfileInput!
+    input: DeleteProfileByNodeIdInput!
   ): DeleteProfilePayload
 
   # Deletes a single `Profile` using a unique key.
-  deleteProfileById(
+  deleteProfile(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteProfileByIdInput!
+    input: DeleteProfileInput!
   ): DeleteProfilePayload
 
   # Deletes a single `Profile` using a unique key.
@@ -4770,27 +4782,27 @@ type Mutation {
   ): DeleteProfilePayload
 
   # Deletes a single `RegistrationCode` using its globally unique id.
+  deleteRegistrationCodeByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteRegistrationCodeByNodeIdInput!
+  ): DeleteRegistrationCodePayload
+
+  # Deletes a single `RegistrationCode` using a unique key.
   deleteRegistrationCode(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteRegistrationCodeInput!
   ): DeleteRegistrationCodePayload
 
-  # Deletes a single `RegistrationCode` using a unique key.
-  deleteRegistrationCodeById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteRegistrationCodeByIdInput!
-  ): DeleteRegistrationCodePayload
-
   # Deletes a single `Role` using its globally unique id.
-  deleteRole(
+  deleteRoleByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteRoleInput!
+    input: DeleteRoleByNodeIdInput!
   ): DeleteRolePayload
 
   # Deletes a single `Role` using a unique key.
-  deleteRoleById(
+  deleteRole(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteRoleByIdInput!
+    input: DeleteRoleInput!
   ): DeleteRolePayload
 
   # Deletes a single `Role` using a unique key.
@@ -4800,87 +4812,87 @@ type Mutation {
   ): DeleteRolePayload
 
   # Deletes a single `Room` using its globally unique id.
+  deleteRoomByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteRoomByNodeIdInput!
+  ): DeleteRoomPayload
+
+  # Deletes a single `Room` using a unique key.
   deleteRoom(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteRoomInput!
   ): DeleteRoomPayload
 
-  # Deletes a single `Room` using a unique key.
-  deleteRoomById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteRoomByIdInput!
-  ): DeleteRoomPayload
-
   # Deletes a single `Setting` using its globally unique id.
+  deleteSettingByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteSettingByNodeIdInput!
+  ): DeleteSettingPayload
+
+  # Deletes a single `Setting` using a unique key.
   deleteSetting(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteSettingInput!
   ): DeleteSettingPayload
 
-  # Deletes a single `Setting` using a unique key.
-  deleteSettingById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteSettingByIdInput!
-  ): DeleteSettingPayload
-
   # Deletes a single `ShirtOrder` using its globally unique id.
+  deleteShirtOrderByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteShirtOrderByNodeIdInput!
+  ): DeleteShirtOrderPayload
+
+  # Deletes a single `ShirtOrder` using a unique key.
   deleteShirtOrder(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteShirtOrderInput!
   ): DeleteShirtOrderPayload
 
-  # Deletes a single `ShirtOrder` using a unique key.
-  deleteShirtOrderById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteShirtOrderByIdInput!
-  ): DeleteShirtOrderPayload
-
   # Deletes a single `ShirtOrderItem` using its globally unique id.
+  deleteShirtOrderItemByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteShirtOrderItemByNodeIdInput!
+  ): DeleteShirtOrderItemPayload
+
+  # Deletes a single `ShirtOrderItem` using a unique key.
   deleteShirtOrderItem(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteShirtOrderItemInput!
   ): DeleteShirtOrderItemPayload
 
-  # Deletes a single `ShirtOrderItem` using a unique key.
-  deleteShirtOrderItemById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteShirtOrderItemByIdInput!
-  ): DeleteShirtOrderItemPayload
-
   # Deletes a single `Slot` using its globally unique id.
+  deleteSlotByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteSlotByNodeIdInput!
+  ): DeleteSlotPayload
+
+  # Deletes a single `Slot` using a unique key.
   deleteSlot(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteSlotInput!
   ): DeleteSlotPayload
 
-  # Deletes a single `Slot` using a unique key.
-  deleteSlotById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteSlotByIdInput!
-  ): DeleteSlotPayload
-
   # Deletes a single `Token` using its globally unique id.
+  deleteTokenByNodeId(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTokenByNodeIdInput!
+  ): DeleteTokenPayload
+
+  # Deletes a single `Token` using a unique key.
   deleteToken(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: DeleteTokenInput!
   ): DeleteTokenPayload
 
-  # Deletes a single `Token` using a unique key.
-  deleteTokenById(
-    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteTokenByIdInput!
-  ): DeleteTokenPayload
-
   # Deletes a single `User` using its globally unique id.
-  deleteUser(
+  deleteUserByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteUserInput!
+    input: DeleteUserByNodeIdInput!
   ): DeleteUserPayload
 
   # Deletes a single `User` using a unique key.
-  deleteUserById(
+  deleteUser(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteUserByIdInput!
+    input: DeleteUserInput!
   ): DeleteUserPayload
 
   # Deletes a single `User` using a unique key.
@@ -4890,15 +4902,15 @@ type Mutation {
   ): DeleteUserPayload
 
   # Deletes a single `UserRole` using its globally unique id.
-  deleteUserRole(
+  deleteUserRoleByNodeId(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteUserRoleInput!
+    input: DeleteUserRoleByNodeIdInput!
   ): DeleteUserRolePayload
 
   # Deletes a single `UserRole` using a unique key.
-  deleteUserRoleByRoleIdAndUserId(
+  deleteUserRole(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    input: DeleteUserRoleByRoleIdAndUserIdInput!
+    input: DeleteUserRoleInput!
   ): DeleteUserRolePayload
   fTruncateTables(
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -5673,155 +5685,155 @@ type Query implements Node {
     # A filter to be used in determining which values should be returned by the collection.
     filter: UserRoleFilter
   ): UserRolesConnection
-  gameById(id: Int!): Game
-  gameAssignmentByMemberIdAndGameIdAndGm(memberId: Int!, gameId: Int!, gm: Int!): GameAssignment
-  gameChoiceById(id: Int!): GameChoice
-  gameSubmissionById(id: Int!): GameSubmission
-  hotelRoomById(id: Int!): HotelRoom
-  hotelRoomDetailById(id: BigInt!): HotelRoomDetail
-  lookupById(id: Int!): Lookup
+  game(id: Int!): Game
+  gameAssignment(memberId: Int!, gameId: Int!, gm: Int!): GameAssignment
+  gameChoice(id: Int!): GameChoice
+  gameSubmission(id: Int!): GameSubmission
+  hotelRoom(id: Int!): HotelRoom
+  hotelRoomDetail(id: BigInt!): HotelRoomDetail
+  lookup(id: Int!): Lookup
   lookupByRealm(realm: String!): Lookup
-  lookupValueById(id: Int!): LookupValue
+  lookupValue(id: Int!): LookupValue
   lookupValueByLookupIdAndCode(lookupId: Int!, code: String!): LookupValue
-  memberHotelRoomAssignmentByMemberIdAndHotelRoomId(memberId: BigInt!, hotelRoomId: BigInt!): MemberHotelRoomAssignment
-  membershipById(id: Int!): Membership
-  profileById(id: Int!): Profile
+  memberHotelRoomAssignment(memberId: BigInt!, hotelRoomId: BigInt!): MemberHotelRoomAssignment
+  membership(id: Int!): Membership
+  profile(id: Int!): Profile
   profileByEmail(email: String!): Profile
-  registrationCodeById(id: Int!): RegistrationCode
-  roleById(id: Int!): Role
+  registrationCode(id: Int!): RegistrationCode
+  role(id: Int!): Role
   roleByAuthority(authority: String!): Role
-  roomById(id: Int!): Room
-  settingById(id: Int!): Setting
-  shirtOrderById(id: Int!): ShirtOrder
-  shirtOrderItemById(id: Int!): ShirtOrderItem
-  slotById(id: Int!): Slot
-  tokenById(id: Int!): Token
-  userById(id: Int!): User
+  room(id: Int!): Room
+  setting(id: Int!): Setting
+  shirtOrder(id: Int!): ShirtOrder
+  shirtOrderItem(id: Int!): ShirtOrderItem
+  slot(id: Int!): Slot
+  token(id: Int!): Token
+  user(id: Int!): User
   userByUsername(username: String!): User
-  userRoleByRoleIdAndUserId(roleId: Int!, userId: Int!): UserRole
+  userRole(roleId: Int!, userId: Int!): UserRole
 
   # Reads a single `Game` using its globally unique `ID`.
-  game(
+  gameByNodeId(
     # The globally unique `ID` to be used in selecting a single `Game`.
     nodeId: ID!
   ): Game
 
   # Reads a single `GameAssignment` using its globally unique `ID`.
-  gameAssignment(
+  gameAssignmentByNodeId(
     # The globally unique `ID` to be used in selecting a single `GameAssignment`.
     nodeId: ID!
   ): GameAssignment
 
   # Reads a single `GameChoice` using its globally unique `ID`.
-  gameChoice(
+  gameChoiceByNodeId(
     # The globally unique `ID` to be used in selecting a single `GameChoice`.
     nodeId: ID!
   ): GameChoice
 
   # Reads a single `GameSubmission` using its globally unique `ID`.
-  gameSubmission(
+  gameSubmissionByNodeId(
     # The globally unique `ID` to be used in selecting a single `GameSubmission`.
     nodeId: ID!
   ): GameSubmission
 
   # Reads a single `HotelRoom` using its globally unique `ID`.
-  hotelRoom(
+  hotelRoomByNodeId(
     # The globally unique `ID` to be used in selecting a single `HotelRoom`.
     nodeId: ID!
   ): HotelRoom
 
   # Reads a single `HotelRoomDetail` using its globally unique `ID`.
-  hotelRoomDetail(
+  hotelRoomDetailByNodeId(
     # The globally unique `ID` to be used in selecting a single `HotelRoomDetail`.
     nodeId: ID!
   ): HotelRoomDetail
 
   # Reads a single `Lookup` using its globally unique `ID`.
-  lookup(
+  lookupByNodeId(
     # The globally unique `ID` to be used in selecting a single `Lookup`.
     nodeId: ID!
   ): Lookup
 
   # Reads a single `LookupValue` using its globally unique `ID`.
-  lookupValue(
+  lookupValueByNodeId(
     # The globally unique `ID` to be used in selecting a single `LookupValue`.
     nodeId: ID!
   ): LookupValue
 
   # Reads a single `MemberHotelRoomAssignment` using its globally unique `ID`.
-  memberHotelRoomAssignment(
+  memberHotelRoomAssignmentByNodeId(
     # The globally unique `ID` to be used in selecting a single `MemberHotelRoomAssignment`.
     nodeId: ID!
   ): MemberHotelRoomAssignment
 
   # Reads a single `Membership` using its globally unique `ID`.
-  membership(
+  membershipByNodeId(
     # The globally unique `ID` to be used in selecting a single `Membership`.
     nodeId: ID!
   ): Membership
 
   # Reads a single `Profile` using its globally unique `ID`.
-  profile(
+  profileByNodeId(
     # The globally unique `ID` to be used in selecting a single `Profile`.
     nodeId: ID!
   ): Profile
 
   # Reads a single `RegistrationCode` using its globally unique `ID`.
-  registrationCode(
+  registrationCodeByNodeId(
     # The globally unique `ID` to be used in selecting a single `RegistrationCode`.
     nodeId: ID!
   ): RegistrationCode
 
   # Reads a single `Role` using its globally unique `ID`.
-  role(
+  roleByNodeId(
     # The globally unique `ID` to be used in selecting a single `Role`.
     nodeId: ID!
   ): Role
 
   # Reads a single `Room` using its globally unique `ID`.
-  room(
+  roomByNodeId(
     # The globally unique `ID` to be used in selecting a single `Room`.
     nodeId: ID!
   ): Room
 
   # Reads a single `Setting` using its globally unique `ID`.
-  setting(
+  settingByNodeId(
     # The globally unique `ID` to be used in selecting a single `Setting`.
     nodeId: ID!
   ): Setting
 
   # Reads a single `ShirtOrder` using its globally unique `ID`.
-  shirtOrder(
+  shirtOrderByNodeId(
     # The globally unique `ID` to be used in selecting a single `ShirtOrder`.
     nodeId: ID!
   ): ShirtOrder
 
   # Reads a single `ShirtOrderItem` using its globally unique `ID`.
-  shirtOrderItem(
+  shirtOrderItemByNodeId(
     # The globally unique `ID` to be used in selecting a single `ShirtOrderItem`.
     nodeId: ID!
   ): ShirtOrderItem
 
   # Reads a single `Slot` using its globally unique `ID`.
-  slot(
+  slotByNodeId(
     # The globally unique `ID` to be used in selecting a single `Slot`.
     nodeId: ID!
   ): Slot
 
   # Reads a single `Token` using its globally unique `ID`.
-  token(
+  tokenByNodeId(
     # The globally unique `ID` to be used in selecting a single `Token`.
     nodeId: ID!
   ): Token
 
   # Reads a single `User` using its globally unique `ID`.
-  user(
+  userByNodeId(
     # The globally unique `ID` to be used in selecting a single `User`.
     nodeId: ID!
   ): User
 
   # Reads a single `UserRole` using its globally unique `ID`.
-  userRole(
+  userRoleByNodeId(
     # The globally unique `ID` to be used in selecting a single `UserRole`.
     nodeId: ID!
   ): UserRole
@@ -6987,21 +6999,8 @@ enum TokensOrderBy {
   USER_BY_USER_ID__USERNAME_DESC
 }
 
-# All input for the `updateGameAssignmentByMemberIdAndGameIdAndGm` mutation.
-input UpdateGameAssignmentByMemberIdAndGameIdAndGmInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `GameAssignment` being updated.
-  patch: GameAssignmentPatch!
-  memberId: Int!
-  gameId: Int!
-  gm: Int!
-}
-
-# All input for the `updateGameAssignment` mutation.
-input UpdateGameAssignmentInput {
+# All input for the `updateGameAssignmentByNodeId` mutation.
+input UpdateGameAssignmentByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7011,6 +7010,19 @@ input UpdateGameAssignmentInput {
 
   # An object where the defined keys will be set on the `GameAssignment` being updated.
   patch: GameAssignmentPatch!
+}
+
+# All input for the `updateGameAssignment` mutation.
+input UpdateGameAssignmentInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `GameAssignment` being updated.
+  patch: GameAssignmentPatch!
+  memberId: Int!
+  gameId: Int!
+  gm: Int!
 }
 
 # The output of our update `GameAssignment` mutation.
@@ -7038,30 +7050,21 @@ type UpdateGameAssignmentPayload {
   ): GameAssignmentsEdge
 }
 
-# All input for the `updateGameById` mutation.
-input UpdateGameByIdInput {
+# All input for the `updateGameByNodeId` mutation.
+input UpdateGameByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Game` to be updated.
+  nodeId: ID!
 
   # An object where the defined keys will be set on the `Game` being updated.
   patch: GamePatch!
-  id: Int!
 }
 
-# All input for the `updateGameChoiceById` mutation.
-input UpdateGameChoiceByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `GameChoice` being updated.
-  patch: GameChoicePatch!
-  id: Int!
-}
-
-# All input for the `updateGameChoice` mutation.
-input UpdateGameChoiceInput {
+# All input for the `updateGameChoiceByNodeId` mutation.
+input UpdateGameChoiceByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7071,6 +7074,17 @@ input UpdateGameChoiceInput {
 
   # An object where the defined keys will be set on the `GameChoice` being updated.
   patch: GameChoicePatch!
+}
+
+# All input for the `updateGameChoice` mutation.
+input UpdateGameChoiceInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `GameChoice` being updated.
+  patch: GameChoicePatch!
+  id: Int!
 }
 
 # The output of our update `GameChoice` mutation.
@@ -7107,11 +7121,9 @@ input UpdateGameInput {
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
-  # The globally unique `ID` which will identify a single `Game` to be updated.
-  nodeId: ID!
-
   # An object where the defined keys will be set on the `Game` being updated.
   patch: GamePatch!
+  id: Int!
 }
 
 # The output of our update `Game` mutation.
@@ -7142,19 +7154,8 @@ type UpdateGamePayload {
   ): GamesEdge
 }
 
-# All input for the `updateGameSubmissionById` mutation.
-input UpdateGameSubmissionByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `GameSubmission` being updated.
-  patch: GameSubmissionPatch!
-  id: Int!
-}
-
-# All input for the `updateGameSubmission` mutation.
-input UpdateGameSubmissionInput {
+# All input for the `updateGameSubmissionByNodeId` mutation.
+input UpdateGameSubmissionByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7164,6 +7165,17 @@ input UpdateGameSubmissionInput {
 
   # An object where the defined keys will be set on the `GameSubmission` being updated.
   patch: GameSubmissionPatch!
+}
+
+# All input for the `updateGameSubmission` mutation.
+input UpdateGameSubmissionInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `GameSubmission` being updated.
+  patch: GameSubmissionPatch!
+  id: Int!
 }
 
 # The output of our update `GameSubmission` mutation.
@@ -7188,30 +7200,21 @@ type UpdateGameSubmissionPayload {
   ): GameSubmissionsEdge
 }
 
-# All input for the `updateHotelRoomById` mutation.
-input UpdateHotelRoomByIdInput {
+# All input for the `updateHotelRoomByNodeId` mutation.
+input UpdateHotelRoomByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `HotelRoom` to be updated.
+  nodeId: ID!
 
   # An object where the defined keys will be set on the `HotelRoom` being updated.
   patch: HotelRoomPatch!
-  id: Int!
 }
 
-# All input for the `updateHotelRoomDetailById` mutation.
-input UpdateHotelRoomDetailByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `HotelRoomDetail` being updated.
-  patch: HotelRoomDetailPatch!
-  id: BigInt!
-}
-
-# All input for the `updateHotelRoomDetail` mutation.
-input UpdateHotelRoomDetailInput {
+# All input for the `updateHotelRoomDetailByNodeId` mutation.
+input UpdateHotelRoomDetailByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7221,6 +7224,17 @@ input UpdateHotelRoomDetailInput {
 
   # An object where the defined keys will be set on the `HotelRoomDetail` being updated.
   patch: HotelRoomDetailPatch!
+}
+
+# All input for the `updateHotelRoomDetail` mutation.
+input UpdateHotelRoomDetailInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `HotelRoomDetail` being updated.
+  patch: HotelRoomDetailPatch!
+  id: BigInt!
 }
 
 # The output of our update `HotelRoomDetail` mutation.
@@ -7248,11 +7262,9 @@ input UpdateHotelRoomInput {
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
-  # The globally unique `ID` which will identify a single `HotelRoom` to be updated.
-  nodeId: ID!
-
   # An object where the defined keys will be set on the `HotelRoom` being updated.
   patch: HotelRoomPatch!
+  id: Int!
 }
 
 # The output of our update `HotelRoom` mutation.
@@ -7274,15 +7286,17 @@ type UpdateHotelRoomPayload {
   ): HotelRoomsEdge
 }
 
-# All input for the `updateLookupById` mutation.
-input UpdateLookupByIdInput {
+# All input for the `updateLookupByNodeId` mutation.
+input UpdateLookupByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
+  # The globally unique `ID` which will identify a single `Lookup` to be updated.
+  nodeId: ID!
+
   # An object where the defined keys will be set on the `Lookup` being updated.
   patch: LookupPatch!
-  id: Int!
 }
 
 # All input for the `updateLookupByRealm` mutation.
@@ -7302,11 +7316,9 @@ input UpdateLookupInput {
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
-  # The globally unique `ID` which will identify a single `Lookup` to be updated.
-  nodeId: ID!
-
   # An object where the defined keys will be set on the `Lookup` being updated.
   patch: LookupPatch!
+  id: Int!
 }
 
 # The output of our update `Lookup` mutation.
@@ -7328,17 +7340,6 @@ type UpdateLookupPayload {
   ): LookupsEdge
 }
 
-# All input for the `updateLookupValueById` mutation.
-input UpdateLookupValueByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `LookupValue` being updated.
-  patch: LookupValuePatch!
-  id: Int!
-}
-
 # All input for the `updateLookupValueByLookupIdAndCode` mutation.
 input UpdateLookupValueByLookupIdAndCodeInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
@@ -7351,8 +7352,8 @@ input UpdateLookupValueByLookupIdAndCodeInput {
   code: String!
 }
 
-# All input for the `updateLookupValue` mutation.
-input UpdateLookupValueInput {
+# All input for the `updateLookupValueByNodeId` mutation.
+input UpdateLookupValueByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7362,6 +7363,17 @@ input UpdateLookupValueInput {
 
   # An object where the defined keys will be set on the `LookupValue` being updated.
   patch: LookupValuePatch!
+}
+
+# All input for the `updateLookupValue` mutation.
+input UpdateLookupValueInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `LookupValue` being updated.
+  patch: LookupValuePatch!
+  id: Int!
 }
 
 # The output of our update `LookupValue` mutation.
@@ -7386,20 +7398,8 @@ type UpdateLookupValuePayload {
   ): LookupValuesEdge
 }
 
-# All input for the `updateMemberHotelRoomAssignmentByMemberIdAndHotelRoomId` mutation.
-input UpdateMemberHotelRoomAssignmentByMemberIdAndHotelRoomIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated.
-  patch: MemberHotelRoomAssignmentPatch!
-  memberId: BigInt!
-  hotelRoomId: BigInt!
-}
-
-# All input for the `updateMemberHotelRoomAssignment` mutation.
-input UpdateMemberHotelRoomAssignmentInput {
+# All input for the `updateMemberHotelRoomAssignmentByNodeId` mutation.
+input UpdateMemberHotelRoomAssignmentByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7409,6 +7409,18 @@ input UpdateMemberHotelRoomAssignmentInput {
 
   # An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated.
   patch: MemberHotelRoomAssignmentPatch!
+}
+
+# All input for the `updateMemberHotelRoomAssignment` mutation.
+input UpdateMemberHotelRoomAssignmentInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated.
+  patch: MemberHotelRoomAssignmentPatch!
+  memberId: BigInt!
+  hotelRoomId: BigInt!
 }
 
 # The output of our update `MemberHotelRoomAssignment` mutation.
@@ -7436,19 +7448,8 @@ type UpdateMemberHotelRoomAssignmentPayload {
   ): MemberHotelRoomAssignmentsEdge
 }
 
-# All input for the `updateMembershipById` mutation.
-input UpdateMembershipByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Membership` being updated.
-  patch: MembershipPatch!
-  id: Int!
-}
-
-# All input for the `updateMembership` mutation.
-input UpdateMembershipInput {
+# All input for the `updateMembershipByNodeId` mutation.
+input UpdateMembershipByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7458,6 +7459,17 @@ input UpdateMembershipInput {
 
   # An object where the defined keys will be set on the `Membership` being updated.
   patch: MembershipPatch!
+}
+
+# All input for the `updateMembership` mutation.
+input UpdateMembershipInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Membership` being updated.
+  patch: MembershipPatch!
+  id: Int!
 }
 
 # The output of our update `Membership` mutation.
@@ -7496,19 +7508,8 @@ input UpdateProfileByEmailInput {
   email: String!
 }
 
-# All input for the `updateProfileById` mutation.
-input UpdateProfileByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Profile` being updated.
-  patch: ProfilePatch!
-  id: Int!
-}
-
-# All input for the `updateProfile` mutation.
-input UpdateProfileInput {
+# All input for the `updateProfileByNodeId` mutation.
+input UpdateProfileByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7518,6 +7519,17 @@ input UpdateProfileInput {
 
   # An object where the defined keys will be set on the `Profile` being updated.
   patch: ProfilePatch!
+}
+
+# All input for the `updateProfile` mutation.
+input UpdateProfileInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Profile` being updated.
+  patch: ProfilePatch!
+  id: Int!
 }
 
 # The output of our update `Profile` mutation.
@@ -7539,19 +7551,8 @@ type UpdateProfilePayload {
   ): ProfilesEdge
 }
 
-# All input for the `updateRegistrationCodeById` mutation.
-input UpdateRegistrationCodeByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `RegistrationCode` being updated.
-  patch: RegistrationCodePatch!
-  id: Int!
-}
-
-# All input for the `updateRegistrationCode` mutation.
-input UpdateRegistrationCodeInput {
+# All input for the `updateRegistrationCodeByNodeId` mutation.
+input UpdateRegistrationCodeByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7561,6 +7562,17 @@ input UpdateRegistrationCodeInput {
 
   # An object where the defined keys will be set on the `RegistrationCode` being updated.
   patch: RegistrationCodePatch!
+}
+
+# All input for the `updateRegistrationCode` mutation.
+input UpdateRegistrationCodeInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `RegistrationCode` being updated.
+  patch: RegistrationCodePatch!
+  id: Int!
 }
 
 # The output of our update `RegistrationCode` mutation.
@@ -7593,19 +7605,8 @@ input UpdateRoleByAuthorityInput {
   authority: String!
 }
 
-# All input for the `updateRoleById` mutation.
-input UpdateRoleByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Role` being updated.
-  patch: RolePatch!
-  id: Int!
-}
-
-# All input for the `updateRole` mutation.
-input UpdateRoleInput {
+# All input for the `updateRoleByNodeId` mutation.
+input UpdateRoleByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7615,6 +7616,17 @@ input UpdateRoleInput {
 
   # An object where the defined keys will be set on the `Role` being updated.
   patch: RolePatch!
+}
+
+# All input for the `updateRole` mutation.
+input UpdateRoleInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Role` being updated.
+  patch: RolePatch!
+  id: Int!
 }
 
 # The output of our update `Role` mutation.
@@ -7636,19 +7648,8 @@ type UpdateRolePayload {
   ): RolesEdge
 }
 
-# All input for the `updateRoomById` mutation.
-input UpdateRoomByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Room` being updated.
-  patch: RoomPatch!
-  id: Int!
-}
-
-# All input for the `updateRoom` mutation.
-input UpdateRoomInput {
+# All input for the `updateRoomByNodeId` mutation.
+input UpdateRoomByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7658,6 +7659,17 @@ input UpdateRoomInput {
 
   # An object where the defined keys will be set on the `Room` being updated.
   patch: RoomPatch!
+}
+
+# All input for the `updateRoom` mutation.
+input UpdateRoomInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Room` being updated.
+  patch: RoomPatch!
+  id: Int!
 }
 
 # The output of our update `Room` mutation.
@@ -7679,19 +7691,8 @@ type UpdateRoomPayload {
   ): RoomsEdge
 }
 
-# All input for the `updateSettingById` mutation.
-input UpdateSettingByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Setting` being updated.
-  patch: SettingPatch!
-  id: Int!
-}
-
-# All input for the `updateSetting` mutation.
-input UpdateSettingInput {
+# All input for the `updateSettingByNodeId` mutation.
+input UpdateSettingByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7701,6 +7702,17 @@ input UpdateSettingInput {
 
   # An object where the defined keys will be set on the `Setting` being updated.
   patch: SettingPatch!
+}
+
+# All input for the `updateSetting` mutation.
+input UpdateSettingInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Setting` being updated.
+  patch: SettingPatch!
+  id: Int!
 }
 
 # The output of our update `Setting` mutation.
@@ -7722,19 +7734,8 @@ type UpdateSettingPayload {
   ): SettingsEdge
 }
 
-# All input for the `updateShirtOrderById` mutation.
-input UpdateShirtOrderByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `ShirtOrder` being updated.
-  patch: ShirtOrderPatch!
-  id: Int!
-}
-
-# All input for the `updateShirtOrder` mutation.
-input UpdateShirtOrderInput {
+# All input for the `updateShirtOrderByNodeId` mutation.
+input UpdateShirtOrderByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7746,19 +7747,19 @@ input UpdateShirtOrderInput {
   patch: ShirtOrderPatch!
 }
 
-# All input for the `updateShirtOrderItemById` mutation.
-input UpdateShirtOrderItemByIdInput {
+# All input for the `updateShirtOrder` mutation.
+input UpdateShirtOrderInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
-  # An object where the defined keys will be set on the `ShirtOrderItem` being updated.
-  patch: ShirtOrderItemPatch!
+  # An object where the defined keys will be set on the `ShirtOrder` being updated.
+  patch: ShirtOrderPatch!
   id: Int!
 }
 
-# All input for the `updateShirtOrderItem` mutation.
-input UpdateShirtOrderItemInput {
+# All input for the `updateShirtOrderItemByNodeId` mutation.
+input UpdateShirtOrderItemByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7768,6 +7769,17 @@ input UpdateShirtOrderItemInput {
 
   # An object where the defined keys will be set on the `ShirtOrderItem` being updated.
   patch: ShirtOrderItemPatch!
+}
+
+# All input for the `updateShirtOrderItem` mutation.
+input UpdateShirtOrderItemInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `ShirtOrderItem` being updated.
+  patch: ShirtOrderItemPatch!
+  id: Int!
 }
 
 # The output of our update `ShirtOrderItem` mutation.
@@ -7814,19 +7826,8 @@ type UpdateShirtOrderPayload {
   ): ShirtOrdersEdge
 }
 
-# All input for the `updateSlotById` mutation.
-input UpdateSlotByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Slot` being updated.
-  patch: SlotPatch!
-  id: Int!
-}
-
-# All input for the `updateSlot` mutation.
-input UpdateSlotInput {
+# All input for the `updateSlotByNodeId` mutation.
+input UpdateSlotByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7836,6 +7837,17 @@ input UpdateSlotInput {
 
   # An object where the defined keys will be set on the `Slot` being updated.
   patch: SlotPatch!
+}
+
+# All input for the `updateSlot` mutation.
+input UpdateSlotInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Slot` being updated.
+  patch: SlotPatch!
+  id: Int!
 }
 
 # The output of our update `Slot` mutation.
@@ -7857,19 +7869,8 @@ type UpdateSlotPayload {
   ): SlotsEdge
 }
 
-# All input for the `updateTokenById` mutation.
-input UpdateTokenByIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `Token` being updated.
-  patch: TokenPatch!
-  id: Int!
-}
-
-# All input for the `updateToken` mutation.
-input UpdateTokenInput {
+# All input for the `updateTokenByNodeId` mutation.
+input UpdateTokenByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7879,6 +7880,17 @@ input UpdateTokenInput {
 
   # An object where the defined keys will be set on the `Token` being updated.
   patch: TokenPatch!
+}
+
+# All input for the `updateToken` mutation.
+input UpdateTokenInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Token` being updated.
+  patch: TokenPatch!
+  id: Int!
 }
 
 # The output of our update `Token` mutation.
@@ -7903,15 +7915,17 @@ type UpdateTokenPayload {
   ): TokensEdge
 }
 
-# All input for the `updateUserById` mutation.
-input UpdateUserByIdInput {
+# All input for the `updateUserByNodeId` mutation.
+input UpdateUserByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
+  # The globally unique `ID` which will identify a single `User` to be updated.
+  nodeId: ID!
+
   # An object where the defined keys will be set on the `User` being updated.
   patch: UserPatch!
-  id: Int!
 }
 
 # All input for the `updateUserByUsername` mutation.
@@ -7931,11 +7945,9 @@ input UpdateUserInput {
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
 
-  # The globally unique `ID` which will identify a single `User` to be updated.
-  nodeId: ID!
-
   # An object where the defined keys will be set on the `User` being updated.
   patch: UserPatch!
+  id: Int!
 }
 
 # The output of our update `User` mutation.
@@ -7960,20 +7972,8 @@ type UpdateUserPayload {
   ): UsersEdge
 }
 
-# All input for the `updateUserRoleByRoleIdAndUserId` mutation.
-input UpdateUserRoleByRoleIdAndUserIdInput {
-  # An arbitrary string value with no semantic meaning. Will be included in the
-  # payload verbatim. May be used to track mutations by the client.
-  clientMutationId: String
-
-  # An object where the defined keys will be set on the `UserRole` being updated.
-  patch: UserRolePatch!
-  roleId: Int!
-  userId: Int!
-}
-
-# All input for the `updateUserRole` mutation.
-input UpdateUserRoleInput {
+# All input for the `updateUserRoleByNodeId` mutation.
+input UpdateUserRoleByNodeIdInput {
   # An arbitrary string value with no semantic meaning. Will be included in the
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
@@ -7983,6 +7983,18 @@ input UpdateUserRoleInput {
 
   # An object where the defined keys will be set on the `UserRole` being updated.
   patch: UserRolePatch!
+}
+
+# All input for the `updateUserRole` mutation.
+input UpdateUserRoleInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `UserRole` being updated.
+  patch: UserRolePatch!
+  roleId: Int!
+  userId: Int!
 }
 
 # The output of our update `UserRole` mutation.

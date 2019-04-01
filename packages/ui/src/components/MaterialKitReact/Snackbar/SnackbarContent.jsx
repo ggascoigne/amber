@@ -15,7 +15,7 @@ class SnackbarContent extends React.Component {
     super(props)
     this.closeAlert = this.closeAlert.bind(this)
     const { classes, message, color, close, icon } = props
-    var action = []
+    let action = []
     if (close !== undefined) {
       action = [
         <IconButton

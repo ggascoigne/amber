@@ -1,4 +1,4 @@
-import { URL_SOURCE_SCROLL, withUrlSource } from 'client/resolvers/urlSource'
+import { withUrlSource } from 'client/resolvers/urlSource'
 import { Page } from 'components/Acnw/Page'
 import jump from 'jump.js'
 import debounce from 'lodash/debounce'
@@ -17,7 +17,7 @@ class _PastConsGamesPage extends Component {
     const { history, updateUrlSourceMutation } = this.props
     if (this.state.lastSlug !== slug) {
       this.setState({ lastSlug: slug })
-      updateUrlSourceMutation({ variables: { source: URL_SOURCE_SCROLL, url: slug } })
+      updateUrlSourceMutation({ variables: { source: 'scroll', url: slug } })
       history.replace(slug)
     }
   }, 200)
@@ -42,7 +42,7 @@ class _PastConsGamesPage extends Component {
       return
     }
 
-    if (urlSource.source === URL_SOURCE_SCROLL) {
+    if (urlSource.source === 'scroll') {
       return
     }
 

@@ -1,4 +1,4 @@
-import { URL_SOURCE_JUMP, withUrlSource } from 'client/resolvers/urlSource'
+import { withUrlSource } from 'client/resolvers/urlSource'
 import { GameByYearQuery } from 'components/Acnw/GameByYearQuery'
 import { Page } from 'components/Acnw/Page'
 import { YearTile } from 'components/Acnw/YearTile'
@@ -14,7 +14,7 @@ class _PastConsPage extends Component {
   selectYear = year => {
     const { updateUrlSourceMutation, history } = this.props
     const slug = `/pastCons/${year}`
-    updateUrlSourceMutation({ variables: { source: URL_SOURCE_JUMP, url: slug } })
+    updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
     return history.push(slug)
   }
 

@@ -28,7 +28,7 @@ function camelToSnake(str) {
 }
 
 function snakeToCamel(str) {
-  let parts = str.split('_')
+  const parts = str.split('_')
   return parts.reduce(function(p, c) {
     return p + c.charAt(0).toUpperCase() + c.slice(1)
   }, parts.shift())
@@ -41,7 +41,7 @@ export function toSnakeCase(object, exceptions) {
   exceptions = exceptions || []
 
   return Object.keys(object).reduce(function(p, key) {
-    let newKey = exceptions.indexOf(key) === -1 ? camelToSnake(key) : key
+    const newKey = exceptions.indexOf(key) === -1 ? camelToSnake(key) : key
     p[newKey] = toSnakeCase(object[key])
     return p
   }, {})
@@ -55,7 +55,7 @@ export function toCamelCase(object, exceptions) {
   exceptions = exceptions || []
 
   return Object.keys(object).reduce(function(p, key) {
-    let newKey = exceptions.indexOf(key) === -1 ? snakeToCamel(key) : key
+    const newKey = exceptions.indexOf(key) === -1 ? snakeToCamel(key) : key
     p[newKey] = toCamelCase(object[key])
     return p
   }, {})

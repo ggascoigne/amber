@@ -45,7 +45,7 @@ class NavPills extends React.Component {
         centered={alignCenter}
       >
         {tabs.map((prop, key) => {
-          var icon = {}
+          const icon = {}
           if (prop.tabIcon !== undefined) {
             icon['icon'] = <prop.tabIcon className={classes.tabIcon} />
           }

@@ -6,7 +6,7 @@ import { loader } from 'graphql.macro'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 
-const schema = loader('../client/schema.graphql')
+const schema = loader('../../graphql-schema.graphql')
 
 const cache = new InMemoryCache()
 

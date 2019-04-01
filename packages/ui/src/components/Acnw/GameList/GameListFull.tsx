@@ -1,8 +1,16 @@
+import { GetGames_games_edges } from '__generated__/GetGames'
+import { GetSlots_slots_nodes } from '__generated__/GetSlots'
 import { Game } from 'components/Acnw/Game'
-import PropTypes from 'prop-types'
 import React from 'react'
 
-export const GameListFull = ({ year, slot, games, onEnterGame }) => {
+interface IGameListFull {
+  year: number
+  slot: GetSlots_slots_nodes
+  games: GetGames_games_edges[]
+  onEnterGame: any
+}
+
+export const GameListFull: React.FC<IGameListFull> = ({ year, slot, games, onEnterGame }) => {
   return (
     <React.Fragment key={`slot_${slot.id}`}>
       {games.map(({ node: game }) => {
@@ -18,11 +26,4 @@ export const GameListFull = ({ year, slot, games, onEnterGame }) => {
       })}
     </React.Fragment>
   )
-}
-
-GameListFull.propTypes = {
-  year: PropTypes.number.isRequired,
-  slot: PropTypes.object.isRequired,
-  games: PropTypes.array.isRequired,
-  onEnterGame: PropTypes.func.isRequired
 }

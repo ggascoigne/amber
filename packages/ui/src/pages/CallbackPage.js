@@ -18,7 +18,6 @@ export const CallbackPage = props => (
       if (/access_token|id_token|error/.test(props.location.hash)) {
         handleAuthentication()
       }
-      debugger
       auth.popup.callback()
       return <Redirect to='/' />
     }}

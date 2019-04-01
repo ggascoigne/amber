@@ -42,7 +42,7 @@ class CustomTabs extends React.Component {
             }}
           >
             {tabs.map((prop, key) => {
-              var icon = {}
+              let icon = {}
               if (prop.tabIcon) {
                 icon = {
                   icon: typeof prop.tabIcon === 'string' ? <Icon>{prop.tabIcon}</Icon> : <prop.tabIcon />
