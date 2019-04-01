@@ -56,9 +56,7 @@
     "format": "yarn format:sort-imports && yarn format:prettier",
     "format:prettier": "prettier --no-color --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
     "format:sort-imports": "import-sort --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx}'",
-    "lint": "yarn lint:server && yarn lint:ui",
-    "lint:server": "lerna exec --scope server yarn lint",
-    "lint:ui": "lerna exec --scope ui yarn lint",
+    "lint": "lerna exec --parallel yarn lint",
     "start": "lerna exec --parallel yarn start",
     "start:ui": "yarn db:start && lerna exec --scope ui yarn start",
     "start:production": "lerna exec --scope ui yarn build && lerna exec --scope server yarn start:production",
@@ -86,16 +84,10 @@
     }
   },
   "lint-staged": {
-    "packages/server/src/*.{js,jsx}": [
+    "packages/*/src/*.{js,jsx,ts,tsx}": [
       "import-sort --write",
       "prettier --no-color --write",
-      "yarn lint:server",
-      "git add"
-    ],
-    "packages/ui/src/*.{js,jsx,ts,tsx}": [
-      "import-sort --write",
-      "prettier --no-color --write",
-      "yarn lint:ui",
+      "yarn lint",
       "git add"
     ],
     "*.{css,scss}": [
