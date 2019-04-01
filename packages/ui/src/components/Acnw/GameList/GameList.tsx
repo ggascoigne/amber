@@ -5,7 +5,7 @@ import { SlotSelector } from 'components/Acnw/SlotSelector'
 import React from 'react'
 
 interface IGameList {
-  small: boolean
+  small?: boolean
   year: number
   slotIdStr: string
 

@@ -1,4 +1,4 @@
-const ordinals = {
+const ordinals: { [k: number]: string } = {
   1: 'first',
   2: 'second',
   3: 'third',
@@ -28,7 +28,7 @@ const ordinals = {
   90: 'ninetieth'
 }
 
-const prefixes = {
+const prefixes: { [k: number]: string } = {
   2: 'twenty',
   3: 'thirty',
   4: 'forty',
@@ -40,11 +40,11 @@ const prefixes = {
 }
 
 // note only good for ordinals between 1 and 99 inclusive
-const getOrdinalWord = number =>
-  number < 1 || number > 99
-    ? number
-    : number <= 20 || number % 10 === 0
-    ? ordinals[number]
-    : prefixes[Math.floor(number / 10)] + '-' + ordinals[number % 10]
+const getOrdinalWord = (value: number): string =>
+  value < 1 || value > 99
+    ? `${value}`
+    : value <= 20 || value % 10 === 0
+    ? ordinals[value]
+    : prefixes[Math.floor(value / 10)] + '-' + ordinals[value % 10]
 
 export default getOrdinalWord

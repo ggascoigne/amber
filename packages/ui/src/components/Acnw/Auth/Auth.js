@@ -99,7 +99,6 @@ class Auth extends Component {
   }
 
   setSession(authResult) {
-    console.log(authResult)
     const { sub: id, email, nickname, name, picture } = authResult.idTokenPayload
     const user = {
       id,

@@ -3,9 +3,9 @@ import { NotFound } from 'pages'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import { menuDataType } from './Routes'
+import { TRootRoutes } from './Routes'
 
-export const SelectedContent = ({ routes }) => {
+export const SelectedContent: React.FC<{ routes: TRootRoutes }> = ({ routes }) => {
   return (
     <ErrorBoundary>
       <Switch>
@@ -16,8 +16,4 @@ export const SelectedContent = ({ routes }) => {
       </Switch>
     </ErrorBoundary>
   )
-}
-
-SelectedContent.propTypes = {
-  menuItems: menuDataType
 }

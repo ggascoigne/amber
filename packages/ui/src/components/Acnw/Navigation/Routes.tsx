@@ -1,11 +1,22 @@
 import { AboutAmberconNw, CallbackPage, GraphiQLPage, Lookups, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
-import PropTypes from 'prop-types'
+import * as React from 'react'
 
-const { shape, arrayOf } = PropTypes
+import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
+type IRouteInfo = {
+  path: string
+  label?: string
+  link?: string
+  subText?: string
+  exact: boolean
+  component: React.ComponentType<any>
+  permission?: Perms
+}
 
-export const rootRoutes = [
+export type TRootRoutes = IRouteInfo[]
+
+export const rootRoutes: TRootRoutes = [
   {
     path: '/',
     label: 'Welcome',
@@ -51,7 +62,7 @@ export const rootRoutes = [
     subText: 'Dynamically query the ACNW database',
     exact: false,
     component: GraphiQLPage,
-    permission: 'graphiql:load'
+    permission: Perms.GraphiqlLoad
   },
   {
     path: '/callback',
@@ -59,14 +70,3 @@ export const rootRoutes = [
     component: CallbackPage
   }
 ]
-
-export const menuDataType = arrayOf(
-  shape({
-    path: PropTypes.string.isRequired,
-    link: PropTypes.string,
-    label: PropTypes.string,
-    subText: PropTypes.string,
-    exact: PropTypes.bool.isRequired,
-    component: PropTypes.func.isRequired
-  })
-)

@@ -1,14 +1,26 @@
-import { withUrlSource } from 'client/resolvers/urlSource'
+import { WithUrlSource, withUrlSource } from 'client/resolvers/urlSource'
 import { Page } from 'components/Acnw/Page'
 import jump from 'jump.js'
 import debounce from 'lodash/debounce'
 import { PastConsPageGameList } from 'pages/PastCons/PastConsPageGameList'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 
-class _PastConsGamesPage extends Component {
-  constructor(props) {
+interface MatchParams {
+  year: string
+  slot: string
+  game: string
+}
+
+interface IPastConsGamePage extends WithUrlSource, RouteComponentProps<MatchParams> {}
+
+interface IPastConsGameState {
+  lastSlug: string
+}
+
+class _PastConsGamesPage extends Component<IPastConsGamePage, IPastConsGameState> {
+  constructor(props: IPastConsGamePage) {
     super(props)
     this.state = { lastSlug: '' }
   }
@@ -31,7 +43,7 @@ class _PastConsGamesPage extends Component {
     this.scrollToId(0)
   }
 
-  scrollToId = delay => {
+  scrollToId = (delay: number) => {
     const {
       match: {
         params: { year, slot, game }
@@ -76,7 +88,7 @@ class _PastConsGamesPage extends Component {
   }
 }
 
-export const PastConsGamesPage = compose(
+export const PastConsGamesPage = compose<IPastConsGamePage, {}>(
   withRouter,
   withUrlSource
 )(_PastConsGamesPage)

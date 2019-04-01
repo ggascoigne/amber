@@ -9,7 +9,8 @@ export interface Rules {
 
 export enum Perms {
   PostsList = 'posts:list',
-  HomePageVisit = 'home-page:visit'
+  HomePageVisit = 'home-page:visit',
+  GraphiqlLoad = 'graphiql:load'
 }
 
 const rules: Rules = {

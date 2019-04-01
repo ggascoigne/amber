@@ -29,7 +29,7 @@ interface IGameListIndex {
   year: number
   slot: GetSlots_slots_nodes
   games: GetGames_games_edges[]
-  onEnterGame: any
+  onEnterGame?: any
 }
 
 interface IGameListIndexInternal

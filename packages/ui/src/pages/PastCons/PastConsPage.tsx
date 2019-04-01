@@ -1,4 +1,4 @@
-import { withUrlSource } from 'client/resolvers/urlSource'
+import { WithUrlSource, withUrlSource } from 'client/resolvers/urlSource'
 import { GameByYearQuery } from 'components/Acnw/GameByYearQuery'
 import { Page } from 'components/Acnw/Page'
 import { YearTile } from 'components/Acnw/YearTile'
@@ -7,11 +7,13 @@ import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import range from 'lodash/range'
 import { DateTime } from 'luxon'
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 
-class _PastConsPage extends Component {
-  selectYear = year => {
+interface IPastConsPage extends WithUrlSource, RouteComponentProps {}
+
+class _PastConsPage extends Component<IPastConsPage> {
+  selectYear = (year: number) => {
     const { updateUrlSourceMutation, history } = this.props
     const slug = `/pastCons/${year}`
     updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
@@ -38,7 +40,7 @@ class _PastConsPage extends Component {
   }
 }
 
-export const PastConsPage = compose(
+export const PastConsPage = compose<IPastConsPage, {}>(
   withRouter,
   withUrlSource
 )(_PastConsPage)

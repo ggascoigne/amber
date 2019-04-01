@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core'
+import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
 import { dangerColor } from 'assets/jss/material-kit-react.jsx'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Acnw/Auth'
@@ -6,20 +6,23 @@ import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-const styles = theme => ({
-  banner: {
-    textAlign: 'center'
-  },
-  deadline: {},
-  deadlineExpired: {
-    color: dangerColor,
-    '&:after': {
-      content: '" - date passed"'
+const styles = (theme: Theme) =>
+  createStyles({
+    banner: {
+      textAlign: 'center'
+    },
+    deadline: {},
+    deadlineExpired: {
+      color: dangerColor,
+      '&:after': {
+        content: '" - date passed"'
+      }
     }
-  }
-})
+  })
 
-const _Welcome = ({ classes, theme }) => {
+interface IWelcome extends WithStyles<typeof styles, true> {}
+
+const _Welcome: React.FC<IWelcome> = ({ classes, theme }) => {
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (

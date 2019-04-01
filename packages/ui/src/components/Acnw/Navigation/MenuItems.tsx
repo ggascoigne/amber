@@ -3,12 +3,16 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { HasPermission } from 'components/Acnw/Auth'
 import React from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 
 import { contextRoutes } from './ContextRoutes'
-import { menuDataType } from './Routes'
+import { TRootRoutes } from './Routes'
 
-export const MenuItems = withRouter(({ menuItems, location }) => {
+interface IMenuItems extends RouteComponentProps {
+  menuItems: TRootRoutes
+}
+
+const _MenuItems: React.FC<IMenuItems> = ({ menuItems, location }) => {
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
   if (matchedContextRoute) {
@@ -16,14 +20,19 @@ export const MenuItems = withRouter(({ menuItems, location }) => {
   } else {
     return (
       <List>
-        {/*<ListItem>{location.pathname}</ListItem>*/}
+        <ListItem>{location.pathname}</ListItem>
         {menuItems
           // only display routes with a label
           .filter(menuItem => menuItem.label)
           .map(menuItem => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (
-              <ListItem key={link} button component={Link} to={link} selected={activeItem === link}>
+              <ListItem
+                key={link}
+                button
+                component={({ innerRef, ...props }) => <Link {...props} to={link} />}
+                selected={activeItem === link}
+              >
                 <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
               </ListItem>
             )
@@ -40,8 +49,6 @@ export const MenuItems = withRouter(({ menuItems, location }) => {
       </List>
     )
   }
-})
-
-MenuItems.propTypes = {
-  menuItems: menuDataType
 }
+
+export const MenuItems = withRouter(_MenuItems)
