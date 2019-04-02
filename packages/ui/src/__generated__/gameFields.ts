@@ -8,6 +8,10 @@
 
 export interface gameFields {
   __typename: 'Game'
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string
   id: number
   charInstructions: string
   description: string

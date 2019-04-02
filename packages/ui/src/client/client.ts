@@ -35,7 +35,10 @@ const mergeGet = (attributeName: any) =>
 
 const STORES = [gameFilterStore, urlSourceStore]
 
-const cache = new InMemoryCache()
+const cache = new InMemoryCache({
+  // postgraphile uses nodeId for the uuid, and leaves id as the database id.
+  dataIdFromObject: (obj: any) => obj.nodeId || null
+})
 
 // Initialize the Apollo Client
 const Client = new ApolloClient({

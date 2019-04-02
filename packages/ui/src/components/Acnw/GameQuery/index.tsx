@@ -14,6 +14,7 @@ const QUERY_GAMES = gql`
           ...gameFields
           gameAssignments(filter: { gm: { lessThan: 0 } }) {
             nodes {
+              nodeId
               gm
               member {
                 user {

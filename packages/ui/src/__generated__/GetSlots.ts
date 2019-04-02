@@ -8,6 +8,10 @@
 
 export interface GetSlots_slots_nodes {
   __typename: 'Slot'
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string
   id: number
   slot: number
   day: string

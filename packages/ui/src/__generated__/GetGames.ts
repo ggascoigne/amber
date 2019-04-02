@@ -8,6 +8,10 @@
 
 export interface GetGames_games_edges_node_gameAssignments_nodes_member_user_profile {
   __typename: 'Profile'
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string
   id: number
   email: string
   fullName: string
@@ -33,6 +37,10 @@ export interface GetGames_games_edges_node_gameAssignments_nodes_member {
 
 export interface GetGames_games_edges_node_gameAssignments_nodes {
   __typename: 'GameAssignment'
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string
   gm: number
   /**
    * Reads a single `Membership` that is related to this `GameAssignment`.
@@ -50,6 +58,10 @@ export interface GetGames_games_edges_node_gameAssignments {
 
 export interface GetGames_games_edges_node {
   __typename: 'Game'
+  /**
+   * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+   */
+  nodeId: string
   id: number
   charInstructions: string
   description: string

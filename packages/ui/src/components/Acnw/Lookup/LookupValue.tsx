@@ -8,9 +8,11 @@ const QUERY_LOOKUP = gql`
     lookups(condition: { realm: $realm }) {
       edges {
         node {
+          nodeId
           realm
           lookupValues(condition: { code: $code }) {
             nodes {
+              nodeId
               id
               code
               sequencer

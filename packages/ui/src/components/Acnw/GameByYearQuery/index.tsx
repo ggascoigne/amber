@@ -13,6 +13,7 @@ const QUERY_FIRST_SLOT_ONE_GAME = gql`
         ...gameFields
         gameAssignments(filter: { gm: { lessThan: 0 } }) {
           nodes {
+            nodeId
             gm
             member {
               user {

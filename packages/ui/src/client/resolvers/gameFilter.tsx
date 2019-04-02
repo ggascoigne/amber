@@ -22,6 +22,7 @@ const gameFilterDefaults: IGameFilter = {
   gameFilter: {
     year: 2017,
     slot: {
+      nodeId: 'dummy',
       id: 1,
       slot: 1,
       day: 'Thursday',
@@ -84,7 +85,7 @@ type ChildProps = ChildDataProps<{}, IGameFilter, {}>
 
 const withGameFilterQuery = graphql<{}, IGameFilter, {}, ChildProps>(gameFilterQuery, {
   props: ({ data, ownProps }) => {
-    const { gameFilter = gameFilterDefaults } = data
+    const { gameFilter } = data
     return {
       data, // only here to shut up typescript
       ...ownProps,

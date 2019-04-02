@@ -26,7 +26,7 @@ interface ISlotQueryChild {
   slots?: (GetSlots_slots_nodes | null)[]
 }
 
-export const SlotQuery = ({ year, children }: ISlotQuery) => {
+export const SlotQuery: React.FC<ISlotQuery> = ({ year, children }) => {
   return (
     <GqlQuery<GetSlots> query={QUERY_SLOTS} errorPolicy='all'>
       {data => children && children({ year, slots: data && data.slots ? data.slots.nodes : undefined })}
