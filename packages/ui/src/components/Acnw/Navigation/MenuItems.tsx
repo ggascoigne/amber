@@ -1,11 +1,11 @@
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import { HasPermission } from 'components/Acnw/Auth'
 import React from 'react'
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 import { contextRoutes } from './ContextRoutes'
+import { ListItemLink } from './ListItemLink'
 import { TRootRoutes } from './Routes'
 
 interface IMenuItems extends RouteComponentProps {
@@ -26,14 +26,9 @@ const _MenuItems: React.FC<IMenuItems> = ({ menuItems, location }) => {
           .map(menuItem => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (
-              <ListItem
-                key={link}
-                button
-                component={({ innerRef, ...props }) => <Link {...props} to={link} />}
-                selected={activeItem === link}
-              >
+              <ListItemLink key={link} button to={link} selected={activeItem === link}>
                 <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
-              </ListItem>
+              </ListItemLink>
             )
             if (menuItem.permission) {
               return (
