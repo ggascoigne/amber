@@ -2772,6 +2772,13 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/mui-datatables@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@types/mui-datatables/-/mui-datatables-2.0.7.tgz#1d7cf3913e7e86ce2dd659e64306889f23f60197"
+  integrity sha512-raTT4DlwC08uT/YCtmwZCvxnOWZ48qHS5mtISUfZq5LP9Xs9qwaFrBGScit9AMNs03FkNg7f9NYgEHix0soHIw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/node-fetch@^2.1.7":
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.1.7.tgz#0231559340f6e3f3a0608692077d744c87b5b367"
@@ -10762,6 +10769,11 @@ lodash.memoize@^4.1.2:
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
 
+lodash.merge@^4.6.0:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+  integrity sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==
+
 lodash.once@^4.0.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/lodash.once/-/lodash.once-4.1.1.tgz#0dd3971213c7c56df880977d504c88fb471a97ac"
@@ -11323,6 +11335,20 @@ ms@^2.0.0, ms@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
+
+mui-datatables@^2.0.0-beta.59:
+  version "2.0.0-beta.59"
+  resolved "https://registry.yarnpkg.com/mui-datatables/-/mui-datatables-2.0.0-beta.59.tgz#22460062cd6a7afcecb7b70c657a1b3b1b98f957"
+  integrity sha512-ye9f948TMAN4YoXW66fkVgkPzM2kxT2cKn2DhjazNVnyLMlYlCP1yy8HOC0J34/Pz2W9kXK8CdRN3U/Mkmjifg==
+  dependencies:
+    classnames "^2.2.5"
+    lodash.clonedeep "^4.5.0"
+    lodash.get "^4.4.2"
+    lodash.isequal "^4.5.0"
+    lodash.memoize "^4.1.2"
+    lodash.merge "^4.6.0"
+    prop-types "^15.6.0"
+    react-to-print "^2.0.0-alpha.7"
 
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
@@ -13961,6 +13987,13 @@ react-test-renderer@^16.8.6:
     prop-types "^15.6.2"
     react-is "^16.8.6"
     scheduler "^0.13.6"
+
+react-to-print@^2.0.0-alpha.7:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.1.0.tgz#34abb9c1b50aabbb40e6ee9eba5bc36c46c8117a"
+  integrity sha512-oBwdNdm+q21PgRjBbeb1w9DESx6FpmCoHLZ4x7hcHH88Igog6QYxmb6UHqw4SGxdmWEBc3E+CSybTRoZh+QUrQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-transition-group@^2.2.1:
   version "2.7.1"
