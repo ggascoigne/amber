@@ -1,5 +1,7 @@
 import { GetGames_games_edges_node } from '__generated__/GetGames'
-import { WithStyles, createStyles, withStyles } from '@material-ui/core'
+import { WithStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import classNames from 'classnames'
 import { LookupValue } from 'components/Acnw/Lookup'
 import Card from 'components/MaterialKitReact/Card/Card'

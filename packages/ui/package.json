@@ -30,7 +30,7 @@
     "react-test-renderer": "^16.8.6",
     "source-map-explorer": "^1.8.0",
     "ts-node": "^8.0.3",
-    "typescript": "3.3.3333",
+    "typescript": "3.4.1",
     "why-did-you-update": "^1.0.6"
   },
   "dependencies": {

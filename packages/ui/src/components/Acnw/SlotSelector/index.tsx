@@ -1,5 +1,7 @@
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
+import { Theme, WithStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'

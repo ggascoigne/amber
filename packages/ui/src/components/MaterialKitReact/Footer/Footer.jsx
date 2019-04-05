@@ -1,5 +1,7 @@
-import { List, ListItem, withStyles } from '@material-ui/core'
 // @material-ui/icons
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import withStyles from '@material-ui/core/styles/withStyles'
 import Favorite from '@material-ui/icons/Favorite'
 import footerStyle from 'assets/jss/material-kit-react/components/footerStyle.jsx'
 // nodejs library that concatenates classes

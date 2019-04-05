@@ -1,5 +1,7 @@
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
+import { Theme, WithStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { AuthConsumer } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'

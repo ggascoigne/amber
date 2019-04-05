@@ -1,4 +1,5 @@
-import { Theme, createStyles } from '@material-ui/core'
+import { Theme } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'

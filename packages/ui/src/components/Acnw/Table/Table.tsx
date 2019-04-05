@@ -1,4 +1,4 @@
-import { MuiThemeProvider } from '@material-ui/core'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import MUIDataTable, { MUIDataTableOptions, MUIDataTableProps } from 'mui-datatables'
 import React, { MouseEventHandler } from 'react'
 

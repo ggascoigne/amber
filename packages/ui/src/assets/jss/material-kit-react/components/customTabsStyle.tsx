@@ -1,4 +1,4 @@
-import { createStyles } from '@material-ui/core'
+import createStyles from '@material-ui/core/styles/createStyles'
 
 const customTabsStyle = createStyles({
   cardTitle: {

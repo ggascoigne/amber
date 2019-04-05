@@ -1,4 +1,6 @@
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
+import { Theme, WithStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import contentPageStyles from 'assets/jss/acnw/contentPage'
 import classNames from 'classnames'
 import React from 'react'

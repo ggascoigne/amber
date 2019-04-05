@@ -1,4 +1,6 @@
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core'
+import { Theme, WithStyles } from '@material-ui/core/styles'
+import createStyles from '@material-ui/core/styles/createStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Acnw/Auth'
