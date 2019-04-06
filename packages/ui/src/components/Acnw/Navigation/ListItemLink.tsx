@@ -1,12 +1,17 @@
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
 import * as H from 'history'
-import React from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-export const ListItemLink: React.FC<ListItemProps & { to: H.LocationDescriptor }> = ({ to, children, ...rest }) => {
-  return (
-    <ListItem {...rest} component={({ innerRef, ...rest }) => <Link {...rest} to={to} />}>
-      {children}
-    </ListItem>
-  )
+export class ListItemLink extends Component<ListItemProps & { to: H.LocationDescriptor }> {
+  renderLink: React.FC<ListItemProps> = ({ innerRef, ...itemProps }) => <Link to={this.props.to} {...itemProps} />
+
+  render() {
+    const { to, children, ...rest } = this.props
+    return (
+      <ListItem {...rest} component={this.renderLink}>
+        {children}
+      </ListItem>
+    )
+  }
 }
