@@ -32,6 +32,7 @@ export interface GetLookupValue_lookups_edges_node {
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
    */
   nodeId: string
+  id: number
   realm: string
   /**
    * Reads and enables pagination through a set of `LookupValue`.

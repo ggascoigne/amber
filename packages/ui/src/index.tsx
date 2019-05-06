@@ -5,6 +5,7 @@ import client from 'client/client'
 import { Auth } from 'components/Acnw/Auth'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -17,9 +18,11 @@ const render = (Component: React.ComponentType) => {
   return ReactDOM.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <Auth>
-          <Component />
-        </Auth>
+        <ApolloHooksProvider client={client}>
+          <Auth>
+            <Component />
+          </Auth>
+        </ApolloHooksProvider>
       </ApolloProvider>
     </BrowserRouter>,
     rootElement

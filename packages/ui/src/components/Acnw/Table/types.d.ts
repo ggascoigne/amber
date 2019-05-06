@@ -5,3 +5,5 @@ export interface ITableSelectedRows {
   }[]
   lookup: { [key: number]: boolean }
 }
+
+export type IDisplayData = { data: any[]; dataIndex: number }[]

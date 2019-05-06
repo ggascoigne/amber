@@ -3,7 +3,6 @@ import { GAME_FRAGMENT, PROFILE_FRAGMENT } from 'client/fragments'
 import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
 import get from 'lodash/get'
-import * as PropTypes from 'prop-types'
 import React from 'react'
 
 const QUERY_FIRST_SLOT_ONE_GAME = gql`
@@ -49,9 +48,4 @@ export const GameByYearQuery: React.FC<IGameByYearQuery> = ({ year, children }) 
       {data => children && children({ year, game: get(data, 'games.nodes[0]') })}
     </GqlQuery>
   )
-}
-
-GameByYearQuery.propTypes = {
-  year: PropTypes.number.isRequired,
-  children: PropTypes.func.isRequired
 }

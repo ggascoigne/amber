@@ -1,29 +1,9 @@
 import { GetLookups, GetLookups_lookups } from '__generated__/GetLookups'
+import { QUERY_LOOKUP } from 'client/queries'
 import { GqlQuery } from 'components/Acnw/GqlQuery'
-import gql from 'graphql-tag'
 import React from 'react'
+import { ChildDataProps, graphql } from 'react-apollo'
 
-const QUERY_LOOKUP = gql`
-  query GetLookups {
-    lookups {
-      edges {
-        node {
-          nodeId
-          id
-          realm
-          lookupValues {
-            nodes {
-              nodeId
-              id
-              sequencer
-              value
-            }
-          }
-        }
-      }
-    }
-  }
-`
 interface ILookupsQuery {
   children(props: ILookupsQueryChild): React.ReactNode
 }
@@ -39,3 +19,18 @@ export const LookupsQuery: React.FC<ILookupsQuery> = ({ children }) => {
     </GqlQuery>
   )
 }
+
+type ChildProps = ChildDataProps<{}, GetLookups, {}>
+
+export const withLookupsQuery = graphql<{}, GetLookups, {}, ChildProps>(QUERY_LOOKUP, {
+  // props: ({ data, ownProps }) => {
+  //   const { lookups } = data
+  //   return {
+  //     data, // only here to shut up typescript
+  //     ...ownProps,
+  //     lookups
+  //   }
+  // }
+})
+
+export interface WithLookupsQuery extends ChildProps {}

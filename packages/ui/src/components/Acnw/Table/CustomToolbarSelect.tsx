@@ -39,24 +39,26 @@ const toolbarStyles = (theme: Theme) =>
 
 interface ICustomToolbarSelectDetails {
   selectedRows: ITableSelectedRows
-  displayData: Array<{ data: any[]; dataIndex: number }>
+  displayData: { data: any[]; dataIndex: number }[]
   setSelectedRows: (rows: number[]) => void
 }
 
 interface ICustomToolbarSelect extends ICustomToolbarSelectDetails {
-  onEdit: (selection: ITableSelectedRows) => void
-  onDelete: (selection: ITableSelectedRows) => void
+  onEdit: (selection: number[]) => void
+  onDelete: (selection: number[]) => void
 }
 
 class _CustomToolbarSelect extends React.Component<ICustomToolbarSelect & WithStyles<typeof toolbarStyles>> {
   onEditHandler = () => {
     const { onEdit, selectedRows } = this.props
-    onEdit(selectedRows)
+    const rows = selectedRows.data.map(d => d.dataIndex)
+    onEdit(rows)
   }
 
   onDeleteHandler = () => {
     const { onDelete, selectedRows } = this.props
-    onDelete(selectedRows)
+    const rows = selectedRows.data.map(d => d.dataIndex)
+    onDelete(rows)
   }
 
   render() {
@@ -66,7 +68,11 @@ class _CustomToolbarSelect extends React.Component<ICustomToolbarSelect & WithSt
       <div className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
         <div className={classes.actions}>
           <Tooltip title={'Edit'}>
-            <IconButton className={classes.iconButton} onClick={this.onEditHandler}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={this.onEditHandler}
+              disabled={this.props.selectedRows.data.length !== 1}
+            >
               <CreateIcon className={classes.createIcon} />
             </IconButton>
           </Tooltip>

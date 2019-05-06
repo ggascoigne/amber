@@ -5,12 +5,11 @@ import React, { MouseEventHandler } from 'react'
 import { CustomToolbar } from './CustomToolbar'
 import { CustomToolbarSelect } from './CustomToolbarSelect'
 import { getMuiTableTheme } from './getTableTheme'
-import { ITableSelectedRows } from './types'
 
 export interface ITable extends MUIDataTableProps {
   onAdd: MouseEventHandler
-  onDelete: (selection: ITableSelectedRows) => void
-  onEdit: (selection: ITableSelectedRows) => void
+  onDelete: (selection: number[]) => void
+  onEdit: (selection: number[]) => void
 }
 
 export const Table: React.FC<ITable> = ({ title, data, columns, onAdd, onDelete, onEdit }) => {
@@ -19,6 +18,9 @@ export const Table: React.FC<ITable> = ({ title, data, columns, onAdd, onDelete,
     download: false,
     print: false,
     responsive: 'stacked',
+    onRowClick: (rowData, rowMeta) => {
+      onEdit([rowMeta.dataIndex])
+    },
     customToolbar: () => {
       return <CustomToolbar onAdd={onAdd} />
     },

@@ -1,0 +1,15 @@
+{
+  "name": "ACNW GraphQL Schema",
+  "schemaPath": "packages/ui/graphql-schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:30001/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": true
+      }
+    }
+  }
+}

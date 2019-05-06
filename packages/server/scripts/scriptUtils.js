@@ -144,6 +144,8 @@ function psql(dbconfig, script, stdio = 'inherit') {
   runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: stdio }))
 }
 
+exports.psql = psql
+
 function pgloader(mySqlPassword, script) {
   const name = tempy.file()
   fs.writeFileSync(name, script)

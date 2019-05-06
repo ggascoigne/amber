@@ -13,6 +13,7 @@ export interface GetLookups_lookups_edges_node_lookupValues_nodes {
    */
   nodeId: string
   id: number
+  code: string
   sequencer: number
   value: string
 }

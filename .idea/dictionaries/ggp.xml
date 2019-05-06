@@ -5,6 +5,7 @@
       <w>ambercon</w>
       <w>classnames</w>
       <w>dbconfig</w>
+      <w>formik</w>
       <w>gascoigne</w>
       <w>graphi</w>
       <w>graphiql</w>
@@ -14,6 +15,7 @@
       <w>lerna</w>
       <w>piggford</w>
       <w>postgraphile</w>
+      <w>refetch</w>
       <w>sequelize</w>
       <w>waypoint</w>
       <w>wyrdrune</w>

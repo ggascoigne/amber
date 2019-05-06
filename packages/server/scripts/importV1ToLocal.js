@@ -12,7 +12,8 @@ const {
   createCleanDbMySql,
   pgloader,
   getPostgresArgs,
-  info
+  info,
+  psql
 } = require('./scriptUtils')
 const { stripIndent } = require('common-tags')
 const { sleep } = require('./sleep')
@@ -126,6 +127,19 @@ function fixSequences(dbconfig) {
 
   runOrExit(spawnSync('/usr/local/bin/psql', args1, { stdio: 'inherit' }))
   runOrExit(spawnSync('/usr/local/bin/psql', args2, { stdio: 'inherit' }))
+}
+
+function cleanUpData(dbconfig) {
+  // @formatter:off
+  // language=PostgreSQL
+  const q = stripIndent`
+      DELETE FROM lookup_value 
+      WHERE lookup_value.lookup_id = 3 
+        AND (lookup_value.code = 'en-suite' OR lookup_value.code = 'no en-suite');
+  `
+  // @formatter:on
+
+  return psql(dbconfig, q)
 }
 
 async function main() {
@@ -242,6 +256,9 @@ async function main() {
 
   info('resetting sequences')
   fixSequences(dbconfig)
+
+  info('clean up data')
+  cleanUpData(dbconfig)
 }
 
 main().then(() => info('Complete'))
