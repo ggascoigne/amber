@@ -26,8 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface IPastConsMenu extends WithGameFilter {}
 
-export const _PastConsMenu: React.FC<IPastConsMenu> = ({ gameFilter: { year, slot: filterSlot } }) => {
-  const classes = useStyles()
+export const _PastConsMenu: React.FC<IPastConsMenu> = props => {
+  const {
+    gameFilter: { year, slot: filterSlot }
+  } = props
+  const classes = useStyles(props)
   return (
     <>
       <List>

@@ -18,36 +18,36 @@
   ],
   "devDependencies": {
     "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@commitlint/cli": "^7.5.2",
-    "@commitlint/config-conventional": "^7.5.0",
+    "@babel/core": "^7.4.5",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-conventional": "^8.0.0",
     "apollo-link-http": "^1.5.14",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^24.7.1",
+    "babel-jest": "^24.8.0",
     "cross-env": "^5.2.0",
-    "del-cli": "^1.1.0",
+    "del-cli": "^2.0.0",
     "eslint": "5.16.0",
-    "eslint-config-prettier": "^4.2.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-jest": "^22.5.1",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.1.1",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react": "^7.13.0",
     "execa": "^1.0.0",
     "graphql-tools": "^4.0.4",
-    "husky": "^2.1.0",
+    "husky": "^2.4.0",
     "import-sort-cli": "^6.0.0",
     "import-sort-parser-babylon": "^6.0.0",
     "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
-    "jest": "^24.7.1",
-    "lerna": "^3.13.4",
-    "lint-staged": "^8.1.5",
+    "jest": "24.7.1",
+    "lerna": "^3.14.1",
+    "lint-staged": "^8.1.7",
     "meow": "^5.0.0",
-    "node-fetch": "^2.4.0",
-    "prettier": "^1.17.0"
+    "node-fetch": "^2.6.0",
+    "prettier": "^1.17.1"
   },
   "scripts": {
     "bootstrap": "yarn && yarn outdated ; yarn audit",
@@ -98,6 +98,6 @@
     ]
   },
   "resolutions": {
-    "lerna/**/tar": "^4.4.2"
+
   }
 }
