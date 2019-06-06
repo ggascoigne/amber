@@ -24,7 +24,7 @@ class _PastConsPage extends Component<IPastConsPage> {
     const years = range(2012, DateTime.local().year)
     return (
       <Page>
-        <GridContainer spacing={16} justify={'center'}>
+        <GridContainer spacing={2} justify={'center'}>
           {years.reverse().map(year => {
             return (
               <GridItem key={year} xl={2} lg={3} md={4} sm={6}>

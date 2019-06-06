@@ -141,7 +141,7 @@ class _SlotSelector extends Component<ISlotSelectorInternal, ISlotSelectorState>
       <div className={cx({ [classes.small]: small })}>
         <Card>
           <div ref={this.tabsRef}>
-            <CardHeader ref={this.tabsRef} color='success' className={classes.cardHeader} plain>
+            <CardHeader color='success' className={classes.cardHeader} plain>
               {!small && (
                 <span id='slotLabel' className={classes.slotLabel}>
                   Slot
@@ -161,8 +161,6 @@ class _SlotSelector extends Component<ISlotSelectorInternal, ISlotSelectorState>
                   <Tab
                     classes={{
                       root: classes.tabRootButton,
-                      labelContainer: classes.tabLabelContainer,
-                      label: classes.tabLabel,
                       selected: classes.tabSelected,
                       wrapper: classes.tabWrapper
                     }}

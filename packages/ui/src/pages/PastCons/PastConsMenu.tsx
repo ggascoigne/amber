@@ -2,9 +2,7 @@ import Divider from '@material-ui/core/Divider'
 import List from '@material-ui/core/List'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { Theme, WithStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { WithGameFilter, withGameFilter } from 'client/resolvers/gameFilter'
@@ -13,7 +11,7 @@ import { ListItemLink } from 'components/Acnw/Navigation'
 import React from 'react'
 import compose from 'recompose/compose'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       fontSize: '1.125rem',
@@ -24,10 +22,12 @@ const styles = (theme: Theme) =>
       }
     }
   })
+)
 
-interface IPastConsMenu extends WithStyles<typeof styles>, WithGameFilter {}
+interface IPastConsMenu extends WithGameFilter {}
 
-export const _PastConsMenu: React.FC<IPastConsMenu> = ({ classes, gameFilter: { year, slot: filterSlot } }) => {
+export const _PastConsMenu: React.FC<IPastConsMenu> = ({ gameFilter: { year, slot: filterSlot } }) => {
+  const classes = useStyles()
   return (
     <>
       <List>
@@ -49,7 +49,4 @@ export const _PastConsMenu: React.FC<IPastConsMenu> = ({ classes, gameFilter: { 
   )
 }
 
-export const PastConsMenu = compose<IPastConsMenu, {}>(
-  withGameFilter,
-  withStyles(styles, { withTheme: true })
-)(_PastConsMenu)
+export const PastConsMenu = compose<IPastConsMenu, {}>(withGameFilter)(_PastConsMenu)

@@ -1,8 +1,8 @@
 import { GetGames_games_edges } from '__generated__/GetGames'
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
+import { Typography } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import { WithStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -15,15 +15,6 @@ const styles = createStyles({
   listItem: {
     paddingTop: 5,
     paddingBottom: 5
-  },
-  listItemText: {
-    paddingRight: 0
-  },
-  listItemTextPrimary: {
-    overflow: 'hidden',
-    maxWidth: '100%',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
   }
 })
 
@@ -64,11 +55,9 @@ const _GameListIndex: React.FC<IGameListIndexInternal> = ({
               return history.replace(slug)
             }}
           >
-            <ListItemText
-              className={classes.listItemText}
-              classes={{ primary: classes.listItemTextPrimary }}
-              primary={game.name}
-            />
+            <Typography variant='body1' noWrap>
+              {game.name}
+            </Typography>
           </ListItem>
         )
       })}

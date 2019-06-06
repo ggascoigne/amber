@@ -56,8 +56,8 @@ const styles = (theme: Theme) =>
       minHeight: '100vh',
       width: '100%',
       flexGrow: 1,
-      paddingTop: theme.spacing.unit * 3,
-      paddingBottom: theme.spacing.unit * 3
+      paddingTop: theme.spacing(3),
+      paddingBottom: theme.spacing(3)
     },
     list: {
       ...defaultFont,

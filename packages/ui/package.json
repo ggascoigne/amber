@@ -44,8 +44,8 @@
     "why-did-you-update": "^1.0.6"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2",
+    "@material-ui/core": "^4.0.2",
+    "@material-ui/icons": "^4.0.1",
     "apollo-boost": "^0.3.1",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
@@ -66,7 +66,7 @@
     "jump.js": "^1.0.2",
     "lodash": "^4.17.11",
     "luxon": "^1.12.1",
-    "mui-datatables": "^2.0.0",
+    "mui-datatables": "^2.3.0",
     "natural-compare": "^1.4.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.4.2",

@@ -1,17 +1,13 @@
 import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
-import * as H from 'history'
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { LegacyRef } from 'react'
+import { Link, LinkProps } from 'react-router-dom'
 
-export class ListItemLink extends Component<ListItemProps & { to: H.LocationDescriptor }> {
-  renderLink: React.FC<ListItemProps> = ({ innerRef, ...itemProps }) => <Link to={this.props.to} {...itemProps} />
-
-  render() {
-    const { to, children, ...rest } = this.props
-    return (
-      <ListItem {...rest} component={this.renderLink}>
-        {children}
-      </ListItem>
-    )
-  }
+export const ListItemLink: React.FC<ListItemProps & LinkProps> = ({ to, children, ...rest }) => {
+  const MyLink = React.forwardRef((props, ref: LegacyRef<Link>) => <Link {...props} to={to} ref={ref} />)
+  return (
+    // @ts-ignore
+    <ListItem {...rest} component={MyLink}>
+      {children}
+    </ListItem>
+  )
 }

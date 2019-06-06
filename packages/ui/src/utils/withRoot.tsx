@@ -5,9 +5,7 @@ import React, { ReactElement } from 'react'
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true
-  }
+  typography: {}
 })
 
 function withRoot(Component: React.ComponentType) {
