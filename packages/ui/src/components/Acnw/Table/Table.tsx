@@ -6,13 +6,13 @@ import { CustomToolbar } from './CustomToolbar'
 import { CustomToolbarSelect } from './CustomToolbarSelect'
 import { getMuiTableTheme } from './getTableTheme'
 
-export interface ITable extends MUIDataTableProps {
+export interface Table extends MUIDataTableProps {
   onAdd: MouseEventHandler
   onDelete: (selection: number[]) => void
   onEdit: (selection: number[]) => void
 }
 
-export const Table: React.FC<ITable> = ({ title, data, columns, onAdd, onDelete, onEdit }) => {
+export const Table: React.FC<Table> = ({ title, data, columns, onAdd, onDelete, onEdit }) => {
   const options: MUIDataTableOptions = {
     filterType: 'checkbox',
     download: false,

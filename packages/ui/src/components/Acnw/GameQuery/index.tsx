@@ -34,19 +34,19 @@ const QUERY_GAMES = gql`
   ${PROFILE_FRAGMENT}
 `
 
-interface IGameQuery {
+interface GameQuery {
   year: number
   slot: GetSlots_slots_nodes
-  children(props: IGameQueryChild): React.ReactNode
+  children(props: GameQueryChild): React.ReactNode
 }
 
-export interface IGameQueryChild {
+export interface GameQueryChild {
   year: number
   slot: GetSlots_slots_nodes
   games?: GetGames_games_edges[]
 }
 
-export const GameQuery: React.FC<IGameQuery> = ({ year, slot, children }) => (
+export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => (
   <GqlQuery<GetGames, GetGamesVariables>
     key={`slot_${slot.id}`}
     query={QUERY_GAMES}

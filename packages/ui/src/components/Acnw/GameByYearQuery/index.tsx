@@ -31,18 +31,18 @@ const QUERY_FIRST_SLOT_ONE_GAME = gql`
   ${PROFILE_FRAGMENT}
 `
 
-interface IGameByYearQuery {
+interface GameByYearQuery {
   year: number
 
-  children(props: IGameByYearQueryChild): React.ReactNode
+  children(props: GameByYearQueryChild): React.ReactNode
 }
 
-interface IGameByYearQueryChild {
+interface GameByYearQueryChild {
   year: number
   game: GetSlots_slots_nodes
 }
 
-export const GameByYearQuery: React.FC<IGameByYearQuery> = ({ year, children }) => {
+export const GameByYearQuery: React.FC<GameByYearQuery> = ({ year, children }) => {
   return (
     <GqlQuery key={`year_${year}`} query={QUERY_FIRST_SLOT_ONE_GAME} variables={{ year }} errorPolicy='all'>
       {data => children && children({ year, game: get(data, 'games.nodes[0]') })}

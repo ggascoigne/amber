@@ -23,18 +23,20 @@ const columns = [
 
 const _Lookups: React.FC<WithLookupsQuery> = ({ data: { loading, error, lookups } }) => {
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState([])
+  const [selection, setSelection] = useState<GetLookups_lookups_edges_node[]>([])
   const deleteLookup = useDeleteLookup()
   const deleteLookupValue = useDeleteLookupValue()
 
-  if (loading) {
+  if (loading || !lookups || !lookups.edges) {
     return <Loader />
   }
   if (error) {
     return <GraphQLError error={error} />
   }
 
-  const data = lookups.edges.map(v => v.node)
+  const data: GetLookups_lookups_edges_node[] = lookups.edges
+    .map(v => v.node)
+    .filter(i => i) as GetLookups_lookups_edges_node[]
 
   const onAdd: MouseEventHandler = () => {
     setShowEdit(true)
@@ -53,9 +55,10 @@ const _Lookups: React.FC<WithLookupsQuery> = ({ data: { loading, error, lookups 
     const toDelete = getSelected(selection, data)
     const updater = toDelete
       .map(l => {
-        const updaters: Promise<any>[] = l.lookupValues.nodes.map(lv =>
-          deleteLookupValue({ variables: { input: { id: lv.id } } })
-        )
+        const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
+          lv && lv.id && acc.push(deleteLookupValue({ variables: { input: { id: lv.id } } }))
+          return acc
+        }, [])
         updaters.push(deleteLookup({ variables: { input: { id: l.id } } }))
         return updaters
       })

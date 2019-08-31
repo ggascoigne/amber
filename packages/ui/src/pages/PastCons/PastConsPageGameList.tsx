@@ -8,6 +8,6 @@ interface IPastConsPageGameList {
 }
 export const PastConsPageGameList: React.FC<IPastConsPageGameList> = ({ year, slotIdStr, onEnterGame }) => (
   <GameList year={year} slotIdStr={slotIdStr}>
-    {({ year, slot, games }) => <GameListFull year={year} slot={slot} games={games} onEnterGame={onEnterGame} />}
+    {({ year, slot, games }) => <GameListFull year={year} slot={slot} games={games!} onEnterGame={onEnterGame} />}
   </GameList>
 )

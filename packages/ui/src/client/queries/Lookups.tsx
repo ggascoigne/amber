@@ -1,9 +1,6 @@
 import { createLookup, createLookupVariables } from '__generated__/createLookup'
 import { createLookupValue, createLookupValueVariables } from '__generated__/createLookupValue'
-import {
-  GetLookups_lookups_edges_node,
-  GetLookups_lookups_edges_node_lookupValues_nodes
-} from '__generated__/GetLookups'
+import { GetLookups_lookups_edges_node_lookupValues_nodes } from '__generated__/GetLookups'
 import { updateLookupByNodeId, updateLookupByNodeIdVariables } from '__generated__/updateLookupByNodeId'
 import { updateLookupValueByNodeId, updateLookupValueByNodeIdVariables } from '__generated__/updateLookupValueByNodeId'
 import gql from 'graphql-tag'
@@ -72,11 +69,16 @@ export const useDeleteLookup = () =>
     { refetchQueries: [{ query: QUERY_LOOKUP }] }
   )
 
+interface createOrUpdateLookup {
+  nodeId?: string
+  realm: string
+}
+
 export const useCreateOrUpdateLookup = () => {
   const updateLookup = useUpdateLookup()
   const createLookup = useCreateLookup()
 
-  return (values: Partial<GetLookups_lookups_edges_node>) => {
+  return (values: createOrUpdateLookup) => {
     if (values.nodeId) {
       return updateLookup({
         variables: {

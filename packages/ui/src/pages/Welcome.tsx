@@ -1,6 +1,5 @@
-import { Theme, WithStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw from 'components/Acnw'
 import { AuthConsumer } from 'components/Acnw/Auth'
@@ -8,7 +7,7 @@ import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     banner: {
       textAlign: 'center'
@@ -21,10 +20,10 @@ const styles = (theme: Theme) =>
       }
     }
   })
+)
 
-interface IWelcome extends WithStyles<typeof styles, true> {}
-
-const _Welcome: React.FC<IWelcome> = ({ classes, theme }) => {
+export const Welcome: React.FC = () => {
+  const classes = useStyles()
   return (
     <AuthConsumer>
       {({ authenticated, user }) => (
@@ -34,7 +33,7 @@ const _Welcome: React.FC<IWelcome> = ({ classes, theme }) => {
           </div>
           <h1>Welcome!</h1>
 
-          {authenticated ? (
+          {authenticated && !!user ? (
             <>
               <div>
                 <h2>User Profile</h2>
@@ -163,5 +162,3 @@ const _Welcome: React.FC<IWelcome> = ({ classes, theme }) => {
     </AuthConsumer>
   )
 }
-
-export const Welcome = withStyles(styles, { withTheme: true })(_Welcome)

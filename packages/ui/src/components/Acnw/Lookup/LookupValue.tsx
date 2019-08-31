@@ -2,6 +2,7 @@ import { GetLookupValue, GetLookupValueVariables } from '__generated__/GetLookup
 import { LOOKUP_FRAGMENT, LOOKUP_VALUES_FRAGMENT } from 'client/fragments'
 import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
+import get from 'lodash/get'
 import React from 'react'
 
 const QUERY_LOOKUP_VALUES = gql`
@@ -30,7 +31,7 @@ export const LookupValue: React.FC<GetLookupValueVariables> = ({ realm, code }) 
       variables={{ realm, code }}
       errorPolicy='all'
     >
-      {data => data.lookups.edges[0].node.lookupValues.nodes[0].value}
+      {data => get(data, 'lookups.edges[0].node.lookupValues.nodes[0].value')}
     </GqlQuery>
   )
 }

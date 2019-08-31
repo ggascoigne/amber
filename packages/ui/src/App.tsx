@@ -1,11 +1,12 @@
 import AppBar from '@material-ui/core/AppBar'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
+import { MuiThemeProvider, Theme, createMuiTheme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -13,13 +14,24 @@ import { defaultFont } from 'assets/jss/material-kit-react'
 import { Banner } from 'components/Acnw/Banner'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
 import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
-import React, { Component } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import withRoot from './utils/withRoot'
+const theme = createMuiTheme({
+  palette: {
+    background: {
+      default: '#fafafa'
+    }
+  },
+  typography: {
+    body2: {
+      fontWeight: 300
+    }
+  }
+})
 
 const drawerWidth = 240
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
@@ -82,51 +94,46 @@ const styles = (theme: Theme) =>
       padding: '0 !important'
     }
   })
+)
 
-interface IApp extends WithStyles<typeof styles, true> {}
+export const App: React.FC = () => {
+  const [mobileOpen, setMobileOpen] = useState(false)
 
-interface IAppState {
-  mobileOpen: boolean
-}
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen(!mobileOpen)
+  }, [mobileOpen])
 
-class App extends Component<IApp, IAppState> {
-  state = {
-    mobileOpen: false
-  }
+  const classes = useStyles()
 
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }))
-  }
-
-  render() {
-    const { classes, theme } = this.props
-
-    const drawer = (
-      <div>
-        <div className={classes.toolbar}>
-          <Banner to={'/'} />
-        </div>
-        <Divider />
-        <MenuItems menuItems={rootRoutes} />
+  const drawer = (
+    <div>
+      <div className={classes.toolbar}>
+        <Banner to={'/'} />
       </div>
-    )
+      <Divider />
+      <MenuItems menuItems={rootRoutes} />
+    </div>
+  )
 
-    const rightLinks: React.FC<{ small?: boolean }> = props => (
-      <List className={classes.list}>
-        <ListItem className={classes.listItem}>
-          <LoginMenu {...props} />
-        </ListItem>
-      </List>
-    )
+  const rightLinks: React.FC<{ small?: boolean }> = props => (
+    <List className={classes.list}>
+      <ListItem className={classes.listItem}>
+        <LoginMenu {...props} />
+      </ListItem>
+    </List>
+  )
 
-    return (
-      <div className={classes.root}>
+  return (
+    <div className={classes.root}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+
         <AppBar position='fixed' className={classes.appBar}>
           <Toolbar>
             <IconButton
               color='inherit'
               aria-label='Open drawer'
-              onClick={this.handleDrawerToggle}
+              onClick={handleDrawerToggle}
               className={classes.menuButton}
             >
               <MenuIcon />
@@ -143,9 +150,9 @@ class App extends Component<IApp, IAppState> {
           <Hidden mdUp>
             <Drawer
               variant='temporary'
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={this.state.mobileOpen}
-              onClose={this.handleDrawerToggle}
+              anchor={'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
               classes={{
                 paper: classes.drawerPaper
               }}
@@ -174,9 +181,7 @@ class App extends Component<IApp, IAppState> {
           <div className={classes.toolbar} />
           <SelectedContent routes={rootRoutes} />
         </main>
-      </div>
-    )
-  }
+      </MuiThemeProvider>
+    </div>
+  )
 }
-
-export default withRoot(withStyles(styles, { withTheme: true })(App))

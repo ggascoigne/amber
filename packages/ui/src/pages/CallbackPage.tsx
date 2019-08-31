@@ -21,7 +21,7 @@ export const CallbackPage: React.FC<ICallbackPage> = props => (
   <AuthConsumer>
     {({ handleAuthentication }) => {
       if (/access_token|id_token|error/.test(props.location.hash)) {
-        handleAuthentication()
+        handleAuthentication!()
       }
       auth.popup.callback({ hash: props.location.hash })
       return <Redirect to='/' />

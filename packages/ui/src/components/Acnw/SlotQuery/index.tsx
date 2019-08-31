@@ -15,18 +15,18 @@ const QUERY_SLOTS = gql`
   ${SLOT_FRAGMENT}
 `
 
-interface ISlotQuery {
+interface SlotQuery {
   year: number
 
-  children(props: ISlotQueryChild): React.ReactNode
+  children(props: SlotQueryChild): React.ReactNode
 }
 
-interface ISlotQueryChild {
+interface SlotQueryChild {
   year: number
   slots?: (GetSlots_slots_nodes | null)[]
 }
 
-export const SlotQuery: React.FC<ISlotQuery> = ({ year, children }) => {
+export const SlotQuery: React.FC<SlotQuery> = ({ year, children }) => {
   return (
     <GqlQuery<GetSlots> query={QUERY_SLOTS} errorPolicy='all'>
       {data => children && children({ year, slots: data && data.slots ? data.slots.nodes : undefined })}

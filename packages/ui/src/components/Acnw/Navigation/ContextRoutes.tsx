@@ -12,5 +12,6 @@ const data: ContextRoutes = {
 }
 
 export const contextRoutes = (path: string) => {
-  return data[Object.keys(data).find(k => new RegExp(k).test(path))]
+  const key = Object.keys(data).find(k => new RegExp(k).test(path))
+  return !!key ? data[key] : undefined
 }

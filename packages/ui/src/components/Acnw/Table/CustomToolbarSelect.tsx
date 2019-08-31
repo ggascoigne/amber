@@ -1,28 +1,13 @@
 import IconButton from '@material-ui/core/IconButton'
-import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
+import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Tooltip from '@material-ui/core/Tooltip'
 import CreateIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { ITableSelectedRows } from './types'
+import { TableSelectedRows } from './types'
 
-const xsStyle = createStyles({
-  root: {
-    display: 'block'
-  },
-  actions: {
-    textAlign: 'center'
-  }
-})
-
-const smStyle = createStyles({
-  actions: {
-    textAlign: 'right'
-  }
-})
-
-const toolbarStyles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     actions: {
@@ -32,59 +17,62 @@ const toolbarStyles = (theme: Theme) =>
     },
     createIcon: {},
     deleteIcon: {},
-    [theme.breakpoints.down('sm')]: { ...(smStyle as any) },
-    [theme.breakpoints.down('xs')]: { ...(xsStyle as any) },
+    [theme.breakpoints.down('sm')]: {
+      actions: {
+        textAlign: 'right'
+      }
+    },
+    [theme.breakpoints.down('xs')]: {
+      root: {
+        display: 'block'
+      },
+      actions: {
+        textAlign: 'center'
+      }
+    },
     '@media screen and (max-width: 480px)': {}
   })
+)
 
-interface ICustomToolbarSelectDetails {
-  selectedRows: ITableSelectedRows
+interface CustomToolbarSelectDetails {
+  selectedRows: TableSelectedRows
   displayData: { data: any[]; dataIndex: number }[]
   setSelectedRows: (rows: number[]) => void
 }
 
-interface ICustomToolbarSelect extends ICustomToolbarSelectDetails {
+interface CustomToolbarSelect extends CustomToolbarSelectDetails {
   onEdit: (selection: number[]) => void
   onDelete: (selection: number[]) => void
 }
 
-class _CustomToolbarSelect extends React.Component<ICustomToolbarSelect & WithStyles<typeof toolbarStyles>> {
-  onEditHandler = () => {
-    const { onEdit, selectedRows } = this.props
+export const CustomToolbarSelect: React.FC<CustomToolbarSelect> = props => {
+  const { onEdit, onDelete, selectedRows } = props
+  const classes = useStyles()
+
+  const onEditHandler = useCallback(() => {
     const rows = selectedRows.data.map(d => d.dataIndex)
     onEdit(rows)
-  }
+  }, [onEdit, selectedRows])
 
-  onDeleteHandler = () => {
-    const { onDelete, selectedRows } = this.props
+  const onDeleteHandler = useCallback(() => {
     const rows = selectedRows.data.map(d => d.dataIndex)
     onDelete(rows)
-  }
+  }, [onDelete, selectedRows])
 
-  render() {
-    const { classes } = this.props
-
-    return (
-      <div className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
-        <div className={classes.actions}>
-          <Tooltip title={'Edit'}>
-            <IconButton
-              className={classes.iconButton}
-              onClick={this.onEditHandler}
-              disabled={this.props.selectedRows.data.length !== 1}
-            >
-              <CreateIcon className={classes.createIcon} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={'Delete'}>
-            <IconButton className={classes.iconButton} onClick={this.onDeleteHandler}>
-              <DeleteIcon className={classes.createIcon} />
-            </IconButton>
-          </Tooltip>
-        </div>
+  return (
+    <div className={classes.root} role={'toolbar'} aria-label={'Table Toolbar'}>
+      <div className={classes.actions}>
+        <Tooltip title={'Edit'}>
+          <IconButton className={classes.iconButton} onClick={onEditHandler} disabled={selectedRows.data.length !== 1}>
+            <CreateIcon className={classes.createIcon} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={'Delete'}>
+          <IconButton className={classes.iconButton} onClick={onDeleteHandler}>
+            <DeleteIcon className={classes.createIcon} />
+          </IconButton>
+        </Tooltip>
       </div>
-    )
-  }
+    </div>
+  )
 }
-
-export const CustomToolbarSelect = withStyles(toolbarStyles, { name: 'CustomToolbarSelect' })(_CustomToolbarSelect)

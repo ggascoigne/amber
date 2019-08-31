@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export interface IAuth0User {
+export type Auth0User = {
   id: string
   role: string
   email?: string
@@ -9,16 +9,23 @@ export interface IAuth0User {
   picture: string
 }
 
-export interface IAuthConsumer {
-  authenticated: boolean
-  user: IAuth0User
+type AuthBaseAuthenticated = {
+  authenticated: true
+  user: Auth0User
+}
+type AuthBaseNotAuthenticated = {
+  authenticated: false
+  user?: Auth0User
+}
+
+export type AuthConsumer = (AuthBaseAuthenticated | AuthBaseNotAuthenticated) & {
   accessToken: string
   initiateLogin: () => void
   logout: () => void
   handleAuthentication?: () => void
 }
 
-const authContext = React.createContext<IAuthConsumer>({
+const authContext = React.createContext<AuthConsumer>({
   authenticated: false, // to check if authenticated or not
   user: undefined, // store all the user details
   accessToken: '', // accessToken of user for Auth0

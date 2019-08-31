@@ -72,9 +72,9 @@ type ChildProps = ChildDataProps<{}, IUrlSource, {}>
 
 const withUrlSourceHandler = graphql<{}, IUrlSource, {}, ChildProps>(urlSourceQuery, {
   props: ({ ownProps, data }) => {
-    const { urlSource = urlSourceDefaults } = data
+    const { urlSource = urlSourceDefaults } = data!
     return {
-      data,
+      data: data!,
       ...ownProps,
       urlSource
     }

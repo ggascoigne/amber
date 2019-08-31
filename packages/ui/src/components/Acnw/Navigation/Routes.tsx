@@ -4,7 +4,7 @@ import * as React from 'react'
 import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
-type IRouteInfo = {
+type RouteInfo = {
   path: string
   label?: string
   link?: string
@@ -14,9 +14,9 @@ type IRouteInfo = {
   permission?: Perms
 }
 
-export type TRootRoutes = IRouteInfo[]
+export type RootRoutes = RouteInfo[]
 
-export const rootRoutes: TRootRoutes = [
+export const rootRoutes: RootRoutes = [
   {
     path: '/',
     label: 'Welcome',

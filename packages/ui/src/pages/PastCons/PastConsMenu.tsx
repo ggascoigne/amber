@@ -24,9 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface IPastConsMenu extends WithGameFilter {}
+interface PastConsMenu extends WithGameFilter {}
 
-export const _PastConsMenu: React.FC<IPastConsMenu> = props => {
+export const _PastConsMenu: React.FC<PastConsMenu> = props => {
   const {
     gameFilter: { year, slot: filterSlot }
   } = props
@@ -46,10 +46,10 @@ export const _PastConsMenu: React.FC<IPastConsMenu> = props => {
         Games for {year}
       </Typography>
       <GameList small year={year} slotIdStr={`${filterSlot.id}`}>
-        {({ year, slot, games }) => <GameListIndex year={year} slot={slot} games={games} />}
+        {({ year, slot, games }) => <GameListIndex year={year} slot={slot} games={games!} />}
       </GameList>
     </>
   )
 }
 
-export const PastConsMenu = compose<IPastConsMenu, {}>(withGameFilter)(_PastConsMenu)
+export const PastConsMenu = compose<PastConsMenu, {}>(withGameFilter)(_PastConsMenu)

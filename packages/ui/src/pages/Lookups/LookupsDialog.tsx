@@ -1,13 +1,13 @@
 import { createLookup } from '__generated__/createLookup'
 import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
 import { updateLookupByNodeId } from '__generated__/updateLookupByNodeId'
-import { Dialog, Theme, WithStyles } from '@material-ui/core'
+import { Dialog, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -25,11 +25,11 @@ import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import { Field, FieldArray, Form, Formik, FormikActions } from 'formik'
 import { TextField } from 'formik-material-ui'
+import get from 'lodash/get'
 import * as React from 'react'
-import { MouseEventHandler } from 'react'
 import * as Yup from 'yup'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
@@ -63,14 +63,15 @@ const styles = (theme: Theme) =>
       color: theme.palette.grey[500]
     }
   })
+)
 
-interface ILookupsDialog extends WithStyles<typeof styles> {
+interface LookupsDialog {
   open: boolean
-  onClose: MouseEventHandler
+  onClose: (event?: any) => void
   initialValues?: FormValues
 }
 
-interface FormValues extends Partial<GetLookups_lookups_edges_node> {}
+type FormValues = Omit<GetLookups_lookups_edges_node, 'nodeId' | 'id' | '__typename'>
 
 const validationSchema = Yup.object().shape({
   realm: Yup.string()
@@ -96,7 +97,8 @@ const validationSchema = Yup.object().shape({
 
 const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'LookupValuesConnection', nodes: [] } }
 
-export const _LookupsDialog: React.FC<ILookupsDialog> = ({ open, onClose, initialValues = defaultValues, classes }) => {
+export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialValues = defaultValues }) => {
+  const classes = useStyles()
   const createOrUpdateLookup = useCreateOrUpdateLookup()
   const createOrUpdateLookupValue = useCreateOrUpdateLookupValue()
   const deleteLookupValue = useDeleteLookupValue()
@@ -106,18 +108,37 @@ export const _LookupsDialog: React.FC<ILookupsDialog> = ({ open, onClose, initia
     const isCreateLookup = (value: updateLookupByNodeId | createLookup): value is createLookup =>
       value.hasOwnProperty('createLookup')
 
+    if (!res || !res.data) {
+      return
+    }
+    if (isCreateLookup(res.data) && !res.data.createLookup) {
+      return
+    }
+    if (!isCreateLookup(res.data) && !res.data.updateLookupByNodeId) {
+      return
+    }
+
     const lookupId = isCreateLookup(res.data)
-      ? res.data.createLookup.lookup.id
-      : res.data.updateLookupByNodeId.lookup.id
+      ? get(res, 'data.createLookup.lookup.id')
+      : get(res, 'data.updateLookupByNodeId.lookup.id')
 
-    const updaters: Promise<any>[] = values.lookupValues.nodes.map(lv => createOrUpdateLookupValue(lv, lookupId))
+    const updaters = values.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
+      lv && acc.push(createOrUpdateLookupValue(lv, lookupId))
+      return acc
+    }, [])
 
-    const currentLookupValueIds = values.lookupValues.nodes.map(lv => lv.id)
-    initialValues.lookupValues.nodes.map(
-      ilv =>
+    const currentLookupValueIds = values.lookupValues.nodes.reduce((acc: number[], lv) => {
+      lv && lv.id && acc.push(lv.id)
+      return acc
+    }, [])
+
+    initialValues.lookupValues.nodes.map(ilv => {
+      if (ilv && ilv.id) {
         currentLookupValueIds.includes(ilv.id) ||
-        updaters.push(deleteLookupValue({ variables: { input: { id: ilv.id } } }))
-    )
+          updaters.push(deleteLookupValue({ variables: { input: { id: ilv.id } } }))
+      }
+      return null
+    })
 
     Promise.all(updaters)
       .then(() => onClose(null))
@@ -127,7 +148,7 @@ export const _LookupsDialog: React.FC<ILookupsDialog> = ({ open, onClose, initia
   const editing = initialValues !== defaultValues
 
   const highestSequence = (values: FormValues) => {
-    return values.lookupValues.nodes.reduce((acc, val) => Math.max(val.sequencer, acc), -1) + 1
+    return values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
   }
 
   return (
@@ -226,5 +247,3 @@ export const _LookupsDialog: React.FC<ILookupsDialog> = ({ open, onClose, initia
     </Dialog>
   )
 }
-
-export const LookupsDialog = withStyles(styles)(_LookupsDialog)

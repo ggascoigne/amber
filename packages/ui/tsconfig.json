@@ -19,8 +19,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "rootDir": "src",
-    "strictNullChecks": false
+    "rootDir": "src"
   },
   "include": [
     "src",

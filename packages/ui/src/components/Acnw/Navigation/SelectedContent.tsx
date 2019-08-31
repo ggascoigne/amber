@@ -3,9 +3,9 @@ import { NotFound } from 'pages'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import { TRootRoutes } from './Routes'
+import { RootRoutes } from './Routes'
 
-export const SelectedContent: React.FC<{ routes: TRootRoutes }> = ({ routes }) => {
+export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
   return (
     <ErrorBoundary>
       <Switch>

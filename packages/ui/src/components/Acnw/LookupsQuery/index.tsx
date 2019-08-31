@@ -4,15 +4,15 @@ import { GqlQuery } from 'components/Acnw/GqlQuery'
 import React from 'react'
 import { ChildDataProps, graphql } from 'react-apollo'
 
-interface ILookupsQuery {
-  children(props: ILookupsQueryChild): React.ReactNode
+interface LookupsQuery {
+  children(props: LookupsQueryChild): React.ReactNode
 }
 
-interface ILookupsQueryChild {
+interface LookupsQueryChild {
   lookups?: GetLookups_lookups
 }
 
-export const LookupsQuery: React.FC<ILookupsQuery> = ({ children }) => {
+export const LookupsQuery: React.FC<LookupsQuery> = ({ children }) => {
   return (
     <GqlQuery<GetLookups> query={QUERY_LOOKUP} errorPolicy='all'>
       {data => children && children({ lookups: data && data.lookups ? data.lookups : undefined })}

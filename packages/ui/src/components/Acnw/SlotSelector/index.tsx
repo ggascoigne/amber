@@ -1,7 +1,6 @@
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { Theme, WithStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'
@@ -9,10 +8,10 @@ import cx from 'classnames'
 import { WithGameFilter, withGameFilter } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
-import React, { ChangeEvent, Component } from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { compose } from 'recompose'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     ...customTabsStyle,
     cardHeader: {
@@ -55,53 +54,41 @@ const styles = (theme: Theme) =>
       }
     }
   })
+)
 
-interface ISlotSelector {
+interface SlotSelector {
   year: number
-  slots: (GetSlots_slots_nodes | null)[]
+  slots: (GetSlots_slots_nodes | null)[] | undefined
   selectedSlotId: number
   small: boolean
   children(slot: GetSlots_slots_nodes): React.ReactNode
 }
 
-interface ISlotSelectorState {
-  scrollButtons: 'off' | 'on'
-}
+interface SlotSelectorInternal extends SlotSelector, WithGameFilter {}
 
-interface ISlotSelectorInternal extends WithStyles<typeof styles>, ISlotSelector, WithGameFilter {}
+const _SlotSelector: React.FC<SlotSelectorInternal> = props => {
+  const classes = useStyles()
+  const {
+    slots,
+    updateGameFilterMutation,
+    selectedSlotId,
+    year,
+    small,
+    children,
+    gameFilter: {
+      slot: { id: slotId }
+    }
+  } = props
+  const tabsRef = React.createRef<HTMLDivElement>()
+  const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
 
-class _SlotSelector extends Component<ISlotSelectorInternal, ISlotSelectorState> {
-  private tabsRef = React.createRef<HTMLDivElement>()
-
-  constructor(props: ISlotSelectorInternal) {
-    super(props)
-    this.state = { scrollButtons: 'off' }
+  const getSlot = (slots: (GetSlots_slots_nodes | null)[], selectedSlotId: number) => {
+    return slots.find(s => (s ? s.id === selectedSlotId : false)) as GetSlots_slots_nodes
   }
 
-  componentDidUpdate() {
-    this.updateScrollButtons()
-  }
-
-  componentDidMount() {
-    this.updateScrollButtons()
-    window.addEventListener('resize', this.updateScrollButtons.bind(this))
-
-    const { slots, updateGameFilterMutation, selectedSlotId, year } = this.props
-    const slot = this.getSlot(slots!, selectedSlotId)
-    updateGameFilterMutation({ variables: { slot, year } })
-  }
-
-  private getSlot(slots: (GetSlots_slots_nodes | null)[], selectedSlotId: number) {
-    return slots.find(s => (s ? s.id === selectedSlotId : false))
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateScrollButtons.bind(this))
-  }
-
-  updateScrollButtons() {
-    const container = this.tabsRef.current
-    if (!container || this.props.small) {
+  const updateScrollButtons = useCallback(() => {
+    const container = tabsRef.current
+    if (!container || small) {
       return
     }
     const containerStyles = getComputedStyle(container.children[0])
@@ -112,52 +99,58 @@ class _SlotSelector extends Component<ISlotSelectorInternal, ISlotSelectorState>
     if (items) tabs.push(items as HTMLButtonElement)
     const tabWidth = tabs.reduce((a, b) => a + b.clientWidth + parseInt(getComputedStyle(b).marginLeft!), 0)
     const newScrollButtons = tabWidth > containerWidth ? 'on' : 'off'
-    if (this.state.scrollButtons !== newScrollButtons) {
-      this.setState({
-        scrollButtons: newScrollButtons
-      })
+    if (scrollButtons !== newScrollButtons) {
+      setScrollButtons(newScrollButtons)
     }
-  }
+  }, [scrollButtons, small, tabsRef])
 
-  handleChange = (event: ChangeEvent<{}>, value: any) => {
-    const { slots, updateGameFilterMutation, year } = this.props
-    const slotId = value + 1
-    const slot = this.getSlot(slots!, slotId)
+  useEffect(() => {
+    updateScrollButtons()
+    window.addEventListener('resize', updateScrollButtons)
+    return () => {
+      window.removeEventListener('resize', updateScrollButtons)
+    }
+  }, [updateScrollButtons])
+
+  useEffect(() => {
+    const slot = getSlot(slots!, selectedSlotId)
     updateGameFilterMutation({ variables: { slot, year } })
-  }
+  }, [selectedSlotId, slots, updateGameFilterMutation, year])
 
-  render() {
-    const {
-      classes,
-      slots,
-      children,
-      gameFilter: {
-        slot: { id: slotId }
-      },
-      small
-    } = this.props
-    const slot = this.getSlot(slots, slotId)
-    return (
-      <div className={cx({ [classes.small]: small })}>
-        <Card>
-          <div ref={this.tabsRef}>
-            <CardHeader color='success' className={classes.cardHeader} plain>
-              {!small && (
-                <span id='slotLabel' className={classes.slotLabel}>
-                  Slot
-                </span>
-              )}
-              <Tabs
-                value={slotId - 1}
-                onChange={this.handleChange}
-                variant='scrollable'
-                scrollButtons={this.state.scrollButtons}
-                classes={{
-                  root: classes.tabsRoot,
-                  indicator: classes.displayNone
-                }}
-              >
-                {slots.map(slot => (
+  const handleChange = useCallback(
+    (event: ChangeEvent<{}>, value: any) => {
+      const slot = getSlot(slots!, value + 1)
+      updateGameFilterMutation({ variables: { slot, year } })
+    },
+    [updateGameFilterMutation, year, slots]
+  )
+
+  if (!slots) return null
+
+  const slot = getSlot(slots, slotId)
+
+  return (
+    <div className={cx({ [classes.small]: small })}>
+      <Card>
+        <div ref={tabsRef}>
+          <CardHeader color='success' className={classes.cardHeader} plain>
+            {!small && (
+              <span id='slotLabel' className={classes.slotLabel}>
+                Slot
+              </span>
+            )}
+            <Tabs
+              value={slotId - 1}
+              onChange={handleChange}
+              variant='scrollable'
+              scrollButtons={scrollButtons}
+              classes={{
+                root: classes.tabsRoot,
+                indicator: classes.displayNone
+              }}
+            >
+              {slots.map(slot => {
+                return slot ? (
                   <Tab
                     classes={{
                       root: classes.tabRootButton,
@@ -167,21 +160,18 @@ class _SlotSelector extends Component<ISlotSelectorInternal, ISlotSelectorState>
                     key={slot.id}
                     label={slot.id}
                   />
-                ))}
-              </Tabs>
-            </CardHeader>
-          </div>
-        </Card>
-        <h4 className={classes.slot}>
-          {slot.day}, {slot.time}
-        </h4>
-        {children && children(slot)}
-      </div>
-    )
-  }
+                ) : null
+              })}
+            </Tabs>
+          </CardHeader>
+        </div>
+      </Card>
+      <h4 className={classes.slot}>
+        {slot.day}, {slot.time}
+      </h4>
+      {children && children(slot)}
+    </div>
+  )
 }
 
-export const SlotSelector = compose<ISlotSelectorInternal, ISlotSelector>(
-  withGameFilter,
-  withStyles(styles, { withTheme: true })
-)(_SlotSelector)
+export const SlotSelector = compose<SlotSelectorInternal, SlotSelector>(withGameFilter)(_SlotSelector)

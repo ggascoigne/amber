@@ -1,18 +1,17 @@
 import Avatar from '@material-ui/core/Avatar'
-import { Theme, WithStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { AuthConsumer } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import React from 'react'
 import { ApolloConsumer } from 'react-apollo'
 
-import { IAuth0User } from '../Auth/authContext'
+import { Auth0User } from '../Auth/authContext'
 
 const MENU_ITEM_SIGN_OUT = 'Sign out'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     loginNavLink: {
       position: 'relative',
@@ -58,12 +57,13 @@ const styles = (theme: Theme) =>
       padding: 15
     }
   })
+)
 
-interface IProfileImage {
-  user: IAuth0User
+type ProfileImage = {
+  user: Auth0User
 }
 
-const ProfileImage: React.FC<IProfileImage> = ({ user }) => {
+const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
   if (user.picture) {
     return <Avatar src={user.picture} />
   } else {
@@ -72,12 +72,13 @@ const ProfileImage: React.FC<IProfileImage> = ({ user }) => {
   }
 }
 
-interface IMenuButton extends WithStyles<typeof styles> {
-  user: IAuth0User
+type MenuButton = {
+  user: Auth0User
   small: boolean
 }
 
-const MenuButton: React.FC<IMenuButton> = ({ classes, small, user }) => {
+const MenuButton: React.FC<MenuButton> = ({ small, user }) => {
+  const classes = useStyles()
   return small ? (
     <>
       <ProfileImage user={user} />
@@ -91,42 +92,43 @@ const MenuButton: React.FC<IMenuButton> = ({ classes, small, user }) => {
   )
 }
 
-interface ILoginMenu extends WithStyles<typeof styles> {
+type LoginMenu = {
   small?: boolean
 }
 
-const _LoginMenu: React.FC<ILoginMenu> = ({ classes, small }) => (
-  <ApolloConsumer>
-    {client => (
-      <AuthConsumer>
-        {({ authenticated, user, initiateLogin, logout }) =>
-          authenticated ? (
-            <CustomDropdown
-              right
-              caret={false}
-              hoverColor='black'
-              buttonText={<MenuButton classes={classes} small={small} user={user} />}
-              buttonProps={{
-                className: classes.navLink,
-                color: 'transparent'
-              }}
-              dropdownList={[MENU_ITEM_SIGN_OUT]}
-              onClick={(prop: string) => {
-                if (prop === MENU_ITEM_SIGN_OUT) {
-                  client.resetStore()
-                  logout()
-                }
-              }}
-            />
-          ) : (
-            <Button className={classes.loginNavLink} onClick={initiateLogin} color='transparent'>
-              Login
-            </Button>
-          )
-        }
-      </AuthConsumer>
-    )}
-  </ApolloConsumer>
-)
-
-export const LoginMenu = withStyles(styles, { withTheme: true })(_LoginMenu)
+export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
+  const classes = useStyles()
+  return (
+    <ApolloConsumer>
+      {client => (
+        <AuthConsumer>
+          {({ authenticated, user, initiateLogin, logout }) =>
+            authenticated ? (
+              <CustomDropdown
+                right
+                caret={false}
+                hoverColor='black'
+                buttonText={<MenuButton small={small} user={user!} />}
+                buttonProps={{
+                  className: classes.navLink,
+                  color: 'transparent'
+                }}
+                dropdownList={[MENU_ITEM_SIGN_OUT]}
+                onClick={(prop: string) => {
+                  if (prop === MENU_ITEM_SIGN_OUT) {
+                    client.resetStore()
+                    logout()
+                  }
+                }}
+              />
+            ) : (
+              <Button className={classes.loginNavLink} onClick={initiateLogin} color='transparent'>
+                Login
+              </Button>
+            )
+          }
+        </AuthConsumer>
+      )}
+    </ApolloConsumer>
+  )
+}

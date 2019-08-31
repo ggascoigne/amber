@@ -1,14 +1,13 @@
-import { Theme, WithStyles } from '@material-ui/core'
+import { Theme, makeStyles } from '@material-ui/core'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
 import * as React from 'react'
-import { MouseEventHandler, ReactNode } from 'react'
+import { MouseEventHandler } from 'react'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       borderBottom: `1px solid ${theme.palette.divider}`,
@@ -22,14 +21,14 @@ const styles = (theme: Theme) =>
       color: theme.palette.grey[500]
     }
   })
+)
 
-interface IDialogTitle extends WithStyles<typeof styles> {
-  children: ReactNode
+interface DialogTitle {
   onClose?: MouseEventHandler
 }
 
-export const DialogTitle = withStyles(styles)((props: IDialogTitle) => {
-  const { children, classes, onClose } = props
+export const DialogTitle: React.FC<DialogTitle> = ({ children, onClose }) => {
+  const classes = useStyles()
   return (
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant='h6'>{children}</Typography>
@@ -40,4 +39,4 @@ export const DialogTitle = withStyles(styles)((props: IDialogTitle) => {
       ) : null}
     </MuiDialogTitle>
   )
-})
+}

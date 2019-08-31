@@ -3,18 +3,18 @@ import { GetSlots_slots_nodes } from '__generated__/GetSlots'
 import { Game } from 'components/Acnw/Game'
 import React from 'react'
 
-interface IGameListFull {
+interface GameListFull {
   year: number
   slot: GetSlots_slots_nodes
   games: GetGames_games_edges[]
   onEnterGame: any
 }
 
-export const GameListFull: React.FC<IGameListFull> = ({ year, slot, games, onEnterGame }) => {
+export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnterGame }) => {
   return (
     <React.Fragment key={`slot_${slot.id}`}>
       {games.map(({ node: game }) => {
-        return (
+        return game ? (
           <Game
             key={`game_${game.id}`}
             year={year}
@@ -22,7 +22,7 @@ export const GameListFull: React.FC<IGameListFull> = ({ year, slot, games, onEnt
             game={game}
             onEnter={() => onEnterGame(`/pastCons/${year}/${slot.id}/${game.id}`)}
           />
-        )
+        ) : null
       })}
     </React.Fragment>
   )

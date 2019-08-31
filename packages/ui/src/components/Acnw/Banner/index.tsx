@@ -1,13 +1,12 @@
-import { Theme } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import configurationService from 'utils/ConfigurationService'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     banner: {
       maxWidth: '100%',
@@ -17,6 +16,7 @@ const styles = (theme: Theme) =>
       marginBottom: '-12px'
     }
   })
+)
 
 const Logo: React.FC<{ dates: string; className: string }> = ({ dates, className }) => {
   const background = '#ffffff'
@@ -290,24 +290,20 @@ const Logo: React.FC<{ dates: string; className: string }> = ({ dates, className
   )
 }
 
-interface BannerProps extends WithStyles<typeof styles> {
+interface BannerProps {
   to?: string
 }
 
-const WrappedLogo: React.FC<BannerProps> = ({ classes, to }) => {
+const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
+  const classes = useStyles()
   const logo = <Logo dates={configurationService.dateRange} className={classes.banner} />
   return to ? <Link to={to}>{logo}</Link> : logo
 }
 
-const BannerImage: React.FC<BannerProps> = props => {
-  const { classes, to } = props
-  return (
-    <GridContainer justify='center'>
-      <GridItem xs={12}>
-        <WrappedLogo classes={classes} to={to} />
-      </GridItem>
-    </GridContainer>
-  )
-}
-
-export const Banner = withStyles(styles, { withTheme: true })(BannerImage)
+export const Banner: React.FC<BannerProps> = ({ to }) => (
+  <GridContainer justify='center'>
+    <GridItem xs={12}>
+      <WrappedLogo to={to} />
+    </GridItem>
+  </GridContainer>
+)

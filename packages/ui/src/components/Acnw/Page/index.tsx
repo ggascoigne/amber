@@ -1,21 +1,20 @@
-import { Theme, WithStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import contentPageStyles from 'assets/jss/acnw/contentPage'
 import classNames from 'classnames'
 import React from 'react'
 
-const styles = (theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     ...contentPageStyles(theme)
   })
+)
 
-interface IPage extends WithStyles<typeof styles> {
+type Page = {
   className?: string
 }
 
-const _Page: React.FC<IPage> = ({ classes, children, className }) => {
+export const Page: React.FC<Page> = ({ children, className }) => {
+  const classes = useStyles()
   return <div className={classNames(classes.main, classes.mainRaised, className)}>{children}</div>
 }
-
-export const Page = withStyles(styles, { withTheme: true })(_Page)

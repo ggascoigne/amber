@@ -4,7 +4,8 @@ import * as React from 'react'
 import { AuthConsumer } from './authContext'
 import rules, { Perms, Rules } from './PermissionRules'
 
-const check = (rules: Rules, role: string, action: Perms, data?: any) => {
+const check = (rules: Rules, role: string | null, action: Perms, data?: any) => {
+  if (!role) return false
   const permissions = rules[role] as any
   if (!permissions) {
     // role is not present in the rules
@@ -42,7 +43,7 @@ export const checkMany = (
 }
 */
 
-interface IPermissionProps {
+type PermissionProps = {
   permission: Perms
   data?: any
   denied?: () => React.ReactNode
@@ -50,17 +51,17 @@ interface IPermissionProps {
 
 const nullOp = (): null => null
 
-interface IAuth {
-  user: {
+type Auth = {
+  user?: {
     role?: string
   }
 }
 
-const HasPermission: React.FC<IPermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
+const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
   return (
     <AuthConsumer>
-      {({ user }: IAuth) => {
-        return check(rules, user && user.role ? user.role : undefined, permission, data) ? children : denied()
+      {({ user }: Auth) => {
+        return !!user && check(rules, user.role ? user.role : null, permission, data) ? children : denied()
       }}
     </AuthConsumer>
   )

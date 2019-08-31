@@ -1,38 +1,33 @@
 import { GetGames_games_edges } from '__generated__/GetGames'
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { Typography } from '@material-ui/core'
+import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import { WithStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { WithUrlSource, withUrlSource } from 'client/resolvers/urlSource'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
 
-const styles = createStyles({
-  listItem: {
-    paddingTop: 5,
-    paddingBottom: 5
-  }
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    listItem: {
+      paddingTop: 5,
+      paddingBottom: 5
+    }
+  })
+)
 
-interface IGameListIndex {
+interface GameListIndex {
   year: number
   slot: GetSlots_slots_nodes
   games: GetGames_games_edges[]
   onEnterGame?: any
 }
 
-interface IGameListIndexInternal
-  extends WithStyles<typeof styles>,
-    IGameListIndex,
-    RouteComponentProps,
-    WithUrlSource {}
+interface GameListIndexInternal extends GameListIndex, RouteComponentProps, WithUrlSource {}
 
-const _GameListIndex: React.FC<IGameListIndexInternal> = ({
-  classes,
+const _GameListIndex: React.FC<GameListIndexInternal> = ({
   history,
   location,
   year,
@@ -40,9 +35,11 @@ const _GameListIndex: React.FC<IGameListIndexInternal> = ({
   games,
   updateUrlSourceMutation
 }) => {
+  const classes = useStyles()
   return (
     <List>
       {games.map(({ node: game }) => {
+        if (!game) return null
         const slug = `/pastCons/${year}/${slot.id}/${game.id}`
         return (
           <ListItem
@@ -64,8 +61,7 @@ const _GameListIndex: React.FC<IGameListIndexInternal> = ({
     </List>
   )
 }
-export const GameListIndex = compose<IGameListIndexInternal, IGameListIndex>(
-  withStyles(styles, { withTheme: true }),
+export const GameListIndex = compose<GameListIndexInternal, GameListIndex>(
   withRouter,
   withUrlSource
 )(_GameListIndex)

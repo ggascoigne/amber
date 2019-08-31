@@ -6,13 +6,13 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
-import { TRootRoutes } from './Routes'
+import { RootRoutes } from './Routes'
 
-interface IMenuItems extends RouteComponentProps {
-  menuItems: TRootRoutes
+interface MenuItems extends RouteComponentProps {
+  menuItems: RootRoutes
 }
 
-const _MenuItems: React.FC<IMenuItems> = ({ menuItems, location }) => {
+const _MenuItems: React.FC<MenuItems> = ({ menuItems, location }) => {
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
   if (matchedContextRoute) {

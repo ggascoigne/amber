@@ -1,4 +1,4 @@
-export interface ITableSelectedRows {
+export interface TableSelectedRows {
   data: {
     index: number // row index in table
     dataIndex: number // index into the source data
@@ -6,4 +6,4 @@ export interface ITableSelectedRows {
   lookup: { [key: number]: boolean }
 }
 
-export type IDisplayData = { data: any[]; dataIndex: number }[]
+export type DisplayData = { data: any[]; dataIndex: number }[]

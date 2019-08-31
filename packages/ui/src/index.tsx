@@ -9,7 +9,7 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
-import App from './App'
+import { App } from './App'
 import registerServiceWorker from './utils/registerServiceWorker'
 
 const rootElement = document.getElementById('root')
