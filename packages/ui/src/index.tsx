@@ -1,11 +1,10 @@
 import 'assets/scss/material-kit-react.css?v=1.3.0'
 import 'react-app-polyfill/ie11'
 
+import { ApolloProvider } from '@apollo/react-hooks'
 import client from 'client/client'
 import { Auth } from 'components/Acnw/Auth'
 import React from 'react'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -18,11 +17,9 @@ const render = (Component: React.ComponentType) => {
   return ReactDOM.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <ApolloHooksProvider client={client}>
-          <Auth>
-            <Component />
-          </Auth>
-        </ApolloHooksProvider>
+        <Auth>
+          <Component />
+        </Auth>
       </ApolloProvider>
     </BrowserRouter>,
     rootElement

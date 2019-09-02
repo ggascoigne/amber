@@ -5,11 +5,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { Theme, createStyles, makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
-import { WithGameFilter, withGameFilter } from 'client/resolvers/gameFilter'
 import { GameList, GameListIndex } from 'components/Acnw/GameList'
 import { ListItemLink } from 'components/Acnw/Navigation'
 import React from 'react'
-import compose from 'recompose/compose'
+
+import { useGameFilterQuery } from '../../client/resolvers/gameFilter'
+import { GraphQLError } from '../../components/Acnw/GraphQLError'
+import { Loader } from '../../components/Acnw/Loader'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,13 +26,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface PastConsMenu extends WithGameFilter {}
-
-export const _PastConsMenu: React.FC<PastConsMenu> = props => {
+export const PastConsMenu: React.FC = () => {
+  const { loading, error, data } = useGameFilterQuery()
+  const classes = useStyles()
+  if (loading) {
+    return <Loader />
+  }
+  if (error) {
+    return <GraphQLError error={error} />
+  }
   const {
     gameFilter: { year, slot: filterSlot }
-  } = props
-  const classes = useStyles(props)
+  } = data!
+
   return (
     <>
       <List>
@@ -51,5 +59,3 @@ export const _PastConsMenu: React.FC<PastConsMenu> = props => {
     </>
   )
 }
-
-export const PastConsMenu = compose<PastConsMenu, {}>(withGameFilter)(_PastConsMenu)

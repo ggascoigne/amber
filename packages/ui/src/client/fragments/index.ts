@@ -1,5 +1,5 @@
 export * from './gameFragment'
-export * from './profileFragment'
-export * from './slotFragment'
 export * from './lookupFragment'
 export * from './lookupValuesFragment'
+export * from './profileFragment'
+export * from './slotFragment'

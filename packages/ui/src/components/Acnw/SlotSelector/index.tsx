@@ -5,11 +5,13 @@ import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'
 import cx from 'classnames'
-import { WithGameFilter, withGameFilter } from 'client/resolvers/gameFilter'
+import { useGameFilterMutation, useGameFilterQuery } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { compose } from 'recompose'
+
+import { GraphQLError } from '../GraphQLError'
+import { Loader } from '../Loader'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,21 +66,11 @@ interface SlotSelector {
   children(slot: GetSlots_slots_nodes): React.ReactNode
 }
 
-interface SlotSelectorInternal extends SlotSelector, WithGameFilter {}
-
-const _SlotSelector: React.FC<SlotSelectorInternal> = props => {
+export const SlotSelector: React.FC<SlotSelector> = props => {
   const classes = useStyles()
-  const {
-    slots,
-    updateGameFilterMutation,
-    selectedSlotId,
-    year,
-    small,
-    children,
-    gameFilter: {
-      slot: { id: slotId }
-    }
-  } = props
+  const { slots, selectedSlotId, year, small, children } = props
+  const { loading, error, data } = useGameFilterQuery()
+  const [gameFilterMutation] = useGameFilterMutation()
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
 
@@ -114,18 +106,31 @@ const _SlotSelector: React.FC<SlotSelectorInternal> = props => {
 
   useEffect(() => {
     const slot = getSlot(slots!, selectedSlotId)
-    updateGameFilterMutation({ variables: { slot, year } })
-  }, [selectedSlotId, slots, updateGameFilterMutation, year])
+    gameFilterMutation({ variables: { slot, year } })
+  }, [selectedSlotId, slots, gameFilterMutation, year])
 
   const handleChange = useCallback(
     (event: ChangeEvent<{}>, value: any) => {
       const slot = getSlot(slots!, value + 1)
-      updateGameFilterMutation({ variables: { slot, year } })
+      gameFilterMutation({ variables: { slot, year } })
     },
-    [updateGameFilterMutation, year, slots]
+    [gameFilterMutation, year, slots]
   )
 
+  if (loading) {
+    return <Loader />
+  }
+  if (error) {
+    return <GraphQLError error={error} />
+  }
+
   if (!slots) return null
+
+  const {
+    gameFilter: {
+      slot: { id: slotId }
+    }
+  } = data!
 
   const slot = getSlot(slots, slotId)
 
@@ -173,5 +178,3 @@ const _SlotSelector: React.FC<SlotSelectorInternal> = props => {
     </div>
   )
 }
-
-export const SlotSelector = compose<SlotSelectorInternal, SlotSelector>(withGameFilter)(_SlotSelector)

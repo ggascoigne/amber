@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { useCreateOrUpdateLookup, useCreateOrUpdateLookupValue, useDeleteLookupValue } from 'client/queries'
+import { useCreateOrUpdateLookup, useCreateOrUpdateLookupValue, useDeleteLookupValue } from 'client'
 import { DialogTitle } from 'components/Acnw/Dialog/DialogTitle'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
@@ -101,7 +101,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
   const classes = useStyles()
   const createOrUpdateLookup = useCreateOrUpdateLookup()
   const createOrUpdateLookupValue = useCreateOrUpdateLookupValue()
-  const deleteLookupValue = useDeleteLookupValue()
+  const [deleteLookupValue] = useDeleteLookupValue()
 
   const onSubmit = async (values: FormValues, actions: FormikActions<FormValues>) => {
     const res = await createOrUpdateLookup(values)

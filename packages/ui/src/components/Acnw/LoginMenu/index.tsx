@@ -1,3 +1,4 @@
+import { ApolloConsumer } from '@apollo/react-common'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
@@ -5,7 +6,6 @@ import { AuthConsumer } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import React from 'react'
-import { ApolloConsumer } from 'react-apollo'
 
 import { Auth0User } from '../Auth/authContext'
 

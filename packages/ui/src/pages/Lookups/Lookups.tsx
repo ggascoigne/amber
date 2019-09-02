@@ -1,11 +1,9 @@
 import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
-import { WithLookupsQuery, withLookupsQuery } from 'components/Acnw/LookupsQuery'
+import { useDeleteLookup, useDeleteLookupValue, useLookupsQuery } from 'client'
 import { Page } from 'components/Acnw/Page'
 import { Table } from 'components/Acnw/Table/Table'
 import React, { MouseEventHandler, useState } from 'react'
-import compose from 'recompose/compose'
 
-import { useDeleteLookup, useDeleteLookupValue } from '../../client/queries'
 import { GraphQLError } from '../../components/Acnw/GraphQLError'
 import { Loader } from '../../components/Acnw/Loader'
 import { LookupsDialog } from './LookupsDialog'
@@ -21,20 +19,23 @@ const columns = [
   }
 ]
 
-const _Lookups: React.FC<WithLookupsQuery> = ({ data: { loading, error, lookups } }) => {
+export const Lookups: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<GetLookups_lookups_edges_node[]>([])
-  const deleteLookup = useDeleteLookup()
-  const deleteLookupValue = useDeleteLookupValue()
+  const [deleteLookup] = useDeleteLookup()
+  const [deleteLookupValue] = useDeleteLookupValue()
+  const { loading, error, data } = useLookupsQuery()
 
-  if (loading || !lookups || !lookups.edges) {
+  if (loading || !data) {
     return <Loader />
   }
   if (error) {
     return <GraphQLError error={error} />
   }
 
-  const data: GetLookups_lookups_edges_node[] = lookups.edges
+  const { lookups } = data!
+
+  const list: GetLookups_lookups_edges_node[] = lookups!.edges
     .map(v => v.node)
     .filter(i => i) as GetLookups_lookups_edges_node[]
 
@@ -76,14 +77,12 @@ const _Lookups: React.FC<WithLookupsQuery> = ({ data: { loading, error, lookups 
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table
         title={'Lookups'}
-        data={data}
+        data={list}
         columns={columns}
         onAdd={onAdd}
-        onDelete={(selection: number[]) => onDelete(selection, data)}
-        onEdit={(selection: number[]) => onEdit(selection, data)}
+        onDelete={(selection: number[]) => onDelete(selection, list)}
+        onEdit={(selection: number[]) => onEdit(selection, list)}
       />
     </Page>
   )
 }
-
-export const Lookups = compose<WithLookupsQuery, {}>(withLookupsQuery)(_Lookups)

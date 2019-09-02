@@ -1,5 +1,4 @@
 module.exports = {
-  plugins: ['react-hooks'],
   extends: [
     'react-app',
     // enable typescript support
@@ -21,9 +20,7 @@ module.exports = {
     '@typescript-eslint/class-name-casing': 'off',
     // too many of the graphql generate types break this rule, and they do so
     // in a way that makes enough sense that I don't want to deal with it
-    '@typescript-eslint/camelcase': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn'
+    '@typescript-eslint/camelcase': 'off'
   },
   overrides: [
     {
@@ -49,7 +46,14 @@ module.exports = {
         // these are somewhat open to debate but match our current code.
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/prefer-interface': 'off',
-        '@typescript-eslint/no-empty-interface': 'off'
+        '@typescript-eslint/no-empty-interface': [
+          'error',
+          {
+            allowSingleExtends: true
+          }
+        ],
+        '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
+        '@typescript-eslint/ban-ts-ignore': 'off'
       }
     }
   ]

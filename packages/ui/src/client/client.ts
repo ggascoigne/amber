@@ -1,6 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost'
-import { store as gameFilterStore } from 'client/resolvers/gameFilter'
-import { store as urlSourceStore } from 'client/resolvers/urlSource'
+import { gameFilterStore, urlSourceStore } from 'client/resolvers'
 import assignIn from 'lodash/fp/assignIn'
 import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'

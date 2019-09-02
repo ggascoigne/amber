@@ -4,10 +4,11 @@ import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { WithUrlSource, withUrlSource } from 'client/resolvers/urlSource'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import compose from 'recompose/compose'
+
+import { useUrlSourceMutation } from '../../../client/resolvers/urlSource'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -25,21 +26,17 @@ interface GameListIndex {
   onEnterGame?: any
 }
 
-interface GameListIndexInternal extends GameListIndex, RouteComponentProps, WithUrlSource {}
+interface GameListIndexInternal extends GameListIndex, RouteComponentProps {}
 
-const _GameListIndex: React.FC<GameListIndexInternal> = ({
-  history,
-  location,
-  year,
-  slot,
-  games,
-  updateUrlSourceMutation
-}) => {
+const _GameListIndex: React.FC<GameListIndexInternal> = ({ history, location, year, slot, games }) => {
   const classes = useStyles()
+  const [updateUrlSourceMutation] = useUrlSourceMutation()
   return (
     <List>
       {games.map(({ node: game }) => {
-        if (!game) return null
+        if (!game) {
+          return null
+        }
         const slug = `/pastCons/${year}/${slot.id}/${game.id}`
         return (
           <ListItem
@@ -47,8 +44,8 @@ const _GameListIndex: React.FC<GameListIndexInternal> = ({
             button
             className={classes.listItem}
             selected={slug === location.pathname}
-            onClick={() => {
-              updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
+            onClick={async () => {
+              await updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
               return history.replace(slug)
             }}
           >
@@ -61,7 +58,4 @@ const _GameListIndex: React.FC<GameListIndexInternal> = ({
     </List>
   )
 }
-export const GameListIndex = compose<GameListIndexInternal, GameListIndex>(
-  withRouter,
-  withUrlSource
-)(_GameListIndex)
+export const GameListIndex = compose<GameListIndexInternal, GameListIndex>(withRouter)(_GameListIndex)

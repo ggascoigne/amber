@@ -1,19 +1,15 @@
+import { useMutation, useQuery } from '@apollo/react-hooks'
 import { ApolloCache } from 'apollo-cache'
-import { GqlQuery } from 'components/Acnw/GqlQuery'
 import gql from 'graphql-tag'
-import React from 'react'
-import { ChildDataProps, graphql } from 'react-apollo'
-import compose from 'recompose/compose'
 import { dropUnset } from 'utils/dropUnset'
 
-type IUrlSource = {
-  urlSource: IUrlSourceDetails
-}
-
-type IUrlSourceDetails = {
+type UrlSourceDetails = {
   source: 'jump' | 'scroll'
   url: string
-  __typename?: string
+}
+
+type UrlSource = {
+  urlSource: UrlSourceDetails & { __typename?: string }
 }
 
 const urlSourceDefaults = {
@@ -24,7 +20,7 @@ const urlSourceDefaults = {
   }
 }
 
-export const urlSourceQuery = gql`
+const urlSourceQuery = gql`
   query getUrlSources {
     urlSource @client {
       source
@@ -32,60 +28,29 @@ export const urlSourceQuery = gql`
     }
   }
 `
-export const updateUrlSourceQuery = gql`
+const updateUrlSourceQuery = gql`
   mutation updateUrlSource($source: String!, $url: String!) {
     updateUrlSource(source: $source, url: $url) @client
   }
 `
 
-const updateUrlSource = (_obj: any, data: IUrlSource, { cache }: { cache: ApolloCache<{}> }): any => {
-  const currentData = cache.readQuery({ query: urlSourceQuery }) as IUrlSource
+const updateUrlSource = (_obj: any, data: UrlSource, { cache }: { cache: ApolloCache<{}> }): any => {
+  const currentData = cache.readQuery({ query: urlSourceQuery }) as UrlSource
   cache.writeData({ data: { urlSource: { ...currentData.urlSource, ...dropUnset(data) } } })
   return null
 }
 
-interface IGameFilterQuery {
-  children(props: IUrlSourceDetails): React.ReactNode
-}
-
-export const UrlSourceQuery = ({ children }: IGameFilterQuery) => {
-  return (
-    <GqlQuery query={urlSourceQuery} errorPolicy='all'>
-      {data => {
-        const {
-          urlSource: { source, url }
-        } = data
-        return children && children({ source, url })
-      }}
-    </GqlQuery>
-  )
-}
-
-export const store = {
+export const urlSourceStore = {
   defaults: urlSourceDefaults,
   mutations: {
     updateUrlSource
   }
 }
 
-type ChildProps = ChildDataProps<{}, IUrlSource, {}>
+export const useUrlSourceQuery = () => {
+  return useQuery<UrlSource>(urlSourceQuery)
+}
 
-const withUrlSourceHandler = graphql<{}, IUrlSource, {}, ChildProps>(urlSourceQuery, {
-  props: ({ ownProps, data }) => {
-    const { urlSource = urlSourceDefaults } = data!
-    return {
-      data: data!,
-      ...ownProps,
-      urlSource
-    }
-  }
-})
-
-export const withUrlSource = compose(
-  withUrlSourceHandler,
-  graphql(updateUrlSourceQuery, { name: 'updateUrlSourceMutation' })
-)
-
-export interface WithUrlSource extends IUrlSource {
-  updateUrlSourceMutation: (options: { variables: IUrlSourceDetails }) => void
+export const useUrlSourceMutation = () => {
+  return useMutation<void, UrlSourceDetails>(updateUrlSourceQuery)
 }

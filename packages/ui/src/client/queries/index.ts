@@ -1,1 +1,5 @@
-export * from './Lookups'
+export * from './game'
+export * from './gameByYear'
+export * from './lookup'
+export * from './lookupValue'
+export * from './slot'
