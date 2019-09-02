@@ -30,7 +30,9 @@ module.exports = {
         '@typescript-eslint/no-unused-vars': 'off',
         // opinion: this is reasonable to disable
         '@typescript-eslint/no-use-before-define': 'off',
-        '@typescript-eslint/no-var-requires': 'off'
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/ban-ts-ignore': 'off'
       }
     },
     {
