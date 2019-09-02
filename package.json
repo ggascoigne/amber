@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=11.7.0",
-    "yarn": ">=1.13.0"
+    "node": ">=12.8.0",
+    "yarn": ">=1.17.3"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,8 @@
     "del-cli": "^2.0.0",
     "eslint": "6.1.0",
     "eslint-config-prettier": "^6.1.0",
+    "eslint-config-react-app": "^5.0.1",
+    "eslint-plugin-flowtype": "^4.2.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -37,22 +39,18 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-flowtype": "^4.2.0",
     "eslint-plugin-react-hooks": "^2.0.1",
-    "eslint-config-react-app": "^5.0.1",
     "execa": "^2.0.4",
     "graphql-tools": "^4.0.5",
     "husky": "^3.0.5",
-    "import-sort-cli": "^6.0.0",
-    "import-sort-parser-babylon": "^6.0.0",
-    "import-sort-parser-typescript": "^6.0.0",
     "import-sort-style-module": "^6.0.0",
     "jest": "24.8.0",
     "lerna": "^3.16.4",
     "lint-staged": "^9.2.5",
     "meow": "^5.0.0",
     "node-fetch": "^2.6.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "prettier-plugin-import-sort": "^0.0.1"
   },
   "scripts": {
     "bootstrap": "yarn && yarn outdated ; yarn audit",
@@ -60,9 +58,7 @@
     "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
-    "format": "yarn format:sort-imports && yarn format:prettier",
-    "format:prettier": "prettier --no-color --loglevel warn --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
-    "format:sort-imports": "import-sort --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx}'",
+    "format": "prettier --no-color --loglevel warn --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
     "lint": "lerna exec --parallel yarn lint",
     "start": "lerna exec --parallel yarn start",
     "start:ui": "yarn db:start && lerna exec --scope ui yarn start",
@@ -92,7 +88,6 @@
   },
   "lint-staged": {
     "packages/*/src/*.{js,jsx,ts,tsx}": [
-      "import-sort --write",
       "prettier --no-color --write",
       "yarn lint",
       "git add"
