@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=12.8.0",
-    "yarn": ">=1.17.3"
+    "node": ">=12.11.0",
+    "yarn": ">=1.19.0"
   },
   "repository": {
     "type": "git",
@@ -24,18 +24,18 @@
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "apollo-link-http": "^1.5.15",
-    "babel-eslint": "10.0.2",
+    "babel-eslint": "10.0.3",
     "babel-jest": "^24.9.0",
-    "cross-env": "^5.2.1",
-    "del-cli": "^2.0.0",
-    "eslint": "6.1.0",
+    "cross-env": "^6.0.3",
+    "del-cli": "^3.0.0",
+    "eslint": "6.5.1",
     "eslint-config-prettier": "^6.1.0",
     "eslint-config-react-app": "^5.0.1",
     "eslint-plugin-flowtype": "^4.2.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
@@ -44,13 +44,15 @@
     "graphql-tools": "^4.0.5",
     "husky": "^3.0.5",
     "import-sort-style-module": "^6.0.0",
-    "jest": "24.8.0",
+    "jest": "24.9.0",
     "lerna": "^3.16.4",
     "lint-staged": "^9.2.5",
+    "trim-right": "^1.0.1",
     "meow": "^5.0.0",
     "node-fetch": "^2.6.0",
+    "patch-package": "^6.2.0",
     "prettier": "^1.18.2",
-    "prettier-plugin-import-sort": "^0.0.1"
+    "prettier-plugin-import-sort": "^0.0.3"
   },
   "scripts": {
     "bootstrap": "yarn && yarn outdated ; yarn audit",
@@ -60,14 +62,15 @@
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
     "format": "prettier --no-color --loglevel warn --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
     "lint": "lerna exec --parallel yarn lint",
+    "postinstall": "patch-package",
+    "saveSchema": "lerna exec --scope ui yarn saveSchema",
     "start": "lerna exec --parallel yarn start",
-    "start:ui": "yarn db:start && lerna exec --scope ui yarn start",
     "start:production": "lerna exec --scope ui yarn build && lerna exec --scope server yarn start:production",
     "start:server": "yarn db:start && lerna exec --scope server yarn start",
+    "start:ui": "yarn db:start && lerna exec --scope ui yarn start",
     "test": "yarn db:start && lerna exec --concurrency 1 -- yarn test",
-    "test:ui": "yarn db:start && lerna exec --scope ui yarn test",
     "test:server": "yarn db:start && lerna exec --scope server yarn test",
-    "saveSchema": "lerna exec --scope ui yarn saveSchema"
+    "test:ui": "yarn db:start && lerna exec --scope ui yarn test"
   },
   "prettier": {
     "printWidth": 120,
@@ -98,10 +101,6 @@
     ]
   },
   "resolutions": {
-    "eslint-utils": "^1.4.2",
-    "lodash": "^4.17.15",
-    "lodash.merge": "^4.6.2",
-    "mixin-deep": "^2.0.1",
-    "set-value": "^3.0.1"
+    "handlebars": "^4.3.0"
   }
 }

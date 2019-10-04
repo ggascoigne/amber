@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
+index f4391c3..37b05ac 100644
+--- a/node_modules/react-scripts/config/webpack.config.js
++++ b/node_modules/react-scripts/config/webpack.config.js
+@@ -346,6 +346,10 @@ module.exports = function(webpackEnv) {
+         // Disable require.ensure as it's not a standard language feature.
+         { parser: { requireEnsure: false } },
+ 
++        // hide TypeScript definition files from the bundler
++        // the recent appol upgrade includes some in a way that leads to a ton of annoying errors
++        { test: /\.d.ts$/, use: 'null-loader' },
++        
+         // First, run the linter.
+         // It's important to do this before Babel processes the JS.
+         {
