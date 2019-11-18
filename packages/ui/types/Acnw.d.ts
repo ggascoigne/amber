@@ -3,1467 +3,1467 @@
 
 declare namespace Acnw {
   interface IGraphQLResponseRoot {
-    data?: IQuery | IMutation
-    errors?: Array<IGraphQLResponseError>
+    data?: IQuery | IMutation;
+    errors?: Array<IGraphQLResponseError>;
   }
 
   interface IGraphQLResponseError {
     /** Required for all errors */
-    message: string
-    locations?: Array<IGraphQLResponseErrorLocation>
+    message: string;
+    locations?: Array<IGraphQLResponseErrorLocation>;
     /** 7.2.2 says 'GraphQL servers may provide additional entries to error' */
-    [propName: string]: any
+    [propName: string]: any;
   }
 
   interface IGraphQLResponseErrorLocation {
-    line: number
-    column: number
+    line: number;
+    column: number;
   }
 
   /**
    * The root query type which gives access points into the data universe.
    */
   interface IQuery {
-    __typename: 'Query'
+    __typename: 'Query';
 
     /**
      * Exposes the root query type nested one level down. This is helpful for Relay 1
      * which can only query top level fields if they are in a particular form.
      */
-    query: IQuery
+    query: IQuery;
 
     /**
      * The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * Fetches an object given its globally unique `ID`.
      */
-    node: Node | null
+    node: Node | null;
 
     /**
      * Reads and enables pagination through a set of `Game`.
      */
-    games: IGamesConnection | null
+    games: IGamesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `GameAssignment`.
      */
-    gameAssignments: IGameAssignmentsConnection | null
+    gameAssignments: IGameAssignmentsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `GameChoice`.
      */
-    gameChoices: IGameChoicesConnection | null
+    gameChoices: IGameChoicesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `GameSubmission`.
      */
-    gameSubmissions: IGameSubmissionsConnection | null
+    gameSubmissions: IGameSubmissionsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `HotelRoom`.
      */
-    hotelRooms: IHotelRoomsConnection | null
+    hotelRooms: IHotelRoomsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `HotelRoomDetail`.
      */
-    hotelRoomDetails: IHotelRoomDetailsConnection | null
+    hotelRoomDetails: IHotelRoomDetailsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Lookup`.
      */
-    lookups: ILookupsConnection | null
+    lookups: ILookupsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `LookupValue`.
      */
-    lookupValues: ILookupValuesConnection | null
+    lookupValues: ILookupValuesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `MemberHotelRoomAssignment`.
      */
-    memberHotelRoomAssignments: IMemberHotelRoomAssignmentsConnection | null
+    memberHotelRoomAssignments: IMemberHotelRoomAssignmentsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Membership`.
      */
-    memberships: IMembershipsConnection | null
+    memberships: IMembershipsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Profile`.
      */
-    profiles: IProfilesConnection | null
+    profiles: IProfilesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `RegistrationCode`.
      */
-    registrationCodes: IRegistrationCodesConnection | null
+    registrationCodes: IRegistrationCodesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Role`.
      */
-    roles: IRolesConnection | null
+    roles: IRolesConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Room`.
      */
-    rooms: IRoomsConnection | null
+    rooms: IRoomsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Setting`.
      */
-    settings: ISettingsConnection | null
+    settings: ISettingsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `ShirtOrder`.
      */
-    shirtOrders: IShirtOrdersConnection | null
+    shirtOrders: IShirtOrdersConnection | null;
 
     /**
      * Reads and enables pagination through a set of `ShirtOrderItem`.
      */
-    shirtOrderItems: IShirtOrderItemsConnection | null
+    shirtOrderItems: IShirtOrderItemsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Slot`.
      */
-    slots: ISlotsConnection | null
+    slots: ISlotsConnection | null;
 
     /**
      * Reads and enables pagination through a set of `Token`.
      */
-    tokens: ITokensConnection | null
+    tokens: ITokensConnection | null;
 
     /**
      * Reads and enables pagination through a set of `User`.
      */
-    users: IUsersConnection | null
+    users: IUsersConnection | null;
 
     /**
      * Reads and enables pagination through a set of `UserRole`.
      */
-    userRoles: IUserRolesConnection | null
-    game: IGame | null
-    gameAssignment: IGameAssignment | null
-    gameChoice: IGameChoice | null
-    gameSubmission: IGameSubmission | null
-    hotelRoom: IHotelRoom | null
-    hotelRoomDetail: IHotelRoomDetail | null
-    lookup: ILookup | null
-    lookupByRealm: ILookup | null
-    lookupValue: ILookupValue | null
-    lookupValueByLookupIdAndCode: ILookupValue | null
-    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null
-    membership: IMembership | null
-    profile: IProfile | null
-    profileByEmail: IProfile | null
-    registrationCode: IRegistrationCode | null
-    role: IRole | null
-    roleByAuthority: IRole | null
-    room: IRoom | null
-    setting: ISetting | null
-    shirtOrder: IShirtOrder | null
-    shirtOrderItem: IShirtOrderItem | null
-    slot: ISlot | null
-    token: IToken | null
-    user: IUser | null
-    userByUsername: IUser | null
-    userRole: IUserRole | null
+    userRoles: IUserRolesConnection | null;
+    game: IGame | null;
+    gameAssignment: IGameAssignment | null;
+    gameChoice: IGameChoice | null;
+    gameSubmission: IGameSubmission | null;
+    hotelRoom: IHotelRoom | null;
+    hotelRoomDetail: IHotelRoomDetail | null;
+    lookup: ILookup | null;
+    lookupByRealm: ILookup | null;
+    lookupValue: ILookupValue | null;
+    lookupValueByLookupIdAndCode: ILookupValue | null;
+    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null;
+    membership: IMembership | null;
+    profile: IProfile | null;
+    profileByEmail: IProfile | null;
+    registrationCode: IRegistrationCode | null;
+    role: IRole | null;
+    roleByAuthority: IRole | null;
+    room: IRoom | null;
+    setting: ISetting | null;
+    shirtOrder: IShirtOrder | null;
+    shirtOrderItem: IShirtOrderItem | null;
+    slot: ISlot | null;
+    token: IToken | null;
+    user: IUser | null;
+    userByUsername: IUser | null;
+    userRole: IUserRole | null;
 
     /**
      * Reads a single `Game` using its globally unique `ID`.
      */
-    gameByNodeId: IGame | null
+    gameByNodeId: IGame | null;
 
     /**
      * Reads a single `GameAssignment` using its globally unique `ID`.
      */
-    gameAssignmentByNodeId: IGameAssignment | null
+    gameAssignmentByNodeId: IGameAssignment | null;
 
     /**
      * Reads a single `GameChoice` using its globally unique `ID`.
      */
-    gameChoiceByNodeId: IGameChoice | null
+    gameChoiceByNodeId: IGameChoice | null;
 
     /**
      * Reads a single `GameSubmission` using its globally unique `ID`.
      */
-    gameSubmissionByNodeId: IGameSubmission | null
+    gameSubmissionByNodeId: IGameSubmission | null;
 
     /**
      * Reads a single `HotelRoom` using its globally unique `ID`.
      */
-    hotelRoomByNodeId: IHotelRoom | null
+    hotelRoomByNodeId: IHotelRoom | null;
 
     /**
      * Reads a single `HotelRoomDetail` using its globally unique `ID`.
      */
-    hotelRoomDetailByNodeId: IHotelRoomDetail | null
+    hotelRoomDetailByNodeId: IHotelRoomDetail | null;
 
     /**
      * Reads a single `Lookup` using its globally unique `ID`.
      */
-    lookupByNodeId: ILookup | null
+    lookupByNodeId: ILookup | null;
 
     /**
      * Reads a single `LookupValue` using its globally unique `ID`.
      */
-    lookupValueByNodeId: ILookupValue | null
+    lookupValueByNodeId: ILookupValue | null;
 
     /**
      * Reads a single `MemberHotelRoomAssignment` using its globally unique `ID`.
      */
-    memberHotelRoomAssignmentByNodeId: IMemberHotelRoomAssignment | null
+    memberHotelRoomAssignmentByNodeId: IMemberHotelRoomAssignment | null;
 
     /**
      * Reads a single `Membership` using its globally unique `ID`.
      */
-    membershipByNodeId: IMembership | null
+    membershipByNodeId: IMembership | null;
 
     /**
      * Reads a single `Profile` using its globally unique `ID`.
      */
-    profileByNodeId: IProfile | null
+    profileByNodeId: IProfile | null;
 
     /**
      * Reads a single `RegistrationCode` using its globally unique `ID`.
      */
-    registrationCodeByNodeId: IRegistrationCode | null
+    registrationCodeByNodeId: IRegistrationCode | null;
 
     /**
      * Reads a single `Role` using its globally unique `ID`.
      */
-    roleByNodeId: IRole | null
+    roleByNodeId: IRole | null;
 
     /**
      * Reads a single `Room` using its globally unique `ID`.
      */
-    roomByNodeId: IRoom | null
+    roomByNodeId: IRoom | null;
 
     /**
      * Reads a single `Setting` using its globally unique `ID`.
      */
-    settingByNodeId: ISetting | null
+    settingByNodeId: ISetting | null;
 
     /**
      * Reads a single `ShirtOrder` using its globally unique `ID`.
      */
-    shirtOrderByNodeId: IShirtOrder | null
+    shirtOrderByNodeId: IShirtOrder | null;
 
     /**
      * Reads a single `ShirtOrderItem` using its globally unique `ID`.
      */
-    shirtOrderItemByNodeId: IShirtOrderItem | null
+    shirtOrderItemByNodeId: IShirtOrderItem | null;
 
     /**
      * Reads a single `Slot` using its globally unique `ID`.
      */
-    slotByNodeId: ISlot | null
+    slotByNodeId: ISlot | null;
 
     /**
      * Reads a single `Token` using its globally unique `ID`.
      */
-    tokenByNodeId: IToken | null
+    tokenByNodeId: IToken | null;
 
     /**
      * Reads a single `User` using its globally unique `ID`.
      */
-    userByNodeId: IUser | null
+    userByNodeId: IUser | null;
 
     /**
      * Reads a single `UserRole` using its globally unique `ID`.
      */
-    userRoleByNodeId: IUserRole | null
+    userRoleByNodeId: IUserRole | null;
   }
 
   interface INodeOnQueryArguments {
     /**
      * The globally unique `ID`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IGamesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameCondition | null
+    condition?: IGameCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameFilter | null
+    filter?: IGameFilter | null;
   }
 
   interface IGameAssignmentsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameAssignmentCondition | null
+    condition?: IGameAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameAssignmentFilter | null
+    filter?: IGameAssignmentFilter | null;
   }
 
   interface IGameChoicesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameChoiceCondition | null
+    condition?: IGameChoiceCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameChoiceFilter | null
+    filter?: IGameChoiceFilter | null;
   }
 
   interface IGameSubmissionsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameSubmission`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameSubmissionsOrderBy> | null
+    orderBy?: Array<GameSubmissionsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameSubmissionCondition | null
+    condition?: IGameSubmissionCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameSubmissionFilter | null
+    filter?: IGameSubmissionFilter | null;
   }
 
   interface IHotelRoomsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `HotelRoom`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomsOrderBy> | null
+    orderBy?: Array<HotelRoomsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IHotelRoomCondition | null
+    condition?: IHotelRoomCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IHotelRoomFilter | null
+    filter?: IHotelRoomFilter | null;
   }
 
   interface IHotelRoomDetailsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `HotelRoomDetail`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomDetailsOrderBy> | null
+    orderBy?: Array<HotelRoomDetailsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IHotelRoomDetailCondition | null
+    condition?: IHotelRoomDetailCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IHotelRoomDetailFilter | null
+    filter?: IHotelRoomDetailFilter | null;
   }
 
   interface ILookupsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Lookup`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupsOrderBy> | null
+    orderBy?: Array<LookupsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ILookupCondition | null
+    condition?: ILookupCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ILookupFilter | null
+    filter?: ILookupFilter | null;
   }
 
   interface ILookupValuesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `LookupValue`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupValuesOrderBy> | null
+    orderBy?: Array<LookupValuesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ILookupValueCondition | null
+    condition?: ILookupValueCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ILookupValueFilter | null
+    filter?: ILookupValueFilter | null;
   }
 
   interface IMemberHotelRoomAssignmentsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMemberHotelRoomAssignmentCondition | null
+    condition?: IMemberHotelRoomAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMemberHotelRoomAssignmentFilter | null
+    filter?: IMemberHotelRoomAssignmentFilter | null;
   }
 
   interface IMembershipsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMembershipCondition | null
+    condition?: IMembershipCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMembershipFilter | null
+    filter?: IMembershipFilter | null;
   }
 
   interface IProfilesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Profile`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ProfilesOrderBy> | null
+    orderBy?: Array<ProfilesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IProfileCondition | null
+    condition?: IProfileCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IProfileFilter | null
+    filter?: IProfileFilter | null;
   }
 
   interface IRegistrationCodesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `RegistrationCode`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RegistrationCodesOrderBy> | null
+    orderBy?: Array<RegistrationCodesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IRegistrationCodeCondition | null
+    condition?: IRegistrationCodeCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IRegistrationCodeFilter | null
+    filter?: IRegistrationCodeFilter | null;
   }
 
   interface IRolesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Role`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RolesOrderBy> | null
+    orderBy?: Array<RolesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IRoleCondition | null
+    condition?: IRoleCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IRoleFilter | null
+    filter?: IRoleFilter | null;
   }
 
   interface IRoomsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Room`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RoomsOrderBy> | null
+    orderBy?: Array<RoomsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IRoomCondition | null
+    condition?: IRoomCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IRoomFilter | null
+    filter?: IRoomFilter | null;
   }
 
   interface ISettingsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Setting`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SettingsOrderBy> | null
+    orderBy?: Array<SettingsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ISettingCondition | null
+    condition?: ISettingCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ISettingFilter | null
+    filter?: ISettingFilter | null;
   }
 
   interface IShirtOrdersOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `ShirtOrder`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrdersOrderBy> | null
+    orderBy?: Array<ShirtOrdersOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IShirtOrderCondition | null
+    condition?: IShirtOrderCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IShirtOrderFilter | null
+    filter?: IShirtOrderFilter | null;
   }
 
   interface IShirtOrderItemsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `ShirtOrderItem`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrderItemsOrderBy> | null
+    orderBy?: Array<ShirtOrderItemsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IShirtOrderItemCondition | null
+    condition?: IShirtOrderItemCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IShirtOrderItemFilter | null
+    filter?: IShirtOrderItemFilter | null;
   }
 
   interface ISlotsOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Slot`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SlotsOrderBy> | null
+    orderBy?: Array<SlotsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ISlotCondition | null
+    condition?: ISlotCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ISlotFilter | null
+    filter?: ISlotFilter | null;
   }
 
   interface ITokensOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Token`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<TokensOrderBy> | null
+    orderBy?: Array<TokensOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ITokenCondition | null
+    condition?: ITokenCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ITokenFilter | null
+    filter?: ITokenFilter | null;
   }
 
   interface IUsersOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `User`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UsersOrderBy> | null
+    orderBy?: Array<UsersOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IUserCondition | null
+    condition?: IUserCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IUserFilter | null
+    filter?: IUserFilter | null;
   }
 
   interface IUserRolesOnQueryArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IUserRoleCondition | null
+    condition?: IUserRoleCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IUserRoleFilter | null
+    filter?: IUserRoleFilter | null;
   }
 
   interface IGameOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IGameAssignmentOnQueryArguments {
-    memberId: number
-    gameId: number
-    gm: number
+    memberId: number;
+    gameId: number;
+    gm: number;
   }
 
   interface IGameChoiceOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IGameSubmissionOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IHotelRoomOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IHotelRoomDetailOnQueryArguments {
-    id: any
+    id: any;
   }
 
   interface ILookupOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface ILookupByRealmOnQueryArguments {
-    realm: string
+    realm: string;
   }
 
   interface ILookupValueOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface ILookupValueByLookupIdAndCodeOnQueryArguments {
-    lookupId: number
-    code: string
+    lookupId: number;
+    code: string;
   }
 
   interface IMemberHotelRoomAssignmentOnQueryArguments {
-    memberId: any
-    hotelRoomId: any
+    memberId: any;
+    hotelRoomId: any;
   }
 
   interface IMembershipOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IProfileOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IProfileByEmailOnQueryArguments {
-    email: string
+    email: string;
   }
 
   interface IRegistrationCodeOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IRoleOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IRoleByAuthorityOnQueryArguments {
-    authority: string
+    authority: string;
   }
 
   interface IRoomOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface ISettingOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IShirtOrderOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IShirtOrderItemOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface ISlotOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface ITokenOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IUserOnQueryArguments {
-    id: number
+    id: number;
   }
 
   interface IUserByUsernameOnQueryArguments {
-    username: string
+    username: string;
   }
 
   interface IUserRoleOnQueryArguments {
-    roleId: number
-    userId: number
+    roleId: number;
+    userId: number;
   }
 
   interface IGameByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Game`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IGameAssignmentByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `GameAssignment`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IGameChoiceByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `GameChoice`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IGameSubmissionByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `GameSubmission`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IHotelRoomByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `HotelRoom`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IHotelRoomDetailByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `HotelRoomDetail`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface ILookupByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Lookup`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface ILookupValueByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `LookupValue`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IMemberHotelRoomAssignmentByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `MemberHotelRoomAssignment`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IMembershipByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Membership`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IProfileByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Profile`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IRegistrationCodeByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `RegistrationCode`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IRoleByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Role`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IRoomByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Room`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface ISettingByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Setting`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IShirtOrderByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `ShirtOrder`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IShirtOrderItemByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `ShirtOrderItem`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface ISlotByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Slot`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface ITokenByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `Token`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IUserByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `User`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   interface IUserRoleByNodeIdOnQueryArguments {
     /**
      * The globally unique `ID` to be used in selecting a single `UserRole`.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
@@ -1491,18 +1491,18 @@ declare namespace Acnw {
     | ILookup
     | ILookupValue
     | IRegistrationCode
-    | ISetting
+    | ISetting;
 
   /**
    * An object with a globally unique `ID`.
    */
   interface INode {
-    __typename: 'Node'
+    __typename: 'Node';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
@@ -1611,132 +1611,132 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `description` field.
      */
-    description?: string | null
+    description?: string | null;
 
     /**
      * Checks for equality with the object’s `lateFinish` field.
      */
-    lateFinish?: boolean | null
+    lateFinish?: boolean | null;
 
     /**
      * Checks for equality with the object’s `lateStart` field.
      */
-    lateStart?: string | null
+    lateStart?: string | null;
 
     /**
      * Checks for equality with the object’s `name` field.
      */
-    name?: string | null
+    name?: string | null;
 
     /**
      * Checks for equality with the object’s `playerMax` field.
      */
-    playerMax?: number | null
+    playerMax?: number | null;
 
     /**
      * Checks for equality with the object’s `playerMin` field.
      */
-    playerMin?: number | null
+    playerMin?: number | null;
 
     /**
      * Checks for equality with the object’s `roomId` field.
      */
-    roomId?: number | null
+    roomId?: number | null;
 
     /**
      * Checks for equality with the object’s `shortName` field.
      */
-    shortName?: string | null
+    shortName?: string | null;
 
     /**
      * Checks for equality with the object’s `slotId` field.
      */
-    slotId?: number | null
+    slotId?: number | null;
 
     /**
      * Checks for equality with the object’s `charInstructions` field.
      */
-    charInstructions?: string | null
+    charInstructions?: string | null;
 
     /**
      * Checks for equality with the object’s `estimatedLength` field.
      */
-    estimatedLength?: string | null
+    estimatedLength?: string | null;
 
     /**
      * Checks for equality with the object’s `gameContactEmail` field.
      */
-    gameContactEmail?: string | null
+    gameContactEmail?: string | null;
 
     /**
      * Checks for equality with the object’s `genre` field.
      */
-    genre?: string | null
+    genre?: string | null;
 
     /**
      * Checks for equality with the object’s `gmNames` field.
      */
-    gmNames?: string | null
+    gmNames?: string | null;
 
     /**
      * Checks for equality with the object’s `message` field.
      */
-    message?: string | null
+    message?: string | null;
 
     /**
      * Checks for equality with the object’s `playerPreference` field.
      */
-    playerPreference?: string | null
+    playerPreference?: string | null;
 
     /**
      * Checks for equality with the object’s `playersContactGm` field.
      */
-    playersContactGm?: boolean | null
+    playersContactGm?: boolean | null;
 
     /**
      * Checks for equality with the object’s `returningPlayers` field.
      */
-    returningPlayers?: string | null
+    returningPlayers?: string | null;
 
     /**
      * Checks for equality with the object’s `setting` field.
      */
-    setting?: string | null
+    setting?: string | null;
 
     /**
      * Checks for equality with the object’s `slotConflicts` field.
      */
-    slotConflicts?: string | null
+    slotConflicts?: string | null;
 
     /**
      * Checks for equality with the object’s `slotPreference` field.
      */
-    slotPreference?: number | null
+    slotPreference?: number | null;
 
     /**
      * Checks for equality with the object’s `teenFriendly` field.
      */
-    teenFriendly?: boolean | null
+    teenFriendly?: boolean | null;
 
     /**
      * Checks for equality with the object’s `type` field.
      */
-    type?: string | null
+    type?: string | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
 
     /**
      * Checks for equality with the object’s `authorId` field.
      */
-    authorId?: number | null
+    authorId?: number | null;
   }
 
   /**
@@ -1746,147 +1746,147 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `description` field.
      */
-    description?: IStringFilter | null
+    description?: IStringFilter | null;
 
     /**
      * Filter by the object’s `lateFinish` field.
      */
-    lateFinish?: IBooleanFilter | null
+    lateFinish?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `lateStart` field.
      */
-    lateStart?: IStringFilter | null
+    lateStart?: IStringFilter | null;
 
     /**
      * Filter by the object’s `name` field.
      */
-    name?: IStringFilter | null
+    name?: IStringFilter | null;
 
     /**
      * Filter by the object’s `playerMax` field.
      */
-    playerMax?: IIntFilter | null
+    playerMax?: IIntFilter | null;
 
     /**
      * Filter by the object’s `playerMin` field.
      */
-    playerMin?: IIntFilter | null
+    playerMin?: IIntFilter | null;
 
     /**
      * Filter by the object’s `roomId` field.
      */
-    roomId?: IIntFilter | null
+    roomId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `shortName` field.
      */
-    shortName?: IStringFilter | null
+    shortName?: IStringFilter | null;
 
     /**
      * Filter by the object’s `slotId` field.
      */
-    slotId?: IIntFilter | null
+    slotId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `charInstructions` field.
      */
-    charInstructions?: IStringFilter | null
+    charInstructions?: IStringFilter | null;
 
     /**
      * Filter by the object’s `estimatedLength` field.
      */
-    estimatedLength?: IStringFilter | null
+    estimatedLength?: IStringFilter | null;
 
     /**
      * Filter by the object’s `gameContactEmail` field.
      */
-    gameContactEmail?: IStringFilter | null
+    gameContactEmail?: IStringFilter | null;
 
     /**
      * Filter by the object’s `genre` field.
      */
-    genre?: IStringFilter | null
+    genre?: IStringFilter | null;
 
     /**
      * Filter by the object’s `gmNames` field.
      */
-    gmNames?: IStringFilter | null
+    gmNames?: IStringFilter | null;
 
     /**
      * Filter by the object’s `message` field.
      */
-    message?: IStringFilter | null
+    message?: IStringFilter | null;
 
     /**
      * Filter by the object’s `playerPreference` field.
      */
-    playerPreference?: IStringFilter | null
+    playerPreference?: IStringFilter | null;
 
     /**
      * Filter by the object’s `playersContactGm` field.
      */
-    playersContactGm?: IBooleanFilter | null
+    playersContactGm?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `returningPlayers` field.
      */
-    returningPlayers?: IStringFilter | null
+    returningPlayers?: IStringFilter | null;
 
     /**
      * Filter by the object’s `setting` field.
      */
-    setting?: IStringFilter | null
+    setting?: IStringFilter | null;
 
     /**
      * Filter by the object’s `slotConflicts` field.
      */
-    slotConflicts?: IStringFilter | null
+    slotConflicts?: IStringFilter | null;
 
     /**
      * Filter by the object’s `slotPreference` field.
      */
-    slotPreference?: IIntFilter | null
+    slotPreference?: IIntFilter | null;
 
     /**
      * Filter by the object’s `teenFriendly` field.
      */
-    teenFriendly?: IBooleanFilter | null
+    teenFriendly?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `type` field.
      */
-    type?: IStringFilter | null
+    type?: IStringFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Filter by the object’s `authorId` field.
      */
-    authorId?: IIntFilter | null
+    authorId?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IGameFilter> | null
+    and?: Array<IGameFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IGameFilter> | null
+    or?: Array<IGameFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IGameFilter | null
+    not?: IGameFilter | null;
   }
 
   /**
@@ -1896,57 +1896,57 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: number | null
+    equalTo?: number | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: number | null
+    notEqualTo?: number | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: number | null
+    distinctFrom?: number | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: number | null
+    notDistinctFrom?: number | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<number> | null
+    in?: Array<number> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<number> | null
+    notIn?: Array<number> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: number | null
+    lessThan?: number | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: number | null
+    lessThanOrEqualTo?: number | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: number | null
+    greaterThan?: number | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: number | null
+    greaterThanOrEqualTo?: number | null;
   }
 
   /**
@@ -1956,153 +1956,153 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: string | null
+    equalTo?: string | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: string | null
+    notEqualTo?: string | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: string | null
+    distinctFrom?: string | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: string | null
+    notDistinctFrom?: string | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<string> | null
+    in?: Array<string> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<string> | null
+    notIn?: Array<string> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: string | null
+    lessThan?: string | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: string | null
+    lessThanOrEqualTo?: string | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: string | null
+    greaterThan?: string | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: string | null
+    greaterThanOrEqualTo?: string | null;
 
     /**
      * Contains the specified string (case-sensitive).
      */
-    includes?: string | null
+    includes?: string | null;
 
     /**
      * Does not contain the specified string (case-sensitive).
      */
-    notIncludes?: string | null
+    notIncludes?: string | null;
 
     /**
      * Contains the specified string (case-insensitive).
      */
-    includesInsensitive?: string | null
+    includesInsensitive?: string | null;
 
     /**
      * Does not contain the specified string (case-insensitive).
      */
-    notIncludesInsensitive?: string | null
+    notIncludesInsensitive?: string | null;
 
     /**
      * Starts with the specified string (case-sensitive).
      */
-    startsWith?: string | null
+    startsWith?: string | null;
 
     /**
      * Does not start with the specified string (case-sensitive).
      */
-    notStartsWith?: string | null
+    notStartsWith?: string | null;
 
     /**
      * Starts with the specified string (case-insensitive).
      */
-    startsWithInsensitive?: string | null
+    startsWithInsensitive?: string | null;
 
     /**
      * Does not start with the specified string (case-insensitive).
      */
-    notStartsWithInsensitive?: string | null
+    notStartsWithInsensitive?: string | null;
 
     /**
      * Ends with the specified string (case-sensitive).
      */
-    endsWith?: string | null
+    endsWith?: string | null;
 
     /**
      * Does not end with the specified string (case-sensitive).
      */
-    notEndsWith?: string | null
+    notEndsWith?: string | null;
 
     /**
      * Ends with the specified string (case-insensitive).
      */
-    endsWithInsensitive?: string | null
+    endsWithInsensitive?: string | null;
 
     /**
      * Does not end with the specified string (case-insensitive).
      */
-    notEndsWithInsensitive?: string | null
+    notEndsWithInsensitive?: string | null;
 
     /**
      * Matches the specified pattern (case-sensitive). An underscore (_) matches any
      * single character; a percent sign (%) matches any sequence of zero or more characters.
      */
-    like?: string | null
+    like?: string | null;
 
     /**
      * Does not match the specified pattern (case-sensitive). An underscore (_)
      * matches any single character; a percent sign (%) matches any sequence of zero
      * or more characters.
      */
-    notLike?: string | null
+    notLike?: string | null;
 
     /**
      * Matches the specified pattern (case-insensitive). An underscore (_) matches
      * any single character; a percent sign (%) matches any sequence of zero or more characters.
      */
-    likeInsensitive?: string | null
+    likeInsensitive?: string | null;
 
     /**
      * Does not match the specified pattern (case-insensitive). An underscore (_)
      * matches any single character; a percent sign (%) matches any sequence of zero
      * or more characters.
      */
-    notLikeInsensitive?: string | null
+    notLikeInsensitive?: string | null;
 
     /**
      * Matches the specified pattern using the SQL standard's definition of a regular expression.
      */
-    similarTo?: string | null
+    similarTo?: string | null;
 
     /**
      * Does not match the specified pattern using the SQL standard's definition of a regular expression.
      */
-    notSimilarTo?: string | null
+    notSimilarTo?: string | null;
   }
 
   /**
@@ -2112,408 +2112,408 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: boolean | null
+    equalTo?: boolean | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: boolean | null
+    notEqualTo?: boolean | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: boolean | null
+    distinctFrom?: boolean | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: boolean | null
+    notDistinctFrom?: boolean | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<boolean> | null
+    in?: Array<boolean> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<boolean> | null
+    notIn?: Array<boolean> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: boolean | null
+    lessThan?: boolean | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: boolean | null
+    lessThanOrEqualTo?: boolean | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: boolean | null
+    greaterThan?: boolean | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: boolean | null
+    greaterThanOrEqualTo?: boolean | null;
   }
 
   /**
    * A connection to a list of `Game` values.
    */
   interface IGamesConnection {
-    __typename: 'GamesConnection'
+    __typename: 'GamesConnection';
 
     /**
      * A list of `Game` objects.
      */
-    nodes: Array<IGame | null>
+    nodes: Array<IGame | null>;
 
     /**
      * A list of edges which contains the `Game` and cursor to aid in pagination.
      */
-    edges: Array<IGamesEdge>
+    edges: Array<IGamesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Game` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IGame {
-    __typename: 'Game'
+    __typename: 'Game';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    description: string
-    lateFinish: boolean | null
-    lateStart: string | null
-    name: string
-    playerMax: number
-    playerMin: number
-    roomId: number | null
-    shortName: string | null
-    slotId: number | null
-    charInstructions: string
-    estimatedLength: string
-    gameContactEmail: string
-    genre: string
-    gmNames: string | null
-    message: string
-    playerPreference: string
-    playersContactGm: boolean
-    returningPlayers: string
-    setting: string
-    slotConflicts: string
-    slotPreference: number
-    teenFriendly: boolean
-    type: string
-    year: number
-    authorId: number | null
+    nodeId: string;
+    id: number;
+    description: string;
+    lateFinish: boolean | null;
+    lateStart: string | null;
+    name: string;
+    playerMax: number;
+    playerMin: number;
+    roomId: number | null;
+    shortName: string | null;
+    slotId: number | null;
+    charInstructions: string;
+    estimatedLength: string;
+    gameContactEmail: string;
+    genre: string;
+    gmNames: string | null;
+    message: string;
+    playerPreference: string;
+    playersContactGm: boolean;
+    returningPlayers: string;
+    setting: string;
+    slotConflicts: string;
+    slotPreference: number;
+    teenFriendly: boolean;
+    type: string;
+    year: number;
+    authorId: number | null;
 
     /**
      * Reads a single `Room` that is related to this `Game`.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Reads a single `Slot` that is related to this `Game`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Reads a single `User` that is related to this `Game`.
      */
-    author: IUser | null
+    author: IUser | null;
 
     /**
      * Reads and enables pagination through a set of `GameAssignment`.
      */
-    gameAssignments: IGameAssignmentsConnection
+    gameAssignments: IGameAssignmentsConnection;
 
     /**
      * Reads and enables pagination through a set of `GameChoice`.
      */
-    gameChoices: IGameChoicesConnection
+    gameChoices: IGameChoicesConnection;
   }
 
   interface IGameAssignmentsOnGameArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameAssignmentCondition | null
+    condition?: IGameAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameAssignmentFilter | null
+    filter?: IGameAssignmentFilter | null;
   }
 
   interface IGameChoicesOnGameArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameChoiceCondition | null
+    condition?: IGameChoiceCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameChoiceFilter | null
+    filter?: IGameChoiceFilter | null;
   }
 
   interface IRoom {
-    __typename: 'Room'
+    __typename: 'Room';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    description: string
-    size: number
-    type: string
-    updated: boolean
+    nodeId: string;
+    id: number;
+    description: string;
+    size: number;
+    type: string;
+    updated: boolean;
 
     /**
      * Reads and enables pagination through a set of `Game`.
      */
-    games: IGamesConnection
+    games: IGamesConnection;
   }
 
   interface IGamesOnRoomArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameCondition | null
+    condition?: IGameCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameFilter | null
+    filter?: IGameFilter | null;
   }
 
   interface ISlot {
-    __typename: 'Slot'
+    __typename: 'Slot';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    slot: number
-    day: string
-    formattedDate: string
-    length: string
-    time: string
+    nodeId: string;
+    id: number;
+    slot: number;
+    day: string;
+    formattedDate: string;
+    length: string;
+    time: string;
 
     /**
      * Reads and enables pagination through a set of `Game`.
      */
-    games: IGamesConnection
+    games: IGamesConnection;
 
     /**
      * Reads and enables pagination through a set of `GameChoice`.
      */
-    gameChoices: IGameChoicesConnection
+    gameChoices: IGameChoicesConnection;
   }
 
   interface IGamesOnSlotArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameCondition | null
+    condition?: IGameCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameFilter | null
+    filter?: IGameFilter | null;
   }
 
   interface IGameChoicesOnSlotArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameChoiceCondition | null
+    condition?: IGameChoiceCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameChoiceFilter | null
+    filter?: IGameChoiceFilter | null;
   }
 
   /**
@@ -2647,37 +2647,37 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `gameId` field.
      */
-    gameId?: number | null
+    gameId?: number | null;
 
     /**
      * Checks for equality with the object’s `memberId` field.
      */
-    memberId?: number | null
+    memberId?: number | null;
 
     /**
      * Checks for equality with the object’s `rank` field.
      */
-    rank?: number | null
+    rank?: number | null;
 
     /**
      * Checks for equality with the object’s `slotId` field.
      */
-    slotId?: number | null
+    slotId?: number | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
 
     /**
      * Checks for equality with the object’s `returningPlayer` field.
      */
-    returningPlayer?: boolean | null
+    returningPlayer?: boolean | null;
   }
 
   /**
@@ -2687,409 +2687,409 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `gameId` field.
      */
-    gameId?: IIntFilter | null
+    gameId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `memberId` field.
      */
-    memberId?: IIntFilter | null
+    memberId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `rank` field.
      */
-    rank?: IIntFilter | null
+    rank?: IIntFilter | null;
 
     /**
      * Filter by the object’s `slotId` field.
      */
-    slotId?: IIntFilter | null
+    slotId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Filter by the object’s `returningPlayer` field.
      */
-    returningPlayer?: IBooleanFilter | null
+    returningPlayer?: IBooleanFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IGameChoiceFilter> | null
+    and?: Array<IGameChoiceFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IGameChoiceFilter> | null
+    or?: Array<IGameChoiceFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IGameChoiceFilter | null
+    not?: IGameChoiceFilter | null;
   }
 
   /**
    * A connection to a list of `GameChoice` values.
    */
   interface IGameChoicesConnection {
-    __typename: 'GameChoicesConnection'
+    __typename: 'GameChoicesConnection';
 
     /**
      * A list of `GameChoice` objects.
      */
-    nodes: Array<IGameChoice | null>
+    nodes: Array<IGameChoice | null>;
 
     /**
      * A list of edges which contains the `GameChoice` and cursor to aid in pagination.
      */
-    edges: Array<IGameChoicesEdge>
+    edges: Array<IGameChoicesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `GameChoice` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IGameChoice {
-    __typename: 'GameChoice'
+    __typename: 'GameChoice';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    gameId: number | null
-    memberId: number
-    rank: number
-    slotId: number
-    year: number
-    returningPlayer: boolean
+    nodeId: string;
+    id: number;
+    gameId: number | null;
+    memberId: number;
+    rank: number;
+    slotId: number;
+    year: number;
+    returningPlayer: boolean;
 
     /**
      * Reads a single `Game` that is related to this `GameChoice`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameChoice`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Slot` that is related to this `GameChoice`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
   }
 
   interface IMembership {
-    __typename: 'Membership'
+    __typename: 'Membership';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    arrivalDate: any
-    attendance: string
-    attending: boolean
-    departureDate: any
-    hotelRoomId: number
-    interestLevel: string
-    message: string
-    roomPreferenceAndNotes: string
-    roomingPreferences: string
-    roomingWith: string
-    userId: number
-    volunteer: boolean
-    year: number
-    offerSubsidy: boolean
-    requestOldPrice: boolean
-    amountOwed: number
-    amountPaid: number
+    nodeId: string;
+    id: number;
+    arrivalDate: any;
+    attendance: string;
+    attending: boolean;
+    departureDate: any;
+    hotelRoomId: number;
+    interestLevel: string;
+    message: string;
+    roomPreferenceAndNotes: string;
+    roomingPreferences: string;
+    roomingWith: string;
+    userId: number;
+    volunteer: boolean;
+    year: number;
+    offerSubsidy: boolean;
+    requestOldPrice: boolean;
+    amountOwed: number;
+    amountPaid: number;
 
     /**
      * Reads a single `HotelRoom` that is related to this `Membership`.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Reads a single `User` that is related to this `Membership`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * Reads and enables pagination through a set of `GameAssignment`.
      */
-    gameAssignmentsByMemberId: IGameAssignmentsConnection
+    gameAssignmentsByMemberId: IGameAssignmentsConnection;
 
     /**
      * Reads and enables pagination through a set of `GameChoice`.
      */
-    gameChoicesByMemberId: IGameChoicesConnection
+    gameChoicesByMemberId: IGameChoicesConnection;
 
     /**
      * Reads and enables pagination through a set of `GameSubmission`.
      */
-    gameSubmissionsByMemberId: IGameSubmissionsConnection
+    gameSubmissionsByMemberId: IGameSubmissionsConnection;
 
     /**
      * Reads and enables pagination through a set of `MemberHotelRoomAssignment`.
      */
-    memberHotelRoomAssignmentsByMemberId: IMemberHotelRoomAssignmentsConnection
+    memberHotelRoomAssignmentsByMemberId: IMemberHotelRoomAssignmentsConnection;
   }
 
   interface IGameAssignmentsByMemberIdOnMembershipArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameAssignmentCondition | null
+    condition?: IGameAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameAssignmentFilter | null
+    filter?: IGameAssignmentFilter | null;
   }
 
   interface IGameChoicesByMemberIdOnMembershipArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameChoiceCondition | null
+    condition?: IGameChoiceCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameChoiceFilter | null
+    filter?: IGameChoiceFilter | null;
   }
 
   interface IGameSubmissionsByMemberIdOnMembershipArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `GameSubmission`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameSubmissionsOrderBy> | null
+    orderBy?: Array<GameSubmissionsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameSubmissionCondition | null
+    condition?: IGameSubmissionCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameSubmissionFilter | null
+    filter?: IGameSubmissionFilter | null;
   }
 
   interface IMemberHotelRoomAssignmentsByMemberIdOnMembershipArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMemberHotelRoomAssignmentCondition | null
+    condition?: IMemberHotelRoomAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMemberHotelRoomAssignmentFilter | null
+    filter?: IMemberHotelRoomAssignmentFilter | null;
   }
 
   interface IHotelRoom {
-    __typename: 'HotelRoom'
+    __typename: 'HotelRoom';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    description: string
-    gamingRoom: boolean
-    occupancy: string
-    quantity: number
-    rate: string
-    bathroomType: string
-    type: string
+    nodeId: string;
+    id: number;
+    description: string;
+    gamingRoom: boolean;
+    occupancy: string;
+    quantity: number;
+    rate: string;
+    bathroomType: string;
+    type: string;
 
     /**
      * Reads and enables pagination through a set of `Membership`.
      */
-    memberships: IMembershipsConnection
+    memberships: IMembershipsConnection;
   }
 
   interface IMembershipsOnHotelRoomArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMembershipCondition | null
+    condition?: IMembershipCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMembershipFilter | null
+    filter?: IMembershipFilter | null;
   }
 
   /**
@@ -3181,92 +3181,92 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `arrivalDate` field.
      */
-    arrivalDate?: any | null
+    arrivalDate?: any | null;
 
     /**
      * Checks for equality with the object’s `attendance` field.
      */
-    attendance?: string | null
+    attendance?: string | null;
 
     /**
      * Checks for equality with the object’s `attending` field.
      */
-    attending?: boolean | null
+    attending?: boolean | null;
 
     /**
      * Checks for equality with the object’s `departureDate` field.
      */
-    departureDate?: any | null
+    departureDate?: any | null;
 
     /**
      * Checks for equality with the object’s `hotelRoomId` field.
      */
-    hotelRoomId?: number | null
+    hotelRoomId?: number | null;
 
     /**
      * Checks for equality with the object’s `interestLevel` field.
      */
-    interestLevel?: string | null
+    interestLevel?: string | null;
 
     /**
      * Checks for equality with the object’s `message` field.
      */
-    message?: string | null
+    message?: string | null;
 
     /**
      * Checks for equality with the object’s `roomPreferenceAndNotes` field.
      */
-    roomPreferenceAndNotes?: string | null
+    roomPreferenceAndNotes?: string | null;
 
     /**
      * Checks for equality with the object’s `roomingPreferences` field.
      */
-    roomingPreferences?: string | null
+    roomingPreferences?: string | null;
 
     /**
      * Checks for equality with the object’s `roomingWith` field.
      */
-    roomingWith?: string | null
+    roomingWith?: string | null;
 
     /**
      * Checks for equality with the object’s `userId` field.
      */
-    userId?: number | null
+    userId?: number | null;
 
     /**
      * Checks for equality with the object’s `volunteer` field.
      */
-    volunteer?: boolean | null
+    volunteer?: boolean | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
 
     /**
      * Checks for equality with the object’s `offerSubsidy` field.
      */
-    offerSubsidy?: boolean | null
+    offerSubsidy?: boolean | null;
 
     /**
      * Checks for equality with the object’s `requestOldPrice` field.
      */
-    requestOldPrice?: boolean | null
+    requestOldPrice?: boolean | null;
 
     /**
      * Checks for equality with the object’s `amountOwed` field.
      */
-    amountOwed?: number | null
+    amountOwed?: number | null;
 
     /**
      * Checks for equality with the object’s `amountPaid` field.
      */
-    amountPaid?: number | null
+    amountPaid?: number | null;
   }
 
   /**
@@ -3276,107 +3276,107 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `arrivalDate` field.
      */
-    arrivalDate?: IDatetimeFilter | null
+    arrivalDate?: IDatetimeFilter | null;
 
     /**
      * Filter by the object’s `attendance` field.
      */
-    attendance?: IStringFilter | null
+    attendance?: IStringFilter | null;
 
     /**
      * Filter by the object’s `attending` field.
      */
-    attending?: IBooleanFilter | null
+    attending?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `departureDate` field.
      */
-    departureDate?: IDatetimeFilter | null
+    departureDate?: IDatetimeFilter | null;
 
     /**
      * Filter by the object’s `hotelRoomId` field.
      */
-    hotelRoomId?: IIntFilter | null
+    hotelRoomId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `interestLevel` field.
      */
-    interestLevel?: IStringFilter | null
+    interestLevel?: IStringFilter | null;
 
     /**
      * Filter by the object’s `message` field.
      */
-    message?: IStringFilter | null
+    message?: IStringFilter | null;
 
     /**
      * Filter by the object’s `roomPreferenceAndNotes` field.
      */
-    roomPreferenceAndNotes?: IStringFilter | null
+    roomPreferenceAndNotes?: IStringFilter | null;
 
     /**
      * Filter by the object’s `roomingPreferences` field.
      */
-    roomingPreferences?: IStringFilter | null
+    roomingPreferences?: IStringFilter | null;
 
     /**
      * Filter by the object’s `roomingWith` field.
      */
-    roomingWith?: IStringFilter | null
+    roomingWith?: IStringFilter | null;
 
     /**
      * Filter by the object’s `userId` field.
      */
-    userId?: IIntFilter | null
+    userId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `volunteer` field.
      */
-    volunteer?: IBooleanFilter | null
+    volunteer?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Filter by the object’s `offerSubsidy` field.
      */
-    offerSubsidy?: IBooleanFilter | null
+    offerSubsidy?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `requestOldPrice` field.
      */
-    requestOldPrice?: IBooleanFilter | null
+    requestOldPrice?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `amountOwed` field.
      */
-    amountOwed?: IFloatFilter | null
+    amountOwed?: IFloatFilter | null;
 
     /**
      * Filter by the object’s `amountPaid` field.
      */
-    amountPaid?: IFloatFilter | null
+    amountPaid?: IFloatFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IMembershipFilter> | null
+    and?: Array<IMembershipFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IMembershipFilter> | null
+    or?: Array<IMembershipFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IMembershipFilter | null
+    not?: IMembershipFilter | null;
   }
 
   /**
@@ -3386,57 +3386,57 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: any | null
+    equalTo?: any | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: any | null
+    notEqualTo?: any | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: any | null
+    distinctFrom?: any | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: any | null
+    notDistinctFrom?: any | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<any> | null
+    in?: Array<any> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<any> | null
+    notIn?: Array<any> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: any | null
+    lessThan?: any | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: any | null
+    lessThanOrEqualTo?: any | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: any | null
+    greaterThan?: any | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: any | null
+    greaterThanOrEqualTo?: any | null;
   }
 
   /**
@@ -3446,456 +3446,456 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: number | null
+    equalTo?: number | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: number | null
+    notEqualTo?: number | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: number | null
+    distinctFrom?: number | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: number | null
+    notDistinctFrom?: number | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<number> | null
+    in?: Array<number> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<number> | null
+    notIn?: Array<number> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: number | null
+    lessThan?: number | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: number | null
+    lessThanOrEqualTo?: number | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: number | null
+    greaterThan?: number | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: number | null
+    greaterThanOrEqualTo?: number | null;
   }
 
   /**
    * A connection to a list of `Membership` values.
    */
   interface IMembershipsConnection {
-    __typename: 'MembershipsConnection'
+    __typename: 'MembershipsConnection';
 
     /**
      * A list of `Membership` objects.
      */
-    nodes: Array<IMembership | null>
+    nodes: Array<IMembership | null>;
 
     /**
      * A list of edges which contains the `Membership` and cursor to aid in pagination.
      */
-    edges: Array<IMembershipsEdge>
+    edges: Array<IMembershipsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Membership` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `Membership` edge in the connection.
    */
   interface IMembershipsEdge {
-    __typename: 'MembershipsEdge'
+    __typename: 'MembershipsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Membership` at the end of the edge.
      */
-    node: IMembership | null
+    node: IMembership | null;
   }
 
   /**
    * Information about pagination in a connection.
    */
   interface IPageInfo {
-    __typename: 'PageInfo'
+    __typename: 'PageInfo';
 
     /**
      * When paginating forwards, are there more items?
      */
-    hasNextPage: boolean
+    hasNextPage: boolean;
 
     /**
      * When paginating backwards, are there more items?
      */
-    hasPreviousPage: boolean
+    hasPreviousPage: boolean;
 
     /**
      * When paginating backwards, the cursor to continue.
      */
-    startCursor: any | null
+    startCursor: any | null;
 
     /**
      * When paginating forwards, the cursor to continue.
      */
-    endCursor: any | null
+    endCursor: any | null;
   }
 
   interface IUser {
-    __typename: 'User'
+    __typename: 'User';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    accountLocked: boolean
-    enabled: boolean
-    password: string
-    profileId: number
-    username: string
+    nodeId: string;
+    id: number;
+    accountLocked: boolean;
+    enabled: boolean;
+    password: string;
+    profileId: number;
+    username: string;
 
     /**
      * Reads a single `Profile` that is related to this `User`.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * Reads and enables pagination through a set of `Game`.
      */
-    authoredGames: IGamesConnection
+    authoredGames: IGamesConnection;
 
     /**
      * Reads and enables pagination through a set of `Membership`.
      */
-    memberships: IMembershipsConnection
+    memberships: IMembershipsConnection;
 
     /**
      * Reads and enables pagination through a set of `ShirtOrder`.
      */
-    shirtOrders: IShirtOrdersConnection
+    shirtOrders: IShirtOrdersConnection;
 
     /**
      * Reads and enables pagination through a set of `UserRole`.
      */
-    userRoles: IUserRolesConnection
+    userRoles: IUserRolesConnection;
 
     /**
      * Reads and enables pagination through a set of `Token`.
      */
-    tokens: ITokensConnection
+    tokens: ITokensConnection;
   }
 
   interface IAuthoredGamesOnUserArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IGameCondition | null
+    condition?: IGameCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IGameFilter | null
+    filter?: IGameFilter | null;
   }
 
   interface IMembershipsOnUserArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMembershipCondition | null
+    condition?: IMembershipCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMembershipFilter | null
+    filter?: IMembershipFilter | null;
   }
 
   interface IShirtOrdersOnUserArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `ShirtOrder`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrdersOrderBy> | null
+    orderBy?: Array<ShirtOrdersOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IShirtOrderCondition | null
+    condition?: IShirtOrderCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IShirtOrderFilter | null
+    filter?: IShirtOrderFilter | null;
   }
 
   interface IUserRolesOnUserArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IUserRoleCondition | null
+    condition?: IUserRoleCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IUserRoleFilter | null
+    filter?: IUserRoleFilter | null;
   }
 
   interface ITokensOnUserArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `Token`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<TokensOrderBy> | null
+    orderBy?: Array<TokensOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ITokenCondition | null
+    condition?: ITokenCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ITokenFilter | null
+    filter?: ITokenFilter | null;
   }
 
   interface IProfile {
-    __typename: 'Profile'
+    __typename: 'Profile';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    email: string
-    fullName: string
-    phoneNumber: string | null
-    snailMailAddress: string | null
+    nodeId: string;
+    id: number;
+    email: string;
+    fullName: string;
+    phoneNumber: string | null;
+    snailMailAddress: string | null;
 
     /**
      * Reads and enables pagination through a set of `User`.
      */
-    users: IUsersConnection
+    users: IUsersConnection;
   }
 
   interface IUsersOnProfileArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `User`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UsersOrderBy> | null
+    orderBy?: Array<UsersOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IUserCondition | null
+    condition?: IUserCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IUserFilter | null
+    filter?: IUserFilter | null;
   }
 
   /**
@@ -3946,32 +3946,32 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `accountLocked` field.
      */
-    accountLocked?: boolean | null
+    accountLocked?: boolean | null;
 
     /**
      * Checks for equality with the object’s `enabled` field.
      */
-    enabled?: boolean | null
+    enabled?: boolean | null;
 
     /**
      * Checks for equality with the object’s `password` field.
      */
-    password?: string | null
+    password?: string | null;
 
     /**
      * Checks for equality with the object’s `profileId` field.
      */
-    profileId?: number | null
+    profileId?: number | null;
 
     /**
      * Checks for equality with the object’s `username` field.
      */
-    username?: string | null
+    username?: string | null;
   }
 
   /**
@@ -3981,91 +3981,91 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `accountLocked` field.
      */
-    accountLocked?: IBooleanFilter | null
+    accountLocked?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `enabled` field.
      */
-    enabled?: IBooleanFilter | null
+    enabled?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `password` field.
      */
-    password?: IStringFilter | null
+    password?: IStringFilter | null;
 
     /**
      * Filter by the object’s `profileId` field.
      */
-    profileId?: IIntFilter | null
+    profileId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `username` field.
      */
-    username?: IStringFilter | null
+    username?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IUserFilter> | null
+    and?: Array<IUserFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IUserFilter> | null
+    or?: Array<IUserFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IUserFilter | null
+    not?: IUserFilter | null;
   }
 
   /**
    * A connection to a list of `User` values.
    */
   interface IUsersConnection {
-    __typename: 'UsersConnection'
+    __typename: 'UsersConnection';
 
     /**
      * A list of `User` objects.
      */
-    nodes: Array<IUser | null>
+    nodes: Array<IUser | null>;
 
     /**
      * A list of edges which contains the `User` and cursor to aid in pagination.
      */
-    edges: Array<IUsersEdge>
+    edges: Array<IUsersEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `User` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `User` edge in the connection.
    */
   interface IUsersEdge {
-    __typename: 'UsersEdge'
+    __typename: 'UsersEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `User` at the end of the edge.
      */
-    node: IUser | null
+    node: IUser | null;
   }
 
   /**
@@ -4109,27 +4109,27 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `deliveryMethod` field.
      */
-    deliveryMethod?: string | null
+    deliveryMethod?: string | null;
 
     /**
      * Checks for equality with the object’s `message` field.
      */
-    message?: string | null
+    message?: string | null;
 
     /**
      * Checks for equality with the object’s `userId` field.
      */
-    userId?: number | null
+    userId?: number | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
   }
 
   /**
@@ -4139,137 +4139,137 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `deliveryMethod` field.
      */
-    deliveryMethod?: IStringFilter | null
+    deliveryMethod?: IStringFilter | null;
 
     /**
      * Filter by the object’s `message` field.
      */
-    message?: IStringFilter | null
+    message?: IStringFilter | null;
 
     /**
      * Filter by the object’s `userId` field.
      */
-    userId?: IIntFilter | null
+    userId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IShirtOrderFilter> | null
+    and?: Array<IShirtOrderFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IShirtOrderFilter> | null
+    or?: Array<IShirtOrderFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IShirtOrderFilter | null
+    not?: IShirtOrderFilter | null;
   }
 
   /**
    * A connection to a list of `ShirtOrder` values.
    */
   interface IShirtOrdersConnection {
-    __typename: 'ShirtOrdersConnection'
+    __typename: 'ShirtOrdersConnection';
 
     /**
      * A list of `ShirtOrder` objects.
      */
-    nodes: Array<IShirtOrder | null>
+    nodes: Array<IShirtOrder | null>;
 
     /**
      * A list of edges which contains the `ShirtOrder` and cursor to aid in pagination.
      */
-    edges: Array<IShirtOrdersEdge>
+    edges: Array<IShirtOrdersEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `ShirtOrder` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IShirtOrder {
-    __typename: 'ShirtOrder'
+    __typename: 'ShirtOrder';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    deliveryMethod: string
-    message: string
-    userId: number
-    year: number
+    nodeId: string;
+    id: number;
+    deliveryMethod: string;
+    message: string;
+    userId: number;
+    year: number;
 
     /**
      * Reads a single `User` that is related to this `ShirtOrder`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * Reads and enables pagination through a set of `ShirtOrderItem`.
      */
-    shirtOrderItemsByOrderId: IShirtOrderItemsConnection
+    shirtOrderItemsByOrderId: IShirtOrderItemsConnection;
   }
 
   interface IShirtOrderItemsByOrderIdOnShirtOrderArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `ShirtOrderItem`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrderItemsOrderBy> | null
+    orderBy?: Array<ShirtOrderItemsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IShirtOrderItemCondition | null
+    condition?: IShirtOrderItemCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IShirtOrderItemFilter | null
+    filter?: IShirtOrderItemFilter | null;
   }
 
   /**
@@ -4311,32 +4311,32 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `orderId` field.
      */
-    orderId?: number | null
+    orderId?: number | null;
 
     /**
      * Checks for equality with the object’s `quantity` field.
      */
-    quantity?: number | null
+    quantity?: number | null;
 
     /**
      * Checks for equality with the object’s `size` field.
      */
-    size?: string | null
+    size?: string | null;
 
     /**
      * Checks for equality with the object’s `style` field.
      */
-    style?: string | null
+    style?: string | null;
 
     /**
      * Checks for equality with the object’s `itemsIdx` field.
      */
-    itemsIdx?: number | null
+    itemsIdx?: number | null;
   }
 
   /**
@@ -4346,128 +4346,128 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `orderId` field.
      */
-    orderId?: IIntFilter | null
+    orderId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `quantity` field.
      */
-    quantity?: IIntFilter | null
+    quantity?: IIntFilter | null;
 
     /**
      * Filter by the object’s `size` field.
      */
-    size?: IStringFilter | null
+    size?: IStringFilter | null;
 
     /**
      * Filter by the object’s `style` field.
      */
-    style?: IStringFilter | null
+    style?: IStringFilter | null;
 
     /**
      * Filter by the object’s `itemsIdx` field.
      */
-    itemsIdx?: IIntFilter | null
+    itemsIdx?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IShirtOrderItemFilter> | null
+    and?: Array<IShirtOrderItemFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IShirtOrderItemFilter> | null
+    or?: Array<IShirtOrderItemFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IShirtOrderItemFilter | null
+    not?: IShirtOrderItemFilter | null;
   }
 
   /**
    * A connection to a list of `ShirtOrderItem` values.
    */
   interface IShirtOrderItemsConnection {
-    __typename: 'ShirtOrderItemsConnection'
+    __typename: 'ShirtOrderItemsConnection';
 
     /**
      * A list of `ShirtOrderItem` objects.
      */
-    nodes: Array<IShirtOrderItem | null>
+    nodes: Array<IShirtOrderItem | null>;
 
     /**
      * A list of edges which contains the `ShirtOrderItem` and cursor to aid in pagination.
      */
-    edges: Array<IShirtOrderItemsEdge>
+    edges: Array<IShirtOrderItemsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `ShirtOrderItem` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IShirtOrderItem {
-    __typename: 'ShirtOrderItem'
+    __typename: 'ShirtOrderItem';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    orderId: number
-    quantity: number
-    size: string
-    style: string
-    itemsIdx: number | null
+    nodeId: string;
+    id: number;
+    orderId: number;
+    quantity: number;
+    size: string;
+    style: string;
+    itemsIdx: number | null;
 
     /**
      * Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`.
      */
-    order: IShirtOrder | null
+    order: IShirtOrder | null;
   }
 
   /**
    * A `ShirtOrderItem` edge in the connection.
    */
   interface IShirtOrderItemsEdge {
-    __typename: 'ShirtOrderItemsEdge'
+    __typename: 'ShirtOrderItemsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `ShirtOrderItem` at the end of the edge.
      */
-    node: IShirtOrderItem | null
+    node: IShirtOrderItem | null;
   }
 
   /**
    * A `ShirtOrder` edge in the connection.
    */
   interface IShirtOrdersEdge {
-    __typename: 'ShirtOrdersEdge'
+    __typename: 'ShirtOrdersEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `ShirtOrder` at the end of the edge.
      */
-    node: IShirtOrder | null
+    node: IShirtOrder | null;
   }
 
   /**
@@ -4507,12 +4507,12 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `roleId` field.
      */
-    roleId?: number | null
+    roleId?: number | null;
 
     /**
      * Checks for equality with the object’s `userId` field.
      */
-    userId?: number | null
+    userId?: number | null;
   }
 
   /**
@@ -4522,152 +4522,152 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `roleId` field.
      */
-    roleId?: IIntFilter | null
+    roleId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `userId` field.
      */
-    userId?: IIntFilter | null
+    userId?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IUserRoleFilter> | null
+    and?: Array<IUserRoleFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IUserRoleFilter> | null
+    or?: Array<IUserRoleFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IUserRoleFilter | null
+    not?: IUserRoleFilter | null;
   }
 
   /**
    * A connection to a list of `UserRole` values.
    */
   interface IUserRolesConnection {
-    __typename: 'UserRolesConnection'
+    __typename: 'UserRolesConnection';
 
     /**
      * A list of `UserRole` objects.
      */
-    nodes: Array<IUserRole | null>
+    nodes: Array<IUserRole | null>;
 
     /**
      * A list of edges which contains the `UserRole` and cursor to aid in pagination.
      */
-    edges: Array<IUserRolesEdge>
+    edges: Array<IUserRolesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `UserRole` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IUserRole {
-    __typename: 'UserRole'
+    __typename: 'UserRole';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    roleId: number
-    userId: number
+    nodeId: string;
+    roleId: number;
+    userId: number;
 
     /**
      * Reads a single `Role` that is related to this `UserRole`.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Reads a single `User` that is related to this `UserRole`.
      */
-    user: IUser | null
+    user: IUser | null;
   }
 
   interface IRole {
-    __typename: 'Role'
+    __typename: 'Role';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    authority: string
+    nodeId: string;
+    id: number;
+    authority: string;
 
     /**
      * Reads and enables pagination through a set of `UserRole`.
      */
-    userRoles: IUserRolesConnection
+    userRoles: IUserRolesConnection;
   }
 
   interface IUserRolesOnRoleArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IUserRoleCondition | null
+    condition?: IUserRoleCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IUserRoleFilter | null
+    filter?: IUserRoleFilter | null;
   }
 
   /**
    * A `UserRole` edge in the connection.
    */
   interface IUserRolesEdge {
-    __typename: 'UserRolesEdge'
+    __typename: 'UserRolesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `UserRole` at the end of the edge.
      */
-    node: IUserRole | null
+    node: IUserRole | null;
   }
 
   /**
@@ -4708,27 +4708,27 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `userId` field.
      */
-    userId?: number | null
+    userId?: number | null;
 
     /**
      * Checks for equality with the object’s `cuid` field.
      */
-    cuid?: string | null
+    cuid?: string | null;
 
     /**
      * Checks for equality with the object’s `active` field.
      */
-    active?: boolean | null
+    active?: boolean | null;
 
     /**
      * Checks for equality with the object’s `lastUsed` field.
      */
-    lastUsed?: any | null
+    lastUsed?: any | null;
   }
 
   /**
@@ -4738,105 +4738,105 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `userId` field.
      */
-    userId?: IIntFilter | null
+    userId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `cuid` field.
      */
-    cuid?: IStringFilter | null
+    cuid?: IStringFilter | null;
 
     /**
      * Filter by the object’s `active` field.
      */
-    active?: IBooleanFilter | null
+    active?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `lastUsed` field.
      */
-    lastUsed?: IDatetimeFilter | null
+    lastUsed?: IDatetimeFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<ITokenFilter> | null
+    and?: Array<ITokenFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<ITokenFilter> | null
+    or?: Array<ITokenFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: ITokenFilter | null
+    not?: ITokenFilter | null;
   }
 
   /**
    * A connection to a list of `Token` values.
    */
   interface ITokensConnection {
-    __typename: 'TokensConnection'
+    __typename: 'TokensConnection';
 
     /**
      * A list of `Token` objects.
      */
-    nodes: Array<IToken | null>
+    nodes: Array<IToken | null>;
 
     /**
      * A list of edges which contains the `Token` and cursor to aid in pagination.
      */
-    edges: Array<ITokensEdge>
+    edges: Array<ITokensEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Token` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IToken {
-    __typename: 'Token'
+    __typename: 'Token';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    userId: number
-    cuid: string | null
-    active: boolean | null
-    lastUsed: any | null
+    nodeId: string;
+    id: number;
+    userId: number;
+    cuid: string | null;
+    active: boolean | null;
+    lastUsed: any | null;
 
     /**
      * Reads a single `User` that is related to this `Token`.
      */
-    user: IUser | null
+    user: IUser | null;
   }
 
   /**
    * A `Token` edge in the connection.
    */
   interface ITokensEdge {
-    __typename: 'TokensEdge'
+    __typename: 'TokensEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Token` at the end of the edge.
      */
-    node: IToken | null
+    node: IToken | null;
   }
 
   /**
@@ -4952,22 +4952,22 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `memberId` field.
      */
-    memberId?: number | null
+    memberId?: number | null;
 
     /**
      * Checks for equality with the object’s `gameId` field.
      */
-    gameId?: number | null
+    gameId?: number | null;
 
     /**
      * Checks for equality with the object’s `gm` field.
      */
-    gm?: number | null
+    gm?: number | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
   }
 
   /**
@@ -4977,104 +4977,104 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `memberId` field.
      */
-    memberId?: IIntFilter | null
+    memberId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `gameId` field.
      */
-    gameId?: IIntFilter | null
+    gameId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `gm` field.
      */
-    gm?: IIntFilter | null
+    gm?: IIntFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IGameAssignmentFilter> | null
+    and?: Array<IGameAssignmentFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IGameAssignmentFilter> | null
+    or?: Array<IGameAssignmentFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IGameAssignmentFilter | null
+    not?: IGameAssignmentFilter | null;
   }
 
   /**
    * A connection to a list of `GameAssignment` values.
    */
   interface IGameAssignmentsConnection {
-    __typename: 'GameAssignmentsConnection'
+    __typename: 'GameAssignmentsConnection';
 
     /**
      * A list of `GameAssignment` objects.
      */
-    nodes: Array<IGameAssignment | null>
+    nodes: Array<IGameAssignment | null>;
 
     /**
      * A list of edges which contains the `GameAssignment` and cursor to aid in pagination.
      */
-    edges: Array<IGameAssignmentsEdge>
+    edges: Array<IGameAssignmentsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `GameAssignment` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IGameAssignment {
-    __typename: 'GameAssignment'
+    __typename: 'GameAssignment';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    memberId: number
-    gameId: number
-    gm: number
-    year: number
+    nodeId: string;
+    memberId: number;
+    gameId: number;
+    gm: number;
+    year: number;
 
     /**
      * Reads a single `Membership` that is related to this `GameAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Game` that is related to this `GameAssignment`.
      */
-    game: IGame | null
+    game: IGame | null;
   }
 
   /**
    * A `GameAssignment` edge in the connection.
    */
   interface IGameAssignmentsEdge {
-    __typename: 'GameAssignmentsEdge'
+    __typename: 'GameAssignmentsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `GameAssignment` at the end of the edge.
      */
-    node: IGameAssignment | null
+    node: IGameAssignment | null;
   }
 
   /**
@@ -5138,22 +5138,22 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `memberId` field.
      */
-    memberId?: number | null
+    memberId?: number | null;
 
     /**
      * Checks for equality with the object’s `message` field.
      */
-    message?: string | null
+    message?: string | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
   }
 
   /**
@@ -5163,99 +5163,99 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `memberId` field.
      */
-    memberId?: IIntFilter | null
+    memberId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `message` field.
      */
-    message?: IStringFilter | null
+    message?: IStringFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IGameSubmissionFilter> | null
+    and?: Array<IGameSubmissionFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IGameSubmissionFilter> | null
+    or?: Array<IGameSubmissionFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IGameSubmissionFilter | null
+    not?: IGameSubmissionFilter | null;
   }
 
   /**
    * A connection to a list of `GameSubmission` values.
    */
   interface IGameSubmissionsConnection {
-    __typename: 'GameSubmissionsConnection'
+    __typename: 'GameSubmissionsConnection';
 
     /**
      * A list of `GameSubmission` objects.
      */
-    nodes: Array<IGameSubmission | null>
+    nodes: Array<IGameSubmission | null>;
 
     /**
      * A list of edges which contains the `GameSubmission` and cursor to aid in pagination.
      */
-    edges: Array<IGameSubmissionsEdge>
+    edges: Array<IGameSubmissionsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `GameSubmission` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IGameSubmission {
-    __typename: 'GameSubmission'
+    __typename: 'GameSubmission';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    memberId: number
-    message: string
-    year: number
+    nodeId: string;
+    id: number;
+    memberId: number;
+    message: string;
+    year: number;
 
     /**
      * Reads a single `Membership` that is related to this `GameSubmission`.
      */
-    member: IMembership | null
+    member: IMembership | null;
   }
 
   /**
    * A `GameSubmission` edge in the connection.
    */
   interface IGameSubmissionsEdge {
-    __typename: 'GameSubmissionsEdge'
+    __typename: 'GameSubmissionsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `GameSubmission` at the end of the edge.
      */
-    node: IGameSubmission | null
+    node: IGameSubmission | null;
   }
 
   /**
@@ -5343,22 +5343,22 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `memberId` field.
      */
-    memberId?: any | null
+    memberId?: any | null;
 
     /**
      * Checks for equality with the object’s `hotelRoomId` field.
      */
-    hotelRoomId?: any | null
+    hotelRoomId?: any | null;
 
     /**
      * Checks for equality with the object’s `roomOwner` field.
      */
-    roomOwner?: boolean | null
+    roomOwner?: boolean | null;
 
     /**
      * Checks for equality with the object’s `year` field.
      */
-    year?: number | null
+    year?: number | null;
   }
 
   /**
@@ -5368,37 +5368,37 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `memberId` field.
      */
-    memberId?: IBigIntFilter | null
+    memberId?: IBigIntFilter | null;
 
     /**
      * Filter by the object’s `hotelRoomId` field.
      */
-    hotelRoomId?: IBigIntFilter | null
+    hotelRoomId?: IBigIntFilter | null;
 
     /**
      * Filter by the object’s `roomOwner` field.
      */
-    roomOwner?: IBooleanFilter | null
+    roomOwner?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `year` field.
      */
-    year?: IIntFilter | null
+    year?: IIntFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IMemberHotelRoomAssignmentFilter> | null
+    and?: Array<IMemberHotelRoomAssignmentFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IMemberHotelRoomAssignmentFilter> | null
+    or?: Array<IMemberHotelRoomAssignmentFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IMemberHotelRoomAssignmentFilter | null
+    not?: IMemberHotelRoomAssignmentFilter | null;
   }
 
   /**
@@ -5408,228 +5408,228 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: any | null
+    equalTo?: any | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: any | null
+    notEqualTo?: any | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: any | null
+    distinctFrom?: any | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: any | null
+    notDistinctFrom?: any | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<any> | null
+    in?: Array<any> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<any> | null
+    notIn?: Array<any> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: any | null
+    lessThan?: any | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: any | null
+    lessThanOrEqualTo?: any | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: any | null
+    greaterThan?: any | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: any | null
+    greaterThanOrEqualTo?: any | null;
   }
 
   /**
    * A connection to a list of `MemberHotelRoomAssignment` values.
    */
   interface IMemberHotelRoomAssignmentsConnection {
-    __typename: 'MemberHotelRoomAssignmentsConnection'
+    __typename: 'MemberHotelRoomAssignmentsConnection';
 
     /**
      * A list of `MemberHotelRoomAssignment` objects.
      */
-    nodes: Array<IMemberHotelRoomAssignment | null>
+    nodes: Array<IMemberHotelRoomAssignment | null>;
 
     /**
      * A list of edges which contains the `MemberHotelRoomAssignment` and cursor to aid in pagination.
      */
-    edges: Array<IMemberHotelRoomAssignmentsEdge>
+    edges: Array<IMemberHotelRoomAssignmentsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `MemberHotelRoomAssignment` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IMemberHotelRoomAssignment {
-    __typename: 'MemberHotelRoomAssignment'
+    __typename: 'MemberHotelRoomAssignment';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    memberId: any
-    hotelRoomId: any
-    roomOwner: boolean
-    year: number
+    nodeId: string;
+    memberId: any;
+    hotelRoomId: any;
+    roomOwner: boolean;
+    year: number;
 
     /**
      * Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`.
      */
-    hotelRoom: IHotelRoomDetail | null
+    hotelRoom: IHotelRoomDetail | null;
   }
 
   interface IHotelRoomDetail {
-    __typename: 'HotelRoomDetail'
+    __typename: 'HotelRoomDetail';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: any
-    version: any
-    bathroomType: string
-    comment: string
-    enabled: boolean
-    gamingRoom: boolean
-    internalRoomType: string
-    name: string
-    reserved: boolean
-    reservedFor: string
-    roomType: string
-    formattedRoomType: string
+    nodeId: string;
+    id: any;
+    version: any;
+    bathroomType: string;
+    comment: string;
+    enabled: boolean;
+    gamingRoom: boolean;
+    internalRoomType: string;
+    name: string;
+    reserved: boolean;
+    reservedFor: string;
+    roomType: string;
+    formattedRoomType: string;
 
     /**
      * Reads and enables pagination through a set of `MemberHotelRoomAssignment`.
      */
-    memberHotelRoomAssignmentsByHotelRoomId: IMemberHotelRoomAssignmentsConnection
+    memberHotelRoomAssignmentsByHotelRoomId: IMemberHotelRoomAssignmentsConnection;
   }
 
   interface IMemberHotelRoomAssignmentsByHotelRoomIdOnHotelRoomDetailArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: IMemberHotelRoomAssignmentCondition | null
+    condition?: IMemberHotelRoomAssignmentCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: IMemberHotelRoomAssignmentFilter | null
+    filter?: IMemberHotelRoomAssignmentFilter | null;
   }
 
   /**
    * A `MemberHotelRoomAssignment` edge in the connection.
    */
   interface IMemberHotelRoomAssignmentsEdge {
-    __typename: 'MemberHotelRoomAssignmentsEdge'
+    __typename: 'MemberHotelRoomAssignmentsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `MemberHotelRoomAssignment` at the end of the edge.
      */
-    node: IMemberHotelRoomAssignment | null
+    node: IMemberHotelRoomAssignment | null;
   }
 
   /**
    * A `GameChoice` edge in the connection.
    */
   interface IGameChoicesEdge {
-    __typename: 'GameChoicesEdge'
+    __typename: 'GameChoicesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `GameChoice` at the end of the edge.
      */
-    node: IGameChoice | null
+    node: IGameChoice | null;
   }
 
   /**
    * A `Game` edge in the connection.
    */
   interface IGamesEdge {
-    __typename: 'GamesEdge'
+    __typename: 'GamesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Game` at the end of the edge.
      */
-    node: IGame | null
+    node: IGame | null;
   }
 
   /**
@@ -5667,42 +5667,42 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `description` field.
      */
-    description?: string | null
+    description?: string | null;
 
     /**
      * Checks for equality with the object’s `gamingRoom` field.
      */
-    gamingRoom?: boolean | null
+    gamingRoom?: boolean | null;
 
     /**
      * Checks for equality with the object’s `occupancy` field.
      */
-    occupancy?: string | null
+    occupancy?: string | null;
 
     /**
      * Checks for equality with the object’s `quantity` field.
      */
-    quantity?: number | null
+    quantity?: number | null;
 
     /**
      * Checks for equality with the object’s `rate` field.
      */
-    rate?: string | null
+    rate?: string | null;
 
     /**
      * Checks for equality with the object’s `bathroomType` field.
      */
-    bathroomType?: string | null
+    bathroomType?: string | null;
 
     /**
      * Checks for equality with the object’s `type` field.
      */
-    type?: string | null
+    type?: string | null;
   }
 
   /**
@@ -5712,101 +5712,101 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `description` field.
      */
-    description?: IStringFilter | null
+    description?: IStringFilter | null;
 
     /**
      * Filter by the object’s `gamingRoom` field.
      */
-    gamingRoom?: IBooleanFilter | null
+    gamingRoom?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `occupancy` field.
      */
-    occupancy?: IStringFilter | null
+    occupancy?: IStringFilter | null;
 
     /**
      * Filter by the object’s `quantity` field.
      */
-    quantity?: IIntFilter | null
+    quantity?: IIntFilter | null;
 
     /**
      * Filter by the object’s `rate` field.
      */
-    rate?: IStringFilter | null
+    rate?: IStringFilter | null;
 
     /**
      * Filter by the object’s `bathroomType` field.
      */
-    bathroomType?: IStringFilter | null
+    bathroomType?: IStringFilter | null;
 
     /**
      * Filter by the object’s `type` field.
      */
-    type?: IStringFilter | null
+    type?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IHotelRoomFilter> | null
+    and?: Array<IHotelRoomFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IHotelRoomFilter> | null
+    or?: Array<IHotelRoomFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IHotelRoomFilter | null
+    not?: IHotelRoomFilter | null;
   }
 
   /**
    * A connection to a list of `HotelRoom` values.
    */
   interface IHotelRoomsConnection {
-    __typename: 'HotelRoomsConnection'
+    __typename: 'HotelRoomsConnection';
 
     /**
      * A list of `HotelRoom` objects.
      */
-    nodes: Array<IHotelRoom | null>
+    nodes: Array<IHotelRoom | null>;
 
     /**
      * A list of edges which contains the `HotelRoom` and cursor to aid in pagination.
      */
-    edges: Array<IHotelRoomsEdge>
+    edges: Array<IHotelRoomsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `HotelRoom` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `HotelRoom` edge in the connection.
    */
   interface IHotelRoomsEdge {
-    __typename: 'HotelRoomsEdge'
+    __typename: 'HotelRoomsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `HotelRoom` at the end of the edge.
      */
-    node: IHotelRoom | null
+    node: IHotelRoom | null;
   }
 
   /**
@@ -5852,62 +5852,62 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: any | null
+    id?: any | null;
 
     /**
      * Checks for equality with the object’s `version` field.
      */
-    version?: any | null
+    version?: any | null;
 
     /**
      * Checks for equality with the object’s `bathroomType` field.
      */
-    bathroomType?: string | null
+    bathroomType?: string | null;
 
     /**
      * Checks for equality with the object’s `comment` field.
      */
-    comment?: string | null
+    comment?: string | null;
 
     /**
      * Checks for equality with the object’s `enabled` field.
      */
-    enabled?: boolean | null
+    enabled?: boolean | null;
 
     /**
      * Checks for equality with the object’s `gamingRoom` field.
      */
-    gamingRoom?: boolean | null
+    gamingRoom?: boolean | null;
 
     /**
      * Checks for equality with the object’s `internalRoomType` field.
      */
-    internalRoomType?: string | null
+    internalRoomType?: string | null;
 
     /**
      * Checks for equality with the object’s `name` field.
      */
-    name?: string | null
+    name?: string | null;
 
     /**
      * Checks for equality with the object’s `reserved` field.
      */
-    reserved?: boolean | null
+    reserved?: boolean | null;
 
     /**
      * Checks for equality with the object’s `reservedFor` field.
      */
-    reservedFor?: string | null
+    reservedFor?: string | null;
 
     /**
      * Checks for equality with the object’s `roomType` field.
      */
-    roomType?: string | null
+    roomType?: string | null;
 
     /**
      * Checks for equality with the object’s `formattedRoomType` field.
      */
-    formattedRoomType?: string | null
+    formattedRoomType?: string | null;
   }
 
   /**
@@ -5917,121 +5917,121 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IBigIntFilter | null
+    id?: IBigIntFilter | null;
 
     /**
      * Filter by the object’s `version` field.
      */
-    version?: IBigIntFilter | null
+    version?: IBigIntFilter | null;
 
     /**
      * Filter by the object’s `bathroomType` field.
      */
-    bathroomType?: IStringFilter | null
+    bathroomType?: IStringFilter | null;
 
     /**
      * Filter by the object’s `comment` field.
      */
-    comment?: IStringFilter | null
+    comment?: IStringFilter | null;
 
     /**
      * Filter by the object’s `enabled` field.
      */
-    enabled?: IBooleanFilter | null
+    enabled?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `gamingRoom` field.
      */
-    gamingRoom?: IBooleanFilter | null
+    gamingRoom?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `internalRoomType` field.
      */
-    internalRoomType?: IStringFilter | null
+    internalRoomType?: IStringFilter | null;
 
     /**
      * Filter by the object’s `name` field.
      */
-    name?: IStringFilter | null
+    name?: IStringFilter | null;
 
     /**
      * Filter by the object’s `reserved` field.
      */
-    reserved?: IBooleanFilter | null
+    reserved?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `reservedFor` field.
      */
-    reservedFor?: IStringFilter | null
+    reservedFor?: IStringFilter | null;
 
     /**
      * Filter by the object’s `roomType` field.
      */
-    roomType?: IStringFilter | null
+    roomType?: IStringFilter | null;
 
     /**
      * Filter by the object’s `formattedRoomType` field.
      */
-    formattedRoomType?: IStringFilter | null
+    formattedRoomType?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IHotelRoomDetailFilter> | null
+    and?: Array<IHotelRoomDetailFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IHotelRoomDetailFilter> | null
+    or?: Array<IHotelRoomDetailFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IHotelRoomDetailFilter | null
+    not?: IHotelRoomDetailFilter | null;
   }
 
   /**
    * A connection to a list of `HotelRoomDetail` values.
    */
   interface IHotelRoomDetailsConnection {
-    __typename: 'HotelRoomDetailsConnection'
+    __typename: 'HotelRoomDetailsConnection';
 
     /**
      * A list of `HotelRoomDetail` objects.
      */
-    nodes: Array<IHotelRoomDetail | null>
+    nodes: Array<IHotelRoomDetail | null>;
 
     /**
      * A list of edges which contains the `HotelRoomDetail` and cursor to aid in pagination.
      */
-    edges: Array<IHotelRoomDetailsEdge>
+    edges: Array<IHotelRoomDetailsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `HotelRoomDetail` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `HotelRoomDetail` edge in the connection.
    */
   interface IHotelRoomDetailsEdge {
-    __typename: 'HotelRoomDetailsEdge'
+    __typename: 'HotelRoomDetailsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `HotelRoomDetail` at the end of the edge.
      */
-    node: IHotelRoomDetail | null
+    node: IHotelRoomDetail | null;
   }
 
   /**
@@ -6076,62 +6076,62 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `codeMaximum` field.
      */
-    codeMaximum?: string | null
+    codeMaximum?: string | null;
 
     /**
      * Checks for equality with the object’s `codeMinimum` field.
      */
-    codeMinimum?: string | null
+    codeMinimum?: string | null;
 
     /**
      * Checks for equality with the object’s `codeScale` field.
      */
-    codeScale?: number | null
+    codeScale?: number | null;
 
     /**
      * Checks for equality with the object’s `codeType` field.
      */
-    codeType?: string | null
+    codeType?: string | null;
 
     /**
      * Checks for equality with the object’s `internationalize` field.
      */
-    internationalize?: boolean | null
+    internationalize?: boolean | null;
 
     /**
      * Checks for equality with the object’s `ordering` field.
      */
-    ordering?: string | null
+    ordering?: string | null;
 
     /**
      * Checks for equality with the object’s `realm` field.
      */
-    realm?: string | null
+    realm?: string | null;
 
     /**
      * Checks for equality with the object’s `valueMaximum` field.
      */
-    valueMaximum?: string | null
+    valueMaximum?: string | null;
 
     /**
      * Checks for equality with the object’s `valueMinimum` field.
      */
-    valueMinimum?: string | null
+    valueMinimum?: string | null;
 
     /**
      * Checks for equality with the object’s `valueScale` field.
      */
-    valueScale?: number | null
+    valueScale?: number | null;
 
     /**
      * Checks for equality with the object’s `valueType` field.
      */
-    valueType?: string | null
+    valueType?: string | null;
   }
 
   /**
@@ -6141,174 +6141,174 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `codeMaximum` field.
      */
-    codeMaximum?: IStringFilter | null
+    codeMaximum?: IStringFilter | null;
 
     /**
      * Filter by the object’s `codeMinimum` field.
      */
-    codeMinimum?: IStringFilter | null
+    codeMinimum?: IStringFilter | null;
 
     /**
      * Filter by the object’s `codeScale` field.
      */
-    codeScale?: IIntFilter | null
+    codeScale?: IIntFilter | null;
 
     /**
      * Filter by the object’s `codeType` field.
      */
-    codeType?: IStringFilter | null
+    codeType?: IStringFilter | null;
 
     /**
      * Filter by the object’s `internationalize` field.
      */
-    internationalize?: IBooleanFilter | null
+    internationalize?: IBooleanFilter | null;
 
     /**
      * Filter by the object’s `ordering` field.
      */
-    ordering?: IStringFilter | null
+    ordering?: IStringFilter | null;
 
     /**
      * Filter by the object’s `realm` field.
      */
-    realm?: IStringFilter | null
+    realm?: IStringFilter | null;
 
     /**
      * Filter by the object’s `valueMaximum` field.
      */
-    valueMaximum?: IStringFilter | null
+    valueMaximum?: IStringFilter | null;
 
     /**
      * Filter by the object’s `valueMinimum` field.
      */
-    valueMinimum?: IStringFilter | null
+    valueMinimum?: IStringFilter | null;
 
     /**
      * Filter by the object’s `valueScale` field.
      */
-    valueScale?: IIntFilter | null
+    valueScale?: IIntFilter | null;
 
     /**
      * Filter by the object’s `valueType` field.
      */
-    valueType?: IStringFilter | null
+    valueType?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<ILookupFilter> | null
+    and?: Array<ILookupFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<ILookupFilter> | null
+    or?: Array<ILookupFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: ILookupFilter | null
+    not?: ILookupFilter | null;
   }
 
   /**
    * A connection to a list of `Lookup` values.
    */
   interface ILookupsConnection {
-    __typename: 'LookupsConnection'
+    __typename: 'LookupsConnection';
 
     /**
      * A list of `Lookup` objects.
      */
-    nodes: Array<ILookup | null>
+    nodes: Array<ILookup | null>;
 
     /**
      * A list of edges which contains the `Lookup` and cursor to aid in pagination.
      */
-    edges: Array<ILookupsEdge>
+    edges: Array<ILookupsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Lookup` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface ILookup {
-    __typename: 'Lookup'
+    __typename: 'Lookup';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    codeMaximum: string | null
-    codeMinimum: string | null
-    codeScale: number | null
-    codeType: string
-    internationalize: boolean
-    ordering: string
-    realm: string
-    valueMaximum: string | null
-    valueMinimum: string | null
-    valueScale: number | null
-    valueType: string
+    nodeId: string;
+    id: number;
+    codeMaximum: string | null;
+    codeMinimum: string | null;
+    codeScale: number | null;
+    codeType: string;
+    internationalize: boolean;
+    ordering: string;
+    realm: string;
+    valueMaximum: string | null;
+    valueMinimum: string | null;
+    valueScale: number | null;
+    valueType: string;
 
     /**
      * Reads and enables pagination through a set of `LookupValue`.
      */
-    lookupValues: ILookupValuesConnection
+    lookupValues: ILookupValuesConnection;
   }
 
   interface ILookupValuesOnLookupArguments {
     /**
      * Only read the first `n` values of the set.
      */
-    first?: number | null
+    first?: number | null;
 
     /**
      * Only read the last `n` values of the set.
      */
-    last?: number | null
+    last?: number | null;
 
     /**
      * Skip the first `n` values from our `after` cursor, an alternative to cursor
      * based pagination. May not be used with `last`.
      */
-    offset?: number | null
+    offset?: number | null;
 
     /**
      * Read all values in the set before (above) this cursor.
      */
-    before?: any | null
+    before?: any | null;
 
     /**
      * Read all values in the set after (below) this cursor.
      */
-    after?: any | null
+    after?: any | null;
 
     /**
      * The method to use when ordering `LookupValue`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupValuesOrderBy> | null
+    orderBy?: Array<LookupValuesOrderBy> | null;
 
     /**
      * A condition to be used in determining which values should be returned by the collection.
      */
-    condition?: ILookupValueCondition | null
+    condition?: ILookupValueCondition | null;
 
     /**
      * A filter to be used in determining which values should be returned by the collection.
      */
-    filter?: ILookupValueFilter | null
+    filter?: ILookupValueFilter | null;
   }
 
   /**
@@ -6366,37 +6366,37 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `code` field.
      */
-    code?: string | null
+    code?: string | null;
 
     /**
      * Checks for equality with the object’s `lookupId` field.
      */
-    lookupId?: number | null
+    lookupId?: number | null;
 
     /**
      * Checks for equality with the object’s `numericSequencer` field.
      */
-    numericSequencer?: any | null
+    numericSequencer?: any | null;
 
     /**
      * Checks for equality with the object’s `sequencer` field.
      */
-    sequencer?: number | null
+    sequencer?: number | null;
 
     /**
      * Checks for equality with the object’s `stringSequencer` field.
      */
-    stringSequencer?: string | null
+    stringSequencer?: string | null;
 
     /**
      * Checks for equality with the object’s `value` field.
      */
-    value?: string | null
+    value?: string | null;
   }
 
   /**
@@ -6406,52 +6406,52 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `code` field.
      */
-    code?: IStringFilter | null
+    code?: IStringFilter | null;
 
     /**
      * Filter by the object’s `lookupId` field.
      */
-    lookupId?: IIntFilter | null
+    lookupId?: IIntFilter | null;
 
     /**
      * Filter by the object’s `numericSequencer` field.
      */
-    numericSequencer?: IBigFloatFilter | null
+    numericSequencer?: IBigFloatFilter | null;
 
     /**
      * Filter by the object’s `sequencer` field.
      */
-    sequencer?: IIntFilter | null
+    sequencer?: IIntFilter | null;
 
     /**
      * Filter by the object’s `stringSequencer` field.
      */
-    stringSequencer?: IStringFilter | null
+    stringSequencer?: IStringFilter | null;
 
     /**
      * Filter by the object’s `value` field.
      */
-    value?: IStringFilter | null
+    value?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<ILookupValueFilter> | null
+    and?: Array<ILookupValueFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<ILookupValueFilter> | null
+    or?: Array<ILookupValueFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: ILookupValueFilter | null
+    not?: ILookupValueFilter | null;
   }
 
   /**
@@ -6461,139 +6461,139 @@ declare namespace Acnw {
     /**
      * Is null (if `true` is specified) or is not null (if `false` is specified).
      */
-    isNull?: boolean | null
+    isNull?: boolean | null;
 
     /**
      * Equal to the specified value.
      */
-    equalTo?: any | null
+    equalTo?: any | null;
 
     /**
      * Not equal to the specified value.
      */
-    notEqualTo?: any | null
+    notEqualTo?: any | null;
 
     /**
      * Not equal to the specified value, treating null like an ordinary value.
      */
-    distinctFrom?: any | null
+    distinctFrom?: any | null;
 
     /**
      * Equal to the specified value, treating null like an ordinary value.
      */
-    notDistinctFrom?: any | null
+    notDistinctFrom?: any | null;
 
     /**
      * Included in the specified list.
      */
-    in?: Array<any> | null
+    in?: Array<any> | null;
 
     /**
      * Not included in the specified list.
      */
-    notIn?: Array<any> | null
+    notIn?: Array<any> | null;
 
     /**
      * Less than the specified value.
      */
-    lessThan?: any | null
+    lessThan?: any | null;
 
     /**
      * Less than or equal to the specified value.
      */
-    lessThanOrEqualTo?: any | null
+    lessThanOrEqualTo?: any | null;
 
     /**
      * Greater than the specified value.
      */
-    greaterThan?: any | null
+    greaterThan?: any | null;
 
     /**
      * Greater than or equal to the specified value.
      */
-    greaterThanOrEqualTo?: any | null
+    greaterThanOrEqualTo?: any | null;
   }
 
   /**
    * A connection to a list of `LookupValue` values.
    */
   interface ILookupValuesConnection {
-    __typename: 'LookupValuesConnection'
+    __typename: 'LookupValuesConnection';
 
     /**
      * A list of `LookupValue` objects.
      */
-    nodes: Array<ILookupValue | null>
+    nodes: Array<ILookupValue | null>;
 
     /**
      * A list of edges which contains the `LookupValue` and cursor to aid in pagination.
      */
-    edges: Array<ILookupValuesEdge>
+    edges: Array<ILookupValuesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `LookupValue` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface ILookupValue {
-    __typename: 'LookupValue'
+    __typename: 'LookupValue';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    code: string
-    lookupId: number
-    numericSequencer: any
-    sequencer: number
-    stringSequencer: string
-    value: string
+    nodeId: string;
+    id: number;
+    code: string;
+    lookupId: number;
+    numericSequencer: any;
+    sequencer: number;
+    stringSequencer: string;
+    value: string;
 
     /**
      * Reads a single `Lookup` that is related to this `LookupValue`.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
   }
 
   /**
    * A `LookupValue` edge in the connection.
    */
   interface ILookupValuesEdge {
-    __typename: 'LookupValuesEdge'
+    __typename: 'LookupValuesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `LookupValue` at the end of the edge.
      */
-    node: ILookupValue | null
+    node: ILookupValue | null;
   }
 
   /**
    * A `Lookup` edge in the connection.
    */
   interface ILookupsEdge {
-    __typename: 'LookupsEdge'
+    __typename: 'LookupsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Lookup` at the end of the edge.
      */
-    node: ILookup | null
+    node: ILookup | null;
   }
 
   /**
@@ -6624,27 +6624,27 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `email` field.
      */
-    email?: string | null
+    email?: string | null;
 
     /**
      * Checks for equality with the object’s `fullName` field.
      */
-    fullName?: string | null
+    fullName?: string | null;
 
     /**
      * Checks for equality with the object’s `phoneNumber` field.
      */
-    phoneNumber?: string | null
+    phoneNumber?: string | null;
 
     /**
      * Checks for equality with the object’s `snailMailAddress` field.
      */
-    snailMailAddress?: string | null
+    snailMailAddress?: string | null;
   }
 
   /**
@@ -6654,86 +6654,86 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `email` field.
      */
-    email?: IStringFilter | null
+    email?: IStringFilter | null;
 
     /**
      * Filter by the object’s `fullName` field.
      */
-    fullName?: IStringFilter | null
+    fullName?: IStringFilter | null;
 
     /**
      * Filter by the object’s `phoneNumber` field.
      */
-    phoneNumber?: IStringFilter | null
+    phoneNumber?: IStringFilter | null;
 
     /**
      * Filter by the object’s `snailMailAddress` field.
      */
-    snailMailAddress?: IStringFilter | null
+    snailMailAddress?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IProfileFilter> | null
+    and?: Array<IProfileFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IProfileFilter> | null
+    or?: Array<IProfileFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IProfileFilter | null
+    not?: IProfileFilter | null;
   }
 
   /**
    * A connection to a list of `Profile` values.
    */
   interface IProfilesConnection {
-    __typename: 'ProfilesConnection'
+    __typename: 'ProfilesConnection';
 
     /**
      * A list of `Profile` objects.
      */
-    nodes: Array<IProfile | null>
+    nodes: Array<IProfile | null>;
 
     /**
      * A list of edges which contains the `Profile` and cursor to aid in pagination.
      */
-    edges: Array<IProfilesEdge>
+    edges: Array<IProfilesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Profile` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `Profile` edge in the connection.
    */
   interface IProfilesEdge {
-    __typename: 'ProfilesEdge'
+    __typename: 'ProfilesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Profile` at the end of the edge.
      */
-    node: IProfile | null
+    node: IProfile | null;
   }
 
   /**
@@ -6759,17 +6759,17 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `token` field.
      */
-    token?: string | null
+    token?: string | null;
 
     /**
      * Checks for equality with the object’s `username` field.
      */
-    username?: string | null
+    username?: string | null;
   }
 
   /**
@@ -6779,88 +6779,88 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `token` field.
      */
-    token?: IStringFilter | null
+    token?: IStringFilter | null;
 
     /**
      * Filter by the object’s `username` field.
      */
-    username?: IStringFilter | null
+    username?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IRegistrationCodeFilter> | null
+    and?: Array<IRegistrationCodeFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IRegistrationCodeFilter> | null
+    or?: Array<IRegistrationCodeFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IRegistrationCodeFilter | null
+    not?: IRegistrationCodeFilter | null;
   }
 
   /**
    * A connection to a list of `RegistrationCode` values.
    */
   interface IRegistrationCodesConnection {
-    __typename: 'RegistrationCodesConnection'
+    __typename: 'RegistrationCodesConnection';
 
     /**
      * A list of `RegistrationCode` objects.
      */
-    nodes: Array<IRegistrationCode | null>
+    nodes: Array<IRegistrationCode | null>;
 
     /**
      * A list of edges which contains the `RegistrationCode` and cursor to aid in pagination.
      */
-    edges: Array<IRegistrationCodesEdge>
+    edges: Array<IRegistrationCodesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `RegistrationCode` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface IRegistrationCode {
-    __typename: 'RegistrationCode'
+    __typename: 'RegistrationCode';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    token: string
-    username: string
+    nodeId: string;
+    id: number;
+    token: string;
+    username: string;
   }
 
   /**
    * A `RegistrationCode` edge in the connection.
    */
   interface IRegistrationCodesEdge {
-    __typename: 'RegistrationCodesEdge'
+    __typename: 'RegistrationCodesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `RegistrationCode` at the end of the edge.
      */
-    node: IRegistrationCode | null
+    node: IRegistrationCode | null;
   }
 
   /**
@@ -6885,12 +6885,12 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `authority` field.
      */
-    authority?: string | null
+    authority?: string | null;
   }
 
   /**
@@ -6900,71 +6900,71 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `authority` field.
      */
-    authority?: IStringFilter | null
+    authority?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IRoleFilter> | null
+    and?: Array<IRoleFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IRoleFilter> | null
+    or?: Array<IRoleFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IRoleFilter | null
+    not?: IRoleFilter | null;
   }
 
   /**
    * A connection to a list of `Role` values.
    */
   interface IRolesConnection {
-    __typename: 'RolesConnection'
+    __typename: 'RolesConnection';
 
     /**
      * A list of `Role` objects.
      */
-    nodes: Array<IRole | null>
+    nodes: Array<IRole | null>;
 
     /**
      * A list of edges which contains the `Role` and cursor to aid in pagination.
      */
-    edges: Array<IRolesEdge>
+    edges: Array<IRolesEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Role` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `Role` edge in the connection.
    */
   interface IRolesEdge {
-    __typename: 'RolesEdge'
+    __typename: 'RolesEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Role` at the end of the edge.
      */
-    node: IRole | null
+    node: IRole | null;
   }
 
   /**
@@ -6995,27 +6995,27 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `description` field.
      */
-    description?: string | null
+    description?: string | null;
 
     /**
      * Checks for equality with the object’s `size` field.
      */
-    size?: number | null
+    size?: number | null;
 
     /**
      * Checks for equality with the object’s `type` field.
      */
-    type?: string | null
+    type?: string | null;
 
     /**
      * Checks for equality with the object’s `updated` field.
      */
-    updated?: boolean | null
+    updated?: boolean | null;
   }
 
   /**
@@ -7025,86 +7025,86 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `description` field.
      */
-    description?: IStringFilter | null
+    description?: IStringFilter | null;
 
     /**
      * Filter by the object’s `size` field.
      */
-    size?: IIntFilter | null
+    size?: IIntFilter | null;
 
     /**
      * Filter by the object’s `type` field.
      */
-    type?: IStringFilter | null
+    type?: IStringFilter | null;
 
     /**
      * Filter by the object’s `updated` field.
      */
-    updated?: IBooleanFilter | null
+    updated?: IBooleanFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<IRoomFilter> | null
+    and?: Array<IRoomFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<IRoomFilter> | null
+    or?: Array<IRoomFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: IRoomFilter | null
+    not?: IRoomFilter | null;
   }
 
   /**
    * A connection to a list of `Room` values.
    */
   interface IRoomsConnection {
-    __typename: 'RoomsConnection'
+    __typename: 'RoomsConnection';
 
     /**
      * A list of `Room` objects.
      */
-    nodes: Array<IRoom | null>
+    nodes: Array<IRoom | null>;
 
     /**
      * A list of edges which contains the `Room` and cursor to aid in pagination.
      */
-    edges: Array<IRoomsEdge>
+    edges: Array<IRoomsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Room` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `Room` edge in the connection.
    */
   interface IRoomsEdge {
-    __typename: 'RoomsEdge'
+    __typename: 'RoomsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Room` at the end of the edge.
      */
-    node: IRoom | null
+    node: IRoom | null;
   }
 
   /**
@@ -7131,22 +7131,22 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `code` field.
      */
-    code?: string | null
+    code?: string | null;
 
     /**
      * Checks for equality with the object’s `type` field.
      */
-    type?: string | null
+    type?: string | null;
 
     /**
      * Checks for equality with the object’s `value` field.
      */
-    value?: string | null
+    value?: string | null;
   }
 
   /**
@@ -7156,94 +7156,94 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `code` field.
      */
-    code?: IStringFilter | null
+    code?: IStringFilter | null;
 
     /**
      * Filter by the object’s `type` field.
      */
-    type?: IStringFilter | null
+    type?: IStringFilter | null;
 
     /**
      * Filter by the object’s `value` field.
      */
-    value?: IStringFilter | null
+    value?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<ISettingFilter> | null
+    and?: Array<ISettingFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<ISettingFilter> | null
+    or?: Array<ISettingFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: ISettingFilter | null
+    not?: ISettingFilter | null;
   }
 
   /**
    * A connection to a list of `Setting` values.
    */
   interface ISettingsConnection {
-    __typename: 'SettingsConnection'
+    __typename: 'SettingsConnection';
 
     /**
      * A list of `Setting` objects.
      */
-    nodes: Array<ISetting | null>
+    nodes: Array<ISetting | null>;
 
     /**
      * A list of edges which contains the `Setting` and cursor to aid in pagination.
      */
-    edges: Array<ISettingsEdge>
+    edges: Array<ISettingsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Setting` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   interface ISetting {
-    __typename: 'Setting'
+    __typename: 'Setting';
 
     /**
      * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
      */
-    nodeId: string
-    id: number
-    code: string
-    type: string
-    value: string
+    nodeId: string;
+    id: number;
+    code: string;
+    type: string;
+    value: string;
   }
 
   /**
    * A `Setting` edge in the connection.
    */
   interface ISettingsEdge {
-    __typename: 'SettingsEdge'
+    __typename: 'SettingsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Setting` at the end of the edge.
      */
-    node: ISetting | null
+    node: ISetting | null;
   }
 
   /**
@@ -7278,32 +7278,32 @@ declare namespace Acnw {
     /**
      * Checks for equality with the object’s `id` field.
      */
-    id?: number | null
+    id?: number | null;
 
     /**
      * Checks for equality with the object’s `slot` field.
      */
-    slot?: number | null
+    slot?: number | null;
 
     /**
      * Checks for equality with the object’s `day` field.
      */
-    day?: string | null
+    day?: string | null;
 
     /**
      * Checks for equality with the object’s `formattedDate` field.
      */
-    formattedDate?: string | null
+    formattedDate?: string | null;
 
     /**
      * Checks for equality with the object’s `length` field.
      */
-    length?: string | null
+    length?: string | null;
 
     /**
      * Checks for equality with the object’s `time` field.
      */
-    time?: string | null
+    time?: string | null;
   }
 
   /**
@@ -7313,1486 +7313,1486 @@ declare namespace Acnw {
     /**
      * Filter by the object’s `id` field.
      */
-    id?: IIntFilter | null
+    id?: IIntFilter | null;
 
     /**
      * Filter by the object’s `slot` field.
      */
-    slot?: IIntFilter | null
+    slot?: IIntFilter | null;
 
     /**
      * Filter by the object’s `day` field.
      */
-    day?: IStringFilter | null
+    day?: IStringFilter | null;
 
     /**
      * Filter by the object’s `formattedDate` field.
      */
-    formattedDate?: IStringFilter | null
+    formattedDate?: IStringFilter | null;
 
     /**
      * Filter by the object’s `length` field.
      */
-    length?: IStringFilter | null
+    length?: IStringFilter | null;
 
     /**
      * Filter by the object’s `time` field.
      */
-    time?: IStringFilter | null
+    time?: IStringFilter | null;
 
     /**
      * Checks for all expressions in this list.
      */
-    and?: Array<ISlotFilter> | null
+    and?: Array<ISlotFilter> | null;
 
     /**
      * Checks for any expressions in this list.
      */
-    or?: Array<ISlotFilter> | null
+    or?: Array<ISlotFilter> | null;
 
     /**
      * Negates the expression.
      */
-    not?: ISlotFilter | null
+    not?: ISlotFilter | null;
   }
 
   /**
    * A connection to a list of `Slot` values.
    */
   interface ISlotsConnection {
-    __typename: 'SlotsConnection'
+    __typename: 'SlotsConnection';
 
     /**
      * A list of `Slot` objects.
      */
-    nodes: Array<ISlot | null>
+    nodes: Array<ISlot | null>;
 
     /**
      * A list of edges which contains the `Slot` and cursor to aid in pagination.
      */
-    edges: Array<ISlotsEdge>
+    edges: Array<ISlotsEdge>;
 
     /**
      * Information to aid in pagination.
      */
-    pageInfo: IPageInfo
+    pageInfo: IPageInfo;
 
     /**
      * The count of *all* `Slot` you could get from the connection.
      */
-    totalCount: number | null
+    totalCount: number | null;
   }
 
   /**
    * A `Slot` edge in the connection.
    */
   interface ISlotsEdge {
-    __typename: 'SlotsEdge'
+    __typename: 'SlotsEdge';
 
     /**
      * A cursor for use in pagination.
      */
-    cursor: any | null
+    cursor: any | null;
 
     /**
      * The `Slot` at the end of the edge.
      */
-    node: ISlot | null
+    node: ISlot | null;
   }
 
   /**
    * The root mutation type which contains root level fields which mutate data.
    */
   interface IMutation {
-    __typename: 'Mutation'
+    __typename: 'Mutation';
 
     /**
      * Creates a single `Game`.
      */
-    createGame: ICreateGamePayload | null
+    createGame: ICreateGamePayload | null;
 
     /**
      * Creates a single `GameAssignment`.
      */
-    createGameAssignment: ICreateGameAssignmentPayload | null
+    createGameAssignment: ICreateGameAssignmentPayload | null;
 
     /**
      * Creates a single `GameChoice`.
      */
-    createGameChoice: ICreateGameChoicePayload | null
+    createGameChoice: ICreateGameChoicePayload | null;
 
     /**
      * Creates a single `GameSubmission`.
      */
-    createGameSubmission: ICreateGameSubmissionPayload | null
+    createGameSubmission: ICreateGameSubmissionPayload | null;
 
     /**
      * Creates a single `HotelRoom`.
      */
-    createHotelRoom: ICreateHotelRoomPayload | null
+    createHotelRoom: ICreateHotelRoomPayload | null;
 
     /**
      * Creates a single `HotelRoomDetail`.
      */
-    createHotelRoomDetail: ICreateHotelRoomDetailPayload | null
+    createHotelRoomDetail: ICreateHotelRoomDetailPayload | null;
 
     /**
      * Creates a single `Lookup`.
      */
-    createLookup: ICreateLookupPayload | null
+    createLookup: ICreateLookupPayload | null;
 
     /**
      * Creates a single `LookupValue`.
      */
-    createLookupValue: ICreateLookupValuePayload | null
+    createLookupValue: ICreateLookupValuePayload | null;
 
     /**
      * Creates a single `MemberHotelRoomAssignment`.
      */
-    createMemberHotelRoomAssignment: ICreateMemberHotelRoomAssignmentPayload | null
+    createMemberHotelRoomAssignment: ICreateMemberHotelRoomAssignmentPayload | null;
 
     /**
      * Creates a single `Membership`.
      */
-    createMembership: ICreateMembershipPayload | null
+    createMembership: ICreateMembershipPayload | null;
 
     /**
      * Creates a single `Profile`.
      */
-    createProfile: ICreateProfilePayload | null
+    createProfile: ICreateProfilePayload | null;
 
     /**
      * Creates a single `RegistrationCode`.
      */
-    createRegistrationCode: ICreateRegistrationCodePayload | null
+    createRegistrationCode: ICreateRegistrationCodePayload | null;
 
     /**
      * Creates a single `Role`.
      */
-    createRole: ICreateRolePayload | null
+    createRole: ICreateRolePayload | null;
 
     /**
      * Creates a single `Room`.
      */
-    createRoom: ICreateRoomPayload | null
+    createRoom: ICreateRoomPayload | null;
 
     /**
      * Creates a single `Setting`.
      */
-    createSetting: ICreateSettingPayload | null
+    createSetting: ICreateSettingPayload | null;
 
     /**
      * Creates a single `ShirtOrder`.
      */
-    createShirtOrder: ICreateShirtOrderPayload | null
+    createShirtOrder: ICreateShirtOrderPayload | null;
 
     /**
      * Creates a single `ShirtOrderItem`.
      */
-    createShirtOrderItem: ICreateShirtOrderItemPayload | null
+    createShirtOrderItem: ICreateShirtOrderItemPayload | null;
 
     /**
      * Creates a single `Slot`.
      */
-    createSlot: ICreateSlotPayload | null
+    createSlot: ICreateSlotPayload | null;
 
     /**
      * Creates a single `Token`.
      */
-    createToken: ICreateTokenPayload | null
+    createToken: ICreateTokenPayload | null;
 
     /**
      * Creates a single `User`.
      */
-    createUser: ICreateUserPayload | null
+    createUser: ICreateUserPayload | null;
 
     /**
      * Creates a single `UserRole`.
      */
-    createUserRole: ICreateUserRolePayload | null
+    createUserRole: ICreateUserRolePayload | null;
 
     /**
      * Updates a single `Game` using its globally unique id and a patch.
      */
-    updateGameByNodeId: IUpdateGamePayload | null
+    updateGameByNodeId: IUpdateGamePayload | null;
 
     /**
      * Updates a single `Game` using a unique key and a patch.
      */
-    updateGame: IUpdateGamePayload | null
+    updateGame: IUpdateGamePayload | null;
 
     /**
      * Updates a single `GameAssignment` using its globally unique id and a patch.
      */
-    updateGameAssignmentByNodeId: IUpdateGameAssignmentPayload | null
+    updateGameAssignmentByNodeId: IUpdateGameAssignmentPayload | null;
 
     /**
      * Updates a single `GameAssignment` using a unique key and a patch.
      */
-    updateGameAssignment: IUpdateGameAssignmentPayload | null
+    updateGameAssignment: IUpdateGameAssignmentPayload | null;
 
     /**
      * Updates a single `GameChoice` using its globally unique id and a patch.
      */
-    updateGameChoiceByNodeId: IUpdateGameChoicePayload | null
+    updateGameChoiceByNodeId: IUpdateGameChoicePayload | null;
 
     /**
      * Updates a single `GameChoice` using a unique key and a patch.
      */
-    updateGameChoice: IUpdateGameChoicePayload | null
+    updateGameChoice: IUpdateGameChoicePayload | null;
 
     /**
      * Updates a single `GameSubmission` using its globally unique id and a patch.
      */
-    updateGameSubmissionByNodeId: IUpdateGameSubmissionPayload | null
+    updateGameSubmissionByNodeId: IUpdateGameSubmissionPayload | null;
 
     /**
      * Updates a single `GameSubmission` using a unique key and a patch.
      */
-    updateGameSubmission: IUpdateGameSubmissionPayload | null
+    updateGameSubmission: IUpdateGameSubmissionPayload | null;
 
     /**
      * Updates a single `HotelRoom` using its globally unique id and a patch.
      */
-    updateHotelRoomByNodeId: IUpdateHotelRoomPayload | null
+    updateHotelRoomByNodeId: IUpdateHotelRoomPayload | null;
 
     /**
      * Updates a single `HotelRoom` using a unique key and a patch.
      */
-    updateHotelRoom: IUpdateHotelRoomPayload | null
+    updateHotelRoom: IUpdateHotelRoomPayload | null;
 
     /**
      * Updates a single `HotelRoomDetail` using its globally unique id and a patch.
      */
-    updateHotelRoomDetailByNodeId: IUpdateHotelRoomDetailPayload | null
+    updateHotelRoomDetailByNodeId: IUpdateHotelRoomDetailPayload | null;
 
     /**
      * Updates a single `HotelRoomDetail` using a unique key and a patch.
      */
-    updateHotelRoomDetail: IUpdateHotelRoomDetailPayload | null
+    updateHotelRoomDetail: IUpdateHotelRoomDetailPayload | null;
 
     /**
      * Updates a single `Lookup` using its globally unique id and a patch.
      */
-    updateLookupByNodeId: IUpdateLookupPayload | null
+    updateLookupByNodeId: IUpdateLookupPayload | null;
 
     /**
      * Updates a single `Lookup` using a unique key and a patch.
      */
-    updateLookup: IUpdateLookupPayload | null
+    updateLookup: IUpdateLookupPayload | null;
 
     /**
      * Updates a single `Lookup` using a unique key and a patch.
      */
-    updateLookupByRealm: IUpdateLookupPayload | null
+    updateLookupByRealm: IUpdateLookupPayload | null;
 
     /**
      * Updates a single `LookupValue` using its globally unique id and a patch.
      */
-    updateLookupValueByNodeId: IUpdateLookupValuePayload | null
+    updateLookupValueByNodeId: IUpdateLookupValuePayload | null;
 
     /**
      * Updates a single `LookupValue` using a unique key and a patch.
      */
-    updateLookupValue: IUpdateLookupValuePayload | null
+    updateLookupValue: IUpdateLookupValuePayload | null;
 
     /**
      * Updates a single `LookupValue` using a unique key and a patch.
      */
-    updateLookupValueByLookupIdAndCode: IUpdateLookupValuePayload | null
+    updateLookupValueByLookupIdAndCode: IUpdateLookupValuePayload | null;
 
     /**
      * Updates a single `MemberHotelRoomAssignment` using its globally unique id and a patch.
      */
-    updateMemberHotelRoomAssignmentByNodeId: IUpdateMemberHotelRoomAssignmentPayload | null
+    updateMemberHotelRoomAssignmentByNodeId: IUpdateMemberHotelRoomAssignmentPayload | null;
 
     /**
      * Updates a single `MemberHotelRoomAssignment` using a unique key and a patch.
      */
-    updateMemberHotelRoomAssignment: IUpdateMemberHotelRoomAssignmentPayload | null
+    updateMemberHotelRoomAssignment: IUpdateMemberHotelRoomAssignmentPayload | null;
 
     /**
      * Updates a single `Membership` using its globally unique id and a patch.
      */
-    updateMembershipByNodeId: IUpdateMembershipPayload | null
+    updateMembershipByNodeId: IUpdateMembershipPayload | null;
 
     /**
      * Updates a single `Membership` using a unique key and a patch.
      */
-    updateMembership: IUpdateMembershipPayload | null
+    updateMembership: IUpdateMembershipPayload | null;
 
     /**
      * Updates a single `Profile` using its globally unique id and a patch.
      */
-    updateProfileByNodeId: IUpdateProfilePayload | null
+    updateProfileByNodeId: IUpdateProfilePayload | null;
 
     /**
      * Updates a single `Profile` using a unique key and a patch.
      */
-    updateProfile: IUpdateProfilePayload | null
+    updateProfile: IUpdateProfilePayload | null;
 
     /**
      * Updates a single `Profile` using a unique key and a patch.
      */
-    updateProfileByEmail: IUpdateProfilePayload | null
+    updateProfileByEmail: IUpdateProfilePayload | null;
 
     /**
      * Updates a single `RegistrationCode` using its globally unique id and a patch.
      */
-    updateRegistrationCodeByNodeId: IUpdateRegistrationCodePayload | null
+    updateRegistrationCodeByNodeId: IUpdateRegistrationCodePayload | null;
 
     /**
      * Updates a single `RegistrationCode` using a unique key and a patch.
      */
-    updateRegistrationCode: IUpdateRegistrationCodePayload | null
+    updateRegistrationCode: IUpdateRegistrationCodePayload | null;
 
     /**
      * Updates a single `Role` using its globally unique id and a patch.
      */
-    updateRoleByNodeId: IUpdateRolePayload | null
+    updateRoleByNodeId: IUpdateRolePayload | null;
 
     /**
      * Updates a single `Role` using a unique key and a patch.
      */
-    updateRole: IUpdateRolePayload | null
+    updateRole: IUpdateRolePayload | null;
 
     /**
      * Updates a single `Role` using a unique key and a patch.
      */
-    updateRoleByAuthority: IUpdateRolePayload | null
+    updateRoleByAuthority: IUpdateRolePayload | null;
 
     /**
      * Updates a single `Room` using its globally unique id and a patch.
      */
-    updateRoomByNodeId: IUpdateRoomPayload | null
+    updateRoomByNodeId: IUpdateRoomPayload | null;
 
     /**
      * Updates a single `Room` using a unique key and a patch.
      */
-    updateRoom: IUpdateRoomPayload | null
+    updateRoom: IUpdateRoomPayload | null;
 
     /**
      * Updates a single `Setting` using its globally unique id and a patch.
      */
-    updateSettingByNodeId: IUpdateSettingPayload | null
+    updateSettingByNodeId: IUpdateSettingPayload | null;
 
     /**
      * Updates a single `Setting` using a unique key and a patch.
      */
-    updateSetting: IUpdateSettingPayload | null
+    updateSetting: IUpdateSettingPayload | null;
 
     /**
      * Updates a single `ShirtOrder` using its globally unique id and a patch.
      */
-    updateShirtOrderByNodeId: IUpdateShirtOrderPayload | null
+    updateShirtOrderByNodeId: IUpdateShirtOrderPayload | null;
 
     /**
      * Updates a single `ShirtOrder` using a unique key and a patch.
      */
-    updateShirtOrder: IUpdateShirtOrderPayload | null
+    updateShirtOrder: IUpdateShirtOrderPayload | null;
 
     /**
      * Updates a single `ShirtOrderItem` using its globally unique id and a patch.
      */
-    updateShirtOrderItemByNodeId: IUpdateShirtOrderItemPayload | null
+    updateShirtOrderItemByNodeId: IUpdateShirtOrderItemPayload | null;
 
     /**
      * Updates a single `ShirtOrderItem` using a unique key and a patch.
      */
-    updateShirtOrderItem: IUpdateShirtOrderItemPayload | null
+    updateShirtOrderItem: IUpdateShirtOrderItemPayload | null;
 
     /**
      * Updates a single `Slot` using its globally unique id and a patch.
      */
-    updateSlotByNodeId: IUpdateSlotPayload | null
+    updateSlotByNodeId: IUpdateSlotPayload | null;
 
     /**
      * Updates a single `Slot` using a unique key and a patch.
      */
-    updateSlot: IUpdateSlotPayload | null
+    updateSlot: IUpdateSlotPayload | null;
 
     /**
      * Updates a single `Token` using its globally unique id and a patch.
      */
-    updateTokenByNodeId: IUpdateTokenPayload | null
+    updateTokenByNodeId: IUpdateTokenPayload | null;
 
     /**
      * Updates a single `Token` using a unique key and a patch.
      */
-    updateToken: IUpdateTokenPayload | null
+    updateToken: IUpdateTokenPayload | null;
 
     /**
      * Updates a single `User` using its globally unique id and a patch.
      */
-    updateUserByNodeId: IUpdateUserPayload | null
+    updateUserByNodeId: IUpdateUserPayload | null;
 
     /**
      * Updates a single `User` using a unique key and a patch.
      */
-    updateUser: IUpdateUserPayload | null
+    updateUser: IUpdateUserPayload | null;
 
     /**
      * Updates a single `User` using a unique key and a patch.
      */
-    updateUserByUsername: IUpdateUserPayload | null
+    updateUserByUsername: IUpdateUserPayload | null;
 
     /**
      * Updates a single `UserRole` using its globally unique id and a patch.
      */
-    updateUserRoleByNodeId: IUpdateUserRolePayload | null
+    updateUserRoleByNodeId: IUpdateUserRolePayload | null;
 
     /**
      * Updates a single `UserRole` using a unique key and a patch.
      */
-    updateUserRole: IUpdateUserRolePayload | null
+    updateUserRole: IUpdateUserRolePayload | null;
 
     /**
      * Deletes a single `Game` using its globally unique id.
      */
-    deleteGameByNodeId: IDeleteGamePayload | null
+    deleteGameByNodeId: IDeleteGamePayload | null;
 
     /**
      * Deletes a single `Game` using a unique key.
      */
-    deleteGame: IDeleteGamePayload | null
+    deleteGame: IDeleteGamePayload | null;
 
     /**
      * Deletes a single `GameAssignment` using its globally unique id.
      */
-    deleteGameAssignmentByNodeId: IDeleteGameAssignmentPayload | null
+    deleteGameAssignmentByNodeId: IDeleteGameAssignmentPayload | null;
 
     /**
      * Deletes a single `GameAssignment` using a unique key.
      */
-    deleteGameAssignment: IDeleteGameAssignmentPayload | null
+    deleteGameAssignment: IDeleteGameAssignmentPayload | null;
 
     /**
      * Deletes a single `GameChoice` using its globally unique id.
      */
-    deleteGameChoiceByNodeId: IDeleteGameChoicePayload | null
+    deleteGameChoiceByNodeId: IDeleteGameChoicePayload | null;
 
     /**
      * Deletes a single `GameChoice` using a unique key.
      */
-    deleteGameChoice: IDeleteGameChoicePayload | null
+    deleteGameChoice: IDeleteGameChoicePayload | null;
 
     /**
      * Deletes a single `GameSubmission` using its globally unique id.
      */
-    deleteGameSubmissionByNodeId: IDeleteGameSubmissionPayload | null
+    deleteGameSubmissionByNodeId: IDeleteGameSubmissionPayload | null;
 
     /**
      * Deletes a single `GameSubmission` using a unique key.
      */
-    deleteGameSubmission: IDeleteGameSubmissionPayload | null
+    deleteGameSubmission: IDeleteGameSubmissionPayload | null;
 
     /**
      * Deletes a single `HotelRoom` using its globally unique id.
      */
-    deleteHotelRoomByNodeId: IDeleteHotelRoomPayload | null
+    deleteHotelRoomByNodeId: IDeleteHotelRoomPayload | null;
 
     /**
      * Deletes a single `HotelRoom` using a unique key.
      */
-    deleteHotelRoom: IDeleteHotelRoomPayload | null
+    deleteHotelRoom: IDeleteHotelRoomPayload | null;
 
     /**
      * Deletes a single `HotelRoomDetail` using its globally unique id.
      */
-    deleteHotelRoomDetailByNodeId: IDeleteHotelRoomDetailPayload | null
+    deleteHotelRoomDetailByNodeId: IDeleteHotelRoomDetailPayload | null;
 
     /**
      * Deletes a single `HotelRoomDetail` using a unique key.
      */
-    deleteHotelRoomDetail: IDeleteHotelRoomDetailPayload | null
+    deleteHotelRoomDetail: IDeleteHotelRoomDetailPayload | null;
 
     /**
      * Deletes a single `Lookup` using its globally unique id.
      */
-    deleteLookupByNodeId: IDeleteLookupPayload | null
+    deleteLookupByNodeId: IDeleteLookupPayload | null;
 
     /**
      * Deletes a single `Lookup` using a unique key.
      */
-    deleteLookup: IDeleteLookupPayload | null
+    deleteLookup: IDeleteLookupPayload | null;
 
     /**
      * Deletes a single `Lookup` using a unique key.
      */
-    deleteLookupByRealm: IDeleteLookupPayload | null
+    deleteLookupByRealm: IDeleteLookupPayload | null;
 
     /**
      * Deletes a single `LookupValue` using its globally unique id.
      */
-    deleteLookupValueByNodeId: IDeleteLookupValuePayload | null
+    deleteLookupValueByNodeId: IDeleteLookupValuePayload | null;
 
     /**
      * Deletes a single `LookupValue` using a unique key.
      */
-    deleteLookupValue: IDeleteLookupValuePayload | null
+    deleteLookupValue: IDeleteLookupValuePayload | null;
 
     /**
      * Deletes a single `LookupValue` using a unique key.
      */
-    deleteLookupValueByLookupIdAndCode: IDeleteLookupValuePayload | null
+    deleteLookupValueByLookupIdAndCode: IDeleteLookupValuePayload | null;
 
     /**
      * Deletes a single `MemberHotelRoomAssignment` using its globally unique id.
      */
-    deleteMemberHotelRoomAssignmentByNodeId: IDeleteMemberHotelRoomAssignmentPayload | null
+    deleteMemberHotelRoomAssignmentByNodeId: IDeleteMemberHotelRoomAssignmentPayload | null;
 
     /**
      * Deletes a single `MemberHotelRoomAssignment` using a unique key.
      */
-    deleteMemberHotelRoomAssignment: IDeleteMemberHotelRoomAssignmentPayload | null
+    deleteMemberHotelRoomAssignment: IDeleteMemberHotelRoomAssignmentPayload | null;
 
     /**
      * Deletes a single `Membership` using its globally unique id.
      */
-    deleteMembershipByNodeId: IDeleteMembershipPayload | null
+    deleteMembershipByNodeId: IDeleteMembershipPayload | null;
 
     /**
      * Deletes a single `Membership` using a unique key.
      */
-    deleteMembership: IDeleteMembershipPayload | null
+    deleteMembership: IDeleteMembershipPayload | null;
 
     /**
      * Deletes a single `Profile` using its globally unique id.
      */
-    deleteProfileByNodeId: IDeleteProfilePayload | null
+    deleteProfileByNodeId: IDeleteProfilePayload | null;
 
     /**
      * Deletes a single `Profile` using a unique key.
      */
-    deleteProfile: IDeleteProfilePayload | null
+    deleteProfile: IDeleteProfilePayload | null;
 
     /**
      * Deletes a single `Profile` using a unique key.
      */
-    deleteProfileByEmail: IDeleteProfilePayload | null
+    deleteProfileByEmail: IDeleteProfilePayload | null;
 
     /**
      * Deletes a single `RegistrationCode` using its globally unique id.
      */
-    deleteRegistrationCodeByNodeId: IDeleteRegistrationCodePayload | null
+    deleteRegistrationCodeByNodeId: IDeleteRegistrationCodePayload | null;
 
     /**
      * Deletes a single `RegistrationCode` using a unique key.
      */
-    deleteRegistrationCode: IDeleteRegistrationCodePayload | null
+    deleteRegistrationCode: IDeleteRegistrationCodePayload | null;
 
     /**
      * Deletes a single `Role` using its globally unique id.
      */
-    deleteRoleByNodeId: IDeleteRolePayload | null
+    deleteRoleByNodeId: IDeleteRolePayload | null;
 
     /**
      * Deletes a single `Role` using a unique key.
      */
-    deleteRole: IDeleteRolePayload | null
+    deleteRole: IDeleteRolePayload | null;
 
     /**
      * Deletes a single `Role` using a unique key.
      */
-    deleteRoleByAuthority: IDeleteRolePayload | null
+    deleteRoleByAuthority: IDeleteRolePayload | null;
 
     /**
      * Deletes a single `Room` using its globally unique id.
      */
-    deleteRoomByNodeId: IDeleteRoomPayload | null
+    deleteRoomByNodeId: IDeleteRoomPayload | null;
 
     /**
      * Deletes a single `Room` using a unique key.
      */
-    deleteRoom: IDeleteRoomPayload | null
+    deleteRoom: IDeleteRoomPayload | null;
 
     /**
      * Deletes a single `Setting` using its globally unique id.
      */
-    deleteSettingByNodeId: IDeleteSettingPayload | null
+    deleteSettingByNodeId: IDeleteSettingPayload | null;
 
     /**
      * Deletes a single `Setting` using a unique key.
      */
-    deleteSetting: IDeleteSettingPayload | null
+    deleteSetting: IDeleteSettingPayload | null;
 
     /**
      * Deletes a single `ShirtOrder` using its globally unique id.
      */
-    deleteShirtOrderByNodeId: IDeleteShirtOrderPayload | null
+    deleteShirtOrderByNodeId: IDeleteShirtOrderPayload | null;
 
     /**
      * Deletes a single `ShirtOrder` using a unique key.
      */
-    deleteShirtOrder: IDeleteShirtOrderPayload | null
+    deleteShirtOrder: IDeleteShirtOrderPayload | null;
 
     /**
      * Deletes a single `ShirtOrderItem` using its globally unique id.
      */
-    deleteShirtOrderItemByNodeId: IDeleteShirtOrderItemPayload | null
+    deleteShirtOrderItemByNodeId: IDeleteShirtOrderItemPayload | null;
 
     /**
      * Deletes a single `ShirtOrderItem` using a unique key.
      */
-    deleteShirtOrderItem: IDeleteShirtOrderItemPayload | null
+    deleteShirtOrderItem: IDeleteShirtOrderItemPayload | null;
 
     /**
      * Deletes a single `Slot` using its globally unique id.
      */
-    deleteSlotByNodeId: IDeleteSlotPayload | null
+    deleteSlotByNodeId: IDeleteSlotPayload | null;
 
     /**
      * Deletes a single `Slot` using a unique key.
      */
-    deleteSlot: IDeleteSlotPayload | null
+    deleteSlot: IDeleteSlotPayload | null;
 
     /**
      * Deletes a single `Token` using its globally unique id.
      */
-    deleteTokenByNodeId: IDeleteTokenPayload | null
+    deleteTokenByNodeId: IDeleteTokenPayload | null;
 
     /**
      * Deletes a single `Token` using a unique key.
      */
-    deleteToken: IDeleteTokenPayload | null
+    deleteToken: IDeleteTokenPayload | null;
 
     /**
      * Deletes a single `User` using its globally unique id.
      */
-    deleteUserByNodeId: IDeleteUserPayload | null
+    deleteUserByNodeId: IDeleteUserPayload | null;
 
     /**
      * Deletes a single `User` using a unique key.
      */
-    deleteUser: IDeleteUserPayload | null
+    deleteUser: IDeleteUserPayload | null;
 
     /**
      * Deletes a single `User` using a unique key.
      */
-    deleteUserByUsername: IDeleteUserPayload | null
+    deleteUserByUsername: IDeleteUserPayload | null;
 
     /**
      * Deletes a single `UserRole` using its globally unique id.
      */
-    deleteUserRoleByNodeId: IDeleteUserRolePayload | null
+    deleteUserRoleByNodeId: IDeleteUserRolePayload | null;
 
     /**
      * Deletes a single `UserRole` using a unique key.
      */
-    deleteUserRole: IDeleteUserRolePayload | null
-    fTruncateTables: IFTruncateTablesPayload | null
+    deleteUserRole: IDeleteUserRolePayload | null;
+    fTruncateTables: IFTruncateTablesPayload | null;
   }
 
   interface ICreateGameOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateGameInput
+    input: ICreateGameInput;
   }
 
   interface ICreateGameAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateGameAssignmentInput
+    input: ICreateGameAssignmentInput;
   }
 
   interface ICreateGameChoiceOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateGameChoiceInput
+    input: ICreateGameChoiceInput;
   }
 
   interface ICreateGameSubmissionOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateGameSubmissionInput
+    input: ICreateGameSubmissionInput;
   }
 
   interface ICreateHotelRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateHotelRoomInput
+    input: ICreateHotelRoomInput;
   }
 
   interface ICreateHotelRoomDetailOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateHotelRoomDetailInput
+    input: ICreateHotelRoomDetailInput;
   }
 
   interface ICreateLookupOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateLookupInput
+    input: ICreateLookupInput;
   }
 
   interface ICreateLookupValueOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateLookupValueInput
+    input: ICreateLookupValueInput;
   }
 
   interface ICreateMemberHotelRoomAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateMemberHotelRoomAssignmentInput
+    input: ICreateMemberHotelRoomAssignmentInput;
   }
 
   interface ICreateMembershipOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateMembershipInput
+    input: ICreateMembershipInput;
   }
 
   interface ICreateProfileOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateProfileInput
+    input: ICreateProfileInput;
   }
 
   interface ICreateRegistrationCodeOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateRegistrationCodeInput
+    input: ICreateRegistrationCodeInput;
   }
 
   interface ICreateRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateRoleInput
+    input: ICreateRoleInput;
   }
 
   interface ICreateRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateRoomInput
+    input: ICreateRoomInput;
   }
 
   interface ICreateSettingOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateSettingInput
+    input: ICreateSettingInput;
   }
 
   interface ICreateShirtOrderOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateShirtOrderInput
+    input: ICreateShirtOrderInput;
   }
 
   interface ICreateShirtOrderItemOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateShirtOrderItemInput
+    input: ICreateShirtOrderItemInput;
   }
 
   interface ICreateSlotOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateSlotInput
+    input: ICreateSlotInput;
   }
 
   interface ICreateTokenOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateTokenInput
+    input: ICreateTokenInput;
   }
 
   interface ICreateUserOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateUserInput
+    input: ICreateUserInput;
   }
 
   interface ICreateUserRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: ICreateUserRoleInput
+    input: ICreateUserRoleInput;
   }
 
   interface IUpdateGameByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameByNodeIdInput
+    input: IUpdateGameByNodeIdInput;
   }
 
   interface IUpdateGameOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameInput
+    input: IUpdateGameInput;
   }
 
   interface IUpdateGameAssignmentByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameAssignmentByNodeIdInput
+    input: IUpdateGameAssignmentByNodeIdInput;
   }
 
   interface IUpdateGameAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameAssignmentInput
+    input: IUpdateGameAssignmentInput;
   }
 
   interface IUpdateGameChoiceByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameChoiceByNodeIdInput
+    input: IUpdateGameChoiceByNodeIdInput;
   }
 
   interface IUpdateGameChoiceOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameChoiceInput
+    input: IUpdateGameChoiceInput;
   }
 
   interface IUpdateGameSubmissionByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameSubmissionByNodeIdInput
+    input: IUpdateGameSubmissionByNodeIdInput;
   }
 
   interface IUpdateGameSubmissionOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateGameSubmissionInput
+    input: IUpdateGameSubmissionInput;
   }
 
   interface IUpdateHotelRoomByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateHotelRoomByNodeIdInput
+    input: IUpdateHotelRoomByNodeIdInput;
   }
 
   interface IUpdateHotelRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateHotelRoomInput
+    input: IUpdateHotelRoomInput;
   }
 
   interface IUpdateHotelRoomDetailByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateHotelRoomDetailByNodeIdInput
+    input: IUpdateHotelRoomDetailByNodeIdInput;
   }
 
   interface IUpdateHotelRoomDetailOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateHotelRoomDetailInput
+    input: IUpdateHotelRoomDetailInput;
   }
 
   interface IUpdateLookupByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupByNodeIdInput
+    input: IUpdateLookupByNodeIdInput;
   }
 
   interface IUpdateLookupOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupInput
+    input: IUpdateLookupInput;
   }
 
   interface IUpdateLookupByRealmOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupByRealmInput
+    input: IUpdateLookupByRealmInput;
   }
 
   interface IUpdateLookupValueByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupValueByNodeIdInput
+    input: IUpdateLookupValueByNodeIdInput;
   }
 
   interface IUpdateLookupValueOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupValueInput
+    input: IUpdateLookupValueInput;
   }
 
   interface IUpdateLookupValueByLookupIdAndCodeOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateLookupValueByLookupIdAndCodeInput
+    input: IUpdateLookupValueByLookupIdAndCodeInput;
   }
 
   interface IUpdateMemberHotelRoomAssignmentByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateMemberHotelRoomAssignmentByNodeIdInput
+    input: IUpdateMemberHotelRoomAssignmentByNodeIdInput;
   }
 
   interface IUpdateMemberHotelRoomAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateMemberHotelRoomAssignmentInput
+    input: IUpdateMemberHotelRoomAssignmentInput;
   }
 
   interface IUpdateMembershipByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateMembershipByNodeIdInput
+    input: IUpdateMembershipByNodeIdInput;
   }
 
   interface IUpdateMembershipOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateMembershipInput
+    input: IUpdateMembershipInput;
   }
 
   interface IUpdateProfileByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateProfileByNodeIdInput
+    input: IUpdateProfileByNodeIdInput;
   }
 
   interface IUpdateProfileOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateProfileInput
+    input: IUpdateProfileInput;
   }
 
   interface IUpdateProfileByEmailOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateProfileByEmailInput
+    input: IUpdateProfileByEmailInput;
   }
 
   interface IUpdateRegistrationCodeByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRegistrationCodeByNodeIdInput
+    input: IUpdateRegistrationCodeByNodeIdInput;
   }
 
   interface IUpdateRegistrationCodeOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRegistrationCodeInput
+    input: IUpdateRegistrationCodeInput;
   }
 
   interface IUpdateRoleByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRoleByNodeIdInput
+    input: IUpdateRoleByNodeIdInput;
   }
 
   interface IUpdateRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRoleInput
+    input: IUpdateRoleInput;
   }
 
   interface IUpdateRoleByAuthorityOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRoleByAuthorityInput
+    input: IUpdateRoleByAuthorityInput;
   }
 
   interface IUpdateRoomByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRoomByNodeIdInput
+    input: IUpdateRoomByNodeIdInput;
   }
 
   interface IUpdateRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateRoomInput
+    input: IUpdateRoomInput;
   }
 
   interface IUpdateSettingByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateSettingByNodeIdInput
+    input: IUpdateSettingByNodeIdInput;
   }
 
   interface IUpdateSettingOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateSettingInput
+    input: IUpdateSettingInput;
   }
 
   interface IUpdateShirtOrderByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateShirtOrderByNodeIdInput
+    input: IUpdateShirtOrderByNodeIdInput;
   }
 
   interface IUpdateShirtOrderOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateShirtOrderInput
+    input: IUpdateShirtOrderInput;
   }
 
   interface IUpdateShirtOrderItemByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateShirtOrderItemByNodeIdInput
+    input: IUpdateShirtOrderItemByNodeIdInput;
   }
 
   interface IUpdateShirtOrderItemOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateShirtOrderItemInput
+    input: IUpdateShirtOrderItemInput;
   }
 
   interface IUpdateSlotByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateSlotByNodeIdInput
+    input: IUpdateSlotByNodeIdInput;
   }
 
   interface IUpdateSlotOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateSlotInput
+    input: IUpdateSlotInput;
   }
 
   interface IUpdateTokenByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateTokenByNodeIdInput
+    input: IUpdateTokenByNodeIdInput;
   }
 
   interface IUpdateTokenOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateTokenInput
+    input: IUpdateTokenInput;
   }
 
   interface IUpdateUserByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateUserByNodeIdInput
+    input: IUpdateUserByNodeIdInput;
   }
 
   interface IUpdateUserOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateUserInput
+    input: IUpdateUserInput;
   }
 
   interface IUpdateUserByUsernameOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateUserByUsernameInput
+    input: IUpdateUserByUsernameInput;
   }
 
   interface IUpdateUserRoleByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateUserRoleByNodeIdInput
+    input: IUpdateUserRoleByNodeIdInput;
   }
 
   interface IUpdateUserRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IUpdateUserRoleInput
+    input: IUpdateUserRoleInput;
   }
 
   interface IDeleteGameByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameByNodeIdInput
+    input: IDeleteGameByNodeIdInput;
   }
 
   interface IDeleteGameOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameInput
+    input: IDeleteGameInput;
   }
 
   interface IDeleteGameAssignmentByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameAssignmentByNodeIdInput
+    input: IDeleteGameAssignmentByNodeIdInput;
   }
 
   interface IDeleteGameAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameAssignmentInput
+    input: IDeleteGameAssignmentInput;
   }
 
   interface IDeleteGameChoiceByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameChoiceByNodeIdInput
+    input: IDeleteGameChoiceByNodeIdInput;
   }
 
   interface IDeleteGameChoiceOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameChoiceInput
+    input: IDeleteGameChoiceInput;
   }
 
   interface IDeleteGameSubmissionByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameSubmissionByNodeIdInput
+    input: IDeleteGameSubmissionByNodeIdInput;
   }
 
   interface IDeleteGameSubmissionOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteGameSubmissionInput
+    input: IDeleteGameSubmissionInput;
   }
 
   interface IDeleteHotelRoomByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteHotelRoomByNodeIdInput
+    input: IDeleteHotelRoomByNodeIdInput;
   }
 
   interface IDeleteHotelRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteHotelRoomInput
+    input: IDeleteHotelRoomInput;
   }
 
   interface IDeleteHotelRoomDetailByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteHotelRoomDetailByNodeIdInput
+    input: IDeleteHotelRoomDetailByNodeIdInput;
   }
 
   interface IDeleteHotelRoomDetailOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteHotelRoomDetailInput
+    input: IDeleteHotelRoomDetailInput;
   }
 
   interface IDeleteLookupByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupByNodeIdInput
+    input: IDeleteLookupByNodeIdInput;
   }
 
   interface IDeleteLookupOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupInput
+    input: IDeleteLookupInput;
   }
 
   interface IDeleteLookupByRealmOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupByRealmInput
+    input: IDeleteLookupByRealmInput;
   }
 
   interface IDeleteLookupValueByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupValueByNodeIdInput
+    input: IDeleteLookupValueByNodeIdInput;
   }
 
   interface IDeleteLookupValueOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupValueInput
+    input: IDeleteLookupValueInput;
   }
 
   interface IDeleteLookupValueByLookupIdAndCodeOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteLookupValueByLookupIdAndCodeInput
+    input: IDeleteLookupValueByLookupIdAndCodeInput;
   }
 
   interface IDeleteMemberHotelRoomAssignmentByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteMemberHotelRoomAssignmentByNodeIdInput
+    input: IDeleteMemberHotelRoomAssignmentByNodeIdInput;
   }
 
   interface IDeleteMemberHotelRoomAssignmentOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteMemberHotelRoomAssignmentInput
+    input: IDeleteMemberHotelRoomAssignmentInput;
   }
 
   interface IDeleteMembershipByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteMembershipByNodeIdInput
+    input: IDeleteMembershipByNodeIdInput;
   }
 
   interface IDeleteMembershipOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteMembershipInput
+    input: IDeleteMembershipInput;
   }
 
   interface IDeleteProfileByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteProfileByNodeIdInput
+    input: IDeleteProfileByNodeIdInput;
   }
 
   interface IDeleteProfileOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteProfileInput
+    input: IDeleteProfileInput;
   }
 
   interface IDeleteProfileByEmailOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteProfileByEmailInput
+    input: IDeleteProfileByEmailInput;
   }
 
   interface IDeleteRegistrationCodeByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRegistrationCodeByNodeIdInput
+    input: IDeleteRegistrationCodeByNodeIdInput;
   }
 
   interface IDeleteRegistrationCodeOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRegistrationCodeInput
+    input: IDeleteRegistrationCodeInput;
   }
 
   interface IDeleteRoleByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRoleByNodeIdInput
+    input: IDeleteRoleByNodeIdInput;
   }
 
   interface IDeleteRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRoleInput
+    input: IDeleteRoleInput;
   }
 
   interface IDeleteRoleByAuthorityOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRoleByAuthorityInput
+    input: IDeleteRoleByAuthorityInput;
   }
 
   interface IDeleteRoomByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRoomByNodeIdInput
+    input: IDeleteRoomByNodeIdInput;
   }
 
   interface IDeleteRoomOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteRoomInput
+    input: IDeleteRoomInput;
   }
 
   interface IDeleteSettingByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteSettingByNodeIdInput
+    input: IDeleteSettingByNodeIdInput;
   }
 
   interface IDeleteSettingOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteSettingInput
+    input: IDeleteSettingInput;
   }
 
   interface IDeleteShirtOrderByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteShirtOrderByNodeIdInput
+    input: IDeleteShirtOrderByNodeIdInput;
   }
 
   interface IDeleteShirtOrderOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteShirtOrderInput
+    input: IDeleteShirtOrderInput;
   }
 
   interface IDeleteShirtOrderItemByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteShirtOrderItemByNodeIdInput
+    input: IDeleteShirtOrderItemByNodeIdInput;
   }
 
   interface IDeleteShirtOrderItemOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteShirtOrderItemInput
+    input: IDeleteShirtOrderItemInput;
   }
 
   interface IDeleteSlotByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteSlotByNodeIdInput
+    input: IDeleteSlotByNodeIdInput;
   }
 
   interface IDeleteSlotOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteSlotInput
+    input: IDeleteSlotInput;
   }
 
   interface IDeleteTokenByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteTokenByNodeIdInput
+    input: IDeleteTokenByNodeIdInput;
   }
 
   interface IDeleteTokenOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteTokenInput
+    input: IDeleteTokenInput;
   }
 
   interface IDeleteUserByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteUserByNodeIdInput
+    input: IDeleteUserByNodeIdInput;
   }
 
   interface IDeleteUserOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteUserInput
+    input: IDeleteUserInput;
   }
 
   interface IDeleteUserByUsernameOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteUserByUsernameInput
+    input: IDeleteUserByUsernameInput;
   }
 
   interface IDeleteUserRoleByNodeIdOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteUserRoleByNodeIdInput
+    input: IDeleteUserRoleByNodeIdInput;
   }
 
   interface IDeleteUserRoleOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IDeleteUserRoleInput
+    input: IDeleteUserRoleInput;
   }
 
   interface IFTruncateTablesOnMutationArguments {
     /**
      * The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
      */
-    input: IFTruncateTablesInput
+    input: IFTruncateTablesInput;
   }
 
   /**
@@ -8803,87 +8803,87 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Game` to be created by this mutation.
      */
-    game: IGameInput
+    game: IGameInput;
   }
 
   /**
    * An input for mutations affecting `Game`
    */
   interface IGameInput {
-    id?: number | null
-    description: string
-    lateFinish?: boolean | null
-    lateStart?: string | null
-    name: string
-    playerMax: number
-    playerMin: number
-    roomId?: number | null
-    shortName?: string | null
-    slotId?: number | null
-    charInstructions: string
-    estimatedLength: string
-    gameContactEmail: string
-    genre: string
-    gmNames?: string | null
-    message: string
-    playerPreference: string
-    playersContactGm: boolean
-    returningPlayers: string
-    setting: string
-    slotConflicts: string
-    slotPreference: number
-    teenFriendly: boolean
-    type: string
-    year: number
-    authorId?: number | null
+    id?: number | null;
+    description: string;
+    lateFinish?: boolean | null;
+    lateStart?: string | null;
+    name: string;
+    playerMax: number;
+    playerMin: number;
+    roomId?: number | null;
+    shortName?: string | null;
+    slotId?: number | null;
+    charInstructions: string;
+    estimatedLength: string;
+    gameContactEmail: string;
+    genre: string;
+    gmNames?: string | null;
+    message: string;
+    playerPreference: string;
+    playersContactGm: boolean;
+    returningPlayers: string;
+    setting: string;
+    slotConflicts: string;
+    slotPreference: number;
+    teenFriendly: boolean;
+    type: string;
+    year: number;
+    authorId?: number | null;
   }
 
   /**
    * The output of our create `Game` mutation.
    */
   interface ICreateGamePayload {
-    __typename: 'CreateGamePayload'
+    __typename: 'CreateGamePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Game` that was created by this mutation.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Room` that is related to this `Game`.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Reads a single `Slot` that is related to this `Game`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Reads a single `User` that is related to this `Game`.
      */
-    author: IUser | null
+    author: IUser | null;
 
     /**
      * An edge for our `Game`. May be used by Relay 1.
      */
-    gameEdge: IGamesEdge | null
+    gameEdge: IGamesEdge | null;
   }
 
   interface IGameEdgeOnCreateGamePayloadArguments {
@@ -8891,7 +8891,7 @@ declare namespace Acnw {
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
   }
 
   /**
@@ -8902,60 +8902,60 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `GameAssignment` to be created by this mutation.
      */
-    gameAssignment: IGameAssignmentInput
+    gameAssignment: IGameAssignmentInput;
   }
 
   /**
    * An input for mutations affecting `GameAssignment`
    */
   interface IGameAssignmentInput {
-    memberId: number
-    gameId: number
-    gm: number
-    year: number
+    memberId: number;
+    gameId: number;
+    gm: number;
+    year: number;
   }
 
   /**
    * The output of our create `GameAssignment` mutation.
    */
   interface ICreateGameAssignmentPayload {
-    __typename: 'CreateGameAssignmentPayload'
+    __typename: 'CreateGameAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameAssignment` that was created by this mutation.
      */
-    gameAssignment: IGameAssignment | null
+    gameAssignment: IGameAssignment | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Game` that is related to this `GameAssignment`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * An edge for our `GameAssignment`. May be used by Relay 1.
      */
-    gameAssignmentEdge: IGameAssignmentsEdge | null
+    gameAssignmentEdge: IGameAssignmentsEdge | null;
   }
 
   interface IGameAssignmentEdgeOnCreateGameAssignmentPayloadArguments {
@@ -8963,7 +8963,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
   }
 
   /**
@@ -8974,68 +8974,68 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `GameChoice` to be created by this mutation.
      */
-    gameChoice: IGameChoiceInput
+    gameChoice: IGameChoiceInput;
   }
 
   /**
    * An input for mutations affecting `GameChoice`
    */
   interface IGameChoiceInput {
-    id?: number | null
-    gameId?: number | null
-    memberId: number
-    rank: number
-    slotId: number
-    year: number
-    returningPlayer: boolean
+    id?: number | null;
+    gameId?: number | null;
+    memberId: number;
+    rank: number;
+    slotId: number;
+    year: number;
+    returningPlayer: boolean;
   }
 
   /**
    * The output of our create `GameChoice` mutation.
    */
   interface ICreateGameChoicePayload {
-    __typename: 'CreateGameChoicePayload'
+    __typename: 'CreateGameChoicePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameChoice` that was created by this mutation.
      */
-    gameChoice: IGameChoice | null
+    gameChoice: IGameChoice | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Game` that is related to this `GameChoice`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameChoice`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Slot` that is related to this `GameChoice`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * An edge for our `GameChoice`. May be used by Relay 1.
      */
-    gameChoiceEdge: IGameChoicesEdge | null
+    gameChoiceEdge: IGameChoicesEdge | null;
   }
 
   interface IGameChoiceEdgeOnCreateGameChoicePayloadArguments {
@@ -9043,7 +9043,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
   }
 
   /**
@@ -9054,55 +9054,55 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `GameSubmission` to be created by this mutation.
      */
-    gameSubmission: IGameSubmissionInput
+    gameSubmission: IGameSubmissionInput;
   }
 
   /**
    * An input for mutations affecting `GameSubmission`
    */
   interface IGameSubmissionInput {
-    id?: number | null
-    memberId: number
-    message: string
-    year: number
+    id?: number | null;
+    memberId: number;
+    message: string;
+    year: number;
   }
 
   /**
    * The output of our create `GameSubmission` mutation.
    */
   interface ICreateGameSubmissionPayload {
-    __typename: 'CreateGameSubmissionPayload'
+    __typename: 'CreateGameSubmissionPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameSubmission` that was created by this mutation.
      */
-    gameSubmission: IGameSubmission | null
+    gameSubmission: IGameSubmission | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameSubmission`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * An edge for our `GameSubmission`. May be used by Relay 1.
      */
-    gameSubmissionEdge: IGameSubmissionsEdge | null
+    gameSubmissionEdge: IGameSubmissionsEdge | null;
   }
 
   interface IGameSubmissionEdgeOnCreateGameSubmissionPayloadArguments {
@@ -9110,7 +9110,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameSubmission`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameSubmissionsOrderBy> | null
+    orderBy?: Array<GameSubmissionsOrderBy> | null;
   }
 
   /**
@@ -9121,54 +9121,54 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `HotelRoom` to be created by this mutation.
      */
-    hotelRoom: IHotelRoomInput
+    hotelRoom: IHotelRoomInput;
   }
 
   /**
    * An input for mutations affecting `HotelRoom`
    */
   interface IHotelRoomInput {
-    id?: number | null
-    description: string
-    gamingRoom: boolean
-    occupancy: string
-    quantity: number
-    rate: string
-    bathroomType: string
-    type: string
+    id?: number | null;
+    description: string;
+    gamingRoom: boolean;
+    occupancy: string;
+    quantity: number;
+    rate: string;
+    bathroomType: string;
+    type: string;
   }
 
   /**
    * The output of our create `HotelRoom` mutation.
    */
   interface ICreateHotelRoomPayload {
-    __typename: 'CreateHotelRoomPayload'
+    __typename: 'CreateHotelRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoom` that was created by this mutation.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoom`. May be used by Relay 1.
      */
-    hotelRoomEdge: IHotelRoomsEdge | null
+    hotelRoomEdge: IHotelRoomsEdge | null;
   }
 
   interface IHotelRoomEdgeOnCreateHotelRoomPayloadArguments {
@@ -9176,7 +9176,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoom`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomsOrderBy> | null
+    orderBy?: Array<HotelRoomsOrderBy> | null;
   }
 
   /**
@@ -9187,58 +9187,58 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `HotelRoomDetail` to be created by this mutation.
      */
-    hotelRoomDetail: IHotelRoomDetailInput
+    hotelRoomDetail: IHotelRoomDetailInput;
   }
 
   /**
    * An input for mutations affecting `HotelRoomDetail`
    */
   interface IHotelRoomDetailInput {
-    id?: any | null
-    version: any
-    bathroomType: string
-    comment: string
-    enabled: boolean
-    gamingRoom: boolean
-    internalRoomType: string
-    name: string
-    reserved: boolean
-    reservedFor: string
-    roomType: string
-    formattedRoomType: string
+    id?: any | null;
+    version: any;
+    bathroomType: string;
+    comment: string;
+    enabled: boolean;
+    gamingRoom: boolean;
+    internalRoomType: string;
+    name: string;
+    reserved: boolean;
+    reservedFor: string;
+    roomType: string;
+    formattedRoomType: string;
   }
 
   /**
    * The output of our create `HotelRoomDetail` mutation.
    */
   interface ICreateHotelRoomDetailPayload {
-    __typename: 'CreateHotelRoomDetailPayload'
+    __typename: 'CreateHotelRoomDetailPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoomDetail` that was created by this mutation.
      */
-    hotelRoomDetail: IHotelRoomDetail | null
+    hotelRoomDetail: IHotelRoomDetail | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoomDetail`. May be used by Relay 1.
      */
-    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null
+    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null;
   }
 
   interface IHotelRoomDetailEdgeOnCreateHotelRoomDetailPayloadArguments {
@@ -9246,7 +9246,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoomDetail`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomDetailsOrderBy> | null
+    orderBy?: Array<HotelRoomDetailsOrderBy> | null;
   }
 
   /**
@@ -9257,58 +9257,58 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Lookup` to be created by this mutation.
      */
-    lookup: ILookupInput
+    lookup: ILookupInput;
   }
 
   /**
    * An input for mutations affecting `Lookup`
    */
   interface ILookupInput {
-    id?: number | null
-    codeMaximum?: string | null
-    codeMinimum?: string | null
-    codeScale?: number | null
-    codeType: string
-    internationalize: boolean
-    ordering: string
-    realm: string
-    valueMaximum?: string | null
-    valueMinimum?: string | null
-    valueScale?: number | null
-    valueType: string
+    id?: number | null;
+    codeMaximum?: string | null;
+    codeMinimum?: string | null;
+    codeScale?: number | null;
+    codeType: string;
+    internationalize: boolean;
+    ordering: string;
+    realm: string;
+    valueMaximum?: string | null;
+    valueMinimum?: string | null;
+    valueScale?: number | null;
+    valueType: string;
   }
 
   /**
    * The output of our create `Lookup` mutation.
    */
   interface ICreateLookupPayload {
-    __typename: 'CreateLookupPayload'
+    __typename: 'CreateLookupPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Lookup` that was created by this mutation.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Lookup`. May be used by Relay 1.
      */
-    lookupEdge: ILookupsEdge | null
+    lookupEdge: ILookupsEdge | null;
   }
 
   interface ILookupEdgeOnCreateLookupPayloadArguments {
@@ -9316,7 +9316,7 @@ declare namespace Acnw {
      * The method to use when ordering `Lookup`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupsOrderBy> | null
+    orderBy?: Array<LookupsOrderBy> | null;
   }
 
   /**
@@ -9327,58 +9327,58 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `LookupValue` to be created by this mutation.
      */
-    lookupValue: ILookupValueInput
+    lookupValue: ILookupValueInput;
   }
 
   /**
    * An input for mutations affecting `LookupValue`
    */
   interface ILookupValueInput {
-    id?: number | null
-    code: string
-    lookupId: number
-    numericSequencer: any
-    sequencer: number
-    stringSequencer: string
-    value: string
+    id?: number | null;
+    code: string;
+    lookupId: number;
+    numericSequencer: any;
+    sequencer: number;
+    stringSequencer: string;
+    value: string;
   }
 
   /**
    * The output of our create `LookupValue` mutation.
    */
   interface ICreateLookupValuePayload {
-    __typename: 'CreateLookupValuePayload'
+    __typename: 'CreateLookupValuePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `LookupValue` that was created by this mutation.
      */
-    lookupValue: ILookupValue | null
+    lookupValue: ILookupValue | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Lookup` that is related to this `LookupValue`.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
 
     /**
      * An edge for our `LookupValue`. May be used by Relay 1.
      */
-    lookupValueEdge: ILookupValuesEdge | null
+    lookupValueEdge: ILookupValuesEdge | null;
   }
 
   interface ILookupValueEdgeOnCreateLookupValuePayloadArguments {
@@ -9386,7 +9386,7 @@ declare namespace Acnw {
      * The method to use when ordering `LookupValue`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupValuesOrderBy> | null
+    orderBy?: Array<LookupValuesOrderBy> | null;
   }
 
   /**
@@ -9397,60 +9397,60 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `MemberHotelRoomAssignment` to be created by this mutation.
      */
-    memberHotelRoomAssignment: IMemberHotelRoomAssignmentInput
+    memberHotelRoomAssignment: IMemberHotelRoomAssignmentInput;
   }
 
   /**
    * An input for mutations affecting `MemberHotelRoomAssignment`
    */
   interface IMemberHotelRoomAssignmentInput {
-    memberId: any
-    hotelRoomId: any
-    roomOwner: boolean
-    year: number
+    memberId: any;
+    hotelRoomId: any;
+    roomOwner: boolean;
+    year: number;
   }
 
   /**
    * The output of our create `MemberHotelRoomAssignment` mutation.
    */
   interface ICreateMemberHotelRoomAssignmentPayload {
-    __typename: 'CreateMemberHotelRoomAssignmentPayload'
+    __typename: 'CreateMemberHotelRoomAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `MemberHotelRoomAssignment` that was created by this mutation.
      */
-    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null
+    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`.
      */
-    hotelRoom: IHotelRoomDetail | null
+    hotelRoom: IHotelRoomDetail | null;
 
     /**
      * An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1.
      */
-    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null
+    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null;
   }
 
   interface IMemberHotelRoomAssignmentEdgeOnCreateMemberHotelRoomAssignmentPayloadArguments {
@@ -9458,7 +9458,7 @@ declare namespace Acnw {
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
   }
 
   /**
@@ -9469,74 +9469,74 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Membership` to be created by this mutation.
      */
-    membership: IMembershipInput
+    membership: IMembershipInput;
   }
 
   /**
    * An input for mutations affecting `Membership`
    */
   interface IMembershipInput {
-    id?: number | null
-    arrivalDate: any
-    attendance: string
-    attending: boolean
-    departureDate: any
-    hotelRoomId: number
-    interestLevel: string
-    message: string
-    roomPreferenceAndNotes: string
-    roomingPreferences: string
-    roomingWith: string
-    userId: number
-    volunteer: boolean
-    year: number
-    offerSubsidy: boolean
-    requestOldPrice: boolean
-    amountOwed: number
-    amountPaid: number
+    id?: number | null;
+    arrivalDate: any;
+    attendance: string;
+    attending: boolean;
+    departureDate: any;
+    hotelRoomId: number;
+    interestLevel: string;
+    message: string;
+    roomPreferenceAndNotes: string;
+    roomingPreferences: string;
+    roomingWith: string;
+    userId: number;
+    volunteer: boolean;
+    year: number;
+    offerSubsidy: boolean;
+    requestOldPrice: boolean;
+    amountOwed: number;
+    amountPaid: number;
   }
 
   /**
    * The output of our create `Membership` mutation.
    */
   interface ICreateMembershipPayload {
-    __typename: 'CreateMembershipPayload'
+    __typename: 'CreateMembershipPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Membership` that was created by this mutation.
      */
-    membership: IMembership | null
+    membership: IMembership | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `HotelRoom` that is related to this `Membership`.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Reads a single `User` that is related to this `Membership`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Membership`. May be used by Relay 1.
      */
-    membershipEdge: IMembershipsEdge | null
+    membershipEdge: IMembershipsEdge | null;
   }
 
   interface IMembershipEdgeOnCreateMembershipPayloadArguments {
@@ -9544,7 +9544,7 @@ declare namespace Acnw {
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
   }
 
   /**
@@ -9555,51 +9555,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Profile` to be created by this mutation.
      */
-    profile: IProfileInput
+    profile: IProfileInput;
   }
 
   /**
    * An input for mutations affecting `Profile`
    */
   interface IProfileInput {
-    id?: number | null
-    email: string
-    fullName: string
-    phoneNumber?: string | null
-    snailMailAddress?: string | null
+    id?: number | null;
+    email: string;
+    fullName: string;
+    phoneNumber?: string | null;
+    snailMailAddress?: string | null;
   }
 
   /**
    * The output of our create `Profile` mutation.
    */
   interface ICreateProfilePayload {
-    __typename: 'CreateProfilePayload'
+    __typename: 'CreateProfilePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Profile` that was created by this mutation.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Profile`. May be used by Relay 1.
      */
-    profileEdge: IProfilesEdge | null
+    profileEdge: IProfilesEdge | null;
   }
 
   interface IProfileEdgeOnCreateProfilePayloadArguments {
@@ -9607,7 +9607,7 @@ declare namespace Acnw {
      * The method to use when ordering `Profile`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ProfilesOrderBy> | null
+    orderBy?: Array<ProfilesOrderBy> | null;
   }
 
   /**
@@ -9618,49 +9618,49 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `RegistrationCode` to be created by this mutation.
      */
-    registrationCode: IRegistrationCodeInput
+    registrationCode: IRegistrationCodeInput;
   }
 
   /**
    * An input for mutations affecting `RegistrationCode`
    */
   interface IRegistrationCodeInput {
-    id?: number | null
-    token: string
-    username: string
+    id?: number | null;
+    token: string;
+    username: string;
   }
 
   /**
    * The output of our create `RegistrationCode` mutation.
    */
   interface ICreateRegistrationCodePayload {
-    __typename: 'CreateRegistrationCodePayload'
+    __typename: 'CreateRegistrationCodePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `RegistrationCode` that was created by this mutation.
      */
-    registrationCode: IRegistrationCode | null
+    registrationCode: IRegistrationCode | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `RegistrationCode`. May be used by Relay 1.
      */
-    registrationCodeEdge: IRegistrationCodesEdge | null
+    registrationCodeEdge: IRegistrationCodesEdge | null;
   }
 
   interface IRegistrationCodeEdgeOnCreateRegistrationCodePayloadArguments {
@@ -9668,7 +9668,7 @@ declare namespace Acnw {
      * The method to use when ordering `RegistrationCode`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RegistrationCodesOrderBy> | null
+    orderBy?: Array<RegistrationCodesOrderBy> | null;
   }
 
   /**
@@ -9679,48 +9679,48 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Role` to be created by this mutation.
      */
-    role: IRoleInput
+    role: IRoleInput;
   }
 
   /**
    * An input for mutations affecting `Role`
    */
   interface IRoleInput {
-    id?: number | null
-    authority: string
+    id?: number | null;
+    authority: string;
   }
 
   /**
    * The output of our create `Role` mutation.
    */
   interface ICreateRolePayload {
-    __typename: 'CreateRolePayload'
+    __typename: 'CreateRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Role` that was created by this mutation.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Role`. May be used by Relay 1.
      */
-    roleEdge: IRolesEdge | null
+    roleEdge: IRolesEdge | null;
   }
 
   interface IRoleEdgeOnCreateRolePayloadArguments {
@@ -9728,7 +9728,7 @@ declare namespace Acnw {
      * The method to use when ordering `Role`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RolesOrderBy> | null
+    orderBy?: Array<RolesOrderBy> | null;
   }
 
   /**
@@ -9739,51 +9739,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Room` to be created by this mutation.
      */
-    room: IRoomInput
+    room: IRoomInput;
   }
 
   /**
    * An input for mutations affecting `Room`
    */
   interface IRoomInput {
-    id?: number | null
-    description: string
-    size: number
-    type: string
-    updated: boolean
+    id?: number | null;
+    description: string;
+    size: number;
+    type: string;
+    updated: boolean;
   }
 
   /**
    * The output of our create `Room` mutation.
    */
   interface ICreateRoomPayload {
-    __typename: 'CreateRoomPayload'
+    __typename: 'CreateRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Room` that was created by this mutation.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Room`. May be used by Relay 1.
      */
-    roomEdge: IRoomsEdge | null
+    roomEdge: IRoomsEdge | null;
   }
 
   interface IRoomEdgeOnCreateRoomPayloadArguments {
@@ -9791,7 +9791,7 @@ declare namespace Acnw {
      * The method to use when ordering `Room`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RoomsOrderBy> | null
+    orderBy?: Array<RoomsOrderBy> | null;
   }
 
   /**
@@ -9802,50 +9802,50 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Setting` to be created by this mutation.
      */
-    setting: ISettingInput
+    setting: ISettingInput;
   }
 
   /**
    * An input for mutations affecting `Setting`
    */
   interface ISettingInput {
-    id?: number | null
-    code: string
-    type: string
-    value: string
+    id?: number | null;
+    code: string;
+    type: string;
+    value: string;
   }
 
   /**
    * The output of our create `Setting` mutation.
    */
   interface ICreateSettingPayload {
-    __typename: 'CreateSettingPayload'
+    __typename: 'CreateSettingPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Setting` that was created by this mutation.
      */
-    setting: ISetting | null
+    setting: ISetting | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Setting`. May be used by Relay 1.
      */
-    settingEdge: ISettingsEdge | null
+    settingEdge: ISettingsEdge | null;
   }
 
   interface ISettingEdgeOnCreateSettingPayloadArguments {
@@ -9853,7 +9853,7 @@ declare namespace Acnw {
      * The method to use when ordering `Setting`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SettingsOrderBy> | null
+    orderBy?: Array<SettingsOrderBy> | null;
   }
 
   /**
@@ -9864,56 +9864,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `ShirtOrder` to be created by this mutation.
      */
-    shirtOrder: IShirtOrderInput
+    shirtOrder: IShirtOrderInput;
   }
 
   /**
    * An input for mutations affecting `ShirtOrder`
    */
   interface IShirtOrderInput {
-    id?: number | null
-    deliveryMethod: string
-    message: string
-    userId: number
-    year: number
+    id?: number | null;
+    deliveryMethod: string;
+    message: string;
+    userId: number;
+    year: number;
   }
 
   /**
    * The output of our create `ShirtOrder` mutation.
    */
   interface ICreateShirtOrderPayload {
-    __typename: 'CreateShirtOrderPayload'
+    __typename: 'CreateShirtOrderPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrder` that was created by this mutation.
      */
-    shirtOrder: IShirtOrder | null
+    shirtOrder: IShirtOrder | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `ShirtOrder`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `ShirtOrder`. May be used by Relay 1.
      */
-    shirtOrderEdge: IShirtOrdersEdge | null
+    shirtOrderEdge: IShirtOrdersEdge | null;
   }
 
   interface IShirtOrderEdgeOnCreateShirtOrderPayloadArguments {
@@ -9921,7 +9921,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrder`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrdersOrderBy> | null
+    orderBy?: Array<ShirtOrdersOrderBy> | null;
   }
 
   /**
@@ -9932,57 +9932,57 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `ShirtOrderItem` to be created by this mutation.
      */
-    shirtOrderItem: IShirtOrderItemInput
+    shirtOrderItem: IShirtOrderItemInput;
   }
 
   /**
    * An input for mutations affecting `ShirtOrderItem`
    */
   interface IShirtOrderItemInput {
-    id?: number | null
-    orderId: number
-    quantity: number
-    size: string
-    style: string
-    itemsIdx?: number | null
+    id?: number | null;
+    orderId: number;
+    quantity: number;
+    size: string;
+    style: string;
+    itemsIdx?: number | null;
   }
 
   /**
    * The output of our create `ShirtOrderItem` mutation.
    */
   interface ICreateShirtOrderItemPayload {
-    __typename: 'CreateShirtOrderItemPayload'
+    __typename: 'CreateShirtOrderItemPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrderItem` that was created by this mutation.
      */
-    shirtOrderItem: IShirtOrderItem | null
+    shirtOrderItem: IShirtOrderItem | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`.
      */
-    order: IShirtOrder | null
+    order: IShirtOrder | null;
 
     /**
      * An edge for our `ShirtOrderItem`. May be used by Relay 1.
      */
-    shirtOrderItemEdge: IShirtOrderItemsEdge | null
+    shirtOrderItemEdge: IShirtOrderItemsEdge | null;
   }
 
   interface IShirtOrderItemEdgeOnCreateShirtOrderItemPayloadArguments {
@@ -9990,7 +9990,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrderItem`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrderItemsOrderBy> | null
+    orderBy?: Array<ShirtOrderItemsOrderBy> | null;
   }
 
   /**
@@ -10001,52 +10001,52 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Slot` to be created by this mutation.
      */
-    slot: ISlotInput
+    slot: ISlotInput;
   }
 
   /**
    * An input for mutations affecting `Slot`
    */
   interface ISlotInput {
-    id?: number | null
-    slot: number
-    day: string
-    formattedDate: string
-    length: string
-    time: string
+    id?: number | null;
+    slot: number;
+    day: string;
+    formattedDate: string;
+    length: string;
+    time: string;
   }
 
   /**
    * The output of our create `Slot` mutation.
    */
   interface ICreateSlotPayload {
-    __typename: 'CreateSlotPayload'
+    __typename: 'CreateSlotPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Slot` that was created by this mutation.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Slot`. May be used by Relay 1.
      */
-    slotEdge: ISlotsEdge | null
+    slotEdge: ISlotsEdge | null;
   }
 
   interface ISlotEdgeOnCreateSlotPayloadArguments {
@@ -10054,7 +10054,7 @@ declare namespace Acnw {
      * The method to use when ordering `Slot`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SlotsOrderBy> | null
+    orderBy?: Array<SlotsOrderBy> | null;
   }
 
   /**
@@ -10065,56 +10065,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `Token` to be created by this mutation.
      */
-    token: ITokenInput
+    token: ITokenInput;
   }
 
   /**
    * An input for mutations affecting `Token`
    */
   interface ITokenInput {
-    id?: number | null
-    userId: number
-    cuid?: string | null
-    active?: boolean | null
-    lastUsed?: any | null
+    id?: number | null;
+    userId: number;
+    cuid?: string | null;
+    active?: boolean | null;
+    lastUsed?: any | null;
   }
 
   /**
    * The output of our create `Token` mutation.
    */
   interface ICreateTokenPayload {
-    __typename: 'CreateTokenPayload'
+    __typename: 'CreateTokenPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Token` that was created by this mutation.
      */
-    token: IToken | null
+    token: IToken | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `Token`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Token`. May be used by Relay 1.
      */
-    tokenEdge: ITokensEdge | null
+    tokenEdge: ITokensEdge | null;
   }
 
   interface ITokenEdgeOnCreateTokenPayloadArguments {
@@ -10122,7 +10122,7 @@ declare namespace Acnw {
      * The method to use when ordering `Token`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<TokensOrderBy> | null
+    orderBy?: Array<TokensOrderBy> | null;
   }
 
   /**
@@ -10133,57 +10133,57 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `User` to be created by this mutation.
      */
-    user: IUserInput
+    user: IUserInput;
   }
 
   /**
    * An input for mutations affecting `User`
    */
   interface IUserInput {
-    id?: number | null
-    accountLocked: boolean
-    enabled: boolean
-    password: string
-    profileId: number
-    username: string
+    id?: number | null;
+    accountLocked: boolean;
+    enabled: boolean;
+    password: string;
+    profileId: number;
+    username: string;
   }
 
   /**
    * The output of our create `User` mutation.
    */
   interface ICreateUserPayload {
-    __typename: 'CreateUserPayload'
+    __typename: 'CreateUserPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `User` that was created by this mutation.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Profile` that is related to this `User`.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * An edge for our `User`. May be used by Relay 1.
      */
-    userEdge: IUsersEdge | null
+    userEdge: IUsersEdge | null;
   }
 
   interface IUserEdgeOnCreateUserPayloadArguments {
@@ -10191,7 +10191,7 @@ declare namespace Acnw {
      * The method to use when ordering `User`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UsersOrderBy> | null
+    orderBy?: Array<UsersOrderBy> | null;
   }
 
   /**
@@ -10202,58 +10202,58 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The `UserRole` to be created by this mutation.
      */
-    userRole: IUserRoleInput
+    userRole: IUserRoleInput;
   }
 
   /**
    * An input for mutations affecting `UserRole`
    */
   interface IUserRoleInput {
-    roleId: number
-    userId: number
+    roleId: number;
+    userId: number;
   }
 
   /**
    * The output of our create `UserRole` mutation.
    */
   interface ICreateUserRolePayload {
-    __typename: 'CreateUserRolePayload'
+    __typename: 'CreateUserRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `UserRole` that was created by this mutation.
      */
-    userRole: IUserRole | null
+    userRole: IUserRole | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Role` that is related to this `UserRole`.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Reads a single `User` that is related to this `UserRole`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `UserRole`. May be used by Relay 1.
      */
-    userRoleEdge: IUserRolesEdge | null
+    userRoleEdge: IUserRolesEdge | null;
   }
 
   interface IUserRoleEdgeOnCreateUserRolePayloadArguments {
@@ -10261,7 +10261,7 @@ declare namespace Acnw {
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
   }
 
   /**
@@ -10272,92 +10272,92 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Game` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Game` being updated.
      */
-    patch: IGamePatch
+    patch: IGamePatch;
   }
 
   /**
    * Represents an update to a `Game`. Fields that are set will be updated.
    */
   interface IGamePatch {
-    id?: number | null
-    description?: string | null
-    lateFinish?: boolean | null
-    lateStart?: string | null
-    name?: string | null
-    playerMax?: number | null
-    playerMin?: number | null
-    roomId?: number | null
-    shortName?: string | null
-    slotId?: number | null
-    charInstructions?: string | null
-    estimatedLength?: string | null
-    gameContactEmail?: string | null
-    genre?: string | null
-    gmNames?: string | null
-    message?: string | null
-    playerPreference?: string | null
-    playersContactGm?: boolean | null
-    returningPlayers?: string | null
-    setting?: string | null
-    slotConflicts?: string | null
-    slotPreference?: number | null
-    teenFriendly?: boolean | null
-    type?: string | null
-    year?: number | null
-    authorId?: number | null
+    id?: number | null;
+    description?: string | null;
+    lateFinish?: boolean | null;
+    lateStart?: string | null;
+    name?: string | null;
+    playerMax?: number | null;
+    playerMin?: number | null;
+    roomId?: number | null;
+    shortName?: string | null;
+    slotId?: number | null;
+    charInstructions?: string | null;
+    estimatedLength?: string | null;
+    gameContactEmail?: string | null;
+    genre?: string | null;
+    gmNames?: string | null;
+    message?: string | null;
+    playerPreference?: string | null;
+    playersContactGm?: boolean | null;
+    returningPlayers?: string | null;
+    setting?: string | null;
+    slotConflicts?: string | null;
+    slotPreference?: number | null;
+    teenFriendly?: boolean | null;
+    type?: string | null;
+    year?: number | null;
+    authorId?: number | null;
   }
 
   /**
    * The output of our update `Game` mutation.
    */
   interface IUpdateGamePayload {
-    __typename: 'UpdateGamePayload'
+    __typename: 'UpdateGamePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Game` that was updated by this mutation.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Room` that is related to this `Game`.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Reads a single `Slot` that is related to this `Game`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Reads a single `User` that is related to this `Game`.
      */
-    author: IUser | null
+    author: IUser | null;
 
     /**
      * An edge for our `Game`. May be used by Relay 1.
      */
-    gameEdge: IGamesEdge | null
+    gameEdge: IGamesEdge | null;
   }
 
   interface IGameEdgeOnUpdateGamePayloadArguments {
@@ -10365,7 +10365,7 @@ declare namespace Acnw {
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
   }
 
   /**
@@ -10376,13 +10376,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Game` being updated.
      */
-    patch: IGamePatch
-    id: number
+    patch: IGamePatch;
+    id: number;
   }
 
   /**
@@ -10393,65 +10393,65 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameAssignment` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `GameAssignment` being updated.
      */
-    patch: IGameAssignmentPatch
+    patch: IGameAssignmentPatch;
   }
 
   /**
    * Represents an update to a `GameAssignment`. Fields that are set will be updated.
    */
   interface IGameAssignmentPatch {
-    memberId?: number | null
-    gameId?: number | null
-    gm?: number | null
-    year?: number | null
+    memberId?: number | null;
+    gameId?: number | null;
+    gm?: number | null;
+    year?: number | null;
   }
 
   /**
    * The output of our update `GameAssignment` mutation.
    */
   interface IUpdateGameAssignmentPayload {
-    __typename: 'UpdateGameAssignmentPayload'
+    __typename: 'UpdateGameAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameAssignment` that was updated by this mutation.
      */
-    gameAssignment: IGameAssignment | null
+    gameAssignment: IGameAssignment | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Game` that is related to this `GameAssignment`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * An edge for our `GameAssignment`. May be used by Relay 1.
      */
-    gameAssignmentEdge: IGameAssignmentsEdge | null
+    gameAssignmentEdge: IGameAssignmentsEdge | null;
   }
 
   interface IGameAssignmentEdgeOnUpdateGameAssignmentPayloadArguments {
@@ -10459,7 +10459,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
   }
 
   /**
@@ -10470,15 +10470,15 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `GameAssignment` being updated.
      */
-    patch: IGameAssignmentPatch
-    memberId: number
-    gameId: number
-    gm: number
+    patch: IGameAssignmentPatch;
+    memberId: number;
+    gameId: number;
+    gm: number;
   }
 
   /**
@@ -10489,73 +10489,73 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameChoice` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `GameChoice` being updated.
      */
-    patch: IGameChoicePatch
+    patch: IGameChoicePatch;
   }
 
   /**
    * Represents an update to a `GameChoice`. Fields that are set will be updated.
    */
   interface IGameChoicePatch {
-    id?: number | null
-    gameId?: number | null
-    memberId?: number | null
-    rank?: number | null
-    slotId?: number | null
-    year?: number | null
-    returningPlayer?: boolean | null
+    id?: number | null;
+    gameId?: number | null;
+    memberId?: number | null;
+    rank?: number | null;
+    slotId?: number | null;
+    year?: number | null;
+    returningPlayer?: boolean | null;
   }
 
   /**
    * The output of our update `GameChoice` mutation.
    */
   interface IUpdateGameChoicePayload {
-    __typename: 'UpdateGameChoicePayload'
+    __typename: 'UpdateGameChoicePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameChoice` that was updated by this mutation.
      */
-    gameChoice: IGameChoice | null
+    gameChoice: IGameChoice | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Game` that is related to this `GameChoice`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameChoice`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Slot` that is related to this `GameChoice`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * An edge for our `GameChoice`. May be used by Relay 1.
      */
-    gameChoiceEdge: IGameChoicesEdge | null
+    gameChoiceEdge: IGameChoicesEdge | null;
   }
 
   interface IGameChoiceEdgeOnUpdateGameChoicePayloadArguments {
@@ -10563,7 +10563,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
   }
 
   /**
@@ -10574,13 +10574,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `GameChoice` being updated.
      */
-    patch: IGameChoicePatch
-    id: number
+    patch: IGameChoicePatch;
+    id: number;
   }
 
   /**
@@ -10591,60 +10591,60 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameSubmission` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `GameSubmission` being updated.
      */
-    patch: IGameSubmissionPatch
+    patch: IGameSubmissionPatch;
   }
 
   /**
    * Represents an update to a `GameSubmission`. Fields that are set will be updated.
    */
   interface IGameSubmissionPatch {
-    id?: number | null
-    memberId?: number | null
-    message?: string | null
-    year?: number | null
+    id?: number | null;
+    memberId?: number | null;
+    message?: string | null;
+    year?: number | null;
   }
 
   /**
    * The output of our update `GameSubmission` mutation.
    */
   interface IUpdateGameSubmissionPayload {
-    __typename: 'UpdateGameSubmissionPayload'
+    __typename: 'UpdateGameSubmissionPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameSubmission` that was updated by this mutation.
      */
-    gameSubmission: IGameSubmission | null
+    gameSubmission: IGameSubmission | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameSubmission`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * An edge for our `GameSubmission`. May be used by Relay 1.
      */
-    gameSubmissionEdge: IGameSubmissionsEdge | null
+    gameSubmissionEdge: IGameSubmissionsEdge | null;
   }
 
   interface IGameSubmissionEdgeOnUpdateGameSubmissionPayloadArguments {
@@ -10652,7 +10652,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameSubmission`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameSubmissionsOrderBy> | null
+    orderBy?: Array<GameSubmissionsOrderBy> | null;
   }
 
   /**
@@ -10663,13 +10663,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `GameSubmission` being updated.
      */
-    patch: IGameSubmissionPatch
-    id: number
+    patch: IGameSubmissionPatch;
+    id: number;
   }
 
   /**
@@ -10680,59 +10680,59 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `HotelRoom` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `HotelRoom` being updated.
      */
-    patch: IHotelRoomPatch
+    patch: IHotelRoomPatch;
   }
 
   /**
    * Represents an update to a `HotelRoom`. Fields that are set will be updated.
    */
   interface IHotelRoomPatch {
-    id?: number | null
-    description?: string | null
-    gamingRoom?: boolean | null
-    occupancy?: string | null
-    quantity?: number | null
-    rate?: string | null
-    bathroomType?: string | null
-    type?: string | null
+    id?: number | null;
+    description?: string | null;
+    gamingRoom?: boolean | null;
+    occupancy?: string | null;
+    quantity?: number | null;
+    rate?: string | null;
+    bathroomType?: string | null;
+    type?: string | null;
   }
 
   /**
    * The output of our update `HotelRoom` mutation.
    */
   interface IUpdateHotelRoomPayload {
-    __typename: 'UpdateHotelRoomPayload'
+    __typename: 'UpdateHotelRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoom` that was updated by this mutation.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoom`. May be used by Relay 1.
      */
-    hotelRoomEdge: IHotelRoomsEdge | null
+    hotelRoomEdge: IHotelRoomsEdge | null;
   }
 
   interface IHotelRoomEdgeOnUpdateHotelRoomPayloadArguments {
@@ -10740,7 +10740,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoom`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomsOrderBy> | null
+    orderBy?: Array<HotelRoomsOrderBy> | null;
   }
 
   /**
@@ -10751,13 +10751,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `HotelRoom` being updated.
      */
-    patch: IHotelRoomPatch
-    id: number
+    patch: IHotelRoomPatch;
+    id: number;
   }
 
   /**
@@ -10768,63 +10768,63 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `HotelRoomDetail` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `HotelRoomDetail` being updated.
      */
-    patch: IHotelRoomDetailPatch
+    patch: IHotelRoomDetailPatch;
   }
 
   /**
    * Represents an update to a `HotelRoomDetail`. Fields that are set will be updated.
    */
   interface IHotelRoomDetailPatch {
-    id?: any | null
-    version?: any | null
-    bathroomType?: string | null
-    comment?: string | null
-    enabled?: boolean | null
-    gamingRoom?: boolean | null
-    internalRoomType?: string | null
-    name?: string | null
-    reserved?: boolean | null
-    reservedFor?: string | null
-    roomType?: string | null
-    formattedRoomType?: string | null
+    id?: any | null;
+    version?: any | null;
+    bathroomType?: string | null;
+    comment?: string | null;
+    enabled?: boolean | null;
+    gamingRoom?: boolean | null;
+    internalRoomType?: string | null;
+    name?: string | null;
+    reserved?: boolean | null;
+    reservedFor?: string | null;
+    roomType?: string | null;
+    formattedRoomType?: string | null;
   }
 
   /**
    * The output of our update `HotelRoomDetail` mutation.
    */
   interface IUpdateHotelRoomDetailPayload {
-    __typename: 'UpdateHotelRoomDetailPayload'
+    __typename: 'UpdateHotelRoomDetailPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoomDetail` that was updated by this mutation.
      */
-    hotelRoomDetail: IHotelRoomDetail | null
+    hotelRoomDetail: IHotelRoomDetail | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoomDetail`. May be used by Relay 1.
      */
-    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null
+    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null;
   }
 
   interface IHotelRoomDetailEdgeOnUpdateHotelRoomDetailPayloadArguments {
@@ -10832,7 +10832,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoomDetail`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomDetailsOrderBy> | null
+    orderBy?: Array<HotelRoomDetailsOrderBy> | null;
   }
 
   /**
@@ -10843,13 +10843,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `HotelRoomDetail` being updated.
      */
-    patch: IHotelRoomDetailPatch
-    id: any
+    patch: IHotelRoomDetailPatch;
+    id: any;
   }
 
   /**
@@ -10860,63 +10860,63 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Lookup` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Lookup` being updated.
      */
-    patch: ILookupPatch
+    patch: ILookupPatch;
   }
 
   /**
    * Represents an update to a `Lookup`. Fields that are set will be updated.
    */
   interface ILookupPatch {
-    id?: number | null
-    codeMaximum?: string | null
-    codeMinimum?: string | null
-    codeScale?: number | null
-    codeType?: string | null
-    internationalize?: boolean | null
-    ordering?: string | null
-    realm?: string | null
-    valueMaximum?: string | null
-    valueMinimum?: string | null
-    valueScale?: number | null
-    valueType?: string | null
+    id?: number | null;
+    codeMaximum?: string | null;
+    codeMinimum?: string | null;
+    codeScale?: number | null;
+    codeType?: string | null;
+    internationalize?: boolean | null;
+    ordering?: string | null;
+    realm?: string | null;
+    valueMaximum?: string | null;
+    valueMinimum?: string | null;
+    valueScale?: number | null;
+    valueType?: string | null;
   }
 
   /**
    * The output of our update `Lookup` mutation.
    */
   interface IUpdateLookupPayload {
-    __typename: 'UpdateLookupPayload'
+    __typename: 'UpdateLookupPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Lookup` that was updated by this mutation.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Lookup`. May be used by Relay 1.
      */
-    lookupEdge: ILookupsEdge | null
+    lookupEdge: ILookupsEdge | null;
   }
 
   interface ILookupEdgeOnUpdateLookupPayloadArguments {
@@ -10924,7 +10924,7 @@ declare namespace Acnw {
      * The method to use when ordering `Lookup`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupsOrderBy> | null
+    orderBy?: Array<LookupsOrderBy> | null;
   }
 
   /**
@@ -10935,13 +10935,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Lookup` being updated.
      */
-    patch: ILookupPatch
-    id: number
+    patch: ILookupPatch;
+    id: number;
   }
 
   /**
@@ -10952,13 +10952,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Lookup` being updated.
      */
-    patch: ILookupPatch
-    realm: string
+    patch: ILookupPatch;
+    realm: string;
   }
 
   /**
@@ -10969,63 +10969,63 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `LookupValue` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `LookupValue` being updated.
      */
-    patch: ILookupValuePatch
+    patch: ILookupValuePatch;
   }
 
   /**
    * Represents an update to a `LookupValue`. Fields that are set will be updated.
    */
   interface ILookupValuePatch {
-    id?: number | null
-    code?: string | null
-    lookupId?: number | null
-    numericSequencer?: any | null
-    sequencer?: number | null
-    stringSequencer?: string | null
-    value?: string | null
+    id?: number | null;
+    code?: string | null;
+    lookupId?: number | null;
+    numericSequencer?: any | null;
+    sequencer?: number | null;
+    stringSequencer?: string | null;
+    value?: string | null;
   }
 
   /**
    * The output of our update `LookupValue` mutation.
    */
   interface IUpdateLookupValuePayload {
-    __typename: 'UpdateLookupValuePayload'
+    __typename: 'UpdateLookupValuePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `LookupValue` that was updated by this mutation.
      */
-    lookupValue: ILookupValue | null
+    lookupValue: ILookupValue | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Lookup` that is related to this `LookupValue`.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
 
     /**
      * An edge for our `LookupValue`. May be used by Relay 1.
      */
-    lookupValueEdge: ILookupValuesEdge | null
+    lookupValueEdge: ILookupValuesEdge | null;
   }
 
   interface ILookupValueEdgeOnUpdateLookupValuePayloadArguments {
@@ -11033,7 +11033,7 @@ declare namespace Acnw {
      * The method to use when ordering `LookupValue`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupValuesOrderBy> | null
+    orderBy?: Array<LookupValuesOrderBy> | null;
   }
 
   /**
@@ -11044,13 +11044,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `LookupValue` being updated.
      */
-    patch: ILookupValuePatch
-    id: number
+    patch: ILookupValuePatch;
+    id: number;
   }
 
   /**
@@ -11061,14 +11061,14 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `LookupValue` being updated.
      */
-    patch: ILookupValuePatch
-    lookupId: number
-    code: string
+    patch: ILookupValuePatch;
+    lookupId: number;
+    code: string;
   }
 
   /**
@@ -11079,65 +11079,65 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated.
      */
-    patch: IMemberHotelRoomAssignmentPatch
+    patch: IMemberHotelRoomAssignmentPatch;
   }
 
   /**
    * Represents an update to a `MemberHotelRoomAssignment`. Fields that are set will be updated.
    */
   interface IMemberHotelRoomAssignmentPatch {
-    memberId?: any | null
-    hotelRoomId?: any | null
-    roomOwner?: boolean | null
-    year?: number | null
+    memberId?: any | null;
+    hotelRoomId?: any | null;
+    roomOwner?: boolean | null;
+    year?: number | null;
   }
 
   /**
    * The output of our update `MemberHotelRoomAssignment` mutation.
    */
   interface IUpdateMemberHotelRoomAssignmentPayload {
-    __typename: 'UpdateMemberHotelRoomAssignmentPayload'
+    __typename: 'UpdateMemberHotelRoomAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `MemberHotelRoomAssignment` that was updated by this mutation.
      */
-    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null
+    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`.
      */
-    hotelRoom: IHotelRoomDetail | null
+    hotelRoom: IHotelRoomDetail | null;
 
     /**
      * An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1.
      */
-    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null
+    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null;
   }
 
   interface IMemberHotelRoomAssignmentEdgeOnUpdateMemberHotelRoomAssignmentPayloadArguments {
@@ -11145,7 +11145,7 @@ declare namespace Acnw {
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
   }
 
   /**
@@ -11156,14 +11156,14 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated.
      */
-    patch: IMemberHotelRoomAssignmentPatch
-    memberId: any
-    hotelRoomId: any
+    patch: IMemberHotelRoomAssignmentPatch;
+    memberId: any;
+    hotelRoomId: any;
   }
 
   /**
@@ -11174,79 +11174,79 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Membership` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Membership` being updated.
      */
-    patch: IMembershipPatch
+    patch: IMembershipPatch;
   }
 
   /**
    * Represents an update to a `Membership`. Fields that are set will be updated.
    */
   interface IMembershipPatch {
-    id?: number | null
-    arrivalDate?: any | null
-    attendance?: string | null
-    attending?: boolean | null
-    departureDate?: any | null
-    hotelRoomId?: number | null
-    interestLevel?: string | null
-    message?: string | null
-    roomPreferenceAndNotes?: string | null
-    roomingPreferences?: string | null
-    roomingWith?: string | null
-    userId?: number | null
-    volunteer?: boolean | null
-    year?: number | null
-    offerSubsidy?: boolean | null
-    requestOldPrice?: boolean | null
-    amountOwed?: number | null
-    amountPaid?: number | null
+    id?: number | null;
+    arrivalDate?: any | null;
+    attendance?: string | null;
+    attending?: boolean | null;
+    departureDate?: any | null;
+    hotelRoomId?: number | null;
+    interestLevel?: string | null;
+    message?: string | null;
+    roomPreferenceAndNotes?: string | null;
+    roomingPreferences?: string | null;
+    roomingWith?: string | null;
+    userId?: number | null;
+    volunteer?: boolean | null;
+    year?: number | null;
+    offerSubsidy?: boolean | null;
+    requestOldPrice?: boolean | null;
+    amountOwed?: number | null;
+    amountPaid?: number | null;
   }
 
   /**
    * The output of our update `Membership` mutation.
    */
   interface IUpdateMembershipPayload {
-    __typename: 'UpdateMembershipPayload'
+    __typename: 'UpdateMembershipPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Membership` that was updated by this mutation.
      */
-    membership: IMembership | null
+    membership: IMembership | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `HotelRoom` that is related to this `Membership`.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Reads a single `User` that is related to this `Membership`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Membership`. May be used by Relay 1.
      */
-    membershipEdge: IMembershipsEdge | null
+    membershipEdge: IMembershipsEdge | null;
   }
 
   interface IMembershipEdgeOnUpdateMembershipPayloadArguments {
@@ -11254,7 +11254,7 @@ declare namespace Acnw {
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
   }
 
   /**
@@ -11265,13 +11265,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Membership` being updated.
      */
-    patch: IMembershipPatch
-    id: number
+    patch: IMembershipPatch;
+    id: number;
   }
 
   /**
@@ -11282,56 +11282,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Profile` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Profile` being updated.
      */
-    patch: IProfilePatch
+    patch: IProfilePatch;
   }
 
   /**
    * Represents an update to a `Profile`. Fields that are set will be updated.
    */
   interface IProfilePatch {
-    id?: number | null
-    email?: string | null
-    fullName?: string | null
-    phoneNumber?: string | null
-    snailMailAddress?: string | null
+    id?: number | null;
+    email?: string | null;
+    fullName?: string | null;
+    phoneNumber?: string | null;
+    snailMailAddress?: string | null;
   }
 
   /**
    * The output of our update `Profile` mutation.
    */
   interface IUpdateProfilePayload {
-    __typename: 'UpdateProfilePayload'
+    __typename: 'UpdateProfilePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Profile` that was updated by this mutation.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Profile`. May be used by Relay 1.
      */
-    profileEdge: IProfilesEdge | null
+    profileEdge: IProfilesEdge | null;
   }
 
   interface IProfileEdgeOnUpdateProfilePayloadArguments {
@@ -11339,7 +11339,7 @@ declare namespace Acnw {
      * The method to use when ordering `Profile`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ProfilesOrderBy> | null
+    orderBy?: Array<ProfilesOrderBy> | null;
   }
 
   /**
@@ -11350,13 +11350,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Profile` being updated.
      */
-    patch: IProfilePatch
-    id: number
+    patch: IProfilePatch;
+    id: number;
   }
 
   /**
@@ -11367,13 +11367,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Profile` being updated.
      */
-    patch: IProfilePatch
-    email: string
+    patch: IProfilePatch;
+    email: string;
   }
 
   /**
@@ -11384,54 +11384,54 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `RegistrationCode` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `RegistrationCode` being updated.
      */
-    patch: IRegistrationCodePatch
+    patch: IRegistrationCodePatch;
   }
 
   /**
    * Represents an update to a `RegistrationCode`. Fields that are set will be updated.
    */
   interface IRegistrationCodePatch {
-    id?: number | null
-    token?: string | null
-    username?: string | null
+    id?: number | null;
+    token?: string | null;
+    username?: string | null;
   }
 
   /**
    * The output of our update `RegistrationCode` mutation.
    */
   interface IUpdateRegistrationCodePayload {
-    __typename: 'UpdateRegistrationCodePayload'
+    __typename: 'UpdateRegistrationCodePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `RegistrationCode` that was updated by this mutation.
      */
-    registrationCode: IRegistrationCode | null
+    registrationCode: IRegistrationCode | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `RegistrationCode`. May be used by Relay 1.
      */
-    registrationCodeEdge: IRegistrationCodesEdge | null
+    registrationCodeEdge: IRegistrationCodesEdge | null;
   }
 
   interface IRegistrationCodeEdgeOnUpdateRegistrationCodePayloadArguments {
@@ -11439,7 +11439,7 @@ declare namespace Acnw {
      * The method to use when ordering `RegistrationCode`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RegistrationCodesOrderBy> | null
+    orderBy?: Array<RegistrationCodesOrderBy> | null;
   }
 
   /**
@@ -11450,13 +11450,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `RegistrationCode` being updated.
      */
-    patch: IRegistrationCodePatch
-    id: number
+    patch: IRegistrationCodePatch;
+    id: number;
   }
 
   /**
@@ -11467,53 +11467,53 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Role` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Role` being updated.
      */
-    patch: IRolePatch
+    patch: IRolePatch;
   }
 
   /**
    * Represents an update to a `Role`. Fields that are set will be updated.
    */
   interface IRolePatch {
-    id?: number | null
-    authority?: string | null
+    id?: number | null;
+    authority?: string | null;
   }
 
   /**
    * The output of our update `Role` mutation.
    */
   interface IUpdateRolePayload {
-    __typename: 'UpdateRolePayload'
+    __typename: 'UpdateRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Role` that was updated by this mutation.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Role`. May be used by Relay 1.
      */
-    roleEdge: IRolesEdge | null
+    roleEdge: IRolesEdge | null;
   }
 
   interface IRoleEdgeOnUpdateRolePayloadArguments {
@@ -11521,7 +11521,7 @@ declare namespace Acnw {
      * The method to use when ordering `Role`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RolesOrderBy> | null
+    orderBy?: Array<RolesOrderBy> | null;
   }
 
   /**
@@ -11532,13 +11532,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Role` being updated.
      */
-    patch: IRolePatch
-    id: number
+    patch: IRolePatch;
+    id: number;
   }
 
   /**
@@ -11549,13 +11549,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Role` being updated.
      */
-    patch: IRolePatch
-    authority: string
+    patch: IRolePatch;
+    authority: string;
   }
 
   /**
@@ -11566,56 +11566,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Room` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Room` being updated.
      */
-    patch: IRoomPatch
+    patch: IRoomPatch;
   }
 
   /**
    * Represents an update to a `Room`. Fields that are set will be updated.
    */
   interface IRoomPatch {
-    id?: number | null
-    description?: string | null
-    size?: number | null
-    type?: string | null
-    updated?: boolean | null
+    id?: number | null;
+    description?: string | null;
+    size?: number | null;
+    type?: string | null;
+    updated?: boolean | null;
   }
 
   /**
    * The output of our update `Room` mutation.
    */
   interface IUpdateRoomPayload {
-    __typename: 'UpdateRoomPayload'
+    __typename: 'UpdateRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Room` that was updated by this mutation.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Room`. May be used by Relay 1.
      */
-    roomEdge: IRoomsEdge | null
+    roomEdge: IRoomsEdge | null;
   }
 
   interface IRoomEdgeOnUpdateRoomPayloadArguments {
@@ -11623,7 +11623,7 @@ declare namespace Acnw {
      * The method to use when ordering `Room`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RoomsOrderBy> | null
+    orderBy?: Array<RoomsOrderBy> | null;
   }
 
   /**
@@ -11634,13 +11634,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Room` being updated.
      */
-    patch: IRoomPatch
-    id: number
+    patch: IRoomPatch;
+    id: number;
   }
 
   /**
@@ -11651,55 +11651,55 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Setting` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Setting` being updated.
      */
-    patch: ISettingPatch
+    patch: ISettingPatch;
   }
 
   /**
    * Represents an update to a `Setting`. Fields that are set will be updated.
    */
   interface ISettingPatch {
-    id?: number | null
-    code?: string | null
-    type?: string | null
-    value?: string | null
+    id?: number | null;
+    code?: string | null;
+    type?: string | null;
+    value?: string | null;
   }
 
   /**
    * The output of our update `Setting` mutation.
    */
   interface IUpdateSettingPayload {
-    __typename: 'UpdateSettingPayload'
+    __typename: 'UpdateSettingPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Setting` that was updated by this mutation.
      */
-    setting: ISetting | null
+    setting: ISetting | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Setting`. May be used by Relay 1.
      */
-    settingEdge: ISettingsEdge | null
+    settingEdge: ISettingsEdge | null;
   }
 
   interface ISettingEdgeOnUpdateSettingPayloadArguments {
@@ -11707,7 +11707,7 @@ declare namespace Acnw {
      * The method to use when ordering `Setting`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SettingsOrderBy> | null
+    orderBy?: Array<SettingsOrderBy> | null;
   }
 
   /**
@@ -11718,13 +11718,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Setting` being updated.
      */
-    patch: ISettingPatch
-    id: number
+    patch: ISettingPatch;
+    id: number;
   }
 
   /**
@@ -11735,61 +11735,61 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `ShirtOrder` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `ShirtOrder` being updated.
      */
-    patch: IShirtOrderPatch
+    patch: IShirtOrderPatch;
   }
 
   /**
    * Represents an update to a `ShirtOrder`. Fields that are set will be updated.
    */
   interface IShirtOrderPatch {
-    id?: number | null
-    deliveryMethod?: string | null
-    message?: string | null
-    userId?: number | null
-    year?: number | null
+    id?: number | null;
+    deliveryMethod?: string | null;
+    message?: string | null;
+    userId?: number | null;
+    year?: number | null;
   }
 
   /**
    * The output of our update `ShirtOrder` mutation.
    */
   interface IUpdateShirtOrderPayload {
-    __typename: 'UpdateShirtOrderPayload'
+    __typename: 'UpdateShirtOrderPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrder` that was updated by this mutation.
      */
-    shirtOrder: IShirtOrder | null
+    shirtOrder: IShirtOrder | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `ShirtOrder`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `ShirtOrder`. May be used by Relay 1.
      */
-    shirtOrderEdge: IShirtOrdersEdge | null
+    shirtOrderEdge: IShirtOrdersEdge | null;
   }
 
   interface IShirtOrderEdgeOnUpdateShirtOrderPayloadArguments {
@@ -11797,7 +11797,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrder`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrdersOrderBy> | null
+    orderBy?: Array<ShirtOrdersOrderBy> | null;
   }
 
   /**
@@ -11808,13 +11808,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `ShirtOrder` being updated.
      */
-    patch: IShirtOrderPatch
-    id: number
+    patch: IShirtOrderPatch;
+    id: number;
   }
 
   /**
@@ -11825,62 +11825,62 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `ShirtOrderItem` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `ShirtOrderItem` being updated.
      */
-    patch: IShirtOrderItemPatch
+    patch: IShirtOrderItemPatch;
   }
 
   /**
    * Represents an update to a `ShirtOrderItem`. Fields that are set will be updated.
    */
   interface IShirtOrderItemPatch {
-    id?: number | null
-    orderId?: number | null
-    quantity?: number | null
-    size?: string | null
-    style?: string | null
-    itemsIdx?: number | null
+    id?: number | null;
+    orderId?: number | null;
+    quantity?: number | null;
+    size?: string | null;
+    style?: string | null;
+    itemsIdx?: number | null;
   }
 
   /**
    * The output of our update `ShirtOrderItem` mutation.
    */
   interface IUpdateShirtOrderItemPayload {
-    __typename: 'UpdateShirtOrderItemPayload'
+    __typename: 'UpdateShirtOrderItemPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrderItem` that was updated by this mutation.
      */
-    shirtOrderItem: IShirtOrderItem | null
+    shirtOrderItem: IShirtOrderItem | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`.
      */
-    order: IShirtOrder | null
+    order: IShirtOrder | null;
 
     /**
      * An edge for our `ShirtOrderItem`. May be used by Relay 1.
      */
-    shirtOrderItemEdge: IShirtOrderItemsEdge | null
+    shirtOrderItemEdge: IShirtOrderItemsEdge | null;
   }
 
   interface IShirtOrderItemEdgeOnUpdateShirtOrderItemPayloadArguments {
@@ -11888,7 +11888,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrderItem`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrderItemsOrderBy> | null
+    orderBy?: Array<ShirtOrderItemsOrderBy> | null;
   }
 
   /**
@@ -11899,13 +11899,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `ShirtOrderItem` being updated.
      */
-    patch: IShirtOrderItemPatch
-    id: number
+    patch: IShirtOrderItemPatch;
+    id: number;
   }
 
   /**
@@ -11916,57 +11916,57 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Slot` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Slot` being updated.
      */
-    patch: ISlotPatch
+    patch: ISlotPatch;
   }
 
   /**
    * Represents an update to a `Slot`. Fields that are set will be updated.
    */
   interface ISlotPatch {
-    id?: number | null
-    slot?: number | null
-    day?: string | null
-    formattedDate?: string | null
-    length?: string | null
-    time?: string | null
+    id?: number | null;
+    slot?: number | null;
+    day?: string | null;
+    formattedDate?: string | null;
+    length?: string | null;
+    time?: string | null;
   }
 
   /**
    * The output of our update `Slot` mutation.
    */
   interface IUpdateSlotPayload {
-    __typename: 'UpdateSlotPayload'
+    __typename: 'UpdateSlotPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Slot` that was updated by this mutation.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Slot`. May be used by Relay 1.
      */
-    slotEdge: ISlotsEdge | null
+    slotEdge: ISlotsEdge | null;
   }
 
   interface ISlotEdgeOnUpdateSlotPayloadArguments {
@@ -11974,7 +11974,7 @@ declare namespace Acnw {
      * The method to use when ordering `Slot`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SlotsOrderBy> | null
+    orderBy?: Array<SlotsOrderBy> | null;
   }
 
   /**
@@ -11985,13 +11985,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Slot` being updated.
      */
-    patch: ISlotPatch
-    id: number
+    patch: ISlotPatch;
+    id: number;
   }
 
   /**
@@ -12002,61 +12002,61 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Token` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `Token` being updated.
      */
-    patch: ITokenPatch
+    patch: ITokenPatch;
   }
 
   /**
    * Represents an update to a `Token`. Fields that are set will be updated.
    */
   interface ITokenPatch {
-    id?: number | null
-    userId?: number | null
-    cuid?: string | null
-    active?: boolean | null
-    lastUsed?: any | null
+    id?: number | null;
+    userId?: number | null;
+    cuid?: string | null;
+    active?: boolean | null;
+    lastUsed?: any | null;
   }
 
   /**
    * The output of our update `Token` mutation.
    */
   interface IUpdateTokenPayload {
-    __typename: 'UpdateTokenPayload'
+    __typename: 'UpdateTokenPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Token` that was updated by this mutation.
      */
-    token: IToken | null
+    token: IToken | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `Token`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Token`. May be used by Relay 1.
      */
-    tokenEdge: ITokensEdge | null
+    tokenEdge: ITokensEdge | null;
   }
 
   interface ITokenEdgeOnUpdateTokenPayloadArguments {
@@ -12064,7 +12064,7 @@ declare namespace Acnw {
      * The method to use when ordering `Token`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<TokensOrderBy> | null
+    orderBy?: Array<TokensOrderBy> | null;
   }
 
   /**
@@ -12075,13 +12075,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `Token` being updated.
      */
-    patch: ITokenPatch
-    id: number
+    patch: ITokenPatch;
+    id: number;
   }
 
   /**
@@ -12092,62 +12092,62 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `User` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `User` being updated.
      */
-    patch: IUserPatch
+    patch: IUserPatch;
   }
 
   /**
    * Represents an update to a `User`. Fields that are set will be updated.
    */
   interface IUserPatch {
-    id?: number | null
-    accountLocked?: boolean | null
-    enabled?: boolean | null
-    password?: string | null
-    profileId?: number | null
-    username?: string | null
+    id?: number | null;
+    accountLocked?: boolean | null;
+    enabled?: boolean | null;
+    password?: string | null;
+    profileId?: number | null;
+    username?: string | null;
   }
 
   /**
    * The output of our update `User` mutation.
    */
   interface IUpdateUserPayload {
-    __typename: 'UpdateUserPayload'
+    __typename: 'UpdateUserPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `User` that was updated by this mutation.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Profile` that is related to this `User`.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * An edge for our `User`. May be used by Relay 1.
      */
-    userEdge: IUsersEdge | null
+    userEdge: IUsersEdge | null;
   }
 
   interface IUserEdgeOnUpdateUserPayloadArguments {
@@ -12155,7 +12155,7 @@ declare namespace Acnw {
      * The method to use when ordering `User`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UsersOrderBy> | null
+    orderBy?: Array<UsersOrderBy> | null;
   }
 
   /**
@@ -12166,13 +12166,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `User` being updated.
      */
-    patch: IUserPatch
-    id: number
+    patch: IUserPatch;
+    id: number;
   }
 
   /**
@@ -12183,13 +12183,13 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `User` being updated.
      */
-    patch: IUserPatch
-    username: string
+    patch: IUserPatch;
+    username: string;
   }
 
   /**
@@ -12200,63 +12200,63 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `UserRole` to be updated.
      */
-    nodeId: string
+    nodeId: string;
 
     /**
      * An object where the defined keys will be set on the `UserRole` being updated.
      */
-    patch: IUserRolePatch
+    patch: IUserRolePatch;
   }
 
   /**
    * Represents an update to a `UserRole`. Fields that are set will be updated.
    */
   interface IUserRolePatch {
-    roleId?: number | null
-    userId?: number | null
+    roleId?: number | null;
+    userId?: number | null;
   }
 
   /**
    * The output of our update `UserRole` mutation.
    */
   interface IUpdateUserRolePayload {
-    __typename: 'UpdateUserRolePayload'
+    __typename: 'UpdateUserRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `UserRole` that was updated by this mutation.
      */
-    userRole: IUserRole | null
+    userRole: IUserRole | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Role` that is related to this `UserRole`.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Reads a single `User` that is related to this `UserRole`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `UserRole`. May be used by Relay 1.
      */
-    userRoleEdge: IUserRolesEdge | null
+    userRoleEdge: IUserRolesEdge | null;
   }
 
   interface IUserRoleEdgeOnUpdateUserRolePayloadArguments {
@@ -12264,7 +12264,7 @@ declare namespace Acnw {
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
   }
 
   /**
@@ -12275,14 +12275,14 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * An object where the defined keys will be set on the `UserRole` being updated.
      */
-    patch: IUserRolePatch
-    roleId: number
-    userId: number
+    patch: IUserRolePatch;
+    roleId: number;
+    userId: number;
   }
 
   /**
@@ -12293,56 +12293,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Game` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Game` mutation.
    */
   interface IDeleteGamePayload {
-    __typename: 'DeleteGamePayload'
+    __typename: 'DeleteGamePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Game` that was deleted by this mutation.
      */
-    game: IGame | null
-    deletedGameNodeId: string | null
+    game: IGame | null;
+    deletedGameNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Room` that is related to this `Game`.
      */
-    room: IRoom | null
+    room: IRoom | null;
 
     /**
      * Reads a single `Slot` that is related to this `Game`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * Reads a single `User` that is related to this `Game`.
      */
-    author: IUser | null
+    author: IUser | null;
 
     /**
      * An edge for our `Game`. May be used by Relay 1.
      */
-    gameEdge: IGamesEdge | null
+    gameEdge: IGamesEdge | null;
   }
 
   interface IGameEdgeOnDeleteGamePayloadArguments {
@@ -12350,7 +12350,7 @@ declare namespace Acnw {
      * The method to use when ordering `Game`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GamesOrderBy> | null
+    orderBy?: Array<GamesOrderBy> | null;
   }
 
   /**
@@ -12361,8 +12361,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12373,51 +12373,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameAssignment` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `GameAssignment` mutation.
    */
   interface IDeleteGameAssignmentPayload {
-    __typename: 'DeleteGameAssignmentPayload'
+    __typename: 'DeleteGameAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameAssignment` that was deleted by this mutation.
      */
-    gameAssignment: IGameAssignment | null
-    deletedGameAssignmentNodeId: string | null
+    gameAssignment: IGameAssignment | null;
+    deletedGameAssignmentNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Game` that is related to this `GameAssignment`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * An edge for our `GameAssignment`. May be used by Relay 1.
      */
-    gameAssignmentEdge: IGameAssignmentsEdge | null
+    gameAssignmentEdge: IGameAssignmentsEdge | null;
   }
 
   interface IGameAssignmentEdgeOnDeleteGameAssignmentPayloadArguments {
@@ -12425,7 +12425,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameAssignmentsOrderBy> | null
+    orderBy?: Array<GameAssignmentsOrderBy> | null;
   }
 
   /**
@@ -12436,10 +12436,10 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    memberId: number
-    gameId: number
-    gm: number
+    clientMutationId?: string | null;
+    memberId: number;
+    gameId: number;
+    gm: number;
   }
 
   /**
@@ -12450,56 +12450,56 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameChoice` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `GameChoice` mutation.
    */
   interface IDeleteGameChoicePayload {
-    __typename: 'DeleteGameChoicePayload'
+    __typename: 'DeleteGameChoicePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameChoice` that was deleted by this mutation.
      */
-    gameChoice: IGameChoice | null
-    deletedGameChoiceNodeId: string | null
+    gameChoice: IGameChoice | null;
+    deletedGameChoiceNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Game` that is related to this `GameChoice`.
      */
-    game: IGame | null
+    game: IGame | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameChoice`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `Slot` that is related to this `GameChoice`.
      */
-    slot: ISlot | null
+    slot: ISlot | null;
 
     /**
      * An edge for our `GameChoice`. May be used by Relay 1.
      */
-    gameChoiceEdge: IGameChoicesEdge | null
+    gameChoiceEdge: IGameChoicesEdge | null;
   }
 
   interface IGameChoiceEdgeOnDeleteGameChoicePayloadArguments {
@@ -12507,7 +12507,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameChoice`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameChoicesOrderBy> | null
+    orderBy?: Array<GameChoicesOrderBy> | null;
   }
 
   /**
@@ -12518,8 +12518,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12530,46 +12530,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `GameSubmission` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `GameSubmission` mutation.
    */
   interface IDeleteGameSubmissionPayload {
-    __typename: 'DeleteGameSubmissionPayload'
+    __typename: 'DeleteGameSubmissionPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `GameSubmission` that was deleted by this mutation.
      */
-    gameSubmission: IGameSubmission | null
-    deletedGameSubmissionNodeId: string | null
+    gameSubmission: IGameSubmission | null;
+    deletedGameSubmissionNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `GameSubmission`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * An edge for our `GameSubmission`. May be used by Relay 1.
      */
-    gameSubmissionEdge: IGameSubmissionsEdge | null
+    gameSubmissionEdge: IGameSubmissionsEdge | null;
   }
 
   interface IGameSubmissionEdgeOnDeleteGameSubmissionPayloadArguments {
@@ -12577,7 +12577,7 @@ declare namespace Acnw {
      * The method to use when ordering `GameSubmission`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<GameSubmissionsOrderBy> | null
+    orderBy?: Array<GameSubmissionsOrderBy> | null;
   }
 
   /**
@@ -12588,8 +12588,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12600,41 +12600,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `HotelRoom` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `HotelRoom` mutation.
    */
   interface IDeleteHotelRoomPayload {
-    __typename: 'DeleteHotelRoomPayload'
+    __typename: 'DeleteHotelRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoom` that was deleted by this mutation.
      */
-    hotelRoom: IHotelRoom | null
-    deletedHotelRoomNodeId: string | null
+    hotelRoom: IHotelRoom | null;
+    deletedHotelRoomNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoom`. May be used by Relay 1.
      */
-    hotelRoomEdge: IHotelRoomsEdge | null
+    hotelRoomEdge: IHotelRoomsEdge | null;
   }
 
   interface IHotelRoomEdgeOnDeleteHotelRoomPayloadArguments {
@@ -12642,7 +12642,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoom`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomsOrderBy> | null
+    orderBy?: Array<HotelRoomsOrderBy> | null;
   }
 
   /**
@@ -12653,8 +12653,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12665,41 +12665,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `HotelRoomDetail` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `HotelRoomDetail` mutation.
    */
   interface IDeleteHotelRoomDetailPayload {
-    __typename: 'DeleteHotelRoomDetailPayload'
+    __typename: 'DeleteHotelRoomDetailPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `HotelRoomDetail` that was deleted by this mutation.
      */
-    hotelRoomDetail: IHotelRoomDetail | null
-    deletedHotelRoomDetailNodeId: string | null
+    hotelRoomDetail: IHotelRoomDetail | null;
+    deletedHotelRoomDetailNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `HotelRoomDetail`. May be used by Relay 1.
      */
-    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null
+    hotelRoomDetailEdge: IHotelRoomDetailsEdge | null;
   }
 
   interface IHotelRoomDetailEdgeOnDeleteHotelRoomDetailPayloadArguments {
@@ -12707,7 +12707,7 @@ declare namespace Acnw {
      * The method to use when ordering `HotelRoomDetail`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<HotelRoomDetailsOrderBy> | null
+    orderBy?: Array<HotelRoomDetailsOrderBy> | null;
   }
 
   /**
@@ -12718,8 +12718,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: any
+    clientMutationId?: string | null;
+    id: any;
   }
 
   /**
@@ -12730,41 +12730,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Lookup` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Lookup` mutation.
    */
   interface IDeleteLookupPayload {
-    __typename: 'DeleteLookupPayload'
+    __typename: 'DeleteLookupPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Lookup` that was deleted by this mutation.
      */
-    lookup: ILookup | null
-    deletedLookupNodeId: string | null
+    lookup: ILookup | null;
+    deletedLookupNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Lookup`. May be used by Relay 1.
      */
-    lookupEdge: ILookupsEdge | null
+    lookupEdge: ILookupsEdge | null;
   }
 
   interface ILookupEdgeOnDeleteLookupPayloadArguments {
@@ -12772,7 +12772,7 @@ declare namespace Acnw {
      * The method to use when ordering `Lookup`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupsOrderBy> | null
+    orderBy?: Array<LookupsOrderBy> | null;
   }
 
   /**
@@ -12783,8 +12783,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12795,8 +12795,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    realm: string
+    clientMutationId?: string | null;
+    realm: string;
   }
 
   /**
@@ -12807,46 +12807,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `LookupValue` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `LookupValue` mutation.
    */
   interface IDeleteLookupValuePayload {
-    __typename: 'DeleteLookupValuePayload'
+    __typename: 'DeleteLookupValuePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `LookupValue` that was deleted by this mutation.
      */
-    lookupValue: ILookupValue | null
-    deletedLookupValueNodeId: string | null
+    lookupValue: ILookupValue | null;
+    deletedLookupValueNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Lookup` that is related to this `LookupValue`.
      */
-    lookup: ILookup | null
+    lookup: ILookup | null;
 
     /**
      * An edge for our `LookupValue`. May be used by Relay 1.
      */
-    lookupValueEdge: ILookupValuesEdge | null
+    lookupValueEdge: ILookupValuesEdge | null;
   }
 
   interface ILookupValueEdgeOnDeleteLookupValuePayloadArguments {
@@ -12854,7 +12854,7 @@ declare namespace Acnw {
      * The method to use when ordering `LookupValue`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<LookupValuesOrderBy> | null
+    orderBy?: Array<LookupValuesOrderBy> | null;
   }
 
   /**
@@ -12865,8 +12865,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -12877,9 +12877,9 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    lookupId: number
-    code: string
+    clientMutationId?: string | null;
+    lookupId: number;
+    code: string;
   }
 
   /**
@@ -12890,51 +12890,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `MemberHotelRoomAssignment` mutation.
    */
   interface IDeleteMemberHotelRoomAssignmentPayload {
-    __typename: 'DeleteMemberHotelRoomAssignmentPayload'
+    __typename: 'DeleteMemberHotelRoomAssignmentPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `MemberHotelRoomAssignment` that was deleted by this mutation.
      */
-    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null
-    deletedMemberHotelRoomAssignmentNodeId: string | null
+    memberHotelRoomAssignment: IMemberHotelRoomAssignment | null;
+    deletedMemberHotelRoomAssignmentNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`.
      */
-    member: IMembership | null
+    member: IMembership | null;
 
     /**
      * Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`.
      */
-    hotelRoom: IHotelRoomDetail | null
+    hotelRoom: IHotelRoomDetail | null;
 
     /**
      * An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1.
      */
-    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null
+    memberHotelRoomAssignmentEdge: IMemberHotelRoomAssignmentsEdge | null;
   }
 
   interface IMemberHotelRoomAssignmentEdgeOnDeleteMemberHotelRoomAssignmentPayloadArguments {
@@ -12942,7 +12942,7 @@ declare namespace Acnw {
      * The method to use when ordering `MemberHotelRoomAssignment`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null
+    orderBy?: Array<MemberHotelRoomAssignmentsOrderBy> | null;
   }
 
   /**
@@ -12953,9 +12953,9 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    memberId: any
-    hotelRoomId: any
+    clientMutationId?: string | null;
+    memberId: any;
+    hotelRoomId: any;
   }
 
   /**
@@ -12966,51 +12966,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Membership` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Membership` mutation.
    */
   interface IDeleteMembershipPayload {
-    __typename: 'DeleteMembershipPayload'
+    __typename: 'DeleteMembershipPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Membership` that was deleted by this mutation.
      */
-    membership: IMembership | null
-    deletedMembershipNodeId: string | null
+    membership: IMembership | null;
+    deletedMembershipNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `HotelRoom` that is related to this `Membership`.
      */
-    hotelRoom: IHotelRoom | null
+    hotelRoom: IHotelRoom | null;
 
     /**
      * Reads a single `User` that is related to this `Membership`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Membership`. May be used by Relay 1.
      */
-    membershipEdge: IMembershipsEdge | null
+    membershipEdge: IMembershipsEdge | null;
   }
 
   interface IMembershipEdgeOnDeleteMembershipPayloadArguments {
@@ -13018,7 +13018,7 @@ declare namespace Acnw {
      * The method to use when ordering `Membership`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<MembershipsOrderBy> | null
+    orderBy?: Array<MembershipsOrderBy> | null;
   }
 
   /**
@@ -13029,8 +13029,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13041,41 +13041,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Profile` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Profile` mutation.
    */
   interface IDeleteProfilePayload {
-    __typename: 'DeleteProfilePayload'
+    __typename: 'DeleteProfilePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Profile` that was deleted by this mutation.
      */
-    profile: IProfile | null
-    deletedProfileNodeId: string | null
+    profile: IProfile | null;
+    deletedProfileNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Profile`. May be used by Relay 1.
      */
-    profileEdge: IProfilesEdge | null
+    profileEdge: IProfilesEdge | null;
   }
 
   interface IProfileEdgeOnDeleteProfilePayloadArguments {
@@ -13083,7 +13083,7 @@ declare namespace Acnw {
      * The method to use when ordering `Profile`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ProfilesOrderBy> | null
+    orderBy?: Array<ProfilesOrderBy> | null;
   }
 
   /**
@@ -13094,8 +13094,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13106,8 +13106,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    email: string
+    clientMutationId?: string | null;
+    email: string;
   }
 
   /**
@@ -13118,41 +13118,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `RegistrationCode` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `RegistrationCode` mutation.
    */
   interface IDeleteRegistrationCodePayload {
-    __typename: 'DeleteRegistrationCodePayload'
+    __typename: 'DeleteRegistrationCodePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `RegistrationCode` that was deleted by this mutation.
      */
-    registrationCode: IRegistrationCode | null
-    deletedRegistrationCodeNodeId: string | null
+    registrationCode: IRegistrationCode | null;
+    deletedRegistrationCodeNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `RegistrationCode`. May be used by Relay 1.
      */
-    registrationCodeEdge: IRegistrationCodesEdge | null
+    registrationCodeEdge: IRegistrationCodesEdge | null;
   }
 
   interface IRegistrationCodeEdgeOnDeleteRegistrationCodePayloadArguments {
@@ -13160,7 +13160,7 @@ declare namespace Acnw {
      * The method to use when ordering `RegistrationCode`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RegistrationCodesOrderBy> | null
+    orderBy?: Array<RegistrationCodesOrderBy> | null;
   }
 
   /**
@@ -13171,8 +13171,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13183,41 +13183,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Role` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Role` mutation.
    */
   interface IDeleteRolePayload {
-    __typename: 'DeleteRolePayload'
+    __typename: 'DeleteRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Role` that was deleted by this mutation.
      */
-    role: IRole | null
-    deletedRoleNodeId: string | null
+    role: IRole | null;
+    deletedRoleNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Role`. May be used by Relay 1.
      */
-    roleEdge: IRolesEdge | null
+    roleEdge: IRolesEdge | null;
   }
 
   interface IRoleEdgeOnDeleteRolePayloadArguments {
@@ -13225,7 +13225,7 @@ declare namespace Acnw {
      * The method to use when ordering `Role`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RolesOrderBy> | null
+    orderBy?: Array<RolesOrderBy> | null;
   }
 
   /**
@@ -13236,8 +13236,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13248,8 +13248,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    authority: string
+    clientMutationId?: string | null;
+    authority: string;
   }
 
   /**
@@ -13260,41 +13260,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Room` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Room` mutation.
    */
   interface IDeleteRoomPayload {
-    __typename: 'DeleteRoomPayload'
+    __typename: 'DeleteRoomPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Room` that was deleted by this mutation.
      */
-    room: IRoom | null
-    deletedRoomNodeId: string | null
+    room: IRoom | null;
+    deletedRoomNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Room`. May be used by Relay 1.
      */
-    roomEdge: IRoomsEdge | null
+    roomEdge: IRoomsEdge | null;
   }
 
   interface IRoomEdgeOnDeleteRoomPayloadArguments {
@@ -13302,7 +13302,7 @@ declare namespace Acnw {
      * The method to use when ordering `Room`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<RoomsOrderBy> | null
+    orderBy?: Array<RoomsOrderBy> | null;
   }
 
   /**
@@ -13313,8 +13313,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13325,41 +13325,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Setting` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Setting` mutation.
    */
   interface IDeleteSettingPayload {
-    __typename: 'DeleteSettingPayload'
+    __typename: 'DeleteSettingPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Setting` that was deleted by this mutation.
      */
-    setting: ISetting | null
-    deletedSettingNodeId: string | null
+    setting: ISetting | null;
+    deletedSettingNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Setting`. May be used by Relay 1.
      */
-    settingEdge: ISettingsEdge | null
+    settingEdge: ISettingsEdge | null;
   }
 
   interface ISettingEdgeOnDeleteSettingPayloadArguments {
@@ -13367,7 +13367,7 @@ declare namespace Acnw {
      * The method to use when ordering `Setting`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SettingsOrderBy> | null
+    orderBy?: Array<SettingsOrderBy> | null;
   }
 
   /**
@@ -13378,8 +13378,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13390,46 +13390,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `ShirtOrder` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `ShirtOrder` mutation.
    */
   interface IDeleteShirtOrderPayload {
-    __typename: 'DeleteShirtOrderPayload'
+    __typename: 'DeleteShirtOrderPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrder` that was deleted by this mutation.
      */
-    shirtOrder: IShirtOrder | null
-    deletedShirtOrderNodeId: string | null
+    shirtOrder: IShirtOrder | null;
+    deletedShirtOrderNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `ShirtOrder`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `ShirtOrder`. May be used by Relay 1.
      */
-    shirtOrderEdge: IShirtOrdersEdge | null
+    shirtOrderEdge: IShirtOrdersEdge | null;
   }
 
   interface IShirtOrderEdgeOnDeleteShirtOrderPayloadArguments {
@@ -13437,7 +13437,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrder`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrdersOrderBy> | null
+    orderBy?: Array<ShirtOrdersOrderBy> | null;
   }
 
   /**
@@ -13448,8 +13448,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13460,46 +13460,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `ShirtOrderItem` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `ShirtOrderItem` mutation.
    */
   interface IDeleteShirtOrderItemPayload {
-    __typename: 'DeleteShirtOrderItemPayload'
+    __typename: 'DeleteShirtOrderItemPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `ShirtOrderItem` that was deleted by this mutation.
      */
-    shirtOrderItem: IShirtOrderItem | null
-    deletedShirtOrderItemNodeId: string | null
+    shirtOrderItem: IShirtOrderItem | null;
+    deletedShirtOrderItemNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`.
      */
-    order: IShirtOrder | null
+    order: IShirtOrder | null;
 
     /**
      * An edge for our `ShirtOrderItem`. May be used by Relay 1.
      */
-    shirtOrderItemEdge: IShirtOrderItemsEdge | null
+    shirtOrderItemEdge: IShirtOrderItemsEdge | null;
   }
 
   interface IShirtOrderItemEdgeOnDeleteShirtOrderItemPayloadArguments {
@@ -13507,7 +13507,7 @@ declare namespace Acnw {
      * The method to use when ordering `ShirtOrderItem`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<ShirtOrderItemsOrderBy> | null
+    orderBy?: Array<ShirtOrderItemsOrderBy> | null;
   }
 
   /**
@@ -13518,8 +13518,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13530,41 +13530,41 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Slot` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Slot` mutation.
    */
   interface IDeleteSlotPayload {
-    __typename: 'DeleteSlotPayload'
+    __typename: 'DeleteSlotPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Slot` that was deleted by this mutation.
      */
-    slot: ISlot | null
-    deletedSlotNodeId: string | null
+    slot: ISlot | null;
+    deletedSlotNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * An edge for our `Slot`. May be used by Relay 1.
      */
-    slotEdge: ISlotsEdge | null
+    slotEdge: ISlotsEdge | null;
   }
 
   interface ISlotEdgeOnDeleteSlotPayloadArguments {
@@ -13572,7 +13572,7 @@ declare namespace Acnw {
      * The method to use when ordering `Slot`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<SlotsOrderBy> | null
+    orderBy?: Array<SlotsOrderBy> | null;
   }
 
   /**
@@ -13583,8 +13583,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13595,46 +13595,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `Token` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `Token` mutation.
    */
   interface IDeleteTokenPayload {
-    __typename: 'DeleteTokenPayload'
+    __typename: 'DeleteTokenPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `Token` that was deleted by this mutation.
      */
-    token: IToken | null
-    deletedTokenNodeId: string | null
+    token: IToken | null;
+    deletedTokenNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `User` that is related to this `Token`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `Token`. May be used by Relay 1.
      */
-    tokenEdge: ITokensEdge | null
+    tokenEdge: ITokensEdge | null;
   }
 
   interface ITokenEdgeOnDeleteTokenPayloadArguments {
@@ -13642,7 +13642,7 @@ declare namespace Acnw {
      * The method to use when ordering `Token`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<TokensOrderBy> | null
+    orderBy?: Array<TokensOrderBy> | null;
   }
 
   /**
@@ -13653,8 +13653,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13665,46 +13665,46 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `User` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `User` mutation.
    */
   interface IDeleteUserPayload {
-    __typename: 'DeleteUserPayload'
+    __typename: 'DeleteUserPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `User` that was deleted by this mutation.
      */
-    user: IUser | null
-    deletedUserNodeId: string | null
+    user: IUser | null;
+    deletedUserNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Profile` that is related to this `User`.
      */
-    profile: IProfile | null
+    profile: IProfile | null;
 
     /**
      * An edge for our `User`. May be used by Relay 1.
      */
-    userEdge: IUsersEdge | null
+    userEdge: IUsersEdge | null;
   }
 
   interface IUserEdgeOnDeleteUserPayloadArguments {
@@ -13712,7 +13712,7 @@ declare namespace Acnw {
      * The method to use when ordering `User`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UsersOrderBy> | null
+    orderBy?: Array<UsersOrderBy> | null;
   }
 
   /**
@@ -13723,8 +13723,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    id: number
+    clientMutationId?: string | null;
+    id: number;
   }
 
   /**
@@ -13735,8 +13735,8 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    username: string
+    clientMutationId?: string | null;
+    username: string;
   }
 
   /**
@@ -13747,51 +13747,51 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
+    clientMutationId?: string | null;
 
     /**
      * The globally unique `ID` which will identify a single `UserRole` to be deleted.
      */
-    nodeId: string
+    nodeId: string;
   }
 
   /**
    * The output of our delete `UserRole` mutation.
    */
   interface IDeleteUserRolePayload {
-    __typename: 'DeleteUserRolePayload'
+    __typename: 'DeleteUserRolePayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * The `UserRole` that was deleted by this mutation.
      */
-    userRole: IUserRole | null
-    deletedUserRoleNodeId: string | null
+    userRole: IUserRole | null;
+    deletedUserRoleNodeId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
 
     /**
      * Reads a single `Role` that is related to this `UserRole`.
      */
-    role: IRole | null
+    role: IRole | null;
 
     /**
      * Reads a single `User` that is related to this `UserRole`.
      */
-    user: IUser | null
+    user: IUser | null;
 
     /**
      * An edge for our `UserRole`. May be used by Relay 1.
      */
-    userRoleEdge: IUserRolesEdge | null
+    userRoleEdge: IUserRolesEdge | null;
   }
 
   interface IUserRoleEdgeOnDeleteUserRolePayloadArguments {
@@ -13799,7 +13799,7 @@ declare namespace Acnw {
      * The method to use when ordering `UserRole`.
      * @default ["PRIMARY_KEY_ASC"]
      */
-    orderBy?: Array<UserRolesOrderBy> | null
+    orderBy?: Array<UserRolesOrderBy> | null;
   }
 
   /**
@@ -13810,9 +13810,9 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    roleId: number
-    userId: number
+    clientMutationId?: string | null;
+    roleId: number;
+    userId: number;
   }
 
   /**
@@ -13823,26 +13823,26 @@ declare namespace Acnw {
      * An arbitrary string value with no semantic meaning. Will be included in the
      * payload verbatim. May be used to track mutations by the client.
      */
-    clientMutationId?: string | null
-    _username?: string | null
+    clientMutationId?: string | null;
+    _username?: string | null;
   }
 
   /**
    * The output of our `fTruncateTables` mutation.
    */
   interface IFTruncateTablesPayload {
-    __typename: 'FTruncateTablesPayload'
+    __typename: 'FTruncateTablesPayload';
 
     /**
      * The exact same `clientMutationId` that was provided in the mutation input,
      * unchanged and unused. May be used by a client to track mutations.
      */
-    clientMutationId: string | null
+    clientMutationId: string | null;
 
     /**
      * Our root query field type. Allows us to run any query from our mutation payload.
      */
-    query: IQuery | null
+    query: IQuery | null;
   }
 }
 

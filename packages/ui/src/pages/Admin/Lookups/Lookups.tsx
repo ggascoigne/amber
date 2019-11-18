@@ -1,21 +1,15 @@
 import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
 import { useDeleteLookup, useDeleteLookupValue, useLookupsQuery } from 'client'
-import { Page } from 'components/Acnw/Page'
-import { Table } from 'components/Acnw/Table/Table'
+import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
+import { TableInstance } from 'react-table'
 
-import { GraphQLError } from '../../components/Acnw/GraphQLError'
-import { Loader } from '../../components/Acnw/Loader'
+import { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { LookupsDialog } from './LookupsDialog'
 
 const columns = [
   {
-    name: 'realm',
-    label: 'Realm',
-    options: {
-      filter: true,
-      sort: true
-    }
+    accessor: 'realm'
   }
 ]
 
@@ -39,7 +33,7 @@ export const Lookups: React.FC = () => {
     .map(v => v.node)
     .filter(i => i) as GetLookups_lookups_edges_node[]
 
-  const onAdd: MouseEventHandler = () => {
+  const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
   }
 
@@ -48,12 +42,8 @@ export const Lookups: React.FC = () => {
     setSelection([])
   }
 
-  const getSelected = (selection: number[], data: GetLookups_lookups_edges_node[]) => {
-    return selection.map(dataIndex => data[dataIndex])
-  }
-
-  const onDelete = (selection: number[], data: GetLookups_lookups_edges_node[]) => {
-    const toDelete = getSelected(selection, data)
+  const onDelete = (instance: TableInstance<GetLookups_lookups_edges_node>) => () => {
+    const toDelete = instance.selectedFlatRows.map(r => r.original)
     const updater = toDelete
       .map(l => {
         const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
@@ -67,22 +57,15 @@ export const Lookups: React.FC = () => {
     Promise.all(updater).then(() => console.log('deleted'))
   }
 
-  const onEdit = (selection: number[], data: GetLookups_lookups_edges_node[]) => {
+  const onEdit = (instance: TableInstance<GetLookups_lookups_edges_node>) => () => {
     setShowEdit(true)
-    setSelection(getSelected(selection, data))
+    setSelection(instance.selectedFlatRows.map(r => r.original))
   }
 
   return (
     <Page>
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table
-        title={'Lookups'}
-        data={list}
-        columns={columns}
-        onAdd={onAdd}
-        onDelete={(selection: number[]) => onDelete(selection, list)}
-        onEdit={(selection: number[]) => onEdit(selection, list)}
-      />
+      <Table name='lookups' data={list} columns={columns} onAdd={onAdd} onDelete={onDelete} onEdit={onEdit} />
     </Page>
   )
 }

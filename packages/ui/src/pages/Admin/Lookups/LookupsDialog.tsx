@@ -23,7 +23,7 @@ import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
 import GridItem from 'components/MaterialKitReact/Grid/GridItem'
-import { Field, FieldArray, Form, Formik, FormikActions } from 'formik'
+import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import { TextField } from 'formik-material-ui'
 import get from 'lodash/get'
 import * as React from 'react'
@@ -103,7 +103,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
   const createOrUpdateLookupValue = useCreateOrUpdateLookupValue()
   const [deleteLookupValue] = useDeleteLookupValue()
 
-  const onSubmit = async (values: FormValues, actions: FormikActions<FormValues>) => {
+  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const res = await createOrUpdateLookup(values)
     const isCreateLookup = (value: updateLookupByNodeId | createLookup): value is createLookup =>
       value.hasOwnProperty('createLookup')
@@ -171,7 +171,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                     render={arrayHelpers => (
                       <Card>
                         <CardHeader color='success' className={classes.header}>
-                          <Typography variant='h6' component='h2' className={classes.title}>
+                          <Typography variant='h6' className={classes.title}>
                             Lookup Values
                           </Typography>
                           <IconButton
@@ -196,7 +196,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                             <TableBody>
                               {values.lookupValues.nodes.map((lv, index) => (
                                 <TableRow key={index}>
-                                  <TableCell component='th' scope='row' style={{ width: '10%' }}>
+                                  <TableCell scope='row' style={{ width: '10%' }}>
                                     <Field
                                       name={`lookupValues.nodes[${index}].sequencer`}
                                       component={TextField}

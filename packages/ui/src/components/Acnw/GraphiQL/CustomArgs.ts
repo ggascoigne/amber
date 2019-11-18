@@ -1,7 +1,17 @@
 import GraphiQLExplorer from 'graphiql-explorer'
-import { isEnumType, isWrappingType } from 'graphql'
+import {
+  GraphQLArgument,
+  GraphQLEnumType,
+  GraphQLField,
+  GraphQLInputField,
+  GraphQLOutputType,
+  GraphQLScalarType,
+  ValueNode,
+  isEnumType,
+  isWrappingType
+} from 'graphql'
 
-function unwrapOutputType(outputType) {
+function unwrapOutputType(outputType: GraphQLOutputType) {
   let unwrappedType = outputType
   while (isWrappingType(unwrappedType)) {
     unwrappedType = unwrappedType.ofType
@@ -9,19 +19,20 @@ function unwrapOutputType(outputType) {
   return unwrappedType
 }
 
-export function makeDefaultArg(parentField, arg) {
+export function makeDefaultArg(parentField: GraphQLField<any, any>, arg: GraphQLArgument | GraphQLInputField): boolean {
   const unwrappedType = unwrapOutputType(parentField.type)
-  if (
+  return (
     unwrappedType.name.startsWith('GitHub') &&
     unwrappedType.name.endsWith('Connection') &&
     (arg.name === 'first' || arg.name === 'orderBy')
-  ) {
-    return true
-  }
-  return false
+  )
 }
 
-export function getDefaultScalarArgValue(parentField, arg, argType) {
+export function getDefaultScalarArgValue(
+  parentField: GraphQLField<any, any>,
+  arg: GraphQLArgument | GraphQLInputField,
+  argType: GraphQLEnumType | GraphQLScalarType
+): ValueNode {
   const unwrappedType = unwrapOutputType(parentField.type)
   switch (unwrappedType.name) {
     case 'GitHubRepository':

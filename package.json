@@ -17,42 +17,42 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
     "apollo-link-http": "^1.5.15",
     "babel-eslint": "10.0.3",
     "babel-jest": "^24.9.0",
     "cross-env": "^6.0.3",
     "del-cli": "^3.0.0",
-    "eslint": "6.5.1",
-    "eslint-config-prettier": "^6.1.0",
+    "eslint": "6.6.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-config-react-app": "^5.0.1",
-    "eslint-plugin-flowtype": "^4.2.0",
+    "eslint-plugin-flowtype": "^4.4.1",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.16.0",
+    "eslint-plugin-jest": "^23.0.4",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.14.3",
-    "eslint-plugin-react-hooks": "^2.0.1",
-    "execa": "^2.0.4",
-    "graphql-tools": "^4.0.5",
-    "husky": "^3.0.5",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "execa": "^3.3.0",
+    "graphql-tools": "^4.0.6",
+    "husky": "^3.0.9",
     "import-sort-style-module": "^6.0.0",
     "jest": "24.9.0",
-    "lerna": "^3.16.4",
-    "lint-staged": "^9.2.5",
-    "trim-right": "^1.0.1",
+    "lerna": "^3.18.4",
+    "lint-staged": "^9.4.3",
     "meow": "^5.0.0",
     "node-fetch": "^2.6.0",
     "patch-package": "^6.2.0",
-    "prettier": "^1.18.2",
-    "prettier-plugin-import-sort": "^0.0.3"
+    "prettier": "^1.19.1",
+    "prettier-plugin-import-sort": "^0.0.3",
+    "trim-right": "^1.0.1"
   },
   "scripts": {
     "bootstrap": "yarn && yarn outdated ; yarn audit",
@@ -101,6 +101,7 @@
     ]
   },
   "resolutions": {
-    "handlebars": "^4.3.0"
+    "handlebars": "^4.3.3",
+    "https-proxy-agent": "2.2.4"
   }
 }

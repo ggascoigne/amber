@@ -71,7 +71,7 @@ const Field: React.FC<{ label: string; small?: boolean; tiny: boolean }> = ({ la
   )
 }
 
-interface Game {
+interface GameCard {
   game: GetGames_games_edges_node
   year: number
   slot: { id: number }
@@ -79,7 +79,7 @@ interface Game {
   tiny?: boolean
 }
 
-export const Game: React.FC<Game> = ({ game, year, slot, onEnter, tiny = false }) => {
+export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny = false }) => {
   const classes = useStyles()
   const {
     id,

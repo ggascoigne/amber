@@ -1,6 +1,6 @@
 import { GetGames_games_edges } from '__generated__/GetGames'
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { Game } from 'components/Acnw/Game'
+import { GameCard } from 'components/Acnw/GameCard'
 import React from 'react'
 
 interface GameListFull {
@@ -15,7 +15,7 @@ export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnte
     <React.Fragment key={`slot_${slot.id}`}>
       {games.map(({ node: game }) => {
         return game ? (
-          <Game
+          <GameCard
             key={`game_${game.id}`}
             year={year}
             slot={slot}

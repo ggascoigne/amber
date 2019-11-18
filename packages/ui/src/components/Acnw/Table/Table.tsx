@@ -1,43 +1,159 @@
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import MUIDataTable, { MUIDataTableOptions, MUIDataTableProps } from 'mui-datatables'
-import React, { MouseEventHandler } from 'react'
+import { TableSortLabel } from '@material-ui/core'
+import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect, useMemo } from 'react'
+import {
+  CellProps,
+  Column,
+  HeaderProps,
+  TableInstance,
+  TableOptions,
+  useFilters,
+  usePagination,
+  useRowSelect,
+  useSortBy,
+  useTable
+} from 'react-table'
 
-import { CustomToolbar } from './CustomToolbar'
-import { CustomToolbarSelect } from './CustomToolbarSelect'
-import { getMuiTableTheme } from './getTableTheme'
+import { isDev } from '../../../utils/globals'
+import { camelToWords } from '../../../utils/object'
+import { useDebounce } from '../../../utils/useDebounce'
+import { useLocalStorage } from '../../../utils/useLocalStorage'
+import { DumpInstance } from './DumpInstance'
+import { FilterChipBar } from './FilterChipBar'
+import { ResizeHandle } from './ResizeHandle'
+import { TablePagination } from './TablePagination'
+import {
+  AcnwTable,
+  HeaderCheckbox,
+  RowCheckbox,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeadCell,
+  TableHeadRow,
+  TableLabel,
+  TableRow
+} from './TableStyles'
+import { TableToolbar } from './TableToolbar'
+import { TooltipCell } from './TooltipCell'
+import { useFlexLayout } from './useFlexLayout'
+import { useHideColumns } from './useHideColumns'
+import { useResizeColumns } from './useResizeColumns'
 
-export interface Table extends MUIDataTableProps {
-  onAdd: MouseEventHandler
-  onDelete: (selection: number[]) => void
-  onEdit: (selection: number[]) => void
+export interface Table<T extends object = {}> extends TableOptions<T> {
+  name: string
+  onAdd?: (instance: TableInstance<T>) => MouseEventHandler
+  onDelete?: (instance: TableInstance<T>) => MouseEventHandler
+  onEdit?: (instance: TableInstance<T>) => MouseEventHandler
 }
 
-export const Table: React.FC<Table> = ({ title, data, columns, onAdd, onDelete, onEdit }) => {
-  const options: MUIDataTableOptions = {
-    filterType: 'checkbox',
-    download: false,
-    print: false,
-    responsive: 'stacked',
-    onRowClick: (rowData, rowMeta) => {
-      onEdit([rowMeta.dataIndex])
+const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => <>{camelToWords(column.id)}</>
+
+const selectionColumn = {
+  id: '_selector',
+  Header: ({ getToggleAllRowsSelectedProps, isAllRowsSelected, selectedFlatRows }: HeaderProps<any>) => (
+    <HeaderCheckbox
+      {...getToggleAllRowsSelectedProps()}
+      indeterminate={!isAllRowsSelected && !!selectedFlatRows.length}
+    />
+  ),
+  Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
+  width: 52,
+  disableResizing: true
+}
+
+export function Table<T extends object>(props: PropsWithChildren<Table<T>>): ReactElement {
+  const { name, columns: originalColumns, onAdd, onDelete, onEdit } = props
+  const columns = useMemo(() => [selectionColumn, ...originalColumns], [originalColumns])
+
+  const hooks = [useHideColumns, useFilters, useSortBy, useRowSelect, usePagination, useResizeColumns, useFlexLayout]
+
+  const defaultColumn = React.useMemo<Partial<Column<T>>>(
+    () => ({
+      disableFilter: true,
+      Filter: () => null,
+      Cell: TooltipCell,
+      Header: DefaultHeader,
+      maxWidth: 0,
+      width: 0
+    }),
+    []
+  )
+
+  const [initialState, setInitialState] = useLocalStorage(`tableState:${name}`, {})
+  const instance = useTable<T>(
+    {
+      ...props,
+      columns,
+      defaultColumn,
+      initialState
     },
-    customToolbar: () => {
-      return <CustomToolbar onAdd={onAdd} />
-    },
-    customToolbarSelect: (selectedRows, displayData, setSelectedRows) => (
-      <CustomToolbarSelect
-        selectedRows={selectedRows}
-        displayData={displayData}
-        setSelectedRows={setSelectedRows}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
-    )
-  }
+    ...hooks
+  )
+
+  const { getTableProps, headerGroups, page, prepareRow, state } = instance
+  const debouncedState = useDebounce(state, 500)
+
+  useEffect(() => {
+    const { sortBy, filters, pageSize, columnResizing, hiddenColumns } = debouncedState
+    const val = {
+      sortBy,
+      filters,
+      pageSize,
+      columnResizing,
+      hiddenColumns
+    }
+    setInitialState(val)
+  }, [setInitialState, debouncedState])
 
   return (
-    <MuiThemeProvider theme={getMuiTableTheme()}>
-      <MUIDataTable title={title} data={data} columns={columns} options={options} />
-    </MuiThemeProvider>
+    <>
+      <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit }} />
+      <FilterChipBar<T> instance={instance} />
+      <AcnwTable {...getTableProps()}>
+        <TableHead>
+          {headerGroups.map(headerGroup => (
+            <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => {
+                const style = {
+                  alignItems: 'flex-start',
+                  textAlign: column.align ? column.align : 'left '
+                } as CSSProperties
+                return (
+                  <TableHeadCell {...column.getHeaderProps()}>
+                    {column.canSort ? (
+                      <TableSortLabel
+                        active={column.isSorted}
+                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                        {...column.getSortByToggleProps()}
+                        style={style}
+                      >
+                        {column.render('Header')}
+                      </TableSortLabel>
+                    ) : (
+                      <TableLabel style={style}>{column.render('Header')}</TableLabel>
+                    )}
+                    {column.canResize && <ResizeHandle column={column} />}
+                  </TableHeadCell>
+                )
+              })}
+            </TableHeadRow>
+          ))}
+        </TableHead>
+        <TableBody>
+          {page.map((row, i) => {
+            prepareRow(row)
+            return (
+              <TableRow {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                })}
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </AcnwTable>
+      <TablePagination<T> instance={instance} />
+      <DumpInstance enabled={isDev} instance={instance} />
+    </>
   )
 }

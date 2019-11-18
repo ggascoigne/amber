@@ -1,6 +1,6 @@
 import { GetGames_games_edges } from '__generated__/GetGames'
 import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { useGameQuery } from 'client'
+import { useGameBySlotQuery } from 'client'
 import React from 'react'
 
 import { GraphQLError } from '../GraphQLError'
@@ -20,7 +20,7 @@ interface GameQuery {
 }
 
 export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
-  const { loading, error, data } = useGameQuery({ year: year, slotId: slot.id })
+  const { loading, error, data } = useGameBySlotQuery({ year: year, slotId: slot.id })
   if (loading) {
     return <Loader />
   }

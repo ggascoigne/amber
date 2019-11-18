@@ -1,6 +1,7 @@
-import { AboutAmberconNw, CallbackPage, GraphiQLPage, Lookups, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
+import { AboutAmberconNw, CallbackPage, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
 import * as React from 'react'
 
+import { Games, Lookups } from '../../../pages/Admin'
 import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
@@ -57,12 +58,24 @@ export const rootRoutes: RootRoutes = [
     component: Lookups
   },
   {
+    path: '/games',
+    label: 'Games',
+    exact: true,
+    component: Games
+  },
+  {
     path: '/graphiql',
     label: 'GraphiQL',
     subText: 'Dynamically query the ACNW database',
     exact: false,
     component: GraphiQLPage,
     permission: Perms.GraphiqlLoad
+  },
+  {
+    path: '/credits',
+    label: 'Credits',
+    exact: false,
+    component: Credits
   },
   {
     path: '/callback',

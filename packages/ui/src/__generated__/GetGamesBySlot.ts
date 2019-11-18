@@ -3,10 +3,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: GetGames
+// GraphQL query operation: GetGamesBySlot
 // ====================================================
 
-export interface GetGames_games_edges_node_gameAssignments_nodes_member_user_profile {
+export interface GetGamesBySlot_games_edges_node_gameAssignments_nodes_member_user_profile {
   __typename: 'Profile'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -19,23 +19,23 @@ export interface GetGames_games_edges_node_gameAssignments_nodes_member_user_pro
   snailMailAddress: string | null
 }
 
-export interface GetGames_games_edges_node_gameAssignments_nodes_member_user {
+export interface GetGamesBySlot_games_edges_node_gameAssignments_nodes_member_user {
   __typename: 'User'
   /**
    * Reads a single `Profile` that is related to this `User`.
    */
-  profile: GetGames_games_edges_node_gameAssignments_nodes_member_user_profile | null
+  profile: GetGamesBySlot_games_edges_node_gameAssignments_nodes_member_user_profile | null
 }
 
-export interface GetGames_games_edges_node_gameAssignments_nodes_member {
+export interface GetGamesBySlot_games_edges_node_gameAssignments_nodes_member {
   __typename: 'Membership'
   /**
    * Reads a single `User` that is related to this `Membership`.
    */
-  user: GetGames_games_edges_node_gameAssignments_nodes_member_user | null
+  user: GetGamesBySlot_games_edges_node_gameAssignments_nodes_member_user | null
 }
 
-export interface GetGames_games_edges_node_gameAssignments_nodes {
+export interface GetGamesBySlot_games_edges_node_gameAssignments_nodes {
   __typename: 'GameAssignment'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -45,18 +45,18 @@ export interface GetGames_games_edges_node_gameAssignments_nodes {
   /**
    * Reads a single `Membership` that is related to this `GameAssignment`.
    */
-  member: GetGames_games_edges_node_gameAssignments_nodes_member | null
+  member: GetGamesBySlot_games_edges_node_gameAssignments_nodes_member | null
 }
 
-export interface GetGames_games_edges_node_gameAssignments {
+export interface GetGamesBySlot_games_edges_node_gameAssignments {
   __typename: 'GameAssignmentsConnection'
   /**
    * A list of `GameAssignment` objects.
    */
-  nodes: (GetGames_games_edges_node_gameAssignments_nodes | null)[]
+  nodes: (GetGamesBySlot_games_edges_node_gameAssignments_nodes | null)[]
 }
 
-export interface GetGames_games_edges_node {
+export interface GetGamesBySlot_games_edges_node {
   __typename: 'Game'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -87,32 +87,33 @@ export interface GetGames_games_edges_node {
   /**
    * Reads and enables pagination through a set of `GameAssignment`.
    */
-  gameAssignments: GetGames_games_edges_node_gameAssignments
+  gameAssignments: GetGamesBySlot_games_edges_node_gameAssignments
 }
 
-export interface GetGames_games_edges {
+export interface GetGamesBySlot_games_edges {
   __typename: 'GamesEdge'
   /**
    * The `Game` at the end of the edge.
    */
-  node: GetGames_games_edges_node | null
+  node: GetGamesBySlot_games_edges_node | null
 }
 
-export interface GetGames_games {
+export interface GetGamesBySlot_games {
   __typename: 'GamesConnection'
   /**
    * A list of edges which contains the `Game` and cursor to aid in pagination.
    */
-  edges: GetGames_games_edges[]
+  edges: GetGamesBySlot_games_edges[]
 }
 
-export interface GetGames {
+export interface GetGamesBySlot {
   /**
    * Reads and enables pagination through a set of `Game`.
    */
-  games: GetGames_games | null
+  games: GetGamesBySlot_games | null
 }
 
-export interface GetGamesVariables {
+export interface GetGamesBySlotVariables {
   year: number
+  slotId: number
 }

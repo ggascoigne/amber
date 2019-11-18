@@ -1,6 +1,9 @@
 module.exports = {
   client: {
-    includes: ['./src/client/fragments/*.ts', './src/**/*.tsx'],
+    includes: [
+      './src/**/*.ts',
+      './src/**/*.tsx'
+    ],
     excludes: ['./src/client/resolvers/*.tsx'],
     service: {
       name: 'acnw',

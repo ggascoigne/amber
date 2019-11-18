@@ -7,7 +7,7 @@ import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React from 'react'
 
-import { Game } from '../Game'
+import { GameCard } from '../GameCard'
 
 const useStyles = makeStyles(
   createStyles({
@@ -89,12 +89,12 @@ export const YearTile = ({ year, game, onClick }: YearTile) => {
       {' '}
       <CardBody className={classes.cardBody}>
         <CardHeader className={classes.greyCardHeader}>
-          <Typography variant='h6' component='h2' className={classes.yearTitle}>
+          <Typography variant='h6' className={classes.yearTitle}>
             {year}
           </Typography>
         </CardHeader>
         <div className={classes.gameWrapper}>
-          <Game game={game} year={year} slot={{ id: 1 }} tiny />
+          <GameCard game={game} year={year} slot={{ id: 1 }} tiny />
           <FakeTile index={2} />
           <FakeTile index={3} />
         </div>
