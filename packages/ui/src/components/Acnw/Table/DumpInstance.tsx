@@ -1,8 +1,10 @@
 import { IconButton, Tooltip, createStyles, makeStyles } from '@material-ui/core'
-import React, { useState } from 'react'
-import ReactJson from 'react-json-view'
+import React, { Suspense, useState } from 'react'
 
 import { DebugIcon } from '../../../icons'
+import { Loader } from '../Loader'
+
+const ReactJson = React.lazy(() => import('react-json-view'))
 
 const useStyles = makeStyles(
   createStyles({
@@ -33,7 +35,9 @@ export const DumpInstance: React.FC<{
         <>
           <br />
           <br />
-          <ReactJson src={instance} collapsed={1} indentWidth={2} />
+          <Suspense fallback={<Loader />}>
+            <ReactJson src={instance} collapsed={1} indentWidth={2} />
+          </Suspense>
         </>
       )}
     </>
