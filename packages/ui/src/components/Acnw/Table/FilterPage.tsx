@@ -1,9 +1,10 @@
-import { Button, FormControl, Popover, TextField, Typography, createStyles, makeStyles } from '@material-ui/core'
+import { Button, FormControl, Popover, Typography, createStyles, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { Field, Form, Formik, FormikHelpers, FormikState } from 'formik'
-import { fieldToTextField } from 'formik-material-ui'
+import { Form, Formik, FormikHelpers, FormikState } from 'formik'
 import React, { ReactElement, useCallback, useMemo } from 'react'
 import { ColumnInstance, Filters, IdType, TableInstance } from 'react-table'
+
+import { TextField } from '../Form'
 
 const useStyles = makeStyles(
   createStyles({
@@ -121,20 +122,15 @@ export function FilterPage<T extends object>({ instance, anchorEl, onClose, show
                   return (
                     <span key={column.id}>
                       <FormControl className={classNames(classes.formControl, classes.formGrid)}>
-                        <Field name={column.id}>
-                          {(props: any) => (
-                            // NOTE: this uses the raw material UI TextField and not the material-ui-formik one,
-                            // because onBlur always gets overridden by the formik supplied form version version in that package.
-                            <TextField
-                              {...fieldToTextField(props)}
-                              autoFocus={index === 0}
-                              variant={'standard'}
-                              // note that this relies on a convention of having the columns header component just render the name
-                              label={column.render('Header')}
-                              onBlur={() => onBlur(values)}
-                            />
-                          )}
-                        </Field>
+                        <TextField
+                          name={column.id}
+                          overrideFormik={true}
+                          autoFocus={index === 0}
+                          variant={'standard'}
+                          // note that this relies on a convention of having the columns header component just render the name
+                          label={column.render('Header')}
+                          onBlur={() => onBlur(values)}
+                        />
                       </FormControl>
                       {Math.abs(index % 2) === 1 ? <br /> : null}
                     </span>

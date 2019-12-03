@@ -2,17 +2,18 @@ import List from '@material-ui/core/List'
 import ListItemText from '@material-ui/core/ListItemText'
 import { HasPermission } from 'components/Acnw/Auth'
 import React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { useLocation } from 'react-router'
 
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import { RootRoutes } from './Routes'
 
-interface MenuItems extends RouteComponentProps {
+interface MenuItems {
   menuItems: RootRoutes
 }
 
-const _MenuItems: React.FC<MenuItems> = ({ menuItems, location }) => {
+export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
+  const location = useLocation()
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
   if (matchedContextRoute) {
@@ -44,5 +45,3 @@ const _MenuItems: React.FC<MenuItems> = ({ menuItems, location }) => {
     )
   }
 }
-
-export const MenuItems = withRouter(_MenuItems)

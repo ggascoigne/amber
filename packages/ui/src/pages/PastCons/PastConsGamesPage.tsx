@@ -4,8 +4,7 @@ import jump from 'jump.js'
 import debounce from 'lodash/debounce'
 import { PastConsPageGameList } from 'pages/PastCons/PastConsPageGameList'
 import React, { useCallback, useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import compose from 'recompose/compose'
+import { useHistory, useParams } from 'react-router'
 
 interface MatchParams {
   year: string
@@ -13,16 +12,9 @@ interface MatchParams {
   game: string
 }
 
-interface IPastConsGamePage extends RouteComponentProps<MatchParams> {}
-
-const _PastConsGamesPage: React.FC<IPastConsGamePage> = props => {
-  const {
-    match: {
-      params: { year: yearStr, slot: slotIdStr, game }
-    },
-    history
-  } = props
-
+export const PastConsGamesPage: React.FC = () => {
+  const history = useHistory()
+  const { year: yearStr, slot: slotIdStr, game } = useParams<MatchParams>()
   const year = yearStr ? parseInt(yearStr) : 2017
   const [lastSlug, setLastSlug] = useState<string>('')
   const [updateUrlSourceMutation] = useUrlSourceMutation()
@@ -75,5 +67,3 @@ const _PastConsGamesPage: React.FC<IPastConsGamePage> = props => {
     </Page>
   )
 }
-
-export const PastConsGamesPage = compose<IPastConsGamePage, {}>(withRouter)(_PastConsGamesPage)

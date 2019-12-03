@@ -63,26 +63,27 @@ export interface GetGames_games_edges_node {
    */
   nodeId: string
   id: number
-  charInstructions: string
-  description: string
-  estimatedLength: string
-  gameContactEmail: string
-  genre: string
-  lateFinish: boolean | null
-  lateStart: string | null
-  message: string
   name: string
+  gmNames: string | null
+  description: string
+  genre: string
+  type: string
+  setting: string
+  charInstructions: string
   playerMax: number
   playerMin: number
   playerPreference: string
-  playersContactGm: boolean
   returningPlayers: string
-  setting: string
-  slotConflicts: string
-  slotId: number | null
+  playersContactGm: boolean
+  gameContactEmail: string
+  estimatedLength: string
   slotPreference: number
+  lateStart: string | null
+  lateFinish: boolean | null
+  slotConflicts: string
+  message: string
+  slotId: number | null
   teenFriendly: boolean
-  type: string
   year: number
   /**
    * Reads and enables pagination through a set of `GameAssignment`.

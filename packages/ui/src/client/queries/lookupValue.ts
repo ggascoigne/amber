@@ -7,6 +7,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { LOOKUP_FRAGMENT, LOOKUP_VALUES_FRAGMENT } from 'client'
 import gql from 'graphql-tag'
 
+import { GetLookupValuesVariables } from '../../__generated__/GetLookupValues'
 import { QUERY_LOOKUP } from './lookup'
 
 const useUpdateLookupValue = () =>
@@ -87,7 +88,7 @@ export const useDeleteLookupValue = () =>
     { refetchQueries: [{ query: QUERY_LOOKUP }] }
   )
 
-const QUERY_LOOKUP_VALUES = gql`
+const QUERY_LOOKUP_VALUE = gql`
   query GetLookupValue($realm: String!, $code: String!) {
     lookups(condition: { realm: $realm }) {
       edges {
@@ -107,4 +108,26 @@ const QUERY_LOOKUP_VALUES = gql`
 `
 
 export const useLookupValueQuery = (variables: GetLookupValueVariables) =>
-  useQuery<GetLookupValue, GetLookupValueVariables>(QUERY_LOOKUP_VALUES, { variables })
+  useQuery<GetLookupValue, GetLookupValueVariables>(QUERY_LOOKUP_VALUE, { variables })
+
+const QUERY_LOOKUP_VALUES = gql`
+  query GetLookupValues($realm: String!) {
+    lookups(condition: { realm: $realm }) {
+      edges {
+        node {
+          ...lookupFields
+          lookupValues(orderBy: VALUE_ASC) {
+            nodes {
+              ...lookupValuesFields
+            }
+          }
+        }
+      }
+    }
+  }
+  ${LOOKUP_FRAGMENT}
+  ${LOOKUP_VALUES_FRAGMENT}
+`
+
+export const useLookupValuesQuery = (variables: GetLookupValuesVariables) =>
+  useQuery<GetLookupValue, GetLookupValuesVariables>(QUERY_LOOKUP_VALUES, { variables })

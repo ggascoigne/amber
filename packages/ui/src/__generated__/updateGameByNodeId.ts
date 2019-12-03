@@ -2,11 +2,13 @@
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
+import { UpdateGameByNodeIdInput } from './globalTypes'
+
 // ====================================================
-// GraphQL query operation: GetFirstGameOfSlot
+// GraphQL mutation operation: updateGameByNodeId
 // ====================================================
 
-export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member_user_profile {
+export interface updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member_user_profile {
   __typename: 'Profile'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -19,23 +21,23 @@ export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member_use
   snailMailAddress: string | null
 }
 
-export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member_user {
+export interface updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member_user {
   __typename: 'User'
   /**
    * Reads a single `Profile` that is related to this `User`.
    */
-  profile: GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member_user_profile | null
+  profile: updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member_user_profile | null
 }
 
-export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member {
+export interface updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member {
   __typename: 'Membership'
   /**
    * Reads a single `User` that is related to this `Membership`.
    */
-  user: GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member_user | null
+  user: updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member_user | null
 }
 
-export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes {
+export interface updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes {
   __typename: 'GameAssignment'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -45,18 +47,18 @@ export interface GetFirstGameOfSlot_games_nodes_gameAssignments_nodes {
   /**
    * Reads a single `Membership` that is related to this `GameAssignment`.
    */
-  member: GetFirstGameOfSlot_games_nodes_gameAssignments_nodes_member | null
+  member: updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes_member | null
 }
 
-export interface GetFirstGameOfSlot_games_nodes_gameAssignments {
+export interface updateGameByNodeId_updateGameByNodeId_game_gameAssignments {
   __typename: 'GameAssignmentsConnection'
   /**
    * A list of `GameAssignment` objects.
    */
-  nodes: (GetFirstGameOfSlot_games_nodes_gameAssignments_nodes | null)[]
+  nodes: (updateGameByNodeId_updateGameByNodeId_game_gameAssignments_nodes | null)[]
 }
 
-export interface GetFirstGameOfSlot_games_nodes {
+export interface updateGameByNodeId_updateGameByNodeId_game {
   __typename: 'Game'
   /**
    * A globally unique identifier. Can be used in various places throughout the system to identify this single value.
@@ -88,24 +90,24 @@ export interface GetFirstGameOfSlot_games_nodes {
   /**
    * Reads and enables pagination through a set of `GameAssignment`.
    */
-  gameAssignments: GetFirstGameOfSlot_games_nodes_gameAssignments
+  gameAssignments: updateGameByNodeId_updateGameByNodeId_game_gameAssignments
 }
 
-export interface GetFirstGameOfSlot_games {
-  __typename: 'GamesConnection'
+export interface updateGameByNodeId_updateGameByNodeId {
+  __typename: 'UpdateGamePayload'
   /**
-   * A list of `Game` objects.
+   * The `Game` that was updated by this mutation.
    */
-  nodes: (GetFirstGameOfSlot_games_nodes | null)[]
+  game: updateGameByNodeId_updateGameByNodeId_game | null
 }
 
-export interface GetFirstGameOfSlot {
+export interface updateGameByNodeId {
   /**
-   * Reads and enables pagination through a set of `Game`.
+   * Updates a single `Game` using its globally unique id and a patch.
    */
-  games: GetFirstGameOfSlot_games | null
+  updateGameByNodeId: updateGameByNodeId_updateGameByNodeId | null
 }
 
-export interface GetFirstGameOfSlotVariables {
-  year: number
+export interface updateGameByNodeIdVariables {
+  input: UpdateGameByNodeIdInput
 }

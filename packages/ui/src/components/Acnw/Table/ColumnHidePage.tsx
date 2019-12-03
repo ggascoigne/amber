@@ -29,15 +29,15 @@ export function ColumnHidePage<T extends object>({
   anchorEl,
   onClose,
   show
-}: ColumnHidePage<T>): ReactElement {
+}: ColumnHidePage<T>): ReactElement | null {
   const classes = useStyles({})
   const { columns, setColumnHidden } = instance
-  const filterableColumns = columns.filter(column => !(column.id === '_selector' || column.id === '_action'))
-  const checkedCount = filterableColumns.reduce((acc, val) => acc + (val.isVisible ? 0 : 1), 0)
+  const hideableColumns = columns.filter(column => !(column.id === '_selector'))
+  const checkedCount = hideableColumns.reduce((acc, val) => acc + (val.isVisible ? 0 : 1), 0)
 
-  const onlyOneOptionLeft = checkedCount + 1 >= filterableColumns.length
+  const onlyOneOptionLeft = checkedCount + 1 >= hideableColumns.length
 
-  return (
+  return hideableColumns.length > 1 ? (
     <div>
       <Popover
         anchorEl={anchorEl}
@@ -55,7 +55,7 @@ export function ColumnHidePage<T extends object>({
         }}
       >
         <Typography className={classes.popoverTitle}>Visible Columns</Typography>
-        {filterableColumns.map(column => {
+        {hideableColumns.map(column => {
           return (
             <span key={column.id}>
               <FormControlLabel
@@ -70,5 +70,5 @@ export function ColumnHidePage<T extends object>({
         })}
       </Popover>
     </div>
-  )
+  ) : null
 }

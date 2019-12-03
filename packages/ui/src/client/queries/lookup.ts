@@ -6,6 +6,8 @@ import { useMutation, useQuery } from '@apollo/react-hooks'
 import { LOOKUP_FRAGMENT, LOOKUP_VALUES_FRAGMENT } from 'client'
 import gql from 'graphql-tag'
 
+import { LookupInput } from '../../__generated__/globalTypes'
+
 export const QUERY_LOOKUP = gql`
   query GetLookups {
     lookups(orderBy: REALM_ASC) {
@@ -67,9 +69,8 @@ export const useDeleteLookup = () =>
     { refetchQueries: [{ query: QUERY_LOOKUP }] }
   )
 
-interface createOrUpdateLookup {
+interface createOrUpdateLookup extends Pick<LookupInput, 'realm'> {
   nodeId?: string
-  realm: string
 }
 
 export const useCreateOrUpdateLookup = () => {

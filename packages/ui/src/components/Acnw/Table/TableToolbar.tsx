@@ -98,10 +98,12 @@ export function TableToolbar<T extends object>({
   onDelete = () => () => null,
   onEdit = () => () => null
 }: PropsWithChildren<TableToolbar<T>>): ReactElement | null {
+  const { columns } = instance
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)
   const [columnsOpen, setColumnsOpen] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)
+  const hideableColumns = columns.filter(column => !(column.id === '_selector'))
 
   const handleColumnsClick = useCallback(
     (event: MouseEvent) => {
@@ -163,13 +165,15 @@ export function TableToolbar<T extends object>({
       <div className={classes.rightButtons}>
         <ColumnHidePage<T> instance={instance} onClose={handleClose} show={columnsOpen} anchorEl={anchorEl} />
         <FilterPage<T> instance={instance} onClose={handleClose} show={filterOpen} anchorEl={anchorEl} />
-        <SmallIconActionButton<T>
-          instance={instance}
-          icon={<ViewColumnsIcon />}
-          onClick={() => handleColumnsClick}
-          label='Show / hide columns'
-          variant='right'
-        />
+        {hideableColumns.length > 1 && (
+          <SmallIconActionButton<T>
+            instance={instance}
+            icon={<ViewColumnsIcon />}
+            onClick={() => handleColumnsClick}
+            label='Show / hide columns'
+            variant='right'
+          />
+        )}
         <SmallIconActionButton<T>
           instance={instance}
           icon={<FilterListIcon />}

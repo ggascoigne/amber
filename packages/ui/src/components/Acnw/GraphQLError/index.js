@@ -1,11 +1,10 @@
 import Typography from '@material-ui/core/Typography'
 import Quote from 'components/MaterialKitReact/Typography/Quote'
-import get from 'lodash/get'
 import React from 'react'
 
 export const GraphQLError = ({ error }) => {
   console.log(JSON.stringify(error, null, 2))
-  const networkErrors = get(error, 'networkError.result.errors')
+  const networkErrors = error?.networkError?.result?.errors
   return (
     <>
       <Typography variant='h3' color='inherit'>

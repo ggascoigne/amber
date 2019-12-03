@@ -67,7 +67,7 @@ const propTypes = {
   defaultFlex: PropTypes.number
 }
 
-const useMain = instance => {
+const useInstance = instance => {
   PropTypes.checkPropTypes(propTypes, instance, 'property', 'useFlexLayout')
 
   const {
@@ -119,7 +119,7 @@ const useMain = instance => {
 }
 
 export const useFlexLayout = hooks => {
-  hooks.useMain.push(useMain)
+  hooks.useInstance.push(useInstance)
 }
 
 useFlexLayout.pluginName = 'useFlexLayout'

@@ -2,14 +2,15 @@ import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
 import { useDeleteLookup, useDeleteLookupValue, useLookupsQuery } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import { TableInstance } from 'react-table'
+import { Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { LookupsDialog } from './LookupsDialog'
 
 const columns = [
   {
-    accessor: 'realm'
+    accessor: 'realm',
+    disableResizing: true
   }
 ]
 
@@ -62,10 +63,23 @@ export const Lookups: React.FC = () => {
     setSelection(instance.selectedFlatRows.map(r => r.original))
   }
 
+  const onClick = (row: Row<GetLookups_lookups_edges_node>) => {
+    setShowEdit(true)
+    setSelection([row.original])
+  }
+
   return (
     <Page>
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table name='lookups' data={list} columns={columns} onAdd={onAdd} onDelete={onDelete} onEdit={onEdit} />
+      <Table<GetLookups_lookups_edges_node>
+        name='lookups'
+        data={list}
+        columns={columns}
+        onAdd={onAdd}
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onClick={onClick}
+      />
     </Page>
   )
 }

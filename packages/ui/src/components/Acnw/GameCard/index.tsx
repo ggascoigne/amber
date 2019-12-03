@@ -1,13 +1,10 @@
 import { GetGames_games_edges_node } from '__generated__/GetGames'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { LookupValue } from 'components/Acnw/Lookup'
+import { GridContainer, GridItem, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
-import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
-import GridItem from 'components/MaterialKitReact/Grid/GridItem'
-import get from 'lodash/get'
 import React from 'react'
 import { Waypoint } from 'react-waypoint'
 import maskEmail from 'utils/maskEmail'
@@ -117,7 +114,7 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
       <CardBody>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms.nodes.map(a => get(a, 'member.user.profile.fullName')).join(', ')}
+            {gms.nodes.map(a => a?.member?.user?.profile?.fullName).join(', ')}
           </Field>
           <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
             <MultiLine text={description} />

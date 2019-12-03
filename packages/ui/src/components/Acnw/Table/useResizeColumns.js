@@ -1,53 +1,86 @@
-import PropTypes from 'prop-types'
-import { defaultColumn, defaultState } from 'react-table'
+import React from 'react'
+import { actions, reducerHandlers, utils } from 'react-table'
 
-//
+const { defaultColumn, getFirstDefined, mergeProps, applyPropHooks } = utils
 
-// ggp: begin - copied form private methods in react-table
-export function getFirstDefined(...args) {
-  for (let i = 0; i < args.length; i += 1) {
-    if (typeof args[i] !== 'undefined') {
-      return args[i]
+const pluginName = 'useResizeColumns'
+
+// Default Column
+defaultColumn.canResize = true
+
+// Actions
+actions.columnStartResizing = 'columnStartResizing'
+actions.columnResizing = 'columnResizing'
+actions.columnDoneResizing = 'columnDoneResizing'
+
+// Reducer
+reducerHandlers[pluginName] = (state, action) => {
+  if (action.type === actions.init) {
+    return {
+      columnResizing: {
+        columnWidths: {}
+      },
+      ...state
+    }
+  }
+
+  if (action.type === actions.columnStartResizing) {
+    const { startX, columnId, headerIdWidths } = action
+
+    return {
+      ...state,
+      columnResizing: {
+        ...state.columnResizing,
+        startX,
+        headerIdWidths,
+        isResizingColumn: columnId
+      }
+    }
+  }
+
+  if (action.type === actions.columnResizing) {
+    const { clientX } = action
+    const { startX, headerIdWidths } = state.columnResizing
+
+    const deltaX = clientX - startX
+    const percentageDeltaX = deltaX / headerIdWidths.length
+
+    const newColumnWidths = {}
+    headerIdWidths.forEach(([headerId, headerWidth], index) => {
+      newColumnWidths[headerId] = Math.max(headerWidth + percentageDeltaX, 0)
+    })
+
+    return {
+      ...state,
+      columnResizing: {
+        ...state.columnResizing,
+        columnWidths: {
+          ...state.columnResizing.columnWidths,
+          ...newColumnWidths
+        }
+      }
+    }
+  }
+
+  if (action.type === actions.columnDoneResizing) {
+    return {
+      ...state,
+      columnResizing: {
+        ...state.columnResizing,
+        startX: null,
+        isResizingColumn: null
+      }
     }
   }
 }
 
-export const mergeProps = (...groups) => {
-  let props = {}
-  groups.forEach(({ style = {}, className, ...rest } = {}) => {
-    props = {
-      ...props,
-      ...rest,
-      style: {
-        ...(props.style || {}),
-        ...style
-      },
-      className: [props.className, className].filter(Boolean).join(' ')
-    }
-  })
-  return props
-}
-
-export const applyPropHooks = (hooks, ...args) => hooks.reduce((prev, next) => mergeProps(prev, next(...args)), {})
-// ggp: end - copied form private methods in react-table
-
-defaultState.columnResizing = {
-  columnWidths: {}
-}
-
-defaultColumn.canResize = true
-
-const propTypes = {}
-
 export const useResizeColumns = hooks => {
-  hooks.useBeforeDimensions.push(useBeforeDimensions)
+  hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
 }
 
-useResizeColumns.pluginName = 'useResizeColumns'
+useResizeColumns.pluginName = pluginName
 
-const useBeforeDimensions = instance => {
-  PropTypes.checkPropTypes(propTypes, instance, 'property', 'useResizeColumns')
-
+const useInstanceBeforeDimensions = instance => {
   instance.hooks.getResizerProps = []
 
   const {
@@ -55,7 +88,7 @@ const useBeforeDimensions = instance => {
     disableResizing,
     hooks: { getHeaderProps },
     state: { columnResizing },
-    setState
+    dispatch
   } = instance
 
   getHeaderProps.push(() => {
@@ -69,62 +102,41 @@ const useBeforeDimensions = instance => {
   const onMouseDown = (e, header) => {
     const headersToResize = getLeafHeaders(header)
     // ggp:  note that this is a hack and totally dependent upon the dom I've created
-    const startWidths =
+    // originally:
+    // const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
+    const headerIdWidths =
       headersToResize.length === 1
-        ? [e.currentTarget.parentElement.offsetWidth]
-        : headersToResize.map(header => header.totalWidth)
-    const startX = e.clientX
+        ? [[headersToResize[0].id, e.currentTarget.parentElement.offsetWidth]]
+        : headersToResize.map(d => [d.id, d.totalWidth])
+
+    const clientX = e.clientX
 
     const onMouseMove = e => {
-      const currentX = e.clientX
-      const deltaX = currentX - startX
-
-      const percentageDeltaX = deltaX / headersToResize.length
-      // console.log(`percentageDeltaX = ${percentageDeltaX}`)
-
-      const newColumnWidths = {}
-      headersToResize.forEach((header, index) => {
-        newColumnWidths[header.id] = Math.max(startWidths[index] + percentageDeltaX, 0)
-      })
-
-      setState(old => ({
-        ...old,
-        columnResizing: {
-          ...old.columnResizing,
-          columnWidths: {
-            ...old.columnResizing.columnWidths,
-            ...newColumnWidths
-          }
-        }
-      }))
+      const clientX = e.clientX
+      dispatch({ type: actions.columnResizing, clientX })
     }
 
     const onMouseUp = e => {
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseup', onMouseUp)
 
-      setState(old => ({
-        ...old,
-        columnResizing: {
-          ...old.columnResizing,
-          startX: null,
-          isResizingColumn: null
-        }
-      }))
+      dispatch({ type: actions.columnDoneResizing })
     }
 
     document.addEventListener('mousemove', onMouseMove)
     document.addEventListener('mouseup', onMouseUp)
 
-    setState(old => ({
-      ...old,
-      columnResizing: {
-        ...old.columnResizing,
-        startX,
-        isResizingColumn: header.id
-      }
-    }))
+    dispatch({
+      type: actions.columnStartResizing,
+      columnId: header.id,
+      headerIdWidths,
+      startX: clientX
+    })
   }
+
+  // use reference to avoid memory leak in #1608
+  const instanceRef = React.useRef()
+  instanceRef.current = instance
 
   flatHeaders.forEach(header => {
     const canResize = getFirstDefined(
@@ -143,12 +155,11 @@ const useBeforeDimensions = instance => {
           {
             onMouseDown: e => e.persist() || onMouseDown(e, header),
             style: {
-              // ggp: change default cursor
               cursor: 'ew-resize'
             },
             draggable: false
           },
-          applyPropHooks(instance.hooks.getResizerProps, header, instance),
+          applyPropHooks(instanceRef.current.hooks.getResizerProps, header, instanceRef.current),
           userProps
         )
       }

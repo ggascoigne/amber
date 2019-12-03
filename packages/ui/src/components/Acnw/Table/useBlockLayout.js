@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 const propTypes = {}
 
 export const useBlockLayout = hooks => {
-  hooks.useMain.push(useMain)
+  hooks.useInstance.push(useInstance)
 }
 
 useBlockLayout.pluginName = 'useBlockLayout'
 
-const useMain = instance => {
+const useInstance = instance => {
   PropTypes.checkPropTypes(propTypes, instance, 'property', 'useBlockLayout')
 
   const {

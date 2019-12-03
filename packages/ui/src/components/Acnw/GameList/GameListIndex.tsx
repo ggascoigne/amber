@@ -4,11 +4,9 @@ import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import createStyles from '@material-ui/core/styles/createStyles'
+import { useUrlSourceMutation } from 'client/resolvers/urlSource'
 import React from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import compose from 'recompose/compose'
-
-import { useUrlSourceMutation } from '../../../client/resolvers/urlSource'
+import { useHistory, useLocation } from 'react-router'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,10 +24,11 @@ interface GameListIndex {
   onEnterGame?: any
 }
 
-interface GameListIndexInternal extends GameListIndex, RouteComponentProps {}
-
-const _GameListIndex: React.FC<GameListIndexInternal> = ({ history, location, year, slot, games }) => {
+export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games }) => {
   const classes = useStyles()
+  const history = useHistory()
+  const location = useLocation()
+
   const [updateUrlSourceMutation] = useUrlSourceMutation()
   return (
     <List>
@@ -58,4 +57,3 @@ const _GameListIndex: React.FC<GameListIndexInternal> = ({ history, location, ye
     </List>
   )
 }
-export const GameListIndex = compose<GameListIndexInternal, GameListIndex>(withRouter)(_GameListIndex)

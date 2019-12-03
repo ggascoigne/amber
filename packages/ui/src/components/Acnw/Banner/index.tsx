@@ -1,7 +1,6 @@
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
-import GridItem from 'components/MaterialKitReact/Grid/GridItem'
+import { GridContainer, GridItem } from 'components/Acnw'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import configurationService from 'utils/ConfigurationService'

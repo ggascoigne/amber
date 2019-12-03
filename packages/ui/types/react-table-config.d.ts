@@ -41,19 +41,6 @@ import {
 } from 'react-table'
 
 declare module 'react-table' {
-  // begin fixed definitions
-  export interface UseRowSelectState<D extends object> {
-    selectedRowPaths: Array<IdType<D>>
-  }
-
-  export interface UseRowSelectInstanceProps<D extends object> {
-    toggleRowSelected: (rowPath: IdType<D>, set?: boolean) => void
-    toggleRowSelectedAll: (set?: boolean) => void
-    getToggleAllRowsSelectedProps: (props?: object) => object
-    isAllRowsSelected: boolean
-    selectedFlatRows: Array<Row<D>>
-  }
-
   // new definitions
   export interface UseResizeColumnState {
     columnResizing: {

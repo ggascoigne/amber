@@ -1,9 +1,32 @@
 import { useCallback } from 'react'
-import { Column, Hooks, TableInstance, TableState, actions, addActions, defaultState } from 'react-table'
+import { Column, Hooks, TableAction, TableInstance, TableState, actions, reducerHandlers } from 'react-table'
+const pluginName = 'useHideColumns'
 
-addActions('hideColumn')
+// Actions
+actions.hideColumn = 'hideColumn'
 
-defaultState.hiddenColumns = []
+// Reducer
+reducerHandlers[pluginName] = (state: TableState, action: TableAction & { key: string | number; hide: boolean }) => {
+  if (action.type === actions.init) {
+    return {
+      hiddenColumns: [],
+      ...state
+    }
+  }
+
+  if (action.type === actions.hideColumn) {
+    const hidden = new Set(state.hiddenColumns)
+    if (action.hide) {
+      hidden.add(action.key)
+    } else {
+      hidden.delete(action.key)
+    }
+    return {
+      ...state,
+      hiddenColumns: Array.from(hidden)
+    }
+  }
+}
 
 const columnsBeforeHeaderGroups = (userColumns: Column<any>[]) => {
   const columns = [...userColumns]
@@ -19,24 +42,13 @@ const columnsBeforeHeaderGroups = (userColumns: Column<any>[]) => {
   return columns
 }
 
-const useMain = <T extends object>(instance: TableInstance<T>): TableInstance<T> => {
-  const { setState } = instance
+const useInstance = <T extends object>(instance: TableInstance<T>): TableInstance<T> => {
+  const { dispatch } = instance
   const setColumnHidden = useCallback(
     (key: string | number, hide: boolean) => {
-      setState((old): TableState<T> => {
-        const hidden = new Set(old.hiddenColumns)
-        if (hide) {
-          hidden.add(key)
-        } else {
-          hidden.delete(key)
-        }
-        return {
-          ...old,
-          hiddenColumns: Array.from(hidden)
-        }
-      }, actions.hideColumn)
+      return dispatch({ type: actions.hideColumn, key, hide })
     },
-    [setState]
+    [dispatch]
   )
   return {
     ...instance,
@@ -50,7 +62,7 @@ export const useHideColumns = <T extends object = {}>(hooks: Hooks<T>) => {
     const { hiddenColumns } = instance.state
     return [...deps, hiddenColumns]
   })
-  hooks.useMain.push(useMain)
+  hooks.useInstance.push(useInstance)
 }
 
-useHideColumns.pluginName = 'useHideColumns'
+useHideColumns.pluginName = pluginName

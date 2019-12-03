@@ -1,9 +1,11 @@
 import { TableSortLabel } from '@material-ui/core'
 import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect, useMemo } from 'react'
 import {
+  Cell,
   CellProps,
   Column,
   HeaderProps,
+  Row,
   TableInstance,
   TableOptions,
   useFilters,
@@ -44,6 +46,7 @@ export interface Table<T extends object = {}> extends TableOptions<T> {
   onAdd?: (instance: TableInstance<T>) => MouseEventHandler
   onDelete?: (instance: TableInstance<T>) => MouseEventHandler
   onEdit?: (instance: TableInstance<T>) => MouseEventHandler
+  onClick?: (row: Row<T>) => void
 }
 
 const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => <>{camelToWords(column.id)}</>
@@ -62,7 +65,7 @@ const selectionColumn = {
 }
 
 export function Table<T extends object>(props: PropsWithChildren<Table<T>>): ReactElement {
-  const { name, columns: originalColumns, onAdd, onDelete, onEdit } = props
+  const { name, columns: originalColumns, onAdd, onDelete, onEdit, onClick } = props
   const columns = useMemo(() => [selectionColumn, ...originalColumns], [originalColumns])
 
   const hooks = [useHideColumns, useFilters, useSortBy, useRowSelect, usePagination, useResizeColumns, useFlexLayout]
@@ -105,6 +108,10 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
     setInitialState(val)
   }, [setInitialState, debouncedState])
 
+  const cellClickHandler = (cell: Cell<T>) => () => {
+    onClick && cell.column.id !== '_selector' && onClick(cell.row)
+  }
+
   return (
     <>
       <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit }} />
@@ -145,7 +152,11 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
             return (
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
-                  return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>
+                  return (
+                    <TableCell {...cell.getCellProps()} onClick={cellClickHandler(cell)}>
+                      {cell.render('Cell')}
+                    </TableCell>
+                  )
                 })}
               </TableRow>
             )

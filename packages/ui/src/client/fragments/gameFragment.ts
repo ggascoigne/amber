@@ -4,26 +4,45 @@ export const GAME_FRAGMENT = gql`
   fragment gameFields on Game {
     nodeId
     id
-    charInstructions
-    description
-    estimatedLength
-    gameContactEmail
-    genre
-    lateFinish
-    lateStart
-    message
     name
+    gmNames
+    description
+    genre
+    type
+    setting
+    charInstructions
     playerMax
     playerMin
     playerPreference
-    playersContactGm
     returningPlayers
-    setting
-    slotConflicts
-    slotId
+    playersContactGm
+    gameContactEmail
+    estimatedLength
     slotPreference
+    lateStart
+    lateFinish
+    slotConflicts
+    message
+    slotId
     teenFriendly
-    type
     year
+  }
+`
+
+export const GAME_GMS_FRAGMENT = gql`
+  fragment gameGms on Game {
+    gameAssignments(filter: { gm: { lessThan: 0 } }) {
+      nodes {
+        nodeId
+        gm
+        member {
+          user {
+            profile {
+              ...profileFields
+            }
+          }
+        }
+      }
+    }
   }
 `

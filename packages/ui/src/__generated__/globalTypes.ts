@@ -7,6 +7,14 @@
 //==============================================================
 
 /**
+ * All input for the create `Game` mutation.
+ */
+export interface CreateGameInput {
+  clientMutationId?: string | null
+  game: GameInput
+}
+
+/**
  * All input for the create `Lookup` mutation.
  */
 export interface CreateLookupInput {
@@ -23,6 +31,14 @@ export interface CreateLookupValueInput {
 }
 
 /**
+ * All input for the `deleteGame` mutation.
+ */
+export interface DeleteGameInput {
+  clientMutationId?: string | null
+  id: number
+}
+
+/**
  * All input for the `deleteLookup` mutation.
  */
 export interface DeleteLookupInput {
@@ -36,6 +52,70 @@ export interface DeleteLookupInput {
 export interface DeleteLookupValueInput {
   clientMutationId?: string | null
   id: number
+}
+
+/**
+ * An input for mutations affecting `Game`
+ */
+export interface GameInput {
+  id?: number | null
+  description: string
+  lateFinish?: boolean | null
+  lateStart?: string | null
+  name: string
+  playerMax: number
+  playerMin: number
+  roomId?: number | null
+  shortName?: string | null
+  slotId?: number | null
+  charInstructions: string
+  estimatedLength: string
+  gameContactEmail: string
+  genre: string
+  gmNames?: string | null
+  message: string
+  playerPreference: string
+  playersContactGm: boolean
+  returningPlayers: string
+  setting: string
+  slotConflicts: string
+  slotPreference: number
+  teenFriendly: boolean
+  type: string
+  year: number
+  authorId?: number | null
+}
+
+/**
+ * Represents an update to a `Game`. Fields that are set will be updated.
+ */
+export interface GamePatch {
+  id?: number | null
+  description?: string | null
+  lateFinish?: boolean | null
+  lateStart?: string | null
+  name?: string | null
+  playerMax?: number | null
+  playerMin?: number | null
+  roomId?: number | null
+  shortName?: string | null
+  slotId?: number | null
+  charInstructions?: string | null
+  estimatedLength?: string | null
+  gameContactEmail?: string | null
+  genre?: string | null
+  gmNames?: string | null
+  message?: string | null
+  playerPreference?: string | null
+  playersContactGm?: boolean | null
+  returningPlayers?: string | null
+  setting?: string | null
+  slotConflicts?: string | null
+  slotPreference?: number | null
+  teenFriendly?: boolean | null
+  type?: string | null
+  year?: number | null
+  authorId?: number | null
 }
 
 /**
@@ -98,6 +178,15 @@ export interface LookupValuePatch {
   sequencer?: number | null
   stringSequencer?: string | null
   value?: string | null
+}
+
+/**
+ * All input for the `updateGameByNodeId` mutation.
+ */
+export interface UpdateGameByNodeIdInput {
+  clientMutationId?: string | null
+  nodeId: string
+  patch: GamePatch
 }
 
 /**

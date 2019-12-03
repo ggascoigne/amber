@@ -1,16 +1,9 @@
 import { useGameByYearQuery, useUrlSourceMutation } from 'client'
-import { GraphQLError } from 'components/Acnw/GraphQLError'
-import { Loader } from 'components/Acnw/Loader'
-import { Page } from 'components/Acnw/Page'
-import { YearTile } from 'components/Acnw/YearTile'
-import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
-import GridItem from 'components/MaterialKitReact/Grid/GridItem'
-import get from 'lodash/get'
+import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
 import range from 'lodash/range'
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
-import compose from 'recompose/compose'
+import { useHistory } from 'react-router'
 
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
   const { loading, error, data } = useGameByYearQuery({ year })
@@ -21,12 +14,13 @@ const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick })
     return <GraphQLError error={error} />
   }
 
-  const game = get(data, 'games.nodes[0]')
+  const game = data?.games?.nodes[0]
   return <YearTile year={year} game={game} onClick={onClick} />
 }
 
-const _PastConsPage: React.FC<RouteComponentProps> = ({ history }) => {
+export const PastConsPage: React.FC = () => {
   const [updateUrlSourceMutation] = useUrlSourceMutation()
+  const history = useHistory()
 
   const selectYear = useCallback(
     async (year: number) => {
@@ -52,5 +46,3 @@ const _PastConsPage: React.FC<RouteComponentProps> = ({ history }) => {
     </Page>
   )
 }
-
-export const PastConsPage = compose<RouteComponentProps, {}>(withRouter)(_PastConsPage)

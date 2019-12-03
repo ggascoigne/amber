@@ -1,33 +1,33 @@
 import { createLookup } from '__generated__/createLookup'
 import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
 import { updateLookupByNodeId } from '__generated__/updateLookupByNodeId'
-import { Dialog, Theme } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import IconButton from '@material-ui/core/IconButton'
-import createStyles from '@material-ui/core/styles/createStyles'
-import makeStyles from '@material-ui/core/styles/makeStyles'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableHead from '@material-ui/core/TableHead'
-import TableRow from '@material-ui/core/TableRow'
-import Typography from '@material-ui/core/Typography'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Theme,
+  Typography,
+  createStyles,
+  makeStyles
+} from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { useCreateOrUpdateLookup, useCreateOrUpdateLookupValue, useDeleteLookupValue } from 'client'
-import { DialogTitle } from 'components/Acnw/Dialog/DialogTitle'
+import { DialogTitle, GridContainer, GridItem, TextField } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
-import GridContainer from 'components/MaterialKitReact/Grid/GridContainer'
-import GridItem from 'components/MaterialKitReact/Grid/GridItem'
-import { Field, FieldArray, Form, Formik, FormikHelpers } from 'formik'
-import { TextField } from 'formik-material-ui'
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import get from 'lodash/get'
 import * as React from 'react'
-import * as Yup from 'yup'
+import Yup from 'utils/Yup'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,31 +65,31 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+type FormValues = Omit<GetLookups_lookups_edges_node, 'nodeId' | 'id' | '__typename'>
+
 interface LookupsDialog {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: FormValues
 }
 
-type FormValues = Omit<GetLookups_lookups_edges_node, 'nodeId' | 'id' | '__typename'>
-
 const validationSchema = Yup.object().shape({
   realm: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
+    .min(2)
+    .max(50)
     .required('Required'),
   lookupValues: Yup.object().shape({
     nodes: Yup.array().of(
       Yup.object().shape({
-        sequencer: Yup.number().required('Required'),
+        sequencer: Yup.number().required(),
         code: Yup.string()
-          .min(2, 'Too Short!')
-          .max(50, 'Too Long!')
-          .required('Required'),
+          .min(2)
+          .max(50)
+          .required(),
         value: Yup.string()
-          .min(2, 'Too Short!')
-          .max(50, 'Too Long!')
-          .required('Required')
+          .min(2)
+          .max(50)
+          .required()
       })
     )
   })
@@ -153,17 +153,14 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
 
   return (
     <Dialog disableBackdropClick fullWidth={true} maxWidth={false} open={open} onClose={onClose}>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        render={({ isSubmitting, values }) => (
+      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+        {({ isSubmitting, values }) => (
           <Form>
             <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Add'} Lookup</DialogTitle>
             <DialogContent>
-              <GridContainer spacing={40}>
+              <GridContainer spacing={5}>
                 <GridItem xs={12} md={6}>
-                  <Field name='realm' label='Realm' component={TextField} margin='normal' />
+                  <TextField name='realm' label='Realm' margin='normal' />
                 </GridItem>
                 <GridItem>
                   <FieldArray
@@ -197,22 +194,17 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                               {values.lookupValues.nodes.map((lv, index) => (
                                 <TableRow key={index}>
                                   <TableCell scope='row' style={{ width: '10%' }}>
-                                    <Field
+                                    <TextField
                                       name={`lookupValues.nodes[${index}].sequencer`}
-                                      component={TextField}
                                       fullWidth
                                       type='number'
                                     />
                                   </TableCell>
                                   <TableCell style={{ width: '20%' }}>
-                                    <Field name={`lookupValues.nodes[${index}].code`} component={TextField} fullWidth />
+                                    <TextField name={`lookupValues.nodes[${index}].code`} fullWidth />
                                   </TableCell>
                                   <TableCell>
-                                    <Field
-                                      name={`lookupValues.nodes[${index}].value`}
-                                      component={TextField}
-                                      fullWidth
-                                    />
+                                    <TextField name={`lookupValues.nodes[${index}].value`} fullWidth />
                                   </TableCell>
                                   <TableCell align='right' style={{ width: '50px' }}>
                                     <IconButton
@@ -243,7 +235,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
             </DialogActions>
           </Form>
         )}
-      />
+      </Formik>
     </Dialog>
   )
 }
