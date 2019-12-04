@@ -1,7 +1,6 @@
 import React from 'react'
-import { actions, reducerHandlers, utils } from 'react-table'
-
-const { defaultColumn, getFirstDefined, mergeProps, applyPropHooks } = utils
+import { actions, defaultColumn, reducerHandlers, utils } from 'react-table'
+const { getFirstDefined, mergeProps, applyPropHooks } = utils
 
 const pluginName = 'useResizeColumns'
 
@@ -46,7 +45,7 @@ reducerHandlers[pluginName] = (state, action) => {
     const percentageDeltaX = deltaX / headerIdWidths.length
 
     const newColumnWidths = {}
-    headerIdWidths.forEach(([headerId, headerWidth], index) => {
+    headerIdWidths.forEach(([headerId, headerWidth]) => {
       newColumnWidths[headerId] = Math.max(headerWidth + percentageDeltaX, 0)
     })
 

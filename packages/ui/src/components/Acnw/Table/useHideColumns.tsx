@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { Column, Hooks, TableAction, TableInstance, TableState, actions, reducerHandlers } from 'react-table'
+import { Column, Hooks, TableInstance, TableState, actions, reducerHandlers } from 'react-table'
 const pluginName = 'useHideColumns'
 
 // Actions
 actions.hideColumn = 'hideColumn'
 
 // Reducer
-reducerHandlers[pluginName] = (state: TableState, action: TableAction & { key: string | number; hide: boolean }) => {
+reducerHandlers[pluginName] = (state: TableState, action: { type: string, key: string | number; hide: boolean }) => {
   if (action.type === actions.init) {
     return {
       hiddenColumns: [],
