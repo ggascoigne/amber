@@ -48,10 +48,10 @@ index 822bb11..0000000
 -# Credits
 -These definitions were written by Roy Xue <https://github.com/royxue>, Pavel Sakalo <https://github.com/psakalo>, Krzysztof Porębski <https://github.com/Havret>, Andy S <https://github.com/andys8>, Grzegorz Rozdzialik <https://github.com/Gelio>, and Cam Pepin <https://github.com/cpepin>.
 diff --git a/node_modules/@types/react-table/index.d.ts b/node_modules/@types/react-table/index.d.ts
-index 3d144ba..24117fc 100644
+index 3d144ba..7a40c95 100644
 --- a/node_modules/@types/react-table/index.d.ts
 +++ b/node_modules/@types/react-table/index.d.ts
-@@ -1,746 +1,707 @@
+@@ -1,746 +1,710 @@
 -// Type definitions for react-table 6.8
 -// Project: https://github.com/react-tools/react-table
 -// Definitions by: Roy Xue <https://github.com/royxue>,
@@ -119,7 +119,7 @@ index 3d144ba..24117fc 100644
 -
 -    resolveData?: (data: D[]) => ResolvedData[];
 +// TypeScript Version: 3.5
-+// reflects react-table@7.0.0-beta.28
++// reflects react-table@7.0.0-rc.1
 +
 +// tslint:disable:no-unnecessary-generics
 +// no-unnecessary-generics is disabled because many of these definitions are either used in a generic
@@ -239,6 +239,7 @@ index 3d144ba..24117fc 100644
 +    columns: Array<ColumnInstance<D>>;
 +    flatColumns: Array<ColumnInstance<D>>;
 +    headerGroups: Array<HeaderGroup<D>>;
++    footerGroups: Array<HeaderGroup<D>>;
 +    headers: Array<ColumnInstance<D>>;
 +    flatHeaders: Array<ColumnInstance<D>>;
 +    rows: Array<Row<D>>;
@@ -262,6 +263,7 @@ index 3d144ba..24117fc 100644
 +export interface UseTableHeaderGroupProps<D extends object> {
 +    headers: Array<ColumnInstance<D>>;
 +    getHeaderGroupProps: (props?: object) => object;
++    getFooterGroupProps: (props?: object) => object;
 +    totalHeaderCount: number; // not documented
 +}
  
@@ -270,10 +272,11 @@ index 3d144ba..24117fc 100644
 +export interface UseTableColumnProps<D extends object> {
 +    id: IdType<D>;
 +    isVisible: boolean;
-+    render: (type: 'Header' | string, props?: object) => ReactNode;
++    render: (type: 'Header' | 'Footer'  | string, props?: object) => ReactNode;
 +    totalLeft: number;
 +    totalWidth: number;
 +    getHeaderProps: (props?: object) => object;
++    getFooterProps: (props?: object) => object;
 +    toggleHiden: (value?: boolean) => void;
 +    parent: ColumnInstance<D>; // not documented
 +    getToggleHideColumnsProps: (userProps: any) => any;
