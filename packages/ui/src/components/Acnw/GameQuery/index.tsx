@@ -1,26 +1,25 @@
-import { GetGames_games_edges } from '__generated__/GetGames'
-import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { useGameBySlotQuery } from 'client'
+import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment, useGetGamesBySlotQuery } from 'client'
 import React from 'react'
 
+import { Edges } from '../../../utils/ts-utils'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
 export interface GameQueryChild {
   year: number
-  slot: GetSlots_slots_nodes
-  games?: GetGames_games_edges[]
+  slot: SlotFieldsFragment
+  games?: Edges<GameFieldsFragment & GameGmsFragment>
 }
 
 interface GameQuery {
   year: number
-  slot: GetSlots_slots_nodes
+  slot: SlotFieldsFragment
 
   children(props: GameQueryChild): React.ReactNode
 }
 
 export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
-  const { loading, error, data } = useGameBySlotQuery({ year: year, slotId: slot.id })
+  const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year: year, slotId: slot.id } })
   if (loading) {
     return <Loader />
   }

@@ -1,0 +1,8 @@
+fragment profileFields on Profile {
+  nodeId
+  id
+  email
+  fullName
+  phoneNumber
+  snailMailAddress
+}

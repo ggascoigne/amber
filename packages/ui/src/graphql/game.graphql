@@ -1,0 +1,71 @@
+#import "./gameFragment.graphql"
+#import "./slotFragment.graphql"
+#import "./profileFragment.graphql"
+
+query GetGamesBySlot($year: Int!, $slotId: Int!) {
+  games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
+    edges {
+      node {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+}
+
+query GetGamesByYear($year: Int!) {
+  games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
+    edges {
+      node {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+}
+
+mutation updateGameByNodeId($input: UpdateGameByNodeIdInput!) {
+  updateGameByNodeId(input: $input) {
+    game {
+      ...gameFields
+      ...gameGms
+    }
+  }
+}
+
+mutation createGame($input: CreateGameInput!) {
+  createGame(input: $input) {
+    game {
+      ...gameFields
+      ...gameGms
+    }
+  }
+}
+
+mutation deleteGame($input: DeleteGameInput!) {
+  deleteGame(input: $input) {
+    clientMutationId
+    deletedGameNodeId
+  }
+}
+
+query GetFirstGameOfSlot($year: Int!) {
+  games(orderBy: NAME_ASC, condition: { slotId: 1, year: $year }, first: 1) {
+    nodes {
+      ...gameFields
+      gameAssignments(filter: { gm: { lessThan: 0 } }) {
+        nodes {
+          nodeId
+          gm
+          member {
+            user {
+              profile {
+                ...profileFields
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

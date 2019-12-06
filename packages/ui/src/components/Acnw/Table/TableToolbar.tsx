@@ -137,7 +137,7 @@ export function TableToolbar<T extends object>({
             icon={<AddIcon />}
             onClick={onAdd}
             label='Add'
-            enabled={({ state }: TableInstance<T>) => !state.selectedRowPaths || state.selectedRowPaths.length === 0}
+            enabled={({ state }: TableInstance<T>) => !state.selectedRowPaths || state.selectedRowPaths.size === 0}
             variant='left'
           />
         )}
@@ -147,7 +147,7 @@ export function TableToolbar<T extends object>({
             icon={<CreateIcon />}
             onClick={onEdit}
             label='Edit'
-            enabled={({ state }: TableInstance<T>) => state.selectedRowPaths && state.selectedRowPaths.length === 1}
+            enabled={({ state }: TableInstance<T>) => state.selectedRowPaths && state.selectedRowPaths.size === 1}
             variant='left'
           />
         )}
@@ -157,7 +157,7 @@ export function TableToolbar<T extends object>({
             icon={<DeleteIcon />}
             onClick={onDelete}
             label='Delete'
-            enabled={({ state }: TableInstance<T>) => state.selectedRowPaths && state.selectedRowPaths.length > 0}
+            enabled={({ state }: TableInstance<T>) => state.selectedRowPaths && state.selectedRowPaths.size > 0}
             variant='left'
           />
         )}

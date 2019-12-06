@@ -1,5 +1,3 @@
-import { GetGames_games_edges } from '__generated__/GetGames'
-import { GetSlots_slots_nodes } from '__generated__/GetSlots'
 import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -7,6 +5,9 @@ import createStyles from '@material-ui/core/styles/createStyles'
 import { useUrlSourceMutation } from 'client/resolvers/urlSource'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router'
+
+import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment } from '../../../client'
+import { Edges } from '../../../utils/ts-utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface GameListIndex {
   year: number
-  slot: GetSlots_slots_nodes
-  games: GetGames_games_edges[]
+  slot: SlotFieldsFragment
+  games: Edges<GameFieldsFragment & GameGmsFragment>
   onEnterGame?: any
 }
 

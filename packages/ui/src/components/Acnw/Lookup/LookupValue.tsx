@@ -1,12 +1,13 @@
-import { GetLookupValueVariables } from '__generated__/GetLookupValue'
-import { useLookupValueQuery } from 'client'
+import { useGetSingleLookupValueQuery } from 'client'
 import React from 'react'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
-export const LookupValue: React.FC<GetLookupValueVariables> = ({ realm, code }) => {
-  const { loading, error, data } = useLookupValueQuery({ realm, code })
+type LookupValue = { realm: string; code: string }
+
+export const LookupValue: React.FC<LookupValue> = ({ realm, code }) => {
+  const { loading, error, data } = useGetSingleLookupValueQuery({ variables: { realm, code } })
   if (loading) {
     return <Loader />
   }

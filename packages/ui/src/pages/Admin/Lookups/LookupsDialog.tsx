@@ -1,6 +1,3 @@
-import { createLookup } from '__generated__/createLookup'
-import { GetLookups_lookups_edges_node } from '__generated__/GetLookups'
-import { updateLookupByNodeId } from '__generated__/updateLookupByNodeId'
 import {
   Button,
   Dialog,
@@ -19,15 +16,24 @@ import {
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { useCreateOrUpdateLookup, useCreateOrUpdateLookupValue, useDeleteLookupValue } from 'client'
 import { DialogTitle, GridContainer, GridItem, TextField } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
-import get from 'lodash/get'
 import * as React from 'react'
 import Yup from 'utils/Yup'
+
+import {
+  CreateLookupMutation,
+  Node,
+  useCreateLookupMutation,
+  useCreateLookupValueMutation,
+  useDeleteLookupValueMutation,
+  useUpdateLookupByNodeIdMutation,
+  useUpdateLookupValueByNodeIdMutation
+} from '../../../client'
+import { LookupAndValues } from './types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -65,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type FormValues = Omit<GetLookups_lookups_edges_node, 'nodeId' | 'id' | '__typename'>
+type FormValues = Omit<LookupAndValues, 'nodeId' | 'id' | '__typename'> & Partial<Node>
 
 interface LookupsDialog {
   open: boolean
@@ -99,14 +105,40 @@ const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'Look
 
 export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialValues = defaultValues }) => {
   const classes = useStyles()
-  const createOrUpdateLookup = useCreateOrUpdateLookup()
-  const createOrUpdateLookupValue = useCreateOrUpdateLookupValue()
-  const [deleteLookupValue] = useDeleteLookupValue()
+  const [createLookup] = useCreateLookupMutation()
+  const [updateLookup] = useUpdateLookupByNodeIdMutation()
+  const [createLookupValue] = useCreateLookupValueMutation()
+  const [updateLookupValue] = useUpdateLookupValueByNodeIdMutation()
+  const [deleteLookupValue] = useDeleteLookupValueMutation()
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    const res = await createOrUpdateLookup(values)
-    const isCreateLookup = (value: updateLookupByNodeId | createLookup): value is createLookup =>
-      value.hasOwnProperty('createLookup')
+    const res = values.nodeId
+      ? await updateLookup({
+          variables: {
+            input: {
+              nodeId: values.nodeId!,
+              patch: {
+                realm: values.realm
+              }
+            }
+          }
+        })
+      : await createLookup({
+          variables: {
+            input: {
+              lookup: {
+                realm: values.realm,
+                codeType: 'string',
+                internationalize: false,
+                valueType: 'string',
+                ordering: 'sequencer'
+              }
+            }
+          }
+        })
+
+    const isCreateLookup = (value: typeof res.data): value is CreateLookupMutation =>
+      value!.hasOwnProperty('createLookup')
 
     if (!res || !res.data) {
       return
@@ -119,11 +151,46 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
     }
 
     const lookupId = isCreateLookup(res.data)
-      ? get(res, 'data.createLookup.lookup.id')
-      : get(res, 'data.updateLookupByNodeId.lookup.id')
+      ? res?.data?.createLookup?.lookup?.id
+      : res?.data?.updateLookupByNodeId?.lookup?.id
 
     const updaters = values.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
-      lv && acc.push(createOrUpdateLookupValue(lv, lookupId))
+      if (lv) {
+        if (lv.nodeId) {
+          acc.push(
+            updateLookupValue({
+              variables: {
+                input: {
+                  nodeId: lv.nodeId,
+                  patch: {
+                    code: lv.code,
+                    sequencer: lv.sequencer,
+                    value: lv.value,
+                    lookupId: lookupId
+                  }
+                }
+              }
+            })
+          )
+        } else {
+          acc.push(
+            createLookupValue({
+              variables: {
+                input: {
+                  lookupValue: {
+                    code: lv.code,
+                    sequencer: lv.sequencer,
+                    value: lv.value,
+                    lookupId: lookupId!,
+                    numericSequencer: 0.0,
+                    stringSequencer: '_'
+                  }
+                }
+              }
+            })
+          )
+        }
+      }
       return acc
     }, [])
 
@@ -140,9 +207,10 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
       return null
     })
 
-    Promise.all(updaters)
-      .then(() => onClose(null))
-      .finally(() => actions.setSubmitting(false))
+    Promise.all(updaters).then(() => {
+      actions.setSubmitting(false)
+      onClose(null)
+    })
   }
 
   const editing = initialValues !== defaultValues

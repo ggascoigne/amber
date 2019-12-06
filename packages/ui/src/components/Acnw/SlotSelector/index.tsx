@@ -1,14 +1,15 @@
-import { GetSlots_slots_nodes } from '__generated__/GetSlots'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'
 import cx from 'classnames'
+import { SlotFieldsFragment } from 'client'
 import { useGameFilterMutation, useGameFilterQuery } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { MaybeNodes } from 'utils/ts-utils'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
@@ -60,10 +61,11 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface SlotSelector {
   year: number
-  slots: (GetSlots_slots_nodes | null)[] | undefined
+  slots: MaybeNodes<SlotFieldsFragment>
   selectedSlotId: number
   small: boolean
-  children(slot: GetSlots_slots_nodes): React.ReactNode
+
+  children(slot: SlotFieldsFragment): React.ReactNode
 }
 
 export const SlotSelector: React.FC<SlotSelector> = props => {
@@ -74,8 +76,13 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
 
-  const getSlot = (slots: (GetSlots_slots_nodes | null)[], selectedSlotId: number) => {
-    return slots.find(s => (s ? s.id === selectedSlotId : false)) as GetSlots_slots_nodes
+  const getSlot = (slots: MaybeNodes<SlotFieldsFragment>, selectedSlotId: number) => {
+    const slot = slots!.find(s => (s ? s.id === selectedSlotId : false))
+    if (!slot) {
+      throw new Error('slots not found')
+    } else {
+      return slot
+    }
   }
 
   const updateScrollButtons = useCallback(() => {
@@ -88,7 +95,9 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
       container.clientWidth - (parseInt(containerStyles.paddingLeft!) + parseInt(containerStyles.paddingRight!))
     const tabs = Array.from(container.getElementsByTagName('button'))
     const items = container.querySelector('#slotLabel')
-    if (items) tabs.push(items as HTMLButtonElement)
+    if (items) {
+      tabs.push(items as HTMLButtonElement)
+    }
     const tabWidth = tabs.reduce((a, b) => a + b.clientWidth + parseInt(getComputedStyle(b).marginLeft!), 0)
     const newScrollButtons = tabWidth > containerWidth ? 'on' : 'off'
     if (scrollButtons !== newScrollButtons) {
@@ -124,7 +133,9 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
     return <GraphQLError error={error} />
   }
 
-  if (!slots) return null
+  if (!slots) {
+    return null
+  }
 
   const {
     gameFilter: {

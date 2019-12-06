@@ -1,0 +1,9 @@
+#import "./slowFragment.graphql"
+
+query GetSlots {
+  slots {
+    nodes {
+      ...slotFields
+    }
+  }
+}

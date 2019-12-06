@@ -1,8 +1,8 @@
 diff --git a/node_modules/react-scripts/config/webpack.config.js b/node_modules/react-scripts/config/webpack.config.js
-index 6f5abcb..2f4aee9 100644
+index d34d06f..1f94181 100644
 --- a/node_modules/react-scripts/config/webpack.config.js
 +++ b/node_modules/react-scripts/config/webpack.config.js
-@@ -343,6 +343,9 @@ module.exports = function(webpackEnv) {
+@@ -338,6 +338,9 @@ module.exports = function(webpackEnv) {
          // Disable require.ensure as it's not a standard language feature.
          { parser: { requireEnsure: false } },
  

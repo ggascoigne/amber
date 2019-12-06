@@ -38,7 +38,6 @@ import {
 import { TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
 import { useFlexLayout } from './useFlexLayout'
-import { useHideColumns } from './useHideColumns'
 import { useResizeColumns } from './useResizeColumns'
 
 export interface Table<T extends object = {}> extends TableOptions<T> {
@@ -68,7 +67,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
   const { name, columns: originalColumns, onAdd, onDelete, onEdit, onClick } = props
   const columns = useMemo(() => [selectionColumn, ...originalColumns], [originalColumns])
 
-  const hooks = [useHideColumns, useFilters, useSortBy, useRowSelect, usePagination, useResizeColumns, useFlexLayout]
+  const hooks = [useFilters, useSortBy, useRowSelect, usePagination, useResizeColumns, useFlexLayout]
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
     () => ({

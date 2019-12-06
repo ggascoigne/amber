@@ -1,12 +1,13 @@
-import { GetGames_games_edges } from '__generated__/GetGames'
-import { GetSlots_slots_nodes } from '__generated__/GetSlots'
 import { GameCard } from 'components/Acnw/GameCard'
 import React from 'react'
 
+import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment } from '../../../client'
+import { Edges } from '../../../utils/ts-utils'
+
 interface GameListFull {
   year: number
-  slot: GetSlots_slots_nodes
-  games: GetGames_games_edges[]
+  slot: SlotFieldsFragment
+  games: Edges<GameFieldsFragment & GameGmsFragment>
   onEnterGame: any
 }
 

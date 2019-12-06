@@ -1,0 +1,7 @@
+fragment lookupValuesFields on LookupValue {
+  nodeId
+  id
+  code
+  sequencer
+  value
+}

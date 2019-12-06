@@ -1,0 +1,93 @@
+#import "./lookupFragment.graphql"
+#import "./lookupValuesFragment.graphql"
+
+query GetLookups {
+  lookups(orderBy: REALM_ASC) {
+    edges {
+      node {
+        ...lookupFields
+        lookupValues(orderBy: SEQUENCER_ASC) {
+          nodes {
+            ...lookupValuesFields
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetLookupValues($realm: String!) {
+  lookups(condition: { realm: $realm }) {
+    edges {
+      node {
+        ...lookupFields
+        lookupValues(orderBy: VALUE_ASC) {
+          nodes {
+            ...lookupValuesFields
+          }
+        }
+      }
+    }
+  }
+}
+
+query GetSingleLookupValue($realm: String!, $code: String!) {
+  lookups(condition: { realm: $realm }) {
+    edges {
+      node {
+        ...lookupFields
+        lookupValues(condition: { code: $code }) {
+          nodes {
+            ...lookupValuesFields
+          }
+        }
+      }
+    }
+  }
+}
+
+mutation updateLookupByNodeId($input: UpdateLookupByNodeIdInput!) {
+  updateLookupByNodeId(input: $input) {
+    lookup {
+      ...lookupFields
+    }
+  }
+}
+
+mutation createLookup($input: CreateLookupInput!) {
+  createLookup(input: $input) {
+    lookup {
+      ...lookupFields
+    }
+  }
+}
+
+mutation deleteLookup($input: DeleteLookupInput!) {
+  deleteLookup(input: $input) {
+    clientMutationId
+    deletedLookupNodeId
+  }
+}
+
+mutation updateLookupValueByNodeId($input: UpdateLookupValueByNodeIdInput!) {
+  updateLookupValueByNodeId(input: $input) {
+    lookupValue {
+      ...lookupValuesFields
+    }
+  }
+}
+
+mutation createLookupValue($input: CreateLookupValueInput!) {
+  createLookupValue(input: $input) {
+    lookupValue {
+      ...lookupValuesFields
+    }
+  }
+}
+
+mutation deleteLookupValue($input: DeleteLookupValueInput!) {
+  deleteLookupValue(input: $input) {
+    clientMutationId
+    deletedLookupValueNodeId
+  }
+}

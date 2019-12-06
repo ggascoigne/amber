@@ -1,13 +1,13 @@
-import { slotFields } from '__generated__/slotFields'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { ApolloCache } from 'apollo-cache'
-import { SLOT_FRAGMENT } from 'client'
 import gql from 'graphql-tag'
 import { dropUnset } from 'utils/dropUnset'
 
+import { SlotFieldsFragment } from '../../client'
+
 type GameFilterDetails = {
   year: number
-  slot: slotFields
+  slot: SlotFieldsFragment
 }
 
 type GameFilter = {
@@ -30,16 +30,21 @@ const gameFilterDefaults: GameFilter = {
   }
 }
 
+//todo use ...slotFields
 const gameFilterQuery = gql`
   query getGameFilters {
     gameFilter @client {
       slot {
-        ...slotFields
+        nodeId
+        id
+        slot
+        day
+        length
+        time
       }
       year
     }
   }
-  ${SLOT_FRAGMENT}
 `
 const updateGameFilterQuery = gql`
   mutation updateGameFilter($year: Int, $slot: Slot) {

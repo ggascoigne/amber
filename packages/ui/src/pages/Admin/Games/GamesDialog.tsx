@@ -1,4 +1,3 @@
-import { GetGames_games_edges_node } from '__generated__/GetGames'
 import { Button, Dialog, DialogActions, Typography } from '@material-ui/core'
 import DialogContent from '@material-ui/core/DialogContent'
 import {
@@ -15,12 +14,12 @@ import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
 import Yup from 'utils/Yup'
 
-import { useSlotQuery } from '../../../client/queries'
+import { GameFieldsFragment, GameGmsFragment, useGetSlotsQuery } from '../../../client'
 import { LookupField } from '../../../components/Acnw/Form/LookupField'
 import { GraphQLError } from '../../../components/Acnw/GraphQLError'
 import configurationService from '../../../utils/ConfigurationService'
 
-type FormValues = Omit<GetGames_games_edges_node, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
+type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
 interface GamesDialog {
   open: boolean
@@ -119,7 +118,7 @@ const validationSchema = Yup.object().shape({
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = props => {
   const { select, ...rest } = props
-  const { loading, error, data } = useSlotQuery()
+  const { loading, error, data } = useGetSlotsQuery()
   if (loading) {
     return <Loader />
   }

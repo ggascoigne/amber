@@ -1,12 +1,14 @@
-import { useGameByYearQuery, useUrlSourceMutation } from 'client'
+import { useUrlSourceMutation } from 'client'
 import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
 import range from 'lodash/range'
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
 
+import { useGetGamesByYearQuery } from '../../client'
+
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
-  const { loading, error, data } = useGameByYearQuery({ year })
+  const { loading, error, data } = useGetGamesByYearQuery({ variables: { year } })
   if (loading) {
     return <Loader />
   }
@@ -14,7 +16,7 @@ const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick })
     return <GraphQLError error={error} />
   }
 
-  const game = data?.games?.nodes[0]
+  const game = data?.games?.edges[0].node
   return <YearTile year={year} game={game} onClick={onClick} />
 }
 

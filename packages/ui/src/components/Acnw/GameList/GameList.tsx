@@ -1,9 +1,8 @@
-import { GetSlots_slots_nodes } from '__generated__/GetSlots'
-import { useSlotQuery } from 'client'
 import { GameQuery, GameQueryChild } from 'components/Acnw/GameQuery'
 import { SlotSelector } from 'components/Acnw/SlotSelector'
 import React from 'react'
 
+import { SlotFieldsFragment, useGetSlotsQuery } from '../../../client'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
@@ -16,7 +15,7 @@ interface GameList {
 }
 
 export const GameList: React.FC<GameList> = ({ small = false, year, slotIdStr, children }) => {
-  const { loading, error, data } = useSlotQuery()
+  const { loading, error, data } = useGetSlotsQuery()
 
   if (loading) {
     return <Loader />
@@ -26,8 +25,8 @@ export const GameList: React.FC<GameList> = ({ small = false, year, slotIdStr, c
   }
 
   return (
-    <SlotSelector small={small} year={year} slots={data!.slots!.nodes} selectedSlotId={parseInt(slotIdStr)}>
-      {(slot: GetSlots_slots_nodes) => (
+    <SlotSelector small={small} year={year} slots={data?.slots?.nodes} selectedSlotId={parseInt(slotIdStr)}>
+      {(slot: SlotFieldsFragment) => (
         <GameQuery year={year} slot={slot}>
           {({ year, slot, games }) => children({ year, slot, games })}
         </GameQuery>

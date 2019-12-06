@@ -1,6 +1,5 @@
 import React from 'react'
-import { actions, defaultColumn, reducerHandlers, utils } from 'react-table'
-const { getFirstDefined, mergeProps, applyPropHooks } = utils
+import { actions, applyPropHooks, defaultColumn, getFirstDefined, mergeProps, reducerHandlers } from 'react-table'
 
 const pluginName = 'useResizeColumns'
 

@@ -1,6 +1,6 @@
+import { useGetLookupValuesQuery } from 'client'
 import * as React from 'react'
 
-import { useLookupValuesQuery } from '../../../client/queries'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 import { SelectField } from './SelectField'
@@ -12,7 +12,7 @@ export interface LookupFieldProps extends TextFieldProps {
 
 export const LookupField: React.ComponentType<LookupFieldProps> = props => {
   const { select, realm, ...rest } = props
-  const { loading, error, data } = useLookupValuesQuery({ realm })
+  const { loading, error, data } = useGetLookupValuesQuery({ variables: { realm } })
   if (loading) {
     return <Loader />
   }

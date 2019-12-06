@@ -31,7 +31,7 @@ export function ColumnHidePage<T extends object>({
   show
 }: ColumnHidePage<T>): ReactElement | null {
   const classes = useStyles({})
-  const { columns, setColumnHidden } = instance
+  const { columns, toggleHideColumn } = instance
   const hideableColumns = columns.filter(column => !(column.id === '_selector'))
   const checkedCount = hideableColumns.reduce((acc, val) => acc + (val.isVisible ? 0 : 1), 0)
 
@@ -62,7 +62,7 @@ export function ColumnHidePage<T extends object>({
                 control={<Checkbox value={`${column.id}`} disabled={column.isVisible && onlyOneOptionLeft} />}
                 label={column.render('Header')}
                 checked={column.isVisible}
-                onChange={() => setColumnHidden(column.id, column.isVisible)}
+                onChange={() => toggleHideColumn(column.id, column.isVisible)}
               />
               <br />
             </span>

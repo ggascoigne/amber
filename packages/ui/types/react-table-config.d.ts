@@ -1,37 +1,21 @@
 import { MouseEventHandler } from 'react'
 import {
-  IdType,
   TableInstance,
-  // UseColumnOrderInstanceProps,
-  // UseColumnOrderState,
-  // UseExpandedInstanceProps,
-  // UseExpandedOptions,
-  // UseExpandedRowProps,
-  // UseExpandedState,
   UseFiltersColumnOptions,
   UseFiltersColumnProps,
   UseFiltersInstanceProps,
   UseFiltersOptions,
   UseFiltersState,
-  // UseGroupByCellProps,
-  // UseGroupByColumnOptions,
-  // UseGroupByColumnProps,
-  // UseGroupByInstanceProps,
-  // UseGroupByOptions,
-  // UseGroupByRowProps,
-  // UseGroupByState,
   UsePaginationInstanceProps,
   UsePaginationOptions,
   UsePaginationState,
   UseResizeColumnsColumnOptions,
   UseResizeColumnsHeaderProps,
   UseResizeColumnsOptions,
-  // UseRowSelectInstanceProps,
+  UseRowSelectInstanceProps,
   UseRowSelectOptions,
   UseRowSelectRowProps,
-  // UseRowSelectState,
-  // UseRowStateCellProps,
-  // UseRowStateRowProps,
+  UseRowSelectState,
   UseSortByColumnOptions,
   UseSortByColumnProps,
   UseSortByInstanceProps,
@@ -50,13 +34,13 @@ declare module 'react-table' {
 
   // end fixed definitions
 
-  export interface UseHideColumnsValues {
-    setColumnHidden: (columnID: string | number, hide: boolean) => void
-  }
-
-  export interface UseHideColumnsState {
-    hiddenColumns: (string | number)[]
-  }
+  // export interface UseHideColumnsValues {
+  //   setColumnHidden: (columnID: string | number, hide: boolean) => void
+  // }
+  //
+  // export interface UseHideColumnsState {
+  //   hiddenColumns: (string | number)[]
+  // }
 
   export interface TableOptions<D extends object>  // UseExpandedOptions<D>,
     extends UseFiltersOptions<D>,
@@ -73,7 +57,7 @@ declare module 'react-table' {
       // UseGroupByInstanceProps<D>,
       UsePaginationInstanceProps<D>,
       // UseRowStateInstanceProps<D>,
-      UseHideColumnsValues,
+      // UseHideColumnsValues,
       UseSortByInstanceProps<D> {}
 
   export interface TableState<D extends object = {}>  // UseColumnOrderState<D>, // UseExpandedState<D>,
@@ -82,7 +66,7 @@ declare module 'react-table' {
       UsePaginationState<D>,
       UseRowSelectState<D>,
       UseSortByState<D>,
-      UseHideColumnsState,
+      // UseHideColumnsState,
       UseResizeColumnState {
     rowCount: number
   }

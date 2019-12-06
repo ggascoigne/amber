@@ -1,6 +1,6 @@
-import { GetGames_games_edges_node } from '__generated__/GetGames'
 import { makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
+import { GameFieldsFragment, GameGmsFragment } from 'client'
 import { GridContainer, GridItem, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
@@ -69,7 +69,7 @@ const Field: React.FC<{ label: string; small?: boolean; tiny: boolean }> = ({ la
 }
 
 interface GameCard {
-  game: GetGames_games_edges_node
+  game: GameFieldsFragment & GameGmsFragment
   year: number
   slot: { id: number }
   onEnter?: any

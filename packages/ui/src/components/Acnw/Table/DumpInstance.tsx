@@ -4,7 +4,7 @@ import React, { Suspense, useState } from 'react'
 import { DebugIcon } from '../../../icons'
 import { Loader } from '../Loader'
 
-const ReactJson = React.lazy(() => import('react-json-view'))
+const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
 
 const useStyles = makeStyles(
   createStyles({

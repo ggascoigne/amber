@@ -1,3 +1,2 @@
-export * from './fragments'
-export * from './queries'
 export * from './resolvers'
+export * from './graphql'

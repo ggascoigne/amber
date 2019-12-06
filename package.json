@@ -38,7 +38,7 @@
     "del-cli": "^3.0.0",
     "eslint": "6.7.2",
     "eslint-config-prettier": "^6.7.0",
-    "eslint-config-react-app": "^5.0.1",
+    "eslint-config-react-app": "^5.1.0",
     "eslint-plugin-flowtype": "^4.5.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^23.1.1",
@@ -68,7 +68,7 @@
     "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
-    "format": "prettier --no-color --loglevel warn --write 'packages/*/{src,scripts,db}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
+    "format": "prettier --no-color --loglevel warn --write 'packages/*/{src,scripts,db,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "lint": "lerna exec --parallel yarn lint",
     "postinstall": "patch-package",
     "saveSchema": "lerna exec --scope ui yarn saveSchema",
@@ -103,7 +103,7 @@
       "yarn lint",
       "git add"
     ],
-    "*.{css,scss}": [
+    "*.{css,scss,graphql}": [
       "prettier --no-color --write",
       "git add"
     ]

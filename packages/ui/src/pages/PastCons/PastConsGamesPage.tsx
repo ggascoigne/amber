@@ -8,8 +8,8 @@ import { useHistory, useParams } from 'react-router'
 
 interface MatchParams {
   year: string
-  slot: string
-  game: string
+  slot?: string
+  game?: string
 }
 
 export const PastConsGamesPage: React.FC = () => {
@@ -63,7 +63,7 @@ export const PastConsGamesPage: React.FC = () => {
 
   return (
     <Page>
-      <PastConsPageGameList year={year} slotIdStr={slotIdStr} onEnterGame={setNewUrl} />
+      <PastConsPageGameList year={year} slotIdStr={slotIdStr || '1'} onEnterGame={setNewUrl} />
     </Page>
   )
 }
