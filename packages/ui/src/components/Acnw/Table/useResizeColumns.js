@@ -1,7 +1,12 @@
-import React from 'react'
-import { actions, applyPropHooks, defaultColumn, getFirstDefined, mergeProps, reducerHandlers } from 'react-table'
+import { actions, applyPropHooks, defaultColumn, mergeProps, useGetLatest } from 'react-table'
 
-const pluginName = 'useResizeColumns'
+function getFirstDefined(...args) {
+  for (let i = 0; i < args.length; i += 1) {
+    if (typeof args[i] !== 'undefined') {
+      return args[i]
+    }
+  }
+}
 
 // Default Column
 defaultColumn.canResize = true
@@ -11,8 +16,14 @@ actions.columnStartResizing = 'columnStartResizing'
 actions.columnResizing = 'columnResizing'
 actions.columnDoneResizing = 'columnDoneResizing'
 
-// Reducer
-reducerHandlers[pluginName] = (state, action) => {
+export const useResizeColumns = hooks => {
+  hooks.stateReducers.push(reducer)
+  hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
+}
+
+useResizeColumns.pluginName = 'useResizeColumns'
+
+function reducer(state, action) {
   if (action.type === actions.init) {
     return {
       columnResizing: {
@@ -23,14 +34,14 @@ reducerHandlers[pluginName] = (state, action) => {
   }
 
   if (action.type === actions.columnStartResizing) {
-    const { startX, columnId, headerIdWidths } = action
-
+    const { clientX, columnId, columnWidth, headerIdWidths } = action
     return {
       ...state,
       columnResizing: {
         ...state.columnResizing,
-        startX,
+        startX: clientX,
         headerIdWidths,
+        columnWidth: columnWidth !== 0 ? columnWidth : headerIdWidths.find(([i]) => i === columnId)[1],
         isResizingColumn: columnId
       }
     }
@@ -38,16 +49,16 @@ reducerHandlers[pluginName] = (state, action) => {
 
   if (action.type === actions.columnResizing) {
     const { clientX } = action
-    const { startX, headerIdWidths } = state.columnResizing
+    const { startX, columnWidth, headerIdWidths } = state.columnResizing
 
     const deltaX = clientX - startX
-    const percentageDeltaX = deltaX / headerIdWidths.length
+    const percentageDeltaX = deltaX / columnWidth
 
     const newColumnWidths = {}
-    headerIdWidths.forEach(([headerId, headerWidth]) => {
-      newColumnWidths[headerId] = Math.max(headerWidth + percentageDeltaX, 0)
-    })
 
+    headerIdWidths.forEach(([headerId, headerWidth]) => {
+      newColumnWidths[headerId] = Math.max(headerWidth + headerWidth * percentageDeltaX, 0)
+    })
     return {
       ...state,
       columnResizing: {
@@ -71,12 +82,6 @@ reducerHandlers[pluginName] = (state, action) => {
     }
   }
 }
-
-export const useResizeColumns = hooks => {
-  hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
-}
-
-useResizeColumns.pluginName = pluginName
 
 const useInstanceBeforeDimensions = instance => {
   instance.hooks.getResizerProps = []
@@ -111,6 +116,7 @@ const useInstanceBeforeDimensions = instance => {
 
     const onMouseMove = e => {
       const clientX = e.clientX
+
       dispatch({ type: actions.columnResizing, clientX })
     }
 
@@ -127,14 +133,14 @@ const useInstanceBeforeDimensions = instance => {
     dispatch({
       type: actions.columnStartResizing,
       columnId: header.id,
+      columnWidth: header.totalWidth,
       headerIdWidths,
-      startX: clientX
+      clientX
     })
   }
 
   // use reference to avoid memory leak in #1608
-  const instanceRef = React.useRef()
-  instanceRef.current = instance
+  const getInstance = useGetLatest(instance)
 
   flatHeaders.forEach(header => {
     const canResize = getFirstDefined(
@@ -157,7 +163,7 @@ const useInstanceBeforeDimensions = instance => {
             },
             draggable: false
           },
-          applyPropHooks(instanceRef.current.hooks.getResizerProps, header, instanceRef.current),
+          applyPropHooks(getInstance().hooks.getResizerProps, header, getInstance()),
           userProps
         )
       }
