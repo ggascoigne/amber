@@ -48,10 +48,10 @@ index 822bb11..0000000
 -# Credits
 -These definitions were written by Roy Xue <https://github.com/royxue>, Pavel Sakalo <https://github.com/psakalo>, Krzysztof Porębski <https://github.com/Havret>, Andy S <https://github.com/andys8>, Grzegorz Rozdzialik <https://github.com/Gelio>, and Cam Pepin <https://github.com/cpepin>.
 diff --git a/node_modules/@types/react-table/index.d.ts b/node_modules/@types/react-table/index.d.ts
-index 3d144ba..3c008a0 100644
+index 3d144ba..038d2db 100644
 --- a/node_modules/@types/react-table/index.d.ts
 +++ b/node_modules/@types/react-table/index.d.ts
-@@ -1,746 +1,655 @@
+@@ -1,746 +1,665 @@
 -// Type definitions for react-table 6.8
 -// Project: https://github.com/react-tools/react-table
 -// Definitions by: Roy Xue <https://github.com/royxue>,
@@ -95,29 +95,8 @@ index 3d144ba..3c008a0 100644
 -export interface Resize {
 -    id: string;
 -    value: any;
--}
--export interface Filter {
--    id: string;
--    value: any;
--    pivotId?: string;
--}
--
--export interface SortingRule {
--    id: string;
--    desc: boolean;
--}
--
--export interface TableProps<D = any, ResolvedData = D> extends
--    TextProps,
--    ComponentDecoratorProps,
--    ControlledStateCallbackProps,
--    PivotingProps,
--    ControlledStateOverrideProps,
--    ComponentProps {
--    /** Default: [] */
--    data: D[];
 +// TypeScript Version: 3.5
-+// reflects react-table@7.0.0-rc.3
++// reflects react-table@7.0.0-rc.9
 +
 +// tslint:disable:no-unnecessary-generics
 +// no-unnecessary-generics is disabled because many of these definitions are either used in a generic
@@ -145,41 +124,30 @@ index 3d144ba..3c008a0 100644
 +
 +export interface TableState<D extends object = {}> {
 +    hiddenColumns?: Array<IdType<D>>;
-+}
- 
--    resolveData?: (data: D[]) => ResolvedData[];
+ }
+-export interface Filter {
+-    id: string;
+-    value: any;
+-    pivotId?: string;
++
 +export interface Hooks<D extends object = {}> extends UseTableHooks<D> {}
- 
--    /** Default: false */
--    loading: boolean;
++
 +export interface Cell<D extends object = {}> extends UseTableCellProps<D> {}
- 
--    /** Default: true */
--    showPagination: boolean;
++
 +export interface Column<D extends object = {}> extends UseTableColumnOptions<D> {}
- 
--    /** Default: false */
--    showPaginationTop: boolean;
-+export interface ColumnInstance<D extends object = {}> extends Omit<Column<D>, 'id'>, UseTableColumnProps<D> {}
- 
--    /** Default: true  */
--    showPaginationBottom: boolean;
++
++export interface ColumnInstance<D extends object = {}> extends Omit<Column<D>, 'id'|'columns'>, UseTableColumnProps<D> {}
++
 +export interface HeaderGroup<D extends object = {}> extends ColumnInstance<D>, UseTableHeaderGroupProps<D> {}
- 
--    /** Default: false */
--    manual: boolean;
++
 +export interface Row<D extends object = {}> extends UseTableRowProps<D> {}
- 
--    /** Default: true */
--    multiSort: boolean;
++
 +/* #region useTable */
 +export function useTable<D extends object = {}>(
 +    options: TableOptions<D>,
 +    ...plugins: Array<PluginHook<D>>
 +): TableInstance<D>;
- 
--    /** Default: true */
--    showPageSizeOptions: boolean;
++
 +/**
 + * NOTE: To use custom options, use "Interface Merging" to add the custom options
 + */
@@ -197,25 +165,29 @@ index 3d144ba..3c008a0 100644
 +}>;
 +
 +export interface UseTableHooks<D extends object> {
++    useOptions: Array<(options: TableOptions<D>, args: TableOptions<D> ) => TableOptions<D>>;
 +    stateReducers: Array<(newState: TableState<D>, action: string, previousState: TableState<D>, instance: RefObject<TableInstance<D>> ) => TableState<D>>;
-+    columnsBeforeHeaderGroups: Array<(flatColumns: Array<Column<D>>, instance: TableInstance<D>) => Array<Column<D>>>;
-+    columnsBeforeHeaderGroupsDeps: Array<(deps: any[], instance: TableInstance<D>) => any[]>;
-+    useInstanceBeforeDimensions: Array<(instance: TableInstance<D>) => TableInstance<D>>;
-+    useInstance: Array<(instance: TableInstance<D>) => TableInstance<D>>;
++    columns: Array<(columns: Array<Column<D>>, instance: TableInstance<D>) => Array<Column<D>>>;
++    columnsDeps: Array<(deps: any[], instance: TableInstance<D>) => any[]>;
++    flatColumns: Array<(flatColumns: Array<Column<D>>, instance: TableInstance<D>) => Array<Column<D>>>;
++    flatColumnsDeps: Array<(deps: any[], instance: TableInstance<D>) => any[]>;
++    headerGroups: Array<(flatColumns: Array<HeaderGroup<D>>, instance: TableInstance<D>) => Array<HeaderGroup<D>>>;
++    headerGroupDeps: Array<(deps: any[], instance: TableInstance<D>) => any[]>;
++    useInstanceBeforeDimensions: Array<(instance: TableInstance<D>) => void>;
++    useInstance: Array<(instance: TableInstance<D>) => void>;
 +    useRows: Array<(rows: Array<Row<D>>, instance: TableInstance<D>) => Array<Row<D>>>;
 +    prepareRow: Array<(row: Row<D>, instance: TableInstance<D>) => Row<D>>;
-+
-+    // Prop Hooks
-+    getTableProps: Array<(instance: TableInstance<D>) => object>;
-+    getTableBodyProps: Array<(instance: TableInstance<D>) => object>;
-+    getRowProps: Array<(row: Row<D>, instance: TableInstance<D>) => object>;
-+    getHeaderGroupProps: Array<(headerGroup: HeaderGroup<D>, instance: TableInstance<D>) => object>;
-+    getHeaderProps: Array<(column: Column<D>, instance: TableInstance<D>) => object>;
-+    getCellProps: Array<(cell: Cell<D>, instance: TableInstance<D>) => object>;
++    getTableProps: Array<(props: object, instance: TableInstance<D>) => object>;
++    getTableBodyProps: Array<(props: object, instance: TableInstance<D>) => object>;
++    getHeaderGroupProps: Array<(props: object, instance: TableInstance<D>, header: HeaderGroup<D>) => object>;
++    getFooterGroupProps: Array<(props: object, instance: TableInstance<D>, header: HeaderGroup<D>) => object>;
++    getHeaderProps: Array<(props: object, instance: TableInstance<D>, header: HeaderGroup<D>) => object>;
++    getFooterProps: Array<(pops: object, instance: TableInstance<D>, header: HeaderGroup<D>) => object>;
++    getRowProps: Array<(props: object, instance: TableInstance<D>, row: Row<D>) => object>;
++    getCellProps: Array<(props: object, instance: TableInstance<D>, cell: Cell<D>) => object>;
++    useFinalInstance: Array<(instance: TableInstance<D>) => void>;
 +}
- 
--    /** Default: [5, 10, 20, 25, 50, 100] */
--    pageSizeOptions: number[];
++
 +export interface UseTableColumnOptions<D extends object>
 +    extends Accessor<D>,
 +        Partial<{
@@ -223,7 +195,7 @@ index 3d144ba..3c008a0 100644
 +            show: boolean | ((instance: TableInstance<D>) => boolean);
 +            Header: Renderer<HeaderProps<D>>;
 +            Cell: Renderer<CellProps<D>>;
-+            width?: number;
++            width?: number|string;
 +            minWidth?: number;
 +            maxWidth?: number;
 +        }> {}
@@ -232,6 +204,7 @@ index 3d144ba..3c008a0 100644
 +
 +export interface UseTableInstanceProps<D extends object> {
 +    state: TableState<D>;
++    hooks: Hooks<D>;
 +    dispatch: TableDispatch;
 +    columns: Array<ColumnInstance<D>>;
 +    flatColumns: Array<ColumnInstance<D>>;
@@ -250,24 +223,18 @@ index 3d144ba..3c008a0 100644
 +    toggleHideAllColumns: (value?: boolean) => void;
 +    getToggleHideAllColumnsProps: (userProps: any) => any;
 +}
- 
--    /** Default: 20 */
--    defaultPageSize: number;
++
 +export interface UseTableHeaderGroupProps<D extends object> {
 +    headers: Array<ColumnInstance<D>>;
 +    getHeaderGroupProps: (props?: object) => object;
 +    getFooterGroupProps: (props?: object) => object;
 +    totalHeaderCount: number; // not documented
-+}
+ }
  
--    /**
--     * Default: undefined
--     * Otherwise take value from 'pageSize' if defined
--     * @TODO: add minRows to react-table defaultProps even if undefined
--     */
--    minRows: number | undefined;
+-export interface SortingRule {
 +export interface UseTableColumnProps<D extends object> {
 +    id: IdType<D>;
++    columns: Array<ColumnInstance<D>>;
 +    isVisible: boolean;
 +    render: (type: 'Header' | 'Footer'  | string, props?: object) => ReactNode;
 +    totalLeft: number;
@@ -280,22 +247,28 @@ index 3d144ba..3c008a0 100644
 +    depth: number; // not documented
 +    index: number; // not documented
 +}
- 
--    /** Default: true */
--    showPageJump: boolean;
++
 +export interface UseTableRowProps<D extends object> {
 +    cells: Array<Cell<D>>;
 +    values: Record<IdType<D>, CellValue>;
 +    getRowProps: (props?: object) => object;
 +    index: number;
 +    original: D;
-+    path: string[];
+     id: string;
+-    desc: boolean;
 +    subRows: Array<Row<D>>;
 +    state: object;
-+}
+ }
  
--    /** Default: true */
--    sortable: boolean;
+-export interface TableProps<D = any, ResolvedData = D> extends
+-    TextProps,
+-    ComponentDecoratorProps,
+-    ControlledStateCallbackProps,
+-    PivotingProps,
+-    ControlledStateOverrideProps,
+-    ComponentProps {
+-    /** Default: [] */
+-    data: D[];
 +export interface UseTableCellProps<D extends object> {
 +    column: ColumnInstance<D>;
 +    row: Row<D>;
@@ -303,7 +276,8 @@ index 3d144ba..3c008a0 100644
 +    getCellProps: (props?: object) => object;
 +    render: (type: 'Cell' | string, userProps?: object) => ReactNode;
 +}
-+
+ 
+-    resolveData?: (data: D[]) => ResolvedData[];
 +export type HeaderProps<D extends object> = TableInstance<D> & {
 +    column: ColumnInstance<D>;
 +};
@@ -331,12 +305,18 @@ index 3d144ba..3c008a0 100644
 +}
 +
 +/* #endregion */
-+
+ 
+-    /** Default: false */
+-    loading: boolean;
 +// Plugins
-+
+ 
+-    /** Default: true */
+-    showPagination: boolean;
 +/* #region useColumnOrder */
 +export function useColumnOrder<D extends object = {}>(hooks: Hooks<D>): void;
-+
+ 
+-    /** Default: false */
+-    showPaginationTop: boolean;
 +export namespace useColumnOrder {
 +    const pluginName = 'useColumnOrder';
 +}
@@ -345,29 +325,29 @@ index 3d144ba..3c008a0 100644
 +    columnOrder: Array<IdType<D>>;
 +}
  
--    /** Default: true */
--    collapseOnSortingChange: boolean;
+-    /** Default: true  */
+-    showPaginationBottom: boolean;
 +export interface UseColumnOrderInstanceProps<D extends object> {
 +    setColumnOrder: (updater: (columnOrder: Array<IdType<D>>) => Array<IdType<D>>) => void;
 +}
  
--    /** Default: true */
--    collapseOnPageChange: boolean;
+-    /** Default: false */
+-    manual: boolean;
 +/* #endregion */
  
 -    /** Default: true */
--    collapseOnDataChange: boolean;
+-    multiSort: boolean;
 +/* #region useExpanded */
 +export function useExpanded<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Default: false */
--    freezeWhenExpanded: boolean;
+-    /** Default: true */
+-    showPageSizeOptions: boolean;
 +export namespace useExpanded {
 +    const pluginName = 'useExpanded';
 +}
  
--    /** Default: [] */
--    defaultSorting: SortingRule[];
+-    /** Default: [5, 10, 20, 25, 50, 100] */
+-    pageSizeOptions: number[];
 +export type UseExpandedOptions<D extends object> = Partial<{
 +    manualExpandedKey: IdType<D>;
 +    paginateExpandedRows: boolean;
@@ -375,28 +355,32 @@ index 3d144ba..3c008a0 100644
 +    autoResetExpanded?: boolean
 +}>;
  
--    /** Default: false */
--    showFilters: boolean;
+-    /** Default: 20 */
+-    defaultPageSize: number;
 +export interface UseExpandedHooks<D extends object> {
 +    getExpandedToggleProps: Array<(row: Row<D>, instance: TableInstance<D>) => object>;
 +}
  
--    /** Default: [] */
--    defaultFiltering: Filter[];
+-    /**
+-     * Default: undefined
+-     * Otherwise take value from 'pageSize' if defined
+-     * @TODO: add minRows to react-table defaultProps even if undefined
+-     */
+-    minRows: number | undefined;
 +export interface UseExpandedState<D extends object> {
 +    expanded: Array<IdType<D>>; // might really want to be Array<string>
 +}
  
--    /** Default: ... */
--    defaultFilterMethod: DefaultFilterFunction;
+-    /** Default: true */
+-    showPageJump: boolean;
 +export interface UseExpandedInstanceProps<D extends object> {
 +    rows: Array<Row<D>>;
-+    toggleExpandedByPath: (path: Array<IdType<D>>, isExpanded: boolean) => void;
++    toggleExpandedById: (id: Array<IdType<D>>, isExpanded: boolean) => void;
 +    expandedDepth: number;
 +}
  
--    /** Default: ... */
--    defaultSortMethod: SortFunction;
+-    /** Default: true */
+-    sortable: boolean;
 +export interface UseExpandedRowProps<D extends object> {
 +    isExpanded: boolean;
 +    canExpand: boolean;
@@ -406,22 +390,22 @@ index 3d144ba..3c008a0 100644
 +}
  
 -    /** Default: true */
--    resizable: boolean;
+-    collapseOnSortingChange: boolean;
 +/* #endregion */
  
--    /** Default: false */
--    filterable: boolean;
+-    /** Default: true */
+-    collapseOnPageChange: boolean;
 +/* #region useFilters */
 +export function useFilters<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Default: [] */
--    defaultResizing: Resize[];
+-    /** Default: true */
+-    collapseOnDataChange: boolean;
 +export namespace useFilters {
 +    const pluginName = 'useFilters';
 +}
  
 -    /** Default: false */
--    defaultSortDesc: boolean;
+-    freezeWhenExpanded: boolean;
 +export type UseFiltersOptions<D extends object> = Partial<{
 +    manualFilters: boolean;
 +    disableFilters: boolean;
@@ -431,13 +415,13 @@ index 3d144ba..3c008a0 100644
 +}>;
  
 -    /** Default: [] */
--    defaultSorted: SortingRule[];
+-    defaultSorting: SortingRule[];
 +export interface UseFiltersState<D extends object> {
 +    filters: Filters<D>;
 +}
  
--    /** Default: [] */
--    defaultFiltered: Filter[];
+-    /** Default: false */
+-    showFilters: boolean;
 +export type UseFiltersColumnOptions<D extends object> = Partial<{
 +    Filter: Renderer<FilterProps<D>>;
 +    disableFilters: boolean;
@@ -453,7 +437,7 @@ index 3d144ba..3c008a0 100644
 +}
  
 -    /** Default: [] */
--    defaultResized: Resize[];
+-    defaultFiltering: Filter[];
 +export interface UseFiltersColumnProps<D extends object> {
 +    canFilter: boolean;
 +    setFilter: (updater: ((filterValue: FilterValue) => FilterValue) | FilterValue) => void;
@@ -462,14 +446,14 @@ index 3d144ba..3c008a0 100644
 +    filteredRows: Array<Row<D>>;
 +}
  
--    /** Default: {} */
--    defaultExpanded: {};
+-    /** Default: ... */
+-    defaultFilterMethod: DefaultFilterFunction;
 +export type FilterProps<D extends object> = HeaderProps<D>;
 +export type FilterValue = any;
 +export type Filters<D extends object> = Record<string, FilterValue>;
  
--    /** On change. */
--    onChange: ReactTableFunction;
+-    /** Default: ... */
+-    defaultSortMethod: SortFunction;
 +export type DefaultFilterTypes =
 +    | 'text'
 +    | 'exactText'
@@ -480,37 +464,33 @@ index 3d144ba..3c008a0 100644
 +    | 'equals'
 +    | 'between';
  
--    /**
--     * Default: string
--     * Adding a -striped className to ReactTable will slightly color odd numbered rows for legibility
--     * Adding a -highlight className to ReactTable will highlight any row as you hover over it
--     */
--    className: string;
+-    /** Default: true */
+-    resizable: boolean;
 +export interface FilterType<D extends object> {
 +    (rows: Array<Row<D>>, columnId: IdType<D>, filterValue: FilterValue, column: ColumnInstance<D>): Array<Row<D>>;
  
--    /** Default: {} */
--    style: object;
+-    /** Default: false */
+-    filterable: boolean;
 +    autoRemove?: (filterValue: FilterValue) => boolean;
 +}
  
--    /** Global Column Defaults */
--    column: Partial<GlobalColumn>;
+-    /** Default: [] */
+-    defaultResizing: Resize[];
 +/* #endregion */
  
--    /** Array of all Available Columns */
--    columns?: Array<Column<ResolvedData>>;
+-    /** Default: false */
+-    defaultSortDesc: boolean;
 +/* #region useGroupBy */
 +export function useGroupBy<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Expander defaults. */
--    expanderDefaults: Partial<ExpanderDefaults>;
+-    /** Default: [] */
+-    defaultSorted: SortingRule[];
 +export namespace useGroupBy {
 +    const pluginName = 'useGroupBy';
 +}
  
--    /** Privot defaults. */
--    pivotDefaults: Partial<PivotDefaults>;
+-    /** Default: [] */
+-    defaultFiltered: Filter[];
 +export type UseGroupByOptions<D extends object> = Partial<{
 +    manualGroupBy: boolean;
 +    disableGroupBy: boolean;
@@ -524,14 +504,14 @@ index 3d144ba..3c008a0 100644
 +    getGroupByToggleProps: Array<(header: HeaderGroup<D>, instance: TableInstance<D>) => object>;
 +}
  
--    /** The content rendered inside of a padding row */
--    PadRowComponent: () => React.ReactNode;
+-    /** Default: [] */
+-    defaultResized: Resize[];
 +export interface UseGroupByState<D extends object> {
 +    groupBy: Array<IdType<D>>;
 +}
  
--    /** Server-side callbacks */
--    onFetchData: (state: any, instance: any) => void;
+-    /** Default: {} */
+-    defaultExpanded: {};
 +export type UseGroupByColumnOptions<D extends object> = Partial<{
 +    aggregate: Aggregator<D> | Array<Aggregator<D>>;
 +    Aggregated: Renderer<CellProps<D>>;
@@ -546,23 +526,22 @@ index 3d144ba..3c008a0 100644
 +    toggleGroupBy: (columnId: IdType<D>, toggle: boolean) => void;
 +}
  
--    /** Control callback for functional rendering */
--    children: (
--        state: FinalState<ResolvedData>,
--        makeTable: () => React.ReactElement,
--        instance: Instance<ResolvedData>
--    ) => React.ReactNode;
+-    /** On change. */
+-    onChange: ReactTableFunction;
 +export interface UseGroupByColumnProps<D extends object> {
 +    canGroupBy: boolean;
 +    isGrouped: boolean;
 +    groupedIndex: number;
 +    toggleGroupBy: () => void;
 +    getGroupByToggleProps: (props?: object) => object;
- }
++}
  
--export interface ControlledStateOverrideProps {
--    /** Default: undefined */
--    page: number | undefined;
+-    /**
+-     * Default: string
+-     * Adding a -striped className to ReactTable will slightly color odd numbered rows for legibility
+-     * Adding a -highlight className to ReactTable will highlight any row as you hover over it
+-     */
+-    className: string;
 +export interface UseGroupByRowProps<D extends object> {
 +    isAggregated: boolean;
 +    groupById: IdType<D>;
@@ -570,24 +549,24 @@ index 3d144ba..3c008a0 100644
 +    values: Record<IdType<D>, AggregatedValue>;
 +    subRows: Array<Row<D>>;
 +    depth: number;
-+    path: string[];
++    id: string;
 +    index: number;
 +}
  
--    /** Default: undefined */
--    pageSize: number | undefined;
+-    /** Default: {} */
+-    style: object;
 +export interface UseGroupByCellProps<D extends object> {
 +    isGrouped: boolean;
 +    isRepeatedValue: boolean;
 +    isAggregated: boolean;
 +}
  
--    /** Default: undefined */
--    pages: number | undefined;
+-    /** Global Column Defaults */
+-    column: Partial<GlobalColumn>;
 +export type DefaultAggregators = 'sum' | 'average' | 'median' | 'uniqueCount' | 'count';
  
--    /** Default: undefined */
--    sorting: number;
+-    /** Array of all Available Columns */
+-    columns?: Array<Column<ResolvedData>>;
 +export type AggregatorFn<D extends object> = (
 +    columnValues: CellValue[],
 +    rows: Array<Row<D>>,
@@ -597,19 +576,19 @@ index 3d144ba..3c008a0 100644
 +export type AggregatedValue = any;
 +/* #endregion */
  
--    /** Default: [] */
--    sorted: SortingRule[];
+-    /** Expander defaults. */
+-    expanderDefaults: Partial<ExpanderDefaults>;
 +/* #region usePagination */
 +export function usePagination<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Default: [] */
--    filtered: Filter[];
+-    /** Privot defaults. */
+-    pivotDefaults: Partial<PivotDefaults>;
 +export namespace usePagination {
 +    const pluginName = 'usePagination';
 +}
  
--    /** Default: [] */
--    resized: Resize[];
+-    /** The content rendered inside of a padding row */
+-    PadRowComponent: () => React.ReactNode;
 +export type UsePaginationOptions<D extends object> = Partial<{
 +    pageCount: number;
 +    manualPagination: boolean;
@@ -617,15 +596,19 @@ index 3d144ba..3c008a0 100644
 +    paginateExpandedRows: boolean;
 +}>;
  
--    /** Default: {} */
--    expanded: {};
+-    /** Server-side callbacks */
+-    onFetchData: (state: any, instance: any) => void;
 +export interface UsePaginationState<D extends object> {
 +    pageSize: number;
 +    pageIndex: number;
 +}
  
--    /** Sub component */
--    SubComponent: SubComponentFunction;
+-    /** Control callback for functional rendering */
+-    children: (
+-        state: FinalState<ResolvedData>,
+-        makeTable: () => React.ReactElement,
+-        instance: Instance<ResolvedData>
+-    ) => React.ReactNode;
 +export interface UsePaginationInstanceProps<D extends object> {
 +    page: Array<Row<D>>;
 +    pageCount: number;
@@ -640,93 +623,78 @@ index 3d144ba..3c008a0 100644
 +    pageSize: number;
  }
  
--export interface PivotingProps {
+-export interface ControlledStateOverrideProps {
 -    /** Default: undefined */
--    pivotBy: string[];
+-    page: number | undefined;
 +/* #endregion */
  
--    /** Default: 200 */
--    pivotColumnWidth: number;
+-    /** Default: undefined */
+-    pageSize: number | undefined;
 +/* #region useResizeColumns */
 +export function useResizeColumns<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Default: _pivotVal */
--    pivotValKey: string;
+-    /** Default: undefined */
+-    pages: number | undefined;
 +export namespace useResizeColumns {
 +    const pluginName = 'useResizeColumns';
 +}
- 
--    /** Default: _pivotID */
--    pivotIDKey: string;
++
 +export interface UseResizeColumnsOptions<D extends object> {
 +    disableResizing?: boolean;
 +}
- 
--    /** Default: _subRows */
--    subRowsKey: string;
++
 +export interface UseResizeColumnsColumnOptions<D extends object> {
 +    disableResizing?: boolean;
 +}
  
--    /** Default: _aggregated */
--    aggregatedKey: string;
+-    /** Default: undefined */
+-    sorting: number;
 +export interface UseResizeColumnsHeaderProps<D extends object> {
 +    getResizerProps: (props?: object) => object;
 +    canResize: boolean;
 +    isResizing: boolean;
 +}
  
--    /** Default: _nestingLevel */
--    nestingLevelKey: string;
+-    /** Default: [] */
+-    sorted: SortingRule[];
 +/* #endregion */
  
--    /** Default: _original */
--    originalKey: string;
+-    /** Default: [] */
+-    filtered: Filter[];
 +/* #region useRowSelect */
 +export function useRowSelect<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Default: _index */
--    indexKey: string;
--
--    /** Default: _groupedByPivot */
--    groupedByPivotKey: string;
+-    /** Default: [] */
+-    resized: Resize[];
 +export namespace useRowSelect {
 +    const pluginName = 'useRowSelect';
 +}
  
--    /**
--     * Default: {} - Pivoting State Overrides (see Fully Controlled Component section)
--     * @example { 4: true }
--     * @example { 5: { 9: true }, 10: true }
--     */
--    expandedRows: ExpandedRows;
+-    /** Default: {} */
+-    expanded: {};
 +export type UseRowSelectOptions<D extends object> = Partial<{
 +    manualRowSelectedKey: IdType<D>;
-+    getResetSelectedRowPathsDeps: (instance: TableInstance<D>) => any[];
 +}>;
  
--    /** Default: ??? - Pivoting State Callbacks */
--    onExpandRow: ReactTableFunction;
+-    /** Sub component */
+-    SubComponent: SubComponentFunction;
 +export interface UseRowSelectHooks<D extends object> {
 +    getToggleRowSelectedProps: Array<(row: Row<D>, instance: TableInstance<D>) => object>;
 +    getToggleAllRowsSelectedProps: Array<(instance: TableInstance<D>) => object>;
  }
  
--export interface ExpandedRows {
--    [idx: number]: boolean | ExpandedRows;
+-export interface PivotingProps {
+-    /** Default: undefined */
+-    pivotBy: string[];
 +export interface UseRowSelectState<D extends object> {
-+    selectedRowPaths: Set<string>;
- }
++    selectedRowIds: Set<string>;
++}
  
--export interface DerivedDataObject {
--    _index: number;
--    _nestingLevel: number;
--    _subRows: any;
--    _original: any;
--    [p: string]: any;
+-    /** Default: 200 */
+-    pivotColumnWidth: number;
 +export interface UseRowSelectInstanceProps<D extends object> {
-+    toggleRowSelected: (rowPath: string, set?: boolean) => void;
-+    toggleRowSelectedAll: (set?: boolean) => void;
++    toggleRowSelected: (rowId: string, set?: boolean) => void;
++    toggleAllRowsSelected: (set?: boolean) => void;
 +    getToggleAllRowsSelectedProps: (props?: {
 +        onChange?: () => void;
 +        style?: { cursor: string };
@@ -735,15 +703,115 @@ index 3d144ba..3c008a0 100644
 +    }) => object;
 +    isAllRowsSelected: boolean;
 +    selectedFlatRows: Array<Row<D>>;
++}
+ 
+-    /** Default: _pivotVal */
+-    pivotValKey: string;
++export interface UseRowSelectRowProps<D extends object> {
++    isSelected: boolean;
++    isSomeSelected: boolean
++    toggleRowSelected: (set?: boolean) => void;
++    getToggleRowSelectedProps: (props?: object) => object;
++}
+ 
+-    /** Default: _pivotID */
+-    pivotIDKey: string;
++/* #endregion */
+ 
+-    /** Default: _subRows */
+-    subRowsKey: string;
++/* #region useRowState */
++export function useRowState<D extends object = {}>(hooks: Hooks<D>): void;
+ 
+-    /** Default: _aggregated */
+-    aggregatedKey: string;
++export namespace useRowState {
++    const pluginName = 'useRowState';
++}
+ 
+-    /** Default: _nestingLevel */
+-    nestingLevelKey: string;
++export type UseRowStateOptions<D extends object> = Partial<{
++    initialRowStateAccessor: (row: Row<D>) => UseRowStateLocalState<D>;
++    getResetRowStateDeps: (instance: TableInstance<D>) => any[];
++}>;
+ 
+-    /** Default: _original */
+-    originalKey: string;
++export interface UseRowStateState<D extends object> {
++    rowState: Record<string, { cellState: UseRowStateLocalState<D> }>;
++}
+ 
+-    /** Default: _index */
+-    indexKey: string;
+-
+-    /** Default: _groupedByPivot */
+-    groupedByPivotKey: string;
++export interface UseRowStateInstanceProps<D extends object> {
++    setRowState: (rowPath: string[], updater: UseRowUpdater) => void; // Purposely not exposing action
++    setCellState: (rowPath: string[], columnId: IdType<D>, updater: UseRowUpdater) => void;
++}
+ 
+-    /**
+-     * Default: {} - Pivoting State Overrides (see Fully Controlled Component section)
+-     * @example { 4: true }
+-     * @example { 5: { 9: true }, 10: true }
+-     */
+-    expandedRows: ExpandedRows;
++export interface UseRowStateRowProps<D extends object> {
++    state: UseRowStateLocalState<D>;
++    setState: (updater: UseRowUpdater) => void;
++}
+ 
+-    /** Default: ??? - Pivoting State Callbacks */
+-    onExpandRow: ReactTableFunction;
++export interface UseRowStateCellProps<D extends object> {
++    state: UseRowStateLocalState<D>;
++    setState: (updater: UseRowUpdater) => void;
+ }
+ 
+-export interface ExpandedRows {
+-    [idx: number]: boolean | ExpandedRows;
++export type UseRowUpdater<T = unknown> = T | ((prev: T) => T);
++export type UseRowStateLocalState<D extends object, T = unknown> = Record<IdType<D>, T>;
++/* #endregion */
++
++/* #region useSortBy */
++export function useSortBy<D extends object = {}>(hooks: Hooks<D>): void;
++
++export namespace useSortBy {
++    const pluginName = 'useSortBy';
+ }
+ 
+-export interface DerivedDataObject {
+-    _index: number;
+-    _nestingLevel: number;
+-    _subRows: any;
+-    _original: any;
+-    [p: string]: any;
++export type UseSortByOptions<D extends object> = Partial<{
++    manualSortBy: boolean;
++    disableSortBy: boolean;
++    defaultCanSort: boolean;
++    disableMultiSort: boolean;
++    isMultiSortEvent: (e: MouseEvent) => boolean;
++    maxMultiSortColCount: number;
++    disableSortRemove: boolean;
++    disabledMultiRemove: boolean;
++    orderByFn: (rows: Array<Row<D>>, sortFns: Array<SortByFn<D>>, directions: boolean[]) => Array<Row<D>>;
++    sortTypes: Record<string, SortByFn<D>>;
++    autoResetSortBy?: boolean
++}>;
++
++export interface UseSortByHooks<D extends object> {
++    getSortByToggleProps: Array<(column: Column<D>, instance: TableInstance<D>) => object>;
  }
  
 -export interface ControlledStateCallbackProps {
 -    /** Called when the page index is changed by the user */
 -    onPageChange: PageChangeFunction;
-+export interface UseRowSelectRowProps<D extends object> {
-+    isSelected: boolean;
-+    toggleRowSelected: (set?: boolean) => void;
-+    getToggleRowSelectedProps: (props?: object) => object;
++export interface UseSortByState<D extends object> {
++    sortBy: Array<SortingRule<D>>;
 +}
  
 -    /**
@@ -751,36 +819,51 @@ index 3d144ba..3c008a0 100644
 -     *  to maintain approximate position in the data
 -     */
 -    onPageSizeChange: PageSizeChangeFunction;
-+/* #endregion */
++export type UseSortByColumnOptions<D extends object> = Partial<{
++    defaultCanSort: boolean;
++    disableSortBy: boolean;
++    sortDescFirst: boolean;
++    sortInverted: boolean;
++    sortType: SortByFn<D> | DefaultSortTypes | string;
++}>;
++
++export interface UseSortByInstanceProps<D extends object> {
++    rows: Array<Row<D>>;
++    preSortedRows: Array<Row<D>>;
++    toggleSortBy: (columnId: IdType<D>, descending: boolean, isMulti: boolean) => void;
++}
  
 -    /**
 -     * Called when a sortable column header is clicked with the column itself and if
 -     * the shiftkey was held. If the column is a pivoted column, `column` will be an array of columns
 -     */
 -    onSortedChange: SortedChangeFunction;
-+/* #region useRowState */
-+export function useRowState<D extends object = {}>(hooks: Hooks<D>): void;
++export interface UseSortByColumnProps<D extends object> {
++    canSort: boolean;
++    toggleSortBy: (descending: boolean, multi: boolean) => void;
++    getSortByToggleProps: (props?: object) => object;
++    clearSorting: () => void;
++    isSorted: boolean;
++    sortedIndex: number;
++    isSortedDesc: boolean | undefined;
++}
  
 -    /**
 -     * Called when a user enters a value into a filter input field or the value passed
 -     * to the onFiltersChange handler by the Filter option.
 -     */
 -    onFilteredChange: FilteredChangeFunction;
-+export namespace useRowState {
-+    const pluginName = 'useRowState';
-+}
++export type SortByFn<D extends object> = (rowA: Row<D>, rowB: Row<D>, columnId: IdType<D>) => 0 | 1 | -1;
  
 -    /** Called when an expander is clicked. Use this to manage `expanded` */
 -    onExpandedChange: ExpandedChangeFunction;
-+export type UseRowStateOptions<D extends object> = Partial<{
-+    initialRowStateAccessor: (row: Row<D>) => UseRowStateLocalState<D>;
-+    getResetRowStateDeps: (instance: TableInstance<D>) => any[];
-+}>;
++export type DefaultSortTypes = 'alphanumeric' | 'datetime' | 'basic';
  
 -    /** Called when a user clicks on a resizing component (the right edge of a column header) */
 -    onResizedChange: ResizedChangeFunction;
-+export interface UseRowStateState<D extends object> {
-+    rowState: Record<string, { cellState: UseRowStateLocalState<D> }>;
++export interface SortingRule<D> {
++    id: IdType<D>;
++    desc?: boolean;
  }
  
 -export interface ComponentDecoratorProps {
@@ -1091,150 +1174,115 @@ index 3d144ba..3c008a0 100644
 -export interface ColumnRenderProps<D = any> {
 -    /** Sorted data. */
 -    data: D[];
-+export interface UseRowStateInstanceProps<D extends object> {
-+    setRowState: (rowPath: string[], updater: UseRowUpdater) => void; // Purposely not exposing action
-+    setCellState: (rowPath: string[], columnId: IdType<D>, updater: UseRowUpdater) => void;
-+}
-+
-+export interface UseRowStateRowProps<D extends object> {
-+    state: UseRowStateLocalState<D>;
-+    setState: (updater: UseRowUpdater) => void;
-+}
++/* #endregion */
  
 -    /** The column. */
 -    column: Column<D>;
-+export interface UseRowStateCellProps<D extends object> {
-+    state: UseRowStateLocalState<D>;
-+    setState: (updater: UseRowUpdater) => void;
++/* #region useAbsoluteLayout */
++export function useAbsoluteLayout<D extends object = {}>(hooks: Hooks<D>): void;
++
++export namespace useAbsoluteLayout {
++    const pluginName = 'useAbsoluteLayout';
  }
++/* #endregion */
  
 -export interface RowRenderProps extends Partial<RowInfo> {
 -    /** Whenever the current row is expanded */
 -    isExpanded?: boolean;
-+export type UseRowUpdater<T = unknown> = T | ((prev: T) => T);
-+export type UseRowStateLocalState<D extends object, T = unknown> = Record<IdType<D>, T>;
-+/* #endregion */
- 
--    /** The current cell value */
--    value?: any;
-+/* #region useSortBy */
-+export function useSortBy<D extends object = {}>(hooks: Hooks<D>): void;
-+
-+export namespace useSortBy {
-+    const pluginName = 'useSortBy';
- }
- 
--export interface RowInfo {
--    /** Materialized row of data */
--    row: any;
-+export type UseSortByOptions<D extends object> = Partial<{
-+    manualSortBy: boolean;
-+    disableSortBy: boolean;
-+    defaultCanSort: boolean;
-+    disableMultiSort: boolean;
-+    isMultiSortEvent: (e: MouseEvent) => boolean;
-+    maxMultiSortColCount: number;
-+    disableSortRemove: boolean;
-+    disabledMultiRemove: boolean;
-+    orderByFn: (rows: Array<Row<D>>, sortFns: Array<SortByFn<D>>, directions: boolean[]) => Array<Row<D>>;
-+    sortTypes: Record<string, SortByFn<D>>;
-+    autoResetSortBy?: boolean
-+}>;
-+
-+export interface UseSortByHooks<D extends object> {
-+    getSortByToggleProps: Array<(column: Column<D>, instance: TableInstance<D>) => object>;
-+}
- 
--    /** The post-accessed values from the original row */
--    rowValues: any;
-+export interface UseSortByState<D extends object> {
-+    sortBy: Array<SortingRule<D>>;
-+}
- 
--    /** The index of the row */
--    index: number;
-+export type UseSortByColumnOptions<D extends object> = Partial<{
-+    defaultCanSort: boolean;
-+    disableSortBy: boolean;
-+    sortDescFirst: boolean;
-+    sortInverted: boolean;
-+    sortType: SortByFn<D> | DefaultSortTypes | string;
-+}>;
-+
-+export interface UseSortByInstanceProps<D extends object> {
-+    rows: Array<Row<D>>;
-+    preSortedRows: Array<Row<D>>;
-+    toggleSortBy: (columnId: IdType<D>, descending: boolean, isMulti: boolean) => void;
-+}
- 
--    /** The index of the row relative to the current page */
--    viewIndex: number;
-+export interface UseSortByColumnProps<D extends object> {
-+    canSort: boolean;
-+    toggleSortBy: (descending: boolean, multi: boolean) => void;
-+    getSortByToggleProps: (props?: object) => object;
-+    clearSorting: () => void;
-+    isSorted: boolean;
-+    sortedIndex: number;
-+    isSortedDesc: boolean | undefined;
-+}
- 
--    /** The size of the page */
--    pageSize: number;
-+export type SortByFn<D extends object> = (rowA: Row<D>, rowB: Row<D>, columnId: IdType<D>) => 0 | 1 | -1;
- 
--    /** The index of page */
--    page: number;
-+export type DefaultSortTypes = 'alphanumeric' | 'datetime' | 'basic';
- 
--    /** The nesting depth (zero-indexed) */
--    level: number;
-+export interface SortingRule<D> {
-+    id: IdType<D>;
-+    desc?: boolean;
-+}
- 
--    /** The nesting path of the row */
--    nestingPath: number[];
-+/* #endregion */
- 
--    /** A boolean stating if the row is an aggregation row */
--    aggregated: boolean;
-+/* #region useAbsoluteLayout */
-+export function useAbsoluteLayout<D extends object = {}>(hooks: Hooks<D>): void;
- 
--    /** A boolean stating if the row is grouped by Pivot */
--    groupedByPivot: boolean;
-+export namespace useAbsoluteLayout {
-+    const pluginName = 'useAbsoluteLayout';
-+}
-+/* #endregion */
- 
--    /** An array of any expandable sub-rows contained in this row */
--    subRows: any[];
 +/* #region useBlockLayout */
 +export function useBlockLayout<D extends object = {}>(hooks: Hooks<D>): void;
  
--    /** Original object passed to row */
--    original: any;
+-    /** The current cell value */
+-    value?: any;
 +export namespace useBlockLayout {
 +    const pluginName = 'useBlockLayout';
  }
 +/* #endregion */
  
--export interface CellInfo extends RowInfo, Pick<ControlledStateOverrideProps, "resized"> {
--    /* true if this row is expanded */
--    isExpanded: boolean;
+-export interface RowInfo {
+-    /** Materialized row of data */
+-    row: any;
 +// Additional API
 +export const actions: Record<string, string>;
 +export const defaultColumn: Partial<Column> & Record<string, any>;
-+
+ 
+-    /** The post-accessed values from the original row */
+-    rowValues: any;
 +// Helpers
 +export type StringKey<D> = Extract<keyof D, string>;
 +export type IdType<D> = StringKey<D> | string;
 +export type CellValue = any;
-+
+ 
+-    /** The index of the row */
+-    index: number;
 +export type Renderer<Props> = ComponentType<Props> | ReactNode;
+ 
+-    /** The index of the row relative to the current page */
+-    viewIndex: number;
++export interface PluginHook<D extends object> {
++    (hooks: Hooks<D>): void;
+ 
+-    /** The size of the page */
+-    pageSize: number;
++    pluginName: string;
++}
+ 
+-    /** The index of page */
+-    page: number;
++export type TableDispatch<A = any> = (action: A) => void;
+ 
+-    /** The nesting depth (zero-indexed) */
+-    level: number;
++// utils
+ 
+-    /** The nesting path of the row */
+-    nestingPath: number[];
++export function defaultOrderByFn<D extends object = {}>(
++    arr: Array<Row<D>>,
++    funcs: Array<SortByFn<D>>,
++    dirs: boolean[],
++): Array<Row<D>>;
+ 
+-    /** A boolean stating if the row is an aggregation row */
+-    aggregated: boolean;
++export function defaultGroupByFn<D extends object = {}>(
++    rows: Array<Row<D>>,
++    columnId: IdType<D>,
++): Record<string, Row<D>>;
+ 
+-    /** A boolean stating if the row is grouped by Pivot */
+-    groupedByPivot: boolean;
++export function makePropGetter(hooks: Hooks, ...meta: any[]): any
+ 
+-    /** An array of any expandable sub-rows contained in this row */
+-    subRows: any[];
++export function reduceHooks<T extends object = {}>(hooks: Hooks, initial: T, ...args: any[]): T
+ 
+-    /** Original object passed to row */
+-    original: any;
+-}
++export function loopHooks(hooks: Hooks, ...args: any[]): void
+ 
+-export interface CellInfo extends RowInfo, Pick<ControlledStateOverrideProps, "resized"> {
+-    /* true if this row is expanded */
+-    isExpanded: boolean;
++export function ensurePluginOrder<D extends object = {}>(
++    plugins: Array<PluginHook<D>>,
++    befores: string[],
++    pluginName: string,
++    afters: string[],
++): void;
++
++export function functionalUpdate<D extends object = {}>(
++    updater: any,
++    old: Partial<TableState<D>>,
++): Partial<TableState<D>>; // todo
++
++export function useGetLatest(obj: any): any
++export function safeUseLayoutEffect(effect: EffectCallback, deps?: DependencyList): void;
++export function useAsyncDebounce<F extends (...args: any[]) => any>( defaultFn: F, defaultWait?: number): F
++
++export function useConsumeHookGetter( hooks: Hooks, hookName: string): any
  
 -    /* the cell's column */
 -    column: Column;
@@ -1313,49 +1361,7 @@ index 3d144ba..3c008a0 100644
 -    resizeColumnStart(...props: any[]): any;
 -    sortColumn(...props: any[]): any;
 -    sortData(...props: any[]): any;
-+export interface PluginHook<D extends object> {
-+    (hooks: Hooks<D>): void;
-+
-+    pluginName: string;
- }
-+
-+export type TableDispatch<A = any> = (action: A) => void;
-+
-+// utils
-+
-+export function defaultOrderByFn<D extends object = {}>(
-+    arr: Array<Row<D>>,
-+    funcs: Array<SortByFn<D>>,
-+    dirs: boolean[],
-+): Array<Row<D>>;
-+
-+export function defaultGroupByFn<D extends object = {}>(
-+    rows: Array<Row<D>>,
-+    columnId: IdType<D>,
-+): Record<string, Row<D>>;
-+
-+export function mergeProps(props: any): any;
-+
-+export function applyHooks(hooks: any, initial: any, args: any[]): any; // todo
-+export function applyPropHooks(hooks: any, args: any[]): any; // todo
-+export function ensurePluginOrder<D extends object = {}>(
-+    plugins: Array<PluginHook<D>>,
-+    befores: string[],
-+    pluginName: string,
-+    afters: string[],
-+): void;
-+
-+export function functionalUpdate<D extends object = {}>(
-+    updater: any,
-+    old: Partial<TableState<D>>,
-+): Partial<TableState<D>>; // todo
-+
-+export function useGetLatest(obj: any): any
-+export function safeUseLayoutEffect(effect: EffectCallback, deps?: DependencyList): void;
-+export function useAsyncDebounce<F extends (...args: any[]) => any>( defaultFn: F, defaultWait?: number): F
-+
-+export function useConsumeHookGetter( hooks: Hooks, hookName: string): any
-+
+-}
 diff --git a/node_modules/@types/react-table/lib/hoc/selectTable.d.ts b/node_modules/@types/react-table/lib/hoc/selectTable.d.ts
 deleted file mode 100644
 index 11452ec..0000000

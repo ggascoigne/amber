@@ -52,11 +52,8 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => <>{camelToWord
 
 const selectionColumn = {
   id: '_selector',
-  Header: ({ getToggleAllRowsSelectedProps, isAllRowsSelected, selectedFlatRows }: HeaderProps<any>) => (
-    <HeaderCheckbox
-      {...getToggleAllRowsSelectedProps()}
-      indeterminate={!isAllRowsSelected && !!selectedFlatRows.length}
-    />
+  Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
+    <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
   ),
   Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
   width: 52,
@@ -67,7 +64,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
   const { name, columns: originalColumns, onAdd, onDelete, onEdit, onClick } = props
   const columns = useMemo(() => [selectionColumn, ...originalColumns], [originalColumns])
 
-  const hooks = [useFilters, useSortBy, useRowSelect, usePagination, useResizeColumns, useFlexLayout]
+  const hooks = [useFilters, useSortBy, useRowSelect, usePagination, useFlexLayout, useResizeColumns]
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
     () => ({

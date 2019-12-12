@@ -1,4 +1,4 @@
-import { actions, applyPropHooks, defaultColumn, mergeProps, useGetLatest } from 'react-table'
+import { actions, defaultColumn, makePropGetter, useConsumeHookGetter, useGetLatest } from 'react-table'
 
 function getFirstDefined(...args) {
   for (let i = 0; i < args.length; i += 1) {
@@ -17,8 +17,97 @@ actions.columnResizing = 'columnResizing'
 actions.columnDoneResizing = 'columnDoneResizing'
 
 export const useResizeColumns = hooks => {
+  hooks.getResizerProps = [defaultGetResizerProps]
   hooks.stateReducers.push(reducer)
   hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
+}
+
+const defaultGetResizerProps = (props, instance, header) => {
+  const { dispatch } = instance
+
+  const onResizeStart = (e, header) => {
+    let isTouchEvent = false
+    if (e.type === 'touchstart') {
+      // lets not respond to multiple touches (e.g. 2 or 3 fingers)
+      if (e.touches && e.touches.length > 1) {
+        return
+      }
+      isTouchEvent = true
+    }
+    const headersToResize = getLeafHeaders(header)
+    // ggp:  note that this is a hack and totally dependent upon the dom I've created
+    // originally:
+    // const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
+    const headerIdWidths =
+      headersToResize.length === 1
+        ? [[headersToResize[0].id, e.currentTarget.parentElement.offsetWidth]]
+        : headersToResize.map(d => [d.id, d.totalWidth])
+
+    const clientX = isTouchEvent ? Math.round(e.touches[0].clientX) : e.clientX
+
+    const dispatchMove = clientXPos => {
+      dispatch({ type: actions.columnResizing, clientX: clientXPos })
+    }
+    const dispatchEnd = () => dispatch({ type: actions.columnDoneResizing })
+
+    const handlersAndEvents = {
+      mouse: {
+        moveEvent: 'mousemove',
+        moveHandler: e => dispatchMove(e.clientX),
+        upEvent: 'mouseup',
+        upHandler: e => {
+          document.removeEventListener('mousemove', handlersAndEvents.mouse.moveHandler)
+          document.removeEventListener('mouseup', handlersAndEvents.mouse.upHandler)
+          dispatchEnd()
+        }
+      },
+      touch: {
+        moveEvent: 'touchmove',
+        moveHandler: e => {
+          if (e.cancelable) {
+            e.preventDefault()
+            e.stopPropagation()
+          }
+          dispatchMove(e.touches[0].clientX)
+          return false
+        },
+        upEvent: 'touchend',
+        upHandler: e => {
+          document.removeEventListener(handlersAndEvents.touch.moveEvent, handlersAndEvents.touch.moveHandler)
+          document.removeEventListener(handlersAndEvents.touch.upEvent, handlersAndEvents.touch.moveHandler)
+          dispatchEnd()
+        }
+      }
+    }
+
+    const events = isTouchEvent ? handlersAndEvents.touch : handlersAndEvents.mouse
+    document.addEventListener(events.moveEvent, events.moveHandler, {
+      passive: false
+    })
+    document.addEventListener(events.upEvent, events.upHandler, {
+      passive: false
+    })
+
+    dispatch({
+      type: actions.columnStartResizing,
+      columnId: header.id,
+      columnWidth: header.totalWidth,
+      headerIdWidths,
+      clientX
+    })
+  }
+
+  return [
+    props,
+    {
+      onMouseDown: e => e.persist() || onResizeStart(e, header),
+      onTouchStart: e => e.persist() || onResizeStart(e, header),
+      style: {
+        cursor: 'ew-resize'
+      },
+      draggable: false
+    }
+  ]
 }
 
 useResizeColumns.pluginName = 'useResizeColumns'
@@ -84,63 +173,22 @@ function reducer(state, action) {
 }
 
 const useInstanceBeforeDimensions = instance => {
-  instance.hooks.getResizerProps = []
-
   const {
     flatHeaders,
     disableResizing,
     hooks: { getHeaderProps },
-    state: { columnResizing },
-    dispatch
+    state: { columnResizing }
   } = instance
 
-  getHeaderProps.push(() => {
-    return {
-      style: {
-        position: 'relative'
-      }
+  getHeaderProps.push({
+    style: {
+      position: 'relative'
     }
   })
 
-  const onMouseDown = (e, header) => {
-    const headersToResize = getLeafHeaders(header)
-    // ggp:  note that this is a hack and totally dependent upon the dom I've created
-    // originally:
-    // const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
-    const headerIdWidths =
-      headersToResize.length === 1
-        ? [[headersToResize[0].id, e.currentTarget.parentElement.offsetWidth]]
-        : headersToResize.map(d => [d.id, d.totalWidth])
-
-    const clientX = e.clientX
-
-    const onMouseMove = e => {
-      const clientX = e.clientX
-
-      dispatch({ type: actions.columnResizing, clientX })
-    }
-
-    const onMouseUp = e => {
-      document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('mouseup', onMouseUp)
-
-      dispatch({ type: actions.columnDoneResizing })
-    }
-
-    document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('mouseup', onMouseUp)
-
-    dispatch({
-      type: actions.columnStartResizing,
-      columnId: header.id,
-      columnWidth: header.totalWidth,
-      headerIdWidths,
-      clientX
-    })
-  }
-
-  // use reference to avoid memory leak in #1608
   const getInstance = useGetLatest(instance)
+
+  const getResizerPropsHooks = useConsumeHookGetter(getInstance().hooks, 'getResizerProps')
 
   flatHeaders.forEach(header => {
     const canResize = getFirstDefined(
@@ -154,23 +202,9 @@ const useInstanceBeforeDimensions = instance => {
     header.isResizing = columnResizing.isResizingColumn === header.id
 
     if (canResize) {
-      header.getResizerProps = userProps => {
-        return mergeProps(
-          {
-            onMouseDown: e => e.persist() || onMouseDown(e, header),
-            style: {
-              cursor: 'ew-resize'
-            },
-            draggable: false
-          },
-          applyPropHooks(getInstance().hooks.getResizerProps, header, getInstance()),
-          userProps
-        )
-      }
+      header.getResizerProps = makePropGetter(getResizerPropsHooks(), getInstance(), header)
     }
   })
-
-  return instance
 }
 
 function getLeafHeaders(header) {
