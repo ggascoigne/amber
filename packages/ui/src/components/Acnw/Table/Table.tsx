@@ -4,12 +4,16 @@ import {
   Cell,
   CellProps,
   Column,
+  HeaderGroup,
   HeaderProps,
+  Meta,
   Row,
   TableInstance,
   TableOptions,
   useFilters,
+  useFlexLayout,
   usePagination,
+  useResizeColumns,
   useRowSelect,
   useSortBy,
   useTable
@@ -37,8 +41,7 @@ import {
 } from './TableStyles'
 import { TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
-import { useFlexLayout } from './useFlexLayout'
-import { useResizeColumns } from './useResizeColumns'
+// import { useFlexLayout } from './useFlexLayout'
 
 export interface Table<T extends object = {}> extends TableOptions<T> {
   name: string
@@ -50,13 +53,30 @@ export interface Table<T extends object = {}> extends TableOptions<T> {
 
 const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => <>{camelToWords(column.id)}</>
 
+const getStyles = <T extends object>(props: any, disableResizing = false, align = 'left') => [
+  props,
+  {
+    style: {
+      flex: disableResizing ? undefined : props.style.flex,
+      justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
+      alignItems: 'flex-start',
+      display: 'flex'
+    }
+  }
+]
+const headerProps = <T extends object>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
+  getStyles(props, column?.disableResizing, column?.align)
+
+const cellProps = <T extends object>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
+  getStyles(props, cell.column?.disableResizing, cell.column?.align)
+
 const selectionColumn = {
   id: '_selector',
   Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
     <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
   ),
   Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
-  width: 52,
+  width: 59,
   disableResizing: true
 }
 
@@ -72,8 +92,10 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       Filter: () => null,
       Cell: TooltipCell,
       Header: DefaultHeader,
-      maxWidth: 0,
-      width: 0
+      // When using the useFlexLayout:
+      minWidth: 30, // minWidth is only used as a limit for resizing
+      width: 150, // width is used for both the flex-basis and flex-grow
+      maxWidth: 200 // maxWidth is only used as a limit for resizing
     }),
     []
   )
@@ -118,11 +140,10 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
             <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => {
                 const style = {
-                  alignItems: 'flex-start',
                   textAlign: column.align ? column.align : 'left '
                 } as CSSProperties
                 return (
-                  <TableHeadCell {...column.getHeaderProps()}>
+                  <TableHeadCell {...column.getHeaderProps(headerProps)}>
                     {column.canSort ? (
                       <TableSortLabel
                         active={column.isSorted}
@@ -149,7 +170,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
-                    <TableCell {...cell.getCellProps()} onClick={cellClickHandler(cell)}>
+                    <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
                       {cell.render('Cell')}
                     </TableCell>
                   )

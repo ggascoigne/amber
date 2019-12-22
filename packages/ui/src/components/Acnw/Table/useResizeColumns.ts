@@ -1,12 +1,22 @@
-import { actions, defaultColumn, makePropGetter, useConsumeHookGetter, useGetLatest } from 'react-table'
+import { MouseEvent } from 'react'
+import {
+  ActionType,
+  ColumnInstance,
+  HeaderGroup,
+  Hooks,
+  Meta,
+  ReducerTableState,
+  TableInstance,
+  TableState,
+  UseResizeColumnsState,
+  actions,
+  defaultColumn,
+  makePropGetter,
+  useConsumeHookGetter,
+  useGetLatest
+} from 'react-table'
 
-function getFirstDefined(...args) {
-  for (let i = 0; i < args.length; i += 1) {
-    if (typeof args[i] !== 'undefined') {
-      return args[i]
-    }
-  }
-}
+import { getFirstDefined } from './tableHookUtils'
 
 // Default Column
 defaultColumn.canResize = true
@@ -16,36 +26,39 @@ actions.columnStartResizing = 'columnStartResizing'
 actions.columnResizing = 'columnResizing'
 actions.columnDoneResizing = 'columnDoneResizing'
 
-export const useResizeColumns = hooks => {
+export const useResizeColumns = <D extends object>(hooks: Hooks<D>): void => {
   hooks.getResizerProps = [defaultGetResizerProps]
+  hooks.getHeaderProps.push({
+    style: {
+      position: 'relative'
+    }
+  })
   hooks.stateReducers.push(reducer)
   hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
 }
 
-const defaultGetResizerProps = (props, instance, header) => {
+const defaultGetResizerProps = <D extends object>(
+  props: any,
+  { instance, header }: Meta<D, { header: HeaderGroup<D> }>
+) => {
   const { dispatch } = instance
 
-  const onResizeStart = (e, header) => {
+  const onResizeStart = (e: MouseEvent<HTMLDivElement> | TouchEvent, header: HeaderGroup<D>) => {
     let isTouchEvent = false
     if (e.type === 'touchstart') {
+      const te = e as TouchEvent
       // lets not respond to multiple touches (e.g. 2 or 3 fingers)
-      if (e.touches && e.touches.length > 1) {
+      if (te.touches && te.touches.length > 1) {
         return
       }
       isTouchEvent = true
     }
     const headersToResize = getLeafHeaders(header)
-    // ggp:  note that this is a hack and totally dependent upon the dom I've created
-    // originally:
-    // const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
-    const headerIdWidths =
-      headersToResize.length === 1
-        ? [[headersToResize[0].id, e.currentTarget.parentElement.offsetWidth]]
-        : headersToResize.map(d => [d.id, d.totalWidth])
+    const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
 
-    const clientX = isTouchEvent ? Math.round(e.touches[0].clientX) : e.clientX
+    const clientX = isTouchEvent ? Math.round((e as TouchEvent).touches[0].clientX) : (e as MouseEvent).clientX
 
-    const dispatchMove = clientXPos => {
+    const dispatchMove = (clientXPos: number) => {
       dispatch({ type: actions.columnResizing, clientX: clientXPos })
     }
     const dispatchEnd = () => dispatch({ type: actions.columnDoneResizing })
@@ -53,17 +66,17 @@ const defaultGetResizerProps = (props, instance, header) => {
     const handlersAndEvents = {
       mouse: {
         moveEvent: 'mousemove',
-        moveHandler: e => dispatchMove(e.clientX),
+        moveHandler: (e: MouseEvent) => dispatchMove(e.clientX),
         upEvent: 'mouseup',
-        upHandler: e => {
-          document.removeEventListener('mousemove', handlersAndEvents.mouse.moveHandler)
-          document.removeEventListener('mouseup', handlersAndEvents.mouse.upHandler)
+        upHandler: (e: MouseEvent) => {
+          document.removeEventListener('mousemove', (handlersAndEvents.mouse.moveHandler as unknown) as EventListener)
+          document.removeEventListener('mouseup', (handlersAndEvents.mouse.upHandler as unknown) as EventListener)
           dispatchEnd()
         }
       },
       touch: {
         moveEvent: 'touchmove',
-        moveHandler: e => {
+        moveHandler: (e: TouchEvent) => {
           if (e.cancelable) {
             e.preventDefault()
             e.stopPropagation()
@@ -72,19 +85,25 @@ const defaultGetResizerProps = (props, instance, header) => {
           return false
         },
         upEvent: 'touchend',
-        upHandler: e => {
-          document.removeEventListener(handlersAndEvents.touch.moveEvent, handlersAndEvents.touch.moveHandler)
-          document.removeEventListener(handlersAndEvents.touch.upEvent, handlersAndEvents.touch.moveHandler)
+        upHandler: (e: TouchEvent) => {
+          document.removeEventListener(
+            handlersAndEvents.touch.moveEvent,
+            (handlersAndEvents.touch.moveHandler as unknown) as EventListener
+          )
+          document.removeEventListener(
+            handlersAndEvents.touch.upEvent,
+            (handlersAndEvents.touch.moveHandler as unknown) as EventListener
+          )
           dispatchEnd()
         }
       }
     }
 
     const events = isTouchEvent ? handlersAndEvents.touch : handlersAndEvents.mouse
-    document.addEventListener(events.moveEvent, events.moveHandler, {
+    document.addEventListener(events.moveEvent, (events.moveHandler as unknown) as EventListener, {
       passive: false
     })
-    document.addEventListener(events.upEvent, events.upHandler, {
+    document.addEventListener(events.upEvent, (events.upHandler as unknown) as EventListener, {
       passive: false
     })
 
@@ -100,8 +119,13 @@ const defaultGetResizerProps = (props, instance, header) => {
   return [
     props,
     {
-      onMouseDown: e => e.persist() || onResizeStart(e, header),
-      onTouchStart: e => e.persist() || onResizeStart(e, header),
+      onMouseDown: (e: MouseEvent<HTMLDivElement>) => {
+        e.persist()
+        onResizeStart(e, header)
+      },
+      onTouchStart: (e: TouchEvent) => {
+        onResizeStart(e, header)
+      },
       style: {
         cursor: 'ew-resize'
       },
@@ -112,7 +136,8 @@ const defaultGetResizerProps = (props, instance, header) => {
 
 useResizeColumns.pluginName = 'useResizeColumns'
 
-function reducer(state, action) {
+function reducer<D extends object>(previousState: TableState<D>, action: ActionType): ReducerTableState<D> | undefined {
+  const state: TableState<D> & UseResizeColumnsState<D> = previousState as TableState<D> & UseResizeColumnsState<D>
   if (action.type === actions.init) {
     return {
       columnResizing: {
@@ -124,13 +149,14 @@ function reducer(state, action) {
 
   if (action.type === actions.columnStartResizing) {
     const { clientX, columnId, columnWidth, headerIdWidths } = action
+
     return {
       ...state,
       columnResizing: {
         ...state.columnResizing,
         startX: clientX,
         headerIdWidths,
-        columnWidth: columnWidth !== 0 ? columnWidth : headerIdWidths.find(([i]) => i === columnId)[1],
+        columnWidth,
         isResizingColumn: columnId
       }
     }
@@ -140,14 +166,15 @@ function reducer(state, action) {
     const { clientX } = action
     const { startX, columnWidth, headerIdWidths } = state.columnResizing
 
-    const deltaX = clientX - startX
+    const deltaX = clientX - startX!
     const percentageDeltaX = deltaX / columnWidth
 
-    const newColumnWidths = {}
-
+    const newColumnWidths: Record<string, number> = {}
+    // @ts-ignore
     headerIdWidths.forEach(([headerId, headerWidth]) => {
       newColumnWidths[headerId] = Math.max(headerWidth + headerWidth * percentageDeltaX, 0)
     })
+
     return {
       ...state,
       columnResizing: {
@@ -165,26 +192,16 @@ function reducer(state, action) {
       ...state,
       columnResizing: {
         ...state.columnResizing,
-        startX: null,
-        isResizingColumn: null
+        startX: undefined,
+        isResizingColumn: undefined
       }
     }
   }
 }
 
-const useInstanceBeforeDimensions = instance => {
-  const {
-    flatHeaders,
-    disableResizing,
-    hooks: { getHeaderProps },
-    state: { columnResizing }
-  } = instance
-
-  getHeaderProps.push({
-    style: {
-      position: 'relative'
-    }
-  })
+const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D>) => {
+  const { flatHeaders, disableResizing, state } = instance
+  const { columnResizing } = state as TableState<D> & UseResizeColumnsState<D>
 
   const getInstance = useGetLatest(instance)
 
@@ -202,14 +219,17 @@ const useInstanceBeforeDimensions = instance => {
     header.isResizing = columnResizing.isResizingColumn === header.id
 
     if (canResize) {
-      header.getResizerProps = makePropGetter(getResizerPropsHooks(), getInstance(), header)
+      header.getResizerProps = makePropGetter(getResizerPropsHooks(), {
+        instance: getInstance(),
+        header
+      })
     }
   })
 }
 
-function getLeafHeaders(header) {
-  const leafHeaders = []
-  const recurseHeader = header => {
+function getLeafHeaders<D extends object>(header: HeaderGroup<D>) {
+  const leafHeaders: ColumnInstance<D>[] = []
+  const recurseHeader = (header: ColumnInstance<D>) => {
     if (header.columns && header.columns.length) {
       header.columns.map(recurseHeader)
     }

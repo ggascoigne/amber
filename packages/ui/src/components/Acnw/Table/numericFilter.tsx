@@ -27,7 +27,7 @@ function parseValue(filterValue: FilterValue) {
 export const numeric: FilterType<any> = (rows, id, filterValue) => {
   const comparator = parseValue(filterValue)
   return rows.filter(row => {
-    const rowValue = row.values[id]
+    const rowValue = row.values[id[0]]
     return comparator(rowValue)
   })
 }

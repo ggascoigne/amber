@@ -14,8 +14,7 @@ import { LookupAndValues } from './types'
 
 const columns = [
   {
-    accessor: 'realm',
-    disableResizing: true
+    accessor: 'realm'
   }
 ]
 

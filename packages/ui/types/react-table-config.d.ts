@@ -10,8 +10,9 @@ import {
   UsePaginationOptions,
   UsePaginationState,
   UseResizeColumnsColumnOptions,
-  UseResizeColumnsHeaderProps,
+  UseResizeColumnsColumnProps,
   UseResizeColumnsOptions,
+  UseResizeColumnsState,
   UseRowSelectInstanceProps,
   UseRowSelectOptions,
   UseRowSelectRowProps,
@@ -20,74 +21,55 @@ import {
   UseSortByColumnProps,
   UseSortByInstanceProps,
   UseSortByOptions,
-  UseSortByState,
-  UseTableCellProps
+  UseSortByState
 } from 'react-table'
 
 declare module 'react-table' {
-  // new definitions
-  export interface UseResizeColumnState {
-    columnResizing: {
-      columnWidths: number[]
-    }
+  export interface UseFlexLayoutInstanceProps<D extends object> {
+    totalColumnsMinWidth: number
   }
 
-  // end fixed definitions
+  export interface UseFlexLayoutColumnProps<D extends object> {
+    totalMinWidth: number
+  }
 
-  // export interface UseHideColumnsValues {
-  //   setColumnHidden: (columnID: string | number, hide: boolean) => void
-  // }
-  //
-  // export interface UseHideColumnsState {
-  //   hiddenColumns: (string | number)[]
-  // }
-
-  export interface TableOptions<D extends object>  // UseExpandedOptions<D>,
+  export interface TableOptions<D extends object>
     extends UseFiltersOptions<D>,
       UseSortByColumnOptions<D>,
-      // UseGroupByOptions<D>,
       UsePaginationOptions<D>,
       UseRowSelectOptions<D>,
       UseSortByOptions<D>,
       UseResizeColumnsOptions<D> {}
 
-  export interface TableInstance<D extends object>  // UseColumnOrderInstanceProps<D>, // UseExpandedInstanceProps<D>,
+  export interface TableInstance<D extends object>
     extends UseFiltersInstanceProps<D>,
       UseRowSelectInstanceProps<D>,
-      // UseGroupByInstanceProps<D>,
+      UseFlexLayoutInstanceProps<D>,
       UsePaginationInstanceProps<D>,
-      // UseRowStateInstanceProps<D>,
-      // UseHideColumnsValues,
       UseSortByInstanceProps<D> {}
 
-  export interface TableState<D extends object = {}>  // UseColumnOrderState<D>, // UseExpandedState<D>,
+  export interface TableState<D extends object = {}>
     extends UseFiltersState<D>,
-      // UseGroupByState<D>,
       UsePaginationState<D>,
       UseRowSelectState<D>,
       UseSortByState<D>,
-      // UseHideColumnsState,
-      UseResizeColumnState {
+      UseResizeColumnsState<D> {
     rowCount: number
   }
 
   export interface Column<D extends object = {}> extends UseFiltersColumnOptions<D>, UseResizeColumnsColumnOptions<D> {
     align?: string
-  } // UseSortByColumnOptions<D> // UseGroupByColumnOptions<D>,
+  }
 
   export interface ColumnInstance<D extends object = {}>
     extends UseFiltersColumnProps<D>,
-      UseResizeColumnsHeaderProps<D>,
-      // UseGroupByColumnProps<D>,
+      UseResizeColumnsColumnProps<D>,
+      UseFlexLayoutColumnProps<D>,
       UseSortByColumnProps<D> {}
 
-  export interface Cell<D extends object = {}>
-    extends UseTableCellProps<D> /*,
-      UseGroupByCellProps<D>,
-      UseRowStateCellProps<D>*/ {}
+  // export interface Cell<D extends object = {}> {}
 
-  export interface Row<D extends object = {}> extends UseRowSelectRowProps<D> /*,
-      UseRowStateRowProps<D> */ {} // UseExpandedRowProps<D>, // UseGroupByRowProps<D>,
+  export interface Row<D extends object = {}> extends UseRowSelectRowProps<D> {}
 }
 
 export type TableMouseEventHandler = (instance: TableInstance<T>) => MouseEventHandler

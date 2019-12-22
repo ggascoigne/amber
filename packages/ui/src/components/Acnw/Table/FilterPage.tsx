@@ -2,7 +2,7 @@ import { Button, FormControl, Popover, Typography, createStyles, makeStyles } fr
 import classNames from 'classnames'
 import { Form, Formik, FormikHelpers, FormikState } from 'formik'
 import React, { ReactElement, useCallback, useMemo } from 'react'
-import { ColumnInstance, Filters, IdType, TableInstance } from 'react-table'
+import { ColumnInstance, Filters, TableInstance } from 'react-table'
 
 import { TextField } from '../Form'
 
@@ -46,12 +46,27 @@ type FilterPage<T extends object> = {
 
 const id = 'popover-filters'
 
+type FormValues = {
+  [index: string]: any
+}
+
 // you get an error from react if you initialize an input with an undefined initial value since that causes it to be uncontrolled
 // then it becomes controlled as soon as it gets a value.  So initialize the non-existent values with an empty string.
-const getFormSafeValues = <T extends {}>(columns: ColumnInstance<T>[], filters: Filters<T>) =>
+const getFormSafeValues = <T extends {}>(columns: ColumnInstance<T>[], filters: Filters<T>): FormValues =>
   columns
     .filter(it => it.canFilter)
-    .reduce((old, val) => Object.assign(old, { [val.id]: filters[val.id] || '' }), {} as Filters<T>)
+    .reduce(
+      (old, val) => Object.assign(old, { [val.id]: filters.find(f => f.id === val.id)?.value || '' }),
+      {}
+    )
+
+const toFilters = <T extends {}>(columns: ColumnInstance<T>[], values: FormValues): Filters<T> =>
+  columns
+    .filter(it => it.canFilter)
+    .reduce((old, val) => {
+      old.push({ id: val.id, value: values[val.id] || '' })
+      return old
+    }, [] as Filters<T>)
 
 export function FilterPage<T extends object>({ instance, anchorEl, onClose, show }: FilterPage<T>): ReactElement {
   const classes = useStyles({})
@@ -65,25 +80,25 @@ export function FilterPage<T extends object>({ instance, anchorEl, onClose, show
     return getFormSafeValues(columns, filters)
   }, [columns, filters])
 
-  const onSubmit = (values: Filters<T>, { setSubmitting }: FormikHelpers<Filters<T>>) => {
+  const onSubmit = (values: object, { setSubmitting }: FormikHelpers<FormValues>) => {
     // note that setAllFilters modified values and removes all empty strings causing warnings from react
-    setAllFilters({ ...values })
+    setAllFilters(toFilters(columns, values))
     setSubmitting(false)
     onClose()
   }
 
   const onBlur = useCallback(
-    (values: Filters<T>) => {
-      setAllFilters({ ...values })
+    (values: object) => {
+      setAllFilters(toFilters(columns, values))
     },
-    [setAllFilters]
+    [columns, setAllFilters]
   )
 
-  const resetFilters = (resetForm: (nextState?: Partial<FormikState<Filters<T>>>) => void) => {
+  const resetFilters = (resetForm: (nextState?: Partial<FormikState<FormValues>>) => void) => {
     return () => {
-      setAllFilters({} as Record<IdType<T>, any>)
+      setAllFilters([])
       resetForm({
-        values: getFormSafeValues(columns, {} as Record<IdType<T>, any>)
+        values: getFormSafeValues(columns, [])
       })
     }
   }

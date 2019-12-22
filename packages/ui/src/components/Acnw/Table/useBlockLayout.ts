@@ -2,41 +2,41 @@ import { Cell, HeaderGroup, Hooks, TableInstance } from 'react-table'
 
 const cellStyles = {
   display: 'inline-block',
-  boxSizing: 'border-box',
+  boxSizing: 'border-box'
 }
 
-const getRowStyles = (props: any, instance: TableInstance) => [
+const getRowStyles = (props: any, { instance }: { instance: TableInstance }) => [
   props,
   {
     style: {
       display: 'flex',
-      width: `${instance.totalColumnsWidth}px`,
-    },
-  },
+      width: `${instance.totalColumnsWidth}px`
+    }
+  }
 ]
 
 export const useBlockLayout = (hooks: Hooks) => {
   hooks.getRowProps.push(getRowStyles)
   hooks.getHeaderGroupProps.push(getRowStyles)
 
-  hooks.getHeaderProps.push((props: object, instance: TableInstance, header: HeaderGroup) => [
+  hooks.getHeaderProps.push((props: object, { column }: { column: HeaderGroup }) => [
     props,
     {
       style: {
         ...cellStyles,
-        width: `${header.totalWidth}px`,
-      },
-    },
+        width: `${column.totalWidth}px`
+      }
+    }
   ])
 
-  hooks.getCellProps.push((props: object, instance: TableInstance, cell: Cell) => [
+  hooks.getCellProps.push((props: object, { cell }: { cell: Cell }) => [
     props,
     {
       style: {
         ...cellStyles,
-        width: `${cell.column.totalWidth}px`,
-      },
-    },
+        width: `${cell.column.totalWidth}px`
+      }
+    }
   ])
 }
 

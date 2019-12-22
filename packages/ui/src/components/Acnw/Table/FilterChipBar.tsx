@@ -47,15 +47,16 @@ export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) 
       <span className={classes.filtersActiveLabel}>Active filters:</span>
       {filters &&
         columns.map(column => {
+          const value = filters.find(f => f.id === column.id )?.value
           return (
-            filters[column.id] && (
+            value && (
               <Chip
                 className={classes.filterChip}
                 key={column.id}
                 label={
                   <>
                     <span className={classes.chipLabel}>{column.render('Header')}: </span>
-                    {filters[column.id]}
+                    {value}
                   </>
                 }
                 onDelete={() => handleDelete(column.id)}
