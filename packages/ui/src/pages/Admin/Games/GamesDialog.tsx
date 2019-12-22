@@ -129,11 +129,11 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = props => {
     (acc, current) => {
       acc.push({
         value: current!.slot,
-        label: `Slot ${current!.slot}: ${current!.day} - ${current!.time}`
+        text: `Slot ${current!.slot}: ${current!.day} - ${current!.time}`
       })
       return acc
     },
-    [{ value: 0, label: "Any Slot -- Doesn't Matter" }]
+    [{ value: 0, text: "Any Slot -- Doesn't Matter" }]
   )
 
   return <SelectField {...rest} selectValues={selectValues!} />

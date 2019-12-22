@@ -22,7 +22,7 @@ export const LookupField: React.ComponentType<LookupFieldProps> = props => {
   const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map(v => {
     return {
       value: v!.code,
-      label: v!.value
+      text: v!.value
     }
   })
   return <SelectField {...rest} selectValues={selectValues!} />

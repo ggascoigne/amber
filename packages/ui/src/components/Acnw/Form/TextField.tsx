@@ -8,29 +8,36 @@ export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'va
 }
 
 export const TextField: React.ComponentType<TextFieldProps> = props => {
+  const { overrideFormik, ...rest } = props
   // @ts-ignore
-  const [field, meta] = useField(props)
+  const [field, meta] = useField(rest)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
 
   const showError = touched && !!error
 
+  // work around an issue where the select component used by the underlying material-ui
+  // library barfs if you have an undefined value here instead of an empty array
+  if (rest?.SelectProps?.multiple && field.value === undefined) {
+    field.value = []
+  }
   // I really don't want to do this by accident so the default always forces the formik overrides
-  const newProps = props.overrideFormik
+  // this is particularly useful when you want to override the built in onBlur
+  const newProps = overrideFormik
     ? {
         ...field,
-        ...props
+        ...rest
       }
     : {
-        ...props,
+        ...rest,
         ...field
       }
 
   const fullProps = {
     ...newProps,
     error: showError,
-    helperText: showError ? error : props.helperText,
-    disabled: props.disabled !== undefined ? props.disabled : isSubmitting
+    helperText: showError ? error : rest.helperText,
+    disabled: rest.disabled !== undefined ? rest.disabled : isSubmitting
   }
   return <MuiTextField {...fullProps} />
 }
