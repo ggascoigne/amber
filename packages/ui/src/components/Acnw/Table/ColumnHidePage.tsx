@@ -24,6 +24,8 @@ type ColumnHidePage<T extends object> = {
   show: boolean
 }
 
+const id = 'popover-column-hide'
+
 export function ColumnHidePage<T extends object>({
   instance,
   anchorEl,
@@ -31,8 +33,8 @@ export function ColumnHidePage<T extends object>({
   show
 }: ColumnHidePage<T>): ReactElement | null {
   const classes = useStyles({})
-  const { columns, toggleHideColumn } = instance
-  const hideableColumns = columns.filter(column => !(column.id === '_selector'))
+  const { flatColumns, toggleHideColumn } = instance
+  const hideableColumns = flatColumns.filter(column => !(column.id === '_selector'))
   const checkedCount = hideableColumns.reduce((acc, val) => acc + (val.isVisible ? 0 : 1), 0)
 
   const onlyOneOptionLeft = checkedCount + 1 >= hideableColumns.length
@@ -42,7 +44,7 @@ export function ColumnHidePage<T extends object>({
       <Popover
         anchorEl={anchorEl}
         className={classes.columnsPopOver}
-        id={'popover-column-hide'}
+        id={id}
         onClose={onClose}
         open={show}
         anchorOrigin={{

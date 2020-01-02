@@ -1,10 +1,6 @@
-import { Button, FormControl, Popover, Typography, createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
-import { Form, Formik, FormikHelpers, FormikState } from 'formik'
-import React, { ReactElement, useCallback, useMemo } from 'react'
-import { ColumnInstance, Filters, TableInstance } from 'react-table'
-
-import { TextField } from '../Form'
+import { Button, Popover, Typography, createStyles, makeStyles } from '@material-ui/core'
+import React, { FormEvent, ReactElement, useCallback } from 'react'
+import { TableInstance } from 'react-table'
 
 const useStyles = makeStyles(
   createStyles({
@@ -13,7 +9,13 @@ const useStyles = makeStyles(
         padding: '24px 8px 5px 24px'
       }
     },
-    filtersClearButton: {
+    form: {
+      width: 484,
+      '@media (max-width: 600px)': {
+        width: 168
+      }
+    },
+    filtersResetButton: {
       position: 'absolute',
       top: 18,
       right: 21
@@ -24,6 +26,9 @@ const useStyles = makeStyles(
       textTransform: 'uppercase'
     },
     formGrid: {
+      display: 'inline-flex',
+      flexDirection: 'column',
+      verticalAlign: 'top',
       flex: '1 1 calc(50% - 24px)',
       marginRight: 24,
       marginBottom: 24,
@@ -32,8 +37,9 @@ const useStyles = makeStyles(
         width: 150
       }
     },
-    margin: {},
-    formControl: {}
+    hidden: {
+      display: 'none'
+    }
   })
 )
 
@@ -44,71 +50,28 @@ type FilterPage<T extends object> = {
   show: boolean
 }
 
-const id = 'popover-filters'
-
-type FormValues = {
-  [index: string]: any
-}
-
-// you get an error from react if you initialize an input with an undefined initial value since that causes it to be uncontrolled
-// then it becomes controlled as soon as it gets a value.  So initialize the non-existent values with an empty string.
-const getFormSafeValues = <T extends {}>(columns: ColumnInstance<T>[], filters: Filters<T>): FormValues =>
-  columns
-    .filter(it => it.canFilter)
-    .reduce(
-      (old, val) => Object.assign(old, { [val.id]: filters.find(f => f.id === val.id)?.value || '' }),
-      {}
-    )
-
-const toFilters = <T extends {}>(columns: ColumnInstance<T>[], values: FormValues): Filters<T> =>
-  columns
-    .filter(it => it.canFilter)
-    .reduce((old, val) => {
-      old.push({ id: val.id, value: values[val.id] || '' })
-      return old
-    }, [] as Filters<T>)
-
 export function FilterPage<T extends object>({ instance, anchorEl, onClose, show }: FilterPage<T>): ReactElement {
   const classes = useStyles({})
-  const {
-    columns,
-    setAllFilters,
-    state: { filters }
-  } = instance
+  const { flatColumns, setAllFilters } = instance
 
-  const initialValues = useMemo(() => {
-    return getFormSafeValues(columns, filters)
-  }, [columns, filters])
-
-  const onSubmit = (values: object, { setSubmitting }: FormikHelpers<FormValues>) => {
-    // note that setAllFilters modified values and removes all empty strings causing warnings from react
-    setAllFilters(toFilters(columns, values))
-    setSubmitting(false)
-    onClose()
-  }
-
-  const onBlur = useCallback(
-    (values: object) => {
-      setAllFilters(toFilters(columns, values))
+  const onSubmit = useCallback(
+    (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+      onClose()
     },
-    [columns, setAllFilters]
+    [onClose]
   )
 
-  const resetFilters = (resetForm: (nextState?: Partial<FormikState<FormValues>>) => void) => {
-    return () => {
-      setAllFilters([])
-      resetForm({
-        values: getFormSafeValues(columns, [])
-      })
-    }
-  }
+  const resetFilters = useCallback(() => {
+    setAllFilters([])
+  }, [setAllFilters])
 
   return (
     <div>
       <Popover
         anchorEl={anchorEl}
         className={classes.columnsPopOver}
-        id={id}
+        id={'popover-filters'}
         onClose={onClose}
         open={show}
         anchorOrigin={{
@@ -121,47 +84,21 @@ export function FilterPage<T extends object>({ instance, anchorEl, onClose, show
         }}
       >
         <Typography className={classes.popoverTitle}>Filters</Typography>
-        <Formik onSubmit={onSubmit} initialValues={initialValues}>
-          {({ values, resetForm }) => (
-            <Form>
-              <Button
-                className={classNames(classes.margin, classes.filtersClearButton)}
-                color='primary'
-                onClick={resetFilters(resetForm)}
-              >
-                Reset
-              </Button>
-              {columns
-                .filter(it => it.canFilter)
-                .map((column, index) => {
-                  return (
-                    <span key={column.id}>
-                      <FormControl className={classNames(classes.formControl, classes.formGrid)}>
-                        <TextField
-                          name={column.id}
-                          overrideFormik={true}
-                          autoFocus={index === 0}
-                          variant={'standard'}
-                          // note that this relies on a convention of having the columns header component just render the name
-                          label={column.render('Header')}
-                          onBlur={() => onBlur(values)}
-                        />
-                      </FormControl>
-                      {Math.abs(index % 2) === 1 ? <br /> : null}
-                    </span>
-                  )
-                })}
-              <Button
-                style={{
-                  display: 'none'
-                }}
-                type={'submit'}
-              >
-                &nbsp;
-              </Button>
-            </Form>
-          )}
-        </Formik>
+        <form onSubmit={onSubmit} className={classes.form}>
+          <Button className={classes.filtersResetButton} color='primary' onClick={resetFilters}>
+            Reset
+          </Button>
+          {flatColumns
+            .filter(it => it.canFilter)
+            .map(column => (
+              <div key={column.id} className={classes.formGrid}>
+                {column.render('Filter')}
+              </div>
+            ))}
+          <Button className={classes.hidden} type={'submit'}>
+            &nbsp;
+          </Button>
+        </form>
       </Popover>
     </div>
   )

@@ -1,3 +1,4 @@
+///<reference types="webpack-env" />
 import 'assets/scss/material-kit-react.css?v=1.3.0'
 import 'react-app-polyfill/ie11'
 
@@ -28,8 +29,8 @@ const render = (Component: React.ComponentType) => {
 
 render(App)
 
-if (module.hot) {
-  module.hot.accept('./App', () => render(require('./App').default))
+if ((module as NodeModule).hot) {
+  ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
 }
 
 registerServiceWorker()

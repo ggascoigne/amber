@@ -45,6 +45,7 @@ module.exports = {
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-empty-function': 'off',
         // these are somewhat open to debate but match our current code.
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/prefer-interface': 'off',

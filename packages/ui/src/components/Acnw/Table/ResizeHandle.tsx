@@ -12,23 +12,8 @@ export const ResizeHandle = <T extends {}>({ column }: { column: ColumnInstance<
       style={{ cursor: 'col-resize' }} // override the useResizeColumns default
       className={cx({
         [classes.resizeHandle]: true,
-        [classes.resizeHandleActive]: column.isResizing
+        handleActive: column.isResizing
       })}
-    >
-      <div
-        className={cx({
-          [classes.resizeHandleLine]: true,
-          [classes.resizeHandleFirstLine]: true,
-          [classes.resizeHandleLineActive]: column.isResizing
-        })}
-      />
-      <div
-        className={cx({
-          [classes.resizeHandleLine]: true,
-          [classes.resizeHandleSecondLine]: true,
-          [classes.resizeHandleLineActive]: column.isResizing
-        })}
-      />
-    </div>
+    />
   )
 }

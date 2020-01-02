@@ -1,17 +1,25 @@
-import { TableSortLabel } from '@material-ui/core'
-import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect, useMemo } from 'react'
+import { TableSortLabel, TextField } from '@material-ui/core'
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import cx from 'classnames'
+import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect } from 'react'
 import {
   Cell,
   CellProps,
   Column,
+  FilterProps,
   HeaderGroup,
   HeaderProps,
+  Hooks,
   Meta,
   Row,
   TableInstance,
   TableOptions,
+  useColumnOrder,
+  useExpanded,
   useFilters,
   useFlexLayout,
+  useGroupBy,
   usePagination,
   useResizeColumns,
   useRowSelect,
@@ -19,16 +27,14 @@ import {
   useTable
 } from 'react-table'
 
-import { isDev } from '../../../utils/globals'
-import { camelToWords } from '../../../utils/object'
-import { useDebounce } from '../../../utils/useDebounce'
-import { useLocalStorage } from '../../../utils/useLocalStorage'
+import { camelToWords, useDebounce, useLocalStorage } from '../../../utils'
+import { isDev } from '../../../utils'
 import { DumpInstance } from './DumpInstance'
 import { FilterChipBar } from './FilterChipBar'
+import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
 import { TablePagination } from './TablePagination'
 import {
-  AcnwTable,
   HeaderCheckbox,
   RowCheckbox,
   TableBody,
@@ -37,10 +43,13 @@ import {
   TableHeadCell,
   TableHeadRow,
   TableLabel,
-  TableRow
+  TableRow,
+  TableTable,
+  useStyles
 } from './TableStyles'
 import { TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
+
 // import { useFlexLayout } from './useFlexLayout'
 
 export interface Table<T extends object = {}> extends TableOptions<T> {
@@ -51,47 +60,117 @@ export interface Table<T extends object = {}> extends TableOptions<T> {
   onClick?: (row: Row<T>) => void
 }
 
-const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => <>{camelToWords(column.id)}</>
+const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
+  <>{column.id.startsWith('_') ? null : camelToWords(column.id)}</>
+)
+
+function DefaultColumnFilter<T extends object>({
+  column: { id, index, filterValue, setFilter, render, parent }
+}: FilterProps<T>) {
+  const [value, setValue] = React.useState(filterValue || '')
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  }
+  // ensure that reset loads the new value
+  useEffect(() => {
+    setValue(filterValue || '')
+  }, [filterValue])
+
+  const firstIndex = !(parent && parent.index)
+  return (
+    <TextField
+      name={id}
+      label={render('Header')}
+      value={value}
+      autoFocus={index === 0 && firstIndex}
+      variant={'standard'}
+      onChange={handleChange}
+      onBlur={e => {
+        setFilter(e.target.value || undefined)
+      }}
+    />
+  )
+}
 
 const getStyles = <T extends object>(props: any, disableResizing = false, align = 'left') => [
   props,
   {
     style: {
-      flex: disableResizing ? undefined : props.style.flex,
       justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
       alignItems: 'flex-start',
       display: 'flex'
     }
   }
 ]
+
+const selectionHook = (hooks: Hooks<any>) => {
+  hooks.flatColumns.push(columns => [
+    // Let's make a column for selection
+    {
+      id: '_selector',
+      disableResizing: true,
+      disableGroupBy: true,
+      minWidth: 45,
+      width: 45,
+      maxWidth: 45,
+      // The header can use the table's getToggleAllRowsSelectedProps method
+      // to render a checkbox
+      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
+        <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
+      ),
+      // The cell can use the individual row's getToggleRowSelectedProps method
+      // to the render a checkbox
+      Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />
+    },
+    ...columns
+  ])
+  hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
+    // fix the parent group of the selection button to not be resizable
+    const selectionGroupHeader = headerGroups[0].headers[0]
+    selectionGroupHeader.canResize = false
+  })
+}
+
 const headerProps = <T extends object>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
   getStyles(props, column?.disableResizing, column?.align)
 
 const cellProps = <T extends object>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
   getStyles(props, cell.column?.disableResizing, cell.column?.align)
 
-const selectionColumn = {
-  id: '_selector',
-  Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
-    <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
-  ),
-  Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
-  width: 59,
-  disableResizing: true
-}
-
 export function Table<T extends object>(props: PropsWithChildren<Table<T>>): ReactElement {
-  const { name, columns: originalColumns, onAdd, onDelete, onEdit, onClick } = props
-  const columns = useMemo(() => [selectionColumn, ...originalColumns], [originalColumns])
+  const { name, columns, onAdd, onDelete, onEdit, onClick } = props
+  const classes = useStyles()
 
-  const hooks = [useFilters, useSortBy, useRowSelect, usePagination, useFlexLayout, useResizeColumns]
+  const filterTypes = React.useMemo(
+    () => ({
+      fuzzyText: fuzzyTextFilter,
+      numeric: numericTextFilter
+    }),
+    []
+  )
+
+  const hooks = [
+    useColumnOrder,
+    useGroupBy,
+    useFilters,
+    useSortBy,
+    useExpanded,
+    useFlexLayout,
+    usePagination,
+    useResizeColumns,
+    useRowSelect,
+    selectionHook
+  ]
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
     () => ({
-      disableFilter: true,
-      Filter: () => null,
+      // disableFilter: true,
+      // disableGroupBy: true,
+      Filter: DefaultColumnFilter,
       Cell: TooltipCell,
       Header: DefaultHeader,
+      aggregate: ['sum', 'uniqueCount'],
+      Aggregated: ({ cell: { value } }: CellProps<T>) => `${value} Unique Values`,
       // When using the useFlexLayout:
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow
@@ -105,36 +184,38 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
     {
       ...props,
       columns,
+      filterTypes,
       defaultColumn,
       initialState
     },
     ...hooks
   )
 
-  const { getTableProps, headerGroups, page, prepareRow, state } = instance
+  const { getTableProps, headerGroups, getTableBodyProps, page, prepareRow, state } = instance
   const debouncedState = useDebounce(state, 500)
 
   useEffect(() => {
-    const { sortBy, filters, pageSize, columnResizing, hiddenColumns } = debouncedState
+    const { sortBy, filters, pageSize, columnResizing, hiddenColumns, groupBy } = debouncedState
     const val = {
       sortBy,
       filters,
       pageSize,
       columnResizing,
-      hiddenColumns
+      hiddenColumns,
+      groupBy
     }
     setInitialState(val)
   }, [setInitialState, debouncedState])
 
   const cellClickHandler = (cell: Cell<T>) => () => {
-    onClick && cell.column.id !== '_selector' && onClick(cell.row)
+    onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
   }
 
   return (
     <>
       <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit }} />
       <FilterChipBar<T> instance={instance} />
-      <AcnwTable {...getTableProps()}>
+      <TableTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map(headerGroup => (
             <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
@@ -144,18 +225,32 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
                 } as CSSProperties
                 return (
                   <TableHeadCell {...column.getHeaderProps(headerProps)}>
-                    {column.canSort ? (
-                      <TableSortLabel
-                        active={column.isSorted}
-                        direction={column.isSortedDesc ? 'desc' : 'asc'}
-                        {...column.getSortByToggleProps()}
-                        style={style}
-                      >
-                        {column.render('Header')}
-                      </TableSortLabel>
-                    ) : (
-                      <TableLabel style={style}>{column.render('Header')}</TableLabel>
-                    )}
+                    <div>
+                      {column.canGroupBy ? (
+                        // If the column can be grouped, let's add a toggle
+                        <TableSortLabel
+                          active
+                          direction={column.isGrouped ? 'desc' : 'asc'}
+                          IconComponent={KeyboardArrowRight}
+                          {...column.getGroupByToggleProps()}
+                          className={classes.headerIcon}
+                        />
+                      ) : null}
+                      {column.canSort ? (
+                        <TableSortLabel
+                          active={column.isSorted}
+                          direction={column.isSortedDesc ? 'desc' : 'asc'}
+                          {...column.getSortByToggleProps()}
+                          className={classes.tableSortLabel}
+                          style={style}
+                        >
+                          {column.render('Header')}
+                        </TableSortLabel>
+                      ) : (
+                        <TableLabel style={style}>{column.render('Header')}</TableLabel>
+                      )}
+                      {/*<div>{column.canFilter ? column.render('Filter') : null}</div>*/}
+                    </div>
                     {column.canResize && <ResizeHandle column={column} />}
                   </TableHeadCell>
                 )
@@ -163,15 +258,34 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
             </TableHeadRow>
           ))}
         </TableHead>
-        <TableBody>
-          {page.map((row, i) => {
+        <TableBody {...getTableBodyProps()}>
+          {page.map(row => {
             prepareRow(row)
             return (
-              <TableRow {...row.getRowProps()}>
+              <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected })}>
                 {row.cells.map(cell => {
                   return (
                     <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
-                      {cell.render('Cell')}
+                      {cell.isGrouped ? (
+                        // If it's a grouped cell, add an expander and row count
+                        <>
+                          <TableSortLabel
+                            active
+                            direction={row.isExpanded ? 'desc' : 'asc'}
+                            IconComponent={KeyboardArrowDown}
+                            {...row.getExpandedToggleProps()}
+                            className={classes.cellIcon}
+                          />{' '}
+                          {cell.render('Cell', { editable: false })} ({row.subRows.length})
+                        </>
+                      ) : cell.isAggregated ? (
+                        // If the cell is aggregated, use the Aggregated
+                        // renderer for cell
+                        cell.render('Aggregated')
+                      ) : cell.isRepeatedValue ? null : ( // For cells with repeated values, render null
+                        // Otherwise, just render the regular cell
+                        cell.render('Cell' /*, { editable: true }*/)
+                      )}
                     </TableCell>
                   )
                 })}
@@ -179,7 +293,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
             )
           })}
         </TableBody>
-      </AcnwTable>
+      </TableTable>
       <TablePagination<T> instance={instance} />
       <DumpInstance enabled={isDev} instance={instance} />
     </>

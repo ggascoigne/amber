@@ -1,4 +1,4 @@
-import { GraphQLError, Loader, Page, Table, numeric } from 'components/Acnw'
+import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Row, TableInstance } from 'react-table'
 
@@ -25,12 +25,12 @@ const columns = [
   {
     accessor: 'id',
     width: 100,
-    filter: numeric
+    filter: 'numeric'
   },
   {
     accessor: 'slotId',
     width: 100,
-    filter: numeric
+    filter: 'numeric'
   },
   {
     accessor: 'name'
@@ -45,25 +45,25 @@ const columns = [
   {
     accessor: 'estimatedLength',
     width: 100,
-    filter: numeric
+    filter: 'numeric'
   },
   {
     accessor: 'playerMax',
     width: 100,
     align: 'right',
-    filter: numeric
+    filter: 'numeric'
   },
   {
     accessor: 'playerMin',
     width: 100,
     align: 'right',
-    filter: numeric
+    filter: 'numeric'
   },
   {
     accessor: 'year',
     width: 100,
     align: 'right',
-    filter: numeric
+    filter: 'numeric'
   }
 ]
 

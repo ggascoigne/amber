@@ -1,6 +1,6 @@
 import { Chip, createStyles, makeStyles } from '@material-ui/core'
 import React, { useCallback } from 'react'
-import { IdType, TableInstance } from 'react-table'
+import { ColumnInstance, FilterValue, IdType, TableInstance } from 'react-table'
 
 const useStyles = makeStyles(
   createStyles({
@@ -28,10 +28,20 @@ type FilterChipBar<T extends object> = {
   instance: TableInstance<T>
 }
 
+const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) => {
+  switch (column.filter) {
+    case 'between':
+      const min = filterValue[0]
+      const max = filterValue[1]
+      return min ? (max ? `${min}-${max}` : `>=${min}`) : `<=${max}`
+  }
+  return filterValue
+}
+
 export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) {
   const classes = useStyles({})
   const {
-    columns,
+    flatColumns,
     setFilter,
     state: { filters }
   } = instance
@@ -46,8 +56,9 @@ export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) 
     <div className={classes.chipZone}>
       <span className={classes.filtersActiveLabel}>Active filters:</span>
       {filters &&
-        columns.map(column => {
-          const value = filters.find(f => f.id === column.id )?.value
+        flatColumns.map(column => {
+          const filter = filters.find(f => f.id === column.id)
+          const value = filter && filter.value
           return (
             value && (
               <Chip
@@ -56,7 +67,7 @@ export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) 
                 label={
                   <>
                     <span className={classes.chipLabel}>{column.render('Header')}: </span>
-                    {value}
+                    {getFilterValue(column, value)}
                   </>
                 }
                 onDelete={() => handleDelete(column.id)}

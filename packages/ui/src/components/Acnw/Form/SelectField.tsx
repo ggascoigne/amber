@@ -1,11 +1,4 @@
-import {
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  Theme,
-  createStyles,
-  makeStyles
-} from '@material-ui/core'
+import { Checkbox, ListItemText, MenuItem, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { useField } from 'formik'
 import * as React from 'react'
 
@@ -56,11 +49,7 @@ export const SelectField: React.ComponentType<SelectFieldProps> = props => {
       {selectValues &&
         props?.SelectProps?.multiple &&
         selectValues.map(s => (
-          <MenuItem
-            key={getValue(s)}
-            value={getValue(s)}
-            className={classes.multiSelectCheckBox}
-          >
+          <MenuItem key={getValue(s)} value={getValue(s)} className={classes.multiSelectCheckBox}>
             <Checkbox checked={!!field.value.find((i: any) => i === getValue(s))} />
             <ListItemText primary={getLabel(s)} />
           </MenuItem>

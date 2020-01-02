@@ -4,6 +4,10 @@ import React from 'react'
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    tableTable: {
+      borderSpacing: 0,
+      border: '1px solid rgba(224, 224, 224, 1)'
+    },
     tableHeadRow: {
       outline: 0,
       verticalAlign: 'middle',
@@ -11,91 +15,112 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.text.primary,
       fontWeight: 500,
       lineHeight: '1.5rem',
-      position: 'relative'
+      position: 'relative',
+      borderBottom: '1px solid rgba(224, 224, 224, 1)'
     },
     tableHeadCell: {
       padding: '16px 1px 16px 16px',
       fontSize: '0.875rem',
       textAlign: 'left',
-      borderBottom: '1px solid rgba(224, 224, 224, 1)',
-      letterSpacing: '0.01071em',
       verticalAlign: 'inherit',
       color: theme.palette.text.primary,
       fontWeight: 500,
       lineHeight: '1.5rem',
-      '&:hover $resizeHandleLine': {
+      '&:hover $resizeHandle': {
         opacity: 1
       },
-      // '&:nth-last-child(2) $resizeHandle': {
-      //   width: theme.spacing(1),
-      //   right: '1px'
-      // },
-      '& svg': {
-        width: 16,
-        height: 16,
-        marginTop: 3,
-        marginLeft: 0
+      borderRight: '1px solid rgba(224, 224, 224, 1)',
+      '&:last-child': {
+        borderRight: 'none'
       }
     },
     resizeHandle: {
       position: 'absolute',
-      userSelect: 'none',
-      MozUserSelect: 'none',
-      WebkitUserSelect: 'none',
-      width: theme.spacing(1),
-      top: 0,
-      right: -theme.spacing(0.5),
-      height: '100%',
       cursor: 'col-resize',
-      zIndex: 100
-    },
-    resizeHandleLine: {
+      zIndex: 100,
       opacity: 0,
-      position: 'absolute',
-      backgroundColor: theme.palette.primary.light,
+      borderLeft: `1px solid ${theme.palette.primary.light}`,
+      borderRight: `1px solid ${theme.palette.primary.light}`,
       height: '50%',
-      width: '1px',
       top: '25%',
-      transition: 'all linear 100ms'
-    },
-    resizeHandleFirstLine: {
-      left: `${theme.spacing(0.5) - 1}px`
-    },
-    resizeHandleSecondLine: {
-      left: `${theme.spacing(0.5) + 1}px`
-    },
-    resizeHandleLineActive: {
-      left: theme.spacing(0.5)
-    },
-    resizeHandleActive: {
-      '& $resizeHandleLine': {
+      transition: 'all linear 100ms',
+      right: -2,
+      width: 3,
+      '&.handleActive': {
         opacity: '1',
+        border: 'none',
         backgroundColor: theme.palette.primary.light,
         height: 'calc(100% - 4px)',
-        top: '2px'
+        top: '2px',
+        right: -1,
+        width: 1
+      }
+    },
+    tableRow: {
+      color: 'inherit',
+      outline: 0,
+      verticalAlign: 'middle',
+      '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.07)'
+      },
+      borderBottom: '1px solid rgba(224, 224, 224, 1)',
+      '&:last-child': {
+        borderBottom: 'none'
+      },
+      '&.rowSelected': {
+        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+        '&:hover': {
+          backgroundColor: 'rgba(0, 0, 0, 0.07)'
+        }
       }
     },
     tableCell: {
-      // display: 'table-cell',
       padding: 16,
       fontSize: '0.875rem',
       textAlign: 'left',
       fontWeight: 300,
       lineHeight: 1.43,
-      borderBottom: '1px solid rgba(224, 224, 224, 1)',
-      letterSpacing: '0.01071em',
       verticalAlign: 'inherit',
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
+      borderRight: '1px solid rgba(224, 224, 224, 1)',
+      '&:last-child': {
+        borderRight: 'none'
+      }
+    },
+    tableSortLabel: {
+      '& svg': {
+        width: 16,
+        height: 16,
+        marginTop: 0,
+        marginLeft: 2
+      }
+    },
+    headerIcon: {
+      '& svg': {
+        width: 16,
+        height: 16,
+        marginTop: 4,
+        marginRight: 0
+      }
+    },
+    cellIcon: {
+      '& svg': {
+        width: 16,
+        height: 16,
+        marginTop: 3
+      }
     }
   })
 )
 
-export const AcnwTable = styled('div')({
-  // width: '100%',
-  // display: 'table',
-  borderSpacing: 0,
-  borderCollapse: 'collapse'
-})
+export const TableTable = ({ children, className, ...rest }: any) => {
+  const classes = useStyles()
+  return (
+    <div className={cx(className, classes.tableTable)} {...rest}>
+      {children}
+    </div>
+  )
+}
 
 export const TableBody = styled('div')({
   display: 'flex',
@@ -104,11 +129,7 @@ export const TableBody = styled('div')({
   flexDirection: 'column'
 })
 
-export const TableHead = styled('div')({
-  // display: 'flex',
-  // flex: '1 1 auto',
-  // width: '100%'
-})
+export const TableHead = styled('div')({})
 
 export const TableHeadRow = ({ children, className, ...rest }: any) => {
   const classes = useStyles()
@@ -128,15 +149,14 @@ export const TableHeadCell = ({ children, className, ...rest }: any) => {
   )
 }
 
-export const TableRow = styled('div')({
-  color: 'inherit',
-  // display: 'table-row',
-  outline: 0,
-  verticalAlign: 'middle',
-  '&:hover': {
-    backgroundColor: 'rgba(0, 0, 0, 0.07)'
-  }
-})
+export const TableRow = ({ children, className, ...rest }: any) => {
+  const classes = useStyles()
+  return (
+    <div className={cx(className, classes.tableRow)} {...rest}>
+      {children}
+    </div>
+  )
+}
 
 export const TableCell = ({ children, className, ...rest }: any) => {
   const classes = useStyles()
@@ -147,18 +167,11 @@ export const TableCell = ({ children, className, ...rest }: any) => {
   )
 }
 
-export const TableLabel = styled('div')({
-  // cursor: 'default',
-  // display: 'inline-flex',
-  // alignItems: 'center',
-  // flexDirection: 'inherit',
-  // justifyContent: 'flex-start',
-  // verticalAlign: 'sub'
-})
+export const TableLabel = styled('div')({})
 
 export const HeaderCheckbox = styled(Checkbox)({
   fontSize: '1rem',
-  margin: '-8px 0',
+  margin: '-8px 0 -8px -15px',
   padding: '8px 9px',
   '& svg': {
     width: '24px',
@@ -171,9 +184,13 @@ export const HeaderCheckbox = styled(Checkbox)({
 
 export const RowCheckbox = styled(Checkbox)({
   fontSize: '14px',
-  margin: '-9px 0 -8px 0',
+  margin: '-9px 0 -8px -15px',
   padding: '8px 9px 9px 9px',
   '&:hover': {
     backgroundColor: 'transparent'
+  },
+  '& svg': {
+    width: 24,
+    height: 24
   }
 })
