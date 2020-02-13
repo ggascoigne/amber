@@ -1,6 +1,6 @@
 import { TableSortLabel, TextField } from '@material-ui/core'
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import cx from 'classnames'
 import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect } from 'react'
 import {
@@ -15,6 +15,7 @@ import {
   Row,
   TableInstance,
   TableOptions,
+  TableState,
   useColumnOrder,
   useExpanded,
   useFilters,
@@ -29,10 +30,10 @@ import {
 
 import { camelToWords, useDebounce, useLocalStorage } from '../../../utils'
 import { isDev } from '../../../utils'
-import { DumpInstance } from './DumpInstance'
 import { FilterChipBar } from './FilterChipBar'
 import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
+import { TableDebug } from './TableDebug'
 import { TablePagination } from './TablePagination'
 import {
   HeaderCheckbox,
@@ -65,7 +66,8 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
 )
 
 function DefaultColumnFilter<T extends object>({
-  column: { id, index, filterValue, setFilter, render, parent }
+  column: { id, index, filterValue, setFilter, render, parent },
+  gotoPage
 }: FilterProps<T>) {
   const [value, setValue] = React.useState(filterValue || '')
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +88,9 @@ function DefaultColumnFilter<T extends object>({
       variant={'standard'}
       onChange={handleChange}
       onBlur={e => {
-        setFilter(e.target.value || undefined)
+        const value = e.target.value || undefined
+        setFilter(value)
+        if (value !== filterValue) gotoPage(0)
       }}
     />
   )
@@ -103,27 +107,30 @@ const getStyles = <T extends object>(props: any, disableResizing = false, align 
   }
 ]
 
-const selectionHook = (hooks: Hooks<any>) => {
-  hooks.flatColumns.push(columns => [
-    // Let's make a column for selection
-    {
-      id: '_selector',
-      disableResizing: true,
-      disableGroupBy: true,
-      minWidth: 45,
-      width: 45,
-      maxWidth: 45,
-      // The header can use the table's getToggleAllRowsSelectedProps method
-      // to render a checkbox
-      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
-        <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
-      ),
-      // The cell can use the individual row's getToggleRowSelectedProps method
-      // to the render a checkbox
-      Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />
-    },
-    ...columns
-  ])
+const useSelectionUi = (hooks: Hooks<any>) => {
+  hooks.flatColumns.push((columns, { instance }) => {
+    console.log(`instance column length = ${instance.columns.length}`)
+    return [
+      // Let's make a column for selection
+      {
+        id: '_selector',
+        disableResizing: true,
+        disableGroupBy: true,
+        minWidth: 45,
+        width: 45,
+        maxWidth: 45,
+        // The header can use the table's getToggleAllRowsSelectedProps method
+        // to render a checkbox
+        Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
+          <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
+        ),
+        // The cell can use the individual row's getToggleRowSelectedProps method
+        // to the render a checkbox
+        Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />
+      },
+      ...columns
+    ]
+  })
   hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
     const selectionGroupHeader = headerGroups[0].headers[0]
@@ -159,7 +166,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
     usePagination,
     useResizeColumns,
     useRowSelect,
-    selectionHook
+    useSelectionUi
   ]
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
@@ -179,14 +186,20 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
     []
   )
 
-  const [initialState, setInitialState] = useLocalStorage(`tableState:${name}`, {})
+  const [initialState, setInitialState] = useLocalStorage<Partial<TableState<T>>>(`tableState:${name}`, {})
   const instance = useTable<T>(
     {
       ...props,
       columns,
       filterTypes,
       defaultColumn,
-      initialState
+      initialState,
+      autoResetPage: false,
+      autoResetExpanded: false,
+      autoResetGroupBy: false,
+      autoResetSelectedRows: false,
+      autoResetSortBy: false,
+      autoResetFilters: false
     },
     ...hooks
   )
@@ -270,9 +283,13 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
                         // If it's a grouped cell, add an expander and row count
                         <>
                           <TableSortLabel
+                            classes={{
+                              iconDirectionAsc: classes.iconDirectionAsc,
+                              iconDirectionDesc: classes.iconDirectionDesc
+                            }}
                             active
                             direction={row.isExpanded ? 'desc' : 'asc'}
-                            IconComponent={KeyboardArrowDown}
+                            IconComponent={KeyboardArrowUp}
                             {...row.getExpandedToggleProps()}
                             className={classes.cellIcon}
                           />{' '}
@@ -295,7 +312,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
         </TableBody>
       </TableTable>
       <TablePagination<T> instance={instance} />
-      <DumpInstance enabled={isDev} instance={instance} />
+      <TableDebug enabled={isDev} instance={instance} />
     </>
   )
 }

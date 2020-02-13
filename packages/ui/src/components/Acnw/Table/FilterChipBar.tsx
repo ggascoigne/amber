@@ -57,8 +57,7 @@ export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) 
       <span className={classes.filtersActiveLabel}>Active filters:</span>
       {filters &&
         flatColumns.map(column => {
-          const filter = filters.find(f => f.id === column.id)
-          const value = filter && filter.value
+          const value = filters.find(f => f.id === column.id)?.value
           return (
             value && (
               <Chip

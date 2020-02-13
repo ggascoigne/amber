@@ -1,7 +1,7 @@
 import { IconButton, Tooltip, createStyles, makeStyles } from '@material-ui/core'
 import React, { Suspense, useState } from 'react'
 
-import { DebugIcon } from '../../../icons'
+import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone'
 import { Loader } from '../Loader'
 
 const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
@@ -10,12 +10,12 @@ const useStyles = makeStyles(
   createStyles({
     button: {
       marginTop: -72,
-      marginLeft: 12
+      marginLeft: 0
     }
   })
 )
 
-export const DumpInstance: React.FC<{
+export const TableDebug: React.FC<{
   enabled: boolean
   instance: any
 }> = ({ enabled, instance }) => {
@@ -27,7 +27,7 @@ export const DumpInstance: React.FC<{
       <Tooltip title={'Debug'}>
         <span>
           <IconButton className={classes.button} onClick={() => setOpen(old => !old)}>
-            <DebugIcon />
+            <BugReportTwoToneIcon />
           </IconButton>
         </span>
       </Tooltip>
@@ -36,7 +36,7 @@ export const DumpInstance: React.FC<{
           <br />
           <br />
           <Suspense fallback={<Loader />}>
-            <ReactJson src={{ ...instance }} collapsed={1} indentWidth={2} />
+            <ReactJson src={{ ...instance }} collapsed={1} indentWidth={2} sortKeys />
           </Suspense>
         </>
       )}

@@ -8,16 +8,15 @@ export const Credits = () => {
       <Typography variant='h3' color='inherit'>
         Credits
       </Typography>
-      <div>
-        Some icons made by{' '}
-        <a href='https://www.flaticon.com/authors/freepik' title='Freepik'>
-          Freepik
-        </a>{' '}
-        from{' '}
-        <a href='https://www.flaticon.com/' title='Flaticon'>
-          www.flaticon.com
+      <ul>
+        <li>The table control used throughout this site is{' '}
+        <a href='https://github.com/tannerlinsley/react-table' title='React-Table'>
+          React-Table
         </a>
-      </div>
+          {' '} by Tanner Linsley.</li>
+        <li>The UI toolkit is <a href='https://material-ui.com/' title='Material-UI'> Material UI</a></li>
+        <li>Various useful utilities from from <a href='https://usehooks.com'> Use Hooks</a></li>
+      </ul>
     </Page>
   )
 }

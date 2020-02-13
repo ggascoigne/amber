@@ -2,12 +2,16 @@ import { Checkbox, Theme, createStyles, makeStyles, styled } from '@material-ui/
 import cx from 'classnames'
 import React from 'react'
 
-export const useStyles = makeStyles((theme: Theme) =>
+// note that this isn't actually a hook, it just generally follows that naming convention.
+// because we want to use it outside of a component, we're just calling it as a function and
+// avoiding the hook eslint validation by not calling it useStyles
+const getClasses = makeStyles((theme: Theme) =>
   createStyles({
     tableTable: {
       borderSpacing: 0,
       border: '1px solid rgba(224, 224, 224, 1)'
     },
+    tableHead: {},
     tableHeadRow: {
       outline: 0,
       verticalAlign: 'middle',
@@ -16,7 +20,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 500,
       lineHeight: '1.5rem',
       position: 'relative',
-      borderBottom: '1px solid rgba(224, 224, 224, 1)'
+      borderBottom: '1px solid rgba(224, 224, 224, 1)',
+      '&:hover $resizeHandle': {
+        opacity: 1
+      }
     },
     tableHeadCell: {
       padding: '16px 1px 16px 16px',
@@ -26,35 +33,16 @@ export const useStyles = makeStyles((theme: Theme) =>
       color: theme.palette.text.primary,
       fontWeight: 500,
       lineHeight: '1.5rem',
-      '&:hover $resizeHandle': {
-        opacity: 1
-      },
       borderRight: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
         borderRight: 'none'
       }
     },
-    resizeHandle: {
-      position: 'absolute',
-      cursor: 'col-resize',
-      zIndex: 100,
-      opacity: 0,
-      borderLeft: `1px solid ${theme.palette.primary.light}`,
-      borderRight: `1px solid ${theme.palette.primary.light}`,
-      height: '50%',
-      top: '25%',
-      transition: 'all linear 100ms',
-      right: -2,
-      width: 3,
-      '&.handleActive': {
-        opacity: '1',
-        border: 'none',
-        backgroundColor: theme.palette.primary.light,
-        height: 'calc(100% - 4px)',
-        top: '2px',
-        right: -1,
-        width: 1
-      }
+    tableBody: {
+      display: 'flex',
+      flex: '1 1 auto',
+      width: '100%',
+      flexDirection: 'column'
     },
     tableRow: {
       color: 'inherit',
@@ -74,6 +62,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         }
       }
     },
+    tableLabel: {},
     tableCell: {
       padding: 16,
       fontSize: '0.875rem',
@@ -85,6 +74,28 @@ export const useStyles = makeStyles((theme: Theme) =>
       borderRight: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
         borderRight: 'none'
+      }
+    },
+    resizeHandle: {
+      position: 'absolute',
+      cursor: 'col-resize',
+      zIndex: 100,
+      opacity: 0,
+      borderLeft: `1px solid ${theme.palette.primary.light}`,
+      borderRight: `1px solid ${theme.palette.primary.light}`,
+      height: '50%',
+      top: '25%',
+      transition: 'all linear 100ms',
+      right: -2,
+      width: 3,
+      '&.handleActive': {
+        opacity: 1,
+        border: 'none',
+        backgroundColor: theme.palette.primary.light,
+        height: 'calc(100% - 4px)',
+        top: '2px',
+        right: -1,
+        width: 1
       }
     },
     tableSortLabel: {
@@ -103,6 +114,12 @@ export const useStyles = makeStyles((theme: Theme) =>
         marginRight: 0
       }
     },
+    iconDirectionAsc: {
+      transform: 'rotate(90deg)'
+    },
+    iconDirectionDesc: {
+      transform: 'rotate(180deg)'
+    },
     cellIcon: {
       '& svg': {
         width: 16,
@@ -113,61 +130,34 @@ export const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const TableTable = ({ children, className, ...rest }: any) => {
-  const classes = useStyles()
+export const useStyles = getClasses
+
+type StyleKeyType = keyof ReturnType<typeof getClasses>
+type StyledDiv<P = {}> = React.FC<JSX.IntrinsicElements['div'] & P>
+
+//  The material UI styled method doesn't allow for using the theme
+const styledDiv: StyledDiv<{ styledDivClassname: StyleKeyType }> = ({
+  children,
+  className,
+  styledDivClassname,
+  ...rest
+}) => {
+  const classes = getClasses()
   return (
-    <div className={cx(className, classes.tableTable)} {...rest}>
+    <div className={cx(className, classes[styledDivClassname])} {...rest}>
       {children}
     </div>
   )
 }
 
-export const TableBody = styled('div')({
-  display: 'flex',
-  flex: '1 1 auto',
-  width: '100%',
-  flexDirection: 'column'
-})
-
-export const TableHead = styled('div')({})
-
-export const TableHeadRow = ({ children, className, ...rest }: any) => {
-  const classes = useStyles()
-  return (
-    <div className={cx(className, classes.tableHeadRow)} {...rest}>
-      {children}
-    </div>
-  )
-}
-
-export const TableHeadCell = ({ children, className, ...rest }: any) => {
-  const classes = useStyles()
-  return (
-    <div className={cx(className, classes.tableHeadCell)} {...rest}>
-      {children}
-    </div>
-  )
-}
-
-export const TableRow = ({ children, className, ...rest }: any) => {
-  const classes = useStyles()
-  return (
-    <div className={cx(className, classes.tableRow)} {...rest}>
-      {children}
-    </div>
-  )
-}
-
-export const TableCell = ({ children, className, ...rest }: any) => {
-  const classes = useStyles()
-  return (
-    <div className={cx(className, classes.tableCell)} {...rest}>
-      {children}
-    </div>
-  )
-}
-
-export const TableLabel = styled('div')({})
+export const TableTable: StyledDiv = props => styledDiv({ styledDivClassname: 'tableTable', ...props })
+export const TableBody: StyledDiv = props => styledDiv({ styledDivClassname: 'tableBody', ...props })
+export const TableHead: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHead', ...props })
+export const TableHeadRow: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHeadRow', ...props })
+export const TableHeadCell: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHeadCell', ...props })
+export const TableRow: StyledDiv = props => styledDiv({ styledDivClassname: 'tableRow', ...props })
+export const TableCell: StyledDiv = props => styledDiv({ styledDivClassname: 'tableCell', ...props })
+export const TableLabel: StyledDiv = props => styledDiv({ styledDivClassname: 'tableLabel', ...props })
 
 export const HeaderCheckbox = styled(Checkbox)({
   fontSize: '1rem',
