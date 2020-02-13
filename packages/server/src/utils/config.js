@@ -7,7 +7,7 @@ const envFile = fs.existsSync(potentialEnvFile) ? potentialEnvFile : path.resolv
 require('dotenv').config({ path: envFile })
 
 const config = {
-  nodeEnv: nodeEnv,
+  nodeEnv,
   isDev: nodeEnv === 'development',
   port: parseInt(process.env.SERVER_PORT, 10),
   host: process.env.SERVER_HOST,

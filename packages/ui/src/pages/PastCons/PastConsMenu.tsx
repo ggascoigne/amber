@@ -46,7 +46,7 @@ export const PastConsMenu: React.FC = () => {
           <ListItemIcon>
             <ArrowBackIcon />
           </ListItemIcon>
-          <ListItemText primary={'Past Cons'} />
+          <ListItemText primary='Past Cons' />
         </ListItemLink>
       </List>
       <Divider />

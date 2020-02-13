@@ -103,7 +103,7 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
       id={`game/${year}/${slot.id}/${id}`}
     >
       {onEnter ? (
-        <Waypoint topOffset={100} bottomOffset={'80%'} onEnter={onEnter}>
+        <Waypoint topOffset={100} bottomOffset='80%' onEnter={onEnter}>
           <div>
             <HeaderContent name={name} tiny={tiny} />
           </div>
@@ -125,23 +125,23 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
             </Field>
           )}
           {charInstructions && (
-            <Field label={'Character & Player Instructions'} tiny={tiny}>
+            <Field label='Character & Player Instructions' tiny={tiny}>
               <MultiLine text={charInstructions} />
             </Field>
           )}
-          <Field label={'Genre/Type'} small tiny={tiny}>
+          <Field label='Genre/Type' small tiny={tiny}>
             {genre} - {type}
           </Field>
-          <Field label={'Teen Friendly'} small tiny={tiny}>
+          <Field label='Teen Friendly' small tiny={tiny}>
             {teenFriendly ? 'Yes' : 'No'}
           </Field>
-          <Field label={'Number of Players'} small tiny={tiny}>
+          <Field label='Number of Players' small tiny={tiny}>
             {playerMin} - {playerMax}
           </Field>
-          <Field label={'Player Preference'} small tiny={tiny}>
-            <LookupValue realm={'gamePlayerPref'} code={playerPreference} />
+          <Field label='Player Preference' small tiny={tiny}>
+            <LookupValue realm='gamePlayerPref' code={playerPreference} />
           </Field>
-          <Field label={''} tiny={tiny}>
+          <Field label='' tiny={tiny}>
             {playersContactGm
               ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
               : `Players need not contact the GM in advance of the convention.`}

@@ -141,7 +141,7 @@ function psql(dbconfig, script, stdio = 'inherit') {
   const args = getPostgresArgs(dbconfig)
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
   console.log(`running psql ${args.join(' ')}`)
-  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: stdio }))
+  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio }))
 }
 
 exports.psql = psql

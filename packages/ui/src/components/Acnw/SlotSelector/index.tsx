@@ -165,8 +165,8 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
                 indicator: classes.displayNone
               }}
             >
-              {slots.map(slot => {
-                return slot ? (
+              {slots.map(slot =>
+                slot ? (
                   <Tab
                     classes={{
                       root: classes.tabRootButton,
@@ -177,7 +177,7 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
                     label={slot.id}
                   />
                 ) : null
-              })}
+              )}
             </Tabs>
           </CardHeader>
         </div>

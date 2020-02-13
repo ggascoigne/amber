@@ -12,12 +12,8 @@ export function installStandardKoaMiddlewares(app, { config }) {
   }
   if (config.isDev) {
     loggerConfig.serializers = {
-      req: req => {
-        return `${req.method} ${req.url}`
-      },
-      res: res => {
-        return `${res.statusCode}`
-      }
+      req: req => `${req.method} ${req.url}`,
+      res: res => `${res.statusCode}`
     }
   }
 

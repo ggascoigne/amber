@@ -1,7 +1,7 @@
 import { IconButton, Tooltip, createStyles, makeStyles } from '@material-ui/core'
+import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone'
 import React, { Suspense, useState } from 'react'
 
-import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone'
 import { Loader } from '../Loader'
 
 const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
@@ -24,7 +24,7 @@ export const TableDebug: React.FC<{
 
   return enabled ? (
     <>
-      <Tooltip title={'Debug'}>
+      <Tooltip title='Debug'>
         <span>
           <IconButton className={classes.button} onClick={() => setOpen(old => !old)}>
             <BugReportTwoToneIcon />

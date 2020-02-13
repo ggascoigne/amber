@@ -1,4 +1,4 @@
-import { Button, Typography, createStyles, makeStyles, Popover } from '@material-ui/core'
+import { Button, Popover, Typography, createStyles, makeStyles } from '@material-ui/core'
 import React, { FormEvent, ReactElement, useCallback } from 'react'
 import { TableInstance } from 'react-table'
 
@@ -21,10 +21,10 @@ const useStyles = makeStyles(
       display: 'grid',
       gridTemplateColumns: 'repeat(2, 218px)',
       '@media (max-width: 600px)': {
-        gridTemplateColumns: 'repeat(1, 180px)',
+        gridTemplateColumns: 'repeat(1, 180px)'
       },
       gridColumnGap: 24,
-      gridRowGap: 24,
+      gridRowGap: 24
     },
     cell: {
       width: '100%',
@@ -64,7 +64,7 @@ export function FilterPage<T extends object>({ instance, anchorEl, onClose, show
     <div>
       <Popover
         anchorEl={anchorEl}
-        id={'popover-filters'}
+        id='popover-filters'
         onClose={onClose}
         open={show}
         anchorOrigin={{
@@ -77,24 +77,24 @@ export function FilterPage<T extends object>({ instance, anchorEl, onClose, show
         }}
       >
         <div className={classes.columnsPopOver}>
-        <Typography className={classes.popoverTitle}>Filters</Typography>
+          <Typography className={classes.popoverTitle}>Filters</Typography>
           <form onSubmit={onSubmit}>
-          <Button className={classes.filtersResetButton} color='primary' onClick={resetFilters}>
-            Reset
-          </Button>
+            <Button className={classes.filtersResetButton} color='primary' onClick={resetFilters}>
+              Reset
+            </Button>
             <div className={classes.grid}>
-          {flatColumns
-            .filter(it => it.canFilter)
-            .map(column => (
+              {flatColumns
+                .filter(it => it.canFilter)
+                .map(column => (
                   <div key={column.id} className={classes.cell}>
-                {column.render('Filter')}
-              </div>
-            ))}
+                    {column.render('Filter')}
+                  </div>
+                ))}
             </div>
-          <Button className={classes.hidden} type={'submit'}>
-            &nbsp;
-          </Button>
-        </form>
+            <Button className={classes.hidden} type='submit'>
+              &nbsp;
+            </Button>
+          </form>
         </div>
       </Popover>
     </div>

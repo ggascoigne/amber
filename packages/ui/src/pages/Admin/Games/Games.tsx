@@ -99,9 +99,7 @@ export const Games: React.FC = () => {
 
   const onDelete = (instance: TableInstance<Game>) => () => {
     const toDelete = instance.selectedFlatRows.map(r => r.original)
-    const updater = toDelete.map(g => {
-      return deleteGame({ variables: { input: { id: g.id } } })
-    })
+    const updater = toDelete.map(g => deleteGame({ variables: { input: { id: g.id } } }))
     Promise.all(updater).then(() => console.log('deleted'))
   }
 

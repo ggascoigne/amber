@@ -47,10 +47,6 @@ export const urlSourceStore = {
   }
 }
 
-export const useUrlSourceQuery = () => {
-  return useQuery<UrlSource>(urlSourceQuery)
-}
+export const useUrlSourceQuery = () => useQuery<UrlSource>(urlSourceQuery)
 
-export const useUrlSourceMutation = () => {
-  return useMutation<void, UrlSourceDetails>(updateUrlSourceQuery)
-}
+export const useUrlSourceMutation = () => useMutation<void, UrlSourceDetails>(updateUrlSourceQuery)

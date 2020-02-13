@@ -34,19 +34,17 @@ export const Welcome: React.FC = () => {
           <h1>Welcome!</h1>
 
           {authenticated && !!user ? (
-            <>
-              <div>
-                <h2>User Profile</h2>
-                <ul>
-                  <li>ID: {user.id}</li>
-                  <li>Email: {user.email}</li>
-                  <li>Role: {user.role}</li>
-                  <li>Name: {user.name}</li>
-                  <li>Nickname: {user.nickname}</li>
-                  <li>Picture: {user.picture}</li>
-                </ul>
-              </div>
-            </>
+            <div>
+              <h2>User Profile</h2>
+              <ul>
+                <li>ID: {user.id}</li>
+                <li>Email: {user.email}</li>
+                <li>Role: {user.role}</li>
+                <li>Name: {user.name}</li>
+                <li>Nickname: {user.nickname}</li>
+                <li>Picture: {user.picture}</li>
+              </ul>
+            </div>
           ) : null}
           <p>
             Our <Acnw.Ordinal /> annual AmberCon Northwest is a fully scheduled role-playing game convention devoted to

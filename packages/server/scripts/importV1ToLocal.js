@@ -175,7 +175,7 @@ async function main() {
     info(`Create tmp mysql database ${mysqlDbconfig.database}`)
     await createCleanDbMySql(mysqlDbconfig)
 
-    info('note that if this times out, make sure that you aren\'t on the vpn')
+    info("note that if this times out, make sure that you aren't on the vpn")
     info(`download data from live mysql to local temp`)
     await pipeLiveToLocalMysql(mysqlDbconfig).catch(bail)
 

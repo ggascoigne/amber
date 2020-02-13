@@ -65,10 +65,6 @@ export const gameFilterStore = {
   }
 }
 
-export const useGameFilterQuery = () => {
-  return useQuery<GameFilter>(gameFilterQuery)
-}
+export const useGameFilterQuery = () => useQuery<GameFilter>(gameFilterQuery)
 
-export const useGameFilterMutation = () => {
-  return useMutation<void, GameFilterDetails>(updateGameFilterQuery)
-}
+export const useGameFilterMutation = () => useMutation<void, GameFilterDetails>(updateGameFilterQuery)

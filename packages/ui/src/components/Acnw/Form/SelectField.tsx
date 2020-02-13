@@ -24,13 +24,9 @@ export interface SelectFieldProps extends TextFieldProps {
   selectValues?: Array<SelectFieldValue>
 }
 
-const getValue = (value: SelectFieldValue): any => {
-  return typeof value === 'string' ? value : value.value
-}
+const getValue = (value: SelectFieldValue): any => (typeof value === 'string' ? value : value.value)
 
-const getLabel = (value: SelectFieldValue): string => {
-  return typeof value === 'string' ? value : value.text
-}
+const getLabel = (value: SelectFieldValue): string => (typeof value === 'string' ? value : value.text)
 
 export const SelectField: React.ComponentType<SelectFieldProps> = props => {
   const classes = useStyles({})

@@ -19,7 +19,7 @@ interface GameQuery {
 }
 
 export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
-  const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year: year, slotId: slot.id } })
+  const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year, slotId: slot.id } })
   if (loading) {
     return <Loader />
   }

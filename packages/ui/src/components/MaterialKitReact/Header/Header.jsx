@@ -83,7 +83,7 @@ class Header extends React.Component {
         <Hidden mdUp implementation='css'>
           <Drawer
             variant='temporary'
-            anchor={'right'}
+            anchor='right'
             open={this.state.mobileOpen}
             classes={{
               paper: classes.drawerPaper

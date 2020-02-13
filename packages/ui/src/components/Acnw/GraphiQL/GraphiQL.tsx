@@ -43,10 +43,8 @@ function graphQLFetcher(graphQLParams: object) {
     },
     body: JSON.stringify(graphQLParams)
   })
-    .then(function(response) {
-      return response.text()
-    })
-    .then(function(responseBody) {
+    .then(response => response.text())
+    .then(responseBody => {
       try {
         return JSON.parse(responseBody)
       } catch (e) {

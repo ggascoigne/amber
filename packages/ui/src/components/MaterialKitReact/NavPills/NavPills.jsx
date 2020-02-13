@@ -47,7 +47,7 @@ class NavPills extends React.Component {
         {tabs.map((prop, key) => {
           const icon = {}
           if (prop.tabIcon !== undefined) {
-            icon['icon'] = <prop.tabIcon className={classes.tabIcon} />
+            icon.icon = <prop.tabIcon className={classes.tabIcon} />
           }
           const pillsClasses = classNames({
             [classes.pills]: true,
@@ -77,13 +77,11 @@ class NavPills extends React.Component {
           index={this.state.active}
           onChangeIndex={this.handleChangeIndex}
         >
-          {tabs.map((prop, key) => {
-            return (
-              <div className={classes.tabContent} key={key}>
-                {prop.tabContent}
-              </div>
-            )
-          })}
+          {tabs.map((prop, key) => (
+            <div className={classes.tabContent} key={key}>
+              {prop.tabContent}
+            </div>
+          ))}
         </SwipeableViews>
       </div>
     )

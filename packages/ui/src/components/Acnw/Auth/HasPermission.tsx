@@ -57,15 +57,11 @@ type Auth = {
   }
 }
 
-const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
-  return (
-    <AuthConsumer>
-      {({ user }: Auth) => {
-        return !!user && check(rules, user.role ? user.role : null, permission, data) ? children : denied()
-      }}
-    </AuthConsumer>
-  )
-}
+const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => (
+  <AuthConsumer>
+    {({ user }: Auth) => (!!user && check(rules, user.role ? user.role : null, permission, data) ? children : denied())}
+  </AuthConsumer>
+)
 
 /*
 export const hasPermission = (auth, permission, data) => {

@@ -64,19 +64,17 @@ export function ColumnHidePage<T extends object>({
         }}
       >
         <div className={classes.columnsPopOver}>
-        <Typography className={classes.popoverTitle}>Visible Columns</Typography>
+          <Typography className={classes.popoverTitle}>Visible Columns</Typography>
           <div className={classes.grid}>
-        {hideableColumns.map(column => {
-          return (
+            {hideableColumns.map(column => (
               <FormControlLabel
-                  key={column.id}
+                key={column.id}
                 control={<Checkbox value={`${column.id}`} disabled={column.isVisible && onlyOneOptionLeft} />}
                 label={column.render('Header')}
                 checked={column.isVisible}
                 onChange={() => toggleHideColumn(column.id, column.isVisible)}
               />
-          )
-        })}
+            ))}
           </div>
         </div>
       </Popover>

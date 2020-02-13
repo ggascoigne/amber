@@ -9,8 +9,13 @@ module.exports = {
     // and the code is all being formatted on commit anyway.
   ],
   rules: {
+    'arrow-body-style': 'warn',
+    'dot-notation': 'warn',
     'no-var': 'error',
     'no-debugger': 'error',
+    'no-duplicate-imports': 'error',
+    'object-shorthand': 'warn',
+    'prefer-arrow-callback': 'warn',
     'prefer-const': 'warn',
     // In principle I like this rule, but I also want to use names such as _Foo
     // for those internal classes that get passed on to redux connect.  After
@@ -20,7 +25,12 @@ module.exports = {
     '@typescript-eslint/class-name-casing': 'off',
     // too many of the graphql generate types break this rule, and they do so
     // in a way that makes enough sense that I don't want to deal with it
-    '@typescript-eslint/camelcase': 'off'
+    '@typescript-eslint/camelcase': 'off',
+    // enforce consistent jsx attributes
+    'react/jsx-curly-brace-presence': ['warn', 'never'],
+    'react/jsx-boolean-value': 'warn',
+    'react/jsx-fragments': 'warn',
+    'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
   },
   overrides: [
     {

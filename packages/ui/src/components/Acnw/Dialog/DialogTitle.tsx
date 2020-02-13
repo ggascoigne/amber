@@ -1,11 +1,10 @@
-import { Theme, makeStyles } from '@material-ui/core'
+import { makeStyles, Theme } from '@material-ui/core'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Typography from '@material-ui/core/Typography'
 import CloseIcon from '@material-ui/icons/Close'
-import * as React from 'react'
-import { MouseEventHandler } from 'react'
+import React, { MouseEventHandler } from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

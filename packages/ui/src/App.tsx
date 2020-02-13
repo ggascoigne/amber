@@ -123,7 +123,7 @@ export const App: React.FC = () => {
   const drawer = (
     <div>
       <div className={classes.toolbar}>
-        <Banner to={'/'} />
+        <Banner to='/' />
       </div>
       <Divider />
       <MenuItems menuItems={rootRoutes} />
@@ -165,7 +165,7 @@ export const App: React.FC = () => {
           <Hidden mdUp>
             <Drawer
               variant='temporary'
-              anchor={'left'}
+              anchor='left'
               open={mobileOpen}
               onClose={handleDrawerToggle}
               classes={{

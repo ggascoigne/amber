@@ -19,12 +19,10 @@ export const LookupField: React.ComponentType<LookupFieldProps> = props => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map(v => {
-    return {
-      value: v!.code,
-      text: v!.value
-    }
-  })
+  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map(v => ({
+    value: v!.code,
+    text: v!.value
+  }))
   return <SelectField {...rest} selectValues={selectValues!} />
 }
 

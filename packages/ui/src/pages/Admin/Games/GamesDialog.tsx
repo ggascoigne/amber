@@ -143,7 +143,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const editing = initialValues !== defaultValues
 
   return (
-    <Dialog disableBackdropClick fullWidth={true} maxWidth={false} open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
@@ -167,7 +167,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <GridContainer direction={'row'}>
+                  <GridContainer direction='row'>
                     <GridItem xs={12} md={6}>
                       <SelectField name='genre' label='Genre' margin='normal' fullWidth selectValues={genreOptions} />
                     </GridItem>
@@ -179,7 +179,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 <GridItem xs={12} md={12}>
                   <CheckboxWithLabel
                     Label={{ label: 'Is the game Teen Friendly?', labelPlacement: 'start', style: { marginLeft: 0 } }}
-                    name={'teenFriendly'}
+                    name='teenFriendly'
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
@@ -201,15 +201,15 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <Typography className={'MuiFormControlLabel-label MuiFormLabel-root'}>Number of Players</Typography>
+                  <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <GridContainer direction={'row'}>
+                  <GridContainer direction='row'>
                     <GridItem xs={12} md={6}>
-                      <TextField name='playerMin' label='Min' margin='normal' fullWidth type={'number'} required />
+                      <TextField name='playerMin' label='Min' margin='normal' fullWidth type='number' required />
                     </GridItem>
                     <GridItem xs={12} md={6}>
-                      <TextField name='playerMax' label='Max' margin='normal' fullWidth type={'number'} required />
+                      <TextField name='playerMax' label='Max' margin='normal' fullWidth type='number' required />
                     </GridItem>
                   </GridContainer>
                 </GridItem>
@@ -219,7 +219,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                     label='Player Preference'
                     margin='normal'
                     fullWidth
-                    realm={'gamePlayerPref'}
+                    realm='gamePlayerPref'
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
@@ -276,7 +276,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <Typography className={'MuiFormControlLabel-label MuiFormLabel-root'}>
+                  <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
                     In the event we have to change your slot, list any and all known slot conflicts including other
                     games you are running, returning or ongoing games, and any slots you are taking off.
                   </Typography>
@@ -289,7 +289,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 </GridItem>
               </GridContainer>
             </DialogContent>
-            <DialogActions className={'modalFooterButtons'}>
+            <DialogActions className='modalFooterButtons'>
               <Button onClick={onClose} variant='outlined'>
                 Cancel
               </Button>

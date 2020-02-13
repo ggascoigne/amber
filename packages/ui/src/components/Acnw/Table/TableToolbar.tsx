@@ -52,14 +52,12 @@ export const LabeledActionButton = <T extends object>({
   onClick,
   label,
   enabled = () => true
-}: ActionButton<T>): ReactElement => {
-  return (
-    <Button variant='contained' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
-      {icon}
-      {label}
-    </Button>
-  )
-}
+}: ActionButton<T>): ReactElement => (
+  <Button variant='contained' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
+    {icon}
+    {label}
+  </Button>
+)
 
 export const SmallIconActionButton = <T extends object>({
   instance,

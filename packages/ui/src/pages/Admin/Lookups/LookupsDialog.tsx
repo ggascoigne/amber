@@ -166,7 +166,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                     code: lv.code,
                     sequencer: lv.sequencer,
                     value: lv.value,
-                    lookupId: lookupId
+                    lookupId
                   }
                 }
               }
@@ -215,12 +215,11 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
 
   const editing = initialValues !== defaultValues
 
-  const highestSequence = (values: FormValues) => {
-    return values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
-  }
+  const highestSequence = (values: FormValues) =>
+    values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
 
   return (
-    <Dialog disableBackdropClick fullWidth={true} maxWidth={false} open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => (
           <Form>
@@ -293,7 +292,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                 </GridItem>
               </GridContainer>
             </DialogContent>
-            <DialogActions className={'modalFooterButtons'}>
+            <DialogActions className='modalFooterButtons'>
               <Button onClick={onClose} variant='outlined'>
                 Cancel
               </Button>

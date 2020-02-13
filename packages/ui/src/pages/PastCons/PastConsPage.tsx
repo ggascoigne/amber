@@ -36,14 +36,12 @@ export const PastConsPage: React.FC = () => {
   const years = range(2012, DateTime.local().year)
   return (
     <Page>
-      <GridContainer spacing={2} justify={'center'}>
-        {years.reverse().map(year => {
-          return (
-            <GridItem key={year} xl={2} lg={3} md={4} sm={6}>
-              <GameByYear year={year} onClick={() => selectYear(year)} />
-            </GridItem>
-          )
-        })}
+      <GridContainer spacing={2} justify='center'>
+        {years.reverse().map(year => (
+          <GridItem key={year} xl={2} lg={3} md={4} sm={6}>
+            <GameByYear year={year} onClick={() => selectYear(year)} />
+          </GridItem>
+        ))}
       </GridContainer>
     </Page>
   )

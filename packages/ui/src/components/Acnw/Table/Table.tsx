@@ -28,8 +28,7 @@ import {
   useTable
 } from 'react-table'
 
-import { camelToWords, useDebounce, useLocalStorage } from '../../../utils'
-import { isDev } from '../../../utils'
+import { camelToWords, isDev, useDebounce, useLocalStorage } from '../../../utils'
 import { FilterChipBar } from './FilterChipBar'
 import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
@@ -85,7 +84,7 @@ function DefaultColumnFilter<T extends object>({
       label={render('Header')}
       value={value}
       autoFocus={index === 0 && firstIndex}
-      variant={'standard'}
+      variant='standard'
       onChange={handleChange}
       onBlur={e => {
         const value = e.target.value || undefined
@@ -231,12 +230,14 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       <TableTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map(headerGroup => (
+            // eslint-disable-next-line react/jsx-key
             <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => {
                 const style = {
                   textAlign: column.align ? column.align : 'left '
                 } as CSSProperties
                 return (
+                  // eslint-disable-next-line react/jsx-key
                   <TableHeadCell {...column.getHeaderProps(headerProps)}>
                     <div>
                       {column.canGroupBy ? (
@@ -275,37 +276,37 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
           {page.map(row => {
             prepareRow(row)
             return (
+              // eslint-disable-next-line react/jsx-key
               <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected })}>
-                {row.cells.map(cell => {
-                  return (
-                    <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
-                      {cell.isGrouped ? (
-                        // If it's a grouped cell, add an expander and row count
-                        <>
-                          <TableSortLabel
-                            classes={{
-                              iconDirectionAsc: classes.iconDirectionAsc,
-                              iconDirectionDesc: classes.iconDirectionDesc
-                            }}
-                            active
-                            direction={row.isExpanded ? 'desc' : 'asc'}
-                            IconComponent={KeyboardArrowUp}
-                            {...row.getExpandedToggleProps()}
-                            className={classes.cellIcon}
-                          />{' '}
-                          {cell.render('Cell', { editable: false })} ({row.subRows.length})
-                        </>
-                      ) : cell.isAggregated ? (
-                        // If the cell is aggregated, use the Aggregated
-                        // renderer for cell
-                        cell.render('Aggregated')
-                      ) : cell.isRepeatedValue ? null : ( // For cells with repeated values, render null
-                        // Otherwise, just render the regular cell
-                        cell.render('Cell' /*, { editable: true }*/)
-                      )}
-                    </TableCell>
-                  )
-                })}
+                {row.cells.map(cell => (
+                  // eslint-disable-next-line react/jsx-key
+                  <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
+                    {cell.isGrouped ? (
+                      // If it's a grouped cell, add an expander and row count
+                      <>
+                        <TableSortLabel
+                          classes={{
+                            iconDirectionAsc: classes.iconDirectionAsc,
+                            iconDirectionDesc: classes.iconDirectionDesc
+                          }}
+                          active
+                          direction={row.isExpanded ? 'desc' : 'asc'}
+                          IconComponent={KeyboardArrowUp}
+                          {...row.getExpandedToggleProps()}
+                          className={classes.cellIcon}
+                        />{' '}
+                        {cell.render('Cell', { editable: false })} ({row.subRows.length})
+                      </>
+                    ) : cell.isAggregated ? (
+                      // If the cell is aggregated, use the Aggregated
+                      // renderer for cell
+                      cell.render('Aggregated')
+                    ) : cell.isRepeatedValue ? null : ( // For cells with repeated values, render null
+                      // Otherwise, just render the regular cell
+                      cell.render('Cell' /*, { editable: true }*/)
+                    )}
+                  </TableCell>
+                ))}
               </TableRow>
             )
           })}

@@ -42,7 +42,7 @@ const cache = new InMemoryCache({
 // Initialize the Apollo Client
 const Client = new ApolloClient({
   link: new HttpLink(),
-  cache: cache,
+  cache,
   // @ts-ignore
   resolvers: {
     Mutation: mergeGet('mutations')(STORES)
