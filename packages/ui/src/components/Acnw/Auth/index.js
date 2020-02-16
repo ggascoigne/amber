@@ -1,3 +1,2 @@
-export { default as Auth } from 'components/Acnw/Auth/Auth'
-export { default as HasPermission } from 'components/Acnw/Auth/HasPermission'
-export * from './authContext'
+export * from './HasPermission'
+export * from './Auth0'

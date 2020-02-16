@@ -4,7 +4,7 @@ import 'react-app-polyfill/ie11'
 
 import { ApolloProvider } from '@apollo/react-hooks'
 import client from 'client/client'
-import { Auth } from 'components/Acnw/Auth'
+import { Auth0Provider } from 'components/Acnw'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
@@ -18,9 +18,9 @@ const render = (Component: React.ComponentType) =>
   ReactDOM.render(
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <Auth>
+        <Auth0Provider>
           <Component />
-        </Auth>
+        </Auth0Provider>
       </ApolloProvider>
     </BrowserRouter>,
     rootElement
