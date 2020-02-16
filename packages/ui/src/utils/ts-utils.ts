@@ -19,3 +19,5 @@ export type MaybeNodes<T> = Array<Maybe<T>> | undefined
 export type Nodes<T> = Array<Maybe<T>>
 
 export type Edges<T> = Array<{ node: Maybe<T> }>
+
+export type ThenArg<T> = T extends PromiseLike<infer U> ? U : T

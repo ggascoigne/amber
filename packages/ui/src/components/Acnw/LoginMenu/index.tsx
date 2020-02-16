@@ -2,12 +2,12 @@ import { ApolloConsumer } from '@apollo/react-common'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { AuthConsumer } from 'components/Acnw/Auth'
+import { useAuth0 } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import { Auth0User } from '../Auth/authContext'
+import { Auth0User } from '../Auth'
 
 const MENU_ITEM_SIGN_OUT = 'Sign out'
 
@@ -98,37 +98,41 @@ type LoginMenu = {
 
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
+  const { isAuthenticated, user, loginWithPopup, logout } = useAuth0()
+  const login = useCallback(
+    async (e: MouseEvent) => {
+      e.preventDefault()
+      return loginWithPopup && (await loginWithPopup())
+    },
+    [loginWithPopup]
+  )
   return (
     <ApolloConsumer>
-      {client => (
-        <AuthConsumer>
-          {({ authenticated, user, initiateLogin, logout }) =>
-            authenticated ? (
-              <CustomDropdown
-                right
-                caret={false}
-                hoverColor='black'
-                buttonText={<MenuButton small={small} user={user!} />}
-                buttonProps={{
-                  className: classes.navLink,
-                  color: 'transparent'
-                }}
-                dropdownList={[MENU_ITEM_SIGN_OUT]}
-                onClick={(prop: string) => {
-                  if (prop === MENU_ITEM_SIGN_OUT) {
-                    client.resetStore()
-                    logout()
-                  }
-                }}
-              />
-            ) : (
-              <Button className={classes.loginNavLink} onClick={initiateLogin} color='transparent'>
-                Login
-              </Button>
-            )
-          }
-        </AuthConsumer>
-      )}
+      {client =>
+        isAuthenticated ? (
+          <CustomDropdown
+            right
+            caret={false}
+            hoverColor='black'
+            buttonText={<MenuButton small={small} user={user!} />}
+            buttonProps={{
+              className: classes.navLink,
+              color: 'transparent'
+            }}
+            dropdownList={[MENU_ITEM_SIGN_OUT]}
+            onClick={(prop: string) => {
+              if (prop === MENU_ITEM_SIGN_OUT) {
+                client.resetStore()
+                logout && logout()
+              }
+            }}
+          />
+        ) : (
+          <Button className={classes.loginNavLink} onClick={login} color='transparent'>
+            Login
+          </Button>
+        )
+      }
     </ApolloConsumer>
   )
 }

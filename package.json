@@ -64,7 +64,7 @@
   },
   "scripts": {
     "bootstrap": "yarn && yarn outdated ; yarn audit",
-    "clean:install": "rm -rf node_modules packages/*/node_modules yarn.lock && yarn && yarn audit",
+    "clean:install": "rm -rf node_modules packages/*/node_modules && yarn && yarn audit",
     "db:import": "yarn db:start && lerna exec --scope server yarn db:import",
     "db:setup:production": "lerna exec --scope server yarn db:setup:production",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",

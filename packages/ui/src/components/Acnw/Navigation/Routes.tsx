@@ -1,4 +1,4 @@
-import { AboutAmberconNw, CallbackPage, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
+import { AboutAmberconNw, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
 import * as React from 'react'
 
 import { Games, Lookups } from '../../../pages/Admin'
@@ -76,10 +76,5 @@ export const rootRoutes: RootRoutes = [
     label: 'Credits',
     exact: false,
     component: Credits
-  },
-  {
-    path: '/callback',
-    exact: true,
-    component: CallbackPage
   }
 ]

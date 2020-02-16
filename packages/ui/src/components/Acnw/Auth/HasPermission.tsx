@@ -1,11 +1,12 @@
-// import { find } from 'lodash'
 import * as React from 'react'
 
-import { AuthConsumer } from './authContext'
+import { getRoles, useAuth0 } from './Auth0'
 import rules, { Perms, Rules } from './PermissionRules'
 
 const check = (rules: Rules, role: string | null, action: Perms, data?: any) => {
-  if (!role) return false
+  if (!role) {
+    return false
+  }
   const permissions = rules[role] as any
   if (!permissions) {
     // role is not present in the rules
@@ -32,42 +33,15 @@ const check = (rules: Rules, role: string | null, action: Perms, data?: any) => 
   return false
 }
 
-/*
-export const checkMany = (
-  rules: Rules,
-  roles: string[],
-  action: Perms,
-  data?: any
-) => {
-  return !!find(roles, role => check(rules, role, action, data))
-}
-*/
-
 type PermissionProps = {
   permission: Perms
   data?: any
-  denied?: () => React.ReactNode
+  denied?: () => React.ReactElement | null
 }
 
 const nullOp = (): null => null
 
-type Auth = {
-  user?: {
-    role?: string
-  }
+export const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
+  const { user } = useAuth0()
+  return <>{!!user && check(rules, getRoles(user), permission, data) ? children : denied()}</>
 }
-
-const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => (
-  <AuthConsumer>
-    {({ user }: Auth) => (!!user && check(rules, user.role ? user.role : null, permission, data) ? children : denied())}
-  </AuthConsumer>
-)
-
-/*
-export const hasPermission = (auth, permission, data) => {
-  const { roles } = getAuthProps(auth)
-  return checkMany(rules, roles, permission, data)
-}
-*/
-
-export default HasPermission
