@@ -12,8 +12,8 @@ import {
   actions,
   defaultColumn,
   makePropGetter,
-  useConsumeHookGetter,
-  useGetLatest
+  useGetLatest,
+  ensurePluginOrder,
 } from 'react-table'
 
 import { getFirstDefined } from './tableHookUtils'
@@ -35,6 +35,7 @@ export const useResizeColumns = <D extends object>(hooks: Hooks<D>): void => {
   })
   hooks.stateReducers.push(reducer)
   hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
+  hooks.useInstance.push(useInstance)
 }
 
 const defaultGetResizerProps = <D extends object>(
@@ -129,7 +130,8 @@ const defaultGetResizerProps = <D extends object>(
       style: {
         cursor: 'ew-resize'
       },
-      draggable: false
+      draggable: false,
+      role: 'separator',
     }
   ]
 }
@@ -200,12 +202,10 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
 }
 
 const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D>) => {
-  const { flatHeaders, disableResizing, state } = instance
+  const { flatHeaders, disableResizing, state, getHooks } = instance
   const { columnResizing } = state as TableState<D> & UseResizeColumnsState<D>
 
   const getInstance = useGetLatest(instance)
-
-  const getResizerPropsHooks = useConsumeHookGetter(getInstance().hooks, 'getResizerProps')
 
   flatHeaders.forEach(header => {
     const canResize = getFirstDefined(
@@ -219,12 +219,16 @@ const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D
     header.isResizing = columnResizing.isResizingColumn === header.id
 
     if (canResize) {
-      header.getResizerProps = makePropGetter(getResizerPropsHooks(), {
+      header.getResizerProps = makePropGetter(getHooks().getResizerProps, {
         instance: getInstance(),
         header
       })
     }
   })
+}
+
+function useInstance<D extends object>({ plugins }: TableInstance<D>) {
+  ensurePluginOrder(plugins, ['useAbsoluteLayout'], 'useResizeColumns')
 }
 
 function getLeafHeaders<D extends object>(header: HeaderGroup<D>) {

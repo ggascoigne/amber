@@ -107,7 +107,7 @@ const getStyles = <T extends object>(props: any, disableResizing = false, align 
 ]
 
 const useSelectionUi = (hooks: Hooks<any>) => {
-  hooks.flatColumns.push((columns, { instance }) => {
+  hooks.allColumns.push((columns, { instance }) => {
     console.log(`instance column length = ${instance.columns.length}`)
     return [
       // Let's make a column for selection
@@ -118,6 +118,7 @@ const useSelectionUi = (hooks: Hooks<any>) => {
         minWidth: 45,
         width: 45,
         maxWidth: 45,
+        Aggregated: undefined,
         // The header can use the table's getToggleAllRowsSelectedProps method
         // to render a checkbox
         Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
@@ -157,8 +158,8 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
 
   const hooks = [
     useColumnOrder,
-    useGroupBy,
     useFilters,
+    useGroupBy,
     useSortBy,
     useExpanded,
     useFlexLayout,
@@ -175,7 +176,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       Filter: DefaultColumnFilter,
       Cell: TooltipCell,
       Header: DefaultHeader,
-      aggregate: ['sum', 'uniqueCount'],
+      aggregate: 'uniqueCount',
       Aggregated: ({ cell: { value } }: CellProps<T>) => `${value} Unique Values`,
       // When using the useFlexLayout:
       minWidth: 30, // minWidth is only used as a limit for resizing
@@ -292,7 +293,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
                           active
                           direction={row.isExpanded ? 'desc' : 'asc'}
                           IconComponent={KeyboardArrowUp}
-                          {...row.getExpandedToggleProps()}
+                          {...row.getToggleRowExpandedProps()}
                           className={classes.cellIcon}
                         />{' '}
                         {cell.render('Cell', { editable: false })} ({row.subRows.length})
@@ -301,7 +302,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
                       // If the cell is aggregated, use the Aggregated
                       // renderer for cell
                       cell.render('Aggregated')
-                    ) : cell.isRepeatedValue ? null : ( // For cells with repeated values, render null
+                    ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
                       // Otherwise, just render the regular cell
                       cell.render('Cell' /*, { editable: true }*/)
                     )}
