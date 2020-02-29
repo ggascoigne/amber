@@ -10,19 +10,20 @@ export interface Rules {
 export enum Perms {
   PostsList = 'posts:list',
   HomePageVisit = 'home-page:visit',
-  GraphiqlLoad = 'graphiql:load'
+  GraphiqlLoad = 'graphiql:load',
+  IsAdmin = 'is:Admin'
 }
 
 const rules: Rules = {
-  admin: {
+  ROLE_ADMIN: {
     dynamic: {
       '*': () => true
     }
   },
-  member: {
+  ROLE_USER: {
     static: [Perms.PostsList, Perms.HomePageVisit]
   },
-  gameAdmin: {}
+  ROLE_GAME_ADMIN: {}
 }
 
 export default rules

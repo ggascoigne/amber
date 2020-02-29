@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const Welcome: React.FC = () => {
   const classes = useStyles()
   const { isAuthenticated, user } = useAuth0()
+
   return (
     <Page>
       <div className={classes.banner}>
@@ -38,7 +39,7 @@ export const Welcome: React.FC = () => {
         <div>
           <h2>User Profile</h2>
           <Suspense fallback={<Loader />}>
-            <ReactJson src={user} collapsed={1} indentWidth={2} sortKeys />
+            <ReactJson src={user} indentWidth={2} sortKeys />
           </Suspense>
         </div>
       ) : null}

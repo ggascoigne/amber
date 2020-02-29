@@ -1,18 +1,32 @@
 import createAuth0Client from '@auth0/auth0-spa-js'
 import { AUTH_CONFIG } from 'auth0-variables'
+import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { ThenArg } from 'utils'
 
 type Auth0Client = ThenArg<ReturnType<typeof createAuth0Client>>
 
-export type Auth0User = {
-  id: string
-  role: string
+type AccessToken = {
+  iss?: string
+  sub?: string
+  aud?: string[]
+  iat?: number
+  exp?: number
+  scope?: string
+} & Record<string, any>
+
+export type AuthInfo = {
+  roles?: string[]
+  userId?: number
+}
+
+export type Auth0User = AuthInfo & {
   email?: string
+  email_verified?: boolean
   name: string
   nickname: string
   picture: string
-} & Record<string, string>
+}
 
 interface ContextValueType {
   isAuthenticated?: boolean
@@ -45,7 +59,10 @@ const auth0ClientConfig: Auth0ClientOptions = {
   domain: AUTH_CONFIG.domain,
   client_id: AUTH_CONFIG.clientId,
   redirect_uri: window.location.origin,
-  cacheLocation: 'localstorage'
+  cacheLocation: 'localstorage',
+  audience: AUTH_CONFIG.audience,
+  responseType: 'token id_token',
+  scope: 'openid profile'
 }
 
 const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
@@ -60,15 +77,19 @@ const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
   window.history.replaceState({}, document.title, targetUrl)
 }
 
-export const Auth0Provider = ({
-  children,
-  onRedirectCallback = onAuthRedirectCallback
-}: Auth0ProviderOptions) => {
+export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCallback }: Auth0ProviderOptions) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isInitializing, setIsInitializing] = useState(true)
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [user, setUser] = useState<Auth0User>()
   const [auth0Client, setAuth0Client] = useState<Auth0Client>()
+
+  const getEnrichedUser = async (client: Auth0Client) => {
+    const userProfile = await client.getUser()
+    const token = await client.getTokenSilently()
+    const decodedToken: AccessToken | undefined = token && JwtDecode(token)
+    return decodedToken ? { ...userProfile, ...decodedToken[AUTH_CONFIG.audience] } : userProfile
+  }
 
   useEffect(() => {
     const initAuth0 = async () => {
@@ -87,8 +108,7 @@ export const Auth0Provider = ({
       const authed = await auth0FromHook.isAuthenticated()
 
       if (authed) {
-        const userProfile = await auth0FromHook.getUser()
-
+        const userProfile = await getEnrichedUser(auth0FromHook)
         setUser(userProfile)
         setIsAuthenticated(true)
       }
@@ -111,7 +131,7 @@ export const Auth0Provider = ({
         setIsPopupOpen(false)
       }
 
-      const userProfile = await auth0Client!.getUser()
+      const userProfile = await getEnrichedUser(auth0Client!)
       setUser(userProfile)
       setIsAuthenticated(true)
     },
@@ -122,11 +142,10 @@ export const Auth0Provider = ({
     setIsInitializing(true)
 
     const result = await auth0Client!.handleRedirectCallback()
-    const userProfile = await auth0Client!.getUser()
-
+    const userProfile = await getEnrichedUser(auth0Client!)
     setIsInitializing(false)
-    setIsAuthenticated(true)
     setUser(userProfile)
+    setIsAuthenticated(true)
 
     return result
   }, [auth0Client])
@@ -169,5 +188,3 @@ export const Auth0Provider = ({
     </Auth0Context.Provider>
   )
 }
-
-export const getRoles = (user?: Auth0User) => user ? user[AUTH_CONFIG.roleUrl] : null

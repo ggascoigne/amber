@@ -1,6 +1,7 @@
+import find from 'lodash/find'
 import * as React from 'react'
 
-import { getRoles, useAuth0 } from './Auth0'
+import { useAuth0 } from './Auth0'
 import rules, { Perms, Rules } from './PermissionRules'
 
 const check = (rules: Rules, role: string | null, action: Perms, data?: any) => {
@@ -33,6 +34,9 @@ const check = (rules: Rules, role: string | null, action: Perms, data?: any) => 
   return false
 }
 
+export const checkMany = (rules: Rules, roles: string[] | undefined, action: Perms, data?: any) =>
+  !!find(roles, role => check(rules, role, action, data))
+
 type PermissionProps = {
   permission: Perms
   data?: any
@@ -43,5 +47,6 @@ const nullOp = (): null => null
 
 export const HasPermission: React.FC<PermissionProps> = ({ permission, data, children = null, denied = nullOp }) => {
   const { user } = useAuth0()
-  return <>{!!user && check(rules, getRoles(user), permission, data) ? children : denied()}</>
+  const allowed = !!user && checkMany(rules, user.roles, permission, data)
+  return allowed ? <>{children}</> : denied()
 }

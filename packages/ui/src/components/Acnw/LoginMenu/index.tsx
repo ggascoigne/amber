@@ -1,6 +1,7 @@
 import { ApolloConsumer } from '@apollo/react-common'
+import { Badge } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
-import { Theme, makeStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles, withStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { useAuth0 } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
@@ -8,8 +9,41 @@ import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDro
 import React, { useCallback } from 'react'
 
 import { Auth0User } from '../Auth'
+import { HasPermission } from '../Auth/HasPermission'
+import { Perms } from '../Auth/PermissionRules'
 
 const MENU_ITEM_SIGN_OUT = 'Sign out'
+
+const StyledBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      backgroundColor: '#fcc60a',
+      color: '#fcc60a',
+      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+      '&::after': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        animation: '$ripple 1.2s infinite ease-in-out',
+        border: '1px solid currentColor',
+        content: '""'
+      }
+    },
+    '@keyframes ripple': {
+      '0%': {
+        transform: 'scale(.8)',
+        opacity: 1
+      },
+      '100%': {
+        transform: 'scale(2.4)',
+        opacity: 0
+      }
+    }
+  })
+)(Badge)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -63,13 +97,30 @@ type ProfileImage = {
   user: Auth0User
 }
 
-const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
+const OurAvatar: React.FC<ProfileImage> = ({ user }) => {
   if (user.picture) {
     return <Avatar src={user.picture} />
   } else {
     const initials = user.nickname ? user.nickname[0] : '...'
     return <Avatar>{initials}</Avatar>
   }
+}
+
+const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
+  return (
+    <HasPermission permission={Perms.IsAdmin} denied={() => <OurAvatar user={user} />}>
+      <StyledBadge
+        overlap='circle'
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        variant='dot'
+      >
+        <OurAvatar user={user} />
+      </StyledBadge>
+    </HasPermission>
+  )
 }
 
 type MenuButton = {
