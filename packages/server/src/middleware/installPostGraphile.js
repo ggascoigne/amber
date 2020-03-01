@@ -24,7 +24,7 @@ export function installPostGraphile(app, { rootPgPool, config }) {
       debug: config.isDev,
       disableQueryLog: true,
       enableCors: config.isDev,
-      graphiql: true, // need to secure this somehow
+      graphiql: false,
       ignoreRBAC: false,
       // pgSettings: opts.pgSettings,
       showErrorStack: config.isDev,
