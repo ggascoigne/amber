@@ -108,7 +108,6 @@ const getStyles = <T extends object>(props: any, disableResizing = false, align 
 
 const useSelectionUi = (hooks: Hooks<any>) => {
   hooks.allColumns.push((columns, { instance }) => {
-    console.log(`instance column length = ${instance.columns.length}`)
     return [
       // Let's make a column for selection
       {
