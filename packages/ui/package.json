@@ -44,6 +44,8 @@
     "react-test-renderer": "^16.13.0",
     "source-map-explorer": "^2.3.1",
     "ts-node": "^8.6.2",
+    "react-refresh": "^0.8.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.1.3",
     "typescript": "3.8.3"
   },
   "dependencies": {
@@ -92,7 +94,7 @@
     "build": "react-scripts build && rm -rf ../server/ui && mv build ../server/ui",
     "format": "cd ../../ && yarn format",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "start": "concurrently --kill-others --names 'codegen,CRA' --prefix-colors 'blue,yellow' 'yarn codegen:watch' 'PORT=30000 react-scripts start'",
+    "start": "concurrently --kill-others --names 'codegen,CRA' --prefix-colors 'blue,yellow' 'yarn codegen:watch' 'REACT_REFRESH=true PORT=30000 react-scripts start'",
     "test": "CI=true react-scripts test",
     "test:watch": "react-scripts test",
     "typesync": "typesync"
