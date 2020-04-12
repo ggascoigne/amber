@@ -54,3 +54,5 @@ packages/server/ui
 .idea/shelf
 
 postgres-data
+
+.now

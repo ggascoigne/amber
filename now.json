@@ -1,0 +1,11 @@
+{
+  "env": {
+    "DATABASE_HOST": "@database_host",
+    "DATABASE_NAME": "@database_name",
+    "DATABASE_USER": "@database_user",
+    "DATABASE_PASSWORD": "@database_password",
+    "DATABASE_PORT": "@database_port",
+    "DATABASE_SSL": "@database_ssl",
+    "DATABASE_SSL_CERT": "@database_ssl_cert"
+  }
+}
