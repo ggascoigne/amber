@@ -41,7 +41,7 @@ const cache = new InMemoryCache({
 
 // Initialize the Apollo Client
 const Client = new ApolloClient({
-  link: new HttpLink(),
+  link: new HttpLink({ uri: window.location.origin + '/api/graphql' }),
   cache,
   // @ts-ignore
   resolvers: {
