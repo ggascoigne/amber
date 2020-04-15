@@ -121,6 +121,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/js/*.js'",
+    "build": "react-scripts build",
     "clean:install": "rm -rf node_modules packages/*/node_modules && yarn && yarn audit",
     "codegen": "graphql-codegen --config codegen.yml",
     "codegen:watch": "yarn codegen --watch",
@@ -131,7 +132,6 @@
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "postinstall": "patch-package",
     "saveSchema": "lerna exec --scope ui yarn saveSchema",
-    "XXstart": "concurrently --kill-others --names 'codegen,CRA' --prefix-colors 'blue,yellow' 'yarn codegen:watch' 'REACT_REFRESH=false PORT=30000 react-scripts start'",
     "start": "react-scripts start",
     "start:production": "lerna exec --scope ui yarn build && lerna exec --scope server yarn start:production",
     "start:server": "yarn db:start && lerna exec --scope server yarn start",
@@ -139,7 +139,8 @@
     "test": "yarn db:start && lerna exec --concurrency 1 -- yarn test",
     "test:server": "yarn db:start && lerna exec --scope server yarn test",
     "test:ui": "yarn db:start && lerna exec --scope ui yarn test",
-    "typesync": "typesync"
+    "typesync": "typesync",
+    "XXstart": "concurrently --kill-others --names 'codegen,CRA' --prefix-colors 'blue,yellow' 'yarn codegen:watch' 'REACT_REFRESH=false PORT=30000 react-scripts start'"
   },
   "prettier": {
     "printWidth": 120,
