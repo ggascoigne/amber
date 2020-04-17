@@ -48,7 +48,7 @@ export const useStyles = makeStyles(
 )
 
 const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
-  fetch(window.location.origin + '/graphql', {
+  fetch(window.location.origin + '/api/graphql', {
     method: 'post',
     headers: jwtToken
       ? {
