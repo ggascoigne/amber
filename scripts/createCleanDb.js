@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const config = require('../src/utils/config')
+const { config } = require('../shared/config')
 const { createCleanDb } = require('./scriptUtils')
 const chalk = require('chalk')
 

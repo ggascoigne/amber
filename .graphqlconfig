@@ -1,6 +1,6 @@
 {
   "name": "ACNW GraphQL Schema",
-  "schemaPath": "packages/ui/graphql-schema.graphql",
+  "schemaPath": "./graphql-schema.graphql",
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {

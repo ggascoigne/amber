@@ -172,25 +172,25 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
           <RealGraphiQL.Toolbar>
             <RealGraphiQL.Button
               onClick={() => _graphiql.current.handlePrettifyQuery()}
-              label={'Prettify'}
-              title={'Prettify Query (Shift-Ctrl-P)'}
+              label='Prettify'
+              title='Prettify Query (Shift-Ctrl-P)'
             />
             <RealGraphiQL.Button
               onClick={() => _graphiql.current.handleMergeQuery()}
-              title={'Merge Query (Shift-Ctrl-M)'}
-              label={'Merge'}
+              title='Merge Query (Shift-Ctrl-M)'
+              label='Merge'
             />
             <RealGraphiQL.Button
               onClick={() => _graphiql.current.handleCopyQuery()}
-              title={'Copy Query (Shift-Ctrl-C)'}
-              label={'Copy'}
+              title='Copy Query (Shift-Ctrl-C)'
+              label='Copy'
             />{' '}
             <RealGraphiQL.Button
               onClick={() => _graphiql.current.handleToggleHistory()}
-              label={'History'}
-              title={'Show History'}
+              label='History'
+              title='Show History'
             />
-            <RealGraphiQL.Button onClick={handleToggleExplorer} label={'Explorer'} title={'Toggle Explorer'} />
+            <RealGraphiQL.Button onClick={handleToggleExplorer} label='Explorer' title='Toggle Explorer' />
           </RealGraphiQL.Toolbar>
         </RealGraphiQL>
       </div>

@@ -11,9 +11,9 @@ import {
   UseResizeColumnsState,
   actions,
   defaultColumn,
-  makePropGetter,
-  useGetLatest,
   ensurePluginOrder,
+  makePropGetter,
+  useGetLatest
 } from 'react-table'
 
 import { getFirstDefined } from './tableHookUtils'
@@ -131,7 +131,7 @@ const defaultGetResizerProps = <D extends object>(
         cursor: 'ew-resize'
       },
       draggable: false,
-      role: 'separator',
+      role: 'separator'
     }
   ]
 }

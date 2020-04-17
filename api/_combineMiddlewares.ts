@@ -12,15 +12,13 @@ export function combineMiddlewares(middlewares: Array<RequestHandler>) {
     (
       parent: (req: Request, res: Response, next: (err?: Error) => void) => void,
       fn: (req: Request, res: Response, next: (err?: Error) => void) => void
-    ): ((req: Request, res: Response, next: (err?: Error) => void) => void) => {
-      return (req, res, next) => {
-        parent(req, res, (error) => {
-          if (error) {
-            return next(error)
-          }
-          fn(req, res, next)
-        })
-      }
+    ): ((req: Request, res: Response, next: (err?: Error) => void) => void) => (req, res, next) => {
+      parent(req, res, error => {
+        if (error) {
+          return next(error)
+        }
+        fn(req, res, next)
+      })
     },
     (_req: Request, _res: Response, next: (err?: Error) => void) => next()
   )

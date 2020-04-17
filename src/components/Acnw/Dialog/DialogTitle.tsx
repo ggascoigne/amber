@@ -1,4 +1,4 @@
-import { makeStyles, Theme } from '@material-ui/core'
+import { Theme, makeStyles } from '@material-ui/core'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import createStyles from '@material-ui/core/styles/createStyles'

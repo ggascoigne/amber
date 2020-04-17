@@ -7,6 +7,7 @@ import client from 'client/client'
 import { Auth0Provider } from 'components/Acnw'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { hot } from 'react-hot-loader/root'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
@@ -14,22 +15,18 @@ import registerServiceWorker from './utils/registerServiceWorker'
 
 const rootElement = document.getElementById('root')
 
-const render = (Component: React.ComponentType) =>
-  ReactDOM.render(
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <Auth0Provider>
-          <Component />
-        </Auth0Provider>
-      </ApolloProvider>
-    </BrowserRouter>,
-    rootElement
-  )
+const RootComponent = () => (
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <Auth0Provider>
+        <App />
+      </Auth0Provider>
+    </ApolloProvider>
+  </BrowserRouter>
+)
 
-render(App)
+const WrappedRootComponents = process.env.NODE_ENV === 'development' ? hot(RootComponent) : RootComponent
 
-if ((module as NodeModule).hot) {
-  ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
-}
+ReactDOM.render(<WrappedRootComponents />, rootElement)
 
 registerServiceWorker()

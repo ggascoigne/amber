@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const config = require('../src/utils/config')
+const { config } = require('../shared/config')
 const { spawn, spawnSync } = require('child_process')
 const {
   bail,
@@ -226,18 +226,22 @@ async function main() {
 
   info('Preparing tmpdb for transfer to new database')
   runOrExit(
-    spawnSync('./node_modules/.bin/knex-migrate', ['up', '--only', '20171015154605_drop_junk.js'], {
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        DATABASE_NAME: tmpDbConfig.database,
-        DATABASE_USER: tmpDbConfig.user,
-        DATABASE_PORT: tmpDbConfig.port,
-        DATABASE_HOST: tmpDbConfig.host,
-        DATABASE_PASSWORD: tmpDbConfig.password,
-        DATABASE_SSL: tmpDbConfig.ssl
+    spawnSync(
+      './node_modules/.bin/knex-migrate',
+      ['--cwd', './support', '--knexfile', './knexfile.js', 'up', '--only', '20171015154605_drop_junk.js'],
+      {
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          DATABASE_NAME: tmpDbConfig.database,
+          DATABASE_USER: tmpDbConfig.user,
+          DATABASE_PORT: tmpDbConfig.port,
+          DATABASE_HOST: tmpDbConfig.host,
+          DATABASE_PASSWORD: tmpDbConfig.password,
+          DATABASE_SSL: tmpDbConfig.ssl
+        }
       }
-    })
+    )
   )
 
   info('Deleting knex records in tmpdb')
@@ -251,7 +255,11 @@ async function main() {
   createKnexMigrationTables(dbconfig)
 
   info('Create new schema')
-  runOrExit(spawnSync('./node_modules/.bin/knex-migrate', ['up'], { stdio: 'inherit' }))
+  runOrExit(
+    spawnSync('./node_modules/.bin/knex-migrate', ['--cwd', './support', '--knexfile', './knexfile.js', 'up'], {
+      stdio: 'inherit'
+    })
+  )
 
   info('Loading data from tmp to live')
   await pipeTmpToLive(tmpDbConfig, dbconfig).catch(bail)

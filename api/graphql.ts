@@ -1,3 +1,4 @@
+// @ts-ignore
 import cors from 'cors'
 import { NextFunction, Request, Response } from 'express'
 import { postgraphile } from 'postgraphile'
@@ -33,12 +34,12 @@ const app = combineMiddlewares([
   },
   postgraphile(getPool(`${__dirname}/../shared/`), getSchemas(), {
     ...options,
-    readCache: `${__dirname}/../shared/postgraphile.cache`,
-  }),
+    readCache: `${__dirname}/../shared/postgraphile.cache`
+  })
 ])
 
 module.exports = (req: Request, res: Response) => {
-  app(req, res, (err) => {
+  app(req, res, err => {
     if (err) {
       // eslint-disable-next-line no-console
       console.error(err)

@@ -106,22 +106,20 @@ const OurAvatar: React.FC<ProfileImage> = ({ user }) => {
   }
 }
 
-const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
-  return (
-    <HasPermission permission={Perms.IsAdmin} denied={() => <OurAvatar user={user} />}>
-      <StyledBadge
-        overlap='circle'
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        variant='dot'
-      >
-        <OurAvatar user={user} />
-      </StyledBadge>
-    </HasPermission>
-  )
-}
+const ProfileImage: React.FC<ProfileImage> = ({ user }) => (
+  <HasPermission permission={Perms.IsAdmin} denied={() => <OurAvatar user={user} />}>
+    <StyledBadge
+      overlap='circle'
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right'
+      }}
+      variant='dot'
+    >
+      <OurAvatar user={user} />
+    </StyledBadge>
+  </HasPermission>
+)
 
 type MenuButton = {
   user: Auth0User
