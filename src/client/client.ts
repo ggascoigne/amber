@@ -1,9 +1,12 @@
-import { ApolloClient, HttpLink, InMemoryCache } from 'apollo-boost'
+import ApolloClient, { InMemoryCache } from 'apollo-boost'
+import { Operation } from 'apollo-link'
 import { gameFilterStore, urlSourceStore } from 'client/resolvers'
 import assignIn from 'lodash/fp/assignIn'
 import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'
 import reduce from 'lodash/fp/reduce'
+
+import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 
 // @ts-ignore
 const reduceWithDefault = reduce.convert({ cap: false })
@@ -39,15 +42,27 @@ const cache = new InMemoryCache({
   dataIdFromObject: (obj: any) => obj.nodeId || null
 })
 
-// Initialize the Apollo Client
-const Client = new ApolloClient({
-  link: new HttpLink({ uri: window.location.origin + '/api/graphql' }),
-  cache,
-  // @ts-ignore
-  resolvers: {
-    Mutation: mergeGet('mutations')(STORES)
-  }
-})
+const Client = (authProps: Auth0ContextType) =>
+  new ApolloClient({
+    uri: '/api/graphql',
+    request: async (operation: Operation) => {
+      const { getTokenSilently, isAuthenticated } = authProps
+      if (isAuthenticated) {
+        const token = getTokenSilently && (await getTokenSilently())
+        operation.setContext({
+          headers: {
+            Authorization: token ? `Bearer ${token}` : ''
+          }
+        })
+      }
+    },
+    cache,
+    // @ts-ignore
+    resolvers: {
+      Mutation: mergeGet('mutations')(STORES)
+    }
+  })
+
 cache.writeData({ data: mergeGet('defaults')(STORES) })
 
 export default Client

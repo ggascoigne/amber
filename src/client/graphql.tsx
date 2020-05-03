@@ -382,42 +382,6 @@ export type CreateLookupValuePayloadLookupValueEdgeArgs = {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
-/** All input for the create `MemberHotelRoomAssignment` mutation. */
-export type CreateMemberHotelRoomAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `MemberHotelRoomAssignment` to be created by this mutation. */
-  memberHotelRoomAssignment: MemberHotelRoomAssignmentInput
-}
-
-/** The output of our create `MemberHotelRoomAssignment` mutation. */
-export type CreateMemberHotelRoomAssignmentPayload = {
-  __typename: 'CreateMemberHotelRoomAssignmentPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `MemberHotelRoomAssignment` that was created by this mutation. */
-  memberHotelRoomAssignment?: Maybe<MemberHotelRoomAssignment>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`. */
-  hotelRoom?: Maybe<HotelRoomDetail>
-  /** An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1. */
-  memberHotelRoomAssignmentEdge?: Maybe<MemberHotelRoomAssignmentsEdge>
-}
-
-/** The output of our create `MemberHotelRoomAssignment` mutation. */
-export type CreateMemberHotelRoomAssignmentPayloadMemberHotelRoomAssignmentEdgeArgs = {
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-}
-
 /** All input for the create `Membership` mutation. */
 export type CreateMembershipInput = {
   /**
@@ -484,38 +448,6 @@ export type CreateProfilePayload = {
 /** The output of our create `Profile` mutation. */
 export type CreateProfilePayloadProfileEdgeArgs = {
   orderBy?: Maybe<Array<ProfilesOrderBy>>
-}
-
-/** All input for the create `RegistrationCode` mutation. */
-export type CreateRegistrationCodeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `RegistrationCode` to be created by this mutation. */
-  registrationCode: RegistrationCodeInput
-}
-
-/** The output of our create `RegistrationCode` mutation. */
-export type CreateRegistrationCodePayload = {
-  __typename: 'CreateRegistrationCodePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `RegistrationCode` that was created by this mutation. */
-  registrationCode?: Maybe<RegistrationCode>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `RegistrationCode`. May be used by Relay 1. */
-  registrationCodeEdge?: Maybe<RegistrationCodesEdge>
-}
-
-/** The output of our create `RegistrationCode` mutation. */
-export type CreateRegistrationCodePayloadRegistrationCodeEdgeArgs = {
-  orderBy?: Maybe<Array<RegistrationCodesOrderBy>>
 }
 
 /** All input for the create `Role` mutation. */
@@ -712,40 +644,6 @@ export type CreateSlotPayload = {
 /** The output of our create `Slot` mutation. */
 export type CreateSlotPayloadSlotEdgeArgs = {
   orderBy?: Maybe<Array<SlotsOrderBy>>
-}
-
-/** All input for the create `Token` mutation. */
-export type CreateTokenInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Token` to be created by this mutation. */
-  token: TokenInput
-}
-
-/** The output of our create `Token` mutation. */
-export type CreateTokenPayload = {
-  __typename: 'CreateTokenPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Token` that was created by this mutation. */
-  token?: Maybe<Token>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `Token`. */
-  user?: Maybe<User>
-  /** An edge for our `Token`. May be used by Relay 1. */
-  tokenEdge?: Maybe<TokensEdge>
-}
-
-/** The output of our create `Token` mutation. */
-export type CreateTokenPayloadTokenEdgeArgs = {
-  orderBy?: Maybe<Array<TokensOrderBy>>
 }
 
 /** All input for the create `User` mutation. */
@@ -1231,54 +1129,6 @@ export type DeleteLookupValuePayloadLookupValueEdgeArgs = {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
-/** All input for the `deleteMemberHotelRoomAssignmentByNodeId` mutation. */
-export type DeleteMemberHotelRoomAssignmentByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteMemberHotelRoomAssignment` mutation. */
-export type DeleteMemberHotelRoomAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  memberId: Scalars['BigInt']
-  hotelRoomId: Scalars['BigInt']
-}
-
-/** The output of our delete `MemberHotelRoomAssignment` mutation. */
-export type DeleteMemberHotelRoomAssignmentPayload = {
-  __typename: 'DeleteMemberHotelRoomAssignmentPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `MemberHotelRoomAssignment` that was deleted by this mutation. */
-  memberHotelRoomAssignment?: Maybe<MemberHotelRoomAssignment>
-  deletedMemberHotelRoomAssignmentNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`. */
-  hotelRoom?: Maybe<HotelRoomDetail>
-  /** An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1. */
-  memberHotelRoomAssignmentEdge?: Maybe<MemberHotelRoomAssignmentsEdge>
-}
-
-/** The output of our delete `MemberHotelRoomAssignment` mutation. */
-export type DeleteMemberHotelRoomAssignmentPayloadMemberHotelRoomAssignmentEdgeArgs = {
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-}
-
 /** All input for the `deleteMembershipByNodeId` mutation. */
 export type DeleteMembershipByNodeIdInput = {
   /**
@@ -1377,49 +1227,6 @@ export type DeleteProfilePayload = {
 /** The output of our delete `Profile` mutation. */
 export type DeleteProfilePayloadProfileEdgeArgs = {
   orderBy?: Maybe<Array<ProfilesOrderBy>>
-}
-
-/** All input for the `deleteRegistrationCodeByNodeId` mutation. */
-export type DeleteRegistrationCodeByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `RegistrationCode` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteRegistrationCode` mutation. */
-export type DeleteRegistrationCodeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  id: Scalars['Int']
-}
-
-/** The output of our delete `RegistrationCode` mutation. */
-export type DeleteRegistrationCodePayload = {
-  __typename: 'DeleteRegistrationCodePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `RegistrationCode` that was deleted by this mutation. */
-  registrationCode?: Maybe<RegistrationCode>
-  deletedRegistrationCodeNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `RegistrationCode`. May be used by Relay 1. */
-  registrationCodeEdge?: Maybe<RegistrationCodesEdge>
-}
-
-/** The output of our delete `RegistrationCode` mutation. */
-export type DeleteRegistrationCodePayloadRegistrationCodeEdgeArgs = {
-  orderBy?: Maybe<Array<RegistrationCodesOrderBy>>
 }
 
 /** All input for the `deleteRoleByAuthority` mutation. */
@@ -1692,51 +1499,6 @@ export type DeleteSlotPayload = {
 /** The output of our delete `Slot` mutation. */
 export type DeleteSlotPayloadSlotEdgeArgs = {
   orderBy?: Maybe<Array<SlotsOrderBy>>
-}
-
-/** All input for the `deleteTokenByNodeId` mutation. */
-export type DeleteTokenByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Token` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteToken` mutation. */
-export type DeleteTokenInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  id: Scalars['Int']
-}
-
-/** The output of our delete `Token` mutation. */
-export type DeleteTokenPayload = {
-  __typename: 'DeleteTokenPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Token` that was deleted by this mutation. */
-  token?: Maybe<Token>
-  deletedTokenNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `Token`. */
-  user?: Maybe<User>
-  /** An edge for our `Token`. May be used by Relay 1. */
-  tokenEdge?: Maybe<TokensEdge>
-}
-
-/** The output of our delete `Token` mutation. */
-export type DeleteTokenPayloadTokenEdgeArgs = {
-  orderBy?: Maybe<Array<TokensOrderBy>>
 }
 
 /** All input for the `deleteUserByNodeId` mutation. */
@@ -2868,19 +2630,6 @@ export type HotelRoomDetail = Node & {
   reservedFor: Scalars['String']
   roomType: Scalars['String']
   formattedRoomType: Scalars['String']
-  /** Reads and enables pagination through a set of `MemberHotelRoomAssignment`. */
-  memberHotelRoomAssignmentsByHotelRoomId: MemberHotelRoomAssignmentsConnection
-}
-
-export type HotelRoomDetailMemberHotelRoomAssignmentsByHotelRoomIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-  condition?: Maybe<MemberHotelRoomAssignmentCondition>
-  filter?: Maybe<MemberHotelRoomAssignmentFilter>
 }
 
 /**
@@ -3030,9 +2779,7 @@ export enum HotelRoomDetailsOrderBy {
   FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
   FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MemberHotelRoomAssignmentsByHotelRoomIdCountAsc = 'MEMBER_HOTEL_ROOM_ASSIGNMENTS_BY_HOTEL_ROOM_ID__COUNT_ASC',
-  MemberHotelRoomAssignmentsByHotelRoomIdCountDesc = 'MEMBER_HOTEL_ROOM_ASSIGNMENTS_BY_HOTEL_ROOM_ID__COUNT_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
 /** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
@@ -3487,166 +3234,6 @@ export enum LookupValuesOrderBy {
   LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC'
 }
 
-export type MemberHotelRoomAssignment = Node & {
-  __typename: 'MemberHotelRoomAssignment'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  memberId: Scalars['BigInt']
-  hotelRoomId: Scalars['BigInt']
-  roomOwner: Scalars['Boolean']
-  year: Scalars['Int']
-  /** Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`. */
-  hotelRoom?: Maybe<HotelRoomDetail>
-}
-
-/**
- * A condition to be used against `MemberHotelRoomAssignment` object types. All
- * fields are tested for equality and combined with a logical ‘and.’
- */
-export type MemberHotelRoomAssignmentCondition = {
-  /** Checks for equality with the object’s `memberId` field. */
-  memberId?: Maybe<Scalars['BigInt']>
-  /** Checks for equality with the object’s `hotelRoomId` field. */
-  hotelRoomId?: Maybe<Scalars['BigInt']>
-  /** Checks for equality with the object’s `roomOwner` field. */
-  roomOwner?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `year` field. */
-  year?: Maybe<Scalars['Int']>
-}
-
-/** A filter to be used against `MemberHotelRoomAssignment` object types. All fields are combined with a logical ‘and.’ */
-export type MemberHotelRoomAssignmentFilter = {
-  /** Filter by the object’s `memberId` field. */
-  memberId?: Maybe<BigIntFilter>
-  /** Filter by the object’s `hotelRoomId` field. */
-  hotelRoomId?: Maybe<BigIntFilter>
-  /** Filter by the object’s `roomOwner` field. */
-  roomOwner?: Maybe<BooleanFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<MemberHotelRoomAssignmentFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<MemberHotelRoomAssignmentFilter>>
-  /** Negates the expression. */
-  not?: Maybe<MemberHotelRoomAssignmentFilter>
-}
-
-/** An input for mutations affecting `MemberHotelRoomAssignment` */
-export type MemberHotelRoomAssignmentInput = {
-  memberId: Scalars['BigInt']
-  hotelRoomId: Scalars['BigInt']
-  roomOwner: Scalars['Boolean']
-  year: Scalars['Int']
-}
-
-/** Represents an update to a `MemberHotelRoomAssignment`. Fields that are set will be updated. */
-export type MemberHotelRoomAssignmentPatch = {
-  memberId?: Maybe<Scalars['BigInt']>
-  hotelRoomId?: Maybe<Scalars['BigInt']>
-  roomOwner?: Maybe<Scalars['Boolean']>
-  year?: Maybe<Scalars['Int']>
-}
-
-/** A connection to a list of `MemberHotelRoomAssignment` values. */
-export type MemberHotelRoomAssignmentsConnection = {
-  __typename: 'MemberHotelRoomAssignmentsConnection'
-  /** A list of `MemberHotelRoomAssignment` objects. */
-  nodes: Array<Maybe<MemberHotelRoomAssignment>>
-  /** A list of edges which contains the `MemberHotelRoomAssignment` and cursor to aid in pagination. */
-  edges: Array<MemberHotelRoomAssignmentsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `MemberHotelRoomAssignment` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `MemberHotelRoomAssignment` edge in the connection. */
-export type MemberHotelRoomAssignmentsEdge = {
-  __typename: 'MemberHotelRoomAssignmentsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `MemberHotelRoomAssignment` at the end of the edge. */
-  node?: Maybe<MemberHotelRoomAssignment>
-}
-
-/** Methods to use when ordering `MemberHotelRoomAssignment`. */
-export enum MemberHotelRoomAssignmentsOrderBy {
-  Natural = 'NATURAL',
-  MemberIdAsc = 'MEMBER_ID_ASC',
-  MemberIdDesc = 'MEMBER_ID_DESC',
-  HotelRoomIdAsc = 'HOTEL_ROOM_ID_ASC',
-  HotelRoomIdDesc = 'HOTEL_ROOM_ID_DESC',
-  RoomOwnerAsc = 'ROOM_OWNER_ASC',
-  RoomOwnerDesc = 'ROOM_OWNER_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
-  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
-  MembershipByMemberIdArrivalDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC',
-  MembershipByMemberIdArrivalDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_DESC',
-  MembershipByMemberIdAttendanceAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_ASC',
-  MembershipByMemberIdAttendanceDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_DESC',
-  MembershipByMemberIdAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_ASC',
-  MembershipByMemberIdAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_DESC',
-  MembershipByMemberIdDepartureDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_ASC',
-  MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
-  MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
-  MembershipByMemberIdHotelRoomIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_DESC',
-  MembershipByMemberIdInterestLevelAsc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_ASC',
-  MembershipByMemberIdInterestLevelDesc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_DESC',
-  MembershipByMemberIdMessageAsc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_ASC',
-  MembershipByMemberIdMessageDesc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_DESC',
-  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
-  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
-  MembershipByMemberIdRoomingPreferencesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_ASC',
-  MembershipByMemberIdRoomingPreferencesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_DESC',
-  MembershipByMemberIdRoomingWithAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_ASC',
-  MembershipByMemberIdRoomingWithDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_DESC',
-  MembershipByMemberIdUserIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_ASC',
-  MembershipByMemberIdUserIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_DESC',
-  MembershipByMemberIdVolunteerAsc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_ASC',
-  MembershipByMemberIdVolunteerDesc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_DESC',
-  MembershipByMemberIdYearAsc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_ASC',
-  MembershipByMemberIdYearDesc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_DESC',
-  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
-  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
-  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
-  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
-  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
-  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
-  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
-  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  HotelRoomDetailByHotelRoomIdIdAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ID_ASC',
-  HotelRoomDetailByHotelRoomIdIdDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ID_DESC',
-  HotelRoomDetailByHotelRoomIdVersionAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__VERSION_ASC',
-  HotelRoomDetailByHotelRoomIdVersionDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__VERSION_DESC',
-  HotelRoomDetailByHotelRoomIdBathroomTypeAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_ASC',
-  HotelRoomDetailByHotelRoomIdBathroomTypeDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_DESC',
-  HotelRoomDetailByHotelRoomIdCommentAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__COMMENT_ASC',
-  HotelRoomDetailByHotelRoomIdCommentDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__COMMENT_DESC',
-  HotelRoomDetailByHotelRoomIdEnabledAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ENABLED_ASC',
-  HotelRoomDetailByHotelRoomIdEnabledDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ENABLED_DESC',
-  HotelRoomDetailByHotelRoomIdGamingRoomAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__GAMING_ROOM_ASC',
-  HotelRoomDetailByHotelRoomIdGamingRoomDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__GAMING_ROOM_DESC',
-  HotelRoomDetailByHotelRoomIdInternalRoomTypeAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__INTERNAL_ROOM_TYPE_ASC',
-  HotelRoomDetailByHotelRoomIdInternalRoomTypeDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__INTERNAL_ROOM_TYPE_DESC',
-  HotelRoomDetailByHotelRoomIdNameAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__NAME_ASC',
-  HotelRoomDetailByHotelRoomIdNameDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__NAME_DESC',
-  HotelRoomDetailByHotelRoomIdReservedAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__RESERVED_ASC',
-  HotelRoomDetailByHotelRoomIdReservedDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__RESERVED_DESC',
-  HotelRoomDetailByHotelRoomIdReservedForAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__RESERVED_FOR_ASC',
-  HotelRoomDetailByHotelRoomIdReservedForDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__RESERVED_FOR_DESC',
-  HotelRoomDetailByHotelRoomIdRoomTypeAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ROOM_TYPE_ASC',
-  HotelRoomDetailByHotelRoomIdRoomTypeDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__ROOM_TYPE_DESC',
-  HotelRoomDetailByHotelRoomIdFormattedRoomTypeAsc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__FORMATTED_ROOM_TYPE_ASC',
-  HotelRoomDetailByHotelRoomIdFormattedRoomTypeDesc = 'HOTEL_ROOM_DETAIL_BY_HOTEL_ROOM_ID__FORMATTED_ROOM_TYPE_DESC'
-}
-
 export type Membership = Node & {
   __typename: 'Membership'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -3679,8 +3266,6 @@ export type Membership = Node & {
   gameChoicesByMemberId: GameChoicesConnection
   /** Reads and enables pagination through a set of `GameSubmission`. */
   gameSubmissionsByMemberId: GameSubmissionsConnection
-  /** Reads and enables pagination through a set of `MemberHotelRoomAssignment`. */
-  memberHotelRoomAssignmentsByMemberId: MemberHotelRoomAssignmentsConnection
 }
 
 export type MembershipGameAssignmentsByMemberIdArgs = {
@@ -3714,17 +3299,6 @@ export type MembershipGameSubmissionsByMemberIdArgs = {
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
   condition?: Maybe<GameSubmissionCondition>
   filter?: Maybe<GameSubmissionFilter>
-}
-
-export type MembershipMemberHotelRoomAssignmentsByMemberIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-  condition?: Maybe<MemberHotelRoomAssignmentCondition>
-  filter?: Maybe<MemberHotelRoomAssignmentFilter>
 }
 
 /**
@@ -3956,9 +3530,7 @@ export enum MembershipsOrderBy {
   GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
   GameChoicesByMemberIdCountDesc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_DESC',
   GameSubmissionsByMemberIdCountAsc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_ASC',
-  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC',
-  MemberHotelRoomAssignmentsByMemberIdCountAsc = 'MEMBER_HOTEL_ROOM_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
-  MemberHotelRoomAssignmentsByMemberIdCountDesc = 'MEMBER_HOTEL_ROOM_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC'
+  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC'
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -3980,14 +3552,10 @@ export type Mutation = {
   createLookup?: Maybe<CreateLookupPayload>
   /** Creates a single `LookupValue`. */
   createLookupValue?: Maybe<CreateLookupValuePayload>
-  /** Creates a single `MemberHotelRoomAssignment`. */
-  createMemberHotelRoomAssignment?: Maybe<CreateMemberHotelRoomAssignmentPayload>
   /** Creates a single `Membership`. */
   createMembership?: Maybe<CreateMembershipPayload>
   /** Creates a single `Profile`. */
   createProfile?: Maybe<CreateProfilePayload>
-  /** Creates a single `RegistrationCode`. */
-  createRegistrationCode?: Maybe<CreateRegistrationCodePayload>
   /** Creates a single `Role`. */
   createRole?: Maybe<CreateRolePayload>
   /** Creates a single `Room`. */
@@ -4000,8 +3568,6 @@ export type Mutation = {
   createShirtOrderItem?: Maybe<CreateShirtOrderItemPayload>
   /** Creates a single `Slot`. */
   createSlot?: Maybe<CreateSlotPayload>
-  /** Creates a single `Token`. */
-  createToken?: Maybe<CreateTokenPayload>
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>
   /** Creates a single `UserRole`. */
@@ -4042,10 +3608,6 @@ export type Mutation = {
   updateLookupValue?: Maybe<UpdateLookupValuePayload>
   /** Updates a single `LookupValue` using a unique key and a patch. */
   updateLookupValueByLookupIdAndCode?: Maybe<UpdateLookupValuePayload>
-  /** Updates a single `MemberHotelRoomAssignment` using its globally unique id and a patch. */
-  updateMemberHotelRoomAssignmentByNodeId?: Maybe<UpdateMemberHotelRoomAssignmentPayload>
-  /** Updates a single `MemberHotelRoomAssignment` using a unique key and a patch. */
-  updateMemberHotelRoomAssignment?: Maybe<UpdateMemberHotelRoomAssignmentPayload>
   /** Updates a single `Membership` using its globally unique id and a patch. */
   updateMembershipByNodeId?: Maybe<UpdateMembershipPayload>
   /** Updates a single `Membership` using a unique key and a patch. */
@@ -4056,10 +3618,6 @@ export type Mutation = {
   updateProfile?: Maybe<UpdateProfilePayload>
   /** Updates a single `Profile` using a unique key and a patch. */
   updateProfileByEmail?: Maybe<UpdateProfilePayload>
-  /** Updates a single `RegistrationCode` using its globally unique id and a patch. */
-  updateRegistrationCodeByNodeId?: Maybe<UpdateRegistrationCodePayload>
-  /** Updates a single `RegistrationCode` using a unique key and a patch. */
-  updateRegistrationCode?: Maybe<UpdateRegistrationCodePayload>
   /** Updates a single `Role` using its globally unique id and a patch. */
   updateRoleByNodeId?: Maybe<UpdateRolePayload>
   /** Updates a single `Role` using a unique key and a patch. */
@@ -4086,10 +3644,6 @@ export type Mutation = {
   updateSlotByNodeId?: Maybe<UpdateSlotPayload>
   /** Updates a single `Slot` using a unique key and a patch. */
   updateSlot?: Maybe<UpdateSlotPayload>
-  /** Updates a single `Token` using its globally unique id and a patch. */
-  updateTokenByNodeId?: Maybe<UpdateTokenPayload>
-  /** Updates a single `Token` using a unique key and a patch. */
-  updateToken?: Maybe<UpdateTokenPayload>
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserByNodeId?: Maybe<UpdateUserPayload>
   /** Updates a single `User` using a unique key and a patch. */
@@ -4136,10 +3690,6 @@ export type Mutation = {
   deleteLookupValue?: Maybe<DeleteLookupValuePayload>
   /** Deletes a single `LookupValue` using a unique key. */
   deleteLookupValueByLookupIdAndCode?: Maybe<DeleteLookupValuePayload>
-  /** Deletes a single `MemberHotelRoomAssignment` using its globally unique id. */
-  deleteMemberHotelRoomAssignmentByNodeId?: Maybe<DeleteMemberHotelRoomAssignmentPayload>
-  /** Deletes a single `MemberHotelRoomAssignment` using a unique key. */
-  deleteMemberHotelRoomAssignment?: Maybe<DeleteMemberHotelRoomAssignmentPayload>
   /** Deletes a single `Membership` using its globally unique id. */
   deleteMembershipByNodeId?: Maybe<DeleteMembershipPayload>
   /** Deletes a single `Membership` using a unique key. */
@@ -4150,10 +3700,6 @@ export type Mutation = {
   deleteProfile?: Maybe<DeleteProfilePayload>
   /** Deletes a single `Profile` using a unique key. */
   deleteProfileByEmail?: Maybe<DeleteProfilePayload>
-  /** Deletes a single `RegistrationCode` using its globally unique id. */
-  deleteRegistrationCodeByNodeId?: Maybe<DeleteRegistrationCodePayload>
-  /** Deletes a single `RegistrationCode` using a unique key. */
-  deleteRegistrationCode?: Maybe<DeleteRegistrationCodePayload>
   /** Deletes a single `Role` using its globally unique id. */
   deleteRoleByNodeId?: Maybe<DeleteRolePayload>
   /** Deletes a single `Role` using a unique key. */
@@ -4180,10 +3726,6 @@ export type Mutation = {
   deleteSlotByNodeId?: Maybe<DeleteSlotPayload>
   /** Deletes a single `Slot` using a unique key. */
   deleteSlot?: Maybe<DeleteSlotPayload>
-  /** Deletes a single `Token` using its globally unique id. */
-  deleteTokenByNodeId?: Maybe<DeleteTokenPayload>
-  /** Deletes a single `Token` using a unique key. */
-  deleteToken?: Maybe<DeleteTokenPayload>
   /** Deletes a single `User` using its globally unique id. */
   deleteUserByNodeId?: Maybe<DeleteUserPayload>
   /** Deletes a single `User` using a unique key. */
@@ -4238,11 +3780,6 @@ export type MutationCreateLookupValueArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateMemberHotelRoomAssignmentArgs = {
-  input: CreateMemberHotelRoomAssignmentInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateMembershipArgs = {
   input: CreateMembershipInput
 }
@@ -4250,11 +3787,6 @@ export type MutationCreateMembershipArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateProfileArgs = {
   input: CreateProfileInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateRegistrationCodeArgs = {
-  input: CreateRegistrationCodeInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4285,11 +3817,6 @@ export type MutationCreateShirtOrderItemArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateSlotArgs = {
   input: CreateSlotInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateTokenArgs = {
-  input: CreateTokenInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4393,16 +3920,6 @@ export type MutationUpdateLookupValueByLookupIdAndCodeArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMemberHotelRoomAssignmentByNodeIdArgs = {
-  input: UpdateMemberHotelRoomAssignmentByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMemberHotelRoomAssignmentArgs = {
-  input: UpdateMemberHotelRoomAssignmentInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateMembershipByNodeIdArgs = {
   input: UpdateMembershipByNodeIdInput
 }
@@ -4425,16 +3942,6 @@ export type MutationUpdateProfileArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateProfileByEmailArgs = {
   input: UpdateProfileByEmailInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRegistrationCodeByNodeIdArgs = {
-  input: UpdateRegistrationCodeByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRegistrationCodeArgs = {
-  input: UpdateRegistrationCodeInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4500,16 +4007,6 @@ export type MutationUpdateSlotByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateSlotArgs = {
   input: UpdateSlotInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTokenByNodeIdArgs = {
-  input: UpdateTokenByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateTokenArgs = {
-  input: UpdateTokenInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4628,16 +4125,6 @@ export type MutationDeleteLookupValueByLookupIdAndCodeArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMemberHotelRoomAssignmentByNodeIdArgs = {
-  input: DeleteMemberHotelRoomAssignmentByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMemberHotelRoomAssignmentArgs = {
-  input: DeleteMemberHotelRoomAssignmentInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteMembershipByNodeIdArgs = {
   input: DeleteMembershipByNodeIdInput
 }
@@ -4660,16 +4147,6 @@ export type MutationDeleteProfileArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteProfileByEmailArgs = {
   input: DeleteProfileByEmailInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRegistrationCodeByNodeIdArgs = {
-  input: DeleteRegistrationCodeByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRegistrationCodeArgs = {
-  input: DeleteRegistrationCodeInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4735,16 +4212,6 @@ export type MutationDeleteSlotByNodeIdArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteSlotArgs = {
   input: DeleteSlotInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTokenByNodeIdArgs = {
-  input: DeleteTokenByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteTokenArgs = {
-  input: DeleteTokenInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4941,14 +4408,10 @@ export type Query = Node & {
   lookups?: Maybe<LookupsConnection>
   /** Reads and enables pagination through a set of `LookupValue`. */
   lookupValues?: Maybe<LookupValuesConnection>
-  /** Reads and enables pagination through a set of `MemberHotelRoomAssignment`. */
-  memberHotelRoomAssignments?: Maybe<MemberHotelRoomAssignmentsConnection>
   /** Reads and enables pagination through a set of `Membership`. */
   memberships?: Maybe<MembershipsConnection>
   /** Reads and enables pagination through a set of `Profile`. */
   profiles?: Maybe<ProfilesConnection>
-  /** Reads and enables pagination through a set of `RegistrationCode`. */
-  registrationCodes?: Maybe<RegistrationCodesConnection>
   /** Reads and enables pagination through a set of `Role`. */
   roles?: Maybe<RolesConnection>
   /** Reads and enables pagination through a set of `Room`. */
@@ -4961,8 +4424,6 @@ export type Query = Node & {
   shirtOrderItems?: Maybe<ShirtOrderItemsConnection>
   /** Reads and enables pagination through a set of `Slot`. */
   slots?: Maybe<SlotsConnection>
-  /** Reads and enables pagination through a set of `Token`. */
-  tokens?: Maybe<TokensConnection>
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UsersConnection>
   /** Reads and enables pagination through a set of `UserRole`. */
@@ -4977,11 +4438,9 @@ export type Query = Node & {
   lookupByRealm?: Maybe<Lookup>
   lookupValue?: Maybe<LookupValue>
   lookupValueByLookupIdAndCode?: Maybe<LookupValue>
-  memberHotelRoomAssignment?: Maybe<MemberHotelRoomAssignment>
   membership?: Maybe<Membership>
   profile?: Maybe<Profile>
   profileByEmail?: Maybe<Profile>
-  registrationCode?: Maybe<RegistrationCode>
   role?: Maybe<Role>
   roleByAuthority?: Maybe<Role>
   room?: Maybe<Room>
@@ -4989,10 +4448,11 @@ export type Query = Node & {
   shirtOrder?: Maybe<ShirtOrder>
   shirtOrderItem?: Maybe<ShirtOrderItem>
   slot?: Maybe<Slot>
-  token?: Maybe<Token>
   user?: Maybe<User>
   userByUsername?: Maybe<User>
   userRole?: Maybe<UserRole>
+  currentUserId?: Maybe<Scalars['Int']>
+  currentUserIsAdmin?: Maybe<Scalars['Boolean']>
   /** Reads a single `Game` using its globally unique `ID`. */
   gameByNodeId?: Maybe<Game>
   /** Reads a single `GameAssignment` using its globally unique `ID`. */
@@ -5009,14 +4469,10 @@ export type Query = Node & {
   lookupByNodeId?: Maybe<Lookup>
   /** Reads a single `LookupValue` using its globally unique `ID`. */
   lookupValueByNodeId?: Maybe<LookupValue>
-  /** Reads a single `MemberHotelRoomAssignment` using its globally unique `ID`. */
-  memberHotelRoomAssignmentByNodeId?: Maybe<MemberHotelRoomAssignment>
   /** Reads a single `Membership` using its globally unique `ID`. */
   membershipByNodeId?: Maybe<Membership>
   /** Reads a single `Profile` using its globally unique `ID`. */
   profileByNodeId?: Maybe<Profile>
-  /** Reads a single `RegistrationCode` using its globally unique `ID`. */
-  registrationCodeByNodeId?: Maybe<RegistrationCode>
   /** Reads a single `Role` using its globally unique `ID`. */
   roleByNodeId?: Maybe<Role>
   /** Reads a single `Room` using its globally unique `ID`. */
@@ -5029,8 +4485,6 @@ export type Query = Node & {
   shirtOrderItemByNodeId?: Maybe<ShirtOrderItem>
   /** Reads a single `Slot` using its globally unique `ID`. */
   slotByNodeId?: Maybe<Slot>
-  /** Reads a single `Token` using its globally unique `ID`. */
-  tokenByNodeId?: Maybe<Token>
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>
   /** Reads a single `UserRole` using its globally unique `ID`. */
@@ -5139,18 +4593,6 @@ export type QueryLookupValuesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMemberHotelRoomAssignmentsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-  condition?: Maybe<MemberHotelRoomAssignmentCondition>
-  filter?: Maybe<MemberHotelRoomAssignmentFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
 export type QueryMembershipsArgs = {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
@@ -5172,18 +4614,6 @@ export type QueryProfilesArgs = {
   orderBy?: Maybe<Array<ProfilesOrderBy>>
   condition?: Maybe<ProfileCondition>
   filter?: Maybe<ProfileFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRegistrationCodesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<RegistrationCodesOrderBy>>
-  condition?: Maybe<RegistrationCodeCondition>
-  filter?: Maybe<RegistrationCodeFilter>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -5256,18 +4686,6 @@ export type QuerySlotsArgs = {
   orderBy?: Maybe<Array<SlotsOrderBy>>
   condition?: Maybe<SlotCondition>
   filter?: Maybe<SlotFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTokensArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<TokensOrderBy>>
-  condition?: Maybe<TokenCondition>
-  filter?: Maybe<TokenFilter>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -5348,12 +4766,6 @@ export type QueryLookupValueByLookupIdAndCodeArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMemberHotelRoomAssignmentArgs = {
-  memberId: Scalars['BigInt']
-  hotelRoomId: Scalars['BigInt']
-}
-
-/** The root query type which gives access points into the data universe. */
 export type QueryMembershipArgs = {
   id: Scalars['Int']
 }
@@ -5366,11 +4778,6 @@ export type QueryProfileArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryProfileByEmailArgs = {
   email: Scalars['String']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRegistrationCodeArgs = {
-  id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -5405,11 +4812,6 @@ export type QueryShirtOrderItemArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QuerySlotArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryTokenArgs = {
   id: Scalars['Int']
 }
 
@@ -5470,22 +4872,12 @@ export type QueryLookupValueByNodeIdArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMemberHotelRoomAssignmentByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
 export type QueryMembershipByNodeIdArgs = {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
 export type QueryProfileByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRegistrationCodeByNodeIdArgs = {
   nodeId: Scalars['ID']
 }
 
@@ -5520,11 +4912,6 @@ export type QuerySlotByNodeIdArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryTokenByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
 export type QueryUserByNodeIdArgs = {
   nodeId: Scalars['ID']
 }
@@ -5532,93 +4919,6 @@ export type QueryUserByNodeIdArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserRoleByNodeIdArgs = {
   nodeId: Scalars['ID']
-}
-
-export type RegistrationCode = Node & {
-  __typename: 'RegistrationCode'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  token: Scalars['String']
-  username: Scalars['String']
-}
-
-/**
- * A condition to be used against `RegistrationCode` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type RegistrationCodeCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `token` field. */
-  token?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `username` field. */
-  username?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `RegistrationCode` object types. All fields are combined with a logical ‘and.’ */
-export type RegistrationCodeFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `token` field. */
-  token?: Maybe<StringFilter>
-  /** Filter by the object’s `username` field. */
-  username?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<RegistrationCodeFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<RegistrationCodeFilter>>
-  /** Negates the expression. */
-  not?: Maybe<RegistrationCodeFilter>
-}
-
-/** An input for mutations affecting `RegistrationCode` */
-export type RegistrationCodeInput = {
-  id?: Maybe<Scalars['Int']>
-  token: Scalars['String']
-  username: Scalars['String']
-}
-
-/** Represents an update to a `RegistrationCode`. Fields that are set will be updated. */
-export type RegistrationCodePatch = {
-  id?: Maybe<Scalars['Int']>
-  token?: Maybe<Scalars['String']>
-  username?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `RegistrationCode` values. */
-export type RegistrationCodesConnection = {
-  __typename: 'RegistrationCodesConnection'
-  /** A list of `RegistrationCode` objects. */
-  nodes: Array<Maybe<RegistrationCode>>
-  /** A list of edges which contains the `RegistrationCode` and cursor to aid in pagination. */
-  edges: Array<RegistrationCodesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `RegistrationCode` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `RegistrationCode` edge in the connection. */
-export type RegistrationCodesEdge = {
-  __typename: 'RegistrationCodesEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `RegistrationCode` at the end of the edge. */
-  node?: Maybe<RegistrationCode>
-}
-
-/** Methods to use when ordering `RegistrationCode`. */
-export enum RegistrationCodesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  TokenAsc = 'TOKEN_ASC',
-  TokenDesc = 'TOKEN_DESC',
-  UsernameAsc = 'USERNAME_ASC',
-  UsernameDesc = 'USERNAME_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
 }
 
 export type Role = Node & {
@@ -6398,122 +5698,6 @@ export type StringFilter = {
   notSimilarTo?: Maybe<Scalars['String']>
 }
 
-export type Token = Node & {
-  __typename: 'Token'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  userId: Scalars['Int']
-  cuid?: Maybe<Scalars['String']>
-  active?: Maybe<Scalars['Boolean']>
-  lastUsed?: Maybe<Scalars['Datetime']>
-  /** Reads a single `User` that is related to this `Token`. */
-  user?: Maybe<User>
-}
-
-/** A condition to be used against `Token` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type TokenCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `cuid` field. */
-  cuid?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `active` field. */
-  active?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `lastUsed` field. */
-  lastUsed?: Maybe<Scalars['Datetime']>
-}
-
-/** A filter to be used against `Token` object types. All fields are combined with a logical ‘and.’ */
-export type TokenFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>
-  /** Filter by the object’s `cuid` field. */
-  cuid?: Maybe<StringFilter>
-  /** Filter by the object’s `active` field. */
-  active?: Maybe<BooleanFilter>
-  /** Filter by the object’s `lastUsed` field. */
-  lastUsed?: Maybe<DatetimeFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<TokenFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<TokenFilter>>
-  /** Negates the expression. */
-  not?: Maybe<TokenFilter>
-}
-
-/** An input for mutations affecting `Token` */
-export type TokenInput = {
-  id?: Maybe<Scalars['Int']>
-  userId: Scalars['Int']
-  cuid?: Maybe<Scalars['String']>
-  active?: Maybe<Scalars['Boolean']>
-  lastUsed?: Maybe<Scalars['Datetime']>
-}
-
-/** Represents an update to a `Token`. Fields that are set will be updated. */
-export type TokenPatch = {
-  id?: Maybe<Scalars['Int']>
-  userId?: Maybe<Scalars['Int']>
-  cuid?: Maybe<Scalars['String']>
-  active?: Maybe<Scalars['Boolean']>
-  lastUsed?: Maybe<Scalars['Datetime']>
-}
-
-/** A connection to a list of `Token` values. */
-export type TokensConnection = {
-  __typename: 'TokensConnection'
-  /** A list of `Token` objects. */
-  nodes: Array<Maybe<Token>>
-  /** A list of edges which contains the `Token` and cursor to aid in pagination. */
-  edges: Array<TokensEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Token` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Token` edge in the connection. */
-export type TokensEdge = {
-  __typename: 'TokensEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Token` at the end of the edge. */
-  node?: Maybe<Token>
-}
-
-/** Methods to use when ordering `Token`. */
-export enum TokensOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  CuidAsc = 'CUID_ASC',
-  CuidDesc = 'CUID_DESC',
-  ActiveAsc = 'ACTIVE_ASC',
-  ActiveDesc = 'ACTIVE_DESC',
-  LastUsedAsc = 'LAST_USED_ASC',
-  LastUsedDesc = 'LAST_USED_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdAccountLockedAsc = 'USER_BY_USER_ID__ACCOUNT_LOCKED_ASC',
-  UserByUserIdAccountLockedDesc = 'USER_BY_USER_ID__ACCOUNT_LOCKED_DESC',
-  UserByUserIdEnabledAsc = 'USER_BY_USER_ID__ENABLED_ASC',
-  UserByUserIdEnabledDesc = 'USER_BY_USER_ID__ENABLED_DESC',
-  UserByUserIdPasswordAsc = 'USER_BY_USER_ID__PASSWORD_ASC',
-  UserByUserIdPasswordDesc = 'USER_BY_USER_ID__PASSWORD_DESC',
-  UserByUserIdProfileIdAsc = 'USER_BY_USER_ID__PROFILE_ID_ASC',
-  UserByUserIdProfileIdDesc = 'USER_BY_USER_ID__PROFILE_ID_DESC',
-  UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
-  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC'
-}
-
 /** All input for the `updateGameAssignmentByNodeId` mutation. */
 export type UpdateGameAssignmentByNodeIdInput = {
   /**
@@ -6929,57 +6113,6 @@ export type UpdateLookupValuePayloadLookupValueEdgeArgs = {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
-/** All input for the `updateMemberHotelRoomAssignmentByNodeId` mutation. */
-export type UpdateMemberHotelRoomAssignmentByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `MemberHotelRoomAssignment` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated. */
-  patch: MemberHotelRoomAssignmentPatch
-}
-
-/** All input for the `updateMemberHotelRoomAssignment` mutation. */
-export type UpdateMemberHotelRoomAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `MemberHotelRoomAssignment` being updated. */
-  patch: MemberHotelRoomAssignmentPatch
-  memberId: Scalars['BigInt']
-  hotelRoomId: Scalars['BigInt']
-}
-
-/** The output of our update `MemberHotelRoomAssignment` mutation. */
-export type UpdateMemberHotelRoomAssignmentPayload = {
-  __typename: 'UpdateMemberHotelRoomAssignmentPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `MemberHotelRoomAssignment` that was updated by this mutation. */
-  memberHotelRoomAssignment?: Maybe<MemberHotelRoomAssignment>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `MemberHotelRoomAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `HotelRoomDetail` that is related to this `MemberHotelRoomAssignment`. */
-  hotelRoom?: Maybe<HotelRoomDetail>
-  /** An edge for our `MemberHotelRoomAssignment`. May be used by Relay 1. */
-  memberHotelRoomAssignmentEdge?: Maybe<MemberHotelRoomAssignmentsEdge>
-}
-
-/** The output of our update `MemberHotelRoomAssignment` mutation. */
-export type UpdateMemberHotelRoomAssignmentPayloadMemberHotelRoomAssignmentEdgeArgs = {
-  orderBy?: Maybe<Array<MemberHotelRoomAssignmentsOrderBy>>
-}
-
 /** All input for the `updateMembershipByNodeId` mutation. */
 export type UpdateMembershipByNodeIdInput = {
   /**
@@ -7086,52 +6219,6 @@ export type UpdateProfilePayload = {
 /** The output of our update `Profile` mutation. */
 export type UpdateProfilePayloadProfileEdgeArgs = {
   orderBy?: Maybe<Array<ProfilesOrderBy>>
-}
-
-/** All input for the `updateRegistrationCodeByNodeId` mutation. */
-export type UpdateRegistrationCodeByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `RegistrationCode` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `RegistrationCode` being updated. */
-  patch: RegistrationCodePatch
-}
-
-/** All input for the `updateRegistrationCode` mutation. */
-export type UpdateRegistrationCodeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `RegistrationCode` being updated. */
-  patch: RegistrationCodePatch
-  id: Scalars['Int']
-}
-
-/** The output of our update `RegistrationCode` mutation. */
-export type UpdateRegistrationCodePayload = {
-  __typename: 'UpdateRegistrationCodePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `RegistrationCode` that was updated by this mutation. */
-  registrationCode?: Maybe<RegistrationCode>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `RegistrationCode`. May be used by Relay 1. */
-  registrationCodeEdge?: Maybe<RegistrationCodesEdge>
-}
-
-/** The output of our update `RegistrationCode` mutation. */
-export type UpdateRegistrationCodePayloadRegistrationCodeEdgeArgs = {
-  orderBy?: Maybe<Array<RegistrationCodesOrderBy>>
 }
 
 /** All input for the `updateRoleByAuthority` mutation. */
@@ -7426,54 +6513,6 @@ export type UpdateSlotPayloadSlotEdgeArgs = {
   orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
-/** All input for the `updateTokenByNodeId` mutation. */
-export type UpdateTokenByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Token` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Token` being updated. */
-  patch: TokenPatch
-}
-
-/** All input for the `updateToken` mutation. */
-export type UpdateTokenInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Token` being updated. */
-  patch: TokenPatch
-  id: Scalars['Int']
-}
-
-/** The output of our update `Token` mutation. */
-export type UpdateTokenPayload = {
-  __typename: 'UpdateTokenPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Token` that was updated by this mutation. */
-  token?: Maybe<Token>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `Token`. */
-  user?: Maybe<User>
-  /** An edge for our `Token`. May be used by Relay 1. */
-  tokenEdge?: Maybe<TokensEdge>
-}
-
-/** The output of our update `Token` mutation. */
-export type UpdateTokenPayloadTokenEdgeArgs = {
-  orderBy?: Maybe<Array<TokensOrderBy>>
-}
-
 /** All input for the `updateUserByNodeId` mutation. */
 export type UpdateUserByNodeIdInput = {
   /**
@@ -7605,8 +6644,6 @@ export type User = Node & {
   shirtOrders: ShirtOrdersConnection
   /** Reads and enables pagination through a set of `UserRole`. */
   userRoles: UserRolesConnection
-  /** Reads and enables pagination through a set of `Token`. */
-  tokens: TokensConnection
 }
 
 export type UserAuthoredGamesArgs = {
@@ -7651,17 +6688,6 @@ export type UserUserRolesArgs = {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
   condition?: Maybe<UserRoleCondition>
   filter?: Maybe<UserRoleFilter>
-}
-
-export type UserTokensArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<TokensOrderBy>>
-  condition?: Maybe<TokenCondition>
-  filter?: Maybe<TokenFilter>
 }
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -7876,9 +6902,7 @@ export enum UsersOrderBy {
   ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',
   ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
   UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
-  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
-  TokensByUserIdCountAsc = 'TOKENS_BY_USER_ID__COUNT_ASC',
-  TokensByUserIdCountDesc = 'TOKENS_BY_USER_ID__COUNT_DESC'
+  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC'
 }
 
 export type GetGamesBySlotQueryVariables = {

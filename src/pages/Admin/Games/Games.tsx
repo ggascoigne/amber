@@ -67,7 +67,7 @@ const columns = [
   }
 ]
 
-export const Games: React.FC = () => {
+export const Games: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()
@@ -127,4 +127,4 @@ export const Games: React.FC = () => {
       />
     </Page>
   )
-}
+})

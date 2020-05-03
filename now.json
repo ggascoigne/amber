@@ -6,7 +6,9 @@
     "DATABASE_PASSWORD": "@database_password",
     "DATABASE_PORT": "@database_port",
     "DATABASE_SSL": "@database_ssl",
-    "DATABASE_SSL_CERT": "@database_ssl_cert"
+    "DATABASE_SSL_CERT": "@database_ssl_cert",
+    "REACT_APP_AUTH0_DOMAIN": "@auth0_domain",
+    "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id"
   },
   "build" : {
     "env": {
@@ -16,7 +18,9 @@
       "DATABASE_PASSWORD": "@database_password",
       "DATABASE_PORT": "@database_port",
       "DATABASE_SSL": "@database_ssl",
-      "DATABASE_SSL_CERT": "@database_ssl_cert"
+      "DATABASE_SSL_CERT": "@database_ssl_cert",
+      "REACT_APP_AUTH0_DOMAIN": "@auth0_domain",
+      "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id"
     }
   }
 }

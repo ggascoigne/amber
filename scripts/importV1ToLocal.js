@@ -20,6 +20,8 @@ const { sleep } = require('./sleep')
 const tempy = require('tempy')
 const fs = require('fs')
 
+// note run `SKIP_DOWNLOAD=true yarn db:import` if you want to just re-run this with the last download
+
 async function pipeLiveToLocalMysql(mysqlDbconfig) {
   return new Promise((resolve, reject) => {
     const exporting = spawn('/usr/local/bin/plink', [
@@ -256,13 +258,24 @@ async function main() {
 
   info('Create new schema')
   runOrExit(
-    spawnSync('./node_modules/.bin/knex-migrate', ['--cwd', './support', '--knexfile', './knexfile.js', 'up'], {
-      stdio: 'inherit'
-    })
+    spawnSync(
+      './node_modules/.bin/knex-migrate',
+      ['--cwd', './support', '--knexfile', './knexfile.js', 'up', '--to', '20190127145944_omit_tables'],
+      {
+        stdio: 'inherit'
+      }
+    )
   )
 
   info('Loading data from tmp to live')
   await pipeTmpToLive(tmpDbConfig, dbconfig).catch(bail)
+
+  info('Run rest of the migrators')
+  runOrExit(
+    spawnSync('./node_modules/.bin/knex-migrate', ['--cwd', './support', '--knexfile', './knexfile.js', 'up'], {
+      stdio: 'inherit'
+    })
+  )
 
   info('resetting sequences')
   fixSequences(dbconfig)

@@ -1,6 +1,8 @@
+/* eslint-disable */
 // Auth0 rule for hooking up user data from the database with the access token
 
-function(user, context, callback) {
+// note that the name getUserRoles isn't wanted here but shuts up eslint
+function getUserRoles(user, context, callback) {
 
   const namespace = 'https://amberconnw.org';
 

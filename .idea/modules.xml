@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/acnw2.iml" filepath="$PROJECT_DIR$/acnw2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/packages/server/server.iml" filepath="$PROJECT_DIR$/packages/server/server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/packages/ui/ui.iml" filepath="$PROJECT_DIR$/packages/ui/ui.iml" />
     </modules>
   </component>
 </project>

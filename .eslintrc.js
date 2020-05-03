@@ -30,7 +30,7 @@ module.exports = {
     'react/jsx-curly-brace-presence': ['warn', 'never'],
     'react/jsx-boolean-value': 'warn',
     'react/jsx-fragments': 'warn',
-    'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
+    'react/jsx-key': ['warn', { checkFragmentShorthand: true }]
   },
   overrides: [
     {
@@ -67,6 +67,19 @@ module.exports = {
         ],
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
         '@typescript-eslint/ban-ts-ignore': 'off'
+      }
+    },
+    {
+      files: 'api/*.{ts,tsx}',
+      rules: {
+        // this is node.js code, it needs require
+        '@typescript-eslint/no-var-requires': 'off'
+      }
+    },
+    {
+      files: 'support/**/*.js',
+      rules: {
+        '@typescript-eslint/no-empty-function': 'off'
       }
     }
   ]

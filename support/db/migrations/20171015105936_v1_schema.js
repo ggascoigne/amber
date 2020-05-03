@@ -1,5 +1,3 @@
-'use strict'
-
 // create a base schema that is import compatible with the Grails-created on in the V1 site
 //
 // fyi the biggest difference is that this just uses increments as keys, these are unsigned int(10)

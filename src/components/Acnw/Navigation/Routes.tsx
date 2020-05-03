@@ -5,7 +5,7 @@ import { Games, Lookups } from '../../../pages/Admin'
 import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
-type RouteInfo = {
+export type RouteInfo = {
   path: string
   label?: string
   link?: string

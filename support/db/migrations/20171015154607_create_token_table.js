@@ -1,5 +1,3 @@
-'use strict'
-
 // drop a batch if stuff that I either don't care about or plan on handling
 // differently this time around
 //
