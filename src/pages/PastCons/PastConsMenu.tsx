@@ -9,7 +9,7 @@ import { GameList, GameListIndex } from 'components/Acnw/GameList'
 import { ListItemLink } from 'components/Acnw/Navigation'
 import React from 'react'
 
-import { useGameFilterQuery } from '../../client/resolvers/gameFilter'
+import { useGameFilterQuery } from '../../client/resolvers'
 import { GraphQLError } from '../../components/Acnw/GraphQLError'
 import { Loader } from '../../components/Acnw/Loader'
 

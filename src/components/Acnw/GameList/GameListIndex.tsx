@@ -6,8 +6,7 @@ import { useUrlSourceMutation } from 'client/resolvers/urlSource'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router'
 
-import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment } from '../../../client'
-import { Edges } from '../../../utils/ts-utils'
+import { GameArray, SlotFieldsFragment } from '../../../client'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface GameListIndex {
   year: number
   slot: SlotFieldsFragment
-  games: Edges<GameFieldsFragment & GameGmsFragment>
+  games: GameArray
   onEnterGame?: any
 }
 

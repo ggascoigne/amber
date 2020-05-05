@@ -1,6 +1,6 @@
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import { Row, TableInstance } from 'react-table'
+import { Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { GameFieldsFragment, GameGmsFragment, useDeleteGameMutation, useGetGamesByYearQuery } from '../../../client'
@@ -12,59 +12,59 @@ const getGms = (row: Game) => {
   const playersOrEmpty = row.gameAssignments.nodes
   if (playersOrEmpty && playersOrEmpty.length) {
     return playersOrEmpty
-      .filter(val => val)
-      .filter(val => val!.gm !== 0)
-      .map(val => val?.member?.user?.profile?.fullName || '')
+      .filter((val) => val)
+      .filter((val) => val!.gm !== 0)
+      .map((val) => val?.member?.user?.profile?.fullName || '')
       .join(', ')
   } else {
     return ''
   }
 }
 
-const columns = [
+const columns: Column<Game>[] = [
   {
     accessor: 'id',
     width: 100,
-    filter: 'numeric'
+    filter: 'numeric',
   },
   {
     accessor: 'slotId',
     width: 100,
-    filter: 'numeric'
+    filter: 'numeric',
   },
   {
-    accessor: 'name'
+    accessor: 'name',
   },
   {
     id: 'GM',
-    accessor: getGms
+    accessor: getGms,
   },
   {
-    accessor: 'description'
+    accessor: 'description',
   },
   {
     accessor: 'estimatedLength',
     width: 100,
-    filter: 'numeric'
+    filter: 'numeric',
   },
   {
     accessor: 'playerMax',
     width: 100,
     align: 'right',
-    filter: 'numeric'
+    filter: 'numeric',
   },
   {
     accessor: 'playerMin',
     width: 100,
     align: 'right',
-    filter: 'numeric'
+    filter: 'numeric',
   },
   {
     accessor: 'year',
     width: 100,
     align: 'right',
-    filter: 'numeric'
-  }
+    filter: 'numeric',
+  },
 ]
 
 export const Games: React.FC = React.memo(() => {
@@ -73,8 +73,8 @@ export const Games: React.FC = React.memo(() => {
   const [deleteGame] = useDeleteGameMutation()
   const { loading, error, data } = useGetGamesByYearQuery({
     variables: {
-      year: 2018
-    }
+      year: 2018,
+    },
   })
 
   if (loading || !data) {
@@ -86,7 +86,7 @@ export const Games: React.FC = React.memo(() => {
 
   const { games } = data!
 
-  const list: Game[] = games!.edges.map(v => v.node).filter(i => i) as Game[]
+  const list: Game[] = games!.edges.map((v) => v.node).filter((i) => i) as Game[]
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
@@ -98,14 +98,14 @@ export const Games: React.FC = React.memo(() => {
   }
 
   const onDelete = (instance: TableInstance<Game>) => () => {
-    const toDelete = instance.selectedFlatRows.map(r => r.original)
-    const updater = toDelete.map(g => deleteGame({ variables: { input: { id: g.id } } }))
+    const toDelete = instance.selectedFlatRows.map((r) => r.original)
+    const updater = toDelete.map((g) => deleteGame({ variables: { input: { id: g.id } } }))
     Promise.all(updater).then(() => console.log('deleted'))
   }
 
   const onEdit = (instance: TableInstance<Game>) => () => {
     setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map(r => r.original))
+    setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
   const onClick = (row: Row<Game>) => {

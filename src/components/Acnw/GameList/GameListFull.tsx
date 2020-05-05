@@ -1,13 +1,12 @@
 import { GameCard } from 'components/Acnw/GameCard'
 import React from 'react'
-import { Edges } from 'utils/ts-utils'
 
-import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment } from '../../../client'
+import { GameArray, SlotFieldsFragment } from '../../../client'
 
 interface GameListFull {
   year: number
   slot: SlotFieldsFragment
-  games: Edges<GameFieldsFragment & GameGmsFragment>
+  games: GameArray
   onEnterGame: any
 }
 

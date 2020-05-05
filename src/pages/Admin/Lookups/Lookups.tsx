@@ -2,20 +2,20 @@ import {
   useDeleteLookupMutation,
   useDeleteLookupValueMutation,
   useGetLookupsLazyQuery,
-  useGetLookupsQuery
+  useGetLookupsQuery,
 } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import { Row, TableInstance } from 'react-table'
+import { Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { LookupsDialog } from './LookupsDialog'
 import { LookupAndValues } from './types'
 
-const columns = [
+const columns: Column<LookupAndValues>[] = [
   {
-    accessor: 'realm'
-  }
+    accessor: 'realm',
+  },
 ]
 
 export const Lookups: React.FC = React.memo(() => {
@@ -33,7 +33,7 @@ export const Lookups: React.FC = React.memo(() => {
     return <GraphQLError error={error} />
   }
 
-  const list: LookupAndValues[] = data!.lookups!.edges.map(v => v.node).filter(i => i) as LookupAndValues[]
+  const list: LookupAndValues[] = data!.lookups!.edges.map((v) => v.node).filter((i) => i) as LookupAndValues[]
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
@@ -47,8 +47,8 @@ export const Lookups: React.FC = React.memo(() => {
 
   const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
     const updater = instance.selectedFlatRows
-      .map(r => r.original)
-      .map(l => {
+      .map((r) => r.original)
+      .map((l) => {
         const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
           lv && lv.id && acc.push(deleteLookupValue({ variables: { input: { id: lv.id } } }))
           return acc
@@ -62,7 +62,7 @@ export const Lookups: React.FC = React.memo(() => {
 
   const onEdit = (instance: TableInstance<LookupAndValues>) => () => {
     setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map(r => r.original))
+    setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
   const onClick = (row: Row<LookupAndValues>) => {

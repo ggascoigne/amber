@@ -1,4 +1,14 @@
-import createAuth0Client from '@auth0/auth0-spa-js'
+import createAuth0Client, {
+  Auth0ClientOptions,
+  GetTokenSilentlyOptions,
+  GetTokenWithPopupOptions,
+  IdToken,
+  LogoutOptions,
+  PopupLoginOptions,
+  RedirectLoginOptions,
+  RedirectLoginResult,
+  getIdTokenClaimsOptions
+} from '@auth0/auth0-spa-js'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { ThenArg } from 'utils'

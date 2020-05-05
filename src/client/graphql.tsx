@@ -1901,7 +1901,7 @@ export enum GameAssignmentsOrderBy {
   GameByGameIdYearAsc = 'GAME_BY_GAME_ID__YEAR_ASC',
   GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
   GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
-  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC'
+  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
 }
 
 export type GameChoice = Node & {
@@ -2130,7 +2130,7 @@ export enum GameChoicesOrderBy {
   SlotBySlotIdLengthAsc = 'SLOT_BY_SLOT_ID__LENGTH_ASC',
   SlotBySlotIdLengthDesc = 'SLOT_BY_SLOT_ID__LENGTH_DESC',
   SlotBySlotIdTimeAsc = 'SLOT_BY_SLOT_ID__TIME_ASC',
-  SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC'
+  SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
 }
 
 /** A condition to be used against `Game` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -2427,7 +2427,7 @@ export enum GamesOrderBy {
   GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
   GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
   GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
-  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC'
+  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
 }
 
 export type GameSubmission = Node & {
@@ -2561,7 +2561,7 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
-  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC'
+  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
 }
 
 export type HotelRoom = Node & {
@@ -2779,7 +2779,7 @@ export enum HotelRoomDetailsOrderBy {
   FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
   FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
 /** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
@@ -2876,7 +2876,7 @@ export enum HotelRoomsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   MembershipsByHotelRoomIdCountAsc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_ASC',
-  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC'
+  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC',
 }
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
@@ -3082,7 +3082,7 @@ export enum LookupsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   LookupValuesByLookupIdCountAsc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_ASC',
-  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC'
+  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
 }
 
 export type LookupValue = Node & {
@@ -3231,7 +3231,7 @@ export enum LookupValuesOrderBy {
   LookupByLookupIdValueScaleAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_ASC',
   LookupByLookupIdValueScaleDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_DESC',
   LookupByLookupIdValueTypeAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_ASC',
-  LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC'
+  LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC',
 }
 
 export type Membership = Node & {
@@ -3530,7 +3530,7 @@ export enum MembershipsOrderBy {
   GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
   GameChoicesByMemberIdCountDesc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_DESC',
   GameSubmissionsByMemberIdCountAsc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_ASC',
-  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC'
+  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC',
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4377,7 +4377,7 @@ export enum ProfilesOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UsersByProfileIdCountAsc = 'USERS_BY_PROFILE_ID__COUNT_ASC',
-  UsersByProfileIdCountDesc = 'USERS_BY_PROFILE_ID__COUNT_DESC'
+  UsersByProfileIdCountDesc = 'USERS_BY_PROFILE_ID__COUNT_DESC',
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -5008,7 +5008,7 @@ export enum RolesOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UserRolesByRoleIdCountAsc = 'USER_ROLES_BY_ROLE_ID__COUNT_ASC',
-  UserRolesByRoleIdCountDesc = 'USER_ROLES_BY_ROLE_ID__COUNT_DESC'
+  UserRolesByRoleIdCountDesc = 'USER_ROLES_BY_ROLE_ID__COUNT_DESC',
 }
 
 export type Room = Node & {
@@ -5125,7 +5125,7 @@ export enum RoomsOrderBy {
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   GamesByRoomIdCountAsc = 'GAMES_BY_ROOM_ID__COUNT_ASC',
-  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC'
+  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
 }
 
 export type Setting = Node & {
@@ -5218,7 +5218,7 @@ export enum SettingsOrderBy {
   ValueAsc = 'VALUE_ASC',
   ValueDesc = 'VALUE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
 export type ShirtOrder = Node & {
@@ -5416,7 +5416,7 @@ export enum ShirtOrderItemsOrderBy {
   ShirtOrderByOrderIdUserIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_ASC',
   ShirtOrderByOrderIdUserIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_DESC',
   ShirtOrderByOrderIdYearAsc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_ASC',
-  ShirtOrderByOrderIdYearDesc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_DESC'
+  ShirtOrderByOrderIdYearDesc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_DESC',
 }
 
 /** Represents an update to a `ShirtOrder`. Fields that are set will be updated. */
@@ -5478,7 +5478,7 @@ export enum ShirtOrdersOrderBy {
   UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
   UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC',
   ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
-  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC'
+  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
 }
 
 export type Slot = Node & {
@@ -5619,7 +5619,7 @@ export enum SlotsOrderBy {
   GamesBySlotIdCountAsc = 'GAMES_BY_SLOT_ID__COUNT_ASC',
   GamesBySlotIdCountDesc = 'GAMES_BY_SLOT_ID__COUNT_DESC',
   GameChoicesBySlotIdCountAsc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_ASC',
-  GameChoicesBySlotIdCountDesc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_DESC'
+  GameChoicesBySlotIdCountDesc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_DESC',
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -5692,10 +5692,26 @@ export type StringFilter = {
    * or more characters.
    */
   notLikeInsensitive?: Maybe<Scalars['String']>
-  /** Matches the specified pattern using the SQL standard's definition of a regular expression. */
-  similarTo?: Maybe<Scalars['String']>
-  /** Does not match the specified pattern using the SQL standard's definition of a regular expression. */
-  notSimilarTo?: Maybe<Scalars['String']>
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: Maybe<Scalars['String']>
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: Maybe<Scalars['String']>
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: Maybe<Scalars['String']>
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: Maybe<Scalars['String']>
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: Maybe<Scalars['String']>
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: Maybe<Scalars['String']>
 }
 
 /** All input for the `updateGameAssignmentByNodeId` mutation. */
@@ -6843,7 +6859,7 @@ export enum UserRolesOrderBy {
   UserByUserIdProfileIdAsc = 'USER_BY_USER_ID__PROFILE_ID_ASC',
   UserByUserIdProfileIdDesc = 'USER_BY_USER_ID__PROFILE_ID_DESC',
   UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
-  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC'
+  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC',
 }
 
 /** A connection to a list of `User` values. */
@@ -6902,7 +6918,7 @@ export enum UsersOrderBy {
   ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',
   ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
   UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
-  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC'
+  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
 }
 
 export type GetGamesBySlotQueryVariables = {
@@ -6911,10 +6927,10 @@ export type GetGamesBySlotQueryVariables = {
 }
 
 export type GetGamesBySlotQuery = { __typename: 'Query' } & {
-  games: Maybe<
+  games?: Maybe<
     { __typename: 'GamesConnection' } & {
       edges: Array<
-        { __typename: 'GamesEdge' } & { node: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+        { __typename: 'GamesEdge' } & { node?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
       >
     }
   >
@@ -6925,10 +6941,10 @@ export type GetGamesByYearQueryVariables = {
 }
 
 export type GetGamesByYearQuery = { __typename: 'Query' } & {
-  games: Maybe<
+  games?: Maybe<
     { __typename: 'GamesConnection' } & {
       edges: Array<
-        { __typename: 'GamesEdge' } & { node: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+        { __typename: 'GamesEdge' } & { node?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
       >
     }
   >
@@ -6939,8 +6955,10 @@ export type UpdateGameByNodeIdMutationVariables = {
 }
 
 export type UpdateGameByNodeIdMutation = { __typename: 'Mutation' } & {
-  updateGameByNodeId: Maybe<
-    { __typename: 'UpdateGamePayload' } & { game: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+  updateGameByNodeId?: Maybe<
+    { __typename: 'UpdateGamePayload' } & {
+      game?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment>
+    }
   >
 }
 
@@ -6949,8 +6967,10 @@ export type CreateGameMutationVariables = {
 }
 
 export type CreateGameMutation = { __typename: 'Mutation' } & {
-  createGame: Maybe<
-    { __typename: 'CreateGamePayload' } & { game: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+  createGame?: Maybe<
+    { __typename: 'CreateGamePayload' } & {
+      game?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment>
+    }
   >
 }
 
@@ -6959,7 +6979,7 @@ export type DeleteGameMutationVariables = {
 }
 
 export type DeleteGameMutation = { __typename: 'Mutation' } & {
-  deleteGame: Maybe<
+  deleteGame?: Maybe<
     { __typename: 'DeleteGamePayload' } & Pick<DeleteGamePayload, 'clientMutationId' | 'deletedGameNodeId'>
   >
 }
@@ -6969,7 +6989,7 @@ export type GetFirstGameOfSlotQueryVariables = {
 }
 
 export type GetFirstGameOfSlotQuery = { __typename: 'Query' } & {
-  games: Maybe<
+  games?: Maybe<
     { __typename: 'GamesConnection' } & {
       nodes: Array<
         Maybe<
@@ -6978,11 +6998,11 @@ export type GetFirstGameOfSlotQuery = { __typename: 'Query' } & {
               nodes: Array<
                 Maybe<
                   { __typename: 'GameAssignment' } & Pick<GameAssignment, 'nodeId' | 'gm'> & {
-                      member: Maybe<
+                      member?: Maybe<
                         { __typename: 'Membership' } & {
-                          user: Maybe<
+                          user?: Maybe<
                             { __typename: 'User' } & {
-                              profile: Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment>
+                              profile?: Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment>
                             }
                           >
                         }
@@ -7031,10 +7051,10 @@ export type GameGmsFragment = { __typename: 'Game' } & {
     nodes: Array<
       Maybe<
         { __typename: 'GameAssignment' } & Pick<GameAssignment, 'nodeId' | 'gm'> & {
-            member: Maybe<
+            member?: Maybe<
               { __typename: 'Membership' } & {
-                user: Maybe<
-                  { __typename: 'User' } & { profile: Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment> }
+                user?: Maybe<
+                  { __typename: 'User' } & { profile?: Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment> }
                 >
               }
             >
@@ -7054,11 +7074,11 @@ export type LookupValuesFieldsFragment = { __typename: 'LookupValue' } & Pick<
 export type GetLookupsQueryVariables = {}
 
 export type GetLookupsQuery = { __typename: 'Query' } & {
-  lookups: Maybe<
+  lookups?: Maybe<
     { __typename: 'LookupsConnection' } & {
       edges: Array<
         { __typename: 'LookupsEdge' } & {
-          node: Maybe<
+          node?: Maybe<
             { __typename: 'Lookup' } & {
               lookupValues: { __typename: 'LookupValuesConnection' } & {
                 nodes: Array<Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>>
@@ -7076,11 +7096,11 @@ export type GetLookupValuesQueryVariables = {
 }
 
 export type GetLookupValuesQuery = { __typename: 'Query' } & {
-  lookups: Maybe<
+  lookups?: Maybe<
     { __typename: 'LookupsConnection' } & {
       edges: Array<
         { __typename: 'LookupsEdge' } & {
-          node: Maybe<
+          node?: Maybe<
             { __typename: 'Lookup' } & {
               lookupValues: { __typename: 'LookupValuesConnection' } & {
                 nodes: Array<Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>>
@@ -7099,11 +7119,11 @@ export type GetSingleLookupValueQueryVariables = {
 }
 
 export type GetSingleLookupValueQuery = { __typename: 'Query' } & {
-  lookups: Maybe<
+  lookups?: Maybe<
     { __typename: 'LookupsConnection' } & {
       edges: Array<
         { __typename: 'LookupsEdge' } & {
-          node: Maybe<
+          node?: Maybe<
             { __typename: 'Lookup' } & {
               lookupValues: { __typename: 'LookupValuesConnection' } & {
                 nodes: Array<Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>>
@@ -7121,8 +7141,8 @@ export type UpdateLookupByNodeIdMutationVariables = {
 }
 
 export type UpdateLookupByNodeIdMutation = { __typename: 'Mutation' } & {
-  updateLookupByNodeId: Maybe<
-    { __typename: 'UpdateLookupPayload' } & { lookup: Maybe<{ __typename: 'Lookup' } & LookupFieldsFragment> }
+  updateLookupByNodeId?: Maybe<
+    { __typename: 'UpdateLookupPayload' } & { lookup?: Maybe<{ __typename: 'Lookup' } & LookupFieldsFragment> }
   >
 }
 
@@ -7131,8 +7151,8 @@ export type CreateLookupMutationVariables = {
 }
 
 export type CreateLookupMutation = { __typename: 'Mutation' } & {
-  createLookup: Maybe<
-    { __typename: 'CreateLookupPayload' } & { lookup: Maybe<{ __typename: 'Lookup' } & LookupFieldsFragment> }
+  createLookup?: Maybe<
+    { __typename: 'CreateLookupPayload' } & { lookup?: Maybe<{ __typename: 'Lookup' } & LookupFieldsFragment> }
   >
 }
 
@@ -7141,7 +7161,7 @@ export type DeleteLookupMutationVariables = {
 }
 
 export type DeleteLookupMutation = { __typename: 'Mutation' } & {
-  deleteLookup: Maybe<
+  deleteLookup?: Maybe<
     { __typename: 'DeleteLookupPayload' } & Pick<DeleteLookupPayload, 'clientMutationId' | 'deletedLookupNodeId'>
   >
 }
@@ -7151,9 +7171,9 @@ export type UpdateLookupValueByNodeIdMutationVariables = {
 }
 
 export type UpdateLookupValueByNodeIdMutation = { __typename: 'Mutation' } & {
-  updateLookupValueByNodeId: Maybe<
+  updateLookupValueByNodeId?: Maybe<
     { __typename: 'UpdateLookupValuePayload' } & {
-      lookupValue: Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>
+      lookupValue?: Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>
     }
   >
 }
@@ -7163,9 +7183,9 @@ export type CreateLookupValueMutationVariables = {
 }
 
 export type CreateLookupValueMutation = { __typename: 'Mutation' } & {
-  createLookupValue: Maybe<
+  createLookupValue?: Maybe<
     { __typename: 'CreateLookupValuePayload' } & {
-      lookupValue: Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>
+      lookupValue?: Maybe<{ __typename: 'LookupValue' } & LookupValuesFieldsFragment>
     }
   >
 }
@@ -7175,7 +7195,7 @@ export type DeleteLookupValueMutationVariables = {
 }
 
 export type DeleteLookupValueMutation = { __typename: 'Mutation' } & {
-  deleteLookupValue: Maybe<
+  deleteLookupValue?: Maybe<
     { __typename: 'DeleteLookupValuePayload' } & Pick<
       DeleteLookupValuePayload,
       'clientMutationId' | 'deletedLookupValueNodeId'
@@ -7191,7 +7211,9 @@ export type ProfileFieldsFragment = { __typename: 'Profile' } & Pick<
 export type GetSlotsQueryVariables = {}
 
 export type GetSlotsQuery = { __typename: 'Query' } & {
-  slots: Maybe<{ __typename: 'SlotsConnection' } & { nodes: Array<Maybe<{ __typename: 'Slot' } & SlotFieldsFragment>> }>
+  slots?: Maybe<
+    { __typename: 'SlotsConnection' } & { nodes: Array<Maybe<{ __typename: 'Slot' } & SlotFieldsFragment>> }
+  >
 }
 
 export type SlotFieldsFragment = { __typename: 'Slot' } & Pick<

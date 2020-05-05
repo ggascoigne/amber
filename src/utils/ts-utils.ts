@@ -21,3 +21,9 @@ export type Nodes<T> = Array<Maybe<T>>
 export type Edges<T> = Array<{ node: Maybe<T> }>
 
 export type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
+
+// extract the type from an array
+export type UnpackArray<T> = T extends (infer U)[] ? U : T
+
+// extract the type of an object property
+export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]

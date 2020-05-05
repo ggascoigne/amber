@@ -1,14 +1,13 @@
-import { GameFieldsFragment, GameGmsFragment, SlotFieldsFragment, useGetGamesBySlotQuery } from 'client'
+import { GameArray, SlotFieldsFragment, useGetGamesBySlotQuery } from 'client'
 import React from 'react'
 
-import { Edges } from '../../../utils/ts-utils'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
 export interface GameQueryChild {
   year: number
   slot: SlotFieldsFragment
-  games?: Edges<GameFieldsFragment & GameGmsFragment>
+  games?: GameArray
 }
 
 interface GameQuery {
