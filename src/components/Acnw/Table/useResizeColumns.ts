@@ -13,7 +13,7 @@ import {
   defaultColumn,
   ensurePluginOrder,
   makePropGetter,
-  useGetLatest
+  useGetLatest,
 } from 'react-table'
 
 import { getFirstDefined } from './tableHookUtils'
@@ -30,8 +30,8 @@ export const useResizeColumns = <D extends object>(hooks: Hooks<D>): void => {
   hooks.getResizerProps = [defaultGetResizerProps]
   hooks.getHeaderProps.push({
     style: {
-      position: 'relative'
-    }
+      position: 'relative',
+    },
   })
   hooks.stateReducers.push(reducer)
   hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
@@ -55,7 +55,7 @@ const defaultGetResizerProps = <D extends object>(
       isTouchEvent = true
     }
     const headersToResize = getLeafHeaders(header)
-    const headerIdWidths = headersToResize.map(d => [d.id, d.totalWidth])
+    const headerIdWidths = headersToResize.map((d) => [d.id, d.totalWidth])
 
     const clientX = isTouchEvent ? Math.round((e as TouchEvent).touches[0].clientX) : (e as MouseEvent).clientX
 
@@ -73,7 +73,7 @@ const defaultGetResizerProps = <D extends object>(
           document.removeEventListener('mousemove', (handlersAndEvents.mouse.moveHandler as unknown) as EventListener)
           document.removeEventListener('mouseup', (handlersAndEvents.mouse.upHandler as unknown) as EventListener)
           dispatchEnd()
-        }
+        },
       },
       touch: {
         moveEvent: 'touchmove',
@@ -96,16 +96,16 @@ const defaultGetResizerProps = <D extends object>(
             (handlersAndEvents.touch.moveHandler as unknown) as EventListener
           )
           dispatchEnd()
-        }
-      }
+        },
+      },
     }
 
     const events = isTouchEvent ? handlersAndEvents.touch : handlersAndEvents.mouse
     document.addEventListener(events.moveEvent, (events.moveHandler as unknown) as EventListener, {
-      passive: false
+      passive: false,
     })
     document.addEventListener(events.upEvent, (events.upHandler as unknown) as EventListener, {
-      passive: false
+      passive: false,
     })
 
     dispatch({
@@ -113,7 +113,7 @@ const defaultGetResizerProps = <D extends object>(
       columnId: header.id,
       columnWidth: header.totalWidth,
       headerIdWidths,
-      clientX
+      clientX,
     })
   }
 
@@ -128,11 +128,11 @@ const defaultGetResizerProps = <D extends object>(
         onResizeStart(e, header)
       },
       style: {
-        cursor: 'ew-resize'
+        cursor: 'ew-resize',
       },
       draggable: false,
-      role: 'separator'
-    }
+      role: 'separator',
+    },
   ]
 }
 
@@ -143,9 +143,9 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
   if (action.type === actions.init) {
     return {
       columnResizing: {
-        columnWidths: {}
+        columnWidths: {},
       },
-      ...state
+      ...state,
     }
   }
 
@@ -159,8 +159,8 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
         startX: clientX,
         headerIdWidths,
         columnWidth,
-        isResizingColumn: columnId
-      }
+        isResizingColumn: columnId,
+      },
     }
   }
 
@@ -183,9 +183,9 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
         ...state.columnResizing,
         columnWidths: {
           ...state.columnResizing.columnWidths,
-          ...newColumnWidths
-        }
-      }
+          ...newColumnWidths,
+        },
+      },
     }
   }
 
@@ -195,8 +195,8 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
       columnResizing: {
         ...state.columnResizing,
         startX: undefined,
-        isResizingColumn: undefined
-      }
+        isResizingColumn: undefined,
+      },
     }
   }
 }
@@ -207,7 +207,7 @@ const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D
 
   const getInstance = useGetLatest(instance)
 
-  flatHeaders.forEach(header => {
+  flatHeaders.forEach((header) => {
     const canResize = getFirstDefined(
       header.disableResizing === true ? false : undefined,
       disableResizing === true ? false : undefined,
@@ -221,7 +221,7 @@ const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D
     if (canResize) {
       header.getResizerProps = makePropGetter(getHooks().getResizerProps, {
         instance: getInstance(),
-        header
+        header,
       })
     }
   })

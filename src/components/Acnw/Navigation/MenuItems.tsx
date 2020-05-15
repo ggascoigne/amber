@@ -23,8 +23,8 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
       <List>
         {menuItems
           // only display routes with a label
-          .filter(menuItem => menuItem.label)
-          .map(menuItem => {
+          .filter((menuItem) => menuItem.label)
+          .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (
               <ListItemLink key={link} button to={link} selected={activeItem === link}>

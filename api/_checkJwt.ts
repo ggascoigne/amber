@@ -12,5 +12,5 @@ export const checkJwt = jwt({
   audience: 'https://amberconnw.org',
   issuer: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/`,
   algorithms: ['RS256'],
-  credentialsRequired: false
+  credentialsRequired: false,
 })

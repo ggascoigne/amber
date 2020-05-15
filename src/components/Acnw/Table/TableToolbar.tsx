@@ -16,14 +16,14 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     toolbar: {
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     },
     leftButtons: {},
     rightButtons: {},
     leftIcons: {
       '&:first-of-type': {
-        marginLeft: -12
-      }
+        marginLeft: -12,
+      },
     },
     rightIcons: {
       padding: 12,
@@ -31,9 +31,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: 48,
       height: 48,
       '&:last-of-type': {
-        marginRight: -12
-      }
-    }
+        marginRight: -12,
+      },
+    },
   })
 )
 
@@ -51,7 +51,7 @@ export const LabeledActionButton = <T extends object>({
   icon,
   onClick,
   label,
-  enabled = () => true
+  enabled = () => true,
 }: ActionButton<T>): ReactElement => (
   <Button variant='contained' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
     {icon}
@@ -65,7 +65,7 @@ export const SmallIconActionButton = <T extends object>({
   onClick,
   label,
   enabled = () => true,
-  variant
+  variant,
 }: ActionButton<T>) => {
   const classes = useStyles({})
   return (
@@ -94,14 +94,14 @@ export function TableToolbar<T extends object>({
   instance,
   onAdd = () => () => null,
   onDelete = () => () => null,
-  onEdit = () => () => null
+  onEdit = () => () => null,
 }: PropsWithChildren<TableToolbar<T>>): ReactElement | null {
   const { columns } = instance
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)
   const [columnsOpen, setColumnsOpen] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)
-  const hideableColumns = columns.filter(column => !(column.id === '_selector'))
+  const hideableColumns = columns.filter((column) => !(column.id === '_selector'))
 
   const handleColumnsClick = useCallback(
     (event: MouseEvent) => {

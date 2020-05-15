@@ -1,7 +1,7 @@
 import { defaultFont } from 'assets/jss/material-kit-react'
 import tooltip from 'assets/jss/material-kit-react/tooltipsStyle.jsx'
 
-const headerLinksStyle = theme => ({
+const headerLinksStyle = (theme) => ({
   list: {
     ...defaultFont,
     fontSize: '14px',
@@ -10,7 +10,7 @@ const headerLinksStyle = theme => ({
     listStyle: 'none',
     paddingTop: '0',
     paddingBottom: '0',
-    color: 'inherit'
+    color: 'inherit',
   },
   listItem: {
     float: 'left',
@@ -28,12 +28,12 @@ const headerLinksStyle = theme => ({
         display: 'block',
         height: '1px',
         marginLeft: '15px',
-        backgroundColor: '#e5e5e5'
-      }
-    }
+        backgroundColor: '#e5e5e5',
+      },
+    },
   },
   listItemText: {
-    padding: '0 !important'
+    padding: '0 !important',
   },
   navLink: {
     color: 'inherit',
@@ -49,7 +49,7 @@ const headerLinksStyle = theme => ({
     display: 'inline-flex',
     '&:hover,&:focus': {
       color: 'inherit',
-      background: 'rgba(200, 200, 200, 0.2)'
+      background: 'rgba(200, 200, 200, 0.2)',
     },
     [theme.breakpoints.down('sm')]: {
       width: 'calc(100% - 30px)',
@@ -58,9 +58,9 @@ const headerLinksStyle = theme => ({
       marginTop: '8px',
       textAlign: 'left',
       '& > span:first-child': {
-        justifyContent: 'flex-start'
-      }
-    }
+        justifyContent: 'flex-start',
+      },
+    },
   },
   notificationNavLink: {
     color: 'inherit',
@@ -72,7 +72,7 @@ const headerLinksStyle = theme => ({
     textDecoration: 'none',
     margin: '0px',
     display: 'inline-flex',
-    top: '4px'
+    top: '4px',
   },
   registerNavLink: {
     top: '3px',
@@ -83,34 +83,34 @@ const headerLinksStyle = theme => ({
     lineHeight: '20px',
     textDecoration: 'none',
     margin: '0px',
-    display: 'inline-flex'
+    display: 'inline-flex',
   },
   navLinkActive: {
     color: 'inherit',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)'
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   icons: {
     width: '20px',
     height: '20px',
-    marginRight: '3px'
+    marginRight: '3px',
   },
   socialIcons: {
     position: 'relative',
     fontSize: '20px !important',
-    marginRight: '4px'
+    marginRight: '4px',
   },
   dropdownLink: {
     '&,&:hover,&:focus': {
       color: 'inherit',
       textDecoration: 'none',
       display: 'block',
-      padding: '10px 20px'
-    }
+      padding: '10px 20px',
+    },
   },
   ...tooltip,
   marginRight5: {
-    marginRight: '5px'
-  }
+    marginRight: '5px',
+  },
 })
 
 export default headerLinksStyle

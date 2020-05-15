@@ -16,8 +16,8 @@ const urlSourceDefaults = {
   urlSource: {
     source: 'jump',
     url: '',
-    __typename: 'urlSource'
-  }
+    __typename: 'urlSource',
+  },
 }
 
 const urlSourceQuery = gql`
@@ -43,8 +43,8 @@ const updateUrlSource = (_obj: any, data: UrlSource, { cache }: { cache: ApolloC
 export const urlSourceStore = {
   defaults: urlSourceDefaults,
   mutations: {
-    updateUrlSource
-  }
+    updateUrlSource,
+  },
 }
 
 export const useUrlSourceQuery = () => useQuery<UrlSource>(urlSourceQuery)

@@ -8,7 +8,7 @@ import {
   Loader,
   SelectField,
   TextField,
-  TextFieldProps
+  TextFieldProps,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
@@ -41,7 +41,7 @@ const genreOptions = [
   'Sci-Fi / Futuristic',
   'Strategy',
   'Tense / Real-time',
-  'Other; N/A'
+  'Other; N/A',
 ]
 
 const typeOptions = [
@@ -50,7 +50,7 @@ const typeOptions = [
   'Alternate Amber',
   'Amber with a Twist',
   'Non - Amber',
-  'Other; N/A'
+  'Other; N/A',
 ]
 
 const estimatedLengthOptions = [
@@ -68,7 +68,7 @@ const estimatedLengthOptions = [
   '8.5',
   '9',
   '10',
-  '12+'
+  '12+',
 ]
 
 const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
@@ -95,28 +95,22 @@ const defaultValues: FormValues = {
   slotConflicts: '',
   message: '',
   teenFriendly: false,
-  year: configurationService.year
+  year: configurationService.year,
 }
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .min(2)
-    .max(100)
-    .required(),
-  gmNames: Yup.string()
-    .min(2)
-    .max(255)
-    .required(),
+  name: Yup.string().min(2).max(100).required(),
+  gmNames: Yup.string().min(2).max(255).required(),
   description: Yup.string()
     .min(2)
     .max(10 * 1024)
     .required(),
   setting: Yup.string()
     .min(2)
-    .max(10 * 1024)
+    .max(10 * 1024),
 })
 
-export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = props => {
+export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = (props) => {
   const { select, ...rest } = props
   const { loading, error, data } = useGetSlotsQuery()
   if (loading) {
@@ -129,7 +123,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = props => {
     (acc, current) => {
       acc.push({
         value: current!.slot,
-        text: `Slot ${current!.slot}: ${current!.day} - ${current!.time}`
+        text: `Slot ${current!.slot}: ${current!.day} - ${current!.time}`,
       })
       return acc
     },
@@ -236,7 +230,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                     Label={{
                       label: 'Should your players contact you before the con?',
                       labelPlacement: 'start',
-                      style: { marginLeft: 0 }
+                      style: { marginLeft: 0 },
                     }}
                     name='playersContactGm'
                   />
@@ -271,7 +265,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                     Label={{
                       label: 'Evening Game: Game may run late into the evening',
                       labelPlacement: 'start',
-                      style: { marginLeft: 0 }
+                      style: { marginLeft: 0 },
                     }}
                   />
                 </GridItem>

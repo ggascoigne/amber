@@ -13,7 +13,7 @@ export function combineMiddlewares(middlewares: Array<RequestHandler>) {
       parent: (req: Request, res: Response, next: (err?: Error) => void) => void,
       fn: (req: Request, res: Response, next: (err?: Error) => void) => void
     ): ((req: Request, res: Response, next: (err?: Error) => void) => void) => (req, res, next) => {
-      parent(req, res, error => {
+      parent(req, res, (error) => {
         if (error) {
           return next(error)
         }

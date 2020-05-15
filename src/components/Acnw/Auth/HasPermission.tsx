@@ -35,7 +35,7 @@ const check = (rules: Rules, role: string | null, action: Perms, data?: any) => 
 }
 
 export const checkMany = (rules: Rules, roles: string[] | undefined, action: Perms, data?: any) =>
-  !!find(roles, role => check(rules, role, action, data))
+  !!find(roles, (role) => check(rules, role, action, data))
 
 type PermissionProps = {
   permission: Perms

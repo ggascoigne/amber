@@ -11,12 +11,12 @@ function Badge({ ...props }) {
 }
 
 Badge.defaultProps = {
-  color: 'gray'
+  color: 'gray',
 }
 
 Badge.propTypes = {
   classes: PropTypes.object.isRequired,
-  color: PropTypes.oneOf(['primary', 'warning', 'danger', 'success', 'info', 'rose', 'gray'])
+  color: PropTypes.oneOf(['primary', 'warning', 'danger', 'success', 'info', 'rose', 'gray']),
 }
 
 export default withStyles(badgeStyle)(Badge)

@@ -12,7 +12,7 @@ import {
   Theme,
   Typography,
   createStyles,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -31,7 +31,7 @@ import {
   useCreateLookupValueMutation,
   useDeleteLookupValueMutation,
   useUpdateLookupByNodeIdMutation,
-  useUpdateLookupValueByNodeIdMutation
+  useUpdateLookupValueByNodeIdMutation,
 } from '../../../client'
 import { LookupAndValues } from './types'
 
@@ -40,34 +40,34 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: '100%',
       marginTop: theme.spacing(3),
-      overflowX: 'auto'
+      overflowX: 'auto',
     },
     table: {
-      minWidth: 700
+      minWidth: 700,
     },
     header: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
       paddingLeft: 24,
-      paddingRight: 24
+      paddingRight: 24,
     },
     title: {
       color: '#fff',
       fontWeight: 300,
-      textTransform: 'none'
+      textTransform: 'none',
     },
     iconButton: {
       color: '#fff',
       '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.08)'
-      }
+        backgroundColor: 'rgba(255, 255, 255, 0.08)',
+      },
     },
     addIcon: {},
     deleteIcon: {},
     deleteButton: {
-      color: theme.palette.grey[500]
-    }
+      color: theme.palette.grey[500],
+    },
   })
 )
 
@@ -80,25 +80,16 @@ interface LookupsDialog {
 }
 
 const validationSchema = Yup.object().shape({
-  realm: Yup.string()
-    .min(2)
-    .max(50)
-    .required('Required'),
+  realm: Yup.string().min(2).max(50).required('Required'),
   lookupValues: Yup.object().shape({
     nodes: Yup.array().of(
       Yup.object().shape({
         sequencer: Yup.number().required(),
-        code: Yup.string()
-          .min(2)
-          .max(50)
-          .required(),
-        value: Yup.string()
-          .min(2)
-          .max(50)
-          .required()
+        code: Yup.string().min(2).max(50).required(),
+        value: Yup.string().min(2).max(50).required(),
       })
-    )
-  })
+    ),
+  }),
 })
 
 const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'LookupValuesConnection', nodes: [] } }
@@ -118,10 +109,10 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
             input: {
               nodeId: values.nodeId!,
               patch: {
-                realm: values.realm
-              }
-            }
-          }
+                realm: values.realm,
+              },
+            },
+          },
         })
       : await createLookup({
           variables: {
@@ -131,10 +122,10 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                 codeType: 'string',
                 internationalize: false,
                 valueType: 'string',
-                ordering: 'sequencer'
-              }
-            }
-          }
+                ordering: 'sequencer',
+              },
+            },
+          },
         })
 
     const isCreateLookup = (value: typeof res.data): value is CreateLookupMutation =>
@@ -166,10 +157,10 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                     code: lv.code,
                     sequencer: lv.sequencer,
                     value: lv.value,
-                    lookupId
-                  }
-                }
-              }
+                    lookupId,
+                  },
+                },
+              },
             })
           )
         } else {
@@ -183,10 +174,10 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                     value: lv.value,
                     lookupId: lookupId!,
                     numericSequencer: 0.0,
-                    stringSequencer: '_'
-                  }
-                }
-              }
+                    stringSequencer: '_',
+                  },
+                },
+              },
             })
           )
         }
@@ -199,7 +190,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
       return acc
     }, [])
 
-    initialValues.lookupValues.nodes.map(ilv => {
+    initialValues.lookupValues.nodes.map((ilv) => {
       if (ilv && ilv.id) {
         currentLookupValueIds.includes(ilv.id) ||
           updaters.push(deleteLookupValue({ variables: { input: { id: ilv.id } } }))
@@ -232,7 +223,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
                 <GridItem>
                   <FieldArray
                     name='lookupValues.nodes'
-                    render={arrayHelpers => (
+                    render={(arrayHelpers) => (
                       <Card>
                         <CardHeader color='success' className={classes.header}>
                           <Typography variant='h6' className={classes.title}>

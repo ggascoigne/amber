@@ -49,7 +49,7 @@ export const PastConsGamesPage: React.FC = () => {
             if (el) {
               jump(el, {
                 duration: 200,
-                offset: -105
+                offset: -105,
               })
             }
           }),

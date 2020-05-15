@@ -20,16 +20,16 @@ const useStyles = makeStyles((theme: Theme) =>
     cardHeader: {
       flex: 1,
       display: 'flex',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     slotLabel: {
       fontSize: '1.125rem',
       [theme.breakpoints.up('sm')]: {
-        paddingRight: 20
-      }
+        paddingRight: 20,
+      },
     },
     slot: {
-      marginBottom: 55
+      marginBottom: 55,
     },
     small: {
       marginTop: 35,
@@ -38,24 +38,24 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: 10,
       width: '95%',
       '& $tabsRoot': {
-        paddingLeft: 3
+        paddingLeft: 3,
       },
       '& $cardHeader': {
-        padding: 0
+        padding: 0,
       },
       '& $tabRootButton': {
-        padding: '8px 9px'
+        padding: '8px 9px',
       },
       '& $slot': {
         marginBottom: 10,
-        marginTop: -16
+        marginTop: -16,
       },
       '& h4': {
         fontSize: '1em',
         lineHeight: '1.2em',
-        paddingLeft: '16px'
-      }
-    }
+        paddingLeft: '16px',
+      },
+    },
   })
 )
 
@@ -68,7 +68,7 @@ interface SlotSelector {
   children(slot: SlotFieldsFragment): React.ReactNode
 }
 
-export const SlotSelector: React.FC<SlotSelector> = props => {
+export const SlotSelector: React.FC<SlotSelector> = (props) => {
   const classes = useStyles()
   const { slots, selectedSlotId, year, small, children } = props
   const { loading, error, data } = useGameFilterQuery()
@@ -77,7 +77,7 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
 
   const getSlot = (slots: MaybeNodes<SlotFieldsFragment>, selectedSlotId: number) => {
-    const slot = slots!.find(s => (s ? s.id === selectedSlotId : false))
+    const slot = slots!.find((s) => (s ? s.id === selectedSlotId : false))
     if (!slot) {
       throw new Error('slots not found')
     } else {
@@ -139,8 +139,8 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
 
   const {
     gameFilter: {
-      slot: { id: slotId }
-    }
+      slot: { id: slotId },
+    },
   } = data!
 
   const slot = getSlot(slots, slotId)
@@ -162,16 +162,16 @@ export const SlotSelector: React.FC<SlotSelector> = props => {
               scrollButtons={scrollButtons}
               classes={{
                 root: classes.tabsRoot,
-                indicator: classes.displayNone
+                indicator: classes.displayNone,
               }}
             >
-              {slots.map(slot =>
+              {slots.map((slot) =>
                 slot ? (
                   <Tab
                     classes={{
                       root: classes.tabRootButton,
                       selected: classes.tabSelected,
-                      wrapper: classes.tabWrapper
+                      wrapper: classes.tabWrapper,
                     }}
                     key={slot.id}
                     label={slot.id}

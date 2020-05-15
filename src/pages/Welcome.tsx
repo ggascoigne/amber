@@ -12,15 +12,15 @@ const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     banner: {
-      textAlign: 'center'
+      textAlign: 'center',
     },
     deadline: {},
     deadlineExpired: {
       color: dangerColor,
       '&:after': {
-        content: '" - date passed"'
-      }
-    }
+        content: '" - date passed"',
+      },
+    },
   })
 )
 

@@ -7,11 +7,11 @@ interface ContextRoutes {
 
 const data: ContextRoutes = {
   '/pastCons/\\d+': {
-    load: <PastConsMenu />
-  }
+    load: <PastConsMenu />,
+  },
 }
 
 export const contextRoutes = (path: string) => {
-  const key = Object.keys(data).find(k => new RegExp(k).test(path))
+  const key = Object.keys(data).find((k) => new RegExp(k).test(path))
   return !!key ? data[key] : undefined
 }

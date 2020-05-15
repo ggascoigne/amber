@@ -125,7 +125,7 @@ async function mysqlExecScript(dbconfig, script) {
     const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
       .on('error', reject)
       .on('close', resolve)
-      .on('exit', code => (!code ? resolve() : reject(code)))
+      .on('exit', (code) => (!code ? resolve() : reject(code)))
 
     child.stdout.pipe(process.stdout)
     child.stderr.pipe(process.stderr)
@@ -154,14 +154,14 @@ function pgloader(mySqlPassword, script) {
   runOrExit(
     spawnSync('/usr/local/bin/pgloader', ['-v', /* '--debug', */ '--on-error-stop', name], {
       env: { MYSQL_PWD: mySqlPassword },
-      stdio: 'inherit'
+      stdio: 'inherit',
     })
   )
 }
 
 exports.pgloader = pgloader
 
-const bail = reason => {
+const bail = (reason) => {
   if (reason) {
     console.error(chalk.bold.red('error detected'))
     console.error(reason)

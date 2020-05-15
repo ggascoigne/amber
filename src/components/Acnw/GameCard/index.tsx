@@ -11,30 +11,30 @@ import maskEmail from 'utils/maskEmail'
 
 const useStyles = makeStyles({
   card: {
-    marginBottom: 50
+    marginBottom: 50,
   },
   gridItem: {
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   label: {
     fontWeight: 500,
-    minWidth: 80
+    minWidth: 80,
   },
   tinyCard: {
     height: 279,
     width: 295,
     zIndex: 10,
-    transform: 'rotateZ(-3deg)'
+    transform: 'rotateZ(-3deg)',
   },
   tinyHeaderText: {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
   },
   cardTiny: {
     overflow: 'hidden',
-    height: 200
-  }
+    height: 200,
+  },
 })
 
 const MultiLine: React.FC<{ text: string }> = ({ text }) => (
@@ -93,7 +93,7 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
     type,
     teenFriendly,
     gameAssignments: gms,
-    setting
+    setting,
   } = game
 
   return slotId ? (
@@ -114,7 +114,7 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
       <CardBody>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms.nodes.map(a => a?.member?.user?.profile?.fullName).join(', ')}
+            {gms.nodes.map((a) => a?.member?.user?.profile?.fullName).join(', ')}
           </Field>
           <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
             <MultiLine text={description} />

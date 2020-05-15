@@ -20,7 +20,7 @@ export const Checkbox: React.ComponentType<CheckboxProps> = (props: CheckboxProp
     error: showError,
     disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
     checked: field.value,
-    value: field.value ? 'checked' : ''
+    value: field.value ? 'checked' : '',
   }
 
   return <MuiCheckbox {...fullProps} />

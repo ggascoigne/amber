@@ -29,19 +29,19 @@ const StyledBadge = withStyles((theme: Theme) =>
         borderRadius: '50%',
         animation: '$ripple 1.2s infinite ease-in-out',
         border: '1px solid currentColor',
-        content: '""'
-      }
+        content: '""',
+      },
     },
     '@keyframes ripple': {
       '0%': {
         transform: 'scale(.8)',
-        opacity: 1
+        opacity: 1,
       },
       '100%': {
         transform: 'scale(2.4)',
-        opacity: 0
-      }
-    }
+        opacity: 0,
+      },
+    },
   })
 )(Badge)
 
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: '20px',
       display: 'inline-flex',
       color: 'inherit',
-      backgroundColor: 'rgba(255, 255, 255, 0.15)'
+      backgroundColor: 'rgba(255, 255, 255, 0.15)',
     },
     navLink: {
       color: 'inherit',
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'inline-flex',
       '&:hover,&:focus': {
         color: 'inherit',
-        background: 'rgba(200, 200, 200, 0.2)'
+        background: 'rgba(200, 200, 200, 0.2)',
       },
       [theme.breakpoints.down('sm')]: {
         width: 'calc(100% - 30px)',
@@ -82,14 +82,14 @@ const useStyles = makeStyles((theme: Theme) =>
         marginTop: '8px',
         textAlign: 'left',
         '& > span:first-child': {
-          justifyContent: 'flex-start'
-        }
-      }
+          justifyContent: 'flex-start',
+        },
+      },
     },
     email: {
       textTransform: 'none',
-      padding: 15
-    }
+      padding: 15,
+    },
   })
 )
 
@@ -112,7 +112,7 @@ const ProfileImage: React.FC<ProfileImage> = ({ user }) => (
       overlap='circle'
       anchorOrigin={{
         vertical: 'bottom',
-        horizontal: 'right'
+        horizontal: 'right',
       }}
       variant='dot'
     >
@@ -157,7 +157,7 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   )
   return (
     <ApolloConsumer>
-      {client =>
+      {(client) =>
         isAuthenticated ? (
           <CustomDropdown
             right
@@ -166,7 +166,7 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
             buttonText={<MenuButton small={small} user={user!} />}
             buttonProps={{
               className: classes.navLink,
-              color: 'transparent'
+              color: 'transparent',
             }}
             dropdownList={[MENU_ITEM_SIGN_OUT]}
             onClick={(prop: string) => {

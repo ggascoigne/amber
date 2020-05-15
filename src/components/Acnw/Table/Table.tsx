@@ -25,7 +25,7 @@ import {
   useResizeColumns,
   useRowSelect,
   useSortBy,
-  useTable
+  useTable,
 } from 'react-table'
 
 import { camelToWords, isDev, useDebounce, useLocalStorage } from '../../../utils'
@@ -45,7 +45,7 @@ import {
   TableLabel,
   TableRow,
   TableTable,
-  useStyles
+  useStyles,
 } from './TableStyles'
 import { TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
@@ -66,7 +66,7 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
 
 function DefaultColumnFilter<T extends object>({
   column: { id, index, filterValue, setFilter, render, parent },
-  gotoPage
+  gotoPage,
 }: FilterProps<T>) {
   const [value, setValue] = React.useState(filterValue || '')
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +86,7 @@ function DefaultColumnFilter<T extends object>({
       autoFocus={index === 0 && firstIndex}
       variant='standard'
       onChange={handleChange}
-      onBlur={e => {
+      onBlur={(e) => {
         const value = e.target.value || undefined
         setFilter(value)
         if (value !== filterValue) gotoPage(0)
@@ -101,9 +101,9 @@ const getStyles = <T extends object>(props: any, disableResizing = false, align 
     style: {
       justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
       alignItems: 'flex-start',
-      display: 'flex'
-    }
-  }
+      display: 'flex',
+    },
+  },
 ]
 
 const useSelectionUi = (hooks: Hooks<any>) => {
@@ -124,9 +124,9 @@ const useSelectionUi = (hooks: Hooks<any>) => {
       ),
       // The cell can use the individual row's getToggleRowSelectedProps method
       // to the render a checkbox
-      Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />
+      Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
     },
-    ...columns
+    ...columns,
   ])
   hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
@@ -148,7 +148,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
   const filterTypes = React.useMemo(
     () => ({
       fuzzyText: fuzzyTextFilter,
-      numeric: numericTextFilter
+      numeric: numericTextFilter,
     }),
     []
   )
@@ -163,7 +163,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
     usePagination,
     useResizeColumns,
     useRowSelect,
-    useSelectionUi
+    useSelectionUi,
   ]
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
@@ -178,7 +178,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       // When using the useFlexLayout:
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow
-      maxWidth: 200 // maxWidth is only used as a limit for resizing
+      maxWidth: 200, // maxWidth is only used as a limit for resizing
     }),
     []
   )
@@ -196,7 +196,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       autoResetGroupBy: false,
       autoResetSelectedRows: false,
       autoResetSortBy: false,
-      autoResetFilters: false
+      autoResetFilters: false,
     },
     ...hooks
   )
@@ -212,7 +212,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       pageSize,
       columnResizing,
       hiddenColumns,
-      groupBy
+      groupBy,
     }
     setInitialState(val)
   }, [setInitialState, debouncedState])
@@ -227,12 +227,12 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
       <FilterChipBar<T> instance={instance} />
       <TableTable {...getTableProps()}>
         <TableHead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             // eslint-disable-next-line react/jsx-key
             <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => {
+              {headerGroup.headers.map((column) => {
                 const style = {
-                  textAlign: column.align ? column.align : 'left '
+                  textAlign: column.align ? column.align : 'left ',
                 } as CSSProperties
                 return (
                   // eslint-disable-next-line react/jsx-key
@@ -271,12 +271,12 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
           ))}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
-          {page.map(row => {
+          {page.map((row) => {
             prepareRow(row)
             return (
               // eslint-disable-next-line react/jsx-key
               <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected })}>
-                {row.cells.map(cell => (
+                {row.cells.map((cell) => (
                   // eslint-disable-next-line react/jsx-key
                   <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
                     {cell.isGrouped ? (
@@ -285,7 +285,7 @@ export function Table<T extends object>(props: PropsWithChildren<Table<T>>): Rea
                         <TableSortLabel
                           classes={{
                             iconDirectionAsc: classes.iconDirectionAsc,
-                            iconDirectionDesc: classes.iconDirectionDesc
+                            iconDirectionDesc: classes.iconDirectionDesc,
                           }}
                           active
                           direction={row.isExpanded ? 'desc' : 'asc'}

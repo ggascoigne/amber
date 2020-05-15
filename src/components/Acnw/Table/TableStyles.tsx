@@ -9,7 +9,7 @@ const getClasses = makeStyles((theme: Theme) =>
   createStyles({
     tableTable: {
       borderSpacing: 0,
-      border: '1px solid rgba(224, 224, 224, 1)'
+      border: '1px solid rgba(224, 224, 224, 1)',
     },
     tableHead: {},
     tableHeadRow: {
@@ -22,8 +22,8 @@ const getClasses = makeStyles((theme: Theme) =>
       position: 'relative',
       borderBottom: '1px solid rgba(224, 224, 224, 1)',
       '&:hover $resizeHandle': {
-        opacity: 1
-      }
+        opacity: 1,
+      },
     },
     tableHeadCell: {
       padding: '16px 1px 16px 16px',
@@ -35,32 +35,32 @@ const getClasses = makeStyles((theme: Theme) =>
       lineHeight: '1.5rem',
       borderRight: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
-        borderRight: 'none'
-      }
+        borderRight: 'none',
+      },
     },
     tableBody: {
       display: 'flex',
       flex: '1 1 auto',
       width: '100%',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
     tableRow: {
       color: 'inherit',
       outline: 0,
       verticalAlign: 'middle',
       '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.07)'
+        backgroundColor: 'rgba(0, 0, 0, 0.07)',
       },
       borderBottom: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
-        borderBottom: 'none'
+        borderBottom: 'none',
       },
       '&.rowSelected': {
         backgroundColor: 'rgba(0, 0, 0, 0.04)',
         '&:hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.07)'
-        }
-      }
+          backgroundColor: 'rgba(0, 0, 0, 0.07)',
+        },
+      },
     },
     tableLabel: {},
     tableCell: {
@@ -73,8 +73,8 @@ const getClasses = makeStyles((theme: Theme) =>
       color: theme.palette.text.primary,
       borderRight: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
-        borderRight: 'none'
-      }
+        borderRight: 'none',
+      },
     },
     resizeHandle: {
       position: 'absolute',
@@ -95,38 +95,38 @@ const getClasses = makeStyles((theme: Theme) =>
         height: 'calc(100% - 4px)',
         top: '2px',
         right: -1,
-        width: 1
-      }
+        width: 1,
+      },
     },
     tableSortLabel: {
       '& svg': {
         width: 16,
         height: 16,
         marginTop: 0,
-        marginLeft: 2
-      }
+        marginLeft: 2,
+      },
     },
     headerIcon: {
       '& svg': {
         width: 16,
         height: 16,
         marginTop: 4,
-        marginRight: 0
-      }
+        marginRight: 0,
+      },
     },
     iconDirectionAsc: {
-      transform: 'rotate(90deg)'
+      transform: 'rotate(90deg)',
     },
     iconDirectionDesc: {
-      transform: 'rotate(180deg)'
+      transform: 'rotate(180deg)',
     },
     cellIcon: {
       '& svg': {
         width: 16,
         height: 16,
-        marginTop: 3
-      }
-    }
+        marginTop: 3,
+      },
+    },
   })
 )
 
@@ -150,14 +150,14 @@ const styledDiv: StyledDiv<{ styledDivClassname: StyleKeyType }> = ({
   )
 }
 
-export const TableTable: StyledDiv = props => styledDiv({ styledDivClassname: 'tableTable', ...props })
-export const TableBody: StyledDiv = props => styledDiv({ styledDivClassname: 'tableBody', ...props })
-export const TableHead: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHead', ...props })
-export const TableHeadRow: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHeadRow', ...props })
-export const TableHeadCell: StyledDiv = props => styledDiv({ styledDivClassname: 'tableHeadCell', ...props })
-export const TableRow: StyledDiv = props => styledDiv({ styledDivClassname: 'tableRow', ...props })
-export const TableCell: StyledDiv = props => styledDiv({ styledDivClassname: 'tableCell', ...props })
-export const TableLabel: StyledDiv = props => styledDiv({ styledDivClassname: 'tableLabel', ...props })
+export const TableTable: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableTable', ...props })
+export const TableBody: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableBody', ...props })
+export const TableHead: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHead', ...props })
+export const TableHeadRow: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHeadRow', ...props })
+export const TableHeadCell: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHeadCell', ...props })
+export const TableRow: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableRow', ...props })
+export const TableCell: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableCell', ...props })
+export const TableLabel: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableLabel', ...props })
 
 export const HeaderCheckbox = styled(Checkbox)({
   fontSize: '1rem',
@@ -165,11 +165,11 @@ export const HeaderCheckbox = styled(Checkbox)({
   padding: '8px 9px',
   '& svg': {
     width: '24px',
-    height: '24px'
+    height: '24px',
   },
   '&:hover': {
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: 'transparent',
+  },
 })
 
 export const RowCheckbox = styled(Checkbox)({
@@ -177,10 +177,10 @@ export const RowCheckbox = styled(Checkbox)({
   margin: '-9px 0 -8px -15px',
   padding: '8px 9px 9px 9px',
   '&:hover': {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   '& svg': {
     width: 24,
-    height: 24
-  }
+    height: 24,
+  },
 })

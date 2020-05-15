@@ -23,10 +23,10 @@ const gameFilterDefaults: GameFilter = {
       day: 'Thursday',
       length: '5 hrs',
       time: '7 pm to midnight',
-      __typename: 'Slot'
+      __typename: 'Slot',
     },
-    __typename: 'gameFilter'
-  }
+    __typename: 'gameFilter',
+  },
 }
 
 //todo use ...slotFields
@@ -60,8 +60,8 @@ const updateGameFilter = (_obj: any, data: GameFilter, { cache }: { cache: Apoll
 export const gameFilterStore = {
   defaults: gameFilterDefaults,
   mutations: {
-    updateGameFilter
-  }
+    updateGameFilter,
+  },
 }
 
 export const useGameFilterQuery = () => useQuery<GameFilter>(gameFilterQuery)

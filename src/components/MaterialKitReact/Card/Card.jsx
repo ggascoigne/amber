@@ -16,7 +16,7 @@ function Card({ ...props }) {
     [classes.card]: true,
     [classes.cardPlain]: plain,
     [classes.cardCarousel]: carousel,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   })
   return (
     <div className={cardClasses} {...rest}>
@@ -29,7 +29,7 @@ Card.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   plain: PropTypes.bool,
-  carousel: PropTypes.bool
+  carousel: PropTypes.bool,
 }
 
 export default withStyles(cardStyle)(Card)

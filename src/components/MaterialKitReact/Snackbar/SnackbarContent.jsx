@@ -26,7 +26,7 @@ class SnackbarContent extends React.Component {
           onClick={this.closeAlert}
         >
           <Close className={classes.close} />
-        </IconButton>
+        </IconButton>,
       ]
     }
 
@@ -55,10 +55,10 @@ class SnackbarContent extends React.Component {
           }
           classes={{
             root: classes.root + ' ' + classes[color],
-            message: classes.message + ' ' + classes.container
+            message: classes.message + ' ' + classes.container,
           }}
         />
-      )
+      ),
     }
   }
   closeAlert() {
@@ -74,7 +74,7 @@ SnackbarContent.propTypes = {
   message: PropTypes.node.isRequired,
   color: PropTypes.oneOf(['info', 'success', 'warning', 'danger', 'primary']),
   close: PropTypes.bool,
-  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.string])
+  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
 }
 
 export default withStyles(snackbarContentStyle)(SnackbarContent)

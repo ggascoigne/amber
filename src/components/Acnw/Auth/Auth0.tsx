@@ -7,7 +7,7 @@ import createAuth0Client, {
   PopupLoginOptions,
   RedirectLoginOptions,
   RedirectLoginResult,
-  getIdTokenClaimsOptions
+  getIdTokenClaimsOptions,
 } from '@auth0/auth0-spa-js'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
@@ -16,7 +16,7 @@ import { ThenArg } from 'utils'
 const AUTH_CONFIG = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN || '',
   audience: 'https://amberconnw.org',
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID || ''
+  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID || '',
 }
 
 type Auth0Client = ThenArg<ReturnType<typeof createAuth0Client>>
@@ -60,7 +60,7 @@ interface ContextValueType {
 export type Auth0ContextType = ContextValueType
 
 const defaultContext: ContextValueType = {
-  isAuthenticated: false
+  isAuthenticated: false,
 }
 
 // create the context
@@ -79,7 +79,7 @@ const auth0ClientConfig: Auth0ClientOptions = {
   cacheLocation: 'localstorage',
   audience: AUTH_CONFIG.audience,
   responseType: 'token id_token',
-  scope: 'openid profile'
+  scope: 'openid profile',
 }
 
 const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
@@ -172,7 +172,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       auth0Client!.logout({
         returnTo: window.location.origin,
         client_id: AUTH_CONFIG.clientId,
-        ...options
+        ...options,
       }),
     [auth0Client]
   )
@@ -198,7 +198,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
         getTokenSilently,
         handleRedirectCallback,
         getIdTokenClaims,
-        getTokenWithPopup
+        getTokenWithPopup,
       }}
     >
       {children}

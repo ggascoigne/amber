@@ -14,7 +14,7 @@ function CardFooter({ ...props }) {
   const { classes, className, children, ...rest } = props
   const cardFooterClasses = classNames({
     [classes.cardFooter]: true,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   })
   return (
     <div className={cardFooterClasses} {...rest}>
@@ -25,7 +25,7 @@ function CardFooter({ ...props }) {
 
 CardFooter.propTypes = {
   classes: PropTypes.object.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
 }
 
 export default withStyles(cardFooterStyle)(CardFooter)

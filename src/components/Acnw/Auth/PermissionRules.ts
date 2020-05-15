@@ -11,19 +11,19 @@ export enum Perms {
   PostsList = 'posts:list',
   HomePageVisit = 'home-page:visit',
   GraphiqlLoad = 'graphiql:load',
-  IsAdmin = 'is:Admin'
+  IsAdmin = 'is:Admin',
 }
 
 const rules: Rules = {
   ROLE_ADMIN: {
     dynamic: {
-      '*': () => true
-    }
+      '*': () => true,
+    },
   },
   ROLE_USER: {
-    static: [Perms.PostsList, Perms.HomePageVisit]
+    static: [Perms.PostsList, Perms.HomePageVisit],
   },
-  ROLE_GAME_ADMIN: {}
+  ROLE_GAME_ADMIN: {},
 }
 
 export default rules

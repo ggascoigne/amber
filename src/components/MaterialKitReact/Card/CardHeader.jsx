@@ -16,7 +16,7 @@ function CardHeader({ ...props }) {
     [classes.cardHeader]: true,
     [classes[color + 'CardHeader']]: color,
     [classes.cardHeaderPlain]: plain,
-    [className]: className !== undefined
+    [className]: className !== undefined,
   })
   return (
     <div className={cardHeaderClasses} {...rest}>
@@ -29,7 +29,7 @@ CardHeader.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   color: PropTypes.oneOf(['warning', 'success', 'danger', 'info', 'primary']),
-  plain: PropTypes.bool
+  plain: PropTypes.bool,
 }
 
 export default withStyles(cardHeaderStyle)(CardHeader)

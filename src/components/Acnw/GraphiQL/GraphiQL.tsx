@@ -16,7 +16,7 @@ export const useStyles = makeStyles(
     graphiQlWrapper: {
       height: 'calc(100% - 64px) !Important',
       maxHeight: '100vh',
-      padding: 12
+      padding: 12,
     },
     box: {
       boxSizing: 'content-box',
@@ -24,28 +24,28 @@ export const useStyles = makeStyles(
       border: '1px solid #d6d6d6',
       display: 'flex',
       flexDirection: 'row',
-      width: '100%'
+      width: '100%',
     },
     '@global': {
       '.graphiql-explorer-root': {
         overflow: 'unset !important',
-        padding: '0 !important'
+        padding: '0 !important',
       },
       '.graphiql-explorer-root > :first-child': {
         padding: '8px 8px 0 8px',
-        overflowX: 'hidden !important'
+        overflowX: 'hidden !important',
       },
       '.graphiql-explorer-root > :nth-child(2)': {
-        padding: '0px 8px 0 8px'
+        padding: '0px 8px 0 8px',
       },
       '.graphiql-container .execute-button:focus': {
-        outline: 0
+        outline: 0,
       },
       '.graphiql-container .historyPaneWrap': {
         width: '300px !important',
-        boxShadow: 'none !important'
-      }
-    }
+        boxShadow: 'none !important',
+      },
+    },
   })
 )
 
@@ -55,15 +55,15 @@ const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
     headers: jwtToken
       ? {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`
+          Authorization: `Bearer ${jwtToken}`,
         }
       : {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-    body: JSON.stringify(graphQLParams)
+    body: JSON.stringify(graphQLParams),
   })
-    .then(response => response.text())
-    .then(responseBody => {
+    .then((response) => response.text())
+    .then((responseBody) => {
       try {
         return JSON.parse(responseBody)
       } catch (e) {
@@ -83,7 +83,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const [jwtToken, setJwtToken] = useState<string | undefined>()
 
   useEffect(() => {
-    isAuthenticated && getTokenSilently && getTokenSilently().then(t => setJwtToken(t))
+    isAuthenticated && getTokenSilently && getTokenSilently().then((t) => setJwtToken(t))
   }, [getTokenSilently, isAuthenticated])
 
   const handleInspectOperation = useCallback(
@@ -100,12 +100,12 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
       const end = { line: mousePos.line, ch: token.end }
       const relevantMousePos = {
         start: cm.indexFromPos(start),
-        end: cm.indexFromPos(end)
+        end: cm.indexFromPos(end),
       }
 
       const position = relevantMousePos
 
-      const def = parsedQuery.definitions.find(definition => {
+      const def = parsedQuery.definitions.find((definition) => {
         if (!definition.loc) {
           console.log('Missing location information for definition')
           return false
@@ -140,13 +140,13 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
 
   useEffect(() => {
     graphQLFetcher(jwtToken)({
-      query: getIntrospectionQuery()
-    }).then(result => {
+      query: getIntrospectionQuery(),
+    }).then((result) => {
       const editor = _graphiql.current !== null && _graphiql.current.getQueryEditor()
       editor &&
         editor.setOption('extraKeys', {
           ...(editor.options.extraKeys || {}),
-          'Shift-Alt-LeftClick': handleInspectOperation
+          'Shift-Alt-LeftClick': handleInspectOperation,
         })
       setSchema(buildClientSchema(result.data))
     })
@@ -155,7 +155,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const handleEditQuery = useCallback((query: string) => setQuery(query), [])
 
   const handleToggleExplorer = useCallback(() => {
-    setExplorerIsOpen(old => !old)
+    setExplorerIsOpen((old) => !old)
   }, [])
 
   return (

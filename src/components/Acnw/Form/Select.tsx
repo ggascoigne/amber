@@ -18,7 +18,7 @@ export const Select: React.ComponentType<SelectProps> = (props: SelectProps) => 
     disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
     ...props,
     ...field,
-    error: showError
+    error: showError,
   }
   return <MuiSelect {...fullProps} />
 }

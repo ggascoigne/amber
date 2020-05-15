@@ -13,7 +13,7 @@ import {
   Typography,
   createMuiTheme,
   createStyles,
-  makeStyles
+  makeStyles,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react'
@@ -25,23 +25,23 @@ import React, { useCallback, useState } from 'react'
 const theme = createMuiTheme({
   palette: {
     background: {
-      default: '#fafafa'
-    }
+      default: '#fafafa',
+    },
   },
   typography: {
     body2: {
-      fontWeight: 300
-    }
+      fontWeight: 300,
+    },
   },
   overrides: {
     MuiTableSortLabel: {
       root: {
         '&:hover': {
-          color: 'inherit'
-        }
-      }
-    }
-  }
+          color: 'inherit',
+        },
+      },
+    },
+  },
 })
 
 const drawerWidth = 240
@@ -50,13 +50,13 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
-      minHeight: '100vh'
+      minHeight: '100vh',
     },
     drawer: {
       [theme.breakpoints.up('md')]: {
         width: drawerWidth,
-        flexShrink: 0
-      }
+        flexShrink: 0,
+      },
     },
     appBar: {
       flex: '1 1 auto',
@@ -65,26 +65,26 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginLeft: drawerWidth,
       [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`
-      }
+        width: `calc(100% - ${drawerWidth}px)`,
+      },
     },
     menuButton: {
       marginRight: 20,
       [theme.breakpoints.up('md')]: {
-        display: 'none'
-      }
+        display: 'none',
+      },
     },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
       width: drawerWidth,
-      overflowX: 'hidden'
+      overflowX: 'hidden',
     },
     content: {
       minHeight: '100vh',
       width: '100%',
       flexGrow: 1,
       paddingTop: theme.spacing(3),
-      paddingBottom: theme.spacing(3)
+      paddingBottom: theme.spacing(3),
     },
     list: {
       ...defaultFont,
@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) =>
       listStyle: 'none',
       paddingTop: '0',
       paddingBottom: '0',
-      color: 'inherit'
+      color: 'inherit',
     },
     listItem: {
       float: 'left',
@@ -103,11 +103,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'block',
       width: 'auto',
       margin: '0',
-      padding: '0'
+      padding: '0',
     },
     listItemText: {
-      padding: '0 !important'
-    }
+      padding: '0 !important',
+    },
   })
 )
 
@@ -130,7 +130,7 @@ export const App: React.FC = () => {
     </div>
   )
 
-  const rightLinks: React.FC<{ small?: boolean }> = props => (
+  const rightLinks: React.FC<{ small?: boolean }> = (props) => (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         <LoginMenu {...props} />
@@ -169,10 +169,10 @@ export const App: React.FC = () => {
               open={mobileOpen}
               onClose={handleDrawerToggle}
               classes={{
-                paper: classes.drawerPaper
+                paper: classes.drawerPaper,
               }}
               ModalProps={{
-                keepMounted: true // Better open performance on mobile.
+                keepMounted: true, // Better open performance on mobile.
               }}
             >
               {drawer}
@@ -183,7 +183,7 @@ export const App: React.FC = () => {
           <Hidden smDown>
             <Drawer
               classes={{
-                paper: classes.drawerPaper
+                paper: classes.drawerPaper,
               }}
               variant='permanent'
               open

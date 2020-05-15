@@ -13,7 +13,7 @@ const {
   pgloader,
   getPostgresArgs,
   info,
-  psql
+  psql,
 } = require('./scriptUtils')
 const { stripIndent } = require('common-tags')
 const { sleep } = require('./sleep')
@@ -50,10 +50,10 @@ async function pipeLiveToLocalMysql(mysqlDbconfig) {
       '--hex-blob',
       '--default-character-set=utf8',
       `--user=${process.env.LEGACY_LIVE_MYSQL_USER}`,
-      process.env.LEGACY_LIVE_MYSQL_DATABASE
+      process.env.LEGACY_LIVE_MYSQL_DATABASE,
     ])
       .on('error', reject)
-      .on('exit', code => (!code ? resolve() : reject(code)))
+      .on('exit', (code) => (!code ? resolve() : reject(code)))
 
     const { database, host, port, user, password } = mysqlDbconfig
     const importing = spawn(
@@ -62,7 +62,7 @@ async function pipeLiveToLocalMysql(mysqlDbconfig) {
       { env: { MYSQL_PWD: password } }
     )
       .on('error', reject)
-      .on('exit', code => (!code ? resolve() : reject(code)))
+      .on('exit', (code) => (!code ? resolve() : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 
@@ -82,7 +82,7 @@ async function pipeTmpToLive(tmpDbConfig, dbconfig) {
     psqlArgs.push('-v', 'ON_ERROR_STOP=1')
     const importing = spawn('/usr/local/bin/psql', psqlArgs)
       .on('error', reject)
-      .on('exit', code => (!code ? resolve() : reject(code)))
+      .on('exit', (code) => (!code ? resolve() : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 
@@ -152,7 +152,7 @@ async function main() {
     host: config.database.host,
     password: config.database.password,
     ssl: config.database.ssl,
-    ssl_cert: config.database.ssl_cert
+    ssl_cert: config.database.ssl_cert,
   }
 
   const tmpDbConfig = {
@@ -161,7 +161,7 @@ async function main() {
     port: process.env.MIGRATION_POSTGRES_PORT,
     host: process.env.MIGRATION_POSTGRES_HOST,
     password: process.env.MIGRATION_POSTGRES_PASSWORD,
-    ssl: process.env.MIGRATION_POSTGRES_SSL
+    ssl: process.env.MIGRATION_POSTGRES_SSL,
   }
 
   const mysqlDbconfig = {
@@ -170,7 +170,7 @@ async function main() {
     port: process.env.MIGRATION_MYSQL_PORT,
     host: process.env.MIGRATION_MYSQL_HOST,
     password: process.env.MIGRATION_MYSQL_PASSWORD,
-    ssl: process.env.MIGRATION_MYSQL_SSL
+    ssl: process.env.MIGRATION_MYSQL_SSL,
   }
 
   if (!process.env.SKIP_DOWNLOAD) {
@@ -240,8 +240,8 @@ async function main() {
           DATABASE_PORT: tmpDbConfig.port,
           DATABASE_HOST: tmpDbConfig.host,
           DATABASE_PASSWORD: tmpDbConfig.password,
-          DATABASE_SSL: tmpDbConfig.ssl
-        }
+          DATABASE_SSL: tmpDbConfig.ssl,
+        },
       }
     )
   )
@@ -262,7 +262,7 @@ async function main() {
       './node_modules/.bin/knex-migrate',
       ['--cwd', './support', '--knexfile', './knexfile.js', 'up', '--to', '20190127145944_omit_tables'],
       {
-        stdio: 'inherit'
+        stdio: 'inherit',
       }
     )
   )
@@ -273,7 +273,7 @@ async function main() {
   info('Run rest of the migrators')
   runOrExit(
     spawnSync('./node_modules/.bin/knex-migrate', ['--cwd', './support', '--knexfile', './knexfile.js', 'up'], {
-      stdio: 'inherit'
+      stdio: 'inherit',
     })
   )
 

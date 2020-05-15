@@ -38,7 +38,7 @@ const app = combineMiddlewares([
   postgraphile(getPool(`${__dirname}/../shared/`), getSchemas(), {
     ...options,
     readCache: `${__dirname}/../shared/postgraphile.cache`,
-    pgSettings: req => {
+    pgSettings: (req) => {
       const { user } = req as any
       console.log(`user = ${JSON.stringify(user, null, 2)}`)
       const settings: Record<string, any> = {}
@@ -49,13 +49,13 @@ const app = combineMiddlewares([
       }
       console.log(`settings = ${JSON.stringify(settings, null, 2)}`)
       return settings
-    }
+    },
   }),
-  authErrors
+  authErrors,
 ])
 
 module.exports = (req: Request, res: Response) => {
-  app(req, res, err => {
+  app(req, res, (err) => {
     if (err) {
       // eslint-disable-next-line no-console
       console.error(err)

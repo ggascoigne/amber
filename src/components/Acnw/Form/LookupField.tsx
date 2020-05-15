@@ -10,7 +10,7 @@ export interface LookupFieldProps extends TextFieldProps {
   realm: string
 }
 
-export const LookupField: React.ComponentType<LookupFieldProps> = props => {
+export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   const { select, realm, ...rest } = props
   const { loading, error, data } = useGetLookupValuesQuery({ variables: { realm } })
   if (loading) {
@@ -19,9 +19,9 @@ export const LookupField: React.ComponentType<LookupFieldProps> = props => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map(v => ({
+  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map((v) => ({
     value: v!.code,
-    text: v!.value
+    text: v!.value,
   }))
   return <SelectField {...rest} selectValues={selectValues!} />
 }

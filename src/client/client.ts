@@ -39,7 +39,7 @@ const STORES = [gameFilterStore, urlSourceStore]
 
 const cache = new InMemoryCache({
   // postgraphile uses nodeId for the uuid, and leaves id as the database id.
-  dataIdFromObject: (obj: any) => obj.nodeId || null
+  dataIdFromObject: (obj: any) => obj.nodeId || null,
 })
 
 const Client = (authProps: Auth0ContextType) =>
@@ -51,16 +51,16 @@ const Client = (authProps: Auth0ContextType) =>
         const token = getTokenSilently && (await getTokenSilently())
         operation.setContext({
           headers: {
-            Authorization: token ? `Bearer ${token}` : ''
-          }
+            Authorization: token ? `Bearer ${token}` : '',
+          },
         })
       }
     },
     cache,
     // @ts-ignore
     resolvers: {
-      Mutation: mergeGet('mutations')(STORES)
-    }
+      Mutation: mergeGet('mutations')(STORES),
+    },
   })
 
 cache.writeData({ data: mergeGet('defaults')(STORES) })

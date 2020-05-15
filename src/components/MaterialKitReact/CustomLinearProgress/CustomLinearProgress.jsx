@@ -14,19 +14,19 @@ function CustomLinearProgress({ ...props }) {
       {...rest}
       classes={{
         root: classes.root + ' ' + classes[color + 'Background'],
-        bar: classes.bar + ' ' + classes[color]
+        bar: classes.bar + ' ' + classes[color],
       }}
     />
   )
 }
 
 CustomLinearProgress.defaultProps = {
-  color: 'gray'
+  color: 'gray',
 }
 
 CustomLinearProgress.propTypes = {
   classes: PropTypes.object.isRequired,
-  color: PropTypes.oneOf(['primary', 'warning', 'danger', 'success', 'info', 'rose', 'gray'])
+  color: PropTypes.oneOf(['primary', 'warning', 'danger', 'success', 'info', 'rose', 'gray']),
 }
 
 export default withStyles(customLinearProgressStyle)(CustomLinearProgress)

@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     listItem: {
       paddingTop: 5,
-      paddingBottom: 5
-    }
+      paddingBottom: 5,
+    },
   })
 )
 

@@ -12,7 +12,7 @@ function Danger({ ...props }) {
 }
 
 Danger.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 }
 
 export default withStyles(typographyStyle)(Danger)

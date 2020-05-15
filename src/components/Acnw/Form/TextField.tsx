@@ -7,7 +7,7 @@ export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'va
   overrideFormik?: boolean
 }
 
-export const TextField: React.ComponentType<TextFieldProps> = props => {
+export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const { overrideFormik, ...rest } = props
   // @ts-ignore
   const [field, meta] = useField(rest)
@@ -26,18 +26,18 @@ export const TextField: React.ComponentType<TextFieldProps> = props => {
   const newProps = overrideFormik
     ? {
         ...field,
-        ...rest
+        ...rest,
       }
     : {
         ...rest,
-        ...field
+        ...field,
       }
 
   const fullProps = {
     ...newProps,
     error: showError,
     helperText: showError ? error : rest.helperText,
-    disabled: rest.disabled !== undefined ? rest.disabled : isSubmitting
+    disabled: rest.disabled !== undefined ? rest.disabled : isSubmitting,
   }
   return <MuiTextField {...fullProps} />
 }

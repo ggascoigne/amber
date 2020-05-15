@@ -3,14 +3,14 @@ import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
 import { TableInstance } from 'react-table'
 
 export function TablePagination<T extends object>({
-  instance
+  instance,
 }: PropsWithChildren<{ instance: TableInstance<T> }>): ReactElement | null {
   const {
     state: { pageIndex, pageSize, rowCount = instance.rows.length },
     gotoPage,
     nextPage,
     previousPage,
-    setPageSize
+    setPageSize,
   } = instance
 
   const handleChangePage = useCallback(
@@ -34,7 +34,7 @@ export function TablePagination<T extends object>({
       rowsPerPage={pageSize}
       page={pageIndex}
       onChangePage={handleChangePage}
-      onChangeRowsPerPage={e => {
+      onChangeRowsPerPage={(e) => {
         setPageSize(Number(e.target.value))
       }}
     />

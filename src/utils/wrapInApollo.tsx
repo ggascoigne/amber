@@ -14,13 +14,13 @@ const executableSchema = makeExecutableSchema({
   typeDefs: schema,
   // resolvers,
   resolverValidationOptions: {
-    requireResolversForResolveType: false
-  }
+    requireResolversForResolveType: false,
+  },
 })
 
 const client = new ApolloClient({
   link: new SchemaLink({ schema: executableSchema }),
-  cache
+  cache,
 })
 
 // used in tests only

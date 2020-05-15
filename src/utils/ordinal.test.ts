@@ -12,7 +12,7 @@ describe('ordinals', () => {
     { input: 21, output: 'twenty-first' },
     { input: 34, output: 'thirty-fourth' },
     { input: 78, output: 'seventy-eighth' },
-    { input: 90, output: 'ninetieth' }
+    { input: 90, output: 'ninetieth' },
   ]
 
   data.forEach((run, index) => {

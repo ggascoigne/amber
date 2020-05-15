@@ -13,14 +13,14 @@ class Parallax extends React.Component {
     super(props)
     const windowScrollTop = window.pageYOffset / 3
     this.state = {
-      transform: 'translate3d(0,' + windowScrollTop + 'px,0)'
+      transform: 'translate3d(0,' + windowScrollTop + 'px,0)',
     }
     this.resetTransform = this.resetTransform.bind(this)
   }
   componentDidMount() {
     const windowScrollTop = window.pageYOffset / 3
     this.setState({
-      transform: 'translate3d(0,' + windowScrollTop + 'px,0)'
+      transform: 'translate3d(0,' + windowScrollTop + 'px,0)',
     })
     window.addEventListener('scroll', this.resetTransform)
   }
@@ -30,7 +30,7 @@ class Parallax extends React.Component {
   resetTransform() {
     const windowScrollTop = window.pageYOffset / 3
     this.setState({
-      transform: 'translate3d(0,' + windowScrollTop + 'px,0)'
+      transform: 'translate3d(0,' + windowScrollTop + 'px,0)',
     })
   }
   render() {
@@ -39,7 +39,7 @@ class Parallax extends React.Component {
       [classes.parallax]: true,
       [classes.filter]: filter,
       [classes.small]: small,
-      [className]: className !== undefined
+      [className]: className !== undefined,
     })
     return (
       <div
@@ -47,7 +47,7 @@ class Parallax extends React.Component {
         style={{
           ...style,
           backgroundImage: 'url(' + image + ')',
-          ...this.state
+          ...this.state,
         }}
         ref='parallax'
       >
@@ -63,7 +63,7 @@ Parallax.propTypes = {
   filter: PropTypes.bool,
   children: PropTypes.node,
   style: PropTypes.string,
-  image: PropTypes.string
+  image: PropTypes.string,
 }
 
 export default withStyles(parallaxStyle)(Parallax)

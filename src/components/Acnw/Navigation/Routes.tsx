@@ -23,45 +23,45 @@ export const rootRoutes: RootRoutes = [
     label: 'Welcome',
     subText: 'Introduction',
     exact: true,
-    component: Welcome
+    component: Welcome,
   },
   {
     path: '/aboutacnw',
     label: 'AmberCon NW',
     subText: 'What you get and what it costs',
     exact: false,
-    component: AboutAmberconNw
+    component: AboutAmberconNw,
   },
   {
     path: '/aboutedge',
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
-    component: AboutAmberconNw
+    component: AboutAmberconNw,
   },
   {
     path: '/pastCons/:year/:slot?/:game?',
     link: '/pastCons',
     exact: false,
-    component: PastConsGamesPage
+    component: PastConsGamesPage,
   },
   {
     path: '/pastCons',
     label: 'Past Cons',
     exact: true,
-    component: PastConsPage
+    component: PastConsPage,
   },
   {
     path: '/lookups',
     label: 'Lookups',
     exact: true,
-    component: Lookups
+    component: Lookups,
   },
   {
     path: '/games',
     label: 'Games',
     exact: true,
-    component: Games
+    component: Games,
   },
   {
     path: '/graphiql',
@@ -69,12 +69,12 @@ export const rootRoutes: RootRoutes = [
     subText: 'Dynamically query the ACNW database',
     exact: false,
     component: GraphiQLPage,
-    permission: Perms.GraphiqlLoad
+    permission: Perms.GraphiqlLoad,
   },
   {
     path: '/credits',
     label: 'Credits',
     exact: false,
-    component: Credits
-  }
+    component: Credits,
+  },
 ]

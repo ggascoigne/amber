@@ -6,7 +6,7 @@ import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    ...contentPageStyles(theme)
+    ...contentPageStyles(theme),
   })
 )
 

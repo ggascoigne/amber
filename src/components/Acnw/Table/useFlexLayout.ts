@@ -14,9 +14,9 @@ const getTableBodyProps = <D extends object>(props: any, { instance }: Meta<D>) 
   props,
   {
     style: {
-      minWidth: `${instance.totalColumnsWidth}px`
-    }
-  }
+      minWidth: `${instance.totalColumnsWidth}px`,
+    },
+  },
 ]
 
 const getRowStyles = <D extends object>(props: any, { instance }: Meta<D>) => [
@@ -25,9 +25,9 @@ const getRowStyles = <D extends object>(props: any, { instance }: Meta<D>) => [
     style: {
       display: 'flex',
       flex: '1 0 auto',
-      minWidth: `${instance.totalColumnsMinWidth}px`
-    }
-  }
+      minWidth: `${instance.totalColumnsMinWidth}px`,
+    },
+  },
 ]
 
 const getHeaderProps = <D extends object>(props: any, { column }: Meta<D, { column: HeaderGroup<D> }>) => [
@@ -37,9 +37,9 @@ const getHeaderProps = <D extends object>(props: any, { column }: Meta<D, { colu
       boxSizing: 'border-box',
       flex: `${column.totalWidth} 0 auto`,
       minWidth: `${column.totalMinWidth}px`,
-      width: `${column.totalWidth}px`
-    }
-  }
+      width: `${column.totalWidth}px`,
+    },
+  },
 ]
 
 const getCellProps = <D extends object>(props: any, { cell }: Meta<D, { cell: Cell<D> }>) => [
@@ -49,7 +49,7 @@ const getCellProps = <D extends object>(props: any, { cell }: Meta<D, { cell: Ce
       boxSizing: 'border-box',
       flex: `${cell.column.totalWidth} 0 auto`,
       minWidth: `${cell.column.totalMinWidth}px`,
-      width: `${cell.column.totalWidth}px`
-    }
-  }
+      width: `${cell.column.totalWidth}px`,
+    },
+  },
 ]

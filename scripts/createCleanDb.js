@@ -16,7 +16,7 @@ createCleanDb({ database, port, user, password, host })
   .then(() => {
     console.log('Complete')
   })
-  .catch(reason => {
+  .catch((reason) => {
     console.error(chalk.bold.red('error detected'))
     console.error(reason)
     process.exit(-1)

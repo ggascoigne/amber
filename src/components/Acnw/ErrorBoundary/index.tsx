@@ -26,7 +26,7 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
     static readonly WrappedComponent = BaseComponent
 
     readonly state: HocState = {
-      error: undefined
+      error: undefined,
     }
 
     componentDidCatch(error: Error | null, info: object) {

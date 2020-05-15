@@ -2,7 +2,7 @@ import { Cell, HeaderGroup, Hooks, TableInstance } from 'react-table'
 
 const cellStyles = {
   display: 'inline-block',
-  boxSizing: 'border-box'
+  boxSizing: 'border-box',
 }
 
 const getRowStyles = (props: any, { instance }: { instance: TableInstance }) => [
@@ -10,9 +10,9 @@ const getRowStyles = (props: any, { instance }: { instance: TableInstance }) => 
   {
     style: {
       display: 'flex',
-      width: `${instance.totalColumnsWidth}px`
-    }
-  }
+      width: `${instance.totalColumnsWidth}px`,
+    },
+  },
 ]
 
 export const useBlockLayout = (hooks: Hooks) => {
@@ -24,9 +24,9 @@ export const useBlockLayout = (hooks: Hooks) => {
     {
       style: {
         ...cellStyles,
-        width: `${column.totalWidth}px`
-      }
-    }
+        width: `${column.totalWidth}px`,
+      },
+    },
   ])
 
   hooks.getCellProps.push((props: object, { cell }: { cell: Cell }) => [
@@ -34,9 +34,9 @@ export const useBlockLayout = (hooks: Hooks) => {
     {
       style: {
         ...cellStyles,
-        width: `${cell.column.totalWidth}px`
-      }
-    }
+        width: `${cell.column.totalWidth}px`,
+      },
+    },
   ])
 }
 

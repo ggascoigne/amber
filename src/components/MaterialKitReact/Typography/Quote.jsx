@@ -19,7 +19,7 @@ function Quote({ ...props }) {
 Quote.propTypes = {
   classes: PropTypes.object.isRequired,
   text: PropTypes.node,
-  author: PropTypes.node
+  author: PropTypes.node,
 }
 
 export default withStyles(typographyStyle)(Quote)

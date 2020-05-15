@@ -15,11 +15,11 @@ function Footer({ ...props }) {
   const { classes, whiteFont } = props
   const footerClasses = classNames({
     [classes.footer]: true,
-    [classes.footerWhiteFont]: whiteFont
+    [classes.footerWhiteFont]: whiteFont,
   })
   const aClasses = classNames({
     [classes.a]: true,
-    [classes.footerWhiteFont]: whiteFont
+    [classes.footerWhiteFont]: whiteFont,
   })
   return (
     <footer className={footerClasses}>
@@ -62,7 +62,7 @@ function Footer({ ...props }) {
 
 Footer.propTypes = {
   classes: PropTypes.object.isRequired,
-  whiteFont: PropTypes.bool
+  whiteFont: PropTypes.bool,
 }
 
 export default withStyles(footerStyle)(Footer)

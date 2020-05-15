@@ -25,7 +25,7 @@ const ordinals: { [k: number]: string } = {
   60: 'sixtieth',
   70: 'seventieth',
   80: 'eightieth',
-  90: 'ninetieth'
+  90: 'ninetieth',
 }
 
 const prefixes: { [k: number]: string } = {
@@ -36,7 +36,7 @@ const prefixes: { [k: number]: string } = {
   6: 'sixty',
   7: 'seventy',
   8: 'eighty',
-  9: 'ninety'
+  9: 'ninety',
 }
 
 // note only good for ordinals between 1 and 99 inclusive

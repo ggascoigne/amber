@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 'auto',
       height: 'auto',
       padding: '5px 5px 0px 12px',
-      marginBottom: '-12px'
-    }
+      marginBottom: '-12px',
+    },
   })
 )
 

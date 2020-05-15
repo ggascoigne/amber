@@ -4,7 +4,7 @@
 const conventionDates = {
   year: 2017,
   startDay: 2,
-  endDay: 5
+  endDay: 5,
 }
 
 const configurationService = {
@@ -32,7 +32,7 @@ const configurationService = {
   fourDayVoucher: 70,
   threeDayMembership: 100,
   threeDayVoucher: 50,
-  deposit: 30
+  deposit: 30,
 }
 
 export default configurationService

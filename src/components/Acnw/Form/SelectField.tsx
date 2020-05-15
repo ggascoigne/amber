@@ -7,8 +7,8 @@ import { TextField, TextFieldProps } from './TextField'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     multiSelectCheckBox: {
-      paddingLeft: theme.spacing(1)
-    }
+      paddingLeft: theme.spacing(1),
+    },
   })
 )
 
@@ -28,7 +28,7 @@ const getValue = (value: SelectFieldValue): any => (typeof value === 'string' ? 
 
 const getLabel = (value: SelectFieldValue): string => (typeof value === 'string' ? value : value.text)
 
-export const SelectField: React.ComponentType<SelectFieldProps> = props => {
+export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
   const classes = useStyles({})
   // @ts-ignore
   const [field] = useField(props)
@@ -37,14 +37,14 @@ export const SelectField: React.ComponentType<SelectFieldProps> = props => {
     <TextField select {...rest}>
       {selectValues &&
         !props?.SelectProps?.multiple &&
-        selectValues.map(s => (
+        selectValues.map((s) => (
           <MenuItem key={getValue(s)} value={getValue(s)}>
             {getLabel(s)}
           </MenuItem>
         ))}
       {selectValues &&
         props?.SelectProps?.multiple &&
-        selectValues.map(s => (
+        selectValues.map((s) => (
           <MenuItem key={getValue(s)} value={getValue(s)} className={classes.multiSelectCheckBox}>
             <Checkbox checked={!!field.value.find((i: any) => i === getValue(s))} />
             <ListItemText primary={getLabel(s)} />

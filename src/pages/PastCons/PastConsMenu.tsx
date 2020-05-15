@@ -20,9 +20,9 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingTop: 6,
       paddingLeft: 5,
       [theme.breakpoints.up('sm')]: {
-        paddingRight: 20
-      }
-    }
+        paddingRight: 20,
+      },
+    },
   })
 )
 
@@ -36,7 +36,7 @@ export const PastConsMenu: React.FC = () => {
     return <GraphQLError error={error} />
   }
   const {
-    gameFilter: { year, slot: filterSlot }
+    gameFilter: { year, slot: filterSlot },
   } = data!
 
   return (
