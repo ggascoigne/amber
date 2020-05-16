@@ -1,5 +1,5 @@
 ///<reference types="webpack-env" />
-import 'assets/scss/material-kit-react.css?v=1.3.0'
+import 'assets/scss/material-kit-react.scss?v=1.8.0'
 import 'react-app-polyfill/ie11'
 
 import { ApolloProvider } from '@apollo/react-hooks'
@@ -13,13 +13,13 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import registerServiceWorker from './utils/registerServiceWorker'
 
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const whyDidYouRender = require('@welldone-software/why-did-you-render')
-  whyDidYouRender(React, {
-    trackAllPureComponents: true,
-  })
-}
+// if (process.env.NODE_ENV === 'development') {
+//   // eslint-disable-next-line @typescript-eslint/no-var-requires
+//   const whyDidYouRender = require('@welldone-software/why-did-you-render')
+//   whyDidYouRender(React, {
+//     trackAllPureComponents: true,
+//   })
+// }
 
 const rootElement = document.getElementById('root')
 

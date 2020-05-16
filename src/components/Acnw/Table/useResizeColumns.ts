@@ -142,9 +142,9 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
   const state: TableState<D> & UseResizeColumnsState<D> = previousState as TableState<D> & UseResizeColumnsState<D>
   if (action.type === actions.init) {
     return {
-      columnResizing: {
-        columnWidths: {},
-      },
+      // columnResizing: {
+      //   columnWidths: {},
+      // },
       ...state,
     }
   }
