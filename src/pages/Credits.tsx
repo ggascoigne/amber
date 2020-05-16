@@ -23,6 +23,12 @@ export const Credits = () => (
         </a>
       </li>
       <li>
+        Parts based on{' '}
+        <a href='https://demos.creative-tim.com/material-kit-react' title='Material Kit React'>
+          Material Kit React
+        </a>
+      </li>
+      <li>
         Various useful utilities from from <a href='https://usehooks.com'> Use Hooks</a>
       </li>
     </ul>
