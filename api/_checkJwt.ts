@@ -1,3 +1,5 @@
+import { audience } from './_constants'
+
 const jwt = require('express-jwt')
 const fs = require('fs')
 
@@ -9,7 +11,7 @@ const public_key = fs.readFileSync(`./shared/certs/${process.env.REACT_APP_AUTH0
 
 export const checkJwt = jwt({
   secret: public_key,
-  audience: 'https://amberconnw.org',
+  audience,
   issuer: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/`,
   algorithms: ['RS256'],
   credentialsRequired: false,

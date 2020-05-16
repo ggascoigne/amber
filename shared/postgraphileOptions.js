@@ -9,7 +9,7 @@ exports.options = {
   graphqlRoute: '/api/graphql',
   // externalUrlBase: `/${process.env.AWS_STAGE}`,
   absoluteRoutes: false,
-  disableQueryLog: false,
+  disableQueryLog: process.env.NODE_ENV === 'production',
   enableCors: false,
   ignoreRBAC: false,
   showErrorStack: false,

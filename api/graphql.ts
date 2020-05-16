@@ -8,8 +8,7 @@ import { options } from '../shared/postgraphileOptions'
 import { authErrors } from './_authErrors'
 import { checkJwt } from './_checkJwt'
 import { combineMiddlewares } from './_combineMiddlewares'
-
-const audience = 'https://amberconnw.org'
+import { audience, isDev } from './_constants'
 
 const app = combineMiddlewares([
   /*
@@ -40,14 +39,14 @@ const app = combineMiddlewares([
     readCache: `${__dirname}/../shared/postgraphile.cache`,
     pgSettings: (req) => {
       const { user } = req as any
-      console.log(`user = ${JSON.stringify(user, null, 2)}`)
+      // console.log(`user = ${JSON.stringify(user, null, 2)}`)
       const settings: Record<string, any> = {}
       if (user) {
         // string values because pgSettings only groks strings
         settings['user.id'] = `${user[audience].userId}`
         settings['user.admin'] = `${user[audience].roles.indexOf('ROLE_ADMIN') !== -1}`
       }
-      console.log(`settings = ${JSON.stringify(settings, null, 2)}`)
+      isDev && console.log(`settings = ${JSON.stringify(settings, null, 2)}`)
       return settings
     },
   }),
