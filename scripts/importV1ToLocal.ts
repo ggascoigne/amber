@@ -1,40 +1,45 @@
-#!/usr/bin/env node
+#!/usr/bin/env ts-node-script
 
-const { config } = require('../shared/config')
-const { spawn, spawnSync } = require('child_process')
-const {
-  bail,
+/// <reference types="../types/common-tags" />
+import { spawn, spawnSync } from 'child_process'
+import fs from 'fs'
+
+import cli from 'cli-ux'
+import { stripIndent } from 'common-tags'
+import meow from 'meow'
+import tempy from 'tempy'
+
+import { DbConfig, config } from '../shared/config'
+import {
   MYSQL_PATH,
-  runOrExit,
-  dropKnexMigrationTables,
-  createKnexMigrationTables,
+  bail,
   createCleanDb,
   createCleanDbMySql,
-  pgloader,
+  createKnexMigrationTables,
+  dropKnexMigrationTables,
   getPostgresArgs,
   info,
+  pgloader,
   psql,
-} = require('./scriptUtils')
-const { stripIndent } = require('common-tags')
-const { sleep } = require('./sleep')
-const tempy = require('tempy')
-const fs = require('fs')
+  runOrExit,
+} from './scriptUtils'
+import { sleep } from './sleep'
 
-// note run `SKIP_DOWNLOAD=true yarn db:import` if you want to just re-run this with the last download
+// note run `yarn db:import --skip-download` if you want to just re-run this with the last download
 
-async function pipeLiveToLocalMysql(mysqlDbconfig) {
+async function pipeLiveToLocalMysql(mysqlDbconfig: DbConfig, verbose: boolean) {
   return new Promise((resolve, reject) => {
     const exporting = spawn('/usr/local/bin/plink', [
       '-ssh',
       '-pw',
-      process.env.SSH_KEYSTORE_PASSWORD,
+      process.env.SSH_KEYSTORE_PASSWORD!,
       '-P',
-      process.env.LEGACY_JUMP_BOX_PORT,
+      process.env.LEGACY_JUMP_BOX_PORT!,
       '-noagent',
       '-l',
-      process.env.LEGACY_JUMP_BOX_USER,
-      process.env.LEGACY_JUMP_BOX_HOST,
-      `MYSQL_PWD=${process.env.LEGACY_LIVE_MYSQL_PASSWORD}`,
+      process.env.LEGACY_JUMP_BOX_USER!,
+      process.env.LEGACY_JUMP_BOX_HOST!,
+      `MYSQL_PWD=${process.env.LEGACY_LIVE_MYSQL_PASSWORD!}`,
       '/usr/bin/mysqldump',
       '--max_allowed_packet=1G',
       '--skip-add-locks',
@@ -49,11 +54,11 @@ async function pipeLiveToLocalMysql(mysqlDbconfig) {
       '--triggers',
       '--hex-blob',
       '--default-character-set=utf8',
-      `--user=${process.env.LEGACY_LIVE_MYSQL_USER}`,
-      process.env.LEGACY_LIVE_MYSQL_DATABASE,
+      `--user=${process.env.LEGACY_LIVE_MYSQL_USER!}`,
+      process.env.LEGACY_LIVE_MYSQL_DATABASE!,
     ])
       .on('error', reject)
-      .on('exit', (code) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
 
     const { database, host, port, user, password } = mysqlDbconfig
     const importing = spawn(
@@ -62,17 +67,19 @@ async function pipeLiveToLocalMysql(mysqlDbconfig) {
       { env: { MYSQL_PWD: password } }
     )
       .on('error', reject)
-      .on('exit', (code) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 
     exporting.stderr.pipe(process.stderr)
-    importing.stdout.pipe(process.stdout)
+    if (verbose) {
+      importing.stdout.pipe(process.stdout)
+    }
     importing.stderr.pipe(process.stderr)
   })
 }
 
-async function pipeTmpToLive(tmpDbConfig, dbconfig) {
+async function pipeTmpToLive(tmpDbConfig: DbConfig, dbconfig: DbConfig, verbose: boolean) {
   return new Promise((resolve, reject) => {
     const pgDumpArgs = getPostgresArgs(tmpDbConfig)
     pgDumpArgs.push('--schema=public', '-a')
@@ -82,12 +89,14 @@ async function pipeTmpToLive(tmpDbConfig, dbconfig) {
     psqlArgs.push('-v', 'ON_ERROR_STOP=1')
     const importing = spawn('/usr/local/bin/psql', psqlArgs)
       .on('error', reject)
-      .on('exit', (code) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 
     exporting.stderr.pipe(process.stderr)
-    importing.stdout.pipe(process.stdout)
+    if (verbose) {
+      importing.stdout.pipe(process.stdout)
+    }
     importing.stderr.pipe(process.stderr)
   })
 }
@@ -95,7 +104,7 @@ async function pipeTmpToLive(tmpDbConfig, dbconfig) {
 /*
   reset all sequences based on the max index on the table.
  */
-function fixSequences(dbconfig) {
+function fixSequences(dbconfig: DbConfig, verbose: boolean) {
   // @formatter:off
   // language=PostgreSQL
   const q = stripIndent`
@@ -127,11 +136,11 @@ function fixSequences(dbconfig) {
   const args2 = getPostgresArgs(dbconfig)
   args2.push('-X', '-f', name2)
 
-  runOrExit(spawnSync('/usr/local/bin/psql', args1, { stdio: 'inherit' }))
-  runOrExit(spawnSync('/usr/local/bin/psql', args2, { stdio: 'inherit' }))
+  runOrExit(spawnSync('/usr/local/bin/psql', args1, { stdio: verbose ? 'inherit' : 'ignore' }))
+  runOrExit(spawnSync('/usr/local/bin/psql', args2, { stdio: verbose ? 'inherit' : 'ignore' }))
 }
 
-function cleanUpData(dbconfig) {
+function cleanUpData(dbconfig: DbConfig, verbose: boolean) {
   // @formatter:off
   // language=PostgreSQL
   const q = stripIndent`
@@ -141,54 +150,74 @@ function cleanUpData(dbconfig) {
   `
   // @formatter:on
 
-  return psql(dbconfig, q)
+  return psql(dbconfig, q, verbose)
 }
 
 async function main() {
-  const dbconfig = {
-    database: config.database.database,
-    user: config.database.username,
-    port: config.database.port,
-    host: config.database.host,
-    password: config.database.password,
-    ssl: config.database.ssl,
-    ssl_cert: config.database.ssl_cert,
-  }
+  const args = meow(
+    `
+      Usage
+        $ importV1ToLocal
+      
+      Options
+        --help          Show this help message
+        --verbose       Show verbose output
+        --skip-download Skip downloading database from public, just use the latest local mysl copy
+  `,
+    {
+      description: 'importV1ToLocal - download legacy MySql database and convert it to a local postgres database.',
+      flags: {
+        verbose: {
+          type: 'boolean',
+          alias: 'v',
+          default: false,
+        },
+        skipDownload: {
+          type: 'boolean',
+          alias: 's',
+          default: false,
+        },
+      },
+    }
+  )
 
-  const tmpDbConfig = {
+  const dbconfig: DbConfig = config.database
+
+  const tmpDbConfig: DbConfig = {
     database: 'acnw_v1_tmp',
-    user: process.env.MIGRATION_POSTGRES_USER,
-    port: process.env.MIGRATION_POSTGRES_PORT,
-    host: process.env.MIGRATION_POSTGRES_HOST,
-    password: process.env.MIGRATION_POSTGRES_PASSWORD,
-    ssl: process.env.MIGRATION_POSTGRES_SSL,
+    user: process.env.MIGRATION_POSTGRES_USER!,
+    port: parseInt(process.env.MIGRATION_POSTGRES_PORT || '', 10),
+    host: process.env.MIGRATION_POSTGRES_HOST!,
+    password: process.env.MIGRATION_POSTGRES_PASSWORD || '',
+    ssl: process.env.MIGRATION_POSTGRES_SSL === '1',
   }
 
-  const mysqlDbconfig = {
+  const mysqlDbconfig: DbConfig = {
     database: 'acnw_v1_tmp',
-    user: process.env.MIGRATION_MYSQL_USER,
-    port: process.env.MIGRATION_MYSQL_PORT,
-    host: process.env.MIGRATION_MYSQL_HOST,
-    password: process.env.MIGRATION_MYSQL_PASSWORD,
-    ssl: process.env.MIGRATION_MYSQL_SSL,
+    user: process.env.MIGRATION_MYSQL_USER!,
+    port: parseInt(process.env.MIGRATION_MYSQL_PORT || '', 10),
+    host: process.env.MIGRATION_MYSQL_HOST!,
+    password: process.env.MIGRATION_MYSQL_PASSWORD || '',
+    ssl: process.env.MIGRATION_MYSQL_SSL === '1',
   }
 
-  if (!process.env.SKIP_DOWNLOAD) {
+  cli.action.start('Import')
+  if (!process.env.SKIP_DOWNLOAD && !args.flags.skipDownload) {
     info(`Create tmp mysql database ${mysqlDbconfig.database}`)
-    await createCleanDbMySql(mysqlDbconfig)
+    await createCleanDbMySql(mysqlDbconfig, args.flags.verbose)
 
-    info("note that if this times out, make sure that you aren't on the vpn")
-    info(`download data from live mysql to local temp`)
-    await pipeLiveToLocalMysql(mysqlDbconfig).catch(bail)
+    info("Note that if this times out, make sure that you aren't on the vpn")
+    info(`Download data from live mysql to local temp`)
+    await pipeLiveToLocalMysql(mysqlDbconfig, args.flags.verbose).catch(bail)
 
     // if I don't do this then some of the users don't get copied over and things explode
-    info(`pausing to let mysql flush to disk`)
+    info(`Pausing to let mysql flush to disk`)
     await sleep(5000)
   } else {
-    info('skipping download')
+    info('Skipping download')
   }
   info(`Create tmp postgres database ${tmpDbConfig.database}`)
-  await createCleanDb(tmpDbConfig)
+  await createCleanDb(tmpDbConfig, args.flags.verbose)
 
   info(`Importing data from tmp mysql to tmp postgres database`)
   // note that workers=1 was needed to deal with a hard-to-trace connection error
@@ -220,11 +249,12 @@ async function main() {
          type bigint when (= precision 20) to integer drop typemod,
          type int when (= precision 11) to integer drop typemod
     ALTER SCHEMA '${tmpDbConfig.database}' RENAME TO 'public'
-  ;`
+  ;`,
+    args.flags.verbose
   )
 
   info('Inserting knex records into postgres tmpdb')
-  createKnexMigrationTables(tmpDbConfig)
+  createKnexMigrationTables(tmpDbConfig, args.flags.verbose)
 
   info('Preparing tmpdb for transfer to new database')
   runOrExit(
@@ -232,29 +262,29 @@ async function main() {
       './node_modules/.bin/knex-migrate',
       ['--cwd', './support', '--knexfile', './knexfile.js', 'up', '--only', '20171015154605_drop_junk.js'],
       {
-        stdio: 'inherit',
+        stdio: args.flags.verbose ? 'inherit' : 'ignore',
         env: {
           ...process.env,
           DATABASE_NAME: tmpDbConfig.database,
           DATABASE_USER: tmpDbConfig.user,
-          DATABASE_PORT: tmpDbConfig.port,
+          DATABASE_PORT: `${tmpDbConfig.port}`,
           DATABASE_HOST: tmpDbConfig.host,
           DATABASE_PASSWORD: tmpDbConfig.password,
-          DATABASE_SSL: tmpDbConfig.ssl,
+          DATABASE_SSL: `${tmpDbConfig.ssl}`,
         },
       }
     )
   )
 
   info('Deleting knex records in tmpdb')
-  dropKnexMigrationTables(tmpDbConfig)
+  dropKnexMigrationTables(tmpDbConfig, args.flags.verbose)
 
   info(`Recreating database ${dbconfig.database}`)
-  await createCleanDb(dbconfig)
+  await createCleanDb(dbconfig, args.flags.verbose)
 
   info('Inserting knex records')
   // remove if kex-migrate fixes it's issue
-  createKnexMigrationTables(dbconfig)
+  createKnexMigrationTables(dbconfig, args.flags.verbose)
 
   info('Create new schema')
   runOrExit(
@@ -262,26 +292,32 @@ async function main() {
       './node_modules/.bin/knex-migrate',
       ['--cwd', './support', '--knexfile', './knexfile.js', 'up', '--to', '20190127145944_omit_tables'],
       {
-        stdio: 'inherit',
+        stdio: args.flags.verbose ? 'inherit' : 'ignore',
       }
     )
   )
 
   info('Loading data from tmp to live')
-  await pipeTmpToLive(tmpDbConfig, dbconfig).catch(bail)
+  await pipeTmpToLive(tmpDbConfig, dbconfig, args.flags.verbose).catch(bail)
 
   info('Run rest of the migrators')
   runOrExit(
     spawnSync('./node_modules/.bin/knex-migrate', ['--cwd', './support', '--knexfile', './knexfile.js', 'up'], {
-      stdio: 'inherit',
+      stdio: args.flags.verbose ? 'inherit' : 'ignore',
     })
   )
 
-  info('resetting sequences')
-  fixSequences(dbconfig)
+  info('Resetting sequences')
+  fixSequences(dbconfig, args.flags.verbose)
 
-  info('clean up data')
-  cleanUpData(dbconfig)
+  info('Clean up data')
+  cleanUpData(dbconfig, args.flags.verbose)
 }
 
-main().then(() => info('Complete'))
+main().then(() => {
+  cli.action.stop('Complete')
+})
+
+// hack to force ts to treat the file as a module and avoid the
+// 'All files must be modules when the '--isolatedModules' flag is provided.' error
+export {}

@@ -54,7 +54,7 @@ const app = combineMiddlewares([
 ])
 
 module.exports = (req: Request, res: Response) => {
-  app(req, res, (err) => {
+  app(req, res, (err: any) => {
     if (err) {
       // eslint-disable-next-line no-console
       console.error(err)

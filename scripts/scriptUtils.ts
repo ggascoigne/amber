@@ -1,32 +1,33 @@
+import { SpawnSyncReturns } from 'child_process'
+
+import cli from 'cli-ux'
+
+import { DbConfig } from '../shared/config'
+
 const { spawn, spawnSync } = require('child_process')
 const { stripIndent } = require('common-tags')
 const chalk = require('chalk')
 const fs = require('fs')
 const tempy = require('tempy')
 
-const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
-exports.MYSQL_PATH = MYSQL_PATH
+export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
 
-async function createCleanDbMySql(dbconfig) {
+export async function createCleanDbMySql(dbconfig: DbConfig, verbose: boolean) {
   const { database } = dbconfig
   // language=MySQL
   const script = stripIndent`
     DROP DATABASE IF EXISTS ${database};
     CREATE DATABASE ${database} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
 
-  return mysqlExecScript({ ...dbconfig, database: '' }, script)
+  return mysqlExecScript({ ...dbconfig, database: '' }, script, verbose)
 }
 
-exports.createCleanDbMySql = createCleanDbMySql
-
-function getPostgresArgs(dbconfig) {
+export function getPostgresArgs(dbconfig: DbConfig) {
   const { database, host, port, user, password, ssl } = dbconfig
   return [`postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`]
 }
 
-exports.getPostgresArgs = getPostgresArgs
-
-async function createCleanDb(dbconfig) {
+export async function createCleanDb(dbconfig: DbConfig, verbose: boolean) {
   const { database, user } = dbconfig
   // useful for tests since it forces dropping local connections
   // const script = stripIndent`
@@ -54,12 +55,10 @@ async function createCleanDb(dbconfig) {
     DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist;
    `
   // @formatter:on
-  psql({ ...dbconfig, database: 'postgres' }, script, 'inherit')
+  psql({ ...dbconfig, database: 'postgres' }, script, verbose)
 }
 
-exports.createCleanDb = createCleanDb
-
-function createKnexMigrationTables(dbconfig) {
+export function createKnexMigrationTables(dbconfig: DbConfig, verbose: boolean) {
   // @formatter:off
   // language=PostgreSQL
   const sql = stripIndent`
@@ -96,12 +95,10 @@ function createKnexMigrationTables(dbconfig) {
   `
   // @formatter:on
 
-  return psql(dbconfig, sql)
+  return psql(dbconfig, sql, verbose)
 }
 
-exports.createKnexMigrationTables = createKnexMigrationTables
-
-function dropKnexMigrationTables(dbconfig) {
+export function dropKnexMigrationTables(dbconfig: DbConfig, verbose: boolean) {
   // @formatter:off
   // language=PostgreSQL
   const sql = stripIndent`
@@ -111,12 +108,10 @@ function dropKnexMigrationTables(dbconfig) {
   `
   // @formatter:on
 
-  return psql(dbconfig, sql)
+  return psql(dbconfig, sql, verbose)
 }
 
-exports.dropKnexMigrationTables = dropKnexMigrationTables
-
-async function mysqlExecScript(dbconfig, script) {
+export async function mysqlExecScript(dbconfig: DbConfig, script: string, verbose: boolean) {
   const { database, host, port, user, password } = dbconfig
   const args = [`--host=${host}`, `--port=${port}`, `--user=${user}`, '--default-character-set=utf8']
   database && args.push(`--database=${database}`)
@@ -125,52 +120,47 @@ async function mysqlExecScript(dbconfig, script) {
     const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
       .on('error', reject)
       .on('close', resolve)
-      .on('exit', (code) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
 
-    child.stdout.pipe(process.stdout)
-    child.stderr.pipe(process.stderr)
+    if (verbose) {
+      child.stdout.pipe(process.stdout)
+      child.stderr.pipe(process.stderr)
+    }
     child.stdin.write(script)
     child.stdin.end()
   })
 }
 
-function psql(dbconfig, script, stdio = 'inherit') {
+export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
   const args = getPostgresArgs(dbconfig)
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
-  console.log(`running psql ${args.join(' ')}`)
-  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio }))
+  verbose && cli.log(`running psql ${args.join(' ')}`)
+  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }))
 }
 
-exports.psql = psql
-
-function pgloader(mySqlPassword, script) {
+export function pgloader(mySqlPassword: string, script: string, verbose: boolean) {
   const name = tempy.file()
   fs.writeFileSync(name, script)
 
-  console.log(`setting  MYSQL_PWD: ${mySqlPassword} `)
   runOrExit(
     spawnSync('/usr/local/bin/pgloader', ['-v', /* '--debug', */ '--on-error-stop', name], {
       env: { MYSQL_PWD: mySqlPassword },
-      stdio: 'inherit',
+      stdio: verbose ? 'inherit' : 'ignore',
     })
   )
 }
 
-exports.pgloader = pgloader
-
-const bail = (reason) => {
+export const bail = (reason: any) => {
   if (reason) {
-    console.error(chalk.bold.red('error detected'))
-    console.error(reason)
+    cli.error(chalk.bold.red('error detected'))
+    cli.error(reason)
     process.exit(-1)
   }
 }
-exports.bail = bail
-
-const runOrExit = (processStatus, message = '') => {
+export const runOrExit = (processStatus: SpawnSyncReturns<Buffer>, message = '') => {
   if (processStatus.error) {
     bail(message || processStatus.error)
   }
@@ -179,10 +169,6 @@ const runOrExit = (processStatus, message = '') => {
   }
 }
 
-exports.runOrExit = runOrExit
-
-function info(s) {
-  console.log(chalk.bold(s))
+export function info(s: string) {
+  cli.log(chalk.bold(s))
 }
-
-exports.info = info

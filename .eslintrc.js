@@ -4,7 +4,7 @@ module.exports = {
     // enable typescript support
     'plugin:@typescript-eslint/recommended',
     // now disable all of the rules that are in conflict with prettier
-    'prettier/@typescript-eslint'
+    'prettier/@typescript-eslint',
     // note that we don't add the prettier rules, they add noise to the IDE
     // and the code is all being formatted on commit anyway.
   ],
@@ -30,7 +30,7 @@ module.exports = {
     'react/jsx-curly-brace-presence': ['warn', 'never'],
     'react/jsx-boolean-value': 'warn',
     'react/jsx-fragments': 'warn',
-    'react/jsx-key': ['warn', { checkFragmentShorthand: true }]
+    'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
   },
   overrides: [
     {
@@ -42,8 +42,8 @@ module.exports = {
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off'
-      }
+        '@typescript-eslint/ban-ts-ignore': 'off',
+      },
     },
     {
       files: '*.{ts,tsx}',
@@ -62,25 +62,25 @@ module.exports = {
         '@typescript-eslint/no-empty-interface': [
           'error',
           {
-            allowSingleExtends: true
-          }
+            allowSingleExtends: true,
+          },
         ],
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off'
-      }
+        '@typescript-eslint/ban-ts-ignore': 'off',
+      },
     },
     {
-      files: 'api/*.{ts,tsx}',
+      files: '{api,scripts,shared}/*.{ts,tsx}',
       rules: {
         // this is node.js code, it needs require
-        '@typescript-eslint/no-var-requires': 'off'
-      }
+        '@typescript-eslint/no-var-requires': 'off',
+      },
     },
     {
       files: 'support/**/*.js',
       rules: {
-        '@typescript-eslint/no-empty-function': 'off'
-      }
-    }
-  ]
+        '@typescript-eslint/no-empty-function': 'off',
+      },
+    },
+  ],
 }

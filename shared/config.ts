@@ -3,11 +3,9 @@ const fs = require('fs')
 
 process.env.NODE_ENV !== 'production' && require('dotenv').config()
 
-exports.getSchemas = () => {
-  return process.env.DATABASE_SCHEMAS ? process.env.DATABASE_SCHEMAS.split(',') : ['public']
-}
+export const getSchemas = () => (process.env.DATABASE_SCHEMAS ? process.env.DATABASE_SCHEMAS.split(',') : ['public'])
 
-exports.getPool = (pathToRoot = './') => {
+export const getPool = (pathToRoot = './') => {
   const {
     DATABASE_HOST: host,
     DATABASE_NAME: database,
@@ -36,14 +34,24 @@ exports.getPool = (pathToRoot = './') => {
   })
 }
 
-exports.config = {
+export type DbConfig = {
+  database: string
+  user: string
+  port: number
+  host: string
+  password: string
+  ssl: boolean
+  ssl_cert?: string
+}
+
+export const config: { database: DbConfig } = {
   database: {
-    host: process.env.DATABASE_HOST,
-    database: process.env.DATABASE_NAME,
-    username: process.env.DATABASE_USER,
+    host: process.env.DATABASE_HOST!,
+    database: process.env.DATABASE_NAME!,
+    user: process.env.DATABASE_USER!,
     password: process.env.DATABASE_PASSWORD || '',
-    port: parseInt(process.env.DATABASE_PORT, 10),
+    port: parseInt(process.env.DATABASE_PORT || '', 10),
     ssl: process.env.DATABASE_SSL === '1',
-    ssl_cert: process.env.DATABASE_SSL_CERT || ''
-  }
+    ssl_cert: process.env.DATABASE_SSL_CERT || '',
+  },
 }

@@ -2,7 +2,7 @@ const PgSimplifyInflectorPlugin = require('@graphile-contrib/pg-simplify-inflect
 const ConnectionFilterPlugin = require('postgraphile-plugin-connection-filter')
 const PgOrderByRelatedPlugin = require('@graphile-contrib/pg-order-by-related')
 
-exports.options = {
+export const options = {
   dynamicJson: true,
   cors: false,
   graphiql: false,

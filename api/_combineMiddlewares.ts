@@ -10,9 +10,9 @@ import { Request, RequestHandler, Response } from 'express'
 export function combineMiddlewares(middlewares: Array<RequestHandler>) {
   return middlewares.reduce(
     (
-      parent: (req: Request, res: Response, next: (err?: Error) => void) => void,
-      fn: (req: Request, res: Response, next: (err?: Error) => void) => void
-    ): ((req: Request, res: Response, next: (err?: Error) => void) => void) => (req, res, next) => {
+      parent: (req: Request, res: Response, next: (err?: any) => void) => void,
+      fn: (req: Request, res: Response, next: (err?: any) => void) => void
+    ): ((req: Request, res: Response, next: (err?: any) => void) => void) => (req, res, next) => {
       parent(req, res, (error) => {
         if (error) {
           return next(error)
@@ -20,6 +20,6 @@ export function combineMiddlewares(middlewares: Array<RequestHandler>) {
         fn(req, res, next)
       })
     },
-    (_req: Request, _res: Response, next: (err?: Error) => void) => next()
+    (_req: Request, _res: Response, next: (err?: any) => void) => next()
   )
 }
