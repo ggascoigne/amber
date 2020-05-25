@@ -3,7 +3,7 @@ import { Badge } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles, withStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { useAuth0 } from 'components/Acnw/Auth'
+import { useAuth } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import React, { useCallback } from 'react'
@@ -147,7 +147,7 @@ type LoginMenu = {
 
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
-  const { isAuthenticated, user, loginWithPopup, logout } = useAuth0()
+  const { isAuthenticated, user, loginWithPopup, logout } = useAuth()
   const login = useCallback(
     async (e: MouseEvent) => {
       e.preventDefault()

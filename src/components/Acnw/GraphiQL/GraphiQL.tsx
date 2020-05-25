@@ -9,7 +9,7 @@ import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, parse } from '
 import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import { useAuth0 } from '../Auth/Auth0'
+import { useAuth } from '../Auth/Auth0'
 
 export const useStyles = makeStyles(
   createStyles({
@@ -79,7 +79,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const [query, setQuery] = useState<string>('')
   const [explorerIsOpen, setExplorerIsOpen] = useState<boolean>(true)
   const classes = useStyles({})
-  const { isAuthenticated, getTokenSilently } = useAuth0()
+  const { isAuthenticated, getTokenSilently } = useAuth()
   const [jwtToken, setJwtToken] = useState<string | undefined>()
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw, { Loader } from 'components/Acnw'
-import { useAuth0 } from 'components/Acnw/Auth'
+import { useAuth } from 'components/Acnw/Auth'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React, { Suspense } from 'react'
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const Welcome: React.FC = () => {
   const classes = useStyles()
-  const { isAuthenticated, user } = useAuth0()
+  const { isAuthenticated, user } = useAuth()
 
   return (
     <Page>

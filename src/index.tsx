@@ -4,13 +4,14 @@ import 'react-app-polyfill/ie11'
 
 import { ApolloProvider } from '@apollo/react-hooks'
 import client from 'client/client'
-import { Auth0Consumer, Auth0Provider } from 'components/Acnw'
+import { Auth0Provider } from 'components/Acnw'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
+import { useAuth } from './components/Acnw/Auth/Auth0'
 import registerServiceWorker from './utils/registerServiceWorker'
 
 // if (process.env.NODE_ENV === 'development') {
@@ -26,13 +27,9 @@ const rootElement = document.getElementById('root')
 const RootComponent = () => (
   <BrowserRouter>
     <Auth0Provider>
-      <Auth0Consumer>
-        {(authProps) => (
-          <ApolloProvider client={client(authProps)}>
-            <App />
-          </ApolloProvider>
-        )}
-      </Auth0Consumer>
+      <ApolloProvider client={client(useAuth())}>
+        <App />
+      </ApolloProvider>
     </Auth0Provider>
   </BrowserRouter>
 )

@@ -13,6 +13,9 @@ import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { ThenArg } from 'utils'
 
+import { checkMany } from './authUtils'
+import rules, { Perms } from './PermissionRules'
+
 const AUTH_CONFIG = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN || '',
   audience: 'https://amberconnw.org',
@@ -55,17 +58,19 @@ interface ContextValueType {
   getTokenSilently?: (o?: GetTokenSilentlyOptions) => Promise<string | undefined>
   getTokenWithPopup?: (o?: GetTokenWithPopupOptions) => Promise<string | undefined>
   logout?: (o?: LogoutOptions) => void
+  hasPermissions: (permission: Perms, data?: any) => boolean
 }
 
 export type Auth0ContextType = ContextValueType
 
 const defaultContext: ContextValueType = {
   isAuthenticated: false,
+  hasPermissions: () => false,
 }
 
 // create the context
 export const Auth0Context = createContext<ContextValueType>(defaultContext)
-export const useAuth0: () => ContextValueType = () => useContext(Auth0Context)
+export const useAuth: () => ContextValueType = () => useContext(Auth0Context)
 
 interface Auth0ProviderOptions {
   children: React.ReactElement
@@ -177,6 +182,11 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
     [auth0Client]
   )
 
+  const hasPermissions = useCallback(
+    (permission: Perms, data?: any) => !!user && checkMany(rules, user.roles, permission, data),
+    [user]
+  )
+
   const loginWithRedirect = (options?: RedirectLoginOptions) => auth0Client!.loginWithRedirect(options)
 
   const getTokenSilently = (options?: GetTokenSilentlyOptions) => auth0Client!.getTokenSilently(options)
@@ -199,6 +209,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
         handleRedirectCallback,
         getIdTokenClaims,
         getTokenWithPopup,
+        hasPermissions,
       }}
     >
       {children}

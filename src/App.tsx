@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const App: React.FC = () => {
+export const App: React.FC = React.memo(() => {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = useCallback(() => {
@@ -199,4 +199,4 @@ export const App: React.FC = () => {
       </MuiThemeProvider>
     </div>
   )
-}
+})
