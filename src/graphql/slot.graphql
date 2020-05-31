@@ -1,4 +1,4 @@
-#import "./slowFragment.graphql"
+#import "./slotFragment.graphql"
 
 query GetSlots {
   slots {
