@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type FilterChipBar<T extends object> = {
+type FilterChipBar<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
 }
 
@@ -38,7 +38,7 @@ const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) =
   return filterValue
 }
 
-export function FilterChipBar<T extends object>({ instance }: FilterChipBar<T>) {
+export function FilterChipBar<T extends Record<string, unknown>>({ instance }: FilterChipBar<T>) {
   const classes = useStyles({})
   const {
     allColumns,

@@ -17,20 +17,12 @@ module.exports = {
     'object-shorthand': 'warn',
     'prefer-arrow-callback': 'warn',
     'prefer-const': 'warn',
-    // In principle I like this rule, but I also want to use names such as _Foo
-    // for those internal classes that get passed on to redux connect.  After
-    // much refactoring I realized that I just prefer _Foo to FooImpl.  Since
-    // this rule is being well followed without an eslint rule, I'm switching
-    // this one off.
-    '@typescript-eslint/class-name-casing': 'off',
-    // too many of the graphql generate types break this rule, and they do so
-    // in a way that makes enough sense that I don't want to deal with it
-    '@typescript-eslint/camelcase': 'off',
     // enforce consistent jsx attributes
     'react/jsx-curly-brace-presence': ['warn', 'never'],
     'react/jsx-boolean-value': 'warn',
     'react/jsx-fragments': 'warn',
     'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
   overrides: [
     {
@@ -42,7 +34,7 @@ module.exports = {
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
       },
     },
     {
@@ -56,8 +48,6 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-empty-function': 'off',
-        // these are somewhat open to debate but match our current code.
-        '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/prefer-interface': 'off',
         '@typescript-eslint/no-empty-interface': [
           'error',
@@ -66,7 +56,7 @@ module.exports = {
           },
         ],
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
-        '@typescript-eslint/ban-ts-ignore': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
       },
     },
     {

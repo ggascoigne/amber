@@ -34,7 +34,7 @@ const updateUrlSourceQuery = gql`
   }
 `
 
-const updateUrlSource = (_obj: any, data: UrlSource, { cache }: { cache: ApolloCache<{}> }): any => {
+const updateUrlSource = (_obj: any, data: UrlSource, { cache }: { cache: ApolloCache<unknown> }): any => {
   const currentData = cache.readQuery({ query: urlSourceQuery }) as UrlSource
   cache.writeData({ data: { urlSource: { ...currentData.urlSource, ...dropUnset(data) } } })
   return null

@@ -1,5 +1,5 @@
 interface Permissions {
-  dynamic?: object
+  dynamic?: Record<string, unknown>
   static?: Perms[]
 }
 

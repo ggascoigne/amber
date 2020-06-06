@@ -133,7 +133,7 @@ const getClasses = makeStyles((theme: Theme) =>
 export const useStyles = getClasses
 
 type StyleKeyType = keyof ReturnType<typeof getClasses>
-type StyledDiv<P = {}> = React.FC<JSX.IntrinsicElements['div'] & P>
+type StyledDiv<P = unknown> = React.FC<JSX.IntrinsicElements['div'] & P>
 
 //  The material UI styled method doesn't allow for using the theme
 const styledDiv: StyledDiv<{ styledDivClassname: StyleKeyType }> = ({

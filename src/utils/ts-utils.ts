@@ -8,7 +8,7 @@ export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
 // expands object types recursively
-export type ExpandRecursively<T> = T extends object
+export type ExpandRecursively<T> = T extends Record<string, unknown>
   ? T extends infer O
     ? { [K in keyof O]: ExpandRecursively<O[K]> }
     : never

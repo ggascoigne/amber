@@ -26,7 +26,7 @@ actions.columnStartResizing = 'columnStartResizing'
 actions.columnResizing = 'columnResizing'
 actions.columnDoneResizing = 'columnDoneResizing'
 
-export const useResizeColumns = <D extends object>(hooks: Hooks<D>): void => {
+export const useResizeColumns = <D extends Record<string, unknown>>(hooks: Hooks<D>): void => {
   hooks.getResizerProps = [defaultGetResizerProps]
   hooks.getHeaderProps.push({
     style: {
@@ -38,7 +38,7 @@ export const useResizeColumns = <D extends object>(hooks: Hooks<D>): void => {
   hooks.useInstance.push(useInstance)
 }
 
-const defaultGetResizerProps = <D extends object>(
+const defaultGetResizerProps = <D extends Record<string, unknown>>(
   props: any,
   { instance, header }: Meta<D, { header: HeaderGroup<D> }>
 ) => {
@@ -138,7 +138,10 @@ const defaultGetResizerProps = <D extends object>(
 
 useResizeColumns.pluginName = 'useResizeColumns'
 
-function reducer<D extends object>(previousState: TableState<D>, action: ActionType): ReducerTableState<D> | undefined {
+function reducer<D extends Record<string, unknown>>(
+  previousState: TableState<D>,
+  action: ActionType
+): ReducerTableState<D> | undefined {
   const state: TableState<D> & UseResizeColumnsState<D> = previousState as TableState<D> & UseResizeColumnsState<D>
   if (action.type === actions.init) {
     return {
@@ -201,7 +204,7 @@ function reducer<D extends object>(previousState: TableState<D>, action: ActionT
   }
 }
 
-const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D>) => {
+const useInstanceBeforeDimensions = <D extends Record<string, unknown>>(instance: TableInstance<D>) => {
   const { flatHeaders, disableResizing, state, getHooks } = instance
   const { columnResizing } = state as TableState<D> & UseResizeColumnsState<D>
 
@@ -227,11 +230,11 @@ const useInstanceBeforeDimensions = <D extends object>(instance: TableInstance<D
   })
 }
 
-function useInstance<D extends object>({ plugins }: TableInstance<D>) {
+function useInstance<D extends Record<string, unknown>>({ plugins }: TableInstance<D>) {
   ensurePluginOrder(plugins, ['useAbsoluteLayout'], 'useResizeColumns')
 }
 
-function getLeafHeaders<D extends object>(header: HeaderGroup<D>) {
+function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D>) {
   const leafHeaders: ColumnInstance<D>[] = []
   const recurseHeader = (header: ColumnInstance<D>) => {
     if (header.columns && header.columns.length) {

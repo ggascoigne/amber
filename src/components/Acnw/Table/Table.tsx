@@ -52,7 +52,7 @@ import { TooltipCell } from './TooltipCell'
 
 // import { useFlexLayout } from './useFlexLayout'
 
-export interface Table<T extends object = {}> extends TableOptions<T> {
+export interface Table<T extends Record<string, unknown>> extends TableOptions<T> {
   name: string
   onAdd?: (instance: TableInstance<T>) => MouseEventHandler
   onDelete?: (instance: TableInstance<T>) => MouseEventHandler
@@ -64,7 +64,7 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
   <>{column.id.startsWith('_') ? null : camelToWords(column.id)}</>
 )
 
-function DefaultColumnFilter<T extends object>({
+function DefaultColumnFilter<T extends Record<string, unknown>>({
   column: { id, index, filterValue, setFilter, render, parent },
   gotoPage,
 }: FilterProps<T>) {
@@ -95,7 +95,7 @@ function DefaultColumnFilter<T extends object>({
   )
 }
 
-const getStyles = <T extends object>(props: any, disableResizing = false, align = 'left') => [
+const getStyles = <T extends Record<string, unknown>>(props: any, disableResizing = false, align = 'left') => [
   props,
   {
     style: {
@@ -135,13 +135,13 @@ const useSelectionUi = (hooks: Hooks<any>) => {
   })
 }
 
-const headerProps = <T extends object>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
+const headerProps = <T extends Record<string, unknown>>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
   getStyles(props, column?.disableResizing, column?.align)
 
-const cellProps = <T extends object>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
+const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
   getStyles(props, cell.column?.disableResizing, cell.column?.align)
 
-export function Table<T extends object>(props: PropsWithChildren<Table<T>>): ReactElement {
+export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<Table<T>>): ReactElement {
   const { name, columns, onAdd, onDelete, onEdit, onClick } = props
   const classes = useStyles()
 

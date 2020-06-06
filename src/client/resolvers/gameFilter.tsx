@@ -51,7 +51,7 @@ const updateGameFilterQuery = gql`
   }
 `
 
-const updateGameFilter = (_obj: any, data: GameFilter, { cache }: { cache: ApolloCache<{}> }): any => {
+const updateGameFilter = (_obj: any, data: GameFilter, { cache }: { cache: ApolloCache<unknown> }): any => {
   const currentData = cache.readQuery({ query: gameFilterQuery }) as GameFilter
   cache.writeData({ data: { gameFilter: { ...currentData.gameFilter, ...dropUnset(data) } } })
   return null

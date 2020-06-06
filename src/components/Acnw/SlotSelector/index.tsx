@@ -119,7 +119,7 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
   }, [selectedSlotId, slots, gameFilterMutation, year])
 
   const handleChange = useCallback(
-    (event: ChangeEvent<{}>, value: any) => {
+    (event: ChangeEvent<unknown>, value: any) => {
       const slot = getSlot(slots!, value + 1)
       gameFilterMutation({ variables: { slot, year } })
     },

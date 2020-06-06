@@ -1,5 +1,5 @@
 // from https://raw.githubusercontent.com/piotrwitek/react-redux-typescript-guide/master/playground/src/hoc/with-error-boundary.tsx
-import * as React from 'react'
+import React, { ErrorInfo } from 'react'
 import { Subtract } from 'utility-types'
 
 import { ErrorMessage } from './ErrorMessage'
@@ -29,12 +29,12 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
       error: undefined,
     }
 
-    componentDidCatch(error: Error | null, info: object) {
+    componentDidCatch(error: Error | null, info: ErrorInfo) {
       this.setState({ error: error || new Error(MISSING_ERROR) })
       this.logErrorToCloud(error, info)
     }
 
-    logErrorToCloud = (error: Error | null, info: object) => {
+    logErrorToCloud = (error: Error | null, info: ErrorInfo) => {
       // TODO: send error report to service provider
     }
 

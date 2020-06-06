@@ -19,7 +19,7 @@ export const useBlockLayout = (hooks: Hooks) => {
   hooks.getRowProps.push(getRowStyles)
   hooks.getHeaderGroupProps.push(getRowStyles)
 
-  hooks.getHeaderProps.push((props: object, { column }: { column: HeaderGroup }) => [
+  hooks.getHeaderProps.push((props: Record<string, unknown>, { column }: { column: HeaderGroup }) => [
     props,
     {
       style: {
@@ -29,7 +29,7 @@ export const useBlockLayout = (hooks: Hooks) => {
     },
   ])
 
-  hooks.getCellProps.push((props: object, { cell }: { cell: Cell }) => [
+  hooks.getCellProps.push((props: Record<string, unknown>, { cell }: { cell: Cell }) => [
     props,
     {
       style: {

@@ -37,7 +37,7 @@ export const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ActionButton<T extends object> = {
+type ActionButton<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   icon?: JSX.Element
   onClick: TableMouseEventHandler
@@ -46,7 +46,7 @@ type ActionButton<T extends object> = {
   variant?: 'right' | 'left'
 }
 
-export const LabeledActionButton = <T extends object>({
+export const LabeledActionButton = <T extends Record<string, unknown>>({
   instance,
   icon,
   onClick,
@@ -59,7 +59,7 @@ export const LabeledActionButton = <T extends object>({
   </Button>
 )
 
-export const SmallIconActionButton = <T extends object>({
+export const SmallIconActionButton = <T extends Record<string, unknown>>({
   instance,
   icon,
   onClick,
@@ -83,14 +83,14 @@ export const SmallIconActionButton = <T extends object>({
   )
 }
 
-type TableToolbar<T extends object> = {
+type TableToolbar<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   onAdd?: TableMouseEventHandler
   onDelete?: TableMouseEventHandler
   onEdit?: TableMouseEventHandler
 }
 
-export function TableToolbar<T extends object>({
+export function TableToolbar<T extends Record<string, unknown>>({
   instance,
   onAdd = () => () => null,
   onDelete = () => () => null,

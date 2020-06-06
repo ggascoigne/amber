@@ -1,6 +1,6 @@
 import { Cell, HeaderGroup, Hooks, Meta } from 'react-table'
 
-export function useFlexLayout<D extends object>(hooks: Hooks<D>) {
+export function useFlexLayout<D extends Record<string, unknown>>(hooks: Hooks<D>) {
   hooks.getTableBodyProps.push(getTableBodyProps)
   hooks.getRowProps.push(getRowStyles)
   hooks.getHeaderGroupProps.push(getRowStyles)
@@ -10,7 +10,7 @@ export function useFlexLayout<D extends object>(hooks: Hooks<D>) {
 
 useFlexLayout.pluginName = 'useFlexLayout'
 
-const getTableBodyProps = <D extends object>(props: any, { instance }: Meta<D>) => [
+const getTableBodyProps = <D extends Record<string, unknown>>(props: any, { instance }: Meta<D>) => [
   props,
   {
     style: {
@@ -19,7 +19,7 @@ const getTableBodyProps = <D extends object>(props: any, { instance }: Meta<D>) 
   },
 ]
 
-const getRowStyles = <D extends object>(props: any, { instance }: Meta<D>) => [
+const getRowStyles = <D extends Record<string, unknown>>(props: any, { instance }: Meta<D>) => [
   props,
   {
     style: {
@@ -30,7 +30,10 @@ const getRowStyles = <D extends object>(props: any, { instance }: Meta<D>) => [
   },
 ]
 
-const getHeaderProps = <D extends object>(props: any, { column }: Meta<D, { column: HeaderGroup<D> }>) => [
+const getHeaderProps = <D extends Record<string, unknown>>(
+  props: any,
+  { column }: Meta<D, { column: HeaderGroup<D> }>
+) => [
   props,
   {
     style: {
@@ -42,7 +45,7 @@ const getHeaderProps = <D extends object>(props: any, { column }: Meta<D, { colu
   },
 ]
 
-const getCellProps = <D extends object>(props: any, { cell }: Meta<D, { cell: Cell<D> }>) => [
+const getCellProps = <D extends Record<string, unknown>>(props: any, { cell }: Meta<D, { cell: Cell<D> }>) => [
   props,
   {
     style: {

@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type ColumnHidePage<T extends object> = {
+type ColumnHidePage<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   anchorEl?: Element
   onClose: () => void
@@ -33,7 +33,7 @@ type ColumnHidePage<T extends object> = {
 
 const id = 'popover-column-hide'
 
-export function ColumnHidePage<T extends object>({
+export function ColumnHidePage<T extends Record<string, unknown>>({
   instance,
   anchorEl,
   onClose,
