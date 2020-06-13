@@ -4,6 +4,7 @@ import * as ApolloReactHooks from '@apollo/react-hooks'
 /* eslint-disable @typescript-eslint/ban-types */
 import gql from 'graphql-tag'
 export type Maybe<T> = T | null
+export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] }
 
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
@@ -6922,10 +6923,10 @@ export enum UsersOrderBy {
   UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
 }
 
-export type GetGamesBySlotQueryVariables = {
+export type GetGamesBySlotQueryVariables = Exact<{
   year: Scalars['Int']
   slotId: Scalars['Int']
-}
+}>
 
 export type GetGamesBySlotQuery = { __typename: 'Query' } & {
   games?: Maybe<
@@ -6937,9 +6938,9 @@ export type GetGamesBySlotQuery = { __typename: 'Query' } & {
   >
 }
 
-export type GetGamesByYearQueryVariables = {
+export type GetGamesByYearQueryVariables = Exact<{
   year: Scalars['Int']
-}
+}>
 
 export type GetGamesByYearQuery = { __typename: 'Query' } & {
   games?: Maybe<
@@ -6951,9 +6952,9 @@ export type GetGamesByYearQuery = { __typename: 'Query' } & {
   >
 }
 
-export type UpdateGameByNodeIdMutationVariables = {
+export type UpdateGameByNodeIdMutationVariables = Exact<{
   input: UpdateGameByNodeIdInput
-}
+}>
 
 export type UpdateGameByNodeIdMutation = { __typename: 'Mutation' } & {
   updateGameByNodeId?: Maybe<
@@ -6963,9 +6964,9 @@ export type UpdateGameByNodeIdMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type CreateGameMutationVariables = {
+export type CreateGameMutationVariables = Exact<{
   input: CreateGameInput
-}
+}>
 
 export type CreateGameMutation = { __typename: 'Mutation' } & {
   createGame?: Maybe<
@@ -6975,9 +6976,9 @@ export type CreateGameMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type DeleteGameMutationVariables = {
+export type DeleteGameMutationVariables = Exact<{
   input: DeleteGameInput
-}
+}>
 
 export type DeleteGameMutation = { __typename: 'Mutation' } & {
   deleteGame?: Maybe<
@@ -6985,9 +6986,9 @@ export type DeleteGameMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type GetFirstGameOfSlotQueryVariables = {
+export type GetFirstGameOfSlotQueryVariables = Exact<{
   year: Scalars['Int']
-}
+}>
 
 export type GetFirstGameOfSlotQuery = { __typename: 'Query' } & {
   games?: Maybe<
@@ -7072,7 +7073,7 @@ export type LookupValuesFieldsFragment = { __typename: 'LookupValue' } & Pick<
   'nodeId' | 'id' | 'code' | 'sequencer' | 'value'
 >
 
-export type GetLookupsQueryVariables = {}
+export type GetLookupsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetLookupsQuery = { __typename: 'Query' } & {
   lookups?: Maybe<
@@ -7092,9 +7093,9 @@ export type GetLookupsQuery = { __typename: 'Query' } & {
   >
 }
 
-export type GetLookupValuesQueryVariables = {
+export type GetLookupValuesQueryVariables = Exact<{
   realm: Scalars['String']
-}
+}>
 
 export type GetLookupValuesQuery = { __typename: 'Query' } & {
   lookups?: Maybe<
@@ -7114,10 +7115,10 @@ export type GetLookupValuesQuery = { __typename: 'Query' } & {
   >
 }
 
-export type GetSingleLookupValueQueryVariables = {
+export type GetSingleLookupValueQueryVariables = Exact<{
   realm: Scalars['String']
   code: Scalars['String']
-}
+}>
 
 export type GetSingleLookupValueQuery = { __typename: 'Query' } & {
   lookups?: Maybe<
@@ -7137,9 +7138,9 @@ export type GetSingleLookupValueQuery = { __typename: 'Query' } & {
   >
 }
 
-export type UpdateLookupByNodeIdMutationVariables = {
+export type UpdateLookupByNodeIdMutationVariables = Exact<{
   input: UpdateLookupByNodeIdInput
-}
+}>
 
 export type UpdateLookupByNodeIdMutation = { __typename: 'Mutation' } & {
   updateLookupByNodeId?: Maybe<
@@ -7147,9 +7148,9 @@ export type UpdateLookupByNodeIdMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type CreateLookupMutationVariables = {
+export type CreateLookupMutationVariables = Exact<{
   input: CreateLookupInput
-}
+}>
 
 export type CreateLookupMutation = { __typename: 'Mutation' } & {
   createLookup?: Maybe<
@@ -7157,9 +7158,9 @@ export type CreateLookupMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type DeleteLookupMutationVariables = {
+export type DeleteLookupMutationVariables = Exact<{
   input: DeleteLookupInput
-}
+}>
 
 export type DeleteLookupMutation = { __typename: 'Mutation' } & {
   deleteLookup?: Maybe<
@@ -7167,9 +7168,9 @@ export type DeleteLookupMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type UpdateLookupValueByNodeIdMutationVariables = {
+export type UpdateLookupValueByNodeIdMutationVariables = Exact<{
   input: UpdateLookupValueByNodeIdInput
-}
+}>
 
 export type UpdateLookupValueByNodeIdMutation = { __typename: 'Mutation' } & {
   updateLookupValueByNodeId?: Maybe<
@@ -7179,9 +7180,9 @@ export type UpdateLookupValueByNodeIdMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type CreateLookupValueMutationVariables = {
+export type CreateLookupValueMutationVariables = Exact<{
   input: CreateLookupValueInput
-}
+}>
 
 export type CreateLookupValueMutation = { __typename: 'Mutation' } & {
   createLookupValue?: Maybe<
@@ -7191,9 +7192,9 @@ export type CreateLookupValueMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type DeleteLookupValueMutationVariables = {
+export type DeleteLookupValueMutationVariables = Exact<{
   input: DeleteLookupValueInput
-}
+}>
 
 export type DeleteLookupValueMutation = { __typename: 'Mutation' } & {
   deleteLookupValue?: Maybe<
@@ -7209,7 +7210,7 @@ export type ProfileFieldsFragment = { __typename: 'Profile' } & Pick<
   'nodeId' | 'id' | 'email' | 'fullName' | 'phoneNumber' | 'snailMailAddress'
 >
 
-export type GetSlotsQueryVariables = {}
+export type GetSlotsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetSlotsQuery = { __typename: 'Query' } & {
   slots?: Maybe<
