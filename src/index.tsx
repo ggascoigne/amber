@@ -7,7 +7,6 @@ import client from 'client/client'
 import { Auth0Provider } from 'components/Acnw'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { hot } from 'react-hot-loader/root'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
@@ -24,18 +23,27 @@ import registerServiceWorker from './utils/registerServiceWorker'
 
 const rootElement = document.getElementById('root')
 
-const RootComponent = () => (
+const RootComponent: React.FC = ({ children }) => (
   <BrowserRouter>
     <Auth0Provider>
-      <ApolloProvider client={client(useAuth())}>
-        <App />
-      </ApolloProvider>
+      <ApolloProvider client={client(useAuth())}>{children}</ApolloProvider>
     </Auth0Provider>
   </BrowserRouter>
 )
 
-const WrappedRootComponents = process.env.NODE_ENV === 'development' ? hot(RootComponent) : RootComponent
+const render = (Component: React.ComponentType) =>
+  ReactDOM.render(
+    <RootComponent>
+      <Component />
+    </RootComponent>,
+    rootElement
+  )
 
-ReactDOM.render(<WrappedRootComponents />, rootElement)
+render(App)
+
+if ((module as NodeModule).hot) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
+}
 
 registerServiceWorker()

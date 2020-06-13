@@ -14,14 +14,11 @@
     "url": "https://github.com/ggascoigne/acnw2.git"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
     "@graphql-codegen/add": "1.15.3",
     "@graphql-codegen/cli": "1.15.3",
     "@graphql-codegen/typescript": "1.15.3",
     "@graphql-codegen/typescript-operations": "1.15.3",
     "@graphql-codegen/typescript-react-apollo": "1.15.3",
-    "@hot-loader/react-dom": "^16.13.0",
     "@types/auth0-js": "^9.13.1",
     "@types/classnames": "^2.2.9",
     "@types/concurrently": "^5.2.1",
@@ -74,7 +71,6 @@
     "meow": "^7.0.1",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.0",
-    "patch-package": "^6.2.1",
     "prettier": "^2.0.5",
     "prettier-plugin-import-sort": "^0.0.4",
     "react-test-renderer": "^16.13.0",
@@ -119,10 +115,7 @@
     "postgraphile-plugin-connection-filter": "^2.0.0",
     "react": "^16.13.0",
     "react-app-polyfill": "^1.0.6",
-    "react-app-rewire-hot-loader": "^2.0.1",
-    "react-app-rewired": "^2.1.6",
     "react-dom": "^16.13.0",
-    "react-hot-loader": "^4.12.21",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-table": "^7.2.0",
@@ -136,7 +129,7 @@
     "setup": "yarn db:migrate:up && TS_NODE_PROJECT=./tsconfig.commonjs.json ./scripts/prepareGraphql.ts && yarn codegen",
     "prebuild": "yarn setup",
     "prestart": "yarn setup",
-    "build": "react-app-rewired build",
+    "build": "react-scripts build",
     "clean:install": "rm -rf node_modules && yarn && yarn audit",
     "codegen": "graphql-codegen --config codegen.yml",
     "db:clean": "yarn db:start && TS_NODE_PROJECT=./tsconfig.commonjs.json ./scripts/createCleanDb.ts",
@@ -148,9 +141,8 @@
     "debug": "now dev --listen 30000",
     "format": "prettier --no-color --loglevel warn --write '{src,api,scripts,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "lint": "eslint '{src,api,scripts,support,types}/**/*.{js,jsx,ts,tsx}'",
-    "postinstall": "patch-package",
-    "start": "BROWSER=none react-app-rewired start",
-    "test": "react-app-rewired test",
+    "start": "BROWSER=none react-scripts start",
+    "test": "react-scripts test",
     "typesync": "typesync"
   },
   "prettier": {
@@ -160,14 +152,17 @@
     "jsxSingleQuote": true
   },
   "importSort": {
-    ".js, .jsx, .ts, .tsx": {
+    ".ts, .tsx": {
+      "style": "module",
+      "parser": "typescript"
+    },
+    ".js, .jsx": {
       "style": "module"
     }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
