@@ -4,7 +4,7 @@ import * as React from 'react'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 import { SelectField } from './SelectField'
-import { TextFieldProps } from './TextField'
+import type { TextFieldProps } from './TextField'
 
 export interface LookupFieldProps extends TextFieldProps {
   realm: string

@@ -8,7 +8,7 @@ import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import React, { useCallback } from 'react'
 
-import { Auth0User } from '../Auth'
+import type { Auth0User } from '../Auth'
 import { HasPermission } from '../Auth/HasPermission'
 import { Perms } from '../Auth/PermissionRules'
 

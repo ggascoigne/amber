@@ -1,4 +1,4 @@
-import { GetGamesBySlotQuery } from './graphql'
+import type { GetGamesBySlotQuery } from './graphql'
 
 export * from './resolvers'
 export * from './graphql'

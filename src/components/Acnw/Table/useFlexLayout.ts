@@ -1,4 +1,4 @@
-import { Cell, HeaderGroup, Hooks, Meta } from 'react-table'
+import type { Cell, HeaderGroup, Hooks, Meta } from 'react-table'
 
 export function useFlexLayout<D extends Record<string, unknown>>(hooks: Hooks<D>) {
   hooks.getTableBodyProps.push(getTableBodyProps)

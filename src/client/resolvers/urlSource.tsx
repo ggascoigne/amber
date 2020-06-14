@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/react-hooks'
-import { ApolloCache } from 'apollo-cache'
+import type { ApolloCache } from 'apollo-cache'
 import gql from 'graphql-tag'
 import { dropUnset } from 'utils/dropUnset'
 

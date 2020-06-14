@@ -3,7 +3,7 @@ import FormControlLabel, { FormControlLabelProps as MuiFormControlLabelProps } f
 import { useField, useFormikContext } from 'formik'
 import * as React from 'react'
 
-import { CheckboxProps } from './Checkbox'
+import type { CheckboxProps } from './Checkbox'
 
 /**
  * Exclude props that are passed directly to the control

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { GameFieldsFragment, GameGmsFragment } from 'client'
+import type { GameFieldsFragment, GameGmsFragment } from 'client'
 import { GridContainer, GridItem, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'

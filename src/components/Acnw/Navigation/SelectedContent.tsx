@@ -3,7 +3,7 @@ import { NotFound } from 'pages'
 import React, { useMemo } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
-import { RootRoutes } from './Routes'
+import type { RootRoutes } from './Routes'
 
 export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
   const results = useMemo(

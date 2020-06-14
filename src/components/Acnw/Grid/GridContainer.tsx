@@ -1,5 +1,5 @@
 import { Grid, createStyles, makeStyles } from '@material-ui/core'
-import { GridProps } from '@material-ui/core/Grid'
+import type { GridProps } from '@material-ui/core/Grid'
 import React from 'react'
 
 const useStyles = makeStyles(() =>

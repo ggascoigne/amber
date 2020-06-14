@@ -1,4 +1,4 @@
-import { Cell, HeaderGroup, Hooks, TableInstance } from 'react-table'
+import type { Cell, HeaderGroup, Hooks, TableInstance } from 'react-table'
 
 const cellStyles = {
   display: 'inline-block',

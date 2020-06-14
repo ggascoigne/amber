@@ -3,7 +3,7 @@
 
 import find from 'lodash/find'
 
-import { Perms, Rules } from './PermissionRules'
+import type { Perms, Rules } from './PermissionRules'
 
 const check = (rules: Rules, role: string | null, action: Perms, data?: any) => {
   if (!role) {

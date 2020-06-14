@@ -1,7 +1,7 @@
 import { GameCard } from 'components/Acnw/GameCard'
 import React from 'react'
 
-import { GameArray, SlotFieldsFragment } from '../../../client'
+import type { GameArray, SlotFieldsFragment } from '../../../client'
 
 interface GameListFull {
   year: number

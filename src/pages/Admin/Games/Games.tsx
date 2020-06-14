@@ -1,8 +1,8 @@
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import { Column, Row, TableInstance } from 'react-table'
+import type { Column, Row, TableInstance } from 'react-table'
 
-import { TableMouseEventHandler } from '../../../../types/react-table-config'
+import type { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { GameFieldsFragment, GameGmsFragment, useDeleteGameMutation, useGetGamesByYearQuery } from '../../../client'
 import { GamesDialog } from './GamesDialog'
 

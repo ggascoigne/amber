@@ -6,7 +6,7 @@ import { useUrlSourceMutation } from 'client/resolvers/urlSource'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router'
 
-import { GameArray, SlotFieldsFragment } from '../../../client'
+import type { GameArray, SlotFieldsFragment } from '../../../client'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

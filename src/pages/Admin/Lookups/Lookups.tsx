@@ -6,11 +6,11 @@ import {
 } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import { Column, Row, TableInstance } from 'react-table'
+import type { Column, Row, TableInstance } from 'react-table'
 
-import { TableMouseEventHandler } from '../../../../types/react-table-config'
+import type { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { LookupsDialog } from './LookupsDialog'
-import { LookupAndValues } from './types'
+import type { LookupAndValues } from './types'
 
 const columns: Column<LookupAndValues>[] = [
   {

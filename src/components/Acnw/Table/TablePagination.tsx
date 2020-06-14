@@ -1,6 +1,6 @@
 import { TablePagination as MuiTablePagination } from '@material-ui/core'
 import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
-import { TableInstance } from 'react-table'
+import type { TableInstance } from 'react-table'
 
 export function TablePagination<T extends Record<string, unknown>>({
   instance,

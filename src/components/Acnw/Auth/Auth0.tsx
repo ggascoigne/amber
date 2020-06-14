@@ -11,7 +11,7 @@ import createAuth0Client, {
 } from '@auth0/auth0-spa-js'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { ThenArg } from 'utils'
+import type { ThenArg } from 'utils'
 
 import { checkMany } from './authUtils'
 import rules, { Perms } from './PermissionRules'

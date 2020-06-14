@@ -1,12 +1,12 @@
 import ApolloClient, { InMemoryCache } from 'apollo-boost'
-import { Operation } from 'apollo-link'
+import type { Operation } from 'apollo-link'
 import { gameFilterStore, urlSourceStore } from 'client/resolvers'
 import assignIn from 'lodash/fp/assignIn'
 import flow from 'lodash/fp/flow'
 import map from 'lodash/fp/map'
 import reduce from 'lodash/fp/reduce'
 
-import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
+import type { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 
 // @ts-ignore
 const reduceWithDefault = reduce.convert({ cap: false })

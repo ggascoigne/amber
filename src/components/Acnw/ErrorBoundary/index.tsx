@@ -1,6 +1,6 @@
 // from https://raw.githubusercontent.com/piotrwitek/react-redux-typescript-guide/master/playground/src/hoc/with-error-boundary.tsx
 import React, { ErrorInfo } from 'react'
-import { Subtract } from 'utility-types'
+import type { Subtract } from 'utility-types'
 
 import { ErrorMessage } from './ErrorMessage'
 

@@ -6,7 +6,7 @@ import { useLocation } from 'react-router'
 
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
-import { RootRoutes } from './Routes'
+import type { RootRoutes } from './Routes'
 
 interface MenuItems {
   menuItems: RootRoutes

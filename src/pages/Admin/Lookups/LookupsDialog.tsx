@@ -33,7 +33,7 @@ import {
   useUpdateLookupByNodeIdMutation,
   useUpdateLookupValueByNodeIdMutation,
 } from '../../../client'
-import { LookupAndValues } from './types'
+import type { LookupAndValues } from './types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

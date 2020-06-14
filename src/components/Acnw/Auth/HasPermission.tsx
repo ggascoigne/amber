@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { useAuth } from './Auth0'
-import { Perms } from './PermissionRules'
+import type { Perms } from './PermissionRules'
 
 type PermissionProps = {
   permission: Perms

@@ -1,5 +1,5 @@
 import { AboutAmberconNw, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
-import * as React from 'react'
+import type React from 'react'
 
 import { Games, Lookups } from '../../../pages/Admin'
 import { Perms } from '../Auth/PermissionRules'

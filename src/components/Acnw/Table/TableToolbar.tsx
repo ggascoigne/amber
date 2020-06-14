@@ -6,9 +6,9 @@ import FilterListIcon from '@material-ui/icons/FilterList'
 import ViewColumnsIcon from '@material-ui/icons/ViewColumn'
 import classnames from 'classnames'
 import React, { MouseEvent, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
-import { TableInstance } from 'react-table'
+import type { TableInstance } from 'react-table'
 
-import { TableMouseEventHandler } from '../../../../types/react-table-config'
+import type { TableMouseEventHandler } from '../../../../types/react-table-config'
 import { ColumnHidePage } from './ColumnHidePage'
 import { FilterPage } from './FilterPage'
 
