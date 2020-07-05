@@ -1,8 +1,9 @@
 import { ApolloConsumer } from '@apollo/react-common'
 import { Badge } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
-import { Theme, makeStyles, withStyles } from '@material-ui/core/styles'
+import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
 import { useAuth } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
@@ -13,37 +14,6 @@ import { HasPermission } from '../Auth/HasPermission'
 import { Perms } from '../Auth/PermissionRules'
 
 const MENU_ITEM_SIGN_OUT = 'Sign out'
-
-const StyledBadge = withStyles((theme: Theme) =>
-  createStyles({
-    badge: {
-      backgroundColor: '#fcc60a',
-      color: '#fcc60a',
-      boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-      '&::after': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        animation: '$ripple 1.2s infinite ease-in-out',
-        border: '1px solid currentColor',
-        content: '""',
-      },
-    },
-    '@keyframes ripple': {
-      '0%': {
-        transform: 'scale(.8)',
-        opacity: 1,
-      },
-      '100%': {
-        transform: 'scale(2.4)',
-        opacity: 0,
-      },
-    },
-  })
-)(Badge)
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -108,16 +78,16 @@ const OurAvatar: React.FC<ProfileImage> = ({ user }) => {
 
 const ProfileImage: React.FC<ProfileImage> = ({ user }) => (
   <HasPermission permission={Perms.IsAdmin} denied={() => <OurAvatar user={user} />}>
-    <StyledBadge
+    <Badge
       overlap='circle'
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      variant='dot'
+      badgeContent={<VerifiedUserIcon style={{ color: '#fcc60a' }} />}
     >
       <OurAvatar user={user} />
-    </StyledBadge>
+    </Badge>
   </HasPermission>
 )
 
