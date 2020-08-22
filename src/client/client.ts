@@ -1,15 +1,8 @@
-import ApolloClient, { InMemoryCache } from 'apollo-boost'
-import type { Operation } from 'apollo-link'
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
+import { setContext } from '@apollo/client/link/context'
 import { gameFilterStore, urlSourceStore } from 'client/resolvers'
-import assignIn from 'lodash/fp/assignIn'
-import flow from 'lodash/fp/flow'
-import map from 'lodash/fp/map'
-import reduce from 'lodash/fp/reduce'
 
-import type { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
-
-// @ts-ignore
-const reduceWithDefault = reduce.convert({ cap: false })
+import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 
 // this pattern is based upon https://hackernoon.com/setting-up-apollo-link-state-for-multiple-stores-4cf54fdb1e00
 
@@ -27,13 +20,8 @@ const reduceWithDefault = reduce.convert({ cap: false })
  * // returns {x: true, y: "foo", z: 123}
  * mergeGet("defaults")(objectList)
  */
-const mergeGet = (attributeName: any) =>
-  flow(
-    // pick a single attribute from each object
-    map(attributeName),
-    // merge all values into a single object
-    reduceWithDefault(assignIn, {})
-  )
+export const mergeGet = (attributeName: string) => (input: any[]) =>
+  input.reduce((prev, curr) => ({ ...prev, ...curr[attributeName] }), {})
 
 const STORES = [gameFilterStore, urlSourceStore]
 
@@ -44,18 +32,23 @@ const cache = new InMemoryCache({
 
 const Client = (authProps: Auth0ContextType) =>
   new ApolloClient({
-    uri: '/api/graphql',
-    request: async (operation: Operation) => {
+    link: setContext(async (_, { headers }) => {
       const { getTokenSilently, isAuthenticated } = authProps
       if (isAuthenticated) {
         const token = getTokenSilently && (await getTokenSilently())
-        operation.setContext({
+        return {
           headers: {
+            ...headers,
             Authorization: token ? `Bearer ${token}` : '',
           },
-        })
+        }
       }
-    },
+      return headers
+    }).concat(
+      createHttpLink({
+        uri: '/api/graphql',
+      })
+    ),
     cache,
     // @ts-ignore
     resolvers: {
@@ -63,6 +56,11 @@ const Client = (authProps: Auth0ContextType) =>
     },
   })
 
-cache.writeData({ data: mergeGet('defaults')(STORES) })
+STORES.forEach((val) => {
+  cache.writeQuery({
+    query: val.query,
+    data: val.defaults,
+  })
+})
 
 export default Client

@@ -56,3 +56,4 @@ packages/server/ui
 postgres-data
 
 .now
+build/

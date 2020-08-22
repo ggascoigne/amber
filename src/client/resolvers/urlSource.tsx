@@ -1,5 +1,4 @@
-import { useMutation, useQuery } from '@apollo/react-hooks'
-import type { ApolloCache } from 'apollo-cache'
+import { ApolloCache, useMutation, useQuery } from '@apollo/client'
 import gql from 'graphql-tag'
 import { dropUnset } from 'utils/dropUnset'
 
@@ -36,12 +35,13 @@ const updateUrlSourceQuery = gql`
 
 const updateUrlSource = (_obj: any, data: UrlSource, { cache }: { cache: ApolloCache<unknown> }): any => {
   const currentData = cache.readQuery({ query: urlSourceQuery }) as UrlSource
-  cache.writeData({ data: { urlSource: { ...currentData.urlSource, ...dropUnset(data) } } })
+  cache.writeQuery({ query: urlSourceQuery, data: { urlSource: { ...currentData.urlSource, ...dropUnset(data) } } })
   return null
 }
 
 export const urlSourceStore = {
   defaults: urlSourceDefaults,
+  query: urlSourceQuery,
   mutations: {
     updateUrlSource,
   },

@@ -1,6 +1,7 @@
-export async function sleep(ms: number) {
-  await new Promise((resolve: any) => {
-    setTimeout(() => resolve(ms), ms)
-  })
-  console.log(`slept for ${ms}ms`)
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+async function main() {
+  const argv = process.argv.slice(2)
+  argv.length && (await sleep(parseInt(argv[0]) * 1000))
 }
+main().then()

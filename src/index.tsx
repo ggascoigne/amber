@@ -2,7 +2,7 @@
 import 'assets/scss/material-kit-react.scss?v=1.8.0'
 import 'react-app-polyfill/ie11'
 
-import { ApolloProvider } from '@apollo/react-hooks'
+import { ApolloProvider } from '@apollo/client'
 import client from 'client/client'
 import { Auth0Provider } from 'components/Acnw'
 import React from 'react'
@@ -23,10 +23,15 @@ import registerServiceWorker from './utils/registerServiceWorker'
 
 const rootElement = document.getElementById('root')
 
+const ApolloWrapper: React.FC = ({ children }) => {
+  const authProps = useAuth()
+  // console.log(`ApolloWrapper = ${JSON.stringify({isAuthenticated: authProps.isAuthenticated, user: authProps.user}, null, 2)}`)
+  return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
+}
 const RootComponent: React.FC = ({ children }) => (
   <BrowserRouter>
     <Auth0Provider>
-      <ApolloProvider client={client(useAuth())}>{children}</ApolloProvider>
+      <ApolloWrapper>{children}</ApolloWrapper>
     </Auth0Provider>
   </BrowserRouter>
 )

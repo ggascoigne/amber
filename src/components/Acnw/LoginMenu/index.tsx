@@ -1,4 +1,4 @@
-import { ApolloConsumer } from '@apollo/react-common'
+import { ApolloConsumer } from '@apollo/client'
 import { Badge } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'

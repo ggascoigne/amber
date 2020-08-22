@@ -1,6 +1,5 @@
-import { useMutation, useQuery } from '@apollo/react-hooks'
-import type { ApolloCache } from 'apollo-cache'
-import type { SlotFieldsFragment } from 'client'
+import { ApolloCache, useMutation, useQuery } from '@apollo/client'
+import { SlotFieldsFragment } from 'client'
 import gql from 'graphql-tag'
 import { dropUnset } from 'utils/dropUnset'
 
@@ -53,12 +52,13 @@ const updateGameFilterQuery = gql`
 
 const updateGameFilter = (_obj: any, data: GameFilter, { cache }: { cache: ApolloCache<unknown> }): any => {
   const currentData = cache.readQuery({ query: gameFilterQuery }) as GameFilter
-  cache.writeData({ data: { gameFilter: { ...currentData.gameFilter, ...dropUnset(data) } } })
+  cache.writeQuery({ query: gameFilterQuery, data: { gameFilter: { ...currentData.gameFilter, ...dropUnset(data) } } })
   return null
 }
 
 export const gameFilterStore = {
   defaults: gameFilterDefaults,
+  query: gameFilterQuery,
   mutations: {
     updateGameFilter,
   },
