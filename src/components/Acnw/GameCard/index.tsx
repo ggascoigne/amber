@@ -114,7 +114,7 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
       <CardBody>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms.nodes.map((a) => a?.member?.user?.profile?.fullName).join(', ')}
+            {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
           </Field>
           <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
             <MultiLine text={description} />

@@ -162,7 +162,7 @@ async function main() {
       Options
         --help          Show this help message
         --verbose       Show verbose output
-        --skip-download Skip downloading database from public, just use the latest local mysl copy
+        --skip-download Skip downloading database from public, just use the latest local mysql copy
   `,
     {
       description: 'importV1ToLocal - download legacy MySql database and convert it to a local postgres database.',

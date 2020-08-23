@@ -14,7 +14,7 @@ const getGms = (row: Game) => {
     return playersOrEmpty
       .filter((val) => val)
       .filter((val) => val!.gm !== 0)
-      .map((val) => val?.member?.user?.profile?.fullName || '')
+      .map((val) => val?.member?.user?.fullName || '')
       .join(', ')
   } else {
     return ''

@@ -34,9 +34,8 @@ fragment gameGms on Game {
       gm
       member {
         user {
-          profile {
-            ...profileFields
-          }
+          email
+          fullName
         }
       }
     }

@@ -6,11 +6,11 @@ function getUserRoles(user, context, callback) {
 
   const namespace = 'https://amberconnw.org';
 
-  const query = `select p.id profile_id, p.email, u.id user_id, r.authority, r.id role_id
-        from profile p join "user" u on p.id = u.profile_id
-        join user_role ur on u.id = ur.user_id
-        join "role" r on r.id = ur.role_id
-        where p.email = $1`;
+  const query = `select u.email email, u.id user_id, r.authority, r.id role_id
+    from "user" u
+    join user_role ur on u.id = ur.user_id
+    join "role" r on r.id = ur.role_id
+    where u.email =  $1`;
 
   const pg = require('pg@7.17.1');
 

@@ -59,9 +59,8 @@ query GetFirstGameOfSlot($year: Int!) {
           gm
           member {
             user {
-              profile {
-                ...profileFields
-              }
+              email
+              fullName
             }
           }
         }
