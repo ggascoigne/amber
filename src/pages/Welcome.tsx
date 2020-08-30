@@ -39,7 +39,7 @@ export const Welcome: React.FC = () => {
         <div>
           <h2>User Profile</h2>
           <Suspense fallback={<Loader />}>
-            <ReactJson src={user} indentWidth={2} sortKeys />
+            <ReactJson src={user} indentWidth={2} enableClipboard={false} sortKeys />
           </Suspense>
         </div>
       ) : null}

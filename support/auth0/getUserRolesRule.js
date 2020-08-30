@@ -2,15 +2,18 @@
 // Auth0 rule for hooking up user data from the database with the access token
 
 // note that the name getUserRoles isn't wanted here but shuts up eslint
-function getUserRoles(user, context, callback) {
+async function getUserRoles(user, context, callback) {
 
   const namespace = 'https://amberconnw.org';
 
-  const query = `select u.email email, u.id user_id, r.authority, r.id role_id
-    from "user" u
-    join user_role ur on u.id = ur.user_id
-    join "role" r on r.id = ur.role_id
-    where u.email =  $1`;
+  const query = `
+    select u.email email, u.id user_id, r.authority, r.id role_id
+      from "user" u
+      join user_role ur on u.id = ur.user_id
+      join "role" r on r.id = ur.role_id
+      where u.email = $1`;
+
+  const insertQuery = `insert into "user" (id, email) values (default, $1) returning email, id as user_id`;
 
   const pg = require('pg@7.17.1');
 
@@ -28,26 +31,29 @@ function getUserRoles(user, context, callback) {
     ssl: true
   });
 
-  client.connect()
-    .then(() => {
-      client.query(query, [user.email])
-        .then(res => {
-          if(res.rows.length > 0) {
-            context.accessToken[namespace] = {
-              userId: res.rows[0].user_id,
-              roles: res.rows.map(r => r.authority)
-            };
-          }
-          client.end();
-          return callback(null, user, context);
-        })
-        .catch(e => {
-          client.end();
-          return callback(e);
-        });
-    })
-    .catch(e => {
-      client.end();
-      return callback(e);
-    });
+  try {
+    await client.connect();
+    const res = await client.query(query, [user.email]);
+    if (res.rows.length > 0) {
+      context.accessToken[namespace] = {
+        userId: res.rows[0].user_id,
+        roles: res.rows.map(r => r.authority)
+      };
+    } else {
+      // create user
+      // roles are handled by a trigger
+      const res = await client.query(insertQuery, [user.email]);
+      if (res.rows.length > 0) {
+        context.accessToken[namespace] = {
+          userId: res.rows[0].user_id,
+          roles: ['ROLE_USER']
+        };
+      }
+    }
+    client.end();
+    return callback(null, user, context);
+  } catch (e) {
+    client.end();
+    return callback(e);
+  }
 }

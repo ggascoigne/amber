@@ -1,4 +1,4 @@
-import { audience } from './_constants'
+import { audience, authDomain } from './_constants'
 
 const jwt = require('express-jwt')
 const fs = require('fs')
@@ -7,12 +7,20 @@ const fs = require('fs')
 // lambda that can't benefit from caching that just doesn't seem like a smart plan.
 // instead just put the public key on the filsysten
 
-const public_key = fs.readFileSync(`./shared/certs/${process.env.REACT_APP_AUTH0_DOMAIN}.pem`).toString()
+const public_key = fs.readFileSync(`./shared/certs/${authDomain}.pem`).toString()
 
 export const checkJwt = jwt({
   secret: public_key,
   audience,
-  issuer: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/`,
+  issuer: `https://${authDomain}/`,
   algorithms: ['RS256'],
   credentialsRequired: false,
+})
+
+export const requireJwt = jwt({
+  secret: public_key,
+  audience,
+  issuer: `https://${authDomain}/`,
+  algorithms: ['RS256'],
+  credentialsRequired: true,
 })

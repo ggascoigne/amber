@@ -7,12 +7,18 @@ import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
 import { useAuth } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
-import React, { useCallback } from 'react'
+import fetch from 'isomorphic-fetch'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import type { Auth0User } from '../Auth'
+import { useToken } from '../Auth/Auth0'
 import { HasPermission } from '../Auth/HasPermission'
 import { Perms } from '../Auth/PermissionRules'
+import { ProfileDialog } from '../Auth/Profile'
+import { useNotification } from '../Notifications'
 
+const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
+const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
 const MENU_ITEM_SIGN_OUT = 'Sign out'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -98,14 +104,21 @@ type MenuButton = {
 
 const MenuButton: React.FC<MenuButton> = ({ small, user }) => {
   const classes = useStyles()
+  const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
     <>
       <ProfileImage user={user} />
-      <span className={classes.email}>{user.email}</span>
+      <span className={classes.email}>
+        {user.email}
+        {unverified}
+      </span>
     </>
   ) : (
     <>
-      <span className={classes.email}>{user.email}</span>
+      <span className={classes.email}>
+        {user.email}
+        {unverified}
+      </span>
       <ProfileImage user={user} />
     </>
   )
@@ -118,6 +131,10 @@ type LoginMenu = {
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
   const { isAuthenticated, user, loginWithPopup, logout } = useAuth()
+  const [jwtToken] = useToken()
+  const [notify] = useNotification()
+  const [profileOpen, setProfileOpen] = useState(false)
+
   const login = useCallback(
     async (e: MouseEvent) => {
       e.preventDefault()
@@ -125,27 +142,84 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
     },
     [loginWithPopup]
   )
+
+  const menuItems = useMemo(
+    () =>
+      user?.sub.startsWith('auth0')
+        ? [MENU_ITEM_EDIT_PROFILE, MENU_ITEM_RESET_PASSWORD, MENU_ITEM_SIGN_OUT]
+        : [MENU_ITEM_EDIT_PROFILE, MENU_ITEM_SIGN_OUT],
+    [user]
+  )
+
+  const editProfile = useCallback(() => {
+    setProfileOpen(true)
+  }, [])
+
+  const closeProfile = useCallback(() => {
+    setProfileOpen(false)
+  }, [])
+
+  const resetPassword = useCallback(() => {
+    fetch(window.location.origin + '/api/resetPassword', {
+      method: 'post',
+      headers: jwtToken
+        ? {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          }
+        : {
+            'Content-Type': 'application/json',
+          },
+    })
+      .then((response) => response.text())
+      .then((responseBody) => {
+        try {
+          const result = JSON.parse(responseBody)
+          notify({
+            text: result.message,
+            variant: 'success',
+          })
+        } catch (e) {
+          console.log(e)
+          notify({
+            text: e,
+            variant: 'error',
+          })
+          return responseBody
+        }
+      })
+  }, [notify, jwtToken])
+
   return (
     <ApolloConsumer>
       {(client) =>
         isAuthenticated ? (
-          <CustomDropdown
-            right
-            caret={false}
-            hoverColor='black'
-            buttonText={<MenuButton small={small} user={user!} />}
-            buttonProps={{
-              className: classes.navLink,
-              color: 'transparent',
-            }}
-            dropdownList={[MENU_ITEM_SIGN_OUT]}
-            onClick={(prop: string) => {
-              if (prop === MENU_ITEM_SIGN_OUT) {
-                client.resetStore()
-                logout && logout()
-              }
-            }}
-          />
+          <>
+            <ProfileDialog open={profileOpen} onClose={closeProfile} email={user!.email!} />
+            <CustomDropdown
+              right
+              caret={false}
+              hoverColor='black'
+              buttonText={<MenuButton small={small} user={user!} />}
+              buttonProps={{
+                className: classes.navLink,
+                color: 'transparent',
+              }}
+              dropdownList={menuItems}
+              onClick={(prop: string) => {
+                if (prop === MENU_ITEM_EDIT_PROFILE) {
+                  editProfile()
+                }
+                if (prop === MENU_ITEM_RESET_PASSWORD) {
+                  resetPassword()
+                }
+                if (prop === MENU_ITEM_SIGN_OUT) {
+                  client.resetStore()
+                  logout && logout()
+                }
+              }}
+            />
+          </>
         ) : (
           <Button className={classes.loginNavLink} onClick={login} color='transparent'>
             Login

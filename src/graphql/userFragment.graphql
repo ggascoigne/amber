@@ -1,0 +1,8 @@
+fragment userFields on User {
+  nodeId
+  id
+  email
+  fullName
+  snailMailAddress
+  phoneNumber
+}

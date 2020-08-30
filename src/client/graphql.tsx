@@ -1435,16 +1435,6 @@ export type DeleteUserByNodeIdInput = {
   nodeId: Scalars['ID']
 }
 
-/** All input for the `deleteUserByUsername` mutation. */
-export type DeleteUserByUsernameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  username: Scalars['String']
-}
-
 /** All input for the `deleteUser` mutation. */
 export type DeleteUserInput = {
   /**
@@ -2335,12 +2325,14 @@ export enum GamesOrderBy {
   SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
   UserByAuthorIdIdAsc = 'USER_BY_AUTHOR_ID__ID_ASC',
   UserByAuthorIdIdDesc = 'USER_BY_AUTHOR_ID__ID_DESC',
-  UserByAuthorIdUsernameAsc = 'USER_BY_AUTHOR_ID__USERNAME_ASC',
-  UserByAuthorIdUsernameDesc = 'USER_BY_AUTHOR_ID__USERNAME_DESC',
   UserByAuthorIdEmailAsc = 'USER_BY_AUTHOR_ID__EMAIL_ASC',
   UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
   UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
   UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
+  UserByAuthorIdSnailMailAddressAsc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
+  UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
   GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
   GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
   GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
@@ -3432,12 +3424,14 @@ export enum MembershipsOrderBy {
   HotelRoomByHotelRoomIdTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC',
   UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
   UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
-  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
   GameAssignmentsByMemberIdCountDesc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC',
   GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
@@ -3554,8 +3548,6 @@ export type Mutation = {
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>
   /** Updates a single `User` using a unique key and a patch. */
-  updateUserByUsername?: Maybe<UpdateUserPayload>
-  /** Updates a single `User` using a unique key and a patch. */
   updateUserByEmail?: Maybe<UpdateUserPayload>
   /** Updates a single `UserRole` using its globally unique id and a patch. */
   updateUserRoleByNodeId?: Maybe<UpdateUserRolePayload>
@@ -3631,8 +3623,6 @@ export type Mutation = {
   deleteUserByNodeId?: Maybe<DeleteUserPayload>
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>
-  /** Deletes a single `User` using a unique key. */
-  deleteUserByUsername?: Maybe<DeleteUserPayload>
   /** Deletes a single `User` using a unique key. */
   deleteUserByEmail?: Maybe<DeleteUserPayload>
   /** Deletes a single `UserRole` using its globally unique id. */
@@ -3903,11 +3893,6 @@ export type MutationUpdateUserArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByUsernameArgs = {
-  input: UpdateUserByUsernameInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserByEmailArgs = {
   input: UpdateUserByEmailInput
 }
@@ -4098,11 +4083,6 @@ export type MutationDeleteUserArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByUsernameArgs = {
-  input: DeleteUserByUsernameInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserByEmailArgs = {
   input: DeleteUserByEmailInput
 }
@@ -4206,7 +4186,6 @@ export type Query = Node & {
   shirtOrderItem?: Maybe<ShirtOrderItem>
   slot?: Maybe<Slot>
   user?: Maybe<User>
-  userByUsername?: Maybe<User>
   userByEmail?: Maybe<User>
   userRole?: Maybe<UserRole>
   currentUserId?: Maybe<Scalars['Int']>
@@ -4552,11 +4531,6 @@ export type QuerySlotArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
   id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByUsernameArgs = {
-  username: Scalars['String']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -5201,12 +5175,14 @@ export enum ShirtOrdersOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
   UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
-  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
   ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
 }
@@ -6226,18 +6202,6 @@ export type UpdateUserByNodeIdInput = {
   patch: UserPatch
 }
 
-/** All input for the `updateUserByUsername` mutation. */
-export type UpdateUserByUsernameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch
-  username: Scalars['String']
-}
-
 /** All input for the `updateUser` mutation. */
 export type UpdateUserInput = {
   /**
@@ -6327,9 +6291,10 @@ export type User = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
   id: Scalars['Int']
-  username: Scalars['String']
   email: Scalars['String']
-  fullName: Scalars['String']
+  fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Game`. */
   authoredGames: GamesConnection
   /** Reads and enables pagination through a set of `Membership`. */
@@ -6388,24 +6353,28 @@ export type UserUserRolesArgs = {
 export type UserCondition = {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `username` field. */
-  username?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `email` field. */
   email?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
-  /** Filter by the object’s `username` field. */
-  username?: Maybe<StringFilter>
   /** Filter by the object’s `email` field. */
   email?: Maybe<StringFilter>
   /** Filter by the object’s `fullName` field. */
   fullName?: Maybe<StringFilter>
+  /** Filter by the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<StringFilter>
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<UserFilter>>
   /** Checks for any expressions in this list. */
@@ -6417,17 +6386,19 @@ export type UserFilter = {
 /** An input for mutations affecting `User` */
 export type UserInput = {
   id?: Maybe<Scalars['Int']>
-  username: Scalars['String']
   email: Scalars['String']
-  fullName: Scalars['String']
+  fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
   id?: Maybe<Scalars['Int']>
-  username?: Maybe<Scalars['String']>
   email?: Maybe<Scalars['String']>
   fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
 }
 
 export type UserRole = Node & {
@@ -6516,12 +6487,14 @@ export enum UserRolesOrderBy {
   RoleByRoleIdAuthorityDesc = 'ROLE_BY_ROLE_ID__AUTHORITY_DESC',
   UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
   UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdUsernameAsc = 'USER_BY_USER_ID__USERNAME_ASC',
-  UserByUserIdUsernameDesc = 'USER_BY_USER_ID__USERNAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
 }
 
 /** A connection to a list of `User` values. */
@@ -6551,12 +6524,14 @@ export enum UsersOrderBy {
   Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  UsernameAsc = 'USERNAME_ASC',
-  UsernameDesc = 'USERNAME_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
   FullNameAsc = 'FULL_NAME_ASC',
   FullNameDesc = 'FULL_NAME_DESC',
+  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
+  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
+  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
+  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   GamesByAuthorIdCountAsc = 'GAMES_BY_AUTHOR_ID__COUNT_ASC',
@@ -6856,6 +6831,29 @@ export type SlotFieldsFragment = { __typename: 'Slot' } & Pick<
   'nodeId' | 'id' | 'slot' | 'day' | 'length' | 'time'
 >
 
+export type GetUserByEmailQueryVariables = Exact<{
+  email: Scalars['String']
+}>
+
+export type GetUserByEmailQuery = { __typename: 'Query' } & {
+  userByEmail?: Maybe<{ __typename: 'User' } & UserFieldsFragment>
+}
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput
+}>
+
+export type UpdateUserMutation = { __typename: 'Mutation' } & {
+  updateUser?: Maybe<
+    { __typename: 'UpdateUserPayload' } & { user?: Maybe<{ __typename: 'User' } & UserFieldsFragment> }
+  >
+}
+
+export type UserFieldsFragment = { __typename: 'User' } & Pick<
+  User,
+  'nodeId' | 'id' | 'email' | 'fullName' | 'snailMailAddress' | 'phoneNumber'
+>
+
 export const GameFieldsFragmentDoc = gql`
   fragment gameFields on Game {
     nodeId
@@ -6924,6 +6922,16 @@ export const SlotFieldsFragmentDoc = gql`
     day
     length
     time
+  }
+`
+export const UserFieldsFragmentDoc = gql`
+  fragment userFields on User {
+    nodeId
+    id
+    email
+    fullName
+    snailMailAddress
+    phoneNumber
   }
 `
 export const GetGamesBySlotDocument = gql`
@@ -7647,3 +7655,78 @@ export function useGetSlotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<G
 export type GetSlotsQueryHookResult = ReturnType<typeof useGetSlotsQuery>
 export type GetSlotsLazyQueryHookResult = ReturnType<typeof useGetSlotsLazyQuery>
 export type GetSlotsQueryResult = Apollo.QueryResult<GetSlotsQuery, GetSlotsQueryVariables>
+export const GetUserByEmailDocument = gql`
+  query GetUserByEmail($email: String!) {
+    userByEmail(email: $email) {
+      ...userFields
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`
+
+/**
+ * __useGetUserByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserByEmailQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+  return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, baseOptions)
+}
+export function useGetUserByEmailLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, baseOptions)
+}
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+export const UpdateUserDocument = gql`
+  mutation updateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      user {
+        ...userFields
+      }
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>
+) {
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, baseOptions)
+}
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>

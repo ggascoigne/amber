@@ -11,6 +11,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
 import { useAuth } from './components/Acnw/Auth/Auth0'
+import { NotificationProvider } from './components/Acnw/Notifications'
 import registerServiceWorker from './utils/registerServiceWorker'
 
 // if (process.env.NODE_ENV === 'development') {
@@ -30,9 +31,11 @@ const ApolloWrapper: React.FC = ({ children }) => {
 }
 const RootComponent: React.FC = ({ children }) => (
   <BrowserRouter>
-    <Auth0Provider>
-      <ApolloWrapper>{children}</ApolloWrapper>
-    </Auth0Provider>
+    <NotificationProvider>
+      <Auth0Provider>
+        <ApolloWrapper>{children}</ApolloWrapper>
+      </Auth0Provider>
+    </NotificationProvider>
   </BrowserRouter>
 )
 

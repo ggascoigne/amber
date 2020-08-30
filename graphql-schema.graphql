@@ -2178,18 +2178,6 @@ input DeleteUserByNodeIdInput {
 }
 
 """
-All input for the `deleteUserByUsername` mutation.
-"""
-input DeleteUserByUsernameInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  username: String!
-}
-
-"""
 All input for the `deleteUser` mutation.
 """
 input DeleteUserInput {
@@ -3570,12 +3558,14 @@ enum GamesOrderBy {
   SLOT_BY_SLOT_ID__TIME_DESC
   USER_BY_AUTHOR_ID__ID_ASC
   USER_BY_AUTHOR_ID__ID_DESC
-  USER_BY_AUTHOR_ID__USERNAME_ASC
-  USER_BY_AUTHOR_ID__USERNAME_DESC
   USER_BY_AUTHOR_ID__EMAIL_ASC
   USER_BY_AUTHOR_ID__EMAIL_DESC
   USER_BY_AUTHOR_ID__FULL_NAME_ASC
   USER_BY_AUTHOR_ID__FULL_NAME_DESC
+  USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC
+  USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC
+  USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC
+  USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC
   GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC
   GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC
   GAME_CHOICES_BY_GAME_ID__COUNT_ASC
@@ -5450,12 +5440,14 @@ enum MembershipsOrderBy {
   HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC
   USER_BY_USER_ID__ID_ASC
   USER_BY_USER_ID__ID_DESC
-  USER_BY_USER_ID__USERNAME_ASC
-  USER_BY_USER_ID__USERNAME_DESC
   USER_BY_USER_ID__EMAIL_ASC
   USER_BY_USER_ID__EMAIL_DESC
   USER_BY_USER_ID__FULL_NAME_ASC
   USER_BY_USER_ID__FULL_NAME_DESC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC
+  USER_BY_USER_ID__PHONE_NUMBER_ASC
+  USER_BY_USER_ID__PHONE_NUMBER_DESC
   GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC
   GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC
   GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC
@@ -5991,16 +5983,6 @@ type Mutation {
   """
   Updates a single `User` using a unique key and a patch.
   """
-  updateUserByUsername(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: UpdateUserByUsernameInput!
-  ): UpdateUserPayload
-
-  """
-  Updates a single `User` using a unique key and a patch.
-  """
   updateUserByEmail(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -6376,16 +6358,6 @@ type Mutation {
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: DeleteUserInput!
-  ): DeleteUserPayload
-
-  """
-  Deletes a single `User` using a unique key.
-  """
-  deleteUserByUsername(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: DeleteUserByUsernameInput!
   ): DeleteUserPayload
 
   """
@@ -7285,7 +7257,6 @@ type Query implements Node {
   shirtOrderItem(id: Int!): ShirtOrderItem
   slot(id: Int!): Slot
   user(id: Int!): User
-  userByUsername(username: String!): User
   userByEmail(email: String!): User
   userRole(roleId: Int!, userId: Int!): UserRole
   currentUserId: Int
@@ -8421,12 +8392,14 @@ enum ShirtOrdersOrderBy {
   PRIMARY_KEY_DESC
   USER_BY_USER_ID__ID_ASC
   USER_BY_USER_ID__ID_DESC
-  USER_BY_USER_ID__USERNAME_ASC
-  USER_BY_USER_ID__USERNAME_DESC
   USER_BY_USER_ID__EMAIL_ASC
   USER_BY_USER_ID__EMAIL_DESC
   USER_BY_USER_ID__FULL_NAME_ASC
   USER_BY_USER_ID__FULL_NAME_DESC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC
+  USER_BY_USER_ID__PHONE_NUMBER_ASC
+  USER_BY_USER_ID__PHONE_NUMBER_DESC
   SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC
   SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC
 }
@@ -10104,23 +10077,6 @@ input UpdateUserByNodeIdInput {
 }
 
 """
-All input for the `updateUserByUsername` mutation.
-"""
-input UpdateUserByUsernameInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-
-  """
-  An object where the defined keys will be set on the `User` being updated.
-  """
-  patch: UserPatch!
-  username: String!
-}
-
-"""
 All input for the `updateUser` mutation.
 """
 input UpdateUserInput {
@@ -10254,9 +10210,10 @@ type User implements Node {
   """
   nodeId: ID!
   id: Int!
-  username: String!
   email: String!
-  fullName: String!
+  fullName: String
+  snailMailAddress: String
+  phoneNumber: String
 
   """
   Reads and enables pagination through a set of `Game`.
@@ -10453,11 +10410,6 @@ input UserCondition {
   id: Int
 
   """
-  Checks for equality with the object’s `username` field.
-  """
-  username: String
-
-  """
   Checks for equality with the object’s `email` field.
   """
   email: String
@@ -10466,6 +10418,16 @@ input UserCondition {
   Checks for equality with the object’s `fullName` field.
   """
   fullName: String
+
+  """
+  Checks for equality with the object’s `snailMailAddress` field.
+  """
+  snailMailAddress: String
+
+  """
+  Checks for equality with the object’s `phoneNumber` field.
+  """
+  phoneNumber: String
 }
 
 """
@@ -10478,11 +10440,6 @@ input UserFilter {
   id: IntFilter
 
   """
-  Filter by the object’s `username` field.
-  """
-  username: StringFilter
-
-  """
   Filter by the object’s `email` field.
   """
   email: StringFilter
@@ -10491,6 +10448,16 @@ input UserFilter {
   Filter by the object’s `fullName` field.
   """
   fullName: StringFilter
+
+  """
+  Filter by the object’s `snailMailAddress` field.
+  """
+  snailMailAddress: StringFilter
+
+  """
+  Filter by the object’s `phoneNumber` field.
+  """
+  phoneNumber: StringFilter
 
   """
   Checks for all expressions in this list.
@@ -10513,9 +10480,10 @@ An input for mutations affecting `User`
 """
 input UserInput {
   id: Int
-  username: String!
   email: String!
-  fullName: String!
+  fullName: String
+  snailMailAddress: String
+  phoneNumber: String
 }
 
 """
@@ -10523,9 +10491,10 @@ Represents an update to a `User`. Fields that are set will be updated.
 """
 input UserPatch {
   id: Int
-  username: String
   email: String
   fullName: String
+  snailMailAddress: String
+  phoneNumber: String
 }
 
 type UserRole implements Node {
@@ -10666,12 +10635,14 @@ enum UserRolesOrderBy {
   ROLE_BY_ROLE_ID__AUTHORITY_DESC
   USER_BY_USER_ID__ID_ASC
   USER_BY_USER_ID__ID_DESC
-  USER_BY_USER_ID__USERNAME_ASC
-  USER_BY_USER_ID__USERNAME_DESC
   USER_BY_USER_ID__EMAIL_ASC
   USER_BY_USER_ID__EMAIL_DESC
   USER_BY_USER_ID__FULL_NAME_ASC
   USER_BY_USER_ID__FULL_NAME_DESC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC
+  USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC
+  USER_BY_USER_ID__PHONE_NUMBER_ASC
+  USER_BY_USER_ID__PHONE_NUMBER_DESC
 }
 
 """
@@ -10721,12 +10692,14 @@ enum UsersOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
-  USERNAME_ASC
-  USERNAME_DESC
   EMAIL_ASC
   EMAIL_DESC
   FULL_NAME_ASC
   FULL_NAME_DESC
+  SNAIL_MAIL_ADDRESS_ASC
+  SNAIL_MAIL_ADDRESS_DESC
+  PHONE_NUMBER_ASC
+  PHONE_NUMBER_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   GAMES_BY_AUTHOR_ID__COUNT_ASC

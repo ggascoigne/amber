@@ -11,8 +11,9 @@ import createAuth0Client, {
 } from '@auth0/auth0-spa-js'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import type { ThenArg } from 'utils'
+import { ThenArg, useLocalStorage } from 'utils'
 
+import { useNotification } from '../Notifications'
 import { checkMany } from './authUtils'
 import rules, { Perms } from './PermissionRules'
 
@@ -44,6 +45,7 @@ export type Auth0User = AuthInfo & {
   name: string
   nickname: string
   picture: string
+  sub: string
 }
 
 interface ContextValueType {
@@ -84,7 +86,7 @@ const auth0ClientConfig: Auth0ClientOptions = {
   cacheLocation: 'localstorage',
   audience: AUTH_CONFIG.audience,
   responseType: 'token id_token',
-  scope: 'openid profile',
+  scope: 'openid profile email',
 }
 
 const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
@@ -105,6 +107,8 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [user, setUser] = useState<Auth0User>()
   const [auth0Client, setAuth0Client] = useState<Auth0Client>()
+  const [notify] = useNotification()
+  const [showVerifyEmailMessage, setShowVerifyEmailMessage] = useLocalStorage<boolean>('showVerifyEmailMessage', false)
 
   const getEnrichedUser = async (client: Auth0Client) => {
     const userProfile = await client.getUser()
@@ -146,7 +150,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       setIsPopupOpen(true)
 
       try {
-        await auth0Client!.loginWithPopup(options)
+        await auth0Client!.loginWithPopup(options, { timeoutInSeconds: 300 })
       } catch (error) {
         console.error(error)
       } finally {
@@ -181,6 +185,27 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       }),
     [auth0Client]
   )
+
+  useEffect(() => {
+    if (user && !user.email_verified) {
+      console.log('email not verified so logging out')
+      setShowVerifyEmailMessage(true)
+      logout()
+    }
+  }, [logout, setShowVerifyEmailMessage, user])
+
+  useEffect(() => {
+    if (!user && showVerifyEmailMessage) {
+      notify({
+        text: 'Please verify your email and try to login again',
+        variant: 'success',
+        options: {
+          autoHideDuration: null,
+        },
+      })
+      setShowVerifyEmailMessage(false)
+    }
+  }, [user, notify, setShowVerifyEmailMessage, showVerifyEmailMessage])
 
   const hasPermissions = useCallback(
     (permission: Perms, data?: any) => !!user && checkMany(rules, user.roles, permission, data),
@@ -218,3 +243,14 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
 }
 
 export const Auth0Consumer = Auth0Context.Consumer
+
+export const useToken = () => {
+  const { isAuthenticated, getTokenSilently } = useAuth()
+  const [jwtToken, setJwtToken] = useState<string | undefined>()
+
+  useEffect(() => {
+    isAuthenticated && getTokenSilently && getTokenSilently().then((t) => setJwtToken(t))
+  }, [getTokenSilently, isAuthenticated])
+
+  return [jwtToken]
+}

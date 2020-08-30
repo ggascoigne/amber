@@ -1,0 +1,15 @@
+#import "./userFragment.graphql"
+
+query GetUserByEmail($email: String!) {
+  userByEmail(email: $email) {
+    ...userFields
+  }
+}
+
+mutation updateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    user {
+      ...userFields
+    }
+  }
+}
