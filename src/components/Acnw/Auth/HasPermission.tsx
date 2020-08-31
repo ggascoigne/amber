@@ -16,3 +16,18 @@ export const HasPermission: React.FC<PermissionProps> = ({ permission, data, chi
   const allowed = hasPermissions(permission, data)
   return allowed ? <>{children}</> : denied()
 }
+
+export const IsLoggedIn: React.FC = ({ children }) => {
+  const { isAuthenticated, user } = useAuth()
+  return isAuthenticated && !!user ? <>{children}</> : null
+}
+
+export const IsNotLoggedIn: React.FC = ({ children }) => {
+  const { isAuthenticated, user } = useAuth()
+  return isAuthenticated && !!user ? null : <>{children}</>
+}
+
+// export const IsMember: React.FC = ({ children}) => {
+//   const { isAuthenticated, user } = useAuth()
+//   return isAuthenticated && !!user ? <>{children}</> : null
+// }

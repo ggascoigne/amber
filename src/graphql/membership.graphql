@@ -1,0 +1,9 @@
+#import "./membershipFragment.graphql"
+
+query getMembership($year: Int, $userId: Int) {
+  memberships(condition: { userId: $userId, year: $year }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}

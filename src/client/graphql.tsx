@@ -6818,6 +6818,42 @@ export type DeleteLookupValueMutation = { __typename: 'Mutation' } & {
   >
 }
 
+export type GetMembershipQueryVariables = Exact<{
+  year?: Maybe<Scalars['Int']>
+  userId?: Maybe<Scalars['Int']>
+}>
+
+export type GetMembershipQuery = { __typename: 'Query' } & {
+  memberships?: Maybe<
+    { __typename: 'MembershipsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
+    }
+  >
+}
+
+export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
+  Membership,
+  | 'nodeId'
+  | 'id'
+  | 'amountOwed'
+  | 'amountPaid'
+  | 'arrivalDate'
+  | 'attendance'
+  | 'attending'
+  | 'hotelRoomId'
+  | 'departureDate'
+  | 'interestLevel'
+  | 'message'
+  | 'offerSubsidy'
+  | 'requestOldPrice'
+  | 'roomPreferenceAndNotes'
+  | 'roomingPreferences'
+  | 'roomingWith'
+  | 'userId'
+  | 'volunteer'
+  | 'year'
+>
+
 export type GetSlotsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetSlotsQuery = { __typename: 'Query' } & {
@@ -6912,6 +6948,29 @@ export const LookupValuesFieldsFragmentDoc = gql`
     code
     sequencer
     value
+  }
+`
+export const MembershipFieldsFragmentDoc = gql`
+  fragment membershipFields on Membership {
+    nodeId
+    id
+    amountOwed
+    amountPaid
+    arrivalDate
+    attendance
+    attending
+    hotelRoomId
+    departureDate
+    interestLevel
+    message
+    offerSubsidy
+    requestOldPrice
+    roomPreferenceAndNotes
+    roomingPreferences
+    roomingWith
+    userId
+    volunteer
+    year
   }
 `
 export const SlotFieldsFragmentDoc = gql`
@@ -7620,6 +7679,47 @@ export type DeleteLookupValueMutationOptions = Apollo.BaseMutationOptions<
   DeleteLookupValueMutation,
   DeleteLookupValueMutationVariables
 >
+export const GetMembershipDocument = gql`
+  query getMembership($year: Int, $userId: Int) {
+    memberships(condition: { userId: $userId, year: $year }) {
+      nodes {
+        ...membershipFields
+      }
+    }
+  }
+  ${MembershipFieldsFragmentDoc}
+`
+
+/**
+ * __useGetMembershipQuery__
+ *
+ * To run a query within a React component, call `useGetMembershipQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembershipQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembershipQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useGetMembershipQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetMembershipQuery, GetMembershipQueryVariables>
+) {
+  return Apollo.useQuery<GetMembershipQuery, GetMembershipQueryVariables>(GetMembershipDocument, baseOptions)
+}
+export function useGetMembershipLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipQuery, GetMembershipQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetMembershipQuery, GetMembershipQueryVariables>(GetMembershipDocument, baseOptions)
+}
+export type GetMembershipQueryHookResult = ReturnType<typeof useGetMembershipQuery>
+export type GetMembershipLazyQueryHookResult = ReturnType<typeof useGetMembershipLazyQuery>
+export type GetMembershipQueryResult = Apollo.QueryResult<GetMembershipQuery, GetMembershipQueryVariables>
 export const GetSlotsDocument = gql`
   query GetSlots {
     slots {

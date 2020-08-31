@@ -1,0 +1,21 @@
+fragment membershipFields on Membership {
+  nodeId
+  id
+  amountOwed
+  amountPaid
+  arrivalDate
+  attendance
+  attending
+  hotelRoomId
+  departureDate
+  interestLevel
+  message
+  offerSubsidy
+  requestOldPrice
+  roomPreferenceAndNotes
+  roomingPreferences
+  roomingWith
+  userId
+  volunteer
+  year
+}

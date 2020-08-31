@@ -1,13 +1,16 @@
+import { Button } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
-import Acnw, { Loader } from 'components/Acnw'
+import Acnw from 'components/Acnw'
 import { useAuth } from 'components/Acnw/Auth'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
-import React, { Suspense } from 'react'
+import React, { useCallback } from 'react'
 
-const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
+import { useGetMembershipQuery } from '../client'
+import { Auth0User } from '../components/Acnw/Auth/Auth0'
+import { IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,9 +27,63 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+const NeedsLogin: React.FC = () => {
+  const { loginWithPopup } = useAuth()
+  const login = useCallback(async () => loginWithPopup && (await loginWithPopup()), [loginWithPopup])
+  return (
+    <>
+      <p>
+        Firstly you need to Register with the Ambercon NW site and login: &nbsp;
+        <Button onClick={login} variant='contained'>
+          click here to register/login
+        </Button>
+      </p>
+      <p>
+        Please note that site registration and login has changed from previous years. If you have games from previous
+        years that you want to have easy access to, please ensure that you use the same email address as in previous
+        years.
+      </p>
+    </>
+  )
+}
+
+type IsUserAMember = {
+  user: Auth0User
+  denied?: () => React.ReactElement | null
+}
+
+const nullOp = (): null => null
+
+const IsUserAMember: React.FC<IsUserAMember> = ({ user, children = null, denied = nullOp }) => {
+  const { loading, error, data } = useGetMembershipQuery({ variables: { year: 2019, userId: user.userId } })
+  if (loading || !data) return denied()
+  if (error) console.log(`error = ${JSON.stringify(error, null, 2)}`)
+  if (data) console.log(`data = ${JSON.stringify(data, null, 2)}`)
+  return <>{children}</>
+}
+
+export const IsMember: React.FC = ({ children }) => {
+  const { isAuthenticated, user } = useAuth()
+
+  if (isAuthenticated && !!user) {
+    return <IsUserAMember user={user}>{children}</IsUserAMember>
+  } else {
+    return null
+  }
+}
+
+export const IsNotMember: React.FC = ({ children }) => {
+  const { isAuthenticated, user } = useAuth()
+
+  if (isAuthenticated && !!user) {
+    return <IsUserAMember user={user} denied={() => <>{children}</>} />
+  } else {
+    return null
+  }
+}
+
 export const Welcome: React.FC = () => {
   const classes = useStyles()
-  const { isAuthenticated, user } = useAuth()
 
   return (
     <Page>
@@ -35,14 +92,6 @@ export const Welcome: React.FC = () => {
       </div>
       <h1>Welcome!</h1>
 
-      {isAuthenticated && !!user ? (
-        <div>
-          <h2>User Profile</h2>
-          <Suspense fallback={<Loader />}>
-            <ReactJson src={user} indentWidth={2} enableClipboard={false} sortKeys />
-          </Suspense>
-        </div>
-      ) : null}
       <p>
         Our <Acnw.Ordinal /> annual AmberCon Northwest is a fully scheduled role-playing game convention devoted to
         Roger Zelazny's worlds of Amber using Phage Press's Amber Diceless RPG by Erick Wujcik, and to diceless and
@@ -71,6 +120,14 @@ export const Welcome: React.FC = () => {
           www.ambercons.com
         </a>
       </p>
+
+      <h2>Attending Virtual AmberCon NW</h2>
+
+      <IsNotLoggedIn>
+        <NeedsLogin />
+      </IsNotLoggedIn>
+      <IsMember>Is a member</IsMember>
+      <IsNotMember>Is NOT member</IsNotMember>
 
       <h2>Deadline dates this year</h2>
       <ul>

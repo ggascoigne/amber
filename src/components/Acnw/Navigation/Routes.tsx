@@ -47,7 +47,7 @@ export const rootRoutes: RootRoutes = [
   },
   {
     path: '/pastCons',
-    label: 'Past Cons',
+    label: 'Past Years',
     exact: true,
     component: PastConsPage,
   },
@@ -56,12 +56,14 @@ export const rootRoutes: RootRoutes = [
     label: 'Lookups',
     exact: true,
     component: Lookups,
+    permission: Perms.IsAdmin,
   },
   {
     path: '/games',
     label: 'Games',
     exact: true,
     component: Games,
+    permission: Perms.IsAdmin,
   },
   {
     path: '/graphiql',
