@@ -18,6 +18,7 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react'
 import { Banner } from 'components/Acnw/Banner'
+import { Footer } from 'components/Acnw/Footer'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
 import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
 import React, { useCallback, useState } from 'react'
@@ -121,13 +122,15 @@ export const App: React.FC = React.memo(() => {
   const classes = useStyles()
 
   const drawer = (
-    <div>
+    <>
       <div className={classes.toolbar}>
         <Banner to='/' />
       </div>
       <Divider />
       <MenuItems menuItems={rootRoutes} />
-    </div>
+      <div style={{ height: '100%' }} />
+      <Footer />
+    </>
   )
 
   const rightLinks: React.FC<{ small?: boolean }> = (props) => (

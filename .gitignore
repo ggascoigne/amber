@@ -57,3 +57,6 @@ postgres-data
 
 .now
 build/
+
+# generated at build time
+src/version.ts

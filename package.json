@@ -127,7 +127,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/js/*.js'",
-    "setup": "yarn db:migrate:up && TS_NODE_PROJECT=./tsconfig.commonjs.json ./scripts/prepareGraphql.ts && yarn codegen",
+    "setup": "yarn db:migrate:up && TS_NODE_PROJECT=./tsconfig.commonjs.json ./scripts/prepareGraphql.ts && yarn codegen && yarn gitHash",
     "prebuild": "yarn setup",
     "prestart": "yarn setup",
     "build": "react-scripts build",
@@ -141,6 +141,7 @@
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
     "debug": "now dev --listen 30000",
     "format": "prettier --no-color --loglevel warn --write '{src,api,scripts,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
+    "gitHash": "./scripts/getGitHash.sh",
     "lint": "eslint '{src,api,scripts,support,types}/**/*.{js,jsx,ts,tsx}'",
     "start": "BROWSER=none react-scripts start",
     "test": "react-scripts test",

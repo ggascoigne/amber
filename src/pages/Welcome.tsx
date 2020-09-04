@@ -11,6 +11,7 @@ import React, { useCallback } from 'react'
 import { useGetMembershipQuery } from '../client'
 import { Auth0User } from '../components/Acnw/Auth/Auth0'
 import { IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
+import { useLocalStorage } from '../utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,17 +49,28 @@ const NeedsLogin: React.FC = () => {
 }
 
 type IsUserAMember = {
+  year: number
   user: Auth0User
   denied?: () => React.ReactElement | null
 }
 
 const nullOp = (): null => null
 
-const IsUserAMember: React.FC<IsUserAMember> = ({ user, children = null, denied = nullOp }) => {
-  const { loading, error, data } = useGetMembershipQuery({ variables: { year: 2019, userId: user.userId } })
-  if (loading || !data) return denied()
-  if (error) console.log(`error = ${JSON.stringify(error, null, 2)}`)
-  if (data) console.log(`data = ${JSON.stringify(data, null, 2)}`)
+const IsUserAMember: React.FC<IsUserAMember> = ({ year, user, children = null, denied = nullOp }) => {
+  const [lastMembershipYear, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
+  const { loading, error, data } = useGetMembershipQuery({ variables: { year, userId: user.userId } })
+  if (lastMembershipYear !== year) {
+    if (loading || !data) {
+      return denied()
+    }
+    if (error) {
+      console.log(`error = ${JSON.stringify(error, null, 2)}`)
+    }
+    if (data) {
+      console.log(`data = ${JSON.stringify(data, null, 2)}`)
+    }
+    setLastMembershipYear(year)
+  }
   return <>{children}</>
 }
 
@@ -66,7 +78,11 @@ export const IsMember: React.FC = ({ children }) => {
   const { isAuthenticated, user } = useAuth()
 
   if (isAuthenticated && !!user) {
-    return <IsUserAMember user={user}>{children}</IsUserAMember>
+    return (
+      <IsUserAMember year={2019} user={user}>
+        {children}
+      </IsUserAMember>
+    )
   } else {
     return null
   }
@@ -76,7 +92,7 @@ export const IsNotMember: React.FC = ({ children }) => {
   const { isAuthenticated, user } = useAuth()
 
   if (isAuthenticated && !!user) {
-    return <IsUserAMember user={user} denied={() => <>{children}</>} />
+    return <IsUserAMember year={2019} user={user} denied={() => <>{children}</>} />
   } else {
     return null
   }
