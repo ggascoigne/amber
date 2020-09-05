@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
 #set -x
-source ./.env.aws-dev
+source ./.env.aws-prod
 
 function now_secrets() {
   echo Y | now secrets rm $1 >/dev/null 2>&1
