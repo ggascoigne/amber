@@ -114,7 +114,7 @@
     "react-app-polyfill": "^1.0.6",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "4.0.0-next.77",
     "react-table": "^7.5.0",
     "react-waypoint": "^9.0.3",
     "typesync": "^0.7.0",

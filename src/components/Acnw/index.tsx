@@ -34,4 +34,5 @@ const GameSubmissionDeadline = () => <>{configurationService.gameSubmissionDeadl
 
 const SimoneEmail = () => <>{configurationService.simEmail}</>
 
-export default { Ordinal, RegistrationDeadline, ConventionYear, PaymentDeadline, GameSubmissionDeadline, SimoneEmail }
+const defaults = { Ordinal, RegistrationDeadline, ConventionYear, PaymentDeadline, GameSubmissionDeadline, SimoneEmail }
+export default defaults

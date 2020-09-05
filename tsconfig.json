@@ -20,7 +20,8 @@
     "noEmit": true,
     "jsx": "preserve",
     "rootDir": "src",
-    "noErrorTruncation": true
+    "noErrorTruncation": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": [
     "src",

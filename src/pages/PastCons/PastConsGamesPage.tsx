@@ -21,6 +21,7 @@ export const PastConsGamesPage: React.FC = () => {
   const { data } = useUrlSourceQuery()
   const urlSource = data && data.urlSource
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const setNewUrl = useCallback(
     debounce(async (slug: string) => {
       if (lastSlug !== slug) {
@@ -29,7 +30,7 @@ export const PastConsGamesPage: React.FC = () => {
         history.replace(slug)
       }
     }, 200),
-    []
+    [history, lastSlug, updateUrlSourceMutation]
   )
 
   const scrollToId = useCallback(
