@@ -75,6 +75,7 @@ export const Footer: React.FC = (props) => {
     setAnchorEl(null)
   }
 
+  const hash = gitHash.length > 0 ? gitHash.substring(0, 8) : 'dev'
   const open = Boolean(anchorEl)
   const id = open ? 'simple-popover' : undefined
   return (
@@ -112,8 +113,7 @@ export const Footer: React.FC = (props) => {
             </Popover>
           )}
         </HasPermission>
-        <span onClick={handleClick}>{gitHash.substring(0, 8)}</span> | &copy; {DateTime.fromJSDate(new Date()).year}{' '}
-        amberconnw.org
+        <span onClick={handleClick}>{hash}</span> | &copy; {DateTime.fromJSDate(new Date()).year} amberconnw.org
       </div>
     </footer>
   )
