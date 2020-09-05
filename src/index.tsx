@@ -12,7 +12,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import { useAuth } from './components/Acnw/Auth/Auth0'
 import { NotificationProvider } from './components/Acnw/Notifications'
-import registerServiceWorker from './utils/registerServiceWorker'
+
+// import registerServiceWorker from './utils/registerServiceWorker'
 
 // if (process.env.NODE_ENV === 'development') {
 //   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -54,4 +55,4 @@ if ((module as NodeModule).hot) {
   ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
 }
 
-registerServiceWorker()
+// registerServiceWorker()
