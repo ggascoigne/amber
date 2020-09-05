@@ -7,7 +7,11 @@ export const Credits = () => (
     <Typography variant='h3' color='inherit'>
       Credits
     </Typography>
-    <a href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss' target='_blank'>
+    <a
+      href='https://auth0.com/?utm_source=oss&utm_medium=gp&utm_campaign=oss'
+      target='_blank'
+      rel='noopener noreferrer'
+    >
       <img
         width='150'
         height='50'
