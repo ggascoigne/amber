@@ -21,7 +21,9 @@ import { Banner } from 'components/Acnw/Banner'
 import { Footer } from 'components/Acnw/Footer'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
 import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+
+import { Config, useGetConfig } from './utils/getConfig'
 
 const theme = createMuiTheme({
   palette: {
@@ -114,10 +116,28 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const App: React.FC = React.memo(() => {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [config, getConfig] = useGetConfig()
+  const [configDetails, setConfigDetails] = useState('')
 
   const handleDrawerToggle = useCallback(() => {
     setMobileOpen(!mobileOpen)
   }, [mobileOpen])
+
+  useEffect(() => {
+    getConfig()
+  }, [getConfig])
+
+  useEffect(() => {
+    const getConfigDetails = (config: Config | undefined, href: string | undefined) => {
+      // never show any sort of configuration debug on the two release sites
+      // note that amberconnw.org is the real site
+      // acnw.org is the "dev" release site
+      if (href?.startsWith('https://amberconnw.org') || href?.startsWith('https://acnw.org')) return ''
+      return !config ? '' : config.local ? '(local)' : config.databaseName !== 'acnw' ? '(test)' : '(prod)'
+    }
+
+    setConfigDetails(getConfigDetails(config, window.location.href))
+  }, [config])
 
   const classes = useStyles()
 
@@ -159,6 +179,7 @@ export const App: React.FC = React.memo(() => {
             <Typography variant='h6' color='inherit' noWrap>
               AmberCon Northwest
             </Typography>
+            &nbsp;{configDetails}
           </Toolbar>
           <Hidden smDown implementation='css'>
             {rightLinks({})}

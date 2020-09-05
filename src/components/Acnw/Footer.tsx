@@ -2,12 +2,12 @@ import { Popover } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { container } from 'assets/jss/material-kit-react.js'
-import fetch from 'isomorphic-fetch'
 import { DateTime } from 'luxon'
-import React, { Suspense, useCallback, useState } from 'react'
+import React, { Suspense } from 'react'
 import { gitHash } from 'version'
 
-import { useAuth, useToken } from './Auth/Auth0'
+import { useGetConfig } from '../../utils/getConfig'
+import { useAuth } from './Auth/Auth0'
 import { HasPermission } from './Auth/HasPermission'
 import { Perms } from './Auth/PermissionRules'
 import { Loader } from './Loader'
@@ -34,35 +34,10 @@ const footerStyle = createStyles({
 const useStyles = makeStyles(footerStyle)
 
 export const Footer: React.FC = (props) => {
-  const [jwtToken] = useToken()
   const { hasPermissions } = useAuth()
-  const [config, setConfig] = useState({})
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-
-  const getConfig = useCallback(() => {
-    fetch(window.location.origin + '/api/getConfig', {
-      method: 'post',
-      headers: jwtToken
-        ? {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
-    })
-      .then((response) => response.text())
-      .then((responseBody) => {
-        try {
-          const result = JSON.parse(responseBody)
-          setConfig(result)
-        } catch (e) {
-          console.log(e)
-          return responseBody
-        }
-      })
-  }, [setConfig, jwtToken])
+  const [config, getConfig] = useGetConfig()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasPermissions(Perms.IsAdmin)) {

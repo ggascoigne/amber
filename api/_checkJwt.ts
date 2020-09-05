@@ -1,4 +1,5 @@
 import { audience, authDomain } from './_constants'
+
 const jwt = require('express-jwt')
 const fs = require('fs')
 
@@ -24,4 +25,7 @@ export const requireJwt = jwt({
 
 export const getUserId = (user: any) => user?.[audience]?.userId
 
-export const isAdmin = (user: any) => user[audience].roles.indexOf('ROLE_ADMIN') !== -1
+export const isAdmin = (user: any) => {
+  const roles = user?.[audience]?.roles
+  return roles && roles.indexOf('ROLE_ADMIN') !== -1
+}
