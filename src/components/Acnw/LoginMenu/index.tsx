@@ -8,7 +8,7 @@ import { useAuth } from 'components/Acnw/Auth'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import fetch from 'isomorphic-fetch'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { Auth0User } from '../Auth'
 import { useToken } from '../Auth/Auth0'
@@ -130,10 +130,13 @@ type LoginMenu = {
 
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
-  const { isAuthenticated, user, loginWithPopup, logout } = useAuth()
+  const { isInitializing = true, isAuthenticated, user, loginWithPopup, logout } = useAuth()
   const [jwtToken] = useToken()
   const [notify] = useNotification()
   const [profileOpen, setProfileOpen] = useState(false)
+  const [authInitialized, setAuthInitialized] = useState(false)
+
+  useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
 
   const login = useCallback(
     async (e: MouseEvent) => {
@@ -221,7 +224,7 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
             />
           </>
         ) : (
-          <Button className={classes.loginNavLink} onClick={login} color='transparent'>
+          <Button disabled={!authInitialized} className={classes.loginNavLink} onClick={login} color='transparent'>
             Login
           </Button>
         )

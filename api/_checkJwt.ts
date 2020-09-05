@@ -9,6 +9,8 @@ const fs = require('fs')
 
 const public_key = fs.readFileSync(`./shared/certs/${authDomain}.pem`).toString()
 
+// note express-jwt doesn't just validate the token, it puts the decoded token on the request as `user`
+
 export const checkJwt = jwt({
   secret: public_key,
   audience,
@@ -24,3 +26,7 @@ export const requireJwt = jwt({
   algorithms: ['RS256'],
   credentialsRequired: true,
 })
+
+export const getUserId = (user: any) => user?.[audience]?.userId
+
+export const isAdmin = (user: any) => user[audience].roles.indexOf('ROLE_ADMIN') !== -1

@@ -2,7 +2,7 @@ import { postgraphile } from 'postgraphile'
 
 import { getPool, getSchemas } from '../shared/config'
 import { options } from '../shared/postgraphileOptions'
-import { checkJwt } from './_checkJwt'
+import { checkJwt, getUserId, isAdmin } from './_checkJwt'
 import { audience, isDev } from './_constants'
 import { withApiHandler } from './_standardHandler'
 
@@ -21,8 +21,8 @@ export default withApiHandler([
       const settings: Record<string, any> = {}
       if (user && user[audience]) {
         // string values because pgSettings only groks strings
-        settings['user.id'] = `${user[audience].userId}`
-        settings['user.admin'] = `${user[audience].roles.indexOf('ROLE_ADMIN') !== -1}`
+        settings['user.id'] = `${getUserId(user)}`
+        settings['user.admin'] = `${isAdmin(user)}`
       }
       isDev && console.log(`settings = ${JSON.stringify(settings, null, 2)}`)
       return settings
