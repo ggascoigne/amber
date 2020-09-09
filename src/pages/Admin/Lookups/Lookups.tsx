@@ -26,11 +26,11 @@ export const Lookups: React.FC = React.memo(() => {
   const [refreshLookups] = useGetLookupsLazyQuery({ fetchPolicy: 'network-only' })
   const { loading, error, data } = useGetLookupsQuery()
 
-  if (loading || !data) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading || !data) {
+    return <Loader />
   }
 
   const list: LookupAndValues[] = data!.lookups!.edges.map((v) => v.node).filter((i) => i) as LookupAndValues[]

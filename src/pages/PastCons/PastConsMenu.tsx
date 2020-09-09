@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme: Theme) =>
 export const PastConsMenu: React.FC = () => {
   const { loading, error, data } = useGameFilterQuery()
   const classes = useStyles()
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading) {
+    return <Loader />
   }
   const {
     gameFilter: { year, slot: filterSlot },

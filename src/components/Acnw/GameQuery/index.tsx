@@ -19,11 +19,11 @@ interface GameQuery {
 
 export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
   const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year, slotId: slot.id } })
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading) {
+    return <Loader />
   }
   return (
     <React.Fragment key={`slot_${slot.id}`}>

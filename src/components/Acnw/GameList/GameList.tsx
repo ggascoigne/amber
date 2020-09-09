@@ -16,12 +16,11 @@ interface GameList {
 
 export const GameList: React.FC<GameList> = ({ small = false, year, slotIdStr, children }) => {
   const { loading, error, data } = useGetSlotsQuery()
-
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading) {
+    return <Loader />
   }
 
   return (

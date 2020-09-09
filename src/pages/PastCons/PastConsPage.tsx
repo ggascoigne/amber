@@ -9,11 +9,11 @@ import { useGetGamesByYearQuery } from '../../client'
 
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
   const { loading, error, data } = useGetGamesByYearQuery({ variables: { year } })
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading) {
+    return <Loader />
   }
 
   const game = data?.games?.edges[0].node

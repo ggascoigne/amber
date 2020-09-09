@@ -126,13 +126,12 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
     [gameFilterMutation, year, slots]
   )
 
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
   }
-
+  if (loading) {
+    return <Loader />
+  }
   if (!slots) {
     return null
   }
