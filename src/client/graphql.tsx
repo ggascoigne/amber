@@ -1761,6 +1761,8 @@ export enum GameAssignmentsOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
+  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
+  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
   GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
   GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
   GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
@@ -2030,6 +2032,8 @@ export enum GameChoicesOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
+  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
+  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
   SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
   SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
   SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
@@ -2333,6 +2337,10 @@ export enum GamesOrderBy {
   UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
   UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
   UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
+  UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
+  UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
+  UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
+  UserByAuthorIdLastNameDesc = 'USER_BY_AUTHOR_ID__LAST_NAME_DESC',
   GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
   GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
   GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
@@ -2471,6 +2479,8 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
+  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
+  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
 }
 
 export type HotelRoom = Node & {
@@ -3165,6 +3175,7 @@ export type Membership = Node & {
   requestOldPrice: Scalars['Boolean']
   amountOwed: Scalars['Float']
   amountPaid: Scalars['Float']
+  skipSlots?: Maybe<Scalars['String']>
   /** Reads a single `HotelRoom` that is related to this `Membership`. */
   hotelRoom?: Maybe<HotelRoom>
   /** Reads a single `User` that is related to this `Membership`. */
@@ -3251,6 +3262,8 @@ export type MembershipCondition = {
   amountOwed?: Maybe<Scalars['Float']>
   /** Checks for equality with the object’s `amountPaid` field. */
   amountPaid?: Maybe<Scalars['Float']>
+  /** Checks for equality with the object’s `skipSlots` field. */
+  skipSlots?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
@@ -3291,6 +3304,8 @@ export type MembershipFilter = {
   amountOwed?: Maybe<FloatFilter>
   /** Filter by the object’s `amountPaid` field. */
   amountPaid?: Maybe<FloatFilter>
+  /** Filter by the object’s `skipSlots` field. */
+  skipSlots?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<MembershipFilter>>
   /** Checks for any expressions in this list. */
@@ -3319,6 +3334,7 @@ export type MembershipInput = {
   requestOldPrice: Scalars['Boolean']
   amountOwed: Scalars['Float']
   amountPaid: Scalars['Float']
+  skipSlots?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `Membership`. Fields that are set will be updated. */
@@ -3341,6 +3357,7 @@ export type MembershipPatch = {
   requestOldPrice?: Maybe<Scalars['Boolean']>
   amountOwed?: Maybe<Scalars['Float']>
   amountPaid?: Maybe<Scalars['Float']>
+  skipSlots?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `Membership` values. */
@@ -3404,6 +3421,8 @@ export enum MembershipsOrderBy {
   AmountOwedDesc = 'AMOUNT_OWED_DESC',
   AmountPaidAsc = 'AMOUNT_PAID_ASC',
   AmountPaidDesc = 'AMOUNT_PAID_DESC',
+  SkipSlotsAsc = 'SKIP_SLOTS_ASC',
+  SkipSlotsDesc = 'SKIP_SLOTS_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
@@ -3432,6 +3451,10 @@ export enum MembershipsOrderBy {
   UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
   UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
   UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
   GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
   GameAssignmentsByMemberIdCountDesc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC',
   GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
@@ -5183,6 +5206,10 @@ export enum ShirtOrdersOrderBy {
   UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
   UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
   UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
   ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
   ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
 }
@@ -6295,6 +6322,8 @@ export type User = Node & {
   fullName?: Maybe<Scalars['String']>
   snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Game`. */
   authoredGames: GamesConnection
   /** Reads and enables pagination through a set of `Membership`. */
@@ -6361,6 +6390,10 @@ export type UserCondition = {
   snailMailAddress?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `phoneNumber` field. */
   phoneNumber?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `firstName` field. */
+  firstName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `lastName` field. */
+  lastName?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
@@ -6375,6 +6408,10 @@ export type UserFilter = {
   snailMailAddress?: Maybe<StringFilter>
   /** Filter by the object’s `phoneNumber` field. */
   phoneNumber?: Maybe<StringFilter>
+  /** Filter by the object’s `firstName` field. */
+  firstName?: Maybe<StringFilter>
+  /** Filter by the object’s `lastName` field. */
+  lastName?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<UserFilter>>
   /** Checks for any expressions in this list. */
@@ -6390,6 +6427,8 @@ export type UserInput = {
   fullName?: Maybe<Scalars['String']>
   snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
@@ -6399,6 +6438,8 @@ export type UserPatch = {
   fullName?: Maybe<Scalars['String']>
   snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
 }
 
 export type UserRole = Node & {
@@ -6495,6 +6536,10 @@ export enum UserRolesOrderBy {
   UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
   UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
   UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
 }
 
 /** A connection to a list of `User` values. */
@@ -6532,6 +6577,10 @@ export enum UsersOrderBy {
   SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
   PhoneNumberAsc = 'PHONE_NUMBER_ASC',
   PhoneNumberDesc = 'PHONE_NUMBER_DESC',
+  FirstNameAsc = 'FIRST_NAME_ASC',
+  FirstNameDesc = 'FIRST_NAME_DESC',
+  LastNameAsc = 'LAST_NAME_ASC',
+  LastNameDesc = 'LAST_NAME_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   GamesByAuthorIdCountAsc = 'GAMES_BY_AUTHOR_ID__COUNT_ASC',
@@ -6818,15 +6867,51 @@ export type DeleteLookupValueMutation = { __typename: 'Mutation' } & {
   >
 }
 
-export type GetMembershipQueryVariables = Exact<{
+export type GetMembershipByYearAndIdQueryVariables = Exact<{
   year?: Maybe<Scalars['Int']>
   userId?: Maybe<Scalars['Int']>
 }>
 
-export type GetMembershipQuery = { __typename: 'Query' } & {
+export type GetMembershipByYearAndIdQuery = { __typename: 'Query' } & {
   memberships?: Maybe<
     { __typename: 'MembershipsConnection' } & {
       nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
+    }
+  >
+}
+
+export type GetMembershipsByYearQueryVariables = Exact<{
+  year?: Maybe<Scalars['Int']>
+}>
+
+export type GetMembershipsByYearQuery = { __typename: 'Query' } & {
+  memberships?: Maybe<
+    { __typename: 'MembershipsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
+    }
+  >
+}
+
+export type UpdateMembershipByNodeIdMutationVariables = Exact<{
+  input: UpdateMembershipByNodeIdInput
+}>
+
+export type UpdateMembershipByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateMembershipByNodeId?: Maybe<
+    { __typename: 'UpdateMembershipPayload' } & {
+      membership?: Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>
+    }
+  >
+}
+
+export type CreateMembershipMutationVariables = Exact<{
+  input: CreateMembershipInput
+}>
+
+export type CreateMembershipMutation = { __typename: 'Mutation' } & {
+  createMembership?: Maybe<
+    { __typename: 'CreateMembershipPayload' } & {
+      membership?: Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>
     }
   >
 }
@@ -6835,8 +6920,6 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   Membership,
   | 'nodeId'
   | 'id'
-  | 'amountOwed'
-  | 'amountPaid'
   | 'arrivalDate'
   | 'attendance'
   | 'attending'
@@ -6852,7 +6935,10 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   | 'userId'
   | 'volunteer'
   | 'year'
->
+  | 'skipSlots'
+  | 'amountOwed'
+  | 'amountPaid'
+> & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName'>> }
 
 export type GetSlotsQueryVariables = Exact<{ [key: string]: never }>
 
@@ -6887,7 +6973,7 @@ export type UpdateUserMutation = { __typename: 'Mutation' } & {
 
 export type UserFieldsFragment = { __typename: 'User' } & Pick<
   User,
-  'nodeId' | 'id' | 'email' | 'fullName' | 'snailMailAddress' | 'phoneNumber'
+  'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
 >
 
 export const GameFieldsFragmentDoc = gql`
@@ -6954,8 +7040,6 @@ export const MembershipFieldsFragmentDoc = gql`
   fragment membershipFields on Membership {
     nodeId
     id
-    amountOwed
-    amountPaid
     arrivalDate
     attendance
     attending
@@ -6971,6 +7055,15 @@ export const MembershipFieldsFragmentDoc = gql`
     userId
     volunteer
     year
+    skipSlots
+    amountOwed
+    amountPaid
+    user {
+      id
+      fullName
+      firstName
+      lastName
+    }
   }
 `
 export const SlotFieldsFragmentDoc = gql`
@@ -6989,6 +7082,8 @@ export const UserFieldsFragmentDoc = gql`
     id
     email
     fullName
+    firstName
+    lastName
     snailMailAddress
     phoneNumber
   }
@@ -7679,8 +7774,8 @@ export type DeleteLookupValueMutationOptions = Apollo.BaseMutationOptions<
   DeleteLookupValueMutation,
   DeleteLookupValueMutationVariables
 >
-export const GetMembershipDocument = gql`
-  query getMembership($year: Int, $userId: Int) {
+export const GetMembershipByYearAndIdDocument = gql`
+  query getMembershipByYearAndId($year: Int, $userId: Int) {
     memberships(condition: { userId: $userId, year: $year }) {
       nodes {
         ...membershipFields
@@ -7691,35 +7786,185 @@ export const GetMembershipDocument = gql`
 `
 
 /**
- * __useGetMembershipQuery__
+ * __useGetMembershipByYearAndIdQuery__
  *
- * To run a query within a React component, call `useGetMembershipQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMembershipQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetMembershipByYearAndIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembershipByYearAndIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMembershipQuery({
+ * const { data, loading, error } = useGetMembershipByYearAndIdQuery({
  *   variables: {
  *      year: // value for 'year'
  *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useGetMembershipQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetMembershipQuery, GetMembershipQueryVariables>
+export function useGetMembershipByYearAndIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
 ) {
-  return Apollo.useQuery<GetMembershipQuery, GetMembershipQueryVariables>(GetMembershipDocument, baseOptions)
+  return Apollo.useQuery<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
+    GetMembershipByYearAndIdDocument,
+    baseOptions
+  )
 }
-export function useGetMembershipLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipQuery, GetMembershipQueryVariables>
+export function useGetMembershipByYearAndIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetMembershipQuery, GetMembershipQueryVariables>(GetMembershipDocument, baseOptions)
+  return Apollo.useLazyQuery<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
+    GetMembershipByYearAndIdDocument,
+    baseOptions
+  )
 }
-export type GetMembershipQueryHookResult = ReturnType<typeof useGetMembershipQuery>
-export type GetMembershipLazyQueryHookResult = ReturnType<typeof useGetMembershipLazyQuery>
-export type GetMembershipQueryResult = Apollo.QueryResult<GetMembershipQuery, GetMembershipQueryVariables>
+export type GetMembershipByYearAndIdQueryHookResult = ReturnType<typeof useGetMembershipByYearAndIdQuery>
+export type GetMembershipByYearAndIdLazyQueryHookResult = ReturnType<typeof useGetMembershipByYearAndIdLazyQuery>
+export type GetMembershipByYearAndIdQueryResult = Apollo.QueryResult<
+  GetMembershipByYearAndIdQuery,
+  GetMembershipByYearAndIdQueryVariables
+>
+export const GetMembershipsByYearDocument = gql`
+  query getMembershipsByYear($year: Int) {
+    memberships(condition: { year: $year }) {
+      nodes {
+        ...membershipFields
+      }
+    }
+  }
+  ${MembershipFieldsFragmentDoc}
+`
+
+/**
+ * __useGetMembershipsByYearQuery__
+ *
+ * To run a query within a React component, call `useGetMembershipsByYearQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembershipsByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembershipsByYearQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetMembershipsByYearQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
+) {
+  return Apollo.useQuery<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(
+    GetMembershipsByYearDocument,
+    baseOptions
+  )
+}
+export function useGetMembershipsByYearLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(
+    GetMembershipsByYearDocument,
+    baseOptions
+  )
+}
+export type GetMembershipsByYearQueryHookResult = ReturnType<typeof useGetMembershipsByYearQuery>
+export type GetMembershipsByYearLazyQueryHookResult = ReturnType<typeof useGetMembershipsByYearLazyQuery>
+export type GetMembershipsByYearQueryResult = Apollo.QueryResult<
+  GetMembershipsByYearQuery,
+  GetMembershipsByYearQueryVariables
+>
+export const UpdateMembershipByNodeIdDocument = gql`
+  mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
+    updateMembershipByNodeId(input: $input) {
+      membership {
+        ...membershipFields
+      }
+    }
+  }
+  ${MembershipFieldsFragmentDoc}
+`
+export type UpdateMembershipByNodeIdMutationFn = Apollo.MutationFunction<
+  UpdateMembershipByNodeIdMutation,
+  UpdateMembershipByNodeIdMutationVariables
+>
+
+/**
+ * __useUpdateMembershipByNodeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateMembershipByNodeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMembershipByNodeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMembershipByNodeIdMutation, { data, loading, error }] = useUpdateMembershipByNodeIdMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMembershipByNodeIdMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateMembershipByNodeIdMutation, UpdateMembershipByNodeIdMutationVariables>
+) {
+  return Apollo.useMutation<UpdateMembershipByNodeIdMutation, UpdateMembershipByNodeIdMutationVariables>(
+    UpdateMembershipByNodeIdDocument,
+    baseOptions
+  )
+}
+export type UpdateMembershipByNodeIdMutationHookResult = ReturnType<typeof useUpdateMembershipByNodeIdMutation>
+export type UpdateMembershipByNodeIdMutationResult = Apollo.MutationResult<UpdateMembershipByNodeIdMutation>
+export type UpdateMembershipByNodeIdMutationOptions = Apollo.BaseMutationOptions<
+  UpdateMembershipByNodeIdMutation,
+  UpdateMembershipByNodeIdMutationVariables
+>
+export const CreateMembershipDocument = gql`
+  mutation createMembership($input: CreateMembershipInput!) {
+    createMembership(input: $input) {
+      membership {
+        ...membershipFields
+      }
+    }
+  }
+  ${MembershipFieldsFragmentDoc}
+`
+export type CreateMembershipMutationFn = Apollo.MutationFunction<
+  CreateMembershipMutation,
+  CreateMembershipMutationVariables
+>
+
+/**
+ * __useCreateMembershipMutation__
+ *
+ * To run a mutation, you first call `useCreateMembershipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMembershipMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMembershipMutation, { data, loading, error }] = useCreateMembershipMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateMembershipMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateMembershipMutation, CreateMembershipMutationVariables>
+) {
+  return Apollo.useMutation<CreateMembershipMutation, CreateMembershipMutationVariables>(
+    CreateMembershipDocument,
+    baseOptions
+  )
+}
+export type CreateMembershipMutationHookResult = ReturnType<typeof useCreateMembershipMutation>
+export type CreateMembershipMutationResult = Apollo.MutationResult<CreateMembershipMutation>
+export type CreateMembershipMutationOptions = Apollo.BaseMutationOptions<
+  CreateMembershipMutation,
+  CreateMembershipMutationVariables
+>
 export const GetSlotsDocument = gql`
   query GetSlots {
     slots {

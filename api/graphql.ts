@@ -17,14 +17,15 @@ export default withApiHandler([
     readCache: `${__dirname}/../shared/postgraphile.cache`,
     pgSettings: (req) => {
       const { user } = req as any
-      // console.log(`user = ${JSON.stringify(user, null, 2)}`)
       const settings: Record<string, any> = {}
       if (user && user[audience]) {
+        const admin = isAdmin(user)
+        const userId = getUserId(user)
         // string values because pgSettings only groks strings
-        settings['user.id'] = `${getUserId(user)}`
-        settings['user.admin'] = `${isAdmin(user)}`
+        settings['user.id'] = `${userId}`
+        settings['user.admin'] = `${admin}`
+        isDev && admin && console.log(`userId(${userId}) is admin`)
       }
-      isDev && console.log(`settings = ${JSON.stringify(settings, null, 2)}`)
       return settings
     },
   }),

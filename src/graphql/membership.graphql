@@ -1,8 +1,32 @@
 #import "./membershipFragment.graphql"
 
-query getMembership($year: Int, $userId: Int) {
+query getMembershipByYearAndId($year: Int, $userId: Int) {
   memberships(condition: { userId: $userId, year: $year }) {
     nodes {
+      ...membershipFields
+    }
+  }
+}
+
+query getMembershipsByYear($year: Int) {
+  memberships(condition: { year: $year }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
+  updateMembershipByNodeId(input: $input) {
+    membership {
+      ...membershipFields
+    }
+  }
+}
+
+mutation createMembership($input: CreateMembershipInput!) {
+  createMembership(input: $input) {
+    membership {
       ...membershipFields
     }
   }

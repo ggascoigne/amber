@@ -3,6 +3,5 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/scripts/importV1ToLocal.ts" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/scripts/scriptUtils.ts" dialect="PostgreSQL" />
-    <file url="file://$PROJECT_DIR$/support/auth0/getUserRolesRule.js" dialect="GenericSQL" />
   </component>
 </project>

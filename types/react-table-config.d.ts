@@ -1,3 +1,4 @@
+import { DateTimeFormatOptions } from 'luxon'
 import { MouseEventHandler } from 'react'
 import {
   TableInstance,
@@ -101,6 +102,7 @@ declare module 'react-table' {
       UseResizeColumnsColumnOptions<D>,
       UseSortByColumnOptions<D> {
     align?: string
+    dateFormat?: string
   }
 
   export interface ColumnInstance<D extends Record<string, unknown> = unknown>

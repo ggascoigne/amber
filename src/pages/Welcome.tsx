@@ -1,17 +1,13 @@
-import { Button } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw from 'components/Acnw'
-import { useAuth } from 'components/Acnw/Auth'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
-import React, { useCallback } from 'react'
+import React from 'react'
 
-import { useGetMembershipQuery } from '../client'
-import { Auth0User } from '../components/Acnw/Auth/Auth0'
 import { IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
-import { useLocalStorage } from '../utils'
+import { IsMember, IsNotMember } from '../utils/membership'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,76 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 )
-
-const NeedsLogin: React.FC = () => {
-  const { loginWithPopup } = useAuth()
-  const login = useCallback(async () => loginWithPopup && (await loginWithPopup()), [loginWithPopup])
-  return (
-    <>
-      <p>
-        Firstly you need to Register with the Ambercon NW site and login: &nbsp;
-        <Button onClick={login} variant='contained'>
-          click here to register/login
-        </Button>
-      </p>
-      <p>
-        Please note that site registration and login has changed from previous years. If you have games from previous
-        years that you want to have easy access to, please ensure that you use the same email address as in previous
-        years.
-      </p>
-    </>
-  )
-}
-
-type IsUserAMember = {
-  year: number
-  user: Auth0User
-  denied?: () => React.ReactElement | null
-}
-
-const nullOp = (): null => null
-
-const IsUserAMember: React.FC<IsUserAMember> = ({ year, user, children = null, denied = nullOp }) => {
-  const [lastMembershipYear, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
-  const { loading, error, data } = useGetMembershipQuery({ variables: { year, userId: user.userId } })
-  if (lastMembershipYear !== year) {
-    if (loading || !data) {
-      return denied()
-    }
-    if (error) {
-      console.log(`error = ${JSON.stringify(error, null, 2)}`)
-    }
-    if (data) {
-      console.log(`data = ${JSON.stringify(data, null, 2)}`)
-    }
-    setLastMembershipYear(year)
-  }
-  return <>{children}</>
-}
-
-export const IsMember: React.FC = ({ children }) => {
-  const { isAuthenticated, user } = useAuth()
-
-  if (isAuthenticated && !!user) {
-    return (
-      <IsUserAMember year={2019} user={user}>
-        {children}
-      </IsUserAMember>
-    )
-  } else {
-    return null
-  }
-}
-
-export const IsNotMember: React.FC = ({ children }) => {
-  const { isAuthenticated, user } = useAuth()
-
-  if (isAuthenticated && !!user) {
-    return <IsUserAMember year={2019} user={user} denied={() => <>{children}</>} />
-  } else {
-    return null
-  }
-}
 
 export const Welcome: React.FC = () => {
   const classes = useStyles()
@@ -140,27 +66,38 @@ export const Welcome: React.FC = () => {
       <h2>Attending Virtual AmberCon NW</h2>
 
       <IsNotLoggedIn>
-        <NeedsLogin />
+        <h4>New Authentication system.</h4>
+        <p>
+          We have a new authentication system. If you have an account from the old system, you can access it by signing
+          up again using the same email address as before and then confirming that email address.
+        </p>
+        <p>
+          Please note, that you can also login with either Facebook or Google. The same email advice applies in this
+          case too.
+        </p>
       </IsNotLoggedIn>
+
       <IsMember>Is a member</IsMember>
-      <IsNotMember>Is NOT member</IsNotMember>
+      <IsNotMember>
+        <p>If you are interested in attending AmberCon NW this year, please Signup.</p>
+      </IsNotMember>
 
       <h2>Deadline dates this year</h2>
       <ul>
         {/* search for Date Edit when changing */}
         <li>
           <span className={classes.deadlineExpired}>
-            Initial registration and deposits: <Acnw.RegistrationDeadline />, <Acnw.ConventionYear />
+            Initial registration and deposits: <Acnw.RegistrationDeadline />
           </span>
         </li>
         <li>
           <span className={classes.deadlineExpired}>
-            Membership payment in full: <Acnw.PaymentDeadline />, <Acnw.ConventionYear />
+            Membership payment in full: <Acnw.PaymentDeadline />
           </span>
         </li>
         <li>
           <span className={classes.deadlineExpired}>
-            Games and Events due: <Acnw.GameSubmissionDeadline />, <Acnw.ConventionYear />
+            Games and Events due: <Acnw.GameSubmissionDeadline />
           </span>
         </li>
         {/* and on home/gameBookClosed.gsp */}

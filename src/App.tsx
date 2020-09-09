@@ -1,29 +1,24 @@
 import {
-  AppBar,
   CssBaseline,
   Divider,
   Drawer,
   Hidden,
-  IconButton,
   List,
   ListItem,
   MuiThemeProvider,
   Theme,
-  Toolbar,
-  Typography,
   createMuiTheme,
   createStyles,
   makeStyles,
 } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
 import { defaultFont } from 'assets/jss/material-kit-react'
 import { Banner } from 'components/Acnw/Banner'
 import { Footer } from 'components/Acnw/Footer'
 import { LoginMenu } from 'components/Acnw/LoginMenu'
 import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { Config, useGetConfig } from './utils/getConfig'
+import { Header } from './components/Acnw'
 
 const theme = createMuiTheme({
   palette: {
@@ -59,22 +54,6 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.up('md')]: {
         width: drawerWidth,
         flexShrink: 0,
-      },
-    },
-    appBar: {
-      flex: '1 1 auto',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginLeft: drawerWidth,
-      [theme.breakpoints.up('md')]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-      },
-    },
-    menuButton: {
-      marginRight: 20,
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
       },
     },
     toolbar: theme.mixins.toolbar,
@@ -114,34 +93,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const App: React.FC = React.memo(() => {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [config, getConfig] = useGetConfig()
-  const [configDetails, setConfigDetails] = useState('')
-
-  const handleDrawerToggle = useCallback(() => {
-    setMobileOpen(!mobileOpen)
-  }, [mobileOpen])
-
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
-
-  useEffect(() => {
-    const getConfigDetails = (config: Config | undefined, href: string | undefined) => {
-      // never show any sort of configuration debug on the two release sites
-      // note that amberconnw.org is the real site
-      // acnw.org is the "dev" release site
-      if (href?.startsWith('https://amberconnw.org') || href?.startsWith('https://acnw.org')) return ''
-      return !config ? '' : config.local ? '(local)' : config.databaseName !== 'acnw' ? '(test)' : '(prod)'
-    }
-
-    setConfigDetails(getConfigDetails(config, window.location.href))
-  }, [config])
-
+const DrawerContents: React.FC = () => {
   const classes = useStyles()
-
-  const drawer = (
+  return (
     <>
       <div className={classes.toolbar}>
         <Banner to='/' />
@@ -152,39 +106,34 @@ export const App: React.FC = React.memo(() => {
       <Footer />
     </>
   )
+}
 
-  const rightLinks: React.FC<{ small?: boolean }> = (props) => (
+const RightMenu: React.FC<{ small?: boolean }> = (props) => {
+  const classes = useStyles()
+  return (
     <List className={classes.list}>
       <ListItem className={classes.listItem}>
         <LoginMenu {...props} />
       </ListItem>
     </List>
   )
+}
+
+export const App: React.FC = React.memo(() => {
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen(!mobileOpen)
+  }, [mobileOpen])
+
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
 
-        <AppBar position='fixed' className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color='inherit'
-              aria-label='Open drawer'
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant='h6' color='inherit' noWrap>
-              AmberCon Northwest
-            </Typography>
-            &nbsp;{configDetails}
-          </Toolbar>
-          <Hidden smDown implementation='css'>
-            {rightLinks({})}
-          </Hidden>
-        </AppBar>
+        <Header handleDrawerToggle={handleDrawerToggle} rightMenu={RightMenu} />
         <nav className={classes.drawer}>
           <Hidden mdUp>
             <Drawer
@@ -199,9 +148,9 @@ export const App: React.FC = React.memo(() => {
                 keepMounted: true, // Better open performance on mobile.
               }}
             >
-              {drawer}
+              <DrawerContents />
               <Divider />
-              {rightLinks({ small: true })}
+              <RightMenu small />
             </Drawer>
           </Hidden>
           <Hidden smDown>
@@ -212,7 +161,7 @@ export const App: React.FC = React.memo(() => {
               variant='permanent'
               open
             >
-              {drawer}
+              <DrawerContents />
             </Drawer>
           </Hidden>
         </nav>

@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 fnm use
-now dev -l 30000
+vc dev -l 30000

@@ -1,8 +1,6 @@
 fragment membershipFields on Membership {
   nodeId
   id
-  amountOwed
-  amountPaid
   arrivalDate
   attendance
   attending
@@ -18,4 +16,13 @@ fragment membershipFields on Membership {
   userId
   volunteer
   year
+  skipSlots
+  amountOwed
+  amountPaid
+  user {
+    id
+    fullName
+    firstName
+    lastName
+  }
 }

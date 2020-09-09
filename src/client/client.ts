@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
-import { gameFilterStore, urlSourceStore } from 'client/resolvers'
+import { gameFilterStore, urlSourceStore, yearFilterStore } from 'client/resolvers'
 
 import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 
@@ -23,7 +23,7 @@ import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 export const mergeGet = (attributeName: string) => (input: any[]) =>
   input.reduce((prev, curr) => ({ ...prev, ...curr[attributeName] }), {})
 
-const STORES = [gameFilterStore, urlSourceStore]
+const STORES = [gameFilterStore, urlSourceStore, yearFilterStore]
 
 const cache = new InMemoryCache({
   // postgraphile uses nodeId for the uuid, and leaves id as the database id.

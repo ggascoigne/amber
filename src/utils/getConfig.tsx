@@ -41,7 +41,7 @@ export const useGetConfig = () => {
           const result = JSON.parse(responseBody)
           setConfig(result)
         } catch (e) {
-          console.log(e)
+          // console.log(e)
           return responseBody
         }
       })

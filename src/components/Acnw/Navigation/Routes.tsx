@@ -1,7 +1,7 @@
 import { AboutAmberconNw, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
 import type React from 'react'
 
-import { Games, Lookups } from '../../../pages/Admin'
+import { Games, Lookups, Memberships } from '../../../pages/Admin'
 import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
@@ -63,6 +63,13 @@ export const rootRoutes: RootRoutes = [
     label: 'Games',
     exact: true,
     component: Games,
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/members',
+    label: 'Members',
+    exact: true,
+    component: Memberships,
     permission: Perms.IsAdmin,
   },
   {

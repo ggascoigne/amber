@@ -1,23 +1,21 @@
-import { Button, Dialog, DialogActions, Typography } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
+import { Button, Dialog, DialogActions, DialogContent, Typography } from '@material-ui/core'
+import { GameFieldsFragment, GameGmsFragment, useGetSlotsQuery } from 'client'
 import {
   CheckboxWithLabel,
   DialogTitle,
+  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
+  LookupField,
   SelectField,
   TextField,
   TextFieldProps,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
+import { configuration } from 'utils'
 import Yup from 'utils/Yup'
-
-import { GameFieldsFragment, GameGmsFragment, useGetSlotsQuery } from '../../../client'
-import { LookupField } from '../../../components/Acnw/Form/LookupField'
-import { GraphQLError } from '../../../components/Acnw/GraphQLError'
-import configurationService from '../../../utils/ConfigurationService'
 
 type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
@@ -95,7 +93,7 @@ const defaultValues: FormValues = {
   slotConflicts: '',
   message: '',
   teenFriendly: false,
-  year: configurationService.year,
+  year: configuration.year,
 }
 
 const validationSchema = Yup.object().shape({
@@ -113,11 +111,11 @@ const validationSchema = Yup.object().shape({
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = (props) => {
   const { select, ...rest } = props
   const { loading, error, data } = useGetSlotsQuery()
-  if (loading) {
-    return <Loader />
-  }
   if (error) {
     return <GraphQLError error={error} />
+  }
+  if (loading) {
+    return <Loader />
   }
   const selectValues = data?.slots?.nodes?.reduce(
     (acc, current) => {
@@ -137,7 +135,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const editing = initialValues !== defaultValues
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>

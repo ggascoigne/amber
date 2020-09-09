@@ -5,8 +5,6 @@ import React from 'react'
 const useStyles = makeStyles(() =>
   createStyles({
     grid: {
-      marginRight: '-15px',
-      marginLeft: '-15px',
       width: 'auto',
     },
   })

@@ -3,6 +3,8 @@ fragment userFields on User {
   id
   email
   fullName
+  firstName
+  lastName
   snailMailAddress
   phoneNumber
 }

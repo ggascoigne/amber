@@ -60,3 +60,6 @@ build/
 
 # generated at build time
 src/version.ts
+
+# contains user details that shouldn't get checked in here
+name_cleanup.js

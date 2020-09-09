@@ -58,5 +58,6 @@ Update ALL content for 2020
 
 * [x] transition to main rds database
 * [ ] get real auth keys for facebook and google-oauth link.
-* [ ] maybe add database name and or local vs aws flags, so it's easier to check in the ui
-
+* [x] maybe add database name and or local vs aws flags, so it's easier to check in the ui
+* [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
+ 

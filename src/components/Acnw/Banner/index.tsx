@@ -3,7 +3,7 @@ import createStyles from '@material-ui/core/styles/createStyles'
 import { GridContainer, GridItem } from 'components/Acnw'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import configurationService from 'utils/ConfigurationService'
+import { configuration } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -295,7 +295,12 @@ interface BannerProps {
 
 const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   const classes = useStyles()
-  const logo = <Logo dates={configurationService.dateRange} className={classes.banner} />
+  const conventionStartDate = configuration.conventionStartDate
+  const dateRange = `${conventionStartDate.toFormat('MMMM')} ${configuration.startDay}-${configuration.endDay}, ${
+    configuration.year
+  }`
+
+  const logo = <Logo dates={dateRange} className={classes.banner} />
   return to ? <Link to={to}>{logo}</Link> : logo
 }
 
