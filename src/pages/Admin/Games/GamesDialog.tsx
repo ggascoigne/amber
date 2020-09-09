@@ -135,7 +135,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const editing = initialValues !== defaultValues
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth={'md'} open={open} onClose={onClose}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
@@ -158,15 +158,13 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 <GridItem xs={12} md={12}>
                   <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
                 </GridItem>
-                <GridItem xs={12} md={12}>
-                  <GridContainer direction='row'>
-                    <GridItem xs={12} md={6}>
-                      <SelectField name='genre' label='Genre' margin='normal' fullWidth selectValues={genreOptions} />
-                    </GridItem>
-                    <GridItem xs={12} md={6}>
-                      <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
-                    </GridItem>
-                  </GridContainer>
+                <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
+                  <GridItem xs={12} md={6}>
+                    <SelectField name='genre' label='Genre' margin='normal' fullWidth selectValues={genreOptions} />
+                  </GridItem>
+                  <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
+                    <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
+                  </GridItem>
                 </GridItem>
                 <GridItem xs={12} md={12}>
                   <CheckboxWithLabel
@@ -195,15 +193,13 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 <GridItem xs={12} md={12}>
                   <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
                 </GridItem>
-                <GridItem xs={12} md={12}>
-                  <GridContainer direction='row'>
-                    <GridItem xs={12} md={6}>
-                      <TextField name='playerMin' label='Min' margin='normal' fullWidth type='number' required />
-                    </GridItem>
-                    <GridItem xs={12} md={6}>
-                      <TextField name='playerMax' label='Max' margin='normal' fullWidth type='number' required />
-                    </GridItem>
-                  </GridContainer>
+                <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
+                  <GridItem xs={12} md={6}>
+                    <TextField name='playerMin' label='Min' margin='normal' fullWidth type='number' required />
+                  </GridItem>
+                  <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
+                    <TextField name='playerMax' label='Max' margin='normal' fullWidth type='number' required />
+                  </GridItem>
                 </GridItem>
                 <GridItem xs={12} md={12}>
                   <LookupField
