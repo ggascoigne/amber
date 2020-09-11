@@ -4,21 +4,20 @@ import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
-import { useAuth } from 'components/Acnw/Auth'
+import { useAuth } from 'components/Acnw/Auth/index'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import type { Auth0User } from '../Auth'
-import { useToken } from '../Auth/Auth0'
-import { HasPermission } from '../Auth/HasPermission'
-import { Perms } from '../Auth/PermissionRules'
-import { useNotification } from '../Notifications'
-import { ProfileDialog } from '../Profile'
+import { Auth0User, HasPermission, Perms, useAuthOverride, useToken } from './Auth/index'
+import { useNotification } from './Notifications'
+import { ProfileDialog } from './Profile'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
+const MENU_ITEM_VIEW_AS_USER = 'View as Regular User'
+const MENU_ITEM_VIEW_AS_ADMIN = 'View as Admin'
 const MENU_ITEM_SIGN_OUT = 'Sign out'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -130,11 +129,13 @@ type LoginMenu = {
 
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
-  const { isInitializing = true, isAuthenticated, user, loginWithPopup, logout } = useAuth()
+  const { isInitializing = true, isAuthenticated, user, loginWithPopup, logout, hasPermissions } = useAuth()
   const [jwtToken] = useToken()
   const [notify] = useNotification()
   const [profileOpen, setProfileOpen] = useState(false)
   const [authInitialized, setAuthInitialized] = useState(false)
+  const roleOverride = useAuthOverride((state) => state.roleOverride)
+  const setRoleOverride = useAuthOverride((state) => state.setRoleOverride)
 
   useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
 
@@ -146,13 +147,19 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
     [loginWithPopup]
   )
 
-  const menuItems = useMemo(
-    () =>
-      user?.sub.startsWith('auth0')
-        ? [MENU_ITEM_EDIT_PROFILE, MENU_ITEM_RESET_PASSWORD, MENU_ITEM_SIGN_OUT]
-        : [MENU_ITEM_EDIT_PROFILE, MENU_ITEM_SIGN_OUT],
-    [user]
-  )
+  const menuItems = useMemo(() => {
+    const menu = [MENU_ITEM_EDIT_PROFILE]
+    if (user?.sub.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
+    if (hasPermissions(Perms.IsAdmin, { ignoreOverride: true })) {
+      if (!roleOverride) {
+        menu.push(MENU_ITEM_VIEW_AS_USER)
+      } else {
+        menu.push(MENU_ITEM_VIEW_AS_ADMIN)
+      }
+    }
+    menu.push(MENU_ITEM_SIGN_OUT)
+    return menu
+  }, [hasPermissions, roleOverride, user?.sub])
 
   const editProfile = useCallback(() => {
     setProfileOpen(true)
@@ -193,12 +200,20 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
       })
   }, [notify, jwtToken])
 
+  const viewAsUser = () => {
+    if (!roleOverride) {
+      setRoleOverride('ROLE_USER')
+    } else {
+      setRoleOverride('')
+    }
+  }
+
   return (
     <ApolloConsumer>
       {(client) =>
         isAuthenticated ? (
           <>
-            <ProfileDialog open={profileOpen} onClose={closeProfile} email={user!.email!} />
+            <ProfileDialog open={profileOpen} onClose={closeProfile} />
             <CustomDropdown
               right
               caret={false}
@@ -210,15 +225,21 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
               }}
               dropdownList={menuItems}
               onClick={(prop: string) => {
-                if (prop === MENU_ITEM_EDIT_PROFILE) {
-                  editProfile()
-                }
-                if (prop === MENU_ITEM_RESET_PASSWORD) {
-                  resetPassword()
-                }
-                if (prop === MENU_ITEM_SIGN_OUT) {
-                  client.resetStore()
-                  logout && logout()
+                switch (prop) {
+                  case MENU_ITEM_EDIT_PROFILE:
+                    editProfile()
+                    break
+                  case MENU_ITEM_VIEW_AS_ADMIN:
+                  case MENU_ITEM_VIEW_AS_USER:
+                    viewAsUser()
+                    break
+                  case MENU_ITEM_RESET_PASSWORD:
+                    resetPassword()
+                    break
+                  case MENU_ITEM_SIGN_OUT:
+                    client.resetStore()
+                    logout && logout()
+                    break
                 }
               }}
             />

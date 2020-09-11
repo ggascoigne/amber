@@ -39,7 +39,9 @@ export default withApiHandler([
   requireJwt,
   async (req: Request, res: Response) => {
     try {
+      if (!req.body) throw new JsonError(400, 'missing body: expecting password')
       const { password } = req.body
+      if (!password) throw new JsonError(400, 'missing password')
       const profile = await getProfile(req.headers.authorization!)
       // note that we are validating the password for the user identified by the access token
       // this ensures that an authenticated user does try and sniff other users passwords

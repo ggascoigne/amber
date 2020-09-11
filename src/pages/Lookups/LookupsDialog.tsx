@@ -32,7 +32,7 @@ import {
   useDeleteLookupValueMutation,
   useUpdateLookupByNodeIdMutation,
   useUpdateLookupValueByNodeIdMutation,
-} from '../../../client'
+} from '../../client'
 import type { LookupAndValues } from './types'
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -8,7 +8,11 @@
     "DATABASE_SSL": "@database_ssl",
     "DATABASE_SSL_CERT": "@database_ssl_cert",
     "REACT_APP_AUTH0_DOMAIN": "@auth0_domain",
-    "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id"
+    "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id",
+    "SMTP_HOST": "@smtp_host",
+    "SMTP_PORT": "@smtp_port",
+    "SMTP_USERNAME": "@smtp_username",
+    "SMTP_PASSWORD": "@smtp_password"
   },
   "build" : {
     "env": {
@@ -20,7 +24,11 @@
       "DATABASE_SSL": "@database_ssl",
       "DATABASE_SSL_CERT": "@database_ssl_cert",
       "REACT_APP_AUTH0_DOMAIN": "@auth0_domain",
-      "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id"
+      "REACT_APP_AUTH0_CLIENT_ID": "@auth0_client_id",
+      "SMTP_HOST": "@smtp_host",
+      "SMTP_PORT": "@smtp_port",
+      "SMTP_USERNAME": "@smtp_username",
+      "SMTP_PASSWORD": "@smtp_password"
     }
   }
 }

@@ -44,7 +44,14 @@ export type DbConfig = {
   ssl_cert?: string
 }
 
-export const config: { database: DbConfig } = {
+export type EmailConfig = {
+  user: string
+  port: number
+  host: string
+  password: string
+}
+
+export const config: { database: DbConfig; email: EmailConfig } = {
   database: {
     host: process.env.DATABASE_HOST!,
     database: process.env.DATABASE_NAME!,
@@ -53,5 +60,11 @@ export const config: { database: DbConfig } = {
     port: parseInt(process.env.DATABASE_PORT || '', 10),
     ssl: process.env.DATABASE_SSL === '1',
     ssl_cert: process.env.DATABASE_SSL_CERT || '',
+  },
+  email: {
+    host: process.env.SMTP_HOST!,
+    user: process.env.SMTP_USERNAME!,
+    password: process.env.SMTP_PASSWORD || '',
+    port: parseInt(process.env.SMTP_PORT || '', 10),
   },
 }

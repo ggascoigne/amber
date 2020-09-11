@@ -1,7 +1,17 @@
-import { AboutAmberconNw, Credits, GraphiQLPage, PastConsGamesPage, PastConsPage, Welcome } from 'pages'
+import {
+  AboutAmber,
+  AboutAmberconNw,
+  Credits,
+  GraphiQLPage,
+  PastConsGamesPage,
+  PastConsPage,
+  Welcome,
+  WelcomeVirtual,
+} from 'pages'
 import type React from 'react'
 
-import { Games, Lookups, Memberships } from '../../../pages/Admin'
+import { AntiHarassmentPolicy, Games, Lookups, Memberships } from '../../../pages'
+import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
 // note that entries are only displayed if they have a label
@@ -13,6 +23,7 @@ export type RouteInfo = {
   exact: boolean
   component: React.ComponentType<any>
   permission?: Perms
+  condition?: boolean
 }
 
 export type RootRoutes = RouteInfo[]
@@ -24,6 +35,15 @@ export const rootRoutes: RootRoutes = [
     subText: 'Introduction',
     exact: true,
     component: Welcome,
+    condition: !configuration.virtual,
+  },
+  {
+    path: '/',
+    label: 'Welcome',
+    subText: 'Introduction',
+    exact: true,
+    component: WelcomeVirtual,
+    condition: configuration.virtual,
   },
   {
     path: '/aboutacnw',
@@ -38,6 +58,7 @@ export const rootRoutes: RootRoutes = [
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
     component: AboutAmberconNw,
+    condition: !configuration.virtual,
   },
   {
     path: '/pastCons/:year/:slot?/:game?',
@@ -46,8 +67,16 @@ export const rootRoutes: RootRoutes = [
     component: PastConsGamesPage,
   },
   {
+    path: '/aboutamber',
+    label: 'Amber',
+    subText: 'Just what is this "Amber" thing?',
+    exact: false,
+    component: AboutAmber,
+  },
+  {
     path: '/pastCons',
-    label: 'Past Years',
+    label: 'Past Conventions',
+    subText: 'See game books from earlier cons',
     exact: true,
     component: PastConsPage,
   },
@@ -79,6 +108,12 @@ export const rootRoutes: RootRoutes = [
     exact: false,
     component: GraphiQLPage,
     permission: Perms.GraphiqlLoad,
+  },
+  {
+    path: '/antiHarassmentPolicy',
+    label: 'Anti-Harassment Policy',
+    exact: false,
+    component: AntiHarassmentPolicy,
   },
   {
     path: '/credits',

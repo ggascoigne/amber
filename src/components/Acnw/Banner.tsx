@@ -1,6 +1,6 @@
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { GridContainer, GridItem } from 'components/Acnw'
+import { GridContainer, GridItem } from 'components/Acnw/index'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { configuration } from 'utils'
@@ -17,11 +17,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const Logo: React.FC<{ dates: string; className: string }> = ({ dates, className }) => {
+const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = ({
+  dates,
+  className,
+  virtual = false,
+}) => {
   const background = '#ffffff'
   const purple = '#31107b'
   const red = '#ce0000'
   const yellow = '#ffce00'
+  const virtualColor = '#ec0202'
   return (
     <svg
       width='550px'
@@ -285,6 +290,26 @@ const Logo: React.FC<{ dates: string; className: string }> = ({ dates, className
           {dates}
         </tspan>
       </text>
+      {virtual && (
+        <text
+          id='virtual'
+          transform='rotate(-35 50 100)
+                                    translate(65 106)
+                                    scale(1)'
+        >
+          <tspan
+            x='1.0'
+            y='30.0'
+            fontFamily='Old Stamper'
+            fontSize='38'
+            fontWeight='600'
+            textDecoration='none'
+            fill={virtualColor}
+          >
+            virtual
+          </tspan>
+        </text>
+      )}
     </svg>
   )
 }
@@ -300,7 +325,7 @@ const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
     configuration.year
   }`
 
-  const logo = <Logo dates={dateRange} className={classes.banner} />
+  const logo = <Logo dates={dateRange} className={classes.banner} virtual={configuration.virtual} />
   return to ? <Link to={to}>{logo}</Link> : logo
 }
 

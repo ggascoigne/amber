@@ -35,4 +35,5 @@ export const configuration = {
   threeDayMembership: 100,
   threeDayVoucher: 50,
   deposit: 30,
+  virtual: true,
 }

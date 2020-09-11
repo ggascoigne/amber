@@ -1,9 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText } from '@material-ui/core'
-import { Node, UserInput, useGetUserByEmailQuery, useUpdateUserMutation } from 'client'
+import { Node, UserInput, useGetUserByEmailLazyQuery, useUpdateUserMutation } from 'client'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
 import Yup from 'utils/Yup'
 
+import { useAuth } from './Auth/Auth0'
 import { DialogTitle } from './Dialog'
 import { TextField } from './Form'
 import { GridContainer, GridItem } from './Grid'
@@ -23,29 +24,43 @@ type FormValues = UserInput & Partial<Node>
 interface ProfileDialog {
   open: boolean
   onClose: (event?: any) => void
-  email: string
 }
 
-export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose, email }) => {
-  const [updateUser] = useUpdateUserMutation()
+export const useProfile = () => {
+  const { user } = useAuth()
+  const [getProfile, { loading, error, data }] = useGetUserByEmailLazyQuery()
   const [notify] = useNotification()
 
-  const { loading, error, data } = useGetUserByEmailQuery({ variables: { email } })
+  if (!user) return null
+
   if (loading) {
     return null
   }
+  if (!data) {
+    getProfile({ variables: { email: user!.email! } })
+    return null
+  }
+
   if (error) {
     notify({ text: error.message, variant: 'error' })
     return null
   }
 
-  const user: FormValues = data!.userByEmail!
+  return data!.userByEmail! as UserInput & Partial<Node>
+}
+
+export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose }) => {
+  const [updateUser] = useUpdateUserMutation()
+  const [notify] = useNotification()
+  const profile = useProfile()
+
+  if (!profile) return null
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     await updateUser({
       variables: {
         input: {
-          id: user.id!,
+          id: profile.id!,
           patch: {
             firstName: values.firstName,
             lastName: values.lastName,
@@ -68,7 +83,7 @@ export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose, email })
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose}>
-      <Formik initialValues={user} validationSchema={validationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={profile} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
             <DialogTitle onClose={onClose}>Edit Profile</DialogTitle>

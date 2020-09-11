@@ -16,18 +16,21 @@ import {
   MembershipFieldsFragment,
   Node,
   useCreateMembershipMutation,
+  useGetMembershipByYearAndIdQuery,
   useUpdateMembershipByNodeIdMutation,
 } from 'client'
-import { CheckboxWithLabel, DialogTitle, GridContainer, GridItem, TextField } from 'components/Acnw'
+import { CheckboxWithLabel, DialogTitle, GridContainer, GridItem, TextField, useProfile } from 'components/Acnw'
 import { useAuth } from 'components/Acnw/Auth/Auth0'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo, useState } from 'react'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
 import Yup from 'utils/Yup'
 
-import { useNotification } from '../../../components/Acnw/Notifications'
+import { useNotification } from '../../components/Acnw/Notifications'
+import { useSendEmail } from '../../utils/useSendEmail'
 
 type FormValues = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
+  Partial<{ id: number }> &
   Partial<Node> & {
     skipSlotsData?: boolean[]
   }
@@ -82,6 +85,8 @@ export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, in
   const [createMembership] = useCreateMembershipMutation()
   const [updateMembership] = useUpdateMembershipByNodeIdMutation()
   const [notify] = useNotification()
+  const [sendEmail] = useSendEmail()
+  const profile = useProfile()
 
   if (!isAuthenticated || !user) throw new Error('login expired') // todo test this
 
@@ -147,9 +152,20 @@ export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, in
             },
           },
         },
+        refetchQueries: ['getMembershipsByYear'],
       })
         .then(() => {
           notify({ text: 'Membership updated', variant: 'success' })
+          sendEmail({
+            type: 'membershipConfirmation',
+            body: JSON.stringify({
+              year: configuration.year,
+              name: profile?.fullName,
+              email: profile?.email,
+              url: `${window.location.origin}/members/${values.id}`,
+              membership: values,
+            }),
+          })
           onClose()
         })
         .catch((error) => {
@@ -181,9 +197,21 @@ export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, in
             },
           },
         },
+        refetchQueries: ['getMembershipsByYear', 'getMembershipByYearAndId'],
       })
-        .then(() => {
+        .then((res) => {
+          const membershipId = res?.data?.createMembership?.membership?.id
           notify({ text: 'Membership created', variant: 'success' })
+          sendEmail({
+            type: 'membershipConfirmation',
+            body: JSON.stringify({
+              year: configuration.year,
+              name: profile?.fullName,
+              email: profile?.email,
+              url: `${window.location.origin}/members/${membershipId}`,
+              membership: values,
+            }),
+          })
           onClose()
         })
         .catch((error) => {

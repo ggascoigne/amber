@@ -6916,6 +6916,19 @@ export type CreateMembershipMutation = { __typename: 'Mutation' } & {
   >
 }
 
+export type DeleteMembershipMutationVariables = Exact<{
+  input: DeleteMembershipInput
+}>
+
+export type DeleteMembershipMutation = { __typename: 'Mutation' } & {
+  deleteMembership?: Maybe<
+    { __typename: 'DeleteMembershipPayload' } & Pick<
+      DeleteMembershipPayload,
+      'clientMutationId' | 'deletedMembershipNodeId'
+    >
+  >
+}
+
 export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   Membership,
   | 'nodeId'
@@ -7964,6 +7977,50 @@ export type CreateMembershipMutationResult = Apollo.MutationResult<CreateMembers
 export type CreateMembershipMutationOptions = Apollo.BaseMutationOptions<
   CreateMembershipMutation,
   CreateMembershipMutationVariables
+>
+export const DeleteMembershipDocument = gql`
+  mutation deleteMembership($input: DeleteMembershipInput!) {
+    deleteMembership(input: $input) {
+      clientMutationId
+      deletedMembershipNodeId
+    }
+  }
+`
+export type DeleteMembershipMutationFn = Apollo.MutationFunction<
+  DeleteMembershipMutation,
+  DeleteMembershipMutationVariables
+>
+
+/**
+ * __useDeleteMembershipMutation__
+ *
+ * To run a mutation, you first call `useDeleteMembershipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMembershipMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMembershipMutation, { data, loading, error }] = useDeleteMembershipMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteMembershipMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteMembershipMutation, DeleteMembershipMutationVariables>
+) {
+  return Apollo.useMutation<DeleteMembershipMutation, DeleteMembershipMutationVariables>(
+    DeleteMembershipDocument,
+    baseOptions
+  )
+}
+export type DeleteMembershipMutationHookResult = ReturnType<typeof useDeleteMembershipMutation>
+export type DeleteMembershipMutationResult = Apollo.MutationResult<DeleteMembershipMutation>
+export type DeleteMembershipMutationOptions = Apollo.BaseMutationOptions<
+  DeleteMembershipMutation,
+  DeleteMembershipMutationVariables
 >
 export const GetSlotsDocument = gql`
   query GetSlots {

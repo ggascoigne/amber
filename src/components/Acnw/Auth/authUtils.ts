@@ -5,11 +5,13 @@ import find from 'lodash/find'
 
 import type { Perms, Rules } from './PermissionRules'
 
-const check = (rules: Rules, role: string | null, action: Perms, data?: any) => {
-  if (!role) {
+const check = (rules: Rules, role: string | null, action: Perms, roleOverride: string | undefined, data?: any) => {
+  const roleToTest = data?.ignoreOverride ? role : roleOverride || role
+
+  if (!roleToTest) {
     return false
   }
-  const permissions = rules[role] as any
+  const permissions = rules[roleToTest] as any
   if (!permissions) {
     // role is not present in the rules
     return false
@@ -35,5 +37,10 @@ const check = (rules: Rules, role: string | null, action: Perms, data?: any) => 
   return false
 }
 
-export const checkMany = (rules: Rules, roles: string[] | undefined, action: Perms, data?: any) =>
-  !!find(roles, (role) => check(rules, role, action, data))
+export const checkMany = (
+  rules: Rules,
+  roles: string[] | undefined,
+  action: Perms,
+  roleOverride: string | undefined,
+  data?: any
+) => !!find(roles, (role) => check(rules, role, action, roleOverride, data))

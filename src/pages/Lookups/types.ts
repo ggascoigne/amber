@@ -1,4 +1,4 @@
-import type { LookupFieldsFragment, LookupValuesFieldsFragment, Maybe } from '../../../client'
+import type { LookupFieldsFragment, LookupValuesFieldsFragment, Maybe } from '../../client'
 
 export type LookupAndValues = { __typename: 'Lookup' } & {
   lookupValues: { __typename: 'LookupValuesConnection' } & {

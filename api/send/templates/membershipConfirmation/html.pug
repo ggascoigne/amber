@@ -1,0 +1,32 @@
+h1 Registration Confirmation
+
+p Registration for vACNW #{year}
+
+ul
+    li User: #{name}
+    li Email: #{email}
+
+p If you need to make changes to your registration, please email #{simEmail}.
+
+if membership.skipSlots
+    if membership.skipSlots.includes(',')
+        p You've indicated that you are likely to skip slots #{membership.skipSlots}.
+    else
+        p You've indicated that you are likely to skip slot #{membership.skipSlots}.
+
+if membership.message
+    p Message to Simone: #{membership.message}
+
+h3 Payments should be made out to
+
+p Simone Cooper
+
+p and sent to
+
+p
+ | AmberCon NW<br>
+ | c/o Simone Cooper<br>
+ | 8047 N. Syracuse St.<br>
+ | Portland, OR 97203-4939
+
+p If you can't read this clearly then you can view this email online at #{url}.

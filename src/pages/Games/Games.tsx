@@ -2,15 +2,15 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
 
-import type { TableMouseEventHandler } from '../../../../types/react-table-config'
+import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import {
   GameFieldsFragment,
   GameGmsFragment,
   useDeleteGameMutation,
   useGetGamesByYearQuery,
   useYearFilterQuery,
-} from '../../../client'
-import { configuration } from '../../../utils'
+} from '../../client'
+import { configuration } from '../../utils'
 import { GamesDialog } from './GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment

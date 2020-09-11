@@ -8,7 +8,7 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
 
-import type { TableMouseEventHandler } from '../../../../types/react-table-config'
+import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { LookupsDialog } from './LookupsDialog'
 import type { LookupAndValues } from './types'
 

@@ -31,3 +31,10 @@ mutation createMembership($input: CreateMembershipInput!) {
     }
   }
 }
+
+mutation deleteMembership($input: DeleteMembershipInput!) {
+  deleteMembership(input: $input) {
+    clientMutationId
+    deletedMembershipNodeId
+  }
+}

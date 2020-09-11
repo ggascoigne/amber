@@ -45,6 +45,6 @@ export const IsNotMember: React.FC = ({ children }) => {
   if (isAuthenticated && !!user) {
     return <IsUserAMember user={user} denied={() => <>{children}</>} />
   } else {
-    return null
+    return <>{children}</>
   }
 }

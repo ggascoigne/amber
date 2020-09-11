@@ -8,9 +8,16 @@ import type { RootRoutes } from './Routes'
 export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
   const results = useMemo(
     () =>
-      routes.map((route, index) => (
-        <Route exact={route.exact} path={route.path} render={() => React.createElement(route.component)} key={index} />
-      )),
+      routes
+        .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
+        .map((route, index) => (
+          <Route
+            exact={route.exact}
+            path={route.path}
+            render={() => React.createElement(route.component)}
+            key={index}
+          />
+        )),
     [routes]
   )
 

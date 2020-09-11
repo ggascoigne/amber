@@ -24,6 +24,7 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
         {menuItems
           // only display routes with a label
           .filter((menuItem) => menuItem.label)
+          .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (

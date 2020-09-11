@@ -44,6 +44,10 @@ export const Credits = () => (
       <li>
         Various useful utilities from from <a href='https://usehooks.com'> Use Hooks</a>
       </li>
+      <li>
+        The Old Stamper font used in the "virtual" convention overlay is from{' '}
+        <a href='https://www.dafont.com/typesgal.d3983'>https://www.dafont.com/typesgal.d3983</a>
+      </li>
     </ul>
   </Page>
 )
