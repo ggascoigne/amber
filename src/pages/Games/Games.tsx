@@ -1,16 +1,10 @@
+import { GameFieldsFragment, GameGmsFragment, useDeleteGameMutation, useGetGamesByYearQuery } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
+import { useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
-import {
-  GameFieldsFragment,
-  GameGmsFragment,
-  useDeleteGameMutation,
-  useGetGamesByYearQuery,
-  useYearFilterQuery,
-} from '../../client'
-import { configuration } from '../../utils'
 import { GamesDialog } from './GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -75,8 +69,7 @@ const columns: Column<Game>[] = [
 ]
 
 export const Games: React.FC = React.memo(() => {
-  const { data: yearQueryData } = useYearFilterQuery()
-  const year = yearQueryData?.yearDetails?.year || configuration.year
+  const year = useYearFilterState((state) => state.year)
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()

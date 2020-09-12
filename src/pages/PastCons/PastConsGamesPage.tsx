@@ -1,12 +1,12 @@
-import { useUrlSourceMutation, useUrlSourceQuery } from 'client/resolvers/urlSource'
 import { Page } from 'components/Acnw/Page'
 import jump from 'jump.js'
 import debounce from 'lodash/debounce'
 import { PastConsPageGameList } from 'pages/PastCons/PastConsPageGameList'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
+import { configuration, useUrlSourceState } from 'utils'
 
-interface MatchParams {
+export interface MatchParams {
   year: string
   slot?: string
   game?: string
@@ -15,22 +15,21 @@ interface MatchParams {
 export const PastConsGamesPage: React.FC = () => {
   const history = useHistory()
   const { year: yearStr, slot: slotIdStr, game } = useParams<MatchParams>()
-  const year = yearStr ? parseInt(yearStr) : 2017
+  const year = yearStr ? parseInt(yearStr) : configuration.year
   const [lastSlug, setLastSlug] = useState<string>('')
-  const [updateUrlSourceMutation] = useUrlSourceMutation()
-  const { data } = useUrlSourceQuery()
-  const urlSource = data && data.urlSource
+  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
+  const urlSource = useUrlSourceState((state) => state.urlSource)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const setNewUrl = useCallback(
     debounce(async (slug: string) => {
       if (lastSlug !== slug) {
         setLastSlug(slug)
-        await updateUrlSourceMutation({ variables: { source: 'scroll', url: slug } })
+        await setUrlSource({ source: 'scroll', url: slug })
         history.replace(slug)
       }
     }, 200),
-    [history, lastSlug, updateUrlSourceMutation]
+    [lastSlug, setUrlSource, setLastSlug]
   )
 
   const scrollToId = useCallback(

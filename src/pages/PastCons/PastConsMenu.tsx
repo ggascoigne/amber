@@ -8,10 +8,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { GameList, GameListIndex } from 'components/Acnw/GameList'
 import { ListItemLink } from 'components/Acnw/Navigation'
 import React from 'react'
-
-import { useGameFilterQuery } from '../../client/resolvers'
-import { GraphQLError } from '../../components/Acnw/GraphQLError'
-import { Loader } from '../../components/Acnw/Loader'
+import { useGameFilterState } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -27,17 +24,8 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const PastConsMenu: React.FC = () => {
-  const { loading, error, data } = useGameFilterQuery()
   const classes = useStyles()
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (loading) {
-    return <Loader />
-  }
-  const {
-    gameFilter: { year, slot: filterSlot },
-  } = data!
+  const { year, slotId } = useGameFilterState((state) => state.gameFilter)
 
   return (
     <>
@@ -53,7 +41,7 @@ export const PastConsMenu: React.FC = () => {
       <Typography variant='h4' className={classes.title}>
         Games for {year}
       </Typography>
-      <GameList small year={year} slotIdStr={`${filterSlot.id}`}>
+      <GameList small year={year} slotIdStr={`${slotId}`}>
         {({ year, slot, games }) => <GameListIndex year={year} slot={slot} games={games!} />}
       </GameList>
     </>

@@ -151,7 +151,7 @@
     "prebuild": "yarn setup",
     "prestart": "yarn setup",
     "setup": "yarn db:migrate:up && yarn tsnode ./scripts/prepareGraphql.ts && yarn codegen && yarn gitHash",
-    "start": "BROWSER=none react-scripts start",
+    "start": "BROWSER=none EXTEND_ESLINT=true react-scripts start",
     "test": "react-scripts test",
     "tsnode": "TS_NODE_PROJECT=./tsconfig.commonjs.json",
     "typesync": "typesync"

@@ -135,7 +135,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const editing = initialValues !== defaultValues
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth={'md'} open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>

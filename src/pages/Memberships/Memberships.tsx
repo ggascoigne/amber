@@ -3,14 +3,9 @@ import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
-import {
-  MembershipFieldsFragment,
-  useDeleteMembershipMutation,
-  useGetMembershipsByYearQuery,
-  useYearFilterQuery,
-} from '../../client'
+import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from '../../client'
 import { DateCell, YesNoCell } from '../../components/Acnw/Table/CellFormatters'
-import { useLocalStorage } from '../../utils'
+import { useLocalStorage, useYearFilterState } from '../../utils'
 import { MembershipDialog } from './MembershipDialog'
 
 type Membership = MembershipFieldsFragment
@@ -65,8 +60,7 @@ const columns: Column<Membership>[] = [
 ]
 
 export const Memberships: React.FC = React.memo(() => {
-  const { data: yearQueryData } = useYearFilterQuery()
-  const year = yearQueryData?.yearDetails?.year
+  const year = useYearFilterState((state) => state.year)
   const [_, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
 
   const [showEdit, setShowEdit] = useState(false)

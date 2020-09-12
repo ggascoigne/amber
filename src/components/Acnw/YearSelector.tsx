@@ -2,9 +2,8 @@ import { FormControl, MenuItem, TextField, Theme, createStyles } from '@material
 import { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import * as React from 'react'
-import { configuration, range } from 'utils'
+import { configuration, range, useYearFilterState } from 'utils'
 
-import { useYearFilterMutation, useYearFilterQuery } from '../../client/resolvers'
 import { getSelectLabel, getSelectValue } from './Form'
 
 export type SelectProps = MuiSelectProps & {
@@ -44,13 +43,12 @@ const possibleYears: string[] = range(configuration.year, 2011, -1).map((v: numb
 
 export const YearSelector = () => {
   const classes = useStyles()
-  const { data } = useYearFilterQuery()
-  const year = data?.yearDetails?.year
-  const [updateYearFilterMutation] = useYearFilterMutation()
+  const year = useYearFilterState((state) => state.year)
+  const setYear = useYearFilterState((state) => state.setYear)
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
     const year = event.target.value as string
-    await updateYearFilterMutation({ variables: { year: parseInt(year) } })
+    await setYear(parseInt(year))
   }
 
   return (

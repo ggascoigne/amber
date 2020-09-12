@@ -1,4 +1,6 @@
 module.exports = {
+  // when changing this, remember that you can run `yarn eslint --print-config <filename>` to print
+  // the existing used config for that path
   extends: [
     'react-app',
     // enable typescript support
@@ -44,6 +46,15 @@ module.exports = {
         'jsx-a11y/img-redundant-alt': 'off',
         // changed to match the default tsconfig
         '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            args: 'none',
+            ignoreRestSiblings: true,
+            // above this line if the default config for this rule, below are my adds
+            varsIgnorePattern: '_',
+          },
+        ],
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',

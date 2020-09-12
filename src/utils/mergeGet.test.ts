@@ -1,6 +1,6 @@
-import { mergeGet } from './client'
+import { mergeGet } from './mergeGet'
 
-describe('ordinals', () => {
+describe('mergeGet', () => {
   const data = [
     {
       input: [{ defaults: { x: true } }, { defaults: { y: 'foo' } }, { defaults: { z: 123 } }],

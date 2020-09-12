@@ -6,8 +6,9 @@ import Acnw from 'components/Acnw'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useCallback, useState } from 'react'
 
+import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { IsLoggedIn, IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
 import { IsNotMember } from '../utils/membership'
 import { MembershipDialog } from './Memberships/MembershipDialog'
@@ -45,6 +46,12 @@ const useStyles = makeStyles((theme: Theme) =>
 export const WelcomeVirtual: React.FC = () => {
   const classes = useStyles()
   const [showMembershipForm, setShowMembershipForm] = useState(false)
+  const { isInitializing = true, loginWithPopup } = useAuth()
+
+  const login = useCallback(async () => !isInitializing && loginWithPopup && (await loginWithPopup()), [
+    isInitializing,
+    loginWithPopup,
+  ])
 
   const openMembershipDialog = () => {
     setShowMembershipForm(true)
@@ -111,6 +118,11 @@ export const WelcomeVirtual: React.FC = () => {
                 Please note, that you can also login with either Facebook or Google. The same email advice applies in
                 this case too.
               </p>
+
+              <Button variant='outlined' color='primary' size='large' onClick={login}>
+                {' '}
+                Login / Sign Up
+              </Button>
             </IsNotLoggedIn>
 
             <IsLoggedIn>
@@ -120,7 +132,7 @@ export const WelcomeVirtual: React.FC = () => {
                 If you are interested in attending AmberCon NW this year, please{' '}
                 <Button variant='outlined' color='primary' size='large' onClick={openMembershipDialog}>
                   {' '}
-                  Signup
+                  Register
                 </Button>
               </p>
             </IsLoggedIn>

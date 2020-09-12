@@ -2,11 +2,10 @@ import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { useUrlSourceMutation } from 'client/resolvers/urlSource'
+import type { GameArray, SlotFieldsFragment } from 'client'
 import React from 'react'
 import { useHistory, useLocation } from 'react-router'
-
-import type { GameArray, SlotFieldsFragment } from '../../../client'
+import { useUrlSourceState } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,8 +27,7 @@ export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games }) =>
   const classes = useStyles()
   const history = useHistory()
   const location = useLocation()
-
-  const [updateUrlSourceMutation] = useUrlSourceMutation()
+  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
   return (
     <List>
       {games.map(({ node: game }) => {
@@ -44,7 +42,7 @@ export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games }) =>
             className={classes.listItem}
             selected={slug === location.pathname}
             onClick={async () => {
-              await updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
+              await setUrlSource({ source: 'jump', url: slug })
               return history.replace(slug)
             }}
           >

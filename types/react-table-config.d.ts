@@ -1,4 +1,3 @@
-import { DateTimeFormatOptions } from 'luxon'
 import { MouseEventHandler } from 'react'
 import {
   TableInstance,

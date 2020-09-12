@@ -16,7 +16,6 @@ import {
   MembershipFieldsFragment,
   Node,
   useCreateMembershipMutation,
-  useGetMembershipByYearAndIdQuery,
   useUpdateMembershipByNodeIdMutation,
 } from 'client'
 import { CheckboxWithLabel, DialogTitle, GridContainer, GridItem, TextField, useProfile } from 'components/Acnw'

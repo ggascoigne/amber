@@ -1,5 +1,11 @@
 #Todos & Ideas
 
+* Hook up SES to auth0
+* format auth0 emails
+* add login button to main screen at least for mobile.
+* add past game selection to game form
+
+
 * [ ] In the past cons list, indicate which games the logged in user played.
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
 * [ ] Convert the MaterialKitReact code to typescript - at least starting with the styles.  Remove all the bits that aren't being used.
@@ -60,4 +66,4 @@ Update ALL content for 2020
 * [ ] get real auth keys for facebook and google-oauth link.
 * [x] maybe add database name and or local vs aws flags, so it's easier to check in the ui
 * [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
- 
+* [ ] there's still something icky about the past cons page, it really shouldn't be using the url as an input in so many places.  It feels like we're mixing input from the url with input from state and making it far too complex. But it works for now.

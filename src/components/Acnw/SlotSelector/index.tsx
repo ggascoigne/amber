@@ -5,14 +5,11 @@ import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'
 import cx from 'classnames'
 import type { SlotFieldsFragment } from 'client'
-import { useGameFilterMutation, useGameFilterQuery } from 'client/resolvers/gameFilter'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useGameFilterState } from 'utils'
 import type { MaybeNodes } from 'utils/ts-utils'
-
-import { GraphQLError } from '../GraphQLError'
-import { Loader } from '../Loader'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -71,8 +68,8 @@ interface SlotSelector {
 export const SlotSelector: React.FC<SlotSelector> = (props) => {
   const classes = useStyles()
   const { slots, selectedSlotId, year, small, children } = props
-  const { loading, error, data } = useGameFilterQuery()
-  const [gameFilterMutation] = useGameFilterMutation()
+  const setGameFilter = useGameFilterState((state) => state.setGameFilter)
+  const { slotId } = useGameFilterState((state) => state.gameFilter)
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
 
@@ -115,32 +112,20 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
 
   useEffect(() => {
     const slot = getSlot(slots!, selectedSlotId)
-    gameFilterMutation({ variables: { slot, year } })
-  }, [selectedSlotId, slots, gameFilterMutation, year])
+    setGameFilter({ slotId: slot.id, year })
+  }, [selectedSlotId, slots, setGameFilter, year])
 
   const handleChange = useCallback(
     (event: ChangeEvent<unknown>, value: any) => {
       const slot = getSlot(slots!, value + 1)
-      gameFilterMutation({ variables: { slot, year } })
+      setGameFilter({ slotId: slot.id, year })
     },
-    [gameFilterMutation, year, slots]
+    [setGameFilter, year, slots]
   )
 
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (loading) {
-    return <Loader />
-  }
   if (!slots) {
     return null
   }
-
-  const {
-    gameFilter: {
-      slot: { id: slotId },
-    },
-  } = data!
 
   const slot = getSlot(slots, slotId)
 

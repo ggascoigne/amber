@@ -1,11 +1,10 @@
-import { useUrlSourceMutation } from 'client'
+import { useGetGamesByYearQuery } from 'client'
 import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
 import range from 'lodash/range'
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
-
-import { useGetGamesByYearQuery } from '../../client'
+import { useUrlSourceState } from 'utils'
 
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
   const { loading, error, data } = useGetGamesByYearQuery({ variables: { year } })
@@ -21,16 +20,16 @@ const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick })
 }
 
 export const PastConsPage: React.FC = () => {
-  const [updateUrlSourceMutation] = useUrlSourceMutation()
+  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
   const history = useHistory()
 
   const selectYear = useCallback(
     async (year: number) => {
       const slug = `/pastCons/${year}`
-      await updateUrlSourceMutation({ variables: { source: 'jump', url: slug } })
+      await setUrlSource({ source: 'jump', url: slug })
       return history.push(slug)
     },
-    [history, updateUrlSourceMutation]
+    [history, setUrlSource]
   )
 
   const years = range(2012, DateTime.local().year)
