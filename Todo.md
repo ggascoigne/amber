@@ -29,7 +29,9 @@ Allow for changing the email address. There is an api from auth0 for this, but i
    * we send email to the new address with a validation code/link
    * user clicks on link
    * in response to that validation we update auth0 with the new email address, and update the database record.
-    
+
+see https://community.auth0.com/t/how-to-let-users-change-their-email-safely/41748 for a reference    
+
 This is dependent upon:
   * [ ] being able to send email (AWS SES account is verified)
   * [ ] Generate and track unique codes
