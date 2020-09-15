@@ -6984,6 +6984,14 @@ export type UpdateUserMutation = { __typename: 'Mutation' } & {
   >
 }
 
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllUsersQuery = { __typename: 'Query' } & {
+  users?: Maybe<
+    { __typename: 'UsersConnection' } & { nodes: Array<Maybe<{ __typename: 'User' } & UserFieldsFragment>> }
+  >
+}
+
 export type UserFieldsFragment = { __typename: 'User' } & Pick<
   User,
   'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
@@ -8132,3 +8140,42 @@ export function useUpdateUserMutation(
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>
+export const GetAllUsersDocument = gql`
+  query GetAllUsers {
+    users(orderBy: LAST_NAME_ASC) {
+      nodes {
+        ...userFields
+      }
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`
+
+/**
+ * __useGetAllUsersQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>
+) {
+  return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
+}
+export function useGetAllUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
+}
+export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
+export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
+export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>

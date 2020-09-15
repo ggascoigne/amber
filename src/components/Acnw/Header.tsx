@@ -5,6 +5,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { Config, useGetConfig } from '../../utils/getConfig'
 import { HasPermission } from './Auth/HasPermission'
 import { Perms } from './Auth/PermissionRules'
+import { UserSelector } from './UserSelector'
 import { YearSelector } from './YearSelector'
 
 const drawerWidth = 240
@@ -76,6 +77,9 @@ export const Header: React.FC<Header> = ({ handleDrawerToggle, rightMenu }) => {
         </Typography>
         &nbsp;{configDetails}
       </Toolbar>
+      <HasPermission permission={Perms.IsAdmin}>
+        <UserSelector />
+      </HasPermission>
       <HasPermission permission={Perms.IsAdmin}>
         <YearSelector />
       </HasPermission>

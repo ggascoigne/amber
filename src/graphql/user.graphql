@@ -13,3 +13,11 @@ mutation updateUser($input: UpdateUserInput!) {
     }
   }
 }
+
+query GetAllUsers {
+  users(orderBy: LAST_NAME_ASC) {
+    nodes {
+      ...userFields
+    }
+  }
+}

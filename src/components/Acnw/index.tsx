@@ -22,6 +22,7 @@ export * from './Page'
 export * from './Profile'
 export * from './SlotSelector'
 export * from './Table'
+export * from './UserSelector'
 export * from './YearTile'
 
 const Ordinal = () => <>{getOrdinalWord(1 + configuration.year - 1997)}</>
