@@ -1,10 +1,10 @@
 import { TextField, makeStyles, withStyles } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import classNames from 'classnames'
+import { UserFieldsFragment, useGetAllUsersQuery } from 'client'
 import React, { useCallback, useMemo } from 'react'
+import { useUserFilterState } from 'utils'
 
-import { useGetAllUsersQuery } from '../../client'
-import { useUserFilterState } from '../../utils/useUserFilterState'
 import { useNotification } from './Notifications'
 
 const useStyles = makeStyles({
@@ -59,34 +59,28 @@ const CleanTextField = withStyles({
   },
 })(TextField)
 
-const getOptionSelected = (option: AutocompleteObject, value: AutocompleteObject) => option.value === value.value
+const getOptionSelected = (option: UserFieldsFragment, value: UserFieldsFragment) => option.id === value.id
 
 interface UserSelector {
   mobile?: boolean
 }
 
-export type AutocompleteObject = { value: any; text: string }
-
 export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
   const classes = useStyles({})
   const [notify] = useNotification()
-  const userId = useUserFilterState((state) => state.userId)
+  const userInfo = useUserFilterState((state) => state.userInfo)
   const setUser = useUserFilterState((state) => state.setUser)
 
   const { loading, error, data } = useGetAllUsersQuery()
 
-  const dropdownOptions: AutocompleteObject[] | null = useMemo(() => {
+  const dropdownOptions = useMemo(() => {
     const users = data?.users?.nodes || []
-
-    return users?.map((u) => u && { value: u.id, text: u.fullName || '' }).filter(Boolean) as
-      | AutocompleteObject[]
-      | null
+    return users?.map((u) => u).filter(Boolean) as UserFieldsFragment[] | null
   }, [data])
 
   const onChange = useCallback(
     (_, value) => {
-      console.log(`value = ${JSON.stringify(value, null, 2)}`)
-      setUser(value?.value || 0)
+      setUser(value ? { id: value.id, email: value.email } : { id: 0, email: '' })
     },
     [setUser]
   )
@@ -96,22 +90,21 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
       text: error.message,
       variant: 'error',
     })
+  }
+
+  if (error || loading || !data) {
     return null
   }
 
-  if (loading || !data) {
-    return null
-  }
-
-  const selectedUser = dropdownOptions?.find((u) => u.value === userId) || null
+  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.id) || null
 
   if (dropdownOptions && dropdownOptions.length > 0) {
     return (
       <>
-        <Autocomplete<AutocompleteObject>
+        <Autocomplete<UserFieldsFragment>
           id='customerFilter'
           options={dropdownOptions}
-          getOptionLabel={(option: AutocompleteObject) => option.text}
+          getOptionLabel={(option: UserFieldsFragment) => option.fullName || ''}
           className={classNames(classes.selector, {
             [classes.selectorMobile]: mobile,
           })}
@@ -122,9 +115,9 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
             clearIndicator: classes.inheritColor,
           }}
           renderInput={(params) => <CleanTextField {...params} fullWidth placeholder='User Override' />}
-          renderOption={(params: AutocompleteObject) => (
+          renderOption={(params: UserFieldsFragment) => (
             <div className={classes.holder}>
-              <span className={classes.text}>{params.text}</span>
+              <span className={classes.text}>{params.fullName}</span>
             </div>
           )}
           getOptionSelected={getOptionSelected}
