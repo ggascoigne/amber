@@ -1,17 +1,17 @@
 import { DateTime } from 'luxon'
 
-import { configuration } from './configuration'
+import { configuration, pdxDate } from './configuration'
 
 // note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
 const startDates: Record<number, { date: DateTime; virtual: boolean }> = {
-  2012: { date: DateTime.fromObject({ year: 2012, month: 11, day: 8, zone: 'America/Los_Angeles' }), virtual: false },
-  2013: { date: DateTime.fromObject({ year: 2013, month: 11, day: 7, zone: 'America/Los_Angeles' }), virtual: false },
-  2014: { date: DateTime.fromObject({ year: 2014, month: 11, day: 6, zone: 'America/Los_Angeles' }), virtual: false },
-  2015: { date: DateTime.fromObject({ year: 2015, month: 11, day: 12, zone: 'America/Los_Angeles' }), virtual: false },
-  2016: { date: DateTime.fromObject({ year: 2016, month: 11, day: 3, zone: 'America/Los_Angeles' }), virtual: false },
-  2017: { date: DateTime.fromObject({ year: 2017, month: 11, day: 2, zone: 'America/Los_Angeles' }), virtual: false },
-  2018: { date: DateTime.fromObject({ year: 2018, month: 11, day: 1, zone: 'America/Los_Angeles' }), virtual: false },
-  2019: { date: DateTime.fromObject({ year: 2019, month: 10, day: 31, zone: 'America/Los_Angeles' }), virtual: false },
+  2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false },
+  2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false },
+  2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false },
+  2015: { date: pdxDate({ year: 2015, month: 11, day: 12 }), virtual: false },
+  2016: { date: pdxDate({ year: 2016, month: 11, day: 3 }), virtual: false },
+  2017: { date: pdxDate({ year: 2017, month: 11, day: 2 }), virtual: false },
+  2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false },
+  2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false },
   2020: { date: configuration.conventionStartDate, virtual: true },
 }
 
@@ -64,9 +64,16 @@ const getVirtualSlotTimes = (year: number) => {
   ] as const
 }
 
-const formatSlot = (s: DateTime, e: DateTime) => `${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
+const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: boolean) => {
+  if (altFormat) {
+    return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
+  } else {
+    return `Slot ${slot} ${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
+  }
+}
 
-const formatSlotLocal = (s: DateTime, e: DateTime) => formatSlot(s.setZone('local'), e.setZone('local'))
+const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: boolean) =>
+  formatSlot(slot, s.setZone('local'), e.setZone('local'), altFormat)
 
 export const getSlotTimes = (year: number) =>
   startDates[year].virtual ? getVirtualSlotTimes(year) : getRegularSlotTimes(year)
@@ -75,17 +82,19 @@ export const getSlotDescription = ({
   year,
   slot,
   local = false,
+  altFormat = false,
 }: {
   year: number
   slot: 1 | 2 | 3 | 4 | 5 | 6 | 7
   local?: boolean
+  altFormat?: boolean
 }) => {
   const [start, end] = getSlotTimes(year)[slot - 1]
-  return local ? `Slot ${slot} ${formatSlotLocal(start, end)}` : `Slot ${slot} ${formatSlot(start, end)}`
+  return local ? formatSlotLocal(slot, start, end, altFormat) : formatSlot(slot, start, end, altFormat)
 }
 
 // I thought that I could just check the TZ, but there turn out to be a ton of possible Pacific Time strings,
-// this way cheats but is easy. Aand it re-uses a function that I know works
+// this way cheats but is easy. And it re-uses a function that I know works
 export const isNotPacificTime =
   getSlotDescription({
     year: 2020,

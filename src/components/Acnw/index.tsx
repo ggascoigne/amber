@@ -27,15 +27,13 @@ export * from './YearTile'
 
 const Ordinal = () => <>{getOrdinalWord(1 + configuration.year - 1997)}</>
 
-const RegistrationDeadline = () => <>{configuration.registrationDeadline.toLocaleString(DateTime.DATE_MED)}</>
-
 const ConventionYear = () => <>{configuration.year}</>
 
-const PaymentDeadline = () => <>{configuration.paymentDeadline.toLocaleString(DateTime.DATE_MED)}</>
+export const ConfigDate = ({ name }: { name: keyof typeof configuration }) => (
+  <>{(configuration[name] as DateTime).toLocaleString(DateTime.DATE_MED)}</>
+)
 
-const GameSubmissionDeadline = () => <>{configuration.gameSubmissionDeadline.toLocaleString(DateTime.DATE_MED)}</>
+const ContactEmail = () => <>{configuration.contactEmail}</>
 
-const SimoneEmail = () => <>{configuration.simEmail}</>
-
-const defaults = { Ordinal, RegistrationDeadline, ConventionYear, PaymentDeadline, GameSubmissionDeadline, SimoneEmail }
+const defaults = { Ordinal, ConventionYear, ContactEmail }
 export default defaults

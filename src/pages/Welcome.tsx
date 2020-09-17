@@ -1,7 +1,7 @@
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
-import Acnw from 'components/Acnw'
+import Acnw, { ConfigDate } from 'components/Acnw'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
@@ -44,7 +44,10 @@ export const Welcome: React.FC = () => {
 
       <p>
         <Acnw.ConventionYear /> marks AmberCon Northwest's <Acnw.Ordinal /> year at the venue that makes it unique,
-        McMenamins Edgefield Bed and Breakfast Resort.
+        <a href='https://www.mcmenamins.com/edgefield' target='_new'>
+          McMenamins Edgefield Bed and Breakfast Resort
+        </a>
+        .
       </p>
 
       <p>
@@ -93,49 +96,49 @@ export const Welcome: React.FC = () => {
       <ul>
         {/* search for Date Edit when changing */}
         <li>
-          <span className={classes.deadlineExpired}>
-            Initial registration and deposits: <Acnw.RegistrationDeadline />
+          <span className={classes.deadline}>
+            Initial registration and deposits: <ConfigDate name='registrationDeadline' />
           </span>
         </li>
         <li>
-          <span className={classes.deadlineExpired}>
-            Membership payment in full: <Acnw.PaymentDeadline />
+          <span className={classes.deadline}>
+            Membership payment in full: <ConfigDate name='gameSubmissionDeadline' />
           </span>
         </li>
         <li>
-          <span className={classes.deadlineExpired}>
-            Games and Events due: <Acnw.GameSubmissionDeadline />
+          <span className={classes.deadline}>
+            Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
           </span>
         </li>
         {/* and on home/gameBookClosed.gsp */}
         <li>
-          <span className={classes.deadlineExpired}>
-            Game Book preview to GMs: September 8 &amp; 9, <Acnw.ConventionYear />
+          <span className={classes.deadline}>
+            Game Book preview to GMs: <ConfigDate name='gameGmPreview' />
+          </span>
+        </li>
+        <li>
+          <span className={classes.deadline}>
+            Game Books open for selections: <ConfigDate name='gameBookOpen' />
+          </span>
+        </li>
+        <li>
+          <span className={classes.deadline}>
+            Game Selections due: <ConfigDate name='gameChoicesDue' />
+          </span>
+        </li>
+        <li>
+          <span className={classes.deadline}>
+            Last date for cancellation with full refund: <ConfigDate name='gameSubmissionDeadline' />
+          </span>
+        </li>
+        <li>
+          <span className={classes.deadline}>
+            Schedule previews to GMs: <ConfigDate name='gmPreview' />
           </span>
         </li>
         <li>
           <span className={classes.deadlineExpired}>
-            Game Books open for selections: September 13, <Acnw.ConventionYear />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadlineExpired}>
-            Game Selections due: September 18, <Acnw.ConventionYear />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadlineExpired}>
-            Last date for cancellation with full refund: September 18, <Acnw.ConventionYear />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadlineExpired}>
-            Schedule previews to GMs: September 24, <Acnw.ConventionYear />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadlineExpired}>
-            Schedules SENT to all players: September 26, <Acnw.ConventionYear />
+            Schedules SENT to all players: <ConfigDate name='schedulesSent' />
           </span>
         </li>
         <li>
@@ -164,9 +167,9 @@ export const Welcome: React.FC = () => {
       <p>
         If you are accessing this site after{' '}
         <strong>
-          <Acnw.PaymentDeadline />
+          <ConfigDate name='gameSubmissionDeadline' />
         </strong>
-        , please contact the organizers by e-mail at <Acnw.SimoneEmail /> before registering.
+        , please contact the organizers by e-mail at <Acnw.ContactEmail /> before registering.
       </p>
       <br />
     </Page>
