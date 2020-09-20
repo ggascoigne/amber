@@ -16,7 +16,7 @@ fragment membershipFields on Membership {
   userId
   volunteer
   year
-  skipSlots
+  slotsAttending
   amountOwed
   amountPaid
   user {

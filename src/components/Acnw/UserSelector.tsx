@@ -80,7 +80,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
 
   const onChange = useCallback(
     (_, value) => {
-      setUser(value ? { id: value.id, email: value.email } : { id: 0, email: '' })
+      setUser(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
     },
     [setUser]
   )
@@ -96,7 +96,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
     return null
   }
 
-  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.id) || null
+  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.userId) || null
 
   if (dropdownOptions && dropdownOptions.length > 0) {
     return (

@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, Typography } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, Typography, useTheme } from '@material-ui/core'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { GameFieldsFragment, GameGmsFragment, useGetSlotsQuery } from 'client'
 import {
   CheckboxWithLabel,
@@ -133,9 +134,11 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = (props) =>
 
 export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValues = defaultValues }) => {
   const editing = initialValues !== defaultValues
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose} fullScreen={fullScreen}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>

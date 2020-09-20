@@ -1,10 +1,10 @@
 import { Theme, makeStyles } from '@material-ui/core'
 import MuiDialogTitle from '@material-ui/core/DialogTitle'
-import IconButton from '@material-ui/core/IconButton'
 import createStyles from '@material-ui/core/styles/createStyles'
 import Typography from '@material-ui/core/Typography'
-import CloseIcon from '@material-ui/icons/Close'
 import React, { MouseEventHandler } from 'react'
+
+import { DialogClose } from './DialogClose'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -12,12 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
       borderBottom: `1px solid ${theme.palette.divider}`,
       margin: 0,
       padding: theme.spacing(2),
-    },
-    closeButton: {
-      position: 'absolute',
-      right: theme.spacing(1),
-      top: theme.spacing(1),
-      color: theme.palette.grey[500],
     },
   })
 )
@@ -31,11 +25,7 @@ export const DialogTitle: React.FC<DialogTitle> = ({ children, onClose }) => {
   return (
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant='h6'>{children}</Typography>
-      {onClose ? (
-        <IconButton aria-label='Close' className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      ) : null}
+      {onClose && <DialogClose onClose={onClose} />}
     </MuiDialogTitle>
   )
 }

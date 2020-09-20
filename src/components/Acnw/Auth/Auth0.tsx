@@ -9,8 +9,10 @@ import createAuth0Client, {
   RedirectLoginResult,
   getIdTokenClaimsOptions,
 } from '@auth0/auth0-spa-js'
+import type { History } from 'history'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
 import { ThenArg, useLocalStorage } from 'utils'
 
 import { useNotification } from '../Notifications'
@@ -77,7 +79,7 @@ export const useAuth: () => ContextValueType = () => useContext(Auth0Context)
 
 interface Auth0ProviderOptions {
   children: React.ReactElement
-  onRedirectCallback?: (result: RedirectLoginResult) => void
+  onRedirectCallback?: (history: History<any>, result?: RedirectLoginResult) => void
 }
 
 const auth0ClientConfig: Auth0ClientOptions = {
@@ -90,9 +92,8 @@ const auth0ClientConfig: Auth0ClientOptions = {
   scope: 'openid profile email',
 }
 
-const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
+const onAuthRedirectCallback = (history: History<any>, redirectResult?: RedirectLoginResult) => {
   console.log('auth0 onRedirectCallback called with redirectState %o', redirectResult)
-
   // Clears auth0 query string parameters from url
   const targetUrl =
     redirectResult && redirectResult.appState && redirectResult.appState.targetUrl
@@ -100,6 +101,7 @@ const onAuthRedirectCallback = (redirectResult?: RedirectLoginResult) => {
       : window.location.pathname
 
   window.history.replaceState({}, document.title, targetUrl)
+  history.replace(targetUrl)
 }
 
 export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCallback }: Auth0ProviderOptions) => {
@@ -111,6 +113,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const [notify] = useNotification()
   const [showVerifyEmailMessage, setShowVerifyEmailMessage] = useLocalStorage<boolean>('showVerifyEmailMessage', false)
   const roleOverride: string | undefined = useAuthOverride((state) => state.roleOverride)
+  const history = useHistory()
 
   const getEnrichedUser = async (client: Auth0Client) => {
     const userProfile = await client.getUser()
@@ -125,11 +128,11 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       setAuth0Client(auth0FromHook)
 
       if (window.location.search.includes('code=')) {
-        let appState: RedirectLoginResult = {}
+        let redirectResult: RedirectLoginResult = {}
         try {
-          ;({ appState } = await auth0FromHook.handleRedirectCallback())
+          redirectResult = await auth0FromHook.handleRedirectCallback()
         } finally {
-          onRedirectCallback(appState)
+          onRedirectCallback(history, redirectResult)
         }
       }
 
@@ -144,7 +147,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       setIsInitializing(false)
     }
 
-    initAuth0()
+    initAuth0().then()
   }, [onRedirectCallback])
 
   const loginWithPopup = useCallback(
@@ -201,9 +204,6 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
       notify({
         text: 'Please verify your email and try to login again',
         variant: 'success',
-        options: {
-          autoHideDuration: null,
-        },
       })
       setShowVerifyEmailMessage(false)
     }

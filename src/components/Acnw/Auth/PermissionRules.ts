@@ -8,10 +8,9 @@ export interface Rules {
 }
 
 export enum Perms {
-  PostsList = 'posts:list',
-  HomePageVisit = 'home-page:visit',
   GraphiqlLoad = 'graphiql:load',
   IsAdmin = 'is:Admin',
+  IsLoggedIn = 'is:LoggedIn',
 }
 
 const rules: Rules = {
@@ -21,7 +20,7 @@ const rules: Rules = {
     },
   },
   ROLE_USER: {
-    static: [Perms.PostsList, Perms.HomePageVisit],
+    static: [Perms.IsLoggedIn],
   },
   ROLE_GAME_ADMIN: {},
 }

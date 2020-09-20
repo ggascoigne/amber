@@ -3,7 +3,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { HasPermission } from 'components/Acnw/Auth'
 import React from 'react'
 import { useLocation } from 'react-router'
+import { useIsMember } from 'utils/membership'
 
+import { useUser } from '../../../utils'
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './Routes'
@@ -14,6 +16,9 @@ interface MenuItems {
 
 export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
   const location = useLocation()
+  const { userId } = useUser()
+  const isMember = useIsMember(userId)
+
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
   if (matchedContextRoute) {
@@ -25,6 +30,7 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
           // only display routes with a label
           .filter((menuItem) => menuItem.label)
           .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
+          .filter((menuItem) => menuItem.userCondition === undefined || menuItem.userCondition(userId, isMember))
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (

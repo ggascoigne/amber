@@ -2718,8 +2718,8 @@ enum GameAssignmentsOrderBy {
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC
   GAME_BY_GAME_ID__ID_ASC
   GAME_BY_GAME_ID__ID_DESC
   GAME_BY_GAME_ID__DESCRIPTION_ASC
@@ -3074,8 +3074,8 @@ enum GameChoicesOrderBy {
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC
   SLOT_BY_SLOT_ID__ID_ASC
   SLOT_BY_SLOT_ID__ID_DESC
   SLOT_BY_SLOT_ID__SLOT_ASC
@@ -3773,8 +3773,8 @@ enum GameSubmissionsOrderBy {
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC
   MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC
-  MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC
+  MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC
 }
 
 type HotelRoom implements Node {
@@ -4945,7 +4945,7 @@ type Membership implements Node {
   requestOldPrice: Boolean!
   amountOwed: Float!
   amountPaid: Float!
-  skipSlots: String
+  slotsAttending: String
 
   """
   Reads a single `HotelRoom` that is related to this `Membership`.
@@ -5192,9 +5192,9 @@ input MembershipCondition {
   amountPaid: Float
 
   """
-  Checks for equality with the object’s `skipSlots` field.
+  Checks for equality with the object’s `slotsAttending` field.
   """
-  skipSlots: String
+  slotsAttending: String
 }
 
 """
@@ -5292,9 +5292,9 @@ input MembershipFilter {
   amountPaid: FloatFilter
 
   """
-  Filter by the object’s `skipSlots` field.
+  Filter by the object’s `slotsAttending` field.
   """
-  skipSlots: StringFilter
+  slotsAttending: StringFilter
 
   """
   Checks for all expressions in this list.
@@ -5334,7 +5334,7 @@ input MembershipInput {
   requestOldPrice: Boolean!
   amountOwed: Float!
   amountPaid: Float!
-  skipSlots: String
+  slotsAttending: String
 }
 
 """
@@ -5359,7 +5359,7 @@ input MembershipPatch {
   requestOldPrice: Boolean
   amountOwed: Float
   amountPaid: Float
-  skipSlots: String
+  slotsAttending: String
 }
 
 """
@@ -5443,8 +5443,8 @@ enum MembershipsOrderBy {
   AMOUNT_OWED_DESC
   AMOUNT_PAID_ASC
   AMOUNT_PAID_DESC
-  SKIP_SLOTS_ASC
-  SKIP_SLOTS_DESC
+  SLOTS_ATTENDING_ASC
+  SLOTS_ATTENDING_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC

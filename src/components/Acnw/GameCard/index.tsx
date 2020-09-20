@@ -1,24 +1,18 @@
 import { makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import type { GameFieldsFragment, GameGmsFragment } from 'client'
-import { GridContainer, GridItem, LookupValue } from 'components/Acnw'
+import { GridContainer, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
-import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React from 'react'
 import { Waypoint } from 'react-waypoint'
 import maskEmail from 'utils/maskEmail'
 
+import { Field, HeaderContent, MultiLine } from '../CardUtils'
+
 const useStyles = makeStyles({
   card: {
     marginBottom: 50,
-  },
-  gridItem: {
-    paddingBottom: 10,
-  },
-  label: {
-    fontWeight: 500,
-    minWidth: 80,
   },
   tinyCard: {
     height: 279,
@@ -26,47 +20,11 @@ const useStyles = makeStyles({
     zIndex: 10,
     transform: 'rotateZ(-3deg)',
   },
-  tinyHeaderText: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
   cardTiny: {
     overflow: 'hidden',
     height: 200,
   },
 })
-
-const MultiLine: React.FC<{ text: string }> = ({ text }) => (
-  <>
-    {text.split('\n').map((i, key) => (
-      <p key={key}>{i}</p>
-    ))}
-  </>
-)
-
-const HeaderContent: React.FC<{ name: string; tiny: boolean }> = ({ name, tiny }) => {
-  const classes = useStyles()
-  return (
-    <CardHeader color='info'>
-      <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
-    </CardHeader>
-  )
-}
-
-const Field: React.FC<{ label: string; small?: boolean; tiny: boolean }> = ({ label, children, small, tiny }) => {
-  const classes = useStyles()
-  return (
-    <>
-      <GridItem xs={12} sm={2} className={classNames(classes.gridItem, classes.label)}>
-        {label}
-      </GridItem>
-      <GridItem xs={12} sm={small ? 4 : tiny ? 8 : 10} className={classes.gridItem}>
-        {children}
-      </GridItem>
-    </>
-  )
-}
 
 interface GameCard {
   game: GameFieldsFragment & GameGmsFragment

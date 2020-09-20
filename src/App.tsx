@@ -30,6 +30,7 @@ const theme = createMuiTheme({
     body2: {
       fontWeight: 300,
     },
+    fontSize: 12.5, // 14 looks too chunky
   },
   overrides: {
     MuiTableSortLabel: {
@@ -39,6 +40,11 @@ const theme = createMuiTheme({
         },
       },
     },
+    MuiDialogActions: {
+      root: {
+        padding: '8px 24px',
+      },
+    },
   },
 })
 
@@ -46,6 +52,22 @@ const drawerWidth = 240
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    // "@global": {
+    //   // MUI typography elements use REMs, so you can scale the global
+    //   // font size by setting the font-size on the <html> element.
+    //   html: {
+    //     fontSize: 12.5,
+    //     [theme.breakpoints.up("sm")]: {
+    //       fontSize: 14
+    //     },
+    //     [theme.breakpoints.up("md")]: {
+    //       fontSize: 16
+    //     },
+    //     [theme.breakpoints.up("lg")]: {
+    //       fontSize: 18
+    //     }
+    //   }
+    // },
     root: {
       display: 'flex',
       minHeight: '100vh',

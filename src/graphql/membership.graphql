@@ -1,6 +1,6 @@
 #import "./membershipFragment.graphql"
 
-query getMembershipByYearAndId($year: Int, $userId: Int) {
+query getMembershipByYearAndId($year: Int!, $userId: Int!) {
   memberships(condition: { userId: $userId, year: $year }) {
     nodes {
       ...membershipFields
@@ -8,7 +8,7 @@ query getMembershipByYearAndId($year: Int, $userId: Int) {
   }
 }
 
-query getMembershipsByYear($year: Int) {
+query getMembershipsByYear($year: Int!) {
   memberships(condition: { year: $year }) {
     nodes {
       ...membershipFields

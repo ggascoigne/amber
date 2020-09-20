@@ -1761,8 +1761,8 @@ export enum GameAssignmentsOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
-  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
   GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
   GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
   GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
@@ -2032,8 +2032,8 @@ export enum GameChoicesOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
-  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
   SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
   SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
   SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
@@ -2479,8 +2479,8 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
   MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
   MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSkipSlotsAsc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_ASC',
-  MembershipByMemberIdSkipSlotsDesc = 'MEMBERSHIP_BY_MEMBER_ID__SKIP_SLOTS_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
 }
 
 export type HotelRoom = Node & {
@@ -3175,7 +3175,7 @@ export type Membership = Node & {
   requestOldPrice: Scalars['Boolean']
   amountOwed: Scalars['Float']
   amountPaid: Scalars['Float']
-  skipSlots?: Maybe<Scalars['String']>
+  slotsAttending?: Maybe<Scalars['String']>
   /** Reads a single `HotelRoom` that is related to this `Membership`. */
   hotelRoom?: Maybe<HotelRoom>
   /** Reads a single `User` that is related to this `Membership`. */
@@ -3262,8 +3262,8 @@ export type MembershipCondition = {
   amountOwed?: Maybe<Scalars['Float']>
   /** Checks for equality with the object’s `amountPaid` field. */
   amountPaid?: Maybe<Scalars['Float']>
-  /** Checks for equality with the object’s `skipSlots` field. */
-  skipSlots?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
@@ -3304,8 +3304,8 @@ export type MembershipFilter = {
   amountOwed?: Maybe<FloatFilter>
   /** Filter by the object’s `amountPaid` field. */
   amountPaid?: Maybe<FloatFilter>
-  /** Filter by the object’s `skipSlots` field. */
-  skipSlots?: Maybe<StringFilter>
+  /** Filter by the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<MembershipFilter>>
   /** Checks for any expressions in this list. */
@@ -3334,7 +3334,7 @@ export type MembershipInput = {
   requestOldPrice: Scalars['Boolean']
   amountOwed: Scalars['Float']
   amountPaid: Scalars['Float']
-  skipSlots?: Maybe<Scalars['String']>
+  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `Membership`. Fields that are set will be updated. */
@@ -3357,7 +3357,7 @@ export type MembershipPatch = {
   requestOldPrice?: Maybe<Scalars['Boolean']>
   amountOwed?: Maybe<Scalars['Float']>
   amountPaid?: Maybe<Scalars['Float']>
-  skipSlots?: Maybe<Scalars['String']>
+  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `Membership` values. */
@@ -3421,8 +3421,8 @@ export enum MembershipsOrderBy {
   AmountOwedDesc = 'AMOUNT_OWED_DESC',
   AmountPaidAsc = 'AMOUNT_PAID_ASC',
   AmountPaidDesc = 'AMOUNT_PAID_DESC',
-  SkipSlotsAsc = 'SKIP_SLOTS_ASC',
-  SkipSlotsDesc = 'SKIP_SLOTS_DESC',
+  SlotsAttendingAsc = 'SLOTS_ATTENDING_ASC',
+  SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
@@ -6868,8 +6868,8 @@ export type DeleteLookupValueMutation = { __typename: 'Mutation' } & {
 }
 
 export type GetMembershipByYearAndIdQueryVariables = Exact<{
-  year?: Maybe<Scalars['Int']>
-  userId?: Maybe<Scalars['Int']>
+  year: Scalars['Int']
+  userId: Scalars['Int']
 }>
 
 export type GetMembershipByYearAndIdQuery = { __typename: 'Query' } & {
@@ -6881,7 +6881,7 @@ export type GetMembershipByYearAndIdQuery = { __typename: 'Query' } & {
 }
 
 export type GetMembershipsByYearQueryVariables = Exact<{
-  year?: Maybe<Scalars['Int']>
+  year: Scalars['Int']
 }>
 
 export type GetMembershipsByYearQuery = { __typename: 'Query' } & {
@@ -6948,7 +6948,7 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   | 'userId'
   | 'volunteer'
   | 'year'
-  | 'skipSlots'
+  | 'slotsAttending'
   | 'amountOwed'
   | 'amountPaid'
 > & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName'>> }
@@ -7076,7 +7076,7 @@ export const MembershipFieldsFragmentDoc = gql`
     userId
     volunteer
     year
-    skipSlots
+    slotsAttending
     amountOwed
     amountPaid
     user {
@@ -7796,7 +7796,7 @@ export type DeleteLookupValueMutationOptions = Apollo.BaseMutationOptions<
   DeleteLookupValueMutationVariables
 >
 export const GetMembershipByYearAndIdDocument = gql`
-  query getMembershipByYearAndId($year: Int, $userId: Int) {
+  query getMembershipByYearAndId($year: Int!, $userId: Int!) {
     memberships(condition: { userId: $userId, year: $year }) {
       nodes {
         ...membershipFields
@@ -7846,7 +7846,7 @@ export type GetMembershipByYearAndIdQueryResult = Apollo.QueryResult<
   GetMembershipByYearAndIdQueryVariables
 >
 export const GetMembershipsByYearDocument = gql`
-  query getMembershipsByYear($year: Int) {
+  query getMembershipsByYear($year: Int!) {
     memberships(condition: { year: $year }) {
       nodes {
         ...membershipFields

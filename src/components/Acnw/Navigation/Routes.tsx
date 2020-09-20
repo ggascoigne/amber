@@ -10,7 +10,7 @@ import {
 } from 'pages'
 import type React from 'react'
 
-import { AntiHarassmentPolicy, Games, Lookups, Memberships } from '../../../pages'
+import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships } from '../../../pages'
 import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
@@ -24,6 +24,7 @@ export type RouteInfo = {
   component: React.ComponentType<any>
   permission?: Perms
   condition?: boolean
+  userCondition?: (userId: number | null | undefined, isMember: boolean) => boolean
 }
 
 export type RootRoutes = RouteInfo[]
@@ -100,6 +101,13 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: Memberships,
     permission: Perms.IsAdmin,
+  },
+  {
+    path: '/membership',
+    label: 'Membership',
+    subText: 'Your membership details',
+    exact: true,
+    component: MembershipSummary,
   },
   {
     path: '/graphiql',

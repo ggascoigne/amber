@@ -1,4 +1,4 @@
-import { Button, Card } from '@material-ui/core'
+import { Card } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
@@ -6,12 +6,10 @@ import Acnw, { ConfigDate } from 'components/Acnw'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
-import React, { MouseEventHandler, useCallback, useState } from 'react'
+import React from 'react'
 
-import { useAuth } from '../components/Acnw/Auth/Auth0'
-import { IsLoggedIn, IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
 import { IsNotMember } from '../utils/membership'
-import { MembershipDialog } from './Memberships/MembershipDialog'
+import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,22 +43,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const WelcomeVirtual: React.FC = () => {
   const classes = useStyles()
-  const [showMembershipForm, setShowMembershipForm] = useState(false)
-  const { isInitializing = true, loginWithPopup } = useAuth()
-
-  const login = useCallback(async () => !isInitializing && loginWithPopup && (await loginWithPopup()), [
-    isInitializing,
-    loginWithPopup,
-  ])
-
-  const openMembershipDialog = () => {
-    setShowMembershipForm(true)
-  }
-
-  const onCloseMembershipDialog: MouseEventHandler = () => {
-    setShowMembershipForm(false)
-  }
-
   return (
     <Page>
       <div className={classes.banner}>
@@ -107,41 +89,7 @@ export const WelcomeVirtual: React.FC = () => {
         </a>
       </p>
 
-      <IsNotMember>
-        <Card elevation={3}>
-          <CardBody className={classes.card}>
-            <h2>Attending Virtual AmberCon NW</h2>
-            <IsNotLoggedIn>
-              <h4>New Authentication system.</h4>
-              <p>
-                We have a new authentication system. If you have an account from the old system, you can access it by
-                signing up again using the same email address as before and then confirming that email address.
-              </p>
-              <p>
-                Please note, that you can also login with either Facebook or Google. The same email advice applies in
-                this case too.
-              </p>
-
-              <Button variant='outlined' color='primary' size='large' onClick={login}>
-                {' '}
-                Login / Sign Up
-              </Button>
-            </IsNotLoggedIn>
-
-            <IsLoggedIn>
-              {showMembershipForm && <MembershipDialog open={showMembershipForm} onClose={onCloseMembershipDialog} />}
-
-              <p>
-                If you are interested in attending AmberCon NW this year, please{' '}
-                <Button variant='outlined' color='primary' size='large' onClick={openMembershipDialog}>
-                  {' '}
-                  Register
-                </Button>
-              </p>
-            </IsLoggedIn>
-          </CardBody>
-        </Card>
-      </IsNotMember>
+      <BecomeAMember />
 
       <h2>Deadline dates this year</h2>
       <p>

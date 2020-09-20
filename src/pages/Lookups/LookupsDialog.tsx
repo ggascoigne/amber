@@ -13,7 +13,9 @@ import {
   Typography,
   createStyles,
   makeStyles,
+  useTheme,
 } from '@material-ui/core'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { DialogTitle, GridContainer, GridItem, TextField } from 'components/Acnw'
@@ -101,6 +103,8 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
   const [createLookupValue] = useCreateLookupValueMutation()
   const [updateLookupValue] = useUpdateLookupValueByNodeIdMutation()
   const [deleteLookupValue] = useDeleteLookupValueMutation()
+  const theme = useTheme()
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const res = values.nodeId
@@ -210,7 +214,7 @@ export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialV
     values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose}>
+    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose} fullScreen={fullScreen}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => (
           <Form>

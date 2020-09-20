@@ -129,7 +129,7 @@ type LoginMenu = {
 
 export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const classes = useStyles()
-  const { isInitializing = true, isAuthenticated, user, loginWithPopup, logout, hasPermissions } = useAuth()
+  const { isInitializing = true, isAuthenticated, user, loginWithRedirect, logout, hasPermissions } = useAuth()
   const [jwtToken] = useToken()
   const [notify] = useNotification()
   const [profileOpen, setProfileOpen] = useState(false)
@@ -142,9 +142,9 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const login = useCallback(
     async (e: MouseEvent) => {
       e.preventDefault()
-      return loginWithPopup && (await loginWithPopup())
+      return loginWithRedirect && (await loginWithRedirect())
     },
-    [loginWithPopup]
+    [loginWithRedirect]
   )
 
   const menuItems = useMemo(() => {
