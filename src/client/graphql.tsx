@@ -6686,6 +6686,20 @@ export type GetFirstGameOfSlotQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetGamesByAuthorQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetGamesByAuthorQuery = { __typename: 'Query' } & {
+  user?: Maybe<
+    { __typename: 'User' } & {
+      authoredGames: { __typename: 'GamesConnection' } & {
+        nodes: Array<Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment>>
+      }
+    }
+  >
+}
+
 export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   Game,
   | 'nodeId'
@@ -6953,6 +6967,49 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   | 'amountPaid'
 > & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName'>> }
 
+export type SettingFieldsFragment = { __typename: 'Setting' } & Pick<
+  Setting,
+  'nodeId' | 'id' | 'code' | 'type' | 'value'
+>
+
+export type GetSettingsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetSettingsQuery = { __typename: 'Query' } & {
+  settings?: Maybe<
+    { __typename: 'SettingsConnection' } & { nodes: Array<Maybe<{ __typename: 'Setting' } & SettingFieldsFragment>> }
+  >
+}
+
+export type CreateSettingMutationVariables = Exact<{
+  input: CreateSettingInput
+}>
+
+export type CreateSettingMutation = { __typename: 'Mutation' } & {
+  createSetting?: Maybe<
+    { __typename: 'CreateSettingPayload' } & { setting?: Maybe<{ __typename: 'Setting' } & SettingFieldsFragment> }
+  >
+}
+
+export type DeleteSettingMutationVariables = Exact<{
+  input: DeleteSettingInput
+}>
+
+export type DeleteSettingMutation = { __typename: 'Mutation' } & {
+  deleteSetting?: Maybe<
+    { __typename: 'DeleteSettingPayload' } & Pick<DeleteSettingPayload, 'clientMutationId' | 'deletedSettingNodeId'>
+  >
+}
+
+export type UpdateSettingByNodeIdMutationVariables = Exact<{
+  input: UpdateSettingByNodeIdInput
+}>
+
+export type UpdateSettingByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateSettingByNodeId?: Maybe<
+    { __typename: 'UpdateSettingPayload' } & { setting?: Maybe<{ __typename: 'Setting' } & SettingFieldsFragment> }
+  >
+}
+
 export type GetSlotsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetSlotsQuery = { __typename: 'Query' } & {
@@ -7085,6 +7142,15 @@ export const MembershipFieldsFragmentDoc = gql`
       firstName
       lastName
     }
+  }
+`
+export const SettingFieldsFragmentDoc = gql`
+  fragment settingFields on Setting {
+    nodeId
+    id
+    code
+    type
+    value
   }
 `
 export const SlotFieldsFragmentDoc = gql`
@@ -7381,6 +7447,53 @@ export type GetFirstGameOfSlotQueryResult = Apollo.QueryResult<
   GetFirstGameOfSlotQuery,
   GetFirstGameOfSlotQueryVariables
 >
+export const GetGamesByAuthorDocument = gql`
+  query GetGamesByAuthor($id: Int!) {
+    user(id: $id) {
+      authoredGames {
+        nodes {
+          ...gameFields
+          ...gameGms
+        }
+      }
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${GameGmsFragmentDoc}
+`
+
+/**
+ * __useGetGamesByAuthorQuery__
+ *
+ * To run a query within a React component, call `useGetGamesByAuthorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGamesByAuthorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGamesByAuthorQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetGamesByAuthorQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
+) {
+  return Apollo.useQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument, baseOptions)
+}
+export function useGetGamesByAuthorLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(
+    GetGamesByAuthorDocument,
+    baseOptions
+  )
+}
+export type GetGamesByAuthorQueryHookResult = ReturnType<typeof useGetGamesByAuthorQuery>
+export type GetGamesByAuthorLazyQueryHookResult = ReturnType<typeof useGetGamesByAuthorLazyQuery>
+export type GetGamesByAuthorQueryResult = Apollo.QueryResult<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
 export const GetLookupsDocument = gql`
   query GetLookups {
     lookups(orderBy: REALM_ASC) {
@@ -8029,6 +8142,169 @@ export type DeleteMembershipMutationResult = Apollo.MutationResult<DeleteMembers
 export type DeleteMembershipMutationOptions = Apollo.BaseMutationOptions<
   DeleteMembershipMutation,
   DeleteMembershipMutationVariables
+>
+export const GetSettingsDocument = gql`
+  query GetSettings {
+    settings {
+      nodes {
+        ...settingFields
+      }
+    }
+  }
+  ${SettingFieldsFragmentDoc}
+`
+
+/**
+ * __useGetSettingsQuery__
+ *
+ * To run a query within a React component, call `useGetSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSettingsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSettingsQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetSettingsQuery, GetSettingsQueryVariables>
+) {
+  return Apollo.useQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, baseOptions)
+}
+export function useGetSettingsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetSettingsQuery, GetSettingsQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, baseOptions)
+}
+export type GetSettingsQueryHookResult = ReturnType<typeof useGetSettingsQuery>
+export type GetSettingsLazyQueryHookResult = ReturnType<typeof useGetSettingsLazyQuery>
+export type GetSettingsQueryResult = Apollo.QueryResult<GetSettingsQuery, GetSettingsQueryVariables>
+export const CreateSettingDocument = gql`
+  mutation createSetting($input: CreateSettingInput!) {
+    createSetting(input: $input) {
+      setting {
+        ...settingFields
+      }
+    }
+  }
+  ${SettingFieldsFragmentDoc}
+`
+export type CreateSettingMutationFn = Apollo.MutationFunction<CreateSettingMutation, CreateSettingMutationVariables>
+
+/**
+ * __useCreateSettingMutation__
+ *
+ * To run a mutation, you first call `useCreateSettingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSettingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSettingMutation, { data, loading, error }] = useCreateSettingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateSettingMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateSettingMutation, CreateSettingMutationVariables>
+) {
+  return Apollo.useMutation<CreateSettingMutation, CreateSettingMutationVariables>(CreateSettingDocument, baseOptions)
+}
+export type CreateSettingMutationHookResult = ReturnType<typeof useCreateSettingMutation>
+export type CreateSettingMutationResult = Apollo.MutationResult<CreateSettingMutation>
+export type CreateSettingMutationOptions = Apollo.BaseMutationOptions<
+  CreateSettingMutation,
+  CreateSettingMutationVariables
+>
+export const DeleteSettingDocument = gql`
+  mutation deleteSetting($input: DeleteSettingInput!) {
+    deleteSetting(input: $input) {
+      clientMutationId
+      deletedSettingNodeId
+    }
+  }
+`
+export type DeleteSettingMutationFn = Apollo.MutationFunction<DeleteSettingMutation, DeleteSettingMutationVariables>
+
+/**
+ * __useDeleteSettingMutation__
+ *
+ * To run a mutation, you first call `useDeleteSettingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteSettingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteSettingMutation, { data, loading, error }] = useDeleteSettingMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteSettingMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteSettingMutation, DeleteSettingMutationVariables>
+) {
+  return Apollo.useMutation<DeleteSettingMutation, DeleteSettingMutationVariables>(DeleteSettingDocument, baseOptions)
+}
+export type DeleteSettingMutationHookResult = ReturnType<typeof useDeleteSettingMutation>
+export type DeleteSettingMutationResult = Apollo.MutationResult<DeleteSettingMutation>
+export type DeleteSettingMutationOptions = Apollo.BaseMutationOptions<
+  DeleteSettingMutation,
+  DeleteSettingMutationVariables
+>
+export const UpdateSettingByNodeIdDocument = gql`
+  mutation updateSettingByNodeId($input: UpdateSettingByNodeIdInput!) {
+    updateSettingByNodeId(input: $input) {
+      setting {
+        ...settingFields
+      }
+    }
+  }
+  ${SettingFieldsFragmentDoc}
+`
+export type UpdateSettingByNodeIdMutationFn = Apollo.MutationFunction<
+  UpdateSettingByNodeIdMutation,
+  UpdateSettingByNodeIdMutationVariables
+>
+
+/**
+ * __useUpdateSettingByNodeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateSettingByNodeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateSettingByNodeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateSettingByNodeIdMutation, { data, loading, error }] = useUpdateSettingByNodeIdMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateSettingByNodeIdMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateSettingByNodeIdMutation, UpdateSettingByNodeIdMutationVariables>
+) {
+  return Apollo.useMutation<UpdateSettingByNodeIdMutation, UpdateSettingByNodeIdMutationVariables>(
+    UpdateSettingByNodeIdDocument,
+    baseOptions
+  )
+}
+export type UpdateSettingByNodeIdMutationHookResult = ReturnType<typeof useUpdateSettingByNodeIdMutation>
+export type UpdateSettingByNodeIdMutationResult = Apollo.MutationResult<UpdateSettingByNodeIdMutation>
+export type UpdateSettingByNodeIdMutationOptions = Apollo.BaseMutationOptions<
+  UpdateSettingByNodeIdMutation,
+  UpdateSettingByNodeIdMutationVariables
 >
 export const GetSlotsDocument = gql`
   query GetSlots {

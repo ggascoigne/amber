@@ -5,6 +5,7 @@ import {
   GraphiQLPage,
   PastConsGamesPage,
   PastConsPage,
+  Settings,
   Welcome,
   WelcomeVirtual,
 } from 'pages'
@@ -86,6 +87,13 @@ export const rootRoutes: RootRoutes = [
     label: 'Lookups',
     exact: true,
     component: Lookups,
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/settings',
+    label: 'Settings',
+    exact: true,
+    component: Settings,
     permission: Perms.IsAdmin,
   },
   {

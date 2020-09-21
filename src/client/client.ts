@@ -5,7 +5,7 @@ import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
 
 const cache = new InMemoryCache({
   // postgraphile uses nodeId for the uuid, and leaves id as the database id.
-  dataIdFromObject: (obj: any) => obj.nodeId || null,
+  dataIdFromObject: (obj: any) => obj?.nodeId,
 })
 
 const Client = (authProps: Auth0ContextType) =>

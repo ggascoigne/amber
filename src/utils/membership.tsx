@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import { useGetMembershipByYearAndIdQuery } from '../client'
+import { useGetMembershipByYearAndIdLazyQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { useLocalStorage } from './useLocalStorage'
 import { useUser } from './useUserFilterState'
@@ -14,10 +14,20 @@ type IsUserAMember = {
 const nullOp = (): null => null
 
 export const useIsMember = (userId: number | undefined | null) => {
+  const [executed, setExecuted] = useState(false)
   const year = useYearFilterState((state) => state.year)
   const [lastMembershipYear, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
-  const { loading, error, data } = useGetMembershipByYearAndIdQuery({ variables: { year, userId: userId || 0 } })
+  const [getMembership, { loading, error, data }] = useGetMembershipByYearAndIdLazyQuery()
+
   if (lastMembershipYear !== year) {
+    if (!userId) {
+      return false
+    }
+    if (!executed) {
+      getMembership({ variables: { year, userId } })
+      setExecuted(true)
+    }
+
     if (loading || !data) {
       return false
     }
@@ -25,6 +35,7 @@ export const useIsMember = (userId: number | undefined | null) => {
       error && console.log(`error = ${JSON.stringify(error, null, 2)}`)
       return false
     }
+    setExecuted(false)
     setLastMembershipYear(year)
   }
   return true

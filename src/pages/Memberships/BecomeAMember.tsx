@@ -8,6 +8,7 @@ import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { IsLoggedIn, IsNotLoggedIn } from '../../components/Acnw/Auth/HasPermission'
 import { useProfile } from '../../components/Acnw/Profile'
 import CardBody from '../../components/MaterialKitReact/Card/CardBody'
+import { useSetting } from '../../utils'
 import { IsNotMember } from '../../utils/membership'
 import { MembershipWizard } from './MembershipWizard'
 
@@ -15,6 +16,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     card: {
       paddingTop: 0,
+    },
+    button: {
+      marginLeft: 10,
+      [theme.breakpoints.down('sm')]: {
+        marginTop: 10,
+      },
     },
   })
 )
@@ -24,6 +31,7 @@ export const BecomeAMember = () => {
   const { isInitializing = true, loginWithRedirect } = useAuth()
   const [showMembershipForm, setShowMembershipForm] = useState(false)
   const profile = useProfile()
+  const allowed = useSetting('allow.registrations')
 
   const login = useCallback(async () => !isInitializing && loginWithRedirect && (await loginWithRedirect()), [
     isInitializing,
@@ -68,16 +76,20 @@ export const BecomeAMember = () => {
             )}
             <p>
               If you are interested in attending AmberCon NW this year, please
-              <Button
-                variant='outlined'
-                color='primary'
-                size='large'
-                onClick={openMembershipDialog}
-                style={{ marginLeft: 10, marginTop: 10 }}
-                disabled={!profile}
-              >
-                Register
-              </Button>
+              {allowed ? (
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  size='large'
+                  onClick={openMembershipDialog}
+                  className={classes.button}
+                  disabled={!profile}
+                >
+                  Register
+                </Button>
+              ) : (
+                <span> check back as we'll be opening registration soon.</span>
+              )}
             </p>
           </IsLoggedIn>
         </CardBody>

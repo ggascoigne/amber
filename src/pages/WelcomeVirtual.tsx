@@ -1,14 +1,11 @@
-import { Card } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
 import Acnw, { ConfigDate } from 'components/Acnw'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
-import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import React from 'react'
 
-import { IsNotMember } from '../utils/membership'
 import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles((theme: Theme) =>

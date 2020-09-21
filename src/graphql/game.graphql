@@ -68,3 +68,14 @@ query GetFirstGameOfSlot($year: Int!) {
     }
   }
 }
+
+query GetGamesByAuthor($id: Int!) {
+  user(id: $id) {
+    authoredGames {
+      nodes {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+}

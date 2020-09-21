@@ -1,6 +1,15 @@
-import { Button, Dialog, DialogActions, DialogContent, Typography, useTheme } from '@material-ui/core'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  TextField as MuiTextField,
+  Typography,
+  useTheme,
+} from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { GameFieldsFragment, GameGmsFragment, useGetSlotsQuery } from 'client'
+import { Autocomplete } from '@material-ui/lab'
+import { Game, GameFieldsFragment, GameGmsFragment, useGetGamesByAuthorQuery, useGetSlotsQuery } from 'client'
 import {
   CheckboxWithLabel,
   DialogTitle,
@@ -15,7 +24,7 @@ import {
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import { configuration } from 'utils'
+import { configuration, pick, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
 type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
@@ -136,15 +145,86 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const editing = initialValues !== defaultValues
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const { userId } = useUser()
+
+  const { loading, error, data } = useGetGamesByAuthorQuery({
+    variables: {
+      id: userId!,
+    },
+  })
+
+  if (error) {
+    return <GraphQLError error={error} />
+  }
+  if (loading || !data) {
+    return <Loader />
+  }
+
+  const unsorted: Game[] = data?.user?.authoredGames?.nodes?.filter((i) => i) as Game[]
+  const priorGamesList = unsorted
+    .concat()
+    .sort((a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name))
+
+  const onCopyGameChange = (values: FormValues, setValues: (values: FormValues, shouldValidate?: boolean) => void) => (
+    _: any,
+    value: Game | null
+  ): void => {
+    if (!value) return
+    setValues({
+      ...values,
+      ...pick(
+        value!,
+        'name',
+        'gmNames',
+        'description',
+        'genre',
+        'type',
+        'setting',
+        'charInstructions',
+        'playerMin',
+        'playerMax',
+        'playerPreference',
+        'returningPlayers',
+        'playersContactGm',
+        'gameContactEmail',
+        'estimatedLength',
+        'slotPreference',
+        'lateStart',
+        'lateFinish',
+        'slotConflicts',
+        'message',
+        'teenFriendly'
+      ),
+    })
+  }
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose} fullScreen={fullScreen}>
       <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values, setValues }) => (
           <Form>
-            <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Add'} Game</DialogTitle>
+            <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Create'} Game</DialogTitle>
             <DialogContent>
               <GridContainer spacing={2}>
+                {!!priorGamesList?.length && (
+                  <GridItem xs={12} md={12}>
+                    <Autocomplete
+                      id='prior-games'
+                      options={priorGamesList}
+                      groupBy={(game) => `${game.year}`}
+                      getOptionLabel={(game) => `${game.slotId || 0}: ${game.name}`}
+                      fullWidth
+                      renderInput={(params) => (
+                        <MuiTextField
+                          {...params}
+                          label="Copy game definition from a previous year's game"
+                          variant='outlined'
+                        />
+                      )}
+                      onChange={onCopyGameChange(values, setValues)}
+                    />
+                  </GridItem>
+                )}
                 <GridItem xs={12} md={12}>
                   <TextField name='name' label='Game Title' margin='normal' fullWidth required />
                 </GridItem>

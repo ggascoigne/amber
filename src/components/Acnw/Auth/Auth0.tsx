@@ -148,7 +148,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
     }
 
     initAuth0().then()
-  }, [onRedirectCallback])
+  }, [history, onRedirectCallback])
 
   const loginWithPopup = useCallback(
     async (options?: PopupLoginOptions) => {

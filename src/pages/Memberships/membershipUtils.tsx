@@ -6,7 +6,7 @@ import {
 } from 'client'
 import { useNotification } from 'components/Acnw'
 import { ProfileType } from 'components/Acnw/Profile'
-import { configuration, onClose, useSendEmail } from 'utils'
+import { configuration, onCloseHandler, pick, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
 export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
@@ -29,49 +29,28 @@ export const toSlotsAttending = (membershipValues: MembershipType) =>
     .filter((v) => !!v)
     .join(',') || ''
 
-export const fromMembershipValues = (membershipValues: MembershipType) => {
-  const {
-    userId,
-    arrivalDate,
-    attendance,
-    attending,
-    hotelRoomId,
-    departureDate,
-    interestLevel,
-    message,
-    offerSubsidy,
-    requestOldPrice,
-    roomPreferenceAndNotes,
-    roomingPreferences,
-    roomingWith,
-    volunteer,
-    year,
-    slotsAttending,
-    amountOwed,
-    amountPaid,
-  } = membershipValues
-
-  return {
-    userId,
-    arrivalDate,
-    attendance,
-    attending,
-    hotelRoomId,
-    departureDate,
-    interestLevel,
-    message,
-    offerSubsidy,
-    requestOldPrice,
-    roomPreferenceAndNotes,
-    roomingPreferences,
-    roomingWith,
-    volunteer,
-    year,
-    slotsAttending,
-    amountOwed,
-    amountPaid,
-  }
-}
+export const fromMembershipValues = (membershipValues: MembershipType) =>
+  pick(
+    membershipValues,
+    'userId',
+    'arrivalDate',
+    'attendance',
+    'attending',
+    'hotelRoomId',
+    'departureDate',
+    'interestLevel',
+    'message',
+    'offerSubsidy',
+    'requestOldPrice',
+    'roomPreferenceAndNotes',
+    'roomingPreferences',
+    'roomingWith',
+    'volunteer',
+    'year',
+    'slotsAttending',
+    'amountOwed',
+    'amountPaid'
+  )
 
 export const membershipValidationSchema = Yup.object().shape({
   arrivalDate: Yup.date().required(),
@@ -85,7 +64,7 @@ export const membershipValidationSchema = Yup.object().shape({
   skipSlots: Yup.string().max(20),
 })
 
-export const useEditMembership = (profile: ProfileType, onClose: onClose) => {
+export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler) => {
   const [createMembership] = useCreateMembershipMutation()
   const [updateMembership] = useUpdateMembershipByNodeIdMutation()
   const [notify] = useNotification()

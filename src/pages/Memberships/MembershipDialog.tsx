@@ -3,7 +3,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { DialogTitle, ProfileType, useAuth } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { onClose, useUser } from 'utils'
+import { onCloseHandler, useUser } from 'utils'
 
 import { MembershipStep } from './MembershipStep'
 import {
@@ -19,7 +19,7 @@ type FormValues = MembershipType
 
 interface MembershipDialog {
   open: boolean
-  onClose: onClose
+  onClose: onCloseHandler
   initialValues?: MembershipType
   profile: ProfileType | null
 }

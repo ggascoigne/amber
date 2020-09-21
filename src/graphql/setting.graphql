@@ -1,0 +1,38 @@
+fragment settingFields on Setting {
+  nodeId
+  id
+  code
+  type
+  value
+}
+
+query GetSettings {
+  settings {
+    nodes {
+      ...settingFields
+    }
+  }
+}
+
+mutation createSetting($input: CreateSettingInput!) {
+  createSetting(input: $input) {
+    setting {
+      ...settingFields
+    }
+  }
+}
+
+mutation deleteSetting($input: DeleteSettingInput!) {
+  deleteSetting(input: $input) {
+    clientMutationId
+    deletedSettingNodeId
+  }
+}
+
+mutation updateSettingByNodeId($input: UpdateSettingByNodeIdInput!) {
+  updateSettingByNodeId(input: $input) {
+    setting {
+      ...settingFields
+    }
+  }
+}
