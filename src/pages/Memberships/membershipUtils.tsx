@@ -77,7 +77,7 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
         year: configuration.year,
         name: profile?.fullName,
         email: profile?.email,
-        url: `${window.location.origin}/members/${membershipId}`,
+        url: `${window.location.origin}/membership`,
         membership: membershipValues,
       }),
     })
