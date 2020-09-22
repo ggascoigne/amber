@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { Perms } from '../components/Acnw/Auth/PermissionRules'
@@ -21,18 +19,17 @@ const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) =
   return s ? asSettingValue(s.value) : null
 }
 
-const useSettings = () => {
-  const { loading, error, data } = useGetSettingsQuery()
-  if (error || loading || !data) {
-    return null
-  }
-  return (data?.settings?.nodes?.filter((i) => i) as SettingFieldsFragment[]) || null
-}
-
 export const useSetting = (setting: string) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const settings: SettingFieldsFragment[] | null = useSettings()
+  const { loading, error, data } = useGetSettingsQuery()
+
+  if (error || loading || !data) {
+    return false
+  }
+
+  const settings: SettingFieldsFragment[] | null =
+    (data?.settings?.nodes?.filter((i) => i) as SettingFieldsFragment[]) || null
   const s = getSetting(settings, setting)
 
   switch (s) {

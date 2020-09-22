@@ -1,3 +1,4 @@
+import { Card } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
@@ -6,6 +7,8 @@ import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
+import CardBody from '../components/MaterialKitReact/Card/CardBody'
+import { useSetting } from '../utils'
 import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,16 +38,35 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 300,
       textTransform: 'none',
     },
+    betaCard: {
+      marginTop: 20,
+      marginBottom: 20,
+    },
   })
 )
 
 export const WelcomeVirtual: React.FC = () => {
+  const isBeta = useSetting('display.test.warning')
   const classes = useStyles()
   return (
     <Page>
       <div className={classes.banner}>
         <Banner />
       </div>
+      {isBeta && (
+        <>
+          <Card className={classes.betaCard} elevation={3}>
+            <CardBody className={classes.card}>
+              <h2 style={{ color: dangerColor }}>Beta</h2>
+              <p>
+                This version of the site is a work in progress. All changes should be considered temporary and are very
+                likely to get rolled back.
+              </p>
+            </CardBody>
+          </Card>
+        </>
+      )}
+
       <h1>Welcome!</h1>
 
       <p>

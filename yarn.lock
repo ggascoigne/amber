@@ -13626,10 +13626,10 @@ prepend-http@^1.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
 
-prettier-plugin-import-sort@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-import-sort/-/prettier-plugin-import-sort-0.0.4.tgz#29fb80669a1a7cef5fb841933b7aaf80f5e80cb4"
-  integrity sha512-KyPKnWbFER9NJk+qidbGYSPO82wF1OSNdnZGtVSBG6Te0ZAWOvZ5fDeTaaHczG8UIaePgSNE1H1DoUMAykjsEg==
+prettier-plugin-import-sort@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-import-sort/-/prettier-plugin-import-sort-0.0.5.tgz#e0b9934c8f6c9f4b07694ae63bdbb44438079ded"
+  integrity sha512-Niy/2nTzXD1C/O24NNCVjkIfYET4A3D4M8K338BbzjMPURwW9RHPbTTRqpFmqpoI1rjlfSYDeBTlXmNu6HR/4Q==
   dependencies:
     import-sort "^6.0.0"
     import-sort-config "^6.0.0"
