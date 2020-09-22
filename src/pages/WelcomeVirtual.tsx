@@ -62,6 +62,10 @@ export const WelcomeVirtual: React.FC = () => {
                 This version of the site is a work in progress. All changes should be considered temporary and are very
                 likely to get rolled back.
               </p>
+
+              <p>
+                Feel free to look around, but if things seem broken or incomplete, assume that they are being worked on.
+              </p>
             </CardBody>
           </Card>
         </>

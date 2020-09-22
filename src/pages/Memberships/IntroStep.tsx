@@ -1,6 +1,7 @@
 import { DialogContentText } from '@material-ui/core'
 import DialogContent from '@material-ui/core/DialogContent'
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Acnw, { ConfigDate } from '../../components/Acnw'
 
@@ -18,13 +19,13 @@ export const IntroStep: React.FC = () => (
       <DialogContentText>
         In order to run and play games offered through the convention, the first thing you must do is register. If you
         are not already familiar with format of an AmberCon, review the AmberCon NW "What you get and what it costs"
-        page <a href='/aboutacnw'>here</a>.
+        page <Link to='/aboutacnw'>here</Link>.
       </DialogContentText>
 
       <DialogContentText>
-        You should also review our Anti-Harassment Policy <a href='/antiHarassmentPolicy'>here</a>. You will be asked to
-        agree to abide by the policy, along with some adaptations specific to on-line interactions, when you first join
-        the Discord server.
+        You should also review our Anti-Harassment Policy <Link to='/antiHarassmentPolicy'>here</Link>. You will be
+        asked to agree to abide by the policy, along with some adaptations specific to on-line interactions, when you
+        first join the Discord server.
       </DialogContentText>
     </DialogContent>
   </>

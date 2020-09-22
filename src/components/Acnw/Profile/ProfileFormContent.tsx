@@ -24,7 +24,7 @@ export const ProfileFormContent: React.FC<ProfileFormContent> = ({ prefix = '' }
       </GridItem>
       <GridItem container spacing={2} xs={12} md={12} direction='row' style={{ paddingRight: 0 }}>
         <GridItem xs={6} md={6}>
-          <Field component={TextField} name={`${prefix}firstName`} label='First Name' fullWidth required />
+          <Field component={TextField} name={`${prefix}firstName`} label='First Name' fullWidth required autoFocus />
         </GridItem>
         <GridItem xs={6} md={6} style={{ paddingRight: 0 }}>
           <Field component={TextField} name={`${prefix}lastName`} label='Last Name' fullWidth required />

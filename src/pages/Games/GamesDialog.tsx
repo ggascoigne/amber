@@ -226,7 +226,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   </GridItem>
                 )}
                 <GridItem xs={12} md={12}>
-                  <TextField name='name' label='Game Title' margin='normal' fullWidth required />
+                  <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
                 </GridItem>
                 <GridItem xs={12} md={12}>
                   <TextField

@@ -105,7 +105,7 @@ export const SettingDialog: React.FC<SettingDialog> = ({ open, onClose, initialV
             <DialogContent>
               <GridContainer spacing={2}>
                 <GridItem xs={12} md={12}>
-                  <TextField name='code' label='Code' margin='normal' fullWidth required />
+                  <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
                 </GridItem>
                 <GridItem xs={12} md={12}>
                   <TextField name='type' label='Type' margin='normal' fullWidth required />

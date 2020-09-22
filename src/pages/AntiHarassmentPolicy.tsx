@@ -35,7 +35,7 @@ export const AntiHarassmentPolicy = () => {
       {configuration.virtual && (
         <p className={classes.red}>
           For {configuration.year}'s virtual AmberCon NW, we have an adapted policy{' '}
-          <a href='#' target='_new'>
+          <a href='/' target='_new'>
             here
           </a>
           .
