@@ -9,19 +9,19 @@ img(
 
 h1 Registration Confirmation
 
-p Registration for vACNW #{year}
+p Registration for virtual ACNW #{year}
 
 ul
     li User: #{name}
     li Email: #{email}
 
-p If you need to make changes to your registration, please email #{contactEmail}.
+//p If you need to make changes to your registration, please email #{contactEmail}.
 
-if membership.skipSlots
-    if membership.skipSlots.includes(',')
-        p You've indicated that you are likely to skip slots #{membership.skipSlots}.
-    else
-        p You've indicated that you are likely to skip slot #{membership.skipSlots}.
+if membership.slotsAttending
+    p You've indicated that you are likely to attend the following slots:
+    ul
+        each sd in slotDescriptions
+            li=sd
 
 if membership.message
     p Message to Simone: #{membership.message}
@@ -38,4 +38,4 @@ p
  | 8047 N. Syracuse St.<br>
  | Portland, OR 97203-4939
 
-p If you can't read this clearly then you can view this email online at #{url}.
+p You can view or edit your #{year} membership at #{url}.

@@ -1,10 +1,10 @@
 #Todos & Ideas
 
-* Hook up SES to auth0
-* format auth0 emails
-* add login button to main screen at least for mobile.
-* add past game selection to game form
-
+* [x] Hook up SES to auth0
+* [x] format auth0 emails
+* [x] add login button to main screen at least for mobile.
+* [x] add past game selection to game form
+* Remove the lookups stuff - these should just be UI constants, they don't change, and it's too slow to retrieve them.
 
 * [ ] In the past cons list, indicate which games the logged in user played.
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
@@ -49,8 +49,8 @@ Ensure that special behaviors, such as letting a user copy a previous year's gam
 
 ### Admin filtering
 
-*  [ ] Provide mechanism to view site through the user's lens.
-*  [ ] Allow user masquerading, let an admin update records as some other user.  Yes this sounds super sketchy, but it's far easier than using the api to do it and it *IS* authenticated after all.
+*  [x] Provide mechanism to view site through the user's lens.
+*  [x] Allow user masquerading, let an admin update records as some other user.  Yes this sounds super sketchy, but it's far easier than using the api to do it and it *IS* authenticated after all.
 
 ### Content
 

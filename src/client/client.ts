@@ -10,6 +10,12 @@ const cache = new InMemoryCache({
 
 const Client = (authProps: Auth0ContextType) =>
   new ApolloClient({
+    queryDeduplication: true, // this might be the default for all the good it does :(
+    defaultOptions: {
+      query: {
+        fetchPolicy: 'cache-first',
+      },
+    },
     link: setContext(async (_, { headers }) => {
       const { getTokenSilently, isAuthenticated } = authProps
       if (isAuthenticated) {

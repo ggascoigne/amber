@@ -74,30 +74,36 @@ export const WelcomeVirtual: React.FC = () => {
       <h1>Welcome!</h1>
 
       <p>
-        AmberCon Northwest is a fully scheduled role-playing game convention in Troutdale, Oregon, just east of
-        Portland. ACNW was originally devoted to Roger Zelazny's worlds of Amber and Phage Press's{' '}
-        <strong>Amber Diceless RPG</strong> by Erick Wujcik. It has expanded over the years to encompass other diceless
-        and indie RPGs of all kinds, and most recently Rite Publishing's <strong>Lords of Gossamer and Shadow</strong>,
-        a new take and expansion upon the Amber Diceless gaming rules.
-      </p>
-
-      <p>
-        <Acnw.ConventionYear /> marks AmberCon Northwest's <Acnw.Ordinal /> year at the venue that makes it unique,
+        AmberCon Northwest is a fully scheduled role-playing game convention held annually in Troutdale, Oregon, just
+        east of Portland. <Acnw.ConventionYear /> would have been AmberCon Northwest's <Acnw.Ordinal /> year at the
+        venue that makes it unique,{' '}
         <a href='https://www.mcmenamins.com/edgefield' target='_new'>
           McMenamins Edgefield Bed and Breakfast Resort
         </a>
-        .
+        . But given <Acnw.ConventionYear />
+        's myriad challenges, we will hold our first ever virtual ACNW. The main activity of the convention will be
+        hosted on a dedicated, private Discord server. Games may be held within that space or in other agreed upon
+        virtual spaces such as Zoom, Roll 20, etc. at the GMs' discretion.
       </p>
 
       <p>
-        Use this site to learn how an AmberCon works; explore the venue; register for the convention; submit game events
-        to the organizers; sign up for games when the event book is published; and check out the event books from past
-        AmberCon Northwests.
+        While ACNW was originally devoted to Roger Zelazny's worlds of Amber and Phage Press's{' '}
+        <strong>Amber Diceless RPG</strong> by Erick Wujcik. It has expanded over the years to encompass other diceless
+        and indie RPGs of all kinds, and most recently Rite Publishing's <strong>Lords of Gossamer and Shadow</strong>,
+        a new take and expansion upon the Amber Diceless gaming rules. Many games will expect some passing knowledge of
+        at least the main characters and basic plot points of Zelazny's Amber novels.
       </p>
+
+      <p>
+        Use this site to learn how an AmberCon works&mdash;either usually or for this year; register for the convention;
+        submit game events to the organizers; sign up for games when the event book is published; and check out the
+        event books from past AmberCon Northwests.
+      </p>
+
       <br />
 
       <p>
-        AmberCon NW announcements also appear on our{' '}
+        AmberCon NW announcements and informal chats also appear on our{' '}
         <a href='https://www.facebook.com/groups/464742576942907/' target='_new'>
           Facebook group page
         </a>

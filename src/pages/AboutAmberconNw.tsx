@@ -45,9 +45,9 @@ export const AboutAmberconNw = () => (
       prepare in advance.
     </p>
 
-    <p>We suggest a contribution of $15 to support ACNW's annual expenses.</p>
+    <p>We are charging $15 to support ACNW's annual expenses.</p>
 
-    <p>The convention will be divided into 7 event slots:</p>
+    <p>The convention will be divided into seven 4-hour event slots:</p>
 
     <ul>
       {range(0, 7).map((i) => (
@@ -72,9 +72,13 @@ export const AboutAmberconNw = () => (
     </p>
 
     <p>
-      In addition to these formal slots, there may be additional game events hosted at other times, particularly for the
-      UK and European attendees. Those games will be organized separately, though may still use the ACNW server as a
-      home base.
+      Though the formal slots are four hours long, GMs are welcome to run longer games that run over more than one slot
+      time. Any variations will be noted in the game book.
+    </p>
+
+    <p>
+      There may also be additional game events hosted at other times, particularly for the UK and European attendees.
+      Those games will be organized separately.
     </p>
 
     <p>

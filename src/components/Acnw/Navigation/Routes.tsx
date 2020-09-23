@@ -2,6 +2,7 @@ import {
   AboutAmber,
   AboutAmberconNw,
   Credits,
+  GmPage,
   GraphiQLPage,
   PastConsGamesPage,
   PastConsPage,
@@ -63,6 +64,20 @@ export const rootRoutes: RootRoutes = [
     condition: !configuration.virtual,
   },
   {
+    path: '/membership',
+    label: 'Membership',
+    subText: 'Your membership details',
+    exact: true,
+    component: MembershipSummary,
+  },
+  {
+    path: '/gm',
+    label: 'Become a GM',
+    subText: `Submit an event for ${configuration.year}`,
+    exact: true,
+    component: GmPage,
+  },
+  {
     path: '/pastCons/:year/:slot?/:game?',
     link: '/pastCons',
     exact: false,
@@ -109,13 +124,6 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: Memberships,
     permission: Perms.IsAdmin,
-  },
-  {
-    path: '/membership',
-    label: 'Membership',
-    subText: 'Your membership details',
-    exact: true,
-    component: MembershipSummary,
   },
   {
     path: '/graphiql',

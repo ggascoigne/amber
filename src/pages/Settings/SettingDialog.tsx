@@ -5,7 +5,7 @@ import { Node, SettingFieldsFragment, useCreateSettingMutation, useUpdateSetting
 import { DialogTitle, GridContainer, GridItem, SelectField, TextField, useAuth, useNotification } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { onCloseHandler, settingValues } from 'utils'
+import { onCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
 
 const settingValidationSchema = Yup.object().shape({
@@ -20,10 +20,6 @@ interface SettingDialog {
   open: boolean
   onClose: onCloseHandler
   initialValues?: FormValues
-}
-
-function pick<T, D extends keyof T>(o: T, ...props: D[]) {
-  return Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })))
 }
 
 export const useEditSetting = (onClose: onCloseHandler) => {
@@ -77,14 +73,14 @@ export const SettingDialog: React.FC<SettingDialog> = ({ open, onClose, initialV
   const { isAuthenticated, user } = useAuth()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-  const createOrUpdateMembership = useEditSetting(onClose)
+  const createOrUpdateSetting = useEditSetting(onClose)
 
   if (!isAuthenticated || !user) {
     throw new Error('login expired')
   } // todo test this
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    await createOrUpdateMembership(values)
+    await createOrUpdateSetting(values)
   }
 
   const values = useMemo(() => {

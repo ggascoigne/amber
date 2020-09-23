@@ -24,7 +24,7 @@ export const AntiHarassmentPolicy = () => {
       <p>
         AmberCon Northwest's policy is adapted from policy samples created by and posted as an open-source resource on
         the{' '}
-        <a href='http://geekfeminism.wikia.com/wiki/Conference_anti-harassment/Policy' target='_new'>
+        <a href='https://geekfeminism.wikia.org/wiki/Conference_anti-harassment' target='_new'>
           Geek Feminism Wiki
         </a>
         . We will continue to adapt it each year as our understanding grows.

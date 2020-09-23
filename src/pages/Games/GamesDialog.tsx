@@ -9,7 +9,15 @@ import {
 } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Autocomplete } from '@material-ui/lab'
-import { Game, GameFieldsFragment, GameGmsFragment, useGetGamesByAuthorQuery, useGetSlotsQuery } from 'client'
+import {
+  Game,
+  GameFieldsFragment,
+  GameGmsFragment,
+  Node,
+  useCreateGameMutation,
+  useGetGamesByAuthorQuery,
+  useUpdateGameByNodeIdMutation,
+} from 'client'
 import {
   CheckboxWithLabel,
   DialogTitle,
@@ -17,26 +25,118 @@ import {
   GridContainer,
   GridItem,
   Loader,
-  LookupField,
+  ProfileType,
   SelectField,
   TextField,
   TextFieldProps,
+  useNotification,
+  useProfile,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import { configuration, pick, useUser } from 'utils'
+import { configuration, getSlotDescription, onCloseHandler, pick, range, useSendEmail, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
-type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
+type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'> &
+  Partial<Node>
+
+type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
+
+export const useEditGame = (onClose: onCloseHandler) => {
+  const [createGame] = useCreateGameMutation()
+  const [updateGame] = useUpdateGameByNodeIdMutation()
+  const [notify] = useNotification()
+  const [sendEmail] = useSendEmail()
+  const profile = useProfile()
+  const { userId } = useUser()
+
+  const sendGameConfirmation = (profile: ProfileType, values: GameFields) => {
+    sendEmail({
+      type: 'gameConfirmation',
+      body: JSON.stringify({
+        year: configuration.year,
+        name: profile?.fullName,
+        email: profile?.email,
+        url: `${window.location.origin}/gm`,
+        game: values,
+      }),
+    })
+  }
+
+  return async (values: FormValues) => {
+    const fields = pick(
+      values,
+      'name',
+      'gmNames',
+      'description',
+      'genre',
+      'type',
+      'setting',
+      'charInstructions',
+      'playerMin',
+      'playerMax',
+      'playerPreference',
+      'returningPlayers',
+      'playersContactGm',
+      'gameContactEmail',
+      'estimatedLength',
+      'slotPreference',
+      'lateStart',
+      'lateFinish',
+      'slotConflicts',
+      'message',
+      'teenFriendly'
+    )
+
+    if (values.nodeId) {
+      await updateGame({
+        variables: {
+          input: {
+            nodeId: values.nodeId!,
+            patch: {
+              ...fields,
+            },
+          },
+        },
+        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor'],
+      })
+        .then(() => {
+          notify({ text: 'Game updated', variant: 'success' })
+          sendGameConfirmation(profile!, values)
+          onClose()
+        })
+        .catch((error) => {
+          notify({ text: error.message, variant: 'error' })
+        })
+    } else {
+      await createGame({
+        variables: {
+          input: {
+            game: {
+              ...fields,
+              year: configuration.year,
+              authorId: userId,
+            },
+          },
+        },
+        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor'],
+      })
+        .then((res) => {
+          notify({ text: 'Game created', variant: 'success' })
+          sendGameConfirmation(profile!, values)
+          onClose()
+        })
+        .catch((error) => {
+          notify({ text: error.message, variant: 'error' })
+        })
+    }
+  }
+}
 
 interface GamesDialog {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: FormValues
-}
-
-const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-  console.log(JSON.stringify(values))
 }
 
 const genreOptions = [
@@ -61,25 +161,17 @@ const typeOptions = [
   'Other; N/A',
 ]
 
-const estimatedLengthOptions = [
-  '3',
-  '3.5',
-  '4',
-  '4.5',
-  '5',
-  '5.5',
-  '6',
-  '6.5',
-  '7',
-  '7.5',
-  '8',
-  '8.5',
-  '9',
-  '10',
-  '12+',
-]
+const estimatedLengthOptions = configuration.virtual
+  ? ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8']
+  : ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '10', '12+']
 
 const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
+
+const playerPreferenceOptions = [
+  { value: 'any', text: 'Any' },
+  { value: 'ret-only', text: 'Returning players only' },
+  { value: 'ret-pref', text: 'Returning players have preference, new players welcome.' },
+]
 
 const defaultValues: FormValues = {
   slotId: 0,
@@ -90,13 +182,13 @@ const defaultValues: FormValues = {
   type: '',
   setting: '',
   charInstructions: '',
-  playerMin: 4,
-  playerMax: 10,
+  playerMin: configuration.virtual ? 2 : 4,
+  playerMax: configuration.virtual ? 7 : 10,
   playerPreference: '',
   returningPlayers: '',
   playersContactGm: false,
   gameContactEmail: '',
-  estimatedLength: '5',
+  estimatedLength: configuration.virtual ? '4' : '5',
   slotPreference: 0,
   lateStart: morningGamesOptions[0],
   lateFinish: false,
@@ -118,20 +210,13 @@ const validationSchema = Yup.object().shape({
     .max(10 * 1024),
 })
 
-export const SlotOptionsSelect: React.ComponentType<TextFieldProps> = (props) => {
-  const { select, ...rest } = props
-  const { loading, error, data } = useGetSlotsQuery()
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (loading) {
-    return <Loader />
-  }
-  const selectValues = data?.slots?.nodes?.reduce(
+export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
+  const { select, year, ...rest } = props
+  const selectValues = range(1, 8).reduce(
     (acc, current) => {
       acc.push({
-        value: current!.slot,
-        text: `Slot ${current!.slot}: ${current!.day} - ${current!.time}`,
+        value: current,
+        text: getSlotDescription({ year, slot: current, local: true }),
       })
       return acc
     },
@@ -146,6 +231,11 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const { userId } = useUser()
+  const createOrUpdateGame = useEditGame(onClose)
+
+  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    await createOrUpdateGame(values)
+  }
 
   const { loading, error, data } = useGetGamesByAuthorQuery({
     variables: {
@@ -243,10 +333,24 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 </GridItem>
                 <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
                   <GridItem xs={12} md={6}>
-                    <SelectField name='genre' label='Genre' margin='normal' fullWidth selectValues={genreOptions} />
+                    <SelectField
+                      required
+                      name='genre'
+                      label='Genre'
+                      margin='normal'
+                      fullWidth
+                      selectValues={genreOptions}
+                    />
                   </GridItem>
                   <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
-                    <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
+                    <SelectField
+                      required
+                      name='type'
+                      label='Type'
+                      margin='normal'
+                      fullWidth
+                      selectValues={typeOptions}
+                    />
                   </GridItem>
                 </GridItem>
                 <GridItem xs={12} md={12}>
@@ -285,12 +389,12 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   </GridItem>
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <LookupField
+                  <SelectField
                     name='playerPreference'
                     label='Player Preference'
                     margin='normal'
                     fullWidth
-                    realm='gamePlayerPref'
+                    selectValues={playerPreferenceOptions}
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
@@ -316,6 +420,11 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   <TextField name='gameContactEmail' label='Game Contact email' margin='normal' fullWidth />
                 </GridItem>
                 <GridItem xs={12} md={12}>
+                  <p>
+                    You are welcome to start and end the game at any time (within reason), but if the game overlaps two
+                    slots, please enter two games and mark them as parts one and two.
+                  </p>
+                  <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
                   <SelectField
                     name='estimatedLength'
                     label='Estimated Length'
@@ -325,27 +434,38 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <SlotOptionsSelect name='slotPreference' label='Slot Preference' margin='normal' required fullWidth />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  <SelectField
-                    name='lateStart'
-                    label='Morning Games'
+                  <SlotOptionsSelect
+                    name='slotPreference'
+                    label='Slot Preference'
+                    year={values.year}
                     margin='normal'
+                    required
                     fullWidth
-                    selectValues={morningGamesOptions}
                   />
                 </GridItem>
-                <GridItem xs={12} md={12}>
-                  <CheckboxWithLabel
-                    name='lateFinish'
-                    Label={{
-                      label: 'Evening Game: Game may run late into the evening',
-                      labelPlacement: 'start',
-                      style: { marginLeft: 0 },
-                    }}
-                  />
-                </GridItem>
+                {!configuration.virtual && (
+                  <>
+                    <GridItem xs={12} md={12}>
+                      <SelectField
+                        name='lateStart'
+                        label='Morning Games'
+                        margin='normal'
+                        fullWidth
+                        selectValues={morningGamesOptions}
+                      />
+                    </GridItem>
+                    <GridItem xs={12} md={12}>
+                      <CheckboxWithLabel
+                        name='lateFinish'
+                        Label={{
+                          label: 'Evening Game: Game may run late into the evening',
+                          labelPlacement: 'start',
+                          style: { marginLeft: 0 },
+                        }}
+                      />
+                    </GridItem>
+                  </>
+                )}
                 <GridItem xs={12} md={12}>
                   <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
                     In the event we have to change your slot, list any and all known slot conflicts including other

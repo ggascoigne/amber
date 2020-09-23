@@ -22,7 +22,9 @@ const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) =
 export const useSetting = (setting: string) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const { loading, error, data } = useGetSettingsQuery()
+  const { loading, error, data } = useGetSettingsQuery({
+    fetchPolicy: 'cache-first',
+  })
 
   if (error || loading || !data) {
     return false

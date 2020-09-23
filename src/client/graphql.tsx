@@ -6700,6 +6700,19 @@ export type GetGamesByAuthorQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetGamesByYearAndAuthorQueryVariables = Exact<{
+  year: Scalars['Int']
+  id: Scalars['Int']
+}>
+
+export type GetGamesByYearAndAuthorQuery = { __typename: 'Query' } & {
+  games?: Maybe<
+    { __typename: 'GamesConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment>>
+    }
+  >
+}
+
 export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   Game,
   | 'nodeId'
@@ -7494,6 +7507,58 @@ export function useGetGamesByAuthorLazyQuery(
 export type GetGamesByAuthorQueryHookResult = ReturnType<typeof useGetGamesByAuthorQuery>
 export type GetGamesByAuthorLazyQueryHookResult = ReturnType<typeof useGetGamesByAuthorLazyQuery>
 export type GetGamesByAuthorQueryResult = Apollo.QueryResult<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
+export const GetGamesByYearAndAuthorDocument = gql`
+  query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
+    games(condition: { authorId: $id, year: $year }) {
+      nodes {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${GameGmsFragmentDoc}
+`
+
+/**
+ * __useGetGamesByYearAndAuthorQuery__
+ *
+ * To run a query within a React component, call `useGetGamesByYearAndAuthorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGamesByYearAndAuthorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGamesByYearAndAuthorQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetGamesByYearAndAuthorQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
+) {
+  return Apollo.useQuery<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
+    GetGamesByYearAndAuthorDocument,
+    baseOptions
+  )
+}
+export function useGetGamesByYearAndAuthorLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
+    GetGamesByYearAndAuthorDocument,
+    baseOptions
+  )
+}
+export type GetGamesByYearAndAuthorQueryHookResult = ReturnType<typeof useGetGamesByYearAndAuthorQuery>
+export type GetGamesByYearAndAuthorLazyQueryHookResult = ReturnType<typeof useGetGamesByYearAndAuthorLazyQuery>
+export type GetGamesByYearAndAuthorQueryResult = Apollo.QueryResult<
+  GetGamesByYearAndAuthorQuery,
+  GetGamesByYearAndAuthorQueryVariables
+>
 export const GetLookupsDocument = gql`
   query GetLookups {
     lookups(orderBy: REALM_ASC) {

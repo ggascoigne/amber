@@ -79,3 +79,12 @@ query GetGamesByAuthor($id: Int!) {
     }
   }
 }
+
+query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
+  games(condition: { authorId: $id, year: $year }) {
+    nodes {
+      ...gameFields
+      ...gameGms
+    }
+  }
+}
