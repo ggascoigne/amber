@@ -1,4 +1,4 @@
-import { Card } from '@material-ui/core'
+import { Button, Card } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import { dangerColor } from 'assets/jss/material-kit-react'
@@ -6,6 +6,8 @@ import Acnw, { ConfigDate } from 'components/Acnw'
 import { Banner } from 'components/Acnw/Banner'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { IsMember } from 'utils/membership'
 
 import CardBody from '../components/MaterialKitReact/Card/CardBody'
 import { useSetting } from '../utils'
@@ -119,6 +121,12 @@ export const WelcomeVirtual: React.FC = () => {
       </p>
 
       <BecomeAMember />
+
+      <IsMember>
+        <Button variant='outlined' color='primary' size='large' to='/gm' component={Link} style={{ marginTop: 8 }}>
+          Become a GM
+        </Button>
+      </IsMember>
 
       <h2>Deadline dates this year</h2>
       <p>

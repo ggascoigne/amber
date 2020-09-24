@@ -37,6 +37,7 @@ export default withApiHandler([
         template: 'membershipConfirmation',
         message: {
           to: email,
+          cc: emails.contactEmail,
         },
         locals: {
           name,

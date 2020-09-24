@@ -31,7 +31,7 @@ export const BecomeAMember = () => {
   const { isInitializing = true, loginWithRedirect } = useAuth()
   const [showMembershipForm, setShowMembershipForm] = useState(false)
   const profile = useProfile()
-  const allowed = useSetting('allow.registrations')
+  const allowed = useSetting('allow.registrations', true)
 
   const login = useCallback(async () => !isInitializing && loginWithRedirect && (await loginWithRedirect()), [
     isInitializing,

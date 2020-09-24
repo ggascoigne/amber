@@ -19,7 +19,7 @@ const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) =
   return s ? asSettingValue(s.value) : null
 }
 
-export const useSetting = (setting: string) => {
+export const useSetting = (setting: string, defaultValue = false) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { loading, error, data } = useGetSettingsQuery({
@@ -27,7 +27,7 @@ export const useSetting = (setting: string) => {
   })
 
   if (error || loading || !data) {
-    return false
+    return defaultValue
   }
 
   const settings: SettingFieldsFragment[] | null =

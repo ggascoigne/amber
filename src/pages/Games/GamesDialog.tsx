@@ -34,8 +34,21 @@ import {
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import { configuration, getSlotDescription, onCloseHandler, pick, range, useSendEmail, useUser } from 'utils'
+import {
+  configuration,
+  getSlotDescription,
+  onCloseHandler,
+  pick,
+  range,
+  useSendEmail,
+  useSetting,
+  useUser,
+} from 'utils'
 import Yup from 'utils/Yup'
+
+import { useAuth } from '../../components/Acnw/Auth/Auth0'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
+import { playerPreferenceOptions } from '../../utils/lookupValues'
 
 type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'> &
   Partial<Node>
@@ -49,6 +62,9 @@ export const useEditGame = (onClose: onCloseHandler) => {
   const [sendEmail] = useSendEmail()
   const profile = useProfile()
   const { userId } = useUser()
+  const sendAdminEmail = useSetting('send.admin.email')
+  const { hasPermissions } = useAuth()
+  const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
 
   const sendGameConfirmation = (profile: ProfileType, values: GameFields) => {
     sendEmail({
@@ -98,11 +114,14 @@ export const useEditGame = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor'],
+        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor', 'GetGamesByYearAndAuthor'],
       })
         .then(() => {
           notify({ text: 'Game updated', variant: 'success' })
-          sendGameConfirmation(profile!, values)
+          // create always sends email, but generally updates skip sending email about admin updates
+          if (shouldSendEmail) {
+            sendGameConfirmation(profile!, values)
+          }
           onClose()
         })
         .catch((error) => {
@@ -119,7 +138,7 @@ export const useEditGame = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor'],
+        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor', 'GetGamesByYearAndAuthor'],
       })
         .then((res) => {
           notify({ text: 'Game created', variant: 'success' })
@@ -166,12 +185,6 @@ const estimatedLengthOptions = configuration.virtual
   : ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '10', '12+']
 
 const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
-
-const playerPreferenceOptions = [
-  { value: 'any', text: 'Any' },
-  { value: 'ret-only', text: 'Returning players only' },
-  { value: 'ret-pref', text: 'Returning players have preference, new players welcome.' },
-]
 
 const defaultValues: FormValues = {
   slotId: 0,
@@ -252,7 +265,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
 
   const unsorted: Game[] = data?.user?.authoredGames?.nodes?.filter((i) => i) as Game[]
   const priorGamesList = unsorted
-    .concat()
+    .filter((g) => g.year !== configuration.year)
     .sort((a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name))
 
   const onCopyGameChange = (values: FormValues, setValues: (values: FormValues, shouldValidate?: boolean) => void) => (

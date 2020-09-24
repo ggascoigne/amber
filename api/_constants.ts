@@ -7,4 +7,5 @@ export const authDomain = process.env.REACT_APP_AUTH0_DOMAIN
 
 export const emails = {
   contactEmail: 'acnw@wyrdrune.com',
+  gameEmail: 'game@wyrdrune.com',
 }

@@ -17,7 +17,7 @@ export const FinalStep: React.FC = () => {
     <>
       <DialogContent>
         <DialogContentText>
-          If possible please pay by check made out to <strong>Simone Cooper</strong>.
+          If possible please pay $15 by check made out to <strong>Simone Cooper</strong>.
         </DialogContentText>
         <DialogContentText>and sent to</DialogContentText>
 

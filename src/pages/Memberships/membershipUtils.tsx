@@ -6,8 +6,11 @@ import {
 } from 'client'
 import { useNotification } from 'components/Acnw'
 import { ProfileType } from 'components/Acnw/Profile'
-import { configuration, onCloseHandler, pick, useSendEmail } from 'utils'
+import { configuration, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
+
+import { useAuth } from '../../components/Acnw/Auth/Auth0'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 
 export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
   Partial<{ id: number }> &
@@ -69,6 +72,9 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
   const [updateMembership] = useUpdateMembershipByNodeIdMutation()
   const [notify] = useNotification()
   const [sendEmail] = useSendEmail()
+  const sendAdminEmail = useSetting('send.admin.email')
+  const { hasPermissions } = useAuth()
+  const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
 
   const sendMembershipConfirmation = (membershipId: number, profile: ProfileType, membershipValues: MembershipType) => {
     sendEmail({
@@ -98,7 +104,10 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
       })
         .then(() => {
           notify({ text: 'Membership updated', variant: 'success' })
-          sendMembershipConfirmation(membershipValues.id!, profile!, membershipValues)
+          // create always sends email, but generally updates skip sending email about admin updates
+          if (shouldSendEmail) {
+            sendMembershipConfirmation(membershipValues.id!, profile!, membershipValues)
+          }
           onClose()
         })
         .catch((error) => {

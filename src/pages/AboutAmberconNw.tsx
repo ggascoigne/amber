@@ -45,7 +45,9 @@ export const AboutAmberconNw = () => (
       prepare in advance.
     </p>
 
-    <p>We are charging $15 to support ACNW's annual expenses.</p>
+    <p>
+      We are charging <strong>$15</strong> to support ACNW's annual expenses.
+    </p>
 
     <p>The convention will be divided into seven 4-hour event slots:</p>
 

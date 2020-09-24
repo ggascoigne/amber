@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 
+import { getPlayerPreference } from '../../src/utils/lookupValues'
 import { checkJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { JsonError } from '../_JsonError'
@@ -28,10 +29,12 @@ export default withApiHandler([
       if (!url) throw new JsonError(400, 'missing url')
       if (!game) throw new JsonError(400, 'missing game')
 
+      game.playerPreference = getPlayerPreference(game.playerPreference)
       const result = await emailer.send({
         template: 'gameConfirmation',
         message: {
           to: email,
+          cc: emails.gameEmail,
         },
         locals: {
           name,

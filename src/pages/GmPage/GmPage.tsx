@@ -5,30 +5,18 @@ import {
   useDeleteGameMutation,
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
-  useGetGamesByYearQuery,
 } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance } from 'react-table'
 import { useUser, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { IsMember, IsNotMember } from '../../utils/membership'
 import { GamesDialog } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
-
-const getGms = (row: Game) => {
-  const playersOrEmpty = row.gameAssignments.nodes
-  if (playersOrEmpty && playersOrEmpty.length) {
-    return playersOrEmpty
-      .filter((val) => val)
-      .filter((val) => val!.gm !== 0)
-      .map((val) => val?.member?.user?.fullName || '')
-      .join(', ')
-  } else {
-    return ''
-  }
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,21 +34,18 @@ const columns: Column<Game>[] = [
     accessor: 'name',
   },
   {
-    id: 'GM',
-    accessor: getGms,
+    Header: 'GM',
+    accessor: 'gmNames',
+  },
+  {
+    accessor: 'slotPreference',
   },
   {
     accessor: 'description',
   },
   {
     accessor: 'estimatedLength',
-    width: 100,
-    filter: 'numeric',
-  },
-  {
-    accessor: 'playerMax',
-    width: 100,
-    align: 'right',
+    width: 140,
     filter: 'numeric',
   },
   {
@@ -69,9 +54,26 @@ const columns: Column<Game>[] = [
     align: 'right',
     filter: 'numeric',
   },
+  {
+    accessor: 'playerMax',
+    width: 100,
+    align: 'right',
+    filter: 'numeric',
+  },
 ]
 
-export const GmPage: React.FC = React.memo(() => {
+export const GmPage = () => (
+  <>
+    <IsNotMember>
+      <Redirect to='/membership' />
+    </IsNotMember>
+    <IsMember>
+      <MemberGmPage />
+    </IsMember>
+  </>
+)
+
+const MemberGmPage: React.FC = React.memo(() => {
   const year = useYearFilterState((state) => state.year)
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
