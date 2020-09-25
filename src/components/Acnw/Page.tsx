@@ -25,12 +25,14 @@ export const Page: React.FC<Page> = ({ children, className }) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <div
-      className={classNames({
-        [classes.main]: true,
-        [classes.mainRaised]: !fullScreen,
-        [classes.small]: fullScreen,
-        className,
-      })}
+      className={classNames(
+        {
+          [classes.main]: true,
+          [classes.mainRaised]: !fullScreen,
+          [classes.small]: fullScreen,
+        },
+        className
+      )}
     >
       {children}
     </div>
