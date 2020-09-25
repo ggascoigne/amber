@@ -32,7 +32,7 @@ interface MembershipWizard {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileType | null
+  profile: ProfileType
 }
 
 // what hard coded lists did the old system map to
@@ -89,7 +89,7 @@ export const MembershipWizard: React.FC<MembershipWizard> = ({ open, onClose, pr
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const [activeStep, setActiveStep] = React.useState(0)
   const steps = ['Registration', 'Member Information', 'Attendance', 'Payment']
-  const createOrUpdateMembership = useEditMembership(profile!, onClose)
+  const createOrUpdateMembership = useEditMembership(onClose)
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep))
@@ -107,7 +107,7 @@ export const MembershipWizard: React.FC<MembershipWizard> = ({ open, onClose, pr
     await updateUser({
       variables: {
         input: {
-          id: profile!.id!,
+          id: profile.id!,
           patch: {
             firstName: profileValues.firstName,
             lastName: profileValues.lastName,
@@ -126,7 +126,9 @@ export const MembershipWizard: React.FC<MembershipWizard> = ({ open, onClose, pr
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfileValues(profileValues).then(async () => await createOrUpdateMembership(membershipValues))
+    await updateProfileValues(profileValues).then(
+      async () => await createOrUpdateMembership(membershipValues, profileValues)
+    )
   }
 
   const values = useMemo(() => {
@@ -135,7 +137,7 @@ export const MembershipWizard: React.FC<MembershipWizard> = ({ open, onClose, pr
     const defaultValues: MembershipType = getDefaultMembership(userId!)
     const _values = {
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
-      profile: { ...profile! },
+      profile: { ...profile },
     }
     _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
     return _values

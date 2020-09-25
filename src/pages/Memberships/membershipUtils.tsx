@@ -67,7 +67,7 @@ export const membershipValidationSchema = Yup.object().shape({
   skipSlots: Yup.string().max(20),
 })
 
-export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler) => {
+export const useEditMembership = (onClose: onCloseHandler) => {
   const [createMembership] = useCreateMembershipMutation()
   const [updateMembership] = useUpdateMembershipByNodeIdMutation()
   const [notify] = useNotification()
@@ -89,7 +89,7 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
     })
   }
 
-  const createOrUpdateMembership = async (membershipValues: MembershipType) => {
+  return async (membershipValues: MembershipType, profile: ProfileType) => {
     if (membershipValues.nodeId) {
       await updateMembership({
         variables: {
@@ -106,7 +106,7 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates
           if (shouldSendEmail) {
-            sendMembershipConfirmation(membershipValues.id!, profile!, membershipValues)
+            sendMembershipConfirmation(membershipValues.id!, profile, membershipValues)
           }
           onClose()
         })
@@ -127,7 +127,7 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
         .then((res) => {
           const membershipId = res?.data?.createMembership?.membership?.id
           notify({ text: 'Membership created', variant: 'success' })
-          sendMembershipConfirmation(membershipId!, profile!, membershipValues)
+          sendMembershipConfirmation(membershipId!, profile, membershipValues)
           onClose()
         })
         .catch((error) => {
@@ -135,7 +135,6 @@ export const useEditMembership = (profile: ProfileType, onClose: onCloseHandler)
         })
     }
   }
-  return createOrUpdateMembership
 }
 
 export const getDefaultMembership = (userId: number): MembershipType => ({

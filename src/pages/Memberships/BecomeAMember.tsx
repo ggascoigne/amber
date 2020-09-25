@@ -54,11 +54,16 @@ export const BecomeAMember = () => {
             Attending <span style={{ color: dangerColor }}>virtual</span> AmberCon NW
           </h2>
           <IsNotLoggedIn>
-            <h4>New Authentication system.</h4>
+            <h4>We have a new authentication system.</h4>
+
             <p>
-              We have a new authentication system. If you have an account from the old system, you can access it by
-              signing up again using the same email address as before and then confirming that email address.
+              <strong>You must re-register if you used the old site. Your old password won't work.</strong>
             </p>
+
+            <p>If you use the same email address you used on the old site, you will have access to your old data.</p>
+
+            <p>Only after you re-register and confirm your email will you be able to log in to the new site.</p>
+
             <p>
               Please note, that you can also login with either Facebook or Google. The same email advice applies in this
               case too.
@@ -72,7 +77,7 @@ export const BecomeAMember = () => {
 
           <IsLoggedIn>
             {showMembershipForm && (
-              <MembershipWizard open={showMembershipForm} onClose={onCloseMembershipDialog} profile={profile} />
+              <MembershipWizard open={showMembershipForm} onClose={onCloseMembershipDialog} profile={profile!} />
             )}
             <p>
               If you are interested in attending AmberCon NW this year, please

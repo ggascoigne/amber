@@ -67,7 +67,7 @@ export const MembershipSummary: React.FC = () => {
   return (
     <Page>
       {showEdit && (
-        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership!} profile={profile} />
+        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership!} profile={profile!} />
       )}
 
       <h1>Your Membership for {configuration.year}</h1>
@@ -112,7 +112,7 @@ export const MembershipSummary: React.FC = () => {
           </Field>
         )}
         <GridItem xs={12} sm={5} className={classes.gridItem}>
-          <Button onClick={() => setShowEdit(true)} variant='outlined'>
+          <Button onClick={() => setShowEdit(true)} variant='outlined' disabled={!profile}>
             Edit
           </Button>
         </GridItem>

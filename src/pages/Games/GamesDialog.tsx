@@ -430,7 +430,13 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <TextField name='gameContactEmail' label='Game Contact email' margin='normal' fullWidth />
+                  <TextField
+                    name='gameContactEmail'
+                    label='Game Contact email'
+                    margin='normal'
+                    fullWidth
+                    inputProps={{ autocapitalize: 'none' }}
+                  />
                 </GridItem>
                 <GridItem xs={12} md={12}>
                   <p>

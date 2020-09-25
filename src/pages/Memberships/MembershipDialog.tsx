@@ -21,7 +21,7 @@ interface MembershipDialog {
   open: boolean
   onClose: onCloseHandler
   initialValues?: MembershipType
-  profile: ProfileType | null
+  profile: ProfileType
 }
 
 // what hard coded lists did the old system map to
@@ -36,7 +36,7 @@ export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, pr
   const { userId } = useUser()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-  const createOrUpdateMembership = useEditMembership(profile!, onClose)
+  const createOrUpdateMembership = useEditMembership(onClose)
 
   if (!isAuthenticated || !user) {
     throw new Error('login expired')
@@ -44,7 +44,7 @@ export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, pr
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     values.slotsAttending = toSlotsAttending(values)
-    await createOrUpdateMembership(values)
+    await createOrUpdateMembership(values, profile)
   }
 
   const values = useMemo(() => {

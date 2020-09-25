@@ -155,7 +155,7 @@ export const Memberships: React.FC = React.memo(() => {
   return (
     <Page>
       {showEdit && (
-        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile} />
+        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} />
       )}
       <Table<Membership>
         name='members'
