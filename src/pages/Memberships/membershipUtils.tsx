@@ -6,7 +6,7 @@ import {
 } from 'client'
 import { useNotification } from 'components/Acnw'
 import { ProfileType } from 'components/Acnw/Profile'
-import { configuration, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
+import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
@@ -77,6 +77,10 @@ export const useEditMembership = (onClose: onCloseHandler) => {
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
 
   const sendMembershipConfirmation = (membershipId: number, profile: ProfileType, membershipValues: MembershipType) => {
+    const slotDescriptions = membershipValues?.slotsAttending
+      ?.split(',')
+      .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i), local: true }))
+
     sendEmail({
       type: 'membershipConfirmation',
       body: JSON.stringify({
@@ -85,6 +89,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
         email: profile?.email,
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
+        slotDescriptions,
       }),
     })
   }

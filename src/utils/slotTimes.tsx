@@ -85,7 +85,7 @@ export const getSlotDescription = ({
   altFormat = false,
 }: {
   year: number
-  slot: 1 | 2 | 3 | 4 | 5 | 6 | 7
+  slot: number
   local?: boolean
   altFormat?: boolean
 }) => {

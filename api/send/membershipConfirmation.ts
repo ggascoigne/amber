@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 
-import { getSlotDescription } from '../../src/utils/slotTimes'
 import { checkJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { JsonError } from '../_JsonError'
@@ -21,17 +20,15 @@ export default withApiHandler([
   checkJwt,
   async (req: Request, res: Response) => {
     try {
-      if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, membership')
-      const { year, name, email, url, membership } = req.body
+      if (!req.body)
+        throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
+      const { year, name, email, url, membership, slotDescriptions } = req.body
       if (!year) throw new JsonError(400, 'missing year')
       if (!name) throw new JsonError(400, 'missing name')
       if (!email) throw new JsonError(400, 'missing email')
       if (!url) throw new JsonError(400, 'missing url')
       if (!membership) throw new JsonError(400, 'missing membership')
-
-      const slotDescriptions = membership?.slotsAttending
-        ?.split(',')
-        .map((i: 1 | 2 | 3 | 4 | 5 | 6 | 7) => getSlotDescription({ year, slot: i, local: true }))
+      if (!slotDescriptions) throw new JsonError(400, 'missing slotDescriptions')
 
       const result = await emailer.send({
         template: 'membershipConfirmation',
