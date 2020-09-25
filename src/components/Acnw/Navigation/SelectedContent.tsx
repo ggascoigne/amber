@@ -1,7 +1,8 @@
 import { ErrorBoundary } from 'components/Acnw/ErrorBoundary'
 import { NotFound } from 'pages'
+import queryString from 'query-string'
 import React, { useMemo } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useUser } from 'utils'
 import { useIsMember } from 'utils/membership'
 
@@ -30,8 +31,20 @@ export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) =>
     <ErrorBoundary>
       <Switch>
         {results}
+        <Route path='/gameBook' component={LegacyGameBookRedirect} />
         <Route path='*' component={NotFound} />
       </Switch>
     </ErrorBoundary>
   )
+}
+
+// want to convert from
+// http://www.amberconnw.org/gameBook/index?year=2019&slot=1#1115
+// http://www.amberconnw.org/pastCons/2019/1/1115
+const LegacyGameBookRedirect = () => {
+  const location = useLocation()
+  const qs = queryString.parse(location.search)
+  const { year, slot } = qs
+  const id = location.hash.slice(1)
+  return <Redirect to={`/pastCons/${year}/${slot}/${id}`} />
 }
