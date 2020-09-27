@@ -8,19 +8,18 @@ import { DialogTitle } from '../Dialog'
 import { useNotification } from '../Notifications'
 import { ProfileFormContent, ProfileType } from './ProfileFormContent'
 import { profileValidationSchema } from './profileValidationSchema'
-import { useProfile } from './useProfile'
 
 type FormValues = ProfileType
 
 interface ProfileDialog {
   open: boolean
+  initialValues?: ProfileType | null
   onClose: (event?: any) => void
 }
 
-export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose }) => {
+export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose, initialValues: profile }) => {
   const [updateUser] = useUpdateUserMutation()
   const [notify] = useNotification()
-  const profile = useProfile()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 

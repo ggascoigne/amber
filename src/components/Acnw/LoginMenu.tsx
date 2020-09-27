@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { Auth0User, HasPermission, Perms, useAuthOverride, useToken } from './Auth/index'
 import { useNotification } from './Notifications'
-import { ProfileDialog } from './Profile'
+import { ProfileDialog, useProfile } from './Profile'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
@@ -136,6 +136,7 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
   const [authInitialized, setAuthInitialized] = useState(false)
   const roleOverride = useAuthOverride((state) => state.roleOverride)
   const setRoleOverride = useAuthOverride((state) => state.setRoleOverride)
+  const profile = useProfile()
 
   useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
 
@@ -213,7 +214,7 @@ export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
       {(client) =>
         isAuthenticated ? (
           <>
-            <ProfileDialog open={profileOpen} onClose={closeProfile} />
+            <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
             <CustomDropdown
               right
               caret={false}

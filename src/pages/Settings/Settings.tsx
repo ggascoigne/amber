@@ -6,6 +6,7 @@ import { TableMouseEventHandler } from '../../../types/react-table-config'
 import { Page, Table } from '../../components/Acnw'
 import { GraphQLError } from '../../components/Acnw/GraphQLError'
 import { Loader } from '../../components/Acnw/Loader'
+import { notEmpty } from '../../utils'
 import { SettingDialog } from './SettingDialog'
 
 type Setting = SettingFieldsFragment
@@ -35,7 +36,7 @@ export const Settings: React.FC = React.memo(() => {
   }
   const { settings } = data!
 
-  const list: Setting[] = settings!.nodes.filter((i) => i) as Setting[]
+  const list: Setting[] = settings!.nodes.filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)

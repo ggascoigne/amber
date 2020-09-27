@@ -10,7 +10,7 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance } from 'react-table'
-import { useUser, useYearFilterState } from 'utils'
+import { notEmpty, useUser, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { IsMember, IsNotMember } from '../../utils/membership'
@@ -105,7 +105,7 @@ const MemberGmPage: React.FC = React.memo(() => {
 
   const { games } = data!
 
-  const list: Game[] = games!.nodes.filter((i) => i) as Game[]
+  const list: Game[] = games!.nodes.filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)

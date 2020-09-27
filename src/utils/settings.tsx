@@ -1,6 +1,7 @@
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { Perms } from '../components/Acnw/Auth/PermissionRules'
+import { notEmpty } from './ts-utils'
 
 export enum SettingValue {
   No = 'No',
@@ -30,8 +31,7 @@ export const useSetting = (setting: string, defaultValue = false) => {
     return defaultValue
   }
 
-  const settings: SettingFieldsFragment[] | null =
-    (data?.settings?.nodes?.filter((i) => i) as SettingFieldsFragment[]) || null
+  const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) || null
   const s = getSetting(settings, setting)
 
   switch (s) {

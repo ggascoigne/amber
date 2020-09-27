@@ -23,7 +23,7 @@ import {
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import { configuration, getSlotDescription, pick, range, useUser } from 'utils'
+import { configuration, getSlotDescription, notEmpty, pick, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
 import { playerPreferenceOptions } from '../../utils/lookupValues'
@@ -144,7 +144,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
     )
   }
 
-  const unsorted: Game[] = data?.user?.authoredGames?.nodes?.filter((i) => i) as Game[]
+  const unsorted: Game[] = (data!.user?.authoredGames?.nodes?.filter(notEmpty) as Game[]) || []
   const priorGamesList = unsorted
     .filter((g) => g.year !== configuration.year)
     .sort((a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name))

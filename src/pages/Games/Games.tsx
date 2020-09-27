@@ -147,7 +147,7 @@ export const Games: React.FC = React.memo(() => {
 
   const { games } = data!
 
-  const list: Game[] = games!.edges.map((v) => v.node).filter((i) => i) as Game[]
+  const list: Game[] = games!.edges.map((v) => v.node).filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)

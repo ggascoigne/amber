@@ -9,6 +9,7 @@ import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { notEmpty } from '../../utils'
 import { LookupsDialog } from './LookupsDialog'
 import type { LookupAndValues } from './types'
 
@@ -33,7 +34,7 @@ export const Lookups: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const list: LookupAndValues[] = data!.lookups!.edges.map((v) => v.node).filter((i) => i) as LookupAndValues[]
+  const list: LookupAndValues[] = data!.lookups!.edges.map((v) => v.node).filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)

@@ -12,7 +12,7 @@ import {
 } from 'pages'
 import type React from 'react'
 
-import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships } from '../../../pages'
+import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships, Users } from '../../../pages'
 import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
@@ -37,16 +37,7 @@ export const rootRoutes: RootRoutes = [
     label: 'Welcome',
     subText: 'Introduction',
     exact: true,
-    component: Welcome,
-    condition: !configuration.virtual,
-  },
-  {
-    path: '/',
-    label: 'Welcome',
-    subText: 'Introduction',
-    exact: true,
-    component: WelcomeVirtual,
-    condition: configuration.virtual,
+    component: !configuration.virtual ? Welcome : WelcomeVirtual,
   },
   {
     path: '/aboutacnw',
@@ -112,11 +103,18 @@ export const rootRoutes: RootRoutes = [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/users',
+    label: 'Users',
+    exact: true,
+    component: Users,
+    permission: Perms.IsAdmin,
+  },
+  {
     path: '/games',
     label: 'Games',
     exact: true,
     component: Games,
-    permission: Perms.IsAdmin,
+    permission: Perms.FullGameBook,
   },
   {
     path: '/members',

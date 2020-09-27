@@ -11,6 +11,7 @@ export enum Perms {
   GraphiqlLoad = 'graphiql:load',
   IsAdmin = 'is:Admin',
   IsLoggedIn = 'is:LoggedIn',
+  FullGameBook = 'gameBook:load',
 }
 
 const rules: Rules = {
@@ -19,10 +20,12 @@ const rules: Rules = {
       '*': () => true,
     },
   },
+  ROLE_GAME_ADMIN: {
+    static: [Perms.FullGameBook, Perms.IsLoggedIn],
+  },
   ROLE_USER: {
     static: [Perms.IsLoggedIn],
   },
-  ROLE_GAME_ADMIN: {},
 }
 
 export default rules

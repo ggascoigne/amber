@@ -2,7 +2,7 @@ import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembership
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
-import { configuration, useLocalStorage, useYearFilterState } from 'utils'
+import { configuration, notEmpty, useLocalStorage, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { DateCell, YesNoCell } from '../../components/Acnw/Table/CellFormatters'
@@ -115,7 +115,7 @@ export const Memberships: React.FC = React.memo(() => {
   }
   const { memberships } = data!
 
-  const list: Membership[] = memberships!.nodes.filter((i) => i) as Membership[]
+  const list: Membership[] = memberships!.nodes.filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
