@@ -27,3 +27,8 @@ export type UnpackArray<T> = T extends (infer U)[] ? U : T
 
 // extract the type of an object property
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
+
+// typesafe filter to use in .filter(notEmpty) dropping nulls in a type safe manner
+export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  return value !== null && value !== undefined
+}

@@ -16,6 +16,14 @@ query getMembershipsByYear($year: Int!) {
   }
 }
 
+query getMembershipsById($id: Int!) {
+  memberships(condition: { id: $id }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
 mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
   updateMembershipByNodeId(input: $input) {
     membership {

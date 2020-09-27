@@ -1,10 +1,20 @@
-import { GameFieldsFragment, GameGmsFragment, useDeleteGameMutation, useGetGamesByYearQuery } from 'client'
+import { createStyles, makeStyles } from '@material-ui/core'
+import CachedIcon from '@material-ui/icons/Cached'
+import classnames from 'classnames'
+import {
+  GameFieldsFragment,
+  GameGmsFragment,
+  useDeleteGameMutation,
+  useGetGamesByYearQuery,
+  useGetMembershipsByYearQuery,
+} from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import type { Column, Row, TableInstance } from 'react-table'
-import { useYearFilterState } from 'utils'
+import { notEmpty, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -35,6 +45,10 @@ const columns: Column<Game>[] = [
   },
   {
     accessor: 'name',
+  },
+  {
+    Header: 'GM Names',
+    accessor: 'gmNames',
   },
   {
     id: 'GM',
@@ -68,16 +82,61 @@ const columns: Column<Game>[] = [
   },
 ]
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    fixBusy: {
+      color: 'red',
+    },
+  })
+)
 export const Games: React.FC = React.memo(() => {
   const year = useYearFilterState((state) => state.year)
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()
-  const { loading, error, data } = useGetGamesByYearQuery({
+  const [fixBusy, setFixBusy] = useState(false)
+  const classes = useStyles()
+  const { loading, error, data, refetch } = useGetGamesByYearQuery({
+    variables: {
+      year,
+    },
+    // fetchPolicy: 'cache-and-network'
+  })
+  const setGameGmAssignments = useUpdateGameAssignment()
+  const { data: membershipData } = useGetMembershipsByYearQuery({
     variables: {
       year,
     },
   })
+
+  const membershipList = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) || [], [
+    membershipData?.memberships?.nodes,
+  ])
+
+  const onUpdateGmNames = useCallback(
+    (instance: TableInstance<Game>) => async () => {
+      setFixBusy(true)
+      const selected = instance.selectedFlatRows.map((r) => r.original)
+      const queue: Promise<any>[] = []
+      selected.forEach((game) => {
+        queue.push(setGameGmAssignments(game.id, game.gmNames, membershipList))
+      })
+      await Promise.all(queue)
+      setFixBusy(false)
+    },
+    [membershipList, setGameGmAssignments]
+  )
+
+  const commands = useMemo(
+    () => [
+      {
+        label: 'Fix GM Names',
+        onClick: onUpdateGmNames,
+        icon: <CachedIcon className={classnames({ [classes.fixBusy]: fixBusy })} />,
+      },
+    ],
+    [classes.fixBusy, fixBusy, onUpdateGmNames]
+  )
 
   if (error) {
     return <GraphQLError error={error} />
@@ -126,6 +185,8 @@ export const Games: React.FC = React.memo(() => {
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
+        extraCommands={commands}
+        onRefresh={() => refetch()}
       />
     </Page>
   )

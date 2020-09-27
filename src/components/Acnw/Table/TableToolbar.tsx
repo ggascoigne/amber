@@ -1,11 +1,12 @@
 import { Button, IconButton, Theme, Toolbar, Tooltip, createStyles, makeStyles } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
+import CachedIcon from '@material-ui/icons/Cached'
 import CreateIcon from '@material-ui/icons/CreateOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import ViewColumnsIcon from '@material-ui/icons/ViewColumn'
 import classnames from 'classnames'
-import React, { MouseEvent, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
+import React, { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
 
 import type { TableMouseEventHandler } from '../../../../types/react-table-config'
@@ -83,11 +84,19 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
   )
 }
 
+export type Command<T extends Record<string, unknown>> = {
+  label: string
+  onClick: TableMouseEventHandler
+  icon?: JSX.Element
+}
+
 type TableToolbar<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   onAdd?: TableMouseEventHandler
   onDelete?: TableMouseEventHandler
   onEdit?: TableMouseEventHandler
+  onRefresh?: MouseEventHandler
+  extraCommands?: Command<T>[]
 }
 
 export function TableToolbar<T extends Record<string, unknown>>({
@@ -95,6 +104,8 @@ export function TableToolbar<T extends Record<string, unknown>>({
   onAdd = () => () => null,
   onDelete = () => () => null,
   onEdit = () => () => null,
+  extraCommands = [],
+  onRefresh,
 }: PropsWithChildren<TableToolbar<T>>): ReactElement | null {
   const { columns } = instance
   const classes = useStyles()
@@ -165,10 +176,32 @@ export function TableToolbar<T extends Record<string, unknown>>({
             variant='left'
           />
         )}
+        {extraCommands.map((c) => (
+          <SmallIconActionButton<T>
+            key={`command-${c.label}`}
+            instance={instance}
+            icon={c.icon}
+            onClick={c.onClick}
+            label={c.label}
+            enabled={({ state }: TableInstance<T>) =>
+              state.selectedRowIds && Object.keys(state.selectedRowIds).length > 0
+            }
+            variant='left'
+          />
+        ))}
       </div>
       <div className={classes.rightButtons}>
         <ColumnHidePage<T> instance={instance} onClose={handleClose} show={columnsOpen} anchorEl={anchorEl} />
         <FilterPage<T> instance={instance} onClose={handleClose} show={filterOpen} anchorEl={anchorEl} />
+        {onRefresh && (
+          <SmallIconActionButton<T>
+            instance={instance}
+            icon={<CachedIcon />}
+            onClick={() => onRefresh}
+            label='Refresh Table'
+            variant='right'
+          />
+        )}
         {hideableColumns.length > 1 && (
           <SmallIconActionButton<T>
             instance={instance}

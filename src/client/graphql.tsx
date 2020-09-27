@@ -6713,6 +6713,92 @@ export type GetGamesByYearAndAuthorQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetGameByIdQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetGameByIdQuery = { __typename: 'Query' } & {
+  game?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment>
+}
+
+export type GameAssignmentFieldsFragment = { __typename: 'GameAssignment' } & Pick<
+  GameAssignment,
+  'gameId' | 'gm' | 'memberId' | 'nodeId' | 'year'
+>
+
+export type GetGameAssignmentsByYearQueryVariables = Exact<{
+  year: Scalars['Int']
+}>
+
+export type GetGameAssignmentsByYearQuery = { __typename: 'Query' } & {
+  gameAssignments?: Maybe<
+    { __typename: 'GameAssignmentsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'GameAssignment' } & GameAssignmentFieldsFragment>>
+    }
+  >
+}
+
+export type GetGameAssignmentsByGameIdQueryVariables = Exact<{
+  gameId: Scalars['Int']
+}>
+
+export type GetGameAssignmentsByGameIdQuery = { __typename: 'Query' } & {
+  gameAssignments?: Maybe<
+    { __typename: 'GameAssignmentsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'GameAssignment' } & GameAssignmentFieldsFragment>>
+    }
+  >
+}
+
+export type GetGameAssignmentsByMemberIdQueryVariables = Exact<{
+  memberId: Scalars['Int']
+}>
+
+export type GetGameAssignmentsByMemberIdQuery = { __typename: 'Query' } & {
+  gameAssignments?: Maybe<
+    { __typename: 'GameAssignmentsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'GameAssignment' } & GameAssignmentFieldsFragment>>
+    }
+  >
+}
+
+export type UpdateGameAssignmentByNodeIdMutationVariables = Exact<{
+  input: UpdateGameAssignmentByNodeIdInput
+}>
+
+export type UpdateGameAssignmentByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateGameAssignmentByNodeId?: Maybe<
+    { __typename: 'UpdateGameAssignmentPayload' } & {
+      gameAssignment?: Maybe<{ __typename: 'GameAssignment' } & GameAssignmentFieldsFragment>
+    }
+  >
+}
+
+export type CreateGameAssignmentMutationVariables = Exact<{
+  input: CreateGameAssignmentInput
+}>
+
+export type CreateGameAssignmentMutation = { __typename: 'Mutation' } & {
+  createGameAssignment?: Maybe<
+    { __typename: 'CreateGameAssignmentPayload' } & {
+      gameAssignment?: Maybe<{ __typename: 'GameAssignment' } & GameAssignmentFieldsFragment>
+    }
+  >
+}
+
+export type DeleteGameAssignmentMutationVariables = Exact<{
+  input: DeleteGameAssignmentByNodeIdInput
+}>
+
+export type DeleteGameAssignmentMutation = { __typename: 'Mutation' } & {
+  deleteGameAssignmentByNodeId?: Maybe<
+    { __typename: 'DeleteGameAssignmentPayload' } & Pick<
+      DeleteGameAssignmentPayload,
+      'clientMutationId' | 'deletedGameAssignmentNodeId'
+    >
+  >
+}
+
 export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   Game,
   | 'nodeId'
@@ -6919,6 +7005,18 @@ export type GetMembershipsByYearQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetMembershipsByIdQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetMembershipsByIdQuery = { __typename: 'Query' } & {
+  memberships?: Maybe<
+    { __typename: 'MembershipsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
+    }
+  >
+}
+
 export type UpdateMembershipByNodeIdMutationVariables = Exact<{
   input: UpdateMembershipByNodeIdInput
 }>
@@ -6978,7 +7076,7 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   | 'slotsAttending'
   | 'amountOwed'
   | 'amountPaid'
-> & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName'>> }
+> & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName' | 'email'>> }
 
 export type SettingFieldsFragment = { __typename: 'Setting' } & Pick<
   Setting,
@@ -7044,6 +7142,12 @@ export type GetUserByEmailQuery = { __typename: 'Query' } & {
   userByEmail?: Maybe<{ __typename: 'User' } & UserFieldsFragment>
 }
 
+export type GetUserByIdQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetUserByIdQuery = { __typename: 'Query' } & { user?: Maybe<{ __typename: 'User' } & UserFieldsFragment> }
+
 export type UpdateUserMutationVariables = Exact<{
   input: UpdateUserInput
 }>
@@ -7067,6 +7171,15 @@ export type UserFieldsFragment = { __typename: 'User' } & Pick<
   'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
 >
 
+export const GameAssignmentFieldsFragmentDoc = gql`
+  fragment gameAssignmentFields on GameAssignment {
+    gameId
+    gm
+    memberId
+    nodeId
+    year
+  }
+`
 export const GameFieldsFragmentDoc = gql`
   fragment gameFields on Game {
     nodeId
@@ -7154,6 +7267,7 @@ export const MembershipFieldsFragmentDoc = gql`
       fullName
       firstName
       lastName
+      email
     }
   }
 `
@@ -7558,6 +7672,337 @@ export type GetGamesByYearAndAuthorLazyQueryHookResult = ReturnType<typeof useGe
 export type GetGamesByYearAndAuthorQueryResult = Apollo.QueryResult<
   GetGamesByYearAndAuthorQuery,
   GetGamesByYearAndAuthorQueryVariables
+>
+export const GetGameByIdDocument = gql`
+  query GetGameById($id: Int!) {
+    game(id: $id) {
+      ...gameFields
+      ...gameGms
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${GameGmsFragmentDoc}
+`
+
+/**
+ * __useGetGameByIdQuery__
+ *
+ * To run a query within a React component, call `useGetGameByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGameByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGameByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetGameByIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>
+) {
+  return Apollo.useQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, baseOptions)
+}
+export function useGetGameByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, baseOptions)
+}
+export type GetGameByIdQueryHookResult = ReturnType<typeof useGetGameByIdQuery>
+export type GetGameByIdLazyQueryHookResult = ReturnType<typeof useGetGameByIdLazyQuery>
+export type GetGameByIdQueryResult = Apollo.QueryResult<GetGameByIdQuery, GetGameByIdQueryVariables>
+export const GetGameAssignmentsByYearDocument = gql`
+  query getGameAssignmentsByYear($year: Int!) {
+    gameAssignments(condition: { year: $year }) {
+      nodes {
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
+
+/**
+ * __useGetGameAssignmentsByYearQuery__
+ *
+ * To run a query within a React component, call `useGetGameAssignmentsByYearQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGameAssignmentsByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGameAssignmentsByYearQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetGameAssignmentsByYearQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
+) {
+  return Apollo.useQuery<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
+    GetGameAssignmentsByYearDocument,
+    baseOptions
+  )
+}
+export function useGetGameAssignmentsByYearLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
+    GetGameAssignmentsByYearDocument,
+    baseOptions
+  )
+}
+export type GetGameAssignmentsByYearQueryHookResult = ReturnType<typeof useGetGameAssignmentsByYearQuery>
+export type GetGameAssignmentsByYearLazyQueryHookResult = ReturnType<typeof useGetGameAssignmentsByYearLazyQuery>
+export type GetGameAssignmentsByYearQueryResult = Apollo.QueryResult<
+  GetGameAssignmentsByYearQuery,
+  GetGameAssignmentsByYearQueryVariables
+>
+export const GetGameAssignmentsByGameIdDocument = gql`
+  query getGameAssignmentsByGameId($gameId: Int!) {
+    gameAssignments(condition: { gameId: $gameId }) {
+      nodes {
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
+
+/**
+ * __useGetGameAssignmentsByGameIdQuery__
+ *
+ * To run a query within a React component, call `useGetGameAssignmentsByGameIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGameAssignmentsByGameIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGameAssignmentsByGameIdQuery({
+ *   variables: {
+ *      gameId: // value for 'gameId'
+ *   },
+ * });
+ */
+export function useGetGameAssignmentsByGameIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
+) {
+  return Apollo.useQuery<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
+    GetGameAssignmentsByGameIdDocument,
+    baseOptions
+  )
+}
+export function useGetGameAssignmentsByGameIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
+    GetGameAssignmentsByGameIdDocument,
+    baseOptions
+  )
+}
+export type GetGameAssignmentsByGameIdQueryHookResult = ReturnType<typeof useGetGameAssignmentsByGameIdQuery>
+export type GetGameAssignmentsByGameIdLazyQueryHookResult = ReturnType<typeof useGetGameAssignmentsByGameIdLazyQuery>
+export type GetGameAssignmentsByGameIdQueryResult = Apollo.QueryResult<
+  GetGameAssignmentsByGameIdQuery,
+  GetGameAssignmentsByGameIdQueryVariables
+>
+export const GetGameAssignmentsByMemberIdDocument = gql`
+  query getGameAssignmentsByMemberId($memberId: Int!) {
+    gameAssignments(condition: { memberId: $memberId }) {
+      nodes {
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
+
+/**
+ * __useGetGameAssignmentsByMemberIdQuery__
+ *
+ * To run a query within a React component, call `useGetGameAssignmentsByMemberIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGameAssignmentsByMemberIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGameAssignmentsByMemberIdQuery({
+ *   variables: {
+ *      memberId: // value for 'memberId'
+ *   },
+ * });
+ */
+export function useGetGameAssignmentsByMemberIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>
+) {
+  return Apollo.useQuery<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
+    GetGameAssignmentsByMemberIdDocument,
+    baseOptions
+  )
+}
+export function useGetGameAssignmentsByMemberIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetGameAssignmentsByMemberIdQuery,
+    GetGameAssignmentsByMemberIdQueryVariables
+  >
+) {
+  return Apollo.useLazyQuery<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
+    GetGameAssignmentsByMemberIdDocument,
+    baseOptions
+  )
+}
+export type GetGameAssignmentsByMemberIdQueryHookResult = ReturnType<typeof useGetGameAssignmentsByMemberIdQuery>
+export type GetGameAssignmentsByMemberIdLazyQueryHookResult = ReturnType<
+  typeof useGetGameAssignmentsByMemberIdLazyQuery
+>
+export type GetGameAssignmentsByMemberIdQueryResult = Apollo.QueryResult<
+  GetGameAssignmentsByMemberIdQuery,
+  GetGameAssignmentsByMemberIdQueryVariables
+>
+export const UpdateGameAssignmentByNodeIdDocument = gql`
+  mutation updateGameAssignmentByNodeId($input: UpdateGameAssignmentByNodeIdInput!) {
+    updateGameAssignmentByNodeId(input: $input) {
+      gameAssignment {
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
+export type UpdateGameAssignmentByNodeIdMutationFn = Apollo.MutationFunction<
+  UpdateGameAssignmentByNodeIdMutation,
+  UpdateGameAssignmentByNodeIdMutationVariables
+>
+
+/**
+ * __useUpdateGameAssignmentByNodeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameAssignmentByNodeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameAssignmentByNodeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameAssignmentByNodeIdMutation, { data, loading, error }] = useUpdateGameAssignmentByNodeIdMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGameAssignmentByNodeIdMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGameAssignmentByNodeIdMutation,
+    UpdateGameAssignmentByNodeIdMutationVariables
+  >
+) {
+  return Apollo.useMutation<UpdateGameAssignmentByNodeIdMutation, UpdateGameAssignmentByNodeIdMutationVariables>(
+    UpdateGameAssignmentByNodeIdDocument,
+    baseOptions
+  )
+}
+export type UpdateGameAssignmentByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameAssignmentByNodeIdMutation>
+export type UpdateGameAssignmentByNodeIdMutationResult = Apollo.MutationResult<UpdateGameAssignmentByNodeIdMutation>
+export type UpdateGameAssignmentByNodeIdMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGameAssignmentByNodeIdMutation,
+  UpdateGameAssignmentByNodeIdMutationVariables
+>
+export const CreateGameAssignmentDocument = gql`
+  mutation createGameAssignment($input: CreateGameAssignmentInput!) {
+    createGameAssignment(input: $input) {
+      gameAssignment {
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
+export type CreateGameAssignmentMutationFn = Apollo.MutationFunction<
+  CreateGameAssignmentMutation,
+  CreateGameAssignmentMutationVariables
+>
+
+/**
+ * __useCreateGameAssignmentMutation__
+ *
+ * To run a mutation, you first call `useCreateGameAssignmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameAssignmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameAssignmentMutation, { data, loading, error }] = useCreateGameAssignmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGameAssignmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGameAssignmentMutation, CreateGameAssignmentMutationVariables>
+) {
+  return Apollo.useMutation<CreateGameAssignmentMutation, CreateGameAssignmentMutationVariables>(
+    CreateGameAssignmentDocument,
+    baseOptions
+  )
+}
+export type CreateGameAssignmentMutationHookResult = ReturnType<typeof useCreateGameAssignmentMutation>
+export type CreateGameAssignmentMutationResult = Apollo.MutationResult<CreateGameAssignmentMutation>
+export type CreateGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
+  CreateGameAssignmentMutation,
+  CreateGameAssignmentMutationVariables
+>
+export const DeleteGameAssignmentDocument = gql`
+  mutation deleteGameAssignment($input: DeleteGameAssignmentByNodeIdInput!) {
+    deleteGameAssignmentByNodeId(input: $input) {
+      clientMutationId
+      deletedGameAssignmentNodeId
+    }
+  }
+`
+export type DeleteGameAssignmentMutationFn = Apollo.MutationFunction<
+  DeleteGameAssignmentMutation,
+  DeleteGameAssignmentMutationVariables
+>
+
+/**
+ * __useDeleteGameAssignmentMutation__
+ *
+ * To run a mutation, you first call `useDeleteGameAssignmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteGameAssignmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteGameAssignmentMutation, { data, loading, error }] = useDeleteGameAssignmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteGameAssignmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteGameAssignmentMutation, DeleteGameAssignmentMutationVariables>
+) {
+  return Apollo.useMutation<DeleteGameAssignmentMutation, DeleteGameAssignmentMutationVariables>(
+    DeleteGameAssignmentDocument,
+    baseOptions
+  )
+}
+export type DeleteGameAssignmentMutationHookResult = ReturnType<typeof useDeleteGameAssignmentMutation>
+export type DeleteGameAssignmentMutationResult = Apollo.MutationResult<DeleteGameAssignmentMutation>
+export type DeleteGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
+  DeleteGameAssignmentMutation,
+  DeleteGameAssignmentMutationVariables
 >
 export const GetLookupsDocument = gql`
   query GetLookups {
@@ -8072,6 +8517,55 @@ export type GetMembershipsByYearQueryResult = Apollo.QueryResult<
   GetMembershipsByYearQuery,
   GetMembershipsByYearQueryVariables
 >
+export const GetMembershipsByIdDocument = gql`
+  query getMembershipsById($id: Int!) {
+    memberships(condition: { id: $id }) {
+      nodes {
+        ...membershipFields
+      }
+    }
+  }
+  ${MembershipFieldsFragmentDoc}
+`
+
+/**
+ * __useGetMembershipsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetMembershipsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMembershipsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMembershipsByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMembershipsByIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
+) {
+  return Apollo.useQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(
+    GetMembershipsByIdDocument,
+    baseOptions
+  )
+}
+export function useGetMembershipsByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(
+    GetMembershipsByIdDocument,
+    baseOptions
+  )
+}
+export type GetMembershipsByIdQueryHookResult = ReturnType<typeof useGetMembershipsByIdQuery>
+export type GetMembershipsByIdLazyQueryHookResult = ReturnType<typeof useGetMembershipsByIdLazyQuery>
+export type GetMembershipsByIdQueryResult = Apollo.QueryResult<
+  GetMembershipsByIdQuery,
+  GetMembershipsByIdQueryVariables
+>
 export const UpdateMembershipByNodeIdDocument = gql`
   mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
     updateMembershipByNodeId(input: $input) {
@@ -8444,6 +8938,44 @@ export function useGetUserByEmailLazyQuery(
 export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>
 export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>
 export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+export const GetUserByIdDocument = gql`
+  query GetUserById($id: Int!) {
+    user(id: $id) {
+      ...userFields
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`
+
+/**
+ * __useGetUserByIdQuery__
+ *
+ * To run a query within a React component, call `useGetUserByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserByIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>
+) {
+  return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions)
+}
+export function useGetUserByIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions)
+}
+export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>
+export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>
+export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>
 export const UpdateUserDocument = gql`
   mutation updateUser($input: UpdateUserInput!) {
     updateUser(input: $input) {

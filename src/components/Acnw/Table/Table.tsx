@@ -47,7 +47,7 @@ import {
   TableTable,
   useStyles,
 } from './TableStyles'
-import { TableToolbar } from './TableToolbar'
+import { Command, TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
 
 // import { useFlexLayout } from './useFlexLayout'
@@ -58,6 +58,8 @@ export interface Table<T extends Record<string, unknown>> extends TableOptions<T
   onDelete?: (instance: TableInstance<T>) => MouseEventHandler
   onEdit?: (instance: TableInstance<T>) => MouseEventHandler
   onClick?: (row: Row<T>) => void
+  extraCommands?: Command<T>[]
+  onRefresh?: MouseEventHandler
 }
 
 const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
@@ -142,7 +144,7 @@ const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta
   getStyles(props, cell.column?.disableResizing, cell.column?.align)
 
 export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<Table<T>>): ReactElement {
-  const { name, columns, onAdd, onDelete, onEdit, onClick } = props
+  const { name, columns, onAdd, onDelete, onEdit, onClick, extraCommands, onRefresh } = props
   const classes = useStyles()
 
   const filterTypes = React.useMemo(
@@ -223,7 +225,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
 
   return (
     <>
-      <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit }} />
+      <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit, extraCommands, onRefresh }} />
       <FilterChipBar<T> instance={instance} />
       <TableTable {...getTableProps()}>
         <TableHead>

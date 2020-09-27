@@ -1,0 +1,48 @@
+#import "./gameAssignmentFragment.graphql"
+
+query getGameAssignmentsByYear($year: Int!) {
+  gameAssignments(condition: { year: $year }) {
+    nodes {
+      ...gameAssignmentFields
+    }
+  }
+}
+
+query getGameAssignmentsByGameId($gameId: Int!) {
+  gameAssignments(condition: { gameId: $gameId }) {
+    nodes {
+      ...gameAssignmentFields
+    }
+  }
+}
+
+query getGameAssignmentsByMemberId($memberId: Int!) {
+  gameAssignments(condition: { memberId: $memberId }) {
+    nodes {
+      ...gameAssignmentFields
+    }
+  }
+}
+
+mutation updateGameAssignmentByNodeId($input: UpdateGameAssignmentByNodeIdInput!) {
+  updateGameAssignmentByNodeId(input: $input) {
+    gameAssignment {
+      ...gameAssignmentFields
+    }
+  }
+}
+
+mutation createGameAssignment($input: CreateGameAssignmentInput!) {
+  createGameAssignment(input: $input) {
+    gameAssignment {
+      ...gameAssignmentFields
+    }
+  }
+}
+
+mutation deleteGameAssignment($input: DeleteGameAssignmentByNodeIdInput!) {
+  deleteGameAssignmentByNodeId(input: $input) {
+    clientMutationId
+    deletedGameAssignmentNodeId
+  }
+}

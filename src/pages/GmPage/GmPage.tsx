@@ -86,6 +86,7 @@ const MemberGmPage: React.FC = React.memo(() => {
       year,
       id: userId!,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   // just kick this off now so that it's cached by the tie the user clicks the button

@@ -19,6 +19,7 @@ packages/server/ui
 **/lerna-debug.log*
 **/yarn-debug.log*
 **/yarn-error.log*
+**/.log
 
 # from https://www.gitignore.io/api/phpstorm
 
@@ -57,6 +58,7 @@ postgres-data
 
 .now
 build/
+*.dump
 
 # generated at build time
 src/version.ts

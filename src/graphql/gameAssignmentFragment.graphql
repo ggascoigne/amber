@@ -1,0 +1,7 @@
+fragment gameAssignmentFields on GameAssignment {
+  gameId
+  gm
+  memberId
+  nodeId
+  year
+}

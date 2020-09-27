@@ -88,3 +88,10 @@ query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
     }
   }
 }
+
+query GetGameById($id: Int!) {
+  game(id: $id) {
+    ...gameFields
+    ...gameGms
+  }
+}

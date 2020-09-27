@@ -9,15 +9,7 @@ import {
 } from '@material-ui/core'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Autocomplete } from '@material-ui/lab'
-import {
-  Game,
-  GameFieldsFragment,
-  GameGmsFragment,
-  Node,
-  useCreateGameMutation,
-  useGetGamesByAuthorQuery,
-  useUpdateGameByNodeIdMutation,
-} from 'client'
+import { Game, useGetGamesByAuthorQuery } from 'client'
 import {
   CheckboxWithLabel,
   DialogTitle,
@@ -25,137 +17,22 @@ import {
   GridContainer,
   GridItem,
   Loader,
-  ProfileType,
   SelectField,
   TextField,
   TextFieldProps,
-  useNotification,
-  useProfile,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import {
-  configuration,
-  getSlotDescription,
-  onCloseHandler,
-  pick,
-  range,
-  useSendEmail,
-  useSetting,
-  useUser,
-} from 'utils'
+import { configuration, getSlotDescription, pick, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { playerPreferenceOptions } from '../../utils/lookupValues'
-
-type FormValues = Omit<GameFieldsFragment & GameGmsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'> &
-  Partial<Node>
-
-type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
-
-export const useEditGame = (onClose: onCloseHandler) => {
-  const [createGame] = useCreateGameMutation()
-  const [updateGame] = useUpdateGameByNodeIdMutation()
-  const [notify] = useNotification()
-  const [sendEmail] = useSendEmail()
-  const profile = useProfile()
-  const { userId } = useUser()
-  const sendAdminEmail = useSetting('send.admin.email')
-  const { hasPermissions } = useAuth()
-  const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
-
-  const sendGameConfirmation = (profile: ProfileType, values: GameFields) => {
-    sendEmail({
-      type: 'gameConfirmation',
-      body: JSON.stringify({
-        year: configuration.year,
-        name: profile?.fullName,
-        email: profile?.email,
-        url: `${window.location.origin}/gm`,
-        game: values,
-      }),
-    })
-  }
-
-  return async (values: FormValues) => {
-    const fields = pick(
-      values,
-      'name',
-      'gmNames',
-      'description',
-      'genre',
-      'type',
-      'setting',
-      'charInstructions',
-      'playerMin',
-      'playerMax',
-      'playerPreference',
-      'returningPlayers',
-      'playersContactGm',
-      'gameContactEmail',
-      'estimatedLength',
-      'slotPreference',
-      'lateStart',
-      'lateFinish',
-      'slotConflicts',
-      'message',
-      'teenFriendly'
-    )
-
-    if (values.nodeId) {
-      await updateGame({
-        variables: {
-          input: {
-            nodeId: values.nodeId!,
-            patch: {
-              ...fields,
-            },
-          },
-        },
-        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor', 'GetGamesByYearAndAuthor'],
-      })
-        .then(() => {
-          notify({ text: 'Game updated', variant: 'success' })
-          // create always sends email, but generally updates skip sending email about admin updates
-          if (shouldSendEmail) {
-            sendGameConfirmation(profile!, values)
-          }
-          onClose()
-        })
-        .catch((error) => {
-          notify({ text: error.message, variant: 'error' })
-        })
-    } else {
-      await createGame({
-        variables: {
-          input: {
-            game: {
-              ...fields,
-              year: configuration.year,
-              authorId: userId,
-            },
-          },
-        },
-        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor', 'GetGamesByYearAndAuthor'],
-      })
-        .then((res) => {
-          notify({ text: 'Game created', variant: 'success' })
-          sendGameConfirmation(profile!, values)
-          onClose()
-        })
-        .catch((error) => {
-          notify({ text: error.message, variant: 'error' })
-        })
-    }
-  }
-}
+import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 interface GamesDialog {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: FormValues
+  initialValues?: GameDialogFormValues
 }
 
 const genreOptions = [
@@ -186,7 +63,7 @@ const estimatedLengthOptions = configuration.virtual
 
 const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
 
-const defaultValues: FormValues = {
+const defaultValues: GameDialogFormValues = {
   slotId: 0,
   name: '',
   gmNames: '',
@@ -244,9 +121,9 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const { userId } = useUser()
-  const createOrUpdateGame = useEditGame(onClose)
+  const createOrUpdateGame = useEditGame(onClose, initialValues)
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
   }
 
@@ -260,7 +137,11 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
     return <GraphQLError error={error} />
   }
   if (loading || !data) {
-    return <Loader />
+    return (
+      <Dialog disableBackdropClick fullWidth maxWidth='md' open>
+        <Loader />
+      </Dialog>
+    )
   }
 
   const unsorted: Game[] = data?.user?.authoredGames?.nodes?.filter((i) => i) as Game[]
@@ -268,10 +149,10 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
     .filter((g) => g.year !== configuration.year)
     .sort((a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name))
 
-  const onCopyGameChange = (values: FormValues, setValues: (values: FormValues, shouldValidate?: boolean) => void) => (
-    _: any,
-    value: Game | null
-  ): void => {
+  const onCopyGameChange = (
+    values: GameDialogFormValues,
+    setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void
+  ) => (_: any, value: Game | null): void => {
     if (!value) return
     setValues({
       ...values,
@@ -435,7 +316,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                     label='Game Contact email'
                     margin='normal'
                     fullWidth
-                    inputProps={{ autocapitalize: 'none' }}
+                    inputProps={{ autoCapitalize: 'none' }}
                   />
                 </GridItem>
                 <GridItem xs={12} md={12}>

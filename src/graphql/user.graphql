@@ -6,6 +6,12 @@ query GetUserByEmail($email: String!) {
   }
 }
 
+query GetUserById($id: Int!) {
+  user(id: $id) {
+    ...userFields
+  }
+}
+
 mutation updateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     user {

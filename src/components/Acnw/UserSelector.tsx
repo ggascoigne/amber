@@ -3,7 +3,7 @@ import { Autocomplete } from '@material-ui/lab'
 import classNames from 'classnames'
 import { UserFieldsFragment, useGetAllUsersQuery } from 'client'
 import React, { useCallback, useMemo } from 'react'
-import { useUserFilterState } from 'utils'
+import { notEmpty, useUserFilterState } from 'utils'
 
 import { useNotification } from './Notifications'
 
@@ -75,7 +75,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
 
   const dropdownOptions = useMemo(() => {
     const users = data?.users?.nodes || []
-    return users?.map((u) => u).filter(Boolean) as UserFieldsFragment[] | null
+    return users?.map((u) => u).filter(notEmpty)
   }, [data])
 
   const onChange = useCallback(
