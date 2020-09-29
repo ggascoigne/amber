@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import { DbConfig, config } from '../shared/config'
 import { checkJwt, isAdmin } from './_checkJwt'
-import { JsonError } from './_JsonError'
+import { handleError } from './_handleError'
 import { withApiHandler } from './_standardHandler'
 
 // /api/getConfig
@@ -23,16 +23,7 @@ export default withApiHandler([
       }
       res.send(admin ? { ...summary, database } : { ...summary })
     } catch (err) {
-      if (err instanceof JsonError) {
-        res.status(err.status).send({
-          status: err.status,
-          error: err.message,
-        })
-      } else {
-        res.status(err.status || 500).send({
-          error: err.message,
-        })
-      }
+      handleError(err, res)
     }
   },
 ])

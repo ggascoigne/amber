@@ -16,6 +16,7 @@ const conventionDates = {
 
 export const configuration = {
   contactEmail: 'acnw@wyrdrune.com',
+  gameEmail: 'game@wyrdrune.com',
   conventionStartDate,
   conventionEndDate: conventionStartDate.plus({ days: 3 }),
   year: conventionDates.year,

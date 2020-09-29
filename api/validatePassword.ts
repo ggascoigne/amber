@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch'
 import { requireJwt } from './_checkJwt'
 import { authDomain, managementClientId, managementClientSecret } from './_constants'
 import { getProfile } from './_getProfile'
+import { handleError } from './_handleError'
 import { JsonError } from './_JsonError'
 import { withApiHandler } from './_standardHandler'
 
@@ -48,16 +49,7 @@ export default withApiHandler([
       const result = await validatePassword(profile.email, password)
       res.send(result)
     } catch (err) {
-      if (err instanceof JsonError) {
-        res.status(err.status).send({
-          status: err.status,
-          error: err.message,
-        })
-      } else {
-        res.status(err.status || 500).send({
-          error: err.message,
-        })
-      }
+      handleError(err, res)
     }
   },
 ])

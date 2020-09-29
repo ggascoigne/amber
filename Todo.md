@@ -1,7 +1,8 @@
 #Todos & Ideas
 
 * [x] fix gm names
-* [ ] Game book download links for game admins
+* [x] Game book download links for game admins
+* [ ] Add T-Shirt art and sales link
 * [ ] Get old site accessible to me somewhere
 
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
@@ -40,3 +41,38 @@ This is dependent upon:
   * [ ] Generate and track unique codes
   * [ ] Associate some action with the code, for now that might be change email, but I can foresee more things fitting this pattern.
 
+
+Initial registration: Sep 28, 2020
+Games and Events due: Sep 28, 2020
+Game Book preview to GMs: Oct 4, 2020
+Game Books open for selections: Oct 6, 2020
+Game Selections due: Oct 11, 2020
+Schedule previews to GMs: Oct 14, 2020
+Schedules SENT to all players: Oct 16, 2020
+
+```
+   September 2020
+Su Mo Tu We Th Fr Sa
+       1  2  3  4  5
+ 6  7  8  9 10 11 12
+13 14 15 16 17 18 19
+20 21 22 23 24 25 26
+27 28 29 30            < -- 28
+
+    October 2020
+Su Mo Tu We Th Fr Sa
+             1  2  3
+ 4  5  6  7  8  9 10  < -- 4, 6
+11 12 13 14 15 16 17  < -- 11, 14, 16
+18 19 20 21 22 23 24
+25 26 27 28 29 30 31
+
+   November 2020
+Su Mo Tu We Th Fr Sa
+ 1  2  3  4  5  6  7  < -- 5
+ 8  9 10 11 12 13 14
+15 16 17 18 19 20 21
+22 23 24 25 26 27 28
+29 30
+
+```

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express'
 
 import { getPlayerPreference } from '../../src/utils/lookupValues'
-import { checkJwt } from '../_checkJwt'
+import { requireJwt } from '../_checkJwt'
 import { emails } from '../_constants'
+import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 import { withApiHandler } from '../_standardHandler'
 import { emailer } from './_email'
@@ -18,7 +19,7 @@ import { emailer } from './_email'
 // }
 
 export default withApiHandler([
-  checkJwt,
+  requireJwt,
   async (req: Request, res: Response) => {
     try {
       if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
@@ -47,16 +48,7 @@ export default withApiHandler([
       })
       res.send({ result })
     } catch (err) {
-      if (err instanceof JsonError) {
-        res.status(err.status).send({
-          status: err.status,
-          error: err.message,
-        })
-      } else {
-        res.status(err.status || 500).send({
-          error: err.message,
-        })
-      }
+      handleError(err, res)
     }
   },
 ])

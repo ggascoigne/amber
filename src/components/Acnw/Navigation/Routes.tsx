@@ -6,6 +6,7 @@ import {
   GraphiQLPage,
   PastConsGamesPage,
   PastConsPage,
+  Reports,
   Settings,
   Welcome,
   WelcomeVirtual,
@@ -122,6 +123,13 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: Memberships,
     permission: Perms.IsAdmin,
+  },
+  {
+    path: '/reports',
+    label: 'Reports',
+    exact: true,
+    component: Reports,
+    permission: Perms.Reports,
   },
   {
     path: '/graphiql',
