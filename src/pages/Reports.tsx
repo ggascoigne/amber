@@ -2,20 +2,20 @@ import { List, ListItem } from '@material-ui/core'
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-import { AuthenticatedLink } from '../components/Acnw/AuthenticatedLink'
+import { AuthenticatedDownloadButton } from '../components/Acnw/AuthenticatedDownloadButton'
 
 export const Reports = () => (
   <Page>
     <List>
       <ListItem>
-        <AuthenticatedLink url='/api/reports/membershipReport' filename='membership.xlsx'>
+        <AuthenticatedDownloadButton url='/api/reports/membershipReport' filename='membership.xlsx'>
           Download Membership Report
-        </AuthenticatedLink>
+        </AuthenticatedDownloadButton>
       </ListItem>
       <ListItem>
-        <AuthenticatedLink url='/api/reports/gameReport' filename='games.xlsx'>
+        <AuthenticatedDownloadButton url='/api/reports/gameReport' filename='games.xlsx'>
           Download Game Report
-        </AuthenticatedLink>
+        </AuthenticatedDownloadButton>
       </ListItem>
     </List>
   </Page>
