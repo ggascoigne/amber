@@ -8,7 +8,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import { GameList, GameListIndex } from 'components/Acnw/GameList'
 import { ListItemLink } from 'components/Acnw/Navigation'
 import React from 'react'
-import { useGameFilterState } from 'utils'
+import { configuration, useGameFilterState } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -23,18 +23,18 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const PastConsMenu: React.FC = () => {
+export const GameBookMenu: React.FC = () => {
   const classes = useStyles()
   const { year, slotId } = useGameFilterState((state) => state.gameFilter)
-
+  const links = year === configuration.year ? { to: '/', text: 'Menu' } : { to: '/game-history', text: 'Past Cons' }
   return (
     <>
       <List>
-        <ListItemLink button to='/pastCons'>
+        <ListItemLink button to={links.to}>
           <ListItemIcon>
             <ArrowBackIcon />
           </ListItemIcon>
-          <ListItemText primary='Past Cons' />
+          <ListItemText primary={links.text} />
         </ListItemLink>
       </List>
       <Divider />

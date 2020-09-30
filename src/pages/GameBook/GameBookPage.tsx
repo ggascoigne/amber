@@ -1,10 +1,9 @@
 import { useGetGamesByYearQuery } from 'client'
 import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
 import range from 'lodash/range'
-import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
 import { useHistory } from 'react-router'
-import { useUrlSourceState } from 'utils'
+import { configuration, useUrlSourceState } from 'utils'
 
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
   const { loading, error, data } = useGetGamesByYearQuery({ variables: { year } })
@@ -19,20 +18,20 @@ const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick })
   return <YearTile year={year} game={game} onClick={onClick} />
 }
 
-export const PastConsPage: React.FC = () => {
+export const GameBookPage: React.FC = () => {
   const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
   const history = useHistory()
 
   const selectYear = useCallback(
     async (year: number) => {
-      const slug = `/pastCons/${year}`
+      const slug = `/game-book/${year}`
       await setUrlSource({ source: 'jump', url: slug })
       return history.push(slug)
     },
     [history, setUrlSource]
   )
 
-  const years = range(2012, DateTime.local().year)
+  const years = range(2012, configuration.year)
   return (
     <Page>
       <GridContainer spacing={2} justify='center'>

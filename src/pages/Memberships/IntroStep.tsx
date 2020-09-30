@@ -19,7 +19,7 @@ export const IntroStep: React.FC = () => (
       <DialogContentText>
         In order to run and play games offered through the convention, the first thing you must do is register. If you
         are not already familiar with format of an AmberCon, review the AmberCon NW "What you get and what it costs"
-        page <Link to='/aboutacnw'>here</Link>.
+        page <Link to='/about-acnw'>here</Link>.
       </DialogContentText>
 
       <DialogContentText>

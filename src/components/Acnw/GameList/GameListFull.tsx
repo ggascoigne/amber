@@ -3,7 +3,7 @@ import { GameCard } from 'components/Acnw/GameCard'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 
-import { MatchParams } from '../../../pages/PastCons'
+import { MatchParams } from '../../../pages/GameBook'
 
 interface GameListFull {
   year: number
@@ -18,7 +18,7 @@ export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnte
 
   useEffect(() => {
     if (firstGameId && (slotIdStr !== `${slot.id}` || year !== parseInt(yearStr))) {
-      onEnterGame(`/pastCons/${year}/${slot.id}/${firstGameId}`)
+      onEnterGame(`/game-book/${year}/${slot.id}/${firstGameId}`)
     }
   }, [slotIdStr, firstGameId, onEnterGame, slot.id, year, yearStr])
 
@@ -31,7 +31,7 @@ export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnte
             year={year}
             slot={slot}
             game={game}
-            onEnter={() => onEnterGame(`/pastCons/${year}/${slot.id}/${game.id}`)}
+            onEnter={() => onEnterGame(`/game-book/${year}/${slot.id}/${game.id}`)}
           />
         ) : null
       )}

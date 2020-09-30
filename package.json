@@ -184,6 +184,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
+      "./scripts/noForbiddenCode.sh",
       "prettier --no-color --write",
       "yarn lint"
     ],

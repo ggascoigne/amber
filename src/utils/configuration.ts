@@ -1,6 +1,3 @@
-// todo: clean this up.  Right now this is stubbed out to
-// make it easier to pull stuff over from V1
-
 import { DateTime } from 'luxon'
 
 export const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>

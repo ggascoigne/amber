@@ -1,4 +1,4 @@
-import { PastConsMenu } from 'pages/PastCons/PastConsMenu'
+import { GameBookMenu } from 'pages/GameBook/GameBookMenu'
 import React from 'react'
 
 interface ContextRoutes {
@@ -6,8 +6,8 @@ interface ContextRoutes {
 }
 
 const data: ContextRoutes = {
-  '/pastCons/\\d+': {
-    load: <PastConsMenu />,
+  '/game-book/\\d+': {
+    load: <GameBookMenu />,
   },
 }
 

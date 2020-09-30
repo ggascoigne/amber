@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { Perms } from '../components/Acnw/Auth/PermissionRules'
@@ -15,36 +17,47 @@ const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof type
 
 export const settingValues = ['No', 'Admin', 'GM', 'Everyone', 'Yes']
 
-const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) => {
-  const s = settings?.find((s) => s.code === setting)
-  return s ? asSettingValue(s.value) : null
-}
-
-export const useSetting = (setting: string, defaultValue = false) => {
+export const useSettings = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { loading, error, data } = useGetSettingsQuery({
     fetchPolicy: 'cache-first',
   })
 
-  if (error || loading || !data) {
-    return defaultValue
-  }
+  return useCallback(
+    (setting: string, defaultValue = false) => {
+      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) => {
+        const s = settings?.find((s) => s.code === setting)
+        return s ? asSettingValue(s.value) : null
+      }
 
-  const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) || null
-  const s = getSetting(settings, setting)
+      if (error || loading || !data) {
+        return defaultValue
+      }
 
-  switch (s) {
-    case SettingValue.Admin:
-      return isAdmin
-    case SettingValue.GM:
-      throw new Error('not implemented')
-    case SettingValue.Everyone:
-    case SettingValue.Yes:
-      return true
-    default:
-    case null:
-    case SettingValue.No:
-      return false
-  }
+      const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) || null
+
+      const s = getSetting(settings, setting)
+
+      switch (s) {
+        case SettingValue.Admin:
+          return isAdmin
+        case SettingValue.GM:
+          throw new Error('not implemented')
+        case SettingValue.Everyone:
+        case SettingValue.Yes:
+          return true
+        default:
+        case null:
+        case SettingValue.No:
+          return false
+      }
+    },
+    [data, error, isAdmin, loading]
+  )
+}
+
+export const useSetting = (setting: string, defaultValue = false) => {
+  const getSetting = useSettings()
+  return getSetting(setting, defaultValue)
 }

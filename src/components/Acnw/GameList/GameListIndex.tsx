@@ -34,7 +34,7 @@ export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games }) =>
         if (!game) {
           return null
         }
-        const slug = `/pastCons/${year}/${slot.id}/${game.id}`
+        const slug = `/game-book/${year}/${slot.id}/${game.id}`
         return (
           <ListItem
             key={game.id}

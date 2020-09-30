@@ -2,10 +2,10 @@ import {
   AboutAmber,
   AboutAmberconNw,
   Credits,
+  GameBookGamesPage,
+  GameBookPage,
   GmPage,
   GraphiQLPage,
-  PastConsGamesPage,
-  PastConsPage,
   Reports,
   Settings,
   Welcome,
@@ -17,6 +17,12 @@ import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships, U
 import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
+type UserCondition = {
+  userId: number | null | undefined
+  isMember: boolean
+  getSetting: (setting: string, defaultValue?: any) => boolean
+}
+
 // note that entries are only displayed if they have a label
 export type RouteInfo = {
   path: string
@@ -27,7 +33,7 @@ export type RouteInfo = {
   component: React.ComponentType<any>
   permission?: Perms
   condition?: boolean
-  userCondition?: (userId: number | null | undefined, isMember: boolean) => boolean
+  userCondition?: (params: UserCondition) => boolean
 }
 
 export type RootRoutes = RouteInfo[]
@@ -41,14 +47,14 @@ export const rootRoutes: RootRoutes = [
     component: !configuration.virtual ? Welcome : WelcomeVirtual,
   },
   {
-    path: '/aboutacnw',
+    path: '/about-acnw',
     label: 'AmberCon NW',
     subText: 'What you get and what it costs',
     exact: false,
     component: AboutAmberconNw,
   },
   {
-    path: '/aboutedge',
+    path: '/about-edgefield',
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
@@ -70,62 +76,70 @@ export const rootRoutes: RootRoutes = [
     component: GmPage,
   },
   {
-    path: '/pastCons/:year/:slot?/:game?',
-    link: '/pastCons',
-    exact: false,
-    component: PastConsGamesPage,
+    path: `/game-book/${configuration.year}`,
+    label: `${configuration.year} Game Book`,
+    subText: "This year's games",
+    exact: true,
+    component: GameBookGamesPage,
+    userCondition: ({ getSetting }) => getSetting('display.game.book'),
   },
   {
-    path: '/aboutamber',
+    path: '/game-book/:year/:slot?/:game?',
+    link: '/game-book',
+    exact: false,
+    component: GameBookGamesPage,
+  },
+  {
+    path: '/about-amber',
     label: 'Amber',
     subText: 'Just what is this "Amber" thing?',
     exact: false,
     component: AboutAmber,
   },
   {
-    path: '/pastCons',
+    path: '/game-history',
     label: 'Past Conventions',
     subText: 'See game books from earlier cons',
     exact: true,
-    component: PastConsPage,
+    component: GameBookPage,
   },
   {
-    path: '/lookups',
+    path: '/lookup-admin',
     label: 'Lookups',
     exact: true,
     component: Lookups,
     permission: Perms.IsAdmin,
   },
   {
-    path: '/settings',
+    path: '/settings-admin',
     label: 'Settings',
     exact: true,
     component: Settings,
     permission: Perms.IsAdmin,
   },
   {
-    path: '/users',
+    path: '/user-admin',
     label: 'Users',
     exact: true,
     component: Users,
     permission: Perms.IsAdmin,
   },
   {
-    path: '/games',
+    path: '/game-admin',
     label: 'Games',
     exact: true,
     component: Games,
     permission: Perms.FullGameBook,
   },
   {
-    path: '/members',
+    path: '/member-admin',
     label: 'Members',
     exact: true,
     component: Memberships,
     permission: Perms.IsAdmin,
   },
   {
-    path: '/reports',
+    path: '/report-admin',
     label: 'Reports',
     exact: true,
     component: Reports,

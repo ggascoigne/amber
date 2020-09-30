@@ -52,6 +52,11 @@ const drawerWidth = 240
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    '@global': {
+      '.MuiListItem-root.Mui-selected': {
+        backgroundColor: 'rgba(0,0,0,0.18)',
+      },
+    },
     // "@global": {
     //   // MUI typography elements use REMs, so you can scale the global
     //   // font size by setting the font-size on the <html> element.

@@ -1,10 +1,11 @@
 import { Page } from 'components/Acnw/Page'
 import jump from 'jump.js'
 import debounce from 'lodash/debounce'
-import { PastConsPageGameList } from 'pages/PastCons/PastConsPageGameList'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
 import { configuration, useUrlSourceState } from 'utils'
+
+import { GameBookPageGameList } from './GameBookPageGameList'
 
 export interface MatchParams {
   year: string
@@ -12,7 +13,7 @@ export interface MatchParams {
   game?: string
 }
 
-export const PastConsGamesPage: React.FC = () => {
+export const GameBookGamesPage: React.FC = () => {
   const history = useHistory()
   const { year: yearStr, slot: slotIdStr, game } = useParams<MatchParams>()
   const year = yearStr ? parseInt(yearStr) : configuration.year
@@ -63,7 +64,7 @@ export const PastConsGamesPage: React.FC = () => {
 
   return (
     <Page>
-      <PastConsPageGameList year={year} slotIdStr={slotIdStr || '1'} onEnterGame={setNewUrl} />
+      <GameBookPageGameList year={year} slotIdStr={slotIdStr || '1'} onEnterGame={setNewUrl} />
     </Page>
   )
 }

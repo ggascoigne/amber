@@ -5,7 +5,7 @@ import React from 'react'
 import { useLocation } from 'react-router'
 import { useIsMember } from 'utils/membership'
 
-import { useUser } from '../../../utils'
+import { useSettings, useUser } from '../../../utils'
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './Routes'
@@ -18,6 +18,7 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
   const location = useLocation()
   const { userId } = useUser()
   const isMember = useIsMember(userId)
+  const getSetting = useSettings()
 
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
@@ -30,7 +31,10 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
           // only display routes with a label
           .filter((menuItem) => menuItem.label)
           .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
-          .filter((menuItem) => menuItem.userCondition === undefined || menuItem.userCondition(userId, isMember))
+          .filter(
+            (menuItem) =>
+              menuItem.userCondition === undefined || menuItem.userCondition({ userId, isMember, getSetting })
+          )
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (

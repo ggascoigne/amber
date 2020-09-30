@@ -29,8 +29,6 @@ export const AuthenticatedDownloadButton: React.FC<{ url: string; filename: stri
           },
     })
 
-    console.log(`result.status = ${JSON.stringify(result.status, null, 2)}`)
-
     if (result.status !== 200) {
       const json = await result.json()
       notify({ text: json.error, variant: 'error' })
@@ -48,7 +46,7 @@ export const AuthenticatedDownloadButton: React.FC<{ url: string; filename: stri
   return (
     <>
       <Button onClick={handleAction} color='primary' variant='outlined'>
-        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/anchor-has-content */}
         <a role='button' ref={link} />
         {children}
       </Button>
