@@ -42,13 +42,13 @@ This is dependent upon:
   * [ ] Associate some action with the code, for now that might be change email, but I can foresee more things fitting this pattern.
 
 
-Initial registration: Sep 28, 2020
-Games and Events due: Sep 28, 2020
-Game Book preview to GMs: Oct 4, 2020
-Game Books open for selections: Oct 6, 2020
-Game Selections due: Oct 11, 2020
-Schedule previews to GMs: Oct 14, 2020
-Schedules SENT to all players: Oct 16, 2020
+* Initial registration: Sep 28, 2020
+* Games and Events due: Sep 28, 2020
+* Game Book preview to GMs: Oct 4, 2020
+* Game Books open for selections: Oct 6, 2020
+* Game Selections due: Oct 11, 2020
+* Schedule previews to GMs: Oct 14, 2020
+* Schedules SENT to all players: Oct 16, 2020
 
 ```
    September 2020
@@ -76,3 +76,7 @@ Su Mo Tu We Th Fr Sa
 29 30
 
 ```
+
+add first and last name to member download
+split slots attending out into separate columns
+

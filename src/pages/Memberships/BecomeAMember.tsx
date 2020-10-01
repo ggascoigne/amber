@@ -57,12 +57,18 @@ export const BecomeAMember = () => {
             <h4>We have a new authentication system.</h4>
 
             <p>
-              <strong>You must re-register if you used the old site. Your old password won't work.</strong>
+              <strong>
+                You must create a new account if you used the old site. Your old password won't work. Click the
+                Login/Sign up button below and then click Sign Up on the form that opens.
+              </strong>
             </p>
 
             <p>If you use the same email address you used on the old site, you will have access to your old data.</p>
 
-            <p>Only after you re-register and confirm your email will you be able to log in to the new site.</p>
+            <p>
+              Only after you have created a new account and confirmed your email will you be able to log in to the new
+              site.
+            </p>
 
             <p>
               Please note, that you can also login with either Facebook or Google. The same email advice applies in this

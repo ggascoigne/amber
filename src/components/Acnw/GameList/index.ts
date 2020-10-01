@@ -1,3 +1,3 @@
-export * from './GameList'
+export * from './GameListNavigator'
 export * from './GameListFull'
 export * from './GameListIndex'

@@ -1,5 +1,3 @@
-#import "./profileFragment.graphql"
-
 fragment gameFields on Game {
   nodeId
   id

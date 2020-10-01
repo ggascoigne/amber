@@ -1,4 +1,4 @@
-import { useGetGamesByYearQuery } from 'client'
+import { useGetSmallGamesByYearQuery } from 'client'
 import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
 import range from 'lodash/range'
 import React, { useCallback } from 'react'
@@ -6,7 +6,7 @@ import { useHistory } from 'react-router'
 import { configuration, useUrlSourceState } from 'utils'
 
 const GameByYear: React.FC<{ year: number; onClick: any }> = ({ year, onClick }) => {
-  const { loading, error, data } = useGetGamesByYearQuery({ variables: { year } })
+  const { loading, error, data } = useGetSmallGamesByYearQuery({ variables: { year } })
   if (error) {
     return <GraphQLError error={error} />
   }

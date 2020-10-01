@@ -26,15 +26,22 @@ const useStyles = makeStyles({
   },
 })
 
+export interface GameCardChild {
+  year: number
+  slotId: number
+  gameId: number
+}
+
 interface GameCard {
   game: GameFieldsFragment & GameGmsFragment
   year: number
   slot: { id: number }
   onEnter?: any
   tiny?: boolean
+  selectionComponent?: (props: GameCardChild) => React.ReactNode
 }
 
-export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny = false }) => {
+export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny = false, selectionComponent }) => {
   const classes = useStyles()
   const {
     id,
@@ -54,6 +61,14 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
     setting,
   } = game
 
+  const header = selectionComponent ? (
+    <HeaderContent name={name} tiny={tiny}>
+      {selectionComponent({ year, slotId: slot.id, gameId: id })}
+    </HeaderContent>
+  ) : (
+    <HeaderContent name={name} tiny={tiny} />
+  )
+
   return slotId ? (
     <Card
       key={`game_${id}`}
@@ -62,12 +77,10 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
     >
       {onEnter ? (
         <Waypoint topOffset={100} bottomOffset='80%' onEnter={onEnter}>
-          <div>
-            <HeaderContent name={name} tiny={tiny} />
-          </div>
+          <div>{header}</div>
         </Waypoint>
       ) : (
-        <HeaderContent name={name} tiny={tiny} />
+        { header }
       )}
       <CardBody>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>

@@ -80,3 +80,9 @@ export function camelToWords(str: string) {
 
   return newKey
 }
+
+export const not = <T extends unknown>(a: T[], b: T[]) => a.filter((value) => b.indexOf(value) === -1)
+
+export const intersection = <T extends unknown>(a: T[], b: T[]) => a.filter((value) => b.indexOf(value) !== -1)
+
+export const union = <T extends unknown>(a: T[], b: T[]) => [...a, ...not(b, a)]

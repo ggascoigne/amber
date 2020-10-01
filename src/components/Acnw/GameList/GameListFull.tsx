@@ -3,7 +3,11 @@ import { GameCard } from 'components/Acnw/GameCard'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router'
 
-import { MatchParams } from '../../../pages/GameBook'
+export interface MatchParams {
+  year: string
+  slot?: string
+  game?: string
+}
 
 interface GameListFull {
   year: number
@@ -15,6 +19,10 @@ interface GameListFull {
 export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnterGame }) => {
   const firstGameId = games?.[0]?.node?.id
   const { year: yearStr, slot: slotIdStr } = useParams<MatchParams>()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     if (firstGameId && (slotIdStr !== `${slot.id}` || year !== parseInt(yearStr))) {

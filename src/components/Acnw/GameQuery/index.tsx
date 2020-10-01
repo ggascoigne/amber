@@ -13,8 +13,7 @@ export interface GameQueryChild {
 interface GameQuery {
   year: number
   slot: SlotFieldsFragment
-
-  children(props: GameQueryChild): React.ReactNode
+  children: (props: GameQueryChild) => React.ReactNode
 }
 
 export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {

@@ -1,20 +1,19 @@
+import { SlotFieldsFragment, useGetSlotsQuery } from 'client'
 import { GameQuery, GameQueryChild } from 'components/Acnw/GameQuery'
 import { SlotSelector } from 'components/Acnw/SlotSelector'
 import React from 'react'
 
-import { SlotFieldsFragment, useGetSlotsQuery } from '../../../client'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
-interface GameList {
+interface GameListNavigator {
   small?: boolean
   year: number
   slotIdStr: string
-
-  children(props: GameQueryChild): React.ReactNode
+  children: (props: GameQueryChild) => React.ReactNode
 }
 
-export const GameList: React.FC<GameList> = ({ small = false, year, slotIdStr, children }) => {
+export const GameListNavigator: React.FC<GameListNavigator> = ({ small = false, year, slotIdStr, children }) => {
   const { loading, error, data } = useGetSlotsQuery()
   if (error) {
     return <GraphQLError error={error} />

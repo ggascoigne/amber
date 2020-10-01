@@ -6622,6 +6622,20 @@ export type GetGamesByYearQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetSmallGamesByYearQueryVariables = Exact<{
+  year: Scalars['Int']
+}>
+
+export type GetSmallGamesByYearQuery = { __typename: 'Query' } & {
+  games?: Maybe<
+    { __typename: 'GamesConnection' } & {
+      edges: Array<
+        { __typename: 'GamesEdge' } & { node?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+      >
+    }
+  >
+}
+
 export type UpdateGameByNodeIdMutationVariables = Exact<{
   input: UpdateGameByNodeIdInput
 }>
@@ -7391,6 +7405,59 @@ export function useGetGamesByYearLazyQuery(
 export type GetGamesByYearQueryHookResult = ReturnType<typeof useGetGamesByYearQuery>
 export type GetGamesByYearLazyQueryHookResult = ReturnType<typeof useGetGamesByYearLazyQuery>
 export type GetGamesByYearQueryResult = Apollo.QueryResult<GetGamesByYearQuery, GetGamesByYearQueryVariables>
+export const GetSmallGamesByYearDocument = gql`
+  query GetSmallGamesByYear($year: Int!) {
+    games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC], first: 1) {
+      edges {
+        node {
+          ...gameFields
+          ...gameGms
+        }
+      }
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${GameGmsFragmentDoc}
+`
+
+/**
+ * __useGetSmallGamesByYearQuery__
+ *
+ * To run a query within a React component, call `useGetSmallGamesByYearQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSmallGamesByYearQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSmallGamesByYearQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *   },
+ * });
+ */
+export function useGetSmallGamesByYearQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
+) {
+  return Apollo.useQuery<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(
+    GetSmallGamesByYearDocument,
+    baseOptions
+  )
+}
+export function useGetSmallGamesByYearLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(
+    GetSmallGamesByYearDocument,
+    baseOptions
+  )
+}
+export type GetSmallGamesByYearQueryHookResult = ReturnType<typeof useGetSmallGamesByYearQuery>
+export type GetSmallGamesByYearLazyQueryHookResult = ReturnType<typeof useGetSmallGamesByYearLazyQuery>
+export type GetSmallGamesByYearQueryResult = Apollo.QueryResult<
+  GetSmallGamesByYearQuery,
+  GetSmallGamesByYearQueryVariables
+>
 export const UpdateGameByNodeIdDocument = gql`
   mutation updateGameByNodeId($input: UpdateGameByNodeIdInput!) {
     updateGameByNodeId(input: $input) {

@@ -18,6 +18,11 @@ const useStyles = makeStyles({
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
   },
+  header: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'space-between',
+  },
 })
 
 export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
@@ -28,11 +33,12 @@ export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   </>
 )
 
-export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name, tiny = false }) => {
+export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name, tiny = false, children }) => {
   const classes = useStyles()
   return (
-    <CardHeader color='info'>
+    <CardHeader color='info' className={classes.header}>
       <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
+      {children}
     </CardHeader>
   )
 }

@@ -1,6 +1,6 @@
-import CircularProgress from '@material-ui/core/CircularProgress'
 import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
 import React from 'react'
+import Spinner from 'react-spinkit'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -24,7 +24,7 @@ interface ILoader extends WithStyles<typeof styles> {
   pastDelay?: boolean
 }
 
-const CircularIndeterminate: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay }) => (
+const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay }) => (
   <div className={classes.root}>
     {error && (
       <div>
@@ -37,8 +37,8 @@ const CircularIndeterminate: React.FC<ILoader> = ({ classes, error, retry, timed
       </div>
     )}
     {pastDelay && <div>Loading...</div>}
-    <CircularProgress className={classes.progress} />
+    <Spinner fadeIn='half' className={classes.progress} name='chasing-dots' color='#3f51b5' />
   </div>
 )
 
-export const Loader = withStyles(styles)(CircularIndeterminate)
+export const Loader = withStyles(styles)(_Loader)

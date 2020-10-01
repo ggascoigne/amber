@@ -1,13 +1,16 @@
-import { GameBookMenu } from 'pages/GameBook/GameBookMenu'
+import { GameBookMenu, GameSignupMenu } from 'pages'
 import React from 'react'
 
-interface ContextRoutes {
-  [k: string]: { load: any }
-}
+// This controls overriding the nav menu based on the route
+
+type ContextRoutes = Record<string, { load: any }>
 
 const data: ContextRoutes = {
   '/game-book/\\d+': {
     load: <GameBookMenu />,
+  },
+  '/game-signup/\\d+': {
+    load: <GameSignupMenu />,
   },
 }
 

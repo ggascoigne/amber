@@ -4,6 +4,7 @@ import {
   Credits,
   GameBookGamesPage,
   GameBookPage,
+  GameSignupPage,
   GmPage,
   GraphiQLPage,
   Reports,
@@ -88,6 +89,20 @@ export const rootRoutes: RootRoutes = [
     link: '/game-book',
     exact: false,
     component: GameBookGamesPage,
+  },
+  {
+    path: `/game-signup/${configuration.year}`,
+    label: 'Game Signup',
+    subText: 'Choose your games',
+    exact: true,
+    component: GameSignupPage,
+    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+  },
+  {
+    path: '/game-signup/:year/:slot?/:game?',
+    link: '/game-signup',
+    exact: false,
+    component: GameSignupPage,
   },
   {
     path: '/about-amber',

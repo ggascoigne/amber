@@ -24,6 +24,17 @@ query GetGamesByYear($year: Int!) {
   }
 }
 
+query GetSmallGamesByYear($year: Int!) {
+  games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC], first: 1) {
+    edges {
+      node {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+}
+
 mutation updateGameByNodeId($input: UpdateGameByNodeIdInput!) {
   updateGameByNodeId(input: $input) {
     game {
