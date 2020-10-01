@@ -145,9 +145,9 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
   }
 
   const unsorted: Game[] = (data!.user?.authoredGames?.nodes?.filter(notEmpty) as Game[]) || []
-  const priorGamesList = unsorted
-    .filter((g) => g.year !== configuration.year)
-    .sort((a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name))
+  const priorGamesList = unsorted.sort(
+    (a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name)
+  )
 
   const onCopyGameChange = (
     values: GameDialogFormValues,
