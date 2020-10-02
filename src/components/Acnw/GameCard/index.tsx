@@ -77,10 +77,10 @@ export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny =
     >
       {onEnter ? (
         <Waypoint topOffset={100} bottomOffset='80%' onEnter={onEnter}>
-          <div>{header}</div>
+          <>{header}</>
         </Waypoint>
       ) : (
-        { header }
+        <>{header}</>
       )}
       <CardBody>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
