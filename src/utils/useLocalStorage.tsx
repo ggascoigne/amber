@@ -1,5 +1,6 @@
 // credits to https://usehooks.com/useLocalStorage/
 
+import { dequal as deepEqual } from 'dequal'
 import { useCallback, useState } from 'react'
 
 export function useLocalStorage<T = any>(key: string, initialValue: T): [T, (value: T) => void] {
@@ -23,16 +24,18 @@ export function useLocalStorage<T = any>(key: string, initialValue: T): [T, (val
   const setValue = useCallback(
     (value: T) => {
       try {
-        // Save state
-        setStoredValue(value)
-        // Save to local storage
-        window.localStorage.setItem(key, JSON.stringify(value))
+        if (!deepEqual(storedValue, value)) {
+          // Save state
+          setStoredValue(value)
+          // Save to local storage
+          window.localStorage.setItem(key, JSON.stringify(value))
+        }
       } catch (error) {
         // A more advanced implementation would handle the error case
         console.log(error)
       }
     },
-    [key]
+    [key, storedValue]
   )
 
   return [storedValue, setValue]

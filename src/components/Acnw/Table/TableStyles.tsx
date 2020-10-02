@@ -61,6 +61,9 @@ const getClasses = makeStyles((theme: Theme) =>
           backgroundColor: 'rgba(0, 0, 0, 0.07)',
         },
       },
+      '&.clickable': {
+        cursor: 'pointer',
+      },
     },
     tableLabel: {},
     tableCell: {

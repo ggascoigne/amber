@@ -27,8 +27,8 @@ import {
   useSortBy,
   useTable,
 } from 'react-table'
+import { camelToWords, isDev, useDebounce } from 'utils'
 
-import { camelToWords, isDev, useDebounce, useLocalStorage } from '../../../utils'
 import { FilterChipBar } from './FilterChipBar'
 import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
@@ -49,6 +49,7 @@ import {
 } from './TableStyles'
 import { Command, TableToolbar } from './TableToolbar'
 import { TooltipCell } from './TooltipCell'
+import { useInitialTableState } from './useInitialTableState'
 
 // import { useFlexLayout } from './useFlexLayout'
 
@@ -60,6 +61,7 @@ export interface Table<T extends Record<string, unknown>> extends TableOptions<T
   onClick?: (row: Row<T>) => void
   extraCommands?: Command<T>[]
   onRefresh?: MouseEventHandler
+  initialState?: Partial<TableState<T>>
 }
 
 const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
@@ -144,7 +146,17 @@ const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta
   getStyles(props, cell.column?.disableResizing, cell.column?.align)
 
 export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<Table<T>>): ReactElement {
-  const { name, columns, onAdd, onDelete, onEdit, onClick, extraCommands, onRefresh } = props
+  const {
+    name,
+    columns,
+    onAdd,
+    onDelete,
+    onEdit,
+    onClick,
+    extraCommands,
+    onRefresh,
+    initialState: userInitialState = {},
+  } = props
   const classes = useStyles()
 
   const filterTypes = React.useMemo(
@@ -185,7 +197,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     []
   )
 
-  const [initialState, setInitialState] = useLocalStorage<Partial<TableState<T>>>(`tableState:${name}`, {})
+  const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, userInitialState)
   const instance = useTable<T>(
     {
       ...props,
@@ -199,6 +211,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       autoResetSelectedRows: false,
       autoResetSortBy: false,
       autoResetFilters: false,
+      disableSortRemove: true,
     },
     ...hooks
   )
@@ -207,16 +220,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
   const debouncedState = useDebounce(state, 500)
 
   useEffect(() => {
-    const { sortBy, filters, pageSize, columnResizing, hiddenColumns, groupBy } = debouncedState
-    const val = {
-      sortBy,
-      filters,
-      pageSize,
-      columnResizing,
-      hiddenColumns,
-      groupBy,
-    }
-    setInitialState(val)
+    setInitialState(debouncedState)
   }, [setInitialState, debouncedState])
 
   const cellClickHandler = (cell: Cell<T>) => () => {
@@ -277,7 +281,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
             prepareRow(row)
             return (
               // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected })}>
+              <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected, clickable: onClick })}>
                 {row.cells.map((cell) => (
                   // eslint-disable-next-line react/jsx-key
                   <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>

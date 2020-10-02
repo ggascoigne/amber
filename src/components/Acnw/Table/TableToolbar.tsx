@@ -101,9 +101,9 @@ type TableToolbar<T extends Record<string, unknown>> = {
 
 export function TableToolbar<T extends Record<string, unknown>>({
   instance,
-  onAdd = () => () => null,
-  onDelete = () => () => null,
-  onEdit = () => () => null,
+  onAdd,
+  onDelete,
+  onEdit,
   extraCommands = [],
   onRefresh,
 }: PropsWithChildren<TableToolbar<T>>): ReactElement | null {

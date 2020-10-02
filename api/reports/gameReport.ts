@@ -19,9 +19,12 @@ export default withApiHandler([
       const year = req.body?.year || configuration.year
       const query = `
           select 
+            g.id as "Game Id",
             u.full_name as "Full Name",
+            u.first_name as "First Name",
+            u.last_name as "Last Name",
             u.email as "email",
-            g.name as "Name",
+            g.name as "Game Title",
             g.description as "Description",
             g.genre as "Genre",
             g.type as "Type",

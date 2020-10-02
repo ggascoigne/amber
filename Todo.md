@@ -1,9 +1,14 @@
 #Todos & Ideas
 
-* [x] fix gm names
-* [x] Game book download links for game admins
 * [ ] Add T-Shirt art and sales link
 * [ ] Get old site accessible to me somewhere
+* [ ] Cloning the ui changes the tab - forces the UI back to the membership page.
+* [ ] can open links such as edit game into another window
+* [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.
+
+the games table should:
+* [ ] allow for bulk edit perhaps?
+* [ ] split slots attending out into separate columns
 
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
 * [ ] there's still something icky about the past cons page, it really shouldn't be using the url as an input in so many places.  It feels like we're mixing input from the url with input from state and making it far too complex. But it works for now.
@@ -24,6 +29,13 @@
 * [x] add past game selection to game form
 * [x] move builds over to production auth0
 * [x] Customise the auth0 emails
+* [x] fix gm names
+* [x] Game book download links for game admins
+* [x] gm games table should not allow for grouping
+* [x] all tables should have visual indications that you can click to edit, link or mouse change
+* [x] gm games table should have a default sort by slot
+* [x] all tables should have a two-step sort not a three step one
+* [x] add first and last name to member download
 
 ### Profiles
 
@@ -41,6 +53,7 @@ This is dependent upon:
   * [ ] Generate and track unique codes
   * [ ] Associate some action with the code, for now that might be change email, but I can foresee more things fitting this pattern.
 
+### Deadlines
 
 * Initial registration: Sep 28, 2020
 * Games and Events due: Sep 28, 2020
@@ -76,7 +89,4 @@ Su Mo Tu We Th Fr Sa
 29 30
 
 ```
-
-add first and last name to member download
-split slots attending out into separate columns
 

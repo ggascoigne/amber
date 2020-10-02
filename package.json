@@ -96,6 +96,7 @@
     "@now/node": "^1.8.2",
     "classnames": "^2.2.6",
     "cors": "^2.8.5",
+    "dequal": "^2.0.2",
     "email-templates": "^7.1.1",
     "eslint-config-react-app": "^5.2.1",
     "express-jwt": "^6.0.0",

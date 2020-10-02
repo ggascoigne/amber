@@ -9,10 +9,9 @@ import {
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import type { Column, Row, TableInstance } from 'react-table'
+import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { notEmpty, useUser, useYearFilterState } from 'utils'
 
-import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { IsMember, IsNotMember } from '../../utils/membership'
 import { GamesDialog } from '../Games/GamesDialog'
 
@@ -73,6 +72,15 @@ export const GmPage = () => (
   </>
 )
 
+const initialState: Partial<TableState<Game>> = {
+  sortBy: [
+    {
+      id: 'slotPreference',
+      desc: false,
+    },
+  ],
+}
+
 const MemberGmPage: React.FC = React.memo(() => {
   const year = useYearFilterState((state) => state.year)
   const [showEdit, setShowEdit] = useState(false)
@@ -107,10 +115,6 @@ const MemberGmPage: React.FC = React.memo(() => {
 
   const list: Game[] = games!.nodes.filter(notEmpty)
 
-  const onAdd: TableMouseEventHandler = () => () => {
-    setShowEdit(true)
-  }
-
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
     setSelection([])
@@ -125,11 +129,6 @@ const MemberGmPage: React.FC = React.memo(() => {
       })
     )
     Promise.all(updater).then(() => console.log('deleted'))
-  }
-
-  const onEdit = (instance: TableInstance<Game>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
   const onClick = (row: Row<Game>) => {
@@ -192,11 +191,11 @@ const MemberGmPage: React.FC = React.memo(() => {
       {list?.length ? (
         <Table<Game>
           name='gm_games'
+          initialState={initialState}
+          disableGroupBy
           data={list}
           columns={columns}
-          onAdd={onAdd}
           onDelete={onDelete}
-          onEdit={onEdit}
           onClick={onClick}
         />
       ) : null}
