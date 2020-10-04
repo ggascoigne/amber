@@ -3,7 +3,7 @@ import React from 'react'
 
 import { dangerColor } from '../assets/jss/material-kit-react'
 import Acnw from '../components/Acnw'
-import { configuration, getSlotDescription, range } from '../utils'
+import { SlotFormat, configuration, getSlotDescription, range } from '../utils'
 
 export const AboutAmberconNw = () => (
   <Page>
@@ -58,7 +58,7 @@ export const AboutAmberconNw = () => (
             year: configuration.year,
             slot: i + 1,
             local: false,
-            altFormat: true,
+            altFormat: SlotFormat.ALT,
           })}
         </li>
       ))}

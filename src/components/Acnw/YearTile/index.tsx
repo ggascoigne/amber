@@ -79,7 +79,7 @@ const FakeTile = ({ index }: FakeTile) => {
 interface YearTile {
   year: number
   game: any
-  onClick: any
+  onClick?: any
 }
 
 export const YearTile = ({ year, game, onClick }: YearTile) => {
@@ -94,7 +94,7 @@ export const YearTile = ({ year, game, onClick }: YearTile) => {
           </Typography>
         </CardHeader>
         <div className={classes.gameWrapper}>
-          <GameCard game={game} year={year} slot={{ id: 1 }} tiny />
+          <GameCard game={game} year={year} slot={1} tiny />
           <FakeTile index={2} />
           <FakeTile index={3} />
         </div>

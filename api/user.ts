@@ -3,7 +3,6 @@ import { Request, Response } from 'express'
 import { requireJwt } from './_checkJwt'
 import { getManagementApiAccessToken } from './_getManagementApiAccessToken'
 import { handleError } from './_handleError'
-import { JsonError } from './_JsonError'
 import { withApiHandler } from './_standardHandler'
 
 // /api/user

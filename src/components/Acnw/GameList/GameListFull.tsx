@@ -1,37 +1,41 @@
-import type { GameArray, SlotFieldsFragment } from 'client'
-import { GameCard } from 'components/Acnw/GameCard'
+import type { GameArray } from 'client'
+import { GameCard, GameCardChild } from 'components/Acnw'
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router'
+import { useScrollToHash, useUrlSourceState } from 'utils'
 
 export interface MatchParams {
   year: string
   slot?: string
-  game?: string
 }
 
 interface GameListFull {
   year: number
-  slot: SlotFieldsFragment
+  slot: number
   games: GameArray
   onEnterGame: any
+  selectionComponent?: (props: GameCardChild) => React.ReactNode
 }
 
-export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnterGame }) => {
+export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnterGame, selectionComponent }) => {
+  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
+  const hasEnterGame = !!onEnterGame
   const firstGameId = games?.[0]?.node?.id
-  const { year: yearStr, slot: slotIdStr } = useParams<MatchParams>()
+  const firstSlug = `${year}/${slot}/${firstGameId}`
+
+  useScrollToHash()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   useEffect(() => {
-    if (firstGameId && (slotIdStr !== `${slot.id}` || year !== parseInt(yearStr))) {
-      onEnterGame(`/game-book/${year}/${slot.id}/${firstGameId}`)
+    if (firstGameId && hasEnterGame) {
+      setUrlSource({ source: 'scroll', url: firstSlug })
     }
-  }, [slotIdStr, firstGameId, onEnterGame, slot.id, year, yearStr])
+  }, [firstGameId, firstSlug, hasEnterGame, setUrlSource])
 
   return (
-    <React.Fragment key={`slot_${slot.id}`}>
+    <React.Fragment key={`slot_${slot}`}>
       {games.map(({ node: game }) =>
         game ? (
           <GameCard
@@ -39,7 +43,8 @@ export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnte
             year={year}
             slot={slot}
             game={game}
-            onEnter={() => onEnterGame(`/game-book/${year}/${slot.id}/${game.id}`)}
+            onEnter={onEnterGame}
+            selectionComponent={selectionComponent}
           />
         ) : null
       )}

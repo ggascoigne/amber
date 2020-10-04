@@ -38,7 +38,12 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path
             const item = (
-              <ListItemLink key={link} button to={link} selected={activeItem === link}>
+              <ListItemLink
+                key={link}
+                button
+                to={{ pathname: link, state: { fromClick: true } }}
+                selected={activeItem === link}
+              >
                 <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
               </ListItemLink>
             )

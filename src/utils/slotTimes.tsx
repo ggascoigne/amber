@@ -64,15 +64,25 @@ const getVirtualSlotTimes = (year: number) => {
   ] as const
 }
 
-const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: boolean) => {
-  if (altFormat) {
-    return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
-  } else {
-    return `Slot ${slot} ${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
+export enum SlotFormat {
+  DEFAULT,
+  ALT,
+  SHORT,
+}
+
+const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) => {
+  switch (altFormat) {
+    case SlotFormat.ALT:
+      return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
+    case SlotFormat.SHORT:
+      return `Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
+    case SlotFormat.DEFAULT:
+    default:
+      return `Slot ${slot} ${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
   }
 }
 
-const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: boolean) =>
+const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) =>
   formatSlot(slot, s.setZone('local'), e.setZone('local'), altFormat)
 
 export const getSlotTimes = (year: number) =>
@@ -82,12 +92,12 @@ export const getSlotDescription = ({
   year,
   slot,
   local = false,
-  altFormat = false,
+  altFormat = SlotFormat.DEFAULT,
 }: {
   year: number
   slot: number
   local?: boolean
-  altFormat?: boolean
+  altFormat?: SlotFormat
 }) => {
   const [start, end] = getSlotTimes(year)[slot - 1]
   return local ? formatSlotLocal(slot, start, end, altFormat) : formatSlot(slot, start, end, altFormat)

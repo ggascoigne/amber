@@ -28,97 +28,103 @@ const useStyles = makeStyles({
 
 export interface GameCardChild {
   year: number
-  slotId: number
+  slot: number
   gameId: number
 }
 
 interface GameCard {
   game: GameFieldsFragment & GameGmsFragment
   year: number
-  slot: { id: number }
-  onEnter?: any
+  slot: number
+  onEnter?: (param?: string) => void
   tiny?: boolean
   selectionComponent?: (props: GameCardChild) => React.ReactNode
 }
 
-export const GameCard: React.FC<GameCard> = ({ game, year, slot, onEnter, tiny = false, selectionComponent }) => {
-  const classes = useStyles()
-  const {
-    id,
-    name,
-    slotId = 0,
-    description,
-    charInstructions,
-    gameContactEmail,
-    genre,
-    playerMax,
-    playerMin,
-    playerPreference,
-    playersContactGm,
-    type,
-    teenFriendly,
-    gameAssignments: gms,
-    setting,
-  } = game
+export const GameCard: React.FC<GameCard> = React.memo(
+  ({ game, year, slot, onEnter, tiny = false, selectionComponent }) => {
+    const classes = useStyles()
+    const {
+      id,
+      name,
+      slotId = 0,
+      description,
+      charInstructions,
+      gameContactEmail,
+      genre,
+      playerMax,
+      playerMin,
+      playerPreference,
+      playersContactGm,
+      type,
+      teenFriendly,
+      gameAssignments: gms,
+      setting,
+    } = game
 
-  const header = selectionComponent ? (
-    <HeaderContent name={name} tiny={tiny}>
-      {selectionComponent({ year, slotId: slot.id, gameId: id })}
-    </HeaderContent>
-  ) : (
-    <HeaderContent name={name} tiny={tiny} />
-  )
+    const header = (
+      <div>
+        {selectionComponent ? (
+          <HeaderContent name={name} tiny={tiny}>
+            {selectionComponent({ year, slot, gameId: id })}
+          </HeaderContent>
+        ) : (
+          <HeaderContent name={name} tiny={tiny} />
+        )}
+      </div>
+    )
 
-  return slotId ? (
-    <Card
-      key={`game_${id}`}
-      className={classNames(classes.card, { [classes.tinyCard]: tiny })}
-      id={`game/${year}/${slot.id}/${id}`}
-    >
-      {onEnter ? (
-        <Waypoint topOffset={100} bottomOffset='80%' onEnter={onEnter}>
+    return slotId ? (
+      <Card
+        key={`game_${id}`}
+        className={classNames(classes.card, { [classes.tinyCard]: tiny })}
+        id={`game/${year}/${slot}/${id}`}
+      >
+        {onEnter ? (
+          <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
+            {header}
+          </Waypoint>
+        ) : (
           <>{header}</>
-        </Waypoint>
-      ) : (
-        <>{header}</>
-      )}
-      <CardBody>
-        <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
-          <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
-          </Field>
-          <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-            <MultiLine text={description} />
-          </Field>
-          {setting && (
-            <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
-              <MultiLine text={setting} />
+        )}
+        <CardBody>
+          <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+            <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
+              {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
             </Field>
-          )}
-          {charInstructions && (
-            <Field label='Character & Player Instructions' tiny={tiny}>
-              <MultiLine text={charInstructions} />
+            <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+              <MultiLine text={description} />
             </Field>
-          )}
-          <Field label='Genre/Type' small tiny={tiny}>
-            {genre} - {type}
-          </Field>
-          <Field label='Teen Friendly' small tiny={tiny}>
-            {teenFriendly ? 'Yes' : 'No'}
-          </Field>
-          <Field label='Number of Players' small tiny={tiny}>
-            {playerMin} - {playerMax}
-          </Field>
-          <Field label='Player Preference' small tiny={tiny}>
-            <LookupValue realm='gamePlayerPref' code={playerPreference} />
-          </Field>
-          <Field label='' tiny={tiny}>
-            {playersContactGm
-              ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
-              : `Players need not contact the GM in advance of the convention.`}
-          </Field>
-        </GridContainer>
-      </CardBody>
-    </Card>
-  ) : null
-}
+            {setting && (
+              <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
+                <MultiLine text={setting} />
+              </Field>
+            )}
+            {charInstructions && (
+              <Field label='Character & Player Instructions' tiny={tiny}>
+                <MultiLine text={charInstructions} />
+              </Field>
+            )}
+            <Field label='Genre/Type' small tiny={tiny}>
+              {genre} - {type}
+            </Field>
+            <Field label='Teen Friendly' small tiny={tiny}>
+              {teenFriendly ? 'Yes' : 'No'}
+            </Field>
+            <Field label='Number of Players' small tiny={tiny}>
+              {playerMin} - {playerMax}
+            </Field>
+            <Field label='Player Preference' small tiny={tiny}>
+              <LookupValue realm='gamePlayerPref' code={playerPreference} />
+            </Field>
+            <Field label='' tiny={tiny}>
+              {playersContactGm
+                ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
+                : `Players need not contact the GM in advance of the convention.`}
+            </Field>
+          </GridContainer>
+        </CardBody>
+      </Card>
+    ) : null
+  }
+)

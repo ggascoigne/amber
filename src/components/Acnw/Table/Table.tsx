@@ -99,7 +99,7 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
   )
 }
 
-const getStyles = <T extends Record<string, unknown>>(props: any, disableResizing = false, align = 'left') => [
+const getStyles = (props: any, disableResizing = false, align = 'left') => [
   props,
   {
     style: {

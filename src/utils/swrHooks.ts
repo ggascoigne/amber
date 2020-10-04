@@ -20,7 +20,7 @@ export function useLazySwrQuery<TData = any, TVariables = OperationVariables>(
   if (result.loading) {
     try {
       result.client.readQuery({
-        query: query,
+        query,
         variables: result.variables,
       })
     } catch (error) {
@@ -42,7 +42,7 @@ export function useSwrQuery<TData = any, TVariables = OperationVariables>(
   if (result.loading) {
     try {
       result.client.readQuery({
-        query: query,
+        query,
         variables: result.variables,
       })
     } catch (error) {

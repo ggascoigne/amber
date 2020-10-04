@@ -4,14 +4,13 @@ import 'react-app-polyfill/ie11'
 
 import { ApolloProvider } from '@apollo/client'
 import client from 'client/client'
-import { Auth0Provider } from 'components/Acnw'
+import { Auth0Provider, NotificationProvider } from 'components/Acnw'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
 import { useAuth } from './components/Acnw/Auth/Auth0'
-import { NotificationProvider } from './components/Acnw/Notifications'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
@@ -20,6 +19,7 @@ import { NotificationProvider } from './components/Acnw/Notifications'
 //   const whyDidYouRender = require('@welldone-software/why-did-you-render')
 //   whyDidYouRender(React, {
 //     trackAllPureComponents: true,
+//     exclude: [/Waypoint/]
 //   })
 // }
 

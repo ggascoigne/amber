@@ -4,12 +4,11 @@ import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import customTabsStyle from 'assets/jss/material-kit-react/components/customTabsStyle'
 import cx from 'classnames'
-import type { SlotFieldsFragment } from 'client'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { useGameFilterState } from 'utils'
-import type { MaybeNodes } from 'utils/ts-utils'
+import { useHistory } from 'react-router-dom'
+import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,30 +56,19 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 interface SlotSelector {
-  year: number
-  slots: MaybeNodes<SlotFieldsFragment>
-  selectedSlotId: number
   small: boolean
+  name?: string
 
-  children(slot: SlotFieldsFragment): React.ReactNode
+  children({ slot, year }: { slot: number; year: number }): React.ReactNode
 }
 
 export const SlotSelector: React.FC<SlotSelector> = (props) => {
   const classes = useStyles()
-  const { slots, selectedSlotId, year, small, children } = props
-  const setGameFilter = useGameFilterState((state) => state.setGameFilter)
-  const { slotId } = useGameFilterState((state) => state.gameFilter)
+  const { small, children } = props
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
-
-  const getSlot = (slots: MaybeNodes<SlotFieldsFragment>, selectedSlotId: number) => {
-    const slot = slots!.find((s) => (s ? s.id === selectedSlotId : false))
-    if (!slot) {
-      throw new Error('slots not found')
-    } else {
-      return slot
-    }
-  }
+  const history = useHistory()
+  const { base, year, slot } = useGameUrl()
 
   const updateScrollButtons = useCallback(() => {
     const container = tabsRef.current
@@ -110,25 +98,17 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
     }
   }, [updateScrollButtons])
 
-  useEffect(() => {
-    const slot = getSlot(slots!, selectedSlotId)
-    setGameFilter({ slotId: slot.id, year })
-  }, [selectedSlotId, slots, setGameFilter, year])
-
   const handleChange = useCallback(
     (event: ChangeEvent<unknown>, value: any) => {
-      const slot = getSlot(slots!, value + 1)
-      setGameFilter({ slotId: slot.id, year })
+      const slotId = value + 1
+      history.replace(`${base}/${year}/${slotId}`)
     },
-    [setGameFilter, year, slots]
+    [base, history, year]
   )
 
-  if (!slots) {
-    return null
-  }
+  const slots = range(0, 7)
 
-  const slot = getSlot(slots, slotId)
-
+  if (year === 0) return null
   return (
     <div className={cx({ [classes.small]: small })}>
       <Card>
@@ -140,7 +120,7 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
               </span>
             )}
             <Tabs
-              value={slotId - 1}
+              value={slot - 1}
               onChange={handleChange}
               variant='scrollable'
               scrollButtons={scrollButtons}
@@ -149,27 +129,23 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
                 indicator: classes.displayNone,
               }}
             >
-              {slots.map((slot) =>
-                slot ? (
-                  <Tab
-                    classes={{
-                      root: classes.tabRootButton,
-                      selected: classes.tabSelected,
-                      wrapper: classes.tabWrapper,
-                    }}
-                    key={slot.id}
-                    label={slot.id}
-                  />
-                ) : null
-              )}
+              {slots.map((slot) => (
+                <Tab
+                  classes={{
+                    root: classes.tabRootButton,
+                    selected: classes.tabSelected,
+                    wrapper: classes.tabWrapper,
+                  }}
+                  key={slot + 1}
+                  label={slot + 1}
+                />
+              ))}
             </Tabs>
           </CardHeader>
         </div>
       </Card>
-      <h4 className={classes.slot}>
-        {slot.day}, {slot.time}
-      </h4>
-      {children && children(slot)}
+      <h4 className={classes.slot}>{getSlotDescription({ slot, year, altFormat: SlotFormat.SHORT })}</h4>
+      {children && children({ slot, year })}
     </div>
   )
 }

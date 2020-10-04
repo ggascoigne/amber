@@ -85,7 +85,7 @@ export const rootRoutes: RootRoutes = [
     userCondition: ({ getSetting }) => getSetting('display.game.book'),
   },
   {
-    path: '/game-book/:year/:slot?/:game?',
+    path: '/game-book/:year/:slot?',
     link: '/game-book',
     exact: false,
     component: GameBookGamesPage,
@@ -99,7 +99,7 @@ export const rootRoutes: RootRoutes = [
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
   },
   {
-    path: '/game-signup/:year/:slot?/:game?',
+    path: '/game-signup/:year/:slot?',
     link: '/game-signup',
     exact: false,
     component: GameSignupPage,

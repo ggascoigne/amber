@@ -50,5 +50,6 @@ const LegacyGameBookRedirect = () => {
   const qs = queryString.parse(location.search)
   const { year, slot } = qs
   const id = location.hash.slice(1)
-  return <Redirect to={`/game-book/${year}/${slot}/${id}`} />
+  console.log('redirecting a legacy game book url')
+  return <Redirect to={`/game-book/${year}/${slot}#${id}`} />
 }

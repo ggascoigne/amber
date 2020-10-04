@@ -1,11 +1,11 @@
 import { Theme, Typography, makeStyles } from '@material-ui/core'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
 import createStyles from '@material-ui/core/styles/createStyles'
-import type { GameArray, SlotFieldsFragment } from 'client'
+import type { GameArray } from 'client'
 import React from 'react'
-import { useHistory, useLocation } from 'react-router'
 import { useUrlSourceState } from 'utils'
+
+import { ListItemLink } from '../Navigation'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -18,38 +18,35 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface GameListIndex {
   year: number
-  slot: SlotFieldsFragment
+  slot: number
   games: GameArray
+  slugPrefix: string
   onEnterGame?: any
 }
 
-export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games }) => {
+export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games, slugPrefix }) => {
   const classes = useStyles()
-  const history = useHistory()
-  const location = useLocation()
-  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
+  const urlSource = useUrlSourceState((state) => state.urlSource)
   return (
     <List>
       {games.map(({ node: game }) => {
         if (!game) {
           return null
         }
-        const slug = `/game-book/${year}/${slot.id}/${game.id}`
+        const selectionKey = `${year}/${slot}/${game.id}`
+        const slug = `/${slugPrefix}/${year}/${slot}`
         return (
-          <ListItem
+          <ListItemLink
             key={game.id}
-            button
             className={classes.listItem}
-            selected={slug === location.pathname}
-            onClick={async () => {
-              await setUrlSource({ source: 'jump', url: slug })
-              return history.replace(slug)
-            }}
+            selected={selectionKey === urlSource.url}
+            button
+            to={{ pathname: slug, hash: `#${game.id}`, state: { fromClick: true } }}
           >
             <Typography variant='body1' noWrap>
               {game.name}
             </Typography>
-          </ListItem>
+          </ListItemLink>
         )
       })}
     </List>

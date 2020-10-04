@@ -63,7 +63,6 @@ export const MembershipSummary: React.FC = () => {
 
   const slotsAttendingData = fromSlotsAttending(membership)
 
-  // console.log(`slotsAttendingData = ${JSON.stringify(slotsAttendingData, null, 2)}`)
   return (
     <Page>
       {showEdit && (
