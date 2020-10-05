@@ -376,7 +376,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <TextField name='message' label='Messages' margin='normal' fullWidth multiline />
+                  <TextField name='message' label='Messages for the Organizers' margin='normal' fullWidth multiline />
                 </GridItem>
               </GridContainer>
             </DialogContent>

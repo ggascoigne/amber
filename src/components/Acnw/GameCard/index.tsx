@@ -62,7 +62,7 @@ export const GameCard: React.FC<GameCard> = React.memo(
       setting,
     } = game
 
-    const header = (
+    const headerContent = (
       <div>
         {selectionComponent ? (
           <HeaderContent name={name} tiny={tiny}>
@@ -74,19 +74,40 @@ export const GameCard: React.FC<GameCard> = React.memo(
       </div>
     )
 
+    const header = onEnter ? (
+      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
+        {headerContent}
+      </Waypoint>
+    ) : (
+      <>{headerContent}</>
+    )
+
+    if (game.year === 0) {
+      return (
+        <Card
+          key={`game_${id}`}
+          className={classNames(classes.card, { [classes.tinyCard]: tiny })}
+          id={`game/${year}/${slot}/${id}`}
+        >
+          {header}
+          <CardBody>
+            <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+              <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+                <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
+              </Field>
+            </GridContainer>
+          </CardBody>
+        </Card>
+      )
+    }
+
     return slotId ? (
       <Card
         key={`game_${id}`}
         className={classNames(classes.card, { [classes.tinyCard]: tiny })}
         id={`game/${year}/${slot}/${id}`}
       >
-        {onEnter ? (
-          <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
-            {header}
-          </Waypoint>
-        ) : (
-          <>{header}</>
-        )}
+        {header}
         <CardBody>
           <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
             <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>

@@ -4,13 +4,13 @@ import queryString from 'query-string'
 import React, { useMemo } from 'react'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useSettings, useUser } from 'utils'
-import { useIsMember } from 'utils/membership'
+import { useGetMemberShip } from 'utils/membership'
 
 import type { RootRoutes } from './Routes'
 
 export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
   const { userId } = useUser()
-  const isMember = useIsMember(userId)
+  const isMember = !!useGetMemberShip(userId)
   const getSetting = useSettings()
 
   const results = useMemo(

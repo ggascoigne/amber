@@ -132,6 +132,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
         try {
           redirectResult = await auth0FromHook.handleRedirectCallback()
         } finally {
+          // @ts-ignore
           onRedirectCallback(history, redirectResult)
         }
       }

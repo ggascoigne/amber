@@ -10,9 +10,8 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { notEmpty, useUser, useYearFilterState } from 'utils'
+import { notEmpty, useGetMemberShip, useUser, useYearFilterState } from 'utils'
 
-import { IsMember, IsNotMember } from '../../utils/membership'
 import { GamesDialog } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -61,16 +60,19 @@ const columns: Column<Game>[] = [
   },
 ]
 
-export const GmPage = () => (
-  <>
-    <IsNotMember>
-      <Redirect to='/membership' />
-    </IsNotMember>
-    <IsMember>
-      <MemberGmPage />
-    </IsMember>
-  </>
-)
+export const GmPage = () => {
+  const { userId } = useUser()
+  const membership = useGetMemberShip(userId)
+  if (membership === undefined) {
+    // still loading
+    return <Loader />
+  } else if (membership == null) {
+    // OK we know this is not a member
+    return <Redirect to='/membership' />
+  } else {
+    return <MemberGmPage />
+  }
+}
 
 const initialState: Partial<TableState<Game>> = {
   sortBy: [

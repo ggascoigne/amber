@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { useGetMembershipByYearAndIdQuery } from '../client'
+import { useGetGameAssignmentsByYearQuery, useGetMembershipByYearAndIdQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
+import { notEmpty } from './ts-utils'
 import { useUser } from './useUserFilterState'
 import { useYearFilterState } from './useYearFilterState'
 
@@ -12,18 +13,24 @@ type IsUserAMember = {
 
 const nullOp = (): null => null
 
-export const useIsMember = (userId: number | undefined | null) => {
+export const useGetMemberShip = (userId: number | undefined | null) => {
   const year = useYearFilterState((state) => state.year)
   const { data } = useGetMembershipByYearAndIdQuery({
     skip: !userId,
     variables: { year, userId: userId! },
+    // fetchPolicy: 'cache-and-network',
   })
 
-  return !!(data && year === data.memberships?.nodes?.[0]?.year)
+  if (!data) {
+    return undefined // allows us to tell if the load is still ongoing and avoid redirects
+  }
+
+  const membership = data.memberships?.nodes?.[0]
+  return membership?.year === year ? membership : null
 }
 
 const IsUserAMember: React.FC<IsUserAMember> = ({ userId, children = null, denied = nullOp }) => {
-  const isMember = useIsMember(userId)
+  const isMember = !!useGetMemberShip(userId)
   return isMember ? <>{children}</> : denied()
 }
 
@@ -47,4 +54,25 @@ export const IsNotMember: React.FC = ({ children }) => {
   } else {
     return <>{children}</>
   }
+}
+
+export const useIsGm = () => {
+  const { userId } = useUser()
+  const membership = useGetMemberShip(userId)
+  const year = useYearFilterState((state) => state.year)
+  const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
+    variables: {
+      year,
+    },
+    // fetchPolicy: 'cache-and-network',
+  })
+
+  if (!membership || !gameAssignmentData) return false
+
+  return (
+    gameAssignmentData.gameAssignments?.nodes
+      .filter(notEmpty)
+      .filter((ga) => ga!.memberId === membership.id)
+      .filter((ga) => ga!.gm !== 0).length !== 0
+  )
 }

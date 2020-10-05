@@ -1,39 +1,29 @@
-import { GameArray } from 'client'
-import { GameCardChild, GameListFull, GameListNavigator, Page } from 'components/Acnw'
+import { GameListFull, GameListNavigator, Page } from 'components/Acnw'
 import React from 'react'
-import { useGameScroll } from 'utils'
+import { useGameScroll, useGameUrl } from 'utils'
 
-interface GameListFull {
-  year: number
-  slot: number
-  games: GameArray
-  onEnterGame?: any
-}
-
-export const GameChoiceSelector: React.FC<GameCardChild> = ({ year, slot, gameId }) => (
-  <>
-    {year}/{slot}/{gameId}
-  </>
-)
+import { GameChoiceSelector } from './GameChoiceSelector'
+import { SignupInstructions } from './SignupInstructions'
 
 export const GameSignupPage: React.FC = () => {
+  const { slot, year } = useGameUrl()
   const setNewUrl = useGameScroll()
   return (
     <Page>
-      <GameListNavigator name='page'>
+      {slot === 1 && <SignupInstructions year={year} />}
+      <GameListNavigator name='page' selectQuery>
         {({ year, slot, games }) => (
-          <GameListFull
-            year={year}
-            slot={slot}
-            games={games!}
-            onEnterGame={setNewUrl}
-            selectionComponent={GameChoiceSelector}
-          />
+          <>
+            <GameListFull
+              year={year}
+              slot={slot}
+              games={games!}
+              onEnterGame={setNewUrl}
+              selectionComponent={GameChoiceSelector}
+            />
+          </>
         )}
       </GameListNavigator>
     </Page>
   )
 }
-
-// @ts-ignore
-GameSignupPage.whyDidYouRender = true

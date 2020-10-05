@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme: Theme) =>
       '.MuiListItem-root.Mui-selected': {
         backgroundColor: 'rgba(0,0,0,0.18)',
       },
+      'ul, ol': {
+        fontSize: 14,
+      },
     },
     // "@global": {
     //   // MUI typography elements use REMs, so you can scale the global

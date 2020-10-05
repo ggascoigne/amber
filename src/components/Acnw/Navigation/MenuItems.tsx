@@ -3,7 +3,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { HasPermission } from 'components/Acnw/Auth'
 import React from 'react'
 import { useLocation } from 'react-router'
-import { useIsMember } from 'utils/membership'
+import { useGetMemberShip } from 'utils/membership'
 
 import { useSettings, useUser } from '../../../utils'
 import { contextRoutes } from './ContextRoutes'
@@ -17,7 +17,7 @@ interface MenuItems {
 export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
   const location = useLocation()
   const { userId } = useUser()
-  const isMember = useIsMember(userId)
+  const isMember = !!useGetMemberShip(userId)
   const getSetting = useSettings()
 
   const activeItem = location.pathname

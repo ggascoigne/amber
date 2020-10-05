@@ -1,17 +1,17 @@
 #Todos & Ideas
 
 * [ ] Add T-Shirt art and sales link
-* [ ] Get old site accessible to me somewhere
-* [ ] Cloning the ui changes the tab - forces the UI back to the membership page.
 * [ ] can open links such as edit game into another window
 * [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.
+* [ ] Right now you can enter anything in the GM field for a game, I really need to lock that down to just allowing GM names, perhaps forcing the addition of the author.
+* [ ] Add Admin edit mode to the game edit
+* [ ] Make sure that the signup page is only available to members.
 
 the games table should:
 * [ ] allow for bulk edit perhaps?
 * [ ] split slots attending out into separate columns
 
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
-* [ ] there's still something icky about the past cons page, it really shouldn't be using the url as an input in so many places.  It feels like we're mixing input from the url with input from state and making it far too complex. But it works for now.
 * [ ] get real auth keys for facebook and google-oauth link.
 * [ ] migrate from vc secrets to vc env
 * [ ] hook up dev builds using dev database
@@ -20,6 +20,8 @@ the games table should:
 * [ ] Convert the MaterialKitReact code to typescript - at least starting with the styles.  Remove all the bits that aren't being used.
 * [ ] Extract dates from code and put them in the db.  The current behavior was inherited from v1 and was intended as a short term hack. 10 years later...
 * [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
+* [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
+
 
 ## Done
 
@@ -36,6 +38,10 @@ the games table should:
 * [x] gm games table should have a default sort by slot
 * [x] all tables should have a two-step sort not a three step one
 * [x] add first and last name to member download
+* [x] Get old site accessible to me somewhere
+* [x] Cloning the ui changes the tab - forces the UI back to the membership page. Actually this was just cloning the become a GM page.
+* [x] there's still something icky about the past cons page, it really shouldn't be using the url as an input in so many places.  It feels like we're mixing input from the url with input from state and making it far too complex. But it works for now.
+* [x] Add IsGm logic
 
 ### Profiles
 

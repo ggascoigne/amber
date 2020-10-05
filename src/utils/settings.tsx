@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { Perms } from '../components/Acnw/Auth/PermissionRules'
+import { useIsGm } from './membership'
 import { notEmpty } from './ts-utils'
 
 export enum SettingValue {
@@ -18,6 +19,7 @@ const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof type
 export const settingValues = ['No', 'Admin', 'GM', 'Everyone', 'Yes']
 
 export const useSettings = () => {
+  const isGm = useIsGm()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { loading, error, data } = useGetSettingsQuery({
@@ -43,7 +45,7 @@ export const useSettings = () => {
         case SettingValue.Admin:
           return isAdmin
         case SettingValue.GM:
-          throw new Error('not implemented')
+          return isGm
         case SettingValue.Everyone:
         case SettingValue.Yes:
           return true
@@ -53,7 +55,7 @@ export const useSettings = () => {
           return false
       }
     },
-    [data, error, isAdmin, loading]
+    [data, error, isAdmin, isGm, loading]
   )
 }
 

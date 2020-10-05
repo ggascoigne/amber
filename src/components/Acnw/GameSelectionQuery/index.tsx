@@ -1,4 +1,4 @@
-import { GameArray, useGetGamesBySlotQuery } from 'client'
+import { GameArray, useGetGamesBySlotForSignupQuery } from 'client'
 import React from 'react'
 
 import { GraphQLError } from '../GraphQLError'
@@ -16,8 +16,8 @@ interface GameQuery {
   children: (props: GameQueryChild) => React.ReactNode
 }
 
-export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
-  const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year, slotId: slot } })
+export const GameSelectionQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
+  const { loading, error, data } = useGetGamesBySlotForSignupQuery({ variables: { year, slotId: slot } })
   if (error) {
     return <GraphQLError error={error} />
   }

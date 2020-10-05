@@ -29,9 +29,10 @@ type GameMenu = {
   text: string
   title: string
   slugPrefix: string
+  selectQuery?: boolean
 }
 
-export const GameMenu: React.FC<GameMenu> = ({ to, text, title, slugPrefix }) => {
+export const GameMenu: React.FC<GameMenu> = ({ to, text, title, slugPrefix, selectQuery }) => {
   const classes = useStyles()
   return (
     <>
@@ -47,7 +48,7 @@ export const GameMenu: React.FC<GameMenu> = ({ to, text, title, slugPrefix }) =>
       <Typography variant='h4' className={classes.title}>
         {title}
       </Typography>
-      <GameListNavigator small>
+      <GameListNavigator small selectQuery={selectQuery}>
         {({ year, slot, games }) => <GameListIndex year={year} slot={slot} games={games!} slugPrefix={slugPrefix} />}
       </GameListNavigator>
     </>

@@ -1,4 +1,3 @@
-import jump from 'jump.js'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useGameUrl } from './useGameUrl'
@@ -30,12 +29,11 @@ export const useScrollToHash = () => {
       const timer = setTimeout(
         () =>
           window.requestAnimationFrame(() => {
+            // todo: rewrite without accessing the DOM
             const el = document.getElementById(`game/${year}/${slot}/${game}`)
             if (el) {
-              jump(el, {
-                duration: 5,
-                offset: -105,
-              })
+              const y = el.getBoundingClientRect().top + window.pageYOffset - 105
+              window.scrollTo({ top: y })
             }
           }),
         delay

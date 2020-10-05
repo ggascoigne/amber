@@ -2,6 +2,25 @@
 #import "./slotFragment.graphql"
 #import "./profileFragment.graphql"
 
+query GetGamesBySlotForSignup($year: Int!, $slotId: Int!) {
+  games(
+    filter: {
+      or: [
+        { and: [{ or: [{ year: { equalTo: $year } }, { year: { equalTo: 0 } }] }, { slotId: { equalTo: $slotId } }] }
+        { and: [{ year: { equalTo: 0 } }, { slotId: { isNull: true } }] }
+      ]
+    }
+    orderBy: [YEAR_DESC, SLOT_ID_ASC, NAME_ASC]
+  ) {
+    edges {
+      node {
+        ...gameFields
+        ...gameGms
+      }
+    }
+  }
+}
+
 query GetGamesBySlot($year: Int!, $slotId: Int!) {
   games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
     edges {

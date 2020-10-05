@@ -16,10 +16,17 @@ interface GameListFull {
   selectionComponent?: (props: GameCardChild) => React.ReactNode
 }
 
-export const GameListFull: React.FC<GameListFull> = ({ year, slot, games, onEnterGame, selectionComponent }) => {
+export const GameListFull: React.FC<GameListFull> = ({
+  year,
+  slot: slotInput,
+  games,
+  onEnterGame,
+  selectionComponent,
+}) => {
   const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
   const hasEnterGame = !!onEnterGame
   const firstGameId = games?.[0]?.node?.id
+  const slot = slotInput || 0
   const firstSlug = `${year}/${slot}/${firstGameId}`
 
   useScrollToHash()

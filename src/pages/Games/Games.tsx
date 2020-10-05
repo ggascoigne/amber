@@ -10,7 +10,7 @@ import {
 } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
-import type { Column, Row, TableInstance } from 'react-table'
+import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { notEmpty, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -32,6 +32,32 @@ const getGms = (row: Game) => {
   }
 }
 
+const initialState: Partial<TableState<Game>> = {
+  sortBy: [
+    {
+      id: 'slotId',
+      desc: false,
+    },
+  ],
+  hiddenColumns: [
+    'genre',
+    'type',
+    'setting',
+    'charInstructions',
+    'playerPreference',
+    'returningPlayers',
+    'playersContactGm',
+    'gameContactEmail',
+    'slotPreference',
+    'lateStart',
+    'lateFinish',
+    'slotConflicts',
+    'message',
+    'teenFriendly',
+    'year',
+  ],
+}
+
 const columns: Column<Game>[] = [
   {
     accessor: 'id',
@@ -40,6 +66,7 @@ const columns: Column<Game>[] = [
   },
   {
     accessor: 'slotId',
+    Header: 'Slot',
     width: 100,
     filter: 'numeric',
   },
@@ -80,6 +107,20 @@ const columns: Column<Game>[] = [
     align: 'right',
     filter: 'numeric',
   },
+  { accessor: 'genre' },
+  { accessor: 'type' },
+  { accessor: 'setting' },
+  { accessor: 'charInstructions' },
+  { accessor: 'playerPreference' },
+  { accessor: 'returningPlayers' },
+  { accessor: 'playersContactGm' },
+  { accessor: 'gameContactEmail' },
+  { accessor: 'slotPreference' },
+  { accessor: 'lateStart' },
+  { accessor: 'lateFinish' },
+  { accessor: 'slotConflicts' },
+  { accessor: 'message' },
+  { accessor: 'teenFriendly' },
 ]
 
 const useStyles = makeStyles(() =>
@@ -185,6 +226,7 @@ export const Games: React.FC = React.memo(() => {
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
+        initialState={initialState}
         extraCommands={commands}
         onRefresh={() => refetch()}
       />

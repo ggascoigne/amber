@@ -1,16 +1,18 @@
 import { ApolloConsumer } from '@apollo/client'
-import { Badge } from '@material-ui/core'
+import { Badge, Tooltip } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
+import StarIcon from '@material-ui/icons/Star'
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
-import { useAuth } from 'components/Acnw/Auth/index'
 import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Auth0User, HasPermission, Perms, useAuthOverride, useToken } from './Auth/index'
+import { useIsGm } from '../../utils'
+import { useAuth } from './Auth/Auth0'
+import { Auth0User, Perms, useAuthOverride, useToken } from './Auth/index'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
 
@@ -81,20 +83,67 @@ const OurAvatar: React.FC<ProfileImage> = ({ user }) => {
   }
 }
 
-const ProfileImage: React.FC<ProfileImage> = ({ user }) => (
-  <HasPermission permission={Perms.IsAdmin} denied={() => <OurAvatar user={user} />}>
+const AdminBadge: React.FC = ({ children }) => (
+  <Badge
+    overlap='circle'
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'right',
+    }}
+    badgeContent={<VerifiedUserIcon style={{ color: '#fcc60a' }} />}
+  >
+    {children}
+  </Badge>
+)
+
+const GmBadge: React.FC = ({ children }) => (
+  <Tooltip title='GMs always get stars at ACNW'>
     <Badge
       overlap='circle'
       anchorOrigin={{
-        vertical: 'bottom',
+        vertical: 'top',
         horizontal: 'right',
       }}
-      badgeContent={<VerifiedUserIcon style={{ color: '#fcc60a' }} />}
+      badgeContent={<StarIcon style={{ color: '#fcc60a' }} />}
     >
-      <OurAvatar user={user} />
+      {children}
     </Badge>
-  </HasPermission>
+  </Tooltip>
 )
+
+const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
+  const { hasPermissions } = useAuth()
+  const isAdmin = hasPermissions(Perms.IsAdmin)
+  const isGm = useIsGm()
+
+  if (isAdmin) {
+    if (isGm) {
+      return (
+        <GmBadge>
+          <AdminBadge>
+            <OurAvatar user={user} />
+          </AdminBadge>
+        </GmBadge>
+      )
+    } else {
+      return (
+        <AdminBadge>
+          <OurAvatar user={user} />
+        </AdminBadge>
+      )
+    }
+  } else {
+    if (isGm) {
+      return (
+        <GmBadge>
+          <OurAvatar user={user} />
+        </GmBadge>
+      )
+    } else {
+      return <OurAvatar user={user} />
+    }
+  }
+}
 
 type MenuButton = {
   user: Auth0User

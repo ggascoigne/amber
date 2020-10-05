@@ -6593,6 +6593,21 @@ export enum UsersOrderBy {
   UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
 }
 
+export type GetGamesBySlotForSignupQueryVariables = Exact<{
+  year: Scalars['Int']
+  slotId: Scalars['Int']
+}>
+
+export type GetGamesBySlotForSignupQuery = { __typename: 'Query' } & {
+  games?: Maybe<
+    { __typename: 'GamesConnection' } & {
+      edges: Array<
+        { __typename: 'GamesEdge' } & { node?: Maybe<{ __typename: 'Game' } & GameFieldsFragment & GameGmsFragment> }
+      >
+    }
+  >
+}
+
 export type GetGamesBySlotQueryVariables = Exact<{
   year: Scalars['Int']
   slotId: Scalars['Int']
@@ -7316,6 +7331,68 @@ export const UserFieldsFragmentDoc = gql`
     phoneNumber
   }
 `
+export const GetGamesBySlotForSignupDocument = gql`
+  query GetGamesBySlotForSignup($year: Int!, $slotId: Int!) {
+    games(
+      filter: {
+        or: [
+          { and: [{ or: [{ year: { equalTo: $year } }, { year: { equalTo: 0 } }] }, { slotId: { equalTo: $slotId } }] }
+          { and: [{ year: { equalTo: 0 } }, { slotId: { isNull: true } }] }
+        ]
+      }
+      orderBy: [YEAR_DESC, SLOT_ID_ASC, NAME_ASC]
+    ) {
+      edges {
+        node {
+          ...gameFields
+          ...gameGms
+        }
+      }
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${GameGmsFragmentDoc}
+`
+
+/**
+ * __useGetGamesBySlotForSignupQuery__
+ *
+ * To run a query within a React component, call `useGetGamesBySlotForSignupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGamesBySlotForSignupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGamesBySlotForSignupQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      slotId: // value for 'slotId'
+ *   },
+ * });
+ */
+export function useGetGamesBySlotForSignupQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
+) {
+  return Apollo.useQuery<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
+    GetGamesBySlotForSignupDocument,
+    baseOptions
+  )
+}
+export function useGetGamesBySlotForSignupLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
+    GetGamesBySlotForSignupDocument,
+    baseOptions
+  )
+}
+export type GetGamesBySlotForSignupQueryHookResult = ReturnType<typeof useGetGamesBySlotForSignupQuery>
+export type GetGamesBySlotForSignupLazyQueryHookResult = ReturnType<typeof useGetGamesBySlotForSignupLazyQuery>
+export type GetGamesBySlotForSignupQueryResult = Apollo.QueryResult<
+  GetGamesBySlotForSignupQuery,
+  GetGamesBySlotForSignupQueryVariables
+>
 export const GetGamesBySlotDocument = gql`
   query GetGamesBySlot($year: Int!, $slotId: Int!) {
     games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
