@@ -30,7 +30,7 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
     }
 
     componentDidCatch(error: Error | null, info: ErrorInfo) {
-      this.setState({ error: error || new Error(MISSING_ERROR) })
+      this.setState({ error: error ?? new Error(MISSING_ERROR) })
       this.logErrorToCloud(error, info)
     }
 

@@ -74,7 +74,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
   const { loading, error, data } = useGetAllUsersQuery()
 
   const dropdownOptions = useMemo(() => {
-    const users = data?.users?.nodes || []
+    const users = data?.users?.nodes ?? []
     return users?.map((u) => u).filter(notEmpty)
   }, [data])
 
@@ -96,7 +96,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
     return null
   }
 
-  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.userId) || null
+  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.userId) ?? null
 
   if (dropdownOptions && dropdownOptions.length > 0) {
     return (
@@ -104,7 +104,7 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
         <Autocomplete<UserFieldsFragment>
           id='customerFilter'
           options={dropdownOptions}
-          getOptionLabel={(option: UserFieldsFragment) => option.fullName || ''}
+          getOptionLabel={(option: UserFieldsFragment) => option.fullName ?? ''}
           className={classNames(classes.selector, {
             [classes.selectorMobile]: mobile,
           })}

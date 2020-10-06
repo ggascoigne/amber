@@ -30,7 +30,7 @@ export const toSlotsAttending = (membershipValues: MembershipType) =>
   membershipValues?.slotsAttendingData
     ?.map((v, i) => (v ? i + 1 : 0))
     .filter((v) => !!v)
-    .join(',') || ''
+    .join(',') ?? ''
 
 export const fromMembershipValues = (membershipValues: MembershipType) =>
   pick(

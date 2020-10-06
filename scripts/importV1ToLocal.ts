@@ -186,18 +186,18 @@ async function main() {
   const tmpDbConfig: DbConfig = {
     database: 'acnw_v1_tmp',
     user: process.env.MIGRATION_POSTGRES_USER!,
-    port: parseInt(process.env.MIGRATION_POSTGRES_PORT || '', 10),
+    port: parseInt(process.env.MIGRATION_POSTGRES_PORT ?? '', 10),
     host: process.env.MIGRATION_POSTGRES_HOST!,
-    password: process.env.MIGRATION_POSTGRES_PASSWORD || '',
+    password: process.env.MIGRATION_POSTGRES_PASSWORD ?? '',
     ssl: process.env.MIGRATION_POSTGRES_SSL === '1',
   }
 
   const mysqlDbconfig: DbConfig = {
     database: 'acnw_v1_tmp',
     user: process.env.MIGRATION_MYSQL_USER!,
-    port: parseInt(process.env.MIGRATION_MYSQL_PORT || '', 10),
+    port: parseInt(process.env.MIGRATION_MYSQL_PORT ?? '', 10),
     host: process.env.MIGRATION_MYSQL_HOST!,
-    password: process.env.MIGRATION_MYSQL_PASSWORD || '',
+    password: process.env.MIGRATION_MYSQL_PASSWORD ?? '',
     ssl: process.env.MIGRATION_MYSQL_SSL === '1',
   }
 

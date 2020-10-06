@@ -5,7 +5,11 @@
 * [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.
 * [ ] Right now you can enter anything in the GM field for a game, I really need to lock that down to just allowing GM names, perhaps forcing the addition of the author.
 * [ ] Add Admin edit mode to the game edit
-* [ ] Make sure that the signup page is only available to members.
+* [x] Make sure that the signup page is only available to members.
+* [ ] Game selection is a bit slow. Should switch away from manipulating the data in the apollo cache, just can't work out how to update the right item and instead, use the query to update a local copy which we edit and display from, updating it when the query results change.  That way we can get a snappy screen update without worrying about the latency.
+* [ ] Restyle the choice interface - it's functional and very heavily based on the v1 site, I'm sure that we could do better.
+* [ ] Look at displaying he game book stuff using react-window, try to avoid updated to off-screen pages.
+* [ ] should refactor the color definitions scattered through the code to be centralized, maybe in the theme?
 
 the games table should:
 * [ ] allow for bulk edit perhaps?

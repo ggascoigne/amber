@@ -15,6 +15,9 @@ const columns: Column<Membership>[] = [
     Header: 'Member',
     columns: [
       {
+        accessor: 'id',
+      },
+      {
         id: 'firstName',
         accessor: (r: Membership) => r?.user?.firstName,
         width: 70,
@@ -63,6 +66,17 @@ const virtualColumns: Column<Membership>[] = [
   {
     Header: 'Member',
     columns: [
+      {
+        accessor: 'id',
+        Header: 'Member ID',
+        width: 50,
+      },
+      {
+        id: 'userId',
+        accessor: (r: Membership) => r?.user?.id,
+        Header: 'User ID',
+        width: 50,
+      },
       {
         id: 'firstName',
         accessor: (r: Membership) => r?.user?.firstName,

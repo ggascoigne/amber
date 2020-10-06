@@ -26,7 +26,7 @@ export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
   }
   return (
     <React.Fragment key={`slot_${slot}`}>
-      {data && children && children({ year, slot, games: data?.games?.edges || undefined })}
+      {data && children && children({ year, slot, games: data?.games?.edges ?? undefined })}
     </React.Fragment>
   )
 }

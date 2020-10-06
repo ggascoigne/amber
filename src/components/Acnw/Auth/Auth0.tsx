@@ -21,9 +21,9 @@ import rules, { Perms } from './PermissionRules'
 import { useAuthOverride } from './useAuthOverride'
 
 const AUTH_CONFIG = {
-  domain: process.env.REACT_APP_AUTH0_DOMAIN || '',
+  domain: process.env.REACT_APP_AUTH0_DOMAIN ?? '',
   audience: 'https://amberconnw.org',
-  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID || '',
+  clientId: process.env.REACT_APP_AUTH0_CLIENT_ID ?? '',
 }
 
 type Auth0Client = ThenArg<ReturnType<typeof createAuth0Client>>

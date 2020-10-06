@@ -10,9 +10,17 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
 
+import { SlotDecorator, SlotDecoratorParams } from '../types'
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    card: {
+      // zIndex: 200
+    },
     ...customTabsStyle,
+    labelWrapper: {
+      position: 'relative',
+    },
     cardHeader: {
       flex: 1,
       display: 'flex',
@@ -58,13 +66,14 @@ const useStyles = makeStyles((theme: Theme) =>
 interface SlotSelector {
   small: boolean
   name?: string
+  decorator?: (props: SlotDecorator) => React.ReactNode
+  decoratorParams?: SlotDecoratorParams
 
   children({ slot, year }: { slot: number; year: number }): React.ReactNode
 }
 
-export const SlotSelector: React.FC<SlotSelector> = (props) => {
+export const SlotSelector: React.FC<SlotSelector> = ({ small, children, decorator, decoratorParams = {} }) => {
   const classes = useStyles()
-  const { small, children } = props
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
   const history = useHistory()
@@ -111,7 +120,7 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
   if (year === 0) return null
   return (
     <div className={cx({ [classes.small]: small })}>
-      <Card>
+      <Card className={classes.card}>
         <div ref={tabsRef}>
           <CardHeader color='success' className={classes.cardHeader} plain>
             {!small && (
@@ -137,7 +146,12 @@ export const SlotSelector: React.FC<SlotSelector> = (props) => {
                     wrapper: classes.tabWrapper,
                   }}
                   key={slot + 1}
-                  label={slot + 1}
+                  label={
+                    <div className={classes.labelWrapper}>
+                      {slot + 1}
+                      {decorator && decorator({ year, slot, ...decoratorParams })}
+                    </div>
+                  }
                 />
               ))}
             </Tabs>

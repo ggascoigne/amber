@@ -4,11 +4,12 @@ import type { GameFieldsFragment, GameGmsFragment } from 'client'
 import { GridContainer, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Waypoint } from 'react-waypoint'
 import maskEmail from 'utils/maskEmail'
 
 import { Field, HeaderContent, MultiLine } from '../CardUtils'
+import { GameDecorator, GameDecoratorParams } from '../types'
 
 const useStyles = makeStyles({
   card: {
@@ -26,28 +27,11 @@ const useStyles = makeStyles({
   },
 })
 
-export interface GameCardChild {
-  year: number
-  slot: number
-  gameId: number
-}
-
-interface GameCard {
-  game: GameFieldsFragment & GameGmsFragment
-  year: number
-  slot: number
-  onEnter?: (param?: string) => void
-  tiny?: boolean
-  selectionComponent?: (props: GameCardChild) => React.ReactNode
-}
-
-export const GameCard: React.FC<GameCard> = React.memo(
-  ({ game, year, slot, onEnter, tiny = false, selectionComponent }) => {
+const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
+  ({ game, year, slot, onEnter, tiny, header }) => {
     const classes = useStyles()
     const {
       id,
-      name,
-      slotId = 0,
       description,
       charInstructions,
       gameContactEmail,
@@ -62,46 +46,7 @@ export const GameCard: React.FC<GameCard> = React.memo(
       setting,
     } = game
 
-    const headerContent = (
-      <div>
-        {selectionComponent ? (
-          <HeaderContent name={name} tiny={tiny}>
-            {selectionComponent({ year, slot, gameId: id })}
-          </HeaderContent>
-        ) : (
-          <HeaderContent name={name} tiny={tiny} />
-        )}
-      </div>
-    )
-
-    const header = onEnter ? (
-      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
-        {headerContent}
-      </Waypoint>
-    ) : (
-      <>{headerContent}</>
-    )
-
-    if (game.year === 0) {
-      return (
-        <Card
-          key={`game_${id}`}
-          className={classNames(classes.card, { [classes.tinyCard]: tiny })}
-          id={`game/${year}/${slot}/${id}`}
-        >
-          {header}
-          <CardBody>
-            <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
-              <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-                <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
-              </Field>
-            </GridContainer>
-          </CardBody>
-        </Card>
-      )
-    }
-
-    return slotId ? (
+    return (
       <Card
         key={`game_${id}`}
         className={classNames(classes.card, { [classes.tinyCard]: tiny })}
@@ -146,6 +91,71 @@ export const GameCard: React.FC<GameCard> = React.memo(
           </GridContainer>
         </CardBody>
       </Card>
-    ) : null
+    )
+  }
+)
+
+export interface GameCardChild {
+  year: number
+  slot: number
+  gameId: number
+}
+
+interface GameCard {
+  game: GameFieldsFragment & GameGmsFragment
+  year: number
+  slot: number
+  onEnter?: (param?: string) => void
+  tiny?: boolean
+  // these next two are required together
+  decorator?: (props: GameDecorator) => React.ReactNode
+  decoratorParams?: GameDecoratorParams
+}
+
+export const GameCard: React.FC<GameCard> = React.memo(
+  ({ game, year, slot, onEnter, tiny = false, decorator, decoratorParams = {} }) => {
+    const classes = useStyles()
+    const { id, name, slotId = 0, description } = game
+
+    const headerContent = (
+      <div>
+        {decorator ? (
+          <HeaderContent name={name} tiny={tiny}>
+            {decorator({ year, slot, gameId: id, ...decoratorParams })}
+          </HeaderContent>
+        ) : (
+          <HeaderContent name={name} tiny={tiny} />
+        )}
+      </div>
+    )
+
+    const header = onEnter ? (
+      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
+        {headerContent}
+      </Waypoint>
+    ) : (
+      <>{headerContent}</>
+    )
+
+    if (game.year === 0) {
+      return (
+        <Card
+          key={`game_${id}`}
+          className={classNames(classes.card, { [classes.tinyCard]: tiny })}
+          id={`game/${year}/${slot}/${id}`}
+        >
+          {header}
+          <CardBody>
+            <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+              <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+                <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
+              </Field>
+            </GridContainer>
+          </CardBody>
+        </Card>
+      )
+    }
+
+    return slotId ? <GameCardDetails game={game} year={year} slot={slot} tiny={tiny} header={header} /> : null
   }
 )

@@ -8,6 +8,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import React from 'react'
 
 import { ListItemLink } from '../Navigation'
+import { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
 import { GameListIndex } from './GameListIndex'
 import { GameListNavigator } from './GameListNavigator'
 
@@ -30,9 +31,23 @@ type GameMenu = {
   title: string
   slugPrefix: string
   selectQuery?: boolean
+  navDecorator?: (props: SlotDecorator) => React.ReactNode
+  navDecoratorParams?: SlotDecoratorParams
+  itemDecorator?: (props: GameDecorator) => React.ReactNode
+  itemDecoratorParams?: GameDecoratorParams
 }
 
-export const GameMenu: React.FC<GameMenu> = ({ to, text, title, slugPrefix, selectQuery }) => {
+export const GameMenu: React.FC<GameMenu> = ({
+  to,
+  text,
+  title,
+  slugPrefix,
+  selectQuery,
+  itemDecorator,
+  itemDecoratorParams,
+  navDecorator,
+  navDecoratorParams,
+}) => {
   const classes = useStyles()
   return (
     <>
@@ -48,8 +63,17 @@ export const GameMenu: React.FC<GameMenu> = ({ to, text, title, slugPrefix, sele
       <Typography variant='h4' className={classes.title}>
         {title}
       </Typography>
-      <GameListNavigator small selectQuery={selectQuery}>
-        {({ year, slot, games }) => <GameListIndex year={year} slot={slot} games={games!} slugPrefix={slugPrefix} />}
+      <GameListNavigator small selectQuery={selectQuery} decorator={navDecorator} decoratorParams={navDecoratorParams}>
+        {({ year, slot, games }) => (
+          <GameListIndex
+            year={year}
+            slot={slot}
+            games={games!}
+            slugPrefix={slugPrefix}
+            decorator={itemDecorator}
+            decoratorParams={itemDecoratorParams}
+          />
+        )}
       </GameListNavigator>
     </>
   )

@@ -6828,6 +6828,90 @@ export type DeleteGameAssignmentMutation = { __typename: 'Mutation' } & {
   >
 }
 
+export type GameSubmissionFieldsFragment = { __typename: 'GameSubmission' } & Pick<
+  GameSubmission,
+  'id' | 'memberId' | 'message' | 'nodeId' | 'year'
+>
+
+export type GameChoiceFieldsFragment = { __typename: 'GameChoice' } & Pick<
+  GameChoice,
+  'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
+>
+
+export type GetGameChoicesQueryVariables = Exact<{
+  year: Scalars['Int']
+  memberId: Scalars['Int']
+}>
+
+export type GetGameChoicesQuery = { __typename: 'Query' } & {
+  gameSubmissions?: Maybe<
+    { __typename: 'GameSubmissionsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'GameSubmission' } & GameSubmissionFieldsFragment>>
+    }
+  >
+  gameChoices?: Maybe<
+    { __typename: 'GameChoicesConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'GameChoice' } & GameChoiceFieldsFragment>>
+    }
+  >
+}
+
+export type ReadGameChoiceQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type ReadGameChoiceQuery = { __typename: 'Query' } & {
+  gameChoice?: Maybe<{ __typename: 'GameChoice' } & GameChoiceFieldsFragment>
+}
+
+export type CreateGameSubmissionMutationVariables = Exact<{
+  input: CreateGameSubmissionInput
+}>
+
+export type CreateGameSubmissionMutation = { __typename: 'Mutation' } & {
+  createGameSubmission?: Maybe<
+    { __typename: 'CreateGameSubmissionPayload' } & Pick<CreateGameSubmissionPayload, 'clientMutationId'> & {
+        gameSubmission?: Maybe<{ __typename: 'GameSubmission' } & GameSubmissionFieldsFragment>
+      }
+  >
+}
+
+export type UpdateGameSubmissionByNodeIdMutationVariables = Exact<{
+  input: UpdateGameSubmissionByNodeIdInput
+}>
+
+export type UpdateGameSubmissionByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateGameSubmissionByNodeId?: Maybe<
+    { __typename: 'UpdateGameSubmissionPayload' } & Pick<UpdateGameSubmissionPayload, 'clientMutationId'> & {
+        gameSubmission?: Maybe<{ __typename: 'GameSubmission' } & GameSubmissionFieldsFragment>
+      }
+  >
+}
+
+export type CreateGameChoiceMutationVariables = Exact<{
+  input: CreateGameChoiceInput
+}>
+
+export type CreateGameChoiceMutation = { __typename: 'Mutation' } & {
+  createGameChoice?: Maybe<
+    { __typename: 'CreateGameChoicePayload' } & Pick<CreateGameChoicePayload, 'clientMutationId'> & {
+        gameChoice?: Maybe<{ __typename: 'GameChoice' } & GameChoiceFieldsFragment>
+      }
+  >
+}
+
+export type UpdateGameChoiceByNodeIdMutationVariables = Exact<{
+  input: UpdateGameChoiceByNodeIdInput
+}>
+
+export type UpdateGameChoiceByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateGameChoiceByNodeId?: Maybe<
+    { __typename: 'UpdateGameChoicePayload' } & Pick<UpdateGameChoicePayload, 'clientMutationId'> & {
+        gameChoice?: Maybe<{ __typename: 'GameChoice' } & GameChoiceFieldsFragment>
+      }
+  >
+}
+
 export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   Game,
   | 'nodeId'
@@ -7206,6 +7290,27 @@ export const GameAssignmentFieldsFragmentDoc = gql`
     gm
     memberId
     nodeId
+    year
+  }
+`
+export const GameSubmissionFieldsFragmentDoc = gql`
+  fragment gameSubmissionFields on GameSubmission {
+    id
+    memberId
+    message
+    nodeId
+    year
+  }
+`
+export const GameChoiceFieldsFragmentDoc = gql`
+  fragment gameChoiceFields on GameChoice {
+    gameId
+    id
+    memberId
+    nodeId
+    rank
+    returningPlayer
+    slotId
     year
   }
 `
@@ -8147,6 +8252,282 @@ export type DeleteGameAssignmentMutationResult = Apollo.MutationResult<DeleteGam
 export type DeleteGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
   DeleteGameAssignmentMutation,
   DeleteGameAssignmentMutationVariables
+>
+export const GetGameChoicesDocument = gql`
+  query GetGameChoices($year: Int!, $memberId: Int!) {
+    gameSubmissions(condition: { memberId: $memberId, year: $year }) {
+      nodes {
+        ...gameSubmissionFields
+      }
+    }
+    gameChoices(condition: { memberId: $memberId, year: $year }) {
+      nodes {
+        ...gameChoiceFields
+      }
+    }
+  }
+  ${GameSubmissionFieldsFragmentDoc}
+  ${GameChoiceFieldsFragmentDoc}
+`
+
+/**
+ * __useGetGameChoicesQuery__
+ *
+ * To run a query within a React component, call `useGetGameChoicesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetGameChoicesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetGameChoicesQuery({
+ *   variables: {
+ *      year: // value for 'year'
+ *      memberId: // value for 'memberId'
+ *   },
+ * });
+ */
+export function useGetGameChoicesQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
+) {
+  return Apollo.useQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, baseOptions)
+}
+export function useGetGameChoicesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, baseOptions)
+}
+export type GetGameChoicesQueryHookResult = ReturnType<typeof useGetGameChoicesQuery>
+export type GetGameChoicesLazyQueryHookResult = ReturnType<typeof useGetGameChoicesLazyQuery>
+export type GetGameChoicesQueryResult = Apollo.QueryResult<GetGameChoicesQuery, GetGameChoicesQueryVariables>
+export const ReadGameChoiceDocument = gql`
+  query readGameChoice($id: Int!) {
+    gameChoice(id: $id) {
+      ...gameChoiceFields
+    }
+  }
+  ${GameChoiceFieldsFragmentDoc}
+`
+
+/**
+ * __useReadGameChoiceQuery__
+ *
+ * To run a query within a React component, call `useReadGameChoiceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReadGameChoiceQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReadGameChoiceQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useReadGameChoiceQuery(
+  baseOptions?: Apollo.QueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
+) {
+  return Apollo.useQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, baseOptions)
+}
+export function useReadGameChoiceLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
+) {
+  return Apollo.useLazyQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, baseOptions)
+}
+export type ReadGameChoiceQueryHookResult = ReturnType<typeof useReadGameChoiceQuery>
+export type ReadGameChoiceLazyQueryHookResult = ReturnType<typeof useReadGameChoiceLazyQuery>
+export type ReadGameChoiceQueryResult = Apollo.QueryResult<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
+export const CreateGameSubmissionDocument = gql`
+  mutation createGameSubmission($input: CreateGameSubmissionInput!) {
+    createGameSubmission(input: $input) {
+      clientMutationId
+      gameSubmission {
+        ...gameSubmissionFields
+      }
+    }
+  }
+  ${GameSubmissionFieldsFragmentDoc}
+`
+export type CreateGameSubmissionMutationFn = Apollo.MutationFunction<
+  CreateGameSubmissionMutation,
+  CreateGameSubmissionMutationVariables
+>
+
+/**
+ * __useCreateGameSubmissionMutation__
+ *
+ * To run a mutation, you first call `useCreateGameSubmissionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameSubmissionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameSubmissionMutation, { data, loading, error }] = useCreateGameSubmissionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGameSubmissionMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGameSubmissionMutation, CreateGameSubmissionMutationVariables>
+) {
+  return Apollo.useMutation<CreateGameSubmissionMutation, CreateGameSubmissionMutationVariables>(
+    CreateGameSubmissionDocument,
+    baseOptions
+  )
+}
+export type CreateGameSubmissionMutationHookResult = ReturnType<typeof useCreateGameSubmissionMutation>
+export type CreateGameSubmissionMutationResult = Apollo.MutationResult<CreateGameSubmissionMutation>
+export type CreateGameSubmissionMutationOptions = Apollo.BaseMutationOptions<
+  CreateGameSubmissionMutation,
+  CreateGameSubmissionMutationVariables
+>
+export const UpdateGameSubmissionByNodeIdDocument = gql`
+  mutation updateGameSubmissionByNodeId($input: UpdateGameSubmissionByNodeIdInput!) {
+    updateGameSubmissionByNodeId(input: $input) {
+      clientMutationId
+      gameSubmission {
+        ...gameSubmissionFields
+      }
+    }
+  }
+  ${GameSubmissionFieldsFragmentDoc}
+`
+export type UpdateGameSubmissionByNodeIdMutationFn = Apollo.MutationFunction<
+  UpdateGameSubmissionByNodeIdMutation,
+  UpdateGameSubmissionByNodeIdMutationVariables
+>
+
+/**
+ * __useUpdateGameSubmissionByNodeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameSubmissionByNodeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameSubmissionByNodeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameSubmissionByNodeIdMutation, { data, loading, error }] = useUpdateGameSubmissionByNodeIdMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGameSubmissionByNodeIdMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateGameSubmissionByNodeIdMutation,
+    UpdateGameSubmissionByNodeIdMutationVariables
+  >
+) {
+  return Apollo.useMutation<UpdateGameSubmissionByNodeIdMutation, UpdateGameSubmissionByNodeIdMutationVariables>(
+    UpdateGameSubmissionByNodeIdDocument,
+    baseOptions
+  )
+}
+export type UpdateGameSubmissionByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameSubmissionByNodeIdMutation>
+export type UpdateGameSubmissionByNodeIdMutationResult = Apollo.MutationResult<UpdateGameSubmissionByNodeIdMutation>
+export type UpdateGameSubmissionByNodeIdMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGameSubmissionByNodeIdMutation,
+  UpdateGameSubmissionByNodeIdMutationVariables
+>
+export const CreateGameChoiceDocument = gql`
+  mutation createGameChoice($input: CreateGameChoiceInput!) {
+    createGameChoice(input: $input) {
+      clientMutationId
+      gameChoice {
+        ...gameChoiceFields
+      }
+    }
+  }
+  ${GameChoiceFieldsFragmentDoc}
+`
+export type CreateGameChoiceMutationFn = Apollo.MutationFunction<
+  CreateGameChoiceMutation,
+  CreateGameChoiceMutationVariables
+>
+
+/**
+ * __useCreateGameChoiceMutation__
+ *
+ * To run a mutation, you first call `useCreateGameChoiceMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameChoiceMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameChoiceMutation, { data, loading, error }] = useCreateGameChoiceMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateGameChoiceMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGameChoiceMutation, CreateGameChoiceMutationVariables>
+) {
+  return Apollo.useMutation<CreateGameChoiceMutation, CreateGameChoiceMutationVariables>(
+    CreateGameChoiceDocument,
+    baseOptions
+  )
+}
+export type CreateGameChoiceMutationHookResult = ReturnType<typeof useCreateGameChoiceMutation>
+export type CreateGameChoiceMutationResult = Apollo.MutationResult<CreateGameChoiceMutation>
+export type CreateGameChoiceMutationOptions = Apollo.BaseMutationOptions<
+  CreateGameChoiceMutation,
+  CreateGameChoiceMutationVariables
+>
+export const UpdateGameChoiceByNodeIdDocument = gql`
+  mutation updateGameChoiceByNodeId($input: UpdateGameChoiceByNodeIdInput!) {
+    updateGameChoiceByNodeId(input: $input) {
+      clientMutationId
+      gameChoice {
+        ...gameChoiceFields
+      }
+    }
+  }
+  ${GameChoiceFieldsFragmentDoc}
+`
+export type UpdateGameChoiceByNodeIdMutationFn = Apollo.MutationFunction<
+  UpdateGameChoiceByNodeIdMutation,
+  UpdateGameChoiceByNodeIdMutationVariables
+>
+
+/**
+ * __useUpdateGameChoiceByNodeIdMutation__
+ *
+ * To run a mutation, you first call `useUpdateGameChoiceByNodeIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateGameChoiceByNodeIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateGameChoiceByNodeIdMutation, { data, loading, error }] = useUpdateGameChoiceByNodeIdMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateGameChoiceByNodeIdMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>
+) {
+  return Apollo.useMutation<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>(
+    UpdateGameChoiceByNodeIdDocument,
+    baseOptions
+  )
+}
+export type UpdateGameChoiceByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameChoiceByNodeIdMutation>
+export type UpdateGameChoiceByNodeIdMutationResult = Apollo.MutationResult<UpdateGameChoiceByNodeIdMutation>
+export type UpdateGameChoiceByNodeIdMutationOptions = Apollo.BaseMutationOptions<
+  UpdateGameChoiceByNodeIdMutation,
+  UpdateGameChoiceByNodeIdMutationVariables
 >
 export const GetLookupsDocument = gql`
   query GetLookups {

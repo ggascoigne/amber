@@ -18,7 +18,7 @@ export const useInitialTableState = <T extends Record<string, unknown>>(
 ) => {
   const createdFor = useMemo(
     () => ({
-      columns: columns.map((c) => c.id || (c.accessor as string)).join(','),
+      columns: columns.map((c) => c.id ?? (c.accessor as string)).join(','),
       initialState: userInitialState,
     }),
     [columns, userInitialState]

@@ -55,8 +55,8 @@ export const useUpdateGameAssignment = () => {
         const firstAndLast = `${m?.user?.firstName} ${m?.user?.lastName}`
         const pat = `${m?.user?.firstName?.slice(0, 3)}\\w+\\s+${m?.user?.lastName}`
         return (
-          (fullName && gmNames?.includes(fullName) ? fullName : undefined) ||
-          (firstAndLast && gmNames?.includes(firstAndLast) ? fullName : undefined) ||
+          (fullName && gmNames?.includes(fullName) ? fullName : undefined) ??
+          (firstAndLast && gmNames?.includes(firstAndLast) ? fullName : undefined) ??
           (gmNames.match(new RegExp(pat)) ? fullName : undefined)
         )
       })
@@ -149,7 +149,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
     },
   })
 
-  const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) || [], [
+  const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [
     membershipData?.memberships?.nodes,
   ])
 

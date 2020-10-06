@@ -1,7 +1,9 @@
 import type { GameArray } from 'client'
-import { GameCard, GameCardChild } from 'components/Acnw'
+import { GameCard } from 'components/Acnw'
 import React, { useEffect } from 'react'
 import { useScrollToHash, useUrlSourceState } from 'utils'
+
+import { GameDecorator, GameDecoratorParams } from '../types'
 
 export interface MatchParams {
   year: string
@@ -13,7 +15,8 @@ interface GameListFull {
   slot: number
   games: GameArray
   onEnterGame: any
-  selectionComponent?: (props: GameCardChild) => React.ReactNode
+  decorator?: (props: GameDecorator) => React.ReactNode
+  decoratorParams?: GameDecoratorParams
 }
 
 export const GameListFull: React.FC<GameListFull> = ({
@@ -21,7 +24,8 @@ export const GameListFull: React.FC<GameListFull> = ({
   slot: slotInput,
   games,
   onEnterGame,
-  selectionComponent,
+  decorator,
+  decoratorParams,
 }) => {
   const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
   const hasEnterGame = !!onEnterGame
@@ -51,7 +55,8 @@ export const GameListFull: React.FC<GameListFull> = ({
             slot={slot}
             game={game}
             onEnter={onEnterGame}
-            selectionComponent={selectionComponent}
+            decorator={decorator}
+            decoratorParams={decoratorParams}
           />
         ) : null
       )}

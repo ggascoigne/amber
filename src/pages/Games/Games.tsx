@@ -25,7 +25,7 @@ const getGms = (row: Game) => {
     return playersOrEmpty
       .filter((val) => val)
       .filter((val) => val!.gm !== 0)
-      .map((val) => val?.member?.user?.fullName || '')
+      .map((val) => val?.member?.user?.fullName ?? '')
       .join(', ')
   } else {
     return ''
@@ -150,7 +150,7 @@ export const Games: React.FC = React.memo(() => {
     },
   })
 
-  const membershipList = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) || [], [
+  const membershipList = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [
     membershipData?.memberships?.nodes,
   ])
 

@@ -6,6 +6,7 @@ import React from 'react'
 import { useUrlSourceState } from 'utils'
 
 import { ListItemLink } from '../Navigation'
+import { GameDecorator, GameDecoratorParams } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,9 +23,18 @@ interface GameListIndex {
   games: GameArray
   slugPrefix: string
   onEnterGame?: any
+  decorator?: (props: GameDecorator) => React.ReactNode
+  decoratorParams?: GameDecoratorParams
 }
 
-export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games, slugPrefix }) => {
+export const GameListIndex: React.FC<GameListIndex> = ({
+  year,
+  slot,
+  games,
+  slugPrefix,
+  decorator,
+  decoratorParams,
+}) => {
   const classes = useStyles()
   const urlSource = useUrlSourceState((state) => state.urlSource)
   return (
@@ -46,6 +56,8 @@ export const GameListIndex: React.FC<GameListIndex> = ({ year, slot, games, slug
             <Typography variant='body1' noWrap>
               {game.name}
             </Typography>
+            <div style={{ flex: 1 }} />
+            {decorator && decorator({ year, slot, gameId: game.id, ...decoratorParams })}
           </ListItemLink>
         )
       })}

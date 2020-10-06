@@ -31,7 +31,7 @@ export const MembershipSummary: React.FC = () => {
   const profile = useProfile()
   const { userId } = useUser()
   const year = useYearFilterState((state) => state.year)
-  const { loading, error, data } = useGetMembershipByYearAndIdQuery({ variables: { year, userId: userId || 0 } })
+  const { loading, error, data } = useGetMembershipByYearAndIdQuery({ variables: { year, userId: userId ?? 0 } })
   const [showEdit, setShowEdit] = useState(false)
   const classes = useStyles()
   const [showPT, setShowPT] = useState(false)

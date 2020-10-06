@@ -146,7 +146,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
 
   const unsorted: Game[] = (data!.user?.authoredGames?.nodes?.filter(notEmpty) as Game[]) || []
   const priorGamesList = unsorted.sort(
-    (a, b) => b.year - a.year || (a.slotId || 0) - (b.slotId || 0) || -b.name.localeCompare(a.name)
+    (a, b) => b.year - a.year || (a.slotId ?? 0) - (b.slotId ?? 0) || -b.name.localeCompare(a.name)
   )
 
   const onCopyGameChange = (
@@ -196,7 +196,7 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                       id='prior-games'
                       options={priorGamesList}
                       groupBy={(game) => `${game.year}`}
-                      getOptionLabel={(game) => `${game.slotId || 0}: ${game.name}`}
+                      getOptionLabel={(game) => `${game.slotId ?? 0}: ${game.name}`}
                       fullWidth
                       renderInput={(params) => (
                         <MuiTextField

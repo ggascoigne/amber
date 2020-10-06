@@ -42,6 +42,10 @@ module.exports = {
     },
     {
       files: '*.{ts,tsx}',
+      parser: `@typescript-eslint/parser`,
+      parserOptions: {
+        project: `./tsconfig.eslint.json`,
+      },
       rules: {
         // disabled because it conflicts with jsx-a11y/alt-text
         'jsx-a11y/img-redundant-alt': 'off',
@@ -70,6 +74,13 @@ module.exports = {
         ],
         '@typescript-eslint/no-angle-bracket-type-assertion': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/prefer-nullish-coalescing': [
+          'warn',
+          {
+            ignoreConditionalTests: true,
+            ignoreMixedLogicalExpressions: true,
+          },
+        ],
       },
     },
     {

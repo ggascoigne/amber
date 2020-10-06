@@ -37,7 +37,7 @@ export const useSettings = () => {
         return defaultValue
       }
 
-      const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) || null
+      const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) ?? null
 
       const s = getSetting(settings, setting)
 
