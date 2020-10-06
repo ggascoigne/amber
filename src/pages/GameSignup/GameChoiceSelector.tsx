@@ -7,6 +7,10 @@ import { Game, GameChoice, Maybe } from 'client'
 import { GameCardChild } from 'components/Acnw'
 import React, { useEffect } from 'react'
 
+const isNoGame = (id: number) => id <= 7
+// 144 is the magic number of the Any Game entry :(
+const isAnyGame = (id: number) => id === 144
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     spacer: {
@@ -223,16 +227,18 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
             </ToggleButton>
           </ToggleButtonGroup>
         </div>
-        <div className={classes.row}>
-          <ToggleButton
-            value={returning}
-            selected={returning}
-            onChange={handleReturning}
-            className={classNames(classes.returning, classes.button)}
-          >
-            Returning Player
-          </ToggleButton>
-        </div>
+        {!(isNoGame(gameId) || isAnyGame(gameId)) && (
+          <div className={classes.row}>
+            <ToggleButton
+              value={returning}
+              selected={returning}
+              onChange={handleReturning}
+              className={classNames(classes.returning, classes.button)}
+            >
+              Returning Player
+            </ToggleButton>
+          </div>
+        )}
       </div>
     </>
   )
@@ -252,7 +258,11 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, 
 
 type SlotDecoratorCheckMark = { year: number; slot: number } & SelectorParams
 
-const isNoGameOrAnyGame = (choice?: MaybeGameChoice) => choice?.game?.year === 0
+// 144 is the magic number of the Any Game entry :(
+const isNoGameOrAnyGame = (choice?: MaybeGameChoice) => {
+  const id = choice?.gameId
+  return id && (isNoGame(id) || isAnyGame(id))
+}
 
 export const orderChoices = (choices?: MaybeGameChoice[]) => [
   choices?.find((c) => c?.rank === 0),

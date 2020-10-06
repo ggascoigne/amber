@@ -25,7 +25,7 @@ the games table should:
 * [ ] Extract dates from code and put them in the db.  The current behavior was inherited from v1 and was intended as a short term hack. 10 years later...
 * [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
 * [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
-
+* [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place.  Either way it looks messy and should bet sanitized.
 
 ## Done
 
