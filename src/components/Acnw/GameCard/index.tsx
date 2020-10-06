@@ -1,4 +1,5 @@
-import { makeStyles } from '@material-ui/core'
+import { Accordion, AccordionDetails, AccordionSummary, makeStyles } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import classNames from 'classnames'
 import type { GameFieldsFragment, GameGmsFragment } from 'client'
 import { GridContainer, LookupValue } from 'components/Acnw'
@@ -14,6 +15,10 @@ import { GameDecorator, GameDecoratorParams } from '../types'
 const useStyles = makeStyles({
   card: {
     marginBottom: 50,
+  },
+  header: {
+    display: 'f;ex',
+    flex: 1,
   },
   tinyCard: {
     height: 279,
@@ -52,44 +57,50 @@ const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
         className={classNames(classes.card, { [classes.tinyCard]: tiny })}
         id={`game/${year}/${slot}/${id}`}
       >
-        {header}
-        <CardBody>
-          <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
-            <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-              {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
-            </Field>
-            <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-              <MultiLine text={description} />
-            </Field>
-            {setting && (
-              <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
-                <MultiLine text={setting} />
-              </Field>
-            )}
-            {charInstructions && (
-              <Field label='Character & Player Instructions' tiny={tiny}>
-                <MultiLine text={charInstructions} />
-              </Field>
-            )}
-            <Field label='Genre/Type' small tiny={tiny}>
-              {genre} - {type}
-            </Field>
-            <Field label='Teen Friendly' small tiny={tiny}>
-              {teenFriendly ? 'Yes' : 'No'}
-            </Field>
-            <Field label='Number of Players' small tiny={tiny}>
-              {playerMin} - {playerMax}
-            </Field>
-            <Field label='Player Preference' small tiny={tiny}>
-              <LookupValue realm='gamePlayerPref' code={playerPreference} />
-            </Field>
-            <Field label='' tiny={tiny}>
-              {playersContactGm
-                ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
-                : `Players need not contact the GM in advance of the convention.`}
-            </Field>
-          </GridContainer>
-        </CardBody>
+        <Accordion defaultExpanded>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+            {header}
+          </AccordionSummary>
+          <AccordionDetails>
+            <CardBody>
+              <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+                <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
+                  {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
+                </Field>
+                <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+                  <MultiLine text={description} />
+                </Field>
+                {setting && (
+                  <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
+                    <MultiLine text={setting} />
+                  </Field>
+                )}
+                {charInstructions && (
+                  <Field label='Character & Player Instructions' tiny={tiny}>
+                    <MultiLine text={charInstructions} />
+                  </Field>
+                )}
+                <Field label='Genre/Type' small tiny={tiny}>
+                  {genre} - {type}
+                </Field>
+                <Field label='Teen Friendly' small tiny={tiny}>
+                  {teenFriendly ? 'Yes' : 'No'}
+                </Field>
+                <Field label='Number of Players' small tiny={tiny}>
+                  {playerMin} - {playerMax}
+                </Field>
+                <Field label='Player Preference' small tiny={tiny}>
+                  <LookupValue realm='gamePlayerPref' code={playerPreference} />
+                </Field>
+                <Field label='' tiny={tiny}>
+                  {playersContactGm
+                    ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
+                    : `Players need not contact the GM in advance of the convention.`}
+                </Field>
+              </GridContainer>
+            </CardBody>
+          </AccordionDetails>
+        </Accordion>
       </Card>
     )
   }
@@ -118,7 +129,7 @@ export const GameCard: React.FC<GameCard> = React.memo(
     const { id, name, slotId = 0, description } = game
 
     const headerContent = (
-      <div>
+      <div className={classes.header}>
         {decorator ? (
           <HeaderContent name={name} tiny={tiny}>
             {decorator({ year, slot, gameId: id, ...decoratorParams })}
