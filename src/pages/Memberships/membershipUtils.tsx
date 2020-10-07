@@ -76,7 +76,12 @@ export const useEditMembership = (onClose: onCloseHandler) => {
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
 
-  const sendMembershipConfirmation = (membershipId: number, profile: ProfileType, membershipValues: MembershipType) => {
+  const sendMembershipConfirmation = (
+    membershipId: number,
+    profile: ProfileType,
+    membershipValues: MembershipType,
+    update = false
+  ) => {
     const slotDescriptions = membershipValues?.slotsAttending
       ?.split(',')
       .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i), local: true }))
@@ -87,6 +92,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
         year: configuration.year,
         name: profile?.fullName,
         email: profile?.email,
+        update,
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
         slotDescriptions,
@@ -111,7 +117,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates
           if (shouldSendEmail) {
-            sendMembershipConfirmation(membershipValues.id!, profile, membershipValues)
+            sendMembershipConfirmation(membershipValues.id!, profile, membershipValues, true)
           }
           onClose()
         })

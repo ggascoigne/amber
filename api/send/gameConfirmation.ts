@@ -11,6 +11,7 @@ import { emailer } from './_email'
 // /api/send/gameConfirmation
 // auth token: required
 // body: {
+//  update?: boolean
 //  year: number
 //  name: string
 //  email: string
@@ -23,7 +24,7 @@ export default withApiHandler([
   async (req: Request, res: Response) => {
     try {
       if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
-      const { year, name, email, url, game } = req.body
+      const { year, name, email, url, game, update = false } = req.body
       if (!year) throw new JsonError(400, 'missing year')
       if (!name) throw new JsonError(400, 'missing name')
       if (!email) throw new JsonError(400, 'missing email')
@@ -33,11 +34,16 @@ export default withApiHandler([
       game.playerPreference = getPlayerPreference(game.playerPreference)
       const result = await emailer.send({
         template: 'gameConfirmation',
-        message: {
-          to: email,
-          cc: emails.gameEmail,
-        },
+        message: update
+          ? {
+              to: emails.gameEmail,
+            }
+          : {
+              to: email,
+              cc: emails.gameEmail,
+            },
         locals: {
+          update,
           name,
           email,
           year,

@@ -155,7 +155,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (profile: ProfileType, values: GameFields) => {
+      const sendGameConfirmation = (profile: ProfileType, values: GameFields, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: JSON.stringify({
@@ -164,6 +164,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             email: profile?.email,
             url: `${window.location.origin}/gm`,
             game: values,
+            update,
           }),
         })
       }
@@ -209,7 +210,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             notify({ text: 'Game updated', variant: 'success' })
             // create always sends email, but generally updates skip sending email about admin updates
             if (shouldSendEmail) {
-              sendGameConfirmation(profile!, values)
+              sendGameConfirmation(profile!, values, true)
             }
             onClose()
           })

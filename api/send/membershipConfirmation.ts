@@ -15,6 +15,7 @@ import { emailer } from './_email'
 //  email: string
 //  url: string
 //  membership: Membership
+//  update?; boolean
 // }
 
 export default withApiHandler([
@@ -23,7 +24,7 @@ export default withApiHandler([
     try {
       if (!req.body)
         throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
-      const { year, name, email, url, membership, slotDescriptions } = req.body
+      const { year, name, email, url, membership, slotDescriptions, update = false } = req.body
       if (!year) throw new JsonError(400, 'missing year')
       if (!name) throw new JsonError(400, 'missing name')
       if (!email) throw new JsonError(400, 'missing email')
@@ -38,6 +39,7 @@ export default withApiHandler([
           cc: emails.contactEmail,
         },
         locals: {
+          update,
           name,
           email,
           year,
