@@ -78,6 +78,7 @@ export const GameSignupPage: React.FC = () => {
       const { gameChoices, gameId, rank, returningPlayer, slotId, year, oldRank } = params
 
       const empty = {
+        memberId: membership?.id ?? 0,
         slotId,
         year,
         gameId: null,

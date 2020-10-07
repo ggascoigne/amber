@@ -45,7 +45,7 @@ export const useSettings = () => {
         case SettingValue.Admin:
           return isAdmin
         case SettingValue.GM:
-          return isGm
+          return isAdmin || isGm
         case SettingValue.Everyone:
         case SettingValue.Yes:
           return true

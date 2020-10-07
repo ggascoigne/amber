@@ -26,6 +26,8 @@ the games table should:
 * [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
 * [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
 * [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place.  Either way it looks messy and should bet sanitized.
+* [ ] Implement csv import so that we can do bulk operations such as assigning slots to games or players to games etc.  See the in-work code on the import_work branch.
+* [] make menu subtext font a bit bolder - check on Simone's computer
 
 ## Done
 
