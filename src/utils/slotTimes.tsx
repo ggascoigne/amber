@@ -70,16 +70,26 @@ export enum SlotFormat {
   SHORT,
 }
 
+const mapping = { AM: 'am', PM: 'pm' }
+
+const replaceAll = (str: string, mapObj: Record<string, string>) => {
+  const re = new RegExp(Object.keys(mapObj).join('|'), 'g')
+  return str.replace(re, (matched) => mapObj[matched])
+}
+
 const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) => {
-  switch (altFormat) {
-    case SlotFormat.ALT:
-      return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
-    case SlotFormat.SHORT:
-      return `Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
-    case SlotFormat.DEFAULT:
-    default:
-      return `Slot ${slot} ${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
-  }
+  const res = (() => {
+    switch (altFormat) {
+      case SlotFormat.ALT:
+        return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
+      case SlotFormat.SHORT:
+        return `Slot ${slot}: ${s.toFormat('ccc h a')} to ${e.toFormat('h a ZZZZ')}`
+      case SlotFormat.DEFAULT:
+      default:
+        return `Slot ${slot} ${s.toFormat('ccc, LLL d, t')} to ${e.toFormat('t ZZZZ')}`
+    }
+  })()
+  return replaceAll(res, mapping)
 }
 
 const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) =>
@@ -105,7 +115,7 @@ export const getSlotDescription = ({
 
 // I thought that I could just check the TZ, but there turn out to be a ton of possible Pacific Time strings,
 // this way cheats but is easy. And it re-uses a function that I know works
-export const isNotPacificTime =
+export const isNotPacificTime = () =>
   getSlotDescription({
     year: 2020,
     slot: 1,

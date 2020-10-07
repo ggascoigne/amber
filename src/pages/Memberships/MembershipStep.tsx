@@ -46,7 +46,7 @@ export const MembershipStep: React.FC<MembershipFormContent> = ({ prefix = '' })
           separately from the ACNW main game book.
         </DialogContentText>
         <div className={classes.slotSelection}>
-          {isNotPacificTime && (
+          {isNotPacificTime() && (
             <div>
               <FormControlLabel
                 control={

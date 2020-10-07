@@ -27,7 +27,8 @@ the games table should:
 * [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
 * [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place.  Either way it looks messy and should bet sanitized.
 * [ ] Implement csv import so that we can do bulk operations such as assigning slots to games or players to games etc.  See the in-work code on the import_work branch.
-* [] make menu subtext font a bit bolder - check on Simone's computer
+* [ ] make menu subtext font a bit bolder - check on Simone's computer
+* [x] change slot times to include day so something like "Slot 1: Thu 11 am to 3 pm PST"
 
 ## Done
 

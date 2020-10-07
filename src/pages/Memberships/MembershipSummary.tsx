@@ -74,7 +74,7 @@ export const MembershipSummary: React.FC = () => {
       <GridContainer>
         <Field label='Slots you intend to play'>
           <div className={classes.slotSelection}>
-            {isNotPacificTime && (
+            {isNotPacificTime() && (
               <div>
                 <FormControlLabel
                   control={
