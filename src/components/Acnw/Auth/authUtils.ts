@@ -6,7 +6,8 @@ import find from 'lodash/find'
 import type { Perms, Rules } from './PermissionRules'
 
 const check = (rules: Rules, role: string | null, action: Perms, roleOverride: string | undefined, data?: any) => {
-  const roleToTest = data?.ignoreOverride ? role : roleOverride ?? role
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const roleToTest = (data?.ignoreOverride ? role : roleOverride) || role
 
   if (!roleToTest) {
     return false

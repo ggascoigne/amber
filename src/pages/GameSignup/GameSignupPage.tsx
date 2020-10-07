@@ -4,7 +4,13 @@ import React, { useCallback } from 'react'
 import { Redirect } from 'react-router-dom'
 import { PropType, UnpackArray, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
-import { GameChoiceSelector, SelectorUpdate, SlotDecoratorCheckMark, orderChoices } from './GameChoiceSelector'
+import {
+  GameChoiceSelector,
+  SelectorUpdate,
+  SlotDecoratorCheckMark,
+  allSlotsComplete,
+  orderChoices,
+} from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
 type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
@@ -143,9 +149,12 @@ export const GameSignupPage: React.FC = () => {
     updateChoice,
   }
 
+  const complete = allSlotsComplete(year, gameChoices)
+
   return (
     <Page>
       {slot === 1 && <SignupInstructions year={year} />}
+      {complete && <>COMPLETE</>}
       <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
         {({ year, slot, games }) => (
           <>

@@ -7,6 +7,8 @@ import { Game, GameChoice, Maybe } from 'client'
 import { GameCardChild } from 'components/Acnw'
 import React, { useEffect } from 'react'
 
+import { range } from '../../utils'
+
 const isNoGame = (id: number) => id <= 7
 // 144 is the magic number of the Any Game entry :(
 const isAnyGame = (id: number) => id === 144
@@ -206,7 +208,11 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
   return (
     <>
       <div className={classes.spacer} />
-      <div className={classes.container}>
+      <div
+        className={classes.container}
+        onClick={(event) => event.stopPropagation()}
+        onFocus={(event) => event.stopPropagation()}
+      >
         <div className={classes.row}>
           <div className={classes.label}>Choice</div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
@@ -284,6 +290,12 @@ const isSlotComplete = (choices?: MaybeGameChoice[]) => {
   if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(ordered[3])) return true
   return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(ordered[4]))
 }
+
+export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) =>
+  range(0, 7).reduce(
+    (acc, slot) => acc && isSlotComplete(gameChoices?.filter((c) => c?.year === year && c?.slotId === slot + 1)),
+    true
+  )
 
 export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMark> = ({ year, slot, gameChoices }) => {
   const classes = useStyles()

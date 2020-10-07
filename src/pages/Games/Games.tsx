@@ -141,7 +141,7 @@ export const Games: React.FC = React.memo(() => {
     variables: {
       year,
     },
-    // fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
   })
   const setGameGmAssignments = useUpdateGameAssignment()
   const { data: membershipData } = useGetMembershipsByYearQuery({

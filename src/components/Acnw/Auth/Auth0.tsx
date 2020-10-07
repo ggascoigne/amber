@@ -93,7 +93,6 @@ const auth0ClientConfig: Auth0ClientOptions = {
 }
 
 const onAuthRedirectCallback = (history: History<any>, redirectResult?: RedirectLoginResult) => {
-  console.log('auth0 onRedirectCallback called with redirectState %o', redirectResult)
   // Clears auth0 query string parameters from url
   const targetUrl =
     redirectResult && redirectResult.appState && redirectResult.appState.targetUrl
