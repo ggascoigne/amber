@@ -31,8 +31,7 @@ export type RouteInfo = {
   link?: string
   subText?: string
   exact: boolean
-  redirect?: string
-  component?: React.ComponentType<any>
+  component: React.ComponentType<any>
   permission?: Perms
   condition?: boolean
   userCondition?: (params: UserCondition) => boolean
@@ -78,11 +77,11 @@ export const rootRoutes: RootRoutes = [
     component: GmPage,
   },
   {
-    path: '/game-book',
+    path: `/game-book/${configuration.year}`,
     label: `${configuration.year} Game Book`,
     subText: "This year's games",
     exact: true,
-    redirect: `/game-book/${configuration.year}`,
+    component: GameBookGamesPage,
     userCondition: ({ getSetting }) => getSetting('display.game.book'),
   },
   {
@@ -92,11 +91,11 @@ export const rootRoutes: RootRoutes = [
     component: GameBookGamesPage,
   },
   {
-    path: '/game-signup',
+    path: `/game-signup/${configuration.year}`,
     label: 'Game Signup',
     subText: 'Choose your games',
     exact: true,
-    redirect: `/game-signup/${configuration.year}`,
+    component: GameSignupPage,
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
   },
   {
