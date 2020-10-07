@@ -20,14 +20,20 @@ export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) =>
         .filter(
           (menuItem) => menuItem.userCondition === undefined || menuItem.userCondition({ userId, isMember, getSetting })
         )
-        .map((route, index) => (
-          <Route
-            exact={route.exact}
-            path={route.path}
-            render={() => React.createElement(route.component)}
-            key={index}
-          />
-        )),
+        .map((route, index) => {
+          if (route.redirect) {
+            return (
+              <Route
+                exact={route.exact}
+                path={route.path}
+                render={() => <Redirect to={route.redirect!} />}
+                key={index}
+              />
+            )
+          } else {
+            return <Route exact={route.exact} path={route.path} component={route.component!} key={index} />
+          }
+        }),
     [getSetting, isMember, routes, userId]
   )
 

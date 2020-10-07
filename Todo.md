@@ -1,11 +1,11 @@
 #Todos & Ideas
 
+* [ ] Add a members only Discord server link page
 * [ ] Add T-Shirt art and sales link
 * [ ] can open links such as edit game into another window
 * [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.
 * [ ] Right now you can enter anything in the GM field for a game, I really need to lock that down to just allowing GM names, perhaps forcing the addition of the author.
 * [ ] Add Admin edit mode to the game edit
-* [x] Make sure that the signup page is only available to members.
 * [ ] Game selection is a bit slow. Should switch away from manipulating the data in the apollo cache, just can't work out how to update the right item and instead, use the query to update a local copy which we edit and display from, updating it when the query results change.  That way we can get a snappy screen update without worrying about the latency.
 * [ ] Restyle the choice interface - it's functional and very heavily based on the v1 site, I'm sure that we could do better.
 * [ ] Look at displaying he game book stuff using react-window, try to avoid updated to off-screen pages.
@@ -17,8 +17,6 @@ the games table should:
 
 * [ ] Make the year selector on the past cons page a bit smaller on mobile.
 * [ ] get real auth keys for facebook and google-oauth link.
-* [ ] migrate from vc secrets to vc env
-* [ ] hook up dev builds using dev database
 * [ ] Remove the lookups stuff - these should just be UI constants, they don't change, and it's too slow to retrieve them.
 * [ ] In the past cons list, indicate which games the logged in user played.
 * [ ] Convert the MaterialKitReact code to typescript - at least starting with the styles.  Remove all the bits that aren't being used.
@@ -27,8 +25,9 @@ the games table should:
 * [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
 * [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place.  Either way it looks messy and should bet sanitized.
 * [ ] Implement csv import so that we can do bulk operations such as assigning slots to games or players to games etc.  See the in-work code on the import_work branch.
-* [ ] make menu subtext font a bit bolder - check on Simone's computer
-* [x] change slot times to include day so something like "Slot 1: Thu 11 am to 3 pm PST"
+* [ ] make menu subtext font a bit bolder - check on Simone's computer/ Windows
+* [ ] investigate https://www.graphile.org/postgraphile/usage-schema/ wrt. access postgraphile in the api layer
+* [ ] add http://amberconnw.wikidot.com/ to links page
 
 ## Done
 
@@ -49,6 +48,10 @@ the games table should:
 * [x] Cloning the ui changes the tab - forces the UI back to the membership page. Actually this was just cloning the become a GM page.
 * [x] there's still something icky about the past cons page, it really shouldn't be using the url as an input in so many places.  It feels like we're mixing input from the url with input from state and making it far too complex. But it works for now.
 * [x] Add IsGm logic
+* [x] Make sure that the signup page is only available to members.
+* [x] change slot times to include day so something like "Slot 1: Thu 11 am to 3 pm PST"
+* [x] migrate from vc secrets to vc env
+* [x] hook up dev builds using dev database
 
 ### Profiles
 
