@@ -26,11 +26,11 @@ export const configuration = {
   registrationDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
   paymentDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 14 }),
   gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
-  gameGmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 4 }),
-  gameBookOpen: pdxDate({ year: conventionDates.year, month: 10, day: 6 }),
-  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 10, day: 11 }),
-  gmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 14 }),
-  schedulesSent: pdxDate({ year: conventionDates.year, month: 10, day: 16 }),
+  gameGmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 6 }),
+  gameBookOpen: pdxDate({ year: conventionDates.year, month: 10, day: 9 }),
+  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 10, day: 13 }),
+  gmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 15 }),
+  schedulesSent: pdxDate({ year: conventionDates.year, month: 10, day: 17 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
   wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
   dateRange: `${conventionStartDate.toFormat('MMMM')} ${conventionDates.startDay}-${conventionDates.endDay}, ${

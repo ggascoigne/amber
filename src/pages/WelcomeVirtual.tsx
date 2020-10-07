@@ -139,12 +139,12 @@ export const WelcomeVirtual: React.FC = () => {
       <p>NOTE: all dates are tentative due to potential technological restrictions.</p>
       <ul>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Initial registration: <ConfigDate name='registrationDeadline' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
           </span>
         </li>
