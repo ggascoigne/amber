@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   TextField as MuiTextField,
   Typography,
   useTheme,
@@ -16,17 +17,19 @@ import {
   GraphQLError,
   GridContainer,
   GridItem,
+  HasPermission,
   Loader,
+  Perms,
   SelectField,
   TextField,
   TextFieldProps,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
-import { configuration, getSlotDescription, notEmpty, pick, range, useUser } from 'utils'
+import { configuration, getSlotDescription, notEmpty, pick, playerPreferenceOptions, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
-import { playerPreferenceOptions } from '../../utils/lookupValues'
+import { dangerColor } from '../../assets/jss/material-kit-react'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 interface GamesDialog {
@@ -189,6 +192,9 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
           <Form>
             <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Create'} Game</DialogTitle>
             <DialogContent>
+              <HasPermission permission={Perms.FullGameBook}>
+                <DialogContentText style={{ color: dangerColor }}>Admin Mode</DialogContentText>
+              </HasPermission>
               <GridContainer spacing={2}>
                 {!!priorGamesList?.length && (
                   <GridItem xs={12} md={12}>
@@ -212,6 +218,11 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                 <GridItem xs={12} md={12}>
                   <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
                 </GridItem>
+                <HasPermission permission={Perms.FullGameBook}>
+                  <GridItem xs={12} md={12}>
+                    <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
+                  </GridItem>
+                </HasPermission>
                 <GridItem xs={12} md={12}>
                   <TextField
                     name='gmNames'

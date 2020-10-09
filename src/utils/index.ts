@@ -1,6 +1,7 @@
 export * from './configuration'
 export * from './dropUnset'
 export * from './globals'
+export * from './lookupValues'
 export * from './maskEmail'
 export * from './membership'
 export * from './object'

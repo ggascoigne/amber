@@ -190,7 +190,8 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
         'lateFinish',
         'slotConflicts',
         'message',
-        'teenFriendly'
+        'teenFriendly',
+        'slotId'
       )
 
       if (values.nodeId) {
