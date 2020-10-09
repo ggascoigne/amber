@@ -15,6 +15,7 @@ import {
 import type React from 'react'
 
 import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships, Users } from '../../../pages'
+import { GameChoiceSummary } from '../../../pages/GameSignup/GameChoiceSummary'
 import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
@@ -90,6 +91,7 @@ export const rootRoutes: RootRoutes = [
     link: '/game-book',
     exact: false,
     component: GameBookGamesPage,
+    userCondition: ({ getSetting }) => getSetting('display.game.book'),
   },
   {
     path: '/game-signup',
@@ -104,6 +106,19 @@ export const rootRoutes: RootRoutes = [
     link: '/game-signup',
     exact: false,
     component: GameSignupPage,
+    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+  },
+  {
+    path: '/game-choices',
+    exact: true,
+    redirect: `/game-choices/${configuration.year}`,
+    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+  },
+  {
+    path: '/game-choices/:year',
+    exact: true,
+    component: GameChoiceSummary,
+    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
   },
   {
     path: '/about-amber',

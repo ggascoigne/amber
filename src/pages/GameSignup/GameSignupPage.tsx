@@ -1,9 +1,20 @@
-import { useCreateGameChoiceMutation, useGetGameChoicesQuery, useUpdateGameChoiceByNodeIdMutation } from 'client'
-import { GameListFull, GameListNavigator, GraphQLError, Loader, Page } from 'components/Acnw'
-import React, { useCallback } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Button } from '@material-ui/core'
+import NavigationIcon from '@material-ui/icons/Navigation'
+import {
+  useCreateGameChoiceMutation,
+  useCreateGameChoicesMutation,
+  useGetGameChoicesQuery,
+  useUpdateGameChoiceByNodeIdMutation,
+} from 'client'
+import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page } from 'components/Acnw'
+import React, { MouseEventHandler, useCallback, useState } from 'react'
+import { Link, Redirect } from 'react-router-dom'
+import { Waypoint } from 'react-waypoint'
 import { PropType, UnpackArray, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
+import { useAuth } from '../../components/Acnw/Auth/Auth0'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
+import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
   SelectorUpdate,
@@ -11,6 +22,7 @@ import {
   allSlotsComplete,
   orderChoices,
 } from './GameChoiceSelector'
+import { GameChoiceSummary } from './GameChoiceSummary'
 import { SignupInstructions } from './SignupInstructions'
 
 type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
@@ -18,8 +30,21 @@ type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'
 export const useEditGameChoice = () => {
   const [createGameChoice] = useCreateGameChoiceMutation()
   const [updateGameChoice] = useUpdateGameChoiceByNodeIdMutation()
+  const [createGameChoices] = useCreateGameChoicesMutation()
 
-  return async (values: choiceType, refetch = false) => {
+  const createAllGameChoices = async (memberId: number, year: number) => {
+    createGameChoices({
+      variables: {
+        memberId,
+        year,
+      },
+      refetchQueries: ['GetGameChoices'],
+    }).then(() => {
+      // console.log('choices created')
+    })
+  }
+
+  const createOrUpdate = async (values: choiceType, refetch = false) => {
     if (values.nodeId) {
       return updateGameChoice({
         variables: {
@@ -49,7 +74,7 @@ export const useEditGameChoice = () => {
             },
           },
         },
-        refetchQueries: refetch ? ['GetGameChoices'] : undefined,
+        refetchQueries: ['GetGameChoices'],
       })
         .then((res) => {
           // console.log({ text: 'GameChoice created', variant: 'success' })
@@ -59,6 +84,12 @@ export const useEditGameChoice = () => {
         })
     }
   }
+
+  return [createOrUpdate, createAllGameChoices] as const
+}
+
+const gotoTop = () => {
+  window.scrollTo(0, 0)
 }
 
 export const GameSignupPage: React.FC = () => {
@@ -66,12 +97,22 @@ export const GameSignupPage: React.FC = () => {
   const setNewUrl = useGameScroll()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const createOrEditGameChoice = useEditGameChoice()
+  const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
+  const [created, setCreated] = useState(false)
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [showFab, setShowFab] = useState(false)
+  const { hasPermissions } = useAuth()
+  const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { loading, error, data } = useGetGameChoicesQuery({
     variables: { year, memberId: membership?.id ?? 0 },
     skip: !membership,
+    fetchPolicy: 'cache-and-network',
   })
+
+  const onCloseConfirm: MouseEventHandler = () => {
+    setShowConfirmDialog(false)
+  }
 
   const updateChoice = useCallback(
     (params: SelectorUpdate) => {
@@ -124,8 +165,11 @@ export const GameSignupPage: React.FC = () => {
         // console.log('all updaters complete')
       })
     },
-    [createOrEditGameChoice]
+    [createOrEditGameChoice, membership?.id]
   )
+
+  const gameChoices = data?.gameChoices?.nodes
+  const gameSubmission = data?.gameSubmissions?.nodes
 
   if (membership === undefined) {
     // still loading
@@ -142,34 +186,82 @@ export const GameSignupPage: React.FC = () => {
     return <Loader />
   }
 
-  const gameChoices = data?.gameChoices?.nodes
-  const gameSubmission = data?.gameSubmissions?.nodes
+  if (gameChoices !== null && gameChoices !== undefined && gameChoices.length === 0 && !created) {
+    setCreated(true)
+    createGameChoices(membership.id, year).then()
+  }
+
+  // debug a smaller subset fo the data, sorted
+  // const g = gameChoices
+  //   ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))
+  //   ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
+  //   ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
+  // console.table(g)
 
   const selectorParams = {
     gameChoices,
     updateChoice,
   }
 
-  const complete = allSlotsComplete(year, gameChoices)
+  if (gameSubmission?.[0] && !isAdmin) {
+    return <Redirect to='/game-choices' />
+  }
 
+  const complete = allSlotsComplete(year, gameChoices)
   return (
     <Page>
+      {showFab && (
+        <ExpandingFab label='Goto Top' show={showFab} onClick={gotoTop}>
+          <NavigationIcon />
+        </ExpandingFab>
+      )}
+      {gameSubmission?.[0] && isAdmin ? <Link to='/game-choices'>See completed Summary</Link> : null}
+
       {slot === 1 && <SignupInstructions year={year} />}
-      {complete && <>COMPLETE</>}
-      <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
-        {({ year, slot, games }) => (
-          <>
-            <GameListFull
-              year={year}
-              slot={slot}
-              games={games!}
-              onEnterGame={setNewUrl}
-              decorator={GameChoiceSelector}
-              decoratorParams={selectorParams}
-            />
-          </>
-        )}
-      </GameListNavigator>
+      {complete && (
+        <Button
+          variant='contained'
+          color='primary'
+          size='large'
+          onClick={() => setShowConfirmDialog(true)}
+          style={{ marginBottom: 20 }}
+        >
+          Confirm your Game Choices
+        </Button>
+      )}
+      {showConfirmDialog && (
+        <ChoiceConfirmDialog
+          year={year}
+          memberId={membership.id}
+          open={showConfirmDialog}
+          onClose={onCloseConfirm}
+          gameChoices={gameChoices}
+          gameSubmission={gameSubmission?.[0] ?? undefined}
+        />
+      )}
+      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => setShowFab(true)} onLeave={() => setShowFab(false)}>
+        <div>
+          <GameListNavigator
+            name='page'
+            selectQuery
+            decorator={SlotDecoratorCheckMark}
+            decoratorParams={selectorParams}
+          >
+            {({ year, slot, games }) => (
+              <>
+                <GameListFull
+                  year={year}
+                  slot={slot}
+                  games={games!}
+                  onEnterGame={setNewUrl}
+                  decorator={GameChoiceSelector}
+                  decoratorParams={selectorParams}
+                />
+              </>
+            )}
+          </GameListNavigator>
+        </div>
+      </Waypoint>
     </Page>
   )
 }

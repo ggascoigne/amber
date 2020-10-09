@@ -191,6 +191,35 @@ input BooleanFilter {
 }
 
 """
+All input for the `createBareSlotChoices` mutation.
+"""
+input CreateBareSlotChoicesInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  memberId: Int
+  yearno: Int
+}
+
+"""
+The output of our `createBareSlotChoices` mutation.
+"""
+type CreateBareSlotChoicesPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""
 All input for the create `GameAssignment` mutation.
 """
 input CreateGameAssignmentInput {
@@ -6418,12 +6447,24 @@ type Mutation {
     """
     input: DeleteUserRoleInput!
   ): DeleteUserRolePayload
+  createBareSlotChoices(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateBareSlotChoicesInput!
+  ): CreateBareSlotChoicesPayload
   fTruncateTables(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     """
     input: FTruncateTablesInput!
   ): FTruncateTablesPayload
+  slotGmGame(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: SlotGmGameInput!
+  ): SlotGmGamePayload
 }
 
 """
@@ -8625,6 +8666,37 @@ input SlotFilter {
   Negates the expression.
   """
   not: SlotFilter
+}
+
+"""
+All input for the `slotGmGame` mutation.
+"""
+input SlotGmGameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  memberId: Int
+  slotId: Int
+  yearno: Int
+}
+
+"""
+The output of our `slotGmGame` mutation.
+"""
+type SlotGmGamePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  integer: Int
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """

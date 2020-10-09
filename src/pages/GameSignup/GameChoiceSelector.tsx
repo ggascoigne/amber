@@ -102,13 +102,43 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const Rank: React.FC<{ rank: number | null; small?: boolean }> = ({ rank, small = false }) => {
-  if (small) {
+export enum RankStyle {
+  small,
+  superscript,
+  plain,
+}
+
+export const rankString = (rank: number | null) => {
+  switch (rank) {
+    case 0:
+      return 'GM'
+    case 1:
+      return '1st'
+    case 2:
+      return '2nd'
+    case 3:
+      return '3rd'
+    case 4:
+      return '4th'
+    default:
+      return null
+  }
+}
+
+export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
+  rank,
+  rankStyle = RankStyle.superscript,
+}) => {
+  if (rankStyle === RankStyle.small) {
     if (rank === 0) {
       return <>GM</>
     } else {
       return <>{rank}</>
     }
+  }
+
+  if (rankStyle === RankStyle.plain) {
+    return <>{rankString(rank)}</>
   }
 
   switch (rank) {
@@ -205,6 +235,8 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
       })
   }
 
+  const isNoOrAnyGame = isNoGame(gameId) || isAnyGame(gameId)
+
   return (
     <>
       <div className={classes.spacer} />
@@ -216,9 +248,11 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
         <div className={classes.row}>
           <div className={classes.label}>Choice</div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
-            <ToggleButton className={classes.button} value={0} aria-label='GM'>
-              <Rank rank={0} />
-            </ToggleButton>
+            {!isNoOrAnyGame && (
+              <ToggleButton className={classes.button} value={0} aria-label='GM'>
+                <Rank rank={0} />
+              </ToggleButton>
+            )}
             <ToggleButton className={classes.button} value={1} aria-label='first'>
               <Rank rank={1} />
             </ToggleButton>
@@ -233,7 +267,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
             </ToggleButton>
           </ToggleButtonGroup>
         </div>
-        {!(isNoGame(gameId) || isAnyGame(gameId)) && (
+        {!isNoOrAnyGame && (
           <div className={classes.row}>
             <ToggleButton
               value={returning}
@@ -257,7 +291,7 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, 
 
   return rank !== null ? (
     <div className={classes.rankDecorator}>
-      <Rank rank={rank} small />
+      <Rank rank={rank} rankStyle={RankStyle.small} />
     </div>
   ) : null
 }

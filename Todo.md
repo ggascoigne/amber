@@ -28,6 +28,14 @@ the games table should:
 * [ ] make menu subtext font a bit bolder - check on Simone's computer/ Windows
 * [ ] investigate https://www.graphile.org/postgraphile/usage-schema/ wrt. access postgraphile in the api layer
 * [ ] add http://amberconnw.wikidot.com/ to links page
+* [ ] Add contact page
+* [ ] Add site refresh behavior so that open browsers get a forced reload
+* [x] Preselect all of the games that folk are GMing
+* [ ] Add goto top button to game books in general.
+* [ ] make game signup work on mobile.
+* [ ] Year tile looks funky with the accordion - fix it :)
+* [x] Game book no longer works if you aren't logged in
+
 
 ## Done
 

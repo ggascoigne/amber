@@ -50,9 +50,9 @@ const render = (Component: React.ComponentType) =>
 
 render(App)
 
-if ((module as NodeModule).hot) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
-}
+// if ((module as NodeModule).hot) {
+//   // eslint-disable-next-line @typescript-eslint/no-var-requires
+//   ;(module as NodeModule).hot!.accept('./App', () => render(require('./App').default))
+// }
 
 // registerServiceWorker()

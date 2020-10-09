@@ -17,6 +17,12 @@ fragment gameChoiceFields on GameChoice {
   year
 }
 
+mutation createGameChoices($year: Int!, $memberId: Int!) {
+  createBareSlotChoices(input: { memberId: $memberId, yearno: $year }) {
+    clientMutationId
+  }
+}
+
 query GetGameChoices($year: Int!, $memberId: Int!) {
   gameSubmissions(condition: { memberId: $memberId, year: $year }) {
     nodes {

@@ -6,20 +6,36 @@ import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useSettings, useUser } from 'utils'
 import { useGetMemberShip } from 'utils/membership'
 
-import type { RootRoutes } from './Routes'
+import { Loader } from '../Loader'
+import type { RootRoutes, RouteInfo } from './Routes'
 
-export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
+const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem }) => {
   const { userId } = useUser()
-  const isMember = !!useGetMemberShip(userId)
+  const membership = useGetMemberShip(userId)
   const getSetting = useSettings()
 
+  if (!menuItem.userCondition) {
+    return React.createElement(menuItem.component!)
+  }
+
+  if (membership === undefined || getSetting === undefined) {
+    return <Loader />
+  }
+
+  const isMember = !!membership
+
+  if (menuItem.userCondition({ userId, isMember, getSetting })) {
+    return React.createElement(menuItem.component!)
+  } else {
+    return <Redirect to='/' />
+  }
+}
+
+export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
   const results = useMemo(
     () =>
       routes
         .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
-        .filter(
-          (menuItem) => menuItem.userCondition === undefined || menuItem.userCondition({ userId, isMember, getSetting })
-        )
         .map((route, index) => {
           if (route.redirect) {
             return (
@@ -31,10 +47,17 @@ export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) =>
               />
             )
           } else {
-            return <Route exact={route.exact} path={route.path} component={route.component!} key={index} />
+            return (
+              <Route
+                exact={route.exact}
+                path={route.path}
+                render={() => <ComponentConditionWrapper menuItem={route} />}
+                key={index}
+              />
+            )
           }
         }),
-    [getSetting, isMember, routes, userId]
+    [routes]
   )
 
   return (

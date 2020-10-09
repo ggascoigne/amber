@@ -19,7 +19,7 @@ import { GamesDialog } from './GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
 
-const getGms = (row: Game) => {
+export const getGms = (row: Game) => {
   const playersOrEmpty = row.gameAssignments.nodes
   if (playersOrEmpty && playersOrEmpty.length) {
     return playersOrEmpty

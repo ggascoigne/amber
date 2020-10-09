@@ -58,7 +58,10 @@ const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
         id={`game/${year}/${slot}/${id}`}
       >
         <Accordion defaultExpanded>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+          <AccordionSummary
+            expandIcon={tiny ? undefined : <ExpandMoreIcon />}
+            id={`accordion-game/${year}/${slot}/${id}`}
+          >
             {header}
           </AccordionSummary>
           <AccordionDetails>

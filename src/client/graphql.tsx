@@ -106,6 +106,29 @@ export type BooleanFilter = {
   greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>
 }
 
+/** All input for the `createBareSlotChoices` mutation. */
+export type CreateBareSlotChoicesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  memberId?: Maybe<Scalars['Int']>
+  yearno?: Maybe<Scalars['Int']>
+}
+
+/** The output of our `createBareSlotChoices` mutation. */
+export type CreateBareSlotChoicesPayload = {
+  __typename: 'CreateBareSlotChoicesPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+}
+
 /** All input for the create `GameAssignment` mutation. */
 export type CreateGameAssignmentInput = {
   /**
@@ -3652,7 +3675,9 @@ export type Mutation = {
   deleteUserRoleByNodeId?: Maybe<DeleteUserRolePayload>
   /** Deletes a single `UserRole` using a unique key. */
   deleteUserRole?: Maybe<DeleteUserRolePayload>
+  createBareSlotChoices?: Maybe<CreateBareSlotChoicesPayload>
   fTruncateTables?: Maybe<FTruncateTablesPayload>
+  slotGmGame?: Maybe<SlotGmGamePayload>
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4121,8 +4146,18 @@ export type MutationDeleteUserRoleArgs = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateBareSlotChoicesArgs = {
+  input: CreateBareSlotChoicesInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationFTruncateTablesArgs = {
   input: FTruncateTablesInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationSlotGmGameArgs = {
+  input: SlotGmGameInput
 }
 
 /** An object with a globally unique `ID`. */
@@ -5288,6 +5323,31 @@ export type SlotFilter = {
   or?: Maybe<Array<SlotFilter>>
   /** Negates the expression. */
   not?: Maybe<SlotFilter>
+}
+
+/** All input for the `slotGmGame` mutation. */
+export type SlotGmGameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  memberId?: Maybe<Scalars['Int']>
+  slotId?: Maybe<Scalars['Int']>
+  yearno?: Maybe<Scalars['Int']>
+}
+
+/** The output of our `slotGmGame` mutation. */
+export type SlotGmGamePayload = {
+  __typename: 'SlotGmGamePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  integer?: Maybe<Scalars['Int']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** An input for mutations affecting `Slot` */
@@ -6838,6 +6898,17 @@ export type GameChoiceFieldsFragment = { __typename: 'GameChoice' } & Pick<
   'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
 >
 
+export type CreateGameChoicesMutationVariables = Exact<{
+  year: Scalars['Int']
+  memberId: Scalars['Int']
+}>
+
+export type CreateGameChoicesMutation = { __typename: 'Mutation' } & {
+  createBareSlotChoices?: Maybe<
+    { __typename: 'CreateBareSlotChoicesPayload' } & Pick<CreateBareSlotChoicesPayload, 'clientMutationId'>
+  >
+}
+
 export type GetGameChoicesQueryVariables = Exact<{
   year: Scalars['Int']
   memberId: Scalars['Int']
@@ -8252,6 +8323,50 @@ export type DeleteGameAssignmentMutationResult = Apollo.MutationResult<DeleteGam
 export type DeleteGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
   DeleteGameAssignmentMutation,
   DeleteGameAssignmentMutationVariables
+>
+export const CreateGameChoicesDocument = gql`
+  mutation createGameChoices($year: Int!, $memberId: Int!) {
+    createBareSlotChoices(input: { memberId: $memberId, yearno: $year }) {
+      clientMutationId
+    }
+  }
+`
+export type CreateGameChoicesMutationFn = Apollo.MutationFunction<
+  CreateGameChoicesMutation,
+  CreateGameChoicesMutationVariables
+>
+
+/**
+ * __useCreateGameChoicesMutation__
+ *
+ * To run a mutation, you first call `useCreateGameChoicesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateGameChoicesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createGameChoicesMutation, { data, loading, error }] = useCreateGameChoicesMutation({
+ *   variables: {
+ *      year: // value for 'year'
+ *      memberId: // value for 'memberId'
+ *   },
+ * });
+ */
+export function useCreateGameChoicesMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateGameChoicesMutation, CreateGameChoicesMutationVariables>
+) {
+  return Apollo.useMutation<CreateGameChoicesMutation, CreateGameChoicesMutationVariables>(
+    CreateGameChoicesDocument,
+    baseOptions
+  )
+}
+export type CreateGameChoicesMutationHookResult = ReturnType<typeof useCreateGameChoicesMutation>
+export type CreateGameChoicesMutationResult = Apollo.MutationResult<CreateGameChoicesMutation>
+export type CreateGameChoicesMutationOptions = Apollo.BaseMutationOptions<
+  CreateGameChoicesMutation,
+  CreateGameChoicesMutationVariables
 >
 export const GetGameChoicesDocument = gql`
   query GetGameChoices($year: Int!, $memberId: Int!) {

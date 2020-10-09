@@ -26,7 +26,7 @@ export const useSettings = () => {
     fetchPolicy: 'cache-first',
   })
 
-  return useCallback(
+  const getSettings = useCallback(
     (setting: string, defaultValue = false) => {
       const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) => {
         const s = settings?.find((s) => s.code === setting)
@@ -57,9 +57,11 @@ export const useSettings = () => {
     },
     [data, error, isAdmin, isGm, loading]
   )
+
+  return error || loading || !data ? undefined : getSettings
 }
 
 export const useSetting = (setting: string, defaultValue = false) => {
   const getSetting = useSettings()
-  return getSetting(setting, defaultValue)
+  return getSetting ? getSetting(setting, defaultValue) : undefined
 }

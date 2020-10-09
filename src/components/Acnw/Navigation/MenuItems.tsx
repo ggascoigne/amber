@@ -33,7 +33,8 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
           .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
           .filter(
             (menuItem) =>
-              menuItem.userCondition === undefined || menuItem.userCondition({ userId, isMember, getSetting })
+              menuItem.userCondition === undefined ||
+              (getSetting ? menuItem.userCondition({ userId, isMember, getSetting }) : false)
           )
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path

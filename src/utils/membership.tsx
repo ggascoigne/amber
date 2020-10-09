@@ -18,7 +18,7 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
   const { data } = useGetMembershipByYearAndIdQuery({
     skip: !userId,
     variables: { year, userId: userId! },
-    // fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
   })
 
   if (!data) {
@@ -57,6 +57,7 @@ export const IsNotMember: React.FC = ({ children }) => {
 }
 
 export const useIsGm = () => {
+  const { isAuthenticated } = useAuth()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const year = useYearFilterState((state) => state.year)
@@ -64,10 +65,10 @@ export const useIsGm = () => {
     variables: {
       year,
     },
-    // fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
   })
 
-  if (!membership || !gameAssignmentData) return false
+  if (!isAuthenticated || !membership || !gameAssignmentData) return false
 
   return (
     gameAssignmentData.gameAssignments?.nodes

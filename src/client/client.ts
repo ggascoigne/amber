@@ -12,15 +12,18 @@ const cache = new InMemoryCache({
 
 const Client = (authProps: Auth0ContextType) => {
   useEffect(() => {
+    // might be a good idea at some point, but needs a cleaner way to outdate it
+    window.localStorage.removeItem('apollo-cache-persist')
+
     const cacheSetup = async () => {
       // await before instantiating ApolloClient, else queries might run before the cache is persisted
       await persistCache({
         cache,
         // @ts-ignore
-        storage: window.localStorage,
+        storage: window.sessionStorage,
       })
     }
-    cacheSetup().then()
+    // cacheSetup().then()
   }, [])
 
   return new ApolloClient({
