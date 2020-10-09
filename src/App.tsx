@@ -28,7 +28,7 @@ const theme = createMuiTheme({
   },
   typography: {
     body2: {
-      fontWeight: 300,
+      fontWeight: 400,
     },
     fontSize: 12.5, // 14 looks too chunky
   },

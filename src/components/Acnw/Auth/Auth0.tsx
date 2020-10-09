@@ -13,7 +13,7 @@ import type { History } from 'history'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
-import { ThenArg, useLocalStorage } from 'utils'
+import { ThenArg, isDev, useLocalStorage } from 'utils'
 
 import { useNotification } from '../Notifications'
 import { checkMany } from './authUtils'
@@ -123,28 +123,38 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
 
   useEffect(() => {
     const initAuth0 = async () => {
-      const auth0FromHook = await createAuth0Client(auth0ClientConfig)
-      setAuth0Client(auth0FromHook)
+      try {
+        const auth0FromHook = await createAuth0Client(auth0ClientConfig)
+        setAuth0Client(auth0FromHook)
 
-      if (window.location.search.includes('code=')) {
-        let redirectResult: RedirectLoginResult = {}
-        try {
-          redirectResult = await auth0FromHook.handleRedirectCallback()
-        } finally {
-          // @ts-ignore
-          onRedirectCallback(history, redirectResult)
+        if (window.location.search.includes('code=')) {
+          let redirectResult: RedirectLoginResult = {}
+          try {
+            redirectResult = await auth0FromHook.handleRedirectCallback()
+          } finally {
+            // @ts-ignore
+            onRedirectCallback(history, redirectResult)
+          }
+        }
+
+        const authed = await auth0FromHook.isAuthenticated()
+
+        if (authed) {
+          const userProfile = await getEnrichedUser(auth0FromHook)
+          setUser(userProfile)
+          setIsAuthenticated(true)
+        }
+
+        setIsInitializing(false)
+      } catch (error) {
+        if (isDev) {
+          // note that the only way I've every reached this point is when trying to look at
+          // my dev server on my local network. It barfs because it's not https.
+          console.log(error)
+        } else {
+          throw error
         }
       }
-
-      const authed = await auth0FromHook.isAuthenticated()
-
-      if (authed) {
-        const userProfile = await getEnrichedUser(auth0FromHook)
-        setUser(userProfile)
-        setIsAuthenticated(true)
-      }
-
-      setIsInitializing(false)
     }
 
     initAuth0().then()
