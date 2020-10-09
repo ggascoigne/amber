@@ -51,59 +51,67 @@ const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
       setting,
     } = game
 
+    const content = (
+      <CardBody>
+        <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+          <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
+            {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
+          </Field>
+          <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+            <MultiLine text={description} />
+          </Field>
+          {setting && (
+            <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
+              <MultiLine text={setting} />
+            </Field>
+          )}
+          {charInstructions && (
+            <Field label='Character & Player Instructions' tiny={tiny}>
+              <MultiLine text={charInstructions} />
+            </Field>
+          )}
+          <Field label='Genre/Type' small tiny={tiny}>
+            {genre} - {type}
+          </Field>
+          <Field label='Teen Friendly' small tiny={tiny}>
+            {teenFriendly ? 'Yes' : 'No'}
+          </Field>
+          <Field label='Number of Players' small tiny={tiny}>
+            {playerMin} - {playerMax}
+          </Field>
+          <Field label='Player Preference' small tiny={tiny}>
+            <LookupValue realm='gamePlayerPref' code={playerPreference} />
+          </Field>
+          <Field label='' tiny={tiny}>
+            {playersContactGm
+              ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
+              : `Players need not contact the GM in advance of the convention.`}
+          </Field>
+        </GridContainer>
+      </CardBody>
+    )
     return (
       <Card
         key={`game_${id}`}
         className={classNames(classes.card, { [classes.tinyCard]: tiny })}
         id={`game/${year}/${slot}/${id}`}
       >
-        <Accordion defaultExpanded>
-          <AccordionSummary
-            expandIcon={tiny ? undefined : <ExpandMoreIcon />}
-            id={`accordion-game/${year}/${slot}/${id}`}
-          >
+        {tiny ? (
+          <>
             {header}
-          </AccordionSummary>
-          <AccordionDetails>
-            <CardBody>
-              <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
-                <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-                  {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
-                </Field>
-                <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-                  <MultiLine text={description} />
-                </Field>
-                {setting && (
-                  <Field label={tiny ? 'Set' : 'Setting'} tiny={tiny}>
-                    <MultiLine text={setting} />
-                  </Field>
-                )}
-                {charInstructions && (
-                  <Field label='Character & Player Instructions' tiny={tiny}>
-                    <MultiLine text={charInstructions} />
-                  </Field>
-                )}
-                <Field label='Genre/Type' small tiny={tiny}>
-                  {genre} - {type}
-                </Field>
-                <Field label='Teen Friendly' small tiny={tiny}>
-                  {teenFriendly ? 'Yes' : 'No'}
-                </Field>
-                <Field label='Number of Players' small tiny={tiny}>
-                  {playerMin} - {playerMax}
-                </Field>
-                <Field label='Player Preference' small tiny={tiny}>
-                  <LookupValue realm='gamePlayerPref' code={playerPreference} />
-                </Field>
-                <Field label='' tiny={tiny}>
-                  {playersContactGm
-                    ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
-                    : `Players need not contact the GM in advance of the convention.`}
-                </Field>
-              </GridContainer>
-            </CardBody>
-          </AccordionDetails>
-        </Accordion>
+            {content}
+          </>
+        ) : (
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={tiny ? undefined : <ExpandMoreIcon />}
+              id={`accordion-game/${year}/${slot}/${id}`}
+            >
+              {header}
+            </AccordionSummary>
+            <AccordionDetails>{content}</AccordionDetails>
+          </Accordion>
+        )}
       </Card>
     )
   }

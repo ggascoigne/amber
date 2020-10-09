@@ -5,9 +5,6 @@
 * [ ] add http://amberconnw.wikidot.com/ to links page
 * [ ] Add a members only Discord server link page* [ ] Add T-Shirt art and sales link
 
-* [ ] Add goto top button to game books in general.
-* [ ] Year tile looks funky with the accordion - fix it :)
-
 * [ ] can open links such as edit game into another window
 * [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.
 * [ ] Right now you can enter anything in the GM field for a game, I really need to lock that down to just allowing GM names, perhaps forcing the addition of the author.
@@ -67,6 +64,8 @@ the games table should:
 * [x] Disable 1st choice button in slots where the player is a GM
 * [x] Make yellow check mark more visible
 * [x] duplicate confirm game choices button on menu
+* [x] Add goto top button to game books in general.
+* [x] Year tile looks funky with the accordion - fix it :)
   
 
 ### Profiles
