@@ -1,6 +1,7 @@
 export * from './AboutAmber'
 export * from './AboutAmberconNw'
 export * from './AntiHarassmentPolicy'
+export * from './Contact'
 export * from './Credits'
 export * from './GameBook'
 export * from './Games'

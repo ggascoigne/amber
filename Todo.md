@@ -1,6 +1,5 @@
 #Todos & Ideas
 
-* [ ] Add contact page
 * [ ] add http://amberconnw.wikidot.com/ to links page
 * [ ] Add a members only Discord server link page* [ ] Add T-Shirt art and sales link
 
@@ -62,6 +61,7 @@ the games table should:
 * [x] Game selection is a bit slow. Should switch away from manipulating the data in the apollo cache, just can't work out how to update the right item and instead, use the query to update a local copy which we edit and display from, updating it when the query results change.  That way we can get a snappy screen update without worrying about the latency. - Fixed by sorting out the cache update functions.
 * [x] Add Admin edit mode to the game edit
 * [x] make menu subtext font a bit bolder - check on Simone's computer/ Windows
+* [x] Add contact page
 
 ### Profiles
 

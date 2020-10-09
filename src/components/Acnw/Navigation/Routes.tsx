@@ -1,6 +1,7 @@
 import {
   AboutAmber,
   AboutAmberconNw,
+  Contact,
   Credits,
   GameBookGamesPage,
   GameBookPage,
@@ -189,6 +190,12 @@ export const rootRoutes: RootRoutes = [
     label: 'Anti-Harassment Policy',
     exact: false,
     component: AntiHarassmentPolicy,
+  },
+  {
+    path: '/contact',
+    label: 'Contact',
+    exact: false,
+    component: Contact,
   },
   {
     path: '/credits',
