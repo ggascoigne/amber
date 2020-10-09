@@ -9,12 +9,23 @@ import {
 } from 'client'
 import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
+import { InView } from 'react-intersection-observer'
 import { Link, Redirect } from 'react-router-dom'
-import { Waypoint } from 'react-waypoint'
-import { PropType, UnpackArray, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
+import {
+  PropType,
+  UnpackArray,
+  notEmpty,
+  pick,
+  useGameScroll,
+  useGameUrl,
+  useGetMemberShip,
+  useUrlSourceState,
+  useUser,
+} from 'utils'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
+import { useConfirmDialogOpenState } from '../../utils/useConfirmDialogOpenState'
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
@@ -114,7 +125,9 @@ export const GameSignupPage: React.FC = () => {
   const membership = useGetMemberShip(userId)
   const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
-  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const setShowConfirmDialog = useConfirmDialogOpenState((state) => state.setState)
+  const showConfirmDialog = useConfirmDialogOpenState((state) => state.state).open
+
   const [showFab, setShowFab] = useState(false)
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
@@ -126,7 +139,7 @@ export const GameSignupPage: React.FC = () => {
   })
 
   const onCloseConfirm: MouseEventHandler = () => {
-    setShowConfirmDialog(false)
+    setShowConfirmDialog({ open: false })
   }
 
   const updateChoice = useCallback(
@@ -213,9 +226,11 @@ export const GameSignupPage: React.FC = () => {
   //   ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
   // console.table(g)
 
+  const gmSlots = gameChoices?.filter((c) => c?.rank === 0 && c?.gameId).filter(notEmpty)
   const selectorParams = {
     gameChoices,
     updateChoice,
+    gmSlots,
   }
 
   if (gameSubmission?.[0] && !isAdmin) {
@@ -223,6 +238,7 @@ export const GameSignupPage: React.FC = () => {
   }
 
   const complete = allSlotsComplete(year, gameChoices)
+
   return (
     <Page>
       {showFab && (
@@ -238,7 +254,7 @@ export const GameSignupPage: React.FC = () => {
           variant='contained'
           color='primary'
           size='large'
-          onClick={() => setShowConfirmDialog(true)}
+          onClick={() => setShowConfirmDialog({ open: true })}
           style={{ marginBottom: 20 }}
         >
           Confirm your Game Choices
@@ -254,29 +270,22 @@ export const GameSignupPage: React.FC = () => {
           gameSubmission={gameSubmission?.[0] ?? undefined}
         />
       )}
-      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => setShowFab(true)} onLeave={() => setShowFab(false)}>
-        <div>
-          <GameListNavigator
-            name='page'
-            selectQuery
-            decorator={SlotDecoratorCheckMark}
-            decoratorParams={selectorParams}
-          >
-            {({ year, slot, games }) => (
-              <>
-                <GameListFull
-                  year={year}
-                  slot={slot}
-                  games={games!}
-                  onEnterGame={setNewUrl}
-                  decorator={GameChoiceSelector}
-                  decoratorParams={selectorParams}
-                />
-              </>
-            )}
-          </GameListNavigator>
-        </div>
-      </Waypoint>
+      <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>
+        <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
+          {({ year, slot, games }) => (
+            <>
+              <GameListFull
+                year={year}
+                slot={slot}
+                games={games!}
+                onEnterGame={setNewUrl}
+                decorator={GameChoiceSelector}
+                decoratorParams={selectorParams}
+              />
+            </>
+          )}
+        </GameListNavigator>
+      </InView>
     </Page>
   )
 }

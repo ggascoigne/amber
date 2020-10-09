@@ -19,7 +19,6 @@ import { useAuth } from './components/Acnw/Auth/Auth0'
 //   const whyDidYouRender = require('@welldone-software/why-did-you-render')
 //   whyDidYouRender(React, {
 //     trackAllPureComponents: true,
-//     exclude: [/Waypoint/]
 //   })
 // }
 

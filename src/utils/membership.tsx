@@ -21,6 +21,10 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
     fetchPolicy: 'cache-and-network',
   })
 
+  if (!userId) {
+    return null
+  }
+
   if (!data) {
     return undefined // allows us to tell if the load is still ongoing and avoid redirects
   }

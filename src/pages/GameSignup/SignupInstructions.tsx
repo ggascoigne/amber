@@ -18,22 +18,23 @@ export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
         </h4>
 
         <p>
-          We have a shortage of game spaces this year, plus a lot of small games. Following the instructions below to
-          give us as much flexibility as possible in assigning games is the best way to minimize your "no game" slot
+          We have a shortage of game spaces this year, plus a lot of small games. Follow the instructions below to give
+          us as much flexibility as possible in assigning games. This is the best way to minimize your "no game" slot
           assignments.
         </p>
 
         <p>
           For each time slot you wish to attend and play games, please select at least a first, second, third and fourth
-          choice game. There is a "messages" field on the confirmation page where you can indicate, if there are games
-          or events you particularly do or do not mind being bumped into. Likewise let us know if you don't have a
-          specific first-second-third order to your choices.
+          choice game. Once you have selected "Any Game" or "No Game", you do not need to make further choices in that
+          slot.
         </p>
 
         <p>
-          This field can also be used to indicate any specific games you want to avoid in the event that your selected
-          games are full; for example, you might not want to be accidentally assigned to the GM who runs your weekly
-          campaign at home.
+          There is a "messages" field on the confirmation page where you can indicate, if there are additional games or
+          events you particularly do not mind being bumped into. This field can also be used to indicate any specific
+          games you want to avoid in the event that your selected games are full; for example, you might not want to be
+          accidentally assigned to the GM who runs your weekly campaign at home. Likewise let us know if you don't have
+          a specific first-second-third order to your choices.
         </p>
 
         <Card elevation={3}>
@@ -66,10 +67,10 @@ export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
 
     <h4>Game Selection</h4>
     <p>
-      Make your selections on the "choice" panel to the right of the game names, you'll see your choices reflected on
-      the index pane on the left hand side. Please note: you must select something in all four positions for each slot,
-      though your last choice can always be "Any game." or "No game." Returning players can indicate this by clicking
-      the button in this section as well.
+      Make your selections on the "choice" section to the right of the games name, you'll see your choices reflected on
+      the index pane on the left hand side. Returning players can indicate this by clicking the button in this section
+      as well. Please note: you must select something in all four positions for each slot, though your last choice can
+      always be "Any game." or "No game."
     </p>
 
     {!configuration.virtual && <p>Those attending Friday through Sunday can select events starting with Slot 4.</p>}
@@ -81,11 +82,16 @@ export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
         <>
           <li>
             Games will be filled on a first come, first served basis moderated so that everyone will have at least one
-            first-choice game in their schedule. We will also try to distribute the "no game" slots fairly. If you have
-            not registered for games by the end of the day, <ConfigDate name='gameChoicesDue' />, will be assigned games
-            at random.
+            first-choice game in their schedule. We will also try to distribute the "no game" slots fairly.
           </li>
-          <li>If you are a returning player in a game, please let us know.</li>
+          <li>
+            If you have not registered for games by the end of the day, <ConfigDate name='gameChoicesDue' />, will be
+            assigned games at random.
+          </li>
+          <li>
+            If you are a returning player in a game, please click the "Returning Player" button in the choices section
+            of the game title bar.
+          </li>
         </>
       ) : (
         <>
@@ -94,8 +100,11 @@ export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
             first-choice game in their schedule. Please register for games as soon as possible. There is a selfish
             reason and an organizer's reason for doing this. The selfish reason is so that you get into the games you
             want; the reason Simone cares is so she can get your registrations, make and confirm your schedules in time
-            for you to communicate with your GMs before people start traveling on the week of the convention. Anyone who
-            has not registered for games by October 9 will be assigned games at random.
+            for you to communicate with your GMs before people start traveling on the week of the convention.
+          </li>
+          <li>
+            If you have not registered for games by <ConfigDate name='gameChoicesDue' /> will be assigned games at
+            random.
           </li>
           <li>
             In the Messages section, please let us know if you'll be arriving late for any particular game slot (for
@@ -109,7 +118,10 @@ export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
           </li>
         </>
       )}
-      <li>If you are GMing a slot, please make other selections in case your game is cancelled.</li>
+      <li>
+        If you are GMing a slot, you'll see that GM is pre-selected for your first choice game. You can then select a
+        second, third, and fourth choice for that slot in the event that your game is cancelled.
+      </li>
     </ol>
     <br />
   </>

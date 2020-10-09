@@ -173,23 +173,8 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
           in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this page.
         </p>
 
-        <ul>
-          {/*
-            <li>In the Messages section, please let us know if you'll be arriving late for any particular
-            game slot (for example, if your plane gets in late on Thursday or Friday), so we can pass this
-            information on to your GM. Also let us know if you are planning to leave early on Sunday.</li>
-*/}
-          <li>
-            If you are a returning player in a game, please let us know. Also, if you are signing up for a returning
-            player game and are NOT a returning player, you may still get in, but to be safe please indicate a fourth
-            choice game for that slot.
-          </li>
-        </ul>
-
         <p>
-          Note that we cannot guarantee your selections but will fill games (before the deadline) on a first come, first
-          served basis - moderated so everyone has at least one first-choice game in their schedule. Gaming or
-          convention related questions should be sent to <Acnw.ContactEmail />
+          Gaming or convention related questions should be sent to <Acnw.ContactEmail />
         </p>
       </DialogContent>
       <DialogContent>

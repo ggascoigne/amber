@@ -47,6 +47,7 @@ export const GameMenu: React.FC<GameMenu> = ({
   itemDecoratorParams,
   navDecorator,
   navDecoratorParams,
+  children,
 }) => {
   const classes = useStyles()
   return (
@@ -63,6 +64,7 @@ export const GameMenu: React.FC<GameMenu> = ({
       <Typography variant='h4' className={classes.title}>
         {title}
       </Typography>
+      {children}
       <GameListNavigator small selectQuery={selectQuery} decorator={navDecorator} decoratorParams={navDecoratorParams}>
         {({ year, slot, games }) => (
           <GameListIndex

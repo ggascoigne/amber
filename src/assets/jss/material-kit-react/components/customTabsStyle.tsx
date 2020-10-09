@@ -26,6 +26,7 @@ const customTabsStyle = {
     lineHeight: '24px',
     border: '0 !important',
     color: '#fff !important',
+    opacity: 1,
     marginLeft: '4px',
     fontWeight: 500,
     fontSize: '12px',

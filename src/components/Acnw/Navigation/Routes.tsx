@@ -92,7 +92,6 @@ export const rootRoutes: RootRoutes = [
     link: '/game-book',
     exact: false,
     component: GameBookGamesPage,
-    userCondition: ({ getSetting }) => getSetting('display.game.book'),
   },
   {
     path: '/game-signup',

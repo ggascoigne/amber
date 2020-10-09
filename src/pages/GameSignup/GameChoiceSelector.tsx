@@ -7,6 +7,8 @@ import { Game, GameChoice, Maybe } from 'client'
 import { GameCardChild } from 'components/Acnw'
 import React, { useEffect } from 'react'
 
+import { useAuth } from '../../components/Acnw/Auth/Auth0'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { range } from '../../utils'
 
 const isNoGame = (id: number) => id <= 7
@@ -94,7 +96,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     check: {
-      color: '#fcc60a',
+      color: '#ffe100',
       position: 'absolute',
       left: -6,
       bottom: -8,
@@ -193,15 +195,27 @@ export type SelectorUpdate = {
 export type SelectorParams = {
   gameChoices?: MaybeGameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
+  gmSlots?: MaybeGameChoice[]
 }
 
 export type GameChoiceSelector = GameCardChild & SelectorParams
 
-export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, gameId, gameChoices, updateChoice }) => {
+export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
+  year,
+  slot,
+  gameId,
+  gameChoices,
+  updateChoice,
+  gmSlots,
+}) => {
   const classes = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === gameId && c?.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
+  const { hasPermissions } = useAuth()
+  const isAdmin = hasPermissions(Perms.IsAdmin)
+
+  const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length ?? false
 
   useEffect(() => {
     setRank(thisOne?.rank ?? null)
@@ -248,14 +262,25 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({ year, slot, g
         <div className={classes.row}>
           <div className={classes.label}>Choice</div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
-            {!isNoOrAnyGame && (
+            {isAdmin && !isNoOrAnyGame && (
               <ToggleButton className={classes.button} value={0} aria-label='GM'>
                 <Rank rank={0} />
               </ToggleButton>
             )}
-            <ToggleButton className={classes.button} value={1} aria-label='first'>
-              <Rank rank={1} />
-            </ToggleButton>
+            {isAdmin ? (
+              <ToggleButton className={classes.button} value={1} aria-label='first'>
+                <Rank rank={1} />
+              </ToggleButton>
+            ) : (
+              <ToggleButton
+                disabled={isGmThisSlot && !isAdmin}
+                className={classes.button}
+                value={rank === 0 ? 0 : 1}
+                aria-label='first'
+              >
+                {rank === 0 ? <Rank rank={0} /> : <Rank rank={1} />}
+              </ToggleButton>
+            )}
             <ToggleButton className={classes.button} value={2} aria-label='second'>
               <Rank rank={2} />
             </ToggleButton>

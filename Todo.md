@@ -1,5 +1,7 @@
 #Todos & Ideas
 
+* [ ] Add link to the Online verison of the AHP
+  
 * [ ] add http://amberconnw.wikidot.com/ to links page
 * [ ] Add a members only Discord server link page* [ ] Add T-Shirt art and sales link
 
@@ -62,6 +64,10 @@ the games table should:
 * [x] Add Admin edit mode to the game edit
 * [x] make menu subtext font a bit bolder - check on Simone's computer/ Windows
 * [x] Add contact page
+* [x] Disable 1st choice button in slots where the player is a GM
+* [x] Make yellow check mark more visible
+* [x] duplicate confirm game choices button on menu
+  
 
 ### Profiles
 

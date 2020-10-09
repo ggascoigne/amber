@@ -6,7 +6,7 @@ import { GridContainer, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
 import React, { ReactNode } from 'react'
-import { Waypoint } from 'react-waypoint'
+import { InView } from 'react-intersection-observer'
 import maskEmail from 'utils/maskEmail'
 
 import { Field, HeaderContent, MultiLine } from '../CardUtils'
@@ -132,7 +132,7 @@ export const GameCard: React.FC<GameCard> = React.memo(
     const { id, name, slotId = 0, description } = game
 
     const headerContent = (
-      <div className={classes.header}>
+      <>
         {decorator ? (
           <HeaderContent name={name} tiny={tiny}>
             {decorator({ year, slot, gameId: id, ...decoratorParams })}
@@ -140,13 +140,18 @@ export const GameCard: React.FC<GameCard> = React.memo(
         ) : (
           <HeaderContent name={name} tiny={tiny} />
         )}
-      </div>
+      </>
     )
 
     const header = onEnter ? (
-      <Waypoint topOffset={100} bottomOffset='80%' onEnter={() => onEnter!(`${year}/${slot}/${game.id}`)}>
+      <InView
+        as='div'
+        className={classes.header}
+        rootMargin='-100px 0px -80% 0px'
+        onChange={(inView) => inView && onEnter!(`${year}/${slot}/${game.id}`)}
+      >
         {headerContent}
-      </Waypoint>
+      </InView>
     ) : (
       <>{headerContent}</>
     )
