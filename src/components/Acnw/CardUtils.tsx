@@ -37,8 +37,14 @@ export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name
   const classes = useStyles()
   return (
     <CardHeader color='info' className={classes.header}>
-      <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
-      {children}
+      <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
+        <GridItem xs={12} sm={7}>
+          <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
+        </GridItem>
+        <GridItem xs={12} sm={5}>
+          {children}
+        </GridItem>
+      </GridItem>
     </CardHeader>
   )
 }

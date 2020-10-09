@@ -8,7 +8,7 @@
 * [ ] Add Admin edit mode to the game edit
 * [ ] Game selection is a bit slow. Should switch away from manipulating the data in the apollo cache, just can't work out how to update the right item and instead, use the query to update a local copy which we edit and display from, updating it when the query results change.  That way we can get a snappy screen update without worrying about the latency.
 * [ ] Restyle the choice interface - it's functional and very heavily based on the v1 site, I'm sure that we could do better.
-* [ ] Look at displaying he game book stuff using react-window, try to avoid updated to off-screen pages.
+* [ ] Look at displaying the game book stuff using react-window, try to avoid updated to off-screen pages.
 * [ ] should refactor the color definitions scattered through the code to be centralized, maybe in the theme?
 
 the games table should:
@@ -30,12 +30,11 @@ the games table should:
 * [ ] add http://amberconnw.wikidot.com/ to links page
 * [ ] Add contact page
 * [ ] Add site refresh behavior so that open browsers get a forced reload
-* [x] Preselect all of the games that folk are GMing
 * [ ] Add goto top button to game books in general.
-* [ ] make game signup work on mobile.
+* [x] make game signup work on mobile.
 * [ ] Year tile looks funky with the accordion - fix it :)
-* [x] Game book no longer works if you aren't logged in
-
+* [ ] Make sure email doesn't get sent to the usual recipients from the test environment
+* [ ] Switch away from the ByNodeId functions in graphql and just standardize on the ById variants
 
 ## Done
 
@@ -60,6 +59,8 @@ the games table should:
 * [x] change slot times to include day so something like "Slot 1: Thu 11 am to 3 pm PST"
 * [x] migrate from vc secrets to vc env
 * [x] hook up dev builds using dev database
+* [x] Preselect all of the games that folk are GMing
+* [x] Game book no longer works if you aren't logged in
 
 ### Profiles
 

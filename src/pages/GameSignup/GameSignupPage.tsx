@@ -1,3 +1,4 @@
+import { gql, useApolloClient } from '@apollo/client'
 import { Button } from '@material-ui/core'
 import NavigationIcon from '@material-ui/icons/Navigation'
 import {
@@ -22,15 +23,28 @@ import {
   allSlotsComplete,
   orderChoices,
 } from './GameChoiceSelector'
-import { GameChoiceSummary } from './GameChoiceSummary'
 import { SignupInstructions } from './SignupInstructions'
 
 type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
+
+const choiceFragment = gql`
+  fragment gameChoiceFields on GameChoice {
+    gameId
+    id
+    memberId
+    nodeId
+    rank
+    returningPlayer
+    slotId
+    year
+  }
+`
 
 export const useEditGameChoice = () => {
   const [createGameChoice] = useCreateGameChoiceMutation()
   const [updateGameChoice] = useUpdateGameChoiceByNodeIdMutation()
   const [createGameChoices] = useCreateGameChoicesMutation()
+  const client = useApolloClient()
 
   const createAllGameChoices = async (memberId: number, year: number) => {
     createGameChoices({
@@ -46,13 +60,16 @@ export const useEditGameChoice = () => {
 
   const createOrUpdate = async (values: choiceType, refetch = false) => {
     if (values.nodeId) {
+      client.writeFragment({
+        id: `GameChoice:${values.id}`,
+        fragment: choiceFragment,
+        data: pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+      })
       return updateGameChoice({
         variables: {
           input: {
             nodeId: values.nodeId!,
-            patch: {
-              ...pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-            },
+            patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           },
         },
         refetchQueries: refetch ? ['GetGameChoices'] : undefined,
@@ -60,11 +77,9 @@ export const useEditGameChoice = () => {
           ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           __typename: 'GameChoice',
         },
+      }).catch((error) => {
+        console.log({ text: error.message, variant: 'error' })
       })
-        .then(() => {})
-        .catch((error) => {
-          console.log({ text: error.message, variant: 'error' })
-        })
     } else {
       return createGameChoice({
         variables: {
