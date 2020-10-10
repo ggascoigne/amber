@@ -43,11 +43,11 @@ export default withApiHandler([
         template: 'gameChoiceConfirmation',
         message: update
           ? {
-              to: emails.gameEmail,
+              to: emails.contactEmail,
             }
           : {
               to: email,
-              cc: emails.gameEmail,
+              cc: emails.contactEmail,
             },
         locals: {
           update,
