@@ -64,6 +64,8 @@ export type SlotSummary = {
   }[]
 }
 
+const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
+
 export const SlotDetails: React.FC<SlotDetails> = ({ year, slotId, gameChoices, storeTextResults }) => {
   const classes = useStyles()
 
@@ -81,6 +83,7 @@ export const SlotDetails: React.FC<SlotDetails> = ({ year, slotId, gameChoices, 
   useEffect(() => {
     if (storeTextResults && games) {
       const lines = slotInfo
+        ?.sort(rankSort)
         ?.map((info) => {
           const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
           if (!g || !info) return null
@@ -110,7 +113,7 @@ export const SlotDetails: React.FC<SlotDetails> = ({ year, slotId, gameChoices, 
   return (
     <>
       <h5>{slotDescription}</h5>
-      {slotInfo?.map((info) => {
+      {slotInfo?.sort(rankSort)?.map((info) => {
         const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
         if (!g || !info) return null
 

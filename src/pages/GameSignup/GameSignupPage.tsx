@@ -219,6 +219,10 @@ export const GameSignupPage: React.FC = () => {
     createGameChoices(membership.id, year).then()
   }
 
+  if (gameChoices !== null && gameChoices !== undefined && gameChoices.length === 0) {
+    return <Loader />
+  }
+
   // debug a smaller subset fo the data, sorted
   // const g = gameChoices
   //   ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))

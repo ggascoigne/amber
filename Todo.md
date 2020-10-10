@@ -1,5 +1,8 @@
 #Todos & Ideas
 
+
+* [ ] write FAQ on auth
+    
 * [ ] Add link to the Online verison of the AHP
   
 * [ ] add http://amberconnw.wikidot.com/ to links page
@@ -66,6 +69,8 @@ the games table should:
 * [x] duplicate confirm game choices button on menu
 * [x] Add goto top button to game books in general.
 * [x] Year tile looks funky with the accordion - fix it :)
+* [x] fix game choice so it can't create duplicates
+* [x] sort choices in the display.
   
 
 ### Profiles
