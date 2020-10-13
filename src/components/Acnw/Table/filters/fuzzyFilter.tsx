@@ -1,4 +1,4 @@
-import matchSorter from 'match-sorter'
+import { matchSorter } from 'match-sorter'
 import type { FilterValue, IdType, Row } from 'react-table'
 
 export function fuzzyTextFilter<T extends Record<string, unknown>>(

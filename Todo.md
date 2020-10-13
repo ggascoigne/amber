@@ -2,7 +2,9 @@
 
 
 * [ ] write FAQ on auth
-    
+
+* [ ] apparently hitting "Shift+Enter" in the "Game Choice Notes" box [in Google Chrome] does not start a new line, but instead submits the form. Maybe add a confirmation screen?)
+
 * [ ] Add link to the Online verison of the AHP
   
 * [ ] add http://amberconnw.wikidot.com/ to links page

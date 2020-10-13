@@ -3,6 +3,7 @@ import {
   AboutAmberconNw,
   Contact,
   Credits,
+  Faq,
   GameBookGamesPage,
   GameBookPage,
   GameSignupPage,
@@ -189,6 +190,13 @@ export const rootRoutes: RootRoutes = [
     label: 'Anti-Harassment Policy',
     exact: false,
     component: AntiHarassmentPolicy,
+  },
+  {
+    path: '/faq',
+    label: 'Frequently Asked Questions',
+    subText: 'Hopefully with some answers',
+    exact: false,
+    component: Faq,
   },
   {
     path: '/contact',
