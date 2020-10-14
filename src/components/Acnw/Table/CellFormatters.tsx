@@ -24,3 +24,5 @@ export const getBooleanCell = (valueMapping: Record<any, string>) => ({
 }
 
 export const YesNoCell: React.FC<CellProps<any>> = getBooleanCell({ true: 'Yes', false: 'No' })
+
+export const YesBlankCell: React.FC<CellProps<any>> = getBooleanCell({ true: 'Yes', false: '' })

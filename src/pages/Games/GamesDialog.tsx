@@ -222,6 +222,10 @@ export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValue
                   <GridItem xs={12} md={12}>
                     <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
                   </GridItem>
+                  <CheckboxWithLabel
+                    Label={{ label: 'Game Full?', labelPlacement: 'start', style: { marginLeft: 0 } }}
+                    name='full'
+                  />
                 </HasPermission>
                 <GridItem xs={12} md={12}>
                   <TextField

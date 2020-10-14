@@ -23,6 +23,7 @@ fragment gameFields on Game {
   slotId
   teenFriendly
   year
+  full
 }
 
 fragment gameGms on Game {

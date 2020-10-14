@@ -1616,6 +1616,7 @@ export type Game = Node & {
   type: Scalars['String']
   year: Scalars['Int']
   authorId?: Maybe<Scalars['Int']>
+  full?: Maybe<Scalars['Boolean']>
   /** Reads a single `Room` that is related to this `Game`. */
   room?: Maybe<Room>
   /** Reads a single `Slot` that is related to this `Game`. */
@@ -1838,6 +1839,8 @@ export enum GameAssignmentsOrderBy {
   GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
   GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
   GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
+  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
+  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
 }
 
 export type GameChoice = Node & {
@@ -2019,6 +2022,8 @@ export enum GameChoicesOrderBy {
   GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
   GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
   GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
+  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
+  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
   MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
   MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
   MembershipByMemberIdArrivalDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC',
@@ -2125,6 +2130,8 @@ export type GameCondition = {
   year?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `authorId` field. */
   authorId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `full` field. */
+  full?: Maybe<Scalars['Boolean']>
 }
 
 /** A filter to be used against `Game` object types. All fields are combined with a logical ‘and.’ */
@@ -2181,6 +2188,8 @@ export type GameFilter = {
   year?: Maybe<IntFilter>
   /** Filter by the object’s `authorId` field. */
   authorId?: Maybe<IntFilter>
+  /** Filter by the object’s `full` field. */
+  full?: Maybe<BooleanFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<GameFilter>>
   /** Checks for any expressions in this list. */
@@ -2217,6 +2226,7 @@ export type GameInput = {
   type: Scalars['String']
   year: Scalars['Int']
   authorId?: Maybe<Scalars['Int']>
+  full?: Maybe<Scalars['Boolean']>
 }
 
 /** Represents an update to a `Game`. Fields that are set will be updated. */
@@ -2247,6 +2257,7 @@ export type GamePatch = {
   type?: Maybe<Scalars['String']>
   year?: Maybe<Scalars['Int']>
   authorId?: Maybe<Scalars['Int']>
+  full?: Maybe<Scalars['Boolean']>
 }
 
 /** A connection to a list of `Game` values. */
@@ -2326,6 +2337,8 @@ export enum GamesOrderBy {
   YearDesc = 'YEAR_DESC',
   AuthorIdAsc = 'AUTHOR_ID_ASC',
   AuthorIdDesc = 'AUTHOR_ID_DESC',
+  FullAsc = 'FULL_ASC',
+  FullDesc = 'FULL_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RoomByRoomIdIdAsc = 'ROOM_BY_ROOM_ID__ID_ASC',
@@ -7009,6 +7022,7 @@ export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   | 'slotId'
   | 'teenFriendly'
   | 'year'
+  | 'full'
 >
 
 export type GameGmsFragment = { __typename: 'Game' } & {
@@ -7411,6 +7425,7 @@ export const GameFieldsFragmentDoc = gql`
     slotId
     teenFriendly
     year
+    full
   }
 `
 export const GameGmsFragmentDoc = gql`

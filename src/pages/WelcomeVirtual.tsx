@@ -154,12 +154,12 @@ export const WelcomeVirtual: React.FC = () => {
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Game Books open for selections: <ConfigDate name='gameBookOpen' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Game Selections due: <ConfigDate name='gameChoicesDue' />
           </span>
         </li>

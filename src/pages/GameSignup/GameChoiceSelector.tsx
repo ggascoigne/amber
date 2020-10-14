@@ -3,8 +3,7 @@ import createStyles from '@material-ui/core/styles/createStyles'
 import CheckIcon from '@material-ui/icons/Check'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import classNames from 'classnames'
-import { Game, GameChoice, Maybe } from 'client'
-import { GameCardChild } from 'components/Acnw'
+import { Game, GameChoice, GameEntry, Maybe } from 'client'
 import React, { useEffect } from 'react'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
@@ -37,6 +36,12 @@ const useStyles = makeStyles((theme: Theme) =>
       '&:last-of-type': {
         paddingTop: 3,
       },
+    },
+    full: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+      height: 52,
     },
     label: {
       width: 60,
@@ -86,6 +91,30 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: 'white',
       padding: '5px',
       borderColor: 'rgba(102, 8, 22, 1)',
+      lineHeight: '18px',
+      borderStyle: 'solid',
+      margin: -6,
+      '& sup': {
+        lineHeight: 0,
+        display: 'inline-block',
+        paddingBottom: 3,
+      },
+    },
+    fullDecorator: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      textTransform: 'inherit',
+      width: 30,
+      borderRadius: 15,
+      borderWidth: 1,
+      fontSize: '0.72rem',
+      flexGrow: 0,
+      flexShrink: 0,
+      color: 'rgb(8,80,102)',
+      backgroundColor: 'white',
+      padding: '5px',
+      borderColor: 'rgb(8,80,102)',
       lineHeight: '18px',
       borderStyle: 'solid',
       margin: -6,
@@ -198,18 +227,22 @@ export type SelectorParams = {
   gmSlots?: MaybeGameChoice[]
 }
 
-export type GameChoiceSelector = GameCardChild & SelectorParams
+export type GameChoiceSelector = {
+  year: number
+  slot: number
+  game: GameEntry
+} & SelectorParams
 
 export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
   year,
   slot,
-  gameId,
+  game,
   gameChoices,
   updateChoice,
   gmSlots,
 }) => {
   const classes = useStyles()
-  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === gameId && c?.slotId === slot)?.[0]
+  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === game.id && c?.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
   const { hasPermissions } = useAuth()
@@ -226,7 +259,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
     updateChoice &&
       updateChoice({
         gameChoices,
-        gameId,
+        gameId: game.id,
         rank: newRank,
         oldRank: rank,
         returningPlayer: returning,
@@ -240,7 +273,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
     updateChoice &&
       updateChoice({
         gameChoices,
-        gameId,
+        gameId: game.id,
         rank,
         oldRank: rank,
         returningPlayer: !returning,
@@ -249,7 +282,18 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
       })
   }
 
-  const isNoOrAnyGame = isNoGame(gameId) || isAnyGame(gameId)
+  const isNoOrAnyGame = isNoGame(game.id) || isAnyGame(game.id)
+
+  if (game.full && !isAdmin) {
+    return (
+      <>
+        <div className={classes.spacer} />
+        <div className={classes.container}>
+          <div className={classes.full}>This game is full, no more spaces available.</div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -309,16 +353,21 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
   )
 }
 
-export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, gameId, gameChoices }) => {
+export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, game, gameChoices }) => {
   const classes = useStyles()
-  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === gameId && c?.slotId === slot)?.[0]
+  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === game.id && c?.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
 
-  return rank !== null ? (
-    <div className={classes.rankDecorator}>
-      <Rank rank={rank} rankStyle={RankStyle.small} />
-    </div>
-  ) : null
+  return (
+    <>
+      {game.full && <div className={classes.fullDecorator}>full</div>}
+      {rank !== null && (
+        <div className={classes.rankDecorator}>
+          <Rank rank={rank} rankStyle={RankStyle.small} />
+        </div>
+      )}
+    </>
+  )
 }
 
 type SlotDecoratorCheckMark = { year: number; slot: number } & SelectorParams

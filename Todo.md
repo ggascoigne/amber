@@ -1,8 +1,12 @@
 #Todos & Ideas
 
 
-* [ ] write FAQ on auth
-
+* [x] Add ability to mark games as being full
+* [x] Stop users from signing up for full games.
+* [x] write FAQ on auth
+* [ ] upgrade from classnames to https://github.com/lukeed/clsx - it's smaller and faster
+* [ ] investigate material-ui v5
+  
 * [ ] apparently hitting "Shift+Enter" in the "Game Choice Notes" box [in Google Chrome] does not start a new line, but instead submits the form. Maybe add a confirmation screen?)
 
 * [ ] Add link to the Online verison of the AHP

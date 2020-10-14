@@ -14,6 +14,7 @@ import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { notEmpty, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { YesBlankCell } from '../../components/Acnw/Table/CellFormatters'
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
 
@@ -55,6 +56,7 @@ const initialState: Partial<TableState<Game>> = {
     'message',
     'teenFriendly',
     'year',
+    'full',
   ],
 }
 
@@ -117,10 +119,11 @@ const columns: Column<Game>[] = [
   { accessor: 'gameContactEmail' },
   { accessor: 'slotPreference' },
   { accessor: 'lateStart' },
-  { accessor: 'lateFinish' },
+  { accessor: 'lateFinish', Cell: YesBlankCell },
   { accessor: 'slotConflicts' },
   { accessor: 'message' },
-  { accessor: 'teenFriendly' },
+  { accessor: 'teenFriendly', Cell: YesBlankCell },
+  { accessor: 'full', Cell: YesBlankCell },
 ]
 
 const useStyles = makeStyles(() =>

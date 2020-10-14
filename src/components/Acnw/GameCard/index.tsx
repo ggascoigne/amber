@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, makeStyles } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import classNames from 'classnames'
-import type { GameFieldsFragment, GameGmsFragment } from 'client'
+import type { GameEntry } from 'client'
 import { GridContainer, LookupValue } from 'components/Acnw'
 import Card from 'components/MaterialKitReact/Card/Card'
 import CardBody from 'components/MaterialKitReact/Card/CardBody'
@@ -124,7 +124,7 @@ export interface GameCardChild {
 }
 
 interface GameCard {
-  game: GameFieldsFragment & GameGmsFragment
+  game: GameEntry
   year: number
   slot: number
   onEnter?: (param?: string) => void
@@ -143,7 +143,7 @@ export const GameCard: React.FC<GameCard> = React.memo(
       <>
         {decorator ? (
           <HeaderContent name={name} tiny={tiny}>
-            {decorator({ year, slot, gameId: id, ...decoratorParams })}
+            {decorator({ year, slot, game, ...decoratorParams })}
           </HeaderContent>
         ) : (
           <HeaderContent name={name} tiny={tiny} />

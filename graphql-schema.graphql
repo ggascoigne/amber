@@ -2440,6 +2440,7 @@ type Game implements Node {
   type: String!
   year: Int!
   authorId: Int
+  full: Boolean
 
   """
   Reads a single `Room` that is related to this `Game`.
@@ -2801,6 +2802,8 @@ enum GameAssignmentsOrderBy {
   GAME_BY_GAME_ID__YEAR_DESC
   GAME_BY_GAME_ID__AUTHOR_ID_ASC
   GAME_BY_GAME_ID__AUTHOR_ID_DESC
+  GAME_BY_GAME_ID__FULL_ASC
+  GAME_BY_GAME_ID__FULL_DESC
 }
 
 type GameChoice implements Node {
@@ -3067,6 +3070,8 @@ enum GameChoicesOrderBy {
   GAME_BY_GAME_ID__YEAR_DESC
   GAME_BY_GAME_ID__AUTHOR_ID_ASC
   GAME_BY_GAME_ID__AUTHOR_ID_DESC
+  GAME_BY_GAME_ID__FULL_ASC
+  GAME_BY_GAME_ID__FULL_DESC
   MEMBERSHIP_BY_MEMBER_ID__ID_ASC
   MEMBERSHIP_BY_MEMBER_ID__ID_DESC
   MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC
@@ -3252,6 +3257,11 @@ input GameCondition {
   Checks for equality with the object’s `authorId` field.
   """
   authorId: Int
+
+  """
+  Checks for equality with the object’s `full` field.
+  """
+  full: Boolean
 }
 
 """
@@ -3389,6 +3399,11 @@ input GameFilter {
   authorId: IntFilter
 
   """
+  Filter by the object’s `full` field.
+  """
+  full: BooleanFilter
+
+  """
   Checks for all expressions in this list.
   """
   and: [GameFilter!]
@@ -3434,6 +3449,7 @@ input GameInput {
   type: String!
   year: Int!
   authorId: Int
+  full: Boolean
 }
 
 """
@@ -3466,6 +3482,7 @@ input GamePatch {
   type: String
   year: Int
   authorId: Int
+  full: Boolean
 }
 
 """
@@ -3565,6 +3582,8 @@ enum GamesOrderBy {
   YEAR_DESC
   AUTHOR_ID_ASC
   AUTHOR_ID_DESC
+  FULL_ASC
+  FULL_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
   ROOM_BY_ROOM_ID__ID_ASC
