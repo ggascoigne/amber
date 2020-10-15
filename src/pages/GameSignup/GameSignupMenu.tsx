@@ -32,7 +32,6 @@ export const GameSignupMenu: React.FC = () => {
   const decoratorParams = {
     gameChoices,
   }
-  const complete = allSlotsComplete(year, gameChoices)
 
   return (
     <GameMenu
@@ -46,17 +45,15 @@ export const GameSignupMenu: React.FC = () => {
       navDecorator={SlotDecoratorCheckMark}
       navDecoratorParams={decoratorParams}
     >
-      {complete && (
-        <Button
-          variant='contained'
-          color='primary'
-          size='large'
-          onClick={() => setShowConfirmDialog({ open: true })}
-          style={{ margin: '10px 10px 0 10px' }}
-        >
-          Confirm your Game Choices
-        </Button>
-      )}
+      <Button
+        variant='contained'
+        color='primary'
+        size='large'
+        onClick={() => setShowConfirmDialog({ open: true })}
+        style={{ margin: '10px 10px 0 10px' }}
+      >
+        Confirm your Game Choices
+      </Button>
     </GameMenu>
   )
 }

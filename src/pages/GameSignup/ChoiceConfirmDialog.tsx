@@ -13,13 +13,14 @@ import Acnw, {
   useProfile,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
-import React, { useState } from 'react'
-import { onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { onCloseHandler, pick, range, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
-import { MaybeGameChoice } from './GameChoiceSelector'
+import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
+import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
 type FormValues = {
@@ -139,8 +140,9 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
 }) => {
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-  const createOrUpdateSetting = useEditChoiceConfirmation(onClose)
+  const createOrUpdateChoiceConfirmation = useEditChoiceConfirmation(onClose)
   const [textResults, setTextResults] = useState<Record<number, SlotSummary>>({})
+  const [createOrEditGameChoice] = useEditGameChoice()
 
   const storeTextResults = (details: SlotSummary): void => {
     setTextResults((old) => {
@@ -152,10 +154,46 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
     })
   }
 
+  const filledOutChoices = useMemo(
+    () =>
+      range(1, 8).flatMap((slotId) => {
+        const thisSlotChoices: choiceType[] = orderChoices(
+          gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
+        ) as choiceType[]
+
+        if (!isSlotComplete(thisSlotChoices)) {
+          if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {
+            thisSlotChoices[1] = { ...thisSlotChoices[1], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+          } else {
+            for (let i = 2; i < 5; i++) {
+              if (!thisSlotChoices[i].gameId) {
+                thisSlotChoices[i] = { ...thisSlotChoices[i], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+                break
+              }
+            }
+          }
+        }
+        return thisSlotChoices
+      }),
+    [gameChoices, year]
+  )
+
+  const updateChoices = useCallback(() => {
+    const updaters = filledOutChoices
+      .filter((c) => c.modified)
+      .reduce((acc: Promise<any>[], c, idx, arr) => {
+        acc.push(createOrEditGameChoice(c, idx + 1 === arr.length))
+        return acc
+      }, [])
+
+    Promise.all(updaters).then(() => {
+      // console.log('all updaters complete')
+    })
+  }, [createOrEditGameChoice, filledOutChoices])
+
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    await createOrUpdateSetting(values, year, textResults)
-    console.log(`textResults = ${JSON.stringify(textResults, null, 2)}`)
-    console.log(`values = ${JSON.stringify(values, null, 2)}`)
+    await createOrUpdateChoiceConfirmation(values, year, textResults)
+    updateChoices()
   }
 
   const values = gameSubmission ?? {
@@ -163,6 +201,11 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
     memberId,
     message: '',
   }
+
+  useEffect(() => {
+    const changed = filledOutChoices.filter((c) => c.modified)
+    console.log({ gameChoices, filledOutChoices, changed })
+  }, [filledOutChoices, gameChoices])
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
@@ -178,7 +221,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
         </p>
       </DialogContent>
       <DialogContent>
-        <ChoiceSummary year={year} gameChoices={gameChoices} storeTextResults={storeTextResults} />
+        <ChoiceSummary year={year} gameChoices={filledOutChoices} storeTextResults={storeTextResults} />
       </DialogContent>
       <Formik initialValues={values} validationSchema={submissionValidationSchema} onSubmit={onSubmit}>
         {({ values, errors, touched, submitForm, isSubmitting }) => (

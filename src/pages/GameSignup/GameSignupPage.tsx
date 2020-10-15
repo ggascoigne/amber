@@ -11,17 +11,7 @@ import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Pa
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { Link, Redirect } from 'react-router-dom'
-import {
-  PropType,
-  UnpackArray,
-  notEmpty,
-  pick,
-  useGameScroll,
-  useGameUrl,
-  useGetMemberShip,
-  useUrlSourceState,
-  useUser,
-} from 'utils'
+import { PropType, UnpackArray, notEmpty, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
@@ -31,12 +21,13 @@ import {
   GameChoiceSelector,
   SelectorUpdate,
   SlotDecoratorCheckMark,
-  allSlotsComplete,
+  isAnyGame,
+  isNoGame,
   orderChoices,
 } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
-type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
+export type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
 
 const choiceFragment = gql`
   fragment gameChoiceFields on GameChoice {
@@ -178,6 +169,12 @@ export const GameSignupPage: React.FC = () => {
         } else {
           thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
         }
+
+        if ((isNoGame(gameId) || isAnyGame(gameId)) && rank < 4) {
+          for (let i = rank + 1; i <= 4; i++) {
+            if (thisSlotChoices[i].gameId) thisSlotChoices[i] = { ...thisSlotChoices[i], ...empty }
+          }
+        }
       }
 
       // console.log(thisSlotChoices)
@@ -241,8 +238,6 @@ export const GameSignupPage: React.FC = () => {
     return <Redirect to='/game-choices' />
   }
 
-  const complete = allSlotsComplete(year, gameChoices)
-
   return (
     <Page>
       {showFab && (
@@ -253,17 +248,15 @@ export const GameSignupPage: React.FC = () => {
       {gameSubmission?.[0] && isAdmin ? <Link to='/game-choices'>See completed Summary</Link> : null}
 
       {slot === 1 && <SignupInstructions year={year} />}
-      {complete && (
-        <Button
-          variant='contained'
-          color='primary'
-          size='large'
-          onClick={() => setShowConfirmDialog({ open: true })}
-          style={{ marginBottom: 20 }}
-        >
-          Confirm your Game Choices
-        </Button>
-      )}
+      <Button
+        variant='contained'
+        color='primary'
+        size='large'
+        onClick={() => setShowConfirmDialog({ open: true })}
+        style={{ marginBottom: 20 }}
+      >
+        Confirm your Game Choices
+      </Button>
       {showConfirmDialog && (
         <ChoiceConfirmDialog
           year={year}

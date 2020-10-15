@@ -10,9 +10,9 @@ import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { range } from '../../utils'
 
-const isNoGame = (id: number) => id <= 7
+export const isNoGame = (id: number) => id <= 7
 // 144 is the magic number of the Any Game entry :(
-const isAnyGame = (id: number) => id === 144
+export const isAnyGame = (id: number) => id === 144
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -386,7 +386,7 @@ export const orderChoices = (choices?: MaybeGameChoice[]) => [
   choices?.find((c) => c?.rank === 4),
 ]
 
-const isSlotComplete = (choices?: MaybeGameChoice[]) => {
+export const isSlotComplete = (choices?: MaybeGameChoice[]) => {
   if (!choices?.length) return false
 
   const ordered = orderChoices(choices)
