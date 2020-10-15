@@ -202,11 +202,6 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
     message: '',
   }
 
-  useEffect(() => {
-    const changed = filledOutChoices.filter((c) => c.modified)
-    console.log({ gameChoices, filledOutChoices, changed })
-  }, [filledOutChoices, gameChoices])
-
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>

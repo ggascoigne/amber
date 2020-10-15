@@ -1,9 +1,6 @@
 #Todos & Ideas
 
 
-* [x] Add ability to mark games as being full
-* [x] Stop users from signing up for full games.
-* [x] write FAQ on auth
 * [ ] upgrade from classnames to https://github.com/lukeed/clsx - it's smaller and faster
 * [ ] investigate material-ui v5
   
@@ -77,7 +74,10 @@ the games table should:
 * [x] Year tile looks funky with the accordion - fix it :)
 * [x] fix game choice so it can't create duplicates
 * [x] sort choices in the display.
-  
+* [x] Add ability to mark games as being full
+* [x] Stop users from signing up for full games.
+* [x] write FAQ on auth
+* [x] automatically fill in 'no game' on incomplete choices.  This seems to be more in line with people's expectations.  
 
 ### Profiles
 
