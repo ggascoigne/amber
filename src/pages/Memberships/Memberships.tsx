@@ -69,13 +69,13 @@ const virtualColumns: Column<Membership>[] = [
       {
         accessor: 'id',
         Header: 'Member ID',
-        width: 50,
+        width: 70,
       },
       {
         id: 'userId',
         accessor: (r: Membership) => r?.user?.id,
         Header: 'User ID',
-        width: 50,
+        width: 60,
       },
       {
         id: 'firstName',

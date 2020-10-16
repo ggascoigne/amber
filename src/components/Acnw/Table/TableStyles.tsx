@@ -71,7 +71,7 @@ const getClasses = makeStyles((theme: Theme) =>
       fontSize: '0.875rem',
       textAlign: 'left',
       fontWeight: 300,
-      lineHeight: 1.43,
+      lineHeight: 1.3,
       verticalAlign: 'inherit',
       color: theme.palette.text.primary,
       borderRight: '1px solid rgba(224, 224, 224, 1)',
@@ -178,7 +178,7 @@ export const HeaderCheckbox = styled(Checkbox)({
 export const RowCheckbox = styled(Checkbox)({
   fontSize: '14px',
   margin: '-9px 0 -8px -15px',
-  padding: '8px 9px 9px 9px',
+  padding: '5px 9px',
   '&:hover': {
     backgroundColor: 'transparent',
   },
