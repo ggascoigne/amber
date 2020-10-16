@@ -6,11 +6,6 @@ import { notEmpty } from './ts-utils'
 import { useUser } from './useUserFilterState'
 import { useYearFilterState } from './useYearFilterState'
 
-type IsUserAMember = {
-  userId: number
-  denied?: () => React.ReactElement | null
-}
-
 const nullOp = (): null => null
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
@@ -33,28 +28,28 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
   return membership?.year === year ? membership : null
 }
 
-const IsUserAMember: React.FC<IsUserAMember> = ({ userId, children = null, denied = nullOp }) => {
-  const isMember = !!useGetMemberShip(userId)
-  return isMember ? <>{children}</> : denied()
+export const useIsMember = () => {
+  const { isAuthenticated } = useAuth()
+  const { userId } = useUser()
+  const membership = useGetMemberShip(userId)
+  return !!isAuthenticated && !!membership?.attending
 }
 
 export const IsMember: React.FC = ({ children }) => {
-  const { isAuthenticated } = useAuth()
-  const { userId } = useUser()
+  const isMember = useIsMember()
 
-  if (isAuthenticated && !!userId) {
-    return <IsUserAMember userId={userId}>{children}</IsUserAMember>
+  if (isMember) {
+    return <>{children}</>
   } else {
     return null
   }
 }
 
 export const IsNotMember: React.FC = ({ children }) => {
-  const { isAuthenticated } = useAuth()
-  const { userId } = useUser()
+  const isMember = useIsMember()
 
-  if (isAuthenticated && !!userId) {
-    return <IsUserAMember userId={userId} denied={() => <>{children}</>} />
+  if (isMember) {
+    return null
   } else {
     return <>{children}</>
   }

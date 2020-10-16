@@ -1,33 +1,64 @@
 import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
-import type { Column, Row, TableInstance } from 'react-table'
+import { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useLocalStorage, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
-import { DateCell, YesNoCell } from '../../components/Acnw/Table/CellFormatters'
+import { BlankNoCell, DateCell, YesBlankCell } from '../../components/Acnw/Table/CellFormatters'
 import { MembershipDialog } from './MembershipDialog'
 
 type Membership = MembershipFieldsFragment
 
+const initialState: Partial<TableState<Membership>> = {
+  sortBy: [
+    {
+      id: 'lastName',
+      desc: false,
+    },
+  ],
+  hiddenColumns: [
+    'hotelRoomId',
+    'interestLevel',
+    'message',
+    'offerSubsidy',
+    'requestOldPrice',
+    'roomPreferenceAndNotes',
+    'roomingPreferences',
+    'roomingWith',
+    'amountOwed',
+    'amountPaid',
+  ],
+}
+
+const memberColumns: Column<Membership>[] = [
+  {
+    accessor: 'id',
+    Header: 'Member ID',
+    width: 70,
+  },
+  {
+    id: 'userId',
+    accessor: (r: Membership) => r?.user?.id,
+    Header: 'User ID',
+    width: 60,
+  },
+  {
+    id: 'firstName',
+    accessor: (r: Membership) => r?.user?.firstName,
+    width: 70,
+  },
+  {
+    id: 'lastName',
+    accessor: (r: Membership) => r?.user?.lastName,
+    width: 100,
+  },
+]
+
 const columns: Column<Membership>[] = [
   {
     Header: 'Member',
-    columns: [
-      {
-        accessor: 'id',
-      },
-      {
-        id: 'firstName',
-        accessor: (r: Membership) => r?.user?.firstName,
-        width: 70,
-      },
-      {
-        id: 'lastName',
-        accessor: (r: Membership) => r?.user?.lastName,
-        width: 100,
-      },
-    ],
+    columns: memberColumns,
   },
   {
     Header: 'Attendance',
@@ -45,10 +76,6 @@ const columns: Column<Membership>[] = [
         Cell: DateCell,
       },
       {
-        accessor: 'attending',
-        Cell: YesNoCell,
-      },
-      {
         accessor: 'interestLevel',
       },
       {
@@ -56,8 +83,24 @@ const columns: Column<Membership>[] = [
       },
       {
         accessor: 'volunteer',
-        Cell: YesNoCell,
+        Cell: YesBlankCell,
+        width: 50,
       },
+      {
+        accessor: 'attending',
+        Cell: BlankNoCell,
+        width: 50,
+      },
+      { accessor: 'hotelRoomId' },
+      { accessor: 'interestLevel' },
+      { accessor: 'message' },
+      { accessor: 'offerSubsidy' },
+      { accessor: 'requestOldPrice' },
+      { accessor: 'roomPreferenceAndNotes' },
+      { accessor: 'roomingPreferences' },
+      { accessor: 'roomingWith' },
+      { accessor: 'amountOwed' },
+      { accessor: 'amountPaid' },
     ],
   },
 ]
@@ -65,29 +108,7 @@ const columns: Column<Membership>[] = [
 const virtualColumns: Column<Membership>[] = [
   {
     Header: 'Member',
-    columns: [
-      {
-        accessor: 'id',
-        Header: 'Member ID',
-        width: 70,
-      },
-      {
-        id: 'userId',
-        accessor: (r: Membership) => r?.user?.id,
-        Header: 'User ID',
-        width: 60,
-      },
-      {
-        id: 'firstName',
-        accessor: (r: Membership) => r?.user?.firstName,
-        width: 70,
-      },
-      {
-        id: 'lastName',
-        accessor: (r: Membership) => r?.user?.lastName,
-        width: 100,
-      },
-    ],
+    columns: memberColumns,
   },
   {
     Header: 'Attendance',
@@ -100,7 +121,13 @@ const virtualColumns: Column<Membership>[] = [
       },
       {
         accessor: 'volunteer',
-        Cell: YesNoCell,
+        Cell: YesBlankCell,
+        width: 50,
+      },
+      {
+        accessor: 'attending',
+        Cell: BlankNoCell,
+        width: 50,
       },
     ],
   },
@@ -180,6 +207,7 @@ export const Memberships: React.FC = React.memo(() => {
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
+        initialState={initialState}
       />
     </Page>
   )

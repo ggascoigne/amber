@@ -66,7 +66,7 @@ export const GmPage = () => {
   if (membership === undefined) {
     // still loading
     return <Loader />
-  } else if (membership == null) {
+  } else if (membership == null || !membership.attending) {
     // OK we know this is not a member
     return <Redirect to='/membership' />
   } else {

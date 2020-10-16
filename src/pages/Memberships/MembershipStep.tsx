@@ -4,6 +4,10 @@ import { CheckboxWithLabel, ConfigDate, GridContainer, GridItem, TextField } fro
 import React, { useState } from 'react'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
 
+import { dangerColor } from '../../assets/jss/material-kit-react'
+import { HasPermission } from '../../components/Acnw/Auth/HasPermission'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
+
 const useStyles = makeStyles(() =>
   createStyles({
     slotSelection: {
@@ -29,6 +33,9 @@ export const MembershipStep: React.FC<MembershipFormContent> = ({ prefix = '' })
   return (
     <>
       <DialogContent>
+        <HasPermission permission={Perms.IsAdmin}>
+          <DialogContentText style={{ color: dangerColor }}>Admin Mode</DialogContentText>
+        </HasPermission>
         <DialogContentText>
           Please select the slots you <strong>intend</strong> to play. To make sure each slot has coverage for every
           player &mdash; and to not disappoint too many GMs by overbooking and then cancelling unnecessary games &mdash;
@@ -81,6 +88,20 @@ export const MembershipStep: React.FC<MembershipFormContent> = ({ prefix = '' })
           <GridItem xs={12} md={12}>
             <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />
           </GridItem>
+          <HasPermission permission={Perms.IsAdmin}>
+            <GridItem xs={12} md={12}>
+              <CheckboxWithLabel
+                Label={{ label: 'Attending', labelPlacement: 'start', style: { marginLeft: 0 } }}
+                name='attending'
+              />
+            </GridItem>
+            <GridItem xs={12} md={12}>
+              <CheckboxWithLabel
+                Label={{ label: 'Volunteer', labelPlacement: 'start', style: { marginLeft: 0 } }}
+                name='volunteer'
+              />
+            </GridItem>
+          </HasPermission>
         </GridContainer>
       </DialogContent>
     </>

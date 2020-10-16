@@ -3,7 +3,7 @@ import { NotFound } from 'pages'
 import queryString from 'query-string'
 import React, { useMemo } from 'react'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
-import { useSettings, useUser } from 'utils'
+import { useIsMember, useSettings, useUser } from 'utils'
 import { useGetMemberShip } from 'utils/membership'
 
 import { Loader } from '../Loader'
@@ -13,6 +13,7 @@ const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const [, getSettingTruth] = useSettings()
+  const isMember = useIsMember()
 
   if (!menuItem.userCondition || !!menuItem.alwaysAddRoute) {
     return React.createElement(menuItem.component!)
@@ -21,8 +22,6 @@ const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem
   if (membership === undefined || getSettingTruth === undefined) {
     return <Loader />
   }
-
-  const isMember = !!membership
 
   if (menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth })) {
     return React.createElement(menuItem.component!)

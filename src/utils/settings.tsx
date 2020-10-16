@@ -3,23 +3,25 @@ import { useCallback } from 'react'
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { Perms } from '../components/Acnw/Auth/PermissionRules'
-import { useIsGm } from './membership'
+import { useIsGm, useIsMember } from './membership'
 import { notEmpty } from './ts-utils'
 
 export enum SettingValue {
   No = 'No',
   Admin = 'Admin',
   GM = 'GM',
+  Member = 'Member',
   Everyone = 'Everyone',
   Yes = 'Yes',
 }
 
 const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof typeof SettingValue]
 
-export const settingValues = ['No', 'Admin', 'GM', 'Everyone', 'Yes']
+export const settingValues = ['No', 'Admin', 'GM', 'Member', 'Everyone', 'Yes']
 
 export const useSettings = () => {
   const isGm = useIsGm()
+  const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { loading, error, data } = useGetSettingsQuery({
@@ -53,6 +55,8 @@ export const useSettings = () => {
           return isAdmin
         case SettingValue.GM:
           return isAdmin || isGm
+        case SettingValue.Member:
+          return isAdmin || isMember
         case SettingValue.Everyone:
         case SettingValue.Yes:
           return true
@@ -62,7 +66,7 @@ export const useSettings = () => {
           return false
       }
     },
-    [getSettingValue, isAdmin, isGm]
+    [getSettingValue, isAdmin, isGm, isMember]
   )
 
   return error || loading || !data ? [undefined, undefined] : ([getSettingValue, getSettingTruth] as const)
