@@ -67,7 +67,7 @@ const getClasses = makeStyles((theme: Theme) =>
     },
     tableLabel: {},
     tableCell: {
-      padding: 16,
+      padding: '8px 16px',
       fontSize: '0.875rem',
       textAlign: 'left',
       fontWeight: 300,

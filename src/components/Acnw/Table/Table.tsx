@@ -145,6 +145,8 @@ const headerProps = <T extends Record<string, unknown>>(props: any, { column }: 
 const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
   getStyles(props, cell.column?.disableResizing, cell.column?.align)
 
+const DEFAULT_PAGE_SIZE = 25
+
 export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<Table<T>>): ReactElement {
   const {
     name,
@@ -197,7 +199,10 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     []
   )
 
-  const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, userInitialState)
+  const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, {
+    pageSize: DEFAULT_PAGE_SIZE,
+    ...userInitialState,
+  })
   const instance = useTable<T>(
     {
       ...props,
