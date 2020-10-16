@@ -14,7 +14,7 @@ const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem
   const membership = useGetMemberShip(userId)
   const [, getSettingTruth] = useSettings()
 
-  if (!menuItem.userCondition) {
+  if (!menuItem.userCondition || !!menuItem.alwaysAddRoute) {
     return React.createElement(menuItem.component!)
   }
 

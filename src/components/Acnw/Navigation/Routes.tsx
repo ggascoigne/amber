@@ -45,6 +45,7 @@ export type RouteInfo = {
   permission?: Perms
   condition?: boolean
   userCondition?: (params: UserCondition) => boolean
+  alwaysAddRoute?: boolean
 }
 
 export type RootRoutes = RouteInfo[]
@@ -134,6 +135,7 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: SchedulePage,
     userCondition: ({ getSetting }) => getSetting('display.schedule'),
+    alwaysAddRoute: true,
   },
   {
     path: '/about-amber',

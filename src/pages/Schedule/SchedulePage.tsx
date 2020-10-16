@@ -1,7 +1,9 @@
 import { GetScheduleQuery, useGetScheduleQuery } from 'client'
 import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PropType, SettingValue, UnpackArray, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
+
+import { useForceLogin } from '../../utils/useForceLogin'
 
 type G = NonNullable<UnpackArray<PropType<GetScheduleQuery, 'gameAssignments'>>>
 type GameAssignmentNode = NonNullable<UnpackArray<PropType<G, 'nodes'>>>
@@ -36,11 +38,17 @@ const GameSummary: React.FC<GameSummary> = ({ gas }) => {
 }
 
 export const SchedulePage: React.FC = () => {
+  const forceLogin = useForceLogin()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const memberId = membership?.id ?? 0
   const displayScheduleValue = useGetSettingValue('display.schedule')
   const gmOnly = displayScheduleValue === SettingValue.GM
+
+  useEffect(() => {
+    const f = async () => await forceLogin({ appState: { targetUrl: '/schedule' } })
+    f().then()
+  }, [forceLogin])
 
   const { loading, error, data } = useGetScheduleQuery({
     variables: { memberId },
