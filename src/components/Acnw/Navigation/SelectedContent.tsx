@@ -12,19 +12,19 @@ import type { RootRoutes, RouteInfo } from './Routes'
 const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem }) => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const getSetting = useSettings()
+  const [, getSettingTruth] = useSettings()
 
   if (!menuItem.userCondition) {
     return React.createElement(menuItem.component!)
   }
 
-  if (membership === undefined || getSetting === undefined) {
+  if (membership === undefined || getSettingTruth === undefined) {
     return <Loader />
   }
 
   const isMember = !!membership
 
-  if (menuItem.userCondition({ userId, isMember, getSetting })) {
+  if (menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth })) {
     return React.createElement(menuItem.component!)
   } else {
     return <Redirect to='/' />

@@ -1,3 +1,5 @@
+#import "./gameAssignmentFragment.graphql"
+
 fragment gameFields on Game {
   nodeId
   id
@@ -26,17 +28,20 @@ fragment gameFields on Game {
   full
 }
 
+fragment assignmentFields on GameAssignment {
+  ...gameAssignmentFields
+  member {
+    user {
+      email
+      fullName
+    }
+  }
+}
+
 fragment gameGms on Game {
   gameAssignments(filter: { gm: { lessThan: 0 } }) {
     nodes {
-      nodeId
-      gm
-      member {
-        user {
-          email
-          fullName
-        }
-      }
+      ...assignmentFields
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, makeStyles } from '@material-ui/core'
+import { Accordion, AccordionDetails, AccordionSummary, Theme, createStyles, makeStyles } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import classNames from 'classnames'
 import type { GameEntry } from 'client'
@@ -9,31 +9,56 @@ import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import maskEmail from 'utils/maskEmail'
 
+import { getSlotDescription } from '../../../utils'
 import { Field, HeaderContent, MultiLine } from '../CardUtils'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
-const useStyles = makeStyles({
-  card: {
-    marginBottom: 50,
-  },
-  header: {
-    display: 'f;ex',
-    flex: 1,
-  },
-  tinyCard: {
-    height: 279,
-    width: 295,
-    zIndex: 10,
-    transform: 'rotateZ(-3deg)',
-  },
-  cardTiny: {
-    overflow: 'hidden',
-    height: 200,
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    card: {
+      marginBottom: 50,
+    },
+    cardBody: {
+      [theme.breakpoints.down('sm')]: {
+        padding: 0,
+      },
+      [theme.breakpoints.up('sm')]: {
+        padding: '0.9375rem 1.875rem',
+      },
+    },
+    header: {
+      display: 'flex',
+      flex: 1,
+    },
+    tinyCard: {
+      height: 279,
+      width: 295,
+      zIndex: 10,
+      transform: 'rotateZ(-3deg)',
+    },
+    cardTiny: {
+      overflow: 'hidden',
+      height: 200,
+    },
+    playerLine: {
+      lineHeight: '1.5em',
+    },
+  })
+)
 
-const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
-  ({ game, year, slot, onEnter, tiny, header }) => {
+const PlayerDetails: React.FC<{ player: PlayerDetails }> = ({ player }) => {
+  const classes = useStyles()
+  return (
+    <div className={classes.playerLine}>
+      <span>{player.fullName}</span> (<span>{player.email}</span>)
+    </div>
+  )
+}
+
+type GameCardDetails = GameCard & { header: ReactNode; gms?: PlayerDetails[]; players?: PlayerDetails[] }
+
+const GameCardDetails: React.FC<GameCardDetails> = React.memo(
+  ({ game, year, slot, onEnter, tiny, header, players = [], gms = [] }) => {
     const classes = useStyles()
     const {
       id,
@@ -47,16 +72,25 @@ const GameCardDetails: React.FC<GameCard & { header: ReactNode }> = React.memo(
       playersContactGm,
       type,
       teenFriendly,
-      gameAssignments: gms,
+      gameAssignments,
       setting,
     } = game
 
     const content = (
-      <CardBody>
+      <CardBody className={classes.cardBody}>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
+            {gms?.length
+              ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
+              : gameAssignments.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
           </Field>
+          {players?.length ? (
+            <Field label='Players' tiny={tiny}>
+              {players.map((a) => (
+                <PlayerDetails key={a.fullName} player={a} />
+              ))}
+            </Field>
+          ) : null}
           <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
             <MultiLine text={description} />
           </Field>
@@ -123,30 +157,49 @@ export interface GameCardChild {
   gameId: number
 }
 
+type PlayerDetails = {
+  gm: number
+  fullName: string
+  email: string
+}
+
 interface GameCard {
   game: GameEntry
   year: number
   slot: number
   onEnter?: (param?: string) => void
   tiny?: boolean
+  schedule?: boolean
+  gms?: PlayerDetails[]
+  players?: PlayerDetails[]
   // these next two are required together
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
 }
 
 export const GameCard: React.FC<GameCard> = React.memo(
-  ({ game, year, slot, onEnter, tiny = false, decorator, decoratorParams = {} }) => {
+  ({ game, year, slot, onEnter, tiny = false, decorator, decoratorParams = {}, schedule = false, gms, players }) => {
     const classes = useStyles()
     const { id, name, slotId = 0, description } = game
+
+    const slotName = schedule
+      ? getSlotDescription({
+          year,
+          slot: game.slotId!,
+          local: true,
+        })
+      : ''
+
+    const headerText = schedule ? `${slotName} - ${name}` : name
 
     const headerContent = (
       <>
         {decorator ? (
-          <HeaderContent name={name} tiny={tiny}>
+          <HeaderContent name={headerText} tiny={tiny}>
             {decorator({ year, slot, game, ...decoratorParams })}
           </HeaderContent>
         ) : (
-          <HeaderContent name={name} tiny={tiny} />
+          <HeaderContent name={headerText} tiny={tiny} />
         )}
       </>
     )
@@ -183,6 +236,8 @@ export const GameCard: React.FC<GameCard> = React.memo(
       )
     }
 
-    return slotId ? <GameCardDetails game={game} year={year} slot={slot} tiny={tiny} header={header} /> : null
+    return slotId ? (
+      <GameCardDetails game={game} year={year} slot={slot} tiny={tiny} header={header} gms={gms} players={players} />
+    ) : null
   }
 )

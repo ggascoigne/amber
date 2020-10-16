@@ -39,7 +39,9 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const possibleYears: string[] = range(configuration.year, 2011, -1).map((v: number) => `${v}`)
+const possibleYears: string[] = range(configuration.year, 2011, -1)
+  .map((v: number) => `${v}`)
+  .concat(['0'])
 
 export const YearSelector = () => {
   const classes = useStyles()

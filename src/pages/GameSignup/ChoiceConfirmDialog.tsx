@@ -13,7 +13,7 @@ import Acnw, {
   useProfile,
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { onCloseHandler, pick, range, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
 

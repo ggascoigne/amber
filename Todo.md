@@ -1,6 +1,18 @@
 #Todos & Ideas
 
 
+* [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 
+    Let's put
+    Returning players only
+    Returning players 1st, then new players
+    Accepting all players
+    
+    In the big blue title bar,  and/or we can emphasize it in the game description by making it the very first line, before the GM name.
+
+* [ ] display GM game preview - what are they running and who's in it
+* [ ] Display schedule - what are you in and who else is in it.
+
+* [ ] Make menu/nav hierarchical
 * [ ] upgrade from classnames to https://github.com/lukeed/clsx - it's smaller and faster
 * [ ] investigate material-ui v5
   

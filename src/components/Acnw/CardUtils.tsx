@@ -1,29 +1,35 @@
-import { makeStyles } from '@material-ui/core'
+import { Theme, createStyles, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import React from 'react'
 
 import CardHeader from '../MaterialKitReact/Card/CardHeader'
 import { GridItem } from './Grid'
 
-const useStyles = makeStyles({
-  gridItem: {
-    paddingBottom: 10,
-  },
-  label: {
-    fontWeight: 500,
-    minWidth: 80,
-  },
-  tinyHeaderText: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
-  header: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-})
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    gridItem: {
+      paddingBottom: 10,
+    },
+    label: {
+      fontWeight: 500,
+      minWidth: 80,
+    },
+    tinyHeaderText: {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
+    header: {
+      display: 'flex',
+      flex: 1,
+      justifyContent: 'space-between',
+      [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+        marginRight: 0,
+      },
+    },
+  })
+)
 
 export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   <>
@@ -38,12 +44,14 @@ export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name
   return (
     <CardHeader color='info' className={classes.header}>
       <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-        <GridItem xs={12} sm={7}>
+        <GridItem xs={12} sm={children ? 7 : 12}>
           <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
         </GridItem>
-        <GridItem xs={12} sm={5}>
-          {children}
-        </GridItem>
+        {children && (
+          <GridItem xs={12} sm={5}>
+            {children}
+          </GridItem>
+        )}
       </GridItem>
     </CardHeader>
   )

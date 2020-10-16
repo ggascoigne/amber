@@ -40,7 +40,7 @@ export const TableDebug: React.FC<{
           <br />
           <br />
           <Suspense fallback={<Loader />}>
-            <ReactJson src={{ ...instance }} collapsed={1} indentWidth={2} sortKeys />
+            <ReactJson src={{ ...instance }} collapsed={1} indentWidth={2} enableClipboard={false} sortKeys />
           </Suspense>
         </>
       )}

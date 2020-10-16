@@ -26,9 +26,9 @@ export const useSettings = () => {
     fetchPolicy: 'cache-first',
   })
 
-  const getSettings = useCallback(
-    (setting: string, defaultValue = false) => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string) => {
+  const getSettingValue = useCallback(
+    (setting: string, defaultValue = false): SettingValue | null => {
+      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): SettingValue | null => {
         const s = settings?.find((s) => s.code === setting)
         return s ? asSettingValue(s.value) : null
       }
@@ -39,7 +39,14 @@ export const useSettings = () => {
 
       const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) ?? null
 
-      const s = getSetting(settings, setting)
+      return getSetting(settings, setting)
+    },
+    [data, error, loading]
+  )
+
+  const getSettingTruth = useCallback(
+    (setting: string, defaultValue = false) => {
+      const s = getSettingValue(setting, setting)
 
       switch (s) {
         case SettingValue.Admin:
@@ -55,13 +62,20 @@ export const useSettings = () => {
           return false
       }
     },
-    [data, error, isAdmin, isGm, loading]
+    [getSettingValue, isAdmin, isGm]
   )
 
-  return error || loading || !data ? undefined : getSettings
+  return error || loading || !data ? [undefined, undefined] : ([getSettingValue, getSettingTruth] as const)
 }
 
 export const useSetting = (setting: string, defaultValue = false) => {
-  const getSetting = useSettings()
-  return getSetting ? getSetting(setting, defaultValue) : undefined
+  const [, getSettingTruth] = useSettings()
+  return getSettingTruth ? getSettingTruth(setting, defaultValue) : undefined
+}
+
+type useGetSettingValueType = (setting: string, defaultValue?: boolean) => SettingValue | null | undefined
+
+export const useGetSettingValue: useGetSettingValueType = (setting: string, defaultValue = false) => {
+  const [getSettingValue] = useSettings()
+  return getSettingValue ? getSettingValue(setting, defaultValue) : undefined
 }

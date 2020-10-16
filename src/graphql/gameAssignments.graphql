@@ -1,4 +1,5 @@
 #import "./gameAssignmentFragment.graphql"
+#import "./gameFragment.graphql"
 
 query getGameAssignmentsByYear($year: Int!) {
   gameAssignments(condition: { year: $year }) {
@@ -44,5 +45,22 @@ mutation deleteGameAssignment($input: DeleteGameAssignmentByNodeIdInput!) {
   deleteGameAssignmentByNodeId(input: $input) {
     clientMutationId
     deletedGameAssignmentNodeId
+  }
+}
+
+# note that gm < 0 is offering to run, gm = 0 is player, gm > 0 is scheduled to run
+query GetSchedule($memberId: Int!) {
+  gameAssignments(condition: { memberId: $memberId }, filter: { gm: { greaterThanOrEqualTo: 0 } }) {
+    nodes {
+      game {
+        ...gameFields
+        gameAssignments(filter: { gm: { greaterThanOrEqualTo: 0 } }) {
+          nodes {
+            ...assignmentFields
+          }
+        }
+      }
+      ...gameAssignmentFields
+    }
   }
 }

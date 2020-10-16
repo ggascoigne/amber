@@ -1,24 +1,30 @@
 import {
   AboutAmber,
   AboutAmberconNw,
+  AntiHarassmentPolicy,
   Contact,
   Credits,
   Faq,
   GameBookGamesPage,
   GameBookPage,
+  GameChoiceSummary,
   GameSignupPage,
+  Games,
   GmPage,
   GraphiQLPage,
+  Lookups,
+  MembershipSummary,
+  Memberships,
   Reports,
+  SchedulePage,
   Settings,
+  Users,
   Welcome,
   WelcomeVirtual,
 } from 'pages'
 import type React from 'react'
+import { configuration } from 'utils'
 
-import { AntiHarassmentPolicy, Games, Lookups, MembershipSummary, Memberships, Users } from '../../../pages'
-import { GameChoiceSummary } from '../../../pages/GameSignup/GameChoiceSummary'
-import { configuration } from '../../../utils'
 import { Perms } from '../Auth/PermissionRules'
 
 type UserCondition = {
@@ -120,6 +126,14 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: GameChoiceSummary,
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+  },
+  {
+    path: '/schedule',
+    label: 'Schedule',
+    subText: 'Your Schedule',
+    exact: true,
+    component: SchedulePage,
+    userCondition: ({ getSetting }) => getSetting('display.schedule'),
   },
   {
     path: '/about-amber',

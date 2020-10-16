@@ -18,7 +18,7 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
   const location = useLocation()
   const { userId } = useUser()
   const isMember = !!useGetMemberShip(userId)
-  const getSetting = useSettings()
+  const [, getSettingTruth] = useSettings()
 
   const activeItem = location.pathname
   const matchedContextRoute = contextRoutes(location.pathname)
@@ -34,7 +34,7 @@ export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
           .filter(
             (menuItem) =>
               menuItem.userCondition === undefined ||
-              (getSetting ? menuItem.userCondition({ userId, isMember, getSetting }) : false)
+              (getSettingTruth ? menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth }) : false)
           )
           .map((menuItem) => {
             const link = menuItem.link ? menuItem.link : menuItem.path

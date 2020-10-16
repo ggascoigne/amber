@@ -6901,6 +6901,30 @@ export type DeleteGameAssignmentMutation = { __typename: 'Mutation' } & {
   >
 }
 
+export type GetScheduleQueryVariables = Exact<{
+  memberId: Scalars['Int']
+}>
+
+export type GetScheduleQuery = { __typename: 'Query' } & {
+  gameAssignments?: Maybe<
+    { __typename: 'GameAssignmentsConnection' } & {
+      nodes: Array<
+        Maybe<
+          { __typename: 'GameAssignment' } & {
+            game?: Maybe<
+              { __typename: 'Game' } & {
+                gameAssignments: { __typename: 'GameAssignmentsConnection' } & {
+                  nodes: Array<Maybe<{ __typename: 'GameAssignment' } & AssignmentFieldsFragment>>
+                }
+              } & GameFieldsFragment
+            >
+          } & GameAssignmentFieldsFragment
+        >
+      >
+    }
+  >
+}
+
 export type GameSubmissionFieldsFragment = { __typename: 'GameSubmission' } & Pick<
   GameSubmission,
   'id' | 'memberId' | 'message' | 'nodeId' | 'year'
@@ -7025,17 +7049,15 @@ export type GameFieldsFragment = { __typename: 'Game' } & Pick<
   | 'full'
 >
 
+export type AssignmentFieldsFragment = { __typename: 'GameAssignment' } & {
+  member?: Maybe<
+    { __typename: 'Membership' } & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'email' | 'fullName'>> }
+  >
+} & GameAssignmentFieldsFragment
+
 export type GameGmsFragment = { __typename: 'Game' } & {
   gameAssignments: { __typename: 'GameAssignmentsConnection' } & {
-    nodes: Array<
-      Maybe<
-        { __typename: 'GameAssignment' } & Pick<GameAssignment, 'nodeId' | 'gm'> & {
-            member?: Maybe<
-              { __typename: 'Membership' } & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'email' | 'fullName'>> }
-            >
-          }
-      >
-    >
+    nodes: Array<Maybe<{ __typename: 'GameAssignment' } & AssignmentFieldsFragment>>
   }
 }
 
@@ -7369,15 +7391,6 @@ export type UserFieldsFragment = { __typename: 'User' } & Pick<
   'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
 >
 
-export const GameAssignmentFieldsFragmentDoc = gql`
-  fragment gameAssignmentFields on GameAssignment {
-    gameId
-    gm
-    memberId
-    nodeId
-    year
-  }
-`
 export const GameSubmissionFieldsFragmentDoc = gql`
   fragment gameSubmissionFields on GameSubmission {
     id
@@ -7428,21 +7441,36 @@ export const GameFieldsFragmentDoc = gql`
     full
   }
 `
+export const GameAssignmentFieldsFragmentDoc = gql`
+  fragment gameAssignmentFields on GameAssignment {
+    gameId
+    gm
+    memberId
+    nodeId
+    year
+  }
+`
+export const AssignmentFieldsFragmentDoc = gql`
+  fragment assignmentFields on GameAssignment {
+    ...gameAssignmentFields
+    member {
+      user {
+        email
+        fullName
+      }
+    }
+  }
+  ${GameAssignmentFieldsFragmentDoc}
+`
 export const GameGmsFragmentDoc = gql`
   fragment gameGms on Game {
     gameAssignments(filter: { gm: { lessThan: 0 } }) {
       nodes {
-        nodeId
-        gm
-        member {
-          user {
-            email
-            fullName
-          }
-        }
+        ...assignmentFields
       }
     }
   }
+  ${AssignmentFieldsFragmentDoc}
 `
 export const LookupFieldsFragmentDoc = gql`
   fragment lookupFields on Lookup {
@@ -8339,6 +8367,56 @@ export type DeleteGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
   DeleteGameAssignmentMutation,
   DeleteGameAssignmentMutationVariables
 >
+export const GetScheduleDocument = gql`
+  query GetSchedule($memberId: Int!) {
+    gameAssignments(condition: { memberId: $memberId }, filter: { gm: { greaterThanOrEqualTo: 0 } }) {
+      nodes {
+        game {
+          ...gameFields
+          gameAssignments(filter: { gm: { greaterThanOrEqualTo: 0 } }) {
+            nodes {
+              ...assignmentFields
+            }
+          }
+        }
+        ...gameAssignmentFields
+      }
+    }
+  }
+  ${GameFieldsFragmentDoc}
+  ${AssignmentFieldsFragmentDoc}
+  ${GameAssignmentFieldsFragmentDoc}
+`
+
+/**
+ * __useGetScheduleQuery__
+ *
+ * To run a query within a React component, call `useGetScheduleQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetScheduleQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetScheduleQuery({
+ *   variables: {
+ *      memberId: // value for 'memberId'
+ *   },
+ * });
+ */
+export function useGetScheduleQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>
+) {
+  return Apollo.useQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, baseOptions)
+}
+export function useGetScheduleLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, baseOptions)
+}
+export type GetScheduleQueryHookResult = ReturnType<typeof useGetScheduleQuery>
+export type GetScheduleLazyQueryHookResult = ReturnType<typeof useGetScheduleLazyQuery>
+export type GetScheduleQueryResult = Apollo.QueryResult<GetScheduleQuery, GetScheduleQueryVariables>
 export const CreateGameChoicesDocument = gql`
   mutation createGameChoices($year: Int!, $memberId: Int!) {
     createBareSlotChoices(input: { memberId: $memberId, yearno: $year }) {
