@@ -91,7 +91,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   const classes = useStyles()
   const { userId } = useUser()
 
-  const { loading, error, data } = useGetGamesByYearAndAuthorQuery({
+  const { loading, error, data, refetch } = useGetGamesByYearAndAuthorQuery({
     variables: {
       year,
       id: userId!,
@@ -199,6 +199,7 @@ const MemberGmPage: React.FC = React.memo(() => {
           columns={columns}
           onDelete={onDelete}
           onClick={onClick}
+          onRefresh={() => refetch()}
         />
       ) : null}
     </Page>

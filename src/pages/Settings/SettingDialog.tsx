@@ -14,6 +14,8 @@ const settingValidationSchema = Yup.object().shape({
   value: Yup.string().max(100).required('Required'),
 })
 
+export const typeValues = ['integer', 'string']
+
 type FormValues = Omit<SettingFieldsFragment, 'nodeId' | 'id' | '__typename'> & Partial<Node> & { id?: number }
 
 interface SettingDialog {
@@ -104,10 +106,14 @@ export const SettingDialog: React.FC<SettingDialog> = ({ open, onClose, initialV
                   <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <TextField name='type' label='Type' margin='normal' fullWidth required />
+                  <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
                 </GridItem>
                 <GridItem xs={12} md={12}>
-                  <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={settingValues} />
+                  {values.type === 'integer' ? (
+                    <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={settingValues} />
+                  ) : (
+                    <TextField name='value' label='Value' margin='normal' fullWidth required />
+                  )}
                 </GridItem>
               </GridContainer>
             </DialogContent>

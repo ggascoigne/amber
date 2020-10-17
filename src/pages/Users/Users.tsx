@@ -20,7 +20,7 @@ export const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<ProfileType[]>([])
 
-  const { loading, error, data } = useGetAllUsersQuery()
+  const { loading, error, data, refetch } = useGetAllUsersQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -51,7 +51,15 @@ export const Users: React.FC = React.memo(() => {
   return (
     <Page>
       {showEdit && <ProfileDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<ProfileType> name='users' data={list} columns={columns} disableGroupBy onEdit={onEdit} onClick={onClick} />
+      <Table<ProfileType>
+        name='users'
+        data={list}
+        columns={columns}
+        disableGroupBy
+        onEdit={onEdit}
+        onClick={onClick}
+        onRefresh={() => refetch()}
+      />
     </Page>
   )
 })

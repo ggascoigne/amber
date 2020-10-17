@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useGetGameAssignmentsByYearQuery, useGetMembershipByYearAndIdQuery } from '../client'
+import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { notEmpty } from './ts-utils'
 import { useUser } from './useUserFilterState'
@@ -59,11 +59,11 @@ export const useIsGm = () => {
   const { isAuthenticated } = useAuth()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const year = useYearFilterState((state) => state.year)
-  const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
+  const { data: gameAssignmentData } = useGetGameAssignmentsByMemberIdQuery({
     variables: {
-      year,
+      memberId: membership?.id ?? 0,
     },
+    skip: !membership,
     fetchPolicy: 'cache-and-network',
   })
 

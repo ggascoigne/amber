@@ -19,6 +19,7 @@ import {
   SchedulePage,
   Settings,
   Users,
+  VirtualDetails,
   Welcome,
   WelcomeVirtual,
 } from 'pages'
@@ -79,6 +80,15 @@ export const rootRoutes: RootRoutes = [
     exact: false,
     component: AboutAmberconNw,
     condition: !configuration.virtual,
+  },
+  {
+    path: '/virtual-details',
+    label: 'The Virtual Convention',
+    subText: 'Accessing the virtual convention',
+    exact: false,
+    component: VirtualDetails,
+    condition: configuration.virtual,
+    userCondition: ({ getSetting }) => getSetting('display.virtual.details'),
   },
   {
     path: '/membership',

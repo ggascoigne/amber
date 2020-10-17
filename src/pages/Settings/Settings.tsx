@@ -18,6 +18,9 @@ const columns: Column<Setting>[] = [
   {
     accessor: 'value',
   },
+  {
+    accessor: 'type',
+  },
 ]
 
 export const Settings: React.FC = React.memo(() => {
@@ -25,7 +28,7 @@ export const Settings: React.FC = React.memo(() => {
   const [selection, setSelection] = useState<Setting[]>([])
 
   const [deleteSetting] = useDeleteSettingMutation()
-  const { loading, error, data } = useGetSettingsQuery()
+  const { loading, error, data, refetch } = useGetSettingsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -84,6 +87,7 @@ export const Settings: React.FC = React.memo(() => {
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
+        onRefresh={() => refetch()}
       />
     </Page>
   )

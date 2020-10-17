@@ -25,7 +25,7 @@ export const Lookups: React.FC = React.memo(() => {
   const [deleteLookup] = useDeleteLookupMutation()
   const [deleteLookupValue] = useDeleteLookupValueMutation()
   const [refreshLookups] = useGetLookupsLazyQuery({ fetchPolicy: 'network-only' })
-  const { loading, error, data } = useGetLookupsQuery()
+  const { loading, error, data, refetch } = useGetLookupsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -82,6 +82,7 @@ export const Lookups: React.FC = React.memo(() => {
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
+        onRefresh={() => refetch()}
       />
     </Page>
   )

@@ -28,10 +28,29 @@ export const useSettings = () => {
     fetchPolicy: 'cache-first',
   })
 
+  const getSettingString = useCallback(
+    (setting: string, defaultValue = false): string | null => {
+      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): string | null => {
+        const s = settings?.find((s) => s.code === setting)
+        return s ? s.value : null
+      }
+
+      if (error || loading || !data) {
+        return defaultValue
+      }
+
+      const settings: SettingFieldsFragment[] | null = data?.settings?.nodes?.filter(notEmpty) ?? null
+
+      return getSetting(settings, setting)
+    },
+    [data, error, loading]
+  )
+
   const getSettingValue = useCallback(
     (setting: string, defaultValue = false): SettingValue | null => {
       const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): SettingValue | null => {
         const s = settings?.find((s) => s.code === setting)
+        if (s && s.type !== 'integer') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
       }
 
@@ -48,7 +67,7 @@ export const useSettings = () => {
 
   const getSettingTruth = useCallback(
     (setting: string, defaultValue = false) => {
-      const s = getSettingValue(setting, setting)
+      const s = getSettingValue(setting, defaultValue)
 
       switch (s) {
         case SettingValue.Admin:
@@ -69,7 +88,7 @@ export const useSettings = () => {
     [getSettingValue, isAdmin, isGm, isMember]
   )
 
-  return error || loading || !data ? [undefined, undefined] : ([getSettingValue, getSettingTruth] as const)
+  return error || loading || !data ? [undefined, undefined] : ([getSettingString, getSettingTruth] as const)
 }
 
 export const useSetting = (setting: string, defaultValue = false) => {
@@ -77,9 +96,9 @@ export const useSetting = (setting: string, defaultValue = false) => {
   return getSettingTruth ? getSettingTruth(setting, defaultValue) : undefined
 }
 
-type useGetSettingValueType = (setting: string, defaultValue?: boolean) => SettingValue | null | undefined
+type useGetSettingValueType = (setting: string, defaultValue?: boolean) => string | null | undefined
 
 export const useGetSettingValue: useGetSettingValueType = (setting: string, defaultValue = false) => {
-  const [getSettingValue] = useSettings()
-  return getSettingValue ? getSettingValue(setting, defaultValue) : undefined
+  const [getSettingString] = useSettings()
+  return getSettingString ? getSettingString(setting, defaultValue) : undefined
 }

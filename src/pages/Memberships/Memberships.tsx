@@ -141,7 +141,7 @@ export const Memberships: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Membership[]>([])
   const [deleteMembership] = useDeleteMembershipMutation()
-  const { loading, error, data } = useGetMembershipsByYearQuery({
+  const { loading, error, data, refetch } = useGetMembershipsByYearQuery({
     variables: {
       year,
     },
@@ -208,6 +208,7 @@ export const Memberships: React.FC = React.memo(() => {
         onEdit={onEdit}
         onClick={onClick}
         initialState={initialState}
+        onRefresh={() => refetch()}
       />
     </Page>
   )
