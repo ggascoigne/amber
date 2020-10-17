@@ -66,6 +66,13 @@ export const rootRoutes: RootRoutes = [
     component: AboutAmberconNw,
   },
   {
+    path: '/about-amber',
+    label: 'Amber',
+    subText: 'Just what is this "Amber" thing?',
+    exact: false,
+    component: AboutAmber,
+  },
+  {
     path: '/about-edgefield',
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
@@ -136,13 +143,6 @@ export const rootRoutes: RootRoutes = [
     component: SchedulePage,
     userCondition: ({ getSetting }) => getSetting('display.schedule'),
     alwaysAddRoute: true,
-  },
-  {
-    path: '/about-amber',
-    label: 'Amber',
-    subText: 'Just what is this "Amber" thing?',
-    exact: false,
-    component: AboutAmber,
   },
   {
     path: '/game-history',
