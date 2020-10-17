@@ -1,5 +1,6 @@
 10/16/2020
 
+* [x] Clean up schedule display bugs - fix issues around games with no slot assigned.
 * [x] Display schedule - what are you in and who else is in it.
 * [x] display GM game preview - what are they running and who's in it
 

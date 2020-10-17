@@ -218,21 +218,34 @@ export const GameCard: React.FC<GameCard> = React.memo(
     )
 
     if (game.year === 0) {
-      return (
+      const content = (
+        <CardBody>
+          <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+            <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
+              <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
+            </Field>
+          </GridContainer>
+        </CardBody>
+      )
+      return tiny ? (
         <Card
           key={`game_${id}`}
           className={classNames(classes.card, { [classes.tinyCard]: tiny })}
           id={`game/${year}/${slot}/${id}`}
         >
           {header}
-          <CardBody>
-            <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
-              <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-                <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
-              </Field>
-            </GridContainer>
-          </CardBody>
+          {content}
         </Card>
+      ) : (
+        <Accordion defaultExpanded={!schedule}>
+          <AccordionSummary
+            expandIcon={tiny ? undefined : <ExpandMoreIcon />}
+            id={`accordion-game/${year}/${slot}/${id}`}
+          >
+            {header}
+          </AccordionSummary>
+          <AccordionDetails>{content}</AccordionDetails>
+        </Accordion>
       )
     }
 

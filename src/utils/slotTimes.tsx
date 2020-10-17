@@ -109,6 +109,7 @@ export const getSlotDescription = ({
   local?: boolean
   altFormat?: SlotFormat
 }) => {
+  if (!slot) return 'unscheduled'
   const [start, end] = getSlotTimes(year)[slot - 1]
   return local ? formatSlotLocal(slot, start, end, altFormat) : formatSlot(slot, start, end, altFormat)
 }
