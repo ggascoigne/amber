@@ -1,12 +1,11 @@
 import { GetScheduleQuery, useGetScheduleQuery } from 'client'
 import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
 import React, { useEffect } from 'react'
-import { PropType, SettingValue, UnpackArray, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
+import { ContentsOf, SettingValue, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
 
 import { useForceLogin } from '../../utils/useForceLogin'
 
-type G = NonNullable<UnpackArray<PropType<GetScheduleQuery, 'gameAssignments'>>>
-type GameAssignmentNode = NonNullable<UnpackArray<PropType<G, 'nodes'>>>
+type GameAssignmentNode = ContentsOf<ContentsOf<GetScheduleQuery, 'gameAssignments'>, 'nodes'>
 
 type GameSummary = {
   gas: GameAssignmentNode

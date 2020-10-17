@@ -32,3 +32,4 @@ export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
   return value !== null && value !== undefined
 }
+export type ContentsOf<T, K extends keyof T> = NonNullable<UnpackArray<T[K]>>

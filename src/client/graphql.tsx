@@ -7386,6 +7386,27 @@ export type GetAllUsersQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetAllUsersByQueryVariables = Exact<{
+  input: Scalars['String']
+  limit?: Maybe<Scalars['Int']>
+}>
+
+export type GetAllUsersByQuery = { __typename: 'Query' } & {
+  users?: Maybe<
+    { __typename: 'UsersConnection' } & {
+      nodes: Array<
+        Maybe<
+          { __typename: 'User' } & {
+            memberships: { __typename: 'MembershipsConnection' } & {
+              nodes: Array<Maybe<{ __typename: 'Membership' } & Pick<Membership, 'id' | 'year'>>>
+            }
+          } & UserFieldsFragment
+        >
+      >
+    }
+  >
+}
+
 export type UserFieldsFragment = { __typename: 'User' } & Pick<
   User,
   'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
@@ -9785,3 +9806,50 @@ export function useGetAllUsersLazyQuery(
 export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
 export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>
+export const GetAllUsersByDocument = gql`
+  query GetAllUsersBy($input: String!, $limit: Int = 10) {
+    users(orderBy: LAST_NAME_ASC, first: $limit, filter: { fullName: { includesInsensitive: $input } }) {
+      nodes {
+        ...userFields
+        memberships(condition: { attending: true }) {
+          nodes {
+            id
+            year
+          }
+        }
+      }
+    }
+  }
+  ${UserFieldsFragmentDoc}
+`
+
+/**
+ * __useGetAllUsersByQuery__
+ *
+ * To run a query within a React component, call `useGetAllUsersByQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllUsersByQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllUsersByQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetAllUsersByQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
+) {
+  return Apollo.useQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, baseOptions)
+}
+export function useGetAllUsersByLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
+) {
+  return Apollo.useLazyQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, baseOptions)
+}
+export type GetAllUsersByQueryHookResult = ReturnType<typeof useGetAllUsersByQuery>
+export type GetAllUsersByLazyQueryHookResult = ReturnType<typeof useGetAllUsersByLazyQuery>
+export type GetAllUsersByQueryResult = Apollo.QueryResult<GetAllUsersByQuery, GetAllUsersByQueryVariables>

@@ -11,7 +11,7 @@ import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Pa
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { Link, Redirect } from 'react-router-dom'
-import { PropType, UnpackArray, notEmpty, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
+import { ContentsOf, notEmpty, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
@@ -27,7 +27,7 @@ import {
 } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
-export type choiceType = NonNullable<UnpackArray<PropType<SelectorUpdate, 'gameChoices'>>> & { modified?: boolean }
+export type choiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
 const choiceFragment = gql`
   fragment gameChoiceFields on GameChoice {

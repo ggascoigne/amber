@@ -27,3 +27,17 @@ query GetAllUsers {
     }
   }
 }
+
+query GetAllUsersBy($input: String!, $limit: Int = 10) {
+  users(orderBy: LAST_NAME_ASC, first: $limit, filter: { fullName: { includesInsensitive: $input } }) {
+    nodes {
+      ...userFields
+      memberships(condition: { attending: true }) {
+        nodes {
+          id
+          year
+        }
+      }
+    }
+  }
+}

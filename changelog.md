@@ -1,3 +1,7 @@
+10/17/2020
+
+* [x] Improve admin user filter - dynamically load list, differentiate between members and non-members.
+
 10/16/2020
 
 * [x] Clean up schedule display bugs - fix issues around games with no slot assigned.

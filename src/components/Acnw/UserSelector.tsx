@@ -1,9 +1,9 @@
 import { TextField, makeStyles, withStyles } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import classNames from 'classnames'
-import { UserFieldsFragment, useGetAllUsersQuery } from 'client'
-import React, { useCallback, useMemo } from 'react'
-import { notEmpty, useUserFilterState } from 'utils'
+import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
+import React, { useCallback, useEffect, useState } from 'react'
+import { ContentsOf, notEmpty, useUserFilterState, useYearFilterState } from 'utils'
 
 import { useNotification } from './Notifications'
 
@@ -43,6 +43,9 @@ const useStyles = makeStyles({
     fontSize: '0.875rem', // 14px
     wordWrap: 'break-word',
   },
+  notMember: {
+    opacity: '.6',
+  },
 })
 
 const CleanTextField = withStyles({
@@ -59,7 +62,9 @@ const CleanTextField = withStyles({
   },
 })(TextField)
 
-const getOptionSelected = (option: UserFieldsFragment, value: UserFieldsFragment) => option.id === value.id
+type UserType = ContentsOf<ContentsOf<GetAllUsersByQuery, 'users'>, 'nodes'>
+
+const getOptionSelected = (option: UserType, value: UserType) => option.id === value.id
 
 interface UserSelector {
   mobile?: boolean
@@ -70,17 +75,32 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
   const [notify] = useNotification()
   const userInfo = useUserFilterState((state) => state.userInfo)
   const setUser = useUserFilterState((state) => state.setUser)
+  const year = useYearFilterState((state) => state.year)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
 
-  const { loading, error, data } = useGetAllUsersQuery()
+  const { loading, error, data } = useGetAllUsersByQuery({
+    variables: {
+      input: searchTerm,
+      limit: 20,
+    },
+  })
 
-  const dropdownOptions = useMemo(() => {
-    const users = data?.users?.nodes ?? []
-    return users?.map((u) => u).filter(notEmpty)
+  useEffect(() => {
+    if (data) {
+      const users = data?.users?.nodes ?? []
+      setDropdownOptions(users?.filter(notEmpty))
+    }
   }, [data])
+
+  const onInputChange = useCallback((ev) => {
+    setSearchTerm(ev.target.value)
+  }, [])
 
   const onChange = useCallback(
     (_, value) => {
       setUser(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
+      if (!value) setSearchTerm('')
     },
     [setUser]
   )
@@ -92,41 +112,41 @@ export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
     })
   }
 
-  if (error || loading || !data) {
+  if (error) {
     return null
   }
 
   const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.userId) ?? null
 
-  if (dropdownOptions && dropdownOptions.length > 0) {
-    return (
-      <>
-        <Autocomplete<UserFieldsFragment>
-          id='customerFilter'
-          options={dropdownOptions}
-          getOptionLabel={(option: UserFieldsFragment) => option.fullName ?? ''}
-          className={classNames(classes.selector, {
-            [classes.selectorMobile]: mobile,
-          })}
-          value={selectedUser}
-          classes={{
-            endAdornment: classes.inheritColor,
-            popupIndicator: classes.inheritColor,
-            clearIndicator: classes.inheritColor,
-          }}
-          renderInput={(params) => <CleanTextField {...params} fullWidth placeholder='User Override' />}
-          renderOption={(params: UserFieldsFragment) => (
-            <div className={classes.holder}>
-              <span className={classes.text}>{params.fullName}</span>
-            </div>
-          )}
-          getOptionSelected={getOptionSelected}
-          onChange={onChange}
-          data-test='customer-select-dropdown'
-        />
-      </>
-    )
-  } else {
-    return null
-  }
+  return (
+    <Autocomplete<UserType>
+      id='userFilter'
+      loading={loading}
+      options={dropdownOptions}
+      getOptionLabel={(option: UserType) => option.fullName ?? ''}
+      className={classNames(classes.selector, {
+        [classes.selectorMobile]: mobile,
+      })}
+      value={selectedUser}
+      classes={{
+        endAdornment: classes.inheritColor,
+        popupIndicator: classes.inheritColor,
+        clearIndicator: classes.inheritColor,
+      }}
+      renderInput={(params) => (
+        <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} />
+      )}
+      renderOption={(params: UserType) => {
+        const isMember = !!params?.memberships?.nodes?.find((m) => m?.year === year)
+        return (
+          <div className={classes.holder}>
+            <span className={classNames(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
+          </div>
+        )
+      }}
+      getOptionSelected={getOptionSelected}
+      onChange={onChange}
+      data-test='customer-select-dropdown'
+    />
+  )
 }
