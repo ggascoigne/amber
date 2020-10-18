@@ -27,7 +27,7 @@ import {
   useSortBy,
   useTable,
 } from 'react-table'
-import { camelToWords, isDev, useDebounce } from 'utils'
+import { camelToWords, isDev, notEmpty, useDebounce } from 'utils'
 
 import { FilterChipBar } from './FilterChipBar'
 import { fuzzyTextFilter, numericTextFilter } from './filters'
@@ -158,6 +158,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     extraCommands,
     onRefresh,
     initialState: userInitialState = {},
+    hideSelectionUi = false,
   } = props
   const classes = useStyles()
 
@@ -179,8 +180,8 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     usePagination,
     useResizeColumns,
     useRowSelect,
-    useSelectionUi,
-  ]
+    hideSelectionUi ? undefined : useSelectionUi,
+  ].filter(notEmpty)
 
   const defaultColumn = React.useMemo<Partial<Column<T>>>(
     () => ({
@@ -234,8 +235,16 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
 
   return (
     <>
-      <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit, extraCommands, onRefresh }} />
-      <FilterChipBar<T> instance={instance} />
+      {!hideSelectionUi ? (
+        <>
+          <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit, extraCommands, onRefresh }} />
+          <FilterChipBar<T> instance={instance} />
+        </>
+      ) : (
+        <div>
+          <br />
+        </div>
+      )}
       <TableTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (

@@ -100,7 +100,7 @@ export const rootRoutes: RootRoutes = [
   {
     path: '/gm',
     label: 'Become a GM',
-    subText: `Submit an event for ${configuration.year}`,
+    subText: `Manage your games`,
     exact: true,
     component: GmPage,
   },

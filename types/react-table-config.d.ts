@@ -62,7 +62,9 @@ declare module 'react-table' {
       UsePaginationOptions<D>,
       UseResizeColumnsOptions<D>,
       UseRowSelectOptions<D>,
-      UseSortByOptions<D> {}
+      UseSortByOptions<D> {
+    hideSelectionUi?: boolean
+  }
 
   export interface Hooks<D extends Record<string, unknown> = unknown>
     extends UseExpandedHooks<D>,

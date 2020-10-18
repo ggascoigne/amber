@@ -1,3 +1,9 @@
+10/18/2020
+
+* [x] All admins to toggle between the GM preview and regular schedule page
+* [x] Remove the game delete option except prior to the game book publication for the current year
+* [x] Get rid of the selection UI on the gm page if you can't delete games.
+
 10/17/2020
 
 * [x] Improve admin user filter - dynamically load list, differentiate between members and non-members.

@@ -10,7 +10,7 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { notEmpty, useGetMemberShip, useUser, useYearFilterState } from 'utils'
+import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilterState } from 'utils'
 
 import { GamesDialog } from '../Games/GamesDialog'
 
@@ -90,6 +90,9 @@ const MemberGmPage: React.FC = React.memo(() => {
   const [deleteGame] = useDeleteGameMutation()
   const classes = useStyles()
   const { userId } = useUser()
+  const displayGameBook = useSetting('display.game.book')
+  // you can only delete games for the current year, and only if they haven't been published.
+  const displayDeleteButton = year === configuration.year && !displayGameBook
 
   const { loading, error, data, refetch } = useGetGamesByYearAndAuthorQuery({
     variables: {
@@ -197,9 +200,10 @@ const MemberGmPage: React.FC = React.memo(() => {
           disableGroupBy
           data={list}
           columns={columns}
-          onDelete={onDelete}
+          onDelete={displayDeleteButton ? onDelete : undefined}
           onClick={onClick}
           onRefresh={() => refetch()}
+          hideSelectionUi={!displayDeleteButton}
         />
       ) : null}
     </Page>

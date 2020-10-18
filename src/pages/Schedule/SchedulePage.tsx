@@ -1,8 +1,12 @@
+import Button from '@material-ui/core/Button'
 import { GetScheduleQuery, useGetScheduleQuery } from 'client'
 import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ContentsOf, SettingValue, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
 
+import { useAuth } from '../../components/Acnw/Auth/Auth0'
+import { HasPermission } from '../../components/Acnw/Auth/HasPermission'
+import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { useForceLogin } from '../../utils/useForceLogin'
 
 type GameAssignmentNode = ContentsOf<ContentsOf<GetScheduleQuery, 'gameAssignments'>, 'nodes'>
@@ -38,11 +42,14 @@ const GameSummary: React.FC<GameSummary> = ({ gas }) => {
 
 export const SchedulePage: React.FC = () => {
   const forceLogin = useForceLogin()
+  const { hasPermissions } = useAuth()
+  const isAdmin = hasPermissions(Perms.IsAdmin)
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const memberId = membership?.id ?? 0
   const displayScheduleValue = useGetSettingValue('display.schedule')
-  const gmOnly = displayScheduleValue === SettingValue.GM
+  const [showGmPreviewOverride, setShowGmPreviewOverride] = useState(false)
+  const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
 
   useEffect(() => {
     const f = async () => await forceLogin({ appState: { targetUrl: '/schedule' } })
@@ -72,6 +79,11 @@ export const SchedulePage: React.FC = () => {
 
   return (
     <Page>
+      <HasPermission permission={Perms.IsAdmin}>
+        <Button variant='contained' onClick={() => setShowGmPreviewOverride((old) => !old)}>
+          {showGmPreviewOverride ? 'Show Full Schedule' : 'Show GM Preview'}
+        </Button>
+      </HasPermission>
       {gmOnly ? <h3>GM Preview</h3> : null}
       {gamesAndAssignments.map((g) => (
         <GameSummary key={g?.gameId} gas={g} />
