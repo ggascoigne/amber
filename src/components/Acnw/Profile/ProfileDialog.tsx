@@ -11,13 +11,13 @@ import { profileValidationSchema } from './profileValidationSchema'
 
 type FormValues = ProfileType
 
-interface ProfileDialog {
+interface ProfileDialogProps {
   open: boolean
   initialValues?: ProfileType | null
   onClose: (event?: any) => void
 }
 
-export const ProfileDialog: React.FC<ProfileDialog> = ({ open, onClose, initialValues: profile }) => {
+export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, initialValues: profile }) => {
   const [updateUser] = useUpdateUserMutation()
   const [notify] = useNotification()
   const theme = useTheme()

@@ -62,11 +62,11 @@ const useStyles = makeStyles(
   })
 )
 
-interface FakeTile {
+interface FakeTileProps {
   index: number
 }
 
-const FakeTile = ({ index }: FakeTile) => {
+const FakeTile = ({ index }: FakeTileProps) => {
   const classes = useStyles()
   return (
     <Card className={classNames((classes as any)[`card${index}`], classes.fakeCard)}>
@@ -76,13 +76,13 @@ const FakeTile = ({ index }: FakeTile) => {
   )
 }
 
-interface YearTile {
+interface YearTileProps {
   year: number
   game: any
   onClick?: any
 }
 
-export const YearTile = ({ year, game, onClick }: YearTile) => {
+export const YearTile = ({ year, game, onClick }: YearTileProps) => {
   const classes = useStyles()
   return (
     <Card className={classes.card} onClick={onClick}>

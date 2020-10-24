@@ -34,12 +34,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type Header = {
+type HeaderProps = {
   handleDrawerToggle: () => void
   rightMenu: (props?: any) => ReactNode
 }
 
-export const Header: React.FC<Header> = ({ handleDrawerToggle, rightMenu }) => {
+export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu }) => {
   const classes = useStyles()
 
   const [config, getConfig] = useGetConfig()

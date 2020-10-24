@@ -11,11 +11,11 @@ import { GridContainer, GridItem } from '../Grid'
 
 export type ProfileType = UserInput & Partial<Node>
 
-type ProfileFormContent = {
+type ProfileFormContentProps = {
   prefix?: string
 }
 
-export const ProfileFormContent: React.FC<ProfileFormContent> = ({ prefix = '' }) => {
+export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix = '' }) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   return (

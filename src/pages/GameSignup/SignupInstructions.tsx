@@ -6,8 +6,8 @@ import { ConfigDate } from '../../components/Acnw'
 import CardBody from '../../components/MaterialKitReact/Card/CardBody'
 import { configuration } from '../../utils'
 
-type SignupInstructions = { year: number }
-export const SignupInstructions: React.FC<SignupInstructions> = ({ year }) => (
+type SignupInstructionsProps = { year: number }
+export const SignupInstructions: React.FC<SignupInstructionsProps> = ({ year }) => (
   <>
     <h2>Game Book - ACNW {year}</h2>
 

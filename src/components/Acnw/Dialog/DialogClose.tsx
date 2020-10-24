@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type DialogClose = {
+type DialogCloseProps = {
   onClose: MouseEventHandler
 }
 
-export const DialogClose: React.FC<DialogClose> = ({ onClose }) => {
+export const DialogClose: React.FC<DialogCloseProps> = ({ onClose }) => {
   const classes = useStyles()
   return (
     <IconButton aria-label='Close' className={classes.closeButton} onClick={onClose}>

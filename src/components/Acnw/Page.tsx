@@ -15,11 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type Page = {
+type PageProps = {
   className?: string
 }
 
-export const Page: React.FC<Page> = ({ children, className }) => {
+export const Page: React.FC<PageProps> = ({ children, className }) => {
   const classes = useStyles()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))

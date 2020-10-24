@@ -70,11 +70,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ProfileImage = {
+type ProfileImageProps = {
   user: Auth0User
 }
 
-const OurAvatar: React.FC<ProfileImage> = ({ user }) => {
+const OurAvatar: React.FC<ProfileImageProps> = ({ user }) => {
   if (user.picture) {
     return <Avatar src={user.picture} />
   } else {
@@ -111,7 +111,7 @@ const GmBadge: React.FC = ({ children }) => (
   </Tooltip>
 )
 
-const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
+const ProfileImage: React.FC<ProfileImageProps> = ({ user }) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const isGm = useIsGm()
@@ -145,12 +145,12 @@ const ProfileImage: React.FC<ProfileImage> = ({ user }) => {
   }
 }
 
-type MenuButton = {
+type MenuButtonProps = {
   user: Auth0User
   small: boolean
 }
 
-const MenuButton: React.FC<MenuButton> = ({ small, user }) => {
+const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
   const classes = useStyles()
   const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
@@ -172,11 +172,11 @@ const MenuButton: React.FC<MenuButton> = ({ small, user }) => {
   )
 }
 
-type LoginMenu = {
+type LoginMenuProps = {
   small?: boolean
 }
 
-export const LoginMenu: React.FC<LoginMenu> = ({ small = false }) => {
+export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
   const classes = useStyles()
   const { isInitializing = true, isAuthenticated, user, loginWithRedirect, logout, hasPermissions } = useAuth()
   const [jwtToken] = useToken()

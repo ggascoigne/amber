@@ -28,7 +28,7 @@ type FormValues = {
   profile: ProfileType
 }
 
-interface MembershipWizard {
+interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
@@ -80,7 +80,7 @@ const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) =
   }
 }
 
-export const MembershipWizard: React.FC<MembershipWizard> = ({ open, onClose, profile, initialValues }) => {
+export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClose, profile, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()
   const [updateUser] = useUpdateUserMutation()

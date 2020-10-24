@@ -10,13 +10,13 @@ export interface GameQueryChild {
   games?: GameArray
 }
 
-interface GameQuery {
+interface GameQueryProps {
   year: number
   slot: number
   children: (props: GameQueryChild) => React.ReactNode
 }
 
-export const GameQuery: React.FC<GameQuery> = ({ year, slot, children }) => {
+export const GameQuery: React.FC<GameQueryProps> = ({ year, slot, children }) => {
   const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year, slotId: slot } })
   if (error) {
     return <GraphQLError error={error} />

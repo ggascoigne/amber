@@ -53,7 +53,7 @@ import { useInitialTableState } from './useInitialTableState'
 
 // import { useFlexLayout } from './useFlexLayout'
 
-export interface Table<T extends Record<string, unknown>> extends TableOptions<T> {
+export interface TableProps<T extends Record<string, unknown>> extends TableOptions<T> {
   name: string
   onAdd?: (instance: TableInstance<T>) => MouseEventHandler
   onDelete?: (instance: TableInstance<T>) => MouseEventHandler
@@ -147,7 +147,7 @@ const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta
 
 const DEFAULT_PAGE_SIZE = 25
 
-export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<Table<T>>): ReactElement {
+export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<TableProps<T>>): ReactElement {
   const {
     name,
     columns,

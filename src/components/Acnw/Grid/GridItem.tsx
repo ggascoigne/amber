@@ -13,11 +13,11 @@ const useStyles = makeStyles(() =>
   })
 )
 
-interface GridItem extends GridProps {
+interface GridItemProps extends GridProps {
   className?: string
 }
 
-export const GridItem: React.FC<GridItem> = ({ children, className = '', ...rest }) => {
+export const GridItem: React.FC<GridItemProps> = ({ children, className = '', ...rest }) => {
   const classes = useStyles()
   return (
     <Grid item {...rest} className={classes.grid + ' ' + className}>

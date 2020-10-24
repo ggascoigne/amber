@@ -11,10 +11,10 @@ import { useForceLogin } from '../../utils/useForceLogin'
 
 type GameAssignmentNode = ContentsOf<ContentsOf<GetScheduleQuery, 'gameAssignments'>, 'nodes'>
 
-type GameSummary = {
+type GameSummaryProps = {
   gas: GameAssignmentNode
 }
-const GameSummary: React.FC<GameSummary> = ({ gas }) => {
+const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   const game = gas.game
   if (!game) return null
 

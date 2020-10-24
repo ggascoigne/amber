@@ -75,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type FormValues = Omit<LookupAndValues, 'nodeId' | 'id' | '__typename'> & Partial<Node>
 
-interface LookupsDialog {
+interface LookupsDialogProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: FormValues
@@ -96,7 +96,7 @@ const validationSchema = Yup.object().shape({
 
 const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'LookupValuesConnection', nodes: [] } }
 
-export const LookupsDialog: React.FC<LookupsDialog> = ({ open, onClose, initialValues = defaultValues }) => {
+export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const classes = useStyles()
   const [createLookup] = useCreateLookupMutation()
   const [updateLookup] = useUpdateLookupByNodeIdMutation()

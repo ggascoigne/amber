@@ -17,7 +17,7 @@ import {
 
 type FormValues = MembershipType
 
-interface MembershipDialog {
+interface MembershipDialogProps {
   open: boolean
   onClose: onCloseHandler
   initialValues?: MembershipType
@@ -31,7 +31,7 @@ interface MembershipDialog {
 //   roomingPreferences: ['room-with', 'assign-me', 'other'],
 // }
 
-export const MembershipDialog: React.FC<MembershipDialog> = ({ open, onClose, profile, initialValues }) => {
+export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClose, profile, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()
   const theme = useTheme()

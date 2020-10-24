@@ -5,7 +5,7 @@ import React from 'react'
 import { GameSelectionQuery } from '../GameSelectionQuery'
 import { SlotDecorator, SlotDecoratorParams } from '../types'
 
-interface GameListNavigator {
+interface GameListNavigatorProps {
   small?: boolean
   name?: string
   children: (props: GameQueryChild) => React.ReactNode
@@ -14,7 +14,7 @@ interface GameListNavigator {
   decoratorParams?: SlotDecoratorParams
 }
 
-export const GameListNavigator: React.FC<GameListNavigator> = ({
+export const GameListNavigator: React.FC<GameListNavigatorProps> = ({
   small = false,
   children,
   name,

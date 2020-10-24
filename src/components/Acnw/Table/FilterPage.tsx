@@ -37,7 +37,7 @@ const useStyles = makeStyles(
   })
 )
 
-type FilterPage<T extends Record<string, unknown>> = {
+type FilterPageProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   anchorEl?: Element
   onClose: () => void
@@ -49,7 +49,7 @@ export function FilterPage<T extends Record<string, unknown>>({
   anchorEl,
   onClose,
   show,
-}: FilterPage<T>): ReactElement {
+}: FilterPageProps<T>): ReactElement {
   const classes = useStyles({})
   const { allColumns, setAllFilters } = instance
 

@@ -18,7 +18,7 @@ export const typeValues = ['integer', 'string']
 
 type FormValues = Omit<SettingFieldsFragment, 'nodeId' | 'id' | '__typename'> & Partial<Node> & { id?: number }
 
-interface SettingDialog {
+interface SettingDialogProps {
   open: boolean
   onClose: onCloseHandler
   initialValues?: FormValues
@@ -71,7 +71,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
   }
 }
 
-export const SettingDialog: React.FC<SettingDialog> = ({ open, onClose, initialValues }) => {
+export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))

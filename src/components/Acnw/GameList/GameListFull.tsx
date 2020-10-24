@@ -10,7 +10,7 @@ export interface MatchParams {
   slot?: string
 }
 
-interface GameListFull {
+interface GameListFullProps {
   year: number
   slot: number
   games: GameArray
@@ -19,7 +19,7 @@ interface GameListFull {
   decoratorParams?: GameDecoratorParams
 }
 
-export const GameListFull: React.FC<GameListFull> = ({
+export const GameListFull: React.FC<GameListFullProps> = ({
   year,
   slot: slotInput,
   games,

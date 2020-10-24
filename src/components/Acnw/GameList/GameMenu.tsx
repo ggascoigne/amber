@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type GameMenu = {
+type GameMenuProps = {
   to: string
   text: string
   title: string
@@ -37,7 +37,7 @@ type GameMenu = {
   itemDecoratorParams?: GameDecoratorParams
 }
 
-export const GameMenu: React.FC<GameMenu> = ({
+export const GameMenu: React.FC<GameMenuProps> = ({
   to,
   text,
   title,

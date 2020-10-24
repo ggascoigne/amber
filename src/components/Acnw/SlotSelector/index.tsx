@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface SlotSelector {
+interface SlotSelectorProps {
   small: boolean
   name?: string
   decorator?: (props: SlotDecorator) => React.ReactNode
@@ -72,7 +72,7 @@ interface SlotSelector {
   children({ slot, year }: { slot: number; year: number }): React.ReactNode
 }
 
-export const SlotSelector: React.FC<SlotSelector> = ({ small, children, decorator, decoratorParams = {} }) => {
+export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, decorator, decoratorParams = {} }) => {
   const classes = useStyles()
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')

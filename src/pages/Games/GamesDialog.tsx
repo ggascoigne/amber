@@ -32,7 +32,7 @@ import Yup from 'utils/Yup'
 import { dangerColor } from '../../assets/jss/material-kit-react'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
-interface GamesDialog {
+interface GamesDialogProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: GameDialogFormValues
@@ -119,7 +119,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
   return <SelectField {...rest} selectValues={selectValues!} />
 }
 
-export const GamesDialog: React.FC<GamesDialog> = ({ open, onClose, initialValues = defaultValues }) => {
+export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const editing = initialValues !== defaultValues
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))

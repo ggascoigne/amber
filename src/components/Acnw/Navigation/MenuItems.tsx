@@ -10,11 +10,11 @@ import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './Routes'
 
-interface MenuItems {
+interface MenuItemsProps {
   menuItems: RootRoutes
 }
 
-export const MenuItems: React.FC<MenuItems> = ({ menuItems }) => {
+export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
   const location = useLocation()
   const { userId } = useUser()
   const isMember = useIsMember()

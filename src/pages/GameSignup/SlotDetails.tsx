@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ChoiceSummary = {
+type ChoiceSummaryProps = {
   year: number
   gameChoices?: MaybeGameChoice[]
   storeTextResults?: any
 }
 
-export const ChoiceSummary: React.FC<ChoiceSummary> = ({ year, gameChoices, storeTextResults }) => (
+export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => (
   <>
     {range(1, 8).map((slotId) => (
       <SlotDetails
@@ -48,7 +48,7 @@ export const ChoiceSummary: React.FC<ChoiceSummary> = ({ year, gameChoices, stor
   </>
 )
 
-type SlotDetails = {
+type SlotDetailsProps = {
   slotId: number
   year: number
   gameChoices?: MaybeGameChoice[]
@@ -66,7 +66,7 @@ export type SlotSummary = {
 
 const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
 
-export const SlotDetails: React.FC<SlotDetails> = ({ year, slotId, gameChoices, storeTextResults }) => {
+export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
   const classes = useStyles()
 
   const { loading, data } = useGetGamesBySlotForSignupQuery({ variables: { year, slotId }, fetchPolicy: 'cache-first' })

@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface GameListIndex {
+interface GameListIndexProps {
   year: number
   slot: number
   games: GameArray
@@ -27,7 +27,7 @@ interface GameListIndex {
   decoratorParams?: GameDecoratorParams
 }
 
-export const GameListIndex: React.FC<GameListIndex> = ({
+export const GameListIndex: React.FC<GameListIndexProps> = ({
   year,
   slot,
   games,

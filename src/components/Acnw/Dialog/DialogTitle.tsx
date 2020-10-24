@@ -16,11 +16,11 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-interface DialogTitle {
+interface DialogTitleProps {
   onClose?: MouseEventHandler
 }
 
-export const DialogTitle: React.FC<DialogTitle> = ({ children, onClose }) => {
+export const DialogTitle: React.FC<DialogTitleProps> = ({ children, onClose }) => {
   const classes = useStyles()
   return (
     <MuiDialogTitle disableTypography className={classes.root}>

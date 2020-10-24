@@ -31,7 +31,7 @@ type FormValues = {
   id?: number
 }
 
-interface ChoiceConfirmDialog {
+interface ChoiceConfirmDialogProps {
   open: boolean
   onClose: onCloseHandler
   year: number
@@ -130,7 +130,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
   }
 }
 
-export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialog> = ({
+export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
   open,
   onClose,
   year,

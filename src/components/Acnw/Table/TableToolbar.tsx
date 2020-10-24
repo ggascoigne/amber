@@ -90,7 +90,7 @@ export type Command<T extends Record<string, unknown>> = {
   icon?: JSX.Element
 }
 
-type TableToolbar<T extends Record<string, unknown>> = {
+type TableToolbarProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   onAdd?: TableMouseEventHandler
   onDelete?: TableMouseEventHandler
@@ -106,7 +106,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
   onEdit,
   extraCommands = [],
   onRefresh,
-}: PropsWithChildren<TableToolbar<T>>): ReactElement | null {
+}: PropsWithChildren<TableToolbarProps<T>>): ReactElement | null {
   const { columns } = instance
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)

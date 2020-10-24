@@ -227,13 +227,13 @@ export type SelectorParams = {
   gmSlots?: MaybeGameChoice[]
 }
 
-export type GameChoiceSelector = {
+export type GameChoiceSelectorProps = {
   year: number
   slot: number
   game: GameEntry
 } & SelectorParams
 
-export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
+export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   year,
   slot,
   game,
@@ -353,7 +353,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelector> = ({
   )
 }
 
-export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, game, gameChoices }) => {
+export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, slot, game, gameChoices }) => {
   const classes = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === game.id && c?.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
@@ -370,7 +370,7 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelector> = ({ year, slot, 
   )
 }
 
-type SlotDecoratorCheckMark = { year: number; slot: number } & SelectorParams
+type SlotDecoratorCheckMarkProps = { year: number; slot: number } & SelectorParams
 
 // 144 is the magic number of the Any Game entry :(
 const isNoGameOrAnyGame = (choice?: MaybeGameChoice) => {
@@ -405,7 +405,7 @@ export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) 
     true
   )
 
-export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMark> = ({ year, slot, gameChoices }) => {
+export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
   const classes = useStyles()
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c?.slotId === slot + 1)
   const isComplete = isSlotComplete(thisSlotChoices)

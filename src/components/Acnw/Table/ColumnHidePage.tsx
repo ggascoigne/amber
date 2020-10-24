@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type ColumnHidePage<T extends Record<string, unknown>> = {
+type ColumnHidePageProps<T extends Record<string, unknown>> = {
   instance: TableInstance<T>
   anchorEl?: Element
   onClose: () => void
@@ -38,7 +38,7 @@ export function ColumnHidePage<T extends Record<string, unknown>>({
   anchorEl,
   onClose,
   show,
-}: ColumnHidePage<T>): ReactElement | null {
+}: ColumnHidePageProps<T>): ReactElement | null {
   const classes = useStyles({})
   const { allColumns, toggleHideColumn } = instance
   const hideableColumns = allColumns.filter((column) => !(column.id === '_selector'))

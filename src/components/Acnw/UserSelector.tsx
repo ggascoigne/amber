@@ -66,11 +66,11 @@ type UserType = ContentsOf<ContentsOf<GetAllUsersByQuery, 'users'>, 'nodes'>
 
 const getOptionSelected = (option: UserType, value: UserType) => option.id === value.id
 
-interface UserSelector {
+interface UserSelectorProps {
   mobile?: boolean
 }
 
-export const UserSelector: React.FC<UserSelector> = ({ mobile }) => {
+export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const classes = useStyles({})
   const [notify] = useNotification()
   const userInfo = useUserFilterState((state) => state.userInfo)
