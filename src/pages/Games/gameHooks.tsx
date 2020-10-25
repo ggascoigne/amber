@@ -147,6 +147,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
     variables: {
       year,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [

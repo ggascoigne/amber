@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom'
 import { configuration } from 'utils'
 
 const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
-  const { loading, error, data } = useGetSmallGamesByYearQuery({ variables: { year } })
+  const { error, data } = useGetSmallGamesByYearQuery({ variables: { year }, fetchPolicy: 'cache-and-network' })
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading) {
+  if (!data) {
     return <Loader />
   }
 

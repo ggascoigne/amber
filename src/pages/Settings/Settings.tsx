@@ -28,13 +28,13 @@ export const Settings: React.FC = React.memo(() => {
   const [selection, setSelection] = useState<Setting[]>([])
 
   const [deleteSetting] = useDeleteSettingMutation()
-  const { loading, error, data, refetch } = useGetSettingsQuery()
+  const { error, data, refetch } = useGetSettingsQuery({ fetchPolicy: 'cache-and-network' })
 
   if (error) {
     return <GraphQLError error={error} />
   }
 
-  if (loading || !data) {
+  if (!data) {
     return <Loader />
   }
   const { settings } = data!

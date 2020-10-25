@@ -1,6 +1,8 @@
 #Todos & Ideas
 
 
+* [ ] Game book only shows in PST
+
 * [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 
     Let's put
     Returning players only
@@ -19,8 +21,9 @@
 
 * [ ] Add link to the Online verison of the AHP
   
-* [ ] add http://amberconnw.wikidot.com/ to links page
-* [ ] Add a members only Discord server link page* [ ] Add T-Shirt art and sales link
+* [*] add http://amberconnw.wikidot.com/ to links page
+* [*] Add a members only Discord server link page
+* [ ] Add T-Shirt art and sales link
 
 * [ ] can open links such as edit game into another window
 * [ ] dropdowns don't behave like native selects - you have to hit down arrow before you can select with the first character.

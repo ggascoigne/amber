@@ -151,6 +151,7 @@ export const Games: React.FC = React.memo(() => {
     variables: {
       year,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   const membershipList = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [
@@ -187,7 +188,7 @@ export const Games: React.FC = React.memo(() => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading || !data) {
+  if (!data) {
     return <Loader />
   }
 

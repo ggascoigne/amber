@@ -55,14 +55,15 @@ export const SchedulePage: React.FC = () => {
     f().then()
   }, [forceLogin])
 
-  const { loading, error, data } = useGetScheduleQuery({
+  const { error, data } = useGetScheduleQuery({
     variables: { memberId },
     skip: !membership,
+    fetchPolicy: 'cache-and-network',
   })
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading) {
+  if (!data) {
     return <Loader />
   }
 

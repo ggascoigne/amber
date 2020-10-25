@@ -58,7 +58,12 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik initialValues={values} validationSchema={membershipValidationSchema} onSubmit={onSubmit}>
+      <Formik
+        initialValues={values}
+        enableReinitialize
+        validationSchema={membershipValidationSchema}
+        onSubmit={onSubmit}
+      >
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <Form>
             <DialogTitle onClose={onClose}>Edit Membership</DialogTitle>

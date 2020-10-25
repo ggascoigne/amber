@@ -69,7 +69,7 @@ const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
   const classes = useStyles()
 
-  const { loading, data } = useGetGamesBySlotForSignupQuery({ variables: { year, slotId }, fetchPolicy: 'cache-first' })
+  const { data } = useGetGamesBySlotForSignupQuery({ variables: { year, slotId }, fetchPolicy: 'cache-and-network' })
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
 
   const games = data?.games?.edges
@@ -108,7 +108,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
     }
   }, [games, slotDescription, slotId, slotInfo, storeTextResults])
 
-  if (loading || !data) return <Loader />
+  if (!data) return <Loader />
 
   return (
     <>

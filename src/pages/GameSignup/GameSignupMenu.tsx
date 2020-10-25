@@ -1,12 +1,12 @@
 import { Button } from '@material-ui/core'
-import { GraphQLError, Loader, Page } from 'components/Acnw'
+import { GraphQLError, Loader } from 'components/Acnw'
 import { GameMenu } from 'components/Acnw/GameList'
 import React from 'react'
 import { useGameUrl, useGetMemberShip, useUser } from 'utils'
 
 import { useGetGameChoicesQuery } from '../../client'
 import { useConfirmDialogOpenState } from '../../utils/useConfirmDialogOpenState'
-import { GameChoiceDecorator, SlotDecoratorCheckMark, allSlotsComplete } from './GameChoiceSelector'
+import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
 export const GameSignupMenu: React.FC = () => {
   const { year } = useGameUrl()
@@ -14,16 +14,17 @@ export const GameSignupMenu: React.FC = () => {
   const membership = useGetMemberShip(userId)
   const setShowConfirmDialog = useConfirmDialogOpenState((state) => state.setState)
 
-  const { error, loading, data } = useGetGameChoicesQuery({
+  const { error, data } = useGetGameChoicesQuery({
     variables: { year, memberId: membership?.id ?? 0 },
     skip: !membership,
+    fetchPolicy: 'cache-and-network',
   })
 
   if (error) {
     return <GraphQLError error={error} />
   }
 
-  if (!data && (!membership || loading)) {
+  if (!data && !membership) {
     return <Loader />
   }
 

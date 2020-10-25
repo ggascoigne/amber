@@ -17,11 +17,14 @@ interface GameQueryProps {
 }
 
 export const GameQuery: React.FC<GameQueryProps> = ({ year, slot, children }) => {
-  const { loading, error, data } = useGetGamesBySlotQuery({ variables: { year, slotId: slot } })
+  const { error, data } = useGetGamesBySlotQuery({
+    variables: { year, slotId: slot },
+    fetchPolicy: 'cache-and-network',
+  })
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading) {
+  if (!data) {
     return <Loader />
   }
   return (

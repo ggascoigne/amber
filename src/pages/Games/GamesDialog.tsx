@@ -134,12 +134,13 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     variables: {
       id: userId!,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading || !data) {
+  if (!data) {
     return (
       <Dialog disableBackdropClick fullWidth maxWidth='md' open>
         <Loader />
@@ -187,7 +188,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting, values, setValues }) => (
           <Form>
             <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Create'} Game</DialogTitle>

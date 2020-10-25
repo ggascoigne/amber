@@ -1,3 +1,7 @@
+10/25/2020
+* [x] ensure the virtual-details page is accessible if you aren't logged in (by forcing a login).
+* [x] Re-enable apollo caching, adding a schema check so that I can force dumping an out of date cache. Also, change the query behavior to load from cache, but always update in the background.
+
 10/24/2020
 
 * [x] Add option to edit game assignments for a member

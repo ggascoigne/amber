@@ -1,5 +1,4 @@
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
-import CachedIcon from '@material-ui/icons/Cached'
 import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
@@ -145,10 +144,11 @@ export const Memberships: React.FC = React.memo(() => {
   const [showGameAssignment, setShowGameAssignment] = useState(false)
   const [selection, setSelection] = useState<Membership[]>([])
   const [deleteMembership] = useDeleteMembershipMutation()
-  const { loading, error, data, refetch } = useGetMembershipsByYearQuery({
+  const { error, data, refetch } = useGetMembershipsByYearQuery({
     variables: {
       year,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   const onUpdateGameAssignments = useCallback(
@@ -167,6 +167,7 @@ export const Memberships: React.FC = React.memo(() => {
         icon: <AssignmentIndIcon />,
         enabled: ({ state }: TableInstance<Membership>) =>
           state.selectedRowIds && Object.keys(state.selectedRowIds).length === 1,
+        type: 'button' as const,
       },
     ],
     [onUpdateGameAssignments]
@@ -176,7 +177,7 @@ export const Memberships: React.FC = React.memo(() => {
     return <GraphQLError error={error} />
   }
 
-  if (loading || !data) {
+  if (!data) {
     return <Loader />
   }
   const { memberships } = data!

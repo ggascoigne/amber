@@ -54,7 +54,7 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={profile} validationSchema={profileValidationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={profile} enableReinitialize validationSchema={profileValidationSchema} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Form>
             <DialogTitle onClose={onClose}>Edit Profile</DialogTitle>

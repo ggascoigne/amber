@@ -9,16 +9,14 @@ export const useProfile = (): ProfileType | null => {
   const { email } = useUser()
   const [lastEmail, setLastEmail] = useState('')
 
-  const [getProfile, { loading, error, data }] = useGetUserByEmailLazyQuery()
+  const [getProfile, { error, data }] = useGetUserByEmailLazyQuery({ fetchPolicy: 'cache-and-network' })
   const [notify] = useNotification()
 
-  if (!email) return null
-
-  if (loading) {
+  if (!email || !data) {
     return null
   }
 
-  if (!data || (data && lastEmail !== email)) {
+  if (lastEmail !== email) {
     lastEmail !== email && setLastEmail(email)
     getProfile({ variables: { email } })
     return null

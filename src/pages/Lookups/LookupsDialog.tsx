@@ -215,7 +215,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ isSubmitting, values }) => (
           <Form>
             <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Add'} Lookup</DialogTitle>

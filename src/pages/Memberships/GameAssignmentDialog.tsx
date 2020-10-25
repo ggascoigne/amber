@@ -47,13 +47,13 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const memberId = membership?.id ?? 0
 
-  const { loading: sLoading, error: sError, data: sData } = useGetScheduleQuery({
+  const { error: sError, data: sData } = useGetScheduleQuery({
     variables: { memberId },
     skip: !memberId,
     fetchPolicy: 'cache-and-network',
   })
 
-  const { loading: gLoading, error: gError, data: gData } = useGetGamesByYearQuery({
+  const { error: gError, data: gData } = useGetGamesByYearQuery({
     variables: {
       year,
     },
@@ -71,7 +71,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     return <GraphQLError error={sError || gError} />
   }
-  if (sLoading || gLoading) {
+  if (!sData || !gData) {
     return <Loader />
   }
 
@@ -133,7 +133,12 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik initialValues={gamesAndAssignments} validationSchema={membershipValidationSchema} onSubmit={onSubmit}>
+      <Formik
+        initialValues={gamesAndAssignments}
+        enableReinitialize
+        validationSchema={membershipValidationSchema}
+        onSubmit={onSubmit}
+      >
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <Form>
             <DialogTitle onClose={onClose}>Edit Game Assignments</DialogTitle>
@@ -141,20 +146,20 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
               <GridContainer spacing={2}>
                 {gamesAndAssignments.map((g, index) => (
                   <React.Fragment key={index}>
-                    <GridItem xs={12} md={8}>
+                    <GridItem xs={12} md={8} style={{ paddingTop: 0, paddingBottom: 0 }}>
                       <SelectField
                         name={`[${index}].gameId`}
                         label={`Slot ${index + 1}`}
-                        margin='normal'
+                        margin='dense'
                         fullWidth
                         selectValues={gameOptions[index]}
                       />
                     </GridItem>
-                    <GridItem xs={12} md={4}>
+                    <GridItem xs={12} md={4} style={{ paddingTop: 0, paddingBottom: 0 }}>
                       <TextField
                         name={`[${index}].gm`}
                         label='GM'
-                        margin='normal'
+                        margin='dense'
                         fullWidth
                         type='number'
                         required

@@ -218,7 +218,12 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
       <DialogContent>
         <ChoiceSummary year={year} gameChoices={filledOutChoices} storeTextResults={storeTextResults} />
       </DialogContent>
-      <Formik initialValues={values} validationSchema={submissionValidationSchema} onSubmit={onSubmit}>
+      <Formik
+        initialValues={values}
+        enableReinitialize
+        validationSchema={submissionValidationSchema}
+        onSubmit={onSubmit}
+      >
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <Form>
             <DialogContent>

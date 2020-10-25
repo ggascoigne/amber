@@ -96,7 +96,7 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik initialValues={values} validationSchema={settingValidationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={values} enableReinitialize validationSchema={settingValidationSchema} onSubmit={onSubmit}>
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <Form>
             <DialogTitle onClose={onClose}>{values.nodeId ? 'Edit' : 'Add'} Setting</DialogTitle>

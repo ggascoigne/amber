@@ -84,6 +84,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       input: searchTerm,
       limit: 20,
     },
+    fetchPolicy: 'cache-and-network',
   })
 
   useEffect(() => {

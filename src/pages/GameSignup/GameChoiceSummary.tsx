@@ -12,7 +12,7 @@ export const GameChoiceSummary: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
 
-  const { loading, error, data } = useGetGameChoicesQuery({
+  const { error, data } = useGetGameChoicesQuery({
     variables: { year, memberId: membership?.id ?? 0 },
     skip: !membership,
     fetchPolicy: 'cache-and-network',
@@ -32,7 +32,7 @@ export const GameChoiceSummary: React.FC = () => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading && !data) {
+  if (!data) {
     return <Loader />
   }
 

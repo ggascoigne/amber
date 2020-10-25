@@ -123,7 +123,7 @@ export const GameSignupPage: React.FC = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { loading, error, data } = useGetGameChoicesQuery({
+  const { error, data } = useGetGameChoicesQuery({
     variables: { year, memberId: membership?.id ?? 0 },
     skip: !membership,
     fetchPolicy: 'cache-and-network',
@@ -207,7 +207,7 @@ export const GameSignupPage: React.FC = () => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading && !data) {
+  if (!data) {
     return <Loader />
   }
 

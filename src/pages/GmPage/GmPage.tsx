@@ -94,7 +94,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
 
-  const { loading, error, data, refetch } = useGetGamesByYearAndAuthorQuery({
+  const { error, data, refetch } = useGetGamesByYearAndAuthorQuery({
     variables: {
       year,
       id: userId!,
@@ -112,7 +112,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading || !data) {
+  if (!data) {
     return <Loader />
   }
 

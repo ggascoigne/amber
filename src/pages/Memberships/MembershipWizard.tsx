@@ -156,7 +156,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
         })}
       </Stepper>
 
-      <Formik initialValues={values} validationSchema={validationSchema} onSubmit={onSubmit}>
+      <Formik initialValues={values} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <Form>
             <DialogClose onClose={onClose} />

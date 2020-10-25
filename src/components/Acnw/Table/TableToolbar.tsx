@@ -54,8 +54,9 @@ export const LabeledActionButton = <T extends Record<string, unknown>>({
   label,
   enabled = () => true,
 }: ActionButton<T>): ReactElement => (
-  <Button variant='contained' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
+  <Button variant='outlined' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
     {icon}
+    &nbsp;
     {label}
   </Button>
 )
@@ -89,6 +90,7 @@ export type Command<T extends Record<string, unknown>> = {
   onClick: TableMouseEventHandler
   icon?: JSX.Element
   enabled: (instance: TableInstance<T>) => boolean
+  type?: 'icon' | 'button'
 }
 
 type TableToolbarProps<T extends Record<string, unknown>> = {
@@ -177,17 +179,29 @@ export function TableToolbar<T extends Record<string, unknown>>({
             variant='left'
           />
         )}
-        {extraCommands.map((c) => (
-          <SmallIconActionButton<T>
-            key={`command-${c.label}`}
-            instance={instance}
-            icon={c.icon}
-            onClick={c.onClick}
-            label={c.label}
-            enabled={c.enabled}
-            variant='left'
-          />
-        ))}
+        {extraCommands.map((c) => {
+          const { type = 'icon' } = c
+          return type === 'icon' ? (
+            <SmallIconActionButton<T>
+              key={`command-${c.label}`}
+              instance={instance}
+              icon={c.icon}
+              onClick={c.onClick}
+              label={c.label}
+              enabled={c.enabled}
+              variant='left'
+            />
+          ) : (
+            <LabeledActionButton<T>
+              key={`command-${c.label}`}
+              instance={instance}
+              icon={c.icon}
+              onClick={c.onClick}
+              label={c.label}
+              enabled={c.enabled}
+            />
+          )
+        })}
       </div>
       <div className={classes.rightButtons}>
         <ColumnHidePage<T> instance={instance} onClose={handleClose} show={columnsOpen} anchorEl={anchorEl} />

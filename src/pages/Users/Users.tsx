@@ -20,13 +20,13 @@ export const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<ProfileType[]>([])
 
-  const { loading, error, data, refetch } = useGetAllUsersQuery()
+  const { error, data, refetch } = useGetAllUsersQuery({ fetchPolicy: 'cache-and-network' })
 
   if (error) {
     return <GraphQLError error={error} />
   }
 
-  if (loading || !data) {
+  if (!data) {
     return <Loader />
   }
   const { users } = data!
