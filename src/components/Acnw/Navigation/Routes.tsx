@@ -89,6 +89,7 @@ export const rootRoutes: RootRoutes = [
     component: VirtualDetails,
     condition: configuration.virtual,
     userCondition: ({ getSetting }) => getSetting('display.virtual.details'),
+    alwaysAddRoute: true,
   },
   {
     path: '/membership',

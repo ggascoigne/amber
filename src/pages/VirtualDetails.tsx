@@ -1,32 +1,34 @@
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
-import { Page } from 'components/Acnw'
-import React from 'react'
+import { Loader, Page } from 'components/Acnw'
+import React, { useEffect } from 'react'
+import { Redirect } from 'react-router-dom'
 
-import { useGetSettingValue } from '../utils'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    cardBody: {
-      paddingTop: 0,
-    },
-    address: {
-      paddingLeft: 20,
-    },
-  })
-)
+import { useAuth } from '../components/Acnw/Auth/Auth0'
+import { useGetSettingValue, useSettings } from '../utils'
+import { useForceLogin } from '../utils/useForceLogin'
 
 export const VirtualDetails = () => {
+  const forceLogin = useForceLogin()
+  const { isAuthenticated, isInitializing } = useAuth()
+
   const discordUrl = useGetSettingValue('url.discord') ?? ''
   const wikiUrl = useGetSettingValue('url.wiki') ?? ''
+  const [, getSettingTruth] = useSettings()
 
-  console.log({ discordUrl, wikiUrl })
+  useEffect(() => {
+    const f = async () => await forceLogin({ appState: { targetUrl: '/virtual-details' } })
+    f().then()
+  }, [forceLogin])
 
-  const classes = useStyles()
+  const isVisible = getSettingTruth && getSettingTruth('display.virtual.details')
+
+  if (isInitializing || !isAuthenticated) {
+    return <Loader />
+  }
+
+  if (!isInitializing && !isAuthenticated && !isVisible) {
+    return <Redirect to='/' />
+  }
+
   return (
     <Page>
       <h1>Accessing the Virtual Convention</h1>
@@ -51,13 +53,13 @@ export const VirtualDetails = () => {
       </p>
 
       <p>
-        Please do not share the link with others: <a href={discordUrl}>{discordUrl}</a>
+        Please do not share the link with others: {discordUrl ? <a href={discordUrl}>{discordUrl}</a> : <Loader tiny />}
       </p>
 
       <p>
         If you’re new to Discord or would like a preview of how the Con’s server will look and work, please check out
-        our wiki, which has a step by step guide to checking in for the Con and your games:
-        <a href={wikiUrl}>{wikiUrl}</a>
+        our wiki, which has a step by step guide to checking in for the Con and your games: &nbsp;
+        {wikiUrl ? <a href={wikiUrl}>{wikiUrl}</a> : <Loader tiny />}
       </p>
     </Page>
   )

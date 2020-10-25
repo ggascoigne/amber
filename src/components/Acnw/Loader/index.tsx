@@ -1,4 +1,5 @@
 import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
+import classnames from 'classnames'
 import React from 'react'
 import Spinner from 'react-spinkit'
 
@@ -12,6 +13,16 @@ const styles = (theme: Theme) =>
       alignItems: 'center',
       flex: '1 0 auto',
     },
+    tiny: {
+      display: 'inline-block',
+      paddingLeft: 8,
+      marginTop: -3,
+      marginBottom: -3,
+      '& > .sk-chasing-dots': {
+        height: 20,
+        width: 20,
+      },
+    },
     progress: {
       margin: theme.spacing(2),
     },
@@ -22,10 +33,11 @@ interface ILoader extends WithStyles<typeof styles> {
   retry?: (event: React.MouseEvent<HTMLElement>) => void
   timedOut?: boolean
   pastDelay?: boolean
+  tiny?: boolean
 }
 
-const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay }) => (
-  <div className={classes.root}>
+const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay, tiny = false }) => (
+  <div className={classnames({ [classes.root]: !tiny, [classes.tiny]: tiny })}>
     {error && (
       <div>
         Error! <button onClick={retry}>Retry</button>
@@ -37,7 +49,7 @@ const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay
       </div>
     )}
     {pastDelay && <div>Loading...</div>}
-    <Spinner fadeIn='half' className={classes.progress} name='chasing-dots' color='#3f51b5' />
+    <Spinner fadeIn='half' className={classnames({ [classes.progress]: !tiny })} name='chasing-dots' color='#3f51b5' />
   </div>
 )
 
