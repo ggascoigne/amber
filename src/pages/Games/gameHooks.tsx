@@ -33,7 +33,7 @@ type GameAssignment = GameAssignmentFieldsFragment
 
 type Membership = MembershipFieldsFragment
 
-const gameQueries = ['GetGamesByYear', 'GetGamesByYearAndAuthor', 'GetGameAssignmentsByGameId']
+export const gameQueries = ['GetGamesByYear', 'GetGamesByYearAndAuthor', 'GetGameAssignmentsByGameId']
 
 export const useUpdateGameAssignment = () => {
   const year = useYearFilterState((state) => state.year)

@@ -1,11 +1,14 @@
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
+import CachedIcon from '@material-ui/icons/Cached'
 import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useLocalStorage, useYearFilterState } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { BlankNoCell, DateCell, YesBlankCell } from '../../components/Acnw/Table/CellFormatters'
+import { GameAssignmentDialog } from './GameAssignmentDialog'
 import { MembershipDialog } from './MembershipDialog'
 
 type Membership = MembershipFieldsFragment
@@ -139,6 +142,7 @@ export const Memberships: React.FC = React.memo(() => {
   const [_, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
 
   const [showEdit, setShowEdit] = useState(false)
+  const [showGameAssignment, setShowGameAssignment] = useState(false)
   const [selection, setSelection] = useState<Membership[]>([])
   const [deleteMembership] = useDeleteMembershipMutation()
   const { loading, error, data, refetch } = useGetMembershipsByYearQuery({
@@ -146,6 +150,27 @@ export const Memberships: React.FC = React.memo(() => {
       year,
     },
   })
+
+  const onUpdateGameAssignments = useCallback(
+    (instance: TableInstance<Membership>) => async () => {
+      setShowGameAssignment(true)
+      setSelection(instance.selectedFlatRows.map((r) => r.original))
+    },
+    []
+  )
+
+  const commands = useMemo(
+    () => [
+      {
+        label: 'Edit Game Assignments',
+        onClick: onUpdateGameAssignments,
+        icon: <AssignmentIndIcon />,
+        enabled: ({ state }: TableInstance<Membership>) =>
+          state.selectedRowIds && Object.keys(state.selectedRowIds).length === 1,
+      },
+    ],
+    [onUpdateGameAssignments]
+  )
 
   if (error) {
     return <GraphQLError error={error} />
@@ -164,6 +189,7 @@ export const Memberships: React.FC = React.memo(() => {
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
+    setShowGameAssignment(false)
     setSelection([])
   }
 
@@ -198,6 +224,9 @@ export const Memberships: React.FC = React.memo(() => {
       {showEdit && (
         <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} />
       )}
+      {showGameAssignment && (
+        <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />
+      )}
       <Table<Membership>
         name='members'
         data={list}
@@ -208,6 +237,7 @@ export const Memberships: React.FC = React.memo(() => {
         onEdit={onEdit}
         onClick={onClick}
         initialState={initialState}
+        extraCommands={commands}
         onRefresh={() => refetch()}
       />
     </Page>

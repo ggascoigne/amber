@@ -7680,7 +7680,15 @@ export type GetGamesBySlotLazyQueryHookResult = ReturnType<typeof useGetGamesByS
 export type GetGamesBySlotQueryResult = Apollo.QueryResult<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
 export const GetGamesByYearDocument = gql`
   query GetGamesByYear($year: Int!) {
-    games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
+    games(
+      filter: {
+        or: [
+          { and: [{ or: [{ year: { equalTo: $year } }, { year: { equalTo: 0 } }] }] }
+          { and: [{ year: { equalTo: 0 } }] }
+        ]
+      }
+      orderBy: [YEAR_DESC, SLOT_ID_ASC, NAME_ASC]
+    ) {
       edges {
         node {
           ...gameFields

@@ -1,15 +1,14 @@
 import Button from '@material-ui/core/Button'
-import { GetScheduleQuery, useGetScheduleQuery } from 'client'
+import { GameAssignmentNode, useGetScheduleQuery } from 'client'
 import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
 import React, { useEffect, useState } from 'react'
-import { ContentsOf, SettingValue, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
+import { SettingValue, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { HasPermission } from '../../components/Acnw/Auth/HasPermission'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
+import { getGameAssignments } from '../../utils/gameAssignment'
 import { useForceLogin } from '../../utils/useForceLogin'
-
-type GameAssignmentNode = ContentsOf<ContentsOf<GetScheduleQuery, 'gameAssignments'>, 'nodes'>
 
 type GameSummaryProps = {
   gas: GameAssignmentNode
@@ -67,15 +66,7 @@ export const SchedulePage: React.FC = () => {
     return <Loader />
   }
 
-  const gamesAndAssignments: GameAssignmentNode[] = (data?.gameAssignments?.nodes
-    ?.concat()
-    // drop games with zero players/gms
-    .filter((g) => (g?.game?.gameAssignments?.nodes?.length ?? 0) > 0)
-    // is showing only GMs then drop all games where the user isn't the GM
-    .filter((g) =>
-      gmOnly ? g?.game?.gameAssignments?.nodes?.find((g1) => (g1?.gm ?? 0) > 0 && g1?.memberId === memberId) : true
-    )
-    .sort((a, b) => (a?.game?.slotId ?? 0) - (b?.game?.slotId ?? 0)) ?? []) as GameAssignmentNode[]
+  const gamesAndAssignments = getGameAssignments(data, memberId, gmOnly)
 
   return (
     <Page>

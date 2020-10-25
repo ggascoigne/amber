@@ -1,3 +1,7 @@
+10/24/2020
+
+* [x] Add option to edit game assignments for a member
+
 10/18/2020
 
 * [x] All admins to toggle between the GM preview and regular schedule page

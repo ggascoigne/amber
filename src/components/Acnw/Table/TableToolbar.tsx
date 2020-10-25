@@ -88,6 +88,7 @@ export type Command<T extends Record<string, unknown>> = {
   label: string
   onClick: TableMouseEventHandler
   icon?: JSX.Element
+  enabled: (instance: TableInstance<T>) => boolean
 }
 
 type TableToolbarProps<T extends Record<string, unknown>> = {
@@ -183,9 +184,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
             icon={c.icon}
             onClick={c.onClick}
             label={c.label}
-            enabled={({ state }: TableInstance<T>) =>
-              state.selectedRowIds && Object.keys(state.selectedRowIds).length > 0
-            }
+            enabled={c.enabled}
             variant='left'
           />
         ))}

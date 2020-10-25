@@ -177,6 +177,8 @@ export const Games: React.FC = React.memo(() => {
         label: 'Fix GM Names',
         onClick: onUpdateGmNames,
         icon: <CachedIcon className={classnames({ [classes.fixBusy]: fixBusy })} />,
+        enabled: ({ state }: TableInstance<Game>) =>
+          state.selectedRowIds && Object.keys(state.selectedRowIds).length > 0,
       },
     ],
     [classes.fixBusy, fixBusy, onUpdateGmNames]
@@ -191,7 +193,10 @@ export const Games: React.FC = React.memo(() => {
 
   const { games } = data!
 
-  const list: Game[] = games!.edges.map((v) => v.node).filter(notEmpty)
+  const list: Game[] = games!.edges
+    .map((v) => v.node)
+    .filter(notEmpty)
+    .filter((g) => g.year === year)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
