@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-const possibleYears: string[] = range(configuration.year, 2011, -1)
+const possibleYears: string[] = range(2011, configuration.year, -1)
   .map((v: number) => `${v}`)
   .concat(['0'])
 

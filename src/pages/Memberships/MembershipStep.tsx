@@ -69,7 +69,7 @@ export const MembershipStep: React.FC<MembershipFormContent> = ({ prefix = '' })
             </div>
           )}
           <FormGroup>
-            {range(0, 7).map((i) => (
+            {range(7).map((i) => (
               <CheckboxWithLabel
                 key={i}
                 Label={{

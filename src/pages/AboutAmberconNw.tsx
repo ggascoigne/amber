@@ -52,7 +52,7 @@ export const AboutAmberconNw = () => (
     <p>The convention will be divided into seven 4-hour event slots:</p>
 
     <ul>
-      {range(0, 7).map((i) => (
+      {range(7).map((i) => (
         <li key={i}>
           {getSlotDescription({
             year: configuration.year,

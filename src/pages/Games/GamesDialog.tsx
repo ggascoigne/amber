@@ -105,11 +105,11 @@ const validationSchema = Yup.object().shape({
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
   const { select, year, ...rest } = props
-  const selectValues = range(1, 8).reduce(
+  const selectValues = range(7).reduce(
     (acc, current) => {
       acc.push({
-        value: current,
-        text: getSlotDescription({ year, slot: current, local: true }),
+        value: current + 1,
+        text: getSlotDescription({ year, slot: current + 1, local: true }),
       })
       return acc
     },

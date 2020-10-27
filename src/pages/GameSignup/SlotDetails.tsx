@@ -36,7 +36,7 @@ type ChoiceSummaryProps = {
 
 export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => (
   <>
-    {range(1, 8).map((slotId) => (
+    {range(8, 1).map((slotId) => (
       <SlotDetails
         key={slotId}
         slotId={slotId}

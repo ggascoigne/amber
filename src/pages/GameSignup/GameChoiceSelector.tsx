@@ -400,7 +400,7 @@ export const isSlotComplete = (choices?: MaybeGameChoice[]) => {
 }
 
 export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) =>
-  range(0, 7).reduce(
+  range(7).reduce(
     (acc, slot) => acc && isSlotComplete(gameChoices?.filter((c) => c?.year === year && c?.slotId === slot + 1)),
     true
   )

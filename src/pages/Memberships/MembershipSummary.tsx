@@ -89,7 +89,7 @@ export const MembershipSummary: React.FC = () => {
                 />
               </div>
             )}
-            {range(0, 7).map((i) => (
+            {range(7).map((i) => (
               <FormControlLabel
                 key={i}
                 name={`slotsAttendingData[${i}]`}

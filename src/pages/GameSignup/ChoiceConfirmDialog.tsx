@@ -156,7 +156,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
 
   const filledOutChoices = useMemo(
     () =>
-      range(1, 8).flatMap((slotId) => {
+      range(8, 1).flatMap((slotId) => {
         const thisSlotChoices: choiceType[] = orderChoices(
           gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
         ) as choiceType[]

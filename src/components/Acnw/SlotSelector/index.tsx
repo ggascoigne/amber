@@ -115,7 +115,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
     [base, history, year]
   )
 
-  const slots = range(0, 7)
+  const slots = range(7)
 
   if (year === 0) return null
   return (
