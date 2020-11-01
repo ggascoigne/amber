@@ -254,3 +254,6 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
     ) : null
   }
 )
+
+// @ts-ignore
+GameCard.whyDidYouRender = true
