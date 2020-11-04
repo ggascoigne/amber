@@ -58,8 +58,6 @@ interface UserSelectorProps {
   mobile?: boolean
 }
 
-const noOp = async () => {}
-
 export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile }) => {
   const classes = useStyles({})
   const [notify] = useNotification()
@@ -67,42 +65,32 @@ export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile })
   const setUser = useUserFilterState((state) => state.setUser)
   const year = useYearFilterState((state) => state.year)
   const [searchTerm, setSearchTerm] = useState('')
+  const [offset, setOffset] = useState(0)
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
 
   const { loading, error, data, fetchMore } = useGetAllUsersByQuery({
     variables: {
       query: searchTerm,
+      offset,
       limit: 20,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     notifyOnNetworkStatusChange: true
   })
 
   const nodeLength = data?.users?.nodes?.length ?? 0
+
+  useEffect(() => setOffset(nodeLength), [nodeLength])
+
   const userCount = data?.users?.totalCount ?? 0
 
   const loadNextPage = useCallback(
-    () => {
-      console.log(`fetchMore(offset) = ${JSON.stringify(nodeLength, null, 2)}`)
-
-      return loading ? noOp() : fetchMore({
+    () => fetchMore({
         variables: {
-          offset: nodeLength
+          offset
         }
-        // updateQuery: (prev, { fetchMoreResult }) => {
-        //   if (!fetchMoreResult) return prev
-        //   const newVal = Object.assign({}, prev, {
-        //     users: {
-        //       ...prev.users,
-        //       nodes: [...(data?.users?.nodes ?? []), ...(fetchMoreResult?.users?.nodes ?? [])],
-        //     },
-        //   })
-        //   console.log(newVal)
-        //   return newVal
-        // },
-      })
-    },
-    [nodeLength, loading, fetchMore]
+      }),
+    [fetchMore, offset]
   )
 
   const loaderValues = useMemo(
@@ -124,6 +112,7 @@ export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile })
   }, [data])
 
   const onInputChange = useCallback((ev) => {
+    setOffset(0)
     setSearchTerm(ev.target.value)
   }, [])
 
