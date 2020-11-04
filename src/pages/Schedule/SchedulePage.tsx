@@ -1,14 +1,15 @@
 import Button from '@material-ui/core/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
 import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
-import React, { useEffect, useState } from 'react'
-import { SettingValue, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
+import { useAuth } from 'components/Acnw/Auth/Auth0'
+import { HasPermission } from 'components/Acnw/Auth/HasPermission'
+import { Perms } from 'components/Acnw/Auth/PermissionRules'
+import React, { createRef, useEffect, useMemo, useState } from 'react'
+import { SettingValue, getSlotTimes, notEmpty, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
+import { getGameAssignments } from 'utils/gameAssignment'
+import { useForceLogin } from 'utils/useForceLogin'
 
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { HasPermission } from '../../components/Acnw/Auth/HasPermission'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
-import { getGameAssignments } from '../../utils/gameAssignment'
-import { useForceLogin } from '../../utils/useForceLogin'
+import { ICalEvent, buildUrl } from '../../utils/ical'
 
 type GameSummaryProps = {
   gas: GameAssignmentNode
@@ -39,6 +40,52 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   )
 }
 
+const getIcalUrl = (schedule: GameAssignmentNode[]) => {
+  const sched = schedule
+    .map((gas) => {
+      const game = gas.game
+      if (!game || game.id < 8) return null
+
+      const slotId = game.slotId!
+      const [start, end] = getSlotTimes(gas.year)[slotId - 1]
+
+      const ice: ICalEvent = {
+        title: `Slot ${game.slotId!} - ${game.name}`,
+        description: `${game.description}...\n\n${window.location.origin}/schedule`,
+        startTime: start,
+        endTime: end,
+      }
+      return ice
+    })
+    .filter(notEmpty)
+  return buildUrl(sched, true)
+}
+
+export const ICalDownloadButton: React.FC<{ data: string; filename: string }> = ({ data, filename, children }) => {
+  const link = createRef<any>()
+
+  const handleAction = async () => {
+    if (!link.current || link.current.href) {
+      return
+    }
+
+    link.current.download = filename
+    link.current.href = data
+
+    link.current.click()
+  }
+
+  return (
+    <>
+      <Button onClick={handleAction} color='primary' variant='outlined'>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/anchor-has-content */}
+        <a role='button' ref={link} />
+        {children}
+      </Button>
+    </>
+  )
+}
+
 export const SchedulePage: React.FC = () => {
   const forceLogin = useForceLogin()
   const { hasPermissions } = useAuth()
@@ -60,6 +107,11 @@ export const SchedulePage: React.FC = () => {
     skip: !membership,
     fetchPolicy: 'cache-and-network',
   })
+
+  const gamesAndAssignments = getGameAssignments(data, memberId, gmOnly)
+
+  const icalData = useMemo(() => getIcalUrl(gamesAndAssignments), [gamesAndAssignments])
+
   if (error) {
     return <GraphQLError error={error} />
   }
@@ -67,15 +119,17 @@ export const SchedulePage: React.FC = () => {
     return <Loader />
   }
 
-  const gamesAndAssignments = getGameAssignments(data, memberId, gmOnly)
-
   return (
     <Page>
       <HasPermission permission={Perms.IsAdmin}>
         <Button variant='contained' onClick={() => setShowGmPreviewOverride((old) => !old)}>
           {showGmPreviewOverride ? 'Show Full Schedule' : 'Show GM Preview'}
         </Button>
+        <br />
       </HasPermission>
+      <ICalDownloadButton data={icalData} filename={'acnw-schedule.ical'}>
+        Export Schedule
+      </ICalDownloadButton>
       {gmOnly ? <h3>GM Preview</h3> : null}
       {gamesAndAssignments.map((g) => (
         <GameSummary key={g?.gameId} gas={g} />
