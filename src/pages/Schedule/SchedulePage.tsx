@@ -105,7 +105,7 @@ export const SchedulePage: React.FC = () => {
     fetchPolicy: 'cache-and-network',
   })
 
-  const gamesAndAssignments = getGameAssignments(data, memberId, gmOnly)
+  const gamesAndAssignments = useMemo(() => getGameAssignments(data, memberId, gmOnly), [data, gmOnly, memberId])
 
   const exportUrl = useMemo(() => getIcalUrl(gamesAndAssignments), [gamesAndAssignments])
 

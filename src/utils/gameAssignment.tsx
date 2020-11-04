@@ -8,7 +8,7 @@ export const getGameAssignments = (
   (data?.gameAssignments?.nodes
     ?.concat()
     // drop games with zero players/gms
-    .filter((g) => (g?.game?.gameAssignments?.nodes?.length ?? 0) > 0)
+    .filter((g) => (g?.game?.gameAssignments?.nodes?.length ?? 0) > 0 && g?.game?.slotId)
     // is showing only GMs then drop all games where the user isn't the GM
     .filter((g) =>
       gmOnly ? g?.game?.gameAssignments?.nodes?.find((g1) => (g1?.gm ?? 0) > 0 && g1?.memberId === memberId) : true

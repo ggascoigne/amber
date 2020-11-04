@@ -237,7 +237,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
           {content}
         </Card>
       ) : (
-        <Accordion defaultExpanded={!schedule}>
+        <Accordion defaultExpanded={!schedule} style={{ marginTop: 30 }}>
           <AccordionSummary
             expandIcon={tiny ? undefined : <ExpandMoreIcon />}
             id={`accordion-game/${year}/${slot}/${id}`}
