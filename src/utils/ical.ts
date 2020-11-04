@@ -1,24 +1,28 @@
 import * as ics from 'ics'
 import { DateTime } from 'luxon'
 
-import { configuration } from './configuration'
+// import { configuration } from './configuration'
 
 export interface ICalEvent {
   title: string
   description: string
   startTime: DateTime
   endTime: DateTime
+  url: string
 }
 
 const dtToArray = (d: DateTime) => {
   const fmt = 'y-LL-d-H-m'
-  return d
+  const val = d
+    .setZone('local')
     .toFormat(fmt)
     .split('-')
     .map((x) => parseInt(x, 10)) as [number, number, number, number, number]
+  // console.log(`val = ${JSON.stringify(val, null, 2)}`)
+  return val
 }
 
-export function buildUrl(events: ICalEvent[], useDataURL = false): string {
+export function buildUrl(events: ICalEvent[]): string {
   const { error, value } = ics.createEvents(
     events.map((event) => ({
       productId: 'acnw',
@@ -26,16 +30,16 @@ export function buildUrl(events: ICalEvent[], useDataURL = false): string {
       end: dtToArray(event.endTime),
       title: event.title,
       description: event.description,
-      organizer: { email: configuration.contactEmail },
+      // organizer: { email: configuration.contactEmail },
+      url: event.url,
     }))
   )
 
   error && console.log(error)
-  const url = value
 
-  if (useDataURL) {
-    return encodeURI(`data:text/calendar;charset=utf8,${url}`)
+  if (value) {
+    return URL.createObjectURL(new Blob([value], { type: 'text/calendar' }))
   } else {
-    return url ?? ''
+    return ''
   }
 }

@@ -51,27 +51,22 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) => {
 
       const ice: ICalEvent = {
         title: `Slot ${game.slotId!} - ${game.name}`,
-        description: `${game.description}...\n\n${window.location.origin}/schedule`,
+        description: `${game.description}...\n\n${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
         startTime: start,
         endTime: end,
+        url: `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
       }
       return ice
     })
     .filter(notEmpty)
-  return buildUrl(sched, true)
+  return buildUrl(sched)
 }
 
-export const ICalDownloadButton: React.FC<{ data: string; filename: string }> = ({ data, filename, children }) => {
+export const ICalDownloadButton: React.FC<{ url: string; filename: string }> = ({ url, filename, children }) => {
   const link = createRef<any>()
-
   const handleAction = async () => {
-    if (!link.current || link.current.href) {
-      return
-    }
-
     link.current.download = filename
-    link.current.href = data
-
+    link.current.href = url
     link.current.click()
   }
 
@@ -110,7 +105,7 @@ export const SchedulePage: React.FC = () => {
 
   const gamesAndAssignments = getGameAssignments(data, memberId, gmOnly)
 
-  const icalData = useMemo(() => getIcalUrl(gamesAndAssignments), [gamesAndAssignments])
+  const exportUrl = useMemo(() => getIcalUrl(gamesAndAssignments), [gamesAndAssignments])
 
   if (error) {
     return <GraphQLError error={error} />
@@ -127,7 +122,7 @@ export const SchedulePage: React.FC = () => {
         </Button>
         <br />
       </HasPermission>
-      <ICalDownloadButton data={icalData} filename={'acnw-schedule.ical'}>
+      <ICalDownloadButton url={exportUrl} filename='acnw-schedule.ics'>
         Export Schedule
       </ICalDownloadButton>
       {gmOnly ? <h3>GM Preview</h3> : null}
