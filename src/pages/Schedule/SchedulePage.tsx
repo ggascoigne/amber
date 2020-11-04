@@ -41,28 +41,30 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
 }
 
 const getIcalUrl = (schedule: GameAssignmentNode[]) => {
-  const sched = schedule
-    .map((gas) => {
-      const game = gas.game
-      if (!game || game.id < 8) return null
+  if (!schedule) return null
+  return buildUrl(
+    schedule
+      .map((gas) => {
+        const game = gas.game
+        if (!game || game.id < 8) return null
 
-      const slotId = game.slotId!
-      const [start, end] = getSlotTimes(gas.year)[slotId - 1]
+        const slotId = game.slotId!
+        const [start, end] = getSlotTimes(gas.year)[slotId - 1]
 
-      const ice: ICalEvent = {
-        title: `Slot ${game.slotId!} - ${game.name}`,
-        description: `${game.description}...\n\n${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
-        startTime: start,
-        endTime: end,
-        url: `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
-      }
-      return ice
-    })
-    .filter(notEmpty)
-  return buildUrl(sched)
+        const ice: ICalEvent = {
+          title: `Slot ${game.slotId!} - ${game.name}`,
+          description: `${game.description}...\n\n${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
+          startTime: start,
+          endTime: end,
+          url: `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
+        }
+        return ice
+      })
+      .filter(notEmpty)
+  )
 }
 
-export const ICalDownloadButton: React.FC<{ url: string; filename: string }> = ({ url, filename, children }) => {
+export const ICalDownloadButton: React.FC<{ url: string | null; filename: string }> = ({ url, filename, children }) => {
   const link = createRef<any>()
   const handleAction = async () => {
     link.current.download = filename
