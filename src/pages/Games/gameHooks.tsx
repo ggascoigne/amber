@@ -170,6 +170,8 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
         })
       }
 
+      if (values.slotId === 0) values.slotId = null
+
       const fields = pick(
         values,
         'name',
