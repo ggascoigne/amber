@@ -62,7 +62,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const gameOptions = useMemo(() => {
     const games = gData?.games?.edges.map((v) => v.node).filter(notEmpty)
-    return range(0, 7).map((slot) =>
+    return range(7).map((slot) =>
       games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name }))
     )
   }, [gData])
@@ -83,7 +83,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   })
 
   const fillAssignments = (assignments?: GameAssignmentEditNode[]) =>
-    range(1, 8).map((slot) => assignments?.find((a) => a?.game?.slotId === slot) ?? empty(slot))
+    range(8, 1).map((slot) => assignments?.find((a) => a?.game?.slotId === slot) ?? empty(slot))
 
   const gamesAndAssignments = fillAssignments(getGameAssignments(sData, memberId)).map((ga) =>
     pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId')
@@ -93,7 +93,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const toDelete: GameAssignmentEditNode[] = []
     const toCreate: GameAssignmentEditNode[] = []
 
-    range(0, 7).forEach((slot) => {
+    range(7).forEach((slot) => {
       if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
         if (gamesAndAssignments[slot]?.nodeId) {
           toDelete.push(gamesAndAssignments[slot])

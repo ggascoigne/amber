@@ -111,6 +111,7 @@
     "graphql": "14.6.0",
     "graphql.macro": "^1.4.2",
     "history": "^5.0.0",
+    "ics": "^2.26.1",
     "isomorphic-fetch": "^3.0.0",
     "json2xls": "^0.1.2",
     "jump.js": "^1.0.2",
