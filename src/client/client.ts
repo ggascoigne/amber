@@ -1,9 +1,8 @@
 import { ApolloClient, FieldPolicy, InMemoryCache, Reference, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { CachePersistor } from 'apollo3-cache-persist'
-import { useEffect } from 'react'
-
 import { Auth0ContextType } from 'components/Acnw/Auth/Auth0'
+import { useEffect } from 'react'
 import { useLocalStorage } from 'utils'
 
 type KeyArgs = FieldPolicy<any>['keyArgs']
@@ -33,7 +32,7 @@ const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        users: offsetLimitNodePagination(),
+        users: offsetLimitNodePagination(['filter']),
       },
     },
   },
@@ -55,7 +54,7 @@ const Client = (authProps: Auth0ContextType) => {
         storage: window.localStorage,
       })
 
-      if (schemaVersion === SCHEMA_VERSION + 1) {
+      if (schemaVersion === SCHEMA_VERSION) {
         await persistor.restore()
       } else {
         await persistor.purge()
@@ -88,6 +87,7 @@ const Client = (authProps: Auth0ContextType) => {
       createHttpLink({
         uri: '/api/graphql',
       })
+      // createHttpLink({ uri: ({ operationName }) => `/api/graphql/${operationName}` })
     ),
     cache,
   })

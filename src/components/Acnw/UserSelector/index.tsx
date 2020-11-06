@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core'
 import { Autocomplete, AutocompleteRenderInputParams, createFilterOptions } from '@material-ui/lab'
 import classNames from 'classnames'
 import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { ContentsOf, notEmpty, useUserFilterState, useYearFilterState } from 'utils'
 
 import { useNotification } from '../Notifications'
@@ -58,40 +58,46 @@ interface UserSelectorProps {
   mobile?: boolean
 }
 
+type TVariables = { query: string; offset: number; limit: number }
+type TAction = { type: 'setSearchTerm'; payload: string } | { type: 'setOffset'; payload: number }
+
+function reducer(state: TVariables, action: TAction) {
+  switch (action.type) {
+    case 'setSearchTerm':
+      return { query: action.payload, offset: 0, limit: state.limit }
+    case 'setOffset':
+      return { query: state.query, offset: action.payload, limit: state.limit }
+    default:
+      throw new Error()
+  }
+}
+
 export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile }) => {
   const classes = useStyles({})
   const [notify] = useNotification()
   const userInfo = useUserFilterState((state) => state.userInfo)
   const setUser = useUserFilterState((state) => state.setUser)
   const year = useYearFilterState((state) => state.year)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [offset, setOffset] = useState(0)
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
+  const [variables, dispatch] = useReducer(reducer, {
+    query: '',
+    offset: 0,
+    limit: 20,
+  })
 
   const { loading, error, data, fetchMore } = useGetAllUsersByQuery({
-    variables: {
-      query: searchTerm,
-      offset,
-      limit: 20,
-    },
+    variables,
     fetchPolicy: 'cache-first',
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   })
 
   const nodeLength = data?.users?.nodes?.length ?? 0
 
-  useEffect(() => setOffset(nodeLength), [nodeLength])
+  useEffect(() => dispatch({ type: 'setOffset', payload: nodeLength }), [nodeLength])
 
   const userCount = data?.users?.totalCount ?? 0
 
-  const loadNextPage = useCallback(
-    () => fetchMore({
-        variables: {
-          offset
-        }
-      }),
-    [fetchMore, offset]
-  )
+  const loadNextPage = useCallback(() => fetchMore({ variables }), [fetchMore, variables])
 
   const loaderValues = useMemo(
     () => ({
@@ -112,14 +118,13 @@ export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile })
   }, [data])
 
   const onInputChange = useCallback((ev) => {
-    setOffset(0)
-    setSearchTerm(ev.target.value)
+    dispatch({ type: 'setSearchTerm', payload: ev.target.value })
   }, [])
 
   const onChange = useCallback(
     (_, value) => {
       setUser(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
-      if (!value) setSearchTerm('')
+      if (!value) dispatch({ type: 'setSearchTerm', payload: '' })
     },
     [setUser]
   )
@@ -167,7 +172,7 @@ export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile })
         })}
         filterOptions={filterOptions}
         value={selectedUser}
-        inputValue={searchTerm}
+        inputValue={variables.query}
         classes={{
           endAdornment: classes.inheritColor,
           popupIndicator: classes.inheritColor,
@@ -175,7 +180,7 @@ export const UserSelector: React.FC<UserSelectorProps> = React.memo(({ mobile })
         }}
         renderInput={renderInput}
         renderOption={renderOption}
-        noOptionsText={searchTerm?.length > 0 ? 'No matching users' : 'Enter user name'}
+        noOptionsText={variables.query?.length > 0 ? 'No matching users' : 'Enter user name'}
         getOptionSelected={getOptionSelected}
         onChange={onChange}
         // @ts-ignore
