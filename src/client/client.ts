@@ -1,12 +1,41 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client'
+import { ApolloClient, FieldPolicy, InMemoryCache, Reference, createHttpLink } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
 import { CachePersistor } from 'apollo3-cache-persist'
+import { Auth0ContextType } from 'components/Acnw/Auth/Auth0'
 import { useEffect } from 'react'
+import { useLocalStorage } from 'utils'
 
-import { Auth0ContextType } from '../components/Acnw/Auth/Auth0'
-import { useLocalStorage } from '../utils'
+type KeyArgs = FieldPolicy<any>['keyArgs']
+
+const arrayMerge = (existing: any, incoming: any, args: any) => {
+  const merged = existing ? existing.slice(0) : []
+  const start = args ? args.offset : merged.length
+  const end = start + incoming.length
+  for (let i = start; i < end; ++i) {
+    merged[i] = incoming[i - start]
+  }
+  return merged
+}
+
+export function offsetLimitNodePagination<T = Reference>(keyArgs: KeyArgs = false): FieldPolicy<T[]> {
+  return {
+    keyArgs,
+    merge(existing: any, incoming: any, { args }: any) {
+      return Object.assign({}, incoming, {
+        nodes: arrayMerge(existing?.nodes, incoming?.nodes, args),
+      })
+    },
+  }
+}
 
 const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        users: offsetLimitNodePagination(['filter']),
+      },
+    },
+  },
   // postgraphile uses nodeId for the uuid, and leaves id as the database id.
   // dataIdFromObject: (obj: any) => obj?.nodeId,
 })
@@ -58,6 +87,7 @@ const Client = (authProps: Auth0ContextType) => {
       createHttpLink({
         uri: '/api/graphql',
       })
+      // createHttpLink({ uri: ({ operationName }) => `/api/graphql/${operationName}` })
     ),
     cache,
   })

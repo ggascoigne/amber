@@ -10,18 +10,19 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
-import { useAuth } from './components/Acnw/Auth/Auth0'
+import { useAuth } from 'components/Acnw/Auth/Auth0'
 import reportWebVitals from './reportWebVitals'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
-// if (process.env.NODE_ENV === 'development') {
-//   // eslint-disable-next-line @typescript-eslint/no-var-requires
-//   const whyDidYouRender = require('@welldone-software/why-did-you-render')
-//   whyDidYouRender(React, {
-//     trackAllPureComponents: true,
-//   })
-// }
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const whyDidYouRender = require('@welldone-software/why-did-you-render')
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+    exclude: [/VerifiedUserIcon/]
+  })
+}
 
 const rootElement = document.getElementById('root')
 
@@ -55,4 +56,4 @@ render(App)
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals(console.log)
+// reportWebVitals(console.log)
