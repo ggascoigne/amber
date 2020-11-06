@@ -49,7 +49,7 @@ mutation deleteGameAssignment($input: DeleteGameAssignmentByNodeIdInput!) {
 }
 
 # note that gm < 0 is offering to run, gm = 0 is player, gm > 0 is scheduled to run
-query GetSchedule($memberId: Int!) {
+query getSchedule($memberId: Int!) {
   gameAssignments(condition: { memberId: $memberId }, filter: { gm: { greaterThanOrEqualTo: 0 } }) {
     nodes {
       game {

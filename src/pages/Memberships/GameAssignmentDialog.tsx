@@ -120,7 +120,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
               gameAssignment: pick(assignment, 'gameId', 'gm', 'memberId', 'year'),
             },
           },
-          refetchQueries: ['getGameAssignmentsByYear', 'GetSchedule'],
+          refetchQueries: ['getGameAssignmentsByYear', 'getSchedule'],
         }).catch((error) => {
           console.log(`error = ${JSON.stringify(error, null, 2)}`)
           if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })

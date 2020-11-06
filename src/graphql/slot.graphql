@@ -1,6 +1,6 @@
 #import "./slotFragment.graphql"
 
-query GetSlots {
+query getSlots {
   slots {
     nodes {
       ...slotFields

@@ -54,7 +54,7 @@ export const useEditGameChoice = () => {
         memberId,
         year,
       },
-      refetchQueries: ['GetGameChoices'],
+      refetchQueries: ['getGameChoices'],
     }).then(() => {
       // console.log('choices created')
     })
@@ -74,7 +74,7 @@ export const useEditGameChoice = () => {
             patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           },
         },
-        refetchQueries: refetch ? ['GetGameChoices'] : undefined,
+        refetchQueries: refetch ? ['getGameChoices'] : undefined,
         optimisticResponse: {
           ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           __typename: 'GameChoice',
@@ -91,7 +91,7 @@ export const useEditGameChoice = () => {
             },
           },
         },
-        refetchQueries: ['GetGameChoices'],
+        refetchQueries: ['getGameChoices'],
       })
         .then((res) => {
           // console.log({ text: 'GameChoice created', variant: 'success' })

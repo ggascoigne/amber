@@ -130,7 +130,7 @@ const MemberGmPage: React.FC = React.memo(() => {
     const updater = toDelete.map((g) =>
       deleteGame({
         variables: { input: { id: g.id } },
-        refetchQueries: ['GetGamesByYear', 'GetGamesByAuthor', 'GetGamesByYearAndAuthor'],
+        refetchQueries: ['getGamesByYear', 'getGamesByAuthor', 'getGamesByYearAndAuthor'],
       })
     )
     Promise.all(updater).then(() => console.log('deleted'))

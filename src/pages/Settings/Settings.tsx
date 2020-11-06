@@ -55,7 +55,7 @@ export const Settings: React.FC = React.memo(() => {
     const updater = toDelete.map((s) =>
       deleteSetting({
         variables: { input: { id: s.id } },
-        refetchQueries: ['GetSettings'],
+        refetchQueries: ['getSettings'],
       })
     )
     Promise.all(updater).then(() => {

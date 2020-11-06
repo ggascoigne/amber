@@ -97,7 +97,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetGameChoices'],
+        refetchQueries: ['getGameChoices'],
       })
         .then(() => {
           notify({ text: 'Game Submission updated', variant: 'success' })
@@ -116,7 +116,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetGameChoices'],
+        refetchQueries: ['getGameChoices'],
       })
         .then((res) => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })

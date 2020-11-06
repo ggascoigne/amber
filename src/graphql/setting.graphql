@@ -6,7 +6,7 @@ fragment settingFields on Setting {
   value
 }
 
-query GetSettings {
+query getSettings {
   settings {
     nodes {
       ...settingFields

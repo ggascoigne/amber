@@ -7573,7 +7573,7 @@ export const UserFieldsFragmentDoc = gql`
   }
 `
 export const GetGamesBySlotForSignupDocument = gql`
-  query GetGamesBySlotForSignup($year: Int!, $slotId: Int!) {
+  query getGamesBySlotForSignup($year: Int!, $slotId: Int!) {
     games(
       filter: {
         or: [
@@ -7635,7 +7635,7 @@ export type GetGamesBySlotForSignupQueryResult = Apollo.QueryResult<
   GetGamesBySlotForSignupQueryVariables
 >
 export const GetGamesBySlotDocument = gql`
-  query GetGamesBySlot($year: Int!, $slotId: Int!) {
+  query getGamesBySlot($year: Int!, $slotId: Int!) {
     games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
       edges {
         node {
@@ -7680,7 +7680,7 @@ export type GetGamesBySlotQueryHookResult = ReturnType<typeof useGetGamesBySlotQ
 export type GetGamesBySlotLazyQueryHookResult = ReturnType<typeof useGetGamesBySlotLazyQuery>
 export type GetGamesBySlotQueryResult = Apollo.QueryResult<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
 export const GetGamesByYearDocument = gql`
-  query GetGamesByYear($year: Int!) {
+  query getGamesByYear($year: Int!) {
     games(
       filter: {
         or: [
@@ -7732,7 +7732,7 @@ export type GetGamesByYearQueryHookResult = ReturnType<typeof useGetGamesByYearQ
 export type GetGamesByYearLazyQueryHookResult = ReturnType<typeof useGetGamesByYearLazyQuery>
 export type GetGamesByYearQueryResult = Apollo.QueryResult<GetGamesByYearQuery, GetGamesByYearQueryVariables>
 export const GetSmallGamesByYearDocument = gql`
-  query GetSmallGamesByYear($year: Int!) {
+  query getSmallGamesByYear($year: Int!) {
     games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC], first: 1) {
       edges {
         node {
@@ -7907,7 +7907,7 @@ export type DeleteGameMutationHookResult = ReturnType<typeof useDeleteGameMutati
 export type DeleteGameMutationResult = Apollo.MutationResult<DeleteGameMutation>
 export type DeleteGameMutationOptions = Apollo.BaseMutationOptions<DeleteGameMutation, DeleteGameMutationVariables>
 export const GetFirstGameOfSlotDocument = gql`
-  query GetFirstGameOfSlot($year: Int!) {
+  query getFirstGameOfSlot($year: Int!) {
     games(orderBy: NAME_ASC, condition: { slotId: 1, year: $year }, first: 1) {
       nodes {
         ...gameFields
@@ -7968,7 +7968,7 @@ export type GetFirstGameOfSlotQueryResult = Apollo.QueryResult<
   GetFirstGameOfSlotQueryVariables
 >
 export const GetGamesByAuthorDocument = gql`
-  query GetGamesByAuthor($id: Int!) {
+  query getGamesByAuthor($id: Int!) {
     user(id: $id) {
       authoredGames {
         nodes {
@@ -8015,7 +8015,7 @@ export type GetGamesByAuthorQueryHookResult = ReturnType<typeof useGetGamesByAut
 export type GetGamesByAuthorLazyQueryHookResult = ReturnType<typeof useGetGamesByAuthorLazyQuery>
 export type GetGamesByAuthorQueryResult = Apollo.QueryResult<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
 export const GetGamesByYearAndAuthorDocument = gql`
-  query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
+  query getGamesByYearAndAuthor($year: Int!, $id: Int!) {
     games(condition: { authorId: $id, year: $year }) {
       nodes {
         ...gameFields
@@ -8067,7 +8067,7 @@ export type GetGamesByYearAndAuthorQueryResult = Apollo.QueryResult<
   GetGamesByYearAndAuthorQueryVariables
 >
 export const GetGameByIdDocument = gql`
-  query GetGameById($id: Int!) {
+  query getGameById($id: Int!) {
     game(id: $id) {
       ...gameFields
       ...gameGms
@@ -8398,7 +8398,7 @@ export type DeleteGameAssignmentMutationOptions = Apollo.BaseMutationOptions<
   DeleteGameAssignmentMutationVariables
 >
 export const GetScheduleDocument = gql`
-  query GetSchedule($memberId: Int!) {
+  query getSchedule($memberId: Int!) {
     gameAssignments(condition: { memberId: $memberId }, filter: { gm: { greaterThanOrEqualTo: 0 } }) {
       nodes {
         game {
@@ -8768,7 +8768,7 @@ export type UpdateGameChoiceByNodeIdMutationOptions = Apollo.BaseMutationOptions
   UpdateGameChoiceByNodeIdMutationVariables
 >
 export const GetLookupsDocument = gql`
-  query GetLookups {
+  query getLookups {
     lookups(orderBy: REALM_ASC) {
       edges {
         node {
@@ -8813,7 +8813,7 @@ export type GetLookupsQueryHookResult = ReturnType<typeof useGetLookupsQuery>
 export type GetLookupsLazyQueryHookResult = ReturnType<typeof useGetLookupsLazyQuery>
 export type GetLookupsQueryResult = Apollo.QueryResult<GetLookupsQuery, GetLookupsQueryVariables>
 export const GetLookupValuesDocument = gql`
-  query GetLookupValues($realm: String!) {
+  query getLookupValues($realm: String!) {
     lookups(condition: { realm: $realm }) {
       edges {
         node {
@@ -8861,7 +8861,7 @@ export type GetLookupValuesQueryHookResult = ReturnType<typeof useGetLookupValue
 export type GetLookupValuesLazyQueryHookResult = ReturnType<typeof useGetLookupValuesLazyQuery>
 export type GetLookupValuesQueryResult = Apollo.QueryResult<GetLookupValuesQuery, GetLookupValuesQueryVariables>
 export const GetSingleLookupValueDocument = gql`
-  query GetSingleLookupValue($realm: String!, $code: String!) {
+  query getSingleLookupValue($realm: String!, $code: String!) {
     lookups(condition: { realm: $realm }) {
       edges {
         node {
@@ -9466,7 +9466,7 @@ export type DeleteMembershipMutationOptions = Apollo.BaseMutationOptions<
   DeleteMembershipMutationVariables
 >
 export const GetSettingsDocument = gql`
-  query GetSettings {
+  query getSettings {
     settings {
       nodes {
         ...settingFields
@@ -9629,7 +9629,7 @@ export type UpdateSettingByNodeIdMutationOptions = Apollo.BaseMutationOptions<
   UpdateSettingByNodeIdMutationVariables
 >
 export const GetSlotsDocument = gql`
-  query GetSlots {
+  query getSlots {
     slots {
       nodes {
         ...slotFields
@@ -9664,7 +9664,7 @@ export type GetSlotsQueryHookResult = ReturnType<typeof useGetSlotsQuery>
 export type GetSlotsLazyQueryHookResult = ReturnType<typeof useGetSlotsLazyQuery>
 export type GetSlotsQueryResult = Apollo.QueryResult<GetSlotsQuery, GetSlotsQueryVariables>
 export const GetUserByEmailDocument = gql`
-  query GetUserByEmail($email: String!) {
+  query getUserByEmail($email: String!) {
     userByEmail(email: $email) {
       ...userFields
     }
@@ -9702,7 +9702,7 @@ export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQ
 export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>
 export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>
 export const GetUserByIdDocument = gql`
-  query GetUserById($id: Int!) {
+  query getUserById($id: Int!) {
     user(id: $id) {
       ...userFields
     }
@@ -9777,7 +9777,7 @@ export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutati
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>
 export const GetAllUsersDocument = gql`
-  query GetAllUsers {
+  query getAllUsers {
     users(orderBy: LAST_NAME_ASC) {
       nodes {
         ...userFields
@@ -9816,7 +9816,7 @@ export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
 export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>
 export const GetAllUsersByDocument = gql`
-  query GetAllUsersBy($query: String!, $offset: Int = 0, $limit: Int = 10) {
+  query getAllUsersBy($query: String!, $offset: Int = 0, $limit: Int = 10) {
     users(
       orderBy: LAST_NAME_ASC
       filter: { fullName: { includesInsensitive: $query } }

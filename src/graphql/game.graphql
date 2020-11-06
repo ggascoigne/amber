@@ -2,7 +2,7 @@
 #import "./slotFragment.graphql"
 #import "./profileFragment.graphql"
 
-query GetGamesBySlotForSignup($year: Int!, $slotId: Int!) {
+query getGamesBySlotForSignup($year: Int!, $slotId: Int!) {
   games(
     filter: {
       or: [
@@ -21,7 +21,7 @@ query GetGamesBySlotForSignup($year: Int!, $slotId: Int!) {
   }
 }
 
-query GetGamesBySlot($year: Int!, $slotId: Int!) {
+query getGamesBySlot($year: Int!, $slotId: Int!) {
   games(condition: { year: $year, slotId: $slotId }, orderBy: [SLOT_ID_ASC, NAME_ASC]) {
     edges {
       node {
@@ -32,7 +32,7 @@ query GetGamesBySlot($year: Int!, $slotId: Int!) {
   }
 }
 
-query GetGamesByYear($year: Int!) {
+query getGamesByYear($year: Int!) {
   games(
     filter: {
       or: [
@@ -51,7 +51,7 @@ query GetGamesByYear($year: Int!) {
   }
 }
 
-query GetSmallGamesByYear($year: Int!) {
+query getSmallGamesByYear($year: Int!) {
   games(condition: { year: $year }, orderBy: [SLOT_ID_ASC, NAME_ASC], first: 1) {
     edges {
       node {
@@ -87,7 +87,7 @@ mutation deleteGame($input: DeleteGameInput!) {
   }
 }
 
-query GetFirstGameOfSlot($year: Int!) {
+query getFirstGameOfSlot($year: Int!) {
   games(orderBy: NAME_ASC, condition: { slotId: 1, year: $year }, first: 1) {
     nodes {
       ...gameFields
@@ -107,7 +107,7 @@ query GetFirstGameOfSlot($year: Int!) {
   }
 }
 
-query GetGamesByAuthor($id: Int!) {
+query getGamesByAuthor($id: Int!) {
   user(id: $id) {
     authoredGames {
       nodes {
@@ -118,7 +118,7 @@ query GetGamesByAuthor($id: Int!) {
   }
 }
 
-query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
+query getGamesByYearAndAuthor($year: Int!, $id: Int!) {
   games(condition: { authorId: $id, year: $year }) {
     nodes {
       ...gameFields
@@ -127,7 +127,7 @@ query GetGamesByYearAndAuthor($year: Int!, $id: Int!) {
   }
 }
 
-query GetGameById($id: Int!) {
+query getGameById($id: Int!) {
   game(id: $id) {
     ...gameFields
     ...gameGms

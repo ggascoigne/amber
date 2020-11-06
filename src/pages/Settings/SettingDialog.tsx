@@ -40,7 +40,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetSettings'],
+        refetchQueries: ['getSettings'],
       })
         .then(() => {
           notify({ text: 'Setting updated', variant: 'success' })
@@ -58,7 +58,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
             },
           },
         },
-        refetchQueries: ['GetSettings'],
+        refetchQueries: ['getSettings'],
       })
         .then((res) => {
           notify({ text: 'Setting created', variant: 'success' })

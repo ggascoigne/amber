@@ -83,12 +83,7 @@ const Client = (authProps: Auth0ContextType) => {
         }
       }
       return headers
-    }).concat(
-      createHttpLink({
-        uri: '/api/graphql',
-      })
-      // createHttpLink({ uri: ({ operationName }) => `/api/graphql/${operationName}` })
-    ),
+    }).concat(createHttpLink({ uri: ({ operationName }) => `/api/graphql/${operationName}` })),
     cache,
   })
 }
