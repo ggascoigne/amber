@@ -13,6 +13,7 @@ import {
   UseFiltersInstanceProps,
   UseFiltersOptions,
   UseFiltersState,
+  UseGlobalFiltersColumnOptions,
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersOptions,
   UseGlobalFiltersState,
@@ -64,6 +65,7 @@ declare module 'react-table' {
       UseRowSelectOptions<D>,
       UseSortByOptions<D> {
     hideSelectionUi?: boolean
+    defaultColumnDisableGlobalFilter?: boolean
   }
 
   export interface Hooks<D extends Record<string, unknown> = unknown>
@@ -100,6 +102,7 @@ declare module 'react-table' {
   export interface ColumnInterface<D extends Record<string, unknown> = unknown>
     extends UseFiltersColumnOptions<D>,
       UseGroupByColumnOptions<D>,
+      UseGlobalFiltersColumnOptions<D>,
       UseResizeColumnsColumnOptions<D>,
       UseSortByColumnOptions<D> {
     align?: string

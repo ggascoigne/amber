@@ -49,11 +49,13 @@ const memberColumns: Column<Membership>[] = [
     id: 'firstName',
     accessor: (r: Membership) => r?.user?.firstName,
     width: 70,
+    disableGlobalFilter: false,
   },
   {
     id: 'lastName',
     accessor: (r: Membership) => r?.user?.lastName,
     width: 100,
+    disableGlobalFilter: false,
   },
 ]
 
@@ -240,6 +242,7 @@ export const Memberships: React.FC = React.memo(() => {
         initialState={initialState}
         extraCommands={commands}
         onRefresh={() => refetch()}
+        defaultColumnDisableGlobalFilter
       />
     </Page>
   )

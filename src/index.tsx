@@ -5,24 +5,24 @@ import 'react-app-polyfill/ie11'
 import { ApolloProvider } from '@apollo/client'
 import client from 'client/client'
 import { Auth0Provider, NotificationProvider } from 'components/Acnw'
+import { useAuth } from 'components/Acnw/Auth/Auth0'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
-import { useAuth } from 'components/Acnw/Auth/Auth0'
 import reportWebVitals from './reportWebVitals'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
-if (process.env.NODE_ENV === 'development') {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const whyDidYouRender = require('@welldone-software/why-did-you-render')
-  whyDidYouRender(React, {
-    trackAllPureComponents: true,
-    exclude: [/VerifiedUserIcon/]
-  })
-}
+// if (process.env.NODE_ENV === 'development') {
+//   // eslint-disable-next-line @typescript-eslint/no-var-requires
+//   const whyDidYouRender = require('@welldone-software/why-did-you-render')
+//   whyDidYouRender(React, {
+//     trackAllPureComponents: true,
+//     exclude: [/VerifiedUserIcon/]
+//   })
+// }
 
 const rootElement = document.getElementById('root')
 

@@ -20,6 +20,7 @@ import {
   useExpanded,
   useFilters,
   useFlexLayout,
+  useGlobalFilter,
   useGroupBy,
   usePagination,
   useResizeColumns,
@@ -34,6 +35,7 @@ import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
 import { TableDebug } from './TableDebug'
 import { TablePagination } from './TablePagination'
+import { TableSearch } from './TableSearch'
 import {
   HeaderCheckbox,
   RowCheckbox,
@@ -159,6 +161,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     onRefresh,
     initialState: userInitialState = {},
     hideSelectionUi = false,
+    defaultColumnDisableGlobalFilter = false,
   } = props
   const classes = useStyles()
 
@@ -172,6 +175,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
 
   const hooks = [
     useColumnOrder,
+    useGlobalFilter,
     useFilters,
     useGroupBy,
     useSortBy,
@@ -196,8 +200,9 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow
       maxWidth: 200, // maxWidth is only used as a limit for resizing
+      disableGlobalFilter: defaultColumnDisableGlobalFilter,
     }),
-    []
+    [defaultColumnDisableGlobalFilter]
   )
 
   const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, {
@@ -237,6 +242,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     <>
       {!hideSelectionUi ? (
         <>
+          <TableSearch instance={instance} />
           <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit, extraCommands, onRefresh }} />
           <FilterChipBar<T> instance={instance} />
         </>

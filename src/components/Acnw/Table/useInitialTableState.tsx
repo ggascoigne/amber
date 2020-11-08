@@ -31,7 +31,7 @@ export const useInitialTableState = <T extends Record<string, unknown>>(
 
   const setNewState = useCallback(
     (input: Partial<TableState<T>>) => {
-      const { sortBy, filters, pageSize, columnResizing, hiddenColumns, columnOrder, groupBy } = input
+      const { sortBy, filters, pageSize, columnResizing, hiddenColumns, columnOrder, groupBy, globalFilter } = input
       setInitialState({
         createdFor,
         value: {
@@ -42,6 +42,7 @@ export const useInitialTableState = <T extends Record<string, unknown>>(
           pageSize,
           sortBy,
           groupBy,
+          globalFilter,
         },
       })
     },

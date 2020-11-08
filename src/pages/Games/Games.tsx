@@ -74,10 +74,12 @@ const columns: Column<Game>[] = [
   },
   {
     accessor: 'name',
+    disableGlobalFilter: false,
   },
   {
     Header: 'GM Names',
     accessor: 'gmNames',
+    disableGlobalFilter: false,
   },
   {
     id: 'GM',
@@ -85,6 +87,7 @@ const columns: Column<Game>[] = [
   },
   {
     accessor: 'description',
+    disableGlobalFilter: false,
   },
   {
     accessor: 'estimatedLength',
@@ -112,8 +115,8 @@ const columns: Column<Game>[] = [
   { accessor: 'genre' },
   { accessor: 'type' },
   { accessor: 'setting' },
-  { accessor: 'charInstructions' },
-  { accessor: 'playerPreference' },
+  { accessor: 'charInstructions', disableGlobalFilter: false },
+  { accessor: 'playerPreference', disableGlobalFilter: false },
   { accessor: 'returningPlayers' },
   { accessor: 'playersContactGm' },
   { accessor: 'gameContactEmail' },
@@ -121,7 +124,7 @@ const columns: Column<Game>[] = [
   { accessor: 'lateStart' },
   { accessor: 'lateFinish', Cell: YesBlankCell },
   { accessor: 'slotConflicts' },
-  { accessor: 'message' },
+  { accessor: 'message', disableGlobalFilter: false },
   { accessor: 'teenFriendly', Cell: YesBlankCell },
   { accessor: 'full', Cell: YesBlankCell },
 ]
@@ -238,6 +241,7 @@ export const Games: React.FC = React.memo(() => {
         initialState={initialState}
         extraCommands={commands}
         onRefresh={() => refetch()}
+        defaultColumnDisableGlobalFilter
       />
     </Page>
   )
