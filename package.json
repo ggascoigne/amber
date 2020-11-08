@@ -108,7 +108,7 @@
     "graphile-build-pg": "^4.9.2",
     "graphiql": "^1.0.6",
     "graphiql-explorer": "^0.6.2",
-    "graphql": "14.6.0",
+    "graphql": "^14.7.0",
     "graphql.macro": "^1.4.2",
     "history": "^5.0.0",
     "ics": "^2.26.1",
@@ -147,6 +147,8 @@
   },
   "resolutions": {
     "@types/react": "^16.9.56",
+    "graphql": "14.7.0",
+    "node-fetch": "2.6.1",
     "typescript": "4.0.5"
   },
   "scripts": {

@@ -7613,7 +7613,7 @@ export const GetGamesBySlotForSignupDocument = gql`
  * });
  */
 export function useGetGamesBySlotForSignupQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
 ) {
   return Apollo.useQuery<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
     GetGamesBySlotForSignupDocument,
@@ -7667,7 +7667,7 @@ export const GetGamesBySlotDocument = gql`
  * });
  */
 export function useGetGamesBySlotQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
 ) {
   return Apollo.useQuery<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument, baseOptions)
 }
@@ -7719,7 +7719,7 @@ export const GetGamesByYearDocument = gql`
  * });
  */
 export function useGetGamesByYearQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGamesByYearQuery, GetGamesByYearQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGamesByYearQuery, GetGamesByYearQueryVariables>
 ) {
   return Apollo.useQuery<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument, baseOptions)
 }
@@ -7763,7 +7763,7 @@ export const GetSmallGamesByYearDocument = gql`
  * });
  */
 export function useGetSmallGamesByYearQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
 ) {
   return Apollo.useQuery<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(
     GetSmallGamesByYearDocument,
@@ -7946,7 +7946,7 @@ export const GetFirstGameOfSlotDocument = gql`
  * });
  */
 export function useGetFirstGameOfSlotQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>
 ) {
   return Apollo.useQuery<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>(
     GetFirstGameOfSlotDocument,
@@ -7999,7 +7999,7 @@ export const GetGamesByAuthorDocument = gql`
  * });
  */
 export function useGetGamesByAuthorQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
 ) {
   return Apollo.useQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument, baseOptions)
 }
@@ -8045,7 +8045,7 @@ export const GetGamesByYearAndAuthorDocument = gql`
  * });
  */
 export function useGetGamesByYearAndAuthorQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
 ) {
   return Apollo.useQuery<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
     GetGamesByYearAndAuthorDocument,
@@ -8093,9 +8093,7 @@ export const GetGameByIdDocument = gql`
  *   },
  * });
  */
-export function useGetGameByIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>
-) {
+export function useGetGameByIdQuery(baseOptions: Apollo.QueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>) {
   return Apollo.useQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, baseOptions)
 }
 export function useGetGameByIdLazyQuery(
@@ -8134,7 +8132,7 @@ export const GetGameAssignmentsByYearDocument = gql`
  * });
  */
 export function useGetGameAssignmentsByYearQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
 ) {
   return Apollo.useQuery<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
     GetGameAssignmentsByYearDocument,
@@ -8183,7 +8181,7 @@ export const GetGameAssignmentsByGameIdDocument = gql`
  * });
  */
 export function useGetGameAssignmentsByGameIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
 ) {
   return Apollo.useQuery<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
     GetGameAssignmentsByGameIdDocument,
@@ -8232,7 +8230,7 @@ export const GetGameAssignmentsByMemberIdDocument = gql`
  * });
  */
 export function useGetGameAssignmentsByMemberIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>
 ) {
   return Apollo.useQuery<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
     GetGameAssignmentsByMemberIdDocument,
@@ -8434,9 +8432,7 @@ export const GetScheduleDocument = gql`
  *   },
  * });
  */
-export function useGetScheduleQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>
-) {
+export function useGetScheduleQuery(baseOptions: Apollo.QueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>) {
   return Apollo.useQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, baseOptions)
 }
 export function useGetScheduleLazyQuery(
@@ -8526,7 +8522,7 @@ export const GetGameChoicesDocument = gql`
  * });
  */
 export function useGetGameChoicesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
 ) {
   return Apollo.useQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, baseOptions)
 }
@@ -8564,7 +8560,7 @@ export const ReadGameChoiceDocument = gql`
  * });
  */
 export function useReadGameChoiceQuery(
-  baseOptions?: Apollo.QueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
 ) {
   return Apollo.useQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, baseOptions)
 }
@@ -8848,7 +8844,7 @@ export const GetLookupValuesDocument = gql`
  * });
  */
 export function useGetLookupValuesQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetLookupValuesQuery, GetLookupValuesQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetLookupValuesQuery, GetLookupValuesQueryVariables>
 ) {
   return Apollo.useQuery<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument, baseOptions)
 }
@@ -8897,7 +8893,7 @@ export const GetSingleLookupValueDocument = gql`
  * });
  */
 export function useGetSingleLookupValueQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>
 ) {
   return Apollo.useQuery<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>(
     GetSingleLookupValueDocument,
@@ -9210,7 +9206,7 @@ export const GetMembershipByYearAndIdDocument = gql`
  * });
  */
 export function useGetMembershipByYearAndIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
 ) {
   return Apollo.useQuery<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
     GetMembershipByYearAndIdDocument,
@@ -9259,7 +9255,7 @@ export const GetMembershipsByYearDocument = gql`
  * });
  */
 export function useGetMembershipsByYearQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
 ) {
   return Apollo.useQuery<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(
     GetMembershipsByYearDocument,
@@ -9308,7 +9304,7 @@ export const GetMembershipsByIdDocument = gql`
  * });
  */
 export function useGetMembershipsByIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
 ) {
   return Apollo.useQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(
     GetMembershipsByIdDocument,
@@ -9689,7 +9685,7 @@ export const GetUserByEmailDocument = gql`
  * });
  */
 export function useGetUserByEmailQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
 ) {
   return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, baseOptions)
 }
@@ -9726,9 +9722,7 @@ export const GetUserByIdDocument = gql`
  *   },
  * });
  */
-export function useGetUserByIdQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>
-) {
+export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
   return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions)
 }
 export function useGetUserByIdLazyQuery(
@@ -9857,7 +9851,7 @@ export const GetAllUsersByDocument = gql`
  * });
  */
 export function useGetAllUsersByQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
+  baseOptions: Apollo.QueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
 ) {
   return Apollo.useQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, baseOptions)
 }
