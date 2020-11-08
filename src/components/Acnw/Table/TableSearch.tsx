@@ -1,4 +1,5 @@
-import { TextField } from '@material-ui/core'
+import { IconButton, TextField } from '@material-ui/core'
+import ClearIcon from '@material-ui/icons/Clear'
 import React, { PropsWithChildren, ReactElement, useCallback, useEffect } from 'react'
 import { TableInstance } from 'react-table'
 
@@ -18,29 +19,24 @@ export function TableSearch<T extends Record<string, unknown>>({
 
   const [value, setValue] = React.useState(globalFilter)
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
+  const setVars = useCallback(
+    (value: string | undefined) => {
       if (!disableGlobalFilter) {
-        const value = e.target.value || undefined
         setGlobalFilter(value)
-        setValue(e.target.value)
+        setValue(value ?? '')
         if (value !== globalFilter) gotoPage(0)
       }
     },
     [disableGlobalFilter, globalFilter, gotoPage, setGlobalFilter]
   )
 
-  const handleBlur = useCallback(
-    (e: React.FocusEvent<HTMLInputElement>) => {
-      if (!disableGlobalFilter) {
-        const value = e.target.value || undefined
-        setGlobalFilter(value)
-        // setValue(e.target.value)
-        if (value !== globalFilter) gotoPage(0)
-      }
-    },
-    [disableGlobalFilter, globalFilter, gotoPage, setGlobalFilter]
-  )
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setVars(e.target.value || undefined), [
+    setVars,
+  ])
+
+  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => setVars(e.target.value || undefined), [
+    setVars,
+  ])
 
   // ensure that reset loads the new value
   useEffect(() => {
@@ -55,6 +51,13 @@ export function TableSearch<T extends Record<string, unknown>>({
       label='Search'
       fullWidth
       value={value}
+      InputProps={{
+        endAdornment: (
+          <IconButton onClick={() => setVars('')}>
+            <ClearIcon />
+          </IconButton>
+        ),
+      }}
       variant='standard'
       onChange={handleChange}
       onBlur={handleBlur}
