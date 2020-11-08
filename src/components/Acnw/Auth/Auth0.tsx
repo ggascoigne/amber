@@ -117,7 +117,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const getEnrichedUser = async (client: Auth0Client) => {
     const userProfile = await client.getUser()
     const token = await client.getTokenSilently()
-    const decodedToken: AccessToken | undefined = token && JwtDecode(token)
+    const decodedToken: AccessToken | undefined = token && (JwtDecode(token) as AccessToken)
     return decodedToken ? { ...userProfile, ...decodedToken[AUTH_CONFIG.audience] } : userProfile
   }
 
