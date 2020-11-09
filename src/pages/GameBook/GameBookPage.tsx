@@ -32,7 +32,7 @@ export const GameBookPage: React.FC = () => {
   return (
     <Page>
       <GridContainer spacing={2} justify='center'>
-        {years.reverse().map((year) => (
+        {years.map((year) => (
           <GridItem key={year} xl={2} lg={3} md={4} sm={6}>
             <GameByYear year={year} to={`/game-book/${year}/1`} />
           </GridItem>
