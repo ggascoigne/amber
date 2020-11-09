@@ -28,8 +28,8 @@ query getAllUsers {
   }
 }
 
-query getAllUsersBy($query: String!, $offset: Int = 0, $limit: Int = 10) {
-  users(orderBy: LAST_NAME_ASC, filter: { fullName: { includesInsensitive: $query } }, first: $limit, offset: $offset) {
+query getAllUsersBy($query: String!) {
+  users(orderBy: LAST_NAME_ASC, filter: { fullName: { includesInsensitive: $query } }) {
     nodes {
       ...userFields
       memberships(condition: { attending: true }) {
@@ -39,6 +39,5 @@ query getAllUsersBy($query: String!, $offset: Int = 0, $limit: Int = 10) {
         }
       }
     }
-    totalCount
   }
 }

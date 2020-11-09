@@ -29,13 +29,13 @@ export function offsetLimitNodePagination<T = Reference>(keyArgs: KeyArgs = fals
 }
 
 const cache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        users: offsetLimitNodePagination(['filter']),
-      },
-    },
-  },
+  // typePolicies: {
+  //   Query: {
+  //     fields: {
+  //       users: offsetLimitNodePagination(['filter']),
+  //     },
+  //   },
+  // },
   // postgraphile uses nodeId for the uuid, and leaves id as the database id.
   // dataIdFromObject: (obj: any) => obj?.nodeId,
 })

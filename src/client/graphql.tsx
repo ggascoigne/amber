@@ -7388,23 +7388,21 @@ export type GetAllUsersQuery = { __typename: 'Query' } & {
 
 export type GetAllUsersByQueryVariables = Exact<{
   query: Scalars['String']
-  offset?: Maybe<Scalars['Int']>
-  limit?: Maybe<Scalars['Int']>
 }>
 
 export type GetAllUsersByQuery = { __typename: 'Query' } & {
   users?: Maybe<
-    { __typename: 'UsersConnection' } & Pick<UsersConnection, 'totalCount'> & {
-        nodes: Array<
-          Maybe<
-            { __typename: 'User' } & {
-              memberships: { __typename: 'MembershipsConnection' } & {
-                nodes: Array<Maybe<{ __typename: 'Membership' } & Pick<Membership, 'id' | 'year'>>>
-              }
-            } & UserFieldsFragment
-          >
+    { __typename: 'UsersConnection' } & {
+      nodes: Array<
+        Maybe<
+          { __typename: 'User' } & {
+            memberships: { __typename: 'MembershipsConnection' } & {
+              nodes: Array<Maybe<{ __typename: 'Membership' } & Pick<Membership, 'id' | 'year'>>>
+            }
+          } & UserFieldsFragment
         >
-      }
+      >
+    }
   >
 }
 
@@ -9810,13 +9808,8 @@ export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
 export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAllUsersQueryVariables>
 export const GetAllUsersByDocument = gql`
-  query getAllUsersBy($query: String!, $offset: Int = 0, $limit: Int = 10) {
-    users(
-      orderBy: LAST_NAME_ASC
-      filter: { fullName: { includesInsensitive: $query } }
-      first: $limit
-      offset: $offset
-    ) {
+  query getAllUsersBy($query: String!) {
+    users(orderBy: LAST_NAME_ASC, filter: { fullName: { includesInsensitive: $query } }) {
       nodes {
         ...userFields
         memberships(condition: { attending: true }) {
@@ -9826,7 +9819,6 @@ export const GetAllUsersByDocument = gql`
           }
         }
       }
-      totalCount
     }
   }
   ${UserFieldsFragmentDoc}
@@ -9845,8 +9837,6 @@ export const GetAllUsersByDocument = gql`
  * const { data, loading, error } = useGetAllUsersByQuery({
  *   variables: {
  *      query: // value for 'query'
- *      offset: // value for 'offset'
- *      limit: // value for 'limit'
  *   },
  * });
  */
