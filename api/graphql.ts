@@ -1,10 +1,10 @@
 import { postgraphile } from 'postgraphile'
 
-import { getPool, getSchemas } from '../../shared/config'
-import { options } from '../../shared/postgraphileOptions'
-import { checkJwt, getUserId, isAdmin } from '../_checkJwt'
-import { audience, isDev } from '../_constants'
-import { withApiHandler } from '../_standardHandler'
+import { getPool, getSchemas } from '../shared/config'
+import { options } from '../shared/postgraphileOptions'
+import { checkJwt, getUserId, isAdmin } from './_checkJwt'
+import { audience, isDev } from './_constants'
+import { withApiHandler } from './_standardHandler'
 
 // /api/graphql
 // auth token: optional
@@ -12,9 +12,9 @@ import { withApiHandler } from '../_standardHandler'
 
 export default withApiHandler([
   checkJwt,
-  postgraphile(getPool(`${__dirname}/../../shared/`), getSchemas(), {
+  postgraphile(getPool(`${__dirname}/../shared/`), getSchemas(), {
     ...options,
-    readCache: `${__dirname}/../../shared/postgraphile.cache`,
+    readCache: `${__dirname}/../shared/postgraphile.cache`,
     pgSettings: (req) => {
       const { user } = req as any
       const settings: Record<string, any> = {}
