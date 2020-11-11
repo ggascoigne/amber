@@ -1,5 +1,7 @@
 #Todos & Ideas
 
+* [ ] Add readme, contributing guide, etc.
+* [ ] add tests, either unit or Cypress
 
 * [ ] Game book only shows in PST
 
