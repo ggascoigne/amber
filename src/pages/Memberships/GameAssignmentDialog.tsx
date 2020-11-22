@@ -15,7 +15,7 @@ import {
 import { dequal as deepEqual } from 'dequal'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { notEmpty, onCloseHandler, pick, range, useYearFilterState } from 'utils'
+import { notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
 import {
   GameAssignmentNode,
@@ -38,7 +38,7 @@ interface GameAssignmentDialogProps {
 }
 
 export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open, onClose, membership }) => {
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const [createGameAssignment] = useCreateGameAssignmentMutation()

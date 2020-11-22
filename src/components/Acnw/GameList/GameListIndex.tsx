@@ -3,7 +3,7 @@ import List from '@material-ui/core/List'
 import createStyles from '@material-ui/core/styles/createStyles'
 import type { GameArray } from 'client'
 import React from 'react'
-import { useUrlSourceState } from 'utils'
+import { useUrlSource } from 'utils'
 
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
@@ -36,7 +36,7 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
   decoratorParams,
 }) => {
   const classes = useStyles()
-  const urlSource = useUrlSourceState((state) => state.urlSource)
+  const [urlSource] = useUrlSource()
   return (
     <List>
       {games.map(({ node: game }) => {

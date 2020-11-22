@@ -2,7 +2,7 @@ import { FormControl, MenuItem, TextField, Theme, createStyles } from '@material
 import { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import * as React from 'react'
-import { configuration, range, useYearFilterState } from 'utils'
+import { configuration, range, useYearFilter } from 'utils'
 
 import { getSelectLabel, getSelectValue } from './Form'
 
@@ -45,8 +45,7 @@ const possibleYears: string[] = range(2011, configuration.year, -1)
 
 export const YearSelector = () => {
   const classes = useStyles()
-  const year = useYearFilterState((state) => state.year)
-  const setYear = useYearFilterState((state) => state.setYear)
+  const [year, setYear] = useYearFilter()
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
     const year = event.target.value as string

@@ -18,7 +18,7 @@ import { ThenArg, isDev, useLocalStorage } from 'utils'
 import { useNotification } from '../Notifications'
 import { checkMany } from './authUtils'
 import rules, { Perms } from './PermissionRules'
-import { useAuthOverride } from './useAuthOverride'
+import { useRoleOverride } from './useRoleOverride'
 
 const AUTH_CONFIG = {
   domain: process.env.REACT_APP_AUTH0_DOMAIN ?? '',
@@ -111,7 +111,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const [auth0Client, setAuth0Client] = useState<Auth0Client>()
   const [notify] = useNotification()
   const [showVerifyEmailMessage, setShowVerifyEmailMessage] = useLocalStorage<boolean>('showVerifyEmailMessage', false)
-  const roleOverride: string | undefined = useAuthOverride((state) => state.roleOverride)
+  const [roleOverride] = useRoleOverride()
   const history = useHistory()
 
   const getEnrichedUser = async (client: Auth0Client) => {

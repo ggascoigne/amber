@@ -11,7 +11,7 @@ import {
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { notEmpty, useYearFilterState } from 'utils'
+import { notEmpty, useYearFilter } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { YesBlankCell } from '../../components/Acnw/Table/CellFormatters'
@@ -137,7 +137,7 @@ const useStyles = makeStyles(() =>
   })
 )
 export const Games: React.FC = React.memo(() => {
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()

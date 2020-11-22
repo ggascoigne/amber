@@ -1,11 +1,7 @@
-import create from 'zustand'
-import { combine } from 'zustand/middleware'
+import { atom, useAtom } from 'jotai'
 
 import { configuration } from './configuration'
 
-export const useYearFilterState = create(
-  combine({ year: configuration.year }, (set) => ({
-    setYear: (year: number) => set((state) => ({ year })),
-    reset: () => set((state) => ({ year: configuration.year })),
-  }))
-)
+const yearFilterAtom = atom<number>(configuration.year)
+
+export const useYearFilter = () => useAtom(yearFilterAtom)

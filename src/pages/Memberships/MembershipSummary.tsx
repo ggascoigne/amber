@@ -5,7 +5,7 @@ import { Field, MultiLine } from 'components/Acnw/CardUtils'
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 
 import { useGetMembershipByYearAndIdQuery } from '../../client'
-import { configuration, getSlotDescription, isNotPacificTime, range, useUser, useYearFilterState } from '../../utils'
+import { configuration, getSlotDescription, isNotPacificTime, range, useUser, useYearFilter } from '../../utils'
 import { useForceLogin } from '../../utils/useForceLogin'
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipDialog } from './MembershipDialog'
@@ -30,7 +30,7 @@ export const MembershipSummary: React.FC = () => {
   const forceLogin = useForceLogin()
   const profile = useProfile()
   const { userId } = useUser()
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const { loading, error, data } = useGetMembershipByYearAndIdQuery({ variables: { year, userId: userId ?? 0 } })
   const [showEdit, setShowEdit] = useState(false)
   const classes = useStyles()

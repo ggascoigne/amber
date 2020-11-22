@@ -1,7 +1,7 @@
 import type { GameArray } from 'client'
 import { GameCard } from 'components/Acnw'
 import React, { useEffect } from 'react'
-import { useScrollToHash, useUrlSourceState } from 'utils'
+import { useScrollToHash, useUrlSource } from 'utils'
 
 import { GameDecorator, GameDecoratorParams } from '../types'
 
@@ -27,7 +27,7 @@ export const GameListFull: React.FC<GameListFullProps> = ({
   decorator,
   decoratorParams,
 }) => {
-  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
+  const [_, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
   const firstGameId = games?.[0]?.node?.id
   const slot = slotInput || 0

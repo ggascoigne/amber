@@ -4,12 +4,12 @@ import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery 
 import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { notEmpty } from './ts-utils'
 import { useUser } from './useUserFilterState'
-import { useYearFilterState } from './useYearFilterState'
+import { useYearFilter } from './useYearFilterState'
 
 const nullOp = (): null => null
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const { data } = useGetMembershipByYearAndIdQuery({
     skip: !userId,
     variables: { year, userId: userId! },

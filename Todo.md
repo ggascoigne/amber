@@ -2,7 +2,8 @@
 
 * [ ] Add readme, contributing guide, etc.
 * [ ] add tests, either unit or Cypress
-
+* [ ] investigate https://www.w3.org/WAI/tutorials/tables/irregular/
+  
 * [ ] Game book only shows in PST
 
 * [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 

@@ -28,1562 +28,531 @@ export type Scalars = {
   BigFloat: any
 }
 
-/** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
-export type BigFloatFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['BigFloat']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['BigFloat']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['BigFloat']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['BigFloat']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['BigFloat']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['BigFloat']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['BigFloat']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['BigFloat']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['BigFloat']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['BigFloat']>
-}
-
-/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
-export type BigIntFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['BigInt']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['BigInt']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['BigInt']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['BigInt']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['BigInt']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['BigInt']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['BigInt']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['BigInt']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['BigInt']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['BigInt']>
-}
-
-/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
-export type BooleanFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Boolean']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Boolean']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Boolean']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Boolean']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Boolean']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Boolean']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Boolean']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>
-}
-
-/** All input for the `createBareSlotChoices` mutation. */
-export type CreateBareSlotChoicesInput = {
+/** The root query type which gives access points into the data universe. */
+export type Query = Node & {
+  __typename: 'Query'
   /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
+   * Exposes the root query type nested one level down. This is helpful for Relay 1
+   * which can only query top level fields if they are in a particular form.
    */
-  clientMutationId?: Maybe<Scalars['String']>
-  memberId?: Maybe<Scalars['Int']>
-  yearno?: Maybe<Scalars['Int']>
-}
-
-/** The output of our `createBareSlotChoices` mutation. */
-export type CreateBareSlotChoicesPayload = {
-  __typename: 'CreateBareSlotChoicesPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-}
-
-/** All input for the create `GameAssignment` mutation. */
-export type CreateGameAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` to be created by this mutation. */
-  gameAssignment: GameAssignmentInput
-}
-
-/** The output of our create `GameAssignment` mutation. */
-export type CreateGameAssignmentPayload = {
-  __typename: 'CreateGameAssignmentPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was created by this mutation. */
+  query: Query
+  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
+  nodeId: Scalars['ID']
+  /** Fetches an object given its globally unique `ID`. */
+  node?: Maybe<Node>
+  /** Reads and enables pagination through a set of `Game`. */
+  games?: Maybe<GamesConnection>
+  /** Reads and enables pagination through a set of `GameAssignment`. */
+  gameAssignments?: Maybe<GameAssignmentsConnection>
+  /** Reads and enables pagination through a set of `GameChoice`. */
+  gameChoices?: Maybe<GameChoicesConnection>
+  /** Reads and enables pagination through a set of `GameSubmission`. */
+  gameSubmissions?: Maybe<GameSubmissionsConnection>
+  /** Reads and enables pagination through a set of `HotelRoom`. */
+  hotelRooms?: Maybe<HotelRoomsConnection>
+  /** Reads and enables pagination through a set of `HotelRoomDetail`. */
+  hotelRoomDetails?: Maybe<HotelRoomDetailsConnection>
+  /** Reads and enables pagination through a set of `Lookup`. */
+  lookups?: Maybe<LookupsConnection>
+  /** Reads and enables pagination through a set of `LookupValue`. */
+  lookupValues?: Maybe<LookupValuesConnection>
+  /** Reads and enables pagination through a set of `Membership`. */
+  memberships?: Maybe<MembershipsConnection>
+  /** Reads and enables pagination through a set of `Role`. */
+  roles?: Maybe<RolesConnection>
+  /** Reads and enables pagination through a set of `Room`. */
+  rooms?: Maybe<RoomsConnection>
+  /** Reads and enables pagination through a set of `Setting`. */
+  settings?: Maybe<SettingsConnection>
+  /** Reads and enables pagination through a set of `ShirtOrder`. */
+  shirtOrders?: Maybe<ShirtOrdersConnection>
+  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
+  shirtOrderItems?: Maybe<ShirtOrderItemsConnection>
+  /** Reads and enables pagination through a set of `Slot`. */
+  slots?: Maybe<SlotsConnection>
+  /** Reads and enables pagination through a set of `User`. */
+  users?: Maybe<UsersConnection>
+  /** Reads and enables pagination through a set of `UserRole`. */
+  userRoles?: Maybe<UserRolesConnection>
+  game?: Maybe<Game>
   gameAssignment?: Maybe<GameAssignment>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Game` that is related to this `GameAssignment`. */
-  game?: Maybe<Game>
-  /** An edge for our `GameAssignment`. May be used by Relay 1. */
-  gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
-}
-
-/** The output of our create `GameAssignment` mutation. */
-export type CreateGameAssignmentPayloadGameAssignmentEdgeArgs = {
-  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-}
-
-/** All input for the create `GameChoice` mutation. */
-export type CreateGameChoiceInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` to be created by this mutation. */
-  gameChoice: GameChoiceInput
-}
-
-/** The output of our create `GameChoice` mutation. */
-export type CreateGameChoicePayload = {
-  __typename: 'CreateGameChoicePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was created by this mutation. */
   gameChoice?: Maybe<GameChoice>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Game` that is related to this `GameChoice`. */
-  game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
-  /** An edge for our `GameChoice`. May be used by Relay 1. */
-  gameChoiceEdge?: Maybe<GameChoicesEdge>
-}
-
-/** The output of our create `GameChoice` mutation. */
-export type CreateGameChoicePayloadGameChoiceEdgeArgs = {
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-}
-
-/** All input for the create `Game` mutation. */
-export type CreateGameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Game` to be created by this mutation. */
-  game: GameInput
-}
-
-/** The output of our create `Game` mutation. */
-export type CreateGamePayload = {
-  __typename: 'CreateGamePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Game` that was created by this mutation. */
-  game?: Maybe<Game>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Room` that is related to this `Game`. */
-  room?: Maybe<Room>
-  /** Reads a single `Slot` that is related to this `Game`. */
-  slot?: Maybe<Slot>
-  /** Reads a single `User` that is related to this `Game`. */
-  author?: Maybe<User>
-  /** An edge for our `Game`. May be used by Relay 1. */
-  gameEdge?: Maybe<GamesEdge>
-}
-
-/** The output of our create `Game` mutation. */
-export type CreateGamePayloadGameEdgeArgs = {
-  orderBy?: Maybe<Array<GamesOrderBy>>
-}
-
-/** All input for the create `GameSubmission` mutation. */
-export type CreateGameSubmissionInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameSubmission` to be created by this mutation. */
-  gameSubmission: GameSubmissionInput
-}
-
-/** The output of our create `GameSubmission` mutation. */
-export type CreateGameSubmissionPayload = {
-  __typename: 'CreateGameSubmissionPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameSubmission` that was created by this mutation. */
   gameSubmission?: Maybe<GameSubmission>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
-  /** An edge for our `GameSubmission`. May be used by Relay 1. */
-  gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
-}
-
-/** The output of our create `GameSubmission` mutation. */
-export type CreateGameSubmissionPayloadGameSubmissionEdgeArgs = {
-  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-}
-
-/** All input for the create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoomDetail` to be created by this mutation. */
-  hotelRoomDetail: HotelRoomDetailInput
-}
-
-/** The output of our create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailPayload = {
-  __typename: 'CreateHotelRoomDetailPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoomDetail` that was created by this mutation. */
+  hotelRoom?: Maybe<HotelRoom>
   hotelRoomDetail?: Maybe<HotelRoomDetail>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
-  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
-}
-
-/** The output of our create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
-  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
-}
-
-/** All input for the create `HotelRoom` mutation. */
-export type CreateHotelRoomInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoom` to be created by this mutation. */
-  hotelRoom: HotelRoomInput
-}
-
-/** The output of our create `HotelRoom` mutation. */
-export type CreateHotelRoomPayload = {
-  __typename: 'CreateHotelRoomPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoom` that was created by this mutation. */
-  hotelRoom?: Maybe<HotelRoom>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `HotelRoom`. May be used by Relay 1. */
-  hotelRoomEdge?: Maybe<HotelRoomsEdge>
-}
-
-/** The output of our create `HotelRoom` mutation. */
-export type CreateHotelRoomPayloadHotelRoomEdgeArgs = {
-  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
-}
-
-/** All input for the create `Lookup` mutation. */
-export type CreateLookupInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Lookup` to be created by this mutation. */
-  lookup: LookupInput
-}
-
-/** The output of our create `Lookup` mutation. */
-export type CreateLookupPayload = {
-  __typename: 'CreateLookupPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Lookup` that was created by this mutation. */
   lookup?: Maybe<Lookup>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Lookup`. May be used by Relay 1. */
-  lookupEdge?: Maybe<LookupsEdge>
-}
-
-/** The output of our create `Lookup` mutation. */
-export type CreateLookupPayloadLookupEdgeArgs = {
-  orderBy?: Maybe<Array<LookupsOrderBy>>
-}
-
-/** All input for the create `LookupValue` mutation. */
-export type CreateLookupValueInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` to be created by this mutation. */
-  lookupValue: LookupValueInput
-}
-
-/** The output of our create `LookupValue` mutation. */
-export type CreateLookupValuePayload = {
-  __typename: 'CreateLookupValuePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` that was created by this mutation. */
+  lookupByRealm?: Maybe<Lookup>
   lookupValue?: Maybe<LookupValue>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Lookup` that is related to this `LookupValue`. */
-  lookup?: Maybe<Lookup>
-  /** An edge for our `LookupValue`. May be used by Relay 1. */
-  lookupValueEdge?: Maybe<LookupValuesEdge>
-}
-
-/** The output of our create `LookupValue` mutation. */
-export type CreateLookupValuePayloadLookupValueEdgeArgs = {
-  orderBy?: Maybe<Array<LookupValuesOrderBy>>
-}
-
-/** All input for the create `Membership` mutation. */
-export type CreateMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` to be created by this mutation. */
-  membership: MembershipInput
-}
-
-/** The output of our create `Membership` mutation. */
-export type CreateMembershipPayload = {
-  __typename: 'CreateMembershipPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` that was created by this mutation. */
+  lookupValueByLookupIdAndCode?: Maybe<LookupValue>
   membership?: Maybe<Membership>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `HotelRoom` that is related to this `Membership`. */
-  hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
-  /** An edge for our `Membership`. May be used by Relay 1. */
-  membershipEdge?: Maybe<MembershipsEdge>
-}
-
-/** The output of our create `Membership` mutation. */
-export type CreateMembershipPayloadMembershipEdgeArgs = {
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-}
-
-/** All input for the create `Role` mutation. */
-export type CreateRoleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` to be created by this mutation. */
-  role: RoleInput
-}
-
-/** The output of our create `Role` mutation. */
-export type CreateRolePayload = {
-  __typename: 'CreateRolePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` that was created by this mutation. */
   role?: Maybe<Role>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Role`. May be used by Relay 1. */
-  roleEdge?: Maybe<RolesEdge>
-}
-
-/** The output of our create `Role` mutation. */
-export type CreateRolePayloadRoleEdgeArgs = {
-  orderBy?: Maybe<Array<RolesOrderBy>>
-}
-
-/** All input for the create `Room` mutation. */
-export type CreateRoomInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` to be created by this mutation. */
-  room: RoomInput
-}
-
-/** The output of our create `Room` mutation. */
-export type CreateRoomPayload = {
-  __typename: 'CreateRoomPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` that was created by this mutation. */
+  roleByAuthority?: Maybe<Role>
   room?: Maybe<Room>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Room`. May be used by Relay 1. */
-  roomEdge?: Maybe<RoomsEdge>
-}
-
-/** The output of our create `Room` mutation. */
-export type CreateRoomPayloadRoomEdgeArgs = {
-  orderBy?: Maybe<Array<RoomsOrderBy>>
-}
-
-/** All input for the create `Setting` mutation. */
-export type CreateSettingInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` to be created by this mutation. */
-  setting: SettingInput
-}
-
-/** The output of our create `Setting` mutation. */
-export type CreateSettingPayload = {
-  __typename: 'CreateSettingPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` that was created by this mutation. */
   setting?: Maybe<Setting>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Setting`. May be used by Relay 1. */
-  settingEdge?: Maybe<SettingsEdge>
-}
-
-/** The output of our create `Setting` mutation. */
-export type CreateSettingPayloadSettingEdgeArgs = {
-  orderBy?: Maybe<Array<SettingsOrderBy>>
-}
-
-/** All input for the create `ShirtOrder` mutation. */
-export type CreateShirtOrderInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` to be created by this mutation. */
-  shirtOrder: ShirtOrderInput
-}
-
-/** All input for the create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` to be created by this mutation. */
-  shirtOrderItem: ShirtOrderItemInput
-}
-
-/** The output of our create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemPayload = {
-  __typename: 'CreateShirtOrderItemPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` that was created by this mutation. */
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
-  order?: Maybe<ShirtOrder>
-  /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
-  shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
-}
-
-/** The output of our create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
-  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-}
-
-/** The output of our create `ShirtOrder` mutation. */
-export type CreateShirtOrderPayload = {
-  __typename: 'CreateShirtOrderPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was created by this mutation. */
   shirtOrder?: Maybe<ShirtOrder>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
-  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
-  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
-}
-
-/** The output of our create `ShirtOrder` mutation. */
-export type CreateShirtOrderPayloadShirtOrderEdgeArgs = {
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-}
-
-/** All input for the create `Slot` mutation. */
-export type CreateSlotInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` to be created by this mutation. */
-  slot: SlotInput
-}
-
-/** The output of our create `Slot` mutation. */
-export type CreateSlotPayload = {
-  __typename: 'CreateSlotPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` that was created by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
   slot?: Maybe<Slot>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Slot`. May be used by Relay 1. */
-  slotEdge?: Maybe<SlotsEdge>
-}
-
-/** The output of our create `Slot` mutation. */
-export type CreateSlotPayloadSlotEdgeArgs = {
-  orderBy?: Maybe<Array<SlotsOrderBy>>
-}
-
-/** All input for the create `User` mutation. */
-export type CreateUserInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` to be created by this mutation. */
-  user: UserInput
-}
-
-/** The output of our create `User` mutation. */
-export type CreateUserPayload = {
-  __typename: 'CreateUserPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` that was created by this mutation. */
   user?: Maybe<User>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `User`. May be used by Relay 1. */
-  userEdge?: Maybe<UsersEdge>
-}
-
-/** The output of our create `User` mutation. */
-export type CreateUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>
-}
-
-/** All input for the create `UserRole` mutation. */
-export type CreateUserRoleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` to be created by this mutation. */
-  userRole: UserRoleInput
-}
-
-/** The output of our create `UserRole` mutation. */
-export type CreateUserRolePayload = {
-  __typename: 'CreateUserRolePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` that was created by this mutation. */
+  userByEmail?: Maybe<User>
   userRole?: Maybe<UserRole>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Role` that is related to this `UserRole`. */
-  role?: Maybe<Role>
-  /** Reads a single `User` that is related to this `UserRole`. */
-  user?: Maybe<User>
-  /** An edge for our `UserRole`. May be used by Relay 1. */
-  userRoleEdge?: Maybe<UserRolesEdge>
+  currentUserId?: Maybe<Scalars['Int']>
+  currentUserIsAdmin?: Maybe<Scalars['Boolean']>
+  /** Reads a single `Game` using its globally unique `ID`. */
+  gameByNodeId?: Maybe<Game>
+  /** Reads a single `GameAssignment` using its globally unique `ID`. */
+  gameAssignmentByNodeId?: Maybe<GameAssignment>
+  /** Reads a single `GameChoice` using its globally unique `ID`. */
+  gameChoiceByNodeId?: Maybe<GameChoice>
+  /** Reads a single `GameSubmission` using its globally unique `ID`. */
+  gameSubmissionByNodeId?: Maybe<GameSubmission>
+  /** Reads a single `HotelRoom` using its globally unique `ID`. */
+  hotelRoomByNodeId?: Maybe<HotelRoom>
+  /** Reads a single `HotelRoomDetail` using its globally unique `ID`. */
+  hotelRoomDetailByNodeId?: Maybe<HotelRoomDetail>
+  /** Reads a single `Lookup` using its globally unique `ID`. */
+  lookupByNodeId?: Maybe<Lookup>
+  /** Reads a single `LookupValue` using its globally unique `ID`. */
+  lookupValueByNodeId?: Maybe<LookupValue>
+  /** Reads a single `Membership` using its globally unique `ID`. */
+  membershipByNodeId?: Maybe<Membership>
+  /** Reads a single `Role` using its globally unique `ID`. */
+  roleByNodeId?: Maybe<Role>
+  /** Reads a single `Room` using its globally unique `ID`. */
+  roomByNodeId?: Maybe<Room>
+  /** Reads a single `Setting` using its globally unique `ID`. */
+  settingByNodeId?: Maybe<Setting>
+  /** Reads a single `ShirtOrder` using its globally unique `ID`. */
+  shirtOrderByNodeId?: Maybe<ShirtOrder>
+  /** Reads a single `ShirtOrderItem` using its globally unique `ID`. */
+  shirtOrderItemByNodeId?: Maybe<ShirtOrderItem>
+  /** Reads a single `Slot` using its globally unique `ID`. */
+  slotByNodeId?: Maybe<Slot>
+  /** Reads a single `User` using its globally unique `ID`. */
+  userByNodeId?: Maybe<User>
+  /** Reads a single `UserRole` using its globally unique `ID`. */
+  userRoleByNodeId?: Maybe<UserRole>
 }
 
-/** The output of our create `UserRole` mutation. */
-export type CreateUserRolePayloadUserRoleEdgeArgs = {
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
-}
-
-/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
-export type DatetimeFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Datetime']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Datetime']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Datetime']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Datetime']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Datetime']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Datetime']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Datetime']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Datetime']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Datetime']>
-}
-
-/** All input for the `deleteGameAssignmentByNodeId` mutation. */
-export type DeleteGameAssignmentByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameAssignment` to be deleted. */
+/** The root query type which gives access points into the data universe. */
+export type QueryNodeArgs = {
   nodeId: Scalars['ID']
 }
 
-/** All input for the `deleteGameAssignment` mutation. */
-export type DeleteGameAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryGamesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGameAssignmentsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
+  condition?: Maybe<GameAssignmentCondition>
+  filter?: Maybe<GameAssignmentFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGameChoicesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGameSubmissionsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
+  condition?: Maybe<GameSubmissionCondition>
+  filter?: Maybe<GameSubmissionFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
+  condition?: Maybe<HotelRoomCondition>
+  filter?: Maybe<HotelRoomFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomDetailsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
+  condition?: Maybe<HotelRoomDetailCondition>
+  filter?: Maybe<HotelRoomDetailFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<LookupsOrderBy>>
+  condition?: Maybe<LookupCondition>
+  filter?: Maybe<LookupFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupValuesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<LookupValuesOrderBy>>
+  condition?: Maybe<LookupValueCondition>
+  filter?: Maybe<LookupValueFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMembershipsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRolesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<RolesOrderBy>>
+  condition?: Maybe<RoleCondition>
+  filter?: Maybe<RoleFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRoomsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<RoomsOrderBy>>
+  condition?: Maybe<RoomCondition>
+  filter?: Maybe<RoomFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySettingsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<SettingsOrderBy>>
+  condition?: Maybe<SettingCondition>
+  filter?: Maybe<SettingFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrdersArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+  condition?: Maybe<ShirtOrderCondition>
+  filter?: Maybe<ShirtOrderFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrderItemsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
+  condition?: Maybe<ShirtOrderItemCondition>
+  filter?: Maybe<ShirtOrderItemFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySlotsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<SlotsOrderBy>>
+  condition?: Maybe<SlotCondition>
+  filter?: Maybe<SlotFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUsersArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<UsersOrderBy>>
+  condition?: Maybe<UserCondition>
+  filter?: Maybe<UserFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserRolesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGameArgs = {
+  id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryGameAssignmentArgs = {
   memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
 }
 
-/** The output of our delete `GameAssignment` mutation. */
-export type DeleteGameAssignmentPayload = {
-  __typename: 'DeleteGameAssignmentPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was deleted by this mutation. */
-  gameAssignment?: Maybe<GameAssignment>
-  deletedGameAssignmentNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Game` that is related to this `GameAssignment`. */
-  game?: Maybe<Game>
-  /** An edge for our `GameAssignment`. May be used by Relay 1. */
-  gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
-}
-
-/** The output of our delete `GameAssignment` mutation. */
-export type DeleteGameAssignmentPayloadGameAssignmentEdgeArgs = {
-  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-}
-
-/** All input for the `deleteGameByNodeId` mutation. */
-export type DeleteGameByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Game` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteGameChoiceByNodeId` mutation. */
-export type DeleteGameChoiceByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameChoice` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteGameChoice` mutation. */
-export type DeleteGameChoiceInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameChoiceArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `GameChoice` mutation. */
-export type DeleteGameChoicePayload = {
-  __typename: 'DeleteGameChoicePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was deleted by this mutation. */
-  gameChoice?: Maybe<GameChoice>
-  deletedGameChoiceNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Game` that is related to this `GameChoice`. */
-  game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
-  /** An edge for our `GameChoice`. May be used by Relay 1. */
-  gameChoiceEdge?: Maybe<GameChoicesEdge>
-}
-
-/** The output of our delete `GameChoice` mutation. */
-export type DeleteGameChoicePayloadGameChoiceEdgeArgs = {
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-}
-
-/** All input for the `deleteGame` mutation. */
-export type DeleteGameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameSubmissionArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Game` mutation. */
-export type DeleteGamePayload = {
-  __typename: 'DeleteGamePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Game` that was deleted by this mutation. */
-  game?: Maybe<Game>
-  deletedGameNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Room` that is related to this `Game`. */
-  room?: Maybe<Room>
-  /** Reads a single `Slot` that is related to this `Game`. */
-  slot?: Maybe<Slot>
-  /** Reads a single `User` that is related to this `Game`. */
-  author?: Maybe<User>
-  /** An edge for our `Game`. May be used by Relay 1. */
-  gameEdge?: Maybe<GamesEdge>
-}
-
-/** The output of our delete `Game` mutation. */
-export type DeleteGamePayloadGameEdgeArgs = {
-  orderBy?: Maybe<Array<GamesOrderBy>>
-}
-
-/** All input for the `deleteGameSubmissionByNodeId` mutation. */
-export type DeleteGameSubmissionByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameSubmission` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteGameSubmission` mutation. */
-export type DeleteGameSubmissionInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `GameSubmission` mutation. */
-export type DeleteGameSubmissionPayload = {
-  __typename: 'DeleteGameSubmissionPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameSubmission` that was deleted by this mutation. */
-  gameSubmission?: Maybe<GameSubmission>
-  deletedGameSubmissionNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
-  /** An edge for our `GameSubmission`. May be used by Relay 1. */
-  gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
-}
-
-/** The output of our delete `GameSubmission` mutation. */
-export type DeleteGameSubmissionPayloadGameSubmissionEdgeArgs = {
-  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-}
-
-/** All input for the `deleteHotelRoomByNodeId` mutation. */
-export type DeleteHotelRoomByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `HotelRoom` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteHotelRoomDetailByNodeId` mutation. */
-export type DeleteHotelRoomDetailByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `HotelRoomDetail` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteHotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomDetailArgs = {
   id: Scalars['BigInt']
 }
 
-/** The output of our delete `HotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailPayload = {
-  __typename: 'DeleteHotelRoomDetailPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoomDetail` that was deleted by this mutation. */
-  hotelRoomDetail?: Maybe<HotelRoomDetail>
-  deletedHotelRoomDetailNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
-  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
-}
-
-/** The output of our delete `HotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
-  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
-}
-
-/** All input for the `deleteHotelRoom` mutation. */
-export type DeleteHotelRoomInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `HotelRoom` mutation. */
-export type DeleteHotelRoomPayload = {
-  __typename: 'DeleteHotelRoomPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoom` that was deleted by this mutation. */
-  hotelRoom?: Maybe<HotelRoom>
-  deletedHotelRoomNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `HotelRoom`. May be used by Relay 1. */
-  hotelRoomEdge?: Maybe<HotelRoomsEdge>
-}
-
-/** The output of our delete `HotelRoom` mutation. */
-export type DeleteHotelRoomPayloadHotelRoomEdgeArgs = {
-  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
-}
-
-/** All input for the `deleteLookupByNodeId` mutation. */
-export type DeleteLookupByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Lookup` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteLookupByRealm` mutation. */
-export type DeleteLookupByRealmInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupByRealmArgs = {
   realm: Scalars['String']
 }
 
-/** All input for the `deleteLookup` mutation. */
-export type DeleteLookupInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupValueArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Lookup` mutation. */
-export type DeleteLookupPayload = {
-  __typename: 'DeleteLookupPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Lookup` that was deleted by this mutation. */
-  lookup?: Maybe<Lookup>
-  deletedLookupNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Lookup`. May be used by Relay 1. */
-  lookupEdge?: Maybe<LookupsEdge>
-}
-
-/** The output of our delete `Lookup` mutation. */
-export type DeleteLookupPayloadLookupEdgeArgs = {
-  orderBy?: Maybe<Array<LookupsOrderBy>>
-}
-
-/** All input for the `deleteLookupValueByLookupIdAndCode` mutation. */
-export type DeleteLookupValueByLookupIdAndCodeInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupValueByLookupIdAndCodeArgs = {
   lookupId: Scalars['Int']
   code: Scalars['String']
 }
 
-/** All input for the `deleteLookupValueByNodeId` mutation. */
-export type DeleteLookupValueByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `LookupValue` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteLookupValue` mutation. */
-export type DeleteLookupValueInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryMembershipArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `LookupValue` mutation. */
-export type DeleteLookupValuePayload = {
-  __typename: 'DeleteLookupValuePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` that was deleted by this mutation. */
-  lookupValue?: Maybe<LookupValue>
-  deletedLookupValueNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Lookup` that is related to this `LookupValue`. */
-  lookup?: Maybe<Lookup>
-  /** An edge for our `LookupValue`. May be used by Relay 1. */
-  lookupValueEdge?: Maybe<LookupValuesEdge>
-}
-
-/** The output of our delete `LookupValue` mutation. */
-export type DeleteLookupValuePayloadLookupValueEdgeArgs = {
-  orderBy?: Maybe<Array<LookupValuesOrderBy>>
-}
-
-/** All input for the `deleteMembershipByNodeId` mutation. */
-export type DeleteMembershipByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Membership` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteMembership` mutation. */
-export type DeleteMembershipInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryRoleArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Membership` mutation. */
-export type DeleteMembershipPayload = {
-  __typename: 'DeleteMembershipPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` that was deleted by this mutation. */
-  membership?: Maybe<Membership>
-  deletedMembershipNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `HotelRoom` that is related to this `Membership`. */
-  hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
-  /** An edge for our `Membership`. May be used by Relay 1. */
-  membershipEdge?: Maybe<MembershipsEdge>
-}
-
-/** The output of our delete `Membership` mutation. */
-export type DeleteMembershipPayloadMembershipEdgeArgs = {
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-}
-
-/** All input for the `deleteRoleByAuthority` mutation. */
-export type DeleteRoleByAuthorityInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryRoleByAuthorityArgs = {
   authority: Scalars['String']
 }
 
-/** All input for the `deleteRoleByNodeId` mutation. */
-export type DeleteRoleByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Role` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteRole` mutation. */
-export type DeleteRoleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryRoomArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Role` mutation. */
-export type DeleteRolePayload = {
-  __typename: 'DeleteRolePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` that was deleted by this mutation. */
-  role?: Maybe<Role>
-  deletedRoleNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Role`. May be used by Relay 1. */
-  roleEdge?: Maybe<RolesEdge>
-}
-
-/** The output of our delete `Role` mutation. */
-export type DeleteRolePayloadRoleEdgeArgs = {
-  orderBy?: Maybe<Array<RolesOrderBy>>
-}
-
-/** All input for the `deleteRoomByNodeId` mutation. */
-export type DeleteRoomByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Room` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteRoom` mutation. */
-export type DeleteRoomInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QuerySettingArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Room` mutation. */
-export type DeleteRoomPayload = {
-  __typename: 'DeleteRoomPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` that was deleted by this mutation. */
-  room?: Maybe<Room>
-  deletedRoomNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Room`. May be used by Relay 1. */
-  roomEdge?: Maybe<RoomsEdge>
-}
-
-/** The output of our delete `Room` mutation. */
-export type DeleteRoomPayloadRoomEdgeArgs = {
-  orderBy?: Maybe<Array<RoomsOrderBy>>
-}
-
-/** All input for the `deleteSettingByNodeId` mutation. */
-export type DeleteSettingByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Setting` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteSetting` mutation. */
-export type DeleteSettingInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrderArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Setting` mutation. */
-export type DeleteSettingPayload = {
-  __typename: 'DeleteSettingPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` that was deleted by this mutation. */
-  setting?: Maybe<Setting>
-  deletedSettingNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Setting`. May be used by Relay 1. */
-  settingEdge?: Maybe<SettingsEdge>
-}
-
-/** The output of our delete `Setting` mutation. */
-export type DeleteSettingPayloadSettingEdgeArgs = {
-  orderBy?: Maybe<Array<SettingsOrderBy>>
-}
-
-/** All input for the `deleteShirtOrderByNodeId` mutation. */
-export type DeleteShirtOrderByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `ShirtOrder` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteShirtOrder` mutation. */
-export type DeleteShirtOrderInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrderItemArgs = {
   id: Scalars['Int']
 }
 
-/** All input for the `deleteShirtOrderItemByNodeId` mutation. */
-export type DeleteShirtOrderItemByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `ShirtOrderItem` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QuerySlotArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `ShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemPayload = {
-  __typename: 'DeleteShirtOrderItemPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` that was deleted by this mutation. */
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  deletedShirtOrderItemNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
-  order?: Maybe<ShirtOrder>
-  /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
-  shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
-}
-
-/** The output of our delete `ShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
-  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-}
-
-/** The output of our delete `ShirtOrder` mutation. */
-export type DeleteShirtOrderPayload = {
-  __typename: 'DeleteShirtOrderPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was deleted by this mutation. */
-  shirtOrder?: Maybe<ShirtOrder>
-  deletedShirtOrderNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
-  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
-  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
-}
-
-/** The output of our delete `ShirtOrder` mutation. */
-export type DeleteShirtOrderPayloadShirtOrderEdgeArgs = {
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-}
-
-/** All input for the `deleteSlotByNodeId` mutation. */
-export type DeleteSlotByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Slot` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteSlot` mutation. */
-export type DeleteSlotInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryUserArgs = {
   id: Scalars['Int']
 }
 
-/** The output of our delete `Slot` mutation. */
-export type DeleteSlotPayload = {
-  __typename: 'DeleteSlotPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` that was deleted by this mutation. */
-  slot?: Maybe<Slot>
-  deletedSlotNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `Slot`. May be used by Relay 1. */
-  slotEdge?: Maybe<SlotsEdge>
-}
-
-/** The output of our delete `Slot` mutation. */
-export type DeleteSlotPayloadSlotEdgeArgs = {
-  orderBy?: Maybe<Array<SlotsOrderBy>>
-}
-
-/** All input for the `deleteUserByEmail` mutation. */
-export type DeleteUserByEmailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryUserByEmailArgs = {
   email: Scalars['String']
 }
 
-/** All input for the `deleteUserByNodeId` mutation. */
-export type DeleteUserByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `User` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteUser` mutation. */
-export type DeleteUserInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  id: Scalars['Int']
-}
-
-/** The output of our delete `User` mutation. */
-export type DeleteUserPayload = {
-  __typename: 'DeleteUserPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` that was deleted by this mutation. */
-  user?: Maybe<User>
-  deletedUserNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `User`. May be used by Relay 1. */
-  userEdge?: Maybe<UsersEdge>
-}
-
-/** The output of our delete `User` mutation. */
-export type DeleteUserPayloadUserEdgeArgs = {
-  orderBy?: Maybe<Array<UsersOrderBy>>
-}
-
-/** All input for the `deleteUserRoleByNodeId` mutation. */
-export type DeleteUserRoleByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `UserRole` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteUserRole` mutation. */
-export type DeleteUserRoleInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryUserRoleArgs = {
   roleId: Scalars['Int']
   userId: Scalars['Int']
 }
 
-/** The output of our delete `UserRole` mutation. */
-export type DeleteUserRolePayload = {
-  __typename: 'DeleteUserRolePayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` that was deleted by this mutation. */
-  userRole?: Maybe<UserRole>
-  deletedUserRoleNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Role` that is related to this `UserRole`. */
-  role?: Maybe<Role>
-  /** Reads a single `User` that is related to this `UserRole`. */
-  user?: Maybe<User>
-  /** An edge for our `UserRole`. May be used by Relay 1. */
-  userRoleEdge?: Maybe<UserRolesEdge>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameByNodeIdArgs = {
+  nodeId: Scalars['ID']
 }
 
-/** The output of our delete `UserRole` mutation. */
-export type DeleteUserRolePayloadUserRoleEdgeArgs = {
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameAssignmentByNodeIdArgs = {
+  nodeId: Scalars['ID']
 }
 
-/** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
-export type FloatFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Float']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Float']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Float']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Float']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Float']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Float']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Float']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Float']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Float']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Float']>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameChoiceByNodeIdArgs = {
+  nodeId: Scalars['ID']
 }
 
-/** All input for the `fTruncateTables` mutation. */
-export type FTruncateTablesInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  _username?: Maybe<Scalars['String']>
+/** The root query type which gives access points into the data universe. */
+export type QueryGameSubmissionByNodeIdArgs = {
+  nodeId: Scalars['ID']
 }
 
-/** The output of our `fTruncateTables` mutation. */
-export type FTruncateTablesPayload = {
-  __typename: 'FTruncateTablesPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryHotelRoomDetailByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryLookupValueByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMembershipByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRoleByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRoomByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySettingByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrderByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryShirtOrderItemByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QuerySlotByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUserRoleByNodeIdArgs = {
+  nodeId: Scalars['ID']
+}
+
+/** An object with a globally unique `ID`. */
+export type Node = {
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+}
+
+/** A connection to a list of `Game` values. */
+export type GamesConnection = {
+  __typename: 'GamesConnection'
+  /** A list of `Game` objects. */
+  nodes: Array<Maybe<Game>>
+  /** A list of edges which contains the `Game` and cursor to aid in pagination. */
+  edges: Array<GamesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Game` you could get from the connection. */
+  totalCount: Scalars['Int']
 }
 
 export type Game = Node & {
@@ -1651,67 +620,1205 @@ export type GameGameChoicesArgs = {
   filter?: Maybe<GameChoiceFilter>
 }
 
-export type GameAssignment = Node & {
-  __typename: 'GameAssignment'
+export type Room = Node & {
+  __typename: 'Room'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
+  id: Scalars['Int']
+  description: Scalars['String']
+  size: Scalars['Int']
+  type: Scalars['String']
+  updated: Scalars['Boolean']
+  /** Reads and enables pagination through a set of `Game`. */
+  games: GamesConnection
+}
+
+export type RoomGamesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+}
+
+/** Methods to use when ordering `Game`. */
+export enum GamesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  LateFinishAsc = 'LATE_FINISH_ASC',
+  LateFinishDesc = 'LATE_FINISH_DESC',
+  LateStartAsc = 'LATE_START_ASC',
+  LateStartDesc = 'LATE_START_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  PlayerMaxAsc = 'PLAYER_MAX_ASC',
+  PlayerMaxDesc = 'PLAYER_MAX_DESC',
+  PlayerMinAsc = 'PLAYER_MIN_ASC',
+  PlayerMinDesc = 'PLAYER_MIN_DESC',
+  RoomIdAsc = 'ROOM_ID_ASC',
+  RoomIdDesc = 'ROOM_ID_DESC',
+  ShortNameAsc = 'SHORT_NAME_ASC',
+  ShortNameDesc = 'SHORT_NAME_DESC',
+  SlotIdAsc = 'SLOT_ID_ASC',
+  SlotIdDesc = 'SLOT_ID_DESC',
+  CharInstructionsAsc = 'CHAR_INSTRUCTIONS_ASC',
+  CharInstructionsDesc = 'CHAR_INSTRUCTIONS_DESC',
+  EstimatedLengthAsc = 'ESTIMATED_LENGTH_ASC',
+  EstimatedLengthDesc = 'ESTIMATED_LENGTH_DESC',
+  GameContactEmailAsc = 'GAME_CONTACT_EMAIL_ASC',
+  GameContactEmailDesc = 'GAME_CONTACT_EMAIL_DESC',
+  GenreAsc = 'GENRE_ASC',
+  GenreDesc = 'GENRE_DESC',
+  GmNamesAsc = 'GM_NAMES_ASC',
+  GmNamesDesc = 'GM_NAMES_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  PlayerPreferenceAsc = 'PLAYER_PREFERENCE_ASC',
+  PlayerPreferenceDesc = 'PLAYER_PREFERENCE_DESC',
+  PlayersContactGmAsc = 'PLAYERS_CONTACT_GM_ASC',
+  PlayersContactGmDesc = 'PLAYERS_CONTACT_GM_DESC',
+  ReturningPlayersAsc = 'RETURNING_PLAYERS_ASC',
+  ReturningPlayersDesc = 'RETURNING_PLAYERS_DESC',
+  SettingAsc = 'SETTING_ASC',
+  SettingDesc = 'SETTING_DESC',
+  SlotConflictsAsc = 'SLOT_CONFLICTS_ASC',
+  SlotConflictsDesc = 'SLOT_CONFLICTS_DESC',
+  SlotPreferenceAsc = 'SLOT_PREFERENCE_ASC',
+  SlotPreferenceDesc = 'SLOT_PREFERENCE_DESC',
+  TeenFriendlyAsc = 'TEEN_FRIENDLY_ASC',
+  TeenFriendlyDesc = 'TEEN_FRIENDLY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
+  AuthorIdAsc = 'AUTHOR_ID_ASC',
+  AuthorIdDesc = 'AUTHOR_ID_DESC',
+  FullAsc = 'FULL_ASC',
+  FullDesc = 'FULL_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RoomByRoomIdIdAsc = 'ROOM_BY_ROOM_ID__ID_ASC',
+  RoomByRoomIdIdDesc = 'ROOM_BY_ROOM_ID__ID_DESC',
+  RoomByRoomIdDescriptionAsc = 'ROOM_BY_ROOM_ID__DESCRIPTION_ASC',
+  RoomByRoomIdDescriptionDesc = 'ROOM_BY_ROOM_ID__DESCRIPTION_DESC',
+  RoomByRoomIdSizeAsc = 'ROOM_BY_ROOM_ID__SIZE_ASC',
+  RoomByRoomIdSizeDesc = 'ROOM_BY_ROOM_ID__SIZE_DESC',
+  RoomByRoomIdTypeAsc = 'ROOM_BY_ROOM_ID__TYPE_ASC',
+  RoomByRoomIdTypeDesc = 'ROOM_BY_ROOM_ID__TYPE_DESC',
+  RoomByRoomIdUpdatedAsc = 'ROOM_BY_ROOM_ID__UPDATED_ASC',
+  RoomByRoomIdUpdatedDesc = 'ROOM_BY_ROOM_ID__UPDATED_DESC',
+  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
+  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
+  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
+  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
+  SlotBySlotIdDayAsc = 'SLOT_BY_SLOT_ID__DAY_ASC',
+  SlotBySlotIdDayDesc = 'SLOT_BY_SLOT_ID__DAY_DESC',
+  SlotBySlotIdFormattedDateAsc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_ASC',
+  SlotBySlotIdFormattedDateDesc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_DESC',
+  SlotBySlotIdLengthAsc = 'SLOT_BY_SLOT_ID__LENGTH_ASC',
+  SlotBySlotIdLengthDesc = 'SLOT_BY_SLOT_ID__LENGTH_DESC',
+  SlotBySlotIdTimeAsc = 'SLOT_BY_SLOT_ID__TIME_ASC',
+  SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
+  UserByAuthorIdIdAsc = 'USER_BY_AUTHOR_ID__ID_ASC',
+  UserByAuthorIdIdDesc = 'USER_BY_AUTHOR_ID__ID_DESC',
+  UserByAuthorIdEmailAsc = 'USER_BY_AUTHOR_ID__EMAIL_ASC',
+  UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
+  UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
+  UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
+  UserByAuthorIdSnailMailAddressAsc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
+  UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
+  UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
+  UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
+  UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
+  UserByAuthorIdLastNameDesc = 'USER_BY_AUTHOR_ID__LAST_NAME_DESC',
+  GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
+  GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
+  GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
+  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
+}
+
+/** A condition to be used against `Game` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type GameCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `description` field. */
+  description?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `lateFinish` field. */
+  lateFinish?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `lateStart` field. */
+  lateStart?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `playerMax` field. */
+  playerMax?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `playerMin` field. */
+  playerMin?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `roomId` field. */
+  roomId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `shortName` field. */
+  shortName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotId` field. */
+  slotId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `charInstructions` field. */
+  charInstructions?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `estimatedLength` field. */
+  estimatedLength?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `gameContactEmail` field. */
+  gameContactEmail?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `genre` field. */
+  genre?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `gmNames` field. */
+  gmNames?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `message` field. */
+  message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `playerPreference` field. */
+  playerPreference?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `playersContactGm` field. */
+  playersContactGm?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `returningPlayers` field. */
+  returningPlayers?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `setting` field. */
+  setting?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotConflicts` field. */
+  slotConflicts?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotPreference` field. */
+  slotPreference?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `teenFriendly` field. */
+  teenFriendly?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `type` field. */
+  type?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `year` field. */
+  year?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `authorId` field. */
+  authorId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `full` field. */
+  full?: Maybe<Scalars['Boolean']>
+}
+
+/** A filter to be used against `Game` object types. All fields are combined with a logical ‘and.’ */
+export type GameFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `description` field. */
+  description?: Maybe<StringFilter>
+  /** Filter by the object’s `lateFinish` field. */
+  lateFinish?: Maybe<BooleanFilter>
+  /** Filter by the object’s `lateStart` field. */
+  lateStart?: Maybe<StringFilter>
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>
+  /** Filter by the object’s `playerMax` field. */
+  playerMax?: Maybe<IntFilter>
+  /** Filter by the object’s `playerMin` field. */
+  playerMin?: Maybe<IntFilter>
+  /** Filter by the object’s `roomId` field. */
+  roomId?: Maybe<IntFilter>
+  /** Filter by the object’s `shortName` field. */
+  shortName?: Maybe<StringFilter>
+  /** Filter by the object’s `slotId` field. */
+  slotId?: Maybe<IntFilter>
+  /** Filter by the object’s `charInstructions` field. */
+  charInstructions?: Maybe<StringFilter>
+  /** Filter by the object’s `estimatedLength` field. */
+  estimatedLength?: Maybe<StringFilter>
+  /** Filter by the object’s `gameContactEmail` field. */
+  gameContactEmail?: Maybe<StringFilter>
+  /** Filter by the object’s `genre` field. */
+  genre?: Maybe<StringFilter>
+  /** Filter by the object’s `gmNames` field. */
+  gmNames?: Maybe<StringFilter>
+  /** Filter by the object’s `message` field. */
+  message?: Maybe<StringFilter>
+  /** Filter by the object’s `playerPreference` field. */
+  playerPreference?: Maybe<StringFilter>
+  /** Filter by the object’s `playersContactGm` field. */
+  playersContactGm?: Maybe<BooleanFilter>
+  /** Filter by the object’s `returningPlayers` field. */
+  returningPlayers?: Maybe<StringFilter>
+  /** Filter by the object’s `setting` field. */
+  setting?: Maybe<StringFilter>
+  /** Filter by the object’s `slotConflicts` field. */
+  slotConflicts?: Maybe<StringFilter>
+  /** Filter by the object’s `slotPreference` field. */
+  slotPreference?: Maybe<IntFilter>
+  /** Filter by the object’s `teenFriendly` field. */
+  teenFriendly?: Maybe<BooleanFilter>
+  /** Filter by the object’s `type` field. */
+  type?: Maybe<StringFilter>
+  /** Filter by the object’s `year` field. */
+  year?: Maybe<IntFilter>
+  /** Filter by the object’s `authorId` field. */
+  authorId?: Maybe<IntFilter>
+  /** Filter by the object’s `full` field. */
+  full?: Maybe<BooleanFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameFilter>>
+  /** Negates the expression. */
+  not?: Maybe<GameFilter>
+}
+
+/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
+export type IntFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Int']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Int']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Int']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Int']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Int']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Int']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Int']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Int']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Int']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Int']>
+}
+
+/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
+export type StringFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['String']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['String']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['String']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['String']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['String']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['String']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['String']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['String']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['String']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['String']>
+  /** Contains the specified string (case-sensitive). */
+  includes?: Maybe<Scalars['String']>
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: Maybe<Scalars['String']>
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: Maybe<Scalars['String']>
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: Maybe<Scalars['String']>
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: Maybe<Scalars['String']>
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: Maybe<Scalars['String']>
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: Maybe<Scalars['String']>
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: Maybe<Scalars['String']>
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: Maybe<Scalars['String']>
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: Maybe<Scalars['String']>
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: Maybe<Scalars['String']>
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: Maybe<Scalars['String']>
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: Maybe<Scalars['String']>
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: Maybe<Scalars['String']>
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: Maybe<Scalars['String']>
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: Maybe<Scalars['String']>
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: Maybe<Scalars['String']>
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  distinctFromInsensitive?: Maybe<Scalars['String']>
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: Maybe<Scalars['String']>
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: Maybe<Scalars['String']>
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Greater than the specified value (case-insensitive). */
+  greaterThanInsensitive?: Maybe<Scalars['String']>
+  /** Greater than or equal to the specified value (case-insensitive). */
+  greaterThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Boolean']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Boolean']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Boolean']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Boolean']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Boolean']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Boolean']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Boolean']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>
+}
+
+export type Slot = Node & {
+  __typename: 'Slot'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  slot: Scalars['Int']
+  day: Scalars['String']
+  formattedDate: Scalars['String']
+  length: Scalars['String']
+  time: Scalars['String']
+  /** Reads and enables pagination through a set of `Game`. */
+  games: GamesConnection
+  /** Reads and enables pagination through a set of `GameChoice`. */
+  gameChoices: GameChoicesConnection
+}
+
+export type SlotGamesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+}
+
+export type SlotGameChoicesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
+}
+
+/** A connection to a list of `GameChoice` values. */
+export type GameChoicesConnection = {
+  __typename: 'GameChoicesConnection'
+  /** A list of `GameChoice` objects. */
+  nodes: Array<Maybe<GameChoice>>
+  /** A list of edges which contains the `GameChoice` and cursor to aid in pagination. */
+  edges: Array<GameChoicesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `GameChoice` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+export type GameChoice = Node & {
+  __typename: 'GameChoice'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  gameId?: Maybe<Scalars['Int']>
   memberId: Scalars['Int']
-  gameId: Scalars['Int']
-  gm: Scalars['Int']
+  rank: Scalars['Int']
+  slotId: Scalars['Int']
   year: Scalars['Int']
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Game` that is related to this `GameAssignment`. */
+  returningPlayer: Scalars['Boolean']
+  /** Reads a single `Game` that is related to this `GameChoice`. */
   game?: Maybe<Game>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
+}
+
+export type Membership = Node & {
+  __typename: 'Membership'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  arrivalDate: Scalars['Datetime']
+  attendance: Scalars['String']
+  attending: Scalars['Boolean']
+  departureDate: Scalars['Datetime']
+  hotelRoomId: Scalars['Int']
+  interestLevel: Scalars['String']
+  message: Scalars['String']
+  roomPreferenceAndNotes: Scalars['String']
+  roomingPreferences: Scalars['String']
+  roomingWith: Scalars['String']
+  userId: Scalars['Int']
+  volunteer: Scalars['Boolean']
+  year: Scalars['Int']
+  offerSubsidy: Scalars['Boolean']
+  requestOldPrice: Scalars['Boolean']
+  amountOwed: Scalars['Float']
+  amountPaid: Scalars['Float']
+  slotsAttending?: Maybe<Scalars['String']>
+  /** Reads a single `HotelRoom` that is related to this `Membership`. */
+  hotelRoom?: Maybe<HotelRoom>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
+  /** Reads and enables pagination through a set of `GameAssignment`. */
+  gameAssignmentsByMemberId: GameAssignmentsConnection
+  /** Reads and enables pagination through a set of `GameChoice`. */
+  gameChoicesByMemberId: GameChoicesConnection
+  /** Reads and enables pagination through a set of `GameSubmission`. */
+  gameSubmissionsByMemberId: GameSubmissionsConnection
+}
+
+export type MembershipGameAssignmentsByMemberIdArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
+  condition?: Maybe<GameAssignmentCondition>
+  filter?: Maybe<GameAssignmentFilter>
+}
+
+export type MembershipGameChoicesByMemberIdArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
+}
+
+export type MembershipGameSubmissionsByMemberIdArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
+  condition?: Maybe<GameSubmissionCondition>
+  filter?: Maybe<GameSubmissionFilter>
+}
+
+export type HotelRoom = Node & {
+  __typename: 'HotelRoom'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  description: Scalars['String']
+  gamingRoom: Scalars['Boolean']
+  occupancy: Scalars['String']
+  quantity: Scalars['Int']
+  rate: Scalars['String']
+  bathroomType: Scalars['String']
+  type: Scalars['String']
+  /** Reads and enables pagination through a set of `Membership`. */
+  memberships: MembershipsConnection
+}
+
+export type HotelRoomMembershipsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
+}
+
+/** A connection to a list of `Membership` values. */
+export type MembershipsConnection = {
+  __typename: 'MembershipsConnection'
+  /** A list of `Membership` objects. */
+  nodes: Array<Maybe<Membership>>
+  /** A list of edges which contains the `Membership` and cursor to aid in pagination. */
+  edges: Array<MembershipsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Membership` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `Membership` edge in the connection. */
+export type MembershipsEdge = {
+  __typename: 'MembershipsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Membership` at the end of the edge. */
+  node?: Maybe<Membership>
+}
+
+/** Information about pagination in a connection. */
+export type PageInfo = {
+  __typename: 'PageInfo'
+  /** When paginating forwards, are there more items? */
+  hasNextPage: Scalars['Boolean']
+  /** When paginating backwards, are there more items? */
+  hasPreviousPage: Scalars['Boolean']
+  /** When paginating backwards, the cursor to continue. */
+  startCursor?: Maybe<Scalars['Cursor']>
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['Cursor']>
+}
+
+/** Methods to use when ordering `Membership`. */
+export enum MembershipsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  ArrivalDateAsc = 'ARRIVAL_DATE_ASC',
+  ArrivalDateDesc = 'ARRIVAL_DATE_DESC',
+  AttendanceAsc = 'ATTENDANCE_ASC',
+  AttendanceDesc = 'ATTENDANCE_DESC',
+  AttendingAsc = 'ATTENDING_ASC',
+  AttendingDesc = 'ATTENDING_DESC',
+  DepartureDateAsc = 'DEPARTURE_DATE_ASC',
+  DepartureDateDesc = 'DEPARTURE_DATE_DESC',
+  HotelRoomIdAsc = 'HOTEL_ROOM_ID_ASC',
+  HotelRoomIdDesc = 'HOTEL_ROOM_ID_DESC',
+  InterestLevelAsc = 'INTEREST_LEVEL_ASC',
+  InterestLevelDesc = 'INTEREST_LEVEL_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  RoomPreferenceAndNotesAsc = 'ROOM_PREFERENCE_AND_NOTES_ASC',
+  RoomPreferenceAndNotesDesc = 'ROOM_PREFERENCE_AND_NOTES_DESC',
+  RoomingPreferencesAsc = 'ROOMING_PREFERENCES_ASC',
+  RoomingPreferencesDesc = 'ROOMING_PREFERENCES_DESC',
+  RoomingWithAsc = 'ROOMING_WITH_ASC',
+  RoomingWithDesc = 'ROOMING_WITH_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  VolunteerAsc = 'VOLUNTEER_ASC',
+  VolunteerDesc = 'VOLUNTEER_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
+  OfferSubsidyAsc = 'OFFER_SUBSIDY_ASC',
+  OfferSubsidyDesc = 'OFFER_SUBSIDY_DESC',
+  RequestOldPriceAsc = 'REQUEST_OLD_PRICE_ASC',
+  RequestOldPriceDesc = 'REQUEST_OLD_PRICE_DESC',
+  AmountOwedAsc = 'AMOUNT_OWED_ASC',
+  AmountOwedDesc = 'AMOUNT_OWED_DESC',
+  AmountPaidAsc = 'AMOUNT_PAID_ASC',
+  AmountPaidDesc = 'AMOUNT_PAID_DESC',
+  SlotsAttendingAsc = 'SLOTS_ATTENDING_ASC',
+  SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
+  HotelRoomByHotelRoomIdIdDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_DESC',
+  HotelRoomByHotelRoomIdDescriptionAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_ASC',
+  HotelRoomByHotelRoomIdDescriptionDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_DESC',
+  HotelRoomByHotelRoomIdGamingRoomAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_ASC',
+  HotelRoomByHotelRoomIdGamingRoomDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_DESC',
+  HotelRoomByHotelRoomIdOccupancyAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_ASC',
+  HotelRoomByHotelRoomIdOccupancyDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_DESC',
+  HotelRoomByHotelRoomIdQuantityAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_ASC',
+  HotelRoomByHotelRoomIdQuantityDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_DESC',
+  HotelRoomByHotelRoomIdRateAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_ASC',
+  HotelRoomByHotelRoomIdRateDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_DESC',
+  HotelRoomByHotelRoomIdBathroomTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_ASC',
+  HotelRoomByHotelRoomIdBathroomTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_DESC',
+  HotelRoomByHotelRoomIdTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_ASC',
+  HotelRoomByHotelRoomIdTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+  GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
+  GameAssignmentsByMemberIdCountDesc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC',
+  GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
+  GameChoicesByMemberIdCountDesc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_DESC',
+  GameSubmissionsByMemberIdCountAsc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_ASC',
+  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC',
 }
 
 /**
- * A condition to be used against `GameAssignment` object types. All fields are
+ * A condition to be used against `Membership` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type MembershipCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `arrivalDate` field. */
+  arrivalDate?: Maybe<Scalars['Datetime']>
+  /** Checks for equality with the object’s `attendance` field. */
+  attendance?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `attending` field. */
+  attending?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `departureDate` field. */
+  departureDate?: Maybe<Scalars['Datetime']>
+  /** Checks for equality with the object’s `hotelRoomId` field. */
+  hotelRoomId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `interestLevel` field. */
+  interestLevel?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `message` field. */
+  message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `roomPreferenceAndNotes` field. */
+  roomPreferenceAndNotes?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `roomingPreferences` field. */
+  roomingPreferences?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `roomingWith` field. */
+  roomingWith?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `volunteer` field. */
+  volunteer?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `year` field. */
+  year?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `offerSubsidy` field. */
+  offerSubsidy?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `requestOldPrice` field. */
+  requestOldPrice?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `amountOwed` field. */
+  amountOwed?: Maybe<Scalars['Float']>
+  /** Checks for equality with the object’s `amountPaid` field. */
+  amountPaid?: Maybe<Scalars['Float']>
+  /** Checks for equality with the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
+export type MembershipFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `arrivalDate` field. */
+  arrivalDate?: Maybe<DatetimeFilter>
+  /** Filter by the object’s `attendance` field. */
+  attendance?: Maybe<StringFilter>
+  /** Filter by the object’s `attending` field. */
+  attending?: Maybe<BooleanFilter>
+  /** Filter by the object’s `departureDate` field. */
+  departureDate?: Maybe<DatetimeFilter>
+  /** Filter by the object’s `hotelRoomId` field. */
+  hotelRoomId?: Maybe<IntFilter>
+  /** Filter by the object’s `interestLevel` field. */
+  interestLevel?: Maybe<StringFilter>
+  /** Filter by the object’s `message` field. */
+  message?: Maybe<StringFilter>
+  /** Filter by the object’s `roomPreferenceAndNotes` field. */
+  roomPreferenceAndNotes?: Maybe<StringFilter>
+  /** Filter by the object’s `roomingPreferences` field. */
+  roomingPreferences?: Maybe<StringFilter>
+  /** Filter by the object’s `roomingWith` field. */
+  roomingWith?: Maybe<StringFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
+  /** Filter by the object’s `volunteer` field. */
+  volunteer?: Maybe<BooleanFilter>
+  /** Filter by the object’s `year` field. */
+  year?: Maybe<IntFilter>
+  /** Filter by the object’s `offerSubsidy` field. */
+  offerSubsidy?: Maybe<BooleanFilter>
+  /** Filter by the object’s `requestOldPrice` field. */
+  requestOldPrice?: Maybe<BooleanFilter>
+  /** Filter by the object’s `amountOwed` field. */
+  amountOwed?: Maybe<FloatFilter>
+  /** Filter by the object’s `amountPaid` field. */
+  amountPaid?: Maybe<FloatFilter>
+  /** Filter by the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<MembershipFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<MembershipFilter>>
+  /** Negates the expression. */
+  not?: Maybe<MembershipFilter>
+}
+
+/** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
+export type DatetimeFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Datetime']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Datetime']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Datetime']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Datetime']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Datetime']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Datetime']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Datetime']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Datetime']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Datetime']>
+}
+
+/** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
+export type FloatFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Float']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Float']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['Float']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Float']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Float']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Float']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Float']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Float']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['Float']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['Float']>
+}
+
+export type User = Node & {
+  __typename: 'User'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  email: Scalars['String']
+  fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
+  /** Reads and enables pagination through a set of `Game`. */
+  authoredGames: GamesConnection
+  /** Reads and enables pagination through a set of `Membership`. */
+  memberships: MembershipsConnection
+  /** Reads and enables pagination through a set of `ShirtOrder`. */
+  shirtOrders: ShirtOrdersConnection
+  /** Reads and enables pagination through a set of `UserRole`. */
+  userRoles: UserRolesConnection
+}
+
+export type UserAuthoredGamesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+}
+
+export type UserMembershipsArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
+}
+
+export type UserShirtOrdersArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+  condition?: Maybe<ShirtOrderCondition>
+  filter?: Maybe<ShirtOrderFilter>
+}
+
+export type UserUserRolesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
+}
+
+/** A connection to a list of `ShirtOrder` values. */
+export type ShirtOrdersConnection = {
+  __typename: 'ShirtOrdersConnection'
+  /** A list of `ShirtOrder` objects. */
+  nodes: Array<Maybe<ShirtOrder>>
+  /** A list of edges which contains the `ShirtOrder` and cursor to aid in pagination. */
+  edges: Array<ShirtOrdersEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `ShirtOrder` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+export type ShirtOrder = Node & {
+  __typename: 'ShirtOrder'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  deliveryMethod: Scalars['String']
+  message: Scalars['String']
+  userId: Scalars['Int']
+  year: Scalars['Int']
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
+  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
+  shirtOrderItemsByOrderId: ShirtOrderItemsConnection
+}
+
+export type ShirtOrderShirtOrderItemsByOrderIdArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
+  condition?: Maybe<ShirtOrderItemCondition>
+  filter?: Maybe<ShirtOrderItemFilter>
+}
+
+/** A connection to a list of `ShirtOrderItem` values. */
+export type ShirtOrderItemsConnection = {
+  __typename: 'ShirtOrderItemsConnection'
+  /** A list of `ShirtOrderItem` objects. */
+  nodes: Array<Maybe<ShirtOrderItem>>
+  /** A list of edges which contains the `ShirtOrderItem` and cursor to aid in pagination. */
+  edges: Array<ShirtOrderItemsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `ShirtOrderItem` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+export type ShirtOrderItem = Node & {
+  __typename: 'ShirtOrderItem'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  orderId: Scalars['Int']
+  quantity: Scalars['Int']
+  size: Scalars['String']
+  style: Scalars['String']
+  itemsIdx?: Maybe<Scalars['Int']>
+  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
+  order?: Maybe<ShirtOrder>
+}
+
+/** A `ShirtOrderItem` edge in the connection. */
+export type ShirtOrderItemsEdge = {
+  __typename: 'ShirtOrderItemsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `ShirtOrderItem` at the end of the edge. */
+  node?: Maybe<ShirtOrderItem>
+}
+
+/** Methods to use when ordering `ShirtOrderItem`. */
+export enum ShirtOrderItemsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  OrderIdAsc = 'ORDER_ID_ASC',
+  OrderIdDesc = 'ORDER_ID_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC',
+  SizeAsc = 'SIZE_ASC',
+  SizeDesc = 'SIZE_DESC',
+  StyleAsc = 'STYLE_ASC',
+  StyleDesc = 'STYLE_DESC',
+  ItemsIdxAsc = 'ITEMS_IDX_ASC',
+  ItemsIdxDesc = 'ITEMS_IDX_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ShirtOrderByOrderIdIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__ID_ASC',
+  ShirtOrderByOrderIdIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__ID_DESC',
+  ShirtOrderByOrderIdDeliveryMethodAsc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_ASC',
+  ShirtOrderByOrderIdDeliveryMethodDesc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_DESC',
+  ShirtOrderByOrderIdMessageAsc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_ASC',
+  ShirtOrderByOrderIdMessageDesc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_DESC',
+  ShirtOrderByOrderIdUserIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_ASC',
+  ShirtOrderByOrderIdUserIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_DESC',
+  ShirtOrderByOrderIdYearAsc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_ASC',
+  ShirtOrderByOrderIdYearDesc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_DESC',
+}
+
+/**
+ * A condition to be used against `ShirtOrderItem` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
-export type GameAssignmentCondition = {
-  /** Checks for equality with the object’s `memberId` field. */
-  memberId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `gameId` field. */
-  gameId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `gm` field. */
-  gm?: Maybe<Scalars['Int']>
+export type ShirtOrderItemCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `orderId` field. */
+  orderId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `quantity` field. */
+  quantity?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `size` field. */
+  size?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `style` field. */
+  style?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `itemsIdx` field. */
+  itemsIdx?: Maybe<Scalars['Int']>
+}
+
+/** A filter to be used against `ShirtOrderItem` object types. All fields are combined with a logical ‘and.’ */
+export type ShirtOrderItemFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `orderId` field. */
+  orderId?: Maybe<IntFilter>
+  /** Filter by the object’s `quantity` field. */
+  quantity?: Maybe<IntFilter>
+  /** Filter by the object’s `size` field. */
+  size?: Maybe<StringFilter>
+  /** Filter by the object’s `style` field. */
+  style?: Maybe<StringFilter>
+  /** Filter by the object’s `itemsIdx` field. */
+  itemsIdx?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ShirtOrderItemFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ShirtOrderItemFilter>>
+  /** Negates the expression. */
+  not?: Maybe<ShirtOrderItemFilter>
+}
+
+/** A `ShirtOrder` edge in the connection. */
+export type ShirtOrdersEdge = {
+  __typename: 'ShirtOrdersEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `ShirtOrder` at the end of the edge. */
+  node?: Maybe<ShirtOrder>
+}
+
+/** Methods to use when ordering `ShirtOrder`. */
+export enum ShirtOrdersOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  DeliveryMethodAsc = 'DELIVERY_METHOD_ASC',
+  DeliveryMethodDesc = 'DELIVERY_METHOD_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+  ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
+  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
+}
+
+/**
+ * A condition to be used against `ShirtOrder` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type ShirtOrderCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `deliveryMethod` field. */
+  deliveryMethod?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `message` field. */
+  message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
 }
 
-/** A filter to be used against `GameAssignment` object types. All fields are combined with a logical ‘and.’ */
-export type GameAssignmentFilter = {
-  /** Filter by the object’s `memberId` field. */
-  memberId?: Maybe<IntFilter>
-  /** Filter by the object’s `gameId` field. */
-  gameId?: Maybe<IntFilter>
-  /** Filter by the object’s `gm` field. */
-  gm?: Maybe<IntFilter>
+/** A filter to be used against `ShirtOrder` object types. All fields are combined with a logical ‘and.’ */
+export type ShirtOrderFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `deliveryMethod` field. */
+  deliveryMethod?: Maybe<StringFilter>
+  /** Filter by the object’s `message` field. */
+  message?: Maybe<StringFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameAssignmentFilter>>
+  and?: Maybe<Array<ShirtOrderFilter>>
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameAssignmentFilter>>
+  or?: Maybe<Array<ShirtOrderFilter>>
   /** Negates the expression. */
-  not?: Maybe<GameAssignmentFilter>
+  not?: Maybe<ShirtOrderFilter>
 }
 
-/** An input for mutations affecting `GameAssignment` */
-export type GameAssignmentInput = {
-  memberId: Scalars['Int']
-  gameId: Scalars['Int']
-  gm: Scalars['Int']
-  year: Scalars['Int']
+/** A connection to a list of `UserRole` values. */
+export type UserRolesConnection = {
+  __typename: 'UserRolesConnection'
+  /** A list of `UserRole` objects. */
+  nodes: Array<Maybe<UserRole>>
+  /** A list of edges which contains the `UserRole` and cursor to aid in pagination. */
+  edges: Array<UserRolesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `UserRole` you could get from the connection. */
+  totalCount: Scalars['Int']
 }
 
-/** Represents an update to a `GameAssignment`. Fields that are set will be updated. */
-export type GameAssignmentPatch = {
-  memberId?: Maybe<Scalars['Int']>
-  gameId?: Maybe<Scalars['Int']>
-  gm?: Maybe<Scalars['Int']>
-  year?: Maybe<Scalars['Int']>
+export type UserRole = Node & {
+  __typename: 'UserRole'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  roleId: Scalars['Int']
+  userId: Scalars['Int']
+  /** Reads a single `Role` that is related to this `UserRole`. */
+  role?: Maybe<Role>
+  /** Reads a single `User` that is related to this `UserRole`. */
+  user?: Maybe<User>
+}
+
+export type Role = Node & {
+  __typename: 'Role'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  authority: Scalars['String']
+  /** Reads and enables pagination through a set of `UserRole`. */
+  userRoles: UserRolesConnection
+}
+
+export type RoleUserRolesArgs = {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
+}
+
+/** Methods to use when ordering `UserRole`. */
+export enum UserRolesOrderBy {
+  Natural = 'NATURAL',
+  RoleIdAsc = 'ROLE_ID_ASC',
+  RoleIdDesc = 'ROLE_ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RoleByRoleIdIdAsc = 'ROLE_BY_ROLE_ID__ID_ASC',
+  RoleByRoleIdIdDesc = 'ROLE_BY_ROLE_ID__ID_DESC',
+  RoleByRoleIdAuthorityAsc = 'ROLE_BY_ROLE_ID__AUTHORITY_ASC',
+  RoleByRoleIdAuthorityDesc = 'ROLE_BY_ROLE_ID__AUTHORITY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
+  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
+  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
+  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+}
+
+/**
+ * A condition to be used against `UserRole` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type UserRoleCondition = {
+  /** Checks for equality with the object’s `roleId` field. */
+  roleId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
+}
+
+/** A filter to be used against `UserRole` object types. All fields are combined with a logical ‘and.’ */
+export type UserRoleFilter = {
+  /** Filter by the object’s `roleId` field. */
+  roleId?: Maybe<IntFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserRoleFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserRoleFilter>>
+  /** Negates the expression. */
+  not?: Maybe<UserRoleFilter>
+}
+
+/** A `UserRole` edge in the connection. */
+export type UserRolesEdge = {
+  __typename: 'UserRolesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `UserRole` at the end of the edge. */
+  node?: Maybe<UserRole>
 }
 
 /** A connection to a list of `GameAssignment` values. */
@@ -1725,6 +1832,20 @@ export type GameAssignmentsConnection = {
   pageInfo: PageInfo
   /** The count of *all* `GameAssignment` you could get from the connection. */
   totalCount: Scalars['Int']
+}
+
+export type GameAssignment = Node & {
+  __typename: 'GameAssignment'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  memberId: Scalars['Int']
+  gameId: Scalars['Int']
+  gm: Scalars['Int']
+  year: Scalars['Int']
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Game` that is related to this `GameAssignment`. */
+  game?: Maybe<Game>
 }
 
 /** A `GameAssignment` edge in the connection. */
@@ -1843,112 +1964,37 @@ export enum GameAssignmentsOrderBy {
   GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
 }
 
-export type GameChoice = Node & {
-  __typename: 'GameChoice'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  gameId?: Maybe<Scalars['Int']>
-  memberId: Scalars['Int']
-  rank: Scalars['Int']
-  slotId: Scalars['Int']
-  year: Scalars['Int']
-  returningPlayer: Scalars['Boolean']
-  /** Reads a single `Game` that is related to this `GameChoice`. */
-  game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
-}
-
 /**
- * A condition to be used against `GameChoice` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
+ * A condition to be used against `GameAssignment` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
  */
-export type GameChoiceCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `gameId` field. */
-  gameId?: Maybe<Scalars['Int']>
+export type GameAssignmentCondition = {
   /** Checks for equality with the object’s `memberId` field. */
   memberId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `rank` field. */
-  rank?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `slotId` field. */
-  slotId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `gameId` field. */
+  gameId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `gm` field. */
+  gm?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `returningPlayer` field. */
-  returningPlayer?: Maybe<Scalars['Boolean']>
 }
 
-/** A filter to be used against `GameChoice` object types. All fields are combined with a logical ‘and.’ */
-export type GameChoiceFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `gameId` field. */
-  gameId?: Maybe<IntFilter>
+/** A filter to be used against `GameAssignment` object types. All fields are combined with a logical ‘and.’ */
+export type GameAssignmentFilter = {
   /** Filter by the object’s `memberId` field. */
   memberId?: Maybe<IntFilter>
-  /** Filter by the object’s `rank` field. */
-  rank?: Maybe<IntFilter>
-  /** Filter by the object’s `slotId` field. */
-  slotId?: Maybe<IntFilter>
+  /** Filter by the object’s `gameId` field. */
+  gameId?: Maybe<IntFilter>
+  /** Filter by the object’s `gm` field. */
+  gm?: Maybe<IntFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
-  /** Filter by the object’s `returningPlayer` field. */
-  returningPlayer?: Maybe<BooleanFilter>
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameChoiceFilter>>
+  and?: Maybe<Array<GameAssignmentFilter>>
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameChoiceFilter>>
+  or?: Maybe<Array<GameAssignmentFilter>>
   /** Negates the expression. */
-  not?: Maybe<GameChoiceFilter>
-}
-
-/** An input for mutations affecting `GameChoice` */
-export type GameChoiceInput = {
-  id?: Maybe<Scalars['Int']>
-  gameId?: Maybe<Scalars['Int']>
-  memberId: Scalars['Int']
-  rank: Scalars['Int']
-  slotId: Scalars['Int']
-  year: Scalars['Int']
-  returningPlayer: Scalars['Boolean']
-}
-
-/** Represents an update to a `GameChoice`. Fields that are set will be updated. */
-export type GameChoicePatch = {
-  id?: Maybe<Scalars['Int']>
-  gameId?: Maybe<Scalars['Int']>
-  memberId?: Maybe<Scalars['Int']>
-  rank?: Maybe<Scalars['Int']>
-  slotId?: Maybe<Scalars['Int']>
-  year?: Maybe<Scalars['Int']>
-  returningPlayer?: Maybe<Scalars['Boolean']>
-}
-
-/** A connection to a list of `GameChoice` values. */
-export type GameChoicesConnection = {
-  __typename: 'GameChoicesConnection'
-  /** A list of `GameChoice` objects. */
-  nodes: Array<Maybe<GameChoice>>
-  /** A list of edges which contains the `GameChoice` and cursor to aid in pagination. */
-  edges: Array<GameChoicesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `GameChoice` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `GameChoice` edge in the connection. */
-export type GameChoicesEdge = {
-  __typename: 'GameChoicesEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `GameChoice` at the end of the edge. */
-  node?: Maybe<GameChoice>
+  not?: Maybe<GameAssignmentFilter>
 }
 
 /** Methods to use when ordering `GameChoice`. */
@@ -2076,372 +2122,49 @@ export enum GameChoicesOrderBy {
   SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
 }
 
-/** A condition to be used against `Game` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type GameCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `lateFinish` field. */
-  lateFinish?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `lateStart` field. */
-  lateStart?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `playerMax` field. */
-  playerMax?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `playerMin` field. */
-  playerMin?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `roomId` field. */
-  roomId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `shortName` field. */
-  shortName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `slotId` field. */
-  slotId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `charInstructions` field. */
-  charInstructions?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `estimatedLength` field. */
-  estimatedLength?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `gameContactEmail` field. */
-  gameContactEmail?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `genre` field. */
-  genre?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `gmNames` field. */
-  gmNames?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `message` field. */
-  message?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `playerPreference` field. */
-  playerPreference?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `playersContactGm` field. */
-  playersContactGm?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `returningPlayers` field. */
-  returningPlayers?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `setting` field. */
-  setting?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `slotConflicts` field. */
-  slotConflicts?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `slotPreference` field. */
-  slotPreference?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `teenFriendly` field. */
-  teenFriendly?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `type` field. */
-  type?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `year` field. */
-  year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `authorId` field. */
-  authorId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `full` field. */
-  full?: Maybe<Scalars['Boolean']>
-}
-
-/** A filter to be used against `Game` object types. All fields are combined with a logical ‘and.’ */
-export type GameFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>
-  /** Filter by the object’s `lateFinish` field. */
-  lateFinish?: Maybe<BooleanFilter>
-  /** Filter by the object’s `lateStart` field. */
-  lateStart?: Maybe<StringFilter>
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>
-  /** Filter by the object’s `playerMax` field. */
-  playerMax?: Maybe<IntFilter>
-  /** Filter by the object’s `playerMin` field. */
-  playerMin?: Maybe<IntFilter>
-  /** Filter by the object’s `roomId` field. */
-  roomId?: Maybe<IntFilter>
-  /** Filter by the object’s `shortName` field. */
-  shortName?: Maybe<StringFilter>
-  /** Filter by the object’s `slotId` field. */
-  slotId?: Maybe<IntFilter>
-  /** Filter by the object’s `charInstructions` field. */
-  charInstructions?: Maybe<StringFilter>
-  /** Filter by the object’s `estimatedLength` field. */
-  estimatedLength?: Maybe<StringFilter>
-  /** Filter by the object’s `gameContactEmail` field. */
-  gameContactEmail?: Maybe<StringFilter>
-  /** Filter by the object’s `genre` field. */
-  genre?: Maybe<StringFilter>
-  /** Filter by the object’s `gmNames` field. */
-  gmNames?: Maybe<StringFilter>
-  /** Filter by the object’s `message` field. */
-  message?: Maybe<StringFilter>
-  /** Filter by the object’s `playerPreference` field. */
-  playerPreference?: Maybe<StringFilter>
-  /** Filter by the object’s `playersContactGm` field. */
-  playersContactGm?: Maybe<BooleanFilter>
-  /** Filter by the object’s `returningPlayers` field. */
-  returningPlayers?: Maybe<StringFilter>
-  /** Filter by the object’s `setting` field. */
-  setting?: Maybe<StringFilter>
-  /** Filter by the object’s `slotConflicts` field. */
-  slotConflicts?: Maybe<StringFilter>
-  /** Filter by the object’s `slotPreference` field. */
-  slotPreference?: Maybe<IntFilter>
-  /** Filter by the object’s `teenFriendly` field. */
-  teenFriendly?: Maybe<BooleanFilter>
-  /** Filter by the object’s `type` field. */
-  type?: Maybe<StringFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Filter by the object’s `authorId` field. */
-  authorId?: Maybe<IntFilter>
-  /** Filter by the object’s `full` field. */
-  full?: Maybe<BooleanFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameFilter>>
-  /** Negates the expression. */
-  not?: Maybe<GameFilter>
-}
-
-/** An input for mutations affecting `Game` */
-export type GameInput = {
-  id?: Maybe<Scalars['Int']>
-  description: Scalars['String']
-  lateFinish?: Maybe<Scalars['Boolean']>
-  lateStart?: Maybe<Scalars['String']>
-  name: Scalars['String']
-  playerMax: Scalars['Int']
-  playerMin: Scalars['Int']
-  roomId?: Maybe<Scalars['Int']>
-  shortName?: Maybe<Scalars['String']>
-  slotId?: Maybe<Scalars['Int']>
-  charInstructions: Scalars['String']
-  estimatedLength: Scalars['String']
-  gameContactEmail: Scalars['String']
-  genre: Scalars['String']
-  gmNames?: Maybe<Scalars['String']>
-  message: Scalars['String']
-  playerPreference: Scalars['String']
-  playersContactGm: Scalars['Boolean']
-  returningPlayers: Scalars['String']
-  setting: Scalars['String']
-  slotConflicts: Scalars['String']
-  slotPreference: Scalars['Int']
-  teenFriendly: Scalars['Boolean']
-  type: Scalars['String']
-  year: Scalars['Int']
-  authorId?: Maybe<Scalars['Int']>
-  full?: Maybe<Scalars['Boolean']>
-}
-
-/** Represents an update to a `Game`. Fields that are set will be updated. */
-export type GamePatch = {
-  id?: Maybe<Scalars['Int']>
-  description?: Maybe<Scalars['String']>
-  lateFinish?: Maybe<Scalars['Boolean']>
-  lateStart?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  playerMax?: Maybe<Scalars['Int']>
-  playerMin?: Maybe<Scalars['Int']>
-  roomId?: Maybe<Scalars['Int']>
-  shortName?: Maybe<Scalars['String']>
-  slotId?: Maybe<Scalars['Int']>
-  charInstructions?: Maybe<Scalars['String']>
-  estimatedLength?: Maybe<Scalars['String']>
-  gameContactEmail?: Maybe<Scalars['String']>
-  genre?: Maybe<Scalars['String']>
-  gmNames?: Maybe<Scalars['String']>
-  message?: Maybe<Scalars['String']>
-  playerPreference?: Maybe<Scalars['String']>
-  playersContactGm?: Maybe<Scalars['Boolean']>
-  returningPlayers?: Maybe<Scalars['String']>
-  setting?: Maybe<Scalars['String']>
-  slotConflicts?: Maybe<Scalars['String']>
-  slotPreference?: Maybe<Scalars['Int']>
-  teenFriendly?: Maybe<Scalars['Boolean']>
-  type?: Maybe<Scalars['String']>
-  year?: Maybe<Scalars['Int']>
-  authorId?: Maybe<Scalars['Int']>
-  full?: Maybe<Scalars['Boolean']>
-}
-
-/** A connection to a list of `Game` values. */
-export type GamesConnection = {
-  __typename: 'GamesConnection'
-  /** A list of `Game` objects. */
-  nodes: Array<Maybe<Game>>
-  /** A list of edges which contains the `Game` and cursor to aid in pagination. */
-  edges: Array<GamesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Game` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Game` edge in the connection. */
-export type GamesEdge = {
-  __typename: 'GamesEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Game` at the end of the edge. */
-  node?: Maybe<Game>
-}
-
-/** Methods to use when ordering `Game`. */
-export enum GamesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  LateFinishAsc = 'LATE_FINISH_ASC',
-  LateFinishDesc = 'LATE_FINISH_DESC',
-  LateStartAsc = 'LATE_START_ASC',
-  LateStartDesc = 'LATE_START_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  PlayerMaxAsc = 'PLAYER_MAX_ASC',
-  PlayerMaxDesc = 'PLAYER_MAX_DESC',
-  PlayerMinAsc = 'PLAYER_MIN_ASC',
-  PlayerMinDesc = 'PLAYER_MIN_DESC',
-  RoomIdAsc = 'ROOM_ID_ASC',
-  RoomIdDesc = 'ROOM_ID_DESC',
-  ShortNameAsc = 'SHORT_NAME_ASC',
-  ShortNameDesc = 'SHORT_NAME_DESC',
-  SlotIdAsc = 'SLOT_ID_ASC',
-  SlotIdDesc = 'SLOT_ID_DESC',
-  CharInstructionsAsc = 'CHAR_INSTRUCTIONS_ASC',
-  CharInstructionsDesc = 'CHAR_INSTRUCTIONS_DESC',
-  EstimatedLengthAsc = 'ESTIMATED_LENGTH_ASC',
-  EstimatedLengthDesc = 'ESTIMATED_LENGTH_DESC',
-  GameContactEmailAsc = 'GAME_CONTACT_EMAIL_ASC',
-  GameContactEmailDesc = 'GAME_CONTACT_EMAIL_DESC',
-  GenreAsc = 'GENRE_ASC',
-  GenreDesc = 'GENRE_DESC',
-  GmNamesAsc = 'GM_NAMES_ASC',
-  GmNamesDesc = 'GM_NAMES_DESC',
-  MessageAsc = 'MESSAGE_ASC',
-  MessageDesc = 'MESSAGE_DESC',
-  PlayerPreferenceAsc = 'PLAYER_PREFERENCE_ASC',
-  PlayerPreferenceDesc = 'PLAYER_PREFERENCE_DESC',
-  PlayersContactGmAsc = 'PLAYERS_CONTACT_GM_ASC',
-  PlayersContactGmDesc = 'PLAYERS_CONTACT_GM_DESC',
-  ReturningPlayersAsc = 'RETURNING_PLAYERS_ASC',
-  ReturningPlayersDesc = 'RETURNING_PLAYERS_DESC',
-  SettingAsc = 'SETTING_ASC',
-  SettingDesc = 'SETTING_DESC',
-  SlotConflictsAsc = 'SLOT_CONFLICTS_ASC',
-  SlotConflictsDesc = 'SLOT_CONFLICTS_DESC',
-  SlotPreferenceAsc = 'SLOT_PREFERENCE_ASC',
-  SlotPreferenceDesc = 'SLOT_PREFERENCE_DESC',
-  TeenFriendlyAsc = 'TEEN_FRIENDLY_ASC',
-  TeenFriendlyDesc = 'TEEN_FRIENDLY_DESC',
-  TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  AuthorIdAsc = 'AUTHOR_ID_ASC',
-  AuthorIdDesc = 'AUTHOR_ID_DESC',
-  FullAsc = 'FULL_ASC',
-  FullDesc = 'FULL_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoomByRoomIdIdAsc = 'ROOM_BY_ROOM_ID__ID_ASC',
-  RoomByRoomIdIdDesc = 'ROOM_BY_ROOM_ID__ID_DESC',
-  RoomByRoomIdDescriptionAsc = 'ROOM_BY_ROOM_ID__DESCRIPTION_ASC',
-  RoomByRoomIdDescriptionDesc = 'ROOM_BY_ROOM_ID__DESCRIPTION_DESC',
-  RoomByRoomIdSizeAsc = 'ROOM_BY_ROOM_ID__SIZE_ASC',
-  RoomByRoomIdSizeDesc = 'ROOM_BY_ROOM_ID__SIZE_DESC',
-  RoomByRoomIdTypeAsc = 'ROOM_BY_ROOM_ID__TYPE_ASC',
-  RoomByRoomIdTypeDesc = 'ROOM_BY_ROOM_ID__TYPE_DESC',
-  RoomByRoomIdUpdatedAsc = 'ROOM_BY_ROOM_ID__UPDATED_ASC',
-  RoomByRoomIdUpdatedDesc = 'ROOM_BY_ROOM_ID__UPDATED_DESC',
-  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
-  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
-  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
-  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
-  SlotBySlotIdDayAsc = 'SLOT_BY_SLOT_ID__DAY_ASC',
-  SlotBySlotIdDayDesc = 'SLOT_BY_SLOT_ID__DAY_DESC',
-  SlotBySlotIdFormattedDateAsc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_ASC',
-  SlotBySlotIdFormattedDateDesc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_DESC',
-  SlotBySlotIdLengthAsc = 'SLOT_BY_SLOT_ID__LENGTH_ASC',
-  SlotBySlotIdLengthDesc = 'SLOT_BY_SLOT_ID__LENGTH_DESC',
-  SlotBySlotIdTimeAsc = 'SLOT_BY_SLOT_ID__TIME_ASC',
-  SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
-  UserByAuthorIdIdAsc = 'USER_BY_AUTHOR_ID__ID_ASC',
-  UserByAuthorIdIdDesc = 'USER_BY_AUTHOR_ID__ID_DESC',
-  UserByAuthorIdEmailAsc = 'USER_BY_AUTHOR_ID__EMAIL_ASC',
-  UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
-  UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
-  UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
-  UserByAuthorIdSnailMailAddressAsc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
-  UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
-  UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
-  UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
-  UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
-  UserByAuthorIdLastNameDesc = 'USER_BY_AUTHOR_ID__LAST_NAME_DESC',
-  GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
-  GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
-  GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
-  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
-}
-
-export type GameSubmission = Node & {
-  __typename: 'GameSubmission'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  memberId: Scalars['Int']
-  message: Scalars['String']
-  year: Scalars['Int']
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
-}
-
 /**
- * A condition to be used against `GameSubmission` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
+ * A condition to be used against `GameChoice` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
  */
-export type GameSubmissionCondition = {
+export type GameChoiceCondition = {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `gameId` field. */
+  gameId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `memberId` field. */
   memberId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `message` field. */
-  message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `rank` field. */
+  rank?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `slotId` field. */
+  slotId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `returningPlayer` field. */
+  returningPlayer?: Maybe<Scalars['Boolean']>
 }
 
-/** A filter to be used against `GameSubmission` object types. All fields are combined with a logical ‘and.’ */
-export type GameSubmissionFilter = {
+/** A filter to be used against `GameChoice` object types. All fields are combined with a logical ‘and.’ */
+export type GameChoiceFilter = {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
+  /** Filter by the object’s `gameId` field. */
+  gameId?: Maybe<IntFilter>
   /** Filter by the object’s `memberId` field. */
   memberId?: Maybe<IntFilter>
-  /** Filter by the object’s `message` field. */
-  message?: Maybe<StringFilter>
+  /** Filter by the object’s `rank` field. */
+  rank?: Maybe<IntFilter>
+  /** Filter by the object’s `slotId` field. */
+  slotId?: Maybe<IntFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
+  /** Filter by the object’s `returningPlayer` field. */
+  returningPlayer?: Maybe<BooleanFilter>
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameSubmissionFilter>>
+  and?: Maybe<Array<GameChoiceFilter>>
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameSubmissionFilter>>
+  or?: Maybe<Array<GameChoiceFilter>>
   /** Negates the expression. */
-  not?: Maybe<GameSubmissionFilter>
-}
-
-/** An input for mutations affecting `GameSubmission` */
-export type GameSubmissionInput = {
-  id?: Maybe<Scalars['Int']>
-  memberId: Scalars['Int']
-  message: Scalars['String']
-  year: Scalars['Int']
-}
-
-/** Represents an update to a `GameSubmission`. Fields that are set will be updated. */
-export type GameSubmissionPatch = {
-  id?: Maybe<Scalars['Int']>
-  memberId?: Maybe<Scalars['Int']>
-  message?: Maybe<Scalars['String']>
-  year?: Maybe<Scalars['Int']>
+  not?: Maybe<GameChoiceFilter>
 }
 
 /** A connection to a list of `GameSubmission` values. */
@@ -2455,6 +2178,18 @@ export type GameSubmissionsConnection = {
   pageInfo: PageInfo
   /** The count of *all* `GameSubmission` you could get from the connection. */
   totalCount: Scalars['Int']
+}
+
+export type GameSubmission = Node & {
+  __typename: 'GameSubmission'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  memberId: Scalars['Int']
+  message: Scalars['String']
+  year: Scalars['Int']
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
 }
 
 /** A `GameSubmission` edge in the connection. */
@@ -2519,31 +2254,102 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
 }
 
-export type HotelRoom = Node & {
-  __typename: 'HotelRoom'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  description: Scalars['String']
-  gamingRoom: Scalars['Boolean']
-  occupancy: Scalars['String']
-  quantity: Scalars['Int']
-  rate: Scalars['String']
-  bathroomType: Scalars['String']
-  type: Scalars['String']
-  /** Reads and enables pagination through a set of `Membership`. */
-  memberships: MembershipsConnection
+/**
+ * A condition to be used against `GameSubmission` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type GameSubmissionCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `memberId` field. */
+  memberId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `message` field. */
+  message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `year` field. */
+  year?: Maybe<Scalars['Int']>
 }
 
-export type HotelRoomMembershipsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
+/** A filter to be used against `GameSubmission` object types. All fields are combined with a logical ‘and.’ */
+export type GameSubmissionFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `memberId` field. */
+  memberId?: Maybe<IntFilter>
+  /** Filter by the object’s `message` field. */
+  message?: Maybe<StringFilter>
+  /** Filter by the object’s `year` field. */
+  year?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameSubmissionFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameSubmissionFilter>>
+  /** Negates the expression. */
+  not?: Maybe<GameSubmissionFilter>
+}
+
+/** A `GameChoice` edge in the connection. */
+export type GameChoicesEdge = {
+  __typename: 'GameChoicesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `GameChoice` at the end of the edge. */
+  node?: Maybe<GameChoice>
+}
+
+/** A `Game` edge in the connection. */
+export type GamesEdge = {
+  __typename: 'GamesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Game` at the end of the edge. */
+  node?: Maybe<Game>
+}
+
+/** A connection to a list of `HotelRoom` values. */
+export type HotelRoomsConnection = {
+  __typename: 'HotelRoomsConnection'
+  /** A list of `HotelRoom` objects. */
+  nodes: Array<Maybe<HotelRoom>>
+  /** A list of edges which contains the `HotelRoom` and cursor to aid in pagination. */
+  edges: Array<HotelRoomsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `HotelRoom` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `HotelRoom` edge in the connection. */
+export type HotelRoomsEdge = {
+  __typename: 'HotelRoomsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `HotelRoom` at the end of the edge. */
+  node?: Maybe<HotelRoom>
+}
+
+/** Methods to use when ordering `HotelRoom`. */
+export enum HotelRoomsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  GamingRoomAsc = 'GAMING_ROOM_ASC',
+  GamingRoomDesc = 'GAMING_ROOM_DESC',
+  OccupancyAsc = 'OCCUPANCY_ASC',
+  OccupancyDesc = 'OCCUPANCY_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC',
+  RateAsc = 'RATE_ASC',
+  RateDesc = 'RATE_DESC',
+  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
+  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  MembershipsByHotelRoomIdCountAsc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_ASC',
+  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC',
 }
 
 /**
@@ -2569,6 +2375,45 @@ export type HotelRoomCondition = {
   type?: Maybe<Scalars['String']>
 }
 
+/** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
+export type HotelRoomFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `description` field. */
+  description?: Maybe<StringFilter>
+  /** Filter by the object’s `gamingRoom` field. */
+  gamingRoom?: Maybe<BooleanFilter>
+  /** Filter by the object’s `occupancy` field. */
+  occupancy?: Maybe<StringFilter>
+  /** Filter by the object’s `quantity` field. */
+  quantity?: Maybe<IntFilter>
+  /** Filter by the object’s `rate` field. */
+  rate?: Maybe<StringFilter>
+  /** Filter by the object’s `bathroomType` field. */
+  bathroomType?: Maybe<StringFilter>
+  /** Filter by the object’s `type` field. */
+  type?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<HotelRoomFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<HotelRoomFilter>>
+  /** Negates the expression. */
+  not?: Maybe<HotelRoomFilter>
+}
+
+/** A connection to a list of `HotelRoomDetail` values. */
+export type HotelRoomDetailsConnection = {
+  __typename: 'HotelRoomDetailsConnection'
+  /** A list of `HotelRoomDetail` objects. */
+  nodes: Array<Maybe<HotelRoomDetail>>
+  /** A list of edges which contains the `HotelRoomDetail` and cursor to aid in pagination. */
+  edges: Array<HotelRoomDetailsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `HotelRoomDetail` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
 export type HotelRoomDetail = Node & {
   __typename: 'HotelRoomDetail'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -2585,6 +2430,46 @@ export type HotelRoomDetail = Node & {
   reservedFor: Scalars['String']
   roomType: Scalars['String']
   formattedRoomType: Scalars['String']
+}
+
+/** A `HotelRoomDetail` edge in the connection. */
+export type HotelRoomDetailsEdge = {
+  __typename: 'HotelRoomDetailsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `HotelRoomDetail` at the end of the edge. */
+  node?: Maybe<HotelRoomDetail>
+}
+
+/** Methods to use when ordering `HotelRoomDetail`. */
+export enum HotelRoomDetailsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC',
+  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
+  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
+  CommentAsc = 'COMMENT_ASC',
+  CommentDesc = 'COMMENT_DESC',
+  EnabledAsc = 'ENABLED_ASC',
+  EnabledDesc = 'ENABLED_DESC',
+  GamingRoomAsc = 'GAMING_ROOM_ASC',
+  GamingRoomDesc = 'GAMING_ROOM_DESC',
+  InternalRoomTypeAsc = 'INTERNAL_ROOM_TYPE_ASC',
+  InternalRoomTypeDesc = 'INTERNAL_ROOM_TYPE_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  ReservedAsc = 'RESERVED_ASC',
+  ReservedDesc = 'RESERVED_DESC',
+  ReservedForAsc = 'RESERVED_FOR_ASC',
+  ReservedForDesc = 'RESERVED_FOR_DESC',
+  RoomTypeAsc = 'ROOM_TYPE_ASC',
+  RoomTypeDesc = 'ROOM_TYPE_DESC',
+  FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
+  FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
 /**
@@ -2652,212 +2537,43 @@ export type HotelRoomDetailFilter = {
   not?: Maybe<HotelRoomDetailFilter>
 }
 
-/** An input for mutations affecting `HotelRoomDetail` */
-export type HotelRoomDetailInput = {
-  id?: Maybe<Scalars['BigInt']>
-  version: Scalars['BigInt']
-  bathroomType: Scalars['String']
-  comment: Scalars['String']
-  enabled: Scalars['Boolean']
-  gamingRoom: Scalars['Boolean']
-  internalRoomType: Scalars['String']
-  name: Scalars['String']
-  reserved: Scalars['Boolean']
-  reservedFor: Scalars['String']
-  roomType: Scalars['String']
-  formattedRoomType: Scalars['String']
-}
-
-/** Represents an update to a `HotelRoomDetail`. Fields that are set will be updated. */
-export type HotelRoomDetailPatch = {
-  id?: Maybe<Scalars['BigInt']>
-  version?: Maybe<Scalars['BigInt']>
-  bathroomType?: Maybe<Scalars['String']>
-  comment?: Maybe<Scalars['String']>
-  enabled?: Maybe<Scalars['Boolean']>
-  gamingRoom?: Maybe<Scalars['Boolean']>
-  internalRoomType?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  reserved?: Maybe<Scalars['Boolean']>
-  reservedFor?: Maybe<Scalars['String']>
-  roomType?: Maybe<Scalars['String']>
-  formattedRoomType?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `HotelRoomDetail` values. */
-export type HotelRoomDetailsConnection = {
-  __typename: 'HotelRoomDetailsConnection'
-  /** A list of `HotelRoomDetail` objects. */
-  nodes: Array<Maybe<HotelRoomDetail>>
-  /** A list of edges which contains the `HotelRoomDetail` and cursor to aid in pagination. */
-  edges: Array<HotelRoomDetailsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `HotelRoomDetail` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `HotelRoomDetail` edge in the connection. */
-export type HotelRoomDetailsEdge = {
-  __typename: 'HotelRoomDetailsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `HotelRoomDetail` at the end of the edge. */
-  node?: Maybe<HotelRoomDetail>
-}
-
-/** Methods to use when ordering `HotelRoomDetail`. */
-export enum HotelRoomDetailsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  VersionAsc = 'VERSION_ASC',
-  VersionDesc = 'VERSION_DESC',
-  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
-  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
-  CommentAsc = 'COMMENT_ASC',
-  CommentDesc = 'COMMENT_DESC',
-  EnabledAsc = 'ENABLED_ASC',
-  EnabledDesc = 'ENABLED_DESC',
-  GamingRoomAsc = 'GAMING_ROOM_ASC',
-  GamingRoomDesc = 'GAMING_ROOM_DESC',
-  InternalRoomTypeAsc = 'INTERNAL_ROOM_TYPE_ASC',
-  InternalRoomTypeDesc = 'INTERNAL_ROOM_TYPE_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  ReservedAsc = 'RESERVED_ASC',
-  ReservedDesc = 'RESERVED_DESC',
-  ReservedForAsc = 'RESERVED_FOR_ASC',
-  ReservedForDesc = 'RESERVED_FOR_DESC',
-  RoomTypeAsc = 'ROOM_TYPE_ASC',
-  RoomTypeDesc = 'ROOM_TYPE_DESC',
-  FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
-  FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-}
-
-/** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
-export type HotelRoomFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>
-  /** Filter by the object’s `gamingRoom` field. */
-  gamingRoom?: Maybe<BooleanFilter>
-  /** Filter by the object’s `occupancy` field. */
-  occupancy?: Maybe<StringFilter>
-  /** Filter by the object’s `quantity` field. */
-  quantity?: Maybe<IntFilter>
-  /** Filter by the object’s `rate` field. */
-  rate?: Maybe<StringFilter>
-  /** Filter by the object’s `bathroomType` field. */
-  bathroomType?: Maybe<StringFilter>
-  /** Filter by the object’s `type` field. */
-  type?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<HotelRoomFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<HotelRoomFilter>>
-  /** Negates the expression. */
-  not?: Maybe<HotelRoomFilter>
-}
-
-/** An input for mutations affecting `HotelRoom` */
-export type HotelRoomInput = {
-  id?: Maybe<Scalars['Int']>
-  description: Scalars['String']
-  gamingRoom: Scalars['Boolean']
-  occupancy: Scalars['String']
-  quantity: Scalars['Int']
-  rate: Scalars['String']
-  bathroomType: Scalars['String']
-  type: Scalars['String']
-}
-
-/** Represents an update to a `HotelRoom`. Fields that are set will be updated. */
-export type HotelRoomPatch = {
-  id?: Maybe<Scalars['Int']>
-  description?: Maybe<Scalars['String']>
-  gamingRoom?: Maybe<Scalars['Boolean']>
-  occupancy?: Maybe<Scalars['String']>
-  quantity?: Maybe<Scalars['Int']>
-  rate?: Maybe<Scalars['String']>
-  bathroomType?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `HotelRoom` values. */
-export type HotelRoomsConnection = {
-  __typename: 'HotelRoomsConnection'
-  /** A list of `HotelRoom` objects. */
-  nodes: Array<Maybe<HotelRoom>>
-  /** A list of edges which contains the `HotelRoom` and cursor to aid in pagination. */
-  edges: Array<HotelRoomsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `HotelRoom` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `HotelRoom` edge in the connection. */
-export type HotelRoomsEdge = {
-  __typename: 'HotelRoomsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `HotelRoom` at the end of the edge. */
-  node?: Maybe<HotelRoom>
-}
-
-/** Methods to use when ordering `HotelRoom`. */
-export enum HotelRoomsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  GamingRoomAsc = 'GAMING_ROOM_ASC',
-  GamingRoomDesc = 'GAMING_ROOM_DESC',
-  OccupancyAsc = 'OCCUPANCY_ASC',
-  OccupancyDesc = 'OCCUPANCY_DESC',
-  QuantityAsc = 'QUANTITY_ASC',
-  QuantityDesc = 'QUANTITY_DESC',
-  RateAsc = 'RATE_ASC',
-  RateDesc = 'RATE_DESC',
-  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
-  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
-  TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MembershipsByHotelRoomIdCountAsc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_ASC',
-  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC',
-}
-
-/** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
-export type IntFilter = {
+/** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
+export type BigIntFilter = {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Int']>
+  equalTo?: Maybe<Scalars['BigInt']>
   /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Int']>
+  notEqualTo?: Maybe<Scalars['BigInt']>
   /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['Int']>
+  distinctFrom?: Maybe<Scalars['BigInt']>
   /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Int']>
+  notDistinctFrom?: Maybe<Scalars['BigInt']>
   /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Int']>>
+  in?: Maybe<Array<Scalars['BigInt']>>
   /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Int']>>
+  notIn?: Maybe<Array<Scalars['BigInt']>>
   /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Int']>
+  lessThan?: Maybe<Scalars['BigInt']>
   /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Int']>
+  lessThanOrEqualTo?: Maybe<Scalars['BigInt']>
   /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['Int']>
+  greaterThan?: Maybe<Scalars['BigInt']>
   /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['Int']>
+  greaterThanOrEqualTo?: Maybe<Scalars['BigInt']>
+}
+
+/** A connection to a list of `Lookup` values. */
+export type LookupsConnection = {
+  __typename: 'LookupsConnection'
+  /** A list of `Lookup` objects. */
+  nodes: Array<Maybe<Lookup>>
+  /** A list of edges which contains the `Lookup` and cursor to aid in pagination. */
+  edges: Array<LookupsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Lookup` you could get from the connection. */
+  totalCount: Scalars['Int']
 }
 
 export type Lookup = Node & {
@@ -2889,6 +2605,201 @@ export type LookupLookupValuesArgs = {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
   condition?: Maybe<LookupValueCondition>
   filter?: Maybe<LookupValueFilter>
+}
+
+/** A connection to a list of `LookupValue` values. */
+export type LookupValuesConnection = {
+  __typename: 'LookupValuesConnection'
+  /** A list of `LookupValue` objects. */
+  nodes: Array<Maybe<LookupValue>>
+  /** A list of edges which contains the `LookupValue` and cursor to aid in pagination. */
+  edges: Array<LookupValuesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `LookupValue` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+export type LookupValue = Node & {
+  __typename: 'LookupValue'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  code: Scalars['String']
+  lookupId: Scalars['Int']
+  numericSequencer: Scalars['BigFloat']
+  sequencer: Scalars['Int']
+  stringSequencer: Scalars['String']
+  value: Scalars['String']
+  /** Reads a single `Lookup` that is related to this `LookupValue`. */
+  lookup?: Maybe<Lookup>
+}
+
+/** A `LookupValue` edge in the connection. */
+export type LookupValuesEdge = {
+  __typename: 'LookupValuesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `LookupValue` at the end of the edge. */
+  node?: Maybe<LookupValue>
+}
+
+/** Methods to use when ordering `LookupValue`. */
+export enum LookupValuesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  CodeAsc = 'CODE_ASC',
+  CodeDesc = 'CODE_DESC',
+  LookupIdAsc = 'LOOKUP_ID_ASC',
+  LookupIdDesc = 'LOOKUP_ID_DESC',
+  NumericSequencerAsc = 'NUMERIC_SEQUENCER_ASC',
+  NumericSequencerDesc = 'NUMERIC_SEQUENCER_DESC',
+  SequencerAsc = 'SEQUENCER_ASC',
+  SequencerDesc = 'SEQUENCER_DESC',
+  StringSequencerAsc = 'STRING_SEQUENCER_ASC',
+  StringSequencerDesc = 'STRING_SEQUENCER_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  LookupByLookupIdIdAsc = 'LOOKUP_BY_LOOKUP_ID__ID_ASC',
+  LookupByLookupIdIdDesc = 'LOOKUP_BY_LOOKUP_ID__ID_DESC',
+  LookupByLookupIdCodeMaximumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_ASC',
+  LookupByLookupIdCodeMaximumDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_DESC',
+  LookupByLookupIdCodeMinimumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MINIMUM_ASC',
+  LookupByLookupIdCodeMinimumDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_MINIMUM_DESC',
+  LookupByLookupIdCodeScaleAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_SCALE_ASC',
+  LookupByLookupIdCodeScaleDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_SCALE_DESC',
+  LookupByLookupIdCodeTypeAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_ASC',
+  LookupByLookupIdCodeTypeDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_DESC',
+  LookupByLookupIdInternationalizeAsc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_ASC',
+  LookupByLookupIdInternationalizeDesc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_DESC',
+  LookupByLookupIdOrderingAsc = 'LOOKUP_BY_LOOKUP_ID__ORDERING_ASC',
+  LookupByLookupIdOrderingDesc = 'LOOKUP_BY_LOOKUP_ID__ORDERING_DESC',
+  LookupByLookupIdRealmAsc = 'LOOKUP_BY_LOOKUP_ID__REALM_ASC',
+  LookupByLookupIdRealmDesc = 'LOOKUP_BY_LOOKUP_ID__REALM_DESC',
+  LookupByLookupIdValueMaximumAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MAXIMUM_ASC',
+  LookupByLookupIdValueMaximumDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MAXIMUM_DESC',
+  LookupByLookupIdValueMinimumAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MINIMUM_ASC',
+  LookupByLookupIdValueMinimumDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MINIMUM_DESC',
+  LookupByLookupIdValueScaleAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_ASC',
+  LookupByLookupIdValueScaleDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_DESC',
+  LookupByLookupIdValueTypeAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_ASC',
+  LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC',
+}
+
+/**
+ * A condition to be used against `LookupValue` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type LookupValueCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `code` field. */
+  code?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `lookupId` field. */
+  lookupId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `numericSequencer` field. */
+  numericSequencer?: Maybe<Scalars['BigFloat']>
+  /** Checks for equality with the object’s `sequencer` field. */
+  sequencer?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `stringSequencer` field. */
+  stringSequencer?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `value` field. */
+  value?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `LookupValue` object types. All fields are combined with a logical ‘and.’ */
+export type LookupValueFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `code` field. */
+  code?: Maybe<StringFilter>
+  /** Filter by the object’s `lookupId` field. */
+  lookupId?: Maybe<IntFilter>
+  /** Filter by the object’s `numericSequencer` field. */
+  numericSequencer?: Maybe<BigFloatFilter>
+  /** Filter by the object’s `sequencer` field. */
+  sequencer?: Maybe<IntFilter>
+  /** Filter by the object’s `stringSequencer` field. */
+  stringSequencer?: Maybe<StringFilter>
+  /** Filter by the object’s `value` field. */
+  value?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<LookupValueFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<LookupValueFilter>>
+  /** Negates the expression. */
+  not?: Maybe<LookupValueFilter>
+}
+
+/** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
+export type BigFloatFilter = {
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['BigFloat']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: Maybe<Scalars['BigFloat']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['BigFloat']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['BigFloat']>>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['BigFloat']>>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['BigFloat']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['BigFloat']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['BigFloat']>
+}
+
+/** A `Lookup` edge in the connection. */
+export type LookupsEdge = {
+  __typename: 'LookupsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Lookup` at the end of the edge. */
+  node?: Maybe<Lookup>
+}
+
+/** Methods to use when ordering `Lookup`. */
+export enum LookupsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  CodeMaximumAsc = 'CODE_MAXIMUM_ASC',
+  CodeMaximumDesc = 'CODE_MAXIMUM_DESC',
+  CodeMinimumAsc = 'CODE_MINIMUM_ASC',
+  CodeMinimumDesc = 'CODE_MINIMUM_DESC',
+  CodeScaleAsc = 'CODE_SCALE_ASC',
+  CodeScaleDesc = 'CODE_SCALE_DESC',
+  CodeTypeAsc = 'CODE_TYPE_ASC',
+  CodeTypeDesc = 'CODE_TYPE_DESC',
+  InternationalizeAsc = 'INTERNATIONALIZE_ASC',
+  InternationalizeDesc = 'INTERNATIONALIZE_DESC',
+  OrderingAsc = 'ORDERING_ASC',
+  OrderingDesc = 'ORDERING_DESC',
+  RealmAsc = 'REALM_ASC',
+  RealmDesc = 'REALM_DESC',
+  ValueMaximumAsc = 'VALUE_MAXIMUM_ASC',
+  ValueMaximumDesc = 'VALUE_MAXIMUM_DESC',
+  ValueMinimumAsc = 'VALUE_MINIMUM_ASC',
+  ValueMinimumDesc = 'VALUE_MINIMUM_DESC',
+  ValueScaleAsc = 'VALUE_SCALE_ASC',
+  ValueScaleDesc = 'VALUE_SCALE_DESC',
+  ValueTypeAsc = 'VALUE_TYPE_ASC',
+  ValueTypeDesc = 'VALUE_TYPE_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  LookupValuesByLookupIdCountAsc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_ASC',
+  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
 }
 
 /** A condition to be used against `Lookup` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -2953,550 +2864,389 @@ export type LookupFilter = {
   not?: Maybe<LookupFilter>
 }
 
-/** An input for mutations affecting `Lookup` */
-export type LookupInput = {
-  id?: Maybe<Scalars['Int']>
-  codeMaximum?: Maybe<Scalars['String']>
-  codeMinimum?: Maybe<Scalars['String']>
-  codeScale?: Maybe<Scalars['Int']>
-  codeType: Scalars['String']
-  internationalize: Scalars['Boolean']
-  ordering: Scalars['String']
-  realm: Scalars['String']
-  valueMaximum?: Maybe<Scalars['String']>
-  valueMinimum?: Maybe<Scalars['String']>
-  valueScale?: Maybe<Scalars['Int']>
-  valueType: Scalars['String']
-}
-
-/** Represents an update to a `Lookup`. Fields that are set will be updated. */
-export type LookupPatch = {
-  id?: Maybe<Scalars['Int']>
-  codeMaximum?: Maybe<Scalars['String']>
-  codeMinimum?: Maybe<Scalars['String']>
-  codeScale?: Maybe<Scalars['Int']>
-  codeType?: Maybe<Scalars['String']>
-  internationalize?: Maybe<Scalars['Boolean']>
-  ordering?: Maybe<Scalars['String']>
-  realm?: Maybe<Scalars['String']>
-  valueMaximum?: Maybe<Scalars['String']>
-  valueMinimum?: Maybe<Scalars['String']>
-  valueScale?: Maybe<Scalars['Int']>
-  valueType?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `Lookup` values. */
-export type LookupsConnection = {
-  __typename: 'LookupsConnection'
-  /** A list of `Lookup` objects. */
-  nodes: Array<Maybe<Lookup>>
-  /** A list of edges which contains the `Lookup` and cursor to aid in pagination. */
-  edges: Array<LookupsEdge>
+/** A connection to a list of `Role` values. */
+export type RolesConnection = {
+  __typename: 'RolesConnection'
+  /** A list of `Role` objects. */
+  nodes: Array<Maybe<Role>>
+  /** A list of edges which contains the `Role` and cursor to aid in pagination. */
+  edges: Array<RolesEdge>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
-  /** The count of *all* `Lookup` you could get from the connection. */
+  /** The count of *all* `Role` you could get from the connection. */
   totalCount: Scalars['Int']
 }
 
-/** A `Lookup` edge in the connection. */
-export type LookupsEdge = {
-  __typename: 'LookupsEdge'
+/** A `Role` edge in the connection. */
+export type RolesEdge = {
+  __typename: 'RolesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
-  /** The `Lookup` at the end of the edge. */
-  node?: Maybe<Lookup>
+  /** The `Role` at the end of the edge. */
+  node?: Maybe<Role>
 }
 
-/** Methods to use when ordering `Lookup`. */
-export enum LookupsOrderBy {
+/** Methods to use when ordering `Role`. */
+export enum RolesOrderBy {
   Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  CodeMaximumAsc = 'CODE_MAXIMUM_ASC',
-  CodeMaximumDesc = 'CODE_MAXIMUM_DESC',
-  CodeMinimumAsc = 'CODE_MINIMUM_ASC',
-  CodeMinimumDesc = 'CODE_MINIMUM_DESC',
-  CodeScaleAsc = 'CODE_SCALE_ASC',
-  CodeScaleDesc = 'CODE_SCALE_DESC',
-  CodeTypeAsc = 'CODE_TYPE_ASC',
-  CodeTypeDesc = 'CODE_TYPE_DESC',
-  InternationalizeAsc = 'INTERNATIONALIZE_ASC',
-  InternationalizeDesc = 'INTERNATIONALIZE_DESC',
-  OrderingAsc = 'ORDERING_ASC',
-  OrderingDesc = 'ORDERING_DESC',
-  RealmAsc = 'REALM_ASC',
-  RealmDesc = 'REALM_DESC',
-  ValueMaximumAsc = 'VALUE_MAXIMUM_ASC',
-  ValueMaximumDesc = 'VALUE_MAXIMUM_DESC',
-  ValueMinimumAsc = 'VALUE_MINIMUM_ASC',
-  ValueMinimumDesc = 'VALUE_MINIMUM_DESC',
-  ValueScaleAsc = 'VALUE_SCALE_ASC',
-  ValueScaleDesc = 'VALUE_SCALE_DESC',
-  ValueTypeAsc = 'VALUE_TYPE_ASC',
-  ValueTypeDesc = 'VALUE_TYPE_DESC',
+  AuthorityAsc = 'AUTHORITY_ASC',
+  AuthorityDesc = 'AUTHORITY_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  LookupValuesByLookupIdCountAsc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_ASC',
-  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
+  UserRolesByRoleIdCountAsc = 'USER_ROLES_BY_ROLE_ID__COUNT_ASC',
+  UserRolesByRoleIdCountDesc = 'USER_ROLES_BY_ROLE_ID__COUNT_DESC',
 }
 
-export type LookupValue = Node & {
-  __typename: 'LookupValue'
+/** A condition to be used against `Role` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type RoleCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `authority` field. */
+  authority?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `Role` object types. All fields are combined with a logical ‘and.’ */
+export type RoleFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `authority` field. */
+  authority?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<RoleFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<RoleFilter>>
+  /** Negates the expression. */
+  not?: Maybe<RoleFilter>
+}
+
+/** A connection to a list of `Room` values. */
+export type RoomsConnection = {
+  __typename: 'RoomsConnection'
+  /** A list of `Room` objects. */
+  nodes: Array<Maybe<Room>>
+  /** A list of edges which contains the `Room` and cursor to aid in pagination. */
+  edges: Array<RoomsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Room` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `Room` edge in the connection. */
+export type RoomsEdge = {
+  __typename: 'RoomsEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Room` at the end of the edge. */
+  node?: Maybe<Room>
+}
+
+/** Methods to use when ordering `Room`. */
+export enum RoomsOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  SizeAsc = 'SIZE_ASC',
+  SizeDesc = 'SIZE_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
+  UpdatedAsc = 'UPDATED_ASC',
+  UpdatedDesc = 'UPDATED_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  GamesByRoomIdCountAsc = 'GAMES_BY_ROOM_ID__COUNT_ASC',
+  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
+}
+
+/** A condition to be used against `Room` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type RoomCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `description` field. */
+  description?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `size` field. */
+  size?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `type` field. */
+  type?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `updated` field. */
+  updated?: Maybe<Scalars['Boolean']>
+}
+
+/** A filter to be used against `Room` object types. All fields are combined with a logical ‘and.’ */
+export type RoomFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `description` field. */
+  description?: Maybe<StringFilter>
+  /** Filter by the object’s `size` field. */
+  size?: Maybe<IntFilter>
+  /** Filter by the object’s `type` field. */
+  type?: Maybe<StringFilter>
+  /** Filter by the object’s `updated` field. */
+  updated?: Maybe<BooleanFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<RoomFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<RoomFilter>>
+  /** Negates the expression. */
+  not?: Maybe<RoomFilter>
+}
+
+/** A connection to a list of `Setting` values. */
+export type SettingsConnection = {
+  __typename: 'SettingsConnection'
+  /** A list of `Setting` objects. */
+  nodes: Array<Maybe<Setting>>
+  /** A list of edges which contains the `Setting` and cursor to aid in pagination. */
+  edges: Array<SettingsEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Setting` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+export type Setting = Node & {
+  __typename: 'Setting'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
   id: Scalars['Int']
   code: Scalars['String']
-  lookupId: Scalars['Int']
-  numericSequencer: Scalars['BigFloat']
-  sequencer: Scalars['Int']
-  stringSequencer: Scalars['String']
-  value: Scalars['String']
-  /** Reads a single `Lookup` that is related to this `LookupValue`. */
-  lookup?: Maybe<Lookup>
-}
-
-/**
- * A condition to be used against `LookupValue` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type LookupValueCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `code` field. */
-  code?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `lookupId` field. */
-  lookupId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `numericSequencer` field. */
-  numericSequencer?: Maybe<Scalars['BigFloat']>
-  /** Checks for equality with the object’s `sequencer` field. */
-  sequencer?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `stringSequencer` field. */
-  stringSequencer?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `value` field. */
-  value?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `LookupValue` object types. All fields are combined with a logical ‘and.’ */
-export type LookupValueFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `code` field. */
-  code?: Maybe<StringFilter>
-  /** Filter by the object’s `lookupId` field. */
-  lookupId?: Maybe<IntFilter>
-  /** Filter by the object’s `numericSequencer` field. */
-  numericSequencer?: Maybe<BigFloatFilter>
-  /** Filter by the object’s `sequencer` field. */
-  sequencer?: Maybe<IntFilter>
-  /** Filter by the object’s `stringSequencer` field. */
-  stringSequencer?: Maybe<StringFilter>
-  /** Filter by the object’s `value` field. */
-  value?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<LookupValueFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<LookupValueFilter>>
-  /** Negates the expression. */
-  not?: Maybe<LookupValueFilter>
-}
-
-/** An input for mutations affecting `LookupValue` */
-export type LookupValueInput = {
-  id?: Maybe<Scalars['Int']>
-  code: Scalars['String']
-  lookupId: Scalars['Int']
-  numericSequencer: Scalars['BigFloat']
-  sequencer: Scalars['Int']
-  stringSequencer: Scalars['String']
+  type: Scalars['String']
   value: Scalars['String']
 }
 
-/** Represents an update to a `LookupValue`. Fields that are set will be updated. */
-export type LookupValuePatch = {
-  id?: Maybe<Scalars['Int']>
-  code?: Maybe<Scalars['String']>
-  lookupId?: Maybe<Scalars['Int']>
-  numericSequencer?: Maybe<Scalars['BigFloat']>
-  sequencer?: Maybe<Scalars['Int']>
-  stringSequencer?: Maybe<Scalars['String']>
-  value?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `LookupValue` values. */
-export type LookupValuesConnection = {
-  __typename: 'LookupValuesConnection'
-  /** A list of `LookupValue` objects. */
-  nodes: Array<Maybe<LookupValue>>
-  /** A list of edges which contains the `LookupValue` and cursor to aid in pagination. */
-  edges: Array<LookupValuesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `LookupValue` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `LookupValue` edge in the connection. */
-export type LookupValuesEdge = {
-  __typename: 'LookupValuesEdge'
+/** A `Setting` edge in the connection. */
+export type SettingsEdge = {
+  __typename: 'SettingsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
-  /** The `LookupValue` at the end of the edge. */
-  node?: Maybe<LookupValue>
+  /** The `Setting` at the end of the edge. */
+  node?: Maybe<Setting>
 }
 
-/** Methods to use when ordering `LookupValue`. */
-export enum LookupValuesOrderBy {
+/** Methods to use when ordering `Setting`. */
+export enum SettingsOrderBy {
   Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
   CodeAsc = 'CODE_ASC',
   CodeDesc = 'CODE_DESC',
-  LookupIdAsc = 'LOOKUP_ID_ASC',
-  LookupIdDesc = 'LOOKUP_ID_DESC',
-  NumericSequencerAsc = 'NUMERIC_SEQUENCER_ASC',
-  NumericSequencerDesc = 'NUMERIC_SEQUENCER_DESC',
-  SequencerAsc = 'SEQUENCER_ASC',
-  SequencerDesc = 'SEQUENCER_DESC',
-  StringSequencerAsc = 'STRING_SEQUENCER_ASC',
-  StringSequencerDesc = 'STRING_SEQUENCER_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
   ValueAsc = 'VALUE_ASC',
   ValueDesc = 'VALUE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  LookupByLookupIdIdAsc = 'LOOKUP_BY_LOOKUP_ID__ID_ASC',
-  LookupByLookupIdIdDesc = 'LOOKUP_BY_LOOKUP_ID__ID_DESC',
-  LookupByLookupIdCodeMaximumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_ASC',
-  LookupByLookupIdCodeMaximumDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_DESC',
-  LookupByLookupIdCodeMinimumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MINIMUM_ASC',
-  LookupByLookupIdCodeMinimumDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_MINIMUM_DESC',
-  LookupByLookupIdCodeScaleAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_SCALE_ASC',
-  LookupByLookupIdCodeScaleDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_SCALE_DESC',
-  LookupByLookupIdCodeTypeAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_ASC',
-  LookupByLookupIdCodeTypeDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_DESC',
-  LookupByLookupIdInternationalizeAsc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_ASC',
-  LookupByLookupIdInternationalizeDesc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_DESC',
-  LookupByLookupIdOrderingAsc = 'LOOKUP_BY_LOOKUP_ID__ORDERING_ASC',
-  LookupByLookupIdOrderingDesc = 'LOOKUP_BY_LOOKUP_ID__ORDERING_DESC',
-  LookupByLookupIdRealmAsc = 'LOOKUP_BY_LOOKUP_ID__REALM_ASC',
-  LookupByLookupIdRealmDesc = 'LOOKUP_BY_LOOKUP_ID__REALM_DESC',
-  LookupByLookupIdValueMaximumAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MAXIMUM_ASC',
-  LookupByLookupIdValueMaximumDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MAXIMUM_DESC',
-  LookupByLookupIdValueMinimumAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MINIMUM_ASC',
-  LookupByLookupIdValueMinimumDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_MINIMUM_DESC',
-  LookupByLookupIdValueScaleAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_ASC',
-  LookupByLookupIdValueScaleDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_DESC',
-  LookupByLookupIdValueTypeAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_ASC',
-  LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC',
 }
 
-export type Membership = Node & {
-  __typename: 'Membership'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  arrivalDate: Scalars['Datetime']
-  attendance: Scalars['String']
-  attending: Scalars['Boolean']
-  departureDate: Scalars['Datetime']
-  hotelRoomId: Scalars['Int']
-  interestLevel: Scalars['String']
-  message: Scalars['String']
-  roomPreferenceAndNotes: Scalars['String']
-  roomingPreferences: Scalars['String']
-  roomingWith: Scalars['String']
-  userId: Scalars['Int']
-  volunteer: Scalars['Boolean']
-  year: Scalars['Int']
-  offerSubsidy: Scalars['Boolean']
-  requestOldPrice: Scalars['Boolean']
-  amountOwed: Scalars['Float']
-  amountPaid: Scalars['Float']
-  slotsAttending?: Maybe<Scalars['String']>
-  /** Reads a single `HotelRoom` that is related to this `Membership`. */
-  hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
-  /** Reads and enables pagination through a set of `GameAssignment`. */
-  gameAssignmentsByMemberId: GameAssignmentsConnection
-  /** Reads and enables pagination through a set of `GameChoice`. */
-  gameChoicesByMemberId: GameChoicesConnection
-  /** Reads and enables pagination through a set of `GameSubmission`. */
-  gameSubmissionsByMemberId: GameSubmissionsConnection
-}
-
-export type MembershipGameAssignmentsByMemberIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-  condition?: Maybe<GameAssignmentCondition>
-  filter?: Maybe<GameAssignmentFilter>
-}
-
-export type MembershipGameChoicesByMemberIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
-}
-
-export type MembershipGameSubmissionsByMemberIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-  condition?: Maybe<GameSubmissionCondition>
-  filter?: Maybe<GameSubmissionFilter>
-}
-
-/**
- * A condition to be used against `Membership` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type MembershipCondition = {
+/** A condition to be used against `Setting` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type SettingCondition = {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `arrivalDate` field. */
-  arrivalDate?: Maybe<Scalars['Datetime']>
-  /** Checks for equality with the object’s `attendance` field. */
-  attendance?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `attending` field. */
-  attending?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `departureDate` field. */
-  departureDate?: Maybe<Scalars['Datetime']>
-  /** Checks for equality with the object’s `hotelRoomId` field. */
-  hotelRoomId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `interestLevel` field. */
-  interestLevel?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `message` field. */
-  message?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `roomPreferenceAndNotes` field. */
-  roomPreferenceAndNotes?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `roomingPreferences` field. */
-  roomingPreferences?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `roomingWith` field. */
-  roomingWith?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `volunteer` field. */
-  volunteer?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `year` field. */
-  year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `offerSubsidy` field. */
-  offerSubsidy?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `requestOldPrice` field. */
-  requestOldPrice?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `amountOwed` field. */
-  amountOwed?: Maybe<Scalars['Float']>
-  /** Checks for equality with the object’s `amountPaid` field. */
-  amountPaid?: Maybe<Scalars['Float']>
-  /** Checks for equality with the object’s `slotsAttending` field. */
-  slotsAttending?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `code` field. */
+  code?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `type` field. */
+  type?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `value` field. */
+  value?: Maybe<Scalars['String']>
 }
 
-/** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
-export type MembershipFilter = {
+/** A filter to be used against `Setting` object types. All fields are combined with a logical ‘and.’ */
+export type SettingFilter = {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
-  /** Filter by the object’s `arrivalDate` field. */
-  arrivalDate?: Maybe<DatetimeFilter>
-  /** Filter by the object’s `attendance` field. */
-  attendance?: Maybe<StringFilter>
-  /** Filter by the object’s `attending` field. */
-  attending?: Maybe<BooleanFilter>
-  /** Filter by the object’s `departureDate` field. */
-  departureDate?: Maybe<DatetimeFilter>
-  /** Filter by the object’s `hotelRoomId` field. */
-  hotelRoomId?: Maybe<IntFilter>
-  /** Filter by the object’s `interestLevel` field. */
-  interestLevel?: Maybe<StringFilter>
-  /** Filter by the object’s `message` field. */
-  message?: Maybe<StringFilter>
-  /** Filter by the object’s `roomPreferenceAndNotes` field. */
-  roomPreferenceAndNotes?: Maybe<StringFilter>
-  /** Filter by the object’s `roomingPreferences` field. */
-  roomingPreferences?: Maybe<StringFilter>
-  /** Filter by the object’s `roomingWith` field. */
-  roomingWith?: Maybe<StringFilter>
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>
-  /** Filter by the object’s `volunteer` field. */
-  volunteer?: Maybe<BooleanFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Filter by the object’s `offerSubsidy` field. */
-  offerSubsidy?: Maybe<BooleanFilter>
-  /** Filter by the object’s `requestOldPrice` field. */
-  requestOldPrice?: Maybe<BooleanFilter>
-  /** Filter by the object’s `amountOwed` field. */
-  amountOwed?: Maybe<FloatFilter>
-  /** Filter by the object’s `amountPaid` field. */
-  amountPaid?: Maybe<FloatFilter>
-  /** Filter by the object’s `slotsAttending` field. */
-  slotsAttending?: Maybe<StringFilter>
+  /** Filter by the object’s `code` field. */
+  code?: Maybe<StringFilter>
+  /** Filter by the object’s `type` field. */
+  type?: Maybe<StringFilter>
+  /** Filter by the object’s `value` field. */
+  value?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
-  and?: Maybe<Array<MembershipFilter>>
+  and?: Maybe<Array<SettingFilter>>
   /** Checks for any expressions in this list. */
-  or?: Maybe<Array<MembershipFilter>>
+  or?: Maybe<Array<SettingFilter>>
   /** Negates the expression. */
-  not?: Maybe<MembershipFilter>
+  not?: Maybe<SettingFilter>
 }
 
-/** An input for mutations affecting `Membership` */
-export type MembershipInput = {
-  id?: Maybe<Scalars['Int']>
-  arrivalDate: Scalars['Datetime']
-  attendance: Scalars['String']
-  attending: Scalars['Boolean']
-  departureDate: Scalars['Datetime']
-  hotelRoomId: Scalars['Int']
-  interestLevel: Scalars['String']
-  message: Scalars['String']
-  roomPreferenceAndNotes: Scalars['String']
-  roomingPreferences: Scalars['String']
-  roomingWith: Scalars['String']
-  userId: Scalars['Int']
-  volunteer: Scalars['Boolean']
-  year: Scalars['Int']
-  offerSubsidy: Scalars['Boolean']
-  requestOldPrice: Scalars['Boolean']
-  amountOwed: Scalars['Float']
-  amountPaid: Scalars['Float']
-  slotsAttending?: Maybe<Scalars['String']>
-}
-
-/** Represents an update to a `Membership`. Fields that are set will be updated. */
-export type MembershipPatch = {
-  id?: Maybe<Scalars['Int']>
-  arrivalDate?: Maybe<Scalars['Datetime']>
-  attendance?: Maybe<Scalars['String']>
-  attending?: Maybe<Scalars['Boolean']>
-  departureDate?: Maybe<Scalars['Datetime']>
-  hotelRoomId?: Maybe<Scalars['Int']>
-  interestLevel?: Maybe<Scalars['String']>
-  message?: Maybe<Scalars['String']>
-  roomPreferenceAndNotes?: Maybe<Scalars['String']>
-  roomingPreferences?: Maybe<Scalars['String']>
-  roomingWith?: Maybe<Scalars['String']>
-  userId?: Maybe<Scalars['Int']>
-  volunteer?: Maybe<Scalars['Boolean']>
-  year?: Maybe<Scalars['Int']>
-  offerSubsidy?: Maybe<Scalars['Boolean']>
-  requestOldPrice?: Maybe<Scalars['Boolean']>
-  amountOwed?: Maybe<Scalars['Float']>
-  amountPaid?: Maybe<Scalars['Float']>
-  slotsAttending?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `Membership` values. */
-export type MembershipsConnection = {
-  __typename: 'MembershipsConnection'
-  /** A list of `Membership` objects. */
-  nodes: Array<Maybe<Membership>>
-  /** A list of edges which contains the `Membership` and cursor to aid in pagination. */
-  edges: Array<MembershipsEdge>
+/** A connection to a list of `Slot` values. */
+export type SlotsConnection = {
+  __typename: 'SlotsConnection'
+  /** A list of `Slot` objects. */
+  nodes: Array<Maybe<Slot>>
+  /** A list of edges which contains the `Slot` and cursor to aid in pagination. */
+  edges: Array<SlotsEdge>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
-  /** The count of *all* `Membership` you could get from the connection. */
+  /** The count of *all* `Slot` you could get from the connection. */
   totalCount: Scalars['Int']
 }
 
-/** A `Membership` edge in the connection. */
-export type MembershipsEdge = {
-  __typename: 'MembershipsEdge'
+/** A `Slot` edge in the connection. */
+export type SlotsEdge = {
+  __typename: 'SlotsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
-  /** The `Membership` at the end of the edge. */
-  node?: Maybe<Membership>
+  /** The `Slot` at the end of the edge. */
+  node?: Maybe<Slot>
 }
 
-/** Methods to use when ordering `Membership`. */
-export enum MembershipsOrderBy {
+/** Methods to use when ordering `Slot`. */
+export enum SlotsOrderBy {
   Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  ArrivalDateAsc = 'ARRIVAL_DATE_ASC',
-  ArrivalDateDesc = 'ARRIVAL_DATE_DESC',
-  AttendanceAsc = 'ATTENDANCE_ASC',
-  AttendanceDesc = 'ATTENDANCE_DESC',
-  AttendingAsc = 'ATTENDING_ASC',
-  AttendingDesc = 'ATTENDING_DESC',
-  DepartureDateAsc = 'DEPARTURE_DATE_ASC',
-  DepartureDateDesc = 'DEPARTURE_DATE_DESC',
-  HotelRoomIdAsc = 'HOTEL_ROOM_ID_ASC',
-  HotelRoomIdDesc = 'HOTEL_ROOM_ID_DESC',
-  InterestLevelAsc = 'INTEREST_LEVEL_ASC',
-  InterestLevelDesc = 'INTEREST_LEVEL_DESC',
-  MessageAsc = 'MESSAGE_ASC',
-  MessageDesc = 'MESSAGE_DESC',
-  RoomPreferenceAndNotesAsc = 'ROOM_PREFERENCE_AND_NOTES_ASC',
-  RoomPreferenceAndNotesDesc = 'ROOM_PREFERENCE_AND_NOTES_DESC',
-  RoomingPreferencesAsc = 'ROOMING_PREFERENCES_ASC',
-  RoomingPreferencesDesc = 'ROOMING_PREFERENCES_DESC',
-  RoomingWithAsc = 'ROOMING_WITH_ASC',
-  RoomingWithDesc = 'ROOMING_WITH_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  VolunteerAsc = 'VOLUNTEER_ASC',
-  VolunteerDesc = 'VOLUNTEER_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  OfferSubsidyAsc = 'OFFER_SUBSIDY_ASC',
-  OfferSubsidyDesc = 'OFFER_SUBSIDY_DESC',
-  RequestOldPriceAsc = 'REQUEST_OLD_PRICE_ASC',
-  RequestOldPriceDesc = 'REQUEST_OLD_PRICE_DESC',
-  AmountOwedAsc = 'AMOUNT_OWED_ASC',
-  AmountOwedDesc = 'AMOUNT_OWED_DESC',
-  AmountPaidAsc = 'AMOUNT_PAID_ASC',
-  AmountPaidDesc = 'AMOUNT_PAID_DESC',
-  SlotsAttendingAsc = 'SLOTS_ATTENDING_ASC',
-  SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
+  SlotAsc = 'SLOT_ASC',
+  SlotDesc = 'SLOT_DESC',
+  DayAsc = 'DAY_ASC',
+  DayDesc = 'DAY_DESC',
+  FormattedDateAsc = 'FORMATTED_DATE_ASC',
+  FormattedDateDesc = 'FORMATTED_DATE_DESC',
+  LengthAsc = 'LENGTH_ASC',
+  LengthDesc = 'LENGTH_DESC',
+  TimeAsc = 'TIME_ASC',
+  TimeDesc = 'TIME_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
-  HotelRoomByHotelRoomIdIdDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_DESC',
-  HotelRoomByHotelRoomIdDescriptionAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_ASC',
-  HotelRoomByHotelRoomIdDescriptionDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_DESC',
-  HotelRoomByHotelRoomIdGamingRoomAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_ASC',
-  HotelRoomByHotelRoomIdGamingRoomDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_DESC',
-  HotelRoomByHotelRoomIdOccupancyAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_ASC',
-  HotelRoomByHotelRoomIdOccupancyDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_DESC',
-  HotelRoomByHotelRoomIdQuantityAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_ASC',
-  HotelRoomByHotelRoomIdQuantityDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_DESC',
-  HotelRoomByHotelRoomIdRateAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_ASC',
-  HotelRoomByHotelRoomIdRateDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_DESC',
-  HotelRoomByHotelRoomIdBathroomTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_ASC',
-  HotelRoomByHotelRoomIdBathroomTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_DESC',
-  HotelRoomByHotelRoomIdTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_ASC',
-  HotelRoomByHotelRoomIdTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
-  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
-  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
-  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
-  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
-  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
-  GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
-  GameAssignmentsByMemberIdCountDesc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC',
-  GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
-  GameChoicesByMemberIdCountDesc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_DESC',
-  GameSubmissionsByMemberIdCountAsc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_ASC',
-  GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC',
+  GamesBySlotIdCountAsc = 'GAMES_BY_SLOT_ID__COUNT_ASC',
+  GamesBySlotIdCountDesc = 'GAMES_BY_SLOT_ID__COUNT_DESC',
+  GameChoicesBySlotIdCountAsc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_ASC',
+  GameChoicesBySlotIdCountDesc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_DESC',
+}
+
+/** A condition to be used against `Slot` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type SlotCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `slot` field. */
+  slot?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `day` field. */
+  day?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `formattedDate` field. */
+  formattedDate?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `length` field. */
+  length?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `time` field. */
+  time?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `Slot` object types. All fields are combined with a logical ‘and.’ */
+export type SlotFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `slot` field. */
+  slot?: Maybe<IntFilter>
+  /** Filter by the object’s `day` field. */
+  day?: Maybe<StringFilter>
+  /** Filter by the object’s `formattedDate` field. */
+  formattedDate?: Maybe<StringFilter>
+  /** Filter by the object’s `length` field. */
+  length?: Maybe<StringFilter>
+  /** Filter by the object’s `time` field. */
+  time?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<SlotFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<SlotFilter>>
+  /** Negates the expression. */
+  not?: Maybe<SlotFilter>
+}
+
+/** A connection to a list of `User` values. */
+export type UsersConnection = {
+  __typename: 'UsersConnection'
+  /** A list of `User` objects. */
+  nodes: Array<Maybe<User>>
+  /** A list of edges which contains the `User` and cursor to aid in pagination. */
+  edges: Array<UsersEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `User` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `User` edge in the connection. */
+export type UsersEdge = {
+  __typename: 'UsersEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `User` at the end of the edge. */
+  node?: Maybe<User>
+}
+
+/** Methods to use when ordering `User`. */
+export enum UsersOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  EmailAsc = 'EMAIL_ASC',
+  EmailDesc = 'EMAIL_DESC',
+  FullNameAsc = 'FULL_NAME_ASC',
+  FullNameDesc = 'FULL_NAME_DESC',
+  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
+  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
+  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
+  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
+  FirstNameAsc = 'FIRST_NAME_ASC',
+  FirstNameDesc = 'FIRST_NAME_DESC',
+  LastNameAsc = 'LAST_NAME_ASC',
+  LastNameDesc = 'LAST_NAME_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  GamesByAuthorIdCountAsc = 'GAMES_BY_AUTHOR_ID__COUNT_ASC',
+  GamesByAuthorIdCountDesc = 'GAMES_BY_AUTHOR_ID__COUNT_DESC',
+  MembershipsByUserIdCountAsc = 'MEMBERSHIPS_BY_USER_ID__COUNT_ASC',
+  MembershipsByUserIdCountDesc = 'MEMBERSHIPS_BY_USER_ID__COUNT_DESC',
+  ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',
+  ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
+  UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
+  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
+}
+
+/** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type UserCondition = {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `email` field. */
+  email?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `fullName` field. */
+  fullName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `firstName` field. */
+  firstName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `lastName` field. */
+  lastName?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
+export type UserFilter = {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `email` field. */
+  email?: Maybe<StringFilter>
+  /** Filter by the object’s `fullName` field. */
+  fullName?: Maybe<StringFilter>
+  /** Filter by the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<StringFilter>
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<StringFilter>
+  /** Filter by the object’s `firstName` field. */
+  firstName?: Maybe<StringFilter>
+  /** Filter by the object’s `lastName` field. */
+  lastName?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserFilter>>
+  /** Negates the expression. */
+  not?: Maybe<UserFilter>
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4173,1389 +3923,84 @@ export type MutationSlotGmGameArgs = {
   input: SlotGmGameInput
 }
 
-/** An object with a globally unique `ID`. */
-export type Node = {
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-}
-
-/** Information about pagination in a connection. */
-export type PageInfo = {
-  __typename: 'PageInfo'
-  /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars['Boolean']
-  /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars['Boolean']
-  /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars['Cursor']>
-  /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['Cursor']>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type Query = Node & {
-  __typename: 'Query'
-  /**
-   * Exposes the root query type nested one level down. This is helpful for Relay 1
-   * which can only query top level fields if they are in a particular form.
-   */
-  query: Query
-  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
-  nodeId: Scalars['ID']
-  /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<Node>
-  /** Reads and enables pagination through a set of `Game`. */
-  games?: Maybe<GamesConnection>
-  /** Reads and enables pagination through a set of `GameAssignment`. */
-  gameAssignments?: Maybe<GameAssignmentsConnection>
-  /** Reads and enables pagination through a set of `GameChoice`. */
-  gameChoices?: Maybe<GameChoicesConnection>
-  /** Reads and enables pagination through a set of `GameSubmission`. */
-  gameSubmissions?: Maybe<GameSubmissionsConnection>
-  /** Reads and enables pagination through a set of `HotelRoom`. */
-  hotelRooms?: Maybe<HotelRoomsConnection>
-  /** Reads and enables pagination through a set of `HotelRoomDetail`. */
-  hotelRoomDetails?: Maybe<HotelRoomDetailsConnection>
-  /** Reads and enables pagination through a set of `Lookup`. */
-  lookups?: Maybe<LookupsConnection>
-  /** Reads and enables pagination through a set of `LookupValue`. */
-  lookupValues?: Maybe<LookupValuesConnection>
-  /** Reads and enables pagination through a set of `Membership`. */
-  memberships?: Maybe<MembershipsConnection>
-  /** Reads and enables pagination through a set of `Role`. */
-  roles?: Maybe<RolesConnection>
-  /** Reads and enables pagination through a set of `Room`. */
-  rooms?: Maybe<RoomsConnection>
-  /** Reads and enables pagination through a set of `Setting`. */
-  settings?: Maybe<SettingsConnection>
-  /** Reads and enables pagination through a set of `ShirtOrder`. */
-  shirtOrders?: Maybe<ShirtOrdersConnection>
-  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
-  shirtOrderItems?: Maybe<ShirtOrderItemsConnection>
-  /** Reads and enables pagination through a set of `Slot`. */
-  slots?: Maybe<SlotsConnection>
-  /** Reads and enables pagination through a set of `User`. */
-  users?: Maybe<UsersConnection>
-  /** Reads and enables pagination through a set of `UserRole`. */
-  userRoles?: Maybe<UserRolesConnection>
-  game?: Maybe<Game>
-  gameAssignment?: Maybe<GameAssignment>
-  gameChoice?: Maybe<GameChoice>
-  gameSubmission?: Maybe<GameSubmission>
-  hotelRoom?: Maybe<HotelRoom>
-  hotelRoomDetail?: Maybe<HotelRoomDetail>
-  lookup?: Maybe<Lookup>
-  lookupByRealm?: Maybe<Lookup>
-  lookupValue?: Maybe<LookupValue>
-  lookupValueByLookupIdAndCode?: Maybe<LookupValue>
-  membership?: Maybe<Membership>
-  role?: Maybe<Role>
-  roleByAuthority?: Maybe<Role>
-  room?: Maybe<Room>
-  setting?: Maybe<Setting>
-  shirtOrder?: Maybe<ShirtOrder>
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  slot?: Maybe<Slot>
-  user?: Maybe<User>
-  userByEmail?: Maybe<User>
-  userRole?: Maybe<UserRole>
-  currentUserId?: Maybe<Scalars['Int']>
-  currentUserIsAdmin?: Maybe<Scalars['Boolean']>
-  /** Reads a single `Game` using its globally unique `ID`. */
-  gameByNodeId?: Maybe<Game>
-  /** Reads a single `GameAssignment` using its globally unique `ID`. */
-  gameAssignmentByNodeId?: Maybe<GameAssignment>
-  /** Reads a single `GameChoice` using its globally unique `ID`. */
-  gameChoiceByNodeId?: Maybe<GameChoice>
-  /** Reads a single `GameSubmission` using its globally unique `ID`. */
-  gameSubmissionByNodeId?: Maybe<GameSubmission>
-  /** Reads a single `HotelRoom` using its globally unique `ID`. */
-  hotelRoomByNodeId?: Maybe<HotelRoom>
-  /** Reads a single `HotelRoomDetail` using its globally unique `ID`. */
-  hotelRoomDetailByNodeId?: Maybe<HotelRoomDetail>
-  /** Reads a single `Lookup` using its globally unique `ID`. */
-  lookupByNodeId?: Maybe<Lookup>
-  /** Reads a single `LookupValue` using its globally unique `ID`. */
-  lookupValueByNodeId?: Maybe<LookupValue>
-  /** Reads a single `Membership` using its globally unique `ID`. */
-  membershipByNodeId?: Maybe<Membership>
-  /** Reads a single `Role` using its globally unique `ID`. */
-  roleByNodeId?: Maybe<Role>
-  /** Reads a single `Room` using its globally unique `ID`. */
-  roomByNodeId?: Maybe<Room>
-  /** Reads a single `Setting` using its globally unique `ID`. */
-  settingByNodeId?: Maybe<Setting>
-  /** Reads a single `ShirtOrder` using its globally unique `ID`. */
-  shirtOrderByNodeId?: Maybe<ShirtOrder>
-  /** Reads a single `ShirtOrderItem` using its globally unique `ID`. */
-  shirtOrderItemByNodeId?: Maybe<ShirtOrderItem>
-  /** Reads a single `Slot` using its globally unique `ID`. */
-  slotByNodeId?: Maybe<Slot>
-  /** Reads a single `User` using its globally unique `ID`. */
-  userByNodeId?: Maybe<User>
-  /** Reads a single `UserRole` using its globally unique `ID`. */
-  userRoleByNodeId?: Maybe<UserRole>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryNodeArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGamesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-  condition?: Maybe<GameAssignmentCondition>
-  filter?: Maybe<GameAssignmentFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameChoicesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-  condition?: Maybe<GameSubmissionCondition>
-  filter?: Maybe<GameSubmissionFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
-  condition?: Maybe<HotelRoomCondition>
-  filter?: Maybe<HotelRoomFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
-  condition?: Maybe<HotelRoomDetailCondition>
-  filter?: Maybe<HotelRoomDetailFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<LookupsOrderBy>>
-  condition?: Maybe<LookupCondition>
-  filter?: Maybe<LookupFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupValuesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<LookupValuesOrderBy>>
-  condition?: Maybe<LookupValueCondition>
-  filter?: Maybe<LookupValueFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryMembershipsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRolesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<RolesOrderBy>>
-  condition?: Maybe<RoleCondition>
-  filter?: Maybe<RoleFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoomsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<RoomsOrderBy>>
-  condition?: Maybe<RoomCondition>
-  filter?: Maybe<RoomFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySettingsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<SettingsOrderBy>>
-  condition?: Maybe<SettingCondition>
-  filter?: Maybe<SettingFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrdersArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-  condition?: Maybe<ShirtOrderCondition>
-  filter?: Maybe<ShirtOrderFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-  condition?: Maybe<ShirtOrderItemCondition>
-  filter?: Maybe<ShirtOrderItemFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySlotsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<SlotsOrderBy>>
-  condition?: Maybe<SlotCondition>
-  filter?: Maybe<SlotFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUsersArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UsersOrderBy>>
-  condition?: Maybe<UserCondition>
-  filter?: Maybe<UserFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserRolesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentArgs = {
-  memberId: Scalars['Int']
-  gameId: Scalars['Int']
-  gm: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameChoiceArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailArgs = {
-  id: Scalars['BigInt']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupByRealmArgs = {
-  realm: Scalars['String']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupValueArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupValueByLookupIdAndCodeArgs = {
-  lookupId: Scalars['Int']
-  code: Scalars['String']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryMembershipArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoleArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoleByAuthorityArgs = {
-  authority: Scalars['String']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoomArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySettingArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySlotArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserArgs = {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByEmailArgs = {
-  email: Scalars['String']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserRoleArgs = {
-  roleId: Scalars['Int']
-  userId: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameChoiceByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryLookupValueByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryMembershipByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoleByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRoomByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySettingByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QuerySlotByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserRoleByNodeIdArgs = {
-  nodeId: Scalars['ID']
-}
-
-export type Role = Node & {
-  __typename: 'Role'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  authority: Scalars['String']
-  /** Reads and enables pagination through a set of `UserRole`. */
-  userRoles: UserRolesConnection
-}
-
-export type RoleUserRolesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
-}
-
-/** A condition to be used against `Role` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type RoleCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `authority` field. */
-  authority?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `Role` object types. All fields are combined with a logical ‘and.’ */
-export type RoleFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `authority` field. */
-  authority?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<RoleFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<RoleFilter>>
-  /** Negates the expression. */
-  not?: Maybe<RoleFilter>
-}
-
-/** An input for mutations affecting `Role` */
-export type RoleInput = {
-  id?: Maybe<Scalars['Int']>
-  authority: Scalars['String']
-}
-
-/** Represents an update to a `Role`. Fields that are set will be updated. */
-export type RolePatch = {
-  id?: Maybe<Scalars['Int']>
-  authority?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `Role` values. */
-export type RolesConnection = {
-  __typename: 'RolesConnection'
-  /** A list of `Role` objects. */
-  nodes: Array<Maybe<Role>>
-  /** A list of edges which contains the `Role` and cursor to aid in pagination. */
-  edges: Array<RolesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Role` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Role` edge in the connection. */
-export type RolesEdge = {
-  __typename: 'RolesEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Role` at the end of the edge. */
-  node?: Maybe<Role>
-}
-
-/** Methods to use when ordering `Role`. */
-export enum RolesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  AuthorityAsc = 'AUTHORITY_ASC',
-  AuthorityDesc = 'AUTHORITY_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserRolesByRoleIdCountAsc = 'USER_ROLES_BY_ROLE_ID__COUNT_ASC',
-  UserRolesByRoleIdCountDesc = 'USER_ROLES_BY_ROLE_ID__COUNT_DESC',
-}
-
-export type Room = Node & {
-  __typename: 'Room'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  description: Scalars['String']
-  size: Scalars['Int']
-  type: Scalars['String']
-  updated: Scalars['Boolean']
-  /** Reads and enables pagination through a set of `Game`. */
-  games: GamesConnection
-}
-
-export type RoomGamesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
-}
-
-/** A condition to be used against `Room` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type RoomCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `size` field. */
-  size?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `type` field. */
-  type?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `updated` field. */
-  updated?: Maybe<Scalars['Boolean']>
-}
-
-/** A filter to be used against `Room` object types. All fields are combined with a logical ‘and.’ */
-export type RoomFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>
-  /** Filter by the object’s `size` field. */
-  size?: Maybe<IntFilter>
-  /** Filter by the object’s `type` field. */
-  type?: Maybe<StringFilter>
-  /** Filter by the object’s `updated` field. */
-  updated?: Maybe<BooleanFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<RoomFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<RoomFilter>>
-  /** Negates the expression. */
-  not?: Maybe<RoomFilter>
-}
-
-/** An input for mutations affecting `Room` */
-export type RoomInput = {
-  id?: Maybe<Scalars['Int']>
-  description: Scalars['String']
-  size: Scalars['Int']
-  type: Scalars['String']
-  updated: Scalars['Boolean']
-}
-
-/** Represents an update to a `Room`. Fields that are set will be updated. */
-export type RoomPatch = {
-  id?: Maybe<Scalars['Int']>
-  description?: Maybe<Scalars['String']>
-  size?: Maybe<Scalars['Int']>
-  type?: Maybe<Scalars['String']>
-  updated?: Maybe<Scalars['Boolean']>
-}
-
-/** A connection to a list of `Room` values. */
-export type RoomsConnection = {
-  __typename: 'RoomsConnection'
-  /** A list of `Room` objects. */
-  nodes: Array<Maybe<Room>>
-  /** A list of edges which contains the `Room` and cursor to aid in pagination. */
-  edges: Array<RoomsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Room` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Room` edge in the connection. */
-export type RoomsEdge = {
-  __typename: 'RoomsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Room` at the end of the edge. */
-  node?: Maybe<Room>
-}
-
-/** Methods to use when ordering `Room`. */
-export enum RoomsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  SizeAsc = 'SIZE_ASC',
-  SizeDesc = 'SIZE_DESC',
-  TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC',
-  UpdatedAsc = 'UPDATED_ASC',
-  UpdatedDesc = 'UPDATED_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  GamesByRoomIdCountAsc = 'GAMES_BY_ROOM_ID__COUNT_ASC',
-  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
-}
-
-export type Setting = Node & {
-  __typename: 'Setting'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  code: Scalars['String']
-  type: Scalars['String']
-  value: Scalars['String']
-}
-
-/** A condition to be used against `Setting` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type SettingCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `code` field. */
-  code?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `type` field. */
-  type?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `value` field. */
-  value?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `Setting` object types. All fields are combined with a logical ‘and.’ */
-export type SettingFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `code` field. */
-  code?: Maybe<StringFilter>
-  /** Filter by the object’s `type` field. */
-  type?: Maybe<StringFilter>
-  /** Filter by the object’s `value` field. */
-  value?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<SettingFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<SettingFilter>>
-  /** Negates the expression. */
-  not?: Maybe<SettingFilter>
-}
-
-/** An input for mutations affecting `Setting` */
-export type SettingInput = {
-  id?: Maybe<Scalars['Int']>
-  code: Scalars['String']
-  type: Scalars['String']
-  value: Scalars['String']
-}
-
-/** Represents an update to a `Setting`. Fields that are set will be updated. */
-export type SettingPatch = {
-  id?: Maybe<Scalars['Int']>
-  code?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['String']>
-  value?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `Setting` values. */
-export type SettingsConnection = {
-  __typename: 'SettingsConnection'
-  /** A list of `Setting` objects. */
-  nodes: Array<Maybe<Setting>>
-  /** A list of edges which contains the `Setting` and cursor to aid in pagination. */
-  edges: Array<SettingsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Setting` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Setting` edge in the connection. */
-export type SettingsEdge = {
-  __typename: 'SettingsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Setting` at the end of the edge. */
-  node?: Maybe<Setting>
-}
-
-/** Methods to use when ordering `Setting`. */
-export enum SettingsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  CodeAsc = 'CODE_ASC',
-  CodeDesc = 'CODE_DESC',
-  TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC',
-  ValueAsc = 'VALUE_ASC',
-  ValueDesc = 'VALUE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-}
-
-export type ShirtOrder = Node & {
-  __typename: 'ShirtOrder'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  deliveryMethod: Scalars['String']
-  message: Scalars['String']
-  userId: Scalars['Int']
-  year: Scalars['Int']
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
-  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
-  shirtOrderItemsByOrderId: ShirtOrderItemsConnection
-}
-
-export type ShirtOrderShirtOrderItemsByOrderIdArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-  condition?: Maybe<ShirtOrderItemCondition>
-  filter?: Maybe<ShirtOrderItemFilter>
-}
-
-/**
- * A condition to be used against `ShirtOrder` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type ShirtOrderCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `deliveryMethod` field. */
-  deliveryMethod?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `message` field. */
-  message?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `year` field. */
-  year?: Maybe<Scalars['Int']>
-}
-
-/** A filter to be used against `ShirtOrder` object types. All fields are combined with a logical ‘and.’ */
-export type ShirtOrderFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `deliveryMethod` field. */
-  deliveryMethod?: Maybe<StringFilter>
-  /** Filter by the object’s `message` field. */
-  message?: Maybe<StringFilter>
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ShirtOrderFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ShirtOrderFilter>>
-  /** Negates the expression. */
-  not?: Maybe<ShirtOrderFilter>
-}
-
-/** An input for mutations affecting `ShirtOrder` */
-export type ShirtOrderInput = {
-  id?: Maybe<Scalars['Int']>
-  deliveryMethod: Scalars['String']
-  message: Scalars['String']
-  userId: Scalars['Int']
-  year: Scalars['Int']
-}
-
-export type ShirtOrderItem = Node & {
-  __typename: 'ShirtOrderItem'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  orderId: Scalars['Int']
-  quantity: Scalars['Int']
-  size: Scalars['String']
-  style: Scalars['String']
-  itemsIdx?: Maybe<Scalars['Int']>
-  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
-  order?: Maybe<ShirtOrder>
-}
-
-/**
- * A condition to be used against `ShirtOrderItem` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export type ShirtOrderItemCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `orderId` field. */
-  orderId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `quantity` field. */
-  quantity?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `size` field. */
-  size?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `style` field. */
-  style?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `itemsIdx` field. */
-  itemsIdx?: Maybe<Scalars['Int']>
-}
-
-/** A filter to be used against `ShirtOrderItem` object types. All fields are combined with a logical ‘and.’ */
-export type ShirtOrderItemFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `orderId` field. */
-  orderId?: Maybe<IntFilter>
-  /** Filter by the object’s `quantity` field. */
-  quantity?: Maybe<IntFilter>
-  /** Filter by the object’s `size` field. */
-  size?: Maybe<StringFilter>
-  /** Filter by the object’s `style` field. */
-  style?: Maybe<StringFilter>
-  /** Filter by the object’s `itemsIdx` field. */
-  itemsIdx?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ShirtOrderItemFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ShirtOrderItemFilter>>
-  /** Negates the expression. */
-  not?: Maybe<ShirtOrderItemFilter>
-}
-
-/** An input for mutations affecting `ShirtOrderItem` */
-export type ShirtOrderItemInput = {
-  id?: Maybe<Scalars['Int']>
-  orderId: Scalars['Int']
-  quantity: Scalars['Int']
-  size: Scalars['String']
-  style: Scalars['String']
-  itemsIdx?: Maybe<Scalars['Int']>
-}
-
-/** Represents an update to a `ShirtOrderItem`. Fields that are set will be updated. */
-export type ShirtOrderItemPatch = {
-  id?: Maybe<Scalars['Int']>
-  orderId?: Maybe<Scalars['Int']>
-  quantity?: Maybe<Scalars['Int']>
-  size?: Maybe<Scalars['String']>
-  style?: Maybe<Scalars['String']>
-  itemsIdx?: Maybe<Scalars['Int']>
-}
-
-/** A connection to a list of `ShirtOrderItem` values. */
-export type ShirtOrderItemsConnection = {
-  __typename: 'ShirtOrderItemsConnection'
-  /** A list of `ShirtOrderItem` objects. */
-  nodes: Array<Maybe<ShirtOrderItem>>
-  /** A list of edges which contains the `ShirtOrderItem` and cursor to aid in pagination. */
-  edges: Array<ShirtOrderItemsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `ShirtOrderItem` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `ShirtOrderItem` edge in the connection. */
-export type ShirtOrderItemsEdge = {
-  __typename: 'ShirtOrderItemsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `ShirtOrderItem` at the end of the edge. */
-  node?: Maybe<ShirtOrderItem>
-}
-
-/** Methods to use when ordering `ShirtOrderItem`. */
-export enum ShirtOrderItemsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  OrderIdAsc = 'ORDER_ID_ASC',
-  OrderIdDesc = 'ORDER_ID_DESC',
-  QuantityAsc = 'QUANTITY_ASC',
-  QuantityDesc = 'QUANTITY_DESC',
-  SizeAsc = 'SIZE_ASC',
-  SizeDesc = 'SIZE_DESC',
-  StyleAsc = 'STYLE_ASC',
-  StyleDesc = 'STYLE_DESC',
-  ItemsIdxAsc = 'ITEMS_IDX_ASC',
-  ItemsIdxDesc = 'ITEMS_IDX_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  ShirtOrderByOrderIdIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__ID_ASC',
-  ShirtOrderByOrderIdIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__ID_DESC',
-  ShirtOrderByOrderIdDeliveryMethodAsc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_ASC',
-  ShirtOrderByOrderIdDeliveryMethodDesc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_DESC',
-  ShirtOrderByOrderIdMessageAsc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_ASC',
-  ShirtOrderByOrderIdMessageDesc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_DESC',
-  ShirtOrderByOrderIdUserIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_ASC',
-  ShirtOrderByOrderIdUserIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_DESC',
-  ShirtOrderByOrderIdYearAsc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_ASC',
-  ShirtOrderByOrderIdYearDesc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_DESC',
-}
-
-/** Represents an update to a `ShirtOrder`. Fields that are set will be updated. */
-export type ShirtOrderPatch = {
-  id?: Maybe<Scalars['Int']>
-  deliveryMethod?: Maybe<Scalars['String']>
-  message?: Maybe<Scalars['String']>
-  userId?: Maybe<Scalars['Int']>
-  year?: Maybe<Scalars['Int']>
-}
-
-/** A connection to a list of `ShirtOrder` values. */
-export type ShirtOrdersConnection = {
-  __typename: 'ShirtOrdersConnection'
-  /** A list of `ShirtOrder` objects. */
-  nodes: Array<Maybe<ShirtOrder>>
-  /** A list of edges which contains the `ShirtOrder` and cursor to aid in pagination. */
-  edges: Array<ShirtOrdersEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `ShirtOrder` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `ShirtOrder` edge in the connection. */
-export type ShirtOrdersEdge = {
-  __typename: 'ShirtOrdersEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `ShirtOrder` at the end of the edge. */
-  node?: Maybe<ShirtOrder>
-}
-
-/** Methods to use when ordering `ShirtOrder`. */
-export enum ShirtOrdersOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  DeliveryMethodAsc = 'DELIVERY_METHOD_ASC',
-  DeliveryMethodDesc = 'DELIVERY_METHOD_DESC',
-  MessageAsc = 'MESSAGE_ASC',
-  MessageDesc = 'MESSAGE_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
-  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
-  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
-  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
-  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
-  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
-  ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
-  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
-}
-
-export type Slot = Node & {
-  __typename: 'Slot'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  slot: Scalars['Int']
-  day: Scalars['String']
-  formattedDate: Scalars['String']
-  length: Scalars['String']
-  time: Scalars['String']
-  /** Reads and enables pagination through a set of `Game`. */
-  games: GamesConnection
-  /** Reads and enables pagination through a set of `GameChoice`. */
-  gameChoices: GameChoicesConnection
-}
-
-export type SlotGamesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
-}
-
-export type SlotGameChoicesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
-}
-
-/** A condition to be used against `Slot` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type SlotCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `slot` field. */
-  slot?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `day` field. */
-  day?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `formattedDate` field. */
-  formattedDate?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `length` field. */
-  length?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `time` field. */
-  time?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `Slot` object types. All fields are combined with a logical ‘and.’ */
-export type SlotFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `slot` field. */
-  slot?: Maybe<IntFilter>
-  /** Filter by the object’s `day` field. */
-  day?: Maybe<StringFilter>
-  /** Filter by the object’s `formattedDate` field. */
-  formattedDate?: Maybe<StringFilter>
-  /** Filter by the object’s `length` field. */
-  length?: Maybe<StringFilter>
-  /** Filter by the object’s `time` field. */
-  time?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<SlotFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<SlotFilter>>
-  /** Negates the expression. */
-  not?: Maybe<SlotFilter>
-}
-
-/** All input for the `slotGmGame` mutation. */
-export type SlotGmGameInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  memberId?: Maybe<Scalars['Int']>
-  slotId?: Maybe<Scalars['Int']>
-  yearno?: Maybe<Scalars['Int']>
-}
-
-/** The output of our `slotGmGame` mutation. */
-export type SlotGmGamePayload = {
-  __typename: 'SlotGmGamePayload'
+/** The output of our create `Game` mutation. */
+export type CreateGamePayload = {
+  __typename: 'CreateGamePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  integer?: Maybe<Scalars['Int']>
+  /** The `Game` that was created by this mutation. */
+  game?: Maybe<Game>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** Reads a single `Room` that is related to this `Game`. */
+  room?: Maybe<Room>
+  /** Reads a single `Slot` that is related to this `Game`. */
+  slot?: Maybe<Slot>
+  /** Reads a single `User` that is related to this `Game`. */
+  author?: Maybe<User>
+  /** An edge for our `Game`. May be used by Relay 1. */
+  gameEdge?: Maybe<GamesEdge>
 }
 
-/** An input for mutations affecting `Slot` */
-export type SlotInput = {
-  id?: Maybe<Scalars['Int']>
-  slot: Scalars['Int']
-  day: Scalars['String']
-  formattedDate: Scalars['String']
-  length: Scalars['String']
-  time: Scalars['String']
+/** The output of our create `Game` mutation. */
+export type CreateGamePayloadGameEdgeArgs = {
+  orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
-/** Represents an update to a `Slot`. Fields that are set will be updated. */
-export type SlotPatch = {
-  id?: Maybe<Scalars['Int']>
-  slot?: Maybe<Scalars['Int']>
-  day?: Maybe<Scalars['String']>
-  formattedDate?: Maybe<Scalars['String']>
-  length?: Maybe<Scalars['String']>
-  time?: Maybe<Scalars['String']>
-}
-
-/** A connection to a list of `Slot` values. */
-export type SlotsConnection = {
-  __typename: 'SlotsConnection'
-  /** A list of `Slot` objects. */
-  nodes: Array<Maybe<Slot>>
-  /** A list of edges which contains the `Slot` and cursor to aid in pagination. */
-  edges: Array<SlotsEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `Slot` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `Slot` edge in the connection. */
-export type SlotsEdge = {
-  __typename: 'SlotsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `Slot` at the end of the edge. */
-  node?: Maybe<Slot>
-}
-
-/** Methods to use when ordering `Slot`. */
-export enum SlotsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  SlotAsc = 'SLOT_ASC',
-  SlotDesc = 'SLOT_DESC',
-  DayAsc = 'DAY_ASC',
-  DayDesc = 'DAY_DESC',
-  FormattedDateAsc = 'FORMATTED_DATE_ASC',
-  FormattedDateDesc = 'FORMATTED_DATE_DESC',
-  LengthAsc = 'LENGTH_ASC',
-  LengthDesc = 'LENGTH_DESC',
-  TimeAsc = 'TIME_ASC',
-  TimeDesc = 'TIME_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  GamesBySlotIdCountAsc = 'GAMES_BY_SLOT_ID__COUNT_ASC',
-  GamesBySlotIdCountDesc = 'GAMES_BY_SLOT_ID__COUNT_DESC',
-  GameChoicesBySlotIdCountAsc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_ASC',
-  GameChoicesBySlotIdCountDesc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_DESC',
-}
-
-/** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
-export type StringFilter = {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['String']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['String']>
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: Maybe<Scalars['String']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['String']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['String']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['String']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['String']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['String']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['String']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['String']>
-  /** Contains the specified string (case-sensitive). */
-  includes?: Maybe<Scalars['String']>
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: Maybe<Scalars['String']>
-  /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: Maybe<Scalars['String']>
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: Maybe<Scalars['String']>
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: Maybe<Scalars['String']>
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: Maybe<Scalars['String']>
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: Maybe<Scalars['String']>
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: Maybe<Scalars['String']>
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: Maybe<Scalars['String']>
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: Maybe<Scalars['String']>
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: Maybe<Scalars['String']>
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: Maybe<Scalars['String']>
-  /**
-   * Matches the specified pattern (case-sensitive). An underscore (_) matches any
-   * single character; a percent sign (%) matches any sequence of zero or more characters.
-   */
-  like?: Maybe<Scalars['String']>
-  /**
-   * Does not match the specified pattern (case-sensitive). An underscore (_)
-   * matches any single character; a percent sign (%) matches any sequence of zero
-   * or more characters.
-   */
-  notLike?: Maybe<Scalars['String']>
-  /**
-   * Matches the specified pattern (case-insensitive). An underscore (_) matches
-   * any single character; a percent sign (%) matches any sequence of zero or more characters.
-   */
-  likeInsensitive?: Maybe<Scalars['String']>
-  /**
-   * Does not match the specified pattern (case-insensitive). An underscore (_)
-   * matches any single character; a percent sign (%) matches any sequence of zero
-   * or more characters.
-   */
-  notLikeInsensitive?: Maybe<Scalars['String']>
-  /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: Maybe<Scalars['String']>
-  /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: Maybe<Scalars['String']>
-  /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  distinctFromInsensitive?: Maybe<Scalars['String']>
-  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: Maybe<Scalars['String']>
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: Maybe<Array<Scalars['String']>>
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: Maybe<Array<Scalars['String']>>
-  /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: Maybe<Scalars['String']>
-  /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>
-  /** Greater than the specified value (case-insensitive). */
-  greaterThanInsensitive?: Maybe<Scalars['String']>
-  /** Greater than or equal to the specified value (case-insensitive). */
-  greaterThanOrEqualToInsensitive?: Maybe<Scalars['String']>
-}
-
-/** All input for the `updateGameAssignmentByNodeId` mutation. */
-export type UpdateGameAssignmentByNodeIdInput = {
+/** All input for the create `Game` mutation. */
+export type CreateGameInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameAssignment` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
-  patch: GameAssignmentPatch
+  /** The `Game` to be created by this mutation. */
+  game: GameInput
 }
 
-/** All input for the `updateGameAssignment` mutation. */
-export type UpdateGameAssignmentInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
-  patch: GameAssignmentPatch
-  memberId: Scalars['Int']
-  gameId: Scalars['Int']
-  gm: Scalars['Int']
+/** An input for mutations affecting `Game` */
+export type GameInput = {
+  id?: Maybe<Scalars['Int']>
+  description: Scalars['String']
+  lateFinish?: Maybe<Scalars['Boolean']>
+  lateStart?: Maybe<Scalars['String']>
+  name: Scalars['String']
+  playerMax: Scalars['Int']
+  playerMin: Scalars['Int']
+  roomId?: Maybe<Scalars['Int']>
+  shortName?: Maybe<Scalars['String']>
+  slotId?: Maybe<Scalars['Int']>
+  charInstructions: Scalars['String']
+  estimatedLength: Scalars['String']
+  gameContactEmail: Scalars['String']
+  genre: Scalars['String']
+  gmNames?: Maybe<Scalars['String']>
+  message: Scalars['String']
+  playerPreference: Scalars['String']
+  playersContactGm: Scalars['Boolean']
+  returningPlayers: Scalars['String']
+  setting: Scalars['String']
+  slotConflicts: Scalars['String']
+  slotPreference: Scalars['Int']
+  teenFriendly: Scalars['Boolean']
+  type: Scalars['String']
+  year: Scalars['Int']
+  authorId?: Maybe<Scalars['Int']>
+  full?: Maybe<Scalars['Boolean']>
 }
 
-/** The output of our update `GameAssignment` mutation. */
-export type UpdateGameAssignmentPayload = {
-  __typename: 'UpdateGameAssignmentPayload'
+/** The output of our create `GameAssignment` mutation. */
+export type CreateGameAssignmentPayload = {
+  __typename: 'CreateGameAssignmentPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was updated by this mutation. */
+  /** The `GameAssignment` that was created by this mutation. */
   gameAssignment?: Maybe<GameAssignment>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
@@ -5567,58 +4012,39 @@ export type UpdateGameAssignmentPayload = {
   gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
 }
 
-/** The output of our update `GameAssignment` mutation. */
-export type UpdateGameAssignmentPayloadGameAssignmentEdgeArgs = {
+/** The output of our create `GameAssignment` mutation. */
+export type CreateGameAssignmentPayloadGameAssignmentEdgeArgs = {
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
 }
 
-/** All input for the `updateGameByNodeId` mutation. */
-export type UpdateGameByNodeIdInput = {
+/** All input for the create `GameAssignment` mutation. */
+export type CreateGameAssignmentInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Game` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Game` being updated. */
-  patch: GamePatch
+  /** The `GameAssignment` to be created by this mutation. */
+  gameAssignment: GameAssignmentInput
 }
 
-/** All input for the `updateGameChoiceByNodeId` mutation. */
-export type UpdateGameChoiceByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameChoice` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `GameChoice` being updated. */
-  patch: GameChoicePatch
+/** An input for mutations affecting `GameAssignment` */
+export type GameAssignmentInput = {
+  memberId: Scalars['Int']
+  gameId: Scalars['Int']
+  gm: Scalars['Int']
+  year: Scalars['Int']
 }
 
-/** All input for the `updateGameChoice` mutation. */
-export type UpdateGameChoiceInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `GameChoice` being updated. */
-  patch: GameChoicePatch
-  id: Scalars['Int']
-}
-
-/** The output of our update `GameChoice` mutation. */
-export type UpdateGameChoicePayload = {
-  __typename: 'UpdateGameChoicePayload'
+/** The output of our create `GameChoice` mutation. */
+export type CreateGameChoicePayload = {
+  __typename: 'CreateGameChoicePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was updated by this mutation. */
+  /** The `GameChoice` that was created by this mutation. */
   gameChoice?: Maybe<GameChoice>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
@@ -5632,21 +4058,650 @@ export type UpdateGameChoicePayload = {
   gameChoiceEdge?: Maybe<GameChoicesEdge>
 }
 
-/** The output of our update `GameChoice` mutation. */
-export type UpdateGameChoicePayloadGameChoiceEdgeArgs = {
+/** The output of our create `GameChoice` mutation. */
+export type CreateGameChoicePayloadGameChoiceEdgeArgs = {
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
 }
 
-/** All input for the `updateGame` mutation. */
-export type UpdateGameInput = {
+/** All input for the create `GameChoice` mutation. */
+export type CreateGameChoiceInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Game` being updated. */
-  patch: GamePatch
-  id: Scalars['Int']
+  /** The `GameChoice` to be created by this mutation. */
+  gameChoice: GameChoiceInput
+}
+
+/** An input for mutations affecting `GameChoice` */
+export type GameChoiceInput = {
+  id?: Maybe<Scalars['Int']>
+  gameId?: Maybe<Scalars['Int']>
+  memberId: Scalars['Int']
+  rank: Scalars['Int']
+  slotId: Scalars['Int']
+  year: Scalars['Int']
+  returningPlayer: Scalars['Boolean']
+}
+
+/** The output of our create `GameSubmission` mutation. */
+export type CreateGameSubmissionPayload = {
+  __typename: 'CreateGameSubmissionPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameSubmission` that was created by this mutation. */
+  gameSubmission?: Maybe<GameSubmission>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
+  /** An edge for our `GameSubmission`. May be used by Relay 1. */
+  gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
+}
+
+/** The output of our create `GameSubmission` mutation. */
+export type CreateGameSubmissionPayloadGameSubmissionEdgeArgs = {
+  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
+}
+
+/** All input for the create `GameSubmission` mutation. */
+export type CreateGameSubmissionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameSubmission` to be created by this mutation. */
+  gameSubmission: GameSubmissionInput
+}
+
+/** An input for mutations affecting `GameSubmission` */
+export type GameSubmissionInput = {
+  id?: Maybe<Scalars['Int']>
+  memberId: Scalars['Int']
+  message: Scalars['String']
+  year: Scalars['Int']
+}
+
+/** The output of our create `HotelRoom` mutation. */
+export type CreateHotelRoomPayload = {
+  __typename: 'CreateHotelRoomPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoom` that was created by this mutation. */
+  hotelRoom?: Maybe<HotelRoom>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `HotelRoom`. May be used by Relay 1. */
+  hotelRoomEdge?: Maybe<HotelRoomsEdge>
+}
+
+/** The output of our create `HotelRoom` mutation. */
+export type CreateHotelRoomPayloadHotelRoomEdgeArgs = {
+  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
+}
+
+/** All input for the create `HotelRoom` mutation. */
+export type CreateHotelRoomInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoom` to be created by this mutation. */
+  hotelRoom: HotelRoomInput
+}
+
+/** An input for mutations affecting `HotelRoom` */
+export type HotelRoomInput = {
+  id?: Maybe<Scalars['Int']>
+  description: Scalars['String']
+  gamingRoom: Scalars['Boolean']
+  occupancy: Scalars['String']
+  quantity: Scalars['Int']
+  rate: Scalars['String']
+  bathroomType: Scalars['String']
+  type: Scalars['String']
+}
+
+/** The output of our create `HotelRoomDetail` mutation. */
+export type CreateHotelRoomDetailPayload = {
+  __typename: 'CreateHotelRoomDetailPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoomDetail` that was created by this mutation. */
+  hotelRoomDetail?: Maybe<HotelRoomDetail>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
+  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+}
+
+/** The output of our create `HotelRoomDetail` mutation. */
+export type CreateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
+}
+
+/** All input for the create `HotelRoomDetail` mutation. */
+export type CreateHotelRoomDetailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoomDetail` to be created by this mutation. */
+  hotelRoomDetail: HotelRoomDetailInput
+}
+
+/** An input for mutations affecting `HotelRoomDetail` */
+export type HotelRoomDetailInput = {
+  id?: Maybe<Scalars['BigInt']>
+  version: Scalars['BigInt']
+  bathroomType: Scalars['String']
+  comment: Scalars['String']
+  enabled: Scalars['Boolean']
+  gamingRoom: Scalars['Boolean']
+  internalRoomType: Scalars['String']
+  name: Scalars['String']
+  reserved: Scalars['Boolean']
+  reservedFor: Scalars['String']
+  roomType: Scalars['String']
+  formattedRoomType: Scalars['String']
+}
+
+/** The output of our create `Lookup` mutation. */
+export type CreateLookupPayload = {
+  __typename: 'CreateLookupPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Lookup` that was created by this mutation. */
+  lookup?: Maybe<Lookup>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Lookup`. May be used by Relay 1. */
+  lookupEdge?: Maybe<LookupsEdge>
+}
+
+/** The output of our create `Lookup` mutation. */
+export type CreateLookupPayloadLookupEdgeArgs = {
+  orderBy?: Maybe<Array<LookupsOrderBy>>
+}
+
+/** All input for the create `Lookup` mutation. */
+export type CreateLookupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Lookup` to be created by this mutation. */
+  lookup: LookupInput
+}
+
+/** An input for mutations affecting `Lookup` */
+export type LookupInput = {
+  id?: Maybe<Scalars['Int']>
+  codeMaximum?: Maybe<Scalars['String']>
+  codeMinimum?: Maybe<Scalars['String']>
+  codeScale?: Maybe<Scalars['Int']>
+  codeType: Scalars['String']
+  internationalize: Scalars['Boolean']
+  ordering: Scalars['String']
+  realm: Scalars['String']
+  valueMaximum?: Maybe<Scalars['String']>
+  valueMinimum?: Maybe<Scalars['String']>
+  valueScale?: Maybe<Scalars['Int']>
+  valueType: Scalars['String']
+}
+
+/** The output of our create `LookupValue` mutation. */
+export type CreateLookupValuePayload = {
+  __typename: 'CreateLookupValuePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `LookupValue` that was created by this mutation. */
+  lookupValue?: Maybe<LookupValue>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Lookup` that is related to this `LookupValue`. */
+  lookup?: Maybe<Lookup>
+  /** An edge for our `LookupValue`. May be used by Relay 1. */
+  lookupValueEdge?: Maybe<LookupValuesEdge>
+}
+
+/** The output of our create `LookupValue` mutation. */
+export type CreateLookupValuePayloadLookupValueEdgeArgs = {
+  orderBy?: Maybe<Array<LookupValuesOrderBy>>
+}
+
+/** All input for the create `LookupValue` mutation. */
+export type CreateLookupValueInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `LookupValue` to be created by this mutation. */
+  lookupValue: LookupValueInput
+}
+
+/** An input for mutations affecting `LookupValue` */
+export type LookupValueInput = {
+  id?: Maybe<Scalars['Int']>
+  code: Scalars['String']
+  lookupId: Scalars['Int']
+  numericSequencer: Scalars['BigFloat']
+  sequencer: Scalars['Int']
+  stringSequencer: Scalars['String']
+  value: Scalars['String']
+}
+
+/** The output of our create `Membership` mutation. */
+export type CreateMembershipPayload = {
+  __typename: 'CreateMembershipPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Membership` that was created by this mutation. */
+  membership?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `HotelRoom` that is related to this `Membership`. */
+  hotelRoom?: Maybe<HotelRoom>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
+  /** An edge for our `Membership`. May be used by Relay 1. */
+  membershipEdge?: Maybe<MembershipsEdge>
+}
+
+/** The output of our create `Membership` mutation. */
+export type CreateMembershipPayloadMembershipEdgeArgs = {
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+}
+
+/** All input for the create `Membership` mutation. */
+export type CreateMembershipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Membership` to be created by this mutation. */
+  membership: MembershipInput
+}
+
+/** An input for mutations affecting `Membership` */
+export type MembershipInput = {
+  id?: Maybe<Scalars['Int']>
+  arrivalDate: Scalars['Datetime']
+  attendance: Scalars['String']
+  attending: Scalars['Boolean']
+  departureDate: Scalars['Datetime']
+  hotelRoomId: Scalars['Int']
+  interestLevel: Scalars['String']
+  message: Scalars['String']
+  roomPreferenceAndNotes: Scalars['String']
+  roomingPreferences: Scalars['String']
+  roomingWith: Scalars['String']
+  userId: Scalars['Int']
+  volunteer: Scalars['Boolean']
+  year: Scalars['Int']
+  offerSubsidy: Scalars['Boolean']
+  requestOldPrice: Scalars['Boolean']
+  amountOwed: Scalars['Float']
+  amountPaid: Scalars['Float']
+  slotsAttending?: Maybe<Scalars['String']>
+}
+
+/** The output of our create `Role` mutation. */
+export type CreateRolePayload = {
+  __typename: 'CreateRolePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Role` that was created by this mutation. */
+  role?: Maybe<Role>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Role`. May be used by Relay 1. */
+  roleEdge?: Maybe<RolesEdge>
+}
+
+/** The output of our create `Role` mutation. */
+export type CreateRolePayloadRoleEdgeArgs = {
+  orderBy?: Maybe<Array<RolesOrderBy>>
+}
+
+/** All input for the create `Role` mutation. */
+export type CreateRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Role` to be created by this mutation. */
+  role: RoleInput
+}
+
+/** An input for mutations affecting `Role` */
+export type RoleInput = {
+  id?: Maybe<Scalars['Int']>
+  authority: Scalars['String']
+}
+
+/** The output of our create `Room` mutation. */
+export type CreateRoomPayload = {
+  __typename: 'CreateRoomPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Room` that was created by this mutation. */
+  room?: Maybe<Room>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Room`. May be used by Relay 1. */
+  roomEdge?: Maybe<RoomsEdge>
+}
+
+/** The output of our create `Room` mutation. */
+export type CreateRoomPayloadRoomEdgeArgs = {
+  orderBy?: Maybe<Array<RoomsOrderBy>>
+}
+
+/** All input for the create `Room` mutation. */
+export type CreateRoomInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Room` to be created by this mutation. */
+  room: RoomInput
+}
+
+/** An input for mutations affecting `Room` */
+export type RoomInput = {
+  id?: Maybe<Scalars['Int']>
+  description: Scalars['String']
+  size: Scalars['Int']
+  type: Scalars['String']
+  updated: Scalars['Boolean']
+}
+
+/** The output of our create `Setting` mutation. */
+export type CreateSettingPayload = {
+  __typename: 'CreateSettingPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Setting` that was created by this mutation. */
+  setting?: Maybe<Setting>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Setting`. May be used by Relay 1. */
+  settingEdge?: Maybe<SettingsEdge>
+}
+
+/** The output of our create `Setting` mutation. */
+export type CreateSettingPayloadSettingEdgeArgs = {
+  orderBy?: Maybe<Array<SettingsOrderBy>>
+}
+
+/** All input for the create `Setting` mutation. */
+export type CreateSettingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Setting` to be created by this mutation. */
+  setting: SettingInput
+}
+
+/** An input for mutations affecting `Setting` */
+export type SettingInput = {
+  id?: Maybe<Scalars['Int']>
+  code: Scalars['String']
+  type: Scalars['String']
+  value: Scalars['String']
+}
+
+/** The output of our create `ShirtOrder` mutation. */
+export type CreateShirtOrderPayload = {
+  __typename: 'CreateShirtOrderPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrder` that was created by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
+  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
+  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+}
+
+/** The output of our create `ShirtOrder` mutation. */
+export type CreateShirtOrderPayloadShirtOrderEdgeArgs = {
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+}
+
+/** All input for the create `ShirtOrder` mutation. */
+export type CreateShirtOrderInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrder` to be created by this mutation. */
+  shirtOrder: ShirtOrderInput
+}
+
+/** An input for mutations affecting `ShirtOrder` */
+export type ShirtOrderInput = {
+  id?: Maybe<Scalars['Int']>
+  deliveryMethod: Scalars['String']
+  message: Scalars['String']
+  userId: Scalars['Int']
+  year: Scalars['Int']
+}
+
+/** The output of our create `ShirtOrderItem` mutation. */
+export type CreateShirtOrderItemPayload = {
+  __typename: 'CreateShirtOrderItemPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrderItem` that was created by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
+  order?: Maybe<ShirtOrder>
+  /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
+  shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
+}
+
+/** The output of our create `ShirtOrderItem` mutation. */
+export type CreateShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
+  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
+}
+
+/** All input for the create `ShirtOrderItem` mutation. */
+export type CreateShirtOrderItemInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrderItem` to be created by this mutation. */
+  shirtOrderItem: ShirtOrderItemInput
+}
+
+/** An input for mutations affecting `ShirtOrderItem` */
+export type ShirtOrderItemInput = {
+  id?: Maybe<Scalars['Int']>
+  orderId: Scalars['Int']
+  quantity: Scalars['Int']
+  size: Scalars['String']
+  style: Scalars['String']
+  itemsIdx?: Maybe<Scalars['Int']>
+}
+
+/** The output of our create `Slot` mutation. */
+export type CreateSlotPayload = {
+  __typename: 'CreateSlotPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Slot` that was created by this mutation. */
+  slot?: Maybe<Slot>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Slot`. May be used by Relay 1. */
+  slotEdge?: Maybe<SlotsEdge>
+}
+
+/** The output of our create `Slot` mutation. */
+export type CreateSlotPayloadSlotEdgeArgs = {
+  orderBy?: Maybe<Array<SlotsOrderBy>>
+}
+
+/** All input for the create `Slot` mutation. */
+export type CreateSlotInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Slot` to be created by this mutation. */
+  slot: SlotInput
+}
+
+/** An input for mutations affecting `Slot` */
+export type SlotInput = {
+  id?: Maybe<Scalars['Int']>
+  slot: Scalars['Int']
+  day: Scalars['String']
+  formattedDate: Scalars['String']
+  length: Scalars['String']
+  time: Scalars['String']
+}
+
+/** The output of our create `User` mutation. */
+export type CreateUserPayload = {
+  __typename: 'CreateUserPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `User` that was created by this mutation. */
+  user?: Maybe<User>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge?: Maybe<UsersEdge>
+}
+
+/** The output of our create `User` mutation. */
+export type CreateUserPayloadUserEdgeArgs = {
+  orderBy?: Maybe<Array<UsersOrderBy>>
+}
+
+/** All input for the create `User` mutation. */
+export type CreateUserInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `User` to be created by this mutation. */
+  user: UserInput
+}
+
+/** An input for mutations affecting `User` */
+export type UserInput = {
+  id?: Maybe<Scalars['Int']>
+  email: Scalars['String']
+  fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
+}
+
+/** The output of our create `UserRole` mutation. */
+export type CreateUserRolePayload = {
+  __typename: 'CreateUserRolePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `UserRole` that was created by this mutation. */
+  userRole?: Maybe<UserRole>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Role` that is related to this `UserRole`. */
+  role?: Maybe<Role>
+  /** Reads a single `User` that is related to this `UserRole`. */
+  user?: Maybe<User>
+  /** An edge for our `UserRole`. May be used by Relay 1. */
+  userRoleEdge?: Maybe<UserRolesEdge>
+}
+
+/** The output of our create `UserRole` mutation. */
+export type CreateUserRolePayloadUserRoleEdgeArgs = {
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+}
+
+/** All input for the create `UserRole` mutation. */
+export type CreateUserRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `UserRole` to be created by this mutation. */
+  userRole: UserRoleInput
+}
+
+/** An input for mutations affecting `UserRole` */
+export type UserRoleInput = {
+  roleId: Scalars['Int']
+  userId: Scalars['Int']
 }
 
 /** The output of our update `Game` mutation. */
@@ -5676,28 +4731,182 @@ export type UpdateGamePayloadGameEdgeArgs = {
   orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
-/** All input for the `updateGameSubmissionByNodeId` mutation. */
-export type UpdateGameSubmissionByNodeIdInput = {
+/** All input for the `updateGameByNodeId` mutation. */
+export type UpdateGameByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `GameSubmission` to be updated. */
+  /** The globally unique `ID` which will identify a single `Game` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `GameSubmission` being updated. */
-  patch: GameSubmissionPatch
+  /** An object where the defined keys will be set on the `Game` being updated. */
+  patch: GamePatch
 }
 
-/** All input for the `updateGameSubmission` mutation. */
-export type UpdateGameSubmissionInput = {
+/** Represents an update to a `Game`. Fields that are set will be updated. */
+export type GamePatch = {
+  id?: Maybe<Scalars['Int']>
+  description?: Maybe<Scalars['String']>
+  lateFinish?: Maybe<Scalars['Boolean']>
+  lateStart?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  playerMax?: Maybe<Scalars['Int']>
+  playerMin?: Maybe<Scalars['Int']>
+  roomId?: Maybe<Scalars['Int']>
+  shortName?: Maybe<Scalars['String']>
+  slotId?: Maybe<Scalars['Int']>
+  charInstructions?: Maybe<Scalars['String']>
+  estimatedLength?: Maybe<Scalars['String']>
+  gameContactEmail?: Maybe<Scalars['String']>
+  genre?: Maybe<Scalars['String']>
+  gmNames?: Maybe<Scalars['String']>
+  message?: Maybe<Scalars['String']>
+  playerPreference?: Maybe<Scalars['String']>
+  playersContactGm?: Maybe<Scalars['Boolean']>
+  returningPlayers?: Maybe<Scalars['String']>
+  setting?: Maybe<Scalars['String']>
+  slotConflicts?: Maybe<Scalars['String']>
+  slotPreference?: Maybe<Scalars['Int']>
+  teenFriendly?: Maybe<Scalars['Boolean']>
+  type?: Maybe<Scalars['String']>
+  year?: Maybe<Scalars['Int']>
+  authorId?: Maybe<Scalars['Int']>
+  full?: Maybe<Scalars['Boolean']>
+}
+
+/** All input for the `updateGame` mutation. */
+export type UpdateGameInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `GameSubmission` being updated. */
-  patch: GameSubmissionPatch
+  /** An object where the defined keys will be set on the `Game` being updated. */
+  patch: GamePatch
+  id: Scalars['Int']
+}
+
+/** The output of our update `GameAssignment` mutation. */
+export type UpdateGameAssignmentPayload = {
+  __typename: 'UpdateGameAssignmentPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameAssignment` that was updated by this mutation. */
+  gameAssignment?: Maybe<GameAssignment>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Game` that is related to this `GameAssignment`. */
+  game?: Maybe<Game>
+  /** An edge for our `GameAssignment`. May be used by Relay 1. */
+  gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
+}
+
+/** The output of our update `GameAssignment` mutation. */
+export type UpdateGameAssignmentPayloadGameAssignmentEdgeArgs = {
+  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
+}
+
+/** All input for the `updateGameAssignmentByNodeId` mutation. */
+export type UpdateGameAssignmentByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `GameAssignment` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
+  patch: GameAssignmentPatch
+}
+
+/** Represents an update to a `GameAssignment`. Fields that are set will be updated. */
+export type GameAssignmentPatch = {
+  memberId?: Maybe<Scalars['Int']>
+  gameId?: Maybe<Scalars['Int']>
+  gm?: Maybe<Scalars['Int']>
+  year?: Maybe<Scalars['Int']>
+}
+
+/** All input for the `updateGameAssignment` mutation. */
+export type UpdateGameAssignmentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
+  patch: GameAssignmentPatch
+  memberId: Scalars['Int']
+  gameId: Scalars['Int']
+  gm: Scalars['Int']
+}
+
+/** The output of our update `GameChoice` mutation. */
+export type UpdateGameChoicePayload = {
+  __typename: 'UpdateGameChoicePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameChoice` that was updated by this mutation. */
+  gameChoice?: Maybe<GameChoice>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Game` that is related to this `GameChoice`. */
+  game?: Maybe<Game>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
+  /** An edge for our `GameChoice`. May be used by Relay 1. */
+  gameChoiceEdge?: Maybe<GameChoicesEdge>
+}
+
+/** The output of our update `GameChoice` mutation. */
+export type UpdateGameChoicePayloadGameChoiceEdgeArgs = {
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+}
+
+/** All input for the `updateGameChoiceByNodeId` mutation. */
+export type UpdateGameChoiceByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `GameChoice` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `GameChoice` being updated. */
+  patch: GameChoicePatch
+}
+
+/** Represents an update to a `GameChoice`. Fields that are set will be updated. */
+export type GameChoicePatch = {
+  id?: Maybe<Scalars['Int']>
+  gameId?: Maybe<Scalars['Int']>
+  memberId?: Maybe<Scalars['Int']>
+  rank?: Maybe<Scalars['Int']>
+  slotId?: Maybe<Scalars['Int']>
+  year?: Maybe<Scalars['Int']>
+  returningPlayer?: Maybe<Scalars['Boolean']>
+}
+
+/** All input for the `updateGameChoice` mutation. */
+export type UpdateGameChoiceInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `GameChoice` being updated. */
+  patch: GameChoicePatch
   id: Scalars['Int']
 }
 
@@ -5724,74 +4933,36 @@ export type UpdateGameSubmissionPayloadGameSubmissionEdgeArgs = {
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
 }
 
-/** All input for the `updateHotelRoomByNodeId` mutation. */
-export type UpdateHotelRoomByNodeIdInput = {
+/** All input for the `updateGameSubmissionByNodeId` mutation. */
+export type UpdateGameSubmissionByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `HotelRoom` to be updated. */
+  /** The globally unique `ID` which will identify a single `GameSubmission` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `HotelRoom` being updated. */
-  patch: HotelRoomPatch
+  /** An object where the defined keys will be set on the `GameSubmission` being updated. */
+  patch: GameSubmissionPatch
 }
 
-/** All input for the `updateHotelRoomDetailByNodeId` mutation. */
-export type UpdateHotelRoomDetailByNodeIdInput = {
+/** Represents an update to a `GameSubmission`. Fields that are set will be updated. */
+export type GameSubmissionPatch = {
+  id?: Maybe<Scalars['Int']>
+  memberId?: Maybe<Scalars['Int']>
+  message?: Maybe<Scalars['String']>
+  year?: Maybe<Scalars['Int']>
+}
+
+/** All input for the `updateGameSubmission` mutation. */
+export type UpdateGameSubmissionInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `HotelRoomDetail` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `HotelRoomDetail` being updated. */
-  patch: HotelRoomDetailPatch
-}
-
-/** All input for the `updateHotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `HotelRoomDetail` being updated. */
-  patch: HotelRoomDetailPatch
-  id: Scalars['BigInt']
-}
-
-/** The output of our update `HotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailPayload = {
-  __typename: 'UpdateHotelRoomDetailPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `HotelRoomDetail` that was updated by this mutation. */
-  hotelRoomDetail?: Maybe<HotelRoomDetail>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
-  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
-}
-
-/** The output of our update `HotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
-  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
-}
-
-/** All input for the `updateHotelRoom` mutation. */
-export type UpdateHotelRoomInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `HotelRoom` being updated. */
-  patch: HotelRoomPatch
+  /** An object where the defined keys will be set on the `GameSubmission` being updated. */
+  patch: GameSubmissionPatch
   id: Scalars['Int']
 }
 
@@ -5816,41 +4987,103 @@ export type UpdateHotelRoomPayloadHotelRoomEdgeArgs = {
   orderBy?: Maybe<Array<HotelRoomsOrderBy>>
 }
 
-/** All input for the `updateLookupByNodeId` mutation. */
-export type UpdateLookupByNodeIdInput = {
+/** All input for the `updateHotelRoomByNodeId` mutation. */
+export type UpdateHotelRoomByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Lookup` to be updated. */
+  /** The globally unique `ID` which will identify a single `HotelRoom` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Lookup` being updated. */
-  patch: LookupPatch
+  /** An object where the defined keys will be set on the `HotelRoom` being updated. */
+  patch: HotelRoomPatch
 }
 
-/** All input for the `updateLookupByRealm` mutation. */
-export type UpdateLookupByRealmInput = {
+/** Represents an update to a `HotelRoom`. Fields that are set will be updated. */
+export type HotelRoomPatch = {
+  id?: Maybe<Scalars['Int']>
+  description?: Maybe<Scalars['String']>
+  gamingRoom?: Maybe<Scalars['Boolean']>
+  occupancy?: Maybe<Scalars['String']>
+  quantity?: Maybe<Scalars['Int']>
+  rate?: Maybe<Scalars['String']>
+  bathroomType?: Maybe<Scalars['String']>
+  type?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateHotelRoom` mutation. */
+export type UpdateHotelRoomInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Lookup` being updated. */
-  patch: LookupPatch
-  realm: Scalars['String']
-}
-
-/** All input for the `updateLookup` mutation. */
-export type UpdateLookupInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Lookup` being updated. */
-  patch: LookupPatch
+  /** An object where the defined keys will be set on the `HotelRoom` being updated. */
+  patch: HotelRoomPatch
   id: Scalars['Int']
+}
+
+/** The output of our update `HotelRoomDetail` mutation. */
+export type UpdateHotelRoomDetailPayload = {
+  __typename: 'UpdateHotelRoomDetailPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoomDetail` that was updated by this mutation. */
+  hotelRoomDetail?: Maybe<HotelRoomDetail>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
+  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+}
+
+/** The output of our update `HotelRoomDetail` mutation. */
+export type UpdateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
+}
+
+/** All input for the `updateHotelRoomDetailByNodeId` mutation. */
+export type UpdateHotelRoomDetailByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `HotelRoomDetail` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `HotelRoomDetail` being updated. */
+  patch: HotelRoomDetailPatch
+}
+
+/** Represents an update to a `HotelRoomDetail`. Fields that are set will be updated. */
+export type HotelRoomDetailPatch = {
+  id?: Maybe<Scalars['BigInt']>
+  version?: Maybe<Scalars['BigInt']>
+  bathroomType?: Maybe<Scalars['String']>
+  comment?: Maybe<Scalars['String']>
+  enabled?: Maybe<Scalars['Boolean']>
+  gamingRoom?: Maybe<Scalars['Boolean']>
+  internalRoomType?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  reserved?: Maybe<Scalars['Boolean']>
+  reservedFor?: Maybe<Scalars['String']>
+  roomType?: Maybe<Scalars['String']>
+  formattedRoomType?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateHotelRoomDetail` mutation. */
+export type UpdateHotelRoomDetailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `HotelRoomDetail` being updated. */
+  patch: HotelRoomDetailPatch
+  id: Scalars['BigInt']
 }
 
 /** The output of our update `Lookup` mutation. */
@@ -5874,42 +5107,57 @@ export type UpdateLookupPayloadLookupEdgeArgs = {
   orderBy?: Maybe<Array<LookupsOrderBy>>
 }
 
-/** All input for the `updateLookupValueByLookupIdAndCode` mutation. */
-export type UpdateLookupValueByLookupIdAndCodeInput = {
+/** All input for the `updateLookupByNodeId` mutation. */
+export type UpdateLookupByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `LookupValue` being updated. */
-  patch: LookupValuePatch
-  lookupId: Scalars['Int']
-  code: Scalars['String']
-}
-
-/** All input for the `updateLookupValueByNodeId` mutation. */
-export type UpdateLookupValueByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `LookupValue` to be updated. */
+  /** The globally unique `ID` which will identify a single `Lookup` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `LookupValue` being updated. */
-  patch: LookupValuePatch
+  /** An object where the defined keys will be set on the `Lookup` being updated. */
+  patch: LookupPatch
 }
 
-/** All input for the `updateLookupValue` mutation. */
-export type UpdateLookupValueInput = {
+/** Represents an update to a `Lookup`. Fields that are set will be updated. */
+export type LookupPatch = {
+  id?: Maybe<Scalars['Int']>
+  codeMaximum?: Maybe<Scalars['String']>
+  codeMinimum?: Maybe<Scalars['String']>
+  codeScale?: Maybe<Scalars['Int']>
+  codeType?: Maybe<Scalars['String']>
+  internationalize?: Maybe<Scalars['Boolean']>
+  ordering?: Maybe<Scalars['String']>
+  realm?: Maybe<Scalars['String']>
+  valueMaximum?: Maybe<Scalars['String']>
+  valueMinimum?: Maybe<Scalars['String']>
+  valueScale?: Maybe<Scalars['Int']>
+  valueType?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateLookup` mutation. */
+export type UpdateLookupInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `LookupValue` being updated. */
-  patch: LookupValuePatch
+  /** An object where the defined keys will be set on the `Lookup` being updated. */
+  patch: LookupPatch
   id: Scalars['Int']
+}
+
+/** All input for the `updateLookupByRealm` mutation. */
+export type UpdateLookupByRealmInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `Lookup` being updated. */
+  patch: LookupPatch
+  realm: Scalars['String']
 }
 
 /** The output of our update `LookupValue` mutation. */
@@ -5935,29 +5183,53 @@ export type UpdateLookupValuePayloadLookupValueEdgeArgs = {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
-/** All input for the `updateMembershipByNodeId` mutation. */
-export type UpdateMembershipByNodeIdInput = {
+/** All input for the `updateLookupValueByNodeId` mutation. */
+export type UpdateLookupValueByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Membership` to be updated. */
+  /** The globally unique `ID` which will identify a single `LookupValue` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Membership` being updated. */
-  patch: MembershipPatch
+  /** An object where the defined keys will be set on the `LookupValue` being updated. */
+  patch: LookupValuePatch
 }
 
-/** All input for the `updateMembership` mutation. */
-export type UpdateMembershipInput = {
+/** Represents an update to a `LookupValue`. Fields that are set will be updated. */
+export type LookupValuePatch = {
+  id?: Maybe<Scalars['Int']>
+  code?: Maybe<Scalars['String']>
+  lookupId?: Maybe<Scalars['Int']>
+  numericSequencer?: Maybe<Scalars['BigFloat']>
+  sequencer?: Maybe<Scalars['Int']>
+  stringSequencer?: Maybe<Scalars['String']>
+  value?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateLookupValue` mutation. */
+export type UpdateLookupValueInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Membership` being updated. */
-  patch: MembershipPatch
+  /** An object where the defined keys will be set on the `LookupValue` being updated. */
+  patch: LookupValuePatch
   id: Scalars['Int']
+}
+
+/** All input for the `updateLookupValueByLookupIdAndCode` mutation. */
+export type UpdateLookupValueByLookupIdAndCodeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `LookupValue` being updated. */
+  patch: LookupValuePatch
+  lookupId: Scalars['Int']
+  code: Scalars['String']
 }
 
 /** The output of our update `Membership` mutation. */
@@ -5985,40 +5257,51 @@ export type UpdateMembershipPayloadMembershipEdgeArgs = {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
-/** All input for the `updateRoleByAuthority` mutation. */
-export type UpdateRoleByAuthorityInput = {
+/** All input for the `updateMembershipByNodeId` mutation. */
+export type UpdateMembershipByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Role` being updated. */
-  patch: RolePatch
-  authority: Scalars['String']
-}
-
-/** All input for the `updateRoleByNodeId` mutation. */
-export type UpdateRoleByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Role` to be updated. */
+  /** The globally unique `ID` which will identify a single `Membership` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Role` being updated. */
-  patch: RolePatch
+  /** An object where the defined keys will be set on the `Membership` being updated. */
+  patch: MembershipPatch
 }
 
-/** All input for the `updateRole` mutation. */
-export type UpdateRoleInput = {
+/** Represents an update to a `Membership`. Fields that are set will be updated. */
+export type MembershipPatch = {
+  id?: Maybe<Scalars['Int']>
+  arrivalDate?: Maybe<Scalars['Datetime']>
+  attendance?: Maybe<Scalars['String']>
+  attending?: Maybe<Scalars['Boolean']>
+  departureDate?: Maybe<Scalars['Datetime']>
+  hotelRoomId?: Maybe<Scalars['Int']>
+  interestLevel?: Maybe<Scalars['String']>
+  message?: Maybe<Scalars['String']>
+  roomPreferenceAndNotes?: Maybe<Scalars['String']>
+  roomingPreferences?: Maybe<Scalars['String']>
+  roomingWith?: Maybe<Scalars['String']>
+  userId?: Maybe<Scalars['Int']>
+  volunteer?: Maybe<Scalars['Boolean']>
+  year?: Maybe<Scalars['Int']>
+  offerSubsidy?: Maybe<Scalars['Boolean']>
+  requestOldPrice?: Maybe<Scalars['Boolean']>
+  amountOwed?: Maybe<Scalars['Float']>
+  amountPaid?: Maybe<Scalars['Float']>
+  slotsAttending?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateMembership` mutation. */
+export type UpdateMembershipInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Role` being updated. */
-  patch: RolePatch
+  /** An object where the defined keys will be set on the `Membership` being updated. */
+  patch: MembershipPatch
   id: Scalars['Int']
 }
 
@@ -6043,29 +5326,47 @@ export type UpdateRolePayloadRoleEdgeArgs = {
   orderBy?: Maybe<Array<RolesOrderBy>>
 }
 
-/** All input for the `updateRoomByNodeId` mutation. */
-export type UpdateRoomByNodeIdInput = {
+/** All input for the `updateRoleByNodeId` mutation. */
+export type UpdateRoleByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Room` to be updated. */
+  /** The globally unique `ID` which will identify a single `Role` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Room` being updated. */
-  patch: RoomPatch
+  /** An object where the defined keys will be set on the `Role` being updated. */
+  patch: RolePatch
 }
 
-/** All input for the `updateRoom` mutation. */
-export type UpdateRoomInput = {
+/** Represents an update to a `Role`. Fields that are set will be updated. */
+export type RolePatch = {
+  id?: Maybe<Scalars['Int']>
+  authority?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateRole` mutation. */
+export type UpdateRoleInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Room` being updated. */
-  patch: RoomPatch
+  /** An object where the defined keys will be set on the `Role` being updated. */
+  patch: RolePatch
   id: Scalars['Int']
+}
+
+/** All input for the `updateRoleByAuthority` mutation. */
+export type UpdateRoleByAuthorityInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `Role` being updated. */
+  patch: RolePatch
+  authority: Scalars['String']
 }
 
 /** The output of our update `Room` mutation. */
@@ -6089,28 +5390,37 @@ export type UpdateRoomPayloadRoomEdgeArgs = {
   orderBy?: Maybe<Array<RoomsOrderBy>>
 }
 
-/** All input for the `updateSettingByNodeId` mutation. */
-export type UpdateSettingByNodeIdInput = {
+/** All input for the `updateRoomByNodeId` mutation. */
+export type UpdateRoomByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Setting` to be updated. */
+  /** The globally unique `ID` which will identify a single `Room` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Setting` being updated. */
-  patch: SettingPatch
+  /** An object where the defined keys will be set on the `Room` being updated. */
+  patch: RoomPatch
 }
 
-/** All input for the `updateSetting` mutation. */
-export type UpdateSettingInput = {
+/** Represents an update to a `Room`. Fields that are set will be updated. */
+export type RoomPatch = {
+  id?: Maybe<Scalars['Int']>
+  description?: Maybe<Scalars['String']>
+  size?: Maybe<Scalars['Int']>
+  type?: Maybe<Scalars['String']>
+  updated?: Maybe<Scalars['Boolean']>
+}
+
+/** All input for the `updateRoom` mutation. */
+export type UpdateRoomInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Setting` being updated. */
-  patch: SettingPatch
+  /** An object where the defined keys will be set on the `Room` being updated. */
+  patch: RoomPatch
   id: Scalars['Int']
 }
 
@@ -6135,6 +5445,62 @@ export type UpdateSettingPayloadSettingEdgeArgs = {
   orderBy?: Maybe<Array<SettingsOrderBy>>
 }
 
+/** All input for the `updateSettingByNodeId` mutation. */
+export type UpdateSettingByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Setting` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `Setting` being updated. */
+  patch: SettingPatch
+}
+
+/** Represents an update to a `Setting`. Fields that are set will be updated. */
+export type SettingPatch = {
+  id?: Maybe<Scalars['Int']>
+  code?: Maybe<Scalars['String']>
+  type?: Maybe<Scalars['String']>
+  value?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateSetting` mutation. */
+export type UpdateSettingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `Setting` being updated. */
+  patch: SettingPatch
+  id: Scalars['Int']
+}
+
+/** The output of our update `ShirtOrder` mutation. */
+export type UpdateShirtOrderPayload = {
+  __typename: 'UpdateShirtOrderPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrder` that was updated by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
+  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
+  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+}
+
+/** The output of our update `ShirtOrder` mutation. */
+export type UpdateShirtOrderPayloadShirtOrderEdgeArgs = {
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+}
+
 /** All input for the `updateShirtOrderByNodeId` mutation. */
 export type UpdateShirtOrderByNodeIdInput = {
   /**
@@ -6148,6 +5514,15 @@ export type UpdateShirtOrderByNodeIdInput = {
   patch: ShirtOrderPatch
 }
 
+/** Represents an update to a `ShirtOrder`. Fields that are set will be updated. */
+export type ShirtOrderPatch = {
+  id?: Maybe<Scalars['Int']>
+  deliveryMethod?: Maybe<Scalars['String']>
+  message?: Maybe<Scalars['String']>
+  userId?: Maybe<Scalars['Int']>
+  year?: Maybe<Scalars['Int']>
+}
+
 /** All input for the `updateShirtOrder` mutation. */
 export type UpdateShirtOrderInput = {
   /**
@@ -6157,31 +5532,6 @@ export type UpdateShirtOrderInput = {
   clientMutationId?: Maybe<Scalars['String']>
   /** An object where the defined keys will be set on the `ShirtOrder` being updated. */
   patch: ShirtOrderPatch
-  id: Scalars['Int']
-}
-
-/** All input for the `updateShirtOrderItemByNodeId` mutation. */
-export type UpdateShirtOrderItemByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `ShirtOrderItem` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `ShirtOrderItem` being updated. */
-  patch: ShirtOrderItemPatch
-}
-
-/** All input for the `updateShirtOrderItem` mutation. */
-export type UpdateShirtOrderItemInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `ShirtOrderItem` being updated. */
-  patch: ShirtOrderItemPatch
   id: Scalars['Int']
 }
 
@@ -6208,51 +5558,38 @@ export type UpdateShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
   orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
 }
 
-/** The output of our update `ShirtOrder` mutation. */
-export type UpdateShirtOrderPayload = {
-  __typename: 'UpdateShirtOrderPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was updated by this mutation. */
-  shirtOrder?: Maybe<ShirtOrder>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
-  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
-  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
-}
-
-/** The output of our update `ShirtOrder` mutation. */
-export type UpdateShirtOrderPayloadShirtOrderEdgeArgs = {
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-}
-
-/** All input for the `updateSlotByNodeId` mutation. */
-export type UpdateSlotByNodeIdInput = {
+/** All input for the `updateShirtOrderItemByNodeId` mutation. */
+export type UpdateShirtOrderItemByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `Slot` to be updated. */
+  /** The globally unique `ID` which will identify a single `ShirtOrderItem` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `Slot` being updated. */
-  patch: SlotPatch
+  /** An object where the defined keys will be set on the `ShirtOrderItem` being updated. */
+  patch: ShirtOrderItemPatch
 }
 
-/** All input for the `updateSlot` mutation. */
-export type UpdateSlotInput = {
+/** Represents an update to a `ShirtOrderItem`. Fields that are set will be updated. */
+export type ShirtOrderItemPatch = {
+  id?: Maybe<Scalars['Int']>
+  orderId?: Maybe<Scalars['Int']>
+  quantity?: Maybe<Scalars['Int']>
+  size?: Maybe<Scalars['String']>
+  style?: Maybe<Scalars['String']>
+  itemsIdx?: Maybe<Scalars['Int']>
+}
+
+/** All input for the `updateShirtOrderItem` mutation. */
+export type UpdateShirtOrderItemInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `Slot` being updated. */
-  patch: SlotPatch
+  /** An object where the defined keys will be set on the `ShirtOrderItem` being updated. */
+  patch: ShirtOrderItemPatch
   id: Scalars['Int']
 }
 
@@ -6277,40 +5614,38 @@ export type UpdateSlotPayloadSlotEdgeArgs = {
   orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
-/** All input for the `updateUserByEmail` mutation. */
-export type UpdateUserByEmailInput = {
+/** All input for the `updateSlotByNodeId` mutation. */
+export type UpdateSlotByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch
-  email: Scalars['String']
-}
-
-/** All input for the `updateUserByNodeId` mutation. */
-export type UpdateUserByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `User` to be updated. */
+  /** The globally unique `ID` which will identify a single `Slot` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch
+  /** An object where the defined keys will be set on the `Slot` being updated. */
+  patch: SlotPatch
 }
 
-/** All input for the `updateUser` mutation. */
-export type UpdateUserInput = {
+/** Represents an update to a `Slot`. Fields that are set will be updated. */
+export type SlotPatch = {
+  id?: Maybe<Scalars['Int']>
+  slot?: Maybe<Scalars['Int']>
+  day?: Maybe<Scalars['String']>
+  formattedDate?: Maybe<Scalars['String']>
+  length?: Maybe<Scalars['String']>
+  time?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateSlot` mutation. */
+export type UpdateSlotInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch
+  /** An object where the defined keys will be set on the `Slot` being updated. */
+  patch: SlotPatch
   id: Scalars['Int']
 }
 
@@ -6335,30 +5670,52 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: Maybe<Array<UsersOrderBy>>
 }
 
-/** All input for the `updateUserRoleByNodeId` mutation. */
-export type UpdateUserRoleByNodeIdInput = {
+/** All input for the `updateUserByNodeId` mutation. */
+export type UpdateUserByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `UserRole` to be updated. */
+  /** The globally unique `ID` which will identify a single `User` to be updated. */
   nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `UserRole` being updated. */
-  patch: UserRolePatch
+  /** An object where the defined keys will be set on the `User` being updated. */
+  patch: UserPatch
 }
 
-/** All input for the `updateUserRole` mutation. */
-export type UpdateUserRoleInput = {
+/** Represents an update to a `User`. Fields that are set will be updated. */
+export type UserPatch = {
+  id?: Maybe<Scalars['Int']>
+  email?: Maybe<Scalars['String']>
+  fullName?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  firstName?: Maybe<Scalars['String']>
+  lastName?: Maybe<Scalars['String']>
+}
+
+/** All input for the `updateUser` mutation. */
+export type UpdateUserInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `UserRole` being updated. */
-  patch: UserRolePatch
-  roleId: Scalars['Int']
-  userId: Scalars['Int']
+  /** An object where the defined keys will be set on the `User` being updated. */
+  patch: UserPatch
+  id: Scalars['Int']
+}
+
+/** All input for the `updateUserByEmail` mutation. */
+export type UpdateUserByEmailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `User` being updated. */
+  patch: UserPatch
+  email: Scalars['String']
 }
 
 /** The output of our update `UserRole` mutation. */
@@ -6386,176 +5743,17 @@ export type UpdateUserRolePayloadUserRoleEdgeArgs = {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
 }
 
-export type User = Node & {
-  __typename: 'User'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+/** All input for the `updateUserRoleByNodeId` mutation. */
+export type UpdateUserRoleByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `UserRole` to be updated. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  email: Scalars['String']
-  fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
-  firstName?: Maybe<Scalars['String']>
-  lastName?: Maybe<Scalars['String']>
-  /** Reads and enables pagination through a set of `Game`. */
-  authoredGames: GamesConnection
-  /** Reads and enables pagination through a set of `Membership`. */
-  memberships: MembershipsConnection
-  /** Reads and enables pagination through a set of `ShirtOrder`. */
-  shirtOrders: ShirtOrdersConnection
-  /** Reads and enables pagination through a set of `UserRole`. */
-  userRoles: UserRolesConnection
-}
-
-export type UserAuthoredGamesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
-}
-
-export type UserMembershipsArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
-}
-
-export type UserShirtOrdersArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-  condition?: Maybe<ShirtOrderCondition>
-  filter?: Maybe<ShirtOrderFilter>
-}
-
-export type UserUserRolesArgs = {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
-}
-
-/** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type UserCondition = {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `email` field. */
-  email?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `fullName` field. */
-  fullName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `firstName` field. */
-  firstName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `lastName` field. */
-  lastName?: Maybe<Scalars['String']>
-}
-
-/** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
-export type UserFilter = {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `email` field. */
-  email?: Maybe<StringFilter>
-  /** Filter by the object’s `fullName` field. */
-  fullName?: Maybe<StringFilter>
-  /** Filter by the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<StringFilter>
-  /** Filter by the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<StringFilter>
-  /** Filter by the object’s `firstName` field. */
-  firstName?: Maybe<StringFilter>
-  /** Filter by the object’s `lastName` field. */
-  lastName?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserFilter>>
-  /** Negates the expression. */
-  not?: Maybe<UserFilter>
-}
-
-/** An input for mutations affecting `User` */
-export type UserInput = {
-  id?: Maybe<Scalars['Int']>
-  email: Scalars['String']
-  fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
-  firstName?: Maybe<Scalars['String']>
-  lastName?: Maybe<Scalars['String']>
-}
-
-/** Represents an update to a `User`. Fields that are set will be updated. */
-export type UserPatch = {
-  id?: Maybe<Scalars['Int']>
-  email?: Maybe<Scalars['String']>
-  fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
-  firstName?: Maybe<Scalars['String']>
-  lastName?: Maybe<Scalars['String']>
-}
-
-export type UserRole = Node & {
-  __typename: 'UserRole'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  roleId: Scalars['Int']
-  userId: Scalars['Int']
-  /** Reads a single `Role` that is related to this `UserRole`. */
-  role?: Maybe<Role>
-  /** Reads a single `User` that is related to this `UserRole`. */
-  user?: Maybe<User>
-}
-
-/**
- * A condition to be used against `UserRole` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type UserRoleCondition = {
-  /** Checks for equality with the object’s `roleId` field. */
-  roleId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['Int']>
-}
-
-/** A filter to be used against `UserRole` object types. All fields are combined with a logical ‘and.’ */
-export type UserRoleFilter = {
-  /** Filter by the object’s `roleId` field. */
-  roleId?: Maybe<IntFilter>
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserRoleFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserRoleFilter>>
-  /** Negates the expression. */
-  not?: Maybe<UserRoleFilter>
-}
-
-/** An input for mutations affecting `UserRole` */
-export type UserRoleInput = {
-  roleId: Scalars['Int']
-  userId: Scalars['Int']
+  /** An object where the defined keys will be set on the `UserRole` being updated. */
+  patch: UserRolePatch
 }
 
 /** Represents an update to a `UserRole`. Fields that are set will be updated. */
@@ -6564,106 +5762,894 @@ export type UserRolePatch = {
   userId?: Maybe<Scalars['Int']>
 }
 
-/** A connection to a list of `UserRole` values. */
-export type UserRolesConnection = {
-  __typename: 'UserRolesConnection'
-  /** A list of `UserRole` objects. */
-  nodes: Array<Maybe<UserRole>>
-  /** A list of edges which contains the `UserRole` and cursor to aid in pagination. */
-  edges: Array<UserRolesEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `UserRole` you could get from the connection. */
-  totalCount: Scalars['Int']
+/** All input for the `updateUserRole` mutation. */
+export type UpdateUserRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `UserRole` being updated. */
+  patch: UserRolePatch
+  roleId: Scalars['Int']
+  userId: Scalars['Int']
 }
 
-/** A `UserRole` edge in the connection. */
-export type UserRolesEdge = {
-  __typename: 'UserRolesEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `UserRole` at the end of the edge. */
-  node?: Maybe<UserRole>
+/** The output of our delete `Game` mutation. */
+export type DeleteGamePayload = {
+  __typename: 'DeleteGamePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Game` that was deleted by this mutation. */
+  game?: Maybe<Game>
+  deletedGameNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Room` that is related to this `Game`. */
+  room?: Maybe<Room>
+  /** Reads a single `Slot` that is related to this `Game`. */
+  slot?: Maybe<Slot>
+  /** Reads a single `User` that is related to this `Game`. */
+  author?: Maybe<User>
+  /** An edge for our `Game`. May be used by Relay 1. */
+  gameEdge?: Maybe<GamesEdge>
 }
 
-/** Methods to use when ordering `UserRole`. */
-export enum UserRolesOrderBy {
-  Natural = 'NATURAL',
-  RoleIdAsc = 'ROLE_ID_ASC',
-  RoleIdDesc = 'ROLE_ID_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoleByRoleIdIdAsc = 'ROLE_BY_ROLE_ID__ID_ASC',
-  RoleByRoleIdIdDesc = 'ROLE_BY_ROLE_ID__ID_DESC',
-  RoleByRoleIdAuthorityAsc = 'ROLE_BY_ROLE_ID__AUTHORITY_ASC',
-  RoleByRoleIdAuthorityDesc = 'ROLE_BY_ROLE_ID__AUTHORITY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
-  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
-  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
-  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
-  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
-  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+/** The output of our delete `Game` mutation. */
+export type DeleteGamePayloadGameEdgeArgs = {
+  orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
-/** A connection to a list of `User` values. */
-export type UsersConnection = {
-  __typename: 'UsersConnection'
-  /** A list of `User` objects. */
-  nodes: Array<Maybe<User>>
-  /** A list of edges which contains the `User` and cursor to aid in pagination. */
-  edges: Array<UsersEdge>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `User` you could get from the connection. */
-  totalCount: Scalars['Int']
+/** All input for the `deleteGameByNodeId` mutation. */
+export type DeleteGameByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Game` to be deleted. */
+  nodeId: Scalars['ID']
 }
 
-/** A `User` edge in the connection. */
-export type UsersEdge = {
-  __typename: 'UsersEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `User` at the end of the edge. */
-  node?: Maybe<User>
+/** All input for the `deleteGame` mutation. */
+export type DeleteGameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
 }
 
-/** Methods to use when ordering `User`. */
-export enum UsersOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  EmailAsc = 'EMAIL_ASC',
-  EmailDesc = 'EMAIL_DESC',
-  FullNameAsc = 'FULL_NAME_ASC',
-  FullNameDesc = 'FULL_NAME_DESC',
-  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
-  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
-  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
-  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
-  FirstNameAsc = 'FIRST_NAME_ASC',
-  FirstNameDesc = 'FIRST_NAME_DESC',
-  LastNameAsc = 'LAST_NAME_ASC',
-  LastNameDesc = 'LAST_NAME_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  GamesByAuthorIdCountAsc = 'GAMES_BY_AUTHOR_ID__COUNT_ASC',
-  GamesByAuthorIdCountDesc = 'GAMES_BY_AUTHOR_ID__COUNT_DESC',
-  MembershipsByUserIdCountAsc = 'MEMBERSHIPS_BY_USER_ID__COUNT_ASC',
-  MembershipsByUserIdCountDesc = 'MEMBERSHIPS_BY_USER_ID__COUNT_DESC',
-  ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',
-  ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
-  UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
-  UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
+/** The output of our delete `GameAssignment` mutation. */
+export type DeleteGameAssignmentPayload = {
+  __typename: 'DeleteGameAssignmentPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameAssignment` that was deleted by this mutation. */
+  gameAssignment?: Maybe<GameAssignment>
+  deletedGameAssignmentNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Game` that is related to this `GameAssignment`. */
+  game?: Maybe<Game>
+  /** An edge for our `GameAssignment`. May be used by Relay 1. */
+  gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
+}
+
+/** The output of our delete `GameAssignment` mutation. */
+export type DeleteGameAssignmentPayloadGameAssignmentEdgeArgs = {
+  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
+}
+
+/** All input for the `deleteGameAssignmentByNodeId` mutation. */
+export type DeleteGameAssignmentByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `GameAssignment` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteGameAssignment` mutation. */
+export type DeleteGameAssignmentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  memberId: Scalars['Int']
+  gameId: Scalars['Int']
+  gm: Scalars['Int']
+}
+
+/** The output of our delete `GameChoice` mutation. */
+export type DeleteGameChoicePayload = {
+  __typename: 'DeleteGameChoicePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameChoice` that was deleted by this mutation. */
+  gameChoice?: Maybe<GameChoice>
+  deletedGameChoiceNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Game` that is related to this `GameChoice`. */
+  game?: Maybe<Game>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
+  /** An edge for our `GameChoice`. May be used by Relay 1. */
+  gameChoiceEdge?: Maybe<GameChoicesEdge>
+}
+
+/** The output of our delete `GameChoice` mutation. */
+export type DeleteGameChoicePayloadGameChoiceEdgeArgs = {
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+}
+
+/** All input for the `deleteGameChoiceByNodeId` mutation. */
+export type DeleteGameChoiceByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `GameChoice` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteGameChoice` mutation. */
+export type DeleteGameChoiceInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `GameSubmission` mutation. */
+export type DeleteGameSubmissionPayload = {
+  __typename: 'DeleteGameSubmissionPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `GameSubmission` that was deleted by this mutation. */
+  gameSubmission?: Maybe<GameSubmission>
+  deletedGameSubmissionNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
+  /** An edge for our `GameSubmission`. May be used by Relay 1. */
+  gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
+}
+
+/** The output of our delete `GameSubmission` mutation. */
+export type DeleteGameSubmissionPayloadGameSubmissionEdgeArgs = {
+  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
+}
+
+/** All input for the `deleteGameSubmissionByNodeId` mutation. */
+export type DeleteGameSubmissionByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `GameSubmission` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteGameSubmission` mutation. */
+export type DeleteGameSubmissionInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `HotelRoom` mutation. */
+export type DeleteHotelRoomPayload = {
+  __typename: 'DeleteHotelRoomPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoom` that was deleted by this mutation. */
+  hotelRoom?: Maybe<HotelRoom>
+  deletedHotelRoomNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `HotelRoom`. May be used by Relay 1. */
+  hotelRoomEdge?: Maybe<HotelRoomsEdge>
+}
+
+/** The output of our delete `HotelRoom` mutation. */
+export type DeleteHotelRoomPayloadHotelRoomEdgeArgs = {
+  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
+}
+
+/** All input for the `deleteHotelRoomByNodeId` mutation. */
+export type DeleteHotelRoomByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `HotelRoom` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteHotelRoom` mutation. */
+export type DeleteHotelRoomInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `HotelRoomDetail` mutation. */
+export type DeleteHotelRoomDetailPayload = {
+  __typename: 'DeleteHotelRoomDetailPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `HotelRoomDetail` that was deleted by this mutation. */
+  hotelRoomDetail?: Maybe<HotelRoomDetail>
+  deletedHotelRoomDetailNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
+  hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+}
+
+/** The output of our delete `HotelRoomDetail` mutation. */
+export type DeleteHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
+}
+
+/** All input for the `deleteHotelRoomDetailByNodeId` mutation. */
+export type DeleteHotelRoomDetailByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `HotelRoomDetail` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteHotelRoomDetail` mutation. */
+export type DeleteHotelRoomDetailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['BigInt']
+}
+
+/** The output of our delete `Lookup` mutation. */
+export type DeleteLookupPayload = {
+  __typename: 'DeleteLookupPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Lookup` that was deleted by this mutation. */
+  lookup?: Maybe<Lookup>
+  deletedLookupNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Lookup`. May be used by Relay 1. */
+  lookupEdge?: Maybe<LookupsEdge>
+}
+
+/** The output of our delete `Lookup` mutation. */
+export type DeleteLookupPayloadLookupEdgeArgs = {
+  orderBy?: Maybe<Array<LookupsOrderBy>>
+}
+
+/** All input for the `deleteLookupByNodeId` mutation. */
+export type DeleteLookupByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Lookup` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteLookup` mutation. */
+export type DeleteLookupInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** All input for the `deleteLookupByRealm` mutation. */
+export type DeleteLookupByRealmInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  realm: Scalars['String']
+}
+
+/** The output of our delete `LookupValue` mutation. */
+export type DeleteLookupValuePayload = {
+  __typename: 'DeleteLookupValuePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `LookupValue` that was deleted by this mutation. */
+  lookupValue?: Maybe<LookupValue>
+  deletedLookupValueNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Lookup` that is related to this `LookupValue`. */
+  lookup?: Maybe<Lookup>
+  /** An edge for our `LookupValue`. May be used by Relay 1. */
+  lookupValueEdge?: Maybe<LookupValuesEdge>
+}
+
+/** The output of our delete `LookupValue` mutation. */
+export type DeleteLookupValuePayloadLookupValueEdgeArgs = {
+  orderBy?: Maybe<Array<LookupValuesOrderBy>>
+}
+
+/** All input for the `deleteLookupValueByNodeId` mutation. */
+export type DeleteLookupValueByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `LookupValue` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteLookupValue` mutation. */
+export type DeleteLookupValueInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** All input for the `deleteLookupValueByLookupIdAndCode` mutation. */
+export type DeleteLookupValueByLookupIdAndCodeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  lookupId: Scalars['Int']
+  code: Scalars['String']
+}
+
+/** The output of our delete `Membership` mutation. */
+export type DeleteMembershipPayload = {
+  __typename: 'DeleteMembershipPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Membership` that was deleted by this mutation. */
+  membership?: Maybe<Membership>
+  deletedMembershipNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `HotelRoom` that is related to this `Membership`. */
+  hotelRoom?: Maybe<HotelRoom>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
+  /** An edge for our `Membership`. May be used by Relay 1. */
+  membershipEdge?: Maybe<MembershipsEdge>
+}
+
+/** The output of our delete `Membership` mutation. */
+export type DeleteMembershipPayloadMembershipEdgeArgs = {
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+}
+
+/** All input for the `deleteMembershipByNodeId` mutation. */
+export type DeleteMembershipByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Membership` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteMembership` mutation. */
+export type DeleteMembershipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `Role` mutation. */
+export type DeleteRolePayload = {
+  __typename: 'DeleteRolePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Role` that was deleted by this mutation. */
+  role?: Maybe<Role>
+  deletedRoleNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Role`. May be used by Relay 1. */
+  roleEdge?: Maybe<RolesEdge>
+}
+
+/** The output of our delete `Role` mutation. */
+export type DeleteRolePayloadRoleEdgeArgs = {
+  orderBy?: Maybe<Array<RolesOrderBy>>
+}
+
+/** All input for the `deleteRoleByNodeId` mutation. */
+export type DeleteRoleByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Role` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteRole` mutation. */
+export type DeleteRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** All input for the `deleteRoleByAuthority` mutation. */
+export type DeleteRoleByAuthorityInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  authority: Scalars['String']
+}
+
+/** The output of our delete `Room` mutation. */
+export type DeleteRoomPayload = {
+  __typename: 'DeleteRoomPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Room` that was deleted by this mutation. */
+  room?: Maybe<Room>
+  deletedRoomNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Room`. May be used by Relay 1. */
+  roomEdge?: Maybe<RoomsEdge>
+}
+
+/** The output of our delete `Room` mutation. */
+export type DeleteRoomPayloadRoomEdgeArgs = {
+  orderBy?: Maybe<Array<RoomsOrderBy>>
+}
+
+/** All input for the `deleteRoomByNodeId` mutation. */
+export type DeleteRoomByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Room` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteRoom` mutation. */
+export type DeleteRoomInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `Setting` mutation. */
+export type DeleteSettingPayload = {
+  __typename: 'DeleteSettingPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Setting` that was deleted by this mutation. */
+  setting?: Maybe<Setting>
+  deletedSettingNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Setting`. May be used by Relay 1. */
+  settingEdge?: Maybe<SettingsEdge>
+}
+
+/** The output of our delete `Setting` mutation. */
+export type DeleteSettingPayloadSettingEdgeArgs = {
+  orderBy?: Maybe<Array<SettingsOrderBy>>
+}
+
+/** All input for the `deleteSettingByNodeId` mutation. */
+export type DeleteSettingByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Setting` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteSetting` mutation. */
+export type DeleteSettingInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `ShirtOrder` mutation. */
+export type DeleteShirtOrderPayload = {
+  __typename: 'DeleteShirtOrderPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrder` that was deleted by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
+  deletedShirtOrderNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
+  /** An edge for our `ShirtOrder`. May be used by Relay 1. */
+  shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+}
+
+/** The output of our delete `ShirtOrder` mutation. */
+export type DeleteShirtOrderPayloadShirtOrderEdgeArgs = {
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+}
+
+/** All input for the `deleteShirtOrderByNodeId` mutation. */
+export type DeleteShirtOrderByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `ShirtOrder` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteShirtOrder` mutation. */
+export type DeleteShirtOrderInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `ShirtOrderItem` mutation. */
+export type DeleteShirtOrderItemPayload = {
+  __typename: 'DeleteShirtOrderItemPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `ShirtOrderItem` that was deleted by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
+  deletedShirtOrderItemNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
+  order?: Maybe<ShirtOrder>
+  /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
+  shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
+}
+
+/** The output of our delete `ShirtOrderItem` mutation. */
+export type DeleteShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
+  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
+}
+
+/** All input for the `deleteShirtOrderItemByNodeId` mutation. */
+export type DeleteShirtOrderItemByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `ShirtOrderItem` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteShirtOrderItem` mutation. */
+export type DeleteShirtOrderItemInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `Slot` mutation. */
+export type DeleteSlotPayload = {
+  __typename: 'DeleteSlotPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Slot` that was deleted by this mutation. */
+  slot?: Maybe<Slot>
+  deletedSlotNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `Slot`. May be used by Relay 1. */
+  slotEdge?: Maybe<SlotsEdge>
+}
+
+/** The output of our delete `Slot` mutation. */
+export type DeleteSlotPayloadSlotEdgeArgs = {
+  orderBy?: Maybe<Array<SlotsOrderBy>>
+}
+
+/** All input for the `deleteSlotByNodeId` mutation. */
+export type DeleteSlotByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Slot` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteSlot` mutation. */
+export type DeleteSlotInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `User` mutation. */
+export type DeleteUserPayload = {
+  __typename: 'DeleteUserPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `User` that was deleted by this mutation. */
+  user?: Maybe<User>
+  deletedUserNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** An edge for our `User`. May be used by Relay 1. */
+  userEdge?: Maybe<UsersEdge>
+}
+
+/** The output of our delete `User` mutation. */
+export type DeleteUserPayloadUserEdgeArgs = {
+  orderBy?: Maybe<Array<UsersOrderBy>>
+}
+
+/** All input for the `deleteUserByNodeId` mutation. */
+export type DeleteUserByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `User` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteUser` mutation. */
+export type DeleteUserInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** All input for the `deleteUserByEmail` mutation. */
+export type DeleteUserByEmailInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  email: Scalars['String']
+}
+
+/** The output of our delete `UserRole` mutation. */
+export type DeleteUserRolePayload = {
+  __typename: 'DeleteUserRolePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `UserRole` that was deleted by this mutation. */
+  userRole?: Maybe<UserRole>
+  deletedUserRoleNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Role` that is related to this `UserRole`. */
+  role?: Maybe<Role>
+  /** Reads a single `User` that is related to this `UserRole`. */
+  user?: Maybe<User>
+  /** An edge for our `UserRole`. May be used by Relay 1. */
+  userRoleEdge?: Maybe<UserRolesEdge>
+}
+
+/** The output of our delete `UserRole` mutation. */
+export type DeleteUserRolePayloadUserRoleEdgeArgs = {
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+}
+
+/** All input for the `deleteUserRoleByNodeId` mutation. */
+export type DeleteUserRoleByNodeIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `UserRole` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteUserRole` mutation. */
+export type DeleteUserRoleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  roleId: Scalars['Int']
+  userId: Scalars['Int']
+}
+
+/** The output of our `createBareSlotChoices` mutation. */
+export type CreateBareSlotChoicesPayload = {
+  __typename: 'CreateBareSlotChoicesPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+}
+
+/** All input for the `createBareSlotChoices` mutation. */
+export type CreateBareSlotChoicesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  memberId?: Maybe<Scalars['Int']>
+  yearno?: Maybe<Scalars['Int']>
+}
+
+/** The output of our `fTruncateTables` mutation. */
+export type FTruncateTablesPayload = {
+  __typename: 'FTruncateTablesPayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+}
+
+/** All input for the `fTruncateTables` mutation. */
+export type FTruncateTablesInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  _username?: Maybe<Scalars['String']>
+}
+
+/** The output of our `slotGmGame` mutation. */
+export type SlotGmGamePayload = {
+  __typename: 'SlotGmGamePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  integer?: Maybe<Scalars['Int']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+}
+
+/** All input for the `slotGmGame` mutation. */
+export type SlotGmGameInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  memberId?: Maybe<Scalars['Int']>
+  slotId?: Maybe<Scalars['Int']>
+  yearno?: Maybe<Scalars['Int']>
 }
 
 export type GetGamesBySlotForSignupQueryVariables = Exact<{

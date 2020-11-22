@@ -1,4 +1,4 @@
-export * from './HasPermission'
 export * from './Auth0'
-export * from './useAuthOverride'
+export * from './HasPermission'
 export * from './PermissionRules'
+export * from './useRoleOverride'

@@ -11,11 +11,19 @@ import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Pa
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { Link, Redirect } from 'react-router-dom'
-import { ContentsOf, notEmpty, pick, useGameScroll, useGameUrl, useGetMemberShip, useUser } from 'utils'
+import {
+  ContentsOf,
+  notEmpty,
+  pick,
+  useConfirmDialogOpen,
+  useGameScroll,
+  useGameUrl,
+  useGetMemberShip,
+  useUser,
+} from 'utils'
 
 import { useAuth } from '../../components/Acnw/Auth/Auth0'
 import { Perms } from '../../components/Acnw/Auth/PermissionRules'
-import { useConfirmDialogOpenState } from '../../utils/useConfirmDialogOpenState'
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
@@ -116,8 +124,7 @@ export const GameSignupPage: React.FC = () => {
   const membership = useGetMemberShip(userId)
   const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
-  const setShowConfirmDialog = useConfirmDialogOpenState((state) => state.setState)
-  const showConfirmDialog = useConfirmDialogOpenState((state) => state.state).open
+  const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
 
   const [showFab, setShowFab] = useState(false)
   const { hasPermissions } = useAuth()
@@ -130,7 +137,7 @@ export const GameSignupPage: React.FC = () => {
   })
 
   const onCloseConfirm: MouseEventHandler = () => {
-    setShowConfirmDialog({ open: false })
+    setShowConfirmDialog(false)
   }
 
   const updateChoice = useCallback(
@@ -252,7 +259,7 @@ export const GameSignupPage: React.FC = () => {
         variant='contained'
         color='primary'
         size='large'
-        onClick={() => setShowConfirmDialog({ open: true })}
+        onClick={() => setShowConfirmDialog(true)}
         style={{ marginBottom: 20 }}
       >
         Confirm your Game Choices

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useGameUrl } from './useGameUrl'
-import { useUrlSourceState } from './useUrlSourceState'
+import { useUrlSource } from './useUrlSourceState'
 
 export const useGameScroll = () => {
   const [lastSlug, setLastSlug] = useState<string>('')
-  const setUrlSource = useUrlSourceState((state) => state.setUrlSource)
+  const [_, setUrlSource] = useUrlSource()
 
   return useCallback(
     (slug: string) => {

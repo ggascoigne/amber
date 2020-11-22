@@ -1,18 +1,17 @@
 import { Button } from '@material-ui/core'
+import { useGetGameChoicesQuery } from 'client'
 import { GraphQLError, Loader } from 'components/Acnw'
 import { GameMenu } from 'components/Acnw/GameList'
 import React from 'react'
-import { useGameUrl, useGetMemberShip, useUser } from 'utils'
+import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
-import { useGetGameChoicesQuery } from '../../client'
-import { useConfirmDialogOpenState } from '../../utils/useConfirmDialogOpenState'
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
 export const GameSignupMenu: React.FC = () => {
   const { year } = useGameUrl()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const setShowConfirmDialog = useConfirmDialogOpenState((state) => state.setState)
+  const [_, setShowConfirmDialog] = useConfirmDialogOpen()
 
   const { error, data } = useGetGameChoicesQuery({
     variables: { year, memberId: membership?.id ?? 0 },
@@ -50,7 +49,7 @@ export const GameSignupMenu: React.FC = () => {
         variant='contained'
         color='primary'
         size='large'
-        onClick={() => setShowConfirmDialog({ open: true })}
+        onClick={() => setShowConfirmDialog(true)}
         style={{ margin: '10px 10px 0 10px' }}
       >
         Confirm your Game Choices

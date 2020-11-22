@@ -3,7 +3,7 @@ import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembership
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { Column, Row, TableInstance, TableState } from 'react-table'
-import { configuration, notEmpty, useLocalStorage, useYearFilterState } from 'utils'
+import { configuration, notEmpty, useLocalStorage, useYearFilter } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { BlankNoCell, DateCell, YesBlankCell } from '../../components/Acnw/Table/CellFormatters'
@@ -139,7 +139,7 @@ const virtualColumns: Column<Membership>[] = [
 
 export const Memberships: React.FC = React.memo(() => {
   const profile = useProfile()
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const [_, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
 
   const [showEdit, setShowEdit] = useState(false)

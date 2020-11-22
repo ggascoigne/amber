@@ -1,12 +1,5 @@
-import create from 'zustand'
-import { combine } from 'zustand/middleware'
+import { atom, useAtom } from 'jotai'
 
-type ConfirmDialogOpenState = {
-  open: boolean
-}
+const confirmDialogOpenAtom = atom<boolean>(false)
 
-export const useConfirmDialogOpenState = create(
-  combine({ state: { open: false } as ConfirmDialogOpenState }, (set) => ({
-    setState: (state: ConfirmDialogOpenState) => set((inp) => ({ state })),
-  }))
-)
+export const useConfirmDialogOpen = () => useAtom(confirmDialogOpenAtom)

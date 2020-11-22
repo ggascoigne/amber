@@ -6,12 +6,12 @@ import { ApolloProvider } from '@apollo/client'
 import client from 'client/client'
 import { Auth0Provider, NotificationProvider } from 'components/Acnw'
 import { useAuth } from 'components/Acnw/Auth/Auth0'
+import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
-import reportWebVitals from './reportWebVitals'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
@@ -32,13 +32,15 @@ const ApolloWrapper: React.FC = ({ children }) => {
   return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
 }
 const RootComponent: React.FC = ({ children }) => (
-  <BrowserRouter>
-    <NotificationProvider>
-      <Auth0Provider>
-        <ApolloWrapper>{children}</ApolloWrapper>
-      </Auth0Provider>
-    </NotificationProvider>
-  </BrowserRouter>
+  <JotaiProvider>
+    <BrowserRouter>
+      <NotificationProvider>
+        <Auth0Provider>
+          <ApolloWrapper>{children}</ApolloWrapper>
+        </Auth0Provider>
+      </NotificationProvider>
+    </BrowserRouter>
+  </JotaiProvider>
 )
 
 const render = (Component: React.ComponentType) =>

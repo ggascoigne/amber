@@ -14,6 +14,10 @@ export type ExpandRecursively<T> = T extends Record<string, unknown>
     : never
   : T
 
+// Cool trick
+type _<T> = T
+type FlattenTypes<T> = _<{ [k in keyof T]: T[k] }>
+
 export type MaybeNodes<T> = Array<Maybe<T>> | undefined
 
 export type Nodes<T> = Array<Maybe<T>>
@@ -29,7 +33,7 @@ export type UnpackArray<T> = T extends (infer U)[] ? U : T
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 
 // typesafe filter to use in .filter(notEmpty) dropping nulls in a type safe manner
-export function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+export function notEmpty<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined
 }
 

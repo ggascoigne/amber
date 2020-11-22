@@ -24,7 +24,7 @@ import {
   useSendEmail,
   useSetting,
   useUser,
-  useYearFilterState,
+  useYearFilter,
 } from '../../utils'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
@@ -36,7 +36,7 @@ type Membership = MembershipFieldsFragment
 export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
 
 export const useUpdateGameAssignment = () => {
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const [notify] = useNotification()
   const [createGameAssignment] = useCreateGameAssignmentMutation()
   const [deleteGameAssignment] = useDeleteGameAssignmentMutation()
@@ -141,7 +141,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
   const sendAdminEmail = useSetting('send.admin.email')
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const setGameGmAssignments = useUpdateGameAssignment()
   const { data: membershipData } = useGetMembershipsByYearQuery({
     variables: {

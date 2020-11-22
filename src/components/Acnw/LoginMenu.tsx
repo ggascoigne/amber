@@ -12,7 +12,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useIsGm } from '../../utils'
 import { useAuth } from './Auth/Auth0'
-import { Auth0User, Perms, useAuthOverride, useToken } from './Auth/index'
+import { Auth0User, Perms, useRoleOverride, useToken } from './Auth/index'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
 
@@ -183,8 +183,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
   const [notify] = useNotification()
   const [profileOpen, setProfileOpen] = useState(false)
   const [authInitialized, setAuthInitialized] = useState(false)
-  const roleOverride = useAuthOverride((state) => state.roleOverride)
-  const setRoleOverride = useAuthOverride((state) => state.setRoleOverride)
+  const [roleOverride, setRoleOverride] = useRoleOverride()
   const profile = useProfile()
 
   useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])

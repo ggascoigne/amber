@@ -10,7 +10,7 @@ import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilterState } from 'utils'
+import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilter } from 'utils'
 
 import { GamesDialog } from '../Games/GamesDialog'
 
@@ -84,7 +84,7 @@ const initialState: Partial<TableState<Game>> = {
 }
 
 const MemberGmPage: React.FC = React.memo(() => {
-  const year = useYearFilterState((state) => state.year)
+  const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()

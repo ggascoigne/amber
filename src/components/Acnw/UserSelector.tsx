@@ -2,8 +2,9 @@ import { TextField, makeStyles, withStyles } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import classNames from 'classnames'
 import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
+import { useAtom } from 'jotai'
 import React, { useCallback, useEffect, useState } from 'react'
-import { ContentsOf, notEmpty, useUserFilterState, useYearFilterState } from 'utils'
+import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from 'utils'
 
 import { useNotification } from './Notifications'
 
@@ -73,15 +74,14 @@ interface UserSelectorProps {
 export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const classes = useStyles({})
   const [notify] = useNotification()
-  const userInfo = useUserFilterState((state) => state.userInfo)
-  const setUser = useUserFilterState((state) => state.setUser)
-  const year = useYearFilterState((state) => state.year)
+  const [userInfo, setUserInfo] = useUserFilter()
+  const [year] = useYearFilter()
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
 
   const { loading, error, data } = useGetAllUsersByQuery({
     variables: {
-      query: searchTerm,
+      query: searchTerm ?? '',
     },
     fetchPolicy: 'cache-and-network',
   })
@@ -94,15 +94,15 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   }, [data])
 
   const onInputChange = useCallback((ev) => {
-    setSearchTerm(ev.target.value)
+    setSearchTerm(ev.target.value ?? '')
   }, [])
 
   const onChange = useCallback(
     (_, value) => {
-      setUser(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
+      setUserInfo(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
       setSearchTerm(value ? value.Fullname : '')
     },
-    [setUser]
+    [setUserInfo]
   )
 
   const onBlur = useCallback(() => {
