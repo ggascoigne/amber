@@ -1,4 +1,8 @@
+const rulesDirPlugin = require('eslint-plugin-rulesdir')
+rulesDirPlugin.RULES_DIR = 'eslint-rules'
+
 module.exports = {
+  plugins: ['rulesdir'],
   // when changing this, remember that you can run `yarn eslint --print-config <filename>` to print
   // the existing used config for that path
   extends: [
@@ -26,6 +30,8 @@ module.exports = {
     'react/jsx-fragments': 'warn',
     'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // 'rulesdir/jsx-no-logical-expression': 'error',
+    'rulesdir/no-promise-all': 'error',
   },
   overrides: [
     {

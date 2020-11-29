@@ -58,7 +58,7 @@ export const Settings: React.FC = React.memo(() => {
         refetchQueries: ['getSettings'],
       })
     )
-    Promise.all(updater).then(() => {
+    Promise.allSettled(updater).then(() => {
       console.log('deleted')
       instance.toggleAllRowsSelected(false)
       setSelection([])

@@ -133,7 +133,7 @@ const MemberGmPage: React.FC = React.memo(() => {
         refetchQueries: ['getGamesByYear', 'getGamesByAuthor', 'getGamesByYearAndAuthor'],
       })
     )
-    Promise.all(updater).then(() => console.log('deleted'))
+    Promise.allSettled(updater).then(() => console.log('deleted'))
   }
 
   const onClick = (row: Row<Game>) => {

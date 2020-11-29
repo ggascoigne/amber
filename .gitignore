@@ -59,6 +59,7 @@ postgres-data
 .now
 build/
 *.dump
+.eslintcache
 
 # generated at build time
 src/version.ts

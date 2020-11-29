@@ -94,7 +94,7 @@ export const useUpdateGameAssignment = () => {
             })
           )
         })
-        await Promise.all(updaters)
+        await Promise.allSettled(updaters)
       }
 
       const updaters: Promise<any>[] = []
@@ -118,7 +118,7 @@ export const useUpdateGameAssignment = () => {
           })
         )
       })
-      await Promise.all(updaters)
+      await Promise.allSettled(updaters)
     },
     [createGameAssignment, deleteGameAssignment, gameAssignmentData, notify, year]
   )

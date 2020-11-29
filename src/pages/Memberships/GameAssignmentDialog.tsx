@@ -127,7 +127,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
         })
       )
     })
-    await Promise.all(updaters)
+    await Promise.allSettled(updaters)
     onClose()
   }
 

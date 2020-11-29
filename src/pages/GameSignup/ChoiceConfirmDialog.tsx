@@ -14,11 +14,9 @@ import Acnw, {
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
-import { onCloseHandler, pick, range, useSendEmail, useSetting } from 'utils'
+import { onCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
@@ -58,9 +56,6 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
   const [updateGameSubmission] = useUpdateGameSubmissionByNodeIdMutation()
   const [notify] = useNotification()
   const [sendEmail] = useSendEmail()
-  const sendAdminEmail = useSetting('send.admin.email')
-  const { hasPermissions } = useAuth()
-  const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
   const profile = useProfile()
 
   const sendGameChoiceConfirmation = ({
@@ -101,7 +96,6 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
       })
         .then(() => {
           notify({ text: 'Game Submission updated', variant: 'success' })
-          // sendGameChoiceConfirmation({ gameChoiceDetails, year, profile, message: values.message }) // todo remove
           onClose()
         })
         .catch((error) => {
@@ -118,7 +112,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
         },
         refetchQueries: ['getGameChoices'],
       })
-        .then((res) => {
+        .then(() => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })
           sendGameChoiceConfirmation({ gameChoiceDetails, year, profile, message: values.message })
           onClose()
@@ -186,7 +180,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         return acc
       }, [])
 
-    Promise.all(updaters).then(() => {
+    Promise.allSettled(updaters).then(() => {
       // console.log('all updaters complete')
     })
   }, [createOrEditGameChoice, filledOutChoices])

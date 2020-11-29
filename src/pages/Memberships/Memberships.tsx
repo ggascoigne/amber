@@ -204,7 +204,7 @@ export const Memberships: React.FC = React.memo(() => {
         refetchQueries: ['getMembershipsByYear', 'getMembershipByYearAndId'],
       })
     )
-    Promise.all(updater).then(() => {
+    Promise.allSettled(updater).then(() => {
       console.log('deleted')
       instance.toggleAllRowsSelected(false)
       setSelection([])

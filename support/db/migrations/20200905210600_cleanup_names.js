@@ -15,7 +15,7 @@ exports.up = async function (knex) {
                   where sub2.id = "user".id
               `)
 
-  await Promise.all(
+  await Promise.allSettled(
     toFix.map(async (u) => {
       if (u.full)
         await knex.raw(

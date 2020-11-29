@@ -8,6 +8,8 @@ import {
   useUpdateGameChoiceByNodeIdMutation,
 } from 'client'
 import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page } from 'components/Acnw'
+import { useAuth } from 'components/Acnw/Auth/Auth0'
+import { Perms } from 'components/Acnw/Auth/PermissionRules'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { Link, Redirect } from 'react-router-dom'
@@ -22,8 +24,6 @@ import {
   useUser,
 } from 'utils'
 
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
@@ -101,7 +101,7 @@ export const useEditGameChoice = () => {
         },
         refetchQueries: ['getGameChoices'],
       })
-        .then((res) => {
+        .then(() => {
           // console.log({ text: 'GameChoice created', variant: 'success' })
         })
         .catch((error) => {
@@ -193,7 +193,7 @@ export const GameSignupPage: React.FC = () => {
           return acc
         }, [])
 
-      Promise.all(updaters).then(() => {
+      Promise.allSettled(updaters).then(() => {
         // console.log('all updaters complete')
       })
     },

@@ -169,7 +169,7 @@ export const Games: React.FC = React.memo(() => {
       selected.forEach((game) => {
         queue.push(setGameGmAssignments(game.id, game.gmNames, membershipList))
       })
-      await Promise.all(queue)
+      await Promise.allSettled(queue)
       setFixBusy(false)
     },
     [membershipList, setGameGmAssignments]
@@ -214,7 +214,7 @@ export const Games: React.FC = React.memo(() => {
   const onDelete = (instance: TableInstance<Game>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
     const updater = toDelete.map((g) => deleteGame({ variables: { input: { id: g.id } } }))
-    Promise.all(updater).then(() => console.log('deleted'))
+    Promise.allSettled(updater).then(() => console.log('deleted'))
   }
 
   const onEdit = (instance: TableInstance<Game>) => () => {

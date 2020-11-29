@@ -58,7 +58,7 @@ export const Lookups: React.FC = React.memo(() => {
         return updaters
       })
       .flat()
-    Promise.all(updater).then(() => refreshLookups())
+    Promise.allSettled(updater).then(() => refreshLookups())
   }
 
   const onEdit = (instance: TableInstance<LookupAndValues>) => () => {

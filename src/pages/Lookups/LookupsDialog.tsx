@@ -202,7 +202,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
       return null
     })
 
-    Promise.all(updaters).then(() => {
+    Promise.allSettled(updaters).then(() => {
       actions.setSubmitting(false)
       onClose(null)
     })

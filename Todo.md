@@ -3,6 +3,7 @@
 * [ ] Add readme, contributing guide, etc.
 * [ ] add tests, either unit or Cypress
 * [ ] investigate https://www.w3.org/WAI/tutorials/tables/irregular/
+* [ ] investigate   https://github.com/JoviDeCroock/hoofd
   
 * [ ] Game book only shows in PST
 
@@ -34,7 +35,7 @@
 * [ ] Restyle the choice interface - it's functional and very heavily based on the v1 site, I'm sure that we could do better.
 * [ ] Look at displaying the game book stuff using react-window, try to avoid updated to off-screen pages.
 * [ ] should refactor the color definitions scattered through the code to be centralized, maybe in the theme?
-* [ ] Tye and provide a way to get the schedule or game names off the schedule page - either allow better selection of export or something.
+* [ ] Try to provide a way to get the schedule or game names off the schedule page - either allow better selection of export or something.
 
 the games table should:
 * [ ] allow for bulk edit perhaps?

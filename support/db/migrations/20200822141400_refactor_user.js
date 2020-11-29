@@ -1,5 +1,5 @@
 exports.up = async function (knex) {
-  return Promise.all([
+  return Promise.allSettled([
     knex.schema.table('user', (table) => {
       table.string('email', 64)
       table.string('full_name', 64).defaultTo(null)
