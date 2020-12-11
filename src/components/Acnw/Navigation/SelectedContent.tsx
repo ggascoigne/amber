@@ -1,7 +1,7 @@
 import { ErrorBoundary } from 'components/Acnw/ErrorBoundary'
 import { NotFound } from 'pages'
 import queryString from 'query-string'
-import React, { useMemo } from 'react'
+import React, { Suspense, useMemo } from 'react'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useIsMember, useSettings, useUser } from 'utils'
 import { useGetMemberShip } from 'utils/membership'
@@ -31,6 +31,7 @@ const ComponentConditionWrapper: React.FC<{ menuItem: RouteInfo }> = ({ menuItem
 }
 
 export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) => {
+  const loader = <Loader />
   const results = useMemo(
     () =>
       routes
@@ -61,11 +62,13 @@ export const SelectedContent: React.FC<{ routes: RootRoutes }> = ({ routes }) =>
 
   return (
     <ErrorBoundary>
-      <Switch>
-        {results}
-        <Route path='/gameBook' component={LegacyGameBookRedirect} />
-        <Route path='*' component={NotFound} />
-      </Switch>
+      <Suspense fallback={loader}>
+        <Switch>
+          {results}
+          <Route path='/gameBook' component={LegacyGameBookRedirect} />
+          <Route path='*' component={NotFound} />
+        </Switch>
+      </Suspense>
     </ErrorBoundary>
   )
 }

@@ -83,7 +83,7 @@ export const ICalDownloadButton: React.FC<{ url: string | null; filename: string
   )
 }
 
-export const SchedulePage: React.FC = () => {
+const SchedulePage: React.FC = () => {
   const forceLogin = useForceLogin()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
@@ -134,3 +134,5 @@ export const SchedulePage: React.FC = () => {
     </Page>
   )
 }
+
+export default SchedulePage

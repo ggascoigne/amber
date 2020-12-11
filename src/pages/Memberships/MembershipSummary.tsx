@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 })
 
-export const MembershipSummary: React.FC = () => {
+const MembershipSummary: React.FC = () => {
   const forceLogin = useForceLogin()
   const profile = useProfile()
   const { userId } = useUser()
@@ -119,3 +119,5 @@ export const MembershipSummary: React.FC = () => {
     </Page>
   )
 }
+
+export default MembershipSummary

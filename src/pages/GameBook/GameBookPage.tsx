@@ -27,7 +27,7 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
   )
 }
 
-export const GameBookPage: React.FC = () => {
+const GameBookPage: React.FC = () => {
   const years = range(configuration.year, 2012)
   return (
     <Page>
@@ -41,3 +41,5 @@ export const GameBookPage: React.FC = () => {
     </Page>
   )
 }
+
+export default GameBookPage

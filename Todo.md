@@ -3,8 +3,9 @@
 * [ ] Add readme, contributing guide, etc.
 * [ ] add tests, either unit or Cypress
 * [ ] investigate https://www.w3.org/WAI/tutorials/tables/irregular/
-* [ ] investigate   https://github.com/JoviDeCroock/hoofd
-  
+* [ ] investigate https://github.com/JoviDeCroock/hoofd
+* [ ] check out https://github.com/sindresorhus/type-fest
+
 * [ ] Game book only shows in PST
 
 * [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 

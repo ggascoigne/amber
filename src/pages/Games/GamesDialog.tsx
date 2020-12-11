@@ -130,7 +130,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     await createOrUpdateGame(values)
   }
 
-  const { loading, error, data } = useGetGamesByAuthorQuery({
+  const { error, data } = useGetGamesByAuthorQuery({
     variables: {
       id: userId!,
     },

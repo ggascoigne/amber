@@ -60,7 +60,7 @@ const columns: Column<Game>[] = [
   },
 ]
 
-export const GmPage = () => {
+const GmPage = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   if (membership === undefined) {
@@ -209,3 +209,5 @@ const MemberGmPage: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default GmPage

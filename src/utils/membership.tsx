@@ -1,12 +1,10 @@
+import { useAuth } from 'components/Acnw/Auth/Auth0'
 import React from 'react'
 
 import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
-import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { notEmpty } from './ts-utils'
 import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
-
-const nullOp = (): null => null
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()

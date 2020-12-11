@@ -1,7 +1,7 @@
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-export const AboutAmber = () => (
+const AboutAmber = () => (
   <Page>
     <h1>What is Amber Roleplaying?</h1>
 
@@ -169,3 +169,5 @@ export const AboutAmber = () => (
     </dl>
   </Page>
 )
+
+export default AboutAmber

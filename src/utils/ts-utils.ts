@@ -16,7 +16,7 @@ export type ExpandRecursively<T> = T extends Record<string, unknown>
 
 // Cool trick
 type _<T> = T
-type FlattenTypes<T> = _<{ [k in keyof T]: T[k] }>
+export type FlattenTypes<T> = _<{ [k in keyof T]: T[k] }>
 
 export type MaybeNodes<T> = Array<Maybe<T>> | undefined
 

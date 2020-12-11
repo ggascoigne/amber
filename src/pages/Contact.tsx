@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const Contact = () => {
+const Contact = () => {
   const classes = useStyles()
   return (
     <Page>
@@ -85,3 +85,5 @@ export const Contact = () => {
     </Page>
   )
 }
+
+export default Contact

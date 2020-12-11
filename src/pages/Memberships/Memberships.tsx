@@ -137,7 +137,7 @@ const virtualColumns: Column<Membership>[] = [
   },
 ]
 
-export const Memberships: React.FC = React.memo(() => {
+const Memberships: React.FC = React.memo(() => {
   const profile = useProfile()
   const [year] = useYearFilter()
   const [_, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
@@ -247,3 +247,5 @@ export const Memberships: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default Memberships

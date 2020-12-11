@@ -85,6 +85,7 @@ export const useEditGameChoice = () => {
         refetchQueries: refetch ? ['getGameChoices'] : undefined,
         optimisticResponse: {
           ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+          // @ts-ignore
           __typename: 'GameChoice',
         },
       }).catch((error) => {
@@ -117,7 +118,7 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
-export const GameSignupPage: React.FC = () => {
+const GameSignupPage: React.FC = () => {
   const { slot, year } = useGameUrl()
   const setNewUrl = useGameScroll()
   const { userId } = useUser()
@@ -293,3 +294,5 @@ export const GameSignupPage: React.FC = () => {
     </Page>
   )
 }
+
+export default GameSignupPage

@@ -5,7 +5,7 @@ import { dangerColor } from '../assets/jss/material-kit-react'
 import Acnw from '../components/Acnw'
 import { SlotFormat, configuration, getSlotDescription, range } from '../utils'
 
-export const AboutAmberconNw = () => (
+const AboutAmberconNw = () => (
   <Page>
     <h1>
       About <span style={{ color: dangerColor }}>virtual</span> AmberCon NW
@@ -90,3 +90,5 @@ export const AboutAmberconNw = () => (
     </p>
   </Page>
 )
+
+export default AboutAmberconNw

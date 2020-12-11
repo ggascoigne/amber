@@ -7,7 +7,7 @@ import { useGameUrl, useGetMemberShip, useUser } from 'utils'
 import { Field, MultiLine } from '../../components/Acnw/CardUtils'
 import { ChoiceSummary } from './SlotDetails'
 
-export const GameChoiceSummary: React.FC = () => {
+const GameChoiceSummary: React.FC = () => {
   const { year } = useGameUrl()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
@@ -58,3 +58,5 @@ export const GameChoiceSummary: React.FC = () => {
     </Page>
   )
 }
+
+export default GameChoiceSummary

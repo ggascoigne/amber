@@ -136,14 +136,14 @@ const useStyles = makeStyles(() =>
     },
   })
 )
-export const Games: React.FC = React.memo(() => {
+const Games: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const [deleteGame] = useDeleteGameMutation()
   const [fixBusy, setFixBusy] = useState(false)
   const classes = useStyles()
-  const { loading, error, data, refetch } = useGetGamesByYearQuery({
+  const { error, data, refetch } = useGetGamesByYearQuery({
     variables: {
       year,
     },
@@ -246,3 +246,5 @@ export const Games: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default Games

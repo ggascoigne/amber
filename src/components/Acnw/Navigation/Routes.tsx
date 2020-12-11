@@ -1,32 +1,8 @@
-import {
-  AboutAmber,
-  AboutAmberconNw,
-  AntiHarassmentPolicy,
-  Contact,
-  Credits,
-  Faq,
-  GameBookGamesPage,
-  GameBookPage,
-  GameChoiceSummary,
-  GameSignupPage,
-  Games,
-  GmPage,
-  GraphiQLPage,
-  Lookups,
-  MembershipSummary,
-  Memberships,
-  Reports,
-  SchedulePage,
-  Settings,
-  Users,
-  VirtualDetails,
-  Welcome,
-  WelcomeVirtual,
-} from 'pages'
-import type React from 'react'
+import { Welcome, WelcomeVirtual } from 'pages'
+import React from 'react'
 import { configuration } from 'utils'
 
-import { Perms } from '../Auth/PermissionRules'
+import { Perms } from '../Auth'
 
 type UserCondition = {
   userId: number | null | undefined
@@ -64,21 +40,21 @@ export const rootRoutes: RootRoutes = [
     label: 'AmberCon NW',
     subText: 'What you get and what it costs',
     exact: false,
-    component: AboutAmberconNw,
+    component: React.lazy(() => import('pages/AboutAmberconNw')),
   },
   {
     path: '/about-amber',
     label: 'Amber',
     subText: 'Just what is this "Amber" thing?',
     exact: false,
-    component: AboutAmber,
+    component: React.lazy(() => import('pages/AboutAmber')),
   },
   {
     path: '/about-edgefield',
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
-    component: AboutAmberconNw,
+    component: React.lazy(() => import('pages/AboutAmberconNw')), // placeholder
     condition: !configuration.virtual,
   },
   {
@@ -86,7 +62,7 @@ export const rootRoutes: RootRoutes = [
     label: 'The Virtual Convention',
     subText: 'Accessing the virtual convention',
     exact: false,
-    component: VirtualDetails,
+    component: React.lazy(() => import('pages/VirtualDetails')),
     condition: configuration.virtual,
     userCondition: ({ getSetting }) => getSetting('display.virtual.details'),
     alwaysAddRoute: true,
@@ -96,14 +72,14 @@ export const rootRoutes: RootRoutes = [
     label: 'Membership',
     subText: 'Your membership details',
     exact: true,
-    component: MembershipSummary,
+    component: React.lazy(() => import('pages/Memberships/MembershipSummary')),
   },
   {
     path: '/gm',
     label: 'Become a GM',
     subText: `Manage your games`,
     exact: true,
-    component: GmPage,
+    component: React.lazy(() => import('pages/GmPage/GmPage')),
   },
   {
     path: '/game-book',
@@ -117,7 +93,7 @@ export const rootRoutes: RootRoutes = [
     path: '/game-book/:year/:slot?',
     link: '/game-book',
     exact: false,
-    component: GameBookGamesPage,
+    component: React.lazy(() => import('pages/GameBook/GameBookGamesPage')),
   },
   {
     path: '/game-signup',
@@ -131,7 +107,7 @@ export const rootRoutes: RootRoutes = [
     path: '/game-signup/:year/:slot?',
     link: '/game-signup',
     exact: false,
-    component: GameSignupPage,
+    component: React.lazy(() => import('pages/GameSignup/GameSignupPage')),
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
   },
   {
@@ -143,7 +119,7 @@ export const rootRoutes: RootRoutes = [
   {
     path: '/game-choices/:year',
     exact: true,
-    component: GameChoiceSummary,
+    component: React.lazy(() => import('pages/GameSignup/GameChoiceSummary')),
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
   },
   {
@@ -151,7 +127,7 @@ export const rootRoutes: RootRoutes = [
     label: 'Schedule',
     subText: 'Your Schedule',
     exact: true,
-    component: SchedulePage,
+    component: React.lazy(() => import('pages/Schedule/SchedulePage')),
     userCondition: ({ getSetting }) => getSetting('display.schedule'),
     alwaysAddRoute: true,
   },
@@ -160,48 +136,48 @@ export const rootRoutes: RootRoutes = [
     label: 'Past Conventions',
     subText: 'See game books from earlier cons',
     exact: true,
-    component: GameBookPage,
+    component: React.lazy(() => import('pages/GameBook/GameBookPage')),
   },
   {
     path: '/lookup-admin',
     label: 'Lookups',
     exact: true,
-    component: Lookups,
+    component: React.lazy(() => import('pages/Lookups/Lookups')),
     permission: Perms.IsAdmin,
   },
   {
     path: '/settings-admin',
     label: 'Settings',
     exact: true,
-    component: Settings,
+    component: React.lazy(() => import('pages/Settings/Settings')),
     permission: Perms.IsAdmin,
   },
   {
     path: '/user-admin',
     label: 'Users',
     exact: true,
-    component: Users,
+    component: React.lazy(() => import('pages/Users/Users')),
     permission: Perms.IsAdmin,
   },
   {
     path: '/game-admin',
     label: 'Games',
     exact: true,
-    component: Games,
+    component: React.lazy(() => import('pages/Games/Games')),
     permission: Perms.FullGameBook,
   },
   {
     path: '/member-admin',
     label: 'Members',
     exact: true,
-    component: Memberships,
+    component: React.lazy(() => import('pages/Memberships/Memberships')),
     permission: Perms.IsAdmin,
   },
   {
     path: '/report-admin',
     label: 'Reports',
     exact: true,
-    component: Reports,
+    component: React.lazy(() => import('pages/Reports')),
     permission: Perms.Reports,
   },
   {
@@ -209,32 +185,32 @@ export const rootRoutes: RootRoutes = [
     label: 'GraphiQL',
     subText: 'Dynamically query the ACNW database',
     exact: false,
-    component: GraphiQLPage,
+    component: React.lazy(() => import('components/Acnw/GraphiQL/GraphiQL')),
     permission: Perms.GraphiqlLoad,
   },
   {
     path: '/antiHarassmentPolicy',
     label: 'Anti-Harassment Policy',
     exact: false,
-    component: AntiHarassmentPolicy,
+    component: React.lazy(() => import('pages/AntiHarassmentPolicy')),
   },
   {
     path: '/faq',
     label: 'Frequently Asked Questions',
     subText: 'Hopefully with some answers',
     exact: false,
-    component: Faq,
+    component: React.lazy(() => import('pages/Faq')),
   },
   {
     path: '/contact',
     label: 'Contact',
     exact: false,
-    component: Contact,
+    component: React.lazy(() => import('pages/Contact')),
   },
   {
     path: '/credits',
     label: 'Credits',
     exact: false,
-    component: Credits,
+    component: React.lazy(() => import('pages/Credits')),
   },
 ]

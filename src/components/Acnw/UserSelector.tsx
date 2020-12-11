@@ -2,7 +2,6 @@ import { TextField, makeStyles, withStyles } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import classNames from 'classnames'
 import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
-import { useAtom } from 'jotai'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from 'utils'
 

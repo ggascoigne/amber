@@ -19,7 +19,7 @@ const columns: Column<LookupAndValues>[] = [
   },
 ]
 
-export const Lookups: React.FC = React.memo(() => {
+const Lookups: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<LookupAndValues[]>([])
   const [deleteLookup] = useDeleteLookupMutation()
@@ -87,3 +87,5 @@ export const Lookups: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default Lookups

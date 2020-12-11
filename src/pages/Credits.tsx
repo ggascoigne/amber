@@ -1,7 +1,7 @@
 import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
-export const Credits = () => (
+const Credits = () => (
   <Page>
     <h1>Credits</h1>
     <p>
@@ -117,3 +117,5 @@ export const Credits = () => (
     </ul>
   </Page>
 )
+
+export default Credits

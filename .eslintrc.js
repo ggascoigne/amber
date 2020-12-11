@@ -57,16 +57,15 @@ module.exports = {
         'jsx-a11y/img-redundant-alt': 'off',
         // changed to match the default tsconfig
         '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-unused-vars': ['off'],
-        // currently this throws far too many false positives - re-enable this once it's working again
-        //   'warn',
-        //   {
-        //     args: 'none',
-        //     ignoreRestSiblings: true,
-        //     // above this line if the default config for this rule, below are my adds
-        //     varsIgnorePattern: '_',
-        //   },
-        // ],
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          {
+            args: 'none',
+            ignoreRestSiblings: true,
+            // above this line if the default config for this rule, below are my adds
+            varsIgnorePattern: '_',
+          },
+        ],
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',

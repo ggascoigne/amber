@@ -6,7 +6,7 @@ import { useAuth } from '../components/Acnw/Auth/Auth0'
 import { useGetSettingValue, useSettings } from '../utils'
 import { useForceLogin } from '../utils/useForceLogin'
 
-export const VirtualDetails = () => {
+const VirtualDetails = () => {
   const forceLogin = useForceLogin()
   const { isAuthenticated, isInitializing } = useAuth()
 
@@ -64,3 +64,5 @@ export const VirtualDetails = () => {
     </Page>
   )
 }
+
+export default VirtualDetails

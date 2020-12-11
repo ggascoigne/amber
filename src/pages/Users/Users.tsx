@@ -16,7 +16,7 @@ const columns: Column<ProfileType>[] = [
   { accessor: 'phoneNumber' },
 ]
 
-export const Users: React.FC = React.memo(() => {
+const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<ProfileType[]>([])
 
@@ -63,3 +63,5 @@ export const Users: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default Users

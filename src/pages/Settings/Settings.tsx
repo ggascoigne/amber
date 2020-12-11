@@ -23,7 +23,7 @@ const columns: Column<Setting>[] = [
   },
 ]
 
-export const Settings: React.FC = React.memo(() => {
+const Settings: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])
 
@@ -92,3 +92,5 @@ export const Settings: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+export default Settings

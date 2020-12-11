@@ -1,7 +1,7 @@
 import Acnw, { Page } from 'components/Acnw'
 import React from 'react'
 
-export const Faq = () => (
+const Faq = () => (
   <Page>
     <h1>Frequently Asked Questions</h1>
     <h3 id='login'>Login</h3>
@@ -57,3 +57,5 @@ export const Faq = () => (
     </p>
   </Page>
 )
+
+export default Faq

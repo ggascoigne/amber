@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const AntiHarassmentPolicy = () => {
+const AntiHarassmentPolicy = () => {
   const classes = useStyles()
 
   return (
@@ -276,3 +276,5 @@ export const AntiHarassmentPolicy = () => {
     </Page>
   )
 }
+
+export default AntiHarassmentPolicy

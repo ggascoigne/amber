@@ -7,7 +7,7 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
-export const GameBookGamesPage: React.FC = () => {
+const GameBookGamesPage: React.FC = () => {
   const setNewUrl = useGameScroll()
 
   return (
@@ -23,3 +23,5 @@ export const GameBookGamesPage: React.FC = () => {
     </Page>
   )
 }
+
+export default GameBookGamesPage

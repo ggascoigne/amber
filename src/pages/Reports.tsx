@@ -4,7 +4,7 @@ import React from 'react'
 
 import { AuthenticatedDownloadButton } from '../components/Acnw/AuthenticatedDownloadButton'
 
-export const Reports = () => (
+const Reports = () => (
   <Page>
     <List>
       <ListItem>
@@ -20,3 +20,5 @@ export const Reports = () => (
     </List>
   </Page>
 )
+
+export default Reports

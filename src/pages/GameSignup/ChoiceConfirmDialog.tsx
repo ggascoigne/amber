@@ -4,7 +4,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from 'client'
 import Acnw, {
   DialogTitle,
-  GraphQLError,
   GridContainer,
   GridItem,
   ProfileType,
@@ -23,7 +22,7 @@ import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
 type FormValues = {
   year: number
-  memberId?: number
+  memberId: number
   message: string
   nodeId?: string
   id?: number
