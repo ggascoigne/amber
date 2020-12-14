@@ -1,5 +1,5 @@
 ///<reference types="webpack-env" />
-import 'assets/scss/material-kit-react.scss?v=1.8.0'
+import 'assets/css/material-kit-react.css'
 import 'react-app-polyfill/ie11'
 
 import { ApolloProvider } from '@apollo/client'
