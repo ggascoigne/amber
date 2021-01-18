@@ -111,7 +111,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
       ? await updateLookup({
           variables: {
             input: {
-              nodeId: values.nodeId!,
+              nodeId: values.nodeId,
               patch: {
                 realm: values.realm,
               },
@@ -135,7 +135,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     const isCreateLookup = (value: typeof res.data): value is CreateLookupMutation =>
       value!.hasOwnProperty('createLookup')
 
-    if (!res || !res.data) {
+    if (!res.data) {
       return
     }
     if (isCreateLookup(res.data) && !res.data.createLookup) {
@@ -146,8 +146,8 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     }
 
     const lookupId = isCreateLookup(res.data)
-      ? res?.data?.createLookup?.lookup?.id
-      : res?.data?.updateLookupByNodeId?.lookup?.id
+      ? res.data.createLookup?.lookup?.id
+      : res.data.updateLookupByNodeId?.lookup?.id
 
     const updaters = values.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
       if (lv) {
@@ -190,12 +190,12 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     }, [])
 
     const currentLookupValueIds = values.lookupValues.nodes.reduce((acc: number[], lv) => {
-      lv && lv.id && acc.push(lv.id)
+      lv?.id && acc.push(lv.id)
       return acc
     }, [])
 
     initialValues.lookupValues.nodes.map((ilv) => {
-      if (ilv && ilv.id) {
+      if (ilv?.id) {
         currentLookupValueIds.includes(ilv.id) ||
           updaters.push(deleteLookupValue({ variables: { input: { id: ilv.id } } }))
       }

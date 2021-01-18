@@ -44,7 +44,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   const [deleteGameAssignment] = useDeleteGameAssignmentMutation()
   const [notify] = useNotification()
 
-  const memberId = membership?.id ?? 0
+  const memberId = membership.id ?? 0
 
   const { error: sError, data: sData } = useGetScheduleQuery({
     variables: { memberId },
@@ -82,7 +82,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   })
 
   const fillAssignments = (assignments?: GameAssignmentEditNode[]) =>
-    range(8, 1).map((slot) => assignments?.find((a) => a?.game?.slotId === slot) ?? empty(slot))
+    range(8, 1).map((slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot))
 
   const gamesAndAssignments = fillAssignments(getGameAssignments(sData, memberId)).map((ga) =>
     pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId')

@@ -1,6 +1,5 @@
 #!/usr/bin/env ts-node-script
 
-/// <reference types="../types/common-tags" />
 import { spawn, spawnSync } from 'child_process'
 import fs from 'fs'
 
@@ -58,7 +57,7 @@ async function pipeLiveToLocalMysql(mysqlDbconfig: DbConfig, verbose: boolean) {
       process.env.LEGACY_LIVE_MYSQL_DATABASE!,
     ])
       .on('error', reject)
-      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve(code) : reject(code)))
 
     const { database, host, port, user, password } = mysqlDbconfig
     const importing = spawn(
@@ -67,7 +66,7 @@ async function pipeLiveToLocalMysql(mysqlDbconfig: DbConfig, verbose: boolean) {
       { env: { MYSQL_PWD: password } }
     )
       .on('error', reject)
-      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve(code) : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 
@@ -89,7 +88,7 @@ async function pipeTmpToLive(tmpDbConfig: DbConfig, dbconfig: DbConfig, verbose:
     psqlArgs.push('-v', 'ON_ERROR_STOP=1')
     const importing = spawn('/usr/local/bin/psql', psqlArgs)
       .on('error', reject)
-      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (!code ? resolve(code) : reject(code)))
 
     exporting.stdout.pipe(importing.stdin)
 

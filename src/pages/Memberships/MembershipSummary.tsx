@@ -48,7 +48,7 @@ const MembershipSummary: React.FC = () => {
   if (loading || !data) {
     return <Loader />
   }
-  const membership = data!.memberships?.nodes?.[0]
+  const membership = data.memberships?.nodes[0]
   if (!membership) {
     return (
       <Page>
@@ -66,7 +66,7 @@ const MembershipSummary: React.FC = () => {
   return (
     <Page>
       {showEdit && (
-        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership!} profile={profile!} />
+        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership} profile={profile!} />
       )}
 
       <h1>Your Membership for {configuration.year}</h1>

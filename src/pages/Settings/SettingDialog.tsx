@@ -34,7 +34,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
       await updateSetting({
         variables: {
           input: {
-            nodeId: values.nodeId!,
+            nodeId: values.nodeId,
             patch: {
               ...pick(values, 'id', 'code', 'type', 'value'),
             },

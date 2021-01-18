@@ -18,7 +18,7 @@ export default withApiHandler([
     pgSettings: (req) => {
       const { user } = req as any
       const settings: Record<string, any> = {}
-      if (user && user[audience]) {
+      if (user?.[audience]) {
         const admin = isAdmin(user)
         const userId = getUserId(user)
         // string values because pgSettings only groks strings

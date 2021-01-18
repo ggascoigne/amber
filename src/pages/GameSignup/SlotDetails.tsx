@@ -70,7 +70,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
   const classes = useStyles()
 
   const { data } = useGetGamesBySlotForSignupQuery({ variables: { year, slotId }, fetchPolicy: 'cache-and-network' })
-  const slotInfo = gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
+  const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
 
   const games = data?.games?.edges
 
@@ -85,11 +85,11 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
       const lines = slotInfo
         ?.sort(rankSort)
         ?.map((info) => {
-          const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
+          const g = games.find(({ node: game }) => game?.id === info?.gameId)?.node
           if (!g || !info) return null
           const gms = getGms(g)
           const rank = rankString(info.rank)!
-          const description = `${g?.name} ${info.returningPlayer ? ' (returning player)' : ''}${gms && ` - ${gms}`}`
+          const description = `${g.name} ${info.returningPlayer ? ' (returning player)' : ''}${gms && ` - ${gms}`}`
           return {
             rank,
             description,
@@ -119,12 +119,12 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
 
         const gms = getGms(g)
         return (
-          <div className={classes.line} key={info?.gameId}>
+          <div className={classes.line} key={info.gameId}>
             <div className={classes.rank}>
               <Rank rankStyle={RankStyle.superscript} rank={info.rank} />
             </div>
             <div className={classes.name}>
-              {g?.name}
+              {g.name}
               {info.returningPlayer ? ' (returning player)' : ''}
               {gms && ` - ${gms}`}
             </div>

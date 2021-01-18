@@ -29,7 +29,7 @@ export const GameListFull: React.FC<GameListFullProps> = ({
 }) => {
   const [_, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
-  const firstGameId = games?.[0]?.node?.id
+  const firstGameId = games[0]?.node?.id
   const slot = slotInput || 0
   const firstSlug = `${year}/${slot}/${firstGameId}`
 

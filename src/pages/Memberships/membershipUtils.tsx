@@ -21,13 +21,13 @@ export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '_
 export const fromSlotsAttending = (membershipValues: MembershipType) => {
   const slotsAttendingData = Array(7).fill(false)
   // @ts-ignore
-  membershipValues?.slotsAttending?.split(',').forEach((i) => (slotsAttendingData[i - 1] = true))
+  membershipValues.slotsAttending?.split(',').forEach((i) => (slotsAttendingData[i - 1] = true))
   return slotsAttendingData
 }
 
 export const toSlotsAttending = (membershipValues: MembershipType) =>
   // convert an array of booleans to a comma separate list of slot numbers
-  membershipValues?.slotsAttendingData
+  membershipValues.slotsAttendingData
     ?.map((v, i) => (v ? i + 1 : 0))
     .filter((v) => !!v)
     .join(',') ?? ''
@@ -82,7 +82,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
     membershipValues: MembershipType,
     update = false
   ) => {
-    const slotDescriptions = membershipValues?.slotsAttending
+    const slotDescriptions = membershipValues.slotsAttending
       ?.split(',')
       .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i), local: true }))
 
@@ -90,8 +90,8 @@ export const useEditMembership = (onClose: onCloseHandler) => {
       type: 'membershipConfirmation',
       body: JSON.stringify({
         year: configuration.year,
-        name: profile?.fullName,
-        email: profile?.email,
+        name: profile.fullName,
+        email: profile.email,
         update,
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
@@ -105,7 +105,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
       await updateMembership({
         variables: {
           input: {
-            nodeId: membershipValues.nodeId!,
+            nodeId: membershipValues.nodeId,
             patch: {
               ...fromMembershipValues(membershipValues),
             },
@@ -136,7 +136,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
         refetchQueries: ['getMembershipsByYear', 'getMembershipByYearAndId'],
       })
         .then((res) => {
-          const membershipId = res?.data?.createMembership?.membership?.id
+          const membershipId = res.data?.createMembership?.membership?.id
           notify({ text: 'Membership created', variant: 'success' })
           sendMembershipConfirmation(membershipId!, profile, membershipValues)
           onClose()
@@ -149,7 +149,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
 }
 
 export const getDefaultMembership = (userId: number): MembershipType => ({
-  userId: userId!,
+  userId,
   arrivalDate: configuration.conventionStartDate.toISO(),
   attendance: 'Thurs-Sun',
   attending: true,

@@ -4,7 +4,7 @@ const pattern = /(?<base>\/.*?)\/(?<year>\d+)(?:\/(?<slot>\d+))?/
 
 export const useGameUrl = () => {
   const location = useLocation()
-  const match = location?.pathname?.match(pattern)
+  const match = pattern.exec(location.pathname)
   // note that we can't just use useParams since we're not the routed-to component
   const base = match?.groups?.base
   const yearStr = match?.groups?.year

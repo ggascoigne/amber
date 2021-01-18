@@ -80,15 +80,15 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
 
   const { loading, error, data } = useGetAllUsersByQuery({
     variables: {
-      query: searchTerm ?? '',
+      query: searchTerm,
     },
     fetchPolicy: 'cache-and-network',
   })
 
   useEffect(() => {
     if (data) {
-      const users = data?.users?.nodes ?? []
-      setDropdownOptions(users?.filter(notEmpty))
+      const users = data.users?.nodes ?? []
+      setDropdownOptions(users.filter(notEmpty))
     }
   }, [data])
 
@@ -105,10 +105,10 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   )
 
   const onBlur = useCallback(() => {
-    if (userInfo?.userId === 0) {
+    if (userInfo.userId === 0) {
       setSearchTerm('')
     }
-  }, [userInfo?.userId])
+  }, [userInfo.userId])
 
   if (error) {
     notify({
@@ -121,7 +121,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
     return null
   }
 
-  const selectedUser = dropdownOptions?.find((u) => u.id === userInfo.userId) ?? null
+  const selectedUser = dropdownOptions.find((u) => u.id === userInfo.userId) ?? null
 
   return (
     <Autocomplete<UserType>
@@ -142,7 +142,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
         <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} />
       )}
       renderOption={(params: UserType) => {
-        const isMember = !!params?.memberships?.nodes?.find((m) => m?.year === year)
+        const isMember = !!params.memberships.nodes.find((m) => m?.year === year)
         return (
           <div className={classes.holder}>
             <span className={classNames(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>

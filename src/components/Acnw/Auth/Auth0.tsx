@@ -94,10 +94,7 @@ const auth0ClientConfig: Auth0ClientOptions = {
 
 const onAuthRedirectCallback = (history: History<any>, redirectResult?: RedirectLoginResult) => {
   // Clears auth0 query string parameters from url
-  const targetUrl =
-    redirectResult && redirectResult.appState && redirectResult.appState.targetUrl
-      ? redirectResult.appState.targetUrl
-      : window.location.pathname
+  const targetUrl = redirectResult?.appState?.targetUrl ? redirectResult.appState.targetUrl : window.location.pathname
 
   window.history.replaceState({}, document.title, targetUrl)
   history.replace(targetUrl)
@@ -117,7 +114,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const getEnrichedUser = async (client: Auth0Client) => {
     const userProfile = await client.getUser()
     const token = await client.getTokenSilently()
-    const decodedToken: AccessToken | undefined = token && (JwtDecode(token) as AccessToken)
+    const decodedToken: AccessToken | undefined = token && JwtDecode(token)
     return decodedToken ? { ...userProfile, ...decodedToken[AUTH_CONFIG.audience] } : userProfile
   }
 

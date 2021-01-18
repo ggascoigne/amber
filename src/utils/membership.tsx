@@ -22,7 +22,7 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
     return undefined // allows us to tell if the load is still ongoing and avoid redirects
   }
 
-  const membership = data.memberships?.nodes?.[0]
+  const membership = data.memberships?.nodes[0]
   return membership?.year === year ? membership : null
 }
 
@@ -70,7 +70,7 @@ export const useIsGm = () => {
   return (
     gameAssignmentData.gameAssignments?.nodes
       .filter(notEmpty)
-      .filter((ga) => ga!.memberId === membership.id)
-      .filter((ga) => ga!.gm !== 0).length !== 0
+      .filter((ga) => ga.memberId === membership.id)
+      .filter((ga) => ga.gm !== 0).length !== 0
   )
 }

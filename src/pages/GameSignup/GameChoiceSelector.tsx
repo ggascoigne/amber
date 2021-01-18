@@ -242,13 +242,13 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   gmSlots,
 }) => {
   const classes = useStyles()
-  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === game.id && c?.slotId === slot)?.[0]
+  const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length ?? false
+  const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length
 
   useEffect(() => {
     setRank(thisOne?.rank ?? null)
@@ -256,30 +256,28 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
 
   const handlePriority = (event: React.MouseEvent<HTMLElement>, newRank: number | null) => {
     setRank(newRank)
-    updateChoice &&
-      updateChoice({
-        gameChoices,
-        gameId: game.id,
-        rank: newRank,
-        oldRank: rank,
-        returningPlayer: returning,
-        slotId: slot,
-        year,
-      })
+    updateChoice?.({
+      gameChoices,
+      gameId: game.id,
+      rank: newRank,
+      oldRank: rank,
+      returningPlayer: returning,
+      slotId: slot,
+      year,
+    })
   }
 
   const handleReturning = () => {
     setReturning(!returning)
-    updateChoice &&
-      updateChoice({
-        gameChoices,
-        gameId: game.id,
-        rank,
-        oldRank: rank,
-        returningPlayer: !returning,
-        slotId: slot,
-        year,
-      })
+    updateChoice?.({
+      gameChoices,
+      gameId: game.id,
+      rank,
+      oldRank: rank,
+      returningPlayer: !returning,
+      slotId: slot,
+      year,
+    })
   }
 
   const isNoOrAnyGame = isNoGame(game.id) || isAnyGame(game.id)
@@ -355,7 +353,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
 
 export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, slot, game, gameChoices }) => {
   const classes = useStyles()
-  const thisOne = gameChoices?.filter((c) => c?.year === year && c?.gameId === game.id && c?.slotId === slot)?.[0]
+  const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
 
   return (
@@ -401,13 +399,13 @@ export const isSlotComplete = (choices?: MaybeGameChoice[]) => {
 
 export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) =>
   range(7).reduce(
-    (acc, slot) => acc && isSlotComplete(gameChoices?.filter((c) => c?.year === year && c?.slotId === slot + 1)),
+    (acc, slot) => acc && isSlotComplete(gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)),
     true
   )
 
 export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
   const classes = useStyles()
-  const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c?.slotId === slot + 1)
+  const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)
   const isComplete = isSlotComplete(thisSlotChoices)
   return isComplete ? <CheckIcon className={classes.check} /> : null
 }

@@ -37,7 +37,7 @@ const Settings: React.FC = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-  const { settings } = data!
+  const { settings } = data
 
   const list: Setting[] = settings!.nodes.filter(notEmpty)
 

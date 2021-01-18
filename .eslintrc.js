@@ -12,7 +12,7 @@ module.exports = {
     // now disable all of the rules that are in conflict with prettier
     'prettier/@typescript-eslint',
     // note that we don't add the prettier rules, they add noise to the IDE
-    // and the code is all being formatted on commit anyway.
+    // and the code is all being formatted on commit anyway.,
   ],
   rules: {
     'arrow-body-style': 'warn',
@@ -30,15 +30,22 @@ module.exports = {
     'react/jsx-fragments': 'warn',
     'react/jsx-key': ['warn', { checkFragmentShorthand: true }],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    // 'rulesdir/jsx-no-logical-expression': 'error',
     'rulesdir/no-promise-all': 'error',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        args: 'none',
+        ignoreRestSiblings: true,
+        // above this line if the default config for this rule, below are my adds
+        varsIgnorePattern: '^_|knex',
+      },
+    ],
   },
   overrides: [
     {
       files: '*.{js,jsx}',
       rules: {
-        // this should just be fixed
-        '@typescript-eslint/no-unused-vars': 'off',
         // opinion: this is reasonable to disable
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/no-var-requires': 'off',
@@ -57,15 +64,6 @@ module.exports = {
         'jsx-a11y/img-redundant-alt': 'off',
         // changed to match the default tsconfig
         '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-unused-vars': [
-          'warn',
-          {
-            args: 'none',
-            ignoreRestSiblings: true,
-            // above this line if the default config for this rule, below are my adds
-            varsIgnorePattern: '_',
-          },
-        ],
         '@typescript-eslint/explicit-member-accessibility': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
@@ -86,6 +84,11 @@ module.exports = {
             ignoreMixedLogicalExpressions: true,
           },
         ],
+        '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
+        '@typescript-eslint/no-unnecessary-condition': 'warn',
+        '@typescript-eslint/prefer-optional-chain': 'warn',
+        '@typescript-eslint/no-use-before-define': 'warn',
+        '@typescript-eslint/prefer-regexp-exec': 'warn',
       },
     },
     {
@@ -96,9 +99,16 @@ module.exports = {
       },
     },
     {
+      files: 'scripts/*.{js,ts}',
+      rules: {
+        'no-console': 'off',
+      },
+    },
+    {
       files: 'support/**/*.js',
       rules: {
         '@typescript-eslint/no-empty-function': 'off',
+        'func-names': 'off',
       },
     },
   ],

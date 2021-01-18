@@ -78,7 +78,7 @@ export const useEditGameChoice = () => {
       return updateGameChoice({
         variables: {
           input: {
-            nodeId: values.nodeId!,
+            nodeId: values.nodeId,
             patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           },
         },
@@ -155,7 +155,7 @@ const GameSignupPage: React.FC = () => {
       }
 
       const thisSlotChoices: choiceType[] = orderChoices(
-        gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
+        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
@@ -219,12 +219,12 @@ const GameSignupPage: React.FC = () => {
     return <Loader />
   }
 
-  if (gameChoices !== null && gameChoices !== undefined && gameChoices.length === 0 && !created) {
+  if (gameChoices !== undefined && gameChoices.length === 0 && !created) {
     setCreated(true)
     createGameChoices(membership.id, year).then()
   }
 
-  if (gameChoices !== null && gameChoices !== undefined && gameChoices.length === 0) {
+  if (gameChoices !== undefined && gameChoices.length === 0) {
     return <Loader />
   }
 
@@ -235,7 +235,7 @@ const GameSignupPage: React.FC = () => {
   //   ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
   // console.table(g)
 
-  const gmSlots = gameChoices?.filter((c) => c?.rank === 0 && c?.gameId).filter(notEmpty)
+  const gmSlots = gameChoices?.filter((c) => c?.rank === 0 && c.gameId).filter(notEmpty)
   const selectorParams = {
     gameChoices,
     updateChoice,

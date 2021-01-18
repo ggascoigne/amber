@@ -116,7 +116,7 @@ const MemberGmPage: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const { games } = data!
+  const { games } = data
 
   const list: Game[] = games!.nodes.filter(notEmpty)
 
@@ -193,7 +193,7 @@ const MemberGmPage: React.FC = React.memo(() => {
         Add a Game
       </Button>
 
-      {list?.length ? (
+      {list.length ? (
         <Table<Game>
           name='gm_games'
           initialState={initialState}

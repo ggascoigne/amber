@@ -26,5 +26,5 @@ export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code })
   if (loading) {
     return <Loader />
   }
-  return <>{data && data?.lookups?.edges[0]?.node?.lookupValues?.nodes[0]?.value}</>
+  return <>{data?.lookups?.edges[0]?.node?.lookupValues.nodes[0]?.value}</>
 }

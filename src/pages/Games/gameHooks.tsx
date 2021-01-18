@@ -51,13 +51,13 @@ export const useUpdateGameAssignment = () => {
     if (!gmNames) return []
     return membershipList
       .map((m) => {
-        const fullName = m?.user?.fullName
-        const firstAndLast = `${m?.user?.firstName} ${m?.user?.lastName}`
-        const pat = `${m?.user?.firstName?.slice(0, 3)}\\w+\\s+${m?.user?.lastName}`
+        const fullName = m.user?.fullName
+        const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
+        const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`)
         return (
-          (fullName && gmNames?.includes(fullName) ? fullName : undefined) ??
-          (firstAndLast && gmNames?.includes(firstAndLast) ? fullName : undefined) ??
-          (gmNames.match(new RegExp(pat)) ? fullName : undefined)
+          (fullName && gmNames.includes(fullName) ? fullName : undefined) ??
+          (firstAndLast && gmNames.includes(firstAndLast) ? fullName : undefined) ??
+          (pat.exec(gmNames) ? fullName : undefined)
         )
       })
       .filter(notEmpty)
@@ -76,7 +76,7 @@ export const useUpdateGameAssignment = () => {
         const oldAssignments = gameAssignmentData.gameAssignments?.nodes
           .filter(notEmpty)
           .filter((ga) => ga.gameId === gameId)
-          .filter((ga) => ga!.gm !== 0) as GameAssignment[]
+          .filter((ga) => ga.gm !== 0) as GameAssignment[]
 
         const oldIds = oldAssignments.map((o) => o.memberId).sort((a, b) => a - b)
         const newIds = gmMemberships.map((m) => m.id).sort((a, b) => a - b)
@@ -150,7 +150,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
     fetchPolicy: 'cache-and-network',
   })
 
-  const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [
+  const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
     membershipData?.memberships?.nodes,
   ])
 
@@ -161,8 +161,8 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
           type: 'gameConfirmation',
           body: JSON.stringify({
             year,
-            name: profile?.fullName,
-            email: profile?.email,
+            name: profile.fullName,
+            email: profile.email,
             url: `${window.location.origin}/gm`,
             game: values,
             update,
@@ -202,7 +202,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
         await updateGame({
           variables: {
             input: {
-              nodeId: values.nodeId!,
+              nodeId: values.nodeId,
               patch: {
                 ...fields,
               },
@@ -236,7 +236,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
           refetchQueries: gameQueries,
         })
           .then(async (res) => {
-            const gameId = res?.data?.createGame?.game?.id
+            const gameId = res.data?.createGame?.game?.id
             gameId && (await setGameGmAssignments(gameId, values.gmNames, membershipList))
             notify({ text: 'Game created', variant: 'success' })
             sendGameConfirmation(profile!, values)

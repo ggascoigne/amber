@@ -41,19 +41,19 @@ const memberColumns: Column<Membership>[] = [
   },
   {
     id: 'userId',
-    accessor: (r: Membership) => r?.user?.id,
+    accessor: (r: Membership) => r.user?.id,
     Header: 'User ID',
     width: 60,
   },
   {
     id: 'firstName',
-    accessor: (r: Membership) => r?.user?.firstName,
+    accessor: (r: Membership) => r.user?.firstName,
     width: 70,
     disableGlobalFilter: false,
   },
   {
     id: 'lastName',
-    accessor: (r: Membership) => r?.user?.lastName,
+    accessor: (r: Membership) => r.user?.lastName,
     width: 100,
     disableGlobalFilter: false,
   },
@@ -167,8 +167,7 @@ const Memberships: React.FC = React.memo(() => {
         label: 'Edit Game Assignments',
         onClick: onUpdateGameAssignments,
         icon: <AssignmentIndIcon />,
-        enabled: ({ state }: TableInstance<Membership>) =>
-          state.selectedRowIds && Object.keys(state.selectedRowIds).length === 1,
+        enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length === 1,
         type: 'button' as const,
       },
     ],
@@ -182,7 +181,7 @@ const Memberships: React.FC = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-  const { memberships } = data!
+  const { memberships } = data
 
   const list: Membership[] = memberships!.nodes.filter(notEmpty)
 

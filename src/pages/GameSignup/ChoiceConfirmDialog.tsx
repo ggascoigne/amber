@@ -85,7 +85,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
       await updateGameSubmission({
         variables: {
           input: {
-            nodeId: values.nodeId!,
+            nodeId: values.nodeId,
             patch: {
               ...pick(values, 'id', 'year', 'memberId', 'message'),
             },
@@ -139,6 +139,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
 
   const storeTextResults = (details: SlotSummary): void => {
     setTextResults((old) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (old[details.slotId]) {
         return old
       } else {
@@ -151,7 +152,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
     () =>
       range(8, 1).flatMap((slotId) => {
         const thisSlotChoices: choiceType[] = orderChoices(
-          gameChoices?.filter((c) => c?.year === year && c?.slotId === slotId)
+          gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
         ) as choiceType[]
 
         if (!isSlotComplete(thisSlotChoices)) {

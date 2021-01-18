@@ -55,26 +55,25 @@ export function FilterChipBar<T extends Record<string, unknown>>({ instance }: F
   return Object.keys(filters).length > 0 ? (
     <div className={classes.chipZone}>
       <span className={classes.filtersActiveLabel}>Active filters:</span>
-      {filters &&
-        allColumns.map((column) => {
-          const value = filters.find((f) => f.id === column.id)?.value
-          return (
-            value && (
-              <Chip
-                className={classes.filterChip}
-                key={column.id}
-                label={
-                  <>
-                    <span className={classes.chipLabel}>{column.render('Header')}: </span>
-                    {getFilterValue(column, value)}
-                  </>
-                }
-                onDelete={() => handleDelete(column.id)}
-                variant='outlined'
-              />
-            )
+      {allColumns.map((column) => {
+        const value = filters.find((f) => f.id === column.id)?.value
+        return (
+          value && (
+            <Chip
+              className={classes.filterChip}
+              key={column.id}
+              label={
+                <>
+                  <span className={classes.chipLabel}>{column.render('Header')}: </span>
+                  {getFilterValue(column, value)}
+                </>
+              }
+              onDelete={() => handleDelete(column.id)}
+              variant='outlined'
+            />
           )
-        })}
+        )
+      })}
     </div>
   ) : null
 }

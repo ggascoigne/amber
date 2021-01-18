@@ -80,11 +80,11 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
       <CardBody className={classes.cardBody}>
         <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
-            {gms?.length
+            {gms.length
               ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
               : gameAssignments.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
           </Field>
-          {players?.length ? (
+          {players.length ? (
             <Field label='Players' tiny={tiny}>
               {players.map((a) => (
                 <PlayerDetails key={a.fullName} player={a} />
@@ -137,10 +137,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
           </>
         ) : (
           <Accordion defaultExpanded>
-            <AccordionSummary
-              expandIcon={tiny ? undefined : <ExpandMoreIcon />}
-              id={`accordion-game/${year}/${slot}/${id}`}
-            >
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
               {header}
             </AccordionSummary>
             <AccordionDetails>{content}</AccordionDetails>
@@ -209,7 +206,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
         as='div'
         className={classes.header}
         rootMargin='-100px 0px -80% 0px'
-        onChange={(inView) => inView && onEnter!(`${year}/${slot}/${game.id}`)}
+        onChange={(inView) => inView && onEnter(`${year}/${slot}/${game.id}`)}
       >
         {headerContent}
       </InView>
@@ -238,10 +235,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
         </Card>
       ) : (
         <Accordion defaultExpanded={!schedule} style={{ marginTop: 30 }}>
-          <AccordionSummary
-            expandIcon={tiny ? undefined : <ExpandMoreIcon />}
-            id={`accordion-game/${year}/${slot}/${id}`}
-          >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
             {header}
           </AccordionSummary>
           <AccordionDetails>{content}</AccordionDetails>

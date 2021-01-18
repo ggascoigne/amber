@@ -29,7 +29,7 @@ const Users: React.FC = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-  const { users } = data!
+  const { users } = data
 
   const list: ProfileType[] = users!.nodes.filter(notEmpty)
 

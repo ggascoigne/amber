@@ -49,7 +49,7 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     if (e.type === 'touchstart') {
       const te = e as TouchEvent
       // lets not respond to multiple touches (e.g. 2 or 3 fingers)
-      if (te.touches && te.touches.length > 1) {
+      if (te.touches.length > 1) {
         return
       }
       isTouchEvent = true
@@ -237,7 +237,7 @@ function useInstance<D extends Record<string, unknown>>({ plugins }: TableInstan
 function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D>) {
   const leafHeaders: ColumnInstance<D>[] = []
   const recurseHeader = (header: ColumnInstance<D>) => {
-    if (header.columns && header.columns.length) {
+    if (header.columns.length) {
       header.columns.map(recurseHeader)
     }
     leafHeaders.push(header)

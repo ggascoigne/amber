@@ -49,7 +49,7 @@ const GameChoiceSummary: React.FC = () => {
       <br />
       {gameSubmission?.[0]?.message && (
         <Field label='Message'>
-          <MultiLine text={gameSubmission?.[0]?.message} />
+          <MultiLine text={gameSubmission[0].message} />
         </Field>
       )}
       <p>

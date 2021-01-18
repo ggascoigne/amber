@@ -198,7 +198,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
 
   const menuItems = useMemo(() => {
     const menu = [MENU_ITEM_EDIT_PROFILE]
-    if (user?.sub?.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
+    if (user?.sub.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
     if (hasPermissions(Perms.IsAdmin, { ignoreOverride: true })) {
       if (!roleOverride) {
         menu.push(MENU_ITEM_VIEW_AS_USER)
@@ -287,7 +287,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
                     break
                   case MENU_ITEM_SIGN_OUT:
                     client.resetStore()
-                    logout && logout()
+                    logout?.()
                     break
                 }
               }}

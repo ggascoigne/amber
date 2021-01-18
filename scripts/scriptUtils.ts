@@ -1,14 +1,12 @@
-import { SpawnSyncReturns } from 'child_process'
+import { SpawnSyncReturns, spawn, spawnSync } from 'child_process'
+import fs from 'fs'
 
+import chalk from 'chalk'
 import cli from 'cli-ux'
+import { stripIndent } from 'common-tags'
+import tempy from 'tempy'
 
 import { DbConfig } from '../shared/config'
-
-const { spawn, spawnSync } = require('child_process')
-const { stripIndent } = require('common-tags')
-const chalk = require('chalk')
-const fs = require('fs')
-const tempy = require('tempy')
 
 export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
 
@@ -120,7 +118,7 @@ export async function mysqlExecScript(dbconfig: DbConfig, script: string, verbos
     const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
       .on('error', reject)
       .on('close', resolve)
-      .on('exit', (code: number) => (!code ? resolve() : reject(code)))
+      .on('exit', (code: number) => (code ? reject(code) : resolve(code)))
 
     if (verbose) {
       child.stdout.pipe(process.stdout)

@@ -18,7 +18,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
 
   // work around an issue where the select component used by the underlying material-ui
   // library barfs if you have an undefined value here instead of an empty array
-  if (rest?.SelectProps?.multiple && field.value === undefined) {
+  if (rest.SelectProps?.multiple && field.value === undefined) {
     field.value = []
   }
   // I really don't want to do this by accident so the default always forces the formik overrides

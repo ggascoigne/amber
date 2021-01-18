@@ -84,21 +84,13 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const handleInspectOperation = useCallback(
     (cm: any, mousePos: { line: number; ch: number }) => {
       const parsedQuery = parse(query || '')
-
-      if (!parsedQuery) {
-        console.error("Couldn't parse query document")
-        return null
-      }
-
       const token = cm.getTokenAt(mousePos)
       const start = { line: mousePos.line, ch: token.start }
       const end = { line: mousePos.line, ch: token.end }
-      const relevantMousePos = {
+      const position = {
         start: cm.indexFromPos(start),
         end: cm.indexFromPos(end),
       }
-
-      const position = relevantMousePos
 
       const def = parsedQuery.definitions.find((definition) => {
         if (!definition.loc) {
@@ -121,14 +113,13 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
       const operationName =
         def.kind === 'OperationDefinition' && !!def.name
           ? def.name.value
-          : def.kind === 'FragmentDefinition' && !!def.name
+          : def.kind === 'FragmentDefinition'
           ? def.name.value
           : 'unknown'
 
       const selector = `.graphiql-explorer-root #${operationKind}-${operationName}`
 
-      const el = document.querySelector(selector)
-      el && el.scrollIntoView()
+      document.querySelector(selector)?.scrollIntoView()
     },
     [query]
   )
@@ -137,12 +128,11 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
     graphQLFetcher(jwtToken)({
       query: getIntrospectionQuery(),
     }).then((result) => {
-      const editor = _graphiql.current !== null && _graphiql.current.getQueryEditor()
-      editor &&
-        editor.setOption('extraKeys', {
-          ...(editor.options.extraKeys || {}),
-          'Shift-Alt-LeftClick': handleInspectOperation,
-        })
+      const editor = _graphiql.current?.getQueryEditor()
+      editor?.setOption('extraKeys', {
+        ...(editor.options.extraKeys || {}),
+        'Shift-Alt-LeftClick': handleInspectOperation,
+      })
       setSchema(buildClientSchema(result.data))
     })
   }, [handleInspectOperation, jwtToken])

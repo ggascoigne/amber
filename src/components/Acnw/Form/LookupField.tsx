@@ -19,11 +19,11 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   if (loading) {
     return <Loader />
   }
-  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues?.nodes.map((v) => ({
+  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({
     value: v!.code,
     text: v!.value,
   }))
-  return <SelectField {...rest} selectValues={selectValues!} />
+  return <SelectField {...rest} selectValues={selectValues} />
 }
 
 LookupField.displayName = 'LookupField'

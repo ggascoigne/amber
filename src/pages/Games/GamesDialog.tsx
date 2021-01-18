@@ -116,7 +116,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
     [{ value: 0, text: "Any Slot -- Doesn't Matter" }]
   )
 
-  return <SelectField {...rest} selectValues={selectValues!} />
+  return <SelectField {...rest} selectValues={selectValues} />
 }
 
 export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
@@ -148,7 +148,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     )
   }
 
-  const unsorted: Game[] = (data!.user?.authoredGames?.nodes?.filter(notEmpty) as Game[]) || []
+  const unsorted: Game[] = data.user?.authoredGames.nodes.filter(notEmpty) as Game[]
   const priorGamesList = unsorted.sort(
     (a, b) => b.year - a.year || (a.slotId ?? 0) - (b.slotId ?? 0) || -b.name.localeCompare(a.name)
   )
@@ -161,7 +161,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     setValues({
       ...values,
       ...pick(
-        value!,
+        value,
         'name',
         'gmNames',
         'description',
@@ -197,7 +197,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 <DialogContentText style={{ color: dangerColor }}>Admin Mode</DialogContentText>
               </HasPermission>
               <GridContainer spacing={2}>
-                {!!priorGamesList?.length && (
+                {!!priorGamesList.length && (
                   <GridItem xs={12} md={12}>
                     <Autocomplete
                       id='prior-games'

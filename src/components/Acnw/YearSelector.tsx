@@ -55,12 +55,11 @@ export const YearSelector = () => {
   return (
     <FormControl className={classes.formControl}>
       <TextField select id='year-selector-label' value={year} onChange={handleChange} classes={{ root: classes.root }}>
-        {possibleYears &&
-          possibleYears.map((s) => (
-            <MenuItem key={getSelectValue(s)} value={getSelectValue(s)}>
-              {getSelectLabel(s)}
-            </MenuItem>
-          ))}
+        {possibleYears.map((s) => (
+          <MenuItem key={getSelectValue(s)} value={getSelectValue(s)}>
+            {getSelectLabel(s)}
+          </MenuItem>
+        ))}
       </TextField>
     </FormControl>
   )

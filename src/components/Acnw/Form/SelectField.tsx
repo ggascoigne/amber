@@ -35,7 +35,7 @@ export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
   // @ts-ignore
   const [field] = useField(props)
   const { select, selectValues, children, ...rest } = props
-  const multiSelect = !!props?.SelectProps?.multiple
+  const multiSelect = !!props.SelectProps?.multiple
   return (
     <TextField select {...rest}>
       {selectValues &&

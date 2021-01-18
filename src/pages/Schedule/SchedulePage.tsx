@@ -18,7 +18,7 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   const game = gas.game
   if (!game) return null
 
-  const details = game.gameAssignments?.nodes.map((g) => ({
+  const details = game.gameAssignments.nodes.map((g) => ({
     gm: g?.gm ?? 0,
     fullName: g?.member?.user?.fullName ?? '',
     email: g?.member?.user?.email ?? '',
@@ -40,9 +40,8 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   )
 }
 
-const getIcalUrl = (schedule: GameAssignmentNode[]) => {
-  if (!schedule) return null
-  return buildUrl(
+const getIcalUrl = (schedule: GameAssignmentNode[]) =>
+  buildUrl(
     schedule
       .map((gas) => {
         const game = gas.game
@@ -62,7 +61,6 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) => {
       })
       .filter(notEmpty)
   )
-}
 
 export const ICalDownloadButton: React.FC<{ url: string | null; filename: string }> = ({ url, filename, children }) => {
   const link = createRef<any>()
@@ -129,7 +127,7 @@ const SchedulePage: React.FC = () => {
       </ICalDownloadButton>
       {gmOnly ? <h3>GM Preview</h3> : null}
       {gamesAndAssignments.map((g) => (
-        <GameSummary key={g?.gameId} gas={g} />
+        <GameSummary key={g.gameId} gas={g} />
       ))}
     </Page>
   )

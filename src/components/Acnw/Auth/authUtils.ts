@@ -18,16 +18,12 @@ const check = (rules: Rules, role: string | null, action: Perms, roleOverride: s
     return false
   }
 
-  const staticPermissions = permissions.static
-
-  if (staticPermissions && staticPermissions.includes(action)) {
+  if (permissions.static?.includes(action)) {
     return true
   }
 
-  const dynamicPermissions = permissions.dynamic
-
-  if (dynamicPermissions) {
-    const permissionCondition = dynamicPermissions[action] || dynamicPermissions['*']
+  if (permissions.dynamic) {
+    const permissionCondition = permissions.dynamic[action] || permissions.dynamic['*']
     if (!permissionCondition) {
       // dynamic rule not provided for action
       return false

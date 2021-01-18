@@ -19,13 +19,13 @@ const VirtualDetails = () => {
     f().then()
   }, [forceLogin])
 
-  const isVisible = getSettingTruth && getSettingTruth('display.virtual.details')
+  const isVisible = getSettingTruth?.('display.virtual.details')
 
   if (isInitializing || !isAuthenticated) {
     return <Loader />
   }
 
-  if (!isInitializing && !isAuthenticated && !isVisible) {
+  if (!isVisible) {
     return <Redirect to='/' />
   }
 

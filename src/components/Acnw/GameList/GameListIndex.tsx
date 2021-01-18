@@ -57,7 +57,7 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
               {game.name}
             </Typography>
             <div style={{ flex: 1 }} />
-            {decorator && decorator({ year, slot, game, ...decoratorParams })}
+            {decorator?.({ year, slot, game, ...decoratorParams })}
           </ListItemLink>
         )
       })}

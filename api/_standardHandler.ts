@@ -31,7 +31,7 @@ export function withApiHandler(handlers: Handler[]): Handler {
 
     // Note that this is a very specific hack to allow for using the graphql operation name
     // as an api differentiator in the browser network tab
-    if (req?.url?.startsWith('/api/graphql')) req.url = '/api/graphql'
+    if (req.url?.startsWith('/api/graphql')) req.url = '/api/graphql'
 
     const handler = combineHandlers(handlers)
     try {

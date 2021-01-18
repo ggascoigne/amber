@@ -83,7 +83,7 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
     setValue(filterValue || '')
   }, [filterValue])
 
-  const firstIndex = !(parent && parent.index)
+  const firstIndex = !parent.index
   return (
     <TextField
       name={id}
@@ -142,10 +142,10 @@ const useSelectionUi = (hooks: Hooks<any>) => {
 }
 
 const headerProps = <T extends Record<string, unknown>>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
-  getStyles(props, column?.disableResizing, column?.align)
+  getStyles(props, column.disableResizing, column.align)
 
 const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
-  getStyles(props, cell.column?.disableResizing, cell.column?.align)
+  getStyles(props, cell.column.disableResizing, cell.column.align)
 
 const DEFAULT_PAGE_SIZE = 25
 

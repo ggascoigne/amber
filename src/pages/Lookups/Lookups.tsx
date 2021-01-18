@@ -34,7 +34,7 @@ const Lookups: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const list: LookupAndValues[] = data!.lookups!.edges.map((v) => v.node).filter(notEmpty)
+  const list: LookupAndValues[] = data.lookups!.edges.map((v) => v.node).filter(notEmpty)
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
@@ -51,7 +51,7 @@ const Lookups: React.FC = React.memo(() => {
       .map((r) => r.original)
       .map((l) => {
         const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
-          lv && lv.id && acc.push(deleteLookupValue({ variables: { input: { id: lv.id } } }))
+          lv?.id && acc.push(deleteLookupValue({ variables: { input: { id: lv.id } } }))
           return acc
         }, [])
         updaters.push(deleteLookup({ variables: { input: { id: l.id } } }))

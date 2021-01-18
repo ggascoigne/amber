@@ -22,7 +22,7 @@ type Game = GameFieldsFragment & GameGmsFragment
 
 export const getGms = (row: Game) => {
   const playersOrEmpty = row.gameAssignments.nodes
-  if (playersOrEmpty && playersOrEmpty.length) {
+  if (playersOrEmpty.length) {
     return playersOrEmpty
       .filter((val) => val)
       .filter((val) => val!.gm !== 0)
@@ -157,7 +157,7 @@ const Games: React.FC = React.memo(() => {
     fetchPolicy: 'cache-and-network',
   })
 
-  const membershipList = useMemo(() => membershipData?.memberships?.nodes?.filter(notEmpty) ?? [], [
+  const membershipList = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
     membershipData?.memberships?.nodes,
   ])
 
@@ -181,8 +181,7 @@ const Games: React.FC = React.memo(() => {
         label: 'Fix GM Names',
         onClick: onUpdateGmNames,
         icon: <CachedIcon className={classnames({ [classes.fixBusy]: fixBusy })} />,
-        enabled: ({ state }: TableInstance<Game>) =>
-          state.selectedRowIds && Object.keys(state.selectedRowIds).length > 0,
+        enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
       },
     ],
     [classes.fixBusy, fixBusy, onUpdateGmNames]
@@ -195,7 +194,7 @@ const Games: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const { games } = data!
+  const { games } = data
 
   const list: Game[] = games!.edges
     .map((v) => v.node)

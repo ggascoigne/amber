@@ -27,5 +27,5 @@ export const useProfile = (): ProfileType | null => {
     return null
   }
 
-  return data!.userByEmail! as UserInput & Partial<Node>
+  return data.userByEmail! as UserInput & Partial<Node>
 }

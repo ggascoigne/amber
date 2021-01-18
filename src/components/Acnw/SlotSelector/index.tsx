@@ -86,13 +86,13 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
     }
     const containerStyles = getComputedStyle(container.children[0])
     const containerWidth =
-      container.clientWidth - (parseInt(containerStyles.paddingLeft!) + parseInt(containerStyles.paddingRight!))
+      container.clientWidth - (parseInt(containerStyles.paddingLeft) + parseInt(containerStyles.paddingRight))
     const tabs = Array.from(container.getElementsByTagName('button'))
     const items = container.querySelector('#slotLabel')
     if (items) {
       tabs.push(items as HTMLButtonElement)
     }
-    const tabWidth = tabs.reduce((a, b) => a + b.clientWidth + parseInt(getComputedStyle(b).marginLeft!), 0)
+    const tabWidth = tabs.reduce((a, b) => a + b.clientWidth + parseInt(getComputedStyle(b).marginLeft), 0)
     const newScrollButtons = tabWidth > containerWidth ? 'on' : 'off'
     if (scrollButtons !== newScrollButtons) {
       setScrollButtons(newScrollButtons)
@@ -149,7 +149,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
                   label={
                     <div className={classes.labelWrapper}>
                       {slot + 1}
-                      {decorator && decorator({ year, slot, ...decoratorParams })}
+                      {decorator?.({ year, slot, ...decoratorParams })}
                     </div>
                   }
                 />
@@ -159,7 +159,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
         </div>
       </Card>
       <h4 className={classes.slot}>{getSlotDescription({ slot, year, altFormat: SlotFormat.SHORT })}</h4>
-      {children && children({ slot, year })}
+      {children({ slot, year })}
     </div>
   )
 }

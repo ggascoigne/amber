@@ -14,7 +14,7 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
     return <Loader />
   }
 
-  const game = data?.games?.edges[0].node
+  const game = data.games?.edges[0].node
   return (
     <Link
       to={{
