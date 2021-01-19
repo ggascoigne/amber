@@ -7,9 +7,7 @@ import React, { Suspense } from 'react'
 import { gitHash } from 'version'
 
 import { useGetConfig } from '../../utils/getConfig'
-import { useAuth } from './Auth/Auth0'
-import { HasPermission } from './Auth/HasPermission'
-import { Perms } from './Auth/PermissionRules'
+import { HasPermission, Perms, useAuth } from './Auth'
 import { Loader } from './Loader'
 
 const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
@@ -50,8 +48,9 @@ export const Footer: React.FC = (props) => {
     setAnchorEl(null)
   }
 
-  const hash = gitHash.length > 0 ? gitHash.substring(0, 8) : 'dev'
+  const hash = gitHash.hash.length > 0 ? gitHash.hash.substring(0, 8) : 'dev'
   const open = Boolean(anchorEl)
+  const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
   return (
     <footer className={classes.footer}>
@@ -77,6 +76,7 @@ export const Footer: React.FC = (props) => {
                 <Suspense fallback={<Loader />}>
                   <ReactJson
                     src={{
+                      commitDate: commitDate.toLocaleString(DateTime.DATETIME_FULL),
                       authDomain: process.env.REACT_APP_AUTH0_DOMAIN,
                       config,
                     }}
