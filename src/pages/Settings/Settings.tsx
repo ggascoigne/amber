@@ -76,7 +76,7 @@ const Settings: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='Settings'>
       {showEdit && <SettingDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<Setting>
         name='settings'

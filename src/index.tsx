@@ -9,6 +9,7 @@ import { useAuth } from 'components/Acnw/Auth/Auth0'
 import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
@@ -32,15 +33,22 @@ const ApolloWrapper: React.FC = ({ children }) => {
   return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
 }
 const RootComponent: React.FC = ({ children }) => (
-  <JotaiProvider>
-    <BrowserRouter>
-      <NotificationProvider>
-        <Auth0Provider>
-          <ApolloWrapper>{children}</ApolloWrapper>
-        </Auth0Provider>
-      </NotificationProvider>
-    </BrowserRouter>
-  </JotaiProvider>
+  <HelmetProvider>
+    <JotaiProvider>
+      <BrowserRouter>
+        <NotificationProvider>
+          <Auth0Provider>
+            <ApolloWrapper>
+              <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
+                <html lang='en' />
+              </Helmet>
+              {children}
+            </ApolloWrapper>
+          </Auth0Provider>
+        </NotificationProvider>
+      </BrowserRouter>
+    </JotaiProvider>
+  </HelmetProvider>
 )
 
 const render = (Component: React.ComponentType) =>

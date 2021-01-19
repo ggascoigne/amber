@@ -2,7 +2,7 @@ import Acnw, { Page } from 'components/Acnw'
 import React from 'react'
 
 const Faq = () => (
-  <Page>
+  <Page title='Faq'>
     <h1>Frequently Asked Questions</h1>
     <h3 id='login'>Login</h3>
     <p>All of the login issues we've seen so far seem to fall into one of two categories.</p>

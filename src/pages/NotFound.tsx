@@ -4,7 +4,7 @@ import SnackbarContent from 'components/MaterialKitReact/Snackbar/SnackbarConten
 import React from 'react'
 
 export const NotFound = () => (
-  <Page>
+  <Page title='Not Found'>
     <SnackbarContent
       message={
         <span>

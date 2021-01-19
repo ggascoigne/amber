@@ -1,7 +1,7 @@
 import NavigationIcon from '@material-ui/icons/Navigation'
 import { ExpandingFab, GameListFull, GameListNavigator, Page } from 'components/Acnw'
 import React from 'react'
-import { useGameScroll } from 'utils'
+import { useGameScroll, useGameUrl } from 'utils'
 
 const gotoTop = () => {
   window.scrollTo(0, 0)
@@ -9,9 +9,10 @@ const gotoTop = () => {
 
 const GameBookGamesPage: React.FC = () => {
   const setNewUrl = useGameScroll()
+  const { year } = useGameUrl()
 
   return (
-    <Page>
+    <Page title={`Game Book ${year}`}>
       <ExpandingFab label='Goto Top' show onClick={gotoTop}>
         <NavigationIcon />
       </ExpandingFab>

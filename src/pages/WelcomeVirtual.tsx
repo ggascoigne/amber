@@ -51,7 +51,7 @@ export const WelcomeVirtual: React.FC = () => {
   const isBeta = useSetting('display.test.warning')
   const classes = useStyles()
   return (
-    <Page>
+    <Page title='Welcome'>
       <div className={classes.banner}>
         <Banner />
       </div>

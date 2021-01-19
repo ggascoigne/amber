@@ -247,7 +247,7 @@ const GameSignupPage: React.FC = () => {
   }
 
   return (
-    <Page>
+    <Page title='Game Signup'>
       {showFab && (
         <ExpandingFab label='Goto Top' show={showFab} onClick={gotoTop}>
           <NavigationIcon />

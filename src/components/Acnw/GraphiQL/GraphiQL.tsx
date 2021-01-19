@@ -144,7 +144,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   }, [])
 
   return (
-    <Page className={classNames(classes.graphiQlWrapper)}>
+    <Page title='GraphiQL' className={classNames(classes.graphiQlWrapper)}>
       <div className={classNames(classes.box, 'graphiql-container')}>
         <GraphiQLExplorer
           schema={schema}

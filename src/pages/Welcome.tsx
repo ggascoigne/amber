@@ -28,7 +28,7 @@ export const Welcome: React.FC = () => {
   const classes = useStyles()
 
   return (
-    <Page>
+    <Page title='Welcome'>
       <div className={classes.banner}>
         <Banner />
       </div>

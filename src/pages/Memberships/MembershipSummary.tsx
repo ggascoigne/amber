@@ -51,7 +51,7 @@ const MembershipSummary: React.FC = () => {
   const membership = data.memberships?.nodes[0]
   if (!membership) {
     return (
-      <Page>
+      <Page title='Become a Member'>
         <BecomeAMember />
       </Page>
     )
@@ -64,7 +64,7 @@ const MembershipSummary: React.FC = () => {
   const slotsAttendingData = fromSlotsAttending(membership)
 
   return (
-    <Page>
+    <Page title='Membership Summary'>
       {showEdit && (
         <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership} profile={profile!} />
       )}

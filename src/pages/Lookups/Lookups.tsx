@@ -72,7 +72,7 @@ const Lookups: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='Lookup'>
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<LookupAndValues>
         name='lookups'

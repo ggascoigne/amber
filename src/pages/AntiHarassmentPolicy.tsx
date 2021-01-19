@@ -18,7 +18,7 @@ const AntiHarassmentPolicy = () => {
   const classes = useStyles()
 
   return (
-    <Page>
+    <Page title='Anti-harassment'>
       <h1>AmberCon NW's Anti-harassment policy</h1>
 
       <p>

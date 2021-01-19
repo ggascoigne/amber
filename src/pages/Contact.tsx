@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Contact = () => {
   const classes = useStyles()
   return (
-    <Page>
+    <Page title='Contact'>
       <h1>Contact</h1>
       <Card className={classes.card} elevation={3}>
         <CardBody className={classes.cardBody}>

@@ -30,7 +30,7 @@ const VirtualDetails = () => {
   }
 
   return (
-    <Page>
+    <Page title='Amber Virtual'>
       <h1>Accessing the Virtual Convention</h1>
 
       <h3>AmberCon NW's Discord server</h3>

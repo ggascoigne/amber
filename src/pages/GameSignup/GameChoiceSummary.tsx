@@ -42,7 +42,7 @@ const GameChoiceSummary: React.FC = () => {
   }
 
   return (
-    <Page>
+    <Page title='Game Selection Summary'>
       <h3>Summary of your Game Selections</h3>
 
       <ChoiceSummary year={year} gameChoices={gameChoices} />

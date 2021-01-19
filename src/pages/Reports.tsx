@@ -5,7 +5,7 @@ import React from 'react'
 import { AuthenticatedDownloadButton } from '../components/Acnw/AuthenticatedDownloadButton'
 
 const Reports = () => (
-  <Page>
+  <Page title='Reports'>
     <List>
       <ListItem>
         <AuthenticatedDownloadButton url='/api/reports/membershipReport' filename='membership.xlsx'>

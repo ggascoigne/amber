@@ -2,7 +2,7 @@ import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
 const AboutAmber = () => (
-  <Page>
+  <Page title='Amber'>
     <h1>What is Amber Roleplaying?</h1>
 
     <p>

@@ -142,7 +142,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='GM Page'>
       {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <h1>Become a GM</h1>
       <br />

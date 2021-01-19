@@ -115,7 +115,7 @@ const SchedulePage: React.FC = () => {
   }
 
   return (
-    <Page>
+    <Page title='Schedule'>
       <HasPermission permission={Perms.IsAdmin}>
         <Button variant='contained' onClick={() => setShowGmPreviewOverride((old) => !old)}>
           {showGmPreviewOverride ? 'Show Full Schedule' : 'Show GM Preview'}

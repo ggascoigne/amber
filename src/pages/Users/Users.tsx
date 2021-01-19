@@ -49,7 +49,7 @@ const Users: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='Users'>
       {showEdit && <ProfileDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<ProfileType>
         name='users'

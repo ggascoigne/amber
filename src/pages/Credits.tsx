@@ -2,7 +2,7 @@ import { Page } from 'components/Acnw/Page'
 import React from 'react'
 
 const Credits = () => (
-  <Page>
+  <Page title='Credits'>
     <h1>Credits</h1>
     <p>
       This site is built on top of Open Source Software from a number of generous companies and developers, including:{' '}

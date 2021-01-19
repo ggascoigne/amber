@@ -222,7 +222,7 @@ const Memberships: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='Membership'>
       {showEdit && (
         <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} />
       )}

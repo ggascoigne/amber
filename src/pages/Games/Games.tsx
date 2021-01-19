@@ -227,7 +227,7 @@ const Games: React.FC = React.memo(() => {
   }
 
   return (
-    <Page>
+    <Page title='Games'>
       {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<Game>
         name='games'

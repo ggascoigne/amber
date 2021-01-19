@@ -5,6 +5,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import contentPageStyles from 'assets/jss/acnw/contentPage'
 import classNames from 'classnames'
 import React from 'react'
+import { Helmet } from 'react-helmet-async'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,9 +18,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type PageProps = {
   className?: string
+  title: string
 }
 
-export const Page: React.FC<PageProps> = ({ children, className }) => {
+export const Page: React.FC<PageProps> = ({ children, className, title }) => {
   const classes = useStyles()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -34,6 +36,9 @@ export const Page: React.FC<PageProps> = ({ children, className }) => {
         className
       )}
     >
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       {children}
     </div>
   )

@@ -6,7 +6,7 @@ import Acnw from '../components/Acnw'
 import { SlotFormat, configuration, getSlotDescription, range } from '../utils'
 
 const AboutAmberconNw = () => (
-  <Page>
+  <Page title='About'>
     <h1>
       About <span style={{ color: dangerColor }}>virtual</span> AmberCon NW
     </h1>
