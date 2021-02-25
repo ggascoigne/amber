@@ -1,9 +1,5 @@
 // copied then trimmed from https://raw.githubusercontent.com/auth0/auth0.js/master/src/helper/object.js
 
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
-
 function camelToSnake(str: string) {
   let newKey = ''
   let index = 0

@@ -10,7 +10,7 @@ module.exports = {
     // enable typescript support
     'plugin:@typescript-eslint/recommended',
     // now disable all of the rules that are in conflict with prettier
-    'prettier/@typescript-eslint',
+    'prettier',
     // note that we don't add the prettier rules, they add noise to the IDE
     // and the code is all being formatted on commit anyway.,
   ],
@@ -85,7 +85,6 @@ module.exports = {
           },
         ],
         '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
-        '@typescript-eslint/no-unnecessary-condition': 'warn',
         '@typescript-eslint/prefer-optional-chain': 'warn',
         '@typescript-eslint/no-use-before-define': 'warn',
         '@typescript-eslint/prefer-regexp-exec': 'warn',

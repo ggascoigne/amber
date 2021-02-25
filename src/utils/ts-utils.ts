@@ -38,3 +38,12 @@ export function notEmpty<T>(value: T): value is NonNullable<T> {
 }
 
 export type ContentsOf<T, K extends keyof T> = NonNullable<UnpackArray<T[K]>>
+
+// https://realfiction.net/2019/02/03/typescript-type-shenanigans-2-specify-at-least-one-property
+export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<keyof T, Keys>> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Record<Exclude<Keys, K>, undefined>>
+  }[Keys]
+
+// https://stackoverflow.com/questions/48230773/how-to-create-a-partial-like-that-requires-a-single-property-to-be-set
+export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U]

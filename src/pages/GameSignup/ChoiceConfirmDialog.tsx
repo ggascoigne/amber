@@ -139,7 +139,6 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
 
   const storeTextResults = (details: SlotSummary): void => {
     setTextResults((old) => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (old[details.slotId]) {
         return old
       } else {

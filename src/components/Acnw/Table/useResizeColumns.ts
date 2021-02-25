@@ -237,7 +237,7 @@ function useInstance<D extends Record<string, unknown>>({ plugins }: TableInstan
 function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D>) {
   const leafHeaders: ColumnInstance<D>[] = []
   const recurseHeader = (header: ColumnInstance<D>) => {
-    if (header.columns.length) {
+    if (header.columns?.length) {
       header.columns.map(recurseHeader)
     }
     leafHeaders.push(header)

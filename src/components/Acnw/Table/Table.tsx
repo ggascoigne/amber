@@ -7,6 +7,7 @@ import {
   Cell,
   CellProps,
   Column,
+  ColumnInstance,
   FilterProps,
   HeaderGroup,
   HeaderProps,
@@ -70,10 +71,12 @@ const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
   <>{column.id.startsWith('_') ? null : camelToWords(column.id)}</>
 )
 
-function DefaultColumnFilter<T extends Record<string, unknown>>({
-  column: { id, index, filterValue, setFilter, render, parent },
-  gotoPage,
-}: FilterProps<T>) {
+// yes this is recursive, but the depth never exceeds three so it seems safe enough
+const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>
+  columns[0].columns ? findFirstColumn(columns[0].columns) : columns[0]
+
+function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, column, gotoPage }: FilterProps<T>) {
+  const { id, filterValue, setFilter, render } = column
   const [value, setValue] = React.useState(filterValue || '')
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
@@ -83,13 +86,14 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({
     setValue(filterValue || '')
   }, [filterValue])
 
-  const firstIndex = !parent.index
+  const isFirstColumn = findFirstColumn(columns) === column
   return (
     <TextField
       name={id}
       label={render('Header')}
+      InputLabelProps={{ htmlFor: id }}
       value={value}
-      autoFocus={index === 0 && firstIndex}
+      autoFocus={isFirstColumn}
       variant='standard'
       onChange={handleChange}
       onBlur={(e) => {
@@ -254,6 +258,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       <TableTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map((headerGroup) => (
+            // there really is a key here, it's returned by getHeaderGroupProps
             // eslint-disable-next-line react/jsx-key
             <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => {
@@ -261,6 +266,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                   textAlign: column.align ? column.align : 'left ',
                 } as CSSProperties
                 return (
+                  // there really is a key here, it's returned by getHeaderProps
                   // eslint-disable-next-line react/jsx-key
                   <TableHeadCell {...column.getHeaderProps(headerProps)}>
                     <div>
@@ -300,9 +306,11 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
           {page.map((row) => {
             prepareRow(row)
             return (
+              // there really is a key here, it's returned by getRowProps
               // eslint-disable-next-line react/jsx-key
               <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected, clickable: onClick })}>
                 {row.cells.map((cell) => (
+                  // there really is a key here, it's returned by getCellProps
                   // eslint-disable-next-line react/jsx-key
                   <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
                     {cell.isGrouped ? (

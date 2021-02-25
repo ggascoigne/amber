@@ -13,6 +13,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
+import { useAxe } from './utils/useAxe'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
@@ -32,24 +33,27 @@ const ApolloWrapper: React.FC = ({ children }) => {
   // console.log(`ApolloWrapper = ${JSON.stringify({isAuthenticated: authProps.isAuthenticated, user: authProps.user}, null, 2)}`)
   return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
 }
-const RootComponent: React.FC = ({ children }) => (
-  <HelmetProvider>
-    <JotaiProvider>
-      <BrowserRouter>
-        <NotificationProvider>
-          <Auth0Provider>
-            <ApolloWrapper>
-              <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
-                <html lang='en' />
-              </Helmet>
-              {children}
-            </ApolloWrapper>
-          </Auth0Provider>
-        </NotificationProvider>
-      </BrowserRouter>
-    </JotaiProvider>
-  </HelmetProvider>
-)
+const RootComponent: React.FC = ({ children }) => {
+  useAxe()
+  return (
+    <HelmetProvider>
+      <JotaiProvider>
+        <BrowserRouter>
+          <NotificationProvider>
+            <Auth0Provider>
+              <ApolloWrapper>
+                <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
+                  <html lang='en' />
+                </Helmet>
+                {children}
+              </ApolloWrapper>
+            </Auth0Provider>
+          </NotificationProvider>
+        </BrowserRouter>
+      </JotaiProvider>
+    </HelmetProvider>
+  )
+}
 
 const render = (Component: React.ComponentType) =>
   ReactDOM.render(
