@@ -13,7 +13,8 @@ import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
-import { useAxe } from './utils/useAxe'
+
+// import { useAxe } from './utils/useAxe'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
 
@@ -33,8 +34,9 @@ const ApolloWrapper: React.FC = ({ children }) => {
   // console.log(`ApolloWrapper = ${JSON.stringify({isAuthenticated: authProps.isAuthenticated, user: authProps.user}, null, 2)}`)
   return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
 }
+// eslint-disable-next-line arrow-body-style
 const RootComponent: React.FC = ({ children }) => {
-  useAxe()
+  // useAxe()
   return (
     <HelmetProvider>
       <JotaiProvider>
