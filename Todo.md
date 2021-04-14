@@ -37,6 +37,7 @@
 * [ ] Look at displaying the game book stuff using react-window, try to avoid updated to off-screen pages.
 * [ ] should refactor the color definitions scattered through the code to be centralized, maybe in the theme?
 * [ ] Try to provide a way to get the schedule or game names off the schedule page - either allow better selection of export or something.
+* [ ] Look at tagging other members in various fields, maybe use https://github.com/yairEO/tagify
 
 the games table should:
 * [ ] allow for bulk edit perhaps?

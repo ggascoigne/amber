@@ -6,6 +6,7 @@ export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
+const defaultOptions = {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -7601,17 +7602,19 @@ export const GetGamesBySlotForSignupDocument = gql`
 export function useGetGamesBySlotForSignupQuery(
   baseOptions: Apollo.QueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
     GetGamesBySlotForSignupDocument,
-    baseOptions
+    options
   )
 }
 export function useGetGamesBySlotForSignupLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
     GetGamesBySlotForSignupDocument,
-    baseOptions
+    options
   )
 }
 export type GetGamesBySlotForSignupQueryHookResult = ReturnType<typeof useGetGamesBySlotForSignupQuery>
@@ -7655,12 +7658,14 @@ export const GetGamesBySlotDocument = gql`
 export function useGetGamesBySlotQuery(
   baseOptions: Apollo.QueryHookOptions<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
 ) {
-  return Apollo.useQuery<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument, options)
 }
 export function useGetGamesBySlotLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument, options)
 }
 export type GetGamesBySlotQueryHookResult = ReturnType<typeof useGetGamesBySlotQuery>
 export type GetGamesBySlotLazyQueryHookResult = ReturnType<typeof useGetGamesBySlotLazyQuery>
@@ -7707,12 +7712,14 @@ export const GetGamesByYearDocument = gql`
 export function useGetGamesByYearQuery(
   baseOptions: Apollo.QueryHookOptions<GetGamesByYearQuery, GetGamesByYearQueryVariables>
 ) {
-  return Apollo.useQuery<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument, options)
 }
 export function useGetGamesByYearLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGamesByYearQuery, GetGamesByYearQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument, options)
 }
 export type GetGamesByYearQueryHookResult = ReturnType<typeof useGetGamesByYearQuery>
 export type GetGamesByYearLazyQueryHookResult = ReturnType<typeof useGetGamesByYearLazyQuery>
@@ -7751,17 +7758,19 @@ export const GetSmallGamesByYearDocument = gql`
 export function useGetSmallGamesByYearQuery(
   baseOptions: Apollo.QueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(
     GetSmallGamesByYearDocument,
-    baseOptions
+    options
   )
 }
 export function useGetSmallGamesByYearLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(
     GetSmallGamesByYearDocument,
-    baseOptions
+    options
   )
 }
 export type GetSmallGamesByYearQueryHookResult = ReturnType<typeof useGetSmallGamesByYearQuery>
@@ -7807,9 +7816,10 @@ export type UpdateGameByNodeIdMutationFn = Apollo.MutationFunction<
 export function useUpdateGameByNodeIdMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateGameByNodeIdMutation, UpdateGameByNodeIdMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateGameByNodeIdMutation, UpdateGameByNodeIdMutationVariables>(
     UpdateGameByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateGameByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameByNodeIdMutation>
@@ -7852,7 +7862,8 @@ export type CreateGameMutationFn = Apollo.MutationFunction<CreateGameMutation, C
 export function useCreateGameMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateGameMutation, CreateGameMutationVariables>
 ) {
-  return Apollo.useMutation<CreateGameMutation, CreateGameMutationVariables>(CreateGameDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateGameMutation, CreateGameMutationVariables>(CreateGameDocument, options)
 }
 export type CreateGameMutationHookResult = ReturnType<typeof useCreateGameMutation>
 export type CreateGameMutationResult = Apollo.MutationResult<CreateGameMutation>
@@ -7887,7 +7898,8 @@ export type DeleteGameMutationFn = Apollo.MutationFunction<DeleteGameMutation, D
 export function useDeleteGameMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteGameMutation, DeleteGameMutationVariables>
 ) {
-  return Apollo.useMutation<DeleteGameMutation, DeleteGameMutationVariables>(DeleteGameDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteGameMutation, DeleteGameMutationVariables>(DeleteGameDocument, options)
 }
 export type DeleteGameMutationHookResult = ReturnType<typeof useDeleteGameMutation>
 export type DeleteGameMutationResult = Apollo.MutationResult<DeleteGameMutation>
@@ -7934,17 +7946,16 @@ export const GetFirstGameOfSlotDocument = gql`
 export function useGetFirstGameOfSlotQuery(
   baseOptions: Apollo.QueryHookOptions<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>
 ) {
-  return Apollo.useQuery<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>(
-    GetFirstGameOfSlotDocument,
-    baseOptions
-  )
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>(GetFirstGameOfSlotDocument, options)
 }
 export function useGetFirstGameOfSlotLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>(
     GetFirstGameOfSlotDocument,
-    baseOptions
+    options
   )
 }
 export type GetFirstGameOfSlotQueryHookResult = ReturnType<typeof useGetFirstGameOfSlotQuery>
@@ -7987,15 +7998,14 @@ export const GetGamesByAuthorDocument = gql`
 export function useGetGamesByAuthorQuery(
   baseOptions: Apollo.QueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
 ) {
-  return Apollo.useQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument, options)
 }
 export function useGetGamesByAuthorLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(
-    GetGamesByAuthorDocument,
-    baseOptions
-  )
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument, options)
 }
 export type GetGamesByAuthorQueryHookResult = ReturnType<typeof useGetGamesByAuthorQuery>
 export type GetGamesByAuthorLazyQueryHookResult = ReturnType<typeof useGetGamesByAuthorLazyQuery>
@@ -8033,17 +8043,19 @@ export const GetGamesByYearAndAuthorDocument = gql`
 export function useGetGamesByYearAndAuthorQuery(
   baseOptions: Apollo.QueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
     GetGamesByYearAndAuthorDocument,
-    baseOptions
+    options
   )
 }
 export function useGetGamesByYearAndAuthorLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
     GetGamesByYearAndAuthorDocument,
-    baseOptions
+    options
   )
 }
 export type GetGamesByYearAndAuthorQueryHookResult = ReturnType<typeof useGetGamesByYearAndAuthorQuery>
@@ -8080,12 +8092,14 @@ export const GetGameByIdDocument = gql`
  * });
  */
 export function useGetGameByIdQuery(baseOptions: Apollo.QueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>) {
-  return Apollo.useQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, options)
 }
 export function useGetGameByIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGameByIdQuery, GetGameByIdQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument, options)
 }
 export type GetGameByIdQueryHookResult = ReturnType<typeof useGetGameByIdQuery>
 export type GetGameByIdLazyQueryHookResult = ReturnType<typeof useGetGameByIdLazyQuery>
@@ -8120,17 +8134,19 @@ export const GetGameAssignmentsByYearDocument = gql`
 export function useGetGameAssignmentsByYearQuery(
   baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
     GetGameAssignmentsByYearDocument,
-    baseOptions
+    options
   )
 }
 export function useGetGameAssignmentsByYearLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
     GetGameAssignmentsByYearDocument,
-    baseOptions
+    options
   )
 }
 export type GetGameAssignmentsByYearQueryHookResult = ReturnType<typeof useGetGameAssignmentsByYearQuery>
@@ -8169,17 +8185,19 @@ export const GetGameAssignmentsByGameIdDocument = gql`
 export function useGetGameAssignmentsByGameIdQuery(
   baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
     GetGameAssignmentsByGameIdDocument,
-    baseOptions
+    options
   )
 }
 export function useGetGameAssignmentsByGameIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
     GetGameAssignmentsByGameIdDocument,
-    baseOptions
+    options
   )
 }
 export type GetGameAssignmentsByGameIdQueryHookResult = ReturnType<typeof useGetGameAssignmentsByGameIdQuery>
@@ -8218,9 +8236,10 @@ export const GetGameAssignmentsByMemberIdDocument = gql`
 export function useGetGameAssignmentsByMemberIdQuery(
   baseOptions: Apollo.QueryHookOptions<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
     GetGameAssignmentsByMemberIdDocument,
-    baseOptions
+    options
   )
 }
 export function useGetGameAssignmentsByMemberIdLazyQuery(
@@ -8229,9 +8248,10 @@ export function useGetGameAssignmentsByMemberIdLazyQuery(
     GetGameAssignmentsByMemberIdQueryVariables
   >
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
     GetGameAssignmentsByMemberIdDocument,
-    baseOptions
+    options
   )
 }
 export type GetGameAssignmentsByMemberIdQueryHookResult = ReturnType<typeof useGetGameAssignmentsByMemberIdQuery>
@@ -8280,9 +8300,10 @@ export function useUpdateGameAssignmentByNodeIdMutation(
     UpdateGameAssignmentByNodeIdMutationVariables
   >
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateGameAssignmentByNodeIdMutation, UpdateGameAssignmentByNodeIdMutationVariables>(
     UpdateGameAssignmentByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateGameAssignmentByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameAssignmentByNodeIdMutation>
@@ -8326,9 +8347,10 @@ export type CreateGameAssignmentMutationFn = Apollo.MutationFunction<
 export function useCreateGameAssignmentMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateGameAssignmentMutation, CreateGameAssignmentMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateGameAssignmentMutation, CreateGameAssignmentMutationVariables>(
     CreateGameAssignmentDocument,
-    baseOptions
+    options
   )
 }
 export type CreateGameAssignmentMutationHookResult = ReturnType<typeof useCreateGameAssignmentMutation>
@@ -8370,9 +8392,10 @@ export type DeleteGameAssignmentMutationFn = Apollo.MutationFunction<
 export function useDeleteGameAssignmentMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteGameAssignmentMutation, DeleteGameAssignmentMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<DeleteGameAssignmentMutation, DeleteGameAssignmentMutationVariables>(
     DeleteGameAssignmentDocument,
-    baseOptions
+    options
   )
 }
 export type DeleteGameAssignmentMutationHookResult = ReturnType<typeof useDeleteGameAssignmentMutation>
@@ -8419,12 +8442,14 @@ export const GetScheduleDocument = gql`
  * });
  */
 export function useGetScheduleQuery(baseOptions: Apollo.QueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>) {
-  return Apollo.useQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, options)
 }
 export function useGetScheduleLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetScheduleQuery, GetScheduleQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument, options)
 }
 export type GetScheduleQueryHookResult = ReturnType<typeof useGetScheduleQuery>
 export type GetScheduleLazyQueryHookResult = ReturnType<typeof useGetScheduleLazyQuery>
@@ -8462,9 +8487,10 @@ export type CreateGameChoicesMutationFn = Apollo.MutationFunction<
 export function useCreateGameChoicesMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateGameChoicesMutation, CreateGameChoicesMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateGameChoicesMutation, CreateGameChoicesMutationVariables>(
     CreateGameChoicesDocument,
-    baseOptions
+    options
   )
 }
 export type CreateGameChoicesMutationHookResult = ReturnType<typeof useCreateGameChoicesMutation>
@@ -8510,12 +8536,14 @@ export const GetGameChoicesDocument = gql`
 export function useGetGameChoicesQuery(
   baseOptions: Apollo.QueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
 ) {
-  return Apollo.useQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, options)
 }
 export function useGetGameChoicesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetGameChoicesQuery, GetGameChoicesQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument, options)
 }
 export type GetGameChoicesQueryHookResult = ReturnType<typeof useGetGameChoicesQuery>
 export type GetGameChoicesLazyQueryHookResult = ReturnType<typeof useGetGameChoicesLazyQuery>
@@ -8548,12 +8576,14 @@ export const ReadGameChoiceDocument = gql`
 export function useReadGameChoiceQuery(
   baseOptions: Apollo.QueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
 ) {
-  return Apollo.useQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, options)
 }
 export function useReadGameChoiceLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>
 ) {
-  return Apollo.useLazyQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument, options)
 }
 export type ReadGameChoiceQueryHookResult = ReturnType<typeof useReadGameChoiceQuery>
 export type ReadGameChoiceLazyQueryHookResult = ReturnType<typeof useReadGameChoiceLazyQuery>
@@ -8594,9 +8624,10 @@ export type CreateGameSubmissionMutationFn = Apollo.MutationFunction<
 export function useCreateGameSubmissionMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateGameSubmissionMutation, CreateGameSubmissionMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateGameSubmissionMutation, CreateGameSubmissionMutationVariables>(
     CreateGameSubmissionDocument,
-    baseOptions
+    options
   )
 }
 export type CreateGameSubmissionMutationHookResult = ReturnType<typeof useCreateGameSubmissionMutation>
@@ -8644,9 +8675,10 @@ export function useUpdateGameSubmissionByNodeIdMutation(
     UpdateGameSubmissionByNodeIdMutationVariables
   >
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateGameSubmissionByNodeIdMutation, UpdateGameSubmissionByNodeIdMutationVariables>(
     UpdateGameSubmissionByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateGameSubmissionByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameSubmissionByNodeIdMutation>
@@ -8691,9 +8723,10 @@ export type CreateGameChoiceMutationFn = Apollo.MutationFunction<
 export function useCreateGameChoiceMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateGameChoiceMutation, CreateGameChoiceMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateGameChoiceMutation, CreateGameChoiceMutationVariables>(
     CreateGameChoiceDocument,
-    baseOptions
+    options
   )
 }
 export type CreateGameChoiceMutationHookResult = ReturnType<typeof useCreateGameChoiceMutation>
@@ -8738,9 +8771,10 @@ export type UpdateGameChoiceByNodeIdMutationFn = Apollo.MutationFunction<
 export function useUpdateGameChoiceByNodeIdMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>(
     UpdateGameChoiceByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateGameChoiceByNodeIdMutationHookResult = ReturnType<typeof useUpdateGameChoiceByNodeIdMutation>
@@ -8784,12 +8818,14 @@ export const GetLookupsDocument = gql`
  * });
  */
 export function useGetLookupsQuery(baseOptions?: Apollo.QueryHookOptions<GetLookupsQuery, GetLookupsQueryVariables>) {
-  return Apollo.useQuery<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument, options)
 }
 export function useGetLookupsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetLookupsQuery, GetLookupsQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument, options)
 }
 export type GetLookupsQueryHookResult = ReturnType<typeof useGetLookupsQuery>
 export type GetLookupsLazyQueryHookResult = ReturnType<typeof useGetLookupsLazyQuery>
@@ -8832,12 +8868,14 @@ export const GetLookupValuesDocument = gql`
 export function useGetLookupValuesQuery(
   baseOptions: Apollo.QueryHookOptions<GetLookupValuesQuery, GetLookupValuesQueryVariables>
 ) {
-  return Apollo.useQuery<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument, options)
 }
 export function useGetLookupValuesLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetLookupValuesQuery, GetLookupValuesQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument, options)
 }
 export type GetLookupValuesQueryHookResult = ReturnType<typeof useGetLookupValuesQuery>
 export type GetLookupValuesLazyQueryHookResult = ReturnType<typeof useGetLookupValuesLazyQuery>
@@ -8881,17 +8919,19 @@ export const GetSingleLookupValueDocument = gql`
 export function useGetSingleLookupValueQuery(
   baseOptions: Apollo.QueryHookOptions<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>(
     GetSingleLookupValueDocument,
-    baseOptions
+    options
   )
 }
 export function useGetSingleLookupValueLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>(
     GetSingleLookupValueDocument,
-    baseOptions
+    options
   )
 }
 export type GetSingleLookupValueQueryHookResult = ReturnType<typeof useGetSingleLookupValueQuery>
@@ -8935,9 +8975,10 @@ export type UpdateLookupByNodeIdMutationFn = Apollo.MutationFunction<
 export function useUpdateLookupByNodeIdMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateLookupByNodeIdMutation, UpdateLookupByNodeIdMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateLookupByNodeIdMutation, UpdateLookupByNodeIdMutationVariables>(
     UpdateLookupByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateLookupByNodeIdMutationHookResult = ReturnType<typeof useUpdateLookupByNodeIdMutation>
@@ -8978,7 +9019,8 @@ export type CreateLookupMutationFn = Apollo.MutationFunction<CreateLookupMutatio
 export function useCreateLookupMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateLookupMutation, CreateLookupMutationVariables>
 ) {
-  return Apollo.useMutation<CreateLookupMutation, CreateLookupMutationVariables>(CreateLookupDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateLookupMutation, CreateLookupMutationVariables>(CreateLookupDocument, options)
 }
 export type CreateLookupMutationHookResult = ReturnType<typeof useCreateLookupMutation>
 export type CreateLookupMutationResult = Apollo.MutationResult<CreateLookupMutation>
@@ -9016,7 +9058,8 @@ export type DeleteLookupMutationFn = Apollo.MutationFunction<DeleteLookupMutatio
 export function useDeleteLookupMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteLookupMutation, DeleteLookupMutationVariables>
 ) {
-  return Apollo.useMutation<DeleteLookupMutation, DeleteLookupMutationVariables>(DeleteLookupDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteLookupMutation, DeleteLookupMutationVariables>(DeleteLookupDocument, options)
 }
 export type DeleteLookupMutationHookResult = ReturnType<typeof useDeleteLookupMutation>
 export type DeleteLookupMutationResult = Apollo.MutationResult<DeleteLookupMutation>
@@ -9062,9 +9105,10 @@ export function useUpdateLookupValueByNodeIdMutation(
     UpdateLookupValueByNodeIdMutationVariables
   >
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateLookupValueByNodeIdMutation, UpdateLookupValueByNodeIdMutationVariables>(
     UpdateLookupValueByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateLookupValueByNodeIdMutationHookResult = ReturnType<typeof useUpdateLookupValueByNodeIdMutation>
@@ -9108,9 +9152,10 @@ export type CreateLookupValueMutationFn = Apollo.MutationFunction<
 export function useCreateLookupValueMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateLookupValueMutation, CreateLookupValueMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateLookupValueMutation, CreateLookupValueMutationVariables>(
     CreateLookupValueDocument,
-    baseOptions
+    options
   )
 }
 export type CreateLookupValueMutationHookResult = ReturnType<typeof useCreateLookupValueMutation>
@@ -9152,9 +9197,10 @@ export type DeleteLookupValueMutationFn = Apollo.MutationFunction<
 export function useDeleteLookupValueMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteLookupValueMutation, DeleteLookupValueMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<DeleteLookupValueMutation, DeleteLookupValueMutationVariables>(
     DeleteLookupValueDocument,
-    baseOptions
+    options
   )
 }
 export type DeleteLookupValueMutationHookResult = ReturnType<typeof useDeleteLookupValueMutation>
@@ -9194,17 +9240,19 @@ export const GetMembershipByYearAndIdDocument = gql`
 export function useGetMembershipByYearAndIdQuery(
   baseOptions: Apollo.QueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
     GetMembershipByYearAndIdDocument,
-    baseOptions
+    options
   )
 }
 export function useGetMembershipByYearAndIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
     GetMembershipByYearAndIdDocument,
-    baseOptions
+    options
   )
 }
 export type GetMembershipByYearAndIdQueryHookResult = ReturnType<typeof useGetMembershipByYearAndIdQuery>
@@ -9243,17 +9291,19 @@ export const GetMembershipsByYearDocument = gql`
 export function useGetMembershipsByYearQuery(
   baseOptions: Apollo.QueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useQuery<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(
     GetMembershipsByYearDocument,
-    baseOptions
+    options
   )
 }
 export function useGetMembershipsByYearLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(
     GetMembershipsByYearDocument,
-    baseOptions
+    options
   )
 }
 export type GetMembershipsByYearQueryHookResult = ReturnType<typeof useGetMembershipsByYearQuery>
@@ -9292,17 +9342,16 @@ export const GetMembershipsByIdDocument = gql`
 export function useGetMembershipsByIdQuery(
   baseOptions: Apollo.QueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
 ) {
-  return Apollo.useQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(
-    GetMembershipsByIdDocument,
-    baseOptions
-  )
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(GetMembershipsByIdDocument, options)
 }
 export function useGetMembershipsByIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useLazyQuery<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(
     GetMembershipsByIdDocument,
-    baseOptions
+    options
   )
 }
 export type GetMembershipsByIdQueryHookResult = ReturnType<typeof useGetMembershipsByIdQuery>
@@ -9346,9 +9395,10 @@ export type UpdateMembershipByNodeIdMutationFn = Apollo.MutationFunction<
 export function useUpdateMembershipByNodeIdMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateMembershipByNodeIdMutation, UpdateMembershipByNodeIdMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateMembershipByNodeIdMutation, UpdateMembershipByNodeIdMutationVariables>(
     UpdateMembershipByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateMembershipByNodeIdMutationHookResult = ReturnType<typeof useUpdateMembershipByNodeIdMutation>
@@ -9392,9 +9442,10 @@ export type CreateMembershipMutationFn = Apollo.MutationFunction<
 export function useCreateMembershipMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateMembershipMutation, CreateMembershipMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<CreateMembershipMutation, CreateMembershipMutationVariables>(
     CreateMembershipDocument,
-    baseOptions
+    options
   )
 }
 export type CreateMembershipMutationHookResult = ReturnType<typeof useCreateMembershipMutation>
@@ -9436,9 +9487,10 @@ export type DeleteMembershipMutationFn = Apollo.MutationFunction<
 export function useDeleteMembershipMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteMembershipMutation, DeleteMembershipMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<DeleteMembershipMutation, DeleteMembershipMutationVariables>(
     DeleteMembershipDocument,
-    baseOptions
+    options
   )
 }
 export type DeleteMembershipMutationHookResult = ReturnType<typeof useDeleteMembershipMutation>
@@ -9476,12 +9528,14 @@ export const GetSettingsDocument = gql`
 export function useGetSettingsQuery(
   baseOptions?: Apollo.QueryHookOptions<GetSettingsQuery, GetSettingsQueryVariables>
 ) {
-  return Apollo.useQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, options)
 }
 export function useGetSettingsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetSettingsQuery, GetSettingsQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument, options)
 }
 export type GetSettingsQueryHookResult = ReturnType<typeof useGetSettingsQuery>
 export type GetSettingsLazyQueryHookResult = ReturnType<typeof useGetSettingsLazyQuery>
@@ -9518,7 +9572,8 @@ export type CreateSettingMutationFn = Apollo.MutationFunction<CreateSettingMutat
 export function useCreateSettingMutation(
   baseOptions?: Apollo.MutationHookOptions<CreateSettingMutation, CreateSettingMutationVariables>
 ) {
-  return Apollo.useMutation<CreateSettingMutation, CreateSettingMutationVariables>(CreateSettingDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<CreateSettingMutation, CreateSettingMutationVariables>(CreateSettingDocument, options)
 }
 export type CreateSettingMutationHookResult = ReturnType<typeof useCreateSettingMutation>
 export type CreateSettingMutationResult = Apollo.MutationResult<CreateSettingMutation>
@@ -9556,7 +9611,8 @@ export type DeleteSettingMutationFn = Apollo.MutationFunction<DeleteSettingMutat
 export function useDeleteSettingMutation(
   baseOptions?: Apollo.MutationHookOptions<DeleteSettingMutation, DeleteSettingMutationVariables>
 ) {
-  return Apollo.useMutation<DeleteSettingMutation, DeleteSettingMutationVariables>(DeleteSettingDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<DeleteSettingMutation, DeleteSettingMutationVariables>(DeleteSettingDocument, options)
 }
 export type DeleteSettingMutationHookResult = ReturnType<typeof useDeleteSettingMutation>
 export type DeleteSettingMutationResult = Apollo.MutationResult<DeleteSettingMutation>
@@ -9599,9 +9655,10 @@ export type UpdateSettingByNodeIdMutationFn = Apollo.MutationFunction<
 export function useUpdateSettingByNodeIdMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateSettingByNodeIdMutation, UpdateSettingByNodeIdMutationVariables>
 ) {
+  const options = { ...defaultOptions, ...baseOptions }
   return Apollo.useMutation<UpdateSettingByNodeIdMutation, UpdateSettingByNodeIdMutationVariables>(
     UpdateSettingByNodeIdDocument,
-    baseOptions
+    options
   )
 }
 export type UpdateSettingByNodeIdMutationHookResult = ReturnType<typeof useUpdateSettingByNodeIdMutation>
@@ -9637,10 +9694,12 @@ export const GetSlotsDocument = gql`
  * });
  */
 export function useGetSlotsQuery(baseOptions?: Apollo.QueryHookOptions<GetSlotsQuery, GetSlotsQueryVariables>) {
-  return Apollo.useQuery<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument, options)
 }
 export function useGetSlotsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSlotsQuery, GetSlotsQueryVariables>) {
-  return Apollo.useLazyQuery<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument, options)
 }
 export type GetSlotsQueryHookResult = ReturnType<typeof useGetSlotsQuery>
 export type GetSlotsLazyQueryHookResult = ReturnType<typeof useGetSlotsLazyQuery>
@@ -9673,12 +9732,14 @@ export const GetUserByEmailDocument = gql`
 export function useGetUserByEmailQuery(
   baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
 ) {
-  return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options)
 }
 export function useGetUserByEmailLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options)
 }
 export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>
 export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>
@@ -9709,12 +9770,14 @@ export const GetUserByIdDocument = gql`
  * });
  */
 export function useGetUserByIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>) {
-  return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options)
 }
 export function useGetUserByIdLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetUserByIdQuery, GetUserByIdQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, options)
 }
 export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>
@@ -9751,7 +9814,8 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
 export function useUpdateUserMutation(
   baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>
 ) {
-  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options)
 }
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
@@ -9785,12 +9849,14 @@ export const GetAllUsersDocument = gql`
 export function useGetAllUsersQuery(
   baseOptions?: Apollo.QueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>
 ) {
-  return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, options)
 }
 export function useGetAllUsersLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetAllUsersQuery, GetAllUsersQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument, options)
 }
 export type GetAllUsersQueryHookResult = ReturnType<typeof useGetAllUsersQuery>
 export type GetAllUsersLazyQueryHookResult = ReturnType<typeof useGetAllUsersLazyQuery>
@@ -9831,12 +9897,14 @@ export const GetAllUsersByDocument = gql`
 export function useGetAllUsersByQuery(
   baseOptions: Apollo.QueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
 ) {
-  return Apollo.useQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, options)
 }
 export function useGetAllUsersByLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<GetAllUsersByQuery, GetAllUsersByQueryVariables>
 ) {
-  return Apollo.useLazyQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, baseOptions)
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument, options)
 }
 export type GetAllUsersByQueryHookResult = ReturnType<typeof useGetAllUsersByQuery>
 export type GetAllUsersByLazyQueryHookResult = ReturnType<typeof useGetAllUsersByLazyQuery>
