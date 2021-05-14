@@ -14,6 +14,7 @@ import {
 import { dequal as deepEqual } from 'dequal'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 import { notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
 import {
@@ -40,23 +41,22 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   const [year] = useYearFilter()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-  const [createGameAssignment] = useCreateGameAssignmentMutation()
-  const [deleteGameAssignment] = useDeleteGameAssignmentMutation()
+  const createGameAssignment = useCreateGameAssignmentMutation()
+  const deleteGameAssignment = useDeleteGameAssignmentMutation()
+  const queryClient = useQueryClient()
   const [notify] = useNotification()
 
   const memberId = membership.id ?? 0
 
-  const { error: sError, data: sData } = useGetScheduleQuery({
-    variables: { memberId },
-    skip: !memberId,
-    fetchPolicy: 'cache-and-network',
-  })
+  const { error: sError, data: sData } = useGetScheduleQuery(
+    { memberId },
+    {
+      enabled: !!memberId,
+    }
+  )
 
   const { error: gError, data: gData } = useGetGamesByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
 
   const gameOptions = useMemo(() => {
@@ -106,24 +106,31 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const updaters: Promise<any>[] = []
     toDelete.forEach((assignment) => {
       updaters.push(
-        deleteGameAssignment({ variables: { input: { nodeId: assignment.nodeId! } } }).catch((error) => {
+        deleteGameAssignment.mutateAsync({ input: { nodeId: assignment.nodeId! } }).catch((error) => {
           notify({ text: error.message, variant: 'error' })
         })
       )
     })
     toCreate.forEach((assignment) => {
       updaters.push(
-        createGameAssignment({
-          variables: {
-            input: {
-              gameAssignment: pick(assignment, 'gameId', 'gm', 'memberId', 'year'),
+        createGameAssignment
+          .mutateAsync(
+            {
+              input: {
+                gameAssignment: pick(assignment, 'gameId', 'gm', 'memberId', 'year'),
+              },
             },
-          },
-          refetchQueries: ['getGameAssignmentsByYear', 'getSchedule'],
-        }).catch((error) => {
-          console.log(`error = ${JSON.stringify(error, null, 2)}`)
-          if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
-        })
+            {
+              onSuccess: () => {
+                queryClient.invalidateQueries('getGameAssignmentsByYear')
+                queryClient.invalidateQueries('getSchedule')
+              },
+            }
+          )
+          .catch((error) => {
+            console.log(`error = ${JSON.stringify(error, null, 2)}`)
+            if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
+          })
       )
     })
     await Promise.allSettled(updaters)

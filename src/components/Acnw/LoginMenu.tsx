@@ -1,4 +1,3 @@
-import { ApolloConsumer } from '@apollo/client'
 import { Badge, Tooltip } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import { Theme, makeStyles } from '@material-ui/core/styles'
@@ -9,6 +8,7 @@ import Button from 'components/MaterialKitReact/CustomButtons/Button'
 import CustomDropdown from 'components/MaterialKitReact/CustomDropdown/CustomDropdown'
 import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { QueryClient } from 'react-query'
 
 import { useIsGm } from '../../utils'
 import { useAuth } from './Auth/Auth0'
@@ -185,6 +185,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
   const [authInitialized, setAuthInitialized] = useState(false)
   const [roleOverride, setRoleOverride] = useRoleOverride()
   const profile = useProfile()
+  const queryClient = new QueryClient()
 
   useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
 
@@ -257,48 +258,42 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
     }
   }
 
-  return (
-    <ApolloConsumer>
-      {(client) =>
-        isAuthenticated ? (
-          <>
-            <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
-            <CustomDropdown
-              right
-              caret={false}
-              hoverColor='black'
-              buttonText={<MenuButton small={small} user={user!} />}
-              buttonProps={{
-                className: classes.navLink,
-                color: 'transparent',
-              }}
-              dropdownList={menuItems}
-              onClick={(prop: string) => {
-                switch (prop) {
-                  case MENU_ITEM_EDIT_PROFILE:
-                    editProfile()
-                    break
-                  case MENU_ITEM_VIEW_AS_ADMIN:
-                  case MENU_ITEM_VIEW_AS_USER:
-                    viewAsUser()
-                    break
-                  case MENU_ITEM_RESET_PASSWORD:
-                    resetPassword()
-                    break
-                  case MENU_ITEM_SIGN_OUT:
-                    client.resetStore()
-                    logout?.()
-                    break
-                }
-              }}
-            />
-          </>
-        ) : (
-          <Button disabled={!authInitialized} className={classes.loginNavLink} onClick={login} color='transparent'>
-            Login
-          </Button>
-        )
-      }
-    </ApolloConsumer>
+  return isAuthenticated ? (
+    <>
+      <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
+      <CustomDropdown
+        right
+        caret={false}
+        hoverColor='black'
+        buttonText={<MenuButton small={small} user={user!} />}
+        buttonProps={{
+          className: classes.navLink,
+          color: 'transparent',
+        }}
+        dropdownList={menuItems}
+        onClick={(prop: string) => {
+          switch (prop) {
+            case MENU_ITEM_EDIT_PROFILE:
+              editProfile()
+              break
+            case MENU_ITEM_VIEW_AS_ADMIN:
+            case MENU_ITEM_VIEW_AS_USER:
+              viewAsUser()
+              break
+            case MENU_ITEM_RESET_PASSWORD:
+              resetPassword()
+              break
+            case MENU_ITEM_SIGN_OUT:
+              queryClient.clear()
+              logout?.()
+              break
+          }
+        }}
+      />
+    </>
+  ) : (
+    <Button disabled={!authInitialized} className={classes.loginNavLink} onClick={login} color='transparent'>
+      Login
+    </Button>
   )
 }

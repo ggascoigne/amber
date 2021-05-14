@@ -1,4 +1,3 @@
-import { gql, useApolloClient } from '@apollo/client'
 import { Button } from '@material-ui/core'
 import NavigationIcon from '@material-ui/icons/Navigation'
 import {
@@ -12,6 +11,7 @@ import { useAuth } from 'components/Acnw/Auth/Auth0'
 import { Perms } from 'components/Acnw/Auth/PermissionRules'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
+import { useQueryClient } from 'react-query'
 import { Link, Redirect } from 'react-router-dom'
 import {
   ContentsOf,
@@ -37,71 +37,90 @@ import { SignupInstructions } from './SignupInstructions'
 
 export type choiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
-const choiceFragment = gql`
-  fragment gameChoiceFields on GameChoice {
-    gameId
-    id
-    memberId
-    nodeId
-    rank
-    returningPlayer
-    slotId
-    year
-  }
-`
+// const choiceFragment = gql`
+//   fragment gameChoiceFields on GameChoice {
+//     gameId
+//     id
+//     memberId
+//     nodeId
+//     rank
+//     returningPlayer
+//     slotId
+//     year
+//   }
+// `
 
 export const useEditGameChoice = () => {
-  const [createGameChoice] = useCreateGameChoiceMutation()
-  const [updateGameChoice] = useUpdateGameChoiceByNodeIdMutation()
-  const [createGameChoices] = useCreateGameChoicesMutation()
-  const client = useApolloClient()
+  const createGameChoice = useCreateGameChoiceMutation()
+  const updateGameChoice = useUpdateGameChoiceByNodeIdMutation()
+  const queryClient = useQueryClient()
+
+  const createGameChoices = useCreateGameChoicesMutation()
 
   const createAllGameChoices = async (memberId: number, year: number) => {
-    createGameChoices({
-      variables: {
-        memberId,
-        year,
-      },
-      refetchQueries: ['getGameChoices'],
-    }).then(() => {
-      // console.log('choices created')
-    })
+    createGameChoices
+      .mutateAsync(
+        {
+          memberId,
+          year,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries('getGameChoices')
+          },
+        }
+      )
+      .then(() => {
+        // console.log('choices created')
+      })
   }
 
   const createOrUpdate = async (values: choiceType, refetch = false) => {
     if (values.nodeId) {
-      client.writeFragment({
-        id: `GameChoice:${values.id}`,
-        fragment: choiceFragment,
-        data: pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-      })
-      return updateGameChoice({
-        variables: {
-          input: {
-            nodeId: values.nodeId,
-            patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+      // client.writeFragment({
+      //   id: `GameChoice:${values.id}`,
+      //   fragment: choiceFragment,
+      //   data: pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+      // })
+      return updateGameChoice
+        .mutateAsync(
+          {
+            input: {
+              nodeId: values.nodeId,
+              patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+            },
+            // todo: add back the optimistic update
+            // optimisticResponse: {
+            //   ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+            //   // @ts-ignore
+            //   __typename: 'GameChoice',
+            // },
           },
-        },
-        refetchQueries: refetch ? ['getGameChoices'] : undefined,
-        optimisticResponse: {
-          ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-          // @ts-ignore
-          __typename: 'GameChoice',
-        },
-      }).catch((error) => {
-        console.log({ text: error.message, variant: 'error' })
-      })
+          {
+            onSuccess: () => {
+              if (refetch) queryClient.invalidateQueries('getGameChoices')
+            },
+          }
+        )
+        .catch((error) => {
+          console.log({ text: error.message, variant: 'error' })
+        })
     } else {
-      return createGameChoice({
-        variables: {
-          input: {
-            gameChoice: {
-              ...pick(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+      return createGameChoice
+        .mutateAsync(
+          {
+            input: {
+              gameChoice: {
+                ...pick(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
+              },
             },
           },
-        },
-        refetchQueries: ['getGameChoices'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getGameChoices')
+            },
+          }
+        )
         .then(() => {
           // console.log({ text: 'GameChoice created', variant: 'success' })
         })
@@ -131,11 +150,12 @@ const GameSignupPage: React.FC = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { error, data } = useGetGameChoicesQuery({
-    variables: { year, memberId: membership?.id ?? 0 },
-    skip: !membership,
-    fetchPolicy: 'cache-and-network',
-  })
+  const { error, data } = useGetGameChoicesQuery(
+    { year, memberId: membership?.id ?? 0 },
+    {
+      enabled: !!membership,
+    }
+  )
 
   const onCloseConfirm: MouseEventHandler = () => {
     setShowConfirmDialog(false)

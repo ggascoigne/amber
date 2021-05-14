@@ -2,14 +2,12 @@
 import 'assets/css/material-kit-react.css'
 import 'react-app-polyfill/ie11'
 
-import { ApolloProvider } from '@apollo/client'
-import client from 'client/client'
 import { Auth0Provider, NotificationProvider } from 'components/Acnw'
-import { useAuth } from 'components/Acnw/Auth/Auth0'
 import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
@@ -27,13 +25,10 @@ import { App } from './App'
 //   })
 // }
 
+const queryClient = new QueryClient()
+
 const rootElement = document.getElementById('root')
 
-const ApolloWrapper: React.FC = ({ children }) => {
-  const authProps = useAuth()
-  // console.log(`ApolloWrapper = ${JSON.stringify({isAuthenticated: authProps.isAuthenticated, user: authProps.user}, null, 2)}`)
-  return <ApolloProvider client={client(authProps)}>{children}</ApolloProvider>
-}
 // eslint-disable-next-line arrow-body-style
 const RootComponent: React.FC = ({ children }) => {
   // useAxe()
@@ -43,12 +38,12 @@ const RootComponent: React.FC = ({ children }) => {
         <BrowserRouter>
           <NotificationProvider>
             <Auth0Provider>
-              <ApolloWrapper>
+              <QueryClientProvider client={queryClient}>
                 <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
                   <html lang='en' />
                 </Helmet>
                 {children}
-              </ApolloWrapper>
+              </QueryClientProvider>
             </Auth0Provider>
           </NotificationProvider>
         </BrowserRouter>

@@ -131,10 +131,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   }
 
   const { error, data } = useGetGamesByAuthorQuery({
-    variables: {
-      id: userId!,
-    },
-    fetchPolicy: 'cache-and-network',
+    id: userId!,
   })
 
   if (error) {

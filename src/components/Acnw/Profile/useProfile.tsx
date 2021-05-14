@@ -1,4 +1,4 @@
-import { Node, UserInput, useGetUserByEmailLazyQuery } from 'client'
+import { Node, UserInput, useGetUserByEmailQuery } from 'client'
 import { useState } from 'react'
 import { useUser } from 'utils'
 
@@ -9,7 +9,7 @@ export const useProfile = (): ProfileType | null => {
   const { email } = useUser()
   const [lastEmail, setLastEmail] = useState('')
 
-  const [getProfile, { error, data }] = useGetUserByEmailLazyQuery({ fetchPolicy: 'cache-and-network' })
+  const { error, data } = useGetUserByEmailQuery({ email: email ?? '' }, { enabled: !!email && email !== lastEmail })
   const [notify] = useNotification()
 
   if (!email || !data) {
@@ -18,7 +18,6 @@ export const useProfile = (): ProfileType | null => {
 
   if (lastEmail !== email) {
     lastEmail !== email && setLastEmail(email)
-    getProfile({ variables: { email } })
     return null
   }
 

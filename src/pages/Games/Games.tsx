@@ -140,21 +140,15 @@ const Games: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
-  const [deleteGame] = useDeleteGameMutation()
+  const deleteGame = useDeleteGameMutation()
   const [fixBusy, setFixBusy] = useState(false)
   const classes = useStyles()
   const { error, data, refetch } = useGetGamesByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
   const setGameGmAssignments = useUpdateGameAssignment()
   const { data: membershipData } = useGetMembershipsByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
 
   const membershipList = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
@@ -212,7 +206,7 @@ const Games: React.FC = React.memo(() => {
 
   const onDelete = (instance: TableInstance<Game>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((g) => deleteGame({ variables: { input: { id: g.id } } }))
+    const updater = toDelete.map((g) => deleteGame.mutateAsync({ input: { id: g.id } }))
     Promise.allSettled(updater).then(() => console.log('deleted'))
   }
 

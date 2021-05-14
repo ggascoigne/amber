@@ -8,11 +8,12 @@ import { useYearFilter } from './useYearFilterState'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()
-  const { data } = useGetMembershipByYearAndIdQuery({
-    skip: !userId,
-    variables: { year, userId: userId! },
-    fetchPolicy: 'cache-and-network',
-  })
+  const { data } = useGetMembershipByYearAndIdQuery(
+    { year, userId: userId! },
+    {
+      enabled: !!userId,
+    }
+  )
 
   if (!userId) {
     return null
@@ -57,13 +58,12 @@ export const useIsGm = () => {
   const { isAuthenticated } = useAuth()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const { data: gameAssignmentData } = useGetGameAssignmentsByMemberIdQuery({
-    variables: {
+  const { data: gameAssignmentData } = useGetGameAssignmentsByMemberIdQuery(
+    {
       memberId: membership?.id ?? 0,
     },
-    skip: !membership,
-    fetchPolicy: 'cache-and-network',
-  })
+    { enabled: !!membership }
+  )
 
   if (!isAuthenticated || !membership || !gameAssignmentData) return false
 

@@ -1,5 +1,6 @@
 import { SettingFieldsFragment, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -27,8 +28,9 @@ const Settings: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])
 
-  const [deleteSetting] = useDeleteSettingMutation()
-  const { error, data, refetch } = useGetSettingsQuery({ fetchPolicy: 'cache-and-network' })
+  const deleteSetting = useDeleteSettingMutation()
+  const queryClient = useQueryClient()
+  const { error, data, refetch } = useGetSettingsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -53,10 +55,16 @@ const Settings: React.FC = React.memo(() => {
   const onDelete = (instance: TableInstance<Setting>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
     const updater = toDelete.map((s) =>
-      deleteSetting({
-        variables: { input: { id: s.id } },
-        refetchQueries: ['getSettings'],
-      })
+      deleteSetting.mutateAsync(
+        {
+          input: { id: s.id },
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries('getSettings')
+          },
+        }
+      )
     )
     Promise.allSettled(updater).then(() => {
       console.log('deleted')

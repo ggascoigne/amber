@@ -20,7 +20,7 @@ const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<ProfileType[]>([])
 
-  const { error, data, refetch } = useGetAllUsersQuery({ fetchPolicy: 'cache-and-network' })
+  const { error, data, refetch } = useGetAllUsersQuery()
 
   if (error) {
     return <GraphQLError error={error} />

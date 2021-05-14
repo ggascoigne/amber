@@ -97,11 +97,14 @@ const SchedulePage: React.FC = () => {
     f().then()
   }, [forceLogin])
 
-  const { error, data } = useGetScheduleQuery({
-    variables: { memberId },
-    skip: !membership,
-    fetchPolicy: 'cache-and-network',
-  })
+  const { error, data } = useGetScheduleQuery(
+    {
+      memberId,
+    },
+    {
+      enabled: !!membership,
+    }
+  )
 
   const gamesAndAssignments = useMemo(() => getGameAssignments(data, memberId, gmOnly), [data, gmOnly, memberId])
 

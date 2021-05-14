@@ -1,6 +1,7 @@
 import { ContentsOf, UnpackArray } from '../utils'
 import type { GetGamesBySlotQuery, GetScheduleQuery } from './graphql'
 
+export * from './error'
 export * from './graphql'
 
 export type GameArray = NonNullable<GetGamesBySlotQuery['games']>['edges']

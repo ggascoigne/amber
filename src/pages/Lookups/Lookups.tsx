@@ -1,11 +1,7 @@
-import {
-  useDeleteLookupMutation,
-  useDeleteLookupValueMutation,
-  useGetLookupsLazyQuery,
-  useGetLookupsQuery,
-} from 'client'
+import { useDeleteLookupMutation, useDeleteLookupValueMutation, useGetLookupsQuery } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import type { Column, Row, TableInstance } from 'react-table'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -22,15 +18,16 @@ const columns: Column<LookupAndValues>[] = [
 const Lookups: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<LookupAndValues[]>([])
-  const [deleteLookup] = useDeleteLookupMutation()
-  const [deleteLookupValue] = useDeleteLookupValueMutation()
-  const [refreshLookups] = useGetLookupsLazyQuery({ fetchPolicy: 'network-only' })
-  const { loading, error, data, refetch } = useGetLookupsQuery()
+  const deleteLookup = useDeleteLookupMutation()
+  const deleteLookupValue = useDeleteLookupValueMutation()
+  const queryClient = useQueryClient()
+
+  const { isLoading, error, data, refetch } = useGetLookupsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading || !data) {
+  if (isLoading || !data) {
     return <Loader />
   }
 
@@ -43,7 +40,7 @@ const Lookups: React.FC = React.memo(() => {
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
     setSelection([])
-    refreshLookups()
+    queryClient.invalidateQueries('getLookups')
   }
 
   const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
@@ -51,14 +48,14 @@ const Lookups: React.FC = React.memo(() => {
       .map((r) => r.original)
       .map((l) => {
         const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
-          lv?.id && acc.push(deleteLookupValue({ variables: { input: { id: lv.id } } }))
+          lv?.id && acc.push(deleteLookupValue.mutateAsync({ input: { id: lv.id } }))
           return acc
         }, [])
-        updaters.push(deleteLookup({ variables: { input: { id: l.id } } }))
+        updaters.push(deleteLookup.mutateAsync({ input: { id: l.id } }))
         return updaters
       })
       .flat()
-    Promise.allSettled(updater).then(() => refreshLookups())
+    Promise.allSettled(updater).then(() => queryClient.invalidateQueries('getLookups'))
   }
 
   const onEdit = (instance: TableInstance<LookupAndValues>) => () => {

@@ -13,11 +13,7 @@ export const GameSignupMenu: React.FC = () => {
   const membership = useGetMemberShip(userId)
   const [_, setShowConfirmDialog] = useConfirmDialogOpen()
 
-  const { error, data } = useGetGameChoicesQuery({
-    variables: { year, memberId: membership?.id ?? 0 },
-    skip: !membership,
-    fetchPolicy: 'cache-and-network',
-  })
+  const { error, data } = useGetGameChoicesQuery({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership })
 
   if (error) {
     return <GraphQLError error={error} />

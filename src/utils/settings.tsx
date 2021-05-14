@@ -24,9 +24,7 @@ export const useSettings = () => {
   const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const { loading, error, data } = useGetSettingsQuery({
-    fetchPolicy: 'cache-first',
-  })
+  const { isLoading, error, data } = useGetSettingsQuery()
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {
@@ -35,7 +33,7 @@ export const useSettings = () => {
         return s ? s.value : null
       }
 
-      if (error || loading || !data) {
+      if (error || isLoading || !data) {
         return defaultValue
       }
 
@@ -43,7 +41,7 @@ export const useSettings = () => {
 
       return getSetting(settings, setting)
     },
-    [data, error, loading]
+    [data, error, isLoading]
   )
 
   const getSettingValue = useCallback(
@@ -54,7 +52,7 @@ export const useSettings = () => {
         return s ? asSettingValue(s.value) : null
       }
 
-      if (error || loading || !data) {
+      if (error || isLoading || !data) {
         return defaultValue
       }
 
@@ -62,7 +60,7 @@ export const useSettings = () => {
 
       return getSetting(settings, setting)
     },
-    [data, error, loading]
+    [data, error, isLoading]
   )
 
   const getSettingTruth = useCallback(
@@ -88,7 +86,7 @@ export const useSettings = () => {
     [getSettingValue, isAdmin, isGm, isMember]
   )
 
-  return error || loading || !data ? [undefined, undefined] : ([getSettingString, getSettingTruth] as const)
+  return error || isLoading || !data ? [undefined, undefined] : ([getSettingString, getSettingTruth] as const)
 }
 
 export const useSetting = (setting: string, defaultValue = false) => {

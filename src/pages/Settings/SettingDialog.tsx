@@ -5,6 +5,7 @@ import { Node, SettingFieldsFragment, useCreateSettingMutation, useUpdateSetting
 import { DialogTitle, GridContainer, GridItem, SelectField, TextField, useAuth, useNotification } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 import { onCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -25,23 +26,29 @@ interface SettingDialogProps {
 }
 
 export const useEditSetting = (onClose: onCloseHandler) => {
-  const [createSetting] = useCreateSettingMutation()
-  const [updateSetting] = useUpdateSettingByNodeIdMutation()
+  const createSetting = useCreateSettingMutation()
+  const updateSetting = useUpdateSettingByNodeIdMutation()
+  const queryClient = useQueryClient()
   const [notify] = useNotification()
 
   return async (values: FormValues) => {
     if (values.nodeId) {
-      await updateSetting({
-        variables: {
-          input: {
-            nodeId: values.nodeId,
-            patch: {
-              ...pick(values, 'id', 'code', 'type', 'value'),
+      await updateSetting
+        .mutateAsync(
+          {
+            input: {
+              nodeId: values.nodeId,
+              patch: {
+                ...pick(values, 'id', 'code', 'type', 'value'),
+              },
             },
           },
-        },
-        refetchQueries: ['getSettings'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getSettings')
+            },
+          }
+        )
         .then(() => {
           notify({ text: 'Setting updated', variant: 'success' })
           onClose()
@@ -50,16 +57,21 @@ export const useEditSetting = (onClose: onCloseHandler) => {
           notify({ text: error.message, variant: 'error' })
         })
     } else {
-      await createSetting({
-        variables: {
-          input: {
-            setting: {
-              ...pick(values, 'nodeId', 'id', 'code', 'type', 'value'),
+      await createSetting
+        .mutateAsync(
+          {
+            input: {
+              setting: {
+                ...pick(values, 'nodeId', 'id', 'code', 'type', 'value'),
+              },
             },
           },
-        },
-        refetchQueries: ['getSettings'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getSettings')
+            },
+          }
+        )
         .then((res) => {
           notify({ text: 'Setting created', variant: 'success' })
           onClose()

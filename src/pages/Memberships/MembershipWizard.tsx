@@ -83,7 +83,7 @@ const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) =
 export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClose, profile, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()
-  const [updateUser] = useUpdateUserMutation()
+  const updateUser = useUpdateUserMutation()
   const [notify] = useNotification()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -104,8 +104,8 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
   } // todo test this
 
   const updateProfileValues = async (profileValues: ProfileType) => {
-    await updateUser({
-      variables: {
+    await updateUser
+      .mutateAsync({
         input: {
           id: profile.id!,
           patch: {
@@ -117,10 +117,10 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
             phoneNumber: profileValues.phoneNumber,
           },
         },
-      },
-    }).catch((error) => {
-      notify({ text: error.message, variant: 'error' })
-    })
+      })
+      .catch((error) => {
+        notify({ text: error.message, variant: 'error' })
+      })
   }
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {

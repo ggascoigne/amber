@@ -18,8 +18,8 @@ interface GameQueryProps {
 
 export const GameSelectionQuery: React.FC<GameQueryProps> = ({ year, slot, children }) => {
   const { error, data } = useGetGamesBySlotForSignupQuery({
-    variables: { year, slotId: slot },
-    fetchPolicy: 'cache-and-network',
+    year,
+    slotId: slot,
   })
   if (error) {
     return <GraphQLError error={error} />

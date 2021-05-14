@@ -19,11 +19,11 @@ export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
 }
 
 export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
-  const { loading, error, data } = useGetSingleLookupValueQuery({ variables: { realm, code } })
+  const { isLoading, error, data } = useGetSingleLookupValueQuery({ realm, code })
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading) {
+  if (isLoading) {
     return <Loader />
   }
   return <>{data?.lookups?.edges[0]?.node?.lookupValues.nodes[0]?.value}</>

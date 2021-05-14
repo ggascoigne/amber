@@ -8,6 +8,7 @@ import {
 } from 'client'
 import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
 import React, { MouseEventHandler, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilter } from 'utils'
@@ -87,7 +88,8 @@ const MemberGmPage: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
-  const [deleteGame] = useDeleteGameMutation()
+  const deleteGame = useDeleteGameMutation()
+  const queryClient = useQueryClient()
   const classes = useStyles()
   const { userId } = useUser()
   const displayGameBook = useSetting('display.game.book')
@@ -95,18 +97,13 @@ const MemberGmPage: React.FC = React.memo(() => {
   const displayDeleteButton = year === configuration.year && !displayGameBook
 
   const { error, data, refetch } = useGetGamesByYearAndAuthorQuery({
-    variables: {
-      year,
-      id: userId!,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
+    id: userId!,
   })
 
   // just kick this off now so that it's cached by the tie the user clicks the button
   useGetGamesByAuthorQuery({
-    variables: {
-      id: userId!,
-    },
+    id: userId!,
   })
 
   if (error) {
@@ -128,10 +125,18 @@ const MemberGmPage: React.FC = React.memo(() => {
   const onDelete = (instance: TableInstance<Game>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
     const updater = toDelete.map((g) =>
-      deleteGame({
-        variables: { input: { id: g.id } },
-        refetchQueries: ['getGamesByYear', 'getGamesByAuthor', 'getGamesByYearAndAuthor'],
-      })
+      deleteGame.mutateAsync(
+        {
+          input: { id: g.id },
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries('getGamesByYear')
+            queryClient.invalidateQueries('getGamesByAuthor')
+            queryClient.invalidateQueries('getGamesByYearAndAuthor')
+          },
+        }
+      )
     )
     Promise.allSettled(updater).then(() => console.log('deleted'))
   }

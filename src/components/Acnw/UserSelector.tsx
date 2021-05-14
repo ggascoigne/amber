@@ -78,11 +78,8 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
 
-  const { loading, error, data } = useGetAllUsersByQuery({
-    variables: {
-      query: searchTerm,
-    },
-    fetchPolicy: 'cache-and-network',
+  const { isLoading, error, data } = useGetAllUsersByQuery({
+    query: searchTerm,
   })
 
   useEffect(() => {
@@ -126,7 +123,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   return (
     <Autocomplete<UserType>
       id='userFilter'
-      loading={loading}
+      loading={isLoading}
       options={dropdownOptions}
       getOptionLabel={(option: UserType) => option.fullName ?? ''}
       className={classNames(classes.selector, {
