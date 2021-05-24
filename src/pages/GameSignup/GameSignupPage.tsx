@@ -1,6 +1,9 @@
 import { Button } from '@material-ui/core'
 import NavigationIcon from '@material-ui/icons/Navigation'
 import {
+  GameChoiceFieldsFragment,
+  GetGameChoicesQuery,
+  UpdateGameChoiceByNodeIdMutationVariables,
   useCreateGameChoiceMutation,
   useCreateGameChoicesMutation,
   useGetGameChoicesQuery,
@@ -37,22 +40,25 @@ import { SignupInstructions } from './SignupInstructions'
 
 export type choiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
-// const choiceFragment = gql`
-//   fragment gameChoiceFields on GameChoice {
-//     gameId
-//     id
-//     memberId
-//     nodeId
-//     rank
-//     returningPlayer
-//     slotId
-//     year
-//   }
-// `
-
 export const useEditGameChoice = () => {
   const createGameChoice = useCreateGameChoiceMutation()
-  const updateGameChoice = useUpdateGameChoiceByNodeIdMutation()
+  const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
+    onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
+      const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
+      await queryClient.cancelQueries('getGameChoices')
+      const previousData = queryClient.getQueryData<GetGameChoicesQuery>(queryKey)
+      // note that this isn't doing a deep copy, but since we're replacing the data that seems like a reasonably shortcut
+      if (previousData?.gameChoices?.nodes && input?.input?.patch) {
+        const choiceIndex = (input.input.patch.slotId! - 1) * 5 + input.input.patch.rank!
+        previousData.gameChoices.nodes[choiceIndex] = {
+          ...input.input.patch,
+          nodeId: input.input.nodeId,
+        } as GameChoiceFieldsFragment
+        queryClient.setQueryData(queryKey, () => previousData)
+      }
+      return { previousData }
+    },
+  })
   const queryClient = useQueryClient()
 
   const createGameChoices = useCreateGameChoicesMutation()
@@ -77,11 +83,6 @@ export const useEditGameChoice = () => {
 
   const createOrUpdate = async (values: choiceType, refetch = false) => {
     if (values.nodeId) {
-      // client.writeFragment({
-      //   id: `GameChoice:${values.id}`,
-      //   fragment: choiceFragment,
-      //   data: pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-      // })
       return updateGameChoice
         .mutateAsync(
           {
@@ -89,15 +90,9 @@ export const useEditGameChoice = () => {
               nodeId: values.nodeId,
               patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
             },
-            // todo: add back the optimistic update
-            // optimisticResponse: {
-            //   ...pick(values, 'id', 'nodeId', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-            //   // @ts-ignore
-            //   __typename: 'GameChoice',
-            // },
           },
           {
-            onSuccess: () => {
+            onSettled: () => {
               if (refetch) queryClient.invalidateQueries('getGameChoices')
             },
           }
@@ -116,7 +111,7 @@ export const useEditGameChoice = () => {
             },
           },
           {
-            onSuccess: () => {
+            onSettled: () => {
               queryClient.invalidateQueries('getGameChoices')
             },
           }

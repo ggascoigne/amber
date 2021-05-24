@@ -8,9 +8,19 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
+
+// Usage
+// window.toggleDevtools(true)
+
+const ReactQueryDevtoolsProduction = React.lazy(() =>
+  import('react-query/devtools/development').then((d) => ({
+    default: d.ReactQueryDevtools,
+  }))
+)
 
 // import { useAxe } from './utils/useAxe'
 
@@ -29,8 +39,14 @@ const queryClient = new QueryClient()
 
 const rootElement = document.getElementById('root')
 
-// eslint-disable-next-line arrow-body-style
 const RootComponent: React.FC = ({ children }) => {
+  const [showDevtools, setShowDevtools] = React.useState(false)
+
+  React.useEffect(() => {
+    // @ts-ignore
+    window.toggleDevtools = () => setShowDevtools((old) => !old)
+  }, [])
+
   // useAxe()
   return (
     <HelmetProvider>
@@ -43,6 +59,12 @@ const RootComponent: React.FC = ({ children }) => {
                   <html lang='en' />
                 </Helmet>
                 {children}
+                <ReactQueryDevtools />
+                {showDevtools ? (
+                  <React.Suspense fallback={null}>
+                    <ReactQueryDevtoolsProduction />
+                  </React.Suspense>
+                ) : null}
               </QueryClientProvider>
             </Auth0Provider>
           </NotificationProvider>

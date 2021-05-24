@@ -88,7 +88,7 @@ const validationSchema = Yup.object().shape({
       Yup.object().shape({
         sequencer: Yup.number().required(),
         code: Yup.string().min(2).max(50).required(),
-        value: Yup.string().min(2).max(50).required(),
+        value: Yup.string().min(2).max(255).required(),
       })
     ),
   }),
