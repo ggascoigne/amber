@@ -2942,10 +2942,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.2", "@types/react@^17.0.6":
-  version "17.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.6.tgz#0ec564566302c562bf497d73219797a5e0297013"
-  integrity sha512-u/TtPoF/hrvb63LdukET6ncaplYsvCvmkceasx8oG84/ZCsoLxz9Z/raPBP4lTAiWW1Jb889Y9svHmv8R26dWw==
+"@types/react@*", "@types/react@^17.0.2", "@types/react@^17.0.7":
+  version "17.0.7"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.7.tgz#5f2ca73d8baee8c286e96c95df557799ac0d1996"
+  integrity sha512-lBc3fY20hRFQ/pXQT2XdtmpJeXZnRH8N+WPnEzEfPTzuKmaJTA7k/xGWHBaPvKceKpbf0ZnMlLWY/0sFZ5rfkw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -9789,10 +9789,10 @@ joi@^17.1.1:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-jotai@^0.16.6:
-  version "0.16.6"
-  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.16.6.tgz#338b00fd1f9d19ece6dd31ea1c392a34522911d8"
-  integrity sha512-jXD/ZFqsnFrZhYH04PmhVhmq+kOFa1PxjkE9Woyj5fESCPYEBLV/rhf4zRlrqq5jOMgQCQaL7KlY+BsOJoyVKA==
+jotai@^0.16.7:
+  version "0.16.7"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.16.7.tgz#31bc67b5d1b5dde2bac63e0604818c06059750af"
+  integrity sha512-eD8rQffsuQanLnXWxn/7lWXsDlBw4Mw4qmb/craISnjxD1a7jZy5BLSvYFkP+CGLEflZTwd9s2UN+U1qcQPUqA==
 
 js-sha3@0.8.0:
   version "0.8.0"
@@ -13003,10 +13003,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha1-6SQ0v6XqjBn0HN/UAddBo8gZ2Jc=
 
-prettier-plugin-import-sort@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-import-sort/-/prettier-plugin-import-sort-0.0.6.tgz#c962437858ee30c85f4a8d8fe7b08a937a622b2f"
-  integrity sha512-saJ0JjaaZzZ2ZFSMrg2zXHElQujcqYko9wZwnL/Ey5GQ2omUytZwx+V3UKPe0fKtsjJZ6PqdLxGYhhWIN3SQrA==
+prettier-plugin-import-sort@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-import-sort/-/prettier-plugin-import-sort-0.0.7.tgz#b13dcc4de98940b99066a9e34606a955d109b546"
+  integrity sha512-O0KlUSq+lwvh+UiN3wZDT6wWkf7TNxTVv2/XXE5KqpRNbFJq3nRg2ftzBYFFO8QGpdWIrOB0uCTCtFjIxmVKQw==
   dependencies:
     import-sort "^6.0.0"
     import-sort-config "^6.0.0"
