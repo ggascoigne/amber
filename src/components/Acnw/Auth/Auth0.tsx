@@ -221,17 +221,20 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
     [roleOverride, user]
   )
 
-  const loginWithRedirect = useCallback((options?: RedirectLoginOptions) => auth0Client!.loginWithRedirect(options), [
-    auth0Client,
-  ])
+  const loginWithRedirect = useCallback(
+    (options?: RedirectLoginOptions) => auth0Client!.loginWithRedirect(options),
+    [auth0Client]
+  )
 
-  const getTokenSilently = useCallback((options?: GetTokenSilentlyOptions) => auth0Client!.getTokenSilently(options), [
-    auth0Client,
-  ])
+  const getTokenSilently = useCallback(
+    (options?: GetTokenSilentlyOptions) => auth0Client!.getTokenSilently(options),
+    [auth0Client]
+  )
 
-  const getIdTokenClaims = useCallback((options?: getIdTokenClaimsOptions) => auth0Client!.getIdTokenClaims(options), [
-    auth0Client,
-  ])
+  const getIdTokenClaims = useCallback(
+    (options?: getIdTokenClaimsOptions) => auth0Client!.getIdTokenClaims(options),
+    [auth0Client]
+  )
 
   const getTokenWithPopup = useCallback(
     (options?: GetTokenWithPopupOptions) => auth0Client!.getTokenWithPopup(options),

@@ -15,13 +15,12 @@ export const DateCell: React.FC<CellProps<any>> = ({
   />
 )
 
-export const getBooleanCell = (valueMapping: Record<any, string>) => ({
-  cell: { value },
-  column: { align = 'left' },
-}: CellProps<any>) => {
-  const val = valueMapping[value]
-  return <Tooltip text={val} align={align} />
-}
+export const getBooleanCell =
+  (valueMapping: Record<any, string>) =>
+  ({ cell: { value }, column: { align = 'left' } }: CellProps<any>) => {
+    const val = valueMapping[value]
+    return <Tooltip text={val} align={align} />
+  }
 
 export const YesNoCell: React.FC<CellProps<any>> = getBooleanCell({ true: 'Yes', false: 'No' })
 

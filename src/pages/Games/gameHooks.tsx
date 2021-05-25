@@ -154,9 +154,10 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
     year,
   })
 
-  const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
-    membershipData?.memberships?.nodes,
-  ])
+  const membershipList: Membership[] = useMemo(
+    () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
+    [membershipData?.memberships?.nodes]
+  )
 
   return useCallback(
     async (values: GameDialogFormValues) => {

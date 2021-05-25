@@ -33,10 +33,10 @@ export const BecomeAMember = () => {
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
 
-  const login = useCallback(async () => !isInitializing && loginWithRedirect && (await loginWithRedirect()), [
-    isInitializing,
-    loginWithRedirect,
-  ])
+  const login = useCallback(
+    async () => !isInitializing && loginWithRedirect && (await loginWithRedirect()),
+    [isInitializing, loginWithRedirect]
+  )
 
   const openMembershipDialog = () => {
     setShowMembershipForm(true)

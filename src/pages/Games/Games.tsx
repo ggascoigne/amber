@@ -151,9 +151,10 @@ const Games: React.FC = React.memo(() => {
     year,
   })
 
-  const membershipList = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
-    membershipData?.memberships?.nodes,
-  ])
+  const membershipList = useMemo(
+    () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
+    [membershipData?.memberships?.nodes]
+  )
 
   const onUpdateGmNames = useCallback(
     (instance: TableInstance<Game>) => async () => {

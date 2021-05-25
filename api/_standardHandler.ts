@@ -5,16 +5,17 @@ export type Handler = (req: NowRequest, res: NowResponse, next: (err?: any) => v
 export function combineHandlers(handlers: Array<Handler>) {
   return handlers.reduce(
     (
-      parent: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void,
-      fn: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void
-    ): ((req: NowRequest, res: NowResponse, next: (err?: any) => void) => void) => (req, res, next) => {
-      parent(req, res, (error) => {
-        if (error) {
-          return next(error)
-        }
-        fn(req, res, next)
-      })
-    },
+        parent: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void,
+        fn: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void
+      ): ((req: NowRequest, res: NowResponse, next: (err?: any) => void) => void) =>
+      (req, res, next) => {
+        parent(req, res, (error) => {
+          if (error) {
+            return next(error)
+          }
+          fn(req, res, next)
+        })
+      },
     (_req: NowRequest, _res: NowResponse, next: (err?: any) => void) => next()
   )
 }

@@ -14,17 +14,8 @@ const useStyles = makeStyles(styles)
 
 export default function CustomInput(props) {
   const classes = useStyles()
-  const {
-    formControlProps,
-    labelText,
-    id,
-    labelProps,
-    inputProps,
-    error,
-    white,
-    inputRootCustomClasses,
-    success,
-  } = props
+  const { formControlProps, labelText, id, labelProps, inputProps, error, white, inputRootCustomClasses, success } =
+    props
 
   const labelClasses = classNames({
     [' ' + classes.labelRootError]: error,

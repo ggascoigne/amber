@@ -56,9 +56,10 @@ const CleanTextField = withStyles({
     '& label.Mui-focused': {
       color: 'inherit',
     },
-    '& .MuiInput-underline:after, & .MuiInput-underline:before, & .MuiInput-underline:hover:not(.Mui-disabled):before': {
-      borderBottomColor: 'inherit',
-    },
+    '& .MuiInput-underline:after, & .MuiInput-underline:before, & .MuiInput-underline:hover:not(.Mui-disabled):before':
+      {
+        borderBottomColor: 'inherit',
+      },
   },
 })(TextField)
 

@@ -30,13 +30,15 @@ export function TableSearch<T extends Record<string, unknown>>({
     [disableGlobalFilter, globalFilter, gotoPage, setGlobalFilter]
   )
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => setVars(e.target.value || undefined), [
-    setVars,
-  ])
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setVars(e.target.value || undefined),
+    [setVars]
+  )
 
-  const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => setVars(e.target.value || undefined), [
-    setVars,
-  ])
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => setVars(e.target.value || undefined),
+    [setVars]
+  )
 
   // ensure that reset loads the new value
   useEffect(() => {

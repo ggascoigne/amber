@@ -150,38 +150,37 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     (a, b) => b.year - a.year || (a.slotId ?? 0) - (b.slotId ?? 0) || -b.name.localeCompare(a.name)
   )
 
-  const onCopyGameChange = (
-    values: GameDialogFormValues,
-    setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void
-  ) => (_: any, value: Game | null): void => {
-    if (!value) return
-    setValues({
-      ...values,
-      ...pick(
-        value,
-        'name',
-        'gmNames',
-        'description',
-        'genre',
-        'type',
-        'setting',
-        'charInstructions',
-        'playerMin',
-        'playerMax',
-        'playerPreference',
-        'returningPlayers',
-        'playersContactGm',
-        'gameContactEmail',
-        'estimatedLength',
-        'slotPreference',
-        'lateStart',
-        'lateFinish',
-        'slotConflicts',
-        'message',
-        'teenFriendly'
-      ),
-    })
-  }
+  const onCopyGameChange =
+    (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
+    (_: any, value: Game | null): void => {
+      if (!value) return
+      setValues({
+        ...values,
+        ...pick(
+          value,
+          'name',
+          'gmNames',
+          'description',
+          'genre',
+          'type',
+          'setting',
+          'charInstructions',
+          'playerMin',
+          'playerMax',
+          'playerPreference',
+          'returningPlayers',
+          'playersContactGm',
+          'gameContactEmail',
+          'estimatedLength',
+          'slotPreference',
+          'lateStart',
+          'lateFinish',
+          'slotConflicts',
+          'message',
+          'teenFriendly'
+        ),
+      })
+    }
 
   return (
     <Dialog disableBackdropClick fullWidth maxWidth='md' open={open} onClose={onClose} fullScreen={fullScreen}>

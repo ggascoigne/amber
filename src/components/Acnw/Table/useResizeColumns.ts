@@ -70,8 +70,8 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
         moveHandler: (e: MouseEvent) => dispatchMove(e.clientX),
         upEvent: 'mouseup',
         upHandler: (e: MouseEvent) => {
-          document.removeEventListener('mousemove', (handlersAndEvents.mouse.moveHandler as unknown) as EventListener)
-          document.removeEventListener('mouseup', (handlersAndEvents.mouse.upHandler as unknown) as EventListener)
+          document.removeEventListener('mousemove', handlersAndEvents.mouse.moveHandler as unknown as EventListener)
+          document.removeEventListener('mouseup', handlersAndEvents.mouse.upHandler as unknown as EventListener)
           dispatchEnd()
         },
       },
@@ -89,11 +89,11 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
         upHandler: (e: TouchEvent) => {
           document.removeEventListener(
             handlersAndEvents.touch.moveEvent,
-            (handlersAndEvents.touch.moveHandler as unknown) as EventListener
+            handlersAndEvents.touch.moveHandler as unknown as EventListener
           )
           document.removeEventListener(
             handlersAndEvents.touch.upEvent,
-            (handlersAndEvents.touch.moveHandler as unknown) as EventListener
+            handlersAndEvents.touch.moveHandler as unknown as EventListener
           )
           dispatchEnd()
         },
@@ -101,10 +101,10 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     }
 
     const events = isTouchEvent ? handlersAndEvents.touch : handlersAndEvents.mouse
-    document.addEventListener(events.moveEvent, (events.moveHandler as unknown) as EventListener, {
+    document.addEventListener(events.moveEvent, events.moveHandler as unknown as EventListener, {
       passive: false,
     })
-    document.addEventListener(events.upEvent, (events.upHandler as unknown) as EventListener, {
+    document.addEventListener(events.upEvent, events.upHandler as unknown as EventListener, {
       passive: false,
     })
 
