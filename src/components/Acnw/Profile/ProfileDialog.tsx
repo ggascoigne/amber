@@ -18,7 +18,7 @@ interface ProfileDialogProps {
 }
 
 export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, initialValues: profile }) => {
-  const [updateUser] = useUpdateUserMutation()
+  const updateUser = useUpdateUserMutation()
   const [notify] = useNotification()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -28,8 +28,8 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
   }
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
-    await updateUser({
-      variables: {
+    await updateUser
+      .mutateAsync({
         input: {
           id: profile.id!,
           patch: {
@@ -41,8 +41,7 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
             phoneNumber: values.phoneNumber,
           },
         },
-      },
-    })
+      })
       .then(() => {
         notify({ text: 'Profile updated', variant: 'success' })
         onClose()

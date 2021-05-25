@@ -2,6 +2,7 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
 import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { GraphQLError, Loader, Page, Table, useProfile } from 'components/Acnw'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useLocalStorage, useYearFilter } from 'utils'
 
@@ -145,12 +146,10 @@ const Memberships: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [showGameAssignment, setShowGameAssignment] = useState(false)
   const [selection, setSelection] = useState<Membership[]>([])
-  const [deleteMembership] = useDeleteMembershipMutation()
+  const deleteMembership = useDeleteMembershipMutation()
+  const queryClient = useQueryClient()
   const { error, data, refetch } = useGetMembershipsByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
 
   const onUpdateGameAssignments = useCallback(
@@ -198,10 +197,17 @@ const Memberships: React.FC = React.memo(() => {
   const onDelete = (instance: TableInstance<Membership>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
     const updater = toDelete.map((m) =>
-      deleteMembership({
-        variables: { input: { id: m.id } },
-        refetchQueries: ['getMembershipsByYear', 'getMembershipByYearAndId'],
-      })
+      deleteMembership.mutateAsync(
+        {
+          input: { id: m.id },
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries('getMembershipsByYear')
+            queryClient.invalidateQueries('getMembershipByYearAndId')
+          },
+        }
+      )
     )
     Promise.allSettled(updater).then(() => {
       console.log('deleted')

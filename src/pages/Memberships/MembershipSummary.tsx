@@ -31,7 +31,7 @@ const MembershipSummary: React.FC = () => {
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()
-  const { loading, error, data } = useGetMembershipByYearAndIdQuery({ variables: { year, userId: userId ?? 0 } })
+  const { isLoading, error, data } = useGetMembershipByYearAndIdQuery({ year, userId: userId ?? 0 })
   const [showEdit, setShowEdit] = useState(false)
   const classes = useStyles()
   const [showPT, setShowPT] = useState(false)
@@ -45,7 +45,7 @@ const MembershipSummary: React.FC = () => {
     return <GraphQLError error={error} />
   }
 
-  if (loading || !data) {
+  if (isLoading || !data) {
     return <Loader />
   }
   const membership = data.memberships?.nodes[0]

@@ -13,6 +13,7 @@ import Acnw, {
 } from 'components/Acnw'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
+import { useQueryClient } from 'react-query'
 import { onCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -51,8 +52,10 @@ type GameChoiceConfirmationEmail = {
 }
 
 export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
-  const [createGameSubmission] = useCreateGameSubmissionMutation()
-  const [updateGameSubmission] = useUpdateGameSubmissionByNodeIdMutation()
+  const createGameSubmission = useCreateGameSubmissionMutation()
+  const updateGameSubmission = useUpdateGameSubmissionByNodeIdMutation()
+  const queryClient = useQueryClient()
+
   const [notify] = useNotification()
   const [sendEmail] = useSendEmail()
   const profile = useProfile()
@@ -82,17 +85,22 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
 
   return async (values: FormValues, year: number, gameChoiceDetails: Record<number, SlotSummary>) => {
     if (values.nodeId) {
-      await updateGameSubmission({
-        variables: {
-          input: {
-            nodeId: values.nodeId,
-            patch: {
-              ...pick(values, 'id', 'year', 'memberId', 'message'),
+      await updateGameSubmission
+        .mutateAsync(
+          {
+            input: {
+              nodeId: values.nodeId,
+              patch: {
+                ...pick(values, 'id', 'year', 'memberId', 'message'),
+              },
             },
           },
-        },
-        refetchQueries: ['getGameChoices'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getGameChoices')
+            },
+          }
+        )
         .then(() => {
           notify({ text: 'Game Submission updated', variant: 'success' })
           onClose()
@@ -101,16 +109,21 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
           notify({ text: error.message, variant: 'error' })
         })
     } else {
-      await createGameSubmission({
-        variables: {
-          input: {
-            gameSubmission: {
-              ...pick(values, 'nodeId', 'id', 'year', 'memberId', 'message'),
+      await createGameSubmission
+        .mutateAsync(
+          {
+            input: {
+              gameSubmission: {
+                ...pick(values, 'nodeId', 'id', 'year', 'memberId', 'message'),
+              },
             },
           },
-        },
-        refetchQueries: ['getGameChoices'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getGameChoices')
+            },
+          }
+        )
         .then(() => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })
           sendGameChoiceConfirmation({ gameChoiceDetails, year, profile, message: values.message })

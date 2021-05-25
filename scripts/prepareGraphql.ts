@@ -9,6 +9,9 @@ import { createPostGraphileSchema } from 'postgraphile'
 import { getPool, getSchemas } from '../shared/config'
 import { options } from '../shared/postgraphileOptions'
 
+// Download the schema for codegen, also (and as importantly), save the
+// postgraphile cache to speed the lambda  startup time (a lot).
+
 async function main() {
   cli.action.start('transforming postgraphile schema')
   const pgPool = getPool('./shared/')

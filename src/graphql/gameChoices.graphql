@@ -23,7 +23,7 @@ mutation createGameChoices($year: Int!, $memberId: Int!) {
   }
 }
 
-query GetGameChoices($year: Int!, $memberId: Int!) {
+query getGameChoices($year: Int!, $memberId: Int!) {
   gameSubmissions(condition: { memberId: $memberId, year: $year }) {
     nodes {
       ...gameSubmissionFields

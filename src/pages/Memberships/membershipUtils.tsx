@@ -6,6 +6,7 @@ import {
 } from 'client'
 import { useNotification } from 'components/Acnw'
 import { ProfileType } from 'components/Acnw/Profile'
+import { useQueryClient } from 'react-query'
 import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -68,8 +69,9 @@ export const membershipValidationSchema = Yup.object().shape({
 })
 
 export const useEditMembership = (onClose: onCloseHandler) => {
-  const [createMembership] = useCreateMembershipMutation()
-  const [updateMembership] = useUpdateMembershipByNodeIdMutation()
+  const createMembership = useCreateMembershipMutation()
+  const updateMembership = useUpdateMembershipByNodeIdMutation()
+  const queryClient = useQueryClient()
   const [notify] = useNotification()
   const [sendEmail] = useSendEmail()
   const sendAdminEmail = useSetting('send.admin.email')
@@ -102,17 +104,22 @@ export const useEditMembership = (onClose: onCloseHandler) => {
 
   return async (membershipValues: MembershipType, profile: ProfileType) => {
     if (membershipValues.nodeId) {
-      await updateMembership({
-        variables: {
-          input: {
-            nodeId: membershipValues.nodeId,
-            patch: {
-              ...fromMembershipValues(membershipValues),
+      await updateMembership
+        .mutateAsync(
+          {
+            input: {
+              nodeId: membershipValues.nodeId,
+              patch: {
+                ...fromMembershipValues(membershipValues),
+              },
             },
           },
-        },
-        refetchQueries: ['getMembershipsByYear'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getMembershipsByYear')
+            },
+          }
+        )
         .then(() => {
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates
@@ -125,21 +132,31 @@ export const useEditMembership = (onClose: onCloseHandler) => {
           notify({ text: error.message, variant: 'error' })
         })
     } else {
-      await createMembership({
-        variables: {
-          input: {
-            membership: {
-              ...fromMembershipValues(membershipValues),
+      await createMembership
+        .mutateAsync(
+          {
+            input: {
+              membership: {
+                ...fromMembershipValues(membershipValues),
+              },
             },
           },
-        },
-        refetchQueries: ['getMembershipsByYear', 'getMembershipByYearAndId'],
-      })
+          {
+            onSuccess: () => {
+              queryClient.invalidateQueries('getMembershipsByYear')
+              queryClient.invalidateQueries('getMembershipByYearAndId')
+            },
+          }
+        )
         .then((res) => {
-          const membershipId = res.data?.createMembership?.membership?.id
-          notify({ text: 'Membership created', variant: 'success' })
-          sendMembershipConfirmation(membershipId!, profile, membershipValues)
-          onClose()
+          const membershipId = res?.createMembership?.membership?.id
+          if (membershipId) {
+            notify({ text: 'Membership created', variant: 'success' })
+            sendMembershipConfirmation(membershipId, profile, membershipValues)
+            onClose()
+          } else {
+            notify({ text: 'Membership creation failed', variant: 'error' })
+          }
         })
         .catch((error) => {
           notify({ text: error.message, variant: 'error' })

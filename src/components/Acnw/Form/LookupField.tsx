@@ -12,11 +12,11 @@ export interface LookupFieldProps extends TextFieldProps {
 
 export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   const { select, realm, ...rest } = props
-  const { loading, error, data } = useGetLookupValuesQuery({ variables: { realm } })
+  const { isLoading, error, data } = useGetLookupValuesQuery({ realm })
   if (error) {
     return <GraphQLError error={error} />
   }
-  if (loading) {
+  if (isLoading) {
     return <Loader />
   }
   const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({

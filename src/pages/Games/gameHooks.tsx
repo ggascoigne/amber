@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import { useQueryClient } from 'react-query'
 
 import {
   GameAssignmentFieldsFragment,
@@ -38,13 +39,11 @@ export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGam
 export const useUpdateGameAssignment = () => {
   const [year] = useYearFilter()
   const [notify] = useNotification()
-  const [createGameAssignment] = useCreateGameAssignmentMutation()
-  const [deleteGameAssignment] = useDeleteGameAssignmentMutation()
+  const createGameAssignment = useCreateGameAssignmentMutation()
+  const deleteGameAssignment = useDeleteGameAssignmentMutation()
+  const queryClient = useQueryClient()
   const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
 
   const getKnownNames = (gmNames: string | null | undefined, membershipList: Membership[]) => {
@@ -89,7 +88,7 @@ export const useUpdateGameAssignment = () => {
         const updaters: Promise<any>[] = []
         oldAssignments.forEach((oldAssignment) => {
           updaters.push(
-            deleteGameAssignment({ variables: { input: { nodeId: oldAssignment.nodeId } } }).catch((error) => {
+            deleteGameAssignment.mutateAsync({ input: { nodeId: oldAssignment.nodeId } }).catch((error) => {
               notify({ text: error.message, variant: 'error' })
             })
           )
@@ -100,27 +99,34 @@ export const useUpdateGameAssignment = () => {
       const updaters: Promise<any>[] = []
       gmMemberships.forEach((m, index) => {
         updaters.push(
-          createGameAssignment({
-            variables: {
-              input: {
-                gameAssignment: {
-                  gameId,
-                  memberId: m.id,
-                  gm: -(index + 1),
-                  year,
+          createGameAssignment
+            .mutateAsync(
+              {
+                input: {
+                  gameAssignment: {
+                    gameId,
+                    memberId: m.id,
+                    gm: -(index + 1),
+                    year,
+                  },
                 },
               },
-            },
-            refetchQueries: ['getGameAssignmentsByYear', ...gameQueries],
-          }).catch((error) => {
-            console.log(`error = ${JSON.stringify(error, null, 2)}`)
-            if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
-          })
+              {
+                onSuccess: () => {
+                  queryClient.invalidateQueries('getGameAssignmentsByYear')
+                  gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+                },
+              }
+            )
+            .catch((error) => {
+              console.log(`error = ${JSON.stringify(error, null, 2)}`)
+              if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
+            })
         )
       })
       await Promise.allSettled(updaters)
     },
-    [createGameAssignment, deleteGameAssignment, gameAssignmentData, notify, year]
+    [createGameAssignment, deleteGameAssignment, gameAssignmentData, notify, queryClient, year]
   )
 }
 
@@ -132,8 +138,9 @@ export type GameDialogFormValues = Omit<
   Partial<Node>
 
 export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogFormValues) => {
-  const [createGame] = useCreateGameMutation()
-  const [updateGame] = useUpdateGameByNodeIdMutation()
+  const createGame = useCreateGameMutation()
+  const updateGame = useUpdateGameByNodeIdMutation()
+  const queryClient = useQueryClient()
   const [notify] = useNotification()
   const [sendEmail] = useSendEmail()
   const profile = useProfile()
@@ -144,10 +151,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
   const [year] = useYearFilter()
   const setGameGmAssignments = useUpdateGameAssignment()
   const { data: membershipData } = useGetMembershipsByYearQuery({
-    variables: {
-      year,
-    },
-    fetchPolicy: 'cache-and-network',
+    year,
   })
 
   const membershipList: Membership[] = useMemo(() => membershipData?.memberships?.nodes.filter(notEmpty) ?? [], [
@@ -199,17 +203,22 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
       )
 
       if (values.nodeId) {
-        await updateGame({
-          variables: {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...fields,
+        await updateGame
+          .mutateAsync(
+            {
+              input: {
+                nodeId: values.nodeId,
+                patch: {
+                  ...fields,
+                },
               },
             },
-          },
-          refetchQueries: gameQueries,
-        })
+            {
+              onSuccess: () => {
+                gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+              },
+            }
+          )
           .then(async () => {
             await setGameGmAssignments(values.id!, values.gmNames, membershipList)
             notify({ text: 'Game updated', variant: 'success' })
@@ -223,20 +232,25 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             notify({ text: error.message, variant: 'error' })
           })
       } else {
-        await createGame({
-          variables: {
-            input: {
-              game: {
-                ...fields,
-                year: configuration.year,
-                authorId: userId,
+        await createGame
+          .mutateAsync(
+            {
+              input: {
+                game: {
+                  ...fields,
+                  year: configuration.year,
+                  authorId: userId,
+                },
               },
             },
-          },
-          refetchQueries: gameQueries,
-        })
+            {
+              onSuccess: () => {
+                gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+              },
+            }
+          )
           .then(async (res) => {
-            const gameId = res.data?.createGame?.game?.id
+            const gameId = res?.createGame?.game?.id
             gameId && (await setGameGmAssignments(gameId, values.gmNames, membershipList))
             notify({ text: 'Game created', variant: 'success' })
             sendGameConfirmation(profile!, values)
@@ -253,6 +267,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
       notify,
       onClose,
       profile,
+      queryClient,
       sendEmail,
       setGameGmAssignments,
       shouldSendEmail,

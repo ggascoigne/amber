@@ -12,11 +12,15 @@ const GameChoiceSummary: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
 
-  const { error, data } = useGetGameChoicesQuery({
-    variables: { year, memberId: membership?.id ?? 0 },
-    skip: !membership,
-    fetchPolicy: 'cache-and-network',
-  })
+  const { error, data } = useGetGameChoicesQuery(
+    {
+      year,
+      memberId: membership?.id ?? 0,
+    },
+    {
+      enabled: !!membership,
+    }
+  )
 
   const gameChoices = data?.gameChoices?.nodes
   const gameSubmission = data?.gameSubmissions?.nodes

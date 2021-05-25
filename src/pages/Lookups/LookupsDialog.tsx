@@ -88,7 +88,7 @@ const validationSchema = Yup.object().shape({
       Yup.object().shape({
         sequencer: Yup.number().required(),
         code: Yup.string().min(2).max(50).required(),
-        value: Yup.string().min(2).max(50).required(),
+        value: Yup.string().min(2).max(255).required(),
       })
     ),
   }),
@@ -98,88 +98,77 @@ const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'Look
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const classes = useStyles()
-  const [createLookup] = useCreateLookupMutation()
-  const [updateLookup] = useUpdateLookupByNodeIdMutation()
-  const [createLookupValue] = useCreateLookupValueMutation()
-  const [updateLookupValue] = useUpdateLookupValueByNodeIdMutation()
-  const [deleteLookupValue] = useDeleteLookupValueMutation()
+  const createLookup = useCreateLookupMutation()
+  const updateLookup = useUpdateLookupByNodeIdMutation()
+  const createLookupValue = useCreateLookupValueMutation()
+  const updateLookupValue = useUpdateLookupValueByNodeIdMutation()
+  const deleteLookupValue = useDeleteLookupValueMutation()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const res = values.nodeId
-      ? await updateLookup({
-          variables: {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                realm: values.realm,
-              },
+      ? await updateLookup.mutateAsync({
+          input: {
+            nodeId: values.nodeId,
+            patch: {
+              realm: values.realm,
             },
           },
         })
-      : await createLookup({
-          variables: {
-            input: {
-              lookup: {
-                realm: values.realm,
-                codeType: 'string',
-                internationalize: false,
-                valueType: 'string',
-                ordering: 'sequencer',
-              },
+      : await createLookup.mutateAsync({
+          input: {
+            lookup: {
+              realm: values.realm,
+              codeType: 'string',
+              internationalize: false,
+              valueType: 'string',
+              ordering: 'sequencer',
             },
           },
         })
 
-    const isCreateLookup = (value: typeof res.data): value is CreateLookupMutation =>
-      value!.hasOwnProperty('createLookup')
+    const isCreateLookup = (value: typeof res): value is CreateLookupMutation => value.hasOwnProperty('createLookup')
 
-    if (!res.data) {
+    if (!res) {
       return
     }
-    if (isCreateLookup(res.data) && !res.data.createLookup) {
+    if (isCreateLookup(res) && !res.createLookup) {
       return
     }
-    if (!isCreateLookup(res.data) && !res.data.updateLookupByNodeId) {
+    if (!isCreateLookup(res) && !res.updateLookupByNodeId) {
       return
     }
 
-    const lookupId = isCreateLookup(res.data)
-      ? res.data.createLookup?.lookup?.id
-      : res.data.updateLookupByNodeId?.lookup?.id
+    const lookupId = isCreateLookup(res) ? res.createLookup?.lookup?.id : res.updateLookupByNodeId?.lookup?.id
 
     const updaters = values.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
       if (lv) {
         if (lv.nodeId) {
           acc.push(
-            updateLookupValue({
-              variables: {
-                input: {
-                  nodeId: lv.nodeId,
-                  patch: {
-                    code: lv.code,
-                    sequencer: lv.sequencer,
-                    value: lv.value,
-                    lookupId,
-                  },
+            updateLookupValue.mutateAsync({
+              input: {
+                nodeId: lv.nodeId,
+                patch: {
+                  code: lv.code,
+                  sequencer: lv.sequencer,
+                  value: lv.value,
+                  lookupId,
                 },
               },
             })
           )
         } else {
           acc.push(
-            createLookupValue({
-              variables: {
-                input: {
-                  lookupValue: {
-                    code: lv.code,
-                    sequencer: lv.sequencer,
-                    value: lv.value,
-                    lookupId: lookupId!,
-                    numericSequencer: 0.0,
-                    stringSequencer: '_',
-                  },
+            createLookupValue.mutateAsync({
+              input: {
+                lookupValue: {
+                  code: lv.code,
+                  sequencer: lv.sequencer,
+                  value: lv.value,
+                  lookupId: lookupId!,
+                  numericSequencer: 0.0,
+                  stringSequencer: '_',
                 },
               },
             })
@@ -197,7 +186,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     initialValues.lookupValues.nodes.map((ilv) => {
       if (ilv?.id) {
         currentLookupValueIds.includes(ilv.id) ||
-          updaters.push(deleteLookupValue({ variables: { input: { id: ilv.id } } }))
+          updaters.push(deleteLookupValue.mutateAsync({ input: { id: ilv.id } }))
       }
       return null
     })
