@@ -51,7 +51,7 @@ import {
   useStyles,
 } from './TableStyles'
 import { Command, TableToolbar } from './TableToolbar'
-import { TooltipCell } from './TooltipCell'
+import { TooltipCellRenderer } from './TooltipCellRenderer'
 import { useInitialTableState } from './useInitialTableState'
 
 // import { useFlexLayout } from './useFlexLayout'
@@ -196,7 +196,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       // disableFilter: true,
       // disableGroupBy: true,
       Filter: DefaultColumnFilter,
-      Cell: TooltipCell,
+      Cell: TooltipCellRenderer,
       Header: DefaultHeader,
       aggregate: 'uniqueCount',
       Aggregated: ({ cell: { value } }: CellProps<T>) => `${value} Unique Values`,
