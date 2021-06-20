@@ -1,5 +1,5 @@
 import NavigationIcon from '@material-ui/icons/Navigation'
-import { ExpandingFab, GameListFull, GameListNavigator, Page } from 'components/Acnw'
+import { ExpandingFab, GameListFull, GameListNavigator, Page } from 'components'
 import React from 'react'
 import { useGameScroll, useGameUrl } from 'utils'
 

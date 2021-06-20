@@ -1,8 +1,8 @@
 ///<reference types="webpack-env" />
-import 'assets/css/material-kit-react.css'
+// import 'assets/css/material-kit-react.css'
 import 'react-app-polyfill/ie11'
 
-import { Auth0Provider, NotificationProvider } from 'components/Acnw'
+import { Auth0Provider, NotificationProvider } from 'components'
 import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'

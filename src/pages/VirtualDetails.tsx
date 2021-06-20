@@ -1,10 +1,7 @@
-import { Loader, Page } from 'components/Acnw'
+import { Loader, Page, useAuth } from 'components'
 import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
-
-import { useAuth } from '../components/Acnw/Auth/Auth0'
-import { useGetSettingValue, useSettings } from '../utils'
-import { useForceLogin } from '../utils/useForceLogin'
+import { useForceLogin, useGetSettingValue, useSettings } from 'utils'
 
 const VirtualDetails = () => {
   const forceLogin = useForceLogin()

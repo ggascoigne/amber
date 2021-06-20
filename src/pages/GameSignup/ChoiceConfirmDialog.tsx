@@ -1,8 +1,7 @@
-import { Button, Dialog, DialogActions, useTheme } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from 'client'
-import Acnw, {
+import {
+  Acnw,
   DialogTitle,
   GridContainer,
   GridItem,
@@ -10,7 +9,7 @@ import Acnw, {
   TextField,
   useNotification,
   useProfile,
-} from 'components/Acnw'
+} from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from 'react-query'

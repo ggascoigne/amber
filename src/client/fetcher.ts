@@ -1,7 +1,6 @@
+import { useAuth } from 'components'
 import { print } from 'graphql'
 import gql from 'graphql-tag'
-
-import { useAuth } from '../components/Acnw/Auth'
 
 export const useFetchData = <TData, TVariables>(query: string): (() => Promise<TData>) => {
   const authProps = useAuth()

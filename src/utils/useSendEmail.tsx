@@ -1,8 +1,6 @@
+import { useNotification, useToken } from 'components'
 import fetch from 'isomorphic-fetch'
 import { useCallback } from 'react'
-
-import { useToken } from '../components/Acnw/Auth/Auth0'
-import { useNotification } from '../components/Acnw/Notifications'
 
 export const useSendEmail = () => {
   const [jwtToken] = useToken()

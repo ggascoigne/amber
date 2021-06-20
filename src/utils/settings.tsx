@@ -1,8 +1,7 @@
+import { Perms, useAuth } from 'components'
 import { useCallback } from 'react'
 
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
-import { useAuth } from '../components/Acnw/Auth/Auth0'
-import { Perms } from '../components/Acnw/Auth/PermissionRules'
 import { useIsGm, useIsMember } from './membership'
 import { notEmpty } from './ts-utils'
 

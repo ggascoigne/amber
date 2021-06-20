@@ -1,12 +1,16 @@
-import { DialogContentText, FormControlLabel, FormGroup, Switch, createStyles, makeStyles } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
-import { CheckboxWithLabel, ConfigDate, GridContainer, GridItem, TextField } from 'components/Acnw'
+import {
+  DialogContent,
+  DialogContentText,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  createStyles,
+  makeStyles,
+  useTheme,
+} from '@material-ui/core'
+import { CheckboxWithLabel, ConfigDate, GridContainer, GridItem, HasPermission, Perms, TextField } from 'components'
 import React, { useState } from 'react'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
-
-import { dangerColor } from '../../assets/jss/material-kit-react'
-import { HasPermission } from '../../components/Acnw/Auth/HasPermission'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -28,13 +32,14 @@ type MembershipFormContent = {
 
 export const MembershipStep: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const classes = useStyles()
+  const theme = useTheme()
   const [showPT, setShowPT] = useState(false)
 
   return (
     <>
       <DialogContent>
         <HasPermission permission={Perms.IsAdmin}>
-          <DialogContentText style={{ color: dangerColor }}>Admin Mode</DialogContentText>
+          <DialogContentText style={{ color: theme.palette.error.main }}>Admin Mode</DialogContentText>
         </HasPermission>
         <DialogContentText>
           Please select the slots you <strong>intend</strong> to play. To make sure each slot has coverage for every

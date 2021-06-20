@@ -1,11 +1,11 @@
 import { useDeleteLookupMutation, useDeleteLookupValueMutation, useGetLookupsQuery } from 'client'
-import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
+import { GraphQLError, Loader, Page, Table } from 'components'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import type { Column, Row, TableInstance } from 'react-table'
+import { notEmpty } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
-import { notEmpty } from '../../utils'
 import { LookupsDialog } from './LookupsDialog'
 import type { LookupAndValues } from './types'
 

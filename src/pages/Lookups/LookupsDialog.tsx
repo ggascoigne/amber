@@ -13,19 +13,11 @@ import {
   Typography,
   createStyles,
   makeStyles,
+  useMediaQuery,
   useTheme,
 } from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { DialogTitle, GridContainer, GridItem, TextField } from 'components/Acnw'
-import Card from 'components/MaterialKitReact/Card/Card'
-import CardBody from 'components/MaterialKitReact/Card/CardBody'
-import CardHeader from 'components/MaterialKitReact/Card/CardHeader'
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
-import * as React from 'react'
-import Yup from 'utils/Yup'
-
 import {
   CreateLookupMutation,
   Node,
@@ -34,7 +26,12 @@ import {
   useDeleteLookupValueMutation,
   useUpdateLookupByNodeIdMutation,
   useUpdateLookupValueByNodeIdMutation,
-} from '../../client'
+} from 'client'
+import { Card, CardBody, CardHeader, DialogTitle, GridContainer, GridItem, TextField } from 'components'
+import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import * as React from 'react'
+import Yup from 'utils/Yup'
+
 import type { LookupAndValues } from './types'
 
 const useStyles = makeStyles((theme: Theme) =>

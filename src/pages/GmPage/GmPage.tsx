@@ -6,7 +6,7 @@ import {
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
 } from 'client'
-import { GraphQLError, Loader, Page, Table } from 'components/Acnw'
+import { GraphQLError, Loader, Page, Table } from 'components'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'

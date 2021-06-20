@@ -1,5 +1,5 @@
 import { useGetSmallGamesByYearQuery } from 'client'
-import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components/Acnw'
+import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components'
 import range from 'lodash/range'
 import React from 'react'
 import { Link } from 'react-router-dom'

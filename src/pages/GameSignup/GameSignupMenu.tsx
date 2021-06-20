@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core'
 import { useGetGameChoicesQuery } from 'client'
-import { GraphQLError, Loader } from 'components/Acnw'
-import { GameMenu } from 'components/Acnw/GameList'
+import { GameMenu, GraphQLError, Loader } from 'components'
 import React from 'react'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from 'utils'
 

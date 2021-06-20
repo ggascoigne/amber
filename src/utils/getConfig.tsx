@@ -1,7 +1,6 @@
+import { useToken } from 'components'
 import fetch from 'isomorphic-fetch'
 import { useCallback, useState } from 'react'
-
-import { useToken } from '../components/Acnw/Auth/Auth0'
 
 export type DbConfig = {
   database: string

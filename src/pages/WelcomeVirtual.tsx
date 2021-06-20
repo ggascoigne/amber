@@ -1,15 +1,9 @@
-import { Button, Card } from '@material-ui/core'
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
-import { dangerColor } from 'assets/jss/material-kit-react'
-import Acnw, { ConfigDate } from 'components/Acnw'
-import { Banner } from 'components/Acnw/Banner'
-import { Page } from 'components/Acnw/Page'
+import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
+import { Acnw, Banner, CardBody, ConfigDate, Page } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { IsMember } from 'utils/membership'
 
-import CardBody from '../components/MaterialKitReact/Card/CardBody'
 import { useSetting } from '../utils'
 import { BecomeAMember } from './Memberships'
 
@@ -20,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     deadline: {},
     deadlineExpired: {
-      color: dangerColor,
+      color: theme.palette.error.main,
       '&:after': {
         content: '" - date passed"',
       },
@@ -49,6 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const WelcomeVirtual: React.FC = () => {
   const isBeta = useSetting('display.test.warning')
+  const theme = useTheme()
+
   const classes = useStyles()
   return (
     <Page title='Welcome'>
@@ -59,7 +55,7 @@ export const WelcomeVirtual: React.FC = () => {
         <>
           <Card className={classes.betaCard} elevation={3}>
             <CardBody className={classes.card}>
-              <h2 style={{ color: dangerColor }}>Beta</h2>
+              <h2 style={{ color: theme.palette.error.main }}>Beta</h2>
               <p>
                 This version of the site is a work in progress. All changes should be considered temporary and are very
                 likely to get rolled back.

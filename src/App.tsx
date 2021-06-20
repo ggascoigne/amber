@@ -7,46 +7,13 @@ import {
   ListItem,
   MuiThemeProvider,
   Theme,
-  createMuiTheme,
   createStyles,
   makeStyles,
 } from '@material-ui/core'
-import { defaultFont } from 'assets/jss/material-kit-react'
-import { Banner } from 'components/Acnw/Banner'
-import { Footer } from 'components/Acnw/Footer'
-import { LoginMenu } from 'components/Acnw/LoginMenu'
-import { MenuItems, SelectedContent, rootRoutes } from 'components/Acnw/Navigation'
+import { Banner, Footer, LoginMenu, MenuItems, SelectedContent, rootRoutes } from 'components'
 import React, { useCallback, useState } from 'react'
 
-import { Header } from './components/Acnw'
-
-const theme = createMuiTheme({
-  palette: {
-    background: {
-      default: '#fafafa',
-    },
-  },
-  typography: {
-    body2: {
-      fontWeight: 400,
-    },
-    fontSize: 12.5, // 14 looks too chunky
-  },
-  overrides: {
-    MuiTableSortLabel: {
-      root: {
-        '&:hover': {
-          color: 'inherit',
-        },
-      },
-    },
-    MuiDialogActions: {
-      root: {
-        padding: '8px 24px',
-      },
-    },
-  },
-})
+import { Header, theme } from './components'
 
 const drawerWidth = 240
 
@@ -108,7 +75,6 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingBottom: theme.spacing(3),
     },
     list: {
-      ...defaultFont,
       fontSize: '14px',
       margin: 0,
       paddingLeft: '0',

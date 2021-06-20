@@ -1,8 +1,6 @@
 import { List, ListItem } from '@material-ui/core'
-import { Page } from 'components/Acnw/Page'
+import { AuthenticatedDownloadButton, Page } from 'components'
 import React from 'react'
-
-import { AuthenticatedDownloadButton } from '../components/Acnw/AuthenticatedDownloadButton'
 
 const Reports = () => (
   <Page title='Reports'>

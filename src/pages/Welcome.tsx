@@ -1,13 +1,8 @@
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
-import { dangerColor } from 'assets/jss/material-kit-react'
-import Acnw, { ConfigDate } from 'components/Acnw'
-import { Banner } from 'components/Acnw/Banner'
-import { Page } from 'components/Acnw/Page'
+import { Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Acnw, Banner, ConfigDate, Page } from 'components'
+import { IsNotLoggedIn } from 'components/Auth'
 import React from 'react'
-
-import { IsNotLoggedIn } from '../components/Acnw/Auth/HasPermission'
-import { IsMember, IsNotMember } from '../utils/membership'
+import { IsMember, IsNotMember } from 'utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     deadline: {},
     deadlineExpired: {
-      color: dangerColor,
+      color: theme.palette.error.main,
       '&:after': {
         content: '" - date passed"',
       },

@@ -1,15 +1,13 @@
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
-import { Page } from 'components/Acnw/Page'
+import { Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Page } from 'components'
 import React from 'react'
 
-import { dangerColor } from '../assets/jss/material-kit-react'
 import { configuration } from '../utils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     red: {
-      color: dangerColor,
+      color: theme.palette.error.main,
     },
   })
 )

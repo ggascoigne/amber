@@ -1,4 +1,4 @@
-import { useAuth } from 'components/Acnw/Auth/Auth0'
+import { useAuth } from 'components'
 import { atom, useAtom } from 'jotai'
 import { useMemo } from 'react'
 

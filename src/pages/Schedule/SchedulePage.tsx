@@ -1,15 +1,19 @@
 import Button from '@material-ui/core/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
-import { GameCard, GraphQLError, Loader, Page } from 'components/Acnw'
-import { useAuth } from 'components/Acnw/Auth/Auth0'
-import { HasPermission } from 'components/Acnw/Auth/HasPermission'
-import { Perms } from 'components/Acnw/Auth/PermissionRules'
+import { GameCard, GraphQLError, HasPermission, Loader, Page, Perms, useAuth } from 'components'
 import React, { createRef, useEffect, useMemo, useState } from 'react'
-import { SettingValue, getSlotTimes, notEmpty, useGetMemberShip, useGetSettingValue, useUser } from 'utils'
-import { getGameAssignments } from 'utils/gameAssignment'
-import { useForceLogin } from 'utils/useForceLogin'
-
-import { ICalEvent, buildUrl } from '../../utils/ical'
+import {
+  ICalEvent,
+  SettingValue,
+  buildUrl,
+  getGameAssignments,
+  getSlotTimes,
+  notEmpty,
+  useForceLogin,
+  useGetMemberShip,
+  useGetSettingValue,
+  useUser,
+} from 'utils'
 
 type GameSummaryProps = {
   gas: GameAssignmentNode

@@ -1,6 +1,11 @@
-import { Button, Dialog, DialogActions, useTheme } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
+import {
+  GameAssignmentNode,
+  useCreateGameAssignmentMutation,
+  useDeleteGameAssignmentMutation,
+  useGetGamesByYearQuery,
+  useGetScheduleQuery,
+} from 'client'
 import {
   DialogTitle,
   GraphQLError,
@@ -10,21 +15,13 @@ import {
   SelectField,
   TextField,
   useNotification,
-} from 'components/Acnw'
+} from 'components'
 import { dequal as deepEqual } from 'dequal'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from 'react-query'
-import { notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
+import { getGameAssignments, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
-import {
-  GameAssignmentNode,
-  useCreateGameAssignmentMutation,
-  useDeleteGameAssignmentMutation,
-  useGetGamesByYearQuery,
-  useGetScheduleQuery,
-} from '../../client'
-import { getGameAssignments } from '../../utils/gameAssignment'
 import { MembershipType, membershipValidationSchema } from './membershipUtils'
 
 type GameAssignmentEditNode = GameAssignmentNode

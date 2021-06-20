@@ -1,4 +1,4 @@
-import Acnw, { Page } from 'components/Acnw'
+import { Acnw, Page } from 'components'
 import React from 'react'
 
 const Faq = () => (

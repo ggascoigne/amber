@@ -1,6 +1,5 @@
-import { Button, Dialog, DialogActions, useTheme } from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { DialogTitle, ProfileType, useAuth } from 'components/Acnw'
+import { Button, Dialog, DialogActions, useMediaQuery, useTheme } from '@material-ui/core'
+import { DialogTitle, ProfileType, useAuth } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { onCloseHandler, useUser } from 'utils'

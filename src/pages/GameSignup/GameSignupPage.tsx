@@ -9,9 +9,7 @@ import {
   useGetGameChoicesQuery,
   useUpdateGameChoiceByNodeIdMutation,
 } from 'client'
-import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page } from 'components/Acnw'
-import { useAuth } from 'components/Acnw/Auth/Auth0'
-import { Perms } from 'components/Acnw/Auth/PermissionRules'
+import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page, Perms, useAuth } from 'components'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { useQueryClient } from 'react-query'

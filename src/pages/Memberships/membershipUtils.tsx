@@ -4,14 +4,10 @@ import {
   useCreateMembershipMutation,
   useUpdateMembershipByNodeIdMutation,
 } from 'client'
-import { useNotification } from 'components/Acnw'
-import { ProfileType } from 'components/Acnw/Profile'
+import { Perms, ProfileType, useAuth, useNotification } from 'components'
 import { useQueryClient } from 'react-query'
 import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
-
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
 
 export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
   Partial<{ id: number }> &

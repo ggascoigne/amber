@@ -1,9 +1,7 @@
-import { DialogContentText } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
+import { DialogContent, DialogContentText } from '@material-ui/core'
+import { Acnw, ConfigDate } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
-
-import Acnw, { ConfigDate } from '../../components/Acnw'
 
 export const IntroStep: React.FC = () => (
   <>

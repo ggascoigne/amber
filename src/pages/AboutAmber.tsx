@@ -1,4 +1,4 @@
-import { Page } from 'components/Acnw/Page'
+import { Page } from 'components'
 import React from 'react'
 
 const AboutAmber = () => (

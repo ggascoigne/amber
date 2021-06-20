@@ -1,6 +1,5 @@
-import { DialogContentText, createStyles, makeStyles } from '@material-ui/core'
-import DialogContent from '@material-ui/core/DialogContent'
-import Acnw from 'components/Acnw'
+import { DialogContent, DialogContentText, createStyles, makeStyles } from '@material-ui/core'
+import { Acnw } from 'components'
 import React from 'react'
 
 const useStyles = makeStyles(() =>

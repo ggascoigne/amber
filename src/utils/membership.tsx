@@ -1,4 +1,4 @@
-import { useAuth } from 'components/Acnw/Auth/Auth0'
+import { useAuth } from 'components'
 import React from 'react'
 
 import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'

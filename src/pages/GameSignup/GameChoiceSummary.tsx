@@ -1,10 +1,9 @@
 import { useGetGameChoicesQuery } from 'client'
-import Acnw, { GraphQLError, Loader, Page } from 'components/Acnw'
+import { Acnw, Field, GraphQLError, Loader, MultiLine, Page } from 'components'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { useGameUrl, useGetMemberShip, useUser } from 'utils'
 
-import { Field, MultiLine } from '../../components/Acnw/CardUtils'
 import { ChoiceSummary } from './SlotDetails'
 
 const GameChoiceSummary: React.FC = () => {

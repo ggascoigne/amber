@@ -1,6 +1,3 @@
-import { useCallback, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
-
 import {
   GameAssignmentFieldsFragment,
   GameFieldsFragment,
@@ -13,20 +10,11 @@ import {
   useGetGameAssignmentsByYearQuery,
   useGetMembershipsByYearQuery,
   useUpdateGameByNodeIdMutation,
-} from '../../client'
-import { ProfileType, useNotification, useProfile } from '../../components/Acnw'
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
-import {
-  configuration,
-  notEmpty,
-  onCloseHandler,
-  pick,
-  useSendEmail,
-  useSetting,
-  useUser,
-  useYearFilter,
-} from '../../utils'
+} from 'client'
+import { Perms, ProfileType, useAuth, useNotification, useProfile } from 'components'
+import { useCallback, useMemo } from 'react'
+import { useQueryClient } from 'react-query'
+import { configuration, notEmpty, onCloseHandler, pick, useSendEmail, useSetting, useUser, useYearFilter } from 'utils'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 

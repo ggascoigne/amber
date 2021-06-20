@@ -6,9 +6,9 @@ import {
   DialogContentText,
   TextField as MuiTextField,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@material-ui/core'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Autocomplete } from '@material-ui/lab'
 import { Game, useGetGamesByAuthorQuery } from 'client'
 import {
@@ -23,13 +23,12 @@ import {
   SelectField,
   TextField,
   TextFieldProps,
-} from 'components/Acnw'
+} from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
 import { configuration, getSlotDescription, notEmpty, pick, playerPreferenceOptions, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
-import { dangerColor } from '../../assets/jss/material-kit-react'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 interface GamesDialogProps {
@@ -190,7 +189,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Create'} Game</DialogTitle>
             <DialogContent>
               <HasPermission permission={Perms.FullGameBook}>
-                <DialogContentText style={{ color: dangerColor }}>Admin Mode</DialogContentText>
+                <DialogContentText style={{ color: theme.palette.error.main }}>Admin Mode</DialogContentText>
               </HasPermission>
               <GridContainer spacing={2}>
                 {!!priorGamesList.length && (

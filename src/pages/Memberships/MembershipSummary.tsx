@@ -1,12 +1,17 @@
-import { Button, FormControlLabel, Switch, makeStyles } from '@material-ui/core'
-import MuiCheckbox from '@material-ui/core/Checkbox'
-import { GraphQLError, GridContainer, GridItem, Loader, Page, useProfile } from 'components/Acnw'
-import { Field, MultiLine } from 'components/Acnw/CardUtils'
+import { Button, FormControlLabel, Checkbox as MuiCheckbox, Switch, makeStyles } from '@material-ui/core'
+import { useGetMembershipByYearAndIdQuery } from 'client'
+import { Field, GraphQLError, GridContainer, GridItem, Loader, MultiLine, Page, useProfile } from 'components'
 import React, { MouseEventHandler, useEffect, useState } from 'react'
+import {
+  configuration,
+  getSlotDescription,
+  isNotPacificTime,
+  range,
+  useForceLogin,
+  useUser,
+  useYearFilter,
+} from 'utils'
 
-import { useGetMembershipByYearAndIdQuery } from '../../client'
-import { configuration, getSlotDescription, isNotPacificTime, range, useUser, useYearFilter } from '../../utils'
-import { useForceLogin } from '../../utils/useForceLogin'
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipDialog } from './MembershipDialog'
 import { fromSlotsAttending } from './membershipUtils'

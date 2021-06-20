@@ -1,4 +1,4 @@
-import { GameMenu } from 'components/Acnw'
+import { GameMenu } from 'components'
 import React from 'react'
 import { configuration, useGameUrl } from 'utils'
 

@@ -1,11 +1,13 @@
-import { Button, Dialog, DialogActions, useTheme } from '@material-ui/core'
-import Step from '@material-ui/core/Step'
-import StepLabel from '@material-ui/core/StepLabel'
-import Stepper from '@material-ui/core/Stepper'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Button, Dialog, DialogActions, Step, StepLabel, Stepper, useMediaQuery, useTheme } from '@material-ui/core'
 import { useUpdateUserMutation } from 'client'
-import { DialogClose, ProfileFormContent, ProfileType, useAuth, useNotification } from 'components/Acnw'
-import { profileValidationSchema } from 'components/Acnw/Profile/profileValidationSchema'
+import {
+  DialogClose,
+  ProfileFormContent,
+  ProfileType,
+  profileValidationSchema,
+  useAuth,
+  useNotification,
+} from 'components'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikTouched, FormikValues } from 'formik'
 import React, { useMemo } from 'react'
 import { useUser } from 'utils'

@@ -1,15 +1,8 @@
-import { Button, Card } from '@material-ui/core'
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
+import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
+import { CardBody, IsLoggedIn, IsNotLoggedIn, useAuth, useProfile } from 'components'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
+import { IsNotMember, useSetting } from 'utils'
 
-import { dangerColor } from '../../assets/jss/material-kit-react'
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { IsLoggedIn, IsNotLoggedIn } from '../../components/Acnw/Auth/HasPermission'
-import { useProfile } from '../../components/Acnw/Profile'
-import CardBody from '../../components/MaterialKitReact/Card/CardBody'
-import { useSetting } from '../../utils'
-import { IsNotMember } from '../../utils/membership'
 import { MembershipWizard } from './MembershipWizard'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -28,6 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const BecomeAMember = () => {
   const classes = useStyles()
+  const theme = useTheme()
+
   const { isInitializing = true, loginWithRedirect } = useAuth()
   const [showMembershipForm, setShowMembershipForm] = useState(false)
   const profile = useProfile()
@@ -51,7 +46,7 @@ export const BecomeAMember = () => {
       <Card elevation={3}>
         <CardBody className={classes.card}>
           <h2>
-            Attending <span style={{ color: dangerColor }}>virtual</span> AmberCon NW
+            Attending <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
           </h2>
           <IsNotLoggedIn>
             <h4>We have a new authentication system.</h4>

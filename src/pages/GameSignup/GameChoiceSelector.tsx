@@ -1,14 +1,11 @@
-import { Theme, makeStyles } from '@material-ui/core'
-import createStyles from '@material-ui/core/styles/createStyles'
+import { Theme, createStyles, makeStyles } from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import classNames from 'classnames'
 import { Game, GameChoice, GameEntry, Maybe } from 'client'
+import { Perms, useAuth } from 'components'
 import React, { useEffect } from 'react'
-
-import { useAuth } from '../../components/Acnw/Auth/Auth0'
-import { Perms } from '../../components/Acnw/Auth/PermissionRules'
-import { range } from '../../utils'
+import { range } from 'utils'
 
 export const isNoGame = (id: number) => id <= 7
 // 144 is the magic number of the Any Game entry :(
