@@ -176,7 +176,7 @@
     "postinstall": "patch-package",
     "prebuild": "yarn setup",
     "prestart": "yarn setup",
-    "setup": "yarn db:start && yarn db:migrate:up && yarn tsnode ./scripts/prepareGraphql.ts && yarn codegen && yarn gitHash",
+    "setup": "yarn db:migrate:up && yarn tsnode ./scripts/prepareGraphql.ts && yarn codegen && yarn gitHash",
     "start": "DISABLE_NEW_JSX_TRANSFORM=true BROWSER=none react-scripts start",
     "test": "DISABLE_NEW_JSX_TRANSFORM=true react-scripts test",
     "tsnode": "TS_NODE_PROJECT=./tsconfig.commonjs.json",
