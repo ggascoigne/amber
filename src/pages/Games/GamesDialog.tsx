@@ -11,24 +11,18 @@ import {
 } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import { Game, useGetGamesByAuthorQuery } from 'client'
-import {
-  CheckboxWithLabel,
-  DialogTitle,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  HasPermission,
-  Loader,
-  Perms,
-  SelectField,
-  TextField,
-  TextFieldProps,
-} from 'components'
+import { Perms } from 'components/Auth'
+import { CheckboxWithLabel, SelectField, TextField, TextFieldProps } from 'components/Form'
+import { GraphQLError } from 'components/GraphQLError'
+import { Loader } from 'components/Loader'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React from 'react'
 import { configuration, getSlotDescription, notEmpty, pick, playerPreferenceOptions, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
+import { HasPermission } from '../../components/Auth'
+import { DialogTitle } from '../../components/Dialog'
+import { GridContainer, GridItem } from '../../components/Grid'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 interface GamesDialogProps {

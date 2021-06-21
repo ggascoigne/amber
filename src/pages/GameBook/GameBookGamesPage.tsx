@@ -1,7 +1,10 @@
 import NavigationIcon from '@material-ui/icons/Navigation'
-import { ExpandingFab, GameListFull, GameListNavigator, Page } from 'components'
 import React from 'react'
 import { useGameScroll, useGameUrl } from 'utils'
+
+import { ExpandingFab } from '../../components/ExpandingFab'
+import { GameListFull, GameListNavigator } from '../../components/GameList'
+import { Page } from '../../components/Page'
 
 const gotoTop = () => {
   window.scrollTo(0, 0)

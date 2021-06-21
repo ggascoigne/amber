@@ -9,7 +9,6 @@ import {
   useGetGameChoicesQuery,
   useUpdateGameChoiceByNodeIdMutation,
 } from 'client'
-import { ExpandingFab, GameListFull, GameListNavigator, GraphQLError, Loader, Page, Perms, useAuth } from 'components'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
 import { useQueryClient } from 'react-query'
@@ -25,6 +24,12 @@ import {
   useUser,
 } from 'utils'
 
+import { Perms, useAuth } from '../../components/Auth'
+import { ExpandingFab } from '../../components/ExpandingFab'
+import { GameListFull, GameListNavigator } from '../../components/GameList'
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,

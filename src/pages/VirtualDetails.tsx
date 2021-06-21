@@ -1,7 +1,10 @@
-import { Loader, Page, useAuth } from 'components'
 import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useForceLogin, useGetSettingValue, useSettings } from 'utils'
+
+import { useAuth } from '../components/Auth'
+import { Loader } from '../components/Loader'
+import { Page } from '../components/Page'
 
 const VirtualDetails = () => {
   const forceLogin = useForceLogin()

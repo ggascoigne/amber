@@ -1,10 +1,10 @@
-import { ErrorBoundary } from 'components'
 import { NotFound } from 'pages'
 import queryString from 'query-string'
 import React, { Suspense, useMemo } from 'react'
 import { Redirect, Route, Switch, useLocation } from 'react-router-dom'
 import { useGetMemberShip, useIsMember, useSettings, useUser } from 'utils'
 
+import { ErrorBoundary } from '../ErrorBoundary'
 import { Loader } from '../Loader'
 import type { RootRoutes, RouteInfo } from './Routes'
 

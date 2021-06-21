@@ -4,10 +4,13 @@ import {
   useCreateMembershipMutation,
   useUpdateMembershipByNodeIdMutation,
 } from 'client'
-import { Perms, ProfileType, useAuth, useNotification } from 'components'
+import { Perms, useAuth } from 'components/Auth'
+import { ProfileType } from 'components/Profile'
 import { useQueryClient } from 'react-query'
 import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
 import Yup from 'utils/Yup'
+
+import { useNotification } from '../../components/Notifications'
 
 export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
   Partial<{ id: number }> &

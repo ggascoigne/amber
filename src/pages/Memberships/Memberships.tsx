@@ -1,12 +1,17 @@
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
 import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
-import { BlankNoCell, DateCell, GraphQLError, Loader, Page, Table, YesBlankCell, useProfile } from 'components'
+import { BlankNoCell, DateCell, YesBlankCell } from 'components/CellFormatters'
+import { useProfile } from 'components/Profile'
+import { Table } from 'components/Table'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useLocalStorage, useYearFilter } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 import { MembershipDialog } from './MembershipDialog'
 

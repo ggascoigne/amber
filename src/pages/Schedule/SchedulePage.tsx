@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
-import { GameCard, GraphQLError, HasPermission, Loader, Page, Perms, useAuth } from 'components'
 import React, { createRef, useEffect, useMemo, useState } from 'react'
 import {
   ICalEvent,
@@ -14,6 +13,12 @@ import {
   useGetSettingValue,
   useUser,
 } from 'utils'
+
+import { HasPermission, Perms, useAuth } from '../../components/Auth'
+import { GameCard } from '../../components/GameCard'
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
 
 type GameSummaryProps = {
   gas: GameAssignmentNode

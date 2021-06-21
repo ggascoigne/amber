@@ -1,8 +1,10 @@
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import { CardBody, IsLoggedIn, IsNotLoggedIn, useAuth, useProfile } from 'components'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { IsNotMember, useSetting } from 'utils'
 
+import { IsLoggedIn, IsNotLoggedIn, useAuth } from '../../components/Auth'
+import { CardBody } from '../../components/Card'
+import { useProfile } from '../../components/Profile'
 import { MembershipWizard } from './MembershipWizard'
 
 const useStyles = makeStyles((theme: Theme) =>

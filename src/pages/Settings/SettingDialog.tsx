@@ -1,11 +1,16 @@
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import { Node, SettingFieldsFragment, useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from 'client'
-import { DialogTitle, GridContainer, GridItem, SelectField, TextField, useAuth, useNotification } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from 'react-query'
 import { onCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
+
+import { useAuth } from '../../components/Auth'
+import { DialogTitle } from '../../components/Dialog'
+import { SelectField, TextField } from '../../components/Form'
+import { GridContainer, GridItem } from '../../components/Grid'
+import { useNotification } from '../../components/Notifications'
 
 const settingValidationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),

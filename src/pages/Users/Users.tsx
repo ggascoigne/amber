@@ -1,8 +1,13 @@
 import { useGetAllUsersQuery } from 'client'
-import { GraphQLError, Loader, Page, ProfileDialog, ProfileType, Table } from 'components'
+import { GraphQLError } from 'components/GraphQLError'
 import React, { MouseEventHandler, useState } from 'react'
 import { Column, Row, TableInstance } from 'react-table'
 import { notEmpty } from 'utils'
+
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
+import { ProfileDialog, ProfileType } from '../../components/Profile'
+import { Table } from '../../components/Table'
 
 const columns: Column<ProfileType>[] = [
   { accessor: 'fullName' },

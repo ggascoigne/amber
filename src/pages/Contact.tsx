@@ -1,9 +1,12 @@
 import { Card } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
-import { Acnw, CardBody, Page } from 'components'
+import { Acnw } from 'components'
 import React from 'react'
 import { configuration } from 'utils'
+
+import { CardBody } from '../components/Card'
+import { Page } from '../components/Page'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

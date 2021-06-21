@@ -1,18 +1,14 @@
 import { Button, Dialog, DialogActions, Step, StepLabel, Stepper, useMediaQuery, useTheme } from '@material-ui/core'
 import { useUpdateUserMutation } from 'client'
-import {
-  DialogClose,
-  ProfileFormContent,
-  ProfileType,
-  profileValidationSchema,
-  useAuth,
-  useNotification,
-} from 'components'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikTouched, FormikValues } from 'formik'
 import React, { useMemo } from 'react'
 import { useUser } from 'utils'
 import Yup from 'utils/Yup'
 
+import { useAuth } from '../../components/Auth'
+import { DialogClose } from '../../components/Dialog'
+import { useNotification } from '../../components/Notifications'
+import { ProfileFormContent, ProfileType, profileValidationSchema } from '../../components/Profile'
 import { FinalStep } from './FinalStep'
 import { IntroStep } from './IntroStep'
 import { MembershipStep } from './MembershipStep'

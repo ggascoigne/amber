@@ -1,4 +1,4 @@
-import { useAuth } from 'components'
+import { useAuth } from 'components/Auth'
 import { print } from 'graphql'
 import gql from 'graphql-tag'
 

@@ -27,11 +27,14 @@ import {
   useUpdateLookupByNodeIdMutation,
   useUpdateLookupValueByNodeIdMutation,
 } from 'client'
-import { Card, CardBody, CardHeader, DialogTitle, GridContainer, GridItem, TextField } from 'components'
 import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
 import * as React from 'react'
 import Yup from 'utils/Yup'
 
+import { Card, CardBody, CardHeader } from '../../components/Card'
+import { DialogTitle } from '../../components/Dialog'
+import { TextField } from '../../components/Form'
+import { GridContainer, GridItem } from '../../components/Grid'
 import type { LookupAndValues } from './types'
 
 const useStyles = makeStyles((theme: Theme) =>

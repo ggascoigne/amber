@@ -1,8 +1,9 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import { GridContainer, GridItem } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { configuration } from 'utils'
+
+import { GridContainer, GridItem } from './Grid'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -1,6 +1,8 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import { Acnw, Banner, ConfigDate, Page } from 'components'
+import { Acnw, ConfigDate } from 'components'
 import { IsNotLoggedIn } from 'components/Auth'
+import { Banner } from 'components/Banner'
+import { Page } from 'components/Page'
 import React from 'react'
 import { IsMember, IsNotMember } from 'utils'
 

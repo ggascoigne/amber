@@ -11,10 +11,13 @@ import {
   useGetMembershipsByYearQuery,
   useUpdateGameByNodeIdMutation,
 } from 'client'
-import { Perms, ProfileType, useAuth, useNotification, useProfile } from 'components'
 import { useCallback, useMemo } from 'react'
 import { useQueryClient } from 'react-query'
 import { configuration, notEmpty, onCloseHandler, pick, useSendEmail, useSetting, useUser, useYearFilter } from 'utils'
+
+import { Perms, useAuth } from '../../components/Auth'
+import { useNotification } from '../../components/Notifications'
+import { ProfileType, useProfile } from '../../components/Profile'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 

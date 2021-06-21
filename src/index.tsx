@@ -2,7 +2,6 @@
 // import 'assets/css/material-kit-react.css'
 import 'react-app-polyfill/ie11'
 
-import { Auth0Provider, NotificationProvider } from 'components'
 import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -12,6 +11,8 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
+import { Auth0Provider } from './components/Auth'
+import { NotificationProvider } from './components/Notifications'
 
 // Usage
 // window.toggleDevtools(true)

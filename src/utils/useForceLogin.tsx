@@ -1,5 +1,5 @@
 import { RedirectLoginOptions } from '@auth0/auth0-spa-js'
-import { useAuth } from 'components'
+import { useAuth } from 'components/Auth'
 import { useCallback } from 'react'
 
 export const useForceLogin = () => {

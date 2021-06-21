@@ -8,12 +8,16 @@ import {
   useGetGamesByYearQuery,
   useGetMembershipsByYearQuery,
 } from 'client'
-import { GraphQLError, Loader, Page, Table, YesBlankCell } from 'components'
+import { YesBlankCell } from 'components/CellFormatters'
+import { GraphQLError } from 'components/GraphQLError'
+import { Table } from 'components/Table'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { notEmpty, useYearFilter } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
 

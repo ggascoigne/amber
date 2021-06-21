@@ -2,13 +2,15 @@ import { Accordion, AccordionDetails, AccordionSummary, Theme, createStyles, mak
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import classNames from 'classnames'
 import type { GameEntry } from 'client'
-import { Card, CardBody, GridContainer, LookupValue } from 'components'
 import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import { getSlotDescription } from 'utils'
 import maskEmail from 'utils/maskEmail'
 
+import { Card, CardBody } from '../Card'
 import { Field, HeaderContent, MultiLine } from '../CardUtils'
+import { GridContainer } from '../Grid'
+import { LookupValue } from '../Lookup'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -6,13 +6,16 @@ import {
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
 } from 'client'
-import { GraphQLError, Loader, Page, Table } from 'components'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Redirect } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilter } from 'utils'
 
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
+import { Table } from '../../components/Table'
 import { GamesDialog } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment

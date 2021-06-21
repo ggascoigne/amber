@@ -277,7 +277,6 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
         buttonText={<MenuButton small={small} user={user!} />}
         buttonProps={{
           className: classes.navLink,
-          color: 'transparent',
         }}
         dropdownList={menuItems}
         onClick={(prop: string) => {

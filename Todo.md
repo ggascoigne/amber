@@ -6,6 +6,8 @@
 * [ ] investigate https://github.com/JoviDeCroock/hoofd
 * [ ] check out https://github.com/sindresorhus/type-fest
 
+* [ ] Fix transparency on the acnw svg
+
 * [ ] Game book only shows in PST
 
 * [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 

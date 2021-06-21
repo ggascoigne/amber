@@ -8,9 +8,13 @@ import {
   makeStyles,
   useTheme,
 } from '@material-ui/core'
-import { CheckboxWithLabel, ConfigDate, GridContainer, GridItem, HasPermission, Perms, TextField } from 'components'
+import { CheckboxWithLabel, TextField } from 'components/Form'
 import React, { useState } from 'react'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
+
+import { ConfigDate } from '../../components'
+import { HasPermission, Perms } from '../../components/Auth'
+import { GridContainer, GridItem } from '../../components/Grid'
 
 const useStyles = makeStyles(() =>
   createStyles({

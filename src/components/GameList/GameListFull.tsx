@@ -1,8 +1,8 @@
 import type { GameArray } from 'client'
-import { GameCard } from 'components'
 import React, { useEffect } from 'react'
 import { useScrollToHash, useUrlSource } from 'utils'
 
+import { GameCard } from '../GameCard'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
 export interface MatchParams {

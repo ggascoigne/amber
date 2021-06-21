@@ -1,7 +1,8 @@
 import Typography from '@material-ui/core/Typography'
 import { QueryError } from 'client'
-import { Quote } from 'components'
 import React from 'react'
+
+import { Quote } from '../Typography'
 
 type GraphQLErrorProps = { error: QueryError | null }
 

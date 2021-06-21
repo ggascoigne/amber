@@ -1,21 +1,17 @@
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from 'client'
-import {
-  Acnw,
-  DialogTitle,
-  GridContainer,
-  GridItem,
-  ProfileType,
-  TextField,
-  useNotification,
-  useProfile,
-} from 'components'
+import { Acnw } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { onCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
+import { DialogTitle } from '../../components/Dialog'
+import { TextField } from '../../components/Form'
+import { GridContainer, GridItem } from '../../components/Grid'
+import { useNotification } from '../../components/Notifications'
+import { ProfileType, useProfile } from '../../components/Profile'
 import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'

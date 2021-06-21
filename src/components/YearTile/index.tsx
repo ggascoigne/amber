@@ -1,8 +1,8 @@
 import { Typography, createStyles, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { Card, CardBody, CardHeader } from 'components'
 import React from 'react'
 
+import { Card, CardBody, CardHeader } from '../Card'
 import { GameCard } from '../GameCard'
 
 const useStyles = makeStyles(

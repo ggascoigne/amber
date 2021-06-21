@@ -1,10 +1,10 @@
 import { Tab, Tabs, Theme, createStyles, makeStyles } from '@material-ui/core'
 import cx from 'classnames'
-import { Card, CardHeader } from 'components'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
 
+import { Card, CardHeader } from '../Card'
 import { SlotDecorator, SlotDecoratorParams } from '../types'
 
 const useStyles = makeStyles((theme: Theme) =>

@@ -3,7 +3,7 @@ import CheckIcon from '@material-ui/icons/Check'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
 import classNames from 'classnames'
 import { Game, GameChoice, GameEntry, Maybe } from 'client'
-import { Perms, useAuth } from 'components'
+import { Perms, useAuth } from 'components/Auth'
 import React, { useEffect } from 'react'
 import { range } from 'utils'
 

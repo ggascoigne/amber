@@ -1,7 +1,8 @@
-import { GameQuery, GameQueryChild, SlotSelector } from 'components'
 import React from 'react'
 
+import { GameQuery, GameQueryChild } from '../GameQuery'
 import { GameSelectionQuery } from '../GameSelectionQuery'
+import { SlotSelector } from '../SlotSelector'
 import { SlotDecorator, SlotDecoratorParams } from '../types'
 
 interface GameListNavigatorProps {

@@ -1,11 +1,14 @@
 import { SettingFieldsFragment, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
-import { GraphQLError, Loader, Page, Table } from 'components'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance } from 'react-table'
 import { notEmpty } from 'utils'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
+import { Table } from '../../components/Table'
 import { SettingDialog } from './SettingDialog'
 
 type Setting = SettingFieldsFragment

@@ -1,5 +1,5 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import { Page } from 'components'
+import { Page } from 'components/Page'
 import React from 'react'
 
 import { configuration } from '../utils'

@@ -1,6 +1,7 @@
-import { GameMenu } from 'components'
 import React from 'react'
 import { configuration, useGameUrl } from 'utils'
+
+import { GameMenu } from '../../components/GameList'
 
 export const GameBookMenu: React.FC = () => {
   const { year } = useGameUrl()

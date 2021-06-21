@@ -1,5 +1,6 @@
 import { useTheme } from '@material-ui/core'
-import { Acnw, Page } from 'components'
+import { Acnw } from 'components'
+import { Page } from 'components/Page'
 import React from 'react'
 
 import { SlotFormat, configuration, getSlotDescription, range } from '../utils'

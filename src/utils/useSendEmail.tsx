@@ -1,4 +1,5 @@
-import { useNotification, useToken } from 'components'
+import { useToken } from 'components/Auth'
+import { useNotification } from 'components/Notifications'
 import fetch from 'isomorphic-fetch'
 import { useCallback } from 'react'
 

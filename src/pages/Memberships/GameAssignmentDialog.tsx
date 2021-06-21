@@ -6,22 +6,18 @@ import {
   useGetGamesByYearQuery,
   useGetScheduleQuery,
 } from 'client'
-import {
-  DialogTitle,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  Loader,
-  SelectField,
-  TextField,
-  useNotification,
-} from 'components'
 import { dequal as deepEqual } from 'dequal'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from 'react-query'
 import { getGameAssignments, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
+import { DialogTitle } from '../../components/Dialog'
+import { SelectField, TextField } from '../../components/Form'
+import { GraphQLError } from '../../components/GraphQLError'
+import { GridContainer, GridItem } from '../../components/Grid'
+import { Loader } from '../../components/Loader'
+import { useNotification } from '../../components/Notifications'
 import { MembershipType, membershipValidationSchema } from './membershipUtils'
 
 type GameAssignmentEditNode = GameAssignmentNode

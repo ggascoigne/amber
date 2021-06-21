@@ -1,6 +1,5 @@
 import { Button, FormControlLabel, Checkbox as MuiCheckbox, Switch, makeStyles } from '@material-ui/core'
 import { useGetMembershipByYearAndIdQuery } from 'client'
-import { Field, GraphQLError, GridContainer, GridItem, Loader, MultiLine, Page, useProfile } from 'components'
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 import {
   configuration,
@@ -12,6 +11,12 @@ import {
   useYearFilter,
 } from 'utils'
 
+import { Field, MultiLine } from '../../components/CardUtils'
+import { GraphQLError } from '../../components/GraphQLError'
+import { GridContainer, GridItem } from '../../components/Grid'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
+import { useProfile } from '../../components/Profile'
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipDialog } from './MembershipDialog'
 import { fromSlotsAttending } from './membershipUtils'

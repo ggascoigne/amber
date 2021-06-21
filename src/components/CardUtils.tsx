@@ -1,8 +1,8 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { CardHeader } from 'components'
 import React from 'react'
 
+import { CardHeader } from './Card'
 import { GridItem } from './Grid'
 
 const useStyles = makeStyles((theme: Theme) =>

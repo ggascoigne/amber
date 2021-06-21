@@ -1,9 +1,11 @@
 import { Button } from '@material-ui/core'
 import { useGetGameChoicesQuery } from 'client'
-import { GameMenu, GraphQLError, Loader } from 'components'
 import React from 'react'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from 'utils'
 
+import { GameMenu } from '../../components/GameList'
+import { GraphQLError } from '../../components/GraphQLError'
+import { Loader } from '../../components/Loader'
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
 export const GameSignupMenu: React.FC = () => {

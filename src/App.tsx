@@ -10,10 +10,14 @@ import {
   createStyles,
   makeStyles,
 } from '@material-ui/core'
-import { Banner, Footer, LoginMenu, MenuItems, SelectedContent, rootRoutes } from 'components'
 import React, { useCallback, useState } from 'react'
 
-import { Header, theme } from './components'
+import { Banner } from './components/Banner'
+import { Footer } from './components/Footer'
+import { Header } from './components/Header'
+import { LoginMenu } from './components/LoginMenu'
+import { MenuItems, SelectedContent, rootRoutes } from './components/Navigation'
+import { theme } from './components/Theme'
 
 const drawerWidth = 240
 

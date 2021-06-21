@@ -1,9 +1,9 @@
 import { List, ListItemText } from '@material-ui/core'
-import { HasPermission } from 'components'
 import React from 'react'
 import { useLocation } from 'react-router'
 import { useIsMember, useSettings, useUser } from 'utils'
 
+import { HasPermission } from '../Auth'
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './Routes'

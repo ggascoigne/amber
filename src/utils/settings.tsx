@@ -1,4 +1,4 @@
-import { Perms, useAuth } from 'components'
+import { Perms, useAuth } from 'components/Auth'
 import { useCallback } from 'react'
 
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'

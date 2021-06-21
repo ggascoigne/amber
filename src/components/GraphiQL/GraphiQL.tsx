@@ -2,7 +2,6 @@ import 'graphiql/graphiql.css'
 
 import { createStyles, makeStyles } from '@material-ui/core'
 import classNames from 'classnames'
-import { Page } from 'components'
 import RealGraphiQL from 'graphiql'
 import GraphiQLExplorer from 'graphiql-explorer'
 import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, parse } from 'graphql'
@@ -10,6 +9,7 @@ import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useToken } from '../Auth'
+import { Page } from '../Page'
 
 export const useStyles = makeStyles(
   createStyles({

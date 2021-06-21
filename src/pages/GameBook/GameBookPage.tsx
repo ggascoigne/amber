@@ -1,9 +1,14 @@
 import { useGetSmallGamesByYearQuery } from 'client'
-import { GraphQLError, GridContainer, GridItem, Loader, Page, YearTile } from 'components'
 import range from 'lodash/range'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { configuration } from 'utils'
+
+import { GraphQLError } from '../../components/GraphQLError'
+import { GridContainer, GridItem } from '../../components/Grid'
+import { Loader } from '../../components/Loader'
+import { Page } from '../../components/Page'
+import { YearTile } from '../../components/YearTile'
 
 const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
   const { error, data } = useGetSmallGamesByYearQuery({ year })

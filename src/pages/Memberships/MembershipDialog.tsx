@@ -1,9 +1,11 @@
 import { Button, Dialog, DialogActions, useMediaQuery, useTheme } from '@material-ui/core'
-import { DialogTitle, ProfileType, useAuth } from 'components'
+import { DialogTitle } from 'components/Dialog/DialogTitle'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { onCloseHandler, useUser } from 'utils'
 
+import { useAuth } from '../../components/Auth'
+import { ProfileType } from '../../components/Profile'
 import { MembershipStep } from './MembershipStep'
 import {
   MembershipType,

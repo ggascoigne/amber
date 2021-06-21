@@ -1,6 +1,6 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
 import { useGetGamesBySlotForSignupQuery } from 'client'
-import { Loader } from 'components'
+import { Loader } from 'components/Loader'
 import React, { useEffect } from 'react'
 import { getSlotDescription, notEmpty, range } from 'utils'
 

@@ -1,9 +1,12 @@
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import { Acnw, Banner, CardBody, ConfigDate, Page } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { IsMember } from 'utils/membership'
 
+import { Acnw, ConfigDate } from '../components'
+import { Banner } from '../components/Banner'
+import { CardBody } from '../components/Card'
+import { Page } from '../components/Page'
 import { useSetting } from '../utils'
 import { BecomeAMember } from './Memberships'
 

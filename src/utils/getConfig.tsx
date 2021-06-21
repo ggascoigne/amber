@@ -1,4 +1,4 @@
-import { useToken } from 'components'
+import { useToken } from 'components/Auth'
 import fetch from 'isomorphic-fetch'
 import { useCallback, useState } from 'react'
 
