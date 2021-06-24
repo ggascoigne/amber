@@ -1,15 +1,18 @@
 import { createMuiTheme } from '@material-ui/core'
+import cyan from '@material-ui/core/colors/cyan'
+import green from '@material-ui/core/colors/green'
+import indigo from '@material-ui/core/colors/indigo'
+import orange from '@material-ui/core/colors/orange'
+import purple from '@material-ui/core/colors/purple'
+import red from '@material-ui/core/colors/red'
 import hexRgb from 'hex-rgb'
 
-const primaryColor = '#3f51b5'
-const secondaryColor = '#9c27b0'
-const dangerColor = '#f44336'
-const warningColor = '#ff9800'
-const infoColor = '#00acc1'
-const successColor = '#4caf50'
-
-// const roseColor = '#e91e63'
-// const grayColor = '#999999'
+const primaryColor = indigo[500]
+const secondaryColor = purple[500]
+const dangerColor = red[500]
+const warningColor = orange[500]
+const infoColor = cyan[600]
+const successColor = green[500]
 
 const fontFamily = ['Roboto', 'Helvetica', 'Arial', 'sans-serif'].join(',')
 const buildGradientShadow = (color: string) => {
