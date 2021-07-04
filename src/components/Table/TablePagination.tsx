@@ -8,7 +8,7 @@ import LastPageIcon from '@material-ui/icons/LastPage'
 import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
 import type { TableInstance } from 'react-table'
 
-const useStyles1 = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexShrink: 0,
@@ -25,7 +25,7 @@ interface TablePaginationActionsProps {
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
-  const classes = useStyles1()
+  const classes = useStyles()
   const theme = useTheme()
   const { count, page, rowsPerPage, onChangePage } = props
 

@@ -1,4 +1,4 @@
-import { TableSortLabel, TextField } from '@material-ui/core'
+import { TableSortLabel, TextField, Tooltip } from '@material-ui/core'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import cx from 'classnames'
@@ -151,6 +151,11 @@ const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta
 
 const DEFAULT_PAGE_SIZE = 25
 
+const filterTypes = {
+  fuzzyText: fuzzyTextFilter,
+  numeric: numericTextFilter,
+}
+
 export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<TableProps<T>>): ReactElement {
   const {
     name,
@@ -166,14 +171,6 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     defaultColumnDisableGlobalFilter = false,
   } = props
   const classes = useStyles()
-
-  const filterTypes = React.useMemo(
-    () => ({
-      fuzzyText: fuzzyTextFilter,
-      numeric: numericTextFilter,
-    }),
-    []
-  )
 
   const hooks = [
     useColumnOrder,
@@ -202,6 +199,9 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow
       maxWidth: 200, // maxWidth is only used as a limit for resizing
+      // the logic for this is weird.  If you set the default column value for disableGlobalFilter to true then you pass
+      // disableGlobalFilter: false on those columns that you want to be able to search upon
+      // todo: make this more intuitive
       disableGlobalFilter: defaultColumnDisableGlobalFilter,
     }),
     [defaultColumnDisableGlobalFilter]
@@ -211,6 +211,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     pageSize: DEFAULT_PAGE_SIZE,
     ...userInitialState,
   })
+
   const instance = useTable<T>(
     {
       ...props,
@@ -240,6 +241,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
   }
 
+  const { role: tableRole, ...tableProps } = getTableProps()
   return (
     <>
       {!hideSelectionUi ? (
@@ -253,90 +255,99 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
           <br />
         </div>
       )}
-      <TableTable {...getTableProps()}>
+      <TableTable {...tableProps}>
         <TableHead>
-          {headerGroups.map((headerGroup) => (
-            // there really is a key here, it's returned by getHeaderGroupProps
-            // eslint-disable-next-line react/jsx-key
-            <TableHeadRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => {
-                const style = {
-                  textAlign: column.align ? column.align : 'left ',
-                } as CSSProperties
-                return (
-                  // there really is a key here, it's returned by getHeaderProps
-                  // eslint-disable-next-line react/jsx-key
-                  <TableHeadCell {...column.getHeaderProps(headerProps)}>
-                    <div>
-                      {column.canGroupBy ? (
-                        // If the column can be grouped, let's add a toggle
-                        <TableSortLabel
-                          active
-                          direction={column.isGrouped ? 'desc' : 'asc'}
-                          IconComponent={KeyboardArrowRight}
-                          {...column.getGroupByToggleProps()}
-                          className={classes.headerIcon}
-                        />
-                      ) : null}
+          {headerGroups.map((headerGroup) => {
+            const {
+              key: headerGroupKey,
+              title: headerGroupTitle,
+              role: headerGroupRole,
+              ...getHeaderGroupProps
+            } = headerGroup.getHeaderGroupProps()
+            return (
+              <TableHeadRow key={headerGroupKey} {...getHeaderGroupProps}>
+                {headerGroup.headers.map((column) => {
+                  const style = {
+                    textAlign: column.align ? column.align : 'left ',
+                  } as CSSProperties
+                  const { key: headerKey, role: headerRole, ...getHeaderProps } = column.getHeaderProps(headerProps)
+                  const { title: groupTitle = '', ...columnGroupByProps } = column.getGroupByToggleProps()
+                  const { title: sortTitle = '', ...columnSortByProps } = column.getSortByToggleProps()
+
+                  return (
+                    <TableHeadCell key={headerKey} {...getHeaderProps}>
+                      {column.canGroupBy && (
+                        <Tooltip title={groupTitle}>
+                          <TableSortLabel
+                            active
+                            direction={column.isGrouped ? 'desc' : 'asc'}
+                            IconComponent={KeyboardArrowRight}
+                            {...columnGroupByProps}
+                            className={classes.headerIcon}
+                          />
+                        </Tooltip>
+                      )}
                       {column.canSort ? (
-                        <TableSortLabel
-                          active={column.isSorted}
-                          direction={column.isSortedDesc ? 'desc' : 'asc'}
-                          {...column.getSortByToggleProps()}
-                          className={classes.tableSortLabel}
-                          style={style}
-                        >
-                          {column.render('Header')}
-                        </TableSortLabel>
+                        <Tooltip title={sortTitle}>
+                          <TableSortLabel
+                            active={column.isSorted}
+                            direction={column.isSortedDesc ? 'desc' : 'asc'}
+                            {...columnSortByProps}
+                            className={classes.tableSortLabel}
+                            style={style}
+                          >
+                            {column.render('Header')}
+                          </TableSortLabel>
+                        </Tooltip>
                       ) : (
                         <TableLabel style={style}>{column.render('Header')}</TableLabel>
                       )}
                       {/*<div>{column.canFilter ? column.render('Filter') : null}</div>*/}
-                    </div>
-                    {column.canResize && <ResizeHandle column={column} />}
-                  </TableHeadCell>
-                )
-              })}
-            </TableHeadRow>
-          ))}
+                      {column.canResize && <ResizeHandle column={column} />}
+                    </TableHeadCell>
+                  )
+                })}
+              </TableHeadRow>
+            )
+          })}
         </TableHead>
         <TableBody {...getTableBodyProps()}>
           {page.map((row) => {
             prepareRow(row)
+            const { key: rowKey, role: rowRole, ...getRowProps } = row.getRowProps()
             return (
-              // there really is a key here, it's returned by getRowProps
-              // eslint-disable-next-line react/jsx-key
-              <TableRow {...row.getRowProps()} className={cx({ rowSelected: row.isSelected, clickable: onClick })}>
-                {row.cells.map((cell) => (
-                  // there really is a key here, it's returned by getCellProps
-                  // eslint-disable-next-line react/jsx-key
-                  <TableCell {...cell.getCellProps(cellProps)} onClick={cellClickHandler(cell)}>
-                    {cell.isGrouped ? (
-                      // If it's a grouped cell, add an expander and row count
-                      <>
-                        <TableSortLabel
-                          classes={{
-                            iconDirectionAsc: classes.iconDirectionAsc,
-                            iconDirectionDesc: classes.iconDirectionDesc,
-                          }}
-                          active
-                          direction={row.isExpanded ? 'desc' : 'asc'}
-                          IconComponent={KeyboardArrowUp}
-                          {...row.getToggleRowExpandedProps()}
-                          className={classes.cellIcon}
-                        />{' '}
-                        {cell.render('Cell', { editable: false })} ({row.subRows.length})
-                      </>
-                    ) : cell.isAggregated ? (
-                      // If the cell is aggregated, use the Aggregated
-                      // renderer for cell
-                      cell.render('Aggregated')
-                    ) : cell.isPlaceholder ? null : ( // For cells with repeated values, render null
-                      // Otherwise, just render the regular cell
-                      cell.render('Cell' /*, { editable: true }*/)
-                    )}
-                  </TableCell>
-                ))}
+              <TableRow
+                key={rowKey}
+                {...getRowProps}
+                className={cx({ rowSelected: row.isSelected, clickable: onClick })}
+              >
+                {row.cells.map((cell) => {
+                  const { key: cellKey, role: cellRole, ...getCellProps } = cell.getCellProps(cellProps)
+                  return (
+                    <TableCell key={cellKey} {...getCellProps} onClick={cellClickHandler(cell)}>
+                      {cell.isGrouped ? (
+                        <>
+                          <TableSortLabel
+                            classes={{
+                              iconDirectionAsc: classes.iconDirectionAsc,
+                              iconDirectionDesc: classes.iconDirectionDesc,
+                            }}
+                            active
+                            direction={row.isExpanded ? 'desc' : 'asc'}
+                            IconComponent={KeyboardArrowUp}
+                            {...row.getToggleRowExpandedProps()}
+                            className={classes.cellIcon}
+                          />
+                          {cell.render('Cell', { editable: false })} ({row.subRows.length})
+                        </>
+                      ) : cell.isAggregated ? (
+                        cell.render('Aggregated')
+                      ) : cell.isPlaceholder ? null : (
+                        cell.render('Cell')
+                      )}
+                    </TableCell>
+                  )
+                })}
               </TableRow>
             )
           })}
