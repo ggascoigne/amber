@@ -1,4 +1,3 @@
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import {
   GameAssignmentNode,
   useCreateGameAssignmentMutation,
@@ -7,12 +6,12 @@ import {
   useGetScheduleQuery,
 } from 'client'
 import { dequal as deepEqual } from 'dequal'
-import { Form, Formik, FormikHelpers } from 'formik'
+import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from 'react-query'
 import { getGameAssignments, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
-import { DialogTitle } from '../../components/Dialog'
+import { EditDialog } from '../../components/EditDialog'
 import { SelectField, TextField } from '../../components/Form'
 import { GraphQLError } from '../../components/GraphQLError'
 import { GridContainer, GridItem } from '../../components/Grid'
@@ -32,8 +31,6 @@ interface GameAssignmentDialogProps {
 
 export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open, onClose, membership }) => {
   const [year] = useYearFilter()
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const createGameAssignment = useCreateGameAssignmentMutation()
   const deleteGameAssignment = useDeleteGameAssignmentMutation()
   const queryClient = useQueryClient()
@@ -131,55 +128,41 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   }
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik
-        initialValues={gamesAndAssignments}
-        enableReinitialize
-        validationSchema={membershipValidationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
-          <Form>
-            <DialogTitle onClose={onClose}>Edit Game Assignments</DialogTitle>
-            <DialogContent>
-              <GridContainer spacing={2}>
-                {gamesAndAssignments.map((g, index) => (
-                  <React.Fragment key={index}>
-                    <GridItem xs={12} md={8} style={{ paddingTop: 0, paddingBottom: 0 }}>
-                      <SelectField
-                        name={`[${index}].gameId`}
-                        label={`Slot ${index + 1}`}
-                        margin='dense'
-                        fullWidth
-                        selectValues={gameOptions[index]}
-                      />
-                    </GridItem>
-                    <GridItem xs={12} md={4} style={{ paddingTop: 0, paddingBottom: 0 }}>
-                      <TextField
-                        name={`[${index}].gm`}
-                        label='GM'
-                        margin='dense'
-                        fullWidth
-                        type='number'
-                        required
-                        InputProps={{ inputProps: { min: 0, max: 10 } }}
-                      />
-                    </GridItem>
-                  </React.Fragment>
-                ))}
-              </GridContainer>
-            </DialogContent>
-            <DialogActions className='modalFooterButtons'>
-              <Button onClick={onClose} variant='outlined'>
-                Cancel
-              </Button>
-              <Button type='submit' variant='contained' color='primary' disabled={isSubmitting}>
-                Save
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+    <EditDialog
+      initialValues={gamesAndAssignments}
+      onClose={onClose}
+      open={open}
+      onSubmit={onSubmit}
+      title='Game Assignments'
+      validationSchema={membershipValidationSchema}
+      isEditing
+    >
+      <GridContainer spacing={2}>
+        {gamesAndAssignments.map((g, index) => (
+          <React.Fragment key={index}>
+            <GridItem xs={12} md={8} style={{ paddingTop: 0, paddingBottom: 0 }}>
+              <SelectField
+                name={`[${index}].gameId`}
+                label={`Slot ${index + 1}`}
+                margin='dense'
+                fullWidth
+                selectValues={gameOptions[index]}
+              />
+            </GridItem>
+            <GridItem xs={12} md={4} style={{ paddingTop: 0, paddingBottom: 0 }}>
+              <TextField
+                name={`[${index}].gm`}
+                label='GM'
+                margin='dense'
+                fullWidth
+                type='number'
+                required
+                InputProps={{ inputProps: { min: 0, max: 10 } }}
+              />
+            </GridItem>
+          </React.Fragment>
+        ))}
+      </GridContainer>
+    </EditDialog>
   )
 }

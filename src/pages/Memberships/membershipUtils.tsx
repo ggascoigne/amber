@@ -1,22 +1,25 @@
-import {
-  MembershipFieldsFragment,
-  Node,
-  useCreateMembershipMutation,
-  useUpdateMembershipByNodeIdMutation,
-} from 'client'
+import { GetMembershipsByYearQuery, useCreateMembershipMutation, useUpdateMembershipByNodeIdMutation } from 'client'
 import { Perms, useAuth } from 'components/Auth'
 import { ProfileType } from 'components/Profile'
 import { useQueryClient } from 'react-query'
-import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
+import {
+  GqlType,
+  ToFormValues,
+  configuration,
+  getSlotDescription,
+  onCloseHandler,
+  pick,
+  useSendEmail,
+  useSetting,
+} from 'utils'
 import Yup from 'utils/Yup'
 
 import { useNotification } from '../../components/Notifications'
 
-export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
-  Partial<{ id: number }> &
-  Partial<Node> & {
-    slotsAttendingData?: boolean[]
-  }
+export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
+export type MembershipType = ToFormValues<Membership> & {
+  slotsAttendingData?: boolean[]
+}
 
 export const fromSlotsAttending = (membershipValues: MembershipType) => {
   const slotsAttendingData = Array(7).fill(false)

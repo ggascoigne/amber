@@ -1,6 +1,6 @@
 import { IconButton, Theme, Tooltip, createStyles, makeStyles } from '@material-ui/core'
 import BugReportTwoToneIcon from '@material-ui/icons/BugReportTwoTone'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import { atom, useAtom } from 'jotai'
 import React, { Suspense } from 'react'
 
@@ -30,7 +30,7 @@ export const TableDebugButton: React.FC<{ enabled: boolean; instance: any }> = (
     <Tooltip title='Debug'>
       <div style={{ position: 'relative' }}>
         <IconButton
-          className={classnames({ [classes.button]: instance?.rows?.length })}
+          className={clsx({ [classes.button]: instance?.rows?.length })}
           onClick={() => setOpen((old) => !old)}
         >
           <BugReportTwoToneIcon />

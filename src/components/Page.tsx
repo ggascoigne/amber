@@ -2,8 +2,8 @@ import { useTheme } from '@material-ui/core'
 import { Theme, makeStyles } from '@material-ui/core/styles'
 import createStyles from '@material-ui/core/styles/createStyles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import classNames from 'classnames'
-import React from 'react'
+import clsx from 'clsx'
+import React, { ReactNode } from 'react'
 import { Helmet } from 'react-helmet-async'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,21 +22,39 @@ const useStyles = makeStyles((theme: Theme) =>
     small: {
       padding: 16,
     },
+    smaller: {
+      fontSize: '2.25rem',
+      lineHeight: '1.5em',
+      fontWeight: 300,
+      color: 'inherit',
+      marginTop: 20,
+      marginBottom: 10,
+    },
   })
 )
 
 type PageProps = {
   className?: string
   title: string
+  titleElement?: ReactNode
+  hideTitle?: boolean
+  smaller?: boolean
 }
 
-export const Page: React.FC<PageProps> = ({ children, className, title }) => {
+export const Page: React.FC<PageProps> = ({
+  children,
+  className,
+  title,
+  titleElement,
+  hideTitle = false,
+  smaller = false,
+}) => {
   const classes = useStyles()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   return (
     <div
-      className={classNames(
+      className={clsx(
         {
           [classes.main]: true,
           [classes.mainRaised]: !fullScreen,
@@ -48,6 +66,7 @@ export const Page: React.FC<PageProps> = ({ children, className, title }) => {
       <Helmet>
         <title>{title}</title>
       </Helmet>
+      {!hideTitle ? titleElement ? titleElement : <h1 className={classes.smaller}>{title}</h1> : null}
       {children}
     </div>
   )

@@ -1,5 +1,5 @@
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
-import { MembershipFieldsFragment, useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
+import { useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { BlankNoCell, DateCell, YesBlankCell } from 'components/CellFormatters'
 import { useProfile } from 'components/Profile'
 import { Table } from 'components/Table'
@@ -14,8 +14,7 @@ import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 import { MembershipDialog } from './MembershipDialog'
-
-type Membership = MembershipFieldsFragment
+import { Membership } from './membershipUtils'
 
 const initialState: Partial<TableState<Membership>> = {
   sortBy: [
@@ -93,16 +92,16 @@ const columns: Column<Membership>[] = [
       {
         accessor: 'volunteer',
         Cell: YesBlankCell,
-        width: 50,
+        sortType: 'basic',
+        width: 65,
       },
       {
         accessor: 'attending',
         Cell: BlankNoCell,
-        width: 50,
+        sortType: 'basic',
+        width: 65,
       },
       { accessor: 'hotelRoomId' },
-      { accessor: 'interestLevel' },
-      { accessor: 'message' },
       { accessor: 'offerSubsidy' },
       { accessor: 'requestOldPrice' },
       { accessor: 'roomPreferenceAndNotes' },
@@ -131,12 +130,12 @@ const virtualColumns: Column<Membership>[] = [
       {
         accessor: 'volunteer',
         Cell: YesBlankCell,
-        width: 50,
+        width: 65,
       },
       {
         accessor: 'attending',
         Cell: BlankNoCell,
-        width: 50,
+        width: 65,
       },
     ],
   },
@@ -242,7 +241,7 @@ const Memberships: React.FC = React.memo(() => {
       <Table<Membership>
         name='members'
         data={list}
-        columns={configuration.virtual ? virtualColumns : columns}
+        columns={configuration.startDates[year].virtual ? virtualColumns : columns}
         onAdd={onAdd}
         disableGroupBy
         onDelete={onDelete}

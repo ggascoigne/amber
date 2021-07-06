@@ -2,9 +2,7 @@ import { Page } from 'components/Page'
 import React from 'react'
 
 const AboutAmber = () => (
-  <Page title='Amber'>
-    <h1>What is Amber Roleplaying?</h1>
-
+  <Page title='What is Amber Roleplaying?'>
     <p>
       The Amber Diceless Role-Playing Game can be played in many different formats. At our usual AmberCon Northwest you
       might find fully-costumed Live Action games, standard "table-top" games, or anything in-between. We also host

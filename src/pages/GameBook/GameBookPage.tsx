@@ -19,8 +19,8 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
     return <Loader />
   }
 
-  const game = data.games?.edges[0].node
-  return (
+  const game = data.games?.edges?.[0]?.node
+  return game ? (
     <Link
       to={{
         pathname: to,
@@ -29,13 +29,13 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
     >
       <YearTile year={year} game={game} />
     </Link>
-  )
+  ) : null
 }
 
 const GameBookPage: React.FC = () => {
   const years = range(configuration.year, 2012)
   return (
-    <Page title='Game Book'>
+    <Page title='Game Book' hideTitle>
       <GridContainer spacing={2} justify='center'>
         {years.map((year) => (
           <GridItem key={year} xl={2} lg={3} md={4} sm={6}>

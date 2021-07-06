@@ -153,6 +153,20 @@ export const rootRoutes: RootRoutes = [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/hotel-room-types',
+    label: 'Hotel Room Types',
+    exact: true,
+    component: React.lazy(() => import('pages/HotelRoomTypes/HotelRoomTypes')),
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/hotel-rooms',
+    label: 'Hotel Rooms',
+    exact: true,
+    component: React.lazy(() => import('pages/HotelRoomDetails/HotelRoomDetails')),
+    permission: Perms.IsAdmin,
+  },
+  {
     path: '/user-admin',
     label: 'Users',
     exact: true,

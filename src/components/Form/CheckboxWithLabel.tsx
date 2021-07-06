@@ -10,10 +10,11 @@ import type { CheckboxProps } from './Checkbox'
  * https://github.com/mui-org/material-ui/blob/v3.1.1/packages/material-ui/src/FormControlLabel/FormControlLabel.js#L71
  */
 export interface CheckboxWithLabelProps extends CheckboxProps {
-  Label: Omit<MuiFormControlLabelProps, 'control' | 'checked' | 'name' | 'onChange' | 'value' | 'inputRef'>
+  Label?: Omit<MuiFormControlLabelProps, 'control' | 'checked' | 'name' | 'onChange' | 'value' | 'inputRef'>
+  label?: string
 }
 
-export const CheckboxWithLabel: React.ComponentType<CheckboxWithLabelProps> = ({ Label, ...props }) => {
+export const CheckboxWithLabel: React.ComponentType<CheckboxWithLabelProps> = ({ Label, label, ...props }) => {
   // @ts-ignore
   const [field] = useField(props)
   const { isSubmitting } = useFormikContext()
@@ -28,8 +29,11 @@ export const CheckboxWithLabel: React.ComponentType<CheckboxWithLabelProps> = ({
 
   const labelProps = {
     disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
+    style: { marginLeft: 0 },
+    labelPlacement: 'start',
+    label,
     ...Label,
-  }
+  } as const
 
   return <FormControlLabel control={<MuiCheckbox {...fullProps} />} {...labelProps} />
 }

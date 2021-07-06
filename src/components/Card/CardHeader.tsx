@@ -1,5 +1,5 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,7 +60,7 @@ type CardHeaderProps = {
 export const CardHeader: React.FC<CardHeaderProps> = (props) => {
   const classes = useStyles()
   const { className, children, color, plain, ...rest } = props
-  const cardHeaderClasses = classNames(
+  const cardHeaderClasses = clsx(
     classes.cardHeader,
     {
       [getKeyValue(classes)((color + 'CardHeader') as keyof typeof classes)]: color,

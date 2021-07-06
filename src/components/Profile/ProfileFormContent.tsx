@@ -1,5 +1,5 @@
-import { DialogContent, DialogContentText, useTheme } from '@material-ui/core'
-import { Node, UserInput } from 'client'
+import { DialogContentText, useTheme } from '@material-ui/core'
+import { UserInput } from 'client'
 import { Field } from 'formik'
 import { TextField } from 'formik-material-ui'
 import React from 'react'
@@ -7,7 +7,7 @@ import React from 'react'
 import { Perms, useAuth } from '../Auth'
 import { GridContainer, GridItem } from '../Grid'
 
-export type ProfileType = UserInput & Partial<Node>
+export type ProfileType = UserInput
 
 type ProfileFormContentProps = {
   prefix?: string
@@ -18,7 +18,7 @@ export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix =
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const theme = useTheme()
   return (
-    <DialogContent>
+    <>
       <DialogContentText>
         Please ensure that this information is up to date. We promise we wont spam you.
       </DialogContentText>
@@ -59,6 +59,6 @@ export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix =
           <Field component={TextField} name={`${prefix}phoneNumber`} label='Phone number' fullWidth required />
         </GridItem>
       </GridContainer>
-    </DialogContent>
+    </>
   )
 }

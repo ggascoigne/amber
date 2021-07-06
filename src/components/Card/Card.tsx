@@ -1,5 +1,5 @@
 import { createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 const useStyles = makeStyles(
@@ -42,7 +42,7 @@ type CardProps = {
 export const Card: React.FC<CardProps> = (props) => {
   const classes = useStyles()
   const { className, children, plain, carousel, ...rest } = props
-  const cardClasses = classNames(
+  const cardClasses = clsx(
     classes.card,
     {
       [classes.cardPlain]: plain,

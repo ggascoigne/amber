@@ -60,7 +60,7 @@ export function FilterChipBar<T extends Record<string, unknown>>({
       {filters &&
         allColumns.map((column) => {
           const filter = filters.find((f) => f.id === column.id)
-          const value = filter && filter.value
+          const value = filter?.value
           return (
             value && (
               <Chip

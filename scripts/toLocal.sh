@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 
+# import the aws database to the local dev copy
+
 source `dirname $0`/utils.sh
 
 while read line; do export $line; done < <(grep DATABASE .env.aws-prod | egrep -v '^#')

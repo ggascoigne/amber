@@ -9,11 +9,14 @@ const AboutAmberconNw = () => {
   const theme = useTheme()
 
   return (
-    <Page title='About'>
-      <h1>
-        About <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
-      </h1>
-
+    <Page
+      title='About'
+      titleElement={
+        <h1>
+          About <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
+        </h1>
+      }
+    >
       <h2>What is AmberCon NW?</h2>
       <p>
         AmberCon Northwest is a fully scheduled role-playing game convention devoted to Roger Zelazny's worlds of Amber

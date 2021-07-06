@@ -1,7 +1,7 @@
 import { TableSortLabel, TextField, Tooltip } from '@material-ui/core'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
-import cx from 'classnames'
+import clsx from 'clsx'
 import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect } from 'react'
 import {
   Cell,
@@ -242,6 +242,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
   }
 
   const { role: tableRole, ...tableProps } = getTableProps()
+  const { role: tableBodyRole, ...tableBodyProps } = getTableBodyProps()
   return (
     <>
       {!hideSelectionUi ? (
@@ -311,7 +312,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
             )
           })}
         </TableHead>
-        <TableBody {...getTableBodyProps()}>
+        <TableBody {...tableBodyProps}>
           {page.map((row) => {
             prepareRow(row)
             const { key: rowKey, role: rowRole, ...getRowProps } = row.getRowProps()
@@ -319,7 +320,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
               <TableRow
                 key={rowKey}
                 {...getRowProps}
-                className={cx({ rowSelected: row.isSelected, clickable: onClick })}
+                className={clsx({ rowSelected: row.isSelected, clickable: onClick })}
               >
                 {row.cells.map((cell) => {
                   const { key: cellKey, role: cellRole, ...getCellProps } = cell.getCellProps(cellProps)

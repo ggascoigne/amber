@@ -1,18 +1,17 @@
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
-import { Node, SettingFieldsFragment, useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from 'client'
-import { Form, Formik, FormikHelpers } from 'formik'
+import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from 'client'
+import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from 'react-query'
-import { onCloseHandler, pick, settingValues } from 'utils'
+import { ToFormValues, onCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
 
-import { useAuth } from '../../components/Auth'
-import { DialogTitle } from '../../components/Dialog'
+import { EditDialog } from '../../components/EditDialog'
 import { SelectField, TextField } from '../../components/Form'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { useNotification } from '../../components/Notifications'
+import { Setting } from './Settings'
 
-const settingValidationSchema = Yup.object().shape({
+const validationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),
   type: Yup.string().min(2).max(7).required('Required'),
   value: Yup.string().max(100).required('Required'),
@@ -20,7 +19,7 @@ const settingValidationSchema = Yup.object().shape({
 
 export const typeValues = ['integer', 'string']
 
-type FormValues = Omit<SettingFieldsFragment, 'nodeId' | 'id' | '__typename'> & Partial<Node> & { id?: number }
+type FormValues = ToFormValues<Setting>
 
 interface SettingDialogProps {
   open: boolean
@@ -87,14 +86,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
 }
 
 export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, initialValues }) => {
-  const { isAuthenticated, user } = useAuth()
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const createOrUpdateSetting = useEditSetting(onClose)
-
-  if (!isAuthenticated || !user) {
-    throw new Error('login expired')
-  } // todo test this
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     await createOrUpdateSetting(values)
@@ -110,39 +102,30 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
   }, [initialValues])
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik initialValues={values} enableReinitialize validationSchema={settingValidationSchema} onSubmit={onSubmit}>
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
-          <Form>
-            <DialogTitle onClose={onClose}>{values.nodeId ? 'Edit' : 'Add'} Setting</DialogTitle>
-            <DialogContent>
-              <GridContainer spacing={2}>
-                <GridItem xs={12} md={12}>
-                  <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  {values.type === 'integer' ? (
-                    <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={settingValues} />
-                  ) : (
-                    <TextField name='value' label='Value' margin='normal' fullWidth required />
-                  )}
-                </GridItem>
-              </GridContainer>
-            </DialogContent>
-            <DialogActions className='modalFooterButtons'>
-              <Button onClick={onClose} variant='outlined'>
-                Cancel
-              </Button>
-              <Button type='submit' variant='contained' color='primary' disabled={isSubmitting}>
-                Save
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+    <EditDialog
+      initialValues={values}
+      onClose={onClose}
+      open={open}
+      onSubmit={onSubmit}
+      title='Setting'
+      validationSchema={validationSchema}
+      isEditing={!!values.nodeId}
+    >
+      <GridContainer spacing={2}>
+        <GridItem xs={12} md={12}>
+          <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
+        </GridItem>
+        <GridItem xs={12} md={12}>
+          <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
+        </GridItem>
+        <GridItem xs={12} md={12}>
+          {values.type === 'integer' ? (
+            <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={settingValues} />
+          ) : (
+            <TextField name='value' label='Value' margin='normal' fullWidth required />
+          )}
+        </GridItem>
+      </GridContainer>
+    </EditDialog>
   )
 }

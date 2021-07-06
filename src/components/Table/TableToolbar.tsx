@@ -5,7 +5,7 @@ import CreateIcon from '@material-ui/icons/CreateOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import ViewColumnsIcon from '@material-ui/icons/ViewColumn'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import React, { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
 
@@ -74,7 +74,7 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
     <Tooltip title={label} aria-label={label}>
       <span>
         <IconButton
-          className={classnames({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
+          className={clsx({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
           onClick={onClick(instance)}
           disabled={!enabled(instance)}
         >

@@ -225,7 +225,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         validationSchema={submissionValidationSchema}
         onSubmit={onSubmit}
       >
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
+        {({ isSubmitting }) => (
           <Form>
             <DialogContent>
               <GridContainer spacing={2}>

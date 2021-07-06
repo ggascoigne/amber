@@ -1,8 +1,4 @@
 import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
   IconButton,
   Table,
   TableBody,
@@ -13,29 +9,27 @@ import {
   Typography,
   createStyles,
   makeStyles,
-  useMediaQuery,
-  useTheme,
 } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import {
   CreateLookupMutation,
-  Node,
   useCreateLookupMutation,
   useCreateLookupValueMutation,
   useDeleteLookupValueMutation,
   useUpdateLookupByNodeIdMutation,
   useUpdateLookupValueByNodeIdMutation,
 } from 'client'
-import { FieldArray, Form, Formik, FormikHelpers } from 'formik'
+import { FieldArray, FormikHelpers } from 'formik'
 import * as React from 'react'
 import Yup from 'utils/Yup'
 
 import { Card, CardBody, CardHeader } from '../../components/Card'
-import { DialogTitle } from '../../components/Dialog'
+import { EditDialog } from '../../components/EditDialog'
 import { TextField } from '../../components/Form'
 import { GridContainer, GridItem } from '../../components/Grid'
-import type { LookupAndValues } from './types'
+import { ToFormValues } from '../../utils'
+import { LookupAndValues } from './Lookups'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -73,12 +67,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type FormValues = Omit<LookupAndValues, 'nodeId' | 'id' | '__typename'> & Partial<Node>
+type LookupAndValuesType = ToFormValues<LookupAndValues>
 
 interface LookupsDialogProps {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: FormValues
+  initialValues?: LookupAndValuesType
 }
 
 const validationSchema = Yup.object().shape({
@@ -94,7 +88,10 @@ const validationSchema = Yup.object().shape({
   }),
 })
 
-const defaultValues: FormValues = { realm: '', lookupValues: { __typename: 'LookupValuesConnection', nodes: [] } }
+const defaultValues: LookupAndValuesType = {
+  realm: '',
+  lookupValues: { __typename: 'LookupValuesConnection', nodes: [] },
+}
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const classes = useStyles()
@@ -103,10 +100,8 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
   const createLookupValue = useCreateLookupValueMutation()
   const updateLookupValue = useUpdateLookupValueByNodeIdMutation()
   const deleteLookupValue = useDeleteLookupValueMutation()
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: LookupAndValuesType, actions: FormikHelpers<LookupAndValuesType>) => {
     const res = values.nodeId
       ? await updateLookup.mutateAsync({
           input: {
@@ -197,96 +192,80 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     })
   }
 
-  const editing = initialValues !== defaultValues
-
-  const highestSequence = (values: FormValues) =>
+  const highestSequence = (values: LookupAndValuesType) =>
     values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth={false} open={open} onClose={onClose} fullScreen={fullScreen}>
-      <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
-        {({ isSubmitting, values }) => (
-          <Form>
-            <DialogTitle onClose={onClose}>{editing ? 'Edit' : 'Add'} Lookup</DialogTitle>
-            <DialogContent>
-              <GridContainer spacing={5}>
-                <GridItem xs={12} md={6}>
-                  <TextField name='realm' label='Realm' margin='normal' />
-                </GridItem>
-                <GridItem>
-                  <FieldArray
-                    name='lookupValues.nodes'
-                    render={(arrayHelpers) => (
-                      <Card>
-                        <CardHeader color='success' className={classes.header}>
-                          <Typography variant='h6' className={classes.title}>
-                            Lookup Values
-                          </Typography>
-                          <IconButton
-                            className={classes.iconButton}
-                            onClick={() =>
-                              arrayHelpers.push({ sequencer: highestSequence(values), code: '', value: '' })
-                            }
-                          >
-                            <AddIcon className={classes.addIcon} />
-                          </IconButton>
-                        </CardHeader>
-                        <CardBody>
-                          <Table className={classes.table}>
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>Sequencer</TableCell>
-                                <TableCell>Code</TableCell>
-                                <TableCell>Value</TableCell>
-                                <TableCell>&nbsp;</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
-                              {values.lookupValues.nodes.map((lv, index) => (
-                                <TableRow key={index}>
-                                  <TableCell scope='row' style={{ width: '10%' }}>
-                                    <TextField
-                                      name={`lookupValues.nodes[${index}].sequencer`}
-                                      fullWidth
-                                      type='number'
-                                    />
-                                  </TableCell>
-                                  <TableCell style={{ width: '20%' }}>
-                                    <TextField name={`lookupValues.nodes[${index}].code`} fullWidth />
-                                  </TableCell>
-                                  <TableCell>
-                                    <TextField name={`lookupValues.nodes[${index}].value`} fullWidth />
-                                  </TableCell>
-                                  <TableCell align='right' style={{ width: '50px' }}>
-                                    <IconButton
-                                      className={classes.deleteButton}
-                                      onClick={() => arrayHelpers.remove(index)}
-                                    >
-                                      <DeleteIcon className={classes.deleteIcon} />
-                                    </IconButton>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </CardBody>
-                      </Card>
-                    )}
-                  />
-                </GridItem>
-              </GridContainer>
-            </DialogContent>
-            <DialogActions className='modalFooterButtons'>
-              <Button onClick={onClose} variant='outlined'>
-                Cancel
-              </Button>
-              <Button disabled={isSubmitting} type='submit' variant='contained' color='primary'>
-                Save
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+    <EditDialog
+      initialValues={initialValues}
+      onClose={onClose}
+      open={open}
+      onSubmit={onSubmit}
+      title='Lookup'
+      validationSchema={validationSchema}
+      isEditing={initialValues !== defaultValues}
+    >
+      {(formikProps) => (
+        <GridContainer spacing={5}>
+          <GridItem xs={12} md={6}>
+            <TextField name='realm' label='Realm' margin='normal' />
+          </GridItem>
+          <GridItem>
+            <FieldArray
+              name='lookupValues.nodes'
+              render={(arrayHelpers) => (
+                <Card>
+                  <CardHeader color='success' className={classes.header}>
+                    <Typography variant='h6' className={classes.title}>
+                      Lookup Values
+                    </Typography>
+                    <IconButton
+                      className={classes.iconButton}
+                      onClick={() =>
+                        arrayHelpers.push({ sequencer: highestSequence(formikProps.values), code: '', value: '' })
+                      }
+                    >
+                      <AddIcon className={classes.addIcon} />
+                    </IconButton>
+                  </CardHeader>
+                  <CardBody>
+                    <Table className={classes.table}>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Sequencer</TableCell>
+                          <TableCell>Code</TableCell>
+                          <TableCell>Value</TableCell>
+                          <TableCell>&nbsp;</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {formikProps.values.lookupValues.nodes.map((lv, index) => (
+                          <TableRow key={index}>
+                            <TableCell scope='row' style={{ width: '10%' }}>
+                              <TextField name={`lookupValues.nodes[${index}].sequencer`} fullWidth type='number' />
+                            </TableCell>
+                            <TableCell style={{ width: '20%' }}>
+                              <TextField name={`lookupValues.nodes[${index}].code`} fullWidth />
+                            </TableCell>
+                            <TableCell>
+                              <TextField name={`lookupValues.nodes[${index}].value`} fullWidth />
+                            </TableCell>
+                            <TableCell align='right' style={{ width: '50px' }}>
+                              <IconButton className={classes.deleteButton} onClick={() => arrayHelpers.remove(index)}>
+                                <DeleteIcon className={classes.deleteIcon} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardBody>
+                </Card>
+              )}
+            />
+          </GridItem>
+        </GridContainer>
+      )}
+    </EditDialog>
   )
 }

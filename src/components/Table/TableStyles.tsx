@@ -9,7 +9,7 @@ import MuiTableHead from '@material-ui/core/TableHead'
 import { TableHeadTypeMap } from '@material-ui/core/TableHead/TableHead'
 import MuiTableRow from '@material-ui/core/TableRow'
 import { TableRowTypeMap } from '@material-ui/core/TableRow/TableRow'
-import cx from 'classnames'
+import clsx from 'clsx'
 import React, { CSSProperties } from 'react'
 
 export const useStyles = makeStyles((theme: Theme) =>
@@ -138,7 +138,7 @@ type CN = { className?: string; style?: CSSProperties }
 export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableTable className={cx(className, classes.tableTable)} {...rest}>
+    <MuiTableTable className={clsx(className, classes.tableTable)} {...rest}>
       {children}
     </MuiTableTable>
   )
@@ -147,7 +147,7 @@ export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, cla
 export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableBody className={cx(className, classes.tableBody)} {...rest}>
+    <MuiTableBody className={clsx(className, classes.tableBody)} {...rest}>
       {children}
     </MuiTableBody>
   )
@@ -156,7 +156,7 @@ export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({ children, 
 export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableHead className={cx(className, classes.tableHead)} {...rest}>
+    <MuiTableHead className={clsx(className, classes.tableHead)} {...rest}>
       {children}
     </MuiTableHead>
   )
@@ -165,7 +165,7 @@ export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({ children, 
 export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableRow className={cx(className, classes.tableHeadRow)} {...rest}>
+    <MuiTableRow className={clsx(className, classes.tableHeadRow)} {...rest}>
       {children}
     </MuiTableRow>
   )
@@ -174,7 +174,7 @@ export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children
 export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableCell className={cx(className, classes.tableHeadCell)} {...rest}>
+    <MuiTableCell className={clsx(className, classes.tableHeadCell)} {...rest}>
       {children}
     </MuiTableCell>
   )
@@ -183,7 +183,7 @@ export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({ children
 export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableRow className={cx(className, classes.tableRow)} {...rest}>
+    <MuiTableRow className={clsx(className, classes.tableRow)} {...rest}>
       {children}
     </MuiTableRow>
   )
@@ -192,7 +192,7 @@ export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, cl
 export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <MuiTableCell className={cx(className, classes.tableCell)} {...rest}>
+    <MuiTableCell className={clsx(className, classes.tableCell)} {...rest}>
       {children}
     </MuiTableCell>
   )
@@ -201,7 +201,7 @@ export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({ children, cl
 export const TableLabel: React.FC<CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()
   return (
-    <div className={cx(className, classes.tableLabel)} {...rest}>
+    <div className={clsx(className, classes.tableLabel)} {...rest}>
       {children}
     </div>
   )

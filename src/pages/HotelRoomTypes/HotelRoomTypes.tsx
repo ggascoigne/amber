@@ -1,38 +1,54 @@
-import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, notEmpty } from 'utils'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
+import { GetHotelRoomsQuery, useDeleteHotelRoomMutation, useGetHotelRoomsQuery } from '../../client'
+import { YesBlankCell } from '../../components/CellFormatters'
 import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
-import { SettingDialog } from './SettingDialog'
+import { GqlType, notEmpty } from '../../utils'
+import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 
-export type Setting = GqlType<GetSettingsQuery, ['settings', 'nodes', number]>
+export type HotelRoom = GqlType<GetHotelRoomsQuery, ['hotelRooms', 'edges', number, 'node']>
 
-const columns: Column<Setting>[] = [
+const columns: Column<HotelRoom>[] = [
   {
-    accessor: 'code',
+    accessor: 'description',
   },
   {
-    accessor: 'value',
+    accessor: 'bathroomType',
+  },
+  {
+    accessor: 'occupancy',
+  },
+  {
+    // todo - this needs calculating from the hotelRoomDetails table
+    accessor: 'quantity',
+  },
+  {
+    accessor: 'gamingRoom',
+    Cell: YesBlankCell,
+    sortType: 'basic',
+  },
+  {
+    accessor: 'rate',
   },
   {
     accessor: 'type',
   },
 ]
 
-const Settings: React.FC = React.memo(() => {
+const HotelRoomTypes: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<Setting[]>([])
+  const [selection, setSelection] = useState<HotelRoom[]>([])
 
-  const deleteSetting = useDeleteSettingMutation()
+  const deleteHotelRoom = useDeleteHotelRoomMutation()
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGetSettingsQuery()
+  const { isLoading, error, data, refetch } = useGetHotelRoomsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -41,12 +57,12 @@ const Settings: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const list: Setting[] = data.settings!.nodes.filter(notEmpty)
+  const list: HotelRoom[] = data.hotelRooms!.edges.map((v) => v.node).filter(notEmpty)
 
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getSettings')
+    queryClient.invalidateQueries('getHotelRooms')
   }
 
   const onAdd: TableMouseEventHandler = () => () => {
@@ -58,9 +74,9 @@ const Settings: React.FC = React.memo(() => {
     clearSelectionAndRefresh()
   }
 
-  const onDelete = (instance: TableInstance<Setting>) => () => {
+  const onDelete = (instance: TableInstance<HotelRoom>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id } }))
+    const updater = toDelete.map((v) => deleteHotelRoom.mutateAsync({ input: { id: v.id } }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()
@@ -68,25 +84,24 @@ const Settings: React.FC = React.memo(() => {
     })
   }
 
-  const onEdit = (instance: TableInstance<Setting>) => () => {
+  const onEdit = (instance: TableInstance<HotelRoom>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<Setting>) => {
+  const onClick = (row: Row<HotelRoom>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
 
   return (
-    <Page title='Settings'>
-      {showEdit && <SettingDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<Setting>
-        name='settings'
+    <Page title='Hotel Room Types'>
+      {showEdit && <HotelRoomTypeDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+      <Table<HotelRoom>
+        name='hotelRooms'
         data={list}
         columns={columns}
         onAdd={onAdd}
-        disableGroupBy
         onDelete={onDelete}
         onEdit={onEdit}
         onClick={onClick}
@@ -94,6 +109,6 @@ const Settings: React.FC = React.memo(() => {
       />
     </Page>
   )
-})
+}
 
-export default Settings
+export default HotelRoomTypes

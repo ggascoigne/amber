@@ -1,6 +1,6 @@
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
-import { IsNotMember, useSetting } from 'utils'
+import { IsNotMember, configuration, useSetting } from 'utils'
 
 import { IsLoggedIn, IsNotLoggedIn, useAuth } from '../../components/Auth'
 import { CardBody } from '../../components/Card'
@@ -47,33 +47,15 @@ export const BecomeAMember = () => {
     <IsNotMember>
       <Card elevation={3}>
         <CardBody className={classes.card}>
-          <h2>
-            Attending <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
-          </h2>
+          {configuration.virtual ? (
+            <h2>
+              Attending <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
+            </h2>
+          ) : (
+            <h2>Attending AmberCon NW</h2>
+          )}
           <IsNotLoggedIn>
-            <h4>We have a new authentication system.</h4>
-
-            <p>
-              <strong>
-                You must create a new account if you used the old site. Your old password won't work. Click the
-                Login/Sign up button below and then click Sign Up on the form that opens.
-              </strong>
-            </p>
-
-            <p>If you use the same email address you used on the old site, you will have access to your old data.</p>
-
-            <p>
-              Only after you have created a new account and confirmed your email will you be able to log in to the new
-              site.
-            </p>
-
-            <p>
-              Please note, that you can also login with either Facebook or Google. The same email advice applies in this
-              case too.
-            </p>
-
             <Button variant='outlined' color='primary' size='large' onClick={login}>
-              {' '}
               Login / Sign Up
             </Button>
           </IsNotLoggedIn>

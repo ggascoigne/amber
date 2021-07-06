@@ -7052,6 +7052,127 @@ export type GameGmsFragment = { __typename: 'Game' } & {
   }
 }
 
+export type HotelRoomFieldsFragment = { __typename: 'HotelRoom' } & Pick<
+  HotelRoom,
+  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'quantity' | 'rate' | 'type'
+>
+
+export type GetHotelRoomsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetHotelRoomsQuery = { __typename: 'Query' } & {
+  hotelRooms?: Maybe<
+    { __typename: 'HotelRoomsConnection' } & {
+      edges: Array<
+        { __typename: 'HotelRoomsEdge' } & { node?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment> }
+      >
+    }
+  >
+}
+
+export type UpdateHotelRoomByNodeIdMutationVariables = Exact<{
+  input: UpdateHotelRoomByNodeIdInput
+}>
+
+export type UpdateHotelRoomByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateHotelRoomByNodeId?: Maybe<
+    { __typename: 'UpdateHotelRoomPayload' } & {
+      hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment>
+    }
+  >
+}
+
+export type CreateHotelRoomMutationVariables = Exact<{
+  input: CreateHotelRoomInput
+}>
+
+export type CreateHotelRoomMutation = { __typename: 'Mutation' } & {
+  createHotelRoom?: Maybe<
+    { __typename: 'CreateHotelRoomPayload' } & {
+      hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment>
+    }
+  >
+}
+
+export type DeleteHotelRoomMutationVariables = Exact<{
+  input: DeleteHotelRoomInput
+}>
+
+export type DeleteHotelRoomMutation = { __typename: 'Mutation' } & {
+  deleteHotelRoom?: Maybe<
+    { __typename: 'DeleteHotelRoomPayload' } & Pick<
+      DeleteHotelRoomPayload,
+      'clientMutationId' | 'deletedHotelRoomNodeId'
+    >
+  >
+}
+
+export type HotelRoomDetailsFieldsFragment = { __typename: 'HotelRoomDetail' } & Pick<
+  HotelRoomDetail,
+  | 'id'
+  | 'nodeId'
+  | 'name'
+  | 'roomType'
+  | 'comment'
+  | 'reservedFor'
+  | 'bathroomType'
+  | 'gamingRoom'
+  | 'enabled'
+  | 'formattedRoomType'
+  | 'internalRoomType'
+  | 'reserved'
+>
+
+export type GetHotelRoomDetailsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetHotelRoomDetailsQuery = { __typename: 'Query' } & {
+  hotelRoomDetails?: Maybe<
+    { __typename: 'HotelRoomDetailsConnection' } & {
+      edges: Array<
+        { __typename: 'HotelRoomDetailsEdge' } & {
+          node?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+        }
+      >
+    }
+  >
+}
+
+export type UpdateHotelRoomDetailByNodeIdMutationVariables = Exact<{
+  input: UpdateHotelRoomDetailByNodeIdInput
+}>
+
+export type UpdateHotelRoomDetailByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateHotelRoomDetailByNodeId?: Maybe<
+    { __typename: 'UpdateHotelRoomDetailPayload' } & {
+      hotelRoomDetail?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+    }
+  >
+}
+
+export type CreateHotelRoomDetailMutationVariables = Exact<{
+  input: CreateHotelRoomDetailInput
+}>
+
+export type CreateHotelRoomDetailMutation = { __typename: 'Mutation' } & {
+  createHotelRoomDetail?: Maybe<
+    { __typename: 'CreateHotelRoomDetailPayload' } & {
+      hotelRoomDetail?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+    }
+  >
+}
+
+export type DeleteHotelRoomDetailMutationVariables = Exact<{
+  input: DeleteHotelRoomDetailInput
+}>
+
+export type DeleteHotelRoomDetailMutation = { __typename: 'Mutation' } & {
+  deleteHotelRoomDetail?: Maybe<
+    { __typename: 'DeleteHotelRoomDetailPayload' } & Pick<
+      DeleteHotelRoomDetailPayload,
+      'clientMutationId' | 'deletedHotelRoomDetailNodeId'
+    >
+  >
+}
+
 export type LookupFieldsFragment = { __typename: 'Lookup' } & Pick<Lookup, 'nodeId' | 'id' | 'realm'>
 
 export type LookupValuesFieldsFragment = { __typename: 'LookupValue' } & Pick<
@@ -7481,6 +7602,35 @@ export const GameGmsFragmentDoc = `
   }
 }
     ${AssignmentFieldsFragmentDoc}`
+export const HotelRoomFieldsFragmentDoc = `
+    fragment hotelRoomFields on HotelRoom {
+  id
+  nodeId
+  description
+  gamingRoom
+  bathroomType
+  occupancy
+  quantity
+  rate
+  type
+}
+    `
+export const HotelRoomDetailsFieldsFragmentDoc = `
+    fragment hotelRoomDetailsFields on HotelRoomDetail {
+  id
+  nodeId
+  name
+  roomType
+  comment
+  reservedFor
+  bathroomType
+  gamingRoom
+  enabled
+  formattedRoomType
+  internalRoomType
+  reserved
+}
+    `
 export const LookupFieldsFragmentDoc = `
     fragment lookupFields on Lookup {
   nodeId
@@ -8086,6 +8236,157 @@ export const useUpdateGameChoiceByNodeIdMutation = <TError = QueryError, TContex
     useFetchData<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>(
       UpdateGameChoiceByNodeIdDocument
     ),
+    options
+  )
+export const GetHotelRoomsDocument = `
+    query getHotelRooms {
+  hotelRooms {
+    edges {
+      node {
+        ...hotelRoomFields
+      }
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useGetHotelRoomsQuery = <TData = GetHotelRoomsQuery, TError = QueryError>(
+  variables?: GetHotelRoomsQueryVariables,
+  options?: UseQueryOptions<GetHotelRoomsQuery, TError, TData>
+) =>
+  useQuery<GetHotelRoomsQuery, TError, TData>(
+    ['getHotelRooms', variables],
+    useFetchData<GetHotelRoomsQuery, GetHotelRoomsQueryVariables>(GetHotelRoomsDocument).bind(null, variables),
+    options
+  )
+export const UpdateHotelRoomByNodeIdDocument = `
+    mutation updateHotelRoomByNodeId($input: UpdateHotelRoomByNodeIdInput!) {
+  updateHotelRoomByNodeId(input: $input) {
+    hotelRoom {
+      ...hotelRoomFields
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useUpdateHotelRoomByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateHotelRoomByNodeIdMutation,
+    TError,
+    UpdateHotelRoomByNodeIdMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<UpdateHotelRoomByNodeIdMutation, TError, UpdateHotelRoomByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateHotelRoomByNodeIdMutation, UpdateHotelRoomByNodeIdMutationVariables>(
+      UpdateHotelRoomByNodeIdDocument
+    ),
+    options
+  )
+export const CreateHotelRoomDocument = `
+    mutation createHotelRoom($input: CreateHotelRoomInput!) {
+  createHotelRoom(input: $input) {
+    hotelRoom {
+      ...hotelRoomFields
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useCreateHotelRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>
+) =>
+  useMutation<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>(
+    useFetchData<CreateHotelRoomMutation, CreateHotelRoomMutationVariables>(CreateHotelRoomDocument),
+    options
+  )
+export const DeleteHotelRoomDocument = `
+    mutation deleteHotelRoom($input: DeleteHotelRoomInput!) {
+  deleteHotelRoom(input: $input) {
+    clientMutationId
+    deletedHotelRoomNodeId
+  }
+}
+    `
+export const useDeleteHotelRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>
+) =>
+  useMutation<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>(
+    useFetchData<DeleteHotelRoomMutation, DeleteHotelRoomMutationVariables>(DeleteHotelRoomDocument),
+    options
+  )
+export const GetHotelRoomDetailsDocument = `
+    query getHotelRoomDetails {
+  hotelRoomDetails {
+    edges {
+      node {
+        ...hotelRoomDetailsFields
+      }
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useGetHotelRoomDetailsQuery = <TData = GetHotelRoomDetailsQuery, TError = QueryError>(
+  variables?: GetHotelRoomDetailsQueryVariables,
+  options?: UseQueryOptions<GetHotelRoomDetailsQuery, TError, TData>
+) =>
+  useQuery<GetHotelRoomDetailsQuery, TError, TData>(
+    ['getHotelRoomDetails', variables],
+    useFetchData<GetHotelRoomDetailsQuery, GetHotelRoomDetailsQueryVariables>(GetHotelRoomDetailsDocument).bind(
+      null,
+      variables
+    ),
+    options
+  )
+export const UpdateHotelRoomDetailByNodeIdDocument = `
+    mutation updateHotelRoomDetailByNodeId($input: UpdateHotelRoomDetailByNodeIdInput!) {
+  updateHotelRoomDetailByNodeId(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useUpdateHotelRoomDetailByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateHotelRoomDetailByNodeIdMutation,
+    TError,
+    UpdateHotelRoomDetailByNodeIdMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<UpdateHotelRoomDetailByNodeIdMutation, TError, UpdateHotelRoomDetailByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateHotelRoomDetailByNodeIdMutation, UpdateHotelRoomDetailByNodeIdMutationVariables>(
+      UpdateHotelRoomDetailByNodeIdDocument
+    ),
+    options
+  )
+export const CreateHotelRoomDetailDocument = `
+    mutation createHotelRoomDetail($input: CreateHotelRoomDetailInput!) {
+  createHotelRoomDetail(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useCreateHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>
+) =>
+  useMutation<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>(
+    useFetchData<CreateHotelRoomDetailMutation, CreateHotelRoomDetailMutationVariables>(CreateHotelRoomDetailDocument),
+    options
+  )
+export const DeleteHotelRoomDetailDocument = `
+    mutation deleteHotelRoomDetail($input: DeleteHotelRoomDetailInput!) {
+  deleteHotelRoomDetail(input: $input) {
+    clientMutationId
+    deletedHotelRoomDetailNodeId
+  }
+}
+    `
+export const useDeleteHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>
+) =>
+  useMutation<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>(
+    useFetchData<DeleteHotelRoomDetailMutation, DeleteHotelRoomDetailMutationVariables>(DeleteHotelRoomDetailDocument),
     options
   )
 export const GetLookupsDocument = `

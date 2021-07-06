@@ -47,10 +47,10 @@ const useStyles = makeStyles((theme: Theme) =>
 export const WelcomeVirtual: React.FC = () => {
   const isBeta = useSetting('display.test.warning')
   const theme = useTheme()
-
   const classes = useStyles()
-  return (
-    <Page title='Welcome'>
+
+  const titleElement = (
+    <>
       <div className={classes.banner}>
         <Banner />
       </div>
@@ -71,9 +71,12 @@ export const WelcomeVirtual: React.FC = () => {
           </Card>
         </>
       )}
-
       <h1>Welcome!</h1>
+    </>
+  )
 
+  return (
+    <Page title='Welcome' titleElement={titleElement}>
       <p>
         AmberCon Northwest is a fully scheduled role-playing game convention held annually in Troutdale, Oregon, just
         east of Portland. <Acnw.ConventionYear /> would have been AmberCon Northwest's <Acnw.Ordinal /> year at the

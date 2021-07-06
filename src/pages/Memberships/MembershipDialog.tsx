@@ -1,12 +1,11 @@
-import { Button, Dialog, DialogActions, useMediaQuery, useTheme } from '@material-ui/core'
-import { DialogTitle } from 'components/Dialog/DialogTitle'
-import { Form, Formik, FormikHelpers } from 'formik'
+import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { onCloseHandler, useUser } from 'utils'
 
 import { useAuth } from '../../components/Auth'
+import { EditDialog } from '../../components/EditDialog'
 import { ProfileType } from '../../components/Profile'
-import { MembershipStep } from './MembershipStep'
+import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   MembershipType,
   fromSlotsAttending,
@@ -35,8 +34,6 @@ interface MembershipDialogProps {
 export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClose, profile, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const createOrUpdateMembership = useEditMembership(onClose)
 
   if (!isAuthenticated || !user) {
@@ -58,28 +55,16 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   }, [initialValues, userId])
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Formik
-        initialValues={values}
-        enableReinitialize
-        validationSchema={membershipValidationSchema}
-        onSubmit={onSubmit}
-      >
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
-          <Form>
-            <DialogTitle onClose={onClose}>Edit Membership</DialogTitle>
-            <MembershipStep />
-            <DialogActions className='modalFooterButtons'>
-              <Button onClick={onClose} variant='outlined'>
-                Cancel
-              </Button>
-              <Button type='submit' variant='contained' color='primary' disabled={isSubmitting}>
-                Save
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+    <EditDialog
+      initialValues={values}
+      onClose={onClose}
+      open={open}
+      onSubmit={onSubmit}
+      title='Membership'
+      validationSchema={membershipValidationSchema}
+      isEditing
+    >
+      <MembershipStepVirtual />
+    </EditDialog>
   )
 }

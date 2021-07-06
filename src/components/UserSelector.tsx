@@ -1,7 +1,7 @@
 import { TextField, makeStyles, withStyles } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
-import classNames from 'classnames'
 import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
+import clsx from 'clsx'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from 'utils'
 
@@ -127,7 +127,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       loading={isLoading}
       options={dropdownOptions}
       getOptionLabel={(option: UserType) => option.fullName ?? ''}
-      className={classNames(classes.selector, {
+      className={clsx(classes.selector, {
         [classes.selectorMobile]: mobile,
       })}
       value={selectedUser}
@@ -143,7 +143,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
         const isMember = !!params.memberships.nodes.find((m) => m?.year === year)
         return (
           <div className={classes.holder}>
-            <span className={classNames(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
+            <span className={clsx(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
           </div>
         )
       }}
