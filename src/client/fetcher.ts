@@ -2,6 +2,7 @@ import { useAuth } from 'components/Auth'
 import { print } from 'graphql'
 import gql from 'graphql-tag'
 
+// eslint-disable-next-line etc/no-misused-generics
 export const useFetchData = <TData, TVariables>(query: string): (() => Promise<TData>) => {
   const authProps = useAuth()
   return async (variables?: TVariables) => {

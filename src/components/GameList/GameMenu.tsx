@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type GameMenuProps = {
+interface GameMenuProps {
   to: string
   text: string
   title: string

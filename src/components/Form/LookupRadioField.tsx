@@ -3,15 +3,15 @@ import React from 'react'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
-import { SelectField } from './SelectField'
-import type { TextFieldProps } from './TextField'
+import { RadioGroupFieldWithLabel, RadioGroupProps } from './RadioGroupFieldWithLabel'
 
-export interface LookupFieldProps extends TextFieldProps {
+export interface LookupRadioFieldProps extends RadioGroupProps {
   realm: string
 }
 
-export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
-  const { select, realm, ...rest } = props
+export const LookupRadioField: React.ComponentType<LookupRadioFieldProps> = (props) => {
+  const { realm, ...rest } = props
+
   const { isLoading, error, data } = useGetLookupValuesQuery(
     { realm },
     {
@@ -28,7 +28,7 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
     value: v!.code,
     text: v!.value,
   }))
-  return <SelectField {...rest} selectValues={selectValues} />
+  return <RadioGroupFieldWithLabel selectValues={selectValues} {...rest} />
 }
 
-LookupField.displayName = 'LookupField'
+LookupRadioField.displayName = 'LookupRadioField'

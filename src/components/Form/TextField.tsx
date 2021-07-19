@@ -1,6 +1,6 @@
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@material-ui/core/TextField'
 import { useField, useFormikContext } from 'formik'
-import * as React from 'react'
+import React from 'react'
 
 export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> {
   name: string
@@ -9,8 +9,7 @@ export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'va
 
 export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const { overrideFormik, ...rest } = props
-  // @ts-ignore
-  const [field, meta] = useField(rest)
+  const [field, meta] = useField(rest.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
 

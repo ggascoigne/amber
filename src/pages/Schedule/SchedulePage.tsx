@@ -20,7 +20,7 @@ import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 
-type GameSummaryProps = {
+interface GameSummaryProps {
   gas: GameAssignmentNode
 }
 const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {

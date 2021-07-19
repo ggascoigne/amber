@@ -39,12 +39,12 @@ type AccessToken = {
   scope?: string
 } & Record<string, any>
 
-export type AuthInfo = {
+export interface AuthInfo {
   roles?: string[]
   userId?: number
 }
 
-export type Auth0User = AuthInfo & {
+export interface Auth0User extends AuthInfo {
   email?: string
   email_verified?: boolean
   name: string

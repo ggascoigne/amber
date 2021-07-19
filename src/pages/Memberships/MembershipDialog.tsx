@@ -1,6 +1,6 @@
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { onCloseHandler, useUser } from 'utils'
+import { configuration, onCloseHandler, useUser, useYearFilter } from 'utils'
 
 import { useAuth } from '../../components/Auth'
 import { EditDialog } from '../../components/EditDialog'
@@ -35,6 +35,8 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()
   const createOrUpdateMembership = useEditMembership(onClose)
+  const [year] = useYearFilter()
+  const isVirtual = configuration.startDates[year].virtual
 
   if (!isAuthenticated || !user) {
     throw new Error('login expired')
@@ -48,11 +50,11 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   const values = useMemo(() => {
     // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
-    const defaultValues: MembershipType = getDefaultMembership(userId!)
+    const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
     const _values = initialValues ? { ...initialValues } : { ...defaultValues }
     _values.slotsAttendingData = fromSlotsAttending(_values)
     return _values
-  }, [initialValues, userId])
+  }, [initialValues, isVirtual, userId])
 
   return (
     <EditDialog

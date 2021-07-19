@@ -2,7 +2,7 @@ import { useAuth } from 'components/Auth'
 import { atom, useAtom } from 'jotai'
 import { useMemo } from 'react'
 
-type UserInfo = {
+interface UserInfo {
   userId: number
   email: string
 }

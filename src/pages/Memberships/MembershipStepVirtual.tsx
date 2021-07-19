@@ -14,6 +14,7 @@ import { configuration, getSlotDescription, isNotPacificTime, range } from 'util
 import { ConfigDate } from '../../components'
 import { HasPermission, Perms } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
+import { MembershipFormContent } from './membershipUtils'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -28,10 +29,6 @@ const useStyles = makeStyles(() =>
     },
   })
 )
-
-type MembershipFormContent = {
-  prefix?: string
-}
 
 export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const classes = useStyles()

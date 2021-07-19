@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type CustomDropdownProps = {
+interface CustomDropdownProps {
   hoverColor?: 'black' | 'primary' | 'info' | 'success' | 'warning' | 'error'
   buttonText: React.ReactNode
   buttonIcon?: React.ComponentType | string
@@ -176,8 +176,8 @@ type CustomDropdownProps = {
 }
 
 const getKeyValue =
-  <T extends Record<string, unknown>, U extends keyof T>(obj: T) =>
-  (key: U) =>
+  <T extends Record<string, unknown>>(obj: T) =>
+  (key: keyof T) =>
     obj[key]
 
 export const CustomDropdown: React.FC<CustomDropdownProps> = ({

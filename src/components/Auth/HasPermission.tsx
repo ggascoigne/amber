@@ -1,9 +1,9 @@
-import * as React from 'react'
+import React from 'react'
 
 import { useAuth } from './Auth0'
 import type { Perms } from './PermissionRules'
 
-type PermissionProps = {
+interface PermissionProps {
   permission: Perms
   data?: any
   denied?: () => React.ReactElement | null

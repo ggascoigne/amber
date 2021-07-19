@@ -47,11 +47,11 @@ const useStyles = makeStyles((theme: Theme) =>
 type colorTypes = 'warning' | 'success' | 'error' | 'info' | 'primary'
 
 const getKeyValue =
-  <T extends Record<string, unknown>, U extends keyof T>(obj: T) =>
-  (key: U) =>
+  <T extends Record<string, unknown>>(obj: T) =>
+  (key: keyof T) =>
     obj[key]
 
-type CardHeaderProps = {
+interface CardHeaderProps {
   className?: string
   color?: colorTypes
   plain?: boolean

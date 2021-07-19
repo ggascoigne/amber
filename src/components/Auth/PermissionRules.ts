@@ -1,11 +1,11 @@
-interface Permissions {
+import { AtLeastOne } from '../../utils'
+
+type Permissions = AtLeastOne<{
   dynamic?: Record<string, unknown>
   static?: Perms[]
-}
+}>
 
-export interface Rules {
-  [name: string]: Permissions
-}
+export type Rules = Record<string, Permissions>
 
 export enum Perms {
   GraphiqlLoad = 'graphiql:load',
@@ -15,16 +15,22 @@ export enum Perms {
   Reports = 'reports:load',
 }
 
+export enum Roles {
+  ROLE_ADMIN = 'ROLE_ADMIN',
+  ROLE_GAME_ADMIN = 'ROLE_GAME_ADMIN',
+  ROLE_USER = 'ROLE_USER',
+}
+
 const rules: Rules = {
-  ROLE_ADMIN: {
+  [Roles.ROLE_ADMIN]: {
     dynamic: {
       '*': () => true,
     },
   },
-  ROLE_GAME_ADMIN: {
+  [Roles.ROLE_GAME_ADMIN]: {
     static: [Perms.FullGameBook, Perms.Reports, Perms.IsLoggedIn],
   },
-  ROLE_USER: {
+  [Roles.ROLE_USER]: {
     static: [Perms.IsLoggedIn],
   },
 }

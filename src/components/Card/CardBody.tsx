@@ -11,7 +11,7 @@ const useStyles = makeStyles(
   })
 )
 
-type CardBodyProps = {
+interface CardBodyProps {
   className?: string
 }
 

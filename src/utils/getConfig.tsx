@@ -2,7 +2,7 @@ import { useToken } from 'components/Auth'
 import fetch from 'isomorphic-fetch'
 import { useCallback, useState } from 'react'
 
-export type DbConfig = {
+export interface DbConfig {
   database: string
   user: string
   port: number
@@ -12,7 +12,7 @@ export type DbConfig = {
   ssl_cert?: string
 }
 
-export type Config = {
+export interface Config {
   local: boolean
   databaseName: string
   database?: Partial<DbConfig>

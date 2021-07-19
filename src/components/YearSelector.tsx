@@ -1,7 +1,7 @@
 import { FormControl, MenuItem, TextField, Theme, createStyles } from '@material-ui/core'
 import { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
 import { fade, makeStyles } from '@material-ui/core/styles'
-import * as React from 'react'
+import React from 'react'
 import { configuration, range, useYearFilter } from 'utils'
 
 import { getSelectLabel, getSelectValue } from './Form'

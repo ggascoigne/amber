@@ -3,9 +3,12 @@
 
 import find from 'lodash/find'
 
-import type { Perms, Rules } from './PermissionRules'
+import type { Perms, Roles, Rules } from './PermissionRules'
 
-const check = (rules: Rules, role: string | null, action: Perms, roleOverride: string | undefined, data?: any) => {
+// note that incoming roles are defined as strings rather than Roles as they come from an external source
+// and so aren't constrained to the Roles enumeration
+
+const check = (rules: Rules, role: string | null, action: Perms, roleOverride: Roles | undefined, data?: any) => {
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const roleToTest = (data?.ignoreOverride ? role : roleOverride) || role
 
@@ -38,6 +41,6 @@ export const checkMany = (
   rules: Rules,
   roles: string[] | undefined,
   action: Perms,
-  roleOverride: string | undefined,
+  roleOverride: Roles | undefined,
   data?: any
 ) => !!find(roles, (role) => check(rules, role, action, roleOverride, data))

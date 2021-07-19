@@ -7,7 +7,7 @@ import { onCloseHandler } from '../utils'
 import { useAuth } from './Auth'
 import { DialogTitle } from './Dialog'
 
-export type EditDialogProps<T> = {
+export interface EditDialogProps<T> {
   title: string
   initialValues: T
   onSubmit: (values: T, actions: FormikHelpers<T>) => Promise<void>

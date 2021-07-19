@@ -51,13 +51,18 @@ export const configuration = {
   schedulesSent: pdxDate({ year: conventionDates.year, month: 10, day: 17 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
   wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
-  dateRange: `${conventionStartDate.toFormat('MMMM')} ${conventionDates.startDay}-${conventionDates.endDay}, ${
-    conventionDates.year
-  }`,
-  fourDayMembership: 130,
+
+  fourDayMembership: 185,
   fourDayVoucher: 70,
-  threeDayMembership: 100,
+  threeDayMembership: 135,
   threeDayVoucher: 50,
-  deposit: 30,
+  deposit: 50,
+
   virtual: startDates[THIS_YEAR].virtual,
+  oregonHotelTax: '1.5%',
+  moreThanDoubleOccupancySurcharge: '$15',
 }
+
+export type ConfigurationType = typeof configuration
+type DateFields<T> = { [K in keyof T]: T[K] extends DateTime ? K : never }[keyof T]
+export type ConfigurationDates = Pick<ConfigurationType, DateFields<ConfigurationType>>

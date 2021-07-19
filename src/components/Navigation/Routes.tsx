@@ -4,14 +4,14 @@ import { configuration } from 'utils'
 
 import { Perms } from '../Auth'
 
-type UserCondition = {
+interface UserCondition {
   userId: number | null | undefined
   isMember: boolean
   getSetting: (setting: string, defaultValue?: any) => boolean
 }
 
 // note that entries are only displayed if they have a label
-export type RouteInfo = {
+export interface RouteInfo {
   path: string
   label?: string
   link?: string

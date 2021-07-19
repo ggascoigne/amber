@@ -133,7 +133,10 @@ export const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type CN = { className?: string; style?: CSSProperties }
+interface CN {
+  className?: string
+  style?: CSSProperties
+}
 
 export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, className, ...rest }) => {
   const classes = useStyles()

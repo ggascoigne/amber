@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type FilterChipBarProps<T extends Record<string, unknown>> = {
+interface FilterChipBarProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
 }
 

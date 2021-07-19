@@ -6,7 +6,7 @@ import React, { Suspense } from 'react'
 
 import { Loader } from '../Loader'
 
-const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
+const ReactJson = React.lazy(() => import('react-json-view'))
 
 const debugIsOpen = atom<boolean>(false)
 export const useDebugIsOpen = () => useAtom(debugIsOpen)

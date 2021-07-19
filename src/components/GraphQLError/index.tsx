@@ -4,7 +4,9 @@ import React from 'react'
 
 import { Quote } from '../Typography'
 
-type GraphQLErrorProps = { error: QueryError | null }
+interface GraphQLErrorProps {
+  error: QueryError | null
+}
 
 export const GraphQLError = ({ error }: GraphQLErrorProps) => {
   console.log(JSON.stringify(error, null, 2))

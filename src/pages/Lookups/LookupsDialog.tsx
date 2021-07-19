@@ -21,7 +21,7 @@ import {
   useUpdateLookupValueByNodeIdMutation,
 } from 'client'
 import { FieldArray, FormikHelpers } from 'formik'
-import * as React from 'react'
+import React from 'react'
 import Yup from 'utils/Yup'
 
 import { Card, CardBody, CardHeader } from '../../components/Card'

@@ -1,5 +1,5 @@
 import { useTheme } from '@material-ui/core'
-import { Acnw } from 'components'
+import { Acnw, ConventionsDatesFull } from 'components'
 import { Page } from 'components/Page'
 import React from 'react'
 
@@ -30,9 +30,8 @@ const AboutAmberconNw = () => {
       </p>
 
       <p>
-        ACNW 2020 will take place virtually, facilitated through a private Discord server, from
-        {configuration.conventionStartDate.toFormat('cccc, LLLL d')} through{' '}
-        {configuration.conventionEndDate.toFormat('cccc, LLLL d')}. There will be virtual "tours" of the Discord space
+        ACNW 2020 will take place virtually, facilitated through a private Discord server,
+        <ConventionsDatesFull pre='from' intra='through' post='.' /> There will be virtual "tours" of the Discord space
         and introductions to use of Discord led by volunteers in the weeks preceding the convention. Games may take
         place using Discord with or without video or through other technology as organized separately by the GMs.
       </p>

@@ -208,7 +208,7 @@ export type MaybeGameChoice = Maybe<
   > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
 >
 
-export type SelectorUpdate = {
+export interface SelectorUpdate {
   gameChoices?: MaybeGameChoice[]
   gameId: number
   rank: number | null
@@ -218,7 +218,7 @@ export type SelectorUpdate = {
   year: number
 }
 
-export type SelectorParams = {
+export interface SelectorParams {
   gameChoices?: MaybeGameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
   gmSlots?: MaybeGameChoice[]

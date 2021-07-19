@@ -28,6 +28,7 @@ generates:
         isReactHook: true
       errorType: QueryError
       optimizeDocumentNode: true
+      declarationKind: 'interface'
 hooks:
   afterOneFileWrite:
     - prettier --write

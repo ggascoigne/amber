@@ -154,7 +154,7 @@ export interface GameCardChild {
   gameId: number
 }
 
-type Player = {
+interface Player {
   gm: number
   fullName: string
   email: string

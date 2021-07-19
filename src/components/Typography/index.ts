@@ -1,5 +1,6 @@
 export * from './Danger'
 export * from './Info'
+export * from './Important'
 export * from './Muted'
 export * from './Primary'
 export * from './Quote'

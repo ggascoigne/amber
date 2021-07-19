@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 import { Column, TableState } from 'react-table'
 import { useLocalStorage } from 'utils'
 
-type PersistedState<T extends Record<string, unknown>> = {
+interface PersistedState<T extends Record<string, unknown>> {
   createdFor: {
     columns: string
     initialState: Partial<TableState<T>>

@@ -59,3 +59,11 @@ export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: s
   'nodeId' | 'id' | '__typename'
 > &
   Partial<Pick<T, 'nodeId' | 'id'>>
+
+// There are a lot of places where the obvious change would be to reference Record<string,unknown> but we pass objects
+// defined by interface rather than by type in a lot of places (in generated code that's tricky to change) When you do
+// that, you get tsc errors about Index Signatures missing. This is an issue with TypeScript interfaces in general: a
+// specific interface cannot be saved into a more generic interface. However a specific type can be saved into a more
+// generic type.  Using the ObjectOf construct enforces the object extension without falling into this trap.
+
+export type ObjectOf<T> = { [P in keyof T]: T[P] }

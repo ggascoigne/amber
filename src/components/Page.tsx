@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type PageProps = {
+interface PageProps {
   className?: string
   title: string
   titleElement?: ReactNode

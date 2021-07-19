@@ -71,7 +71,9 @@ const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
       }
     })
 
-type Props = { auth?: { jwtToken?: string } }
+interface Props {
+  auth?: { jwtToken?: string }
+}
 
 const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const _graphiql = useRef<any>(null)

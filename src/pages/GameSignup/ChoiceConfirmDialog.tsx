@@ -16,7 +16,7 @@ import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelec
 import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-type FormValues = {
+interface FormValues {
   year: number
   memberId: number
   message: string
@@ -37,7 +37,7 @@ const submissionValidationSchema = Yup.object().shape({
   message: Yup.string().max(1000),
 })
 
-type GameChoiceConfirmationEmail = {
+interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
   profile?: ProfileType | null

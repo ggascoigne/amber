@@ -6,7 +6,7 @@ mkdir -p ${BACKUP_DIR}
 
 source `dirname $0`/utils.sh
 
-while read line; do export $line; done < <(grep DATABASE .env.aws-dev | egrep -v '^#')
+while read line; do export $line; done < <(grep DATABASE .env.aws-prod | egrep -v '^#')
 PG_ARGS=$(getPgString)
 
 DATE=`date "+%m%d%Y.%H%M"`

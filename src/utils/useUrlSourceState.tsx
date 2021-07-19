@@ -1,6 +1,6 @@
 import { atom, useAtom } from 'jotai'
 
-type UrlSource = {
+interface UrlSource {
   source: 'jump' | 'scroll'
   url: string
 }

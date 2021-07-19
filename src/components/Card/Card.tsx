@@ -31,7 +31,7 @@ const useStyles = makeStyles(
   })
 )
 
-type CardProps = {
+interface CardProps {
   id?: string
   className?: string
   plain?: boolean

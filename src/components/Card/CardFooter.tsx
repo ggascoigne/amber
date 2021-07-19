@@ -13,7 +13,7 @@ const useStyles = makeStyles(
   })
 )
 
-type CardFooterProps = {
+interface CardFooterProps {
   className?: string
 }
 
