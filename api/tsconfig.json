@@ -1,0 +1,4 @@
+{
+  "extends": "../tsconfig.eslint.json",
+  "rootDir": "api"
+}

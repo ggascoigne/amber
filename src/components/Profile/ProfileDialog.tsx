@@ -1,35 +1,42 @@
 import { FormikHelpers } from 'formik'
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { EditDialog } from '../EditDialog'
-import { ProfileFormContent, ProfileType } from './ProfileFormContent'
-import { useEditProfile } from './profileUtils'
+import { ProfileFormContent } from './ProfileFormContent'
+import { UsersAndProfileType, fillUserAndProfileValues, useEditUserAndProfile } from './profileUtils'
 import { profileValidationSchema } from './profileValidationSchema'
 
 interface ProfileDialogProps {
   open: boolean
-  initialValues?: ProfileType | null
+  initialValues?: UsersAndProfileType | null
   onClose: (event?: any) => void
 }
 
-export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, initialValues: profile }) => {
-  const updateProfile = useEditProfile(onClose)
+export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, initialValues }) => {
+  const updateProfile = useEditUserAndProfile(onClose)
 
-  if (!profile) {
+  const values = useMemo(() => {
+    if (!initialValues) {
+      return null
+    }
+    return fillUserAndProfileValues(initialValues)
+  }, [initialValues]) as UsersAndProfileType
+
+  if (!initialValues) {
     return null
   }
 
-  const onSubmit = async (values: ProfileType, actions: FormikHelpers<ProfileType>) => {
+  const onSubmit = async (values: UsersAndProfileType, actions: FormikHelpers<UsersAndProfileType>) => {
     await updateProfile(values)
   }
 
   return (
     <EditDialog
-      initialValues={profile}
+      initialValues={values}
       onClose={onClose}
       open={open}
       onSubmit={onSubmit}
-      title='Profile'
+      title='User'
       validationSchema={profileValidationSchema}
       isEditing
     >

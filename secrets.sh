@@ -9,8 +9,10 @@ function vc_secrets() {
 
 vc_secrets database_host "${DATABASE_HOST}"
 vc_secrets database_name "${DATABASE_NAME}"
+vc_secrets database_admin "${DATABASE_ADMIN}"
+vc_secrets database_admin_password "${DATABASE_ADMIN_PASSWORD}"
 vc_secrets database_user "${DATABASE_USER}"
-vc_secrets database_password "${DATABASE_PASSWORD}"
+vc_secrets database_user_password "${DATABASE_USER_PASSWORD}"
 vc_secrets database_port "${DATABASE_PORT}"
 vc_secrets database_ssl "${DATABASE_SSL}"
 vc_secrets database_ssl_cert "${DATABASE_SSL_CERT}"

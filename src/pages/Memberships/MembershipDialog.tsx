@@ -4,7 +4,7 @@ import { configuration, onCloseHandler, useUser, useYearFilter } from 'utils'
 
 import { useAuth } from '../../components/Auth'
 import { EditDialog } from '../../components/EditDialog'
-import { ProfileType } from '../../components/Profile'
+import { ProfileFormType } from '../../components/Profile'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   MembershipType,
@@ -21,7 +21,7 @@ interface MembershipDialogProps {
   open: boolean
   onClose: onCloseHandler
   initialValues?: MembershipType
-  profile: ProfileType
+  profile: ProfileFormType
 }
 
 // what hard coded lists did the old system map to

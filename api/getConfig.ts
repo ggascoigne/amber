@@ -15,7 +15,7 @@ export default withApiHandler([
     try {
       const { user } = req as any
       const admin = isAdmin(user)
-      const database: Partial<DbConfig> = { ...config.database }
+      const database: Partial<DbConfig> = { ...config.userDatabase }
       delete database.password
       const summary = {
         local: !database.host?.includes('aws'),

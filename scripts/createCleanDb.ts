@@ -6,11 +6,11 @@ import cli from 'cli-ux'
 import { config } from '../shared/config'
 import { createCleanDb } from './scriptUtils'
 
-const database = config.database.database
+const database = config.rootDatabase.database
 console.log(`Recreating database ${database}`)
 
 cli.action.start('cleaning database')
-createCleanDb(config.database, false)
+createCleanDb(config.rootDatabase, false)
   .then(() => {
     cli.action.stop()
   })

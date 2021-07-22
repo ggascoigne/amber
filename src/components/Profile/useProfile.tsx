@@ -1,11 +1,11 @@
-import { Node, UserInput, useGetUserByEmailQuery } from 'client'
+import { useGetUserByEmailQuery } from 'client'
 import { useState } from 'react'
 import { useUser } from 'utils'
 
 import { useNotification } from '../Notifications'
-import { ProfileType } from './ProfileFormContent'
+import { ProfileFormType } from './ProfileFormContent'
 
-export const useProfile = (): ProfileType | null => {
+export const useProfile = (): ProfileFormType | null => {
   const { email } = useUser()
   const [lastEmail, setLastEmail] = useState('')
 
@@ -26,5 +26,5 @@ export const useProfile = (): ProfileType | null => {
     return null
   }
 
-  return data.userByEmail! as UserInput & Partial<Node>
+  return data.userByEmail!
 }

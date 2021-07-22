@@ -33,7 +33,7 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
 }
 
 const GameBookPage: React.FC = () => {
-  const years = range(configuration.year, 2012)
+  const years = range(configuration.year - 1, 2012)
   return (
     <Page title='Game Book' hideTitle>
       <GridContainer spacing={2} justify='center'>

@@ -11,7 +11,7 @@ import { DialogTitle } from '../../components/Dialog'
 import { TextField } from '../../components/Form'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { useNotification } from '../../components/Notifications'
-import { ProfileType, useProfile } from '../../components/Profile'
+import { ProfileFormType, useProfile } from '../../components/Profile'
 import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
@@ -40,7 +40,7 @@ const submissionValidationSchema = Yup.object().shape({
 interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile?: ProfileType | null
+  profile?: ProfileFormType | null
   year: number
   update?: boolean
   message: string

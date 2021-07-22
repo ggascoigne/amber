@@ -4,8 +4,8 @@ import { configuration, useUser, useYearFilter } from 'utils'
 import Yup from 'utils/Yup'
 
 import { Perms, useAuth } from '../../components/Auth'
-import { ProfileFormContent, ProfileType, profileValidationSchema } from '../../components/Profile'
-import { useEditProfile } from '../../components/Profile/profileUtils'
+import { ProfileFormContent, ProfileFormType, profileValidationSchema } from '../../components/Profile'
+import { useEditUserAndProfile } from '../../components/Profile/profileUtils'
 import { Wizard, WizardPage } from '../../components/Wizard'
 import { FinalStep } from './FinalStep'
 import { IntroStep } from './IntroStep'
@@ -24,14 +24,14 @@ import {
 
 interface FormValues {
   membership: MembershipType
-  profile: ProfileType
+  profile: ProfileFormType
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileType
+  profile: ProfileFormType
 }
 
 // what hard coded lists did the old system map to
@@ -52,7 +52,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
 
   const { userId } = useUser()
   const createOrUpdateMembership = useEditMembership(onClose)
-  const updateProfile = useEditProfile()
+  const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
 

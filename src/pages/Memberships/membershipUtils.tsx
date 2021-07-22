@@ -1,6 +1,6 @@
 import { GetMembershipsByYearQuery, useCreateMembershipMutation, useUpdateMembershipByNodeIdMutation } from 'client'
 import { Perms, useAuth } from 'components/Auth'
-import { ProfileType } from 'components/Profile'
+import { ProfileFormType } from 'components/Profile'
 import { useQueryClient } from 'react-query'
 import {
   GqlType,
@@ -86,7 +86,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
 
   const sendMembershipConfirmation = (
     membershipId: number,
-    profile: ProfileType,
+    profile: ProfileFormType,
     membershipValues: MembershipType,
     update = false
   ) => {
@@ -108,7 +108,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
     })
   }
 
-  return async (membershipValues: MembershipType, profile: ProfileType) => {
+  return async (membershipValues: MembershipType, profile: ProfileFormType) => {
     if (membershipValues.nodeId) {
       await updateMembership
         .mutateAsync(

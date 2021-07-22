@@ -1,14 +1,13 @@
 import { DialogContentText, createStyles, makeStyles } from '@material-ui/core'
-import { UserInput } from 'client'
 import { TextField } from 'components/Form'
 import React from 'react'
 
-import { ObjectOf } from '../../utils'
 import { HasPermission, Perms, useAuth } from '../Auth'
 import { GridContainer, GridItem } from '../Grid'
 import { Important } from '../Typography'
+import { UsersAndProfileType } from './profileUtils'
 
-export type ProfileType = ObjectOf<UserInput>
+export type ProfileFormType = UsersAndProfileType
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -50,10 +49,16 @@ export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix =
           <TextField name={`${prefix}fullName`} label='Full Name' fullWidth required />
         </GridItem>
         <GridItem xs={12} md={12}>
-          <TextField name={`${prefix}snailMailAddress`} label='Address' fullWidth required multiline />
+          <TextField
+            name={`${prefix}profiles.nodes[0].snailMailAddress`}
+            label='Address'
+            fullWidth
+            required
+            multiline
+          />
         </GridItem>
         <GridItem xs={12} md={12}>
-          <TextField name={`${prefix}phoneNumber`} label='Phone number' fullWidth required />
+          <TextField name={`${prefix}profiles.nodes[0].phoneNumber`} label='Phone number' fullWidth required />
         </GridItem>
       </GridContainer>
     </>

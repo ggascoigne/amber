@@ -446,6 +446,40 @@ export interface CreateMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
+/** All input for the create `Profile` mutation. */
+export interface CreateProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` to be created by this mutation. */
+  profile: ProfileInput
+}
+
+/** The output of our create `Profile` mutation. */
+export interface CreateProfilePayload {
+  __typename: 'CreateProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was created by this mutation. */
+  profile?: Maybe<Profile>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our create `Profile` mutation. */
+export interface CreateProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+}
+
 /** All input for the create `Role` mutation. */
 export interface CreateRoleInput {
   /**
@@ -1168,6 +1202,51 @@ export interface DeleteMembershipPayload {
 /** The output of our delete `Membership` mutation. */
 export interface DeleteMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
+}
+
+/** All input for the `deleteProfileByNodeId` mutation. */
+export interface DeleteProfileByNodeIdInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Profile` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteProfile` mutation. */
+export interface DeleteProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `Profile` mutation. */
+export interface DeleteProfilePayload {
+  __typename: 'DeleteProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was deleted by this mutation. */
+  profile?: Maybe<Profile>
+  deletedProfileNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our delete `Profile` mutation. */
+export interface DeleteProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
 }
 
 /** All input for the `deleteRoleByAuthority` mutation. */
@@ -2510,10 +2589,6 @@ export enum GamesOrderBy {
   UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
   UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
   UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
-  UserByAuthorIdSnailMailAddressAsc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
-  UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
   UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
   UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
   UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
@@ -3488,10 +3563,6 @@ export enum MembershipsOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -3525,6 +3596,8 @@ export interface Mutation {
   createLookupValue?: Maybe<CreateLookupValuePayload>
   /** Creates a single `Membership`. */
   createMembership?: Maybe<CreateMembershipPayload>
+  /** Creates a single `Profile`. */
+  createProfile?: Maybe<CreateProfilePayload>
   /** Creates a single `Role`. */
   createRole?: Maybe<CreateRolePayload>
   /** Creates a single `Room`. */
@@ -3581,6 +3654,10 @@ export interface Mutation {
   updateMembershipByNodeId?: Maybe<UpdateMembershipPayload>
   /** Updates a single `Membership` using a unique key and a patch. */
   updateMembership?: Maybe<UpdateMembershipPayload>
+  /** Updates a single `Profile` using its globally unique id and a patch. */
+  updateProfileByNodeId?: Maybe<UpdateProfilePayload>
+  /** Updates a single `Profile` using a unique key and a patch. */
+  updateProfile?: Maybe<UpdateProfilePayload>
   /** Updates a single `Role` using its globally unique id and a patch. */
   updateRoleByNodeId?: Maybe<UpdateRolePayload>
   /** Updates a single `Role` using a unique key and a patch. */
@@ -3657,6 +3734,10 @@ export interface Mutation {
   deleteMembershipByNodeId?: Maybe<DeleteMembershipPayload>
   /** Deletes a single `Membership` using a unique key. */
   deleteMembership?: Maybe<DeleteMembershipPayload>
+  /** Deletes a single `Profile` using its globally unique id. */
+  deleteProfileByNodeId?: Maybe<DeleteProfilePayload>
+  /** Deletes a single `Profile` using a unique key. */
+  deleteProfile?: Maybe<DeleteProfilePayload>
   /** Deletes a single `Role` using its globally unique id. */
   deleteRoleByNodeId?: Maybe<DeleteRolePayload>
   /** Deletes a single `Role` using a unique key. */
@@ -3741,6 +3822,11 @@ export interface MutationCreateLookupValueArgs {
 /** The root mutation type which contains root level fields which mutate data. */
 export interface MutationCreateMembershipArgs {
   input: CreateMembershipInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationCreateProfileArgs {
+  input: CreateProfileInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -3881,6 +3967,16 @@ export interface MutationUpdateMembershipByNodeIdArgs {
 /** The root mutation type which contains root level fields which mutate data. */
 export interface MutationUpdateMembershipArgs {
   input: UpdateMembershipInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateProfileByNodeIdArgs {
+  input: UpdateProfileByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateProfileArgs {
+  input: UpdateProfileInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4074,6 +4170,16 @@ export interface MutationDeleteMembershipArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
+export interface MutationDeleteProfileByNodeIdArgs {
+  input: DeleteProfileByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationDeleteProfileArgs {
+  input: DeleteProfileInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
 export interface MutationDeleteRoleByNodeIdArgs {
   input: DeleteRoleByNodeIdInput
 }
@@ -4197,6 +4303,111 @@ export interface PageInfo {
   endCursor?: Maybe<Scalars['Cursor']>
 }
 
+export interface Profile extends Node {
+  __typename: 'Profile'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  userId: Scalars['Int']
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+}
+
+/** A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export interface ProfileCondition {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `Profile` object types. All fields are combined with a logical ‘and.’ */
+export interface ProfileFilter {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
+  /** Filter by the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<StringFilter>
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ProfileFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ProfileFilter>>
+  /** Negates the expression. */
+  not?: Maybe<ProfileFilter>
+}
+
+/** An input for mutations affecting `Profile` */
+export interface ProfileInput {
+  id?: Maybe<Scalars['Int']>
+  userId: Scalars['Int']
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** Represents an update to a `Profile`. Fields that are set will be updated. */
+export interface ProfilePatch {
+  id?: Maybe<Scalars['Int']>
+  userId?: Maybe<Scalars['Int']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** A connection to a list of `Profile` values. */
+export interface ProfilesConnection {
+  __typename: 'ProfilesConnection'
+  /** A list of `Profile` objects. */
+  nodes: Array<Maybe<Profile>>
+  /** A list of edges which contains the `Profile` and cursor to aid in pagination. */
+  edges: Array<ProfilesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Profile` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `Profile` edge in the connection. */
+export interface ProfilesEdge {
+  __typename: 'ProfilesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Profile` at the end of the edge. */
+  node?: Maybe<Profile>
+}
+
+/** Methods to use when ordering `Profile`. */
+export enum ProfilesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
+  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
+  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
+  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+}
+
 /** The root query type which gives access points into the data universe. */
 export interface Query extends Node {
   __typename: 'Query'
@@ -4227,6 +4438,8 @@ export interface Query extends Node {
   lookupValues?: Maybe<LookupValuesConnection>
   /** Reads and enables pagination through a set of `Membership`. */
   memberships?: Maybe<MembershipsConnection>
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles?: Maybe<ProfilesConnection>
   /** Reads and enables pagination through a set of `Role`. */
   roles?: Maybe<RolesConnection>
   /** Reads and enables pagination through a set of `Room`. */
@@ -4254,6 +4467,7 @@ export interface Query extends Node {
   lookupValue?: Maybe<LookupValue>
   lookupValueByLookupIdAndCode?: Maybe<LookupValue>
   membership?: Maybe<Membership>
+  profile?: Maybe<Profile>
   role?: Maybe<Role>
   roleByAuthority?: Maybe<Role>
   room?: Maybe<Room>
@@ -4284,6 +4498,8 @@ export interface Query extends Node {
   lookupValueByNodeId?: Maybe<LookupValue>
   /** Reads a single `Membership` using its globally unique `ID`. */
   membershipByNodeId?: Maybe<Membership>
+  /** Reads a single `Profile` using its globally unique `ID`. */
+  profileByNodeId?: Maybe<Profile>
   /** Reads a single `Role` using its globally unique `ID`. */
   roleByNodeId?: Maybe<Role>
   /** Reads a single `Room` using its globally unique `ID`. */
@@ -4413,6 +4629,18 @@ export interface QueryMembershipsArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
   condition?: Maybe<MembershipCondition>
   filter?: Maybe<MembershipFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryProfilesArgs {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4570,6 +4798,11 @@ export interface QueryMembershipArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryProfileArgs {
+  id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryRoleArgs {
   id: Scalars['Int']
 }
@@ -4662,6 +4895,11 @@ export interface QueryLookupValueByNodeIdArgs {
 
 /** The root query type which gives access points into the data universe. */
 export interface QueryMembershipByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryProfileByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
@@ -5255,10 +5493,6 @@ export enum ShirtOrdersOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -5976,6 +6210,54 @@ export interface UpdateMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
+/** All input for the `updateProfileByNodeId` mutation. */
+export interface UpdateProfileByNodeIdInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Profile` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `Profile` being updated. */
+  patch: ProfilePatch
+}
+
+/** All input for the `updateProfile` mutation. */
+export interface UpdateProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `Profile` being updated. */
+  patch: ProfilePatch
+  id: Scalars['Int']
+}
+
+/** The output of our update `Profile` mutation. */
+export interface UpdateProfilePayload {
+  __typename: 'UpdateProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was updated by this mutation. */
+  profile?: Maybe<Profile>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our update `Profile` mutation. */
+export interface UpdateProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+}
+
 /** All input for the `updateRoleByAuthority` mutation. */
 export interface UpdateRoleByAuthorityInput {
   /**
@@ -6384,8 +6666,6 @@ export interface User extends Node {
   id: Scalars['Int']
   email: Scalars['String']
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Game`. */
@@ -6396,6 +6676,8 @@ export interface User extends Node {
   shirtOrders: ShirtOrdersConnection
   /** Reads and enables pagination through a set of `UserRole`. */
   userRoles: UserRolesConnection
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles: ProfilesConnection
 }
 
 export interface UserAuthoredGamesArgs {
@@ -6442,6 +6724,17 @@ export interface UserUserRolesArgs {
   filter?: Maybe<UserRoleFilter>
 }
 
+export interface UserProfilesArgs {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
+}
+
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface UserCondition {
   /** Checks for equality with the object’s `id` field. */
@@ -6450,10 +6743,6 @@ export interface UserCondition {
   email?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `firstName` field. */
   firstName?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `lastName` field. */
@@ -6468,10 +6757,6 @@ export interface UserFilter {
   email?: Maybe<StringFilter>
   /** Filter by the object’s `fullName` field. */
   fullName?: Maybe<StringFilter>
-  /** Filter by the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<StringFilter>
-  /** Filter by the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<StringFilter>
   /** Filter by the object’s `firstName` field. */
   firstName?: Maybe<StringFilter>
   /** Filter by the object’s `lastName` field. */
@@ -6489,8 +6774,6 @@ export interface UserInput {
   id?: Maybe<Scalars['Int']>
   email: Scalars['String']
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
 }
@@ -6500,8 +6783,6 @@ export interface UserPatch {
   id?: Maybe<Scalars['Int']>
   email?: Maybe<Scalars['String']>
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
 }
@@ -6596,10 +6877,6 @@ export enum UserRolesOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -6637,10 +6914,6 @@ export enum UsersOrderBy {
   EmailDesc = 'EMAIL_DESC',
   FullNameAsc = 'FULL_NAME_ASC',
   FullNameDesc = 'FULL_NAME_DESC',
-  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
-  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
-  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
-  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   FirstNameAsc = 'FIRST_NAME_ASC',
   FirstNameDesc = 'FIRST_NAME_DESC',
   LastNameAsc = 'LAST_NAME_ASC',
@@ -6655,6 +6928,8 @@ export enum UsersOrderBy {
   ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
   UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
   UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
+  ProfilesByUserIdCountAsc = 'PROFILES_BY_USER_ID__COUNT_ASC',
+  ProfilesByUserIdCountDesc = 'PROFILES_BY_USER_ID__COUNT_DESC',
 }
 
 export type GetGamesBySlotForSignupQueryVariables = Exact<{
@@ -7498,6 +7773,14 @@ export type GetAllUsersQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetAllUsersAndProfilesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllUsersAndProfilesQuery = { __typename: 'Query' } & {
+  users?: Maybe<
+    { __typename: 'UsersConnection' } & { nodes: Array<Maybe<{ __typename: 'User' } & UserAndProfileFieldsFragment>> }
+  >
+}
+
 export type GetAllUsersByQueryVariables = Exact<{
   query: Scalars['String']
 }>
@@ -7518,10 +7801,37 @@ export type GetAllUsersByQuery = { __typename: 'Query' } & {
   >
 }
 
+export type CreateProfileMutationVariables = Exact<{
+  input: CreateProfileInput
+}>
+
+export type CreateProfileMutation = { __typename: 'Mutation' } & {
+  createProfile?: Maybe<{ __typename: 'CreateProfilePayload' } & Pick<CreateProfilePayload, 'clientMutationId'>>
+}
+
+export type UpdateProfileByNodeIdMutationVariables = Exact<{
+  input: UpdateProfileByNodeIdInput
+}>
+
+export type UpdateProfileByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateProfileByNodeId?: Maybe<{ __typename: 'UpdateProfilePayload' } & Pick<UpdateProfilePayload, 'clientMutationId'>>
+}
+
 export type UserFieldsFragment = { __typename: 'User' } & Pick<
   User,
-  'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
+  'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName'
 >
+
+export type ProfileFieldsFragment = { __typename: 'Profile' } & Pick<
+  Profile,
+  'nodeId' | 'userId' | 'phoneNumber' | 'snailMailAddress'
+>
+
+export type UserAndProfileFieldsFragment = { __typename: 'User' } & {
+  profiles: { __typename: 'ProfilesConnection' } & {
+    nodes: Array<Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment>>
+  }
+} & UserFieldsFragment
 
 export const GameSubmissionFieldsFragmentDoc = `
     fragment gameSubmissionFields on GameSubmission {
@@ -7705,10 +8015,27 @@ export const UserFieldsFragmentDoc = `
   fullName
   firstName
   lastName
-  snailMailAddress
-  phoneNumber
 }
     `
+export const ProfileFieldsFragmentDoc = `
+    fragment profileFields on Profile {
+  nodeId
+  userId
+  phoneNumber
+  snailMailAddress
+}
+    `
+export const UserAndProfileFieldsFragmentDoc = `
+    fragment userAndProfileFields on User {
+  ...userFields
+  profiles {
+    nodes {
+      ...profileFields
+    }
+  }
+}
+    ${UserFieldsFragmentDoc}
+${ProfileFieldsFragmentDoc}`
 export const GetGamesBySlotForSignupDocument = `
     query getGamesBySlotForSignup($year: Int!, $slotId: Int!) {
   games(
@@ -8836,6 +9163,26 @@ export const useGetAllUsersQuery = <TData = GetAllUsersQuery, TError = QueryErro
     useFetchData<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument).bind(null, variables),
     options
   )
+export const GetAllUsersAndProfilesDocument = `
+    query getAllUsersAndProfiles {
+  users(orderBy: LAST_NAME_ASC) {
+    nodes {
+      ...userAndProfileFields
+    }
+  }
+}
+    ${UserAndProfileFieldsFragmentDoc}`
+export const useGetAllUsersAndProfilesQuery = <TData = GetAllUsersAndProfilesQuery, TError = QueryError>(
+  variables?: GetAllUsersAndProfilesQueryVariables,
+  options?: UseQueryOptions<GetAllUsersAndProfilesQuery, TError, TData>
+) =>
+  useQuery<GetAllUsersAndProfilesQuery, TError, TData>(
+    ['getAllUsersAndProfiles', variables],
+    useFetchData<GetAllUsersAndProfilesQuery, GetAllUsersAndProfilesQueryVariables>(
+      GetAllUsersAndProfilesDocument
+    ).bind(null, variables),
+    options
+  )
 export const GetAllUsersByDocument = `
     query getAllUsersBy($query: String!) {
   users(orderBy: LAST_NAME_ASC, filter: {fullName: {includesInsensitive: $query}}) {
@@ -8858,5 +9205,33 @@ export const useGetAllUsersByQuery = <TData = GetAllUsersByQuery, TError = Query
   useQuery<GetAllUsersByQuery, TError, TData>(
     ['getAllUsersBy', variables],
     useFetchData<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument).bind(null, variables),
+    options
+  )
+export const CreateProfileDocument = `
+    mutation createProfile($input: CreateProfileInput!) {
+  createProfile(input: $input) {
+    clientMutationId
+  }
+}
+    `
+export const useCreateProfileMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>
+) =>
+  useMutation<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>(
+    useFetchData<CreateProfileMutation, CreateProfileMutationVariables>(CreateProfileDocument),
+    options
+  )
+export const UpdateProfileByNodeIdDocument = `
+    mutation updateProfileByNodeId($input: UpdateProfileByNodeIdInput!) {
+  updateProfileByNodeId(input: $input) {
+    clientMutationId
+  }
+}
+    `
+export const useUpdateProfileByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>
+) =>
+  useMutation<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateProfileByNodeIdMutation, UpdateProfileByNodeIdMutationVariables>(UpdateProfileByNodeIdDocument),
     options
   )

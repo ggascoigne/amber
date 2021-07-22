@@ -21,5 +21,5 @@ EOF
 
 # yes it relies on globals, but it still saves typing
 function getPgString () {
-  echo "postgresql://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}$([ -n "$DATABASE_SSL" ] && echo '?sslmode=require')"
+  echo "postgresql://${DATABASE_ADMIN}:${DATABASE_ADMIN_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}$([ -n "$DATABASE_SSL" ] && echo '?sslmode=require')"
 }

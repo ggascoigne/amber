@@ -6,7 +6,7 @@ import cli from 'cli-ux'
 import { printSchema } from 'graphql'
 import { createPostGraphileSchema } from 'postgraphile'
 
-import { getPool, getSchemas } from '../shared/config'
+import { PoolType, getPool, getSchemas } from '../shared/config'
 import { options } from '../shared/postgraphileOptions'
 
 // Download the schema for codegen, also (and as importantly), save the
@@ -14,7 +14,7 @@ import { options } from '../shared/postgraphileOptions'
 
 async function main() {
   cli.action.start('transforming postgraphile schema')
-  const pgPool = getPool('./shared/')
+  const pgPool = getPool(PoolType.ADMIN, './shared/')
   const schema = await createPostGraphileSchema(pgPool, getSchemas(), {
     ...options,
     writeCache: `./shared/postgraphile.cache`,
