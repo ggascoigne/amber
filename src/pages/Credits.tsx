@@ -3,7 +3,6 @@ import React from 'react'
 
 const Credits = () => (
   <Page title='Credits'>
-    <h1>Credits</h1>
     <p>
       This site is built on top of Open Source Software from a number of generous companies and developers, including:{' '}
     </p>
@@ -31,10 +30,14 @@ const Credits = () => (
     <ul>
       <li>
         The table control used throughout this site is{' '}
-        <a href='https://github.com/tannerlinsley/react-table' title='React-Table' target='_new'>
+        <a href='https://react-table.tanstack.com/' title='React-Table' target='_new'>
           React-Table
-        </a>{' '}
-        by Tanner Linsley.
+        </a>
+        , all GraphQL client access uses{' '}
+        <a href='https://react-query.tanstack.com/' title='React-Query' target='_new'>
+          React-Query
+        </a>
+        , both by Tanner Linsley.
       </li>
       <li>
         The UI toolkit is{' '}
@@ -42,7 +45,7 @@ const Credits = () => (
           {' '}
           Material UI
         </a>
-        , with parts based on{' '}
+        , with parts inspired by{' '}
         <a href='https://demos.creative-tim.com/material-kit-react' title='Material Kit React' target='_new'>
           Material Kit React
         </a>
@@ -66,13 +69,7 @@ const Credits = () => (
         </a>
       </li>
       <li>
-        GraphQL client code using{' '}
-        <a href='https://www.apollographql.com/' title='Apollo GraphQL' target='_new'>
-          Apollo GraphQL
-        </a>
-      </li>
-      <li>
-        GraphQL schema to typescript tools from{' '}
+        GraphQL schema to React-Query from{' '}
         <a href='https://graphql-code-generator.com/' title='Graphql CodeGen' target='_new'>
           Graphql CodeGen
         </a>
@@ -84,7 +81,7 @@ const Credits = () => (
         </a>
       </li>
       <li>
-        React Forms using{' '}
+        Forms using{' '}
         <a href='https://formik.org/' title='Formik' target='_new'>
           Formik
         </a>

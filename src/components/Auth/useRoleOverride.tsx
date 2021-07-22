@@ -1,5 +1,7 @@
 import { atom, useAtom } from 'jotai'
 
-const roleOverrideAtom = atom<string | undefined>(undefined)
+import { Roles } from './PermissionRules'
+
+const roleOverrideAtom = atom<Roles | undefined>(undefined)
 
 export const useRoleOverride = () => useAtom(roleOverrideAtom)

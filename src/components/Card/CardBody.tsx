@@ -1,5 +1,5 @@
 import { createStyles, makeStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 const useStyles = makeStyles(
@@ -11,14 +11,14 @@ const useStyles = makeStyles(
   })
 )
 
-type CardBodyProps = {
+interface CardBodyProps {
   className?: string
 }
 
 export const CardBody: React.FC<CardBodyProps> = (props) => {
   const classes = useStyles()
   const { className, children, ...rest } = props
-  const cardBodyClasses = classNames(classes.cardBody, className)
+  const cardBodyClasses = clsx(classes.cardBody, className)
   return (
     <div className={cardBodyClasses} {...rest}>
       {children}

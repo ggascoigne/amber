@@ -1,14 +1,13 @@
 import MuiSelect, { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
 import { useField, useFormikContext } from 'formik'
-import * as React from 'react'
+import React from 'react'
 
 export type SelectProps = MuiSelectProps & {
   name: string
 }
 
 export const Select: React.ComponentType<SelectProps> = (props: SelectProps) => {
-  // @ts-ignore
-  const [field, meta] = useField(props)
+  const [field, meta] = useField(props.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
 

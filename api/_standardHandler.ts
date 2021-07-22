@@ -1,6 +1,8 @@
 import { NowRequest, NowResponse } from '@now/node'
 
-export type Handler = (req: NowRequest, res: NowResponse, next: (err?: any) => void) => Promise<any>
+export interface Handler {
+  (req: NowRequest, res: NowResponse, next: (err?: any) => void): Promise<any>
+}
 
 export function combineHandlers(handlers: Array<Handler>) {
   return handlers.reduce(

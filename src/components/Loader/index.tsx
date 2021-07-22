@@ -1,5 +1,5 @@
 import { Theme, WithStyles, createStyles, withStyles } from '@material-ui/core/styles'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 import Spinner from 'react-spinkit'
 
@@ -37,7 +37,7 @@ interface ILoader extends WithStyles<typeof styles> {
 }
 
 const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay, tiny = false }) => (
-  <div className={classnames({ [classes.root]: !tiny, [classes.tiny]: tiny })}>
+  <div className={clsx({ [classes.root]: !tiny, [classes.tiny]: tiny })}>
     {error && (
       <div>
         Error! <button onClick={retry}>Retry</button>
@@ -49,7 +49,7 @@ const _Loader: React.FC<ILoader> = ({ classes, error, retry, timedOut, pastDelay
       </div>
     )}
     {pastDelay && <div>Loading...</div>}
-    <Spinner fadeIn='half' className={classnames({ [classes.progress]: !tiny })} name='chasing-dots' color='#3f51b5' />
+    <Spinner fadeIn='half' className={clsx({ [classes.progress]: !tiny })} name='chasing-dots' color='#3f51b5' />
   </div>
 )
 

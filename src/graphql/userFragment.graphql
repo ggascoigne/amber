@@ -5,6 +5,20 @@ fragment userFields on User {
   fullName
   firstName
   lastName
-  snailMailAddress
+}
+
+fragment profileFields on Profile {
+  nodeId
+  userId
   phoneNumber
+  snailMailAddress
+}
+
+fragment userAndProfileFields on User {
+  ...userFields
+  profiles {
+    nodes {
+      ...profileFields
+    }
+  }
 }

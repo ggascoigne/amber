@@ -7,7 +7,7 @@ import { gitHash } from 'version'
 import { HasPermission, Perms, useAuth } from './Auth'
 import { Loader } from './Loader'
 
-const ReactJson = React.lazy(() => import('@ggascoigne/react-json-view'))
+const ReactJson = React.lazy(() => import('react-json-view'))
 
 const containerFluid = {
   paddingRight: '15px',
@@ -46,6 +46,9 @@ const footerStyle = createStyles({
   },
   popup: {
     padding: 20,
+  },
+  versionInfo: {
+    cursor: 'pointer',
   },
 })
 
@@ -108,7 +111,10 @@ export const Footer: React.FC = (props) => {
             </Popover>
           )}
         </HasPermission>
-        <span onClick={handleClick}>{hash}</span> | &copy; {DateTime.fromJSDate(new Date()).year} amberconnw.org
+        <span className={classes.versionInfo} onClick={handleClick}>
+          {hash}
+        </span>{' '}
+        | &copy; {DateTime.fromJSDate(new Date()).year} amberconnw.org
       </div>
     </footer>
   )

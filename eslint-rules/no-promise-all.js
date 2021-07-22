@@ -14,7 +14,7 @@ function create(context) {
       if (isPromiseAll(node.callee))
         context.report({
           node,
-          message: 'Prefer Promise.allSettled or pSettle like logic instead of Promise.all',
+          message: 'Prefer Promise.allSettled instead of Promise.all',
         })
     },
   }

@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type DialogCloseProps = {
+interface DialogCloseProps {
   onClose: MouseEventHandler
 }
 

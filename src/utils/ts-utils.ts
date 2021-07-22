@@ -1,3 +1,7 @@
+import { O } from 'ts-toolbelt'
+import { Key } from 'ts-toolbelt/out/Any/Key'
+import { List } from 'ts-toolbelt/out/List/List'
+
 import type { Maybe } from '../client'
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -47,3 +51,19 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<
 
 // https://stackoverflow.com/questions/48230773/how-to-create-a-partial-like-that-requires-a-single-property-to-be-set
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U]
+
+export type GqlType<T, V extends List<Key>> = NonNullable<O.Path<T, V>>
+
+export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: string }> = Omit<
+  T,
+  'nodeId' | 'id' | '__typename'
+> &
+  Partial<Pick<T, 'nodeId' | 'id'>>
+
+// There are a lot of places where the obvious change would be to reference Record<string,unknown> but we pass objects
+// defined by interface rather than by type in a lot of places (in generated code that's tricky to change) When you do
+// that, you get tsc errors about Index Signatures missing. This is an issue with TypeScript interfaces in general: a
+// specific interface cannot be saved into a more generic interface. However a specific type can be saved into a more
+// generic type.  Using the ObjectOf construct enforces the object extension without falling into this trap.
+
+export type ObjectOf<T> = { [P in keyof T]: T[P] }

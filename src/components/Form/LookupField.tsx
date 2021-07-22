@@ -1,5 +1,5 @@
 import { useGetLookupValuesQuery } from 'client'
-import * as React from 'react'
+import React from 'react'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
@@ -12,7 +12,12 @@ export interface LookupFieldProps extends TextFieldProps {
 
 export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   const { select, realm, ...rest } = props
-  const { isLoading, error, data } = useGetLookupValuesQuery({ realm })
+  const { isLoading, error, data } = useGetLookupValuesQuery(
+    { realm },
+    {
+      staleTime: 10 * 60 * 1000,
+    }
+  )
   if (error) {
     return <GraphQLError error={error} />
   }

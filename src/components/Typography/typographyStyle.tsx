@@ -46,6 +46,11 @@ export const useTypographyStyles = makeStyles((theme: Theme) =>
     dangerText: {
       color: theme.palette.error.main,
     },
+    importantText: {
+      color: theme.palette.error.main,
+      fontVariant: 'small-caps',
+      fontWeight: 500,
+    },
     smallText: {
       fontSize: '65%',
       fontWeight: 400,

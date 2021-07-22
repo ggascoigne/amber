@@ -4,6 +4,7 @@
     "src",
     "api",
     "scripts",
+    "shared",
     "types"
   ]
 }

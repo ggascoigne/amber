@@ -17,7 +17,7 @@ import { configuration, notEmpty, onCloseHandler, pick, useSendEmail, useSetting
 
 import { Perms, useAuth } from '../../components/Auth'
 import { useNotification } from '../../components/Notifications'
-import { ProfileType, useProfile } from '../../components/Profile'
+import { ProfileFormType, useProfile } from '../../components/Profile'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
@@ -152,7 +152,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (profile: ProfileType, values: GameFields, update = false) => {
+      const sendGameConfirmation = (profile: ProfileFormType, values: GameFields, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: JSON.stringify({
@@ -215,8 +215,8 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             await setGameGmAssignments(values.id!, values.gmNames, membershipList)
             notify({ text: 'Game updated', variant: 'success' })
             // create always sends email, but generally updates skip sending email about admin updates
-            if (shouldSendEmail) {
-              sendGameConfirmation(profile!, values, true)
+            if (shouldSendEmail && profile) {
+              sendGameConfirmation(profile, values, true)
             }
             onClose()
           })
@@ -245,7 +245,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             const gameId = res?.createGame?.game?.id
             gameId && (await setGameGmAssignments(gameId, values.gmNames, membershipList))
             notify({ text: 'Game created', variant: 'success' })
-            sendGameConfirmation(profile!, values)
+            profile && sendGameConfirmation(profile, values)
             onClose()
           })
           .catch((error) => {

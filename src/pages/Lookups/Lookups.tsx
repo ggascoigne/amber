@@ -1,8 +1,8 @@
-import { useDeleteLookupMutation, useDeleteLookupValueMutation, useGetLookupsQuery } from 'client'
+import { GetLookupsQuery, useDeleteLookupMutation, useDeleteLookupValueMutation, useGetLookupsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import type { Column, Row, TableInstance } from 'react-table'
-import { notEmpty } from 'utils'
+import { GqlType, notEmpty } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { GraphQLError } from '../../components/GraphQLError'
@@ -10,7 +10,8 @@ import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
 import { LookupsDialog } from './LookupsDialog'
-import type { LookupAndValues } from './types'
+
+export type LookupAndValues = GqlType<GetLookupsQuery, ['lookups', 'edges', number, 'node']>
 
 const columns: Column<LookupAndValues>[] = [
   {
@@ -43,6 +44,7 @@ const Lookups: React.FC = React.memo(() => {
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
     setSelection([])
+    // noinspection JSIgnoredPromiseFromCall
     queryClient.invalidateQueries('getLookups')
   }
 
@@ -72,7 +74,7 @@ const Lookups: React.FC = React.memo(() => {
   }
 
   return (
-    <Page title='Lookup'>
+    <Page title='Lookups'>
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<LookupAndValues>
         name='lookups'

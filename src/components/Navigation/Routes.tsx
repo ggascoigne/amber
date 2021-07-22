@@ -4,14 +4,14 @@ import { configuration } from 'utils'
 
 import { Perms } from '../Auth'
 
-type UserCondition = {
+interface UserCondition {
   userId: number | null | undefined
   isMember: boolean
   getSetting: (setting: string, defaultValue?: any) => boolean
 }
 
 // note that entries are only displayed if they have a label
-export type RouteInfo = {
+export interface RouteInfo {
   path: string
   label?: string
   link?: string
@@ -150,6 +150,20 @@ export const rootRoutes: RootRoutes = [
     label: 'Settings',
     exact: true,
     component: React.lazy(() => import('pages/Settings/Settings')),
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/hotel-room-types',
+    label: 'Hotel Room Types',
+    exact: true,
+    component: React.lazy(() => import('pages/HotelRoomTypes/HotelRoomTypes')),
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/hotel-rooms',
+    label: 'Hotel Rooms',
+    exact: true,
+    component: React.lazy(() => import('pages/HotelRoomDetails/HotelRoomDetails')),
     permission: Perms.IsAdmin,
   },
   {

@@ -3,7 +3,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 import React, { PropsWithChildren, ReactElement, useCallback, useEffect } from 'react'
 import { TableInstance } from 'react-table'
 
-type TableSearchProps<T extends Record<string, unknown>> = {
+interface TableSearchProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
 }
 

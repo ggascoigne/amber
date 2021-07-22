@@ -1,8 +1,8 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
 import CheckIcon from '@material-ui/icons/Check'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import classNames from 'classnames'
 import { Game, GameChoice, GameEntry, Maybe } from 'client'
+import clsx from 'clsx'
 import { Perms, useAuth } from 'components/Auth'
 import React, { useEffect } from 'react'
 import { range } from 'utils'
@@ -208,7 +208,7 @@ export type MaybeGameChoice = Maybe<
   > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
 >
 
-export type SelectorUpdate = {
+export interface SelectorUpdate {
   gameChoices?: MaybeGameChoice[]
   gameId: number
   rank: number | null
@@ -218,7 +218,7 @@ export type SelectorUpdate = {
   year: number
 }
 
-export type SelectorParams = {
+export interface SelectorParams {
   gameChoices?: MaybeGameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
   gmSlots?: MaybeGameChoice[]
@@ -337,7 +337,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
               value={returning}
               selected={returning}
               onChange={handleReturning}
-              className={classNames(classes.returning, classes.button)}
+              className={clsx(classes.returning, classes.button)}
             >
               Returning Player
             </ToggleButton>

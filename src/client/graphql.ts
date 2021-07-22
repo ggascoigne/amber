@@ -10,7 +10,7 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> }
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> }
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+export interface Scalars {
   ID: string
   String: string
   Boolean: boolean
@@ -34,7 +34,7 @@ export type Scalars = {
 }
 
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
-export type BigFloatFilter = {
+export interface BigFloatFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -60,7 +60,7 @@ export type BigFloatFilter = {
 }
 
 /** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
-export type BigIntFilter = {
+export interface BigIntFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -86,7 +86,7 @@ export type BigIntFilter = {
 }
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
-export type BooleanFilter = {
+export interface BooleanFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -112,7 +112,7 @@ export type BooleanFilter = {
 }
 
 /** All input for the `createBareSlotChoices` mutation. */
-export type CreateBareSlotChoicesInput = {
+export interface CreateBareSlotChoicesInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -123,7 +123,7 @@ export type CreateBareSlotChoicesInput = {
 }
 
 /** The output of our `createBareSlotChoices` mutation. */
-export type CreateBareSlotChoicesPayload = {
+export interface CreateBareSlotChoicesPayload {
   __typename: 'CreateBareSlotChoicesPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -135,7 +135,7 @@ export type CreateBareSlotChoicesPayload = {
 }
 
 /** All input for the create `GameAssignment` mutation. */
-export type CreateGameAssignmentInput = {
+export interface CreateGameAssignmentInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -146,7 +146,7 @@ export type CreateGameAssignmentInput = {
 }
 
 /** The output of our create `GameAssignment` mutation. */
-export type CreateGameAssignmentPayload = {
+export interface CreateGameAssignmentPayload {
   __typename: 'CreateGameAssignmentPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -166,12 +166,12 @@ export type CreateGameAssignmentPayload = {
 }
 
 /** The output of our create `GameAssignment` mutation. */
-export type CreateGameAssignmentPayloadGameAssignmentEdgeArgs = {
+export interface CreateGameAssignmentPayloadGameAssignmentEdgeArgs {
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
 }
 
 /** All input for the create `GameChoice` mutation. */
-export type CreateGameChoiceInput = {
+export interface CreateGameChoiceInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -182,7 +182,7 @@ export type CreateGameChoiceInput = {
 }
 
 /** The output of our create `GameChoice` mutation. */
-export type CreateGameChoicePayload = {
+export interface CreateGameChoicePayload {
   __typename: 'CreateGameChoicePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -204,12 +204,12 @@ export type CreateGameChoicePayload = {
 }
 
 /** The output of our create `GameChoice` mutation. */
-export type CreateGameChoicePayloadGameChoiceEdgeArgs = {
+export interface CreateGameChoicePayloadGameChoiceEdgeArgs {
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
 }
 
 /** All input for the create `Game` mutation. */
-export type CreateGameInput = {
+export interface CreateGameInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -220,7 +220,7 @@ export type CreateGameInput = {
 }
 
 /** The output of our create `Game` mutation. */
-export type CreateGamePayload = {
+export interface CreateGamePayload {
   __typename: 'CreateGamePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -242,12 +242,12 @@ export type CreateGamePayload = {
 }
 
 /** The output of our create `Game` mutation. */
-export type CreateGamePayloadGameEdgeArgs = {
+export interface CreateGamePayloadGameEdgeArgs {
   orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
 /** All input for the create `GameSubmission` mutation. */
-export type CreateGameSubmissionInput = {
+export interface CreateGameSubmissionInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -258,7 +258,7 @@ export type CreateGameSubmissionInput = {
 }
 
 /** The output of our create `GameSubmission` mutation. */
-export type CreateGameSubmissionPayload = {
+export interface CreateGameSubmissionPayload {
   __typename: 'CreateGameSubmissionPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -276,12 +276,12 @@ export type CreateGameSubmissionPayload = {
 }
 
 /** The output of our create `GameSubmission` mutation. */
-export type CreateGameSubmissionPayloadGameSubmissionEdgeArgs = {
+export interface CreateGameSubmissionPayloadGameSubmissionEdgeArgs {
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
 }
 
 /** All input for the create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailInput = {
+export interface CreateHotelRoomDetailInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -292,7 +292,7 @@ export type CreateHotelRoomDetailInput = {
 }
 
 /** The output of our create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailPayload = {
+export interface CreateHotelRoomDetailPayload {
   __typename: 'CreateHotelRoomDetailPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -308,12 +308,12 @@ export type CreateHotelRoomDetailPayload = {
 }
 
 /** The output of our create `HotelRoomDetail` mutation. */
-export type CreateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+export interface CreateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
 }
 
 /** All input for the create `HotelRoom` mutation. */
-export type CreateHotelRoomInput = {
+export interface CreateHotelRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -324,7 +324,7 @@ export type CreateHotelRoomInput = {
 }
 
 /** The output of our create `HotelRoom` mutation. */
-export type CreateHotelRoomPayload = {
+export interface CreateHotelRoomPayload {
   __typename: 'CreateHotelRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -340,12 +340,12 @@ export type CreateHotelRoomPayload = {
 }
 
 /** The output of our create `HotelRoom` mutation. */
-export type CreateHotelRoomPayloadHotelRoomEdgeArgs = {
+export interface CreateHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomsOrderBy>>
 }
 
 /** All input for the create `Lookup` mutation. */
-export type CreateLookupInput = {
+export interface CreateLookupInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -356,7 +356,7 @@ export type CreateLookupInput = {
 }
 
 /** The output of our create `Lookup` mutation. */
-export type CreateLookupPayload = {
+export interface CreateLookupPayload {
   __typename: 'CreateLookupPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -372,12 +372,12 @@ export type CreateLookupPayload = {
 }
 
 /** The output of our create `Lookup` mutation. */
-export type CreateLookupPayloadLookupEdgeArgs = {
+export interface CreateLookupPayloadLookupEdgeArgs {
   orderBy?: Maybe<Array<LookupsOrderBy>>
 }
 
 /** All input for the create `LookupValue` mutation. */
-export type CreateLookupValueInput = {
+export interface CreateLookupValueInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -388,7 +388,7 @@ export type CreateLookupValueInput = {
 }
 
 /** The output of our create `LookupValue` mutation. */
-export type CreateLookupValuePayload = {
+export interface CreateLookupValuePayload {
   __typename: 'CreateLookupValuePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -406,12 +406,12 @@ export type CreateLookupValuePayload = {
 }
 
 /** The output of our create `LookupValue` mutation. */
-export type CreateLookupValuePayloadLookupValueEdgeArgs = {
+export interface CreateLookupValuePayloadLookupValueEdgeArgs {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
 /** All input for the create `Membership` mutation. */
-export type CreateMembershipInput = {
+export interface CreateMembershipInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -422,7 +422,7 @@ export type CreateMembershipInput = {
 }
 
 /** The output of our create `Membership` mutation. */
-export type CreateMembershipPayload = {
+export interface CreateMembershipPayload {
   __typename: 'CreateMembershipPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -442,12 +442,46 @@ export type CreateMembershipPayload = {
 }
 
 /** The output of our create `Membership` mutation. */
-export type CreateMembershipPayloadMembershipEdgeArgs = {
+export interface CreateMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
+/** All input for the create `Profile` mutation. */
+export interface CreateProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` to be created by this mutation. */
+  profile: ProfileInput
+}
+
+/** The output of our create `Profile` mutation. */
+export interface CreateProfilePayload {
+  __typename: 'CreateProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was created by this mutation. */
+  profile?: Maybe<Profile>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our create `Profile` mutation. */
+export interface CreateProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+}
+
 /** All input for the create `Role` mutation. */
-export type CreateRoleInput = {
+export interface CreateRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -458,7 +492,7 @@ export type CreateRoleInput = {
 }
 
 /** The output of our create `Role` mutation. */
-export type CreateRolePayload = {
+export interface CreateRolePayload {
   __typename: 'CreateRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -474,12 +508,12 @@ export type CreateRolePayload = {
 }
 
 /** The output of our create `Role` mutation. */
-export type CreateRolePayloadRoleEdgeArgs = {
+export interface CreateRolePayloadRoleEdgeArgs {
   orderBy?: Maybe<Array<RolesOrderBy>>
 }
 
 /** All input for the create `Room` mutation. */
-export type CreateRoomInput = {
+export interface CreateRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -490,7 +524,7 @@ export type CreateRoomInput = {
 }
 
 /** The output of our create `Room` mutation. */
-export type CreateRoomPayload = {
+export interface CreateRoomPayload {
   __typename: 'CreateRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -506,12 +540,12 @@ export type CreateRoomPayload = {
 }
 
 /** The output of our create `Room` mutation. */
-export type CreateRoomPayloadRoomEdgeArgs = {
+export interface CreateRoomPayloadRoomEdgeArgs {
   orderBy?: Maybe<Array<RoomsOrderBy>>
 }
 
 /** All input for the create `Setting` mutation. */
-export type CreateSettingInput = {
+export interface CreateSettingInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -522,7 +556,7 @@ export type CreateSettingInput = {
 }
 
 /** The output of our create `Setting` mutation. */
-export type CreateSettingPayload = {
+export interface CreateSettingPayload {
   __typename: 'CreateSettingPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -538,12 +572,12 @@ export type CreateSettingPayload = {
 }
 
 /** The output of our create `Setting` mutation. */
-export type CreateSettingPayloadSettingEdgeArgs = {
+export interface CreateSettingPayloadSettingEdgeArgs {
   orderBy?: Maybe<Array<SettingsOrderBy>>
 }
 
 /** All input for the create `ShirtOrder` mutation. */
-export type CreateShirtOrderInput = {
+export interface CreateShirtOrderInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -554,7 +588,7 @@ export type CreateShirtOrderInput = {
 }
 
 /** All input for the create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemInput = {
+export interface CreateShirtOrderItemInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -565,7 +599,7 @@ export type CreateShirtOrderItemInput = {
 }
 
 /** The output of our create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemPayload = {
+export interface CreateShirtOrderItemPayload {
   __typename: 'CreateShirtOrderItemPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -583,12 +617,12 @@ export type CreateShirtOrderItemPayload = {
 }
 
 /** The output of our create `ShirtOrderItem` mutation. */
-export type CreateShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
+export interface CreateShirtOrderItemPayloadShirtOrderItemEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
 }
 
 /** The output of our create `ShirtOrder` mutation. */
-export type CreateShirtOrderPayload = {
+export interface CreateShirtOrderPayload {
   __typename: 'CreateShirtOrderPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -606,12 +640,12 @@ export type CreateShirtOrderPayload = {
 }
 
 /** The output of our create `ShirtOrder` mutation. */
-export type CreateShirtOrderPayloadShirtOrderEdgeArgs = {
+export interface CreateShirtOrderPayloadShirtOrderEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
 }
 
 /** All input for the create `Slot` mutation. */
-export type CreateSlotInput = {
+export interface CreateSlotInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -622,7 +656,7 @@ export type CreateSlotInput = {
 }
 
 /** The output of our create `Slot` mutation. */
-export type CreateSlotPayload = {
+export interface CreateSlotPayload {
   __typename: 'CreateSlotPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -638,12 +672,12 @@ export type CreateSlotPayload = {
 }
 
 /** The output of our create `Slot` mutation. */
-export type CreateSlotPayloadSlotEdgeArgs = {
+export interface CreateSlotPayloadSlotEdgeArgs {
   orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
 /** All input for the create `User` mutation. */
-export type CreateUserInput = {
+export interface CreateUserInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -654,7 +688,7 @@ export type CreateUserInput = {
 }
 
 /** The output of our create `User` mutation. */
-export type CreateUserPayload = {
+export interface CreateUserPayload {
   __typename: 'CreateUserPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -670,12 +704,12 @@ export type CreateUserPayload = {
 }
 
 /** The output of our create `User` mutation. */
-export type CreateUserPayloadUserEdgeArgs = {
+export interface CreateUserPayloadUserEdgeArgs {
   orderBy?: Maybe<Array<UsersOrderBy>>
 }
 
 /** All input for the create `UserRole` mutation. */
-export type CreateUserRoleInput = {
+export interface CreateUserRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -686,7 +720,7 @@ export type CreateUserRoleInput = {
 }
 
 /** The output of our create `UserRole` mutation. */
-export type CreateUserRolePayload = {
+export interface CreateUserRolePayload {
   __typename: 'CreateUserRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -706,12 +740,12 @@ export type CreateUserRolePayload = {
 }
 
 /** The output of our create `UserRole` mutation. */
-export type CreateUserRolePayloadUserRoleEdgeArgs = {
+export interface CreateUserRolePayloadUserRoleEdgeArgs {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
 }
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
-export type DatetimeFilter = {
+export interface DatetimeFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -737,7 +771,7 @@ export type DatetimeFilter = {
 }
 
 /** All input for the `deleteGameAssignmentByNodeId` mutation. */
-export type DeleteGameAssignmentByNodeIdInput = {
+export interface DeleteGameAssignmentByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -748,7 +782,7 @@ export type DeleteGameAssignmentByNodeIdInput = {
 }
 
 /** All input for the `deleteGameAssignment` mutation. */
-export type DeleteGameAssignmentInput = {
+export interface DeleteGameAssignmentInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -760,7 +794,7 @@ export type DeleteGameAssignmentInput = {
 }
 
 /** The output of our delete `GameAssignment` mutation. */
-export type DeleteGameAssignmentPayload = {
+export interface DeleteGameAssignmentPayload {
   __typename: 'DeleteGameAssignmentPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -781,12 +815,12 @@ export type DeleteGameAssignmentPayload = {
 }
 
 /** The output of our delete `GameAssignment` mutation. */
-export type DeleteGameAssignmentPayloadGameAssignmentEdgeArgs = {
+export interface DeleteGameAssignmentPayloadGameAssignmentEdgeArgs {
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
 }
 
 /** All input for the `deleteGameByNodeId` mutation. */
-export type DeleteGameByNodeIdInput = {
+export interface DeleteGameByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -797,7 +831,7 @@ export type DeleteGameByNodeIdInput = {
 }
 
 /** All input for the `deleteGameChoiceByNodeId` mutation. */
-export type DeleteGameChoiceByNodeIdInput = {
+export interface DeleteGameChoiceByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -808,7 +842,7 @@ export type DeleteGameChoiceByNodeIdInput = {
 }
 
 /** All input for the `deleteGameChoice` mutation. */
-export type DeleteGameChoiceInput = {
+export interface DeleteGameChoiceInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -818,7 +852,7 @@ export type DeleteGameChoiceInput = {
 }
 
 /** The output of our delete `GameChoice` mutation. */
-export type DeleteGameChoicePayload = {
+export interface DeleteGameChoicePayload {
   __typename: 'DeleteGameChoicePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -841,12 +875,12 @@ export type DeleteGameChoicePayload = {
 }
 
 /** The output of our delete `GameChoice` mutation. */
-export type DeleteGameChoicePayloadGameChoiceEdgeArgs = {
+export interface DeleteGameChoicePayloadGameChoiceEdgeArgs {
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
 }
 
 /** All input for the `deleteGame` mutation. */
-export type DeleteGameInput = {
+export interface DeleteGameInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -856,7 +890,7 @@ export type DeleteGameInput = {
 }
 
 /** The output of our delete `Game` mutation. */
-export type DeleteGamePayload = {
+export interface DeleteGamePayload {
   __typename: 'DeleteGamePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -879,12 +913,12 @@ export type DeleteGamePayload = {
 }
 
 /** The output of our delete `Game` mutation. */
-export type DeleteGamePayloadGameEdgeArgs = {
+export interface DeleteGamePayloadGameEdgeArgs {
   orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
 /** All input for the `deleteGameSubmissionByNodeId` mutation. */
-export type DeleteGameSubmissionByNodeIdInput = {
+export interface DeleteGameSubmissionByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -895,7 +929,7 @@ export type DeleteGameSubmissionByNodeIdInput = {
 }
 
 /** All input for the `deleteGameSubmission` mutation. */
-export type DeleteGameSubmissionInput = {
+export interface DeleteGameSubmissionInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -905,7 +939,7 @@ export type DeleteGameSubmissionInput = {
 }
 
 /** The output of our delete `GameSubmission` mutation. */
-export type DeleteGameSubmissionPayload = {
+export interface DeleteGameSubmissionPayload {
   __typename: 'DeleteGameSubmissionPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -924,12 +958,12 @@ export type DeleteGameSubmissionPayload = {
 }
 
 /** The output of our delete `GameSubmission` mutation. */
-export type DeleteGameSubmissionPayloadGameSubmissionEdgeArgs = {
+export interface DeleteGameSubmissionPayloadGameSubmissionEdgeArgs {
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
 }
 
 /** All input for the `deleteHotelRoomByNodeId` mutation. */
-export type DeleteHotelRoomByNodeIdInput = {
+export interface DeleteHotelRoomByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -940,7 +974,7 @@ export type DeleteHotelRoomByNodeIdInput = {
 }
 
 /** All input for the `deleteHotelRoomDetailByNodeId` mutation. */
-export type DeleteHotelRoomDetailByNodeIdInput = {
+export interface DeleteHotelRoomDetailByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -951,7 +985,7 @@ export type DeleteHotelRoomDetailByNodeIdInput = {
 }
 
 /** All input for the `deleteHotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailInput = {
+export interface DeleteHotelRoomDetailInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -961,7 +995,7 @@ export type DeleteHotelRoomDetailInput = {
 }
 
 /** The output of our delete `HotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailPayload = {
+export interface DeleteHotelRoomDetailPayload {
   __typename: 'DeleteHotelRoomDetailPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -978,12 +1012,12 @@ export type DeleteHotelRoomDetailPayload = {
 }
 
 /** The output of our delete `HotelRoomDetail` mutation. */
-export type DeleteHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+export interface DeleteHotelRoomDetailPayloadHotelRoomDetailEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
 }
 
 /** All input for the `deleteHotelRoom` mutation. */
-export type DeleteHotelRoomInput = {
+export interface DeleteHotelRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -993,7 +1027,7 @@ export type DeleteHotelRoomInput = {
 }
 
 /** The output of our delete `HotelRoom` mutation. */
-export type DeleteHotelRoomPayload = {
+export interface DeleteHotelRoomPayload {
   __typename: 'DeleteHotelRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1010,12 +1044,12 @@ export type DeleteHotelRoomPayload = {
 }
 
 /** The output of our delete `HotelRoom` mutation. */
-export type DeleteHotelRoomPayloadHotelRoomEdgeArgs = {
+export interface DeleteHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomsOrderBy>>
 }
 
 /** All input for the `deleteLookupByNodeId` mutation. */
-export type DeleteLookupByNodeIdInput = {
+export interface DeleteLookupByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1026,7 +1060,7 @@ export type DeleteLookupByNodeIdInput = {
 }
 
 /** All input for the `deleteLookupByRealm` mutation. */
-export type DeleteLookupByRealmInput = {
+export interface DeleteLookupByRealmInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1036,7 +1070,7 @@ export type DeleteLookupByRealmInput = {
 }
 
 /** All input for the `deleteLookup` mutation. */
-export type DeleteLookupInput = {
+export interface DeleteLookupInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1046,7 +1080,7 @@ export type DeleteLookupInput = {
 }
 
 /** The output of our delete `Lookup` mutation. */
-export type DeleteLookupPayload = {
+export interface DeleteLookupPayload {
   __typename: 'DeleteLookupPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1063,12 +1097,12 @@ export type DeleteLookupPayload = {
 }
 
 /** The output of our delete `Lookup` mutation. */
-export type DeleteLookupPayloadLookupEdgeArgs = {
+export interface DeleteLookupPayloadLookupEdgeArgs {
   orderBy?: Maybe<Array<LookupsOrderBy>>
 }
 
 /** All input for the `deleteLookupValueByLookupIdAndCode` mutation. */
-export type DeleteLookupValueByLookupIdAndCodeInput = {
+export interface DeleteLookupValueByLookupIdAndCodeInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1079,7 +1113,7 @@ export type DeleteLookupValueByLookupIdAndCodeInput = {
 }
 
 /** All input for the `deleteLookupValueByNodeId` mutation. */
-export type DeleteLookupValueByNodeIdInput = {
+export interface DeleteLookupValueByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1090,7 +1124,7 @@ export type DeleteLookupValueByNodeIdInput = {
 }
 
 /** All input for the `deleteLookupValue` mutation. */
-export type DeleteLookupValueInput = {
+export interface DeleteLookupValueInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1100,7 +1134,7 @@ export type DeleteLookupValueInput = {
 }
 
 /** The output of our delete `LookupValue` mutation. */
-export type DeleteLookupValuePayload = {
+export interface DeleteLookupValuePayload {
   __typename: 'DeleteLookupValuePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1119,12 +1153,12 @@ export type DeleteLookupValuePayload = {
 }
 
 /** The output of our delete `LookupValue` mutation. */
-export type DeleteLookupValuePayloadLookupValueEdgeArgs = {
+export interface DeleteLookupValuePayloadLookupValueEdgeArgs {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
 /** All input for the `deleteMembershipByNodeId` mutation. */
-export type DeleteMembershipByNodeIdInput = {
+export interface DeleteMembershipByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1135,7 +1169,7 @@ export type DeleteMembershipByNodeIdInput = {
 }
 
 /** All input for the `deleteMembership` mutation. */
-export type DeleteMembershipInput = {
+export interface DeleteMembershipInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1145,7 +1179,7 @@ export type DeleteMembershipInput = {
 }
 
 /** The output of our delete `Membership` mutation. */
-export type DeleteMembershipPayload = {
+export interface DeleteMembershipPayload {
   __typename: 'DeleteMembershipPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1166,12 +1200,57 @@ export type DeleteMembershipPayload = {
 }
 
 /** The output of our delete `Membership` mutation. */
-export type DeleteMembershipPayloadMembershipEdgeArgs = {
+export interface DeleteMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
+/** All input for the `deleteProfileByNodeId` mutation. */
+export interface DeleteProfileByNodeIdInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Profile` to be deleted. */
+  nodeId: Scalars['ID']
+}
+
+/** All input for the `deleteProfile` mutation. */
+export interface DeleteProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+}
+
+/** The output of our delete `Profile` mutation. */
+export interface DeleteProfilePayload {
+  __typename: 'DeleteProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was deleted by this mutation. */
+  profile?: Maybe<Profile>
+  deletedProfileNodeId?: Maybe<Scalars['ID']>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our delete `Profile` mutation. */
+export interface DeleteProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+}
+
 /** All input for the `deleteRoleByAuthority` mutation. */
-export type DeleteRoleByAuthorityInput = {
+export interface DeleteRoleByAuthorityInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1181,7 +1260,7 @@ export type DeleteRoleByAuthorityInput = {
 }
 
 /** All input for the `deleteRoleByNodeId` mutation. */
-export type DeleteRoleByNodeIdInput = {
+export interface DeleteRoleByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1192,7 +1271,7 @@ export type DeleteRoleByNodeIdInput = {
 }
 
 /** All input for the `deleteRole` mutation. */
-export type DeleteRoleInput = {
+export interface DeleteRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1202,7 +1281,7 @@ export type DeleteRoleInput = {
 }
 
 /** The output of our delete `Role` mutation. */
-export type DeleteRolePayload = {
+export interface DeleteRolePayload {
   __typename: 'DeleteRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1219,12 +1298,12 @@ export type DeleteRolePayload = {
 }
 
 /** The output of our delete `Role` mutation. */
-export type DeleteRolePayloadRoleEdgeArgs = {
+export interface DeleteRolePayloadRoleEdgeArgs {
   orderBy?: Maybe<Array<RolesOrderBy>>
 }
 
 /** All input for the `deleteRoomByNodeId` mutation. */
-export type DeleteRoomByNodeIdInput = {
+export interface DeleteRoomByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1235,7 +1314,7 @@ export type DeleteRoomByNodeIdInput = {
 }
 
 /** All input for the `deleteRoom` mutation. */
-export type DeleteRoomInput = {
+export interface DeleteRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1245,7 +1324,7 @@ export type DeleteRoomInput = {
 }
 
 /** The output of our delete `Room` mutation. */
-export type DeleteRoomPayload = {
+export interface DeleteRoomPayload {
   __typename: 'DeleteRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1262,12 +1341,12 @@ export type DeleteRoomPayload = {
 }
 
 /** The output of our delete `Room` mutation. */
-export type DeleteRoomPayloadRoomEdgeArgs = {
+export interface DeleteRoomPayloadRoomEdgeArgs {
   orderBy?: Maybe<Array<RoomsOrderBy>>
 }
 
 /** All input for the `deleteSettingByNodeId` mutation. */
-export type DeleteSettingByNodeIdInput = {
+export interface DeleteSettingByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1278,7 +1357,7 @@ export type DeleteSettingByNodeIdInput = {
 }
 
 /** All input for the `deleteSetting` mutation. */
-export type DeleteSettingInput = {
+export interface DeleteSettingInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1288,7 +1367,7 @@ export type DeleteSettingInput = {
 }
 
 /** The output of our delete `Setting` mutation. */
-export type DeleteSettingPayload = {
+export interface DeleteSettingPayload {
   __typename: 'DeleteSettingPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1305,12 +1384,12 @@ export type DeleteSettingPayload = {
 }
 
 /** The output of our delete `Setting` mutation. */
-export type DeleteSettingPayloadSettingEdgeArgs = {
+export interface DeleteSettingPayloadSettingEdgeArgs {
   orderBy?: Maybe<Array<SettingsOrderBy>>
 }
 
 /** All input for the `deleteShirtOrderByNodeId` mutation. */
-export type DeleteShirtOrderByNodeIdInput = {
+export interface DeleteShirtOrderByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1321,7 +1400,7 @@ export type DeleteShirtOrderByNodeIdInput = {
 }
 
 /** All input for the `deleteShirtOrder` mutation. */
-export type DeleteShirtOrderInput = {
+export interface DeleteShirtOrderInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1331,7 +1410,7 @@ export type DeleteShirtOrderInput = {
 }
 
 /** All input for the `deleteShirtOrderItemByNodeId` mutation. */
-export type DeleteShirtOrderItemByNodeIdInput = {
+export interface DeleteShirtOrderItemByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1342,7 +1421,7 @@ export type DeleteShirtOrderItemByNodeIdInput = {
 }
 
 /** All input for the `deleteShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemInput = {
+export interface DeleteShirtOrderItemInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1352,7 +1431,7 @@ export type DeleteShirtOrderItemInput = {
 }
 
 /** The output of our delete `ShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemPayload = {
+export interface DeleteShirtOrderItemPayload {
   __typename: 'DeleteShirtOrderItemPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1371,12 +1450,12 @@ export type DeleteShirtOrderItemPayload = {
 }
 
 /** The output of our delete `ShirtOrderItem` mutation. */
-export type DeleteShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
+export interface DeleteShirtOrderItemPayloadShirtOrderItemEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
 }
 
 /** The output of our delete `ShirtOrder` mutation. */
-export type DeleteShirtOrderPayload = {
+export interface DeleteShirtOrderPayload {
   __typename: 'DeleteShirtOrderPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1395,12 +1474,12 @@ export type DeleteShirtOrderPayload = {
 }
 
 /** The output of our delete `ShirtOrder` mutation. */
-export type DeleteShirtOrderPayloadShirtOrderEdgeArgs = {
+export interface DeleteShirtOrderPayloadShirtOrderEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
 }
 
 /** All input for the `deleteSlotByNodeId` mutation. */
-export type DeleteSlotByNodeIdInput = {
+export interface DeleteSlotByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1411,7 +1490,7 @@ export type DeleteSlotByNodeIdInput = {
 }
 
 /** All input for the `deleteSlot` mutation. */
-export type DeleteSlotInput = {
+export interface DeleteSlotInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1421,7 +1500,7 @@ export type DeleteSlotInput = {
 }
 
 /** The output of our delete `Slot` mutation. */
-export type DeleteSlotPayload = {
+export interface DeleteSlotPayload {
   __typename: 'DeleteSlotPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1438,12 +1517,12 @@ export type DeleteSlotPayload = {
 }
 
 /** The output of our delete `Slot` mutation. */
-export type DeleteSlotPayloadSlotEdgeArgs = {
+export interface DeleteSlotPayloadSlotEdgeArgs {
   orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
 /** All input for the `deleteUserByEmail` mutation. */
-export type DeleteUserByEmailInput = {
+export interface DeleteUserByEmailInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1453,7 +1532,7 @@ export type DeleteUserByEmailInput = {
 }
 
 /** All input for the `deleteUserByNodeId` mutation. */
-export type DeleteUserByNodeIdInput = {
+export interface DeleteUserByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1464,7 +1543,7 @@ export type DeleteUserByNodeIdInput = {
 }
 
 /** All input for the `deleteUser` mutation. */
-export type DeleteUserInput = {
+export interface DeleteUserInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1474,7 +1553,7 @@ export type DeleteUserInput = {
 }
 
 /** The output of our delete `User` mutation. */
-export type DeleteUserPayload = {
+export interface DeleteUserPayload {
   __typename: 'DeleteUserPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1491,12 +1570,12 @@ export type DeleteUserPayload = {
 }
 
 /** The output of our delete `User` mutation. */
-export type DeleteUserPayloadUserEdgeArgs = {
+export interface DeleteUserPayloadUserEdgeArgs {
   orderBy?: Maybe<Array<UsersOrderBy>>
 }
 
 /** All input for the `deleteUserRoleByNodeId` mutation. */
-export type DeleteUserRoleByNodeIdInput = {
+export interface DeleteUserRoleByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1507,7 +1586,7 @@ export type DeleteUserRoleByNodeIdInput = {
 }
 
 /** All input for the `deleteUserRole` mutation. */
-export type DeleteUserRoleInput = {
+export interface DeleteUserRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1518,7 +1597,7 @@ export type DeleteUserRoleInput = {
 }
 
 /** The output of our delete `UserRole` mutation. */
-export type DeleteUserRolePayload = {
+export interface DeleteUserRolePayload {
   __typename: 'DeleteUserRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1539,12 +1618,12 @@ export type DeleteUserRolePayload = {
 }
 
 /** The output of our delete `UserRole` mutation. */
-export type DeleteUserRolePayloadUserRoleEdgeArgs = {
+export interface DeleteUserRolePayloadUserRoleEdgeArgs {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
 }
 
 /** All input for the `fTruncateTables` mutation. */
-export type FTruncateTablesInput = {
+export interface FTruncateTablesInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -1554,7 +1633,7 @@ export type FTruncateTablesInput = {
 }
 
 /** The output of our `fTruncateTables` mutation. */
-export type FTruncateTablesPayload = {
+export interface FTruncateTablesPayload {
   __typename: 'FTruncateTablesPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -1566,7 +1645,7 @@ export type FTruncateTablesPayload = {
 }
 
 /** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
-export type FloatFilter = {
+export interface FloatFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -1591,7 +1670,7 @@ export type FloatFilter = {
   greaterThanOrEqualTo?: Maybe<Scalars['Float']>
 }
 
-export type Game = Node & {
+export interface Game extends Node {
   __typename: 'Game'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -1634,7 +1713,7 @@ export type Game = Node & {
   gameChoices: GameChoicesConnection
 }
 
-export type GameGameAssignmentsArgs = {
+export interface GameGameAssignmentsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -1645,7 +1724,7 @@ export type GameGameAssignmentsArgs = {
   filter?: Maybe<GameAssignmentFilter>
 }
 
-export type GameGameChoicesArgs = {
+export interface GameGameChoicesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -1656,7 +1735,7 @@ export type GameGameChoicesArgs = {
   filter?: Maybe<GameChoiceFilter>
 }
 
-export type GameAssignment = Node & {
+export interface GameAssignment extends Node {
   __typename: 'GameAssignment'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -1674,7 +1753,7 @@ export type GameAssignment = Node & {
  * A condition to be used against `GameAssignment` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
-export type GameAssignmentCondition = {
+export interface GameAssignmentCondition {
   /** Checks for equality with the object’s `memberId` field. */
   memberId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `gameId` field. */
@@ -1686,7 +1765,7 @@ export type GameAssignmentCondition = {
 }
 
 /** A filter to be used against `GameAssignment` object types. All fields are combined with a logical ‘and.’ */
-export type GameAssignmentFilter = {
+export interface GameAssignmentFilter {
   /** Filter by the object’s `memberId` field. */
   memberId?: Maybe<IntFilter>
   /** Filter by the object’s `gameId` field. */
@@ -1704,7 +1783,7 @@ export type GameAssignmentFilter = {
 }
 
 /** An input for mutations affecting `GameAssignment` */
-export type GameAssignmentInput = {
+export interface GameAssignmentInput {
   memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
@@ -1712,7 +1791,7 @@ export type GameAssignmentInput = {
 }
 
 /** Represents an update to a `GameAssignment`. Fields that are set will be updated. */
-export type GameAssignmentPatch = {
+export interface GameAssignmentPatch {
   memberId?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
   gm?: Maybe<Scalars['Int']>
@@ -1720,7 +1799,7 @@ export type GameAssignmentPatch = {
 }
 
 /** A connection to a list of `GameAssignment` values. */
-export type GameAssignmentsConnection = {
+export interface GameAssignmentsConnection {
   __typename: 'GameAssignmentsConnection'
   /** A list of `GameAssignment` objects. */
   nodes: Array<Maybe<GameAssignment>>
@@ -1733,7 +1812,7 @@ export type GameAssignmentsConnection = {
 }
 
 /** A `GameAssignment` edge in the connection. */
-export type GameAssignmentsEdge = {
+export interface GameAssignmentsEdge {
   __typename: 'GameAssignmentsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -1848,7 +1927,7 @@ export enum GameAssignmentsOrderBy {
   GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
 }
 
-export type GameChoice = Node & {
+export interface GameChoice extends Node {
   __typename: 'GameChoice'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -1871,7 +1950,7 @@ export type GameChoice = Node & {
  * A condition to be used against `GameChoice` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type GameChoiceCondition = {
+export interface GameChoiceCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `gameId` field. */
@@ -1889,7 +1968,7 @@ export type GameChoiceCondition = {
 }
 
 /** A filter to be used against `GameChoice` object types. All fields are combined with a logical ‘and.’ */
-export type GameChoiceFilter = {
+export interface GameChoiceFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `gameId` field. */
@@ -1913,7 +1992,7 @@ export type GameChoiceFilter = {
 }
 
 /** An input for mutations affecting `GameChoice` */
-export type GameChoiceInput = {
+export interface GameChoiceInput {
   id?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
   memberId: Scalars['Int']
@@ -1924,7 +2003,7 @@ export type GameChoiceInput = {
 }
 
 /** Represents an update to a `GameChoice`. Fields that are set will be updated. */
-export type GameChoicePatch = {
+export interface GameChoicePatch {
   id?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
   memberId?: Maybe<Scalars['Int']>
@@ -1935,7 +2014,7 @@ export type GameChoicePatch = {
 }
 
 /** A connection to a list of `GameChoice` values. */
-export type GameChoicesConnection = {
+export interface GameChoicesConnection {
   __typename: 'GameChoicesConnection'
   /** A list of `GameChoice` objects. */
   nodes: Array<Maybe<GameChoice>>
@@ -1948,7 +2027,7 @@ export type GameChoicesConnection = {
 }
 
 /** A `GameChoice` edge in the connection. */
-export type GameChoicesEdge = {
+export interface GameChoicesEdge {
   __typename: 'GameChoicesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -2082,7 +2161,7 @@ export enum GameChoicesOrderBy {
 }
 
 /** A condition to be used against `Game` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type GameCondition = {
+export interface GameCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `description` field. */
@@ -2140,7 +2219,7 @@ export type GameCondition = {
 }
 
 /** A filter to be used against `Game` object types. All fields are combined with a logical ‘and.’ */
-export type GameFilter = {
+export interface GameFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `description` field. */
@@ -2204,7 +2283,7 @@ export type GameFilter = {
 }
 
 /** An input for mutations affecting `Game` */
-export type GameInput = {
+export interface GameInput {
   id?: Maybe<Scalars['Int']>
   description: Scalars['String']
   lateFinish?: Maybe<Scalars['Boolean']>
@@ -2235,7 +2314,7 @@ export type GameInput = {
 }
 
 /** Represents an update to a `Game`. Fields that are set will be updated. */
-export type GamePatch = {
+export interface GamePatch {
   id?: Maybe<Scalars['Int']>
   description?: Maybe<Scalars['String']>
   lateFinish?: Maybe<Scalars['Boolean']>
@@ -2265,7 +2344,7 @@ export type GamePatch = {
   full?: Maybe<Scalars['Boolean']>
 }
 
-export type GameSubmission = Node & {
+export interface GameSubmission extends Node {
   __typename: 'GameSubmission'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -2281,7 +2360,7 @@ export type GameSubmission = Node & {
  * A condition to be used against `GameSubmission` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
-export type GameSubmissionCondition = {
+export interface GameSubmissionCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `memberId` field. */
@@ -2293,7 +2372,7 @@ export type GameSubmissionCondition = {
 }
 
 /** A filter to be used against `GameSubmission` object types. All fields are combined with a logical ‘and.’ */
-export type GameSubmissionFilter = {
+export interface GameSubmissionFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `memberId` field. */
@@ -2311,7 +2390,7 @@ export type GameSubmissionFilter = {
 }
 
 /** An input for mutations affecting `GameSubmission` */
-export type GameSubmissionInput = {
+export interface GameSubmissionInput {
   id?: Maybe<Scalars['Int']>
   memberId: Scalars['Int']
   message: Scalars['String']
@@ -2319,7 +2398,7 @@ export type GameSubmissionInput = {
 }
 
 /** Represents an update to a `GameSubmission`. Fields that are set will be updated. */
-export type GameSubmissionPatch = {
+export interface GameSubmissionPatch {
   id?: Maybe<Scalars['Int']>
   memberId?: Maybe<Scalars['Int']>
   message?: Maybe<Scalars['String']>
@@ -2327,7 +2406,7 @@ export type GameSubmissionPatch = {
 }
 
 /** A connection to a list of `GameSubmission` values. */
-export type GameSubmissionsConnection = {
+export interface GameSubmissionsConnection {
   __typename: 'GameSubmissionsConnection'
   /** A list of `GameSubmission` objects. */
   nodes: Array<Maybe<GameSubmission>>
@@ -2340,7 +2419,7 @@ export type GameSubmissionsConnection = {
 }
 
 /** A `GameSubmission` edge in the connection. */
-export type GameSubmissionsEdge = {
+export interface GameSubmissionsEdge {
   __typename: 'GameSubmissionsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -2402,7 +2481,7 @@ export enum GameSubmissionsOrderBy {
 }
 
 /** A connection to a list of `Game` values. */
-export type GamesConnection = {
+export interface GamesConnection {
   __typename: 'GamesConnection'
   /** A list of `Game` objects. */
   nodes: Array<Maybe<Game>>
@@ -2415,7 +2494,7 @@ export type GamesConnection = {
 }
 
 /** A `Game` edge in the connection. */
-export type GamesEdge = {
+export interface GamesEdge {
   __typename: 'GamesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -2510,10 +2589,6 @@ export enum GamesOrderBy {
   UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
   UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
   UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
-  UserByAuthorIdSnailMailAddressAsc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByAuthorIdSnailMailAddressDesc = 'USER_BY_AUTHOR_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByAuthorIdPhoneNumberAsc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_ASC',
-  UserByAuthorIdPhoneNumberDesc = 'USER_BY_AUTHOR_ID__PHONE_NUMBER_DESC',
   UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
   UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
   UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
@@ -2524,7 +2599,7 @@ export enum GamesOrderBy {
   GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
 }
 
-export type HotelRoom = Node & {
+export interface HotelRoom extends Node {
   __typename: 'HotelRoom'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -2540,7 +2615,7 @@ export type HotelRoom = Node & {
   memberships: MembershipsConnection
 }
 
-export type HotelRoomMembershipsArgs = {
+export interface HotelRoomMembershipsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -2555,7 +2630,7 @@ export type HotelRoomMembershipsArgs = {
  * A condition to be used against `HotelRoom` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type HotelRoomCondition = {
+export interface HotelRoomCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `description` field. */
@@ -2574,7 +2649,7 @@ export type HotelRoomCondition = {
   type?: Maybe<Scalars['String']>
 }
 
-export type HotelRoomDetail = Node & {
+export interface HotelRoomDetail extends Node {
   __typename: 'HotelRoomDetail'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -2596,7 +2671,7 @@ export type HotelRoomDetail = Node & {
  * A condition to be used against `HotelRoomDetail` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
-export type HotelRoomDetailCondition = {
+export interface HotelRoomDetailCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['BigInt']>
   /** Checks for equality with the object’s `version` field. */
@@ -2624,7 +2699,7 @@ export type HotelRoomDetailCondition = {
 }
 
 /** A filter to be used against `HotelRoomDetail` object types. All fields are combined with a logical ‘and.’ */
-export type HotelRoomDetailFilter = {
+export interface HotelRoomDetailFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<BigIntFilter>
   /** Filter by the object’s `version` field. */
@@ -2658,7 +2733,7 @@ export type HotelRoomDetailFilter = {
 }
 
 /** An input for mutations affecting `HotelRoomDetail` */
-export type HotelRoomDetailInput = {
+export interface HotelRoomDetailInput {
   id?: Maybe<Scalars['BigInt']>
   version: Scalars['BigInt']
   bathroomType: Scalars['String']
@@ -2674,7 +2749,7 @@ export type HotelRoomDetailInput = {
 }
 
 /** Represents an update to a `HotelRoomDetail`. Fields that are set will be updated. */
-export type HotelRoomDetailPatch = {
+export interface HotelRoomDetailPatch {
   id?: Maybe<Scalars['BigInt']>
   version?: Maybe<Scalars['BigInt']>
   bathroomType?: Maybe<Scalars['String']>
@@ -2690,7 +2765,7 @@ export type HotelRoomDetailPatch = {
 }
 
 /** A connection to a list of `HotelRoomDetail` values. */
-export type HotelRoomDetailsConnection = {
+export interface HotelRoomDetailsConnection {
   __typename: 'HotelRoomDetailsConnection'
   /** A list of `HotelRoomDetail` objects. */
   nodes: Array<Maybe<HotelRoomDetail>>
@@ -2703,7 +2778,7 @@ export type HotelRoomDetailsConnection = {
 }
 
 /** A `HotelRoomDetail` edge in the connection. */
-export type HotelRoomDetailsEdge = {
+export interface HotelRoomDetailsEdge {
   __typename: 'HotelRoomDetailsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -2743,7 +2818,7 @@ export enum HotelRoomDetailsOrderBy {
 }
 
 /** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
-export type HotelRoomFilter = {
+export interface HotelRoomFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `description` field. */
@@ -2769,7 +2844,7 @@ export type HotelRoomFilter = {
 }
 
 /** An input for mutations affecting `HotelRoom` */
-export type HotelRoomInput = {
+export interface HotelRoomInput {
   id?: Maybe<Scalars['Int']>
   description: Scalars['String']
   gamingRoom: Scalars['Boolean']
@@ -2781,7 +2856,7 @@ export type HotelRoomInput = {
 }
 
 /** Represents an update to a `HotelRoom`. Fields that are set will be updated. */
-export type HotelRoomPatch = {
+export interface HotelRoomPatch {
   id?: Maybe<Scalars['Int']>
   description?: Maybe<Scalars['String']>
   gamingRoom?: Maybe<Scalars['Boolean']>
@@ -2793,7 +2868,7 @@ export type HotelRoomPatch = {
 }
 
 /** A connection to a list of `HotelRoom` values. */
-export type HotelRoomsConnection = {
+export interface HotelRoomsConnection {
   __typename: 'HotelRoomsConnection'
   /** A list of `HotelRoom` objects. */
   nodes: Array<Maybe<HotelRoom>>
@@ -2806,7 +2881,7 @@ export type HotelRoomsConnection = {
 }
 
 /** A `HotelRoom` edge in the connection. */
-export type HotelRoomsEdge = {
+export interface HotelRoomsEdge {
   __typename: 'HotelRoomsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -2840,7 +2915,7 @@ export enum HotelRoomsOrderBy {
 }
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
-export type IntFilter = {
+export interface IntFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -2865,7 +2940,7 @@ export type IntFilter = {
   greaterThanOrEqualTo?: Maybe<Scalars['Int']>
 }
 
-export type Lookup = Node & {
+export interface Lookup extends Node {
   __typename: 'Lookup'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -2885,7 +2960,7 @@ export type Lookup = Node & {
   lookupValues: LookupValuesConnection
 }
 
-export type LookupLookupValuesArgs = {
+export interface LookupLookupValuesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -2897,7 +2972,7 @@ export type LookupLookupValuesArgs = {
 }
 
 /** A condition to be used against `Lookup` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type LookupCondition = {
+export interface LookupCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `codeMaximum` field. */
@@ -2925,7 +3000,7 @@ export type LookupCondition = {
 }
 
 /** A filter to be used against `Lookup` object types. All fields are combined with a logical ‘and.’ */
-export type LookupFilter = {
+export interface LookupFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `codeMaximum` field. */
@@ -2959,7 +3034,7 @@ export type LookupFilter = {
 }
 
 /** An input for mutations affecting `Lookup` */
-export type LookupInput = {
+export interface LookupInput {
   id?: Maybe<Scalars['Int']>
   codeMaximum?: Maybe<Scalars['String']>
   codeMinimum?: Maybe<Scalars['String']>
@@ -2975,7 +3050,7 @@ export type LookupInput = {
 }
 
 /** Represents an update to a `Lookup`. Fields that are set will be updated. */
-export type LookupPatch = {
+export interface LookupPatch {
   id?: Maybe<Scalars['Int']>
   codeMaximum?: Maybe<Scalars['String']>
   codeMinimum?: Maybe<Scalars['String']>
@@ -2990,7 +3065,7 @@ export type LookupPatch = {
   valueType?: Maybe<Scalars['String']>
 }
 
-export type LookupValue = Node & {
+export interface LookupValue extends Node {
   __typename: 'LookupValue'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -3009,7 +3084,7 @@ export type LookupValue = Node & {
  * A condition to be used against `LookupValue` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type LookupValueCondition = {
+export interface LookupValueCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `code` field. */
@@ -3027,7 +3102,7 @@ export type LookupValueCondition = {
 }
 
 /** A filter to be used against `LookupValue` object types. All fields are combined with a logical ‘and.’ */
-export type LookupValueFilter = {
+export interface LookupValueFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `code` field. */
@@ -3051,7 +3126,7 @@ export type LookupValueFilter = {
 }
 
 /** An input for mutations affecting `LookupValue` */
-export type LookupValueInput = {
+export interface LookupValueInput {
   id?: Maybe<Scalars['Int']>
   code: Scalars['String']
   lookupId: Scalars['Int']
@@ -3062,7 +3137,7 @@ export type LookupValueInput = {
 }
 
 /** Represents an update to a `LookupValue`. Fields that are set will be updated. */
-export type LookupValuePatch = {
+export interface LookupValuePatch {
   id?: Maybe<Scalars['Int']>
   code?: Maybe<Scalars['String']>
   lookupId?: Maybe<Scalars['Int']>
@@ -3073,7 +3148,7 @@ export type LookupValuePatch = {
 }
 
 /** A connection to a list of `LookupValue` values. */
-export type LookupValuesConnection = {
+export interface LookupValuesConnection {
   __typename: 'LookupValuesConnection'
   /** A list of `LookupValue` objects. */
   nodes: Array<Maybe<LookupValue>>
@@ -3086,7 +3161,7 @@ export type LookupValuesConnection = {
 }
 
 /** A `LookupValue` edge in the connection. */
-export type LookupValuesEdge = {
+export interface LookupValuesEdge {
   __typename: 'LookupValuesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -3140,7 +3215,7 @@ export enum LookupValuesOrderBy {
 }
 
 /** A connection to a list of `Lookup` values. */
-export type LookupsConnection = {
+export interface LookupsConnection {
   __typename: 'LookupsConnection'
   /** A list of `Lookup` objects. */
   nodes: Array<Maybe<Lookup>>
@@ -3153,7 +3228,7 @@ export type LookupsConnection = {
 }
 
 /** A `Lookup` edge in the connection. */
-export type LookupsEdge = {
+export interface LookupsEdge {
   __typename: 'LookupsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -3194,7 +3269,7 @@ export enum LookupsOrderBy {
   LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
 }
 
-export type Membership = Node & {
+export interface Membership extends Node {
   __typename: 'Membership'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -3229,7 +3304,7 @@ export type Membership = Node & {
   gameSubmissionsByMemberId: GameSubmissionsConnection
 }
 
-export type MembershipGameAssignmentsByMemberIdArgs = {
+export interface MembershipGameAssignmentsByMemberIdArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -3240,7 +3315,7 @@ export type MembershipGameAssignmentsByMemberIdArgs = {
   filter?: Maybe<GameAssignmentFilter>
 }
 
-export type MembershipGameChoicesByMemberIdArgs = {
+export interface MembershipGameChoicesByMemberIdArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -3251,7 +3326,7 @@ export type MembershipGameChoicesByMemberIdArgs = {
   filter?: Maybe<GameChoiceFilter>
 }
 
-export type MembershipGameSubmissionsByMemberIdArgs = {
+export interface MembershipGameSubmissionsByMemberIdArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -3266,7 +3341,7 @@ export type MembershipGameSubmissionsByMemberIdArgs = {
  * A condition to be used against `Membership` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type MembershipCondition = {
+export interface MembershipCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `arrivalDate` field. */
@@ -3308,7 +3383,7 @@ export type MembershipCondition = {
 }
 
 /** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
-export type MembershipFilter = {
+export interface MembershipFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `arrivalDate` field. */
@@ -3356,7 +3431,7 @@ export type MembershipFilter = {
 }
 
 /** An input for mutations affecting `Membership` */
-export type MembershipInput = {
+export interface MembershipInput {
   id?: Maybe<Scalars['Int']>
   arrivalDate: Scalars['Datetime']
   attendance: Scalars['String']
@@ -3379,7 +3454,7 @@ export type MembershipInput = {
 }
 
 /** Represents an update to a `Membership`. Fields that are set will be updated. */
-export type MembershipPatch = {
+export interface MembershipPatch {
   id?: Maybe<Scalars['Int']>
   arrivalDate?: Maybe<Scalars['Datetime']>
   attendance?: Maybe<Scalars['String']>
@@ -3402,7 +3477,7 @@ export type MembershipPatch = {
 }
 
 /** A connection to a list of `Membership` values. */
-export type MembershipsConnection = {
+export interface MembershipsConnection {
   __typename: 'MembershipsConnection'
   /** A list of `Membership` objects. */
   nodes: Array<Maybe<Membership>>
@@ -3415,7 +3490,7 @@ export type MembershipsConnection = {
 }
 
 /** A `Membership` edge in the connection. */
-export type MembershipsEdge = {
+export interface MembershipsEdge {
   __typename: 'MembershipsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -3488,10 +3563,6 @@ export enum MembershipsOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -3505,7 +3576,7 @@ export enum MembershipsOrderBy {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type Mutation = {
+export interface Mutation {
   __typename: 'Mutation'
   /** Creates a single `Game`. */
   createGame?: Maybe<CreateGamePayload>
@@ -3525,6 +3596,8 @@ export type Mutation = {
   createLookupValue?: Maybe<CreateLookupValuePayload>
   /** Creates a single `Membership`. */
   createMembership?: Maybe<CreateMembershipPayload>
+  /** Creates a single `Profile`. */
+  createProfile?: Maybe<CreateProfilePayload>
   /** Creates a single `Role`. */
   createRole?: Maybe<CreateRolePayload>
   /** Creates a single `Room`. */
@@ -3581,6 +3654,10 @@ export type Mutation = {
   updateMembershipByNodeId?: Maybe<UpdateMembershipPayload>
   /** Updates a single `Membership` using a unique key and a patch. */
   updateMembership?: Maybe<UpdateMembershipPayload>
+  /** Updates a single `Profile` using its globally unique id and a patch. */
+  updateProfileByNodeId?: Maybe<UpdateProfilePayload>
+  /** Updates a single `Profile` using a unique key and a patch. */
+  updateProfile?: Maybe<UpdateProfilePayload>
   /** Updates a single `Role` using its globally unique id and a patch. */
   updateRoleByNodeId?: Maybe<UpdateRolePayload>
   /** Updates a single `Role` using a unique key and a patch. */
@@ -3657,6 +3734,10 @@ export type Mutation = {
   deleteMembershipByNodeId?: Maybe<DeleteMembershipPayload>
   /** Deletes a single `Membership` using a unique key. */
   deleteMembership?: Maybe<DeleteMembershipPayload>
+  /** Deletes a single `Profile` using its globally unique id. */
+  deleteProfileByNodeId?: Maybe<DeleteProfilePayload>
+  /** Deletes a single `Profile` using a unique key. */
+  deleteProfile?: Maybe<DeleteProfilePayload>
   /** Deletes a single `Role` using its globally unique id. */
   deleteRoleByNodeId?: Maybe<DeleteRolePayload>
   /** Deletes a single `Role` using a unique key. */
@@ -3699,493 +3780,518 @@ export type Mutation = {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateGameArgs = {
+export interface MutationCreateGameArgs {
   input: CreateGameInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateGameAssignmentArgs = {
+export interface MutationCreateGameAssignmentArgs {
   input: CreateGameAssignmentInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateGameChoiceArgs = {
+export interface MutationCreateGameChoiceArgs {
   input: CreateGameChoiceInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateGameSubmissionArgs = {
+export interface MutationCreateGameSubmissionArgs {
   input: CreateGameSubmissionInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateHotelRoomArgs = {
+export interface MutationCreateHotelRoomArgs {
   input: CreateHotelRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateHotelRoomDetailArgs = {
+export interface MutationCreateHotelRoomDetailArgs {
   input: CreateHotelRoomDetailInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateLookupArgs = {
+export interface MutationCreateLookupArgs {
   input: CreateLookupInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateLookupValueArgs = {
+export interface MutationCreateLookupValueArgs {
   input: CreateLookupValueInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateMembershipArgs = {
+export interface MutationCreateMembershipArgs {
   input: CreateMembershipInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateRoleArgs = {
+export interface MutationCreateProfileArgs {
+  input: CreateProfileInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationCreateRoleArgs {
   input: CreateRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateRoomArgs = {
+export interface MutationCreateRoomArgs {
   input: CreateRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateSettingArgs = {
+export interface MutationCreateSettingArgs {
   input: CreateSettingInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateShirtOrderArgs = {
+export interface MutationCreateShirtOrderArgs {
   input: CreateShirtOrderInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateShirtOrderItemArgs = {
+export interface MutationCreateShirtOrderItemArgs {
   input: CreateShirtOrderItemInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateSlotArgs = {
+export interface MutationCreateSlotArgs {
   input: CreateSlotInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateUserArgs = {
+export interface MutationCreateUserArgs {
   input: CreateUserInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateUserRoleArgs = {
+export interface MutationCreateUserRoleArgs {
   input: CreateUserRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameByNodeIdArgs = {
+export interface MutationUpdateGameByNodeIdArgs {
   input: UpdateGameByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameArgs = {
+export interface MutationUpdateGameArgs {
   input: UpdateGameInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameAssignmentByNodeIdArgs = {
+export interface MutationUpdateGameAssignmentByNodeIdArgs {
   input: UpdateGameAssignmentByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameAssignmentArgs = {
+export interface MutationUpdateGameAssignmentArgs {
   input: UpdateGameAssignmentInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameChoiceByNodeIdArgs = {
+export interface MutationUpdateGameChoiceByNodeIdArgs {
   input: UpdateGameChoiceByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameChoiceArgs = {
+export interface MutationUpdateGameChoiceArgs {
   input: UpdateGameChoiceInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameSubmissionByNodeIdArgs = {
+export interface MutationUpdateGameSubmissionByNodeIdArgs {
   input: UpdateGameSubmissionByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateGameSubmissionArgs = {
+export interface MutationUpdateGameSubmissionArgs {
   input: UpdateGameSubmissionInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateHotelRoomByNodeIdArgs = {
+export interface MutationUpdateHotelRoomByNodeIdArgs {
   input: UpdateHotelRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateHotelRoomArgs = {
+export interface MutationUpdateHotelRoomArgs {
   input: UpdateHotelRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateHotelRoomDetailByNodeIdArgs = {
+export interface MutationUpdateHotelRoomDetailByNodeIdArgs {
   input: UpdateHotelRoomDetailByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateHotelRoomDetailArgs = {
+export interface MutationUpdateHotelRoomDetailArgs {
   input: UpdateHotelRoomDetailInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupByNodeIdArgs = {
+export interface MutationUpdateLookupByNodeIdArgs {
   input: UpdateLookupByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupArgs = {
+export interface MutationUpdateLookupArgs {
   input: UpdateLookupInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupByRealmArgs = {
+export interface MutationUpdateLookupByRealmArgs {
   input: UpdateLookupByRealmInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupValueByNodeIdArgs = {
+export interface MutationUpdateLookupValueByNodeIdArgs {
   input: UpdateLookupValueByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupValueArgs = {
+export interface MutationUpdateLookupValueArgs {
   input: UpdateLookupValueInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateLookupValueByLookupIdAndCodeArgs = {
+export interface MutationUpdateLookupValueByLookupIdAndCodeArgs {
   input: UpdateLookupValueByLookupIdAndCodeInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMembershipByNodeIdArgs = {
+export interface MutationUpdateMembershipByNodeIdArgs {
   input: UpdateMembershipByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMembershipArgs = {
+export interface MutationUpdateMembershipArgs {
   input: UpdateMembershipInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRoleByNodeIdArgs = {
+export interface MutationUpdateProfileByNodeIdArgs {
+  input: UpdateProfileByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateProfileArgs {
+  input: UpdateProfileInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoleByNodeIdArgs {
   input: UpdateRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRoleArgs = {
+export interface MutationUpdateRoleArgs {
   input: UpdateRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRoleByAuthorityArgs = {
+export interface MutationUpdateRoleByAuthorityArgs {
   input: UpdateRoleByAuthorityInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRoomByNodeIdArgs = {
+export interface MutationUpdateRoomByNodeIdArgs {
   input: UpdateRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRoomArgs = {
+export interface MutationUpdateRoomArgs {
   input: UpdateRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateSettingByNodeIdArgs = {
+export interface MutationUpdateSettingByNodeIdArgs {
   input: UpdateSettingByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateSettingArgs = {
+export interface MutationUpdateSettingArgs {
   input: UpdateSettingInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateShirtOrderByNodeIdArgs = {
+export interface MutationUpdateShirtOrderByNodeIdArgs {
   input: UpdateShirtOrderByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateShirtOrderArgs = {
+export interface MutationUpdateShirtOrderArgs {
   input: UpdateShirtOrderInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateShirtOrderItemByNodeIdArgs = {
+export interface MutationUpdateShirtOrderItemByNodeIdArgs {
   input: UpdateShirtOrderItemByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateShirtOrderItemArgs = {
+export interface MutationUpdateShirtOrderItemArgs {
   input: UpdateShirtOrderItemInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateSlotByNodeIdArgs = {
+export interface MutationUpdateSlotByNodeIdArgs {
   input: UpdateSlotByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateSlotArgs = {
+export interface MutationUpdateSlotArgs {
   input: UpdateSlotInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByNodeIdArgs = {
+export interface MutationUpdateUserByNodeIdArgs {
   input: UpdateUserByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserArgs = {
+export interface MutationUpdateUserArgs {
   input: UpdateUserInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByEmailArgs = {
+export interface MutationUpdateUserByEmailArgs {
   input: UpdateUserByEmailInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserRoleByNodeIdArgs = {
+export interface MutationUpdateUserRoleByNodeIdArgs {
   input: UpdateUserRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserRoleArgs = {
+export interface MutationUpdateUserRoleArgs {
   input: UpdateUserRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameByNodeIdArgs = {
+export interface MutationDeleteGameByNodeIdArgs {
   input: DeleteGameByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameArgs = {
+export interface MutationDeleteGameArgs {
   input: DeleteGameInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameAssignmentByNodeIdArgs = {
+export interface MutationDeleteGameAssignmentByNodeIdArgs {
   input: DeleteGameAssignmentByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameAssignmentArgs = {
+export interface MutationDeleteGameAssignmentArgs {
   input: DeleteGameAssignmentInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameChoiceByNodeIdArgs = {
+export interface MutationDeleteGameChoiceByNodeIdArgs {
   input: DeleteGameChoiceByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameChoiceArgs = {
+export interface MutationDeleteGameChoiceArgs {
   input: DeleteGameChoiceInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameSubmissionByNodeIdArgs = {
+export interface MutationDeleteGameSubmissionByNodeIdArgs {
   input: DeleteGameSubmissionByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteGameSubmissionArgs = {
+export interface MutationDeleteGameSubmissionArgs {
   input: DeleteGameSubmissionInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteHotelRoomByNodeIdArgs = {
+export interface MutationDeleteHotelRoomByNodeIdArgs {
   input: DeleteHotelRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteHotelRoomArgs = {
+export interface MutationDeleteHotelRoomArgs {
   input: DeleteHotelRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteHotelRoomDetailByNodeIdArgs = {
+export interface MutationDeleteHotelRoomDetailByNodeIdArgs {
   input: DeleteHotelRoomDetailByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteHotelRoomDetailArgs = {
+export interface MutationDeleteHotelRoomDetailArgs {
   input: DeleteHotelRoomDetailInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupByNodeIdArgs = {
+export interface MutationDeleteLookupByNodeIdArgs {
   input: DeleteLookupByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupArgs = {
+export interface MutationDeleteLookupArgs {
   input: DeleteLookupInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupByRealmArgs = {
+export interface MutationDeleteLookupByRealmArgs {
   input: DeleteLookupByRealmInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupValueByNodeIdArgs = {
+export interface MutationDeleteLookupValueByNodeIdArgs {
   input: DeleteLookupValueByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupValueArgs = {
+export interface MutationDeleteLookupValueArgs {
   input: DeleteLookupValueInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteLookupValueByLookupIdAndCodeArgs = {
+export interface MutationDeleteLookupValueByLookupIdAndCodeArgs {
   input: DeleteLookupValueByLookupIdAndCodeInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMembershipByNodeIdArgs = {
+export interface MutationDeleteMembershipByNodeIdArgs {
   input: DeleteMembershipByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMembershipArgs = {
+export interface MutationDeleteMembershipArgs {
   input: DeleteMembershipInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoleByNodeIdArgs = {
+export interface MutationDeleteProfileByNodeIdArgs {
+  input: DeleteProfileByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationDeleteProfileArgs {
+  input: DeleteProfileInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationDeleteRoleByNodeIdArgs {
   input: DeleteRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoleArgs = {
+export interface MutationDeleteRoleArgs {
   input: DeleteRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoleByAuthorityArgs = {
+export interface MutationDeleteRoleByAuthorityArgs {
   input: DeleteRoleByAuthorityInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoomByNodeIdArgs = {
+export interface MutationDeleteRoomByNodeIdArgs {
   input: DeleteRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRoomArgs = {
+export interface MutationDeleteRoomArgs {
   input: DeleteRoomInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteSettingByNodeIdArgs = {
+export interface MutationDeleteSettingByNodeIdArgs {
   input: DeleteSettingByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteSettingArgs = {
+export interface MutationDeleteSettingArgs {
   input: DeleteSettingInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteShirtOrderByNodeIdArgs = {
+export interface MutationDeleteShirtOrderByNodeIdArgs {
   input: DeleteShirtOrderByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteShirtOrderArgs = {
+export interface MutationDeleteShirtOrderArgs {
   input: DeleteShirtOrderInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteShirtOrderItemByNodeIdArgs = {
+export interface MutationDeleteShirtOrderItemByNodeIdArgs {
   input: DeleteShirtOrderItemByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteShirtOrderItemArgs = {
+export interface MutationDeleteShirtOrderItemArgs {
   input: DeleteShirtOrderItemInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteSlotByNodeIdArgs = {
+export interface MutationDeleteSlotByNodeIdArgs {
   input: DeleteSlotByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteSlotArgs = {
+export interface MutationDeleteSlotArgs {
   input: DeleteSlotInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByNodeIdArgs = {
+export interface MutationDeleteUserByNodeIdArgs {
   input: DeleteUserByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserArgs = {
+export interface MutationDeleteUserArgs {
   input: DeleteUserInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByEmailArgs = {
+export interface MutationDeleteUserByEmailArgs {
   input: DeleteUserByEmailInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserRoleByNodeIdArgs = {
+export interface MutationDeleteUserRoleByNodeIdArgs {
   input: DeleteUserRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserRoleArgs = {
+export interface MutationDeleteUserRoleArgs {
   input: DeleteUserRoleInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateBareSlotChoicesArgs = {
+export interface MutationCreateBareSlotChoicesArgs {
   input: CreateBareSlotChoicesInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationFTruncateTablesArgs = {
+export interface MutationFTruncateTablesArgs {
   input: FTruncateTablesInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationSlotGmGameArgs = {
+export interface MutationSlotGmGameArgs {
   input: SlotGmGameInput
 }
 
 /** An object with a globally unique `ID`. */
-export type Node = {
+export interface Node {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
 }
 
 /** Information about pagination in a connection. */
-export type PageInfo = {
+export interface PageInfo {
   __typename: 'PageInfo'
   /** When paginating forwards, are there more items? */
   hasNextPage: Scalars['Boolean']
@@ -4197,8 +4303,113 @@ export type PageInfo = {
   endCursor?: Maybe<Scalars['Cursor']>
 }
 
+export interface Profile extends Node {
+  __typename: 'Profile'
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  id: Scalars['Int']
+  userId: Scalars['Int']
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+}
+
+/** A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export interface ProfileCondition {
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** A filter to be used against `Profile` object types. All fields are combined with a logical ‘and.’ */
+export interface ProfileFilter {
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
+  /** Filter by the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<StringFilter>
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<StringFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ProfileFilter>>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ProfileFilter>>
+  /** Negates the expression. */
+  not?: Maybe<ProfileFilter>
+}
+
+/** An input for mutations affecting `Profile` */
+export interface ProfileInput {
+  id?: Maybe<Scalars['Int']>
+  userId: Scalars['Int']
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** Represents an update to a `Profile`. Fields that are set will be updated. */
+export interface ProfilePatch {
+  id?: Maybe<Scalars['Int']>
+  userId?: Maybe<Scalars['Int']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  phoneNumber?: Maybe<Scalars['String']>
+}
+
+/** A connection to a list of `Profile` values. */
+export interface ProfilesConnection {
+  __typename: 'ProfilesConnection'
+  /** A list of `Profile` objects. */
+  nodes: Array<Maybe<Profile>>
+  /** A list of edges which contains the `Profile` and cursor to aid in pagination. */
+  edges: Array<ProfilesEdge>
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo
+  /** The count of *all* `Profile` you could get from the connection. */
+  totalCount: Scalars['Int']
+}
+
+/** A `Profile` edge in the connection. */
+export interface ProfilesEdge {
+  __typename: 'ProfilesEdge'
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>
+  /** The `Profile` at the end of the edge. */
+  node?: Maybe<Profile>
+}
+
+/** Methods to use when ordering `Profile`. */
+export enum ProfilesOrderBy {
+  Natural = 'NATURAL',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
+  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
+  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
+  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+}
+
 /** The root query type which gives access points into the data universe. */
-export type Query = Node & {
+export interface Query extends Node {
   __typename: 'Query'
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
@@ -4227,6 +4438,8 @@ export type Query = Node & {
   lookupValues?: Maybe<LookupValuesConnection>
   /** Reads and enables pagination through a set of `Membership`. */
   memberships?: Maybe<MembershipsConnection>
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles?: Maybe<ProfilesConnection>
   /** Reads and enables pagination through a set of `Role`. */
   roles?: Maybe<RolesConnection>
   /** Reads and enables pagination through a set of `Room`. */
@@ -4254,6 +4467,7 @@ export type Query = Node & {
   lookupValue?: Maybe<LookupValue>
   lookupValueByLookupIdAndCode?: Maybe<LookupValue>
   membership?: Maybe<Membership>
+  profile?: Maybe<Profile>
   role?: Maybe<Role>
   roleByAuthority?: Maybe<Role>
   room?: Maybe<Room>
@@ -4284,6 +4498,8 @@ export type Query = Node & {
   lookupValueByNodeId?: Maybe<LookupValue>
   /** Reads a single `Membership` using its globally unique `ID`. */
   membershipByNodeId?: Maybe<Membership>
+  /** Reads a single `Profile` using its globally unique `ID`. */
+  profileByNodeId?: Maybe<Profile>
   /** Reads a single `Role` using its globally unique `ID`. */
   roleByNodeId?: Maybe<Role>
   /** Reads a single `Room` using its globally unique `ID`. */
@@ -4303,12 +4519,12 @@ export type Query = Node & {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryNodeArgs = {
+export interface QueryNodeArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGamesArgs = {
+export interface QueryGamesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4320,7 +4536,7 @@ export type QueryGamesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentsArgs = {
+export interface QueryGameAssignmentsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4332,7 +4548,7 @@ export type QueryGameAssignmentsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameChoicesArgs = {
+export interface QueryGameChoicesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4344,7 +4560,7 @@ export type QueryGameChoicesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionsArgs = {
+export interface QueryGameSubmissionsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4356,7 +4572,7 @@ export type QueryGameSubmissionsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomsArgs = {
+export interface QueryHotelRoomsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4368,7 +4584,7 @@ export type QueryHotelRoomsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailsArgs = {
+export interface QueryHotelRoomDetailsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4380,7 +4596,7 @@ export type QueryHotelRoomDetailsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupsArgs = {
+export interface QueryLookupsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4392,7 +4608,7 @@ export type QueryLookupsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupValuesArgs = {
+export interface QueryLookupValuesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4404,7 +4620,7 @@ export type QueryLookupValuesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMembershipsArgs = {
+export interface QueryMembershipsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4416,7 +4632,19 @@ export type QueryMembershipsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRolesArgs = {
+export interface QueryProfilesArgs {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryRolesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4428,7 +4656,7 @@ export type QueryRolesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoomsArgs = {
+export interface QueryRoomsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4440,7 +4668,7 @@ export type QueryRoomsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySettingsArgs = {
+export interface QuerySettingsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4452,7 +4680,7 @@ export type QuerySettingsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrdersArgs = {
+export interface QueryShirtOrdersArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4464,7 +4692,7 @@ export type QueryShirtOrdersArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemsArgs = {
+export interface QueryShirtOrderItemsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4476,7 +4704,7 @@ export type QueryShirtOrderItemsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySlotsArgs = {
+export interface QuerySlotsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4488,7 +4716,7 @@ export type QuerySlotsArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUsersArgs = {
+export interface QueryUsersArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4500,7 +4728,7 @@ export type QueryUsersArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserRolesArgs = {
+export interface QueryUserRolesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4512,200 +4740,210 @@ export type QueryUserRolesArgs = {
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameArgs = {
+export interface QueryGameArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentArgs = {
+export interface QueryGameAssignmentArgs {
   memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameChoiceArgs = {
+export interface QueryGameChoiceArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionArgs = {
+export interface QueryGameSubmissionArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomArgs = {
+export interface QueryHotelRoomArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailArgs = {
+export interface QueryHotelRoomDetailArgs {
   id: Scalars['BigInt']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupArgs = {
+export interface QueryLookupArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupByRealmArgs = {
+export interface QueryLookupByRealmArgs {
   realm: Scalars['String']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupValueArgs = {
+export interface QueryLookupValueArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupValueByLookupIdAndCodeArgs = {
+export interface QueryLookupValueByLookupIdAndCodeArgs {
   lookupId: Scalars['Int']
   code: Scalars['String']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMembershipArgs = {
+export interface QueryMembershipArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoleArgs = {
+export interface QueryProfileArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoleByAuthorityArgs = {
+export interface QueryRoleArgs {
+  id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryRoleByAuthorityArgs {
   authority: Scalars['String']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoomArgs = {
+export interface QueryRoomArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySettingArgs = {
+export interface QuerySettingArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderArgs = {
+export interface QueryShirtOrderArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemArgs = {
+export interface QueryShirtOrderItemArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySlotArgs = {
+export interface QuerySlotArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserArgs = {
+export interface QueryUserArgs {
   id: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserByEmailArgs = {
+export interface QueryUserByEmailArgs {
   email: Scalars['String']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserRoleArgs = {
+export interface QueryUserRoleArgs {
   roleId: Scalars['Int']
   userId: Scalars['Int']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameByNodeIdArgs = {
+export interface QueryGameByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameAssignmentByNodeIdArgs = {
+export interface QueryGameAssignmentByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameChoiceByNodeIdArgs = {
+export interface QueryGameChoiceByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryGameSubmissionByNodeIdArgs = {
+export interface QueryGameSubmissionByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomByNodeIdArgs = {
+export interface QueryHotelRoomByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryHotelRoomDetailByNodeIdArgs = {
+export interface QueryHotelRoomDetailByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupByNodeIdArgs = {
+export interface QueryLookupByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryLookupValueByNodeIdArgs = {
+export interface QueryLookupValueByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryMembershipByNodeIdArgs = {
+export interface QueryMembershipByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoleByNodeIdArgs = {
+export interface QueryProfileByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRoomByNodeIdArgs = {
+export interface QueryRoleByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySettingByNodeIdArgs = {
+export interface QueryRoomByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderByNodeIdArgs = {
+export interface QuerySettingByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryShirtOrderItemByNodeIdArgs = {
+export interface QueryShirtOrderByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QuerySlotByNodeIdArgs = {
+export interface QueryShirtOrderItemByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserByNodeIdArgs = {
+export interface QuerySlotByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
-export type QueryUserRoleByNodeIdArgs = {
+export interface QueryUserByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
-export type Role = Node & {
+/** The root query type which gives access points into the data universe. */
+export interface QueryUserRoleByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+export interface Role extends Node {
   __typename: 'Role'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -4715,7 +4953,7 @@ export type Role = Node & {
   userRoles: UserRolesConnection
 }
 
-export type RoleUserRolesArgs = {
+export interface RoleUserRolesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4727,7 +4965,7 @@ export type RoleUserRolesArgs = {
 }
 
 /** A condition to be used against `Role` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type RoleCondition = {
+export interface RoleCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `authority` field. */
@@ -4735,7 +4973,7 @@ export type RoleCondition = {
 }
 
 /** A filter to be used against `Role` object types. All fields are combined with a logical ‘and.’ */
-export type RoleFilter = {
+export interface RoleFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `authority` field. */
@@ -4749,19 +4987,19 @@ export type RoleFilter = {
 }
 
 /** An input for mutations affecting `Role` */
-export type RoleInput = {
+export interface RoleInput {
   id?: Maybe<Scalars['Int']>
   authority: Scalars['String']
 }
 
 /** Represents an update to a `Role`. Fields that are set will be updated. */
-export type RolePatch = {
+export interface RolePatch {
   id?: Maybe<Scalars['Int']>
   authority?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `Role` values. */
-export type RolesConnection = {
+export interface RolesConnection {
   __typename: 'RolesConnection'
   /** A list of `Role` objects. */
   nodes: Array<Maybe<Role>>
@@ -4774,7 +5012,7 @@ export type RolesConnection = {
 }
 
 /** A `Role` edge in the connection. */
-export type RolesEdge = {
+export interface RolesEdge {
   __typename: 'RolesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -4795,7 +5033,7 @@ export enum RolesOrderBy {
   UserRolesByRoleIdCountDesc = 'USER_ROLES_BY_ROLE_ID__COUNT_DESC',
 }
 
-export type Room = Node & {
+export interface Room extends Node {
   __typename: 'Room'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -4808,7 +5046,7 @@ export type Room = Node & {
   games: GamesConnection
 }
 
-export type RoomGamesArgs = {
+export interface RoomGamesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -4820,7 +5058,7 @@ export type RoomGamesArgs = {
 }
 
 /** A condition to be used against `Room` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type RoomCondition = {
+export interface RoomCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `description` field. */
@@ -4834,7 +5072,7 @@ export type RoomCondition = {
 }
 
 /** A filter to be used against `Room` object types. All fields are combined with a logical ‘and.’ */
-export type RoomFilter = {
+export interface RoomFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `description` field. */
@@ -4854,7 +5092,7 @@ export type RoomFilter = {
 }
 
 /** An input for mutations affecting `Room` */
-export type RoomInput = {
+export interface RoomInput {
   id?: Maybe<Scalars['Int']>
   description: Scalars['String']
   size: Scalars['Int']
@@ -4863,7 +5101,7 @@ export type RoomInput = {
 }
 
 /** Represents an update to a `Room`. Fields that are set will be updated. */
-export type RoomPatch = {
+export interface RoomPatch {
   id?: Maybe<Scalars['Int']>
   description?: Maybe<Scalars['String']>
   size?: Maybe<Scalars['Int']>
@@ -4872,7 +5110,7 @@ export type RoomPatch = {
 }
 
 /** A connection to a list of `Room` values. */
-export type RoomsConnection = {
+export interface RoomsConnection {
   __typename: 'RoomsConnection'
   /** A list of `Room` objects. */
   nodes: Array<Maybe<Room>>
@@ -4885,7 +5123,7 @@ export type RoomsConnection = {
 }
 
 /** A `Room` edge in the connection. */
-export type RoomsEdge = {
+export interface RoomsEdge {
   __typename: 'RoomsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -4912,7 +5150,7 @@ export enum RoomsOrderBy {
   GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
 }
 
-export type Setting = Node & {
+export interface Setting extends Node {
   __typename: 'Setting'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -4923,7 +5161,7 @@ export type Setting = Node & {
 }
 
 /** A condition to be used against `Setting` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type SettingCondition = {
+export interface SettingCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `code` field. */
@@ -4935,7 +5173,7 @@ export type SettingCondition = {
 }
 
 /** A filter to be used against `Setting` object types. All fields are combined with a logical ‘and.’ */
-export type SettingFilter = {
+export interface SettingFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `code` field. */
@@ -4953,7 +5191,7 @@ export type SettingFilter = {
 }
 
 /** An input for mutations affecting `Setting` */
-export type SettingInput = {
+export interface SettingInput {
   id?: Maybe<Scalars['Int']>
   code: Scalars['String']
   type: Scalars['String']
@@ -4961,7 +5199,7 @@ export type SettingInput = {
 }
 
 /** Represents an update to a `Setting`. Fields that are set will be updated. */
-export type SettingPatch = {
+export interface SettingPatch {
   id?: Maybe<Scalars['Int']>
   code?: Maybe<Scalars['String']>
   type?: Maybe<Scalars['String']>
@@ -4969,7 +5207,7 @@ export type SettingPatch = {
 }
 
 /** A connection to a list of `Setting` values. */
-export type SettingsConnection = {
+export interface SettingsConnection {
   __typename: 'SettingsConnection'
   /** A list of `Setting` objects. */
   nodes: Array<Maybe<Setting>>
@@ -4982,7 +5220,7 @@ export type SettingsConnection = {
 }
 
 /** A `Setting` edge in the connection. */
-export type SettingsEdge = {
+export interface SettingsEdge {
   __typename: 'SettingsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -5005,7 +5243,7 @@ export enum SettingsOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
-export type ShirtOrder = Node & {
+export interface ShirtOrder extends Node {
   __typename: 'ShirtOrder'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -5020,7 +5258,7 @@ export type ShirtOrder = Node & {
   shirtOrderItemsByOrderId: ShirtOrderItemsConnection
 }
 
-export type ShirtOrderShirtOrderItemsByOrderIdArgs = {
+export interface ShirtOrderShirtOrderItemsByOrderIdArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -5035,7 +5273,7 @@ export type ShirtOrderShirtOrderItemsByOrderIdArgs = {
  * A condition to be used against `ShirtOrder` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type ShirtOrderCondition = {
+export interface ShirtOrderCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `deliveryMethod` field. */
@@ -5049,7 +5287,7 @@ export type ShirtOrderCondition = {
 }
 
 /** A filter to be used against `ShirtOrder` object types. All fields are combined with a logical ‘and.’ */
-export type ShirtOrderFilter = {
+export interface ShirtOrderFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `deliveryMethod` field. */
@@ -5069,7 +5307,7 @@ export type ShirtOrderFilter = {
 }
 
 /** An input for mutations affecting `ShirtOrder` */
-export type ShirtOrderInput = {
+export interface ShirtOrderInput {
   id?: Maybe<Scalars['Int']>
   deliveryMethod: Scalars['String']
   message: Scalars['String']
@@ -5077,7 +5315,7 @@ export type ShirtOrderInput = {
   year: Scalars['Int']
 }
 
-export type ShirtOrderItem = Node & {
+export interface ShirtOrderItem extends Node {
   __typename: 'ShirtOrderItem'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -5095,7 +5333,7 @@ export type ShirtOrderItem = Node & {
  * A condition to be used against `ShirtOrderItem` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
  */
-export type ShirtOrderItemCondition = {
+export interface ShirtOrderItemCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `orderId` field. */
@@ -5111,7 +5349,7 @@ export type ShirtOrderItemCondition = {
 }
 
 /** A filter to be used against `ShirtOrderItem` object types. All fields are combined with a logical ‘and.’ */
-export type ShirtOrderItemFilter = {
+export interface ShirtOrderItemFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `orderId` field. */
@@ -5133,7 +5371,7 @@ export type ShirtOrderItemFilter = {
 }
 
 /** An input for mutations affecting `ShirtOrderItem` */
-export type ShirtOrderItemInput = {
+export interface ShirtOrderItemInput {
   id?: Maybe<Scalars['Int']>
   orderId: Scalars['Int']
   quantity: Scalars['Int']
@@ -5143,7 +5381,7 @@ export type ShirtOrderItemInput = {
 }
 
 /** Represents an update to a `ShirtOrderItem`. Fields that are set will be updated. */
-export type ShirtOrderItemPatch = {
+export interface ShirtOrderItemPatch {
   id?: Maybe<Scalars['Int']>
   orderId?: Maybe<Scalars['Int']>
   quantity?: Maybe<Scalars['Int']>
@@ -5153,7 +5391,7 @@ export type ShirtOrderItemPatch = {
 }
 
 /** A connection to a list of `ShirtOrderItem` values. */
-export type ShirtOrderItemsConnection = {
+export interface ShirtOrderItemsConnection {
   __typename: 'ShirtOrderItemsConnection'
   /** A list of `ShirtOrderItem` objects. */
   nodes: Array<Maybe<ShirtOrderItem>>
@@ -5166,7 +5404,7 @@ export type ShirtOrderItemsConnection = {
 }
 
 /** A `ShirtOrderItem` edge in the connection. */
-export type ShirtOrderItemsEdge = {
+export interface ShirtOrderItemsEdge {
   __typename: 'ShirtOrderItemsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -5204,7 +5442,7 @@ export enum ShirtOrderItemsOrderBy {
 }
 
 /** Represents an update to a `ShirtOrder`. Fields that are set will be updated. */
-export type ShirtOrderPatch = {
+export interface ShirtOrderPatch {
   id?: Maybe<Scalars['Int']>
   deliveryMethod?: Maybe<Scalars['String']>
   message?: Maybe<Scalars['String']>
@@ -5213,7 +5451,7 @@ export type ShirtOrderPatch = {
 }
 
 /** A connection to a list of `ShirtOrder` values. */
-export type ShirtOrdersConnection = {
+export interface ShirtOrdersConnection {
   __typename: 'ShirtOrdersConnection'
   /** A list of `ShirtOrder` objects. */
   nodes: Array<Maybe<ShirtOrder>>
@@ -5226,7 +5464,7 @@ export type ShirtOrdersConnection = {
 }
 
 /** A `ShirtOrder` edge in the connection. */
-export type ShirtOrdersEdge = {
+export interface ShirtOrdersEdge {
   __typename: 'ShirtOrdersEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -5255,10 +5493,6 @@ export enum ShirtOrdersOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -5267,7 +5501,7 @@ export enum ShirtOrdersOrderBy {
   ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
 }
 
-export type Slot = Node & {
+export interface Slot extends Node {
   __typename: 'Slot'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -5283,7 +5517,7 @@ export type Slot = Node & {
   gameChoices: GameChoicesConnection
 }
 
-export type SlotGamesArgs = {
+export interface SlotGamesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -5294,7 +5528,7 @@ export type SlotGamesArgs = {
   filter?: Maybe<GameFilter>
 }
 
-export type SlotGameChoicesArgs = {
+export interface SlotGameChoicesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -5306,7 +5540,7 @@ export type SlotGameChoicesArgs = {
 }
 
 /** A condition to be used against `Slot` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type SlotCondition = {
+export interface SlotCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `slot` field. */
@@ -5322,7 +5556,7 @@ export type SlotCondition = {
 }
 
 /** A filter to be used against `Slot` object types. All fields are combined with a logical ‘and.’ */
-export type SlotFilter = {
+export interface SlotFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `slot` field. */
@@ -5344,7 +5578,7 @@ export type SlotFilter = {
 }
 
 /** All input for the `slotGmGame` mutation. */
-export type SlotGmGameInput = {
+export interface SlotGmGameInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5356,7 +5590,7 @@ export type SlotGmGameInput = {
 }
 
 /** The output of our `slotGmGame` mutation. */
-export type SlotGmGamePayload = {
+export interface SlotGmGamePayload {
   __typename: 'SlotGmGamePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5369,7 +5603,7 @@ export type SlotGmGamePayload = {
 }
 
 /** An input for mutations affecting `Slot` */
-export type SlotInput = {
+export interface SlotInput {
   id?: Maybe<Scalars['Int']>
   slot: Scalars['Int']
   day: Scalars['String']
@@ -5379,7 +5613,7 @@ export type SlotInput = {
 }
 
 /** Represents an update to a `Slot`. Fields that are set will be updated. */
-export type SlotPatch = {
+export interface SlotPatch {
   id?: Maybe<Scalars['Int']>
   slot?: Maybe<Scalars['Int']>
   day?: Maybe<Scalars['String']>
@@ -5389,7 +5623,7 @@ export type SlotPatch = {
 }
 
 /** A connection to a list of `Slot` values. */
-export type SlotsConnection = {
+export interface SlotsConnection {
   __typename: 'SlotsConnection'
   /** A list of `Slot` objects. */
   nodes: Array<Maybe<Slot>>
@@ -5402,7 +5636,7 @@ export type SlotsConnection = {
 }
 
 /** A `Slot` edge in the connection. */
-export type SlotsEdge = {
+export interface SlotsEdge {
   __typename: 'SlotsEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -5434,7 +5668,7 @@ export enum SlotsOrderBy {
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
-export type StringFilter = {
+export interface StringFilter {
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: Maybe<Scalars['Boolean']>
   /** Equal to the specified value. */
@@ -5512,7 +5746,7 @@ export type StringFilter = {
 }
 
 /** All input for the `updateGameAssignmentByNodeId` mutation. */
-export type UpdateGameAssignmentByNodeIdInput = {
+export interface UpdateGameAssignmentByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5525,7 +5759,7 @@ export type UpdateGameAssignmentByNodeIdInput = {
 }
 
 /** All input for the `updateGameAssignment` mutation. */
-export type UpdateGameAssignmentInput = {
+export interface UpdateGameAssignmentInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5539,7 +5773,7 @@ export type UpdateGameAssignmentInput = {
 }
 
 /** The output of our update `GameAssignment` mutation. */
-export type UpdateGameAssignmentPayload = {
+export interface UpdateGameAssignmentPayload {
   __typename: 'UpdateGameAssignmentPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5559,12 +5793,12 @@ export type UpdateGameAssignmentPayload = {
 }
 
 /** The output of our update `GameAssignment` mutation. */
-export type UpdateGameAssignmentPayloadGameAssignmentEdgeArgs = {
+export interface UpdateGameAssignmentPayloadGameAssignmentEdgeArgs {
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
 }
 
 /** All input for the `updateGameByNodeId` mutation. */
-export type UpdateGameByNodeIdInput = {
+export interface UpdateGameByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5577,7 +5811,7 @@ export type UpdateGameByNodeIdInput = {
 }
 
 /** All input for the `updateGameChoiceByNodeId` mutation. */
-export type UpdateGameChoiceByNodeIdInput = {
+export interface UpdateGameChoiceByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5590,7 +5824,7 @@ export type UpdateGameChoiceByNodeIdInput = {
 }
 
 /** All input for the `updateGameChoice` mutation. */
-export type UpdateGameChoiceInput = {
+export interface UpdateGameChoiceInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5602,7 +5836,7 @@ export type UpdateGameChoiceInput = {
 }
 
 /** The output of our update `GameChoice` mutation. */
-export type UpdateGameChoicePayload = {
+export interface UpdateGameChoicePayload {
   __typename: 'UpdateGameChoicePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5624,12 +5858,12 @@ export type UpdateGameChoicePayload = {
 }
 
 /** The output of our update `GameChoice` mutation. */
-export type UpdateGameChoicePayloadGameChoiceEdgeArgs = {
+export interface UpdateGameChoicePayloadGameChoiceEdgeArgs {
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
 }
 
 /** All input for the `updateGame` mutation. */
-export type UpdateGameInput = {
+export interface UpdateGameInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5641,7 +5875,7 @@ export type UpdateGameInput = {
 }
 
 /** The output of our update `Game` mutation. */
-export type UpdateGamePayload = {
+export interface UpdateGamePayload {
   __typename: 'UpdateGamePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5663,12 +5897,12 @@ export type UpdateGamePayload = {
 }
 
 /** The output of our update `Game` mutation. */
-export type UpdateGamePayloadGameEdgeArgs = {
+export interface UpdateGamePayloadGameEdgeArgs {
   orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
 /** All input for the `updateGameSubmissionByNodeId` mutation. */
-export type UpdateGameSubmissionByNodeIdInput = {
+export interface UpdateGameSubmissionByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5681,7 +5915,7 @@ export type UpdateGameSubmissionByNodeIdInput = {
 }
 
 /** All input for the `updateGameSubmission` mutation. */
-export type UpdateGameSubmissionInput = {
+export interface UpdateGameSubmissionInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5693,7 +5927,7 @@ export type UpdateGameSubmissionInput = {
 }
 
 /** The output of our update `GameSubmission` mutation. */
-export type UpdateGameSubmissionPayload = {
+export interface UpdateGameSubmissionPayload {
   __typename: 'UpdateGameSubmissionPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5711,12 +5945,12 @@ export type UpdateGameSubmissionPayload = {
 }
 
 /** The output of our update `GameSubmission` mutation. */
-export type UpdateGameSubmissionPayloadGameSubmissionEdgeArgs = {
+export interface UpdateGameSubmissionPayloadGameSubmissionEdgeArgs {
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
 }
 
 /** All input for the `updateHotelRoomByNodeId` mutation. */
-export type UpdateHotelRoomByNodeIdInput = {
+export interface UpdateHotelRoomByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5729,7 +5963,7 @@ export type UpdateHotelRoomByNodeIdInput = {
 }
 
 /** All input for the `updateHotelRoomDetailByNodeId` mutation. */
-export type UpdateHotelRoomDetailByNodeIdInput = {
+export interface UpdateHotelRoomDetailByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5742,7 +5976,7 @@ export type UpdateHotelRoomDetailByNodeIdInput = {
 }
 
 /** All input for the `updateHotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailInput = {
+export interface UpdateHotelRoomDetailInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5754,7 +5988,7 @@ export type UpdateHotelRoomDetailInput = {
 }
 
 /** The output of our update `HotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailPayload = {
+export interface UpdateHotelRoomDetailPayload {
   __typename: 'UpdateHotelRoomDetailPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5770,12 +6004,12 @@ export type UpdateHotelRoomDetailPayload = {
 }
 
 /** The output of our update `HotelRoomDetail` mutation. */
-export type UpdateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs = {
+export interface UpdateHotelRoomDetailPayloadHotelRoomDetailEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
 }
 
 /** All input for the `updateHotelRoom` mutation. */
-export type UpdateHotelRoomInput = {
+export interface UpdateHotelRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5787,7 +6021,7 @@ export type UpdateHotelRoomInput = {
 }
 
 /** The output of our update `HotelRoom` mutation. */
-export type UpdateHotelRoomPayload = {
+export interface UpdateHotelRoomPayload {
   __typename: 'UpdateHotelRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5803,12 +6037,12 @@ export type UpdateHotelRoomPayload = {
 }
 
 /** The output of our update `HotelRoom` mutation. */
-export type UpdateHotelRoomPayloadHotelRoomEdgeArgs = {
+export interface UpdateHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: Maybe<Array<HotelRoomsOrderBy>>
 }
 
 /** All input for the `updateLookupByNodeId` mutation. */
-export type UpdateLookupByNodeIdInput = {
+export interface UpdateLookupByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5821,7 +6055,7 @@ export type UpdateLookupByNodeIdInput = {
 }
 
 /** All input for the `updateLookupByRealm` mutation. */
-export type UpdateLookupByRealmInput = {
+export interface UpdateLookupByRealmInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5833,7 +6067,7 @@ export type UpdateLookupByRealmInput = {
 }
 
 /** All input for the `updateLookup` mutation. */
-export type UpdateLookupInput = {
+export interface UpdateLookupInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5845,7 +6079,7 @@ export type UpdateLookupInput = {
 }
 
 /** The output of our update `Lookup` mutation. */
-export type UpdateLookupPayload = {
+export interface UpdateLookupPayload {
   __typename: 'UpdateLookupPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5861,12 +6095,12 @@ export type UpdateLookupPayload = {
 }
 
 /** The output of our update `Lookup` mutation. */
-export type UpdateLookupPayloadLookupEdgeArgs = {
+export interface UpdateLookupPayloadLookupEdgeArgs {
   orderBy?: Maybe<Array<LookupsOrderBy>>
 }
 
 /** All input for the `updateLookupValueByLookupIdAndCode` mutation. */
-export type UpdateLookupValueByLookupIdAndCodeInput = {
+export interface UpdateLookupValueByLookupIdAndCodeInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5879,7 +6113,7 @@ export type UpdateLookupValueByLookupIdAndCodeInput = {
 }
 
 /** All input for the `updateLookupValueByNodeId` mutation. */
-export type UpdateLookupValueByNodeIdInput = {
+export interface UpdateLookupValueByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5892,7 +6126,7 @@ export type UpdateLookupValueByNodeIdInput = {
 }
 
 /** All input for the `updateLookupValue` mutation. */
-export type UpdateLookupValueInput = {
+export interface UpdateLookupValueInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5904,7 +6138,7 @@ export type UpdateLookupValueInput = {
 }
 
 /** The output of our update `LookupValue` mutation. */
-export type UpdateLookupValuePayload = {
+export interface UpdateLookupValuePayload {
   __typename: 'UpdateLookupValuePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5922,12 +6156,12 @@ export type UpdateLookupValuePayload = {
 }
 
 /** The output of our update `LookupValue` mutation. */
-export type UpdateLookupValuePayloadLookupValueEdgeArgs = {
+export interface UpdateLookupValuePayloadLookupValueEdgeArgs {
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
 }
 
 /** All input for the `updateMembershipByNodeId` mutation. */
-export type UpdateMembershipByNodeIdInput = {
+export interface UpdateMembershipByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5940,7 +6174,7 @@ export type UpdateMembershipByNodeIdInput = {
 }
 
 /** All input for the `updateMembership` mutation. */
-export type UpdateMembershipInput = {
+export interface UpdateMembershipInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5952,7 +6186,7 @@ export type UpdateMembershipInput = {
 }
 
 /** The output of our update `Membership` mutation. */
-export type UpdateMembershipPayload = {
+export interface UpdateMembershipPayload {
   __typename: 'UpdateMembershipPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -5972,12 +6206,60 @@ export type UpdateMembershipPayload = {
 }
 
 /** The output of our update `Membership` mutation. */
-export type UpdateMembershipPayloadMembershipEdgeArgs = {
+export interface UpdateMembershipPayloadMembershipEdgeArgs {
   orderBy?: Maybe<Array<MembershipsOrderBy>>
 }
 
+/** All input for the `updateProfileByNodeId` mutation. */
+export interface UpdateProfileByNodeIdInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The globally unique `ID` which will identify a single `Profile` to be updated. */
+  nodeId: Scalars['ID']
+  /** An object where the defined keys will be set on the `Profile` being updated. */
+  patch: ProfilePatch
+}
+
+/** All input for the `updateProfile` mutation. */
+export interface UpdateProfileInput {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** An object where the defined keys will be set on the `Profile` being updated. */
+  patch: ProfilePatch
+  id: Scalars['Int']
+}
+
+/** The output of our update `Profile` mutation. */
+export interface UpdateProfilePayload {
+  __typename: 'UpdateProfilePayload'
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']>
+  /** The `Profile` that was updated by this mutation. */
+  profile?: Maybe<Profile>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Profile`. */
+  user?: Maybe<User>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
+}
+
+/** The output of our update `Profile` mutation. */
+export interface UpdateProfilePayloadProfileEdgeArgs {
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+}
+
 /** All input for the `updateRoleByAuthority` mutation. */
-export type UpdateRoleByAuthorityInput = {
+export interface UpdateRoleByAuthorityInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -5989,7 +6271,7 @@ export type UpdateRoleByAuthorityInput = {
 }
 
 /** All input for the `updateRoleByNodeId` mutation. */
-export type UpdateRoleByNodeIdInput = {
+export interface UpdateRoleByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6002,7 +6284,7 @@ export type UpdateRoleByNodeIdInput = {
 }
 
 /** All input for the `updateRole` mutation. */
-export type UpdateRoleInput = {
+export interface UpdateRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6014,7 +6296,7 @@ export type UpdateRoleInput = {
 }
 
 /** The output of our update `Role` mutation. */
-export type UpdateRolePayload = {
+export interface UpdateRolePayload {
   __typename: 'UpdateRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6030,12 +6312,12 @@ export type UpdateRolePayload = {
 }
 
 /** The output of our update `Role` mutation. */
-export type UpdateRolePayloadRoleEdgeArgs = {
+export interface UpdateRolePayloadRoleEdgeArgs {
   orderBy?: Maybe<Array<RolesOrderBy>>
 }
 
 /** All input for the `updateRoomByNodeId` mutation. */
-export type UpdateRoomByNodeIdInput = {
+export interface UpdateRoomByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6048,7 +6330,7 @@ export type UpdateRoomByNodeIdInput = {
 }
 
 /** All input for the `updateRoom` mutation. */
-export type UpdateRoomInput = {
+export interface UpdateRoomInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6060,7 +6342,7 @@ export type UpdateRoomInput = {
 }
 
 /** The output of our update `Room` mutation. */
-export type UpdateRoomPayload = {
+export interface UpdateRoomPayload {
   __typename: 'UpdateRoomPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6076,12 +6358,12 @@ export type UpdateRoomPayload = {
 }
 
 /** The output of our update `Room` mutation. */
-export type UpdateRoomPayloadRoomEdgeArgs = {
+export interface UpdateRoomPayloadRoomEdgeArgs {
   orderBy?: Maybe<Array<RoomsOrderBy>>
 }
 
 /** All input for the `updateSettingByNodeId` mutation. */
-export type UpdateSettingByNodeIdInput = {
+export interface UpdateSettingByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6094,7 +6376,7 @@ export type UpdateSettingByNodeIdInput = {
 }
 
 /** All input for the `updateSetting` mutation. */
-export type UpdateSettingInput = {
+export interface UpdateSettingInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6106,7 +6388,7 @@ export type UpdateSettingInput = {
 }
 
 /** The output of our update `Setting` mutation. */
-export type UpdateSettingPayload = {
+export interface UpdateSettingPayload {
   __typename: 'UpdateSettingPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6122,12 +6404,12 @@ export type UpdateSettingPayload = {
 }
 
 /** The output of our update `Setting` mutation. */
-export type UpdateSettingPayloadSettingEdgeArgs = {
+export interface UpdateSettingPayloadSettingEdgeArgs {
   orderBy?: Maybe<Array<SettingsOrderBy>>
 }
 
 /** All input for the `updateShirtOrderByNodeId` mutation. */
-export type UpdateShirtOrderByNodeIdInput = {
+export interface UpdateShirtOrderByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6140,7 +6422,7 @@ export type UpdateShirtOrderByNodeIdInput = {
 }
 
 /** All input for the `updateShirtOrder` mutation. */
-export type UpdateShirtOrderInput = {
+export interface UpdateShirtOrderInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6152,7 +6434,7 @@ export type UpdateShirtOrderInput = {
 }
 
 /** All input for the `updateShirtOrderItemByNodeId` mutation. */
-export type UpdateShirtOrderItemByNodeIdInput = {
+export interface UpdateShirtOrderItemByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6165,7 +6447,7 @@ export type UpdateShirtOrderItemByNodeIdInput = {
 }
 
 /** All input for the `updateShirtOrderItem` mutation. */
-export type UpdateShirtOrderItemInput = {
+export interface UpdateShirtOrderItemInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6177,7 +6459,7 @@ export type UpdateShirtOrderItemInput = {
 }
 
 /** The output of our update `ShirtOrderItem` mutation. */
-export type UpdateShirtOrderItemPayload = {
+export interface UpdateShirtOrderItemPayload {
   __typename: 'UpdateShirtOrderItemPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6195,12 +6477,12 @@ export type UpdateShirtOrderItemPayload = {
 }
 
 /** The output of our update `ShirtOrderItem` mutation. */
-export type UpdateShirtOrderItemPayloadShirtOrderItemEdgeArgs = {
+export interface UpdateShirtOrderItemPayloadShirtOrderItemEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
 }
 
 /** The output of our update `ShirtOrder` mutation. */
-export type UpdateShirtOrderPayload = {
+export interface UpdateShirtOrderPayload {
   __typename: 'UpdateShirtOrderPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6218,12 +6500,12 @@ export type UpdateShirtOrderPayload = {
 }
 
 /** The output of our update `ShirtOrder` mutation. */
-export type UpdateShirtOrderPayloadShirtOrderEdgeArgs = {
+export interface UpdateShirtOrderPayloadShirtOrderEdgeArgs {
   orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
 }
 
 /** All input for the `updateSlotByNodeId` mutation. */
-export type UpdateSlotByNodeIdInput = {
+export interface UpdateSlotByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6236,7 +6518,7 @@ export type UpdateSlotByNodeIdInput = {
 }
 
 /** All input for the `updateSlot` mutation. */
-export type UpdateSlotInput = {
+export interface UpdateSlotInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6248,7 +6530,7 @@ export type UpdateSlotInput = {
 }
 
 /** The output of our update `Slot` mutation. */
-export type UpdateSlotPayload = {
+export interface UpdateSlotPayload {
   __typename: 'UpdateSlotPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6264,12 +6546,12 @@ export type UpdateSlotPayload = {
 }
 
 /** The output of our update `Slot` mutation. */
-export type UpdateSlotPayloadSlotEdgeArgs = {
+export interface UpdateSlotPayloadSlotEdgeArgs {
   orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
 /** All input for the `updateUserByEmail` mutation. */
-export type UpdateUserByEmailInput = {
+export interface UpdateUserByEmailInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6281,7 +6563,7 @@ export type UpdateUserByEmailInput = {
 }
 
 /** All input for the `updateUserByNodeId` mutation. */
-export type UpdateUserByNodeIdInput = {
+export interface UpdateUserByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6294,7 +6576,7 @@ export type UpdateUserByNodeIdInput = {
 }
 
 /** All input for the `updateUser` mutation. */
-export type UpdateUserInput = {
+export interface UpdateUserInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6306,7 +6588,7 @@ export type UpdateUserInput = {
 }
 
 /** The output of our update `User` mutation. */
-export type UpdateUserPayload = {
+export interface UpdateUserPayload {
   __typename: 'UpdateUserPayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6322,12 +6604,12 @@ export type UpdateUserPayload = {
 }
 
 /** The output of our update `User` mutation. */
-export type UpdateUserPayloadUserEdgeArgs = {
+export interface UpdateUserPayloadUserEdgeArgs {
   orderBy?: Maybe<Array<UsersOrderBy>>
 }
 
 /** All input for the `updateUserRoleByNodeId` mutation. */
-export type UpdateUserRoleByNodeIdInput = {
+export interface UpdateUserRoleByNodeIdInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6340,7 +6622,7 @@ export type UpdateUserRoleByNodeIdInput = {
 }
 
 /** All input for the `updateUserRole` mutation. */
-export type UpdateUserRoleInput = {
+export interface UpdateUserRoleInput {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6353,7 +6635,7 @@ export type UpdateUserRoleInput = {
 }
 
 /** The output of our update `UserRole` mutation. */
-export type UpdateUserRolePayload = {
+export interface UpdateUserRolePayload {
   __typename: 'UpdateUserRolePayload'
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
@@ -6373,19 +6655,17 @@ export type UpdateUserRolePayload = {
 }
 
 /** The output of our update `UserRole` mutation. */
-export type UpdateUserRolePayloadUserRoleEdgeArgs = {
+export interface UpdateUserRolePayloadUserRoleEdgeArgs {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
 }
 
-export type User = Node & {
+export interface User extends Node {
   __typename: 'User'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
   id: Scalars['Int']
   email: Scalars['String']
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Game`. */
@@ -6396,9 +6676,11 @@ export type User = Node & {
   shirtOrders: ShirtOrdersConnection
   /** Reads and enables pagination through a set of `UserRole`. */
   userRoles: UserRolesConnection
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles: ProfilesConnection
 }
 
-export type UserAuthoredGamesArgs = {
+export interface UserAuthoredGamesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -6409,7 +6691,7 @@ export type UserAuthoredGamesArgs = {
   filter?: Maybe<GameFilter>
 }
 
-export type UserMembershipsArgs = {
+export interface UserMembershipsArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -6420,7 +6702,7 @@ export type UserMembershipsArgs = {
   filter?: Maybe<MembershipFilter>
 }
 
-export type UserShirtOrdersArgs = {
+export interface UserShirtOrdersArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -6431,7 +6713,7 @@ export type UserShirtOrdersArgs = {
   filter?: Maybe<ShirtOrderFilter>
 }
 
-export type UserUserRolesArgs = {
+export interface UserUserRolesArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
@@ -6442,18 +6724,25 @@ export type UserUserRolesArgs = {
   filter?: Maybe<UserRoleFilter>
 }
 
+export interface UserProfilesArgs {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
+}
+
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type UserCondition = {
+export interface UserCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `email` field. */
   email?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `fullName` field. */
   fullName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `firstName` field. */
   firstName?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `lastName` field. */
@@ -6461,17 +6750,13 @@ export type UserCondition = {
 }
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
-export type UserFilter = {
+export interface UserFilter {
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `email` field. */
   email?: Maybe<StringFilter>
   /** Filter by the object’s `fullName` field. */
   fullName?: Maybe<StringFilter>
-  /** Filter by the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<StringFilter>
-  /** Filter by the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<StringFilter>
   /** Filter by the object’s `firstName` field. */
   firstName?: Maybe<StringFilter>
   /** Filter by the object’s `lastName` field. */
@@ -6485,28 +6770,24 @@ export type UserFilter = {
 }
 
 /** An input for mutations affecting `User` */
-export type UserInput = {
+export interface UserInput {
   id?: Maybe<Scalars['Int']>
   email: Scalars['String']
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
-export type UserPatch = {
+export interface UserPatch {
   id?: Maybe<Scalars['Int']>
   email?: Maybe<Scalars['String']>
   fullName?: Maybe<Scalars['String']>
-  snailMailAddress?: Maybe<Scalars['String']>
-  phoneNumber?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
   lastName?: Maybe<Scalars['String']>
 }
 
-export type UserRole = Node & {
+export interface UserRole extends Node {
   __typename: 'UserRole'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
@@ -6522,7 +6803,7 @@ export type UserRole = Node & {
  * A condition to be used against `UserRole` object types. All fields are tested
  * for equality and combined with a logical ‘and.’
  */
-export type UserRoleCondition = {
+export interface UserRoleCondition {
   /** Checks for equality with the object’s `roleId` field. */
   roleId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `userId` field. */
@@ -6530,7 +6811,7 @@ export type UserRoleCondition = {
 }
 
 /** A filter to be used against `UserRole` object types. All fields are combined with a logical ‘and.’ */
-export type UserRoleFilter = {
+export interface UserRoleFilter {
   /** Filter by the object’s `roleId` field. */
   roleId?: Maybe<IntFilter>
   /** Filter by the object’s `userId` field. */
@@ -6544,19 +6825,19 @@ export type UserRoleFilter = {
 }
 
 /** An input for mutations affecting `UserRole` */
-export type UserRoleInput = {
+export interface UserRoleInput {
   roleId: Scalars['Int']
   userId: Scalars['Int']
 }
 
 /** Represents an update to a `UserRole`. Fields that are set will be updated. */
-export type UserRolePatch = {
+export interface UserRolePatch {
   roleId?: Maybe<Scalars['Int']>
   userId?: Maybe<Scalars['Int']>
 }
 
 /** A connection to a list of `UserRole` values. */
-export type UserRolesConnection = {
+export interface UserRolesConnection {
   __typename: 'UserRolesConnection'
   /** A list of `UserRole` objects. */
   nodes: Array<Maybe<UserRole>>
@@ -6569,7 +6850,7 @@ export type UserRolesConnection = {
 }
 
 /** A `UserRole` edge in the connection. */
-export type UserRolesEdge = {
+export interface UserRolesEdge {
   __typename: 'UserRolesEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -6596,10 +6877,6 @@ export enum UserRolesOrderBy {
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
   UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
   UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdSnailMailAddressAsc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_ASC',
-  UserByUserIdSnailMailAddressDesc = 'USER_BY_USER_ID__SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdPhoneNumberAsc = 'USER_BY_USER_ID__PHONE_NUMBER_ASC',
-  UserByUserIdPhoneNumberDesc = 'USER_BY_USER_ID__PHONE_NUMBER_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
@@ -6607,7 +6884,7 @@ export enum UserRolesOrderBy {
 }
 
 /** A connection to a list of `User` values. */
-export type UsersConnection = {
+export interface UsersConnection {
   __typename: 'UsersConnection'
   /** A list of `User` objects. */
   nodes: Array<Maybe<User>>
@@ -6620,7 +6897,7 @@ export type UsersConnection = {
 }
 
 /** A `User` edge in the connection. */
-export type UsersEdge = {
+export interface UsersEdge {
   __typename: 'UsersEdge'
   /** A cursor for use in pagination. */
   cursor?: Maybe<Scalars['Cursor']>
@@ -6637,10 +6914,6 @@ export enum UsersOrderBy {
   EmailDesc = 'EMAIL_DESC',
   FullNameAsc = 'FULL_NAME_ASC',
   FullNameDesc = 'FULL_NAME_DESC',
-  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
-  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
-  PhoneNumberAsc = 'PHONE_NUMBER_ASC',
-  PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   FirstNameAsc = 'FIRST_NAME_ASC',
   FirstNameDesc = 'FIRST_NAME_DESC',
   LastNameAsc = 'LAST_NAME_ASC',
@@ -6655,6 +6928,8 @@ export enum UsersOrderBy {
   ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
   UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
   UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
+  ProfilesByUserIdCountAsc = 'PROFILES_BY_USER_ID__COUNT_ASC',
+  ProfilesByUserIdCountDesc = 'PROFILES_BY_USER_ID__COUNT_DESC',
 }
 
 export type GetGamesBySlotForSignupQueryVariables = Exact<{
@@ -7052,6 +7327,127 @@ export type GameGmsFragment = { __typename: 'Game' } & {
   }
 }
 
+export type HotelRoomFieldsFragment = { __typename: 'HotelRoom' } & Pick<
+  HotelRoom,
+  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'quantity' | 'rate' | 'type'
+>
+
+export type GetHotelRoomsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetHotelRoomsQuery = { __typename: 'Query' } & {
+  hotelRooms?: Maybe<
+    { __typename: 'HotelRoomsConnection' } & {
+      edges: Array<
+        { __typename: 'HotelRoomsEdge' } & { node?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment> }
+      >
+    }
+  >
+}
+
+export type UpdateHotelRoomByNodeIdMutationVariables = Exact<{
+  input: UpdateHotelRoomByNodeIdInput
+}>
+
+export type UpdateHotelRoomByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateHotelRoomByNodeId?: Maybe<
+    { __typename: 'UpdateHotelRoomPayload' } & {
+      hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment>
+    }
+  >
+}
+
+export type CreateHotelRoomMutationVariables = Exact<{
+  input: CreateHotelRoomInput
+}>
+
+export type CreateHotelRoomMutation = { __typename: 'Mutation' } & {
+  createHotelRoom?: Maybe<
+    { __typename: 'CreateHotelRoomPayload' } & {
+      hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & HotelRoomFieldsFragment>
+    }
+  >
+}
+
+export type DeleteHotelRoomMutationVariables = Exact<{
+  input: DeleteHotelRoomInput
+}>
+
+export type DeleteHotelRoomMutation = { __typename: 'Mutation' } & {
+  deleteHotelRoom?: Maybe<
+    { __typename: 'DeleteHotelRoomPayload' } & Pick<
+      DeleteHotelRoomPayload,
+      'clientMutationId' | 'deletedHotelRoomNodeId'
+    >
+  >
+}
+
+export type HotelRoomDetailsFieldsFragment = { __typename: 'HotelRoomDetail' } & Pick<
+  HotelRoomDetail,
+  | 'id'
+  | 'nodeId'
+  | 'name'
+  | 'roomType'
+  | 'comment'
+  | 'reservedFor'
+  | 'bathroomType'
+  | 'gamingRoom'
+  | 'enabled'
+  | 'formattedRoomType'
+  | 'internalRoomType'
+  | 'reserved'
+>
+
+export type GetHotelRoomDetailsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetHotelRoomDetailsQuery = { __typename: 'Query' } & {
+  hotelRoomDetails?: Maybe<
+    { __typename: 'HotelRoomDetailsConnection' } & {
+      edges: Array<
+        { __typename: 'HotelRoomDetailsEdge' } & {
+          node?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+        }
+      >
+    }
+  >
+}
+
+export type UpdateHotelRoomDetailByNodeIdMutationVariables = Exact<{
+  input: UpdateHotelRoomDetailByNodeIdInput
+}>
+
+export type UpdateHotelRoomDetailByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateHotelRoomDetailByNodeId?: Maybe<
+    { __typename: 'UpdateHotelRoomDetailPayload' } & {
+      hotelRoomDetail?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+    }
+  >
+}
+
+export type CreateHotelRoomDetailMutationVariables = Exact<{
+  input: CreateHotelRoomDetailInput
+}>
+
+export type CreateHotelRoomDetailMutation = { __typename: 'Mutation' } & {
+  createHotelRoomDetail?: Maybe<
+    { __typename: 'CreateHotelRoomDetailPayload' } & {
+      hotelRoomDetail?: Maybe<{ __typename: 'HotelRoomDetail' } & HotelRoomDetailsFieldsFragment>
+    }
+  >
+}
+
+export type DeleteHotelRoomDetailMutationVariables = Exact<{
+  input: DeleteHotelRoomDetailInput
+}>
+
+export type DeleteHotelRoomDetailMutation = { __typename: 'Mutation' } & {
+  deleteHotelRoomDetail?: Maybe<
+    { __typename: 'DeleteHotelRoomDetailPayload' } & Pick<
+      DeleteHotelRoomDetailPayload,
+      'clientMutationId' | 'deletedHotelRoomDetailNodeId'
+    >
+  >
+}
+
 export type LookupFieldsFragment = { __typename: 'Lookup' } & Pick<Lookup, 'nodeId' | 'id' | 'realm'>
 
 export type LookupValuesFieldsFragment = { __typename: 'LookupValue' } & Pick<
@@ -7377,6 +7773,14 @@ export type GetAllUsersQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetAllUsersAndProfilesQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetAllUsersAndProfilesQuery = { __typename: 'Query' } & {
+  users?: Maybe<
+    { __typename: 'UsersConnection' } & { nodes: Array<Maybe<{ __typename: 'User' } & UserAndProfileFieldsFragment>> }
+  >
+}
+
 export type GetAllUsersByQueryVariables = Exact<{
   query: Scalars['String']
 }>
@@ -7397,10 +7801,37 @@ export type GetAllUsersByQuery = { __typename: 'Query' } & {
   >
 }
 
+export type CreateProfileMutationVariables = Exact<{
+  input: CreateProfileInput
+}>
+
+export type CreateProfileMutation = { __typename: 'Mutation' } & {
+  createProfile?: Maybe<{ __typename: 'CreateProfilePayload' } & Pick<CreateProfilePayload, 'clientMutationId'>>
+}
+
+export type UpdateProfileByNodeIdMutationVariables = Exact<{
+  input: UpdateProfileByNodeIdInput
+}>
+
+export type UpdateProfileByNodeIdMutation = { __typename: 'Mutation' } & {
+  updateProfileByNodeId?: Maybe<{ __typename: 'UpdateProfilePayload' } & Pick<UpdateProfilePayload, 'clientMutationId'>>
+}
+
 export type UserFieldsFragment = { __typename: 'User' } & Pick<
   User,
-  'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName' | 'snailMailAddress' | 'phoneNumber'
+  'nodeId' | 'id' | 'email' | 'fullName' | 'firstName' | 'lastName'
 >
+
+export type ProfileFieldsFragment = { __typename: 'Profile' } & Pick<
+  Profile,
+  'nodeId' | 'userId' | 'phoneNumber' | 'snailMailAddress'
+>
+
+export type UserAndProfileFieldsFragment = { __typename: 'User' } & {
+  profiles: { __typename: 'ProfilesConnection' } & {
+    nodes: Array<Maybe<{ __typename: 'Profile' } & ProfileFieldsFragment>>
+  }
+} & UserFieldsFragment
 
 export const GameSubmissionFieldsFragmentDoc = `
     fragment gameSubmissionFields on GameSubmission {
@@ -7481,6 +7912,35 @@ export const GameGmsFragmentDoc = `
   }
 }
     ${AssignmentFieldsFragmentDoc}`
+export const HotelRoomFieldsFragmentDoc = `
+    fragment hotelRoomFields on HotelRoom {
+  id
+  nodeId
+  description
+  gamingRoom
+  bathroomType
+  occupancy
+  quantity
+  rate
+  type
+}
+    `
+export const HotelRoomDetailsFieldsFragmentDoc = `
+    fragment hotelRoomDetailsFields on HotelRoomDetail {
+  id
+  nodeId
+  name
+  roomType
+  comment
+  reservedFor
+  bathroomType
+  gamingRoom
+  enabled
+  formattedRoomType
+  internalRoomType
+  reserved
+}
+    `
 export const LookupFieldsFragmentDoc = `
     fragment lookupFields on Lookup {
   nodeId
@@ -7555,10 +8015,27 @@ export const UserFieldsFragmentDoc = `
   fullName
   firstName
   lastName
-  snailMailAddress
-  phoneNumber
 }
     `
+export const ProfileFieldsFragmentDoc = `
+    fragment profileFields on Profile {
+  nodeId
+  userId
+  phoneNumber
+  snailMailAddress
+}
+    `
+export const UserAndProfileFieldsFragmentDoc = `
+    fragment userAndProfileFields on User {
+  ...userFields
+  profiles {
+    nodes {
+      ...profileFields
+    }
+  }
+}
+    ${UserFieldsFragmentDoc}
+${ProfileFieldsFragmentDoc}`
 export const GetGamesBySlotForSignupDocument = `
     query getGamesBySlotForSignup($year: Int!, $slotId: Int!) {
   games(
@@ -8088,6 +8565,157 @@ export const useUpdateGameChoiceByNodeIdMutation = <TError = QueryError, TContex
     ),
     options
   )
+export const GetHotelRoomsDocument = `
+    query getHotelRooms {
+  hotelRooms {
+    edges {
+      node {
+        ...hotelRoomFields
+      }
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useGetHotelRoomsQuery = <TData = GetHotelRoomsQuery, TError = QueryError>(
+  variables?: GetHotelRoomsQueryVariables,
+  options?: UseQueryOptions<GetHotelRoomsQuery, TError, TData>
+) =>
+  useQuery<GetHotelRoomsQuery, TError, TData>(
+    ['getHotelRooms', variables],
+    useFetchData<GetHotelRoomsQuery, GetHotelRoomsQueryVariables>(GetHotelRoomsDocument).bind(null, variables),
+    options
+  )
+export const UpdateHotelRoomByNodeIdDocument = `
+    mutation updateHotelRoomByNodeId($input: UpdateHotelRoomByNodeIdInput!) {
+  updateHotelRoomByNodeId(input: $input) {
+    hotelRoom {
+      ...hotelRoomFields
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useUpdateHotelRoomByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateHotelRoomByNodeIdMutation,
+    TError,
+    UpdateHotelRoomByNodeIdMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<UpdateHotelRoomByNodeIdMutation, TError, UpdateHotelRoomByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateHotelRoomByNodeIdMutation, UpdateHotelRoomByNodeIdMutationVariables>(
+      UpdateHotelRoomByNodeIdDocument
+    ),
+    options
+  )
+export const CreateHotelRoomDocument = `
+    mutation createHotelRoom($input: CreateHotelRoomInput!) {
+  createHotelRoom(input: $input) {
+    hotelRoom {
+      ...hotelRoomFields
+    }
+  }
+}
+    ${HotelRoomFieldsFragmentDoc}`
+export const useCreateHotelRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>
+) =>
+  useMutation<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>(
+    useFetchData<CreateHotelRoomMutation, CreateHotelRoomMutationVariables>(CreateHotelRoomDocument),
+    options
+  )
+export const DeleteHotelRoomDocument = `
+    mutation deleteHotelRoom($input: DeleteHotelRoomInput!) {
+  deleteHotelRoom(input: $input) {
+    clientMutationId
+    deletedHotelRoomNodeId
+  }
+}
+    `
+export const useDeleteHotelRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>
+) =>
+  useMutation<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>(
+    useFetchData<DeleteHotelRoomMutation, DeleteHotelRoomMutationVariables>(DeleteHotelRoomDocument),
+    options
+  )
+export const GetHotelRoomDetailsDocument = `
+    query getHotelRoomDetails {
+  hotelRoomDetails {
+    edges {
+      node {
+        ...hotelRoomDetailsFields
+      }
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useGetHotelRoomDetailsQuery = <TData = GetHotelRoomDetailsQuery, TError = QueryError>(
+  variables?: GetHotelRoomDetailsQueryVariables,
+  options?: UseQueryOptions<GetHotelRoomDetailsQuery, TError, TData>
+) =>
+  useQuery<GetHotelRoomDetailsQuery, TError, TData>(
+    ['getHotelRoomDetails', variables],
+    useFetchData<GetHotelRoomDetailsQuery, GetHotelRoomDetailsQueryVariables>(GetHotelRoomDetailsDocument).bind(
+      null,
+      variables
+    ),
+    options
+  )
+export const UpdateHotelRoomDetailByNodeIdDocument = `
+    mutation updateHotelRoomDetailByNodeId($input: UpdateHotelRoomDetailByNodeIdInput!) {
+  updateHotelRoomDetailByNodeId(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useUpdateHotelRoomDetailByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<
+    UpdateHotelRoomDetailByNodeIdMutation,
+    TError,
+    UpdateHotelRoomDetailByNodeIdMutationVariables,
+    TContext
+  >
+) =>
+  useMutation<UpdateHotelRoomDetailByNodeIdMutation, TError, UpdateHotelRoomDetailByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateHotelRoomDetailByNodeIdMutation, UpdateHotelRoomDetailByNodeIdMutationVariables>(
+      UpdateHotelRoomDetailByNodeIdDocument
+    ),
+    options
+  )
+export const CreateHotelRoomDetailDocument = `
+    mutation createHotelRoomDetail($input: CreateHotelRoomDetailInput!) {
+  createHotelRoomDetail(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+    ${HotelRoomDetailsFieldsFragmentDoc}`
+export const useCreateHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>
+) =>
+  useMutation<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>(
+    useFetchData<CreateHotelRoomDetailMutation, CreateHotelRoomDetailMutationVariables>(CreateHotelRoomDetailDocument),
+    options
+  )
+export const DeleteHotelRoomDetailDocument = `
+    mutation deleteHotelRoomDetail($input: DeleteHotelRoomDetailInput!) {
+  deleteHotelRoomDetail(input: $input) {
+    clientMutationId
+    deletedHotelRoomDetailNodeId
+  }
+}
+    `
+export const useDeleteHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>
+) =>
+  useMutation<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>(
+    useFetchData<DeleteHotelRoomDetailMutation, DeleteHotelRoomDetailMutationVariables>(DeleteHotelRoomDetailDocument),
+    options
+  )
 export const GetLookupsDocument = `
     query getLookups {
   lookups(orderBy: REALM_ASC) {
@@ -8535,6 +9163,26 @@ export const useGetAllUsersQuery = <TData = GetAllUsersQuery, TError = QueryErro
     useFetchData<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument).bind(null, variables),
     options
   )
+export const GetAllUsersAndProfilesDocument = `
+    query getAllUsersAndProfiles {
+  users(orderBy: LAST_NAME_ASC) {
+    nodes {
+      ...userAndProfileFields
+    }
+  }
+}
+    ${UserAndProfileFieldsFragmentDoc}`
+export const useGetAllUsersAndProfilesQuery = <TData = GetAllUsersAndProfilesQuery, TError = QueryError>(
+  variables?: GetAllUsersAndProfilesQueryVariables,
+  options?: UseQueryOptions<GetAllUsersAndProfilesQuery, TError, TData>
+) =>
+  useQuery<GetAllUsersAndProfilesQuery, TError, TData>(
+    ['getAllUsersAndProfiles', variables],
+    useFetchData<GetAllUsersAndProfilesQuery, GetAllUsersAndProfilesQueryVariables>(
+      GetAllUsersAndProfilesDocument
+    ).bind(null, variables),
+    options
+  )
 export const GetAllUsersByDocument = `
     query getAllUsersBy($query: String!) {
   users(orderBy: LAST_NAME_ASC, filter: {fullName: {includesInsensitive: $query}}) {
@@ -8557,5 +9205,33 @@ export const useGetAllUsersByQuery = <TData = GetAllUsersByQuery, TError = Query
   useQuery<GetAllUsersByQuery, TError, TData>(
     ['getAllUsersBy', variables],
     useFetchData<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument).bind(null, variables),
+    options
+  )
+export const CreateProfileDocument = `
+    mutation createProfile($input: CreateProfileInput!) {
+  createProfile(input: $input) {
+    clientMutationId
+  }
+}
+    `
+export const useCreateProfileMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>
+) =>
+  useMutation<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>(
+    useFetchData<CreateProfileMutation, CreateProfileMutationVariables>(CreateProfileDocument),
+    options
+  )
+export const UpdateProfileByNodeIdDocument = `
+    mutation updateProfileByNodeId($input: UpdateProfileByNodeIdInput!) {
+  updateProfileByNodeId(input: $input) {
+    clientMutationId
+  }
+}
+    `
+export const useUpdateProfileByNodeIdMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>
+) =>
+  useMutation<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>(
+    useFetchData<UpdateProfileByNodeIdMutation, UpdateProfileByNodeIdMutationVariables>(UpdateProfileByNodeIdDocument),
     options
   )

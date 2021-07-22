@@ -1,5 +1,5 @@
 import { Chip, createStyles, makeStyles } from '@material-ui/core'
-import React, { useCallback } from 'react'
+import React, { ReactElement, useCallback } from 'react'
 import type { ColumnInstance, FilterValue, IdType, TableInstance } from 'react-table'
 
 const useStyles = makeStyles(
@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type FilterChipBarProps<T extends Record<string, unknown>> = {
+interface FilterChipBarProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
 }
 
@@ -38,7 +38,9 @@ const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) =
   return filterValue
 }
 
-export function FilterChipBar<T extends Record<string, unknown>>({ instance }: FilterChipBarProps<T>) {
+export function FilterChipBar<T extends Record<string, unknown>>({
+  instance,
+}: FilterChipBarProps<T>): ReactElement | null {
   const classes = useStyles({})
   const {
     allColumns,
@@ -55,25 +57,27 @@ export function FilterChipBar<T extends Record<string, unknown>>({ instance }: F
   return Object.keys(filters).length > 0 ? (
     <div className={classes.chipZone}>
       <span className={classes.filtersActiveLabel}>Active filters:</span>
-      {allColumns.map((column) => {
-        const value = filters.find((f) => f.id === column.id)?.value
-        return (
-          value && (
-            <Chip
-              className={classes.filterChip}
-              key={column.id}
-              label={
-                <>
-                  <span className={classes.chipLabel}>{column.render('Header')}: </span>
-                  {getFilterValue(column, value)}
-                </>
-              }
-              onDelete={() => handleDelete(column.id)}
-              variant='outlined'
-            />
+      {filters &&
+        allColumns.map((column) => {
+          const filter = filters.find((f) => f.id === column.id)
+          const value = filter?.value
+          return (
+            value && (
+              <Chip
+                className={classes.filterChip}
+                key={column.id}
+                label={
+                  <>
+                    <span className={classes.chipLabel}>{column.render('Header')}: </span>
+                    {getFilterValue(column, value)}
+                  </>
+                }
+                onDelete={() => handleDelete(column.id)}
+                variant='outlined'
+              />
+            )
           )
-        )
-      })}
+        })}
     </div>
   ) : null
 }

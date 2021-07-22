@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useTypographyStyles } from './typographyStyle'
 
-type QuoteProps = {
+interface QuoteProps {
   text: React.ReactNode
   author?: React.ReactNode
 }

@@ -1,5 +1,5 @@
 import { useTheme } from '@material-ui/core'
-import { Acnw } from 'components'
+import { Acnw, ConventionsDatesFull } from 'components'
 import { Page } from 'components/Page'
 import React from 'react'
 
@@ -9,11 +9,14 @@ const AboutAmberconNw = () => {
   const theme = useTheme()
 
   return (
-    <Page title='About'>
-      <h1>
-        About <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
-      </h1>
-
+    <Page
+      title='About'
+      titleElement={
+        <h1>
+          About <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
+        </h1>
+      }
+    >
       <h2>What is AmberCon NW?</h2>
       <p>
         AmberCon Northwest is a fully scheduled role-playing game convention devoted to Roger Zelazny's worlds of Amber
@@ -27,9 +30,8 @@ const AboutAmberconNw = () => {
       </p>
 
       <p>
-        ACNW 2020 will take place virtually, facilitated through a private Discord server, from
-        {configuration.conventionStartDate.toFormat('cccc, LLLL d')} through{' '}
-        {configuration.conventionEndDate.toFormat('cccc, LLLL d')}. There will be virtual "tours" of the Discord space
+        ACNW 2020 will take place virtually, facilitated through a private Discord server,
+        <ConventionsDatesFull pre='from' intra='through' post='.' /> There will be virtual "tours" of the Discord space
         and introductions to use of Discord led by volunteers in the weeks preceding the convention. Games may take
         place using Discord with or without video or through other technology as organized separately by the GMs.
       </p>

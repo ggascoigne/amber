@@ -1,17 +1,18 @@
-import { Button, Dialog, DialogActions, Step, StepLabel, Stepper, useMediaQuery, useTheme } from '@material-ui/core'
-import { useUpdateUserMutation } from 'client'
-import { Form, Formik, FormikErrors, FormikHelpers, FormikTouched, FormikValues } from 'formik'
+import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { useMemo } from 'react'
-import { useUser } from 'utils'
+import { configuration, useUser, useYearFilter } from 'utils'
 import Yup from 'utils/Yup'
 
-import { useAuth } from '../../components/Auth'
-import { DialogClose } from '../../components/Dialog'
-import { useNotification } from '../../components/Notifications'
-import { ProfileFormContent, ProfileType, profileValidationSchema } from '../../components/Profile'
+import { Perms, useAuth } from '../../components/Auth'
+import { ProfileFormContent, ProfileFormType, profileValidationSchema } from '../../components/Profile'
+import { useEditUserAndProfile } from '../../components/Profile/profileUtils'
+import { Wizard, WizardPage } from '../../components/Wizard'
 import { FinalStep } from './FinalStep'
 import { IntroStep } from './IntroStep'
-import { MembershipStep } from './MembershipStep'
+import { MembershipStepAdmin } from './MembershipAdmin'
+import { MembershipStepConvention } from './MembershipStepConvention'
+import { MembershipStepRooms } from './MembershipStepRooms'
+import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   MembershipType,
   fromSlotsAttending,
@@ -21,16 +22,16 @@ import {
   useEditMembership,
 } from './membershipUtils'
 
-type FormValues = {
+interface FormValues {
   membership: MembershipType
-  profile: ProfileType
+  profile: ProfileFormType
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileType
+  profile: ProfileFormType
 }
 
 // what hard coded lists did the old system map to
@@ -45,144 +46,126 @@ const validationSchema = Yup.object().shape({
   profile: profileValidationSchema,
 })
 
-type StepProps = {
-  step: number
-  values: FormikValues
-  errors: FormikErrors<FormikValues>
-  touched: FormikTouched<FormikValues>
-}
-
-const RenderStep: React.FC<StepProps> = ({ step, values, errors, touched }) => {
-  switch (step) {
-    case 0:
-      return <IntroStep />
-    case 1:
-      return <ProfileFormContent prefix='profile.' />
-    case 2:
-      return <MembershipStep prefix='membership.' />
-    default:
-      return <FinalStep />
-  }
-}
-
-const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => {
-  switch (step) {
-    case 0:
-      return false
-    case 1:
-      return !!errors.profile
-    case 2:
-      return !!errors.membership
-    default:
-      return false
-  }
-}
-
 export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClose, profile, initialValues }) => {
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, user, hasPermissions } = useAuth()
+  const isAdmin = hasPermissions(Perms.IsAdmin)
+
   const { userId } = useUser()
-  const updateUser = useUpdateUserMutation()
-  const [notify] = useNotification()
-  const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
-  const [activeStep, setActiveStep] = React.useState(0)
-  const steps = ['Registration', 'Member Information', 'Attendance', 'Payment']
   const createOrUpdateMembership = useEditMembership(onClose)
+  const updateProfile = useEditUserAndProfile()
+  const [year] = useYearFilter()
+  const isVirtual = configuration.startDates[year].virtual
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => (prevActiveStep < steps.length - 1 ? prevActiveStep + 1 : prevActiveStep))
-  }
+  const pages = useMemo(() => {
+    const virtualPages: WizardPage[] = [
+      {
+        name: 'Registration',
+        optional: false,
+        hasForm: false,
+        render: <IntroStep />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+      },
+      {
+        name: 'Member Information',
+        optional: false,
+        hasForm: true,
+        render: <ProfileFormContent prefix='profile.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.profile,
+      },
+      {
+        name: 'Attendance',
+        optional: false,
+        hasForm: true,
+        render: <MembershipStepVirtual prefix='membership.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+      },
+      {
+        name: 'Payment',
+        optional: false,
+        hasForm: false,
+        render: <FinalStep />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+      },
+    ]
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => (prevActiveStep > 0 ? prevActiveStep - 1 : prevActiveStep))
-  }
+    const residentialPages: WizardPage[] = [
+      {
+        name: 'Registration',
+        optional: false,
+        hasForm: false,
+        render: <IntroStep />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+      },
+      {
+        name: 'Member Information',
+        optional: false,
+        hasForm: true,
+        render: <ProfileFormContent prefix='profile.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.profile,
+      },
+      {
+        name: 'Convention',
+        optional: false,
+        hasForm: true,
+        render: <MembershipStepConvention prefix='membership.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+      },
+      {
+        name: 'Rooms',
+        optional: false,
+        hasForm: true,
+        render: <MembershipStepRooms prefix='membership.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+      },
+      {
+        name: 'Admin',
+        optional: false,
+        hasForm: true,
+        render: <MembershipStepAdmin prefix='membership.' />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+        enabled: isAdmin,
+      },
+      {
+        name: 'Payment',
+        optional: false,
+        hasForm: false,
+        render: <FinalStep />,
+        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+      },
+    ]
+    return isVirtual ? virtualPages : residentialPages
+  }, [isAdmin, isVirtual])
 
   if (!isAuthenticated || !user) {
     throw new Error('login expired')
   } // todo test this
 
-  const updateProfileValues = async (profileValues: ProfileType) => {
-    await updateUser
-      .mutateAsync({
-        input: {
-          id: profile.id!,
-          patch: {
-            firstName: profileValues.firstName,
-            lastName: profileValues.lastName,
-            fullName: profileValues.fullName,
-            email: profileValues.email,
-            snailMailAddress: profileValues.snailMailAddress,
-            phoneNumber: profileValues.phoneNumber,
-          },
-        },
-      })
-      .catch((error) => {
-        notify({ text: error.message, variant: 'error' })
-      })
-  }
-
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfileValues(profileValues).then(
-      async () => await createOrUpdateMembership(membershipValues, profileValues)
-    )
+    await updateProfile(profileValues).then(async () => await createOrUpdateMembership(membershipValues, profileValues))
   }
 
   const values = useMemo(() => {
     // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
-    const defaultValues: MembershipType = getDefaultMembership(userId!)
-    const _values = {
+    const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
+    const _values: FormValues = {
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
       profile: { ...profile },
     }
     _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
     return _values
-  }, [initialValues, profile, userId])
+  }, [initialValues, isVirtual, profile, userId])
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
-      <Stepper activeStep={activeStep} alternativeLabel>
-        {steps.map((label, index) => {
-          const stepProps: { completed?: boolean } = {}
-          return (
-            <Step key={label} {...stepProps}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          )
-        })}
-      </Stepper>
-
-      <Formik initialValues={values} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
-          <Form>
-            <DialogClose onClose={onClose} />
-            <RenderStep step={activeStep} values={values} errors={errors} touched={touched} />
-            <DialogActions className='modalFooterButtons'>
-              <Button onClick={onClose} variant='outlined'>
-                Cancel
-              </Button>
-              <Button onClick={handleBack} variant='outlined' disabled={activeStep === 0}>
-                Back
-              </Button>
-              {/*
-                  Note that this seems like a hack, but I can't stop formik submitting my form the
-                  minute I add a submit button to the page
-                  and simply doing things manually appears to work
-               */}
-              <Button
-                onClick={activeStep === steps.length - 1 ? submitForm : handleNext}
-                variant='contained'
-                color='primary'
-                disabled={isSubmitting || errorsOnCurrentPage(activeStep, errors)}
-              >
-                {activeStep === steps.length - 1 ? 'Save' : 'Next'}
-              </Button>
-            </DialogActions>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+    <Wizard
+      pages={pages}
+      values={values}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      onClose={onClose}
+      open={open}
+    />
   )
 }

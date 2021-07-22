@@ -1,4 +1,4 @@
-import { useGetAllUsersQuery } from 'client'
+import { useGetAllUsersAndProfilesQuery } from 'client'
 import { GraphQLError } from 'components/GraphQLError'
 import React, { MouseEventHandler, useState } from 'react'
 import { Column, Row, TableInstance } from 'react-table'
@@ -6,23 +6,24 @@ import { notEmpty } from 'utils'
 
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
-import { ProfileDialog, ProfileType } from '../../components/Profile'
+import { ProfileDialog } from '../../components/Profile'
+import { UsersAndProfileType } from '../../components/Profile/profileUtils'
 import { Table } from '../../components/Table'
 
-const columns: Column<ProfileType>[] = [
+const columns: Column<UsersAndProfileType>[] = [
   { accessor: 'fullName' },
   { accessor: 'firstName' },
   { accessor: 'lastName' },
   { accessor: 'email' },
-  { accessor: 'snailMailAddress' },
-  { accessor: 'phoneNumber' },
+  { id: 'snailMailAddress', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.snailMailAddress },
+  { id: 'phoneNumber', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.phoneNumber },
 ]
 
 const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<ProfileType[]>([])
+  const [selection, setSelection] = useState<UsersAndProfileType[]>([])
 
-  const { error, data, refetch } = useGetAllUsersQuery()
+  const { error, data, refetch } = useGetAllUsersAndProfilesQuery()
 
   if (error) {
     return <GraphQLError error={error} />
@@ -33,19 +34,20 @@ const Users: React.FC = React.memo(() => {
   }
   const { users } = data
 
-  const list: ProfileType[] = users!.nodes.filter(notEmpty)
+  const list: UsersAndProfileType[] = users!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
     setSelection([])
+    refetch().then()
   }
 
-  const onEdit = (instance: TableInstance<ProfileType>) => () => {
+  const onEdit = (instance: TableInstance<UsersAndProfileType>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<ProfileType>) => {
+  const onClick = (row: Row<UsersAndProfileType>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -53,7 +55,7 @@ const Users: React.FC = React.memo(() => {
   return (
     <Page title='Users'>
       {showEdit && <ProfileDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<ProfileType>
+      <Table<UsersAndProfileType>
         name='users'
         data={list}
         columns={columns}

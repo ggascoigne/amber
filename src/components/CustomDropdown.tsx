@@ -12,7 +12,7 @@ import {
   createStyles,
   makeStyles,
 } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -160,7 +160,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type CustomDropdownProps = {
+interface CustomDropdownProps {
   hoverColor?: 'black' | 'primary' | 'info' | 'success' | 'warning' | 'error'
   buttonText: React.ReactNode
   buttonIcon?: React.ComponentType | string
@@ -176,8 +176,8 @@ type CustomDropdownProps = {
 }
 
 const getKeyValue =
-  <T extends Record<string, unknown>, U extends keyof T>(obj: T) =>
-  (key: U) =>
+  <T extends Record<string, unknown>>(obj: T) =>
+  (key: keyof T) =>
     obj[key]
 
 export const CustomDropdown: React.FC<CustomDropdownProps> = ({
@@ -214,12 +214,12 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
   }
   const classes = useStyles({})
 
-  const caretClasses = classNames({
+  const caretClasses = clsx({
     [classes.caret]: true,
     [classes.caretActive]: Boolean(anchorEl),
     [classes.caretRTL]: rtlActive,
   })
-  const dropdownItem = classNames({
+  const dropdownItem = clsx({
     [classes.dropdownItem]: true,
     [getKeyValue(classes)((hoverColor + 'Hover') as keyof typeof classes)]: true,
     [classes.noLiPadding]: noLiPadding,
@@ -260,7 +260,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
         transition
         disablePortal
         placement={dropup ? (left ? 'top-start' : 'top') : left ? 'bottom-start' : 'bottom'}
-        className={classNames({
+        className={clsx({
           [classes.popperClose]: !anchorEl,
           [classes.popperResponsive]: true,
         })}

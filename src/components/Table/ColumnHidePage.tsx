@@ -24,7 +24,7 @@ const useStyles = makeStyles(
   })
 )
 
-type ColumnHidePageProps<T extends Record<string, unknown>> = {
+interface ColumnHidePageProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
   anchorEl?: Element
   onClose: () => void

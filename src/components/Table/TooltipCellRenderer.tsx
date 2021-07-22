@@ -20,7 +20,7 @@ interface TooltipProps {
   align: string
 }
 
-export const TooltipCell: React.FC<TooltipProps> = ({ text, tooltip = text, align }) => {
+export const TooltipCell: React.FC<TooltipProps> = ({ text = '', tooltip = text || '', align }) => {
   const classes = useStyles({})
   const [isOverflowed, setIsOverflow] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)

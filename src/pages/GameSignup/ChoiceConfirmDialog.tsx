@@ -11,12 +11,12 @@ import { DialogTitle } from '../../components/Dialog'
 import { TextField } from '../../components/Form'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { useNotification } from '../../components/Notifications'
-import { ProfileType, useProfile } from '../../components/Profile'
+import { ProfileFormType, useProfile } from '../../components/Profile'
 import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { choiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-type FormValues = {
+interface FormValues {
   year: number
   memberId: number
   message: string
@@ -37,10 +37,10 @@ const submissionValidationSchema = Yup.object().shape({
   message: Yup.string().max(1000),
 })
 
-type GameChoiceConfirmationEmail = {
+interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile?: ProfileType | null
+  profile?: ProfileFormType | null
   year: number
   update?: boolean
   message: string
@@ -225,7 +225,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         validationSchema={submissionValidationSchema}
         onSubmit={onSubmit}
       >
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
+        {({ isSubmitting }) => (
           <Form>
             <DialogContent>
               <GridContainer spacing={2}>

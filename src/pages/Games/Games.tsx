@@ -1,6 +1,5 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import CachedIcon from '@material-ui/icons/Cached'
-import classnames from 'classnames'
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -8,6 +7,7 @@ import {
   useGetGamesByYearQuery,
   useGetMembershipsByYearQuery,
 } from 'client'
+import clsx from 'clsx'
 import { YesBlankCell } from 'components/CellFormatters'
 import { GraphQLError } from 'components/GraphQLError'
 import { Table } from 'components/Table'
@@ -125,11 +125,11 @@ const columns: Column<Game>[] = [
   { accessor: 'gameContactEmail' },
   { accessor: 'slotPreference' },
   { accessor: 'lateStart' },
-  { accessor: 'lateFinish', Cell: YesBlankCell },
+  { accessor: 'lateFinish', Cell: YesBlankCell, sortType: 'basic' },
   { accessor: 'slotConflicts' },
   { accessor: 'message', disableGlobalFilter: false },
-  { accessor: 'teenFriendly', Cell: YesBlankCell },
-  { accessor: 'full', Cell: YesBlankCell },
+  { accessor: 'teenFriendly', Cell: YesBlankCell, sortType: 'basic' },
+  { accessor: 'full', Cell: YesBlankCell, sortType: 'basic' },
 ]
 
 const useStyles = makeStyles(() =>
@@ -178,7 +178,7 @@ const Games: React.FC = React.memo(() => {
       {
         label: 'Fix GM Names',
         onClick: onUpdateGmNames,
-        icon: <CachedIcon className={classnames({ [classes.fixBusy]: fixBusy })} />,
+        icon: <CachedIcon className={clsx({ [classes.fixBusy]: fixBusy })} />,
         enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
       },
     ],

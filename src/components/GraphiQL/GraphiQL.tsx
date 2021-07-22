@@ -1,7 +1,7 @@
 import 'graphiql/graphiql.css'
 
 import { createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import RealGraphiQL from 'graphiql'
 import GraphiQLExplorer from 'graphiql-explorer'
 import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, parse } from 'graphql'
@@ -71,7 +71,9 @@ const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
       }
     })
 
-type Props = { auth?: { jwtToken?: string } }
+interface Props {
+  auth?: { jwtToken?: string }
+}
 
 const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const _graphiql = useRef<any>(null)
@@ -144,8 +146,8 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   }, [])
 
   return (
-    <Page title='GraphiQL' className={classNames(classes.graphiQlWrapper)}>
-      <div className={classNames(classes.box, 'graphiql-container')}>
+    <Page title='GraphiQL' hideTitle className={clsx(classes.graphiQlWrapper)}>
+      <div className={clsx(classes.box, 'graphiql-container')}>
         <GraphiQLExplorer
           schema={schema}
           query={query}

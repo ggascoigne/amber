@@ -16,9 +16,7 @@ const AntiHarassmentPolicy = () => {
   const classes = useStyles()
 
   return (
-    <Page title='Anti-harassment'>
-      <h1>AmberCon NW's Anti-harassment policy</h1>
-
+    <Page title='Anti-harassment' titleElement={<h1>AmberCon NW's Anti-harassment policy</h1>}>
       <p>
         AmberCon Northwest's policy is adapted from policy samples created by and posted as an open-source resource on
         the{' '}

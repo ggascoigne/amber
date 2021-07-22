@@ -5,7 +5,7 @@ import CreateIcon from '@material-ui/icons/CreateOutlined'
 import DeleteIcon from '@material-ui/icons/DeleteOutline'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import ViewColumnsIcon from '@material-ui/icons/ViewColumn'
-import classnames from 'classnames'
+import clsx from 'clsx'
 import React, { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
 
@@ -38,7 +38,7 @@ export const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ActionButton<T extends Record<string, unknown>> = {
+interface ActionButton<T extends Record<string, unknown>> {
   instance: TableInstance<T>
   icon?: JSX.Element
   onClick: TableMouseEventHandler
@@ -74,7 +74,7 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
     <Tooltip title={label} aria-label={label}>
       <span>
         <IconButton
-          className={classnames({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
+          className={clsx({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
           onClick={onClick(instance)}
           disabled={!enabled(instance)}
         >
@@ -85,7 +85,7 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
   )
 }
 
-export type Command<T extends Record<string, unknown>> = {
+export interface Command<T extends Record<string, unknown>> {
   label: string
   onClick: TableMouseEventHandler
   icon?: JSX.Element
@@ -93,7 +93,7 @@ export type Command<T extends Record<string, unknown>> = {
   type?: 'icon' | 'button'
 }
 
-type TableToolbarProps<T extends Record<string, unknown>> = {
+interface TableToolbarProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
   onAdd?: TableMouseEventHandler
   onDelete?: TableMouseEventHandler

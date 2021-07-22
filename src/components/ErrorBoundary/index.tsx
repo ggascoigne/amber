@@ -15,7 +15,7 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
   type HocProps = Subtract<BaseProps, InjectedProps> & {
     // here you can extend hoc with new props
   }
-  type HocState = {
+  interface HocState {
     readonly error: Error | null | undefined
   }
 

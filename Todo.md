@@ -1,12 +1,24 @@
 #Todos & Ideas
 
+## 2021
+
+- [x] switch off virtual flag
+- [x] get new dates
+- [x] sync welcome page with updates on the virtual version
+- [x] update banner - might be automatic based on changing dates
+- [ ] add hotel-room based member registration
+- [ ] add option to mark a whole slot as absent (slot 3)
+- [ ] add option to assign games to rooms
+- [ ] Fix transparency on the acnw svg
+- [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
+- 
+
+
 * [ ] Add readme, contributing guide, etc.
 * [ ] add tests, either unit or Cypress
 * [ ] investigate https://www.w3.org/WAI/tutorials/tables/irregular/
 * [ ] investigate https://github.com/JoviDeCroock/hoofd
 * [ ] check out https://github.com/sindresorhus/type-fest
-
-* [ ] Fix transparency on the acnw svg
 
 * [ ] Game book only shows in PST
 

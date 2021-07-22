@@ -1,5 +1,5 @@
 import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 import { CardHeader } from './Card'
@@ -45,7 +45,7 @@ export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name
     <CardHeader color='info' className={classes.header}>
       <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
         <GridItem xs={12} sm={children ? 7 : 12}>
-          <h4 className={classNames({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
+          <h4 className={clsx({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
         </GridItem>
         {children && (
           <GridItem xs={12} sm={5}>
@@ -66,7 +66,7 @@ export const Field: React.FC<{ label: string; small?: boolean; tiny?: boolean }>
   const classes = useStyles()
   return (
     <>
-      <GridItem xs={12} sm={2} className={classNames(classes.gridItem, classes.label)}>
+      <GridItem xs={12} sm={2} className={clsx(classes.gridItem, classes.label)}>
         {label}
       </GridItem>
       <GridItem xs={12} sm={small ? 4 : tiny ? 8 : 10} className={classes.gridItem}>

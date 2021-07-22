@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ChoiceSummaryProps = {
+interface ChoiceSummaryProps {
   year: number
   gameChoices?: MaybeGameChoice[]
   storeTextResults?: any
@@ -48,14 +48,14 @@ export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices,
   </>
 )
 
-type SlotDetailsProps = {
+interface SlotDetailsProps {
   slotId: number
   year: number
   gameChoices?: MaybeGameChoice[]
   storeTextResults?: (details: SlotSummary) => void
 }
 
-export type SlotSummary = {
+export interface SlotSummary {
   slotId: number
   slotDescription: string
   lines: {
@@ -83,6 +83,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
   useEffect(() => {
     if (storeTextResults && games) {
       const lines = slotInfo
+        ?.concat()
         ?.sort(rankSort)
         ?.map((info) => {
           const g = games.find(({ node: game }) => game?.id === info?.gameId)?.node
@@ -113,24 +114,27 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
   return (
     <>
       <h5>{slotDescription}</h5>
-      {slotInfo?.sort(rankSort)?.map((info) => {
-        const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
-        if (!g || !info) return null
+      {slotInfo
+        ?.concat()
+        ?.sort(rankSort)
+        ?.map((info) => {
+          const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
+          if (!g || !info) return null
 
-        const gms = getGms(g)
-        return (
-          <div className={classes.line} key={info.gameId}>
-            <div className={classes.rank}>
-              <Rank rankStyle={RankStyle.superscript} rank={info.rank} />
+          const gms = getGms(g)
+          return (
+            <div className={classes.line} key={info.gameId}>
+              <div className={classes.rank}>
+                <Rank rankStyle={RankStyle.superscript} rank={info.rank} />
+              </div>
+              <div className={classes.name}>
+                {g.name}
+                {info.returningPlayer ? ' (returning player)' : ''}
+                {gms && ` - ${gms}`}
+              </div>
             </div>
-            <div className={classes.name}>
-              {g.name}
-              {info.returningPlayer ? ' (returning player)' : ''}
-              {gms && ` - ${gms}`}
-            </div>
-          </div>
-        )
-      })}
+          )
+        })}
     </>
   )
 }

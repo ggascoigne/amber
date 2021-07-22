@@ -1,15 +1,23 @@
 import { Checkbox, Theme, createStyles, makeStyles, styled } from '@material-ui/core'
-import cx from 'classnames'
-import React from 'react'
+import MuiTableTable from '@material-ui/core/Table'
+import { TableTypeMap } from '@material-ui/core/Table/Table'
+import MuiTableBody from '@material-ui/core/TableBody'
+import { TableBodyTypeMap } from '@material-ui/core/TableBody/TableBody'
+import MuiTableCell from '@material-ui/core/TableCell'
+import { TableCellProps } from '@material-ui/core/TableCell/TableCell'
+import MuiTableHead from '@material-ui/core/TableHead'
+import { TableHeadTypeMap } from '@material-ui/core/TableHead/TableHead'
+import MuiTableRow from '@material-ui/core/TableRow'
+import { TableRowTypeMap } from '@material-ui/core/TableRow/TableRow'
+import clsx from 'clsx'
+import React, { CSSProperties } from 'react'
 
-// note that this isn't actually a hook, it just generally follows that naming convention.
-// because we want to use it outside of a component, we're just calling it as a function and
-// avoiding the hook eslint validation by not calling it useStyles
-const getClasses = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tableTable: {
       borderSpacing: 0,
       border: '1px solid rgba(224, 224, 224, 1)',
+      width: '100%',
     },
     tableHead: {},
     tableHeadRow: {
@@ -17,9 +25,6 @@ const getClasses = makeStyles((theme: Theme) =>
       verticalAlign: 'middle',
       backgroundColor: theme.palette.background.paper,
       color: theme.palette.text.primary,
-      fontWeight: 500,
-      lineHeight: '1.5rem',
-      position: 'relative',
       borderBottom: '1px solid rgba(224, 224, 224, 1)',
       '&:hover $resizeHandle': {
         opacity: 1,
@@ -38,12 +43,7 @@ const getClasses = makeStyles((theme: Theme) =>
         borderRight: 'none',
       },
     },
-    tableBody: {
-      display: 'flex',
-      flex: '1 1 auto',
-      width: '100%',
-      flexDirection: 'column',
-    },
+    tableBody: {},
     tableRow: {
       color: 'inherit',
       outline: 0,
@@ -133,57 +133,114 @@ const getClasses = makeStyles((theme: Theme) =>
   })
 )
 
-export const useStyles = getClasses
+interface CN {
+  className?: string
+  style?: CSSProperties
+}
 
-type StyleKeyType = keyof ReturnType<typeof getClasses>
-type StyledDiv<P = unknown> = React.FC<JSX.IntrinsicElements['div'] & P>
-
-//  The material UI styled method doesn't allow for using the theme
-const styledDiv: StyledDiv<{ styledDivClassname: StyleKeyType }> = ({
-  children,
-  className,
-  styledDivClassname,
-  ...rest
-}) => {
-  const classes = getClasses()
+export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
   return (
-    <div className={cx(className, classes[styledDivClassname])} {...rest}>
+    <MuiTableTable className={clsx(className, classes.tableTable)} {...rest}>
+      {children}
+    </MuiTableTable>
+  )
+}
+
+export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableBody className={clsx(className, classes.tableBody)} {...rest}>
+      {children}
+    </MuiTableBody>
+  )
+}
+
+export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableHead className={clsx(className, classes.tableHead)} {...rest}>
+      {children}
+    </MuiTableHead>
+  )
+}
+
+export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableRow className={clsx(className, classes.tableHeadRow)} {...rest}>
+      {children}
+    </MuiTableRow>
+  )
+}
+
+export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableCell className={clsx(className, classes.tableHeadCell)} {...rest}>
+      {children}
+    </MuiTableCell>
+  )
+}
+
+export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableRow className={clsx(className, classes.tableRow)} {...rest}>
+      {children}
+    </MuiTableRow>
+  )
+}
+
+export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <MuiTableCell className={clsx(className, classes.tableCell)} {...rest}>
+      {children}
+    </MuiTableCell>
+  )
+}
+
+export const TableLabel: React.FC<CN> = ({ children, className, ...rest }) => {
+  const classes = useStyles()
+  return (
+    <div className={clsx(className, classes.tableLabel)} {...rest}>
       {children}
     </div>
   )
 }
 
-export const TableTable: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableTable', ...props })
-export const TableBody: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableBody', ...props })
-export const TableHead: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHead', ...props })
-export const TableHeadRow: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHeadRow', ...props })
-export const TableHeadCell: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableHeadCell', ...props })
-export const TableRow: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableRow', ...props })
-export const TableCell: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableCell', ...props })
-export const TableLabel: StyledDiv = (props) => styledDiv({ styledDivClassname: 'tableLabel', ...props })
+const areEqual = (prevProps: any, nextProps: any) =>
+  prevProps.checked === nextProps.checked && prevProps.indeterminate === nextProps.indeterminate
 
-export const HeaderCheckbox = styled(Checkbox)({
-  fontSize: '1rem',
-  margin: '-8px 0 -8px -15px',
-  padding: '8px 9px',
-  '& svg': {
-    width: '24px',
-    height: '24px',
-  },
-  '&:hover': {
-    backgroundColor: 'transparent',
-  },
-})
+export const HeaderCheckbox = React.memo(
+  styled(Checkbox)({
+    fontSize: '1rem',
+    margin: '-8px 0 -8px -15px',
+    padding: '8px 9px',
+    '& svg': {
+      width: '24px',
+      height: '24px',
+    },
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+  }),
+  areEqual
+)
 
-export const RowCheckbox = styled(Checkbox)({
-  fontSize: '14px',
-  margin: '-9px 0 -8px -15px',
-  padding: '5px 9px',
-  '&:hover': {
-    backgroundColor: 'transparent',
-  },
-  '& svg': {
-    width: 24,
-    height: 24,
-  },
-})
+export const RowCheckbox = React.memo(
+  styled(Checkbox)({
+    fontSize: '14px',
+    margin: '-9px 0 -8px -15px',
+    padding: '5px 9px',
+    '&:hover': {
+      backgroundColor: 'transparent',
+    },
+    '& svg': {
+      width: 24,
+      height: 24,
+    },
+  }),
+  areEqual
+)

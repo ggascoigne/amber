@@ -1,6 +1,6 @@
 import { Checkbox, ListItemText, MenuItem, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { useField } from 'formik'
-import * as React from 'react'
+import React from 'react'
 
 import { TextField, TextFieldProps } from './TextField'
 
@@ -12,10 +12,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export type SelectFieldValueObject = { value: any; text: string }
+export interface SelectFieldValueObject {
+  value: any
+  text: string
+}
 export type SelectFieldValue = string | SelectFieldValueObject
 
-type SelectValues = {
+export interface SelectValues {
   // pass in an array of values and get a default behavior that automatically
   // knows how to present both an array of simple string, or an array of objects
   // with a text and a value property, where we display the text, but record the
@@ -32,8 +35,7 @@ export const getSelectLabel = (value: SelectFieldValue): string => (typeof value
 
 export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
   const classes = useStyles({})
-  // @ts-ignore
-  const [field] = useField(props)
+  const [field] = useField(props.name)
   const { select, selectValues, children, ...rest } = props
   const multiSelect = !!props.SelectProps?.multiple
   return (

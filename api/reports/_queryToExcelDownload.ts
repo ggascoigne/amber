@@ -2,10 +2,10 @@ import { Response } from 'express'
 // @ts-ignore
 import json2xls from 'json2xls'
 
-import { getPool } from '../../shared/config'
+import { PoolType, getPool } from '../../shared/config'
 
 export const queryToExcelDownload = async (query: string, res: Response) => {
-  const pool = getPool(`${__dirname}/../../shared/`)
+  const pool = getPool(PoolType.USER, `${__dirname}/../../shared/`)
   const client = await pool.connect()
   const result = await client.query(query)
   client.release()

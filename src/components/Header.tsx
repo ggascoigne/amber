@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type HeaderProps = {
+interface HeaderProps {
   handleDrawerToggle: () => void
   rightMenu: (props?: any) => ReactNode
 }

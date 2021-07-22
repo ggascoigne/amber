@@ -1,5 +1,5 @@
 import { Tab, Tabs, Theme, createStyles, makeStyles } from '@material-ui/core'
-import cx from 'classnames'
+import clsx from 'clsx'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
@@ -168,7 +168,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
 
   if (year === 0) return null
   return (
-    <div className={cx({ [classes.small]: small })}>
+    <div className={clsx({ [classes.small]: small })}>
       <Card className={classes.card}>
         <div ref={tabsRef}>
           <CardHeader color='success' className={classes.cardHeader} plain>

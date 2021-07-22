@@ -93,7 +93,9 @@ export const useSetting = (setting: string, defaultValue = false) => {
   return getSettingTruth ? getSettingTruth(setting, defaultValue) : undefined
 }
 
-type useGetSettingValueType = (setting: string, defaultValue?: boolean) => string | null | undefined
+interface useGetSettingValueType {
+  (setting: string, defaultValue?: boolean): string | null | undefined
+}
 
 export const useGetSettingValue: useGetSettingValueType = (setting: string, defaultValue = false) => {
   const [getSettingString] = useSettings()

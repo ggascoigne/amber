@@ -1,5 +1,5 @@
 import { Typography, createStyles, makeStyles } from '@material-ui/core'
-import classNames from 'classnames'
+import clsx from 'clsx'
 import React from 'react'
 
 import { Card, CardBody, CardHeader } from '../Card'
@@ -65,7 +65,7 @@ interface FakeTileProps {
 const FakeTile = ({ index }: FakeTileProps) => {
   const classes = useStyles()
   return (
-    <Card className={classNames((classes as any)[`card${index}`], classes.fakeCard)}>
+    <Card className={clsx((classes as any)[`card${index}`], classes.fakeCard)}>
       <CardHeader className={(classes as any)[`fakeHeader${index}`]} />
       <CardBody />
     </Card>

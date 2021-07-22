@@ -1,19 +1,8 @@
 import { DateTime } from 'luxon'
 
-import { configuration, pdxDate } from './configuration'
+import { configuration } from './configuration'
 
-// note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
-const startDates: Record<number, { date: DateTime; virtual: boolean }> = {
-  2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false },
-  2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false },
-  2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false },
-  2015: { date: pdxDate({ year: 2015, month: 11, day: 12 }), virtual: false },
-  2016: { date: pdxDate({ year: 2016, month: 11, day: 3 }), virtual: false },
-  2017: { date: pdxDate({ year: 2017, month: 11, day: 2 }), virtual: false },
-  2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false },
-  2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false },
-  2020: { date: configuration.conventionStartDate, virtual: true },
-}
+const { startDates } = configuration
 
 // 1 : Thur 7-12
 // 2 : Fri 9-1

@@ -37,7 +37,7 @@ const useStyles = makeStyles(
   })
 )
 
-type FilterPageProps<T extends Record<string, unknown>> = {
+interface FilterPageProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
   anchorEl?: Element
   onClose: () => void

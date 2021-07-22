@@ -6,7 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { QueryClient } from 'react-query'
 import { useIsGm } from 'utils'
 
-import { Auth0User, Perms, useAuth, useRoleOverride, useToken } from './Auth'
+import { Auth0User, Perms, Roles, useAuth, useRoleOverride, useToken } from './Auth'
 import { CustomDropdown } from './CustomDropdown'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-type ProfileImageProps = {
+interface ProfileImageProps {
   user: Auth0User
 }
 
@@ -155,7 +155,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ user }) => {
   }
 }
 
-type MenuButtonProps = {
+interface MenuButtonProps {
   user: Auth0User
   small: boolean
 }
@@ -182,7 +182,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
   )
 }
 
-type LoginMenuProps = {
+interface LoginMenuProps {
   small?: boolean
 }
 
@@ -262,9 +262,9 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
 
   const viewAsUser = () => {
     if (!roleOverride) {
-      setRoleOverride('ROLE_USER')
+      setRoleOverride(Roles.ROLE_USER)
     } else {
-      setRoleOverride('')
+      setRoleOverride(undefined)
     }
   }
 

@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Theme, createStyles, makeStyles } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import classNames from 'classnames'
 import type { GameEntry } from 'client'
+import clsx from 'clsx'
 import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import { getSlotDescription } from 'utils'
@@ -78,7 +78,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
 
     const content = (
       <CardBody className={classes.cardBody}>
-        <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+        <GridContainer className={clsx({ [classes.cardTiny]: tiny })}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
             {gms.length
               ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
@@ -127,7 +127,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
     return (
       <Card
         key={`game_${id}`}
-        className={classNames(classes.card, { [classes.tinyCard]: tiny })}
+        className={clsx(classes.card, { [classes.tinyCard]: tiny })}
         id={`game/${year}/${slot}/${id}`}
       >
         {tiny ? (
@@ -154,7 +154,7 @@ export interface GameCardChild {
   gameId: number
 }
 
-type Player = {
+interface Player {
   gm: number
   fullName: string
   email: string
@@ -217,7 +217,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
     if (game.year === 0) {
       const content = (
         <CardBody>
-          <GridContainer className={classNames({ [classes.cardTiny]: tiny })}>
+          <GridContainer className={clsx({ [classes.cardTiny]: tiny })}>
             <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
               <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
             </Field>
@@ -227,7 +227,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
       return tiny ? (
         <Card
           key={`game_${id}`}
-          className={classNames(classes.card, { [classes.tinyCard]: tiny })}
+          className={clsx(classes.card, { [classes.tinyCard]: tiny })}
           id={`game/${year}/${slot}/${id}`}
         >
           {header}

@@ -1,0 +1,47 @@
+fragment hotelRoomDetailsFields on HotelRoomDetail {
+  id
+  nodeId
+  name
+  roomType
+  comment
+  reservedFor
+  bathroomType
+  gamingRoom
+  enabled
+  formattedRoomType
+  internalRoomType
+  reserved
+}
+
+query getHotelRoomDetails {
+  hotelRoomDetails {
+    edges {
+      node {
+        ...hotelRoomDetailsFields
+      }
+    }
+  }
+}
+
+mutation updateHotelRoomDetailByNodeId($input: UpdateHotelRoomDetailByNodeIdInput!) {
+  updateHotelRoomDetailByNodeId(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+
+mutation createHotelRoomDetail($input: CreateHotelRoomDetailInput!) {
+  createHotelRoomDetail(input: $input) {
+    hotelRoomDetail {
+      ...hotelRoomDetailsFields
+    }
+  }
+}
+
+mutation deleteHotelRoomDetail($input: DeleteHotelRoomDetailInput!) {
+  deleteHotelRoomDetail(input: $input) {
+    clientMutationId
+    deletedHotelRoomDetailNodeId
+  }
+}

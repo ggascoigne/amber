@@ -1,8 +1,8 @@
-import { SettingFieldsFragment, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
+import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { notEmpty } from 'utils'
+import { GqlType, notEmpty } from 'utils'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
 import { GraphQLError } from '../../components/GraphQLError'
@@ -11,7 +11,7 @@ import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
 import { SettingDialog } from './SettingDialog'
 
-type Setting = SettingFieldsFragment
+export type Setting = GqlType<GetSettingsQuery, ['settings', 'nodes', number]>
 
 const columns: Column<Setting>[] = [
   {
@@ -31,18 +31,23 @@ const Settings: React.FC = React.memo(() => {
 
   const deleteSetting = useDeleteSettingMutation()
   const queryClient = useQueryClient()
-  const { error, data, refetch } = useGetSettingsQuery()
+
+  const { isLoading, error, data, refetch } = useGetSettingsQuery()
 
   if (error) {
     return <GraphQLError error={error} />
   }
-
-  if (!data) {
+  if (isLoading || !data) {
     return <Loader />
   }
-  const { settings } = data
 
-  const list: Setting[] = settings!.nodes.filter(notEmpty)
+  const list: Setting[] = data.settings!.nodes.filter(notEmpty)
+
+  const clearSelectionAndRefresh = () => {
+    setSelection([])
+    // noinspection JSIgnoredPromiseFromCall
+    queryClient.invalidateQueries('getSettings')
+  }
 
   const onAdd: TableMouseEventHandler = () => () => {
     setShowEdit(true)
@@ -50,27 +55,16 @@ const Settings: React.FC = React.memo(() => {
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
-    setSelection([])
+    clearSelectionAndRefresh()
   }
 
   const onDelete = (instance: TableInstance<Setting>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) =>
-      deleteSetting.mutateAsync(
-        {
-          input: { id: s.id },
-        },
-        {
-          onSuccess: () => {
-            queryClient.invalidateQueries('getSettings')
-          },
-        }
-      )
-    )
+    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id } }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
+      clearSelectionAndRefresh()
       instance.toggleAllRowsSelected(false)
-      setSelection([])
     })
   }
 

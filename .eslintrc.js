@@ -2,7 +2,7 @@ const rulesDirPlugin = require('eslint-plugin-rulesdir')
 rulesDirPlugin.RULES_DIR = 'eslint-rules'
 
 module.exports = {
-  plugins: ['rulesdir'],
+  plugins: ['rulesdir', 'risxss', 'etc'],
   // when changing this, remember that you can run `yarn eslint --print-config <filename>` to print
   // the existing used config for that path
   extends: [
@@ -32,6 +32,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'rulesdir/no-promise-all': 'error',
     'no-unused-vars': 'off',
+    'risxss/catch-potential-xss-react': 'error',
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
@@ -88,6 +89,11 @@ module.exports = {
         '@typescript-eslint/prefer-optional-chain': 'warn',
         '@typescript-eslint/no-use-before-define': 'warn',
         '@typescript-eslint/prefer-regexp-exec': 'warn',
+        'etc/no-assign-mutated-array': 'error',
+        'etc/no-internal': 'error',
+        'etc/no-misused-generics': 'warn',
+        'etc/prefer-interface': 'warn',
+        'etc/no-deprecated': 'warn',
       },
     },
     {

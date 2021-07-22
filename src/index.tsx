@@ -1,7 +1,8 @@
 ///<reference types="webpack-env" />
-// import 'assets/css/material-kit-react.css'
 import 'react-app-polyfill/ie11'
 
+import LuxonUtils from '@date-io/luxon'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { Provider as JotaiProvider } from 'jotai'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -53,22 +54,24 @@ const RootComponent: React.FC = ({ children }) => {
     <HelmetProvider>
       <JotaiProvider>
         <BrowserRouter>
-          <NotificationProvider>
-            <Auth0Provider>
-              <QueryClientProvider client={queryClient}>
-                <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
-                  <html lang='en' />
-                </Helmet>
-                {children}
-                <ReactQueryDevtools />
-                {showDevtools ? (
-                  <React.Suspense fallback={null}>
-                    <ReactQueryDevtoolsProduction />
-                  </React.Suspense>
-                ) : null}
-              </QueryClientProvider>
-            </Auth0Provider>
-          </NotificationProvider>
+          <MuiPickersUtilsProvider utils={LuxonUtils}>
+            <NotificationProvider>
+              <Auth0Provider>
+                <QueryClientProvider client={queryClient}>
+                  <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
+                    <html lang='en' />
+                  </Helmet>
+                  {children}
+                  <ReactQueryDevtools />
+                  {showDevtools ? (
+                    <React.Suspense fallback={null}>
+                      <ReactQueryDevtoolsProduction />
+                    </React.Suspense>
+                  ) : null}
+                </QueryClientProvider>
+              </Auth0Provider>
+            </NotificationProvider>
+          </MuiPickersUtilsProvider>
         </BrowserRouter>
       </JotaiProvider>
     </HelmetProvider>

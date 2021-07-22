@@ -150,9 +150,8 @@ const MemberGmPage: React.FC = React.memo(() => {
   }
 
   return (
-    <Page title='GM Page'>
+    <Page title='Become a GM'>
       {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <h1>Become a GM</h1>
       <br />
       <p>Thank you for considering offering games for virtualACNW!</p>
 

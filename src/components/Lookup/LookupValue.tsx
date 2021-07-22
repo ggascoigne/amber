@@ -5,7 +5,10 @@ import { getPlayerPreference } from 'utils/lookupValues'
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
 
-type LookupValueProps = { realm: string; code: string }
+interface LookupValueProps {
+  realm: string
+  code: string
+}
 
 export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
   // note that in several cases we're moving away from using the database lookup values.

@@ -4,7 +4,9 @@ import { CardBody } from 'components/Card'
 import React from 'react'
 import { configuration } from 'utils'
 
-type SignupInstructionsProps = { year: number }
+interface SignupInstructionsProps {
+  year: number
+}
 export const SignupInstructions: React.FC<SignupInstructionsProps> = ({ year }) => {
   const theme = useTheme()
 

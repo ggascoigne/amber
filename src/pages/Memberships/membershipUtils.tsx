@@ -1,22 +1,29 @@
-import {
-  MembershipFieldsFragment,
-  Node,
-  useCreateMembershipMutation,
-  useUpdateMembershipByNodeIdMutation,
-} from 'client'
+import { GetMembershipsByYearQuery, useCreateMembershipMutation, useUpdateMembershipByNodeIdMutation } from 'client'
 import { Perms, useAuth } from 'components/Auth'
-import { ProfileType } from 'components/Profile'
+import { ProfileFormType } from 'components/Profile'
 import { useQueryClient } from 'react-query'
-import { configuration, getSlotDescription, onCloseHandler, pick, useSendEmail, useSetting } from 'utils'
+import {
+  GqlType,
+  ToFormValues,
+  configuration,
+  getSlotDescription,
+  onCloseHandler,
+  pick,
+  useSendEmail,
+  useSetting,
+} from 'utils'
 import Yup from 'utils/Yup'
 
 import { useNotification } from '../../components/Notifications'
 
-export type MembershipType = Omit<MembershipFieldsFragment, 'nodeId' | 'id' | '__typename'> &
-  Partial<{ id: number }> &
-  Partial<Node> & {
-    slotsAttendingData?: boolean[]
-  }
+export interface MembershipFormContent {
+  prefix?: string
+}
+
+export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
+export type MembershipType = ToFormValues<Membership> & {
+  slotsAttendingData?: boolean[]
+}
 
 export const fromSlotsAttending = (membershipValues: MembershipType) => {
   const slotsAttendingData = Array(7).fill(false)
@@ -79,7 +86,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
 
   const sendMembershipConfirmation = (
     membershipId: number,
-    profile: ProfileType,
+    profile: ProfileFormType,
     membershipValues: MembershipType,
     update = false
   ) => {
@@ -101,7 +108,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
     })
   }
 
-  return async (membershipValues: MembershipType, profile: ProfileType) => {
+  return async (membershipValues: MembershipType, profile: ProfileFormType) => {
     if (membershipValues.nodeId) {
       await updateMembership
         .mutateAsync(
@@ -164,13 +171,13 @@ export const useEditMembership = (onClose: onCloseHandler) => {
   }
 }
 
-export const getDefaultMembership = (userId: number): MembershipType => ({
+export const getDefaultMembership = (userId: number, isVirtual: boolean): MembershipType => ({
   userId,
-  arrivalDate: configuration.conventionStartDate.toISO(),
+  arrivalDate: isVirtual ? configuration.conventionStartDate.toISO() : '',
   attendance: 'Thurs-Sun',
   attending: true,
   hotelRoomId: 13, // no room required
-  departureDate: configuration.conventionEndDate.toISO(),
+  departureDate: isVirtual ? configuration.conventionEndDate.toISO() : '',
   interestLevel: 'Full',
   message: '',
   offerSubsidy: false,

@@ -68,7 +68,7 @@ const SnackBarActionHandler: React.FC<{ keyValue: OptionsObject['key'] }> = ({ k
   )
 }
 
-type Snackbar = {
+interface Snackbar {
   text: string | ReactElement
   variant: VariantType
   options?: OptionsObject
