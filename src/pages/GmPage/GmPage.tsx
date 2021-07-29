@@ -8,7 +8,7 @@ import {
 } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilter } from 'utils'
 
@@ -16,7 +16,7 @@ import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
-import { GamesDialog } from '../Games/GamesDialog'
+import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
 
@@ -89,7 +89,6 @@ const initialState: Partial<TableState<Game>> = {
 
 const MemberGmPage: React.FC = React.memo(() => {
   const [year] = useYearFilter()
-  const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useDeleteGameMutation()
   const queryClient = useQueryClient()
@@ -98,6 +97,8 @@ const MemberGmPage: React.FC = React.memo(() => {
   const displayGameBook = useSetting('display.game.book')
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
+  const match = useRouteMatch()
+  const history = useHistory()
 
   const { error, data, refetch } = useGetGamesByYearAndAuthorQuery({
     year,
@@ -121,8 +122,8 @@ const MemberGmPage: React.FC = React.memo(() => {
   const list: Game[] = games!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
     setSelection([])
+    history.push(match.url)
   }
 
   const onDelete = (instance: TableInstance<Game>) => () => {
@@ -145,13 +146,20 @@ const MemberGmPage: React.FC = React.memo(() => {
   }
 
   const onClick = (row: Row<Game>) => {
-    setShowEdit(true)
+    history.push(`${match.url}/edit/${row.original.id}`)
     setSelection([row.original])
   }
 
   return (
     <Page title='Become a GM'>
-      {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+      <Route
+        path={`${match.url}/edit/:id`}
+        render={() => <GamesDialogEdit open onClose={onCloseEdit} initialValues={selection[0]} />}
+      />
+      <Route
+        path={`${match.url}/new`}
+        render={() => <GamesDialog open onClose={onCloseEdit} initialValues={selection[0]} />}
+      />
       <br />
       <p>Thank you for considering offering games for virtualACNW!</p>
 
@@ -196,7 +204,7 @@ const MemberGmPage: React.FC = React.memo(() => {
         </li>
       </ol>
 
-      <Button variant='outlined' color='primary' size='large' onClick={() => setShowEdit(true)}>
+      <Button component={RouterLink} to={`${match.url}/new`} variant='outlined' color='primary' size='large'>
         Add a Game
       </Button>
 

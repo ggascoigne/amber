@@ -1,6 +1,5 @@
-import { IconButton, createStyles, makeStyles } from '@material-ui/core'
+import { IconButton, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { amber, green } from '@material-ui/core/colors'
-import { Theme } from '@material-ui/core/styles/createMuiTheme'
 import CloseIcon from '@material-ui/icons/Close'
 import { OptionsObject, SnackbarProvider, VariantType, useSnackbar } from 'notistack'
 import { default as React, ReactElement, useCallback } from 'react'

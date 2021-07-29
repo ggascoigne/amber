@@ -8,6 +8,7 @@ import { onCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
 import { DialogTitle } from '../../components/Dialog'
+import { useDisableBackdropClick } from '../../components/EditDialog'
 import { TextField } from '../../components/Form'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { useNotification } from '../../components/Notifications'
@@ -144,6 +145,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
   const createOrUpdateChoiceConfirmation = useEditChoiceConfirmation(onClose)
   const [textResults, setTextResults] = useState<Record<number, SlotSummary>>({})
   const [createOrEditGameChoice] = useEditGameChoice()
+  const handleClose = useDisableBackdropClick(onClose)
 
   const storeTextResults = (details: SlotSummary): void => {
     setTextResults((old) => {
@@ -204,7 +206,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
   }
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>
       <DialogContent>
         <p>

@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { FormikProps } from 'formik/dist/types'
-import React, { ReactElement, ReactNode } from 'react'
+import React, { ReactElement, ReactNode, useCallback } from 'react'
 
 import { onCloseHandler } from '../utils'
 import { useAuth } from './Auth'
@@ -18,6 +18,16 @@ export interface EditDialogProps<T> {
   children?: ((props: FormikProps<T>) => ReactNode) | ReactNode
 }
 
+export const useDisableBackdropClick = (onClose?: onCloseHandler) =>
+  useCallback(
+    (event: unknown, reason: string) => {
+      if (reason !== 'backdropClick') {
+        onClose?.()
+      }
+    },
+    [onClose]
+  )
+
 export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
 
@@ -26,10 +36,12 @@ export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
     throw new Error('login expired')
   } // todo test this
 
+  const handleClose = useDisableBackdropClick(onClose)
+
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {(formikProps) => {
           const { isSubmitting } = formikProps

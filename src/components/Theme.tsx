@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core'
+import { createTheme } from '@material-ui/core'
 import cyan from '@material-ui/core/colors/cyan'
 import green from '@material-ui/core/colors/green'
 import indigo from '@material-ui/core/colors/indigo'
@@ -27,7 +27,7 @@ const buildGradientShadow = (color: string) => {
   return `0 12px 20px -10px ${point28}, 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px ${point2}`
 }
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     type: 'light',
     primary: {
@@ -172,14 +172,14 @@ export const theme = createMuiTheme({
         label: {
           fontSize: 14,
           lineHeight: 1.42857,
-          color: '#aaa',
+          // color: '#aaa',
         },
         'label, small': {
           fontWeight: 400,
         },
         small: {
           fontSize: '75%',
-          color: '#777',
+          // color: '#777',
         },
         form: {
           marginBottom: '1.125rem',
@@ -212,6 +212,12 @@ export const theme = createMuiTheme({
       root: {
         padding: '8px 24px',
       },
+    },
+  },
+  props: {
+    MuiTextField: {
+      variant: 'filled',
+      size: 'small',
     },
   },
 })

@@ -4,17 +4,17 @@ export const pdxDate = ({ year, month, day }: { year: number; month: number; day
   DateTime.fromObject({ year, month, day, zone: 'America/Los_Angeles' })
 
 // note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
-const startDates: Record<number, { date: DateTime; virtual: boolean }> = {
-  2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false },
-  2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false },
-  2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false },
-  2015: { date: pdxDate({ year: 2015, month: 11, day: 12 }), virtual: false },
-  2016: { date: pdxDate({ year: 2016, month: 11, day: 3 }), virtual: false },
-  2017: { date: pdxDate({ year: 2017, month: 11, day: 2 }), virtual: false },
-  2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false },
-  2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false },
-  2020: { date: pdxDate({ year: 2020, month: 11, day: 5 }), virtual: true },
-  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false },
+const startDates: Record<number, { date: DateTime; virtual: boolean; slots: number }> = {
+  2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false, slots: 7 },
+  2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false, slots: 7 },
+  2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false, slots: 7 },
+  2015: { date: pdxDate({ year: 2015, month: 11, day: 12 }), virtual: false, slots: 7 },
+  2016: { date: pdxDate({ year: 2016, month: 11, day: 3 }), virtual: false, slots: 7 },
+  2017: { date: pdxDate({ year: 2017, month: 11, day: 2 }), virtual: false, slots: 7 },
+  2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false, slots: 7 },
+  2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false, slots: 7 },
+  2020: { date: pdxDate({ year: 2020, month: 11, day: 5 }), virtual: true, slots: 7 },
+  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false, slots: 6 },
 }
 
 const THIS_YEAR = 2021
@@ -59,6 +59,7 @@ export const configuration = {
   deposit: 50,
 
   virtual: startDates[THIS_YEAR].virtual,
+  numberOfSlots: startDates[THIS_YEAR].slots,
   oregonHotelTax: '1.5%',
   moreThanDoubleOccupancySurcharge: '$15',
 }

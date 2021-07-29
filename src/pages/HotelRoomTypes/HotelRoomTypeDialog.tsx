@@ -43,17 +43,7 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
             input: {
               nodeId: values.nodeId,
               patch: {
-                ...pick(
-                  values,
-                  'id',
-                  'description',
-                  'gamingRoom',
-                  'bathroomType',
-                  'occupancy',
-                  'quantity',
-                  'rate',
-                  'type'
-                ),
+                ...pick(values, 'id', 'description', 'gamingRoom', 'bathroomType', 'occupancy', 'rate', 'type'),
               },
             },
           },
@@ -84,10 +74,10 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
                   'gamingRoom',
                   'bathroomType',
                   'occupancy',
-                  'quantity',
                   'rate',
                   'type'
                 ),
+                quantity: 0,
               },
             },
           },
@@ -121,7 +111,6 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
       gamingRoom: false,
       bathroomType: '',
       occupancy: '',
-      quantity: 0,
       rate: '',
       type: '',
     }
@@ -163,13 +152,8 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
         <GridItem xs={12} md={12}>
           <TextField name='rate' label='Rate' margin='normal' fullWidth />
         </GridItem>
-        <GridItem container spacing={2} xs={12} md={12} direction='row' style={{ paddingRight: 0 }}>
-          <GridItem xs={6} md={6}>
-            <TextField name='quantity' label='Quantity' margin='normal' fullWidth required />
-          </GridItem>
-          <GridItem xs={6} md={6} style={{ paddingRight: 0 }}>
-            <LookupField realm='roomType' name='type' label='Type' margin='normal' fullWidth required />
-          </GridItem>
+        <GridItem xs={12} md={12}>
+          <LookupField realm='roomType' name='type' label='Type' margin='normal' fullWidth required />
         </GridItem>
       </GridContainer>
     </EditDialog>

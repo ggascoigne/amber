@@ -1,49 +1,105 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useMemo, useState } from 'react'
 import { useQueryClient } from 'react-query'
-import { Column, Row, TableInstance } from 'react-table'
+import { CellProps, Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
-import { GetHotelRoomsQuery, useDeleteHotelRoomMutation, useGetHotelRoomsQuery } from '../../client'
+import {
+  GetHotelRoomsQuery,
+  useDeleteHotelRoomMutation,
+  useGetHotelRoomsQuery,
+  useGetMembershipByYearAndRoomQuery,
+} from '../../client'
 import { YesBlankCell } from '../../components/CellFormatters'
 import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
-import { GqlType, notEmpty } from '../../utils'
+import { TooltipCell } from '../../components/Table/TooltipCellRenderer'
+import { GqlType, notEmpty, useYearFilter } from '../../utils'
+import { useAvailableHotelRooms } from '../HotelRoomDetails/HotelRoomDetails'
 import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 
 export type HotelRoom = GqlType<GetHotelRoomsQuery, ['hotelRooms', 'edges', number, 'node']>
 
-const columns: Column<HotelRoom>[] = [
-  {
-    accessor: 'description',
-  },
-  {
-    accessor: 'bathroomType',
-  },
-  {
-    accessor: 'occupancy',
-  },
-  {
-    // todo - this needs calculating from the hotelRoomDetails table
-    accessor: 'quantity',
-  },
-  {
-    accessor: 'gamingRoom',
-    Cell: YesBlankCell,
-    sortType: 'basic',
-  },
-  {
-    accessor: 'rate',
-  },
-  {
-    accessor: 'type',
-  },
-]
+const RequestedNames: React.FC<{ names: string[] }> = ({ names }) => (
+  <>
+    Requested by
+    <br />
+    <ul>
+      {names.map((n) => (
+        <li key={`${n}`}>{n}</li>
+      ))}
+    </ul>
+  </>
+)
+
+export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
+  cell: { value, row },
+  column: { align = 'left' },
+}: CellProps<any>) => {
+  const hotelRoomId = row.original.id
+  const [year] = useYearFilter()
+
+  const { data } = useGetMembershipByYearAndRoomQuery(
+    {
+      year,
+      hotelRoomId,
+    },
+    {
+      enabled: value > 0,
+    }
+  )
+  const names = data?.memberships?.nodes
+    .filter(notEmpty)
+    .map((m) => m.user?.fullName)
+    .filter(notEmpty)
+  const tooltip = names?.length ? <RequestedNames names={names} /> : value
+  return <TooltipCell text={value} align={align} tooltip={tooltip} />
+}
 
 const HotelRoomTypes: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoom[]>([])
+  const { getAvailable, getTotal, getRequested } = useAvailableHotelRooms()
+
+  const columns: Column<HotelRoom>[] = useMemo(
+    () => [
+      {
+        accessor: 'description',
+      },
+      {
+        accessor: 'bathroomType',
+      },
+      {
+        accessor: 'occupancy',
+      },
+      {
+        id: 'available',
+        accessor: (row: HotelRoom) => getAvailable(row),
+      },
+      {
+        id: 'total',
+        accessor: (row: HotelRoom) => getTotal(row),
+      },
+      {
+        id: 'requested',
+        accessor: (row: HotelRoom) => getRequested(row),
+        Cell: RequestedRoomCell,
+      },
+      {
+        accessor: 'gamingRoom',
+        Cell: YesBlankCell,
+        sortType: 'basic',
+      },
+      {
+        accessor: 'rate',
+      },
+      {
+        accessor: 'type',
+      },
+    ],
+    [getAvailable, getRequested, getTotal]
+  )
 
   const deleteHotelRoom = useDeleteHotelRoomMutation()
   const queryClient = useQueryClient()

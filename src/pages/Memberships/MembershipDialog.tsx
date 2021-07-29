@@ -24,13 +24,6 @@ interface MembershipDialogProps {
   profile: ProfileFormType
 }
 
-// what hard coded lists did the old system map to
-// const legacyValueLists = {
-//   interestLevel: ['Full', 'Deposit'],
-//   attendance: ['Thurs-Sun', 'Fri-Sun'],
-//   roomingPreferences: ['room-with', 'assign-me', 'other'],
-// }
-
 export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClose, profile, initialValues }) => {
   const { isAuthenticated, user } = useAuth()
   const { userId } = useUser()

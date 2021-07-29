@@ -3,6 +3,8 @@ import { Acnw, ConfigDate } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { configuration } from '../../utils'
+
 export const IntroStep: React.FC = () => (
   <>
     <DialogContentText>
@@ -21,8 +23,10 @@ export const IntroStep: React.FC = () => (
 
     <DialogContentText>
       You should also review our Anti-Harassment Policy <Link to='/antiHarassmentPolicy'>here</Link>. You will be asked
-      to agree to abide by the policy, along with some adaptations specific to on-line interactions, when you first join
-      the Discord server.
+      to agree to abide by the policy
+      {configuration.virtual
+        ? ', along with some adaptations specific to on-line interactions, when you first join the Discord server.'
+        : '.'}
     </DialogContentText>
   </>
 )

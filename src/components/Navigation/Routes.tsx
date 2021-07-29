@@ -71,14 +71,14 @@ export const rootRoutes: RootRoutes = [
     path: '/membership',
     label: 'Membership',
     subText: 'Your membership details',
-    exact: true,
+    exact: false,
     component: React.lazy(() => import('pages/Memberships/MembershipSummary')),
   },
   {
     path: '/gm',
     label: 'Become a GM',
     subText: `Manage your games`,
-    exact: true,
+    exact: false,
     component: React.lazy(() => import('pages/GmPage/GmPage')),
   },
   {

@@ -7,11 +7,11 @@ import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormContent, ProfileFormType, profileValidationSchema } from '../../components/Profile'
 import { useEditUserAndProfile } from '../../components/Profile/profileUtils'
 import { Wizard, WizardPage } from '../../components/Wizard'
-import { FinalStep } from './FinalStep'
 import { IntroStep } from './IntroStep'
-import { MembershipStepAdmin } from './MembershipAdmin'
-import { MembershipStepConvention } from './MembershipStepConvention'
-import { MembershipStepRooms } from './MembershipStepRooms'
+import { MembershipStepAdmin, hasAdminStepErrors } from './MembershipAdmin'
+import { MembershipStepConvention, hasConventionStepErrors } from './MembershipStepConvention'
+import { MembershipStepPayment } from './MembershipStepPayment'
+import { MembershipStepRooms, hasRoomsStepErrors } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   MembershipType,
@@ -22,7 +22,7 @@ import {
   useEditMembership,
 } from './membershipUtils'
 
-interface FormValues {
+export interface MembershipWizardFormValues {
   membership: MembershipType
   profile: ProfileFormType
 }
@@ -32,6 +32,7 @@ interface MembershipWizardProps {
   onClose: (event?: any) => void
   initialValues?: MembershipType
   profile: ProfileFormType
+  short?: boolean
 }
 
 // what hard coded lists did the old system map to
@@ -46,7 +47,13 @@ const validationSchema = Yup.object().shape({
   profile: profileValidationSchema,
 })
 
-export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClose, profile, initialValues }) => {
+export const MembershipWizard: React.FC<MembershipWizardProps> = ({
+  open,
+  onClose,
+  profile,
+  initialValues,
+  short = false,
+}) => {
   const { isAuthenticated, user, hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
@@ -63,7 +70,6 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
         optional: false,
         hasForm: false,
         render: <IntroStep />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => false,
       },
       {
         name: 'Member Information',
@@ -83,8 +89,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
         name: 'Payment',
         optional: false,
         hasForm: false,
-        render: <FinalStep />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+        render: <MembershipStepPayment />,
       },
     ]
 
@@ -94,7 +99,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
         optional: false,
         hasForm: false,
         render: <IntroStep />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+        enabled: !short,
       },
       {
         name: 'Member Information',
@@ -102,45 +107,46 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
         hasForm: true,
         render: <ProfileFormContent prefix='profile.' />,
         hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.profile,
+        enabled: !short,
       },
       {
         name: 'Convention',
         optional: false,
         hasForm: true,
         render: <MembershipStepConvention prefix='membership.' />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+        hasErrors: hasConventionStepErrors,
       },
       {
         name: 'Rooms',
         optional: false,
         hasForm: true,
         render: <MembershipStepRooms prefix='membership.' />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+        hasErrors: hasRoomsStepErrors,
       },
       {
         name: 'Admin',
         optional: false,
         hasForm: true,
         render: <MembershipStepAdmin prefix='membership.' />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
+        hasErrors: hasAdminStepErrors,
         enabled: isAdmin,
       },
       {
         name: 'Payment',
         optional: false,
         hasForm: false,
-        render: <FinalStep />,
-        hasErrors: (errors: FormikErrors<FormikValues>) => false,
+        render: <MembershipStepPayment />,
+        enabled: !short,
       },
     ]
     return isVirtual ? virtualPages : residentialPages
-  }, [isAdmin, isVirtual])
+  }, [isAdmin, isVirtual, short])
 
   if (!isAuthenticated || !user) {
     throw new Error('login expired')
   } // todo test this
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: MembershipWizardFormValues, actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
     await updateProfile(profileValues).then(async () => await createOrUpdateMembership(membershipValues, profileValues))
@@ -150,7 +156,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({ open, onClos
     // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
     const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
-    const _values: FormValues = {
+    const _values: MembershipWizardFormValues = {
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
       profile: { ...profile },
     }

@@ -6,6 +6,7 @@ import {
   GqlType,
   ToFormValues,
   configuration,
+  extractErrors,
   getSlotDescription,
   onCloseHandler,
   pick,
@@ -24,6 +25,8 @@ export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nod
 export type MembershipType = ToFormValues<Membership> & {
   slotsAttendingData?: boolean[]
 }
+
+export type MembershipErrorType = Record<keyof MembershipType, string>
 
 export const fromSlotsAttending = (membershipValues: MembershipType) => {
   const slotsAttendingData = Array(7).fill(false)
@@ -191,3 +194,6 @@ export const getDefaultMembership = (userId: number, isVirtual: boolean): Member
   amountOwed: 0,
   amountPaid: 0,
 })
+
+export const hasMembershipStepErrors = <T, D extends keyof T = keyof T>(name: string, errors: T, ...props: D[]) =>
+  !!extractErrors(errors, ...props)

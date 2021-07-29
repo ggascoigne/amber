@@ -14,14 +14,16 @@ import React, { ReactElement, useMemo } from 'react'
 import Zet from 'zet'
 
 import { notEmpty } from '../utils'
+import { HasPermission, Perms } from './Auth'
 import { DialogClose } from './Dialog'
+import { useDisableBackdropClick } from './EditDialog'
 
 export interface WizardPage {
   name: string
   optional: boolean
   hasForm: boolean
   render: ReactElement
-  hasErrors: (errors: FormikErrors<FormikValues>) => boolean
+  hasErrors?: (errors: FormikErrors<FormikValues>) => boolean
   enabled?: boolean
 }
 
@@ -34,10 +36,16 @@ const useSteps = (steps: WizardPage[]) => {
   const [completed, setCompleted] = React.useState(new Zet<number>())
   const [visited, setVisited] = React.useState(new Zet<number>([0]))
 
+  const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => !!steps[step].hasErrors?.(errors)
+
   const canSave = () => {
-    const allFormSteps = new Zet(steps.map((step, index) => (step.hasForm ? index : undefined)).filter(notEmpty))
+    const allFormSteps = new Zet(
+      // note that we ignore the last page here regardless of if it's a form
+      steps.map((step, index) => (step.hasForm && index !== steps.length - 1 ? index : undefined)).filter(notEmpty)
+    )
     const allFormStepsComplete = completed.superset(allFormSteps)
     const allStepsVisited = visited.size === steps.length
+    console.log({ allStepsVisited, allFormStepsComplete })
     return allStepsVisited && allFormStepsComplete
   }
 
@@ -70,7 +78,6 @@ const useSteps = (steps: WizardPage[]) => {
   }
 
   const isStepComplete = (step: number) => completed.has(step)
-  const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => steps[step].hasErrors(errors)
 
   return {
     activeStep,
@@ -104,12 +111,13 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   const { activeStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } =
     useSteps(activePages)
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const handleClose = useDisableBackdropClick(onClose)
 
   const NextStep: React.FC<{ step: number }> = ({ step }) => activePages[step].render
 
   return (
-    <Dialog disableBackdropClick fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={onClose}>
+    <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <Formik initialValues={values} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <>
@@ -132,6 +140,16 @@ export const Wizard = <T extends FormikValues = FormikValues>({
                 <NextStep step={activeStep} />
               </DialogContent>
               <DialogActions className='modalFooterButtons'>
+                <HasPermission permission={Perms.IsAdmin}>
+                  <Button
+                    onClick={() => {
+                      console.log(`values = ${JSON.stringify(values, null, 2)}`)
+                    }}
+                    variant='outlined'
+                  >
+                    Debug
+                  </Button>
+                </HasPermission>
                 <Button onClick={onClose} variant='outlined'>
                   Cancel
                 </Button>

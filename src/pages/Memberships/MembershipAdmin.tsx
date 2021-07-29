@@ -1,11 +1,12 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import { CheckboxWithLabel } from 'components/Form'
+import { FormikErrors, FormikValues } from 'formik'
 import React from 'react'
 
 import { HasPermission, Perms } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { Important } from '../../components/Typography'
-import { MembershipFormContent } from './membershipUtils'
+import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -24,6 +25,9 @@ const useStyles = makeStyles(() =>
   })
 )
 
+export const hasAdminStepErrors = (errors: FormikErrors<FormikValues>) =>
+  hasMembershipStepErrors('admin', errors?.membership as MembershipErrorType, 'attending', 'volunteer')
+
 export const MembershipStepAdmin: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const classes = useStyles()
 
@@ -33,10 +37,10 @@ export const MembershipStepAdmin: React.FC<MembershipFormContent> = ({ prefix = 
         <Important className={classes.important}>Admin Mode</Important>
         <GridContainer spacing={2}>
           <GridItem xs={12} md={12}>
-            <CheckboxWithLabel label='Attending' name='attending' />
+            <CheckboxWithLabel label='Attending' name={`${prefix}attending`} />
           </GridItem>
           <GridItem xs={12} md={12}>
-            <CheckboxWithLabel label='Volunteer' name='volunteer' />
+            <CheckboxWithLabel label='Volunteer' name={`${prefix}volunteer`} />
           </GridItem>
         </GridContainer>
       </HasPermission>

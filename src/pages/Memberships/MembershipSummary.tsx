@@ -1,6 +1,7 @@
 import { Button, FormControlLabel, Checkbox as MuiCheckbox, Switch, makeStyles } from '@material-ui/core'
 import { useGetMembershipByYearAndIdQuery } from 'client'
 import React, { MouseEventHandler, useEffect, useState } from 'react'
+import { Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import {
   configuration,
   getSlotDescription,
@@ -42,9 +43,10 @@ const MembershipSummary: React.FC = () => {
   const { userId } = useUser()
   const [year] = useYearFilter()
   const { isLoading, error, data } = useGetMembershipByYearAndIdQuery({ year, userId: userId ?? 0 })
-  const [showEdit, setShowEdit] = useState(false)
   const classes = useStyles()
   const [showPT, setShowPT] = useState(false)
+  const match = useRouteMatch()
+  const history = useHistory()
 
   useEffect(() => {
     const f = async () => await forceLogin({ appState: { targetUrl: '/membership' } })
@@ -68,17 +70,17 @@ const MembershipSummary: React.FC = () => {
   }
 
   const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
+    history.push(match.url)
   }
 
   const slotsAttendingData = fromSlotsAttending(membership)
 
   return (
     <Page title='Membership Summary'>
-      {showEdit && (
-        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={membership} profile={profile!} />
-      )}
-
+      <Route
+        path={`${match.url}/edit`}
+        render={() => <MembershipDialog open onClose={onCloseEdit} initialValues={membership} profile={profile!} />}
+      />
       <h1>Your Membership for {configuration.year}</h1>
       <br />
       <GridContainer>
@@ -121,7 +123,7 @@ const MembershipSummary: React.FC = () => {
           </Field>
         )}
         <GridItem xs={12} sm={5} className={classes.gridItem}>
-          <Button onClick={() => setShowEdit(true)} variant='outlined' disabled={!profile}>
+          <Button component={RouterLink} to={`${match.url}/edit`} variant='outlined' disabled={!profile}>
             Edit
           </Button>
         </GridItem>

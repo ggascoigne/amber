@@ -1,5 +1,5 @@
 // select fields from object
-export function pick<T, D extends keyof T>(o: T, ...props: D[]): Pick<T, D> {
+export function pick<T, D extends keyof T = keyof T>(o: T, ...props: D[]): Pick<T, D> {
   return Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })))
 }
 

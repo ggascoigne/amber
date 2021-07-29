@@ -1,5 +1,6 @@
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import React, { MouseEventHandler, useCallback, useState } from 'react'
+import React, { MouseEventHandler, useCallback } from 'react'
+import { Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import { IsNotMember, configuration, useSetting } from 'utils'
 
 import { IsLoggedIn, IsNotLoggedIn, useAuth } from '../../components/Auth'
@@ -26,21 +27,19 @@ export const BecomeAMember = () => {
   const theme = useTheme()
 
   const { isInitializing = true, loginWithRedirect } = useAuth()
-  const [showMembershipForm, setShowMembershipForm] = useState(false)
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
+
+  const match = useRouteMatch()
+  const history = useHistory()
 
   const login = useCallback(
     async () => !isInitializing && loginWithRedirect && (await loginWithRedirect()),
     [isInitializing, loginWithRedirect]
   )
 
-  const openMembershipDialog = () => {
-    setShowMembershipForm(true)
-  }
-
   const onCloseMembershipDialog: MouseEventHandler = () => {
-    setShowMembershipForm(false)
+    history.push(match.url)
   }
 
   return (
@@ -61,9 +60,10 @@ export const BecomeAMember = () => {
           </IsNotLoggedIn>
 
           <IsLoggedIn>
-            {showMembershipForm && (
-              <MembershipWizard open={showMembershipForm} onClose={onCloseMembershipDialog} profile={profile!} />
-            )}
+            <Route
+              path='/membership/new'
+              render={() => <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
+            />
             <p>
               If you are interested in attending AmberCon NW this year, please
               {allowed ? (
@@ -71,9 +71,10 @@ export const BecomeAMember = () => {
                   variant='outlined'
                   color='primary'
                   size='large'
-                  onClick={openMembershipDialog}
                   className={classes.button}
                   disabled={!profile}
+                  component={RouterLink}
+                  to='/membership/new'
                 >
                   Register
                 </Button>

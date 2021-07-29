@@ -90,7 +90,7 @@ const AdminBadge: React.FC = ({ children }) => {
   return (
     <Tooltip title='Site Administrator'>
       <Badge
-        overlap='circle'
+        overlap='circular'
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
@@ -108,7 +108,7 @@ const GmBadge: React.FC = ({ children }) => {
   return (
     <Tooltip title='GMs always get stars at ACNW'>
       <Badge
-        overlap='circle'
+        overlap='circular'
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right',

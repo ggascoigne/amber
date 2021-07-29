@@ -330,7 +330,7 @@ const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
 }
 
 export const Banner: React.FC<BannerProps> = ({ to }) => (
-  <GridContainer justify='center'>
+  <GridContainer justifyContent='center'>
     <GridItem xs={12}>
       <WrappedLogo to={to} />
     </GridItem>

@@ -7329,7 +7329,7 @@ export type GameGmsFragment = { __typename: 'Game' } & {
 
 export type HotelRoomFieldsFragment = { __typename: 'HotelRoom' } & Pick<
   HotelRoom,
-  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'quantity' | 'rate' | 'type'
+  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'rate' | 'type'
 >
 
 export type GetHotelRoomsQueryVariables = Exact<{ [key: string]: never }>
@@ -7612,11 +7612,42 @@ export type GetMembershipsByYearQuery = { __typename: 'Query' } & {
   >
 }
 
+export type GetMembershipRoomsByYearQueryVariables = Exact<{
+  year: Scalars['Int']
+}>
+
+export type GetMembershipRoomsByYearQuery = { __typename: 'Query' } & {
+  memberships?: Maybe<
+    { __typename: 'MembershipsConnection' } & {
+      nodes: Array<
+        Maybe<
+          { __typename: 'Membership' } & {
+            hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & Pick<HotelRoom, 'type' | 'gamingRoom' | 'bathroomType'>>
+          }
+        >
+      >
+    }
+  >
+}
+
 export type GetMembershipsByIdQueryVariables = Exact<{
   id: Scalars['Int']
 }>
 
 export type GetMembershipsByIdQuery = { __typename: 'Query' } & {
+  memberships?: Maybe<
+    { __typename: 'MembershipsConnection' } & {
+      nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
+    }
+  >
+}
+
+export type GetMembershipByYearAndRoomQueryVariables = Exact<{
+  year: Scalars['Int']
+  hotelRoomId: Scalars['Int']
+}>
+
+export type GetMembershipByYearAndRoomQuery = { __typename: 'Query' } & {
   memberships?: Maybe<
     { __typename: 'MembershipsConnection' } & {
       nodes: Array<Maybe<{ __typename: 'Membership' } & MembershipFieldsFragment>>
@@ -7683,7 +7714,10 @@ export type MembershipFieldsFragment = { __typename: 'Membership' } & Pick<
   | 'slotsAttending'
   | 'amountOwed'
   | 'amountPaid'
-> & { user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName' | 'email'>> }
+> & {
+    user?: Maybe<{ __typename: 'User' } & Pick<User, 'id' | 'fullName' | 'firstName' | 'lastName' | 'email'>>
+    hotelRoom?: Maybe<{ __typename: 'HotelRoom' } & Pick<HotelRoom, 'type'>>
+  }
 
 export type SettingFieldsFragment = { __typename: 'Setting' } & Pick<
   Setting,
@@ -7746,7 +7780,7 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>
 
 export type GetUserByEmailQuery = { __typename: 'Query' } & {
-  userByEmail?: Maybe<{ __typename: 'User' } & UserFieldsFragment>
+  userByEmail?: Maybe<{ __typename: 'User' } & UserAndProfileFieldsFragment>
 }
 
 export type GetUserByIdQueryVariables = Exact<{
@@ -7920,7 +7954,6 @@ export const HotelRoomFieldsFragmentDoc = `
   gamingRoom
   bathroomType
   occupancy
-  quantity
   rate
   type
 }
@@ -7985,6 +8018,9 @@ export const MembershipFieldsFragmentDoc = `
     firstName
     lastName
     email
+  }
+  hotelRoom {
+    type
   }
 }
     `
@@ -8939,6 +8975,30 @@ export const useGetMembershipsByYearQuery = <TData = GetMembershipsByYearQuery, 
     ),
     options
   )
+export const GetMembershipRoomsByYearDocument = `
+    query getMembershipRoomsByYear($year: Int!) {
+  memberships(condition: {year: $year}) {
+    nodes {
+      hotelRoom {
+        type
+        gamingRoom
+        bathroomType
+      }
+    }
+  }
+}
+    `
+export const useGetMembershipRoomsByYearQuery = <TData = GetMembershipRoomsByYearQuery, TError = QueryError>(
+  variables: GetMembershipRoomsByYearQueryVariables,
+  options?: UseQueryOptions<GetMembershipRoomsByYearQuery, TError, TData>
+) =>
+  useQuery<GetMembershipRoomsByYearQuery, TError, TData>(
+    ['getMembershipRoomsByYear', variables],
+    useFetchData<GetMembershipRoomsByYearQuery, GetMembershipRoomsByYearQueryVariables>(
+      GetMembershipRoomsByYearDocument
+    ).bind(null, variables),
+    options
+  )
 export const GetMembershipsByIdDocument = `
     query getMembershipsById($id: Int!) {
   memberships(condition: {id: $id}) {
@@ -8958,6 +9018,26 @@ export const useGetMembershipsByIdQuery = <TData = GetMembershipsByIdQuery, TErr
       null,
       variables
     ),
+    options
+  )
+export const GetMembershipByYearAndRoomDocument = `
+    query getMembershipByYearAndRoom($year: Int!, $hotelRoomId: Int!) {
+  memberships(condition: {year: $year, hotelRoomId: $hotelRoomId}) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+    ${MembershipFieldsFragmentDoc}`
+export const useGetMembershipByYearAndRoomQuery = <TData = GetMembershipByYearAndRoomQuery, TError = QueryError>(
+  variables: GetMembershipByYearAndRoomQueryVariables,
+  options?: UseQueryOptions<GetMembershipByYearAndRoomQuery, TError, TData>
+) =>
+  useQuery<GetMembershipByYearAndRoomQuery, TError, TData>(
+    ['getMembershipByYearAndRoom', variables],
+    useFetchData<GetMembershipByYearAndRoomQuery, GetMembershipByYearAndRoomQueryVariables>(
+      GetMembershipByYearAndRoomDocument
+    ).bind(null, variables),
     options
   )
 export const UpdateMembershipByNodeIdDocument = `
@@ -9100,10 +9180,10 @@ export const useGetSlotsQuery = <TData = GetSlotsQuery, TError = QueryError>(
 export const GetUserByEmailDocument = `
     query getUserByEmail($email: String!) {
   userByEmail(email: $email) {
-    ...userFields
+    ...userAndProfileFields
   }
 }
-    ${UserFieldsFragmentDoc}`
+    ${UserAndProfileFieldsFragmentDoc}`
 export const useGetUserByEmailQuery = <TData = GetUserByEmailQuery, TError = QueryError>(
   variables: GetUserByEmailQueryVariables,
   options?: UseQueryOptions<GetUserByEmailQuery, TError, TData>

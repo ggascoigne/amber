@@ -22,7 +22,7 @@ declare module '@material-ui/core/styles/createMixins' {
   }
 }
 
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module '@material-ui/core/createTheme' {
   interface ThemeExtension {
     backgroundSlightlyDarker: CSSProperties['color']
     bannerShadow: CSSProperties['boxShadow']

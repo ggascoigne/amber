@@ -97,7 +97,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const onChange = useCallback(
     (_, value) => {
       setUserInfo(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
-      setSearchTerm(value ? value.Fullname : '')
+      setSearchTerm(value?.fullName || '')
     },
     [setUserInfo]
   )
@@ -137,7 +137,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
         clearIndicator: classes.inheritColor,
       }}
       renderInput={(params) => (
-        <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} />
+        <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} variant='standard' />
       )}
       renderOption={(params: UserType) => {
         const isMember = !!params.memberships.nodes.find((m) => m?.year === year)

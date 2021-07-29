@@ -2,7 +2,7 @@
 
 query getUserByEmail($email: String!) {
   userByEmail(email: $email) {
-    ...userFields
+    ...userAndProfileFields
   }
 }
 

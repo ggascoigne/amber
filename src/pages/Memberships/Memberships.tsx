@@ -13,8 +13,8 @@ import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { GameAssignmentDialog } from './GameAssignmentDialog'
-import { MembershipDialog } from './MembershipDialog'
 import { Membership } from './membershipUtils'
+import { MembershipWizard } from './MembershipWizard'
 
 const initialState: Partial<TableState<Membership>> = {
   sortBy: [
@@ -233,7 +233,7 @@ const Memberships: React.FC = React.memo(() => {
   return (
     <Page title='Membership'>
       {showEdit && (
-        <MembershipDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} />
+        <MembershipWizard open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} short />
       )}
       {showGameAssignment && (
         <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />

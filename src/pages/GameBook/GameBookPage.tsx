@@ -36,7 +36,7 @@ const GameBookPage: React.FC = () => {
   const years = range(configuration.year - 1, 2012)
   return (
     <Page title='Game Book' hideTitle>
-      <GridContainer spacing={2} justify='center'>
+      <GridContainer spacing={2} justifyContent='center'>
         {years.map((year) => (
           <GridItem key={year} xl={2} lg={3} md={4} sm={6}>
             <GameByYear year={year} to={`/game-book/${year}/1`} />

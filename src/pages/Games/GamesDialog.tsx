@@ -1,8 +1,8 @@
 import { Dialog, DialogContentText, TextField as MuiTextField, Typography, useTheme } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
-import { Game, useGetGamesByAuthorQuery } from 'client'
+import { GameFieldsFragment, GameGmsFragment, useGetGameByIdQuery, useGetGamesByAuthorQuery } from 'client'
 import { Perms } from 'components/Auth'
-import { EditDialog } from 'components/EditDialog'
+import { EditDialog, useDisableBackdropClick } from 'components/EditDialog'
 import { CheckboxWithLabel, SelectField, TextField, TextFieldProps } from 'components/Form'
 import { GraphQLError } from 'components/GraphQLError'
 import { Loader } from 'components/Loader'
@@ -15,10 +15,13 @@ import { HasPermission } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
+type Game = GameFieldsFragment & GameGmsFragment
+
 interface GamesDialogProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: GameDialogFormValues
+  id?: number
 }
 
 const genreOptions = [
@@ -102,11 +105,28 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
   return <SelectField {...rest} selectValues={selectValues} />
 }
 
+export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
+  const { id, initialValues } = props
+  const { isLoading, error, data } = useGetGameByIdQuery({ id: id ?? 0 }, { enabled: !initialValues && !!id })
+  if (initialValues) {
+    return <GamesDialog {...props} />
+  }
+  if (error) {
+    return <GraphQLError error={error} />
+  }
+  if (isLoading || !data) {
+    return <Loader />
+  }
+  const values = data.game
+  return values ? <GamesDialog {...props} initialValues={values} /> : null
+}
+
 export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const editing = initialValues !== defaultValues
   const theme = useTheme()
   const { userId } = useUser()
   const createOrUpdateGame = useEditGame(onClose, initialValues)
+  const handleClose = useDisableBackdropClick(onClose)
 
   const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
@@ -121,7 +141,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   }
   if (!data) {
     return (
-      <Dialog disableBackdropClick fullWidth maxWidth='md' open>
+      <Dialog fullWidth maxWidth='md' open onClose={handleClose}>
         <Loader />
       </Dialog>
     )

@@ -82,3 +82,17 @@ export const not = <T extends unknown>(a: T[], b: T[]) => a.filter((value) => b.
 export const intersection = <T extends unknown>(a: T[], b: T[]) => a.filter((value) => b.indexOf(value) !== -1)
 
 export const union = <T extends unknown>(a: T[], b: T[]) => [...a, ...not(b, a)]
+
+export const isEmpty = (obj?: Record<string, unknown>) => {
+  console.log(`obj = ${JSON.stringify(obj, null, 2)}`)
+  if (!obj) return false
+  console.log({
+    length: Object.keys(obj).length,
+    objectConstructor: obj.constructor === Object,
+    keys: Object.keys(obj),
+  })
+  return (
+    !obj || // 👈 null and undefined check
+    (Object.keys(obj).length === 0 && obj.constructor === Object)
+  )
+}

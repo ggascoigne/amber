@@ -1,6 +1,6 @@
 import { FormControl, MenuItem, TextField, Theme, createStyles } from '@material-ui/core'
 import { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { alpha, makeStyles } from '@material-ui/core/styles'
 import React from 'react'
 import { configuration, range, useYearFilter } from 'utils'
 
@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme: Theme) =>
       '& .MuiInput-underline': {
         borderBottomColor: theme.palette.common.white,
         '&:before': {
-          borderBottomColor: fade(theme.palette.common.white, 0.15),
+          borderBottomColor: alpha(theme.palette.common.white, 0.15),
         },
         '&:after': {
           borderBottomColor: theme.palette.common.white,
         },
         '&:hover:before': {
-          borderBottomColor: fade(theme.palette.common.white, 0.25),
+          borderBottomColor: alpha(theme.palette.common.white, 0.25),
         },
       },
     },
@@ -54,7 +54,14 @@ export const YearSelector = () => {
 
   return (
     <FormControl className={classes.formControl}>
-      <TextField select id='year-selector-label' value={year} onChange={handleChange} classes={{ root: classes.root }}>
+      <TextField
+        select
+        id='year-selector-label'
+        value={year}
+        onChange={handleChange}
+        classes={{ root: classes.root }}
+        variant='standard'
+      >
         {possibleYears.map((s) => (
           <MenuItem key={getSelectValue(s)} value={getSelectValue(s)}>
             {getSelectLabel(s)}

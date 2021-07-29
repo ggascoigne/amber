@@ -26,4 +26,7 @@ fragment membershipFields on Membership {
     lastName
     email
   }
+  hotelRoom {
+    type
+  }
 }

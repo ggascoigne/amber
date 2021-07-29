@@ -16,8 +16,28 @@ query getMembershipsByYear($year: Int!) {
   }
 }
 
+query getMembershipRoomsByYear($year: Int!) {
+  memberships(condition: { year: $year }) {
+    nodes {
+      hotelRoom {
+        type
+        gamingRoom
+        bathroomType
+      }
+    }
+  }
+}
+
 query getMembershipsById($id: Int!) {
   memberships(condition: { id: $id }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+query getMembershipByYearAndRoom($year: Int!, $hotelRoomId: Int!) {
+  memberships(condition: { year: $year, hotelRoomId: $hotelRoomId }) {
     nodes {
       ...membershipFields
     }
