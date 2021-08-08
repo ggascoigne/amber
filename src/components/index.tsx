@@ -48,16 +48,16 @@ export const ConventionsDatesFull: React.FC<{ pre?: string; intra?: string; post
   </>
 )
 
-const Ordinal = ({ skipSpace = 'neither' }: SpacingProps) => (
+export const AcnwOrdinal = ({ skipSpace = 'neither' }: SpacingProps) => (
   <Spacing skipSpace={skipSpace}>{getOrdinalWord(1 + configuration.year - 1997)} </Spacing>
 )
 
-const ConventionYear = ({ skipSpace = 'neither' }: SpacingProps) => (
+export const ConventionYear = ({ skipSpace = 'neither' }: SpacingProps) => (
   <Spacing skipSpace={skipSpace}>{configuration.year}</Spacing>
 )
 
-const ContactEmail = ({ skipSpace = 'neither' }: SpacingProps) => (
+export const ContactEmail = ({ skipSpace = 'neither' }: SpacingProps) => (
   <Spacing skipSpace={skipSpace}>{configuration.contactEmail} </Spacing>
 )
 
-export const Acnw = { Ordinal, ConventionYear, ContactEmail }
+export const Acnw = { Ordinal: AcnwOrdinal, ConventionYear, ContactEmail }

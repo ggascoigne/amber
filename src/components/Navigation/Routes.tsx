@@ -54,7 +54,7 @@ export const rootRoutes: RootRoutes = [
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
-    component: React.lazy(() => import('pages/AboutAmberconNw')), // placeholder
+    component: React.lazy(() => import('pages/Accommodations')),
     condition: !configuration.virtual,
   },
   {

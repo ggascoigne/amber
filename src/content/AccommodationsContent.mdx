@@ -1,0 +1,77 @@
+import { AcnwOrdinal, ConventionYear, ConfigDate } from 'components'
+import { RoomsTable } from 'components/Rooms'
+import { BathroomType, configuration } from 'utils'
+
+## McMenamins Edgefield
+
+AmberCon Northwest returns to the McMenamins Edgefield Bed and Breakfast
+Resort in Troutdale for its <AcnwOrdinal/> year. This superb hotel complex includes a
+spa with extensive outdoor garden soaking pools, three pubs, a fine-dining
+restaurant, movie theatre, wine tasting room, on-site brewery and distillery,
+golf course, and comfortably furnished game and accommodation rooms -- all
+decorated by local Northwest artists. Please visit the
+[McMenamins Edgefield](https://www.mcmenamins.com/edgefield)
+web site to see photos of the estate, read the wine lists and menus, or
+investigate the history of this Oregon landmark.
+
+Note: "bed & breakfast style" means that many of the rooms
+at the Edgefield are served by separate but private bathrooms on the halls,
+though some rooms have been updated to include _en suite_ facilities.
+
+### Administrator's Lodge
+
+The Administrator's lodge is a lovely, separate house beside the main
+lodge. In addition to queen, king, and double queen rooms it also includes
+a living-room space used for larger games. The Admin Lodge requires a
+Wednesday - Monday stay.
+
+### Winery Wing
+
+Each year AmberCon Northwest completely takes over this wing of the hotel.
+Almost all of the Winery Wing rooms have now been converted to Queen, King,
+and Double Queen suites with _en-suite_ bath facilities. Many of these
+rooms are also "Gaming Rooms."
+
+### "Gaming Room" Discount!
+
+Several Double Queens, Double Queen Suites, Kings, and King Suites have
+been reserved by the convention for game play. If you book space in these rooms
+the convention will contribute {configuration.gameRoomSubsidy} per night on Thurs-Sun towards the cost.
+Gaming rooms require a minimum Thursday through Monday stay.
+
+## Rooming at AmberCon NW
+
+Prices are set by the hotel. **They are subject to change** before the convention fixes
+them in October, <ConventionYear/>.
+
+To make a room reservation for your stay at AmberCon NW please complete
+our Registration Form. Do not make reservations directly with the hotel.
+
+McMenamins adds a {configuration.moreThanDoubleOccupancySurcharge} charge for each person over 2 in room. Price shown does
+not include {configuration.oregonHotelTax} hotel tax.
+
+### Rooms with bath facilities "down the hall" bed & breakfast style
+
+Note that there are only 4 Twin rooms in the entire hotel; if you
+are flexible about your accommodation, please let us know so that someone
+with less flexibility can get first chance at these rooms. Aside from
+this, accommodation will be assigned on a first-come, first-served basis.
+When registering, please let us know your second choice in case your first
+choice is not available.
+
+<RoomsTable type={BathroomType.NoEnSuite}/>
+
+### Rooms with en-suite bath facilities
+
+<RoomsTable type={BathroomType.EnSuite}/>
+
+<br />
+
+Game Rooms: These are suites reserved for game play and the listed price includes a {configuration.gameRoomSubsidy} discount from ACNW for gaming
+nights. Be advised that while we will do our best to make sure that the rooms
+are used for games you are actually in, in exchange for the discount the game
+space will be scheduled **at the discretion of the organizers**.
+
+Prices in red indicate the reduced rate offered by the convention on
+those nights. This rate does not apply outside of the time of the
+convention.

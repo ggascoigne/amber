@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { getPlayerPreference } from '../../src/utils/lookupValues'
+import { getPlayerPreference } from '../../src/utils/selectValues'
 import { requireJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'

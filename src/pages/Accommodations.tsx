@@ -1,17 +1,17 @@
 /* eslint-disable import/no-webpack-loader-syntax */
 // @ts-ignore
-import AboutAmberContent from '!babel-loader!@mdx-js/loader!../content/AboutAmberContent.mdx'
+import AccommodationsContent from '!babel-loader!@mdx-js/loader!../content/AccommodationsContent.mdx'
 import { Page } from 'components/Page'
 import React from 'react'
 
 import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
 
-const AboutAmber = () => (
-  <Page title='What is Amber Roleplaying?'>
+const Accommodations = () => (
+  <Page title='About the AmberCon NW Venue'>
     <MdxWithExternalLinks>
-      <AboutAmberContent />
+      <AccommodationsContent />
     </MdxWithExternalLinks>
   </Page>
 )
 
-export default AboutAmber
+export default Accommodations

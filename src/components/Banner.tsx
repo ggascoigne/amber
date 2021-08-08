@@ -22,7 +22,7 @@ const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = 
   className,
   virtual = false,
 }) => {
-  const background = '#ffffff'
+  // const background = '#ffffff'
   const purple = '#31107b' // '#39177a'
   const red = '#ce0000'
   const yellow = '#ffce00'

@@ -24,7 +24,9 @@ export default withApiHandler([
         // string values because pgSettings only groks strings
         settings['user.id'] = `${userId}`
         settings['user.admin'] = `${admin}`
-        isDev && admin && console.log(`userId(${userId}) is admin`)
+        isDev && console.log(`userId(${userId}) is ${admin ? 'admin' : 'not-admin'}`)
+      } else {
+        isDev && console.log('not logged in')
       }
       return settings
     },

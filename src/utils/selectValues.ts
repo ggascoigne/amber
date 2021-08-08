@@ -1,6 +1,23 @@
 import { configDate } from '../components'
 import { configuration } from './configuration'
 
+export const getPref = (values: { value: string; text: string }[], value?: string) =>
+  values.find((v) => v.value === value)?.text
+
+export enum PlayerPreference {
+  Any = 'any',
+  RetOnly = 'ret-only',
+  RetPref = 'ret-pref',
+}
+
+export const playerPreferenceOptions = [
+  { value: PlayerPreference.Any, text: 'Any' },
+  { value: PlayerPreference.RetOnly, text: 'Returning players only' },
+  { value: PlayerPreference.RetPref, text: 'Returning players have preference, new players welcome.' },
+]
+
+export const getPlayerPreference = (value?: string) => getPref(playerPreferenceOptions, value)
+
 export enum Attendance {
   ThursSun = 'Thurs-Sun',
   FriSun = 'Fri-Sun',
@@ -16,6 +33,8 @@ export const attendanceSelectValues = [
     text: `Short: $${configuration.threeDayMembership}.`,
   },
 ]
+
+export const getAttendance = (value?: string) => getPref(attendanceSelectValues, value)
 
 export enum InterestLevel {
   Full = 'Full',
@@ -34,6 +53,8 @@ export const interestSelectValues = [
     )}.`,
   },
 ]
+
+export const getInterestLevel = (value?: string) => getPref(interestSelectValues, value)
 
 export enum BathroomType {
   EnSuite = 'en-suite',
@@ -56,6 +77,8 @@ export const bathroomTypeSelectValues = [
   },
 ]
 
+export const getBathroomType = (value?: string) => getPref(bathroomTypeSelectValues, value)
+
 export enum RoomPref {
   RoomWith = 'room-with',
   AssignMe = 'assign-me',
@@ -76,3 +99,5 @@ export const roomPrefSelectValues = [
     text: 'None',
   },
 ]
+
+export const getRoomPref = (value?: string) => getPref(roomPrefSelectValues, value)

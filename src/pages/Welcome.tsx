@@ -1,3 +1,6 @@
+/* eslint-disable import/no-webpack-loader-syntax */
+// @ts-ignore
+import WelcomeContent from '!babel-loader!@mdx-js/loader!../content/WelcomeContent.mdx'
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
 import { Acnw, ConfigDate } from 'components'
 import { Banner } from 'components/Banner'
@@ -7,6 +10,7 @@ import { Link } from 'react-router-dom'
 import { IsMember, useSetting } from 'utils'
 
 import { CardBody } from '../components/Card'
+import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
 import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -43,6 +47,17 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
+const DynamicMemberContent = () => (
+  <>
+    <BecomeAMember />
+    <IsMember>
+      <Button variant='outlined' color='primary' size='large' to='/gm' component={Link} style={{ marginTop: 8 }}>
+        Become a GM
+      </Button>
+    </IsMember>
+  </>
+)
+
 export const Welcome: React.FC = () => {
   const isBeta = useSetting('display.test.warning')
   const theme = useTheme()
@@ -76,53 +91,10 @@ export const Welcome: React.FC = () => {
 
   return (
     <Page title='Welcome' titleElement={titleElement}>
-      <p>
-        AmberCon Northwest is a fully scheduled role-playing game convention held annually in Troutdale, Oregon, just
-        east of Portland. ACNW was originally devoted to Roger Zelazny's worlds of Amber and Phage Press's{' '}
-        <strong>Amber Diceless RPG</strong> by Erick Wujcik. It has expanded over the years to encompass other diceless
-        and indie RPGs of all kinds, and most recently Rite Publishing's <strong>Lords of Gossamer and Shadow</strong>,
-        a new take and expansion upon the Amber Diceless gaming rules. Many games will expect some passing knowledge of
-        at least the main characters and basic plot points of Zelazny's Amber novels.
-      </p>
-
-      <p>
-        <Acnw.ConventionYear /> marks AmberCon Northwest's <Acnw.Ordinal /> year at the venue that makes it unique,
-        <a href='https://www.mcmenamins.com/edgefield' target='_new'>
-          McMenamins Edgefield Bed and Breakfast Resort
-        </a>
-        .
-      </p>
-
-      <p>
-        Use this site to learn how an AmberCon works; explore the venue; register for the convention; submit game events
-        to the organizers; sign up for games when the event book is published; and check out the event books from past
-        AmberCon Northwests.
-      </p>
-      <br />
-
-      <p>
-        AmberCon NW announcements and informal chats also appear on our{' '}
-        <a href='https://www.facebook.com/groups/464742576942907/' target='_new'>
-          Facebook group page
-        </a>
-        .
-      </p>
-      <br />
-
-      <p>
-        For information about other AmberCons in the US and abroad, go to{' '}
-        <a href='http://www.ambercons.com' target='_new'>
-          www.ambercons.com
-        </a>
-      </p>
-
-      <BecomeAMember />
-
-      <IsMember>
-        <Button variant='outlined' color='primary' size='large' to='/gm' component={Link} style={{ marginTop: 8 }}>
-          Become a GM
-        </Button>
-      </IsMember>
+      <MdxWithExternalLinks>
+        <WelcomeContent />
+      </MdxWithExternalLinks>
+      <DynamicMemberContent />
 
       <h2>Deadline dates this year</h2>
       <p>

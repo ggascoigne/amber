@@ -1,6 +1,6 @@
 import { useGetSingleLookupValueQuery } from 'client'
 import React from 'react'
-import { getPlayerPreference } from 'utils/lookupValues'
+import { getAttendance, getBathroomType, getInterestLevel, getPlayerPreference, getRoomPref } from 'utils/selectValues'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'
@@ -16,6 +16,14 @@ export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
   switch (realm) {
     case 'gamePlayerPref':
       return <>{getPlayerPreference(code)}</>
+    case 'attendance':
+      return <>{getAttendance(code)}</>
+    case 'bathroomType':
+      return <>{getBathroomType(code)}</>
+    case 'interest':
+      return <>{getInterestLevel(code)}</>
+    case 'roomPref':
+      return <>{getRoomPref(code)}</>
     default:
       return <InternalLookupValue realm={realm} code={code} />
   }

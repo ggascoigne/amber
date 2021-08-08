@@ -1,34 +1,14 @@
-import {
-  DialogContentText,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Theme,
-  createStyles,
-  makeStyles,
-  useTheme,
-} from '@material-ui/core'
-import clsx from 'clsx'
+import { DialogContentText, FormControl, RadioGroup, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { DatePicker, RadioGroupFieldWithLabel, TextField } from 'components/Form'
 import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 
-import { useGetHotelRoomsQuery } from '../../client'
 import { Acnw, ConfigDate } from '../../components'
-import { GraphQLError } from '../../components/GraphQLError'
 import { GridContainer, GridItem } from '../../components/Grid'
-import { Loader } from '../../components/Loader'
+import { RoomFieldTable } from '../../components/Rooms'
 import { Important } from '../../components/Typography'
-import { BathroomType, RoomPref, configuration, notEmpty, roomPrefSelectValues } from '../../utils'
-import { useAvailableHotelRooms } from '../HotelRoomDetails/HotelRoomDetails'
-import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
+import { RoomPref, configuration, roomPrefSelectValues } from '../../utils'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
@@ -46,131 +26,8 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 16,
       right: 50,
     },
-    titleLine: {
-      // see tableCell
-    },
-    soldOut: {
-      color: 'rgba(0,0,0,0.38)',
-
-      '&:after': {
-        color: 'black',
-        content: ' SOLD OUT',
-      },
-    },
-    tableRow: {
-      color: 'inherit',
-      outline: 0,
-      verticalAlign: 'middle',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.07)',
-      },
-    },
-    tableLabel: {},
-    tableCell: {
-      padding: '8px 16px',
-      fontSize: '0.875rem',
-      textAlign: 'left',
-      fontWeight: 300,
-      lineHeight: 1.3,
-      verticalAlign: 'inherit',
-      // color: theme.palette.text.primary,
-      '&$titleLine': {
-        fontWeight: 500,
-      },
-    },
   })
 )
-
-const getRoomTypeDescription = (type: BathroomType) => {
-  switch (type) {
-    case BathroomType.Other:
-      return ''
-    case BathroomType.EnSuite:
-      return 'Rooms with en-suite bath facilities'
-    case BathroomType.NoEnSuite:
-      return "Rooms with bath facilities 'down the hall', bed & breakfast style"
-  }
-}
-
-interface RoomsProps {
-  rooms?: HotelRoom[]
-  type: BathroomType
-}
-
-// extracted to make style debugging easier
-const roomCountThreshold = 0
-
-const Rooms: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const classes = useStyles()
-  const { getAvailable } = useAvailableHotelRooms()
-  const theme = useTheme()
-  const description = getRoomTypeDescription(type)
-  const roomsOfType = useMemo(
-    () =>
-      rooms?.filter((room) => room.bathroomType === type)?.filter((room) => getAvailable(room) > roomCountThreshold),
-    [getAvailable, rooms, type]
-  )
-
-  if (roomsOfType?.length) {
-    return (
-      <>
-        {description ? (
-          <TableRow key={`${type}_0`} className={classes.tableRow}>
-            <TableCell className={clsx(classes.tableCell, classes.titleLine)} colSpan={3}>
-              {getRoomTypeDescription(type)}
-            </TableCell>
-          </TableRow>
-        ) : null}
-        {roomsOfType?.map((room, index) => {
-          const available = getAvailable(room)
-          const disabled = available <= roomCountThreshold
-          const label = (
-            <span
-              /* eslint-disable-next-line risxss/catch-potential-xss-react */
-              dangerouslySetInnerHTML={{
-                __html: room.description.replaceAll(
-                  /\*/g,
-                  `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`
-                ),
-              }}
-            />
-          )
-          return (
-            <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={disabled} />
-              </TableCell>
-              <TableCell
-                className={clsx(classes.tableCell, { [classes.soldOut]: disabled })}
-                scope='row'
-                /* eslint-disable-next-line risxss/catch-potential-xss-react */
-                dangerouslySetInnerHTML={{
-                  __html: room.rate.replaceAll(
-                    /(\$\d+ \/ night T.*Sat\*)/g,
-                    `<span style='color:${theme.palette.error.main};'>$1</span>`
-                  ),
-                }}
-              />
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.occupancy}
-              </TableCell>
-              {/*
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {available}
-              </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.id}
-              </TableCell>
-*/}
-            </TableRow>
-          )
-        })}
-      </>
-    )
-  } else {
-    return null
-  }
-}
 
 const DatePickerLabelFn = (date: DateTime | null, invalidLabel: string) =>
   date ? date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
@@ -187,7 +44,6 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
 
 export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const classes = useStyles()
-  const { isLoading, error, data } = useGetHotelRoomsQuery()
 
   const [hotelRoomField, meta, { setValue }] = useField(`${prefix}hotelRoomId`)
   const { touched, error: fieldError } = meta
@@ -201,15 +57,6 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
     },
     [setValue]
   )
-
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  const rooms: HotelRoom[] = data.hotelRooms!.edges.map((v) => v.node).filter(notEmpty)
 
   return (
     <>
@@ -286,20 +133,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
 
       <FormControl component='fieldset' error={showError}>
         <RadioGroup {...hotelRoomField} onChange={onChange}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Room</TableCell>
-                <TableCell>Cost</TableCell>
-                <TableCell>Occupancy</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <Rooms rooms={rooms} type={BathroomType.Other} />
-              <Rooms rooms={rooms} type={BathroomType.NoEnSuite} />
-              <Rooms rooms={rooms} type={BathroomType.EnSuite} />
-            </TableBody>
-          </Table>
+          <RoomFieldTable />
         </RadioGroup>
       </FormControl>
 

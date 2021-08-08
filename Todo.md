@@ -9,11 +9,12 @@
 - [x] add hotel-room based member registration
 - [ ] add option to mark a whole slot as absent (slot 3)
 - [ ] add option to assign games to rooms
-- [ ] Fix transparency on the acnw svg
+- [ ] Fix transparency on the acnw svg (for dark mode)
 - [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
 - [ ] Remove virtual from the AmberCon NW page
 - [ ] Create an Accommodations page
 - [ ] Fix registration email for non-virtual
+- [ ] Write non-virtual membership summary
 - [ ] Update convention prices
 - [ ] Update Hotel Room prices and quantity/availability
 - [ ] Review new text with Simone

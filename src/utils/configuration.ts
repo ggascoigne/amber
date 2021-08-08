@@ -61,7 +61,9 @@ export const configuration = {
   virtual: startDates[THIS_YEAR].virtual,
   numberOfSlots: startDates[THIS_YEAR].slots,
   oregonHotelTax: '1.5%',
+  virtualCost: '$15',
   moreThanDoubleOccupancySurcharge: '$15',
+  gameRoomSubsidy: '$30',
 }
 
 export type ConfigurationType = typeof configuration
