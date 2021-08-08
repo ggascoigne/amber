@@ -2,23 +2,23 @@
 
 ## 2021
 
+- [ ] add option to mark a whole slot as absent (slot 3)
+- [ ] add option to assign games to rooms
+- [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
+- [ ] Fix registration email for non-virtual
+- [ ] Update convention prices
+- [ ] Url-based new and edit everywhere 
 - [x] switch off virtual flag
 - [x] get new dates
 - [x] sync welcome page with updates on the virtual version
 - [x] update banner - might be automatic based on changing dates
 - [x] add hotel-room based member registration
-- [ ] add option to mark a whole slot as absent (slot 3)
-- [ ] add option to assign games to rooms
-- [ ] Fix transparency on the acnw svg (for dark mode)
-- [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
-- [ ] Remove virtual from the AmberCon NW page
-- [ ] Create an Accommodations page
-- [ ] Fix registration email for non-virtual
-- [ ] Write non-virtual membership summary
-- [ ] Update convention prices
-- [ ] Update Hotel Room prices and quantity/availability
-- [ ] Review new text with Simone
-- [ ] Url-based new and edit everywhere 
+- [x] Fix transparency on the acnw svg (for dark mode)
+- [x] Remove virtual from the AmberCon NW page
+- [x] Create an Accommodations page
+- [x] Write non-virtual membership summary
+- [x] Update Hotel Room prices and quantity/availability
+- [x] Review new text with Simone
 
 * [ ] Add readme, contributing guide, etc.
 * [ ] add tests, either unit or Cypress
