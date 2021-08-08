@@ -4,7 +4,7 @@ export const pdxDate = ({ year, month, day }: { year: number; month: number; day
   DateTime.fromObject({ year, month, day, zone: 'America/Los_Angeles' })
 
 // note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
-const startDates: Record<number, { date: DateTime; virtual: boolean; slots: number }> = {
+const startDates: Record<number, { date: DateTime; virtual: boolean; slots: number; skippedSlots?: Array<number> }> = {
   2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false, slots: 7 },
   2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false, slots: 7 },
   2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false, slots: 7 },
@@ -14,7 +14,7 @@ const startDates: Record<number, { date: DateTime; virtual: boolean; slots: numb
   2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false, slots: 7 },
   2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false, slots: 7 },
   2020: { date: pdxDate({ year: 2020, month: 11, day: 5 }), virtual: true, slots: 7 },
-  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false, slots: 6 },
+  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false, slots: 6, skippedSlots: [3] },
 }
 
 const THIS_YEAR = 2021
@@ -60,6 +60,7 @@ export const configuration = {
 
   virtual: startDates[THIS_YEAR].virtual,
   numberOfSlots: startDates[THIS_YEAR].slots,
+  skippedSlots: startDates[THIS_YEAR].skippedSlots,
   oregonHotelTax: '1.5%',
   virtualCost: '$15',
   moreThanDoubleOccupancySurcharge: '$15',

@@ -30,14 +30,14 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
     </DialogContentText>
     <h3>Convention Registration</h3>
     <DialogContentText component='div'>
-      <strong>Full Membership</strong> includes
+      <strong>Full Membership - ${configuration.fourDayMembership}</strong> includes
       <ul>
         <li>up to all {configuration.numberOfSlots} game slots, Thursday evening through Sunday evening</li>
         <li>a ${configuration.fourDayVoucher} meal card</li>
         <li>3 breakfasts</li>
         <li>snacks, tea and coffee during the day.</li>
       </ul>
-      <strong>Short Membership</strong> includes
+      <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
       <ul>
         <li>up to 4 game slots, Friday evening through Sunday evening, for example</li>
         <li>a ${configuration.threeDayVoucher} meal card</li>

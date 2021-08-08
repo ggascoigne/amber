@@ -14,7 +14,7 @@ import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { Table } from '../../components/Table'
-import { GqlType, notEmpty, useYearFilter } from '../../utils'
+import { GqlType, notEmpty, useSettings, useYearFilter } from '../../utils'
 import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
@@ -26,6 +26,8 @@ export const useAvailableHotelRooms = () => {
   const { data: roomsByMember } = useGetMembershipRoomsByYearQuery({
     year,
   })
+  const [, getSettingTruth] = useSettings()
+  const shouldUseRoomTotal = getSettingTruth?.('use.detail.room.quantities') ?? false
 
   const rooms: HotelRoomDetail[] | undefined = useMemo(
     () => roomDetails?.hotelRoomDetails!.edges.map((v) => v.node).filter(notEmpty),
@@ -69,11 +71,18 @@ export const useAvailableHotelRooms = () => {
     [roomsInUse]
   )
 
-  const getAvailable = useCallback(
+  const getAvailableFromTotal = useCallback(
     (room: HotelRoom): number => getTotal(room) - getRequested(room),
     [getRequested, getTotal]
   )
-  return { getAvailable, getRequested, getTotal }
+
+  const getAvailableFromQuantity = useCallback(
+    (room: HotelRoom): number => room.quantity - getRequested(room),
+    [getRequested]
+  )
+
+  const getRoomAvailable = shouldUseRoomTotal ? getAvailableFromTotal : getAvailableFromQuantity
+  return { getRoomAvailable, getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal }
 }
 
 const columns: Column<HotelRoomDetail>[] = [

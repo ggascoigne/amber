@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const getRoomTypeDescription = (type: BathroomType) => {
+const getRoomTypeDescription = (type: BathroomType) => {
   switch (type) {
     case BathroomType.Other:
       return ''
@@ -69,7 +69,37 @@ export const getRoomTypeDescription = (type: BathroomType) => {
   }
 }
 
-export interface RoomsProps {
+const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
+  const theme = useTheme()
+  return (
+    <span
+      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      dangerouslySetInnerHTML={{
+        __html: room.description.replaceAll(
+          /\*/g,
+          `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`
+        ),
+      }}
+    />
+  )
+}
+
+const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
+  const theme = useTheme()
+  return (
+    <span
+      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      dangerouslySetInnerHTML={{
+        __html: room.rate.replaceAll(
+          /(\$\d+ \/ night T.*S??\*)/g,
+          `<span style='color:${theme.palette.error.main};'>$1</span>`
+        ),
+      }}
+    />
+  )
+}
+
+interface RoomsProps {
   rooms?: HotelRoom[]
   type: BathroomType
 }
@@ -77,16 +107,22 @@ export interface RoomsProps {
 // extracted to make debugging easier
 const roomCountThreshold = 0
 
-export const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const classes = useStyles()
-  const { getAvailable } = useAvailableHotelRooms()
-  const theme = useTheme()
-  const description = getRoomTypeDescription(type)
-  const roomsOfType = useMemo(
+const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) => {
+  const { getRoomAvailable } = useAvailableHotelRooms()
+  return useMemo(
     () =>
-      rooms?.filter((room) => room.bathroomType === type)?.filter((room) => getAvailable(room) > roomCountThreshold),
-    [getAvailable, rooms, type]
+      rooms
+        ?.filter((room) => room.bathroomType === type)
+        ?.filter((room) => getRoomAvailable(room) > roomCountThreshold),
+    [getRoomAvailable, rooms, type]
   )
+}
+
+const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
+  const classes = useStyles()
+  const { getRoomAvailable } = useAvailableHotelRooms()
+  const description = getRoomTypeDescription(type)
+  const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
 
   if (roomsOfType?.length) {
     return (
@@ -94,40 +130,22 @@ export const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
         {description ? (
           <TableRow key={`${type}_0`} className={classes.tableRow}>
             <TableCell className={clsx(classes.tableCell, classes.titleLine)} colSpan={3}>
-              {getRoomTypeDescription(type)}
+              {description}
             </TableCell>
           </TableRow>
         ) : null}
         {roomsOfType?.map((room, index) => {
-          const available = getAvailable(room)
+          const available = getRoomAvailable(room)
           const disabled = available <= roomCountThreshold
-          const label = (
-            <span
-              /* eslint-disable-next-line risxss/catch-potential-xss-react */
-              dangerouslySetInnerHTML={{
-                __html: room.description.replaceAll(
-                  /\*/g,
-                  `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`
-                ),
-              }}
-            />
-          )
+          const label = <FancyDescription room={room} />
           return (
             <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
               <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={disabled} />
               </TableCell>
-              <TableCell
-                className={clsx(classes.tableCell, { [classes.soldOut]: disabled })}
-                scope='row'
-                /* eslint-disable-next-line risxss/catch-potential-xss-react */
-                dangerouslySetInnerHTML={{
-                  __html: room.rate.replaceAll(
-                    /(\$\d+ \/ night T.*Sat\*)/g,
-                    `<span style='color:${theme.palette.error.main};'>$1</span>`
-                  ),
-                }}
-              />
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                <FancyRate room={room} />
+              </TableCell>
               <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {room.occupancy}
               </TableCell>
@@ -139,6 +157,48 @@ export const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
                 {room.id}
               </TableCell>
 */}
+            </TableRow>
+          )
+        })}
+      </>
+    )
+  } else {
+    return null
+  }
+}
+
+const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
+  const classes = useStyles()
+  const { getRoomAvailable } = useAvailableHotelRooms()
+  const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
+
+  if (roomsOfType?.length) {
+    return (
+      <>
+        {roomsOfType?.map((room, index) => {
+          const available = getRoomAvailable(room)
+          // fyi we chose to hide sold out rooms - so this bit of code never triggers, but we might put it back :)
+          const disabled = available <= roomCountThreshold
+          const label = <FancyDescription room={room} />
+          return (
+            <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                {label}
+              </TableCell>
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                <FancyRate room={room} />
+              </TableCell>
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                {room.occupancy}
+              </TableCell>
+              {/*
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                {available}
+              </TableCell>
+              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+                {room.id}
+              </TableCell>
+              */}
             </TableRow>
           )
         })}
@@ -159,11 +219,10 @@ export const RoomFieldTable: React.FC = () => {
     return <Loader />
   }
 
-  // todo: fix correctly
   const rooms: HotelRoom[] = data
     .hotelRooms!.edges.map((v) => v.node)
     .filter(notEmpty)
-    .filter((r) => r.type !== 'hostel')
+    .filter((r) => r.quantity > 0)
 
   return (
     <Table>
@@ -183,78 +242,6 @@ export const RoomFieldTable: React.FC = () => {
   )
 }
 
-export const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const classes = useStyles()
-  const { getAvailable } = useAvailableHotelRooms()
-  const theme = useTheme()
-  // const description = getRoomTypeDescription(type)
-  const roomsOfType = useMemo(
-    () =>
-      rooms?.filter((room) => room.bathroomType === type)?.filter((room) => getAvailable(room) > roomCountThreshold),
-    [getAvailable, rooms, type]
-  )
-
-  if (roomsOfType?.length) {
-    return (
-      <>
-        {/*{description ? (*/}
-        {/*  <TableRow key={`${type}_0`} className={classes.tableRow}>*/}
-        {/*    <TableCell className={clsx(classes.tableCell, classes.titleLine)} colSpan={3}>*/}
-        {/*      {getRoomTypeDescription(type)}*/}
-        {/*    </TableCell>*/}
-        {/*  </TableRow>*/}
-        {/*) : null}*/}
-        {roomsOfType?.map((room, index) => {
-          const available = getAvailable(room)
-          const disabled = available <= roomCountThreshold
-          const label = (
-            <span
-              /* eslint-disable-next-line risxss/catch-potential-xss-react */
-              dangerouslySetInnerHTML={{
-                __html: room.description.replaceAll(
-                  /\*/g,
-                  `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`
-                ),
-              }}
-            />
-          )
-          return (
-            <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {label}
-              </TableCell>
-              <TableCell
-                className={clsx(classes.tableCell, { [classes.soldOut]: disabled })}
-                scope='row'
-                /* eslint-disable-next-line risxss/catch-potential-xss-react */
-                dangerouslySetInnerHTML={{
-                  __html: room.rate.replaceAll(
-                    /(\$\d+ \/ night T.*S??\*)/g,
-                    `<span style='color:${theme.palette.error.main};'>$1</span>`
-                  ),
-                }}
-              />
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.occupancy}
-              </TableCell>
-              {/*
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {available}
-              </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.id}
-              </TableCell>
-*/}
-            </TableRow>
-          )
-        })}
-      </>
-    )
-  } else {
-    return null
-  }
-}
-
 export interface RoomsTableProps {
   type: BathroomType
 }
@@ -269,11 +256,10 @@ export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
     return <Loader />
   }
 
-  // todo: fix correctly
   const rooms: HotelRoom[] = data
     .hotelRooms!.edges.map((v) => v.node)
     .filter(notEmpty)
-    .filter((r) => r.type !== 'hostel')
+    .filter((r) => r.quantity > 0)
 
   return (
     <Table>

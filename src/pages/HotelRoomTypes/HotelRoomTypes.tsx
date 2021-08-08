@@ -60,45 +60,73 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
 const HotelRoomTypes: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoom[]>([])
-  const { getAvailable, getTotal, getRequested } = useAvailableHotelRooms()
+  const { getAvailableFromTotal, getAvailableFromQuantity, getTotal, getRequested } = useAvailableHotelRooms()
 
   const columns: Column<HotelRoom>[] = useMemo(
     () => [
       {
-        accessor: 'description',
+        Header: 'General',
+        columns: [
+          {
+            accessor: 'description',
+          },
+          {
+            accessor: 'rate',
+          },
+          {
+            accessor: 'occupancy',
+          },
+          {
+            id: 'requested',
+            accessor: (row: HotelRoom) => getRequested(row),
+            Cell: RequestedRoomCell,
+          },
+        ],
       },
       {
-        accessor: 'bathroomType',
+        Header: 'Pre Allocation',
+        columns: [
+          {
+            id: 'availableFromQuantity',
+            Header: 'Available',
+            accessor: (row: HotelRoom) => getAvailableFromQuantity(row),
+          },
+          {
+            accessor: 'quantity',
+          },
+        ],
       },
       {
-        accessor: 'occupancy',
+        Header: 'Room associations',
+        columns: [
+          {
+            id: 'available',
+            accessor: (row: HotelRoom) => getAvailableFromTotal(row),
+          },
+          {
+            id: 'total',
+            accessor: (row: HotelRoom) => getTotal(row),
+          },
+        ],
       },
       {
-        id: 'available',
-        accessor: (row: HotelRoom) => getAvailable(row),
-      },
-      {
-        id: 'total',
-        accessor: (row: HotelRoom) => getTotal(row),
-      },
-      {
-        id: 'requested',
-        accessor: (row: HotelRoom) => getRequested(row),
-        Cell: RequestedRoomCell,
-      },
-      {
-        accessor: 'gamingRoom',
-        Cell: YesBlankCell,
-        sortType: 'basic',
-      },
-      {
-        accessor: 'rate',
-      },
-      {
-        accessor: 'type',
+        Header: 'Types',
+        columns: [
+          {
+            accessor: 'gamingRoom',
+            Cell: YesBlankCell,
+            sortType: 'basic',
+          },
+          {
+            accessor: 'bathroomType',
+          },
+          {
+            accessor: 'type',
+          },
+        ],
       },
     ],
-    [getAvailable, getRequested, getTotal]
+    [getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal]
   )
 
   const deleteHotelRoom = useDeleteHotelRoomMutation()

@@ -7329,7 +7329,7 @@ export type GameGmsFragment = { __typename: 'Game' } & {
 
 export type HotelRoomFieldsFragment = { __typename: 'HotelRoom' } & Pick<
   HotelRoom,
-  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'rate' | 'type'
+  'id' | 'nodeId' | 'description' | 'gamingRoom' | 'bathroomType' | 'occupancy' | 'rate' | 'type' | 'quantity'
 >
 
 export type GetHotelRoomsQueryVariables = Exact<{ [key: string]: never }>
@@ -7956,6 +7956,7 @@ export const HotelRoomFieldsFragmentDoc = `
   occupancy
   rate
   type
+  quantity
 }
     `
 export const HotelRoomDetailsFieldsFragmentDoc = `

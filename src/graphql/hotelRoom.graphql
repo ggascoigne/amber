@@ -7,6 +7,7 @@ fragment hotelRoomFields on HotelRoom {
   occupancy
   rate
   type
+  quantity
 }
 
 query getHotelRooms {

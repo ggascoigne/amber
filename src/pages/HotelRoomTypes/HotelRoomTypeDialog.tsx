@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
   gamingRoom: Yup.boolean().required('Required'),
   bathroomType: Yup.string().min(2).max(100).required('Required'),
   occupancy: Yup.string().min(2).max(255),
-  quantity: Yup.number(),
+  quantity: Yup.number().required('Required'),
   rate: Yup.string().min(2).max(255),
   type: Yup.string().min(2).max(255).required('Required'),
 })
@@ -43,7 +43,17 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
             input: {
               nodeId: values.nodeId,
               patch: {
-                ...pick(values, 'id', 'description', 'gamingRoom', 'bathroomType', 'occupancy', 'rate', 'type'),
+                ...pick(
+                  values,
+                  'id',
+                  'description',
+                  'gamingRoom',
+                  'bathroomType',
+                  'occupancy',
+                  'rate',
+                  'type',
+                  'quantity'
+                ),
               },
             },
           },
@@ -113,6 +123,7 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
       occupancy: '',
       rate: '',
       type: '',
+      quantity: 0,
     }
     return initialValues ? { ...initialValues } : { ...defaultValues }
   }, [initialValues])
@@ -154,6 +165,9 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
         </GridItem>
         <GridItem xs={12} md={12}>
           <LookupField realm='roomType' name='type' label='Type' margin='normal' fullWidth required />
+        </GridItem>
+        <GridItem xs={12} md={12}>
+          <TextField name='quantity' label='Quantity' margin='normal' fullWidth type='number' />
         </GridItem>
       </GridContainer>
     </EditDialog>
