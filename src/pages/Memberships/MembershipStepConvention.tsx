@@ -5,7 +5,7 @@ import React from 'react'
 
 import { Acnw, ConventionsDatesFull } from '../../components'
 import { GridContainer, GridItem } from '../../components/Grid'
-import { attendanceSelectValues, configuration, interestSelectValues } from '../../utils'
+import { attendanceOptions, configuration, interestOptions } from '../../utils'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
@@ -51,7 +51,7 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
           aria-label='Select Membership'
           label='Select Membership'
           name={`${prefix}attendance`}
-          selectValues={attendanceSelectValues}
+          selectValues={attendanceOptions}
         />
       </GridItem>
       <GridItem xs={12} md={12}>
@@ -63,7 +63,7 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
           aria-label='Payment'
           name={`${prefix}interestLevel`}
           label='Payment'
-          selectValues={interestSelectValues}
+          selectValues={interestOptions}
         />
       </GridItem>
     </GridContainer>

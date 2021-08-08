@@ -23,7 +23,7 @@ export enum Attendance {
   FriSun = 'Fri-Sun',
 }
 
-export const attendanceSelectValues = [
+export const attendanceOptions = [
   {
     value: Attendance.ThursSun,
     text: `Full: $${configuration.fourDayMembership}.`,
@@ -34,14 +34,14 @@ export const attendanceSelectValues = [
   },
 ]
 
-export const getAttendance = (value?: string) => getPref(attendanceSelectValues, value)
+export const getAttendance = (value?: string) => getPref(attendanceOptions, value)
 
 export enum InterestLevel {
   Full = 'Full',
   Deposit = 'Deposit',
 }
 
-export const interestSelectValues = [
+export const interestOptions = [
   {
     value: InterestLevel.Full,
     text: 'I am sending payment in full now',
@@ -54,7 +54,7 @@ export const interestSelectValues = [
   },
 ]
 
-export const getInterestLevel = (value?: string) => getPref(interestSelectValues, value)
+export const getInterestLevel = (value?: string) => getPref(interestOptions, value)
 
 export enum BathroomType {
   EnSuite = 'en-suite',
@@ -62,7 +62,7 @@ export enum BathroomType {
   Other = 'other',
 }
 
-export const bathroomTypeSelectValues = [
+export const bathroomTypeOptions = [
   {
     value: BathroomType.EnSuite,
     text: BathroomType.EnSuite,
@@ -77,7 +77,7 @@ export const bathroomTypeSelectValues = [
   },
 ]
 
-export const getBathroomType = (value?: string) => getPref(bathroomTypeSelectValues, value)
+export const getBathroomType = (value?: string) => getPref(bathroomTypeOptions, value)
 
 export enum RoomPref {
   RoomWith = 'room-with',
@@ -85,7 +85,7 @@ export enum RoomPref {
   Other = 'other',
 }
 
-export const roomPrefSelectValues = [
+export const roomPrefOptions = [
   {
     value: RoomPref.RoomWith,
     text: 'I will be rooming with (list names)',
@@ -100,4 +100,47 @@ export const roomPrefSelectValues = [
   },
 ]
 
-export const getRoomPref = (value?: string) => getPref(roomPrefSelectValues, value)
+export const getRoomPref = (value?: string) => getPref(roomPrefOptions, value)
+
+export enum RoomType {
+  Twin = 'twin',
+  Queen = 'queen',
+  King = 'king',
+  DoubleQueen = 'double queen',
+  Hostel = 'hostel',
+  Family = 'family',
+  Other = 'other',
+}
+
+export const roomTypeOptions = [
+  { value: RoomType.Twin, text: 'Twin' },
+  { value: RoomType.Queen, text: 'Queen' },
+  { value: RoomType.King, text: 'King' },
+  { value: RoomType.DoubleQueen, text: 'Double Queen' },
+  { value: RoomType.Hostel, text: 'Hostel' },
+  { value: RoomType.Family, text: 'Family' },
+  { value: RoomType.Other, text: 'Other' },
+]
+
+export const getRoomType = (value?: string) => getPref(roomTypeOptions, value)
+
+//---
+
+export const getRealmOptions = (realm: string) => {
+  switch (realm) {
+    case 'gamePlayerPref':
+      return playerPreferenceOptions
+    case 'attendance':
+      return attendanceOptions
+    case 'bathroomType':
+      return bathroomTypeOptions
+    case 'interest':
+      return interestOptions
+    case 'roomPref':
+      return roomPrefOptions
+    case 'roomType':
+      return roomTypeOptions
+    default:
+      return undefined
+  }
+}

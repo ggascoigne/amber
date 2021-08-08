@@ -8,7 +8,7 @@ import { Acnw, ConfigDate } from '../../components'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { RoomFieldTable } from '../../components/Rooms'
 import { Important } from '../../components/Typography'
-import { RoomPref, configuration, roomPrefSelectValues } from '../../utils'
+import { RoomPref, configuration, roomPrefOptions } from '../../utils'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
@@ -165,7 +165,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             aria-label='Rooming Preferences'
             label='Rooming Preferences'
             name={`${prefix}roomingPreferences`}
-            selectValues={roomPrefSelectValues}
+            selectValues={roomPrefOptions}
           />
         </GridItem>
         <GridItem xs={12} md={6}>
