@@ -1,6 +1,3 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-// @ts-ignore
-import WelcomeContent from '!babel-loader!@mdx-js/loader!../content/WelcomeContent.mdx'
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
 import { Acnw, ConfigDate } from 'components'
 import { Banner } from 'components/Banner'
@@ -11,6 +8,8 @@ import { IsMember, useSetting } from 'utils'
 
 import { CardBody } from '../components/Card'
 import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
+// @ts-ignore
+import WelcomeContent from '../content/WelcomeContent.mdx'
 import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles((theme: Theme) =>

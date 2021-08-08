@@ -1,17 +1,9 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-// @ts-ignore
-import AboutAmberContent from '!babel-loader!@mdx-js/loader!../content/AboutAmberContent.mdx'
-import { Page } from 'components/Page'
 import React from 'react'
 
-import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
+// @ts-ignore
+import AboutAmberContent, { frontMatter } from '../content/AboutAmberContent.mdx'
+import { MdxPage } from './MdxPage'
 
-const AboutAmber = () => (
-  <Page title='What is Amber Roleplaying?'>
-    <MdxWithExternalLinks>
-      <AboutAmberContent />
-    </MdxWithExternalLinks>
-  </Page>
-)
+const AboutAmber = () => <MdxPage frontMatter={frontMatter} component={<AboutAmberContent />} />
 
 export default AboutAmber

@@ -1,13 +1,9 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-// @ts-ignore
-import FaqContent from '!babel-loader!@mdx-js/loader!../content/FaqContent.mdx'
-import { Page } from 'components/Page'
 import React from 'react'
 
-const Faq = () => (
-  <Page title='Frequently Asked Questions'>
-    <FaqContent />
-  </Page>
-)
+// @ts-ignore
+import FaqContent, { frontMatter } from '../content/FaqContent.mdx'
+import { MdxPage } from './MdxPage'
+
+const Faq = () => <MdxPage frontMatter={frontMatter} component={<FaqContent />} />
 
 export default Faq

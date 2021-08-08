@@ -1,17 +1,9 @@
-/* eslint-disable import/no-webpack-loader-syntax */
-// @ts-ignore
-import AccommodationsContent from '!babel-loader!@mdx-js/loader!../content/AccommodationsContent.mdx'
-import { Page } from 'components/Page'
 import React from 'react'
 
-import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
+// @ts-ignore
+import AccommodationsContent, { frontMatter } from '../content/AccommodationsContent.mdx'
+import { MdxPage } from './MdxPage'
 
-const Accommodations = () => (
-  <Page title='About the AmberCon NW Venue'>
-    <MdxWithExternalLinks>
-      <AccommodationsContent />
-    </MdxWithExternalLinks>
-  </Page>
-)
+const Accommodations = () => <MdxPage frontMatter={frontMatter} component={<AccommodationsContent />} />
 
 export default Accommodations
