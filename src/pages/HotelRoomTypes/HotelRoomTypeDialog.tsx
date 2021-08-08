@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
   gamingRoom: Yup.boolean().required('Required'),
   bathroomType: Yup.string().min(2).max(100).required('Required'),
   occupancy: Yup.string().min(2).max(255),
-  quantity: Yup.number().required(),
+  quantity: Yup.number(),
   rate: Yup.string().min(2).max(255),
   type: Yup.string().min(2).max(255).required('Required'),
 })

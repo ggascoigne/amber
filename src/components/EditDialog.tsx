@@ -4,7 +4,7 @@ import { FormikProps } from 'formik/dist/types'
 import React, { ReactElement, ReactNode, useCallback } from 'react'
 
 import { onCloseHandler } from '../utils'
-import { useAuth } from './Auth'
+import { HasPermission, Perms, useAuth } from './Auth'
 import { DialogTitle } from './Dialog'
 
 export interface EditDialogProps<T> {
@@ -44,7 +44,7 @@ export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {(formikProps) => {
-          const { isSubmitting } = formikProps
+          const { isSubmitting, values, errors } = formikProps
           return (
             <Form>
               <DialogTitle onClose={onClose}>
@@ -52,6 +52,16 @@ export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
               </DialogTitle>
               <DialogContent>{typeof children === 'function' ? children?.(formikProps) : children}</DialogContent>
               <DialogActions className='modalFooterButtons'>
+                <HasPermission permission={Perms.IsAdmin}>
+                  <Button
+                    onClick={() => {
+                      console.log(`values = ${JSON.stringify({ values, errors }, null, 2)}`)
+                    }}
+                    variant='outlined'
+                  >
+                    Debug
+                  </Button>
+                </HasPermission>
                 <Button onClick={onClose} variant='outlined'>
                   Cancel
                 </Button>
