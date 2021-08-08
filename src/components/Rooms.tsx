@@ -159,7 +159,11 @@ export const RoomFieldTable: React.FC = () => {
     return <Loader />
   }
 
-  const rooms: HotelRoom[] = data.hotelRooms!.edges.map((v) => v.node).filter(notEmpty)
+  // todo: fix correctly
+  const rooms: HotelRoom[] = data
+    .hotelRooms!.edges.map((v) => v.node)
+    .filter(notEmpty)
+    .filter((r) => r.type !== 'hostel')
 
   return (
     <Table>
@@ -225,7 +229,7 @@ export const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
                 /* eslint-disable-next-line risxss/catch-potential-xss-react */
                 dangerouslySetInnerHTML={{
                   __html: room.rate.replaceAll(
-                    /(\$\d+ \/ night T.*Sat\*)/g,
+                    /(\$\d+ \/ night T.*S??\*)/g,
                     `<span style='color:${theme.palette.error.main};'>$1</span>`
                   ),
                 }}
@@ -265,7 +269,11 @@ export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
     return <Loader />
   }
 
-  const rooms: HotelRoom[] = data.hotelRooms!.edges.map((v) => v.node).filter(notEmpty)
+  // todo: fix correctly
+  const rooms: HotelRoom[] = data
+    .hotelRooms!.edges.map((v) => v.node)
+    .filter(notEmpty)
+    .filter((r) => r.type !== 'hostel')
 
   return (
     <Table>

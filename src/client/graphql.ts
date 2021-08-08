@@ -6672,12 +6672,12 @@ export interface User extends Node {
   authoredGames: GamesConnection
   /** Reads and enables pagination through a set of `Membership`. */
   memberships: MembershipsConnection
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles: ProfilesConnection
   /** Reads and enables pagination through a set of `ShirtOrder`. */
   shirtOrders: ShirtOrdersConnection
   /** Reads and enables pagination through a set of `UserRole`. */
   userRoles: UserRolesConnection
-  /** Reads and enables pagination through a set of `Profile`. */
-  profiles: ProfilesConnection
 }
 
 export interface UserAuthoredGamesArgs {
@@ -6702,6 +6702,17 @@ export interface UserMembershipsArgs {
   filter?: Maybe<MembershipFilter>
 }
 
+export interface UserProfilesArgs {
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  before?: Maybe<Scalars['Cursor']>
+  after?: Maybe<Scalars['Cursor']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
+}
+
 export interface UserShirtOrdersArgs {
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
@@ -6722,17 +6733,6 @@ export interface UserUserRolesArgs {
   orderBy?: Maybe<Array<UserRolesOrderBy>>
   condition?: Maybe<UserRoleCondition>
   filter?: Maybe<UserRoleFilter>
-}
-
-export interface UserProfilesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ProfilesOrderBy>>
-  condition?: Maybe<ProfileCondition>
-  filter?: Maybe<ProfileFilter>
 }
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -6924,12 +6924,12 @@ export enum UsersOrderBy {
   GamesByAuthorIdCountDesc = 'GAMES_BY_AUTHOR_ID__COUNT_DESC',
   MembershipsByUserIdCountAsc = 'MEMBERSHIPS_BY_USER_ID__COUNT_ASC',
   MembershipsByUserIdCountDesc = 'MEMBERSHIPS_BY_USER_ID__COUNT_DESC',
+  ProfilesByUserIdCountAsc = 'PROFILES_BY_USER_ID__COUNT_ASC',
+  ProfilesByUserIdCountDesc = 'PROFILES_BY_USER_ID__COUNT_DESC',
   ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',
   ShirtOrdersByUserIdCountDesc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_DESC',
   UserRolesByUserIdCountAsc = 'USER_ROLES_BY_USER_ID__COUNT_ASC',
   UserRolesByUserIdCountDesc = 'USER_ROLES_BY_USER_ID__COUNT_DESC',
-  ProfilesByUserIdCountAsc = 'PROFILES_BY_USER_ID__COUNT_ASC',
-  ProfilesByUserIdCountDesc = 'PROFILES_BY_USER_ID__COUNT_DESC',
 }
 
 export type GetGamesBySlotForSignupQueryVariables = Exact<{
