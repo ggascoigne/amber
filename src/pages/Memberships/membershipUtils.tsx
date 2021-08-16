@@ -1,13 +1,15 @@
-import { GetMembershipsByYearQuery, useCreateMembershipMutation, useUpdateMembershipByNodeIdMutation } from 'client'
+import { useCreateMembershipMutation, useGetHotelRoomsQuery, useUpdateMembershipByNodeIdMutation } from 'client'
 import { Perms, useAuth } from 'components/Auth'
 import { ProfileFormType } from 'components/Profile'
 import { useQueryClient } from 'react-query'
 import {
-  GqlType,
+  Attendance,
+  InterestLevel,
   ToFormValues,
   configuration,
   extractErrors,
   getSlotDescription,
+  notEmpty,
   onCloseHandler,
   pick,
   useSendEmail,
@@ -16,12 +18,12 @@ import {
 import Yup from 'utils/Yup'
 
 import { useNotification } from '../../components/Notifications'
+import { Membership } from '../../utils/apiTypes'
 
 export interface MembershipFormContent {
   prefix?: string
 }
 
-export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
 export type MembershipType = ToFormValues<Membership> & {
   slotsAttendingData?: boolean[]
 }
@@ -81,11 +83,13 @@ export const useEditMembership = (onClose: onCloseHandler) => {
   const createMembership = useCreateMembershipMutation()
   const updateMembership = useUpdateMembershipByNodeIdMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
-  const [sendEmail] = useSendEmail()
+  const notify = useNotification()
+  const sendEmail = useSendEmail()
   const sendAdminEmail = useSetting('send.admin.email')
   const { hasPermissions } = useAuth()
-  const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
+  const shouldSendEmail = !hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail
+
+  const { data: roomData } = useGetHotelRoomsQuery()
 
   const sendMembershipConfirmation = (
     membershipId: number,
@@ -93,21 +97,31 @@ export const useEditMembership = (onClose: onCloseHandler) => {
     membershipValues: MembershipType,
     update = false
   ) => {
+    const room = roomData
+      ?.hotelRooms!.edges.map((v) => v.node)
+      .filter(notEmpty)
+      .find((r) => r.id === membershipValues.hotelRoomId)
+
     const slotDescriptions = membershipValues.slotsAttending
       ?.split(',')
       .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i), local: true }))
 
     sendEmail({
       type: 'membershipConfirmation',
-      body: JSON.stringify({
+      body: {
         year: configuration.year,
-        name: profile.fullName,
+        virtual: configuration.virtual,
+        name: profile.fullName!,
         email: profile.email,
+        address: profile.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
+        phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
         update,
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
         slotDescriptions,
-      }),
+        owed: getOwed(membershipValues),
+        room,
+      },
     })
   }
 
@@ -197,3 +211,17 @@ export const getDefaultMembership = (userId: number, isVirtual: boolean): Member
 
 export const hasMembershipStepErrors = <T, D extends keyof T = keyof T>(name: string, errors: T, ...props: D[]) =>
   !!extractErrors(errors, ...props)
+
+export const getOwed = (values: MembershipType) => {
+  if (configuration.virtual) {
+    return 15
+  }
+  if (values.interestLevel === InterestLevel.Deposit) {
+    return configuration.deposit
+  }
+  if (values.attendance === Attendance.ThursSun) {
+    return configuration.fourDayMembership
+  } else {
+    return configuration.threeDayMembership
+  }
+}

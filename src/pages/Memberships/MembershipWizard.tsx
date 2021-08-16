@@ -172,6 +172,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
       onSubmit={onSubmit}
       onClose={onClose}
       open={open}
+      isEditing={!!initialValues}
     />
   )
 }

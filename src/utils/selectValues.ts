@@ -1,4 +1,5 @@
-import { configDate } from '../components'
+import { DateTime } from 'luxon'
+
 import { configuration } from './configuration'
 
 export const getPref = (values: { value: string; text: string }[], value?: string) =>
@@ -48,9 +49,9 @@ export const interestOptions = [
   },
   {
     value: InterestLevel.Deposit,
-    text: `I am paying a deposit of $${configuration.deposit} now. I understand payment in full is due ${configDate(
-      'paymentDeadline'
-    )}.`,
+    text: `I am paying a deposit of $${
+      configuration.deposit
+    } now. I understand payment in full is due ${configuration.paymentDeadline.toLocaleString(DateTime.DATE_MED)}.`,
   },
 ]
 

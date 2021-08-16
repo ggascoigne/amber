@@ -47,7 +47,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
       <FormLabel component='legend'>{props.label}</FormLabel>
       <MuiRadioGroup {...fullProps}>
         {selectValues?.map((s) => (
-          <MenuItem key={getSelectValue(s)} value={getSelectValue(s)} className={classes.menuItem}>
+          <MenuItem id={fullProps.name} key={getSelectValue(s)} value={getSelectValue(s)} className={classes.menuItem}>
             <FormControlLabel value={getSelectValue(s)} control={<Radio />} label={getSelectLabel(s)} />
           </MenuItem>
         ))}

@@ -1,6 +1,9 @@
 #!/bin/bash
 #set -x
 
+echo "dont run this until you verify that the database permissions are going to be correct"
+exit 1
+
 source `dirname $0`/utils.sh
 
 while read line; do export $line; done < <(grep DATABASE .env.aws-prod | egrep -v '^#')

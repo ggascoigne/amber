@@ -34,7 +34,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   const createGameAssignment = useCreateGameAssignmentMutation()
   const deleteGameAssignment = useDeleteGameAssignmentMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   const memberId = membership.id ?? 0
 

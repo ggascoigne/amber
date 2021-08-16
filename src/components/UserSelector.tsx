@@ -73,7 +73,7 @@ interface UserSelectorProps {
 
 export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const classes = useStyles({})
-  const [notify] = useNotification()
+  const notify = useNotification()
   const [userInfo, setUserInfo] = useUserFilter()
   const [year] = useYearFilter()
   const [searchTerm, setSearchTerm] = useState('')

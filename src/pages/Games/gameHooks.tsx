@@ -29,7 +29,7 @@ export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGam
 
 export const useUpdateGameAssignment = () => {
   const [year] = useYearFilter()
-  const [notify] = useNotification()
+  const notify = useNotification()
   const createGameAssignment = useCreateGameAssignmentMutation()
   const deleteGameAssignment = useDeleteGameAssignmentMutation()
   const queryClient = useQueryClient()
@@ -132,8 +132,8 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
   const createGame = useCreateGameMutation()
   const updateGame = useUpdateGameByNodeIdMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
-  const [sendEmail] = useSendEmail()
+  const notify = useNotification()
+  const sendEmail = useSendEmail()
   const profile = useProfile()
   const { userId } = useUser()
   const sendAdminEmail = useSetting('send.admin.email')
@@ -155,14 +155,14 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
       const sendGameConfirmation = (profile: ProfileFormType, values: GameFields, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
-          body: JSON.stringify({
+          body: {
             year,
-            name: profile.fullName,
+            name: profile.fullName!,
             email: profile.email,
             url: `${window.location.origin}/gm`,
             game: values,
             update,
-          }),
+          },
         })
       }
 

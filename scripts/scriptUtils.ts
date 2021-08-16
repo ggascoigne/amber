@@ -25,6 +25,19 @@ export function getPostgresArgs(dbconfig: DbConfig) {
   return [`postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`]
 }
 
+export async function resetOwner(dbconfig: DbConfig, targetUser: string, verbose: boolean) {
+  // @formatter:off
+  // language=PostgreSQL
+  const script = stripIndent`
+    grant usage on schema public to ${targetUser};
+    grant select, insert, update, delete on all tables in schema public to ${targetUser};
+    grant select, update, usage on all sequences in schema public to ${targetUser};
+    grant execute on all routines in schema public to ${targetUser};
+  `
+  // @formatter:on
+  psql({ ...dbconfig }, script, verbose)
+}
+
 export async function createCleanDb(dbconfig: DbConfig, verbose: boolean) {
   const { database, user } = dbconfig
   // useful for tests since it forces dropping local connections

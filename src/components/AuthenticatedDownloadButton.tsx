@@ -11,7 +11,7 @@ export const AuthenticatedDownloadButton: React.FC<{ url: string; filename: stri
 }) => {
   const [jwtToken] = useToken()
   const link = createRef<any>()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   const handleAction = async () => {
     if (!link.current || link.current.href) {

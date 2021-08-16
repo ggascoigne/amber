@@ -12,8 +12,8 @@ import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
+import { Membership } from '../../utils/apiTypes'
 import { GameAssignmentDialog } from './GameAssignmentDialog'
-import { Membership } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
 
 const initialState: Partial<TableState<Membership>> = {

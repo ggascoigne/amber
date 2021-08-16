@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@material-ui/core'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
-import React, { ReactElement, useMemo } from 'react'
+import React, { ReactElement, useCallback, useMemo } from 'react'
 import Zet from 'zet'
 
 import { notEmpty } from '../utils'
@@ -31,7 +31,7 @@ const setAdd = (input: Zet<number>, value: number) => input.union(new Zet([value
 
 const setDelete = (input: Zet<number>, value: number) => input.difference(new Zet([value]))
 
-const useSteps = (steps: WizardPage[]) => {
+const useSteps = (steps: WizardPage[], isEditing: boolean) => {
   const [activeStep, setActiveStep] = React.useState(0)
   const [completed, setCompleted] = React.useState(new Zet<number>())
   const [visited, setVisited] = React.useState(new Zet<number>([0]))
@@ -45,8 +45,8 @@ const useSteps = (steps: WizardPage[]) => {
     )
     const allFormStepsComplete = completed.superset(allFormSteps)
     const allStepsVisited = visited.size === steps.length
-    console.log({ allStepsVisited, allFormStepsComplete })
-    return allStepsVisited && allFormStepsComplete
+    // console.log({ allStepsVisited, allFormStepsComplete })
+    return (allStepsVisited && allFormStepsComplete) || isEditing
   }
 
   const handleBack = () => {
@@ -97,6 +97,7 @@ interface WizardProps<T> {
   onClose: (event?: any) => void
   validationSchema: any
   open: boolean
+  isEditing: boolean
 }
 
 export const Wizard = <T extends FormikValues = FormikValues>({
@@ -106,15 +107,18 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   onClose,
   validationSchema,
   open,
+  isEditing,
 }: WizardProps<T>) => {
   const activePages = useMemo(() => pages.filter(({ enabled = true }) => enabled), [pages])
-  const { activeStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } =
-    useSteps(activePages)
+  const { activeStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } = useSteps(
+    activePages,
+    isEditing
+  )
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   const handleClose = useDisableBackdropClick(onClose)
 
-  const NextStep: React.FC<{ step: number }> = ({ step }) => activePages[step].render
+  const NextStep: React.FC<{ step: number }> = useCallback(({ step }) => activePages[step].render, [activePages])
 
   return (
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>

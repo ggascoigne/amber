@@ -41,7 +41,7 @@ const submissionValidationSchema = Yup.object().shape({
 interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile?: ProfileFormType | null
+  profile: ProfileFormType
   year: number
   update?: boolean
   message: string
@@ -52,8 +52,8 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
   const updateGameSubmission = useUpdateGameSubmissionByNodeIdMutation()
   const queryClient = useQueryClient()
 
-  const [notify] = useNotification()
-  const [sendEmail] = useSendEmail()
+  const notify = useNotification()
+  const sendEmail = useSendEmail()
   const profile = useProfile()
 
   const sendGameChoiceConfirmation = ({
@@ -63,19 +63,17 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
     message,
     update = false,
   }: GameChoiceConfirmationEmail) => {
-    // year, name, email, url, gameChoices, update
-
     sendEmail({
       type: 'gameChoiceConfirmation',
-      body: JSON.stringify({
+      body: {
         year,
-        name: profile?.fullName,
-        email: profile?.email,
+        name: profile.fullName!,
+        email: profile.email,
         update,
         message,
         url: `${window.location.origin}/game-choices`,
         gameChoiceDetails,
-      }),
+      },
     })
   }
 
@@ -122,7 +120,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
         )
         .then(() => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })
-          sendGameChoiceConfirmation({ gameChoiceDetails, year, profile, message: values.message })
+          sendGameChoiceConfirmation({ gameChoiceDetails, year, profile: profile!, message: values.message })
           onClose()
         })
         .catch((error) => {

@@ -1,12 +1,13 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 
+import { GameConfirmation } from '../../src/utils/apiTypes'
 import { getPlayerPreference } from '../../src/utils/selectValues'
 import { requireJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 import { withApiHandler } from '../_standardHandler'
-import { emailer } from './_email'
+import { RequestOf, emailer } from './_email'
 
 // /api/send/gameConfirmation
 // auth token: required
@@ -21,7 +22,7 @@ import { emailer } from './_email'
 
 export default withApiHandler([
   requireJwt,
-  async (req: Request, res: Response) => {
+  async (req: RequestOf<GameConfirmation>, res: Response) => {
     try {
       if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
       const { year, name, email, url, game, update = false } = req.body
@@ -31,7 +32,7 @@ export default withApiHandler([
       if (!url) throw new JsonError(400, 'missing url')
       if (!game) throw new JsonError(400, 'missing game')
 
-      game.playerPreference = getPlayerPreference(game.playerPreference)
+      game.playerPreference = getPlayerPreference(game.playerPreference)!
       const result = await emailer.send({
         template: 'gameConfirmation',
         message: update

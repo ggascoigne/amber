@@ -33,7 +33,7 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
   const createHotelRoomType = useCreateHotelRoomMutation()
   const updateHotelRoomType = useUpdateHotelRoomByNodeIdMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   return async (values: HotelRoomType) => {
     if (values.nodeId) {

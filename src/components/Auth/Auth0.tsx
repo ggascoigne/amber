@@ -108,7 +108,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [user, setUser] = useState<Auth0User>()
   const [auth0Client, setAuth0Client] = useState<Auth0Client>()
-  const [notify] = useNotification()
+  const notify = useNotification()
   const [showVerifyEmailMessage, setShowVerifyEmailMessage] = useLocalStorage<boolean>('showVerifyEmailMessage', false)
   const [roleOverride] = useRoleOverride()
   const history = useHistory()

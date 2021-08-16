@@ -9,11 +9,43 @@ img(
 
 h1 #{update ? "Updated Registration Confirmation" : "Registration Confirmation"}
 
-p Registration for virtual ACNW #{year}
+p Registration for #{virtual ? "Virtual " : ""}ACNW #{year}
 
 ul
     li User: #{name}
     li Email: #{email}
+
+if ! virtual
+    h3 Interest
+
+    ul
+        li Attendance: #{membership.attendance}
+        li Interest Level: #{membership.interestLevel}
+        li Arrival Date: #{membership.arrivalDate}
+        li Departure Date: #{membership.departureDate}
+    if membership.offerSubsidy
+        ul
+            li You have offered to provide assistance, thank you!
+
+    h3 Room Information
+
+    if membership.roomingWith
+        ul
+            li Hotel Room: #{room.description}
+            li Room Preference And Notes: #{membership.roomPreferenceAndNotes}
+            li Rooming Preferences: #{membership.roomingPreferences}
+            li Rooming With: #{membership.roomingWith}
+    else
+        ul
+            li Hotel Room: #{room.description}
+            li Room Preference And Notes: #{membership.roomPreferenceAndNotes}
+            li Rooming Preferences: #{membership.roomingPreferences}
+
+    h3 Details
+
+    ul
+        li Postal Address: #{address}
+        li Phone Number: #{phoneNumber}
 
 //p If you need to make changes to your registration, please email #{contactEmail}.
 
@@ -26,7 +58,7 @@ if membership.slotsAttending
 if membership.message
     p Message to Simone: #{membership.message}
 
-h3 Payment of $15 should be made out to
+h3 Payment of $#{owed} should be made out to
 
 p Simone Cooper
 

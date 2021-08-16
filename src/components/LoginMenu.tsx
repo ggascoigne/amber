@@ -190,7 +190,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
   const classes = useStyles()
   const { isInitializing = true, isAuthenticated, user, loginWithRedirect, logout, hasPermissions } = useAuth()
   const [jwtToken] = useToken()
-  const [notify] = useNotification()
+  const notify = useNotification()
   const [profileOpen, setProfileOpen] = useState(false)
   const [authInitialized, setAuthInitialized] = useState(false)
   const [roleOverride, setRoleOverride] = useRoleOverride()

@@ -211,6 +211,14 @@ const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
 
 export const RoomFieldTable: React.FC = () => {
   const { isLoading, error, data } = useGetHotelRoomsQuery()
+  const rooms: HotelRoom[] | undefined = useMemo(
+    () =>
+      data
+        ?.hotelRooms!.edges.map((v) => v.node)
+        .filter(notEmpty)
+        .filter((r) => r.quantity > 0),
+    [data]
+  )
 
   if (error) {
     return <GraphQLError error={error} />
@@ -218,11 +226,6 @@ export const RoomFieldTable: React.FC = () => {
   if (isLoading || !data) {
     return <Loader />
   }
-
-  const rooms: HotelRoom[] = data
-    .hotelRooms!.edges.map((v) => v.node)
-    .filter(notEmpty)
-    .filter((r) => r.quantity > 0)
 
   return (
     <Table>

@@ -15,7 +15,7 @@ export const useProfile = (): ProfileFormType | null => {
     { email: email ?? '' },
     { enabled: !!isAuthenticated && !!email && email !== lastEmail }
   )
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   if (!email || !data) {
     return null

@@ -76,7 +76,7 @@ interface Snackbar {
 export const useNotification = () => {
   const { enqueueSnackbar } = useSnackbar()
 
-  const enqueueNotification = useCallback(
+  return useCallback(
     ({ text, variant, options = {} }: Snackbar) =>
       enqueueSnackbar(text, {
         variant,
@@ -88,6 +88,4 @@ export const useNotification = () => {
       }),
     [enqueueSnackbar]
   )
-
-  return [enqueueNotification]
 }

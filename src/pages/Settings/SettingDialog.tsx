@@ -31,7 +31,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
   const createSetting = useCreateSettingMutation()
   const updateSetting = useUpdateSettingByNodeIdMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   return async (values: FormValues) => {
     if (values.nodeId) {

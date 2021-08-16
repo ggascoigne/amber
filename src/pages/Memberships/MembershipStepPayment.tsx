@@ -3,8 +3,7 @@ import { Acnw } from 'components'
 import { useFormikContext } from 'formik'
 import React from 'react'
 
-import { Attendance, InterestLevel, configuration } from '../../utils'
-import { MembershipType } from './membershipUtils'
+import { getOwed } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
 const useStyles = makeStyles(() =>
@@ -14,20 +13,6 @@ const useStyles = makeStyles(() =>
     },
   })
 )
-
-const getOwed = (values: MembershipType) => {
-  if (configuration.virtual) {
-    return 15
-  }
-  if (values.interestLevel === InterestLevel.Deposit) {
-    return configuration.deposit
-  }
-  if (values.attendance === Attendance.ThursSun) {
-    return configuration.fourDayMembership
-  } else {
-    return configuration.threeDayMembership
-  }
-}
 
 export const MembershipStepPayment: React.FC = () => {
   const classes = useStyles()

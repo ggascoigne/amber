@@ -36,7 +36,7 @@ export const useEditHotelRoomDetail = (onClose: onCloseHandler) => {
   const createHotelRoomDetail = useCreateHotelRoomDetailMutation()
   const updateHotelRoomDetail = useUpdateHotelRoomDetailByNodeIdMutation()
   const queryClient = useQueryClient()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   return async (values: HotelRoomDetailType) => {
     if (values.nodeId) {

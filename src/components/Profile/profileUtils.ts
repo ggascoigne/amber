@@ -29,7 +29,7 @@ export const useEditUserAndProfile = (onClose?: onCloseHandler) => {
   const updateUser = useUpdateUserMutation()
   const createProfile = useCreateProfileMutation()
   const updateProfile = useUpdateProfileByNodeIdMutation()
-  const [notify] = useNotification()
+  const notify = useNotification()
 
   return async (profileValues: UsersAndProfileType) =>
     await updateUser
