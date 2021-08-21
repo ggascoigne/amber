@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon'
 
 export const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>
-  DateTime.fromObject({ year, month, day, zone: 'America/Los_Angeles' })
+  DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })
 
 // note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
 const startDates: Record<number, { date: DateTime; virtual: boolean; slots: number; skippedSlots?: Array<number> }> = {
