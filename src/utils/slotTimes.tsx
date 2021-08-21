@@ -57,6 +57,7 @@ export enum SlotFormat {
   DEFAULT,
   ALT,
   SHORT,
+  ALT_SHORT,
 }
 
 const mapping = { AM: 'am', PM: 'pm' }
@@ -71,6 +72,8 @@ const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotForma
     switch (altFormat) {
       case SlotFormat.ALT:
         return `${s.toFormat('cccc')} Slot ${slot}: ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
+      case SlotFormat.ALT_SHORT:
+        return `${s.toFormat('cccc')} ${s.toFormat('t')} to ${e.toFormat('t ZZZZ')}`
       case SlotFormat.SHORT:
         return `Slot ${slot}: ${s.toFormat('ccc h a')} to ${e.toFormat('h a ZZZZ')}`
       case SlotFormat.DEFAULT:

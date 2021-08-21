@@ -5,9 +5,9 @@
 - [ ] add option to mark a whole slot as absent (slot 3)
 - [ ] add option to assign games to rooms
 - [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
-- [x] Fix registration email for non-virtual
 - [ ] Update convention prices
 - [ ] Url-based new and edit everywhere 
+- [x] Fix registration email for non-virtual
 - [x] switch off virtual flag
 - [x] get new dates
 - [x] sync welcome page with updates on the virtual version
