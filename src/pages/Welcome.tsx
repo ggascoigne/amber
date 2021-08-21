@@ -1,12 +1,12 @@
-import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
+import { Button, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { Acnw, ConfigDate } from 'components'
 import { Banner } from 'components/Banner'
 import { Page } from 'components/Page'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { IsMember, useSetting } from 'utils'
+import { IsMember } from 'utils'
 
-import { CardBody } from '../components/Card'
+import { BetaWarning } from '../components/BetaWarning'
 import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
 // @ts-ignore
 import WelcomeContent from '../content/WelcomeContent.mdx'
@@ -24,9 +24,6 @@ const useStyles = makeStyles((theme: Theme) =>
         content: '" - date passed"',
       },
     },
-    card: {
-      paddingTop: 0,
-    },
     header: {
       display: 'flex',
       alignItems: 'center',
@@ -39,14 +36,10 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 300,
       textTransform: 'none',
     },
-    betaCard: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
   })
 )
 
-const DynamicMemberContent = () => (
+export const DynamicMemberContent = () => (
   <>
     <BecomeAMember />
     <IsMember>
@@ -58,8 +51,6 @@ const DynamicMemberContent = () => (
 )
 
 export const Welcome: React.FC = () => {
-  const isBeta = useSetting('display.test.warning')
-  const theme = useTheme()
   const classes = useStyles()
 
   const titleElement = (
@@ -67,23 +58,7 @@ export const Welcome: React.FC = () => {
       <div className={classes.banner}>
         <Banner />
       </div>
-      {isBeta && (
-        <>
-          <Card className={classes.betaCard} elevation={3}>
-            <CardBody className={classes.card}>
-              <h2 style={{ color: theme.palette.error.main }}>Beta</h2>
-              <p>
-                This version of the site is a work in progress. All changes should be considered temporary and are very
-                likely to get rolled back.
-              </p>
-
-              <p>
-                Feel free to look around, but if things seem broken or incomplete, assume that they are being worked on.
-              </p>
-            </CardBody>
-          </Card>
-        </>
-      )}
+      <BetaWarning />
       <h1>Welcome!</h1>
     </>
   )

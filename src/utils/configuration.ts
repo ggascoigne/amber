@@ -14,7 +14,8 @@ const startDates: Record<number, { date: DateTime; virtual: boolean; slots: numb
   2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false, slots: 7 },
   2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false, slots: 7 },
   2020: { date: pdxDate({ year: 2020, month: 11, day: 5 }), virtual: true, slots: 7 },
-  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false, slots: 6, skippedSlots: [3] },
+  // 2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: false, slots: 6, skippedSlots: [3] },
+  2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: true, slots: 7 },
 }
 
 const THIS_YEAR = 2021
