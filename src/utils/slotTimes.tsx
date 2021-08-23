@@ -38,6 +38,8 @@ const getRegularSlotTimes = (year: number) => {
 // Sunday ACNW Farewell: 1:15 pm Pacific
 // Sun. Slot 7: 2 pm to 6 pm Pacific
 
+// PDT = Pacific Daylight time = summer, PST = Pacific Standard time = winter
+
 const getVirtualSlotTimes = (year: number) => {
   const start = startDates[year].date
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
@@ -45,11 +47,20 @@ const getVirtualSlotTimes = (year: number) => {
   return [
     /* 1 */ [start.plus({ hours: 11 }), start.plus({ hours: 15 })],
     /* 2 */ [start.plus({ day: 1 }).set({ hour: 9 }), start.plus({ day: 1 }).set({ hour: 13 })],
-    /* 3 */ [start.plus({ day: 1 }).set({ hour: 14 }), start.plus({ day: 1 }).set({ hour: 18 })],
+    /* 3 */ [
+      start.plus({ day: 1 }).set({ hour: 14, minute: 30 }),
+      start.plus({ day: 1 }).set({ hour: 18, minute: 30 }),
+    ],
     /* 4 */ [start.plus({ day: 2 }).set({ hour: 9 }), start.plus({ day: 2 }).set({ hour: 13 })],
-    /* 5 */ [start.plus({ day: 2 }).set({ hour: 14 }), start.plus({ day: 2 }).set({ hour: 18 })],
+    /* 5 */ [
+      start.plus({ day: 2 }).set({ hour: 14, minute: 30 }),
+      start.plus({ day: 2 }).set({ hour: 18, minute: 30 }),
+    ],
     /* 6 */ [start.plus({ day: 3 }).set({ hour: 9 }), start.plus({ day: 3 }).set({ hour: 13 })],
-    /* 7 */ [start.plus({ day: 3 }).set({ hour: 14 }), start.plus({ day: 3 }).set({ hour: 18 })],
+    /* 7 */ [
+      start.plus({ day: 3 }).set({ hour: 14, minute: 30 }),
+      start.plus({ day: 3 }).set({ hour: 18, minute: 30 }),
+    ],
   ] as const
 }
 
@@ -110,12 +121,12 @@ export const getSlotDescription = ({
 // this way cheats but is easy. And it re-uses a function that I know works
 export const isNotPacificTime = () =>
   getSlotDescription({
-    year: 2020,
+    year: configuration.year,
     slot: 1,
     local: true,
   }) !==
   getSlotDescription({
-    year: 2020,
+    year: configuration.year,
     slot: 1,
     local: false,
   })

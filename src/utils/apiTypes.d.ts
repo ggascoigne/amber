@@ -16,7 +16,7 @@ export interface MembershipConfirmationBody {
   url: string
 
   virtual: boolean
-  owed: number
+  owed: number | undefined
   address?: string
   phoneNumber?: string
   membership: MembershipType

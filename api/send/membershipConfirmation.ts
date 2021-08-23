@@ -51,7 +51,6 @@ export default withApiHandler([
       if (!membership) throw new JsonError(400, 'missing membership')
       if (!slotDescriptions) throw new JsonError(400, 'missing slotDescriptions')
       if (virtual === undefined) throw new JsonError(400, 'missing virtual')
-      if (!owed) throw new JsonError(400, 'missing owed')
 
       const formattedMembership = {
         ...membership,

@@ -58,16 +58,17 @@ if membership.slotsAttending
 if membership.message
     p Message to Simone: #{membership.message}
 
-h3 Payment of $#{owed} should be made out to
+if owed
+    h3 Payment of $#{owed} should be made out to
 
-p Simone Cooper
+    p Simone Cooper
 
-p and sent to
+    p and sent to
 
-p
- | AmberCon NW<br>
- | c/o Simone Cooper<br>
- | 8047 N. Syracuse St.<br>
- | Portland, OR 97203-4939
+    p
+     | AmberCon NW<br>
+     | c/o Simone Cooper<br>
+     | 8047 N. Syracuse St.<br>
+     | Portland, OR 97203-4939
 
 p You can view or edit your #{year} membership at #{url}.

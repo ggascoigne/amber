@@ -42,14 +42,14 @@ export const configuration = {
   // registrationDeadline: pdxDate({ year: conventionDates.year, month: 7, day: 7 }),
   // paymentDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 14 }),
   // gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 14 }),
-  registrationDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
+  registrationDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 21 }),
   paymentDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 14 }),
-  gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
-  gameGmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 6 }),
-  gameBookOpen: pdxDate({ year: conventionDates.year, month: 10, day: 9 }),
-  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 10, day: 13 }),
-  gmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 15 }),
-  schedulesSent: pdxDate({ year: conventionDates.year, month: 10, day: 17 }),
+  gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 7 }),
+  gameGmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 14 }),
+  gameBookOpen: pdxDate({ year: conventionDates.year, month: 9, day: 21 }),
+  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
+  gmPreview: pdxDate({ year: conventionDates.year, month: 10, day: 5 }),
+  schedulesSent: pdxDate({ year: conventionDates.year, month: 10, day: 12 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
   wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
 
@@ -63,7 +63,7 @@ export const configuration = {
   numberOfSlots: startDates[THIS_YEAR].slots,
   skippedSlots: startDates[THIS_YEAR].skippedSlots,
   oregonHotelTax: '1.5%',
-  virtualCost: '$15',
+  virtualCost: undefined,
   moreThanDoubleOccupancySurcharge: '$15',
   gameRoomSubsidy: '$30',
 }

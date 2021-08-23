@@ -214,7 +214,7 @@ export const hasMembershipStepErrors = <T, D extends keyof T = keyof T>(name: st
 
 export const getOwed = (values: MembershipType) => {
   if (configuration.virtual) {
-    return 15
+    return configuration.virtualCost
   }
   if (values.interestLevel === InterestLevel.Deposit) {
     return configuration.deposit
