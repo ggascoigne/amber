@@ -69,12 +69,12 @@ export const WelcomeVirtual: React.FC = () => {
       <ul>
         <li>
           <span className={classes.deadline}>
-            Initial registration: <ConfigDate name='registrationDeadline' />
+            Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
+            All attendee registrations due: <ConfigDate name='registrationDeadline' />
           </span>
         </li>
         <li>
