@@ -206,7 +206,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                   id='prior-games'
                   options={priorGamesList}
                   groupBy={(game) => `${game.year}`}
-                  getOptionLabel={(game) => `${game.slotId ?? 0}: ${game.name}`}
+                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})` ?? 0}: ${game.name}`}
                   fullWidth
                   renderInput={(params) => (
                     <MuiTextField
