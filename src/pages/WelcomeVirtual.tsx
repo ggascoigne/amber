@@ -61,7 +61,7 @@ export const WelcomeVirtual: React.FC = () => {
       <p>
         If you are accessing this site after{' '}
         <strong>
-          <ConfigDate name='gameBookOpen' />
+          <ConfigDate name='gameGmPreview' />
         </strong>
         , please contact the organizers by e-mail at <Acnw.ContactEmail /> before registering.
       </p>
