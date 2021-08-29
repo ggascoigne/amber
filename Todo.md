@@ -2,6 +2,9 @@
 
 ## 2021
 
+Discord stuff
+
+
 - [ ] support using esm modules in the ts-node tools
 - [ ] allow editing user roles
 - [ ] add option to mark a whole slot as absent (slot 3)

@@ -6,6 +6,8 @@ import { checkJwt, getUserId, isAdmin } from './_checkJwt'
 import { audience, isDev } from './_constants'
 import { withApiHandler } from './_standardHandler'
 
+// FYI export DEBUG="postgraphile:postgres*"to access the postgraphile debugging
+
 // /api/graphql
 // auth token: optional
 // body: graphql query/mutation
