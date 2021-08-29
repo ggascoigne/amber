@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=12.16.2",
+    "node": ">=14",
     "yarn": ">=1.22.4"
   },
   "repository": {
@@ -107,6 +107,7 @@
     "clsx": "^1.1.1",
     "cors": "^2.8.5",
     "dequal": "^2.0.2",
+    "discord-interactions": "^2.3.0",
     "email-templates": "^8.0.8",
     "eslint-config-react-app": "^6.0.0",
     "express-jwt": "^6.1.0",
@@ -137,6 +138,7 @@
     "postgraphile-plugin-connection-filter": "^2.2.2",
     "pug": "^3.0.2",
     "query-string": "^7.0.1",
+    "raw-body": "^2.4.1",
     "react": "^17.0.2",
     "react-app-polyfill": "^2.0.0",
     "react-dom": "^17.0.2",
@@ -175,6 +177,7 @@
     "db:migrate:up": "knex-migrate --cwd ./support --knexfile ./knexfile.js up",
     "db:setup": "yarn db:clean && yarn db:migrate:up",
     "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
+    "discord:register": "yarn tsnode ./scripts/discordRegister.ts",
     "debug": "now dev --listen 30000",
     "format": "prettier --no-color --loglevel warn --write '{src,api,scripts,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "gitHash": "./scripts/getGitHash.sh",

@@ -20,6 +20,7 @@ export default withApiHandler([
       const summary = {
         local: !database.host?.includes('aws'),
         databaseName: database.database,
+        nodeVersion: process.version,
       }
       res.send(admin ? { ...summary, database } : { ...summary })
     } catch (err) {
