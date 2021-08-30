@@ -26,6 +26,7 @@ fragment gameFields on Game {
   teenFriendly
   year
   full
+  roomId
 }
 
 fragment assignmentFields on GameAssignment {

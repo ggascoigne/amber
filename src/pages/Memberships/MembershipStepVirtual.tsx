@@ -1,18 +1,11 @@
-import {
-  DialogContentText,
-  FormControlLabel,
-  FormGroup,
-  Switch,
-  createStyles,
-  makeStyles,
-  useTheme,
-} from '@material-ui/core'
+import { DialogContentText, FormControlLabel, FormGroup, Switch, createStyles, makeStyles } from '@material-ui/core'
 import { CheckboxWithLabel, TextField } from 'components/Form'
 import React, { useState } from 'react'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
 
 import { ConfigDate } from '../../components'
-import { HasPermission, Perms } from '../../components/Auth'
+import { AdminCard } from '../../components/AdminCard'
+import { Perms } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { MembershipFormContent } from './membershipUtils'
 
@@ -32,14 +25,10 @@ const useStyles = makeStyles(() =>
 
 export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const classes = useStyles()
-  const theme = useTheme()
   const [showPT, setShowPT] = useState(false)
 
   return (
     <>
-      <HasPermission permission={Perms.IsAdmin}>
-        <DialogContentText style={{ color: theme.palette.error.main }}>Admin Mode</DialogContentText>
-      </HasPermission>
       <DialogContentText>
         Please select the slots you <strong>intend</strong> to play. To make sure each slot has coverage for every
         player &mdash; and to not disappoint too many GMs by overbooking and then cancelling unnecessary games &mdash;
@@ -93,14 +82,14 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
         <GridItem xs={12} md={12}>
           <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />
         </GridItem>
-        <HasPermission permission={Perms.IsAdmin}>
+        <AdminCard permission={Perms.IsAdmin}>
           <GridItem xs={12} md={12}>
             <CheckboxWithLabel label='Attending' name='attending' />
           </GridItem>
           <GridItem xs={12} md={12}>
             <CheckboxWithLabel label='Volunteer' name='volunteer' />
           </GridItem>
-        </HasPermission>
+        </AdminCard>
       </GridContainer>
     </>
   )

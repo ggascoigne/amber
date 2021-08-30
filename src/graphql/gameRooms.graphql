@@ -1,0 +1,38 @@
+fragment gameRoomFields on Room {
+  id
+  description
+  size
+  type
+  updated
+}
+
+query getGameRooms {
+  rooms {
+    nodes {
+      ...gameRoomFields
+    }
+  }
+}
+
+mutation updateGameRoom($input: UpdateRoomInput!) {
+  updateRoom(input: $input) {
+    room {
+      ...gameRoomFields
+    }
+  }
+}
+
+mutation createGameRoom($input: CreateRoomInput!) {
+  createRoom(input: $input) {
+    room {
+      ...gameRoomFields
+    }
+  }
+}
+
+mutation deleteGameRoom($input: DeleteRoomInput!) {
+  deleteRoom(input: $input) {
+    clientMutationId
+    deletedRoomNodeId
+  }
+}

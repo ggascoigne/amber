@@ -1,6 +1,13 @@
-import { Dialog, DialogContentText, TextField as MuiTextField, Typography, useTheme } from '@material-ui/core'
+import { Dialog, TextField as MuiTextField, Typography } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
-import { GameFieldsFragment, GameGmsFragment, useGetGameByIdQuery, useGetGamesByAuthorQuery } from 'client'
+import {
+  GameFieldsFragment,
+  GameGmsFragment,
+  useGetGameByIdQuery,
+  useGetGameRoomsQuery,
+  useGetGamesByAuthorQuery,
+} from 'client'
+import { AdminCard } from 'components/AdminCard'
 import { Perms } from 'components/Auth'
 import { EditDialog, useDisableBackdropClick } from 'components/EditDialog'
 import { CheckboxWithLabel, SelectField, TextField, TextFieldProps } from 'components/Form'
@@ -11,7 +18,6 @@ import React from 'react'
 import { configuration, getSlotDescription, notEmpty, pick, playerPreferenceOptions, range, useUser } from 'utils'
 import Yup from 'utils/Yup'
 
-import { HasPermission } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
@@ -123,7 +129,6 @@ export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
 
 export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const editing = initialValues !== defaultValues
-  const theme = useTheme()
   const { userId } = useUser()
   const createOrUpdateGame = useEditGame(onClose, initialValues)
   const handleClose = useDisableBackdropClick(onClose)
@@ -132,14 +137,16 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     await createOrUpdateGame(values)
   }
 
-  const { error, data } = useGetGamesByAuthorQuery({
+  const { error: gameError, data: gameData } = useGetGamesByAuthorQuery({
     id: userId!,
   })
 
-  if (error) {
-    return <GraphQLError error={error} />
+  const { error: roomError, data: roomData } = useGetGameRoomsQuery()
+
+  if (gameError || roomError) {
+    return <GraphQLError error={gameError ?? roomError} />
   }
-  if (!data) {
+  if (!gameData || !roomData) {
     return (
       <Dialog fullWidth maxWidth='md' open onClose={handleClose}>
         <Loader />
@@ -147,7 +154,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     )
   }
 
-  const unsorted: Game[] = data.user?.authoredGames.nodes.filter(notEmpty) as Game[]
+  const unsorted: Game[] = gameData.user?.authoredGames.nodes.filter(notEmpty) as Game[]
   const priorGamesList = unsorted
     .concat()
     .sort(
@@ -156,6 +163,8 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
         (a.slotId ?? a.slotPreference ?? 0) - (b.slotId ?? b.slotPreference ?? 0) ||
         -b.name.localeCompare(a.name)
     )
+
+  const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
 
   const onCopyGameChange =
     (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
@@ -199,11 +208,8 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
       validationSchema={validationSchema}
       isEditing={editing}
     >
-      {({ values, setValues }) => (
+      {({ values, setValues, setFieldValue }) => (
         <>
-          <HasPermission permission={Perms.FullGameBook}>
-            <DialogContentText style={{ color: theme.palette.error.main }}>Admin Mode</DialogContentText>
-          </HasPermission>
           <GridContainer spacing={2}>
             {!!priorGamesList.length && (
               <GridItem xs={12} md={12}>
@@ -227,12 +233,25 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
             </GridItem>
-            <HasPermission permission={Perms.FullGameBook}>
+            <AdminCard permission={Perms.GameAdmin}>
               <GridItem xs={12} md={12}>
                 <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
               </GridItem>
               <CheckboxWithLabel label='Game Full?' name='full' />
-            </HasPermission>
+              <Autocomplete
+                id='room'
+                options={rooms}
+                getOptionLabel={(room) =>
+                  `${room.description} (size ${room.size})${
+                    room.type && room.type !== room.description ? ', ' + room.type : ''
+                  }`
+                }
+                fullWidth
+                value={rooms.find((r) => r.id === initialValues?.roomId)}
+                renderInput={(params) => <MuiTextField {...params} label='Room' variant='outlined' />}
+                onChange={(e, value) => setFieldValue('roomId', value?.id)}
+              />
+            </AdminCard>
             <GridItem xs={12} md={12}>
               <TextField
                 name='gmNames'

@@ -167,6 +167,13 @@ export const rootRoutes: RootRoutes = [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/game-rooms',
+    label: 'Game Rooms',
+    exact: true,
+    component: React.lazy(() => import('pages/GameRooms/GameRooms')),
+    permission: Perms.IsAdmin,
+  },
+  {
     path: '/user-admin',
     label: 'Users',
     exact: true,

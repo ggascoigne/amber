@@ -12,6 +12,7 @@ export enum Perms {
   IsAdmin = 'is:Admin',
   IsLoggedIn = 'is:LoggedIn',
   FullGameBook = 'gameBook:load',
+  GameAdmin = 'game:admin',
   Reports = 'reports:load',
 }
 
@@ -28,7 +29,7 @@ const rules: Rules = {
     },
   },
   [Roles.ROLE_GAME_ADMIN]: {
-    static: [Perms.FullGameBook, Perms.Reports, Perms.IsLoggedIn],
+    static: [Perms.FullGameBook, Perms.GameAdmin, Perms.Reports, Perms.IsLoggedIn],
   },
   [Roles.ROLE_USER]: {
     static: [Perms.IsLoggedIn],

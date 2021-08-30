@@ -6970,6 +6970,7 @@ export type GetGamesBySlotForSignupQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7030,6 +7031,7 @@ export type GetGamesBySlotQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7089,6 +7091,7 @@ export type GetGamesByYearQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7148,6 +7151,7 @@ export type GetSmallGamesByYearQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7205,6 +7209,7 @@ export type UpdateGameByNodeIdMutation = {
       teenFriendly: boolean
       year: number
       full?: Maybe<boolean>
+      roomId?: Maybe<number>
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<
@@ -7261,6 +7266,7 @@ export type CreateGameMutation = {
       teenFriendly: boolean
       year: number
       full?: Maybe<boolean>
+      roomId?: Maybe<number>
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<
@@ -7331,6 +7337,7 @@ export type GetFirstGameOfSlotQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7388,6 +7395,7 @@ export type GetGamesByAuthorQuery = {
           teenFriendly: boolean
           year: number
           full?: Maybe<boolean>
+          roomId?: Maybe<number>
           gameAssignments: {
             __typename: 'GameAssignmentsConnection'
             nodes: Array<
@@ -7448,6 +7456,7 @@ export type GetGamesByYearAndAuthorQuery = {
         teenFriendly: boolean
         year: number
         full?: Maybe<boolean>
+        roomId?: Maybe<number>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7503,6 +7512,7 @@ export type GetGameByIdQuery = {
     teenFriendly: boolean
     year: number
     full?: Maybe<boolean>
+    roomId?: Maybe<number>
     gameAssignments: {
       __typename: 'GameAssignmentsConnection'
       nodes: Array<
@@ -7689,6 +7699,7 @@ export type GetScheduleQuery = {
           teenFriendly: boolean
           year: number
           full?: Maybe<boolean>
+          roomId?: Maybe<number>
           gameAssignments: {
             __typename: 'GameAssignmentsConnection'
             nodes: Array<
@@ -7913,6 +7924,7 @@ export type GameFieldsFragment = {
   teenFriendly: boolean
   year: number
   full?: Maybe<boolean>
+  roomId?: Maybe<number>
 }
 
 export type AssignmentFieldsFragment = {
@@ -7947,6 +7959,64 @@ export type GameGmsFragment = {
       }>
     >
   }
+}
+
+export type GameRoomFieldsFragment = {
+  __typename: 'Room'
+  id: number
+  description: string
+  size: number
+  type: string
+  updated: boolean
+}
+
+export type GetGameRoomsQueryVariables = Exact<{ [key: string]: never }>
+
+export type GetGameRoomsQuery = {
+  __typename: 'Query'
+  rooms?: Maybe<{
+    __typename: 'RoomsConnection'
+    nodes: Array<
+      Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
+    >
+  }>
+}
+
+export type UpdateGameRoomMutationVariables = Exact<{
+  input: UpdateRoomInput
+}>
+
+export type UpdateGameRoomMutation = {
+  __typename: 'Mutation'
+  updateRoom?: Maybe<{
+    __typename: 'UpdateRoomPayload'
+    room?: Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
+  }>
+}
+
+export type CreateGameRoomMutationVariables = Exact<{
+  input: CreateRoomInput
+}>
+
+export type CreateGameRoomMutation = {
+  __typename: 'Mutation'
+  createRoom?: Maybe<{
+    __typename: 'CreateRoomPayload'
+    room?: Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
+  }>
+}
+
+export type DeleteGameRoomMutationVariables = Exact<{
+  input: DeleteRoomInput
+}>
+
+export type DeleteGameRoomMutation = {
+  __typename: 'Mutation'
+  deleteRoom?: Maybe<{
+    __typename: 'DeleteRoomPayload'
+    clientMutationId?: Maybe<string>
+    deletedRoomNodeId?: Maybe<string>
+  }>
 }
 
 export type HotelRoomFieldsFragment = {
@@ -9011,6 +9081,7 @@ export const GameFieldsFragmentDoc = `
   teenFriendly
   year
   full
+  roomId
 }
     `
 export const GameAssignmentFieldsFragmentDoc = `
@@ -9042,6 +9113,15 @@ export const GameGmsFragmentDoc = `
   }
 }
     ${AssignmentFieldsFragmentDoc}`
+export const GameRoomFieldsFragmentDoc = `
+    fragment gameRoomFields on Room {
+  id
+  description
+  size
+  type
+  updated
+}
+    `
 export const HotelRoomFieldsFragmentDoc = `
     fragment hotelRoomFields on HotelRoom {
   id
@@ -9696,6 +9776,71 @@ export const useUpdateGameChoiceByNodeIdMutation = <TError = QueryError, TContex
     useFetchData<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>(
       UpdateGameChoiceByNodeIdDocument
     ),
+    options
+  )
+export const GetGameRoomsDocument = `
+    query getGameRooms {
+  rooms {
+    nodes {
+      ...gameRoomFields
+    }
+  }
+}
+    ${GameRoomFieldsFragmentDoc}`
+export const useGetGameRoomsQuery = <TData = GetGameRoomsQuery, TError = QueryError>(
+  variables?: GetGameRoomsQueryVariables,
+  options?: UseQueryOptions<GetGameRoomsQuery, TError, TData>
+) =>
+  useQuery<GetGameRoomsQuery, TError, TData>(
+    ['getGameRooms', variables],
+    useFetchData<GetGameRoomsQuery, GetGameRoomsQueryVariables>(GetGameRoomsDocument).bind(null, variables),
+    options
+  )
+export const UpdateGameRoomDocument = `
+    mutation updateGameRoom($input: UpdateRoomInput!) {
+  updateRoom(input: $input) {
+    room {
+      ...gameRoomFields
+    }
+  }
+}
+    ${GameRoomFieldsFragmentDoc}`
+export const useUpdateGameRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<UpdateGameRoomMutation, TError, UpdateGameRoomMutationVariables, TContext>
+) =>
+  useMutation<UpdateGameRoomMutation, TError, UpdateGameRoomMutationVariables, TContext>(
+    useFetchData<UpdateGameRoomMutation, UpdateGameRoomMutationVariables>(UpdateGameRoomDocument),
+    options
+  )
+export const CreateGameRoomDocument = `
+    mutation createGameRoom($input: CreateRoomInput!) {
+  createRoom(input: $input) {
+    room {
+      ...gameRoomFields
+    }
+  }
+}
+    ${GameRoomFieldsFragmentDoc}`
+export const useCreateGameRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<CreateGameRoomMutation, TError, CreateGameRoomMutationVariables, TContext>
+) =>
+  useMutation<CreateGameRoomMutation, TError, CreateGameRoomMutationVariables, TContext>(
+    useFetchData<CreateGameRoomMutation, CreateGameRoomMutationVariables>(CreateGameRoomDocument),
+    options
+  )
+export const DeleteGameRoomDocument = `
+    mutation deleteGameRoom($input: DeleteRoomInput!) {
+  deleteRoom(input: $input) {
+    clientMutationId
+    deletedRoomNodeId
+  }
+}
+    `
+export const useDeleteGameRoomMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>
+) =>
+  useMutation<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>(
+    useFetchData<DeleteGameRoomMutation, DeleteGameRoomMutationVariables>(DeleteGameRoomDocument),
     options
   )
 export const GetHotelRoomsDocument = `
