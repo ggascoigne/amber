@@ -85,7 +85,7 @@ module.exports = {
             ignoreMixedLogicalExpressions: true,
           },
         ],
-        '@typescript-eslint/no-unnecessary-type-assertion': 'warn',
+        '@typescript-eslint/no-unnecessary-type-assertion': 'off',
         '@typescript-eslint/prefer-optional-chain': 'warn',
         '@typescript-eslint/no-use-before-define': 'warn',
         '@typescript-eslint/prefer-regexp-exec': 'warn',

@@ -1,5 +1,7 @@
-///<reference types="webpack-env" />
 import 'react-app-polyfill/ie11'
+
+///<reference types="webpack-env" />
+import './wdyr' // <--- first import
 
 import LuxonUtils from '@date-io/luxon'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
@@ -27,15 +29,6 @@ const ReactQueryDevtoolsProduction = React.lazy(() =>
 // import { useAxe } from './utils/useAxe'
 
 // import registerServiceWorker from './utils/registerServiceWorker'
-
-// if (process.env.NODE_ENV === 'development') {
-//   // eslint-disable-next-line @typescript-eslint/no-var-requires
-//   const whyDidYouRender = require('@welldone-software/why-did-you-render')
-//   whyDidYouRender(React, {
-//     trackAllPureComponents: true,
-//     exclude: [/VerifiedUserIcon/]
-//   })
-// }
 
 const queryClient = new QueryClient()
 

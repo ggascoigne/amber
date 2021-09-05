@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Column, Row, TableInstance } from 'react-table'
 
@@ -40,6 +40,50 @@ const GameRooms: React.FC = () => {
 
   const { isLoading, error, data, refetch } = useGetGameRoomsQuery()
 
+  const clearSelectionAndRefresh = useCallback(() => {
+    setSelection([])
+    // noinspection JSIgnoredPromiseFromCall
+    queryClient.invalidateQueries('getGameRooms')
+  }, [queryClient])
+
+  const onAdd: TableMouseEventHandler = useCallback(
+    () => () => {
+      setShowEdit(true)
+    },
+    []
+  )
+
+  const onCloseEdit: MouseEventHandler = useCallback(() => {
+    setShowEdit(false)
+    clearSelectionAndRefresh()
+  }, [clearSelectionAndRefresh])
+
+  const onDelete = useCallback(
+    (instance: TableInstance<GameRoom>) => () => {
+      const toDelete = instance.selectedFlatRows.map((r) => r.original)
+      const updater = toDelete.map((v) => deleteGameRoom.mutateAsync({ input: { id: v.id } }))
+      Promise.allSettled(updater).then(() => {
+        console.log('deleted')
+        clearSelectionAndRefresh()
+        instance.toggleAllRowsSelected(false)
+      })
+    },
+    [clearSelectionAndRefresh, deleteGameRoom]
+  )
+
+  const onEdit = useCallback(
+    (instance: TableInstance<GameRoom>) => () => {
+      setShowEdit(true)
+      setSelection(instance.selectedFlatRows.map((r) => r.original))
+    },
+    []
+  )
+
+  const onClick = useCallback((row: Row<GameRoom>) => {
+    setShowEdit(true)
+    setSelection([row.original])
+  }, [])
+
   if (error) {
     return <GraphQLError error={error} />
   }
@@ -48,41 +92,6 @@ const GameRooms: React.FC = () => {
   }
 
   const list: GameRoom[] = data.rooms!.nodes.filter(notEmpty)
-
-  const clearSelectionAndRefresh = () => {
-    setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getGameRooms')
-  }
-
-  const onAdd: TableMouseEventHandler = () => () => {
-    setShowEdit(true)
-  }
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    clearSelectionAndRefresh()
-  }
-
-  const onDelete = (instance: TableInstance<GameRoom>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((v) => deleteGameRoom.mutateAsync({ input: { id: v.id } }))
-    Promise.allSettled(updater).then(() => {
-      console.log('deleted')
-      clearSelectionAndRefresh()
-      instance.toggleAllRowsSelected(false)
-    })
-  }
-
-  const onEdit = (instance: TableInstance<GameRoom>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<GameRoom>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
 
   return (
     <Page title='Game Rooms'>

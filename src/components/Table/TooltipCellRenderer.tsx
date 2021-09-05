@@ -1,6 +1,8 @@
-import { Tooltip, makeStyles } from '@material-ui/core'
-import React, { CSSProperties, useRef, useState } from 'react'
+import { PopperProps, Tooltip, makeStyles } from '@material-ui/core'
+import React, { CSSProperties, useCallback, useRef, useState } from 'react'
 import type { CellProps } from 'react-table'
+
+import { CellEditorWrapper } from './CellEditor'
 
 const useStyles = makeStyles({
   truncated: {
@@ -10,17 +12,20 @@ const useStyles = makeStyles({
   },
 })
 
-export const TooltipCellRenderer: React.FC<CellProps<any>> = ({ cell: { value }, column: { align = 'left' } }) => (
-  <TooltipCell text={value} align={align} />
-)
+export const TooltipCellRenderer: React.FC<CellProps<any>> = (props) => {
+  const { updateData, cell, column } = props
+  const { align = 'left' } = column
+  return updateData ? <EditableCell {...props} /> : <TooltipCell text={cell.value} align={align} />
+}
 
-interface TooltipProps {
+interface TooltipCellProps {
   text: string
   tooltip?: string
   align: string
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void
 }
 
-export const TooltipCell: React.FC<TooltipProps> = ({ text = '', tooltip = text || '', align }) => {
+export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = text || '', align, onClick }) => {
   const classes = useStyles({})
   const [isOverflowed, setIsOverflow] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)
@@ -34,13 +39,41 @@ export const TooltipCell: React.FC<TooltipProps> = ({ text = '', tooltip = text 
   return (
     <Tooltip
       className={classes.truncated}
-      style={{ textAlign: align } as CSSProperties}
+      style={{ textAlign: align, width: '100%' } as CSSProperties}
       title={tooltip}
       disableHoverListener={!showTooltip}
     >
-      <span ref={textRef} onMouseEnter={compareSize}>
+      <span ref={textRef} onMouseEnter={compareSize} onClick={onClick}>
         {text}
       </span>
     </Tooltip>
+  )
+}
+// TooltipCell.whyDidYouRender = true
+
+export const EditableCell: React.FC<CellProps<any>> = (props) => {
+  const { row, updateData, cell, column } = props
+  const { align = 'left' } = column
+  const [anchorEl, setAnchorEl] = React.useState<PopperProps['anchorEl']>(null)
+
+  const onClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(anchorEl ? null : event.currentTarget)
+    },
+    [anchorEl]
+  )
+
+  return (
+    <>
+      <TooltipCell text={cell.value} align={align} onClick={onClick} />
+      <CellEditorWrapper
+        column={column}
+        rowIndex={row.index}
+        updateData={updateData!}
+        value={cell.value}
+        onClose={() => setAnchorEl(null)}
+        anchorElement={anchorEl}
+      />
+    </>
   )
 }

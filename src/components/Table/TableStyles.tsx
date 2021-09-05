@@ -12,7 +12,11 @@ import { TableRowTypeMap } from '@material-ui/core/TableRow/TableRow'
 import clsx from 'clsx'
 import React, { CSSProperties } from 'react'
 
-export const useStyles = makeStyles((theme: Theme) =>
+export interface TableStyleOptions {
+  selectionStyle: 'row' | 'cell'
+}
+
+export const useStyles = makeStyles<Theme, TableStyleOptions>((theme: Theme) =>
   createStyles({
     tableTable: {
       borderSpacing: 0,
@@ -44,12 +48,12 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     tableBody: {},
-    tableRow: {
+    tableRow: ({ selectionStyle }) => ({
       color: 'inherit',
       outline: 0,
       verticalAlign: 'middle',
       '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.07)',
+        backgroundColor: selectionStyle === 'row' ? 'rgba(0, 0, 0, 0.07)' : undefined,
       },
       borderBottom: '1px solid rgba(224, 224, 224, 1)',
       '&:last-child': {
@@ -58,15 +62,15 @@ export const useStyles = makeStyles((theme: Theme) =>
       '&.rowSelected': {
         backgroundColor: 'rgba(0, 0, 0, 0.04)',
         '&:hover': {
-          backgroundColor: 'rgba(0, 0, 0, 0.07)',
+          backgroundColor: selectionStyle === 'row' ? 'rgba(0, 0, 0, 0.07)' : undefined,
         },
       },
       '&.clickable': {
         cursor: 'pointer',
       },
-    },
+    }),
     tableLabel: {},
-    tableCell: {
+    tableCell: ({ selectionStyle }) => ({
       padding: '8px 16px',
       fontSize: '0.875rem',
       textAlign: 'left',
@@ -78,7 +82,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       '&:last-child': {
         borderRight: 'none',
       },
-    },
+      '&:hover': {
+        backgroundColor: selectionStyle === 'cell' ? 'rgba(0, 0, 0, 0.07)' : undefined,
+      },
+    }),
     resizeHandle: {
       position: 'absolute',
       cursor: 'col-resize',
@@ -136,10 +143,16 @@ export const useStyles = makeStyles((theme: Theme) =>
 interface CN {
   className?: string
   style?: CSSProperties
+  tableStyleOptions: TableStyleOptions
 }
 
-export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableTable className={clsx(className, classes.tableTable)} {...rest}>
       {children}
@@ -147,8 +160,13 @@ export const TableTable: React.FC<Partial<TableTypeMap> & CN> = ({ children, cla
   )
 }
 
-export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableBody className={clsx(className, classes.tableBody)} {...rest}>
       {children}
@@ -156,8 +174,13 @@ export const TableBody: React.FC<Partial<TableBodyTypeMap> & CN> = ({ children, 
   )
 }
 
-export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableHead className={clsx(className, classes.tableHead)} {...rest}>
       {children}
@@ -165,8 +188,13 @@ export const TableHead: React.FC<Partial<TableHeadTypeMap> & CN> = ({ children, 
   )
 }
 
-export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableRow className={clsx(className, classes.tableHeadRow)} {...rest}>
       {children}
@@ -174,8 +202,13 @@ export const TableHeadRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children
   )
 }
 
-export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableCell className={clsx(className, classes.tableHeadCell)} {...rest}>
       {children}
@@ -183,8 +216,13 @@ export const TableHeadCell: React.FC<Partial<TableCellProps> & CN> = ({ children
   )
 }
 
-export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableRow className={clsx(className, classes.tableRow)} {...rest}>
       {children}
@@ -192,8 +230,13 @@ export const TableRow: React.FC<Partial<TableRowTypeMap> & CN> = ({ children, cl
   )
 }
 
-export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({
+  children,
+  className,
+  tableStyleOptions,
+  ...rest
+}) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <MuiTableCell className={clsx(className, classes.tableCell)} {...rest}>
       {children}
@@ -201,8 +244,8 @@ export const TableCell: React.FC<Partial<TableCellProps> & CN> = ({ children, cl
   )
 }
 
-export const TableLabel: React.FC<CN> = ({ children, className, ...rest }) => {
-  const classes = useStyles()
+export const TableLabel: React.FC<CN> = ({ children, className, tableStyleOptions, ...rest }) => {
+  const classes = useStyles(tableStyleOptions)
   return (
     <div className={clsx(className, classes.tableLabel)} {...rest}>
       {children}

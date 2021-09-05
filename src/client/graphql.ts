@@ -7092,6 +7092,14 @@ export type GetGamesByYearQuery = {
         year: number
         full?: Maybe<boolean>
         roomId?: Maybe<number>
+        room?: Maybe<{
+          __typename: 'Room'
+          id: number
+          description: string
+          size: number
+          type: string
+          updated: boolean
+        }>
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
@@ -7181,6 +7189,63 @@ export type UpdateGameByNodeIdMutationVariables = Exact<{
 export type UpdateGameByNodeIdMutation = {
   __typename: 'Mutation'
   updateGameByNodeId?: Maybe<{
+    __typename: 'UpdateGamePayload'
+    game?: Maybe<{
+      __typename: 'Game'
+      nodeId: string
+      id: number
+      name: string
+      gmNames?: Maybe<string>
+      description: string
+      genre: string
+      type: string
+      setting: string
+      charInstructions: string
+      playerMax: number
+      playerMin: number
+      playerPreference: string
+      returningPlayers: string
+      playersContactGm: boolean
+      gameContactEmail: string
+      estimatedLength: string
+      slotPreference: number
+      lateStart?: Maybe<string>
+      lateFinish?: Maybe<boolean>
+      slotConflicts: string
+      message: string
+      slotId?: Maybe<number>
+      teenFriendly: boolean
+      year: number
+      full?: Maybe<boolean>
+      roomId?: Maybe<number>
+      gameAssignments: {
+        __typename: 'GameAssignmentsConnection'
+        nodes: Array<
+          Maybe<{
+            __typename: 'GameAssignment'
+            gameId: number
+            gm: number
+            memberId: number
+            nodeId: string
+            year: number
+            member?: Maybe<{
+              __typename: 'Membership'
+              user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
+            }>
+          }>
+        >
+      }
+    }>
+  }>
+}
+
+export type UpdateGameMutationVariables = Exact<{
+  input: UpdateGameInput
+}>
+
+export type UpdateGameMutation = {
+  __typename: 'Mutation'
+  updateGame?: Maybe<{
     __typename: 'UpdateGamePayload'
     game?: Maybe<{
       __typename: 'Game'
@@ -8016,6 +8081,30 @@ export type DeleteGameRoomMutation = {
     __typename: 'DeleteRoomPayload'
     clientMutationId?: Maybe<string>
     deletedRoomNodeId?: Maybe<string>
+  }>
+}
+
+export type GetGameRoomAndGamesQueryVariables = Exact<{
+  year?: Maybe<Scalars['Int']>
+}>
+
+export type GetGameRoomAndGamesQuery = {
+  __typename: 'Query'
+  rooms?: Maybe<{
+    __typename: 'RoomsConnection'
+    nodes: Array<
+      Maybe<{
+        __typename: 'Room'
+        id: number
+        description: string
+        games: {
+          __typename: 'GamesConnection'
+          nodes: Array<
+            Maybe<{ __typename: 'Game'; id: number; name: string; slotId?: Maybe<number>; gmNames?: Maybe<string> }>
+          >
+        }
+      }>
+    >
   }>
 }
 
@@ -9311,12 +9400,16 @@ export const GetGamesByYearDocument = `
       node {
         ...gameFields
         ...gameGms
+        room {
+          ...gameRoomFields
+        }
       }
     }
   }
 }
     ${GameFieldsFragmentDoc}
-${GameGmsFragmentDoc}`
+${GameGmsFragmentDoc}
+${GameRoomFieldsFragmentDoc}`
 export const useGetGamesByYearQuery = <TData = GetGamesByYearQuery, TError = QueryError>(
   variables: GetGamesByYearQueryVariables,
   options?: UseQueryOptions<GetGamesByYearQuery, TError, TData>
@@ -9367,6 +9460,24 @@ export const useUpdateGameByNodeIdMutation = <TError = QueryError, TContext = un
 ) =>
   useMutation<UpdateGameByNodeIdMutation, TError, UpdateGameByNodeIdMutationVariables, TContext>(
     useFetchData<UpdateGameByNodeIdMutation, UpdateGameByNodeIdMutationVariables>(UpdateGameByNodeIdDocument),
+    options
+  )
+export const UpdateGameDocument = `
+    mutation updateGame($input: UpdateGameInput!) {
+  updateGame(input: $input) {
+    game {
+      ...gameFields
+      ...gameGms
+    }
+  }
+}
+    ${GameFieldsFragmentDoc}
+${GameGmsFragmentDoc}`
+export const useUpdateGameMutation = <TError = QueryError, TContext = unknown>(
+  options?: UseMutationOptions<UpdateGameMutation, TError, UpdateGameMutationVariables, TContext>
+) =>
+  useMutation<UpdateGameMutation, TError, UpdateGameMutationVariables, TContext>(
+    useFetchData<UpdateGameMutation, UpdateGameMutationVariables>(UpdateGameDocument),
     options
   )
 export const CreateGameDocument = `
@@ -9841,6 +9952,36 @@ export const useDeleteGameRoomMutation = <TError = QueryError, TContext = unknow
 ) =>
   useMutation<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>(
     useFetchData<DeleteGameRoomMutation, DeleteGameRoomMutationVariables>(DeleteGameRoomDocument),
+    options
+  )
+export const GetGameRoomAndGamesDocument = `
+    query getGameRoomAndGames($year: Int) {
+  rooms {
+    nodes {
+      id
+      description
+      games(condition: {year: $year}, orderBy: SLOT_ID_ASC) {
+        nodes {
+          id
+          name
+          slotId
+          gmNames
+        }
+      }
+    }
+  }
+}
+    `
+export const useGetGameRoomAndGamesQuery = <TData = GetGameRoomAndGamesQuery, TError = QueryError>(
+  variables?: GetGameRoomAndGamesQueryVariables,
+  options?: UseQueryOptions<GetGameRoomAndGamesQuery, TError, TData>
+) =>
+  useQuery<GetGameRoomAndGamesQuery, TError, TData>(
+    ['getGameRoomAndGames', variables],
+    useFetchData<GetGameRoomAndGamesQuery, GetGameRoomAndGamesQueryVariables>(GetGameRoomAndGamesDocument).bind(
+      null,
+      variables
+    ),
     options
   )
 export const GetHotelRoomsDocument = `

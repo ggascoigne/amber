@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MouseEventHandler } from 'react'
+import { ChangeEvent, MouseEventHandler, ReactNode } from 'react'
 import {
   TableInstance,
   UseColumnOrderInstanceProps,
@@ -67,6 +67,7 @@ declare module 'react-table' {
       UseSortByOptions<D> {
     hideSelectionUi?: boolean
     defaultColumnDisableGlobalFilter?: boolean
+    updateData?: (rowIndex: number, columnId: string, value: any) => void
   }
 
   export interface Hooks<D extends Record<string, unknown> = unknown>
@@ -100,6 +101,12 @@ declare module 'react-table' {
     rowCount: number
   }
 
+  export interface CellEditorProps {
+    value: any
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    onBlur: () => void
+  }
+
   export interface ColumnInterface<D extends Record<string, unknown> = unknown>
     extends UseFiltersColumnOptions<D>,
       UseGroupByColumnOptions<D>,
@@ -115,7 +122,9 @@ declare module 'react-table' {
       UseGroupByColumnProps<D>,
       UseResizeColumnsColumnProps<D>,
       UseFlexLayoutColumnProps<D>,
-      UseSortByColumnProps<D> {}
+      UseSortByColumnProps<D> {
+    CellEditor?: (CellEditorProps) => ReactNode
+  }
 
   export interface Cell<D extends Record<string, unknown> = unknown> extends UseGroupByCellProps<D> {}
 

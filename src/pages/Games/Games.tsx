@@ -224,6 +224,10 @@ const Games: React.FC = React.memo(() => {
     setSelection([row.original])
   }
 
+  // const updateData = (rowIndex: number, columnId: string, value: any): void => {
+  //   console.log(`{rowIndex, columnId, value} = ${JSON.stringify({ rowIndex, columnId, value }, null, 2)}`)
+  // }
+
   return (
     <Page title='Games'>
       {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
@@ -239,6 +243,7 @@ const Games: React.FC = React.memo(() => {
         extraCommands={commands}
         onRefresh={() => refetch()}
         defaultColumnDisableGlobalFilter
+        // updateData={updateData}
       />
     </Page>
   )

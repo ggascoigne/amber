@@ -36,3 +36,20 @@ mutation deleteGameRoom($input: DeleteRoomInput!) {
     deletedRoomNodeId
   }
 }
+
+query getGameRoomAndGames($year: Int) {
+  rooms {
+    nodes {
+      id
+      description
+      games(condition: { year: $year }, orderBy: SLOT_ID_ASC) {
+        nodes {
+          id
+          name
+          slotId
+          gmNames
+        }
+      }
+    }
+  }
+}

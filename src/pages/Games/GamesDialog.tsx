@@ -166,6 +166,8 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
   const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
 
+  if (initialValues.slotId === null) initialValues.slotId = 0
+
   const onCopyGameChange =
     (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
     (_: any, value: Game | null): void => {

@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme }
 import { Form, Formik, FormikHelpers } from 'formik'
 import { FormikProps } from 'formik/dist/types'
 import React, { ReactElement, ReactNode, useCallback } from 'react'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 import { onCloseHandler } from '../utils'
 import { HasPermission, Perms, useAuth } from './Auth'
@@ -30,6 +31,7 @@ export const useDisableBackdropClick = (onClose?: onCloseHandler) =>
 
 export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
+  useHotkeys('Escape', onClose, { enableOnTags: ['INPUT', 'TEXTAREA'] })
 
   const { isAuthenticated, user } = useAuth()
   if (!isAuthenticated || !user) {

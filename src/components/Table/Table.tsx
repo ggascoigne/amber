@@ -2,7 +2,15 @@ import { TableSortLabel, TextField, Tooltip } from '@material-ui/core'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
 import clsx from 'clsx'
-import React, { CSSProperties, MouseEventHandler, PropsWithChildren, ReactElement, useEffect } from 'react'
+import React, {
+  CSSProperties,
+  MouseEventHandler,
+  PropsWithChildren,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react'
 import {
   Cell,
   CellProps,
@@ -31,6 +39,7 @@ import {
 } from 'react-table'
 import { camelToWords, isDev, notEmpty, useDebounce } from 'utils'
 
+import { CellEditor } from './CellEditor'
 import { FilterChipBar } from './FilterChipBar'
 import { fuzzyTextFilter, numericTextFilter } from './filters'
 import { ResizeHandle } from './ResizeHandle'
@@ -47,6 +56,7 @@ import {
   TableHeadRow,
   TableLabel,
   TableRow,
+  TableStyleOptions,
   TableTable,
   useStyles,
 } from './TableStyles'
@@ -169,8 +179,17 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     initialState: userInitialState = {},
     hideSelectionUi = false,
     defaultColumnDisableGlobalFilter = false,
+    updateData,
   } = props
-  const classes = useStyles()
+
+  const tableStyleOptions: TableStyleOptions = useMemo(
+    () => ({
+      selectionStyle: updateData ? 'cell' : 'row',
+    }),
+    [updateData]
+  )
+
+  const classes = useStyles(tableStyleOptions)
 
   const hooks = [
     useColumnOrder,
@@ -186,7 +205,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     hideSelectionUi ? undefined : useSelectionUi,
   ].filter(notEmpty)
 
-  const defaultColumn = React.useMemo<Partial<Column<T>>>(
+  const defaultColumn = useMemo<Partial<Column<T>>>(
     () => ({
       // disableFilter: true,
       // disableGroupBy: true,
@@ -203,6 +222,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       // disableGlobalFilter: false on those columns that you want to be able to search upon
       // todo: make this more intuitive
       disableGlobalFilter: defaultColumnDisableGlobalFilter,
+      CellEditor,
     }),
     [defaultColumnDisableGlobalFilter]
   )
@@ -219,6 +239,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       filterTypes,
       defaultColumn,
       initialState,
+      updateData,
       autoResetPage: false,
       autoResetExpanded: false,
       autoResetGroupBy: false,
@@ -237,9 +258,12 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     setInitialState(debouncedState)
   }, [setInitialState, debouncedState])
 
-  const cellClickHandler = (cell: Cell<T>) => () => {
-    onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
-  }
+  const cellClickHandler = useCallback(
+    (cell: Cell<T>) => () => {
+      onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
+    },
+    [onClick]
+  )
 
   const { role: tableRole, ...tableProps } = getTableProps()
   const { role: tableBodyRole, ...tableBodyProps } = getTableBodyProps()
@@ -256,8 +280,8 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
           <br />
         </div>
       )}
-      <TableTable {...tableProps}>
-        <TableHead>
+      <TableTable {...tableProps} tableStyleOptions={tableStyleOptions}>
+        <TableHead tableStyleOptions={tableStyleOptions}>
           {headerGroups.map((headerGroup) => {
             const {
               key: headerGroupKey,
@@ -266,7 +290,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
               ...getHeaderGroupProps
             } = headerGroup.getHeaderGroupProps()
             return (
-              <TableHeadRow key={headerGroupKey} {...getHeaderGroupProps}>
+              <TableHeadRow key={headerGroupKey} {...getHeaderGroupProps} tableStyleOptions={tableStyleOptions}>
                 {headerGroup.headers.map((column) => {
                   const style = {
                     textAlign: column.align ? column.align : 'left ',
@@ -276,7 +300,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                   const { title: sortTitle = '', ...columnSortByProps } = column.getSortByToggleProps()
 
                   return (
-                    <TableHeadCell key={headerKey} {...getHeaderProps}>
+                    <TableHeadCell key={headerKey} {...getHeaderProps} tableStyleOptions={tableStyleOptions}>
                       {column.canGroupBy && (
                         <Tooltip title={groupTitle}>
                           <TableSortLabel
@@ -301,10 +325,12 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                           </TableSortLabel>
                         </Tooltip>
                       ) : (
-                        <TableLabel style={style}>{column.render('Header')}</TableLabel>
+                        <TableLabel style={style} tableStyleOptions={tableStyleOptions}>
+                          {column.render('Header')}
+                        </TableLabel>
                       )}
                       {/*<div>{column.canFilter ? column.render('Filter') : null}</div>*/}
-                      {column.canResize && <ResizeHandle column={column} />}
+                      {column.canResize && <ResizeHandle column={column} tableStyleOptions={tableStyleOptions} />}
                     </TableHeadCell>
                   )
                 })}
@@ -312,7 +338,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
             )
           })}
         </TableHead>
-        <TableBody {...tableBodyProps}>
+        <TableBody {...tableBodyProps} tableStyleOptions={tableStyleOptions}>
           {page.map((row) => {
             prepareRow(row)
             const { key: rowKey, role: rowRole, ...getRowProps } = row.getRowProps()
@@ -321,11 +347,17 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                 key={rowKey}
                 {...getRowProps}
                 className={clsx({ rowSelected: row.isSelected, clickable: onClick })}
+                tableStyleOptions={tableStyleOptions}
               >
                 {row.cells.map((cell) => {
                   const { key: cellKey, role: cellRole, ...getCellProps } = cell.getCellProps(cellProps)
                   return (
-                    <TableCell key={cellKey} {...getCellProps} onClick={cellClickHandler(cell)}>
+                    <TableCell
+                      key={cellKey}
+                      {...getCellProps}
+                      onClick={cellClickHandler(cell)}
+                      tableStyleOptions={tableStyleOptions}
+                    >
                       {cell.isGrouped ? (
                         <>
                           <TableSortLabel
@@ -362,3 +394,5 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     </>
   )
 }
+
+// Table.whyDidYouRender = true

@@ -46,6 +46,9 @@ query getGamesByYear($year: Int!) {
       node {
         ...gameFields
         ...gameGms
+        room {
+          ...gameRoomFields
+        }
       }
     }
   }
@@ -64,6 +67,15 @@ query getSmallGamesByYear($year: Int!) {
 
 mutation updateGameByNodeId($input: UpdateGameByNodeIdInput!) {
   updateGameByNodeId(input: $input) {
+    game {
+      ...gameFields
+      ...gameGms
+    }
+  }
+}
+
+mutation updateGame($input: UpdateGameInput!) {
+  updateGame(input: $input) {
     game {
       ...gameFields
       ...gameGms

@@ -1,6 +1,6 @@
 import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@material-ui/core/TextField'
 import { useField, useFormikContext } from 'formik'
-import React from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> {
   name: string
@@ -12,6 +12,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const [field, meta] = useField(rest.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
+  const [oldValue, setOldValue] = useState(field.value)
 
   const showError = touched && !!error
 
@@ -20,6 +21,11 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   if (rest.SelectProps?.multiple && field.value === undefined) {
     field.value = []
   }
+
+  if (oldValue === undefined) {
+    console.log(`field${field.name} is uncontrolled`)
+  }
+
   // I really don't want to do this by accident so the default always forces the formik overrides
   // this is particularly useful when you want to override the built in onBlur
   const newProps = overrideFormik
@@ -38,7 +44,24 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
     helperText: showError ? error : rest.helperText,
     disabled: rest.disabled !== undefined ? rest.disabled : isSubmitting,
   }
-  return <MuiTextField {...fullProps} />
+
+  const originalOnChange = fullProps.onChange
+
+  const onChangeField = (event: ChangeEvent<HTMLInputElement>, ...rest: any[]) => {
+    console.log('here')
+    const value = event.target.value
+    setOldValue((prevState: unknown) => {
+      if (prevState !== value)
+        if (value === undefined) {
+          console.log(`field${field.name} is switching to uncontrolled`)
+        }
+      return value
+    })
+    // @ts-ignore
+    originalOnChange?.(event, ...rest!)
+  }
+
+  return <MuiTextField {...fullProps} onChange={onChangeField} />
 }
 
 TextField.displayName = 'FormikMaterialUITextField'
