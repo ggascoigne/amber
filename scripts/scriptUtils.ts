@@ -38,7 +38,12 @@ export async function resetOwner(dbconfig: DbConfig, targetUser: string, verbose
   psql({ ...dbconfig }, script, verbose)
 }
 
-export async function createCleanDb(dbconfig: DbConfig, verbose: boolean) {
+export async function createCleanDb(
+  dbconfig: DbConfig,
+  targetUser: string,
+  targetUserPassword: string,
+  verbose: boolean
+) {
   const { database, user } = dbconfig
   // useful for tests since it forces dropping local connections
   // const script = stripIndent`
@@ -67,6 +72,24 @@ export async function createCleanDb(dbconfig: DbConfig, verbose: boolean) {
    `
   // @formatter:on
   psql({ ...dbconfig, database: 'postgres' }, script, verbose)
+
+  // @formatter:off
+  // language=PL
+  const script2 = stripIndent`
+    DO $do$
+    BEGIN
+    IF NOT EXISTS (
+      SELECT FROM pg_catalog.pg_roles  -- SELECT list can be empty for this
+      WHERE rolname = '${targetUser}') THEN
+        CREATE USER ${targetUser} with password '${targetUserPassword}';
+    END IF;
+    END
+    $do$;
+   `
+  // @formatter:on
+  psql({ ...dbconfig, database: 'postgres' }, script2, verbose)
+
+  await resetOwner(dbconfig, targetUser, verbose)
 }
 
 export function createKnexMigrationTables(dbconfig: DbConfig, verbose: boolean) {
@@ -148,8 +171,9 @@ export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
 
   const args = getPostgresArgs(dbconfig)
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
-  verbose && cli.log(`running psql ${args.join(' ')}`)
-  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }))
+  const cmd = `psql ${args.join(' ')}`
+  verbose && cli.log(`running ${cmd}`)
+  runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }), cmd)
 }
 
 export function pgloader(mySqlPassword: string, script: string, verbose: boolean) {
@@ -171,12 +195,14 @@ export const bail = (reason: any) => {
     process.exit(-1)
   }
 }
-export const runOrExit = (processStatus: SpawnSyncReturns<Buffer>, message = '') => {
+export const runOrExit = (processStatus: SpawnSyncReturns<Buffer>, cmd?: string) => {
   if (processStatus.error) {
-    bail(message || processStatus.error)
+    cmd && cli.log(`running ${cmd}`)
+    bail(processStatus.error)
   }
   if (processStatus.status) {
-    bail(message || processStatus.status)
+    cmd && cli.log(`running ${cmd}`)
+    bail(processStatus.status)
   }
 }
 

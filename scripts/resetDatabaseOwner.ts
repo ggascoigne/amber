@@ -1,9 +1,11 @@
-#!/usr/bin/env ts-node-script
+#!/usr/bin/env ts-node-script -r dotenv/config
 
 import chalk from 'chalk'
 import cli from 'cli-ux'
 
+// @ts-ignore
 import { config } from '../shared/config'
+// @ts-ignore
 import { getPostgresArgs, resetOwner } from './scriptUtils'
 
 const targetUser = config.userDatabase.user
