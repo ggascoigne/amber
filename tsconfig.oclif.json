@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "importHelpers": true,
+    "module": "commonjs",
+    "outDir": "lib",
+    "rootDir": "shared",
+    "strict": true,
+    "target": "es2020"
+  },
+  "include": [
+    "shared/**/*"
+  ]
+}

@@ -35,80 +35,80 @@ export interface Scalars {
 
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
 export interface BigFloatFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['BigFloat']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['BigFloat']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['BigFloat']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['BigFloat']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['BigFloat']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['BigFloat']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['BigFloat']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['BigFloat']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['BigFloat']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['BigFloat']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['BigFloat']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['BigFloat']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['BigFloat']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['BigFloat']>>
 }
 
 /** A filter to be used against BigInt fields. All fields are combined with a logical ‘and.’ */
 export interface BigIntFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['BigInt']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['BigInt']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['BigInt']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['BigInt']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['BigInt']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['BigInt']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['BigInt']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['BigInt']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['BigInt']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['BigInt']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['BigInt']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['BigInt']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['BigInt']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['BigInt']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['BigInt']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['BigInt']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['BigInt']>>
 }
 
 /** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
 export interface BooleanFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Boolean']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Boolean']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Boolean']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Boolean']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Boolean']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Boolean']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Boolean']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['Boolean']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['Boolean']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Boolean']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Boolean']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Boolean']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Boolean']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Boolean']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Boolean']>>
 }
 
 /** All input for the `createBareSlotChoices` mutation. */
@@ -153,16 +153,16 @@ export interface CreateGameAssignmentPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was created by this mutation. */
-  gameAssignment?: Maybe<GameAssignment>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
   /** Reads a single `Game` that is related to this `GameAssignment`. */
   game?: Maybe<Game>
+  /** The `GameAssignment` that was created by this mutation. */
+  gameAssignment?: Maybe<GameAssignment>
   /** An edge for our `GameAssignment`. May be used by Relay 1. */
   gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `GameAssignment` mutation. */
@@ -189,18 +189,18 @@ export interface CreateGameChoicePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was created by this mutation. */
-  gameChoice?: Maybe<GameChoice>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Game` that is related to this `GameChoice`. */
   game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
+  /** The `GameChoice` that was created by this mutation. */
+  gameChoice?: Maybe<GameChoice>
   /** An edge for our `GameChoice`. May be used by Relay 1. */
   gameChoiceEdge?: Maybe<GameChoicesEdge>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
 }
 
 /** The output of our create `GameChoice` mutation. */
@@ -222,6 +222,8 @@ export interface CreateGameInput {
 /** The output of our create `Game` mutation. */
 export interface CreateGamePayload {
   __typename: 'CreateGamePayload'
+  /** Reads a single `User` that is related to this `Game`. */
+  author?: Maybe<User>
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -229,16 +231,14 @@ export interface CreateGamePayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Game` that was created by this mutation. */
   game?: Maybe<Game>
+  /** An edge for our `Game`. May be used by Relay 1. */
+  gameEdge?: Maybe<GamesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `Room` that is related to this `Game`. */
   room?: Maybe<Room>
   /** Reads a single `Slot` that is related to this `Game`. */
   slot?: Maybe<Slot>
-  /** Reads a single `User` that is related to this `Game`. */
-  author?: Maybe<User>
-  /** An edge for our `Game`. May be used by Relay 1. */
-  gameEdge?: Maybe<GamesEdge>
 }
 
 /** The output of our create `Game` mutation. */
@@ -267,12 +267,12 @@ export interface CreateGameSubmissionPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `GameSubmission` that was created by this mutation. */
   gameSubmission?: Maybe<GameSubmission>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
   /** An edge for our `GameSubmission`. May be used by Relay 1. */
   gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `GameSubmission` mutation. */
@@ -301,10 +301,10 @@ export interface CreateHotelRoomDetailPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `HotelRoomDetail` that was created by this mutation. */
   hotelRoomDetail?: Maybe<HotelRoomDetail>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
   hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `HotelRoomDetail` mutation. */
@@ -333,10 +333,10 @@ export interface CreateHotelRoomPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `HotelRoom` that was created by this mutation. */
   hotelRoom?: Maybe<HotelRoom>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoom`. May be used by Relay 1. */
   hotelRoomEdge?: Maybe<HotelRoomsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `HotelRoom` mutation. */
@@ -365,10 +365,10 @@ export interface CreateLookupPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Lookup` that was created by this mutation. */
   lookup?: Maybe<Lookup>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `Lookup`. May be used by Relay 1. */
   lookupEdge?: Maybe<LookupsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `Lookup` mutation. */
@@ -395,14 +395,14 @@ export interface CreateLookupValuePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` that was created by this mutation. */
-  lookupValue?: Maybe<LookupValue>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Lookup` that is related to this `LookupValue`. */
   lookup?: Maybe<Lookup>
+  /** The `LookupValue` that was created by this mutation. */
+  lookupValue?: Maybe<LookupValue>
   /** An edge for our `LookupValue`. May be used by Relay 1. */
   lookupValueEdge?: Maybe<LookupValuesEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our create `LookupValue` mutation. */
@@ -429,16 +429,16 @@ export interface CreateMembershipPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` that was created by this mutation. */
-  membership?: Maybe<Membership>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `HotelRoom` that is related to this `Membership`. */
   hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
+  /** The `Membership` that was created by this mutation. */
+  membership?: Maybe<Membership>
   /** An edge for our `Membership`. May be used by Relay 1. */
   membershipEdge?: Maybe<MembershipsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
 }
 
 /** The output of our create `Membership` mutation. */
@@ -467,12 +467,12 @@ export interface CreateProfilePayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Profile` that was created by this mutation. */
   profile?: Maybe<Profile>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `User` that is related to this `Profile`. */
   user?: Maybe<User>
-  /** An edge for our `Profile`. May be used by Relay 1. */
-  profileEdge?: Maybe<ProfilesEdge>
 }
 
 /** The output of our create `Profile` mutation. */
@@ -499,10 +499,10 @@ export interface CreateRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` that was created by this mutation. */
-  role?: Maybe<Role>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Role` that was created by this mutation. */
+  role?: Maybe<Role>
   /** An edge for our `Role`. May be used by Relay 1. */
   roleEdge?: Maybe<RolesEdge>
 }
@@ -531,10 +531,10 @@ export interface CreateRoomPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` that was created by this mutation. */
-  room?: Maybe<Room>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Room` that was created by this mutation. */
+  room?: Maybe<Room>
   /** An edge for our `Room`. May be used by Relay 1. */
   roomEdge?: Maybe<RoomsEdge>
 }
@@ -563,10 +563,10 @@ export interface CreateSettingPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` that was created by this mutation. */
-  setting?: Maybe<Setting>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Setting` that was created by this mutation. */
+  setting?: Maybe<Setting>
   /** An edge for our `Setting`. May be used by Relay 1. */
   settingEdge?: Maybe<SettingsEdge>
 }
@@ -606,12 +606,12 @@ export interface CreateShirtOrderItemPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` that was created by this mutation. */
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
   order?: Maybe<ShirtOrder>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** The `ShirtOrderItem` that was created by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
   /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
   shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
 }
@@ -629,14 +629,14 @@ export interface CreateShirtOrderPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was created by this mutation. */
-  shirtOrder?: Maybe<ShirtOrder>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
+  /** The `ShirtOrder` that was created by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
   /** An edge for our `ShirtOrder`. May be used by Relay 1. */
   shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
 }
 
 /** The output of our create `ShirtOrder` mutation. */
@@ -663,10 +663,10 @@ export interface CreateSlotPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` that was created by this mutation. */
-  slot?: Maybe<Slot>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Slot` that was created by this mutation. */
+  slot?: Maybe<Slot>
   /** An edge for our `Slot`. May be used by Relay 1. */
   slotEdge?: Maybe<SlotsEdge>
 }
@@ -695,10 +695,10 @@ export interface CreateUserPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` that was created by this mutation. */
-  user?: Maybe<User>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `User` that was created by this mutation. */
+  user?: Maybe<User>
   /** An edge for our `User`. May be used by Relay 1. */
   userEdge?: Maybe<UsersEdge>
 }
@@ -727,14 +727,14 @@ export interface CreateUserRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` that was created by this mutation. */
-  userRole?: Maybe<UserRole>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `Role` that is related to this `UserRole`. */
   role?: Maybe<Role>
   /** Reads a single `User` that is related to this `UserRole`. */
   user?: Maybe<User>
+  /** The `UserRole` that was created by this mutation. */
+  userRole?: Maybe<UserRole>
   /** An edge for our `UserRole`. May be used by Relay 1. */
   userRoleEdge?: Maybe<UserRolesEdge>
 }
@@ -746,28 +746,28 @@ export interface CreateUserRolePayloadUserRoleEdgeArgs {
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export interface DatetimeFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Datetime']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Datetime']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['Datetime']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Datetime']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Datetime']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Datetime']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Datetime']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Datetime']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['Datetime']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['Datetime']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Datetime']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Datetime']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Datetime']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Datetime']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Datetime']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Datetime']>>
 }
 
 /** All input for the `deleteGameAssignmentByNodeId` mutation. */
@@ -788,9 +788,9 @@ export interface DeleteGameAssignmentInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
+  memberId: Scalars['Int']
 }
 
 /** The output of our delete `GameAssignment` mutation. */
@@ -801,17 +801,17 @@ export interface DeleteGameAssignmentPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was deleted by this mutation. */
-  gameAssignment?: Maybe<GameAssignment>
   deletedGameAssignmentNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
   /** Reads a single `Game` that is related to this `GameAssignment`. */
   game?: Maybe<Game>
+  /** The `GameAssignment` that was deleted by this mutation. */
+  gameAssignment?: Maybe<GameAssignment>
   /** An edge for our `GameAssignment`. May be used by Relay 1. */
   gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `GameAssignment` mutation. */
@@ -859,19 +859,19 @@ export interface DeleteGameChoicePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was deleted by this mutation. */
-  gameChoice?: Maybe<GameChoice>
   deletedGameChoiceNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Game` that is related to this `GameChoice`. */
   game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
+  /** The `GameChoice` that was deleted by this mutation. */
+  gameChoice?: Maybe<GameChoice>
   /** An edge for our `GameChoice`. May be used by Relay 1. */
   gameChoiceEdge?: Maybe<GameChoicesEdge>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
 }
 
 /** The output of our delete `GameChoice` mutation. */
@@ -892,24 +892,24 @@ export interface DeleteGameInput {
 /** The output of our delete `Game` mutation. */
 export interface DeleteGamePayload {
   __typename: 'DeleteGamePayload'
+  /** Reads a single `User` that is related to this `Game`. */
+  author?: Maybe<User>
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedGameNodeId?: Maybe<Scalars['ID']>
   /** The `Game` that was deleted by this mutation. */
   game?: Maybe<Game>
-  deletedGameNodeId?: Maybe<Scalars['ID']>
+  /** An edge for our `Game`. May be used by Relay 1. */
+  gameEdge?: Maybe<GamesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `Room` that is related to this `Game`. */
   room?: Maybe<Room>
   /** Reads a single `Slot` that is related to this `Game`. */
   slot?: Maybe<Slot>
-  /** Reads a single `User` that is related to this `Game`. */
-  author?: Maybe<User>
-  /** An edge for our `Game`. May be used by Relay 1. */
-  gameEdge?: Maybe<GamesEdge>
 }
 
 /** The output of our delete `Game` mutation. */
@@ -946,15 +946,15 @@ export interface DeleteGameSubmissionPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedGameSubmissionNodeId?: Maybe<Scalars['ID']>
   /** The `GameSubmission` that was deleted by this mutation. */
   gameSubmission?: Maybe<GameSubmission>
-  deletedGameSubmissionNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
   /** An edge for our `GameSubmission`. May be used by Relay 1. */
   gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `GameSubmission` mutation. */
@@ -1002,13 +1002,13 @@ export interface DeleteHotelRoomDetailPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedHotelRoomDetailNodeId?: Maybe<Scalars['ID']>
   /** The `HotelRoomDetail` that was deleted by this mutation. */
   hotelRoomDetail?: Maybe<HotelRoomDetail>
-  deletedHotelRoomDetailNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
   hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `HotelRoomDetail` mutation. */
@@ -1034,13 +1034,13 @@ export interface DeleteHotelRoomPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedHotelRoomNodeId?: Maybe<Scalars['ID']>
   /** The `HotelRoom` that was deleted by this mutation. */
   hotelRoom?: Maybe<HotelRoom>
-  deletedHotelRoomNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoom`. May be used by Relay 1. */
   hotelRoomEdge?: Maybe<HotelRoomsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `HotelRoom` mutation. */
@@ -1087,13 +1087,13 @@ export interface DeleteLookupPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedLookupNodeId?: Maybe<Scalars['ID']>
   /** The `Lookup` that was deleted by this mutation. */
   lookup?: Maybe<Lookup>
-  deletedLookupNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `Lookup`. May be used by Relay 1. */
   lookupEdge?: Maybe<LookupsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `Lookup` mutation. */
@@ -1108,8 +1108,8 @@ export interface DeleteLookupValueByLookupIdAndCodeInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  lookupId: Scalars['Int']
   code: Scalars['String']
+  lookupId: Scalars['Int']
 }
 
 /** All input for the `deleteLookupValueByNodeId` mutation. */
@@ -1141,15 +1141,15 @@ export interface DeleteLookupValuePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` that was deleted by this mutation. */
-  lookupValue?: Maybe<LookupValue>
   deletedLookupValueNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Lookup` that is related to this `LookupValue`. */
   lookup?: Maybe<Lookup>
+  /** The `LookupValue` that was deleted by this mutation. */
+  lookupValue?: Maybe<LookupValue>
   /** An edge for our `LookupValue`. May be used by Relay 1. */
   lookupValueEdge?: Maybe<LookupValuesEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our delete `LookupValue` mutation. */
@@ -1186,17 +1186,17 @@ export interface DeleteMembershipPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` that was deleted by this mutation. */
-  membership?: Maybe<Membership>
   deletedMembershipNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `HotelRoom` that is related to this `Membership`. */
   hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
+  /** The `Membership` that was deleted by this mutation. */
+  membership?: Maybe<Membership>
   /** An edge for our `Membership`. May be used by Relay 1. */
   membershipEdge?: Maybe<MembershipsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
 }
 
 /** The output of our delete `Membership` mutation. */
@@ -1233,15 +1233,15 @@ export interface DeleteProfilePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  deletedProfileNodeId?: Maybe<Scalars['ID']>
   /** The `Profile` that was deleted by this mutation. */
   profile?: Maybe<Profile>
-  deletedProfileNodeId?: Maybe<Scalars['ID']>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `User` that is related to this `Profile`. */
   user?: Maybe<User>
-  /** An edge for our `Profile`. May be used by Relay 1. */
-  profileEdge?: Maybe<ProfilesEdge>
 }
 
 /** The output of our delete `Profile` mutation. */
@@ -1251,12 +1251,12 @@ export interface DeleteProfilePayloadProfileEdgeArgs {
 
 /** All input for the `deleteRoleByAuthority` mutation. */
 export interface DeleteRoleByAuthorityInput {
+  authority: Scalars['String']
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  authority: Scalars['String']
 }
 
 /** All input for the `deleteRoleByNodeId` mutation. */
@@ -1288,11 +1288,11 @@ export interface DeleteRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` that was deleted by this mutation. */
-  role?: Maybe<Role>
   deletedRoleNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Role` that was deleted by this mutation. */
+  role?: Maybe<Role>
   /** An edge for our `Role`. May be used by Relay 1. */
   roleEdge?: Maybe<RolesEdge>
 }
@@ -1331,11 +1331,11 @@ export interface DeleteRoomPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` that was deleted by this mutation. */
-  room?: Maybe<Room>
   deletedRoomNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Room` that was deleted by this mutation. */
+  room?: Maybe<Room>
   /** An edge for our `Room`. May be used by Relay 1. */
   roomEdge?: Maybe<RoomsEdge>
 }
@@ -1374,11 +1374,11 @@ export interface DeleteSettingPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` that was deleted by this mutation. */
-  setting?: Maybe<Setting>
   deletedSettingNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Setting` that was deleted by this mutation. */
+  setting?: Maybe<Setting>
   /** An edge for our `Setting`. May be used by Relay 1. */
   settingEdge?: Maybe<SettingsEdge>
 }
@@ -1438,13 +1438,13 @@ export interface DeleteShirtOrderItemPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` that was deleted by this mutation. */
-  shirtOrderItem?: Maybe<ShirtOrderItem>
   deletedShirtOrderItemNodeId?: Maybe<Scalars['ID']>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
   order?: Maybe<ShirtOrder>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** The `ShirtOrderItem` that was deleted by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
   /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
   shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
 }
@@ -1462,15 +1462,15 @@ export interface DeleteShirtOrderPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was deleted by this mutation. */
-  shirtOrder?: Maybe<ShirtOrder>
   deletedShirtOrderNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
+  /** The `ShirtOrder` that was deleted by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
   /** An edge for our `ShirtOrder`. May be used by Relay 1. */
   shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
 }
 
 /** The output of our delete `ShirtOrder` mutation. */
@@ -1507,11 +1507,11 @@ export interface DeleteSlotPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` that was deleted by this mutation. */
-  slot?: Maybe<Slot>
   deletedSlotNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Slot` that was deleted by this mutation. */
+  slot?: Maybe<Slot>
   /** An edge for our `Slot`. May be used by Relay 1. */
   slotEdge?: Maybe<SlotsEdge>
 }
@@ -1560,11 +1560,11 @@ export interface DeleteUserPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` that was deleted by this mutation. */
-  user?: Maybe<User>
   deletedUserNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `User` that was deleted by this mutation. */
+  user?: Maybe<User>
   /** An edge for our `User`. May be used by Relay 1. */
   userEdge?: Maybe<UsersEdge>
 }
@@ -1604,8 +1604,6 @@ export interface DeleteUserRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` that was deleted by this mutation. */
-  userRole?: Maybe<UserRole>
   deletedUserRoleNodeId?: Maybe<Scalars['ID']>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
@@ -1613,6 +1611,8 @@ export interface DeleteUserRolePayload {
   role?: Maybe<Role>
   /** Reads a single `User` that is related to this `UserRole`. */
   user?: Maybe<User>
+  /** The `UserRole` that was deleted by this mutation. */
+  userRole?: Maybe<UserRole>
   /** An edge for our `UserRole`. May be used by Relay 1. */
   userRoleEdge?: Maybe<UserRolesEdge>
 }
@@ -1624,12 +1624,12 @@ export interface DeleteUserRolePayloadUserRoleEdgeArgs {
 
 /** All input for the `fTruncateTables` mutation. */
 export interface FTruncateTablesInput {
+  _username?: Maybe<Scalars['String']>
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  _username?: Maybe<Scalars['String']>
 }
 
 /** The output of our `fTruncateTables` mutation. */
@@ -1646,107 +1646,107 @@ export interface FTruncateTablesPayload {
 
 /** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
 export interface FloatFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Float']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Float']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['Float']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Float']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Float']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Float']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Float']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Float']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Float']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['Float']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['Float']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Float']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Float']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Float']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Float']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Float']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Float']>>
 }
 
 export interface Game extends Node {
   __typename: 'Game'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  description: Scalars['String']
-  lateFinish?: Maybe<Scalars['Boolean']>
-  lateStart?: Maybe<Scalars['String']>
-  name: Scalars['String']
-  playerMax: Scalars['Int']
-  playerMin: Scalars['Int']
-  roomId?: Maybe<Scalars['Int']>
-  shortName?: Maybe<Scalars['String']>
-  slotId?: Maybe<Scalars['Int']>
-  charInstructions: Scalars['String']
-  estimatedLength: Scalars['String']
-  gameContactEmail: Scalars['String']
-  genre: Scalars['String']
-  gmNames?: Maybe<Scalars['String']>
-  message: Scalars['String']
-  playerPreference: Scalars['String']
-  playersContactGm: Scalars['Boolean']
-  returningPlayers: Scalars['String']
-  setting: Scalars['String']
-  slotConflicts: Scalars['String']
-  slotPreference: Scalars['Int']
-  teenFriendly: Scalars['Boolean']
-  type: Scalars['String']
-  year: Scalars['Int']
-  authorId?: Maybe<Scalars['Int']>
-  full?: Maybe<Scalars['Boolean']>
-  /** Reads a single `Room` that is related to this `Game`. */
-  room?: Maybe<Room>
-  /** Reads a single `Slot` that is related to this `Game`. */
-  slot?: Maybe<Slot>
   /** Reads a single `User` that is related to this `Game`. */
   author?: Maybe<User>
+  authorId?: Maybe<Scalars['Int']>
+  charInstructions: Scalars['String']
+  description: Scalars['String']
+  estimatedLength: Scalars['String']
+  full?: Maybe<Scalars['Boolean']>
   /** Reads and enables pagination through a set of `GameAssignment`. */
   gameAssignments: GameAssignmentsConnection
   /** Reads and enables pagination through a set of `GameChoice`. */
   gameChoices: GameChoicesConnection
+  gameContactEmail: Scalars['String']
+  genre: Scalars['String']
+  gmNames?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+  lateFinish?: Maybe<Scalars['Boolean']>
+  lateStart?: Maybe<Scalars['String']>
+  message: Scalars['String']
+  name: Scalars['String']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  playerMax: Scalars['Int']
+  playerMin: Scalars['Int']
+  playerPreference: Scalars['String']
+  playersContactGm: Scalars['Boolean']
+  returningPlayers: Scalars['String']
+  /** Reads a single `Room` that is related to this `Game`. */
+  room?: Maybe<Room>
+  roomId?: Maybe<Scalars['Int']>
+  setting: Scalars['String']
+  shortName?: Maybe<Scalars['String']>
+  /** Reads a single `Slot` that is related to this `Game`. */
+  slot?: Maybe<Slot>
+  slotConflicts: Scalars['String']
+  slotId?: Maybe<Scalars['Int']>
+  slotPreference: Scalars['Int']
+  teenFriendly: Scalars['Boolean']
+  type: Scalars['String']
+  year: Scalars['Int']
 }
 
 export interface GameGameAssignmentsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameAssignmentCondition>
+  filter?: Maybe<GameAssignmentFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-  condition?: Maybe<GameAssignmentCondition>
-  filter?: Maybe<GameAssignmentFilter>
 }
 
 export interface GameGameChoicesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
 }
 
 export interface GameAssignment extends Node {
   __typename: 'GameAssignment'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  memberId: Scalars['Int']
-  gameId: Scalars['Int']
-  gm: Scalars['Int']
-  year: Scalars['Int']
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
   /** Reads a single `Game` that is related to this `GameAssignment`. */
   game?: Maybe<Game>
+  gameId: Scalars['Int']
+  gm: Scalars['Int']
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  memberId: Scalars['Int']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  year: Scalars['Int']
 }
 
 /**
@@ -1754,57 +1754,57 @@ export interface GameAssignment extends Node {
  * tested for equality and combined with a logical ‘and.’
  */
 export interface GameAssignmentCondition {
-  /** Checks for equality with the object’s `memberId` field. */
-  memberId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `gameId` field. */
   gameId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `gm` field. */
   gm?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `memberId` field. */
+  memberId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
 }
 
 /** A filter to be used against `GameAssignment` object types. All fields are combined with a logical ‘and.’ */
 export interface GameAssignmentFilter {
-  /** Filter by the object’s `memberId` field. */
-  memberId?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameAssignmentFilter>>
   /** Filter by the object’s `gameId` field. */
   gameId?: Maybe<IntFilter>
   /** Filter by the object’s `gm` field. */
   gm?: Maybe<IntFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameAssignmentFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameAssignmentFilter>>
+  /** Filter by the object’s `memberId` field. */
+  memberId?: Maybe<IntFilter>
   /** Negates the expression. */
   not?: Maybe<GameAssignmentFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameAssignmentFilter>>
+  /** Filter by the object’s `year` field. */
+  year?: Maybe<IntFilter>
 }
 
 /** An input for mutations affecting `GameAssignment` */
 export interface GameAssignmentInput {
-  memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
+  memberId: Scalars['Int']
   year: Scalars['Int']
 }
 
 /** Represents an update to a `GameAssignment`. Fields that are set will be updated. */
 export interface GameAssignmentPatch {
-  memberId?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
   gm?: Maybe<Scalars['Int']>
+  memberId?: Maybe<Scalars['Int']>
   year?: Maybe<Scalars['Int']>
 }
 
 /** A connection to a list of `GameAssignment` values. */
 export interface GameAssignmentsConnection {
   __typename: 'GameAssignmentsConnection'
-  /** A list of `GameAssignment` objects. */
-  nodes: Array<Maybe<GameAssignment>>
   /** A list of edges which contains the `GameAssignment` and cursor to aid in pagination. */
   edges: Array<GameAssignmentsEdge>
+  /** A list of `GameAssignment` objects. */
+  nodes: Array<Maybe<GameAssignment>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `GameAssignment` you could get from the connection. */
@@ -1822,19 +1822,68 @@ export interface GameAssignmentsEdge {
 
 /** Methods to use when ordering `GameAssignment`. */
 export enum GameAssignmentsOrderBy {
-  Natural = 'NATURAL',
-  MemberIdAsc = 'MEMBER_ID_ASC',
-  MemberIdDesc = 'MEMBER_ID_DESC',
+  GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
+  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
+  GameByGameIdCharInstructionsAsc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_ASC',
+  GameByGameIdCharInstructionsDesc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_DESC',
+  GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
+  GameByGameIdDescriptionDesc = 'GAME_BY_GAME_ID__DESCRIPTION_DESC',
+  GameByGameIdEstimatedLengthAsc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_ASC',
+  GameByGameIdEstimatedLengthDesc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_DESC',
+  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
+  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
+  GameByGameIdGameContactEmailAsc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_ASC',
+  GameByGameIdGameContactEmailDesc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_DESC',
+  GameByGameIdGenreAsc = 'GAME_BY_GAME_ID__GENRE_ASC',
+  GameByGameIdGenreDesc = 'GAME_BY_GAME_ID__GENRE_DESC',
+  GameByGameIdGmNamesAsc = 'GAME_BY_GAME_ID__GM_NAMES_ASC',
+  GameByGameIdGmNamesDesc = 'GAME_BY_GAME_ID__GM_NAMES_DESC',
+  GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
+  GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
+  GameByGameIdLateFinishAsc = 'GAME_BY_GAME_ID__LATE_FINISH_ASC',
+  GameByGameIdLateFinishDesc = 'GAME_BY_GAME_ID__LATE_FINISH_DESC',
+  GameByGameIdLateStartAsc = 'GAME_BY_GAME_ID__LATE_START_ASC',
+  GameByGameIdLateStartDesc = 'GAME_BY_GAME_ID__LATE_START_DESC',
+  GameByGameIdMessageAsc = 'GAME_BY_GAME_ID__MESSAGE_ASC',
+  GameByGameIdMessageDesc = 'GAME_BY_GAME_ID__MESSAGE_DESC',
+  GameByGameIdNameAsc = 'GAME_BY_GAME_ID__NAME_ASC',
+  GameByGameIdNameDesc = 'GAME_BY_GAME_ID__NAME_DESC',
+  GameByGameIdPlayersContactGmAsc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_ASC',
+  GameByGameIdPlayersContactGmDesc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_DESC',
+  GameByGameIdPlayerMaxAsc = 'GAME_BY_GAME_ID__PLAYER_MAX_ASC',
+  GameByGameIdPlayerMaxDesc = 'GAME_BY_GAME_ID__PLAYER_MAX_DESC',
+  GameByGameIdPlayerMinAsc = 'GAME_BY_GAME_ID__PLAYER_MIN_ASC',
+  GameByGameIdPlayerMinDesc = 'GAME_BY_GAME_ID__PLAYER_MIN_DESC',
+  GameByGameIdPlayerPreferenceAsc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_ASC',
+  GameByGameIdPlayerPreferenceDesc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_DESC',
+  GameByGameIdReturningPlayersAsc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_ASC',
+  GameByGameIdReturningPlayersDesc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_DESC',
+  GameByGameIdRoomIdAsc = 'GAME_BY_GAME_ID__ROOM_ID_ASC',
+  GameByGameIdRoomIdDesc = 'GAME_BY_GAME_ID__ROOM_ID_DESC',
+  GameByGameIdSettingAsc = 'GAME_BY_GAME_ID__SETTING_ASC',
+  GameByGameIdSettingDesc = 'GAME_BY_GAME_ID__SETTING_DESC',
+  GameByGameIdShortNameAsc = 'GAME_BY_GAME_ID__SHORT_NAME_ASC',
+  GameByGameIdShortNameDesc = 'GAME_BY_GAME_ID__SHORT_NAME_DESC',
+  GameByGameIdSlotConflictsAsc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_ASC',
+  GameByGameIdSlotConflictsDesc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_DESC',
+  GameByGameIdSlotIdAsc = 'GAME_BY_GAME_ID__SLOT_ID_ASC',
+  GameByGameIdSlotIdDesc = 'GAME_BY_GAME_ID__SLOT_ID_DESC',
+  GameByGameIdSlotPreferenceAsc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_ASC',
+  GameByGameIdSlotPreferenceDesc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_DESC',
+  GameByGameIdTeenFriendlyAsc = 'GAME_BY_GAME_ID__TEEN_FRIENDLY_ASC',
+  GameByGameIdTeenFriendlyDesc = 'GAME_BY_GAME_ID__TEEN_FRIENDLY_DESC',
+  GameByGameIdTypeAsc = 'GAME_BY_GAME_ID__TYPE_ASC',
+  GameByGameIdTypeDesc = 'GAME_BY_GAME_ID__TYPE_DESC',
+  GameByGameIdYearAsc = 'GAME_BY_GAME_ID__YEAR_ASC',
+  GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
   GameIdAsc = 'GAME_ID_ASC',
   GameIdDesc = 'GAME_ID_DESC',
   GmAsc = 'GM_ASC',
   GmDesc = 'GM_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
-  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
+  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
+  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
+  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
+  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
   MembershipByMemberIdArrivalDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC',
   MembershipByMemberIdArrivalDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_DESC',
   MembershipByMemberIdAttendanceAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_ASC',
@@ -1845,105 +1894,56 @@ export enum GameAssignmentsOrderBy {
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
   MembershipByMemberIdHotelRoomIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_DESC',
+  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
+  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
   MembershipByMemberIdInterestLevelAsc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_ASC',
   MembershipByMemberIdInterestLevelDesc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_DESC',
   MembershipByMemberIdMessageAsc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_ASC',
   MembershipByMemberIdMessageDesc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_DESC',
-  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
-  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
+  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
+  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
+  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
   MembershipByMemberIdRoomingPreferencesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_ASC',
   MembershipByMemberIdRoomingPreferencesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_DESC',
   MembershipByMemberIdRoomingWithAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_ASC',
   MembershipByMemberIdRoomingWithDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_DESC',
+  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
+  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
   MembershipByMemberIdUserIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_ASC',
   MembershipByMemberIdUserIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_DESC',
   MembershipByMemberIdVolunteerAsc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_ASC',
   MembershipByMemberIdVolunteerDesc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_DESC',
   MembershipByMemberIdYearAsc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_ASC',
   MembershipByMemberIdYearDesc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_DESC',
-  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
-  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
-  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
-  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
-  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
-  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
-  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
-  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
-  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
-  GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
-  GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
-  GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
-  GameByGameIdDescriptionDesc = 'GAME_BY_GAME_ID__DESCRIPTION_DESC',
-  GameByGameIdLateFinishAsc = 'GAME_BY_GAME_ID__LATE_FINISH_ASC',
-  GameByGameIdLateFinishDesc = 'GAME_BY_GAME_ID__LATE_FINISH_DESC',
-  GameByGameIdLateStartAsc = 'GAME_BY_GAME_ID__LATE_START_ASC',
-  GameByGameIdLateStartDesc = 'GAME_BY_GAME_ID__LATE_START_DESC',
-  GameByGameIdNameAsc = 'GAME_BY_GAME_ID__NAME_ASC',
-  GameByGameIdNameDesc = 'GAME_BY_GAME_ID__NAME_DESC',
-  GameByGameIdPlayerMaxAsc = 'GAME_BY_GAME_ID__PLAYER_MAX_ASC',
-  GameByGameIdPlayerMaxDesc = 'GAME_BY_GAME_ID__PLAYER_MAX_DESC',
-  GameByGameIdPlayerMinAsc = 'GAME_BY_GAME_ID__PLAYER_MIN_ASC',
-  GameByGameIdPlayerMinDesc = 'GAME_BY_GAME_ID__PLAYER_MIN_DESC',
-  GameByGameIdRoomIdAsc = 'GAME_BY_GAME_ID__ROOM_ID_ASC',
-  GameByGameIdRoomIdDesc = 'GAME_BY_GAME_ID__ROOM_ID_DESC',
-  GameByGameIdShortNameAsc = 'GAME_BY_GAME_ID__SHORT_NAME_ASC',
-  GameByGameIdShortNameDesc = 'GAME_BY_GAME_ID__SHORT_NAME_DESC',
-  GameByGameIdSlotIdAsc = 'GAME_BY_GAME_ID__SLOT_ID_ASC',
-  GameByGameIdSlotIdDesc = 'GAME_BY_GAME_ID__SLOT_ID_DESC',
-  GameByGameIdCharInstructionsAsc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_ASC',
-  GameByGameIdCharInstructionsDesc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_DESC',
-  GameByGameIdEstimatedLengthAsc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_ASC',
-  GameByGameIdEstimatedLengthDesc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_DESC',
-  GameByGameIdGameContactEmailAsc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_ASC',
-  GameByGameIdGameContactEmailDesc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_DESC',
-  GameByGameIdGenreAsc = 'GAME_BY_GAME_ID__GENRE_ASC',
-  GameByGameIdGenreDesc = 'GAME_BY_GAME_ID__GENRE_DESC',
-  GameByGameIdGmNamesAsc = 'GAME_BY_GAME_ID__GM_NAMES_ASC',
-  GameByGameIdGmNamesDesc = 'GAME_BY_GAME_ID__GM_NAMES_DESC',
-  GameByGameIdMessageAsc = 'GAME_BY_GAME_ID__MESSAGE_ASC',
-  GameByGameIdMessageDesc = 'GAME_BY_GAME_ID__MESSAGE_DESC',
-  GameByGameIdPlayerPreferenceAsc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_ASC',
-  GameByGameIdPlayerPreferenceDesc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_DESC',
-  GameByGameIdPlayersContactGmAsc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_ASC',
-  GameByGameIdPlayersContactGmDesc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_DESC',
-  GameByGameIdReturningPlayersAsc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_ASC',
-  GameByGameIdReturningPlayersDesc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_DESC',
-  GameByGameIdSettingAsc = 'GAME_BY_GAME_ID__SETTING_ASC',
-  GameByGameIdSettingDesc = 'GAME_BY_GAME_ID__SETTING_DESC',
-  GameByGameIdSlotConflictsAsc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_ASC',
-  GameByGameIdSlotConflictsDesc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_DESC',
-  GameByGameIdSlotPreferenceAsc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_ASC',
-  GameByGameIdSlotPreferenceDesc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_DESC',
-  GameByGameIdTeenFriendlyAsc = 'GAME_BY_GAME_ID__TEEN_FRIENDLY_ASC',
-  GameByGameIdTeenFriendlyDesc = 'GAME_BY_GAME_ID__TEEN_FRIENDLY_DESC',
-  GameByGameIdTypeAsc = 'GAME_BY_GAME_ID__TYPE_ASC',
-  GameByGameIdTypeDesc = 'GAME_BY_GAME_ID__TYPE_DESC',
-  GameByGameIdYearAsc = 'GAME_BY_GAME_ID__YEAR_ASC',
-  GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
-  GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
-  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
-  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
-  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
+  MemberIdAsc = 'MEMBER_ID_ASC',
+  MemberIdDesc = 'MEMBER_ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
 }
 
 export interface GameChoice extends Node {
   __typename: 'GameChoice'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  gameId?: Maybe<Scalars['Int']>
-  memberId: Scalars['Int']
-  rank: Scalars['Int']
-  slotId: Scalars['Int']
-  year: Scalars['Int']
-  returningPlayer: Scalars['Boolean']
   /** Reads a single `Game` that is related to this `GameChoice`. */
   game?: Maybe<Game>
+  gameId?: Maybe<Scalars['Int']>
+  id: Scalars['Int']
   /** Reads a single `Membership` that is related to this `GameChoice`. */
   member?: Maybe<Membership>
+  memberId: Scalars['Int']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  rank: Scalars['Int']
+  returningPlayer: Scalars['Boolean']
   /** Reads a single `Slot` that is related to this `GameChoice`. */
   slot?: Maybe<Slot>
+  slotId: Scalars['Int']
+  year: Scalars['Int']
 }
 
 /**
@@ -1951,75 +1951,75 @@ export interface GameChoice extends Node {
  * for equality and combined with a logical ‘and.’
  */
 export interface GameChoiceCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `gameId` field. */
   gameId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `memberId` field. */
   memberId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `rank` field. */
   rank?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `returningPlayer` field. */
+  returningPlayer?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `slotId` field. */
   slotId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `returningPlayer` field. */
-  returningPlayer?: Maybe<Scalars['Boolean']>
 }
 
 /** A filter to be used against `GameChoice` object types. All fields are combined with a logical ‘and.’ */
 export interface GameChoiceFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameChoiceFilter>>
   /** Filter by the object’s `gameId` field. */
   gameId?: Maybe<IntFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `memberId` field. */
   memberId?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<GameChoiceFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameChoiceFilter>>
   /** Filter by the object’s `rank` field. */
   rank?: Maybe<IntFilter>
+  /** Filter by the object’s `returningPlayer` field. */
+  returningPlayer?: Maybe<BooleanFilter>
   /** Filter by the object’s `slotId` field. */
   slotId?: Maybe<IntFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
-  /** Filter by the object’s `returningPlayer` field. */
-  returningPlayer?: Maybe<BooleanFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameChoiceFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameChoiceFilter>>
-  /** Negates the expression. */
-  not?: Maybe<GameChoiceFilter>
 }
 
 /** An input for mutations affecting `GameChoice` */
 export interface GameChoiceInput {
-  id?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
+  id?: Maybe<Scalars['Int']>
   memberId: Scalars['Int']
   rank: Scalars['Int']
+  returningPlayer: Scalars['Boolean']
   slotId: Scalars['Int']
   year: Scalars['Int']
-  returningPlayer: Scalars['Boolean']
 }
 
 /** Represents an update to a `GameChoice`. Fields that are set will be updated. */
 export interface GameChoicePatch {
-  id?: Maybe<Scalars['Int']>
   gameId?: Maybe<Scalars['Int']>
+  id?: Maybe<Scalars['Int']>
   memberId?: Maybe<Scalars['Int']>
   rank?: Maybe<Scalars['Int']>
+  returningPlayer?: Maybe<Scalars['Boolean']>
   slotId?: Maybe<Scalars['Int']>
   year?: Maybe<Scalars['Int']>
-  returningPlayer?: Maybe<Scalars['Boolean']>
 }
 
 /** A connection to a list of `GameChoice` values. */
 export interface GameChoicesConnection {
   __typename: 'GameChoicesConnection'
-  /** A list of `GameChoice` objects. */
-  nodes: Array<Maybe<GameChoice>>
   /** A list of edges which contains the `GameChoice` and cursor to aid in pagination. */
   edges: Array<GameChoicesEdge>
+  /** A list of `GameChoice` objects. */
+  nodes: Array<Maybe<GameChoice>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `GameChoice` you could get from the connection. */
@@ -2037,65 +2037,52 @@ export interface GameChoicesEdge {
 
 /** Methods to use when ordering `GameChoice`. */
 export enum GameChoicesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  GameIdAsc = 'GAME_ID_ASC',
-  GameIdDesc = 'GAME_ID_DESC',
-  MemberIdAsc = 'MEMBER_ID_ASC',
-  MemberIdDesc = 'MEMBER_ID_DESC',
-  RankAsc = 'RANK_ASC',
-  RankDesc = 'RANK_DESC',
-  SlotIdAsc = 'SLOT_ID_ASC',
-  SlotIdDesc = 'SLOT_ID_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  ReturningPlayerAsc = 'RETURNING_PLAYER_ASC',
-  ReturningPlayerDesc = 'RETURNING_PLAYER_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
-  GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
-  GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
-  GameByGameIdDescriptionDesc = 'GAME_BY_GAME_ID__DESCRIPTION_DESC',
-  GameByGameIdLateFinishAsc = 'GAME_BY_GAME_ID__LATE_FINISH_ASC',
-  GameByGameIdLateFinishDesc = 'GAME_BY_GAME_ID__LATE_FINISH_DESC',
-  GameByGameIdLateStartAsc = 'GAME_BY_GAME_ID__LATE_START_ASC',
-  GameByGameIdLateStartDesc = 'GAME_BY_GAME_ID__LATE_START_DESC',
-  GameByGameIdNameAsc = 'GAME_BY_GAME_ID__NAME_ASC',
-  GameByGameIdNameDesc = 'GAME_BY_GAME_ID__NAME_DESC',
-  GameByGameIdPlayerMaxAsc = 'GAME_BY_GAME_ID__PLAYER_MAX_ASC',
-  GameByGameIdPlayerMaxDesc = 'GAME_BY_GAME_ID__PLAYER_MAX_DESC',
-  GameByGameIdPlayerMinAsc = 'GAME_BY_GAME_ID__PLAYER_MIN_ASC',
-  GameByGameIdPlayerMinDesc = 'GAME_BY_GAME_ID__PLAYER_MIN_DESC',
-  GameByGameIdRoomIdAsc = 'GAME_BY_GAME_ID__ROOM_ID_ASC',
-  GameByGameIdRoomIdDesc = 'GAME_BY_GAME_ID__ROOM_ID_DESC',
-  GameByGameIdShortNameAsc = 'GAME_BY_GAME_ID__SHORT_NAME_ASC',
-  GameByGameIdShortNameDesc = 'GAME_BY_GAME_ID__SHORT_NAME_DESC',
-  GameByGameIdSlotIdAsc = 'GAME_BY_GAME_ID__SLOT_ID_ASC',
-  GameByGameIdSlotIdDesc = 'GAME_BY_GAME_ID__SLOT_ID_DESC',
+  GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
+  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
   GameByGameIdCharInstructionsAsc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_ASC',
   GameByGameIdCharInstructionsDesc = 'GAME_BY_GAME_ID__CHAR_INSTRUCTIONS_DESC',
+  GameByGameIdDescriptionAsc = 'GAME_BY_GAME_ID__DESCRIPTION_ASC',
+  GameByGameIdDescriptionDesc = 'GAME_BY_GAME_ID__DESCRIPTION_DESC',
   GameByGameIdEstimatedLengthAsc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_ASC',
   GameByGameIdEstimatedLengthDesc = 'GAME_BY_GAME_ID__ESTIMATED_LENGTH_DESC',
+  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
+  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
   GameByGameIdGameContactEmailAsc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_ASC',
   GameByGameIdGameContactEmailDesc = 'GAME_BY_GAME_ID__GAME_CONTACT_EMAIL_DESC',
   GameByGameIdGenreAsc = 'GAME_BY_GAME_ID__GENRE_ASC',
   GameByGameIdGenreDesc = 'GAME_BY_GAME_ID__GENRE_DESC',
   GameByGameIdGmNamesAsc = 'GAME_BY_GAME_ID__GM_NAMES_ASC',
   GameByGameIdGmNamesDesc = 'GAME_BY_GAME_ID__GM_NAMES_DESC',
+  GameByGameIdIdAsc = 'GAME_BY_GAME_ID__ID_ASC',
+  GameByGameIdIdDesc = 'GAME_BY_GAME_ID__ID_DESC',
+  GameByGameIdLateFinishAsc = 'GAME_BY_GAME_ID__LATE_FINISH_ASC',
+  GameByGameIdLateFinishDesc = 'GAME_BY_GAME_ID__LATE_FINISH_DESC',
+  GameByGameIdLateStartAsc = 'GAME_BY_GAME_ID__LATE_START_ASC',
+  GameByGameIdLateStartDesc = 'GAME_BY_GAME_ID__LATE_START_DESC',
   GameByGameIdMessageAsc = 'GAME_BY_GAME_ID__MESSAGE_ASC',
   GameByGameIdMessageDesc = 'GAME_BY_GAME_ID__MESSAGE_DESC',
-  GameByGameIdPlayerPreferenceAsc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_ASC',
-  GameByGameIdPlayerPreferenceDesc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_DESC',
+  GameByGameIdNameAsc = 'GAME_BY_GAME_ID__NAME_ASC',
+  GameByGameIdNameDesc = 'GAME_BY_GAME_ID__NAME_DESC',
   GameByGameIdPlayersContactGmAsc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_ASC',
   GameByGameIdPlayersContactGmDesc = 'GAME_BY_GAME_ID__PLAYERS_CONTACT_GM_DESC',
+  GameByGameIdPlayerMaxAsc = 'GAME_BY_GAME_ID__PLAYER_MAX_ASC',
+  GameByGameIdPlayerMaxDesc = 'GAME_BY_GAME_ID__PLAYER_MAX_DESC',
+  GameByGameIdPlayerMinAsc = 'GAME_BY_GAME_ID__PLAYER_MIN_ASC',
+  GameByGameIdPlayerMinDesc = 'GAME_BY_GAME_ID__PLAYER_MIN_DESC',
+  GameByGameIdPlayerPreferenceAsc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_ASC',
+  GameByGameIdPlayerPreferenceDesc = 'GAME_BY_GAME_ID__PLAYER_PREFERENCE_DESC',
   GameByGameIdReturningPlayersAsc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_ASC',
   GameByGameIdReturningPlayersDesc = 'GAME_BY_GAME_ID__RETURNING_PLAYERS_DESC',
+  GameByGameIdRoomIdAsc = 'GAME_BY_GAME_ID__ROOM_ID_ASC',
+  GameByGameIdRoomIdDesc = 'GAME_BY_GAME_ID__ROOM_ID_DESC',
   GameByGameIdSettingAsc = 'GAME_BY_GAME_ID__SETTING_ASC',
   GameByGameIdSettingDesc = 'GAME_BY_GAME_ID__SETTING_DESC',
+  GameByGameIdShortNameAsc = 'GAME_BY_GAME_ID__SHORT_NAME_ASC',
+  GameByGameIdShortNameDesc = 'GAME_BY_GAME_ID__SHORT_NAME_DESC',
   GameByGameIdSlotConflictsAsc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_ASC',
   GameByGameIdSlotConflictsDesc = 'GAME_BY_GAME_ID__SLOT_CONFLICTS_DESC',
+  GameByGameIdSlotIdAsc = 'GAME_BY_GAME_ID__SLOT_ID_ASC',
+  GameByGameIdSlotIdDesc = 'GAME_BY_GAME_ID__SLOT_ID_DESC',
   GameByGameIdSlotPreferenceAsc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_ASC',
   GameByGameIdSlotPreferenceDesc = 'GAME_BY_GAME_ID__SLOT_PREFERENCE_DESC',
   GameByGameIdTeenFriendlyAsc = 'GAME_BY_GAME_ID__TEEN_FRIENDLY_ASC',
@@ -2104,12 +2091,14 @@ export enum GameChoicesOrderBy {
   GameByGameIdTypeDesc = 'GAME_BY_GAME_ID__TYPE_DESC',
   GameByGameIdYearAsc = 'GAME_BY_GAME_ID__YEAR_ASC',
   GameByGameIdYearDesc = 'GAME_BY_GAME_ID__YEAR_DESC',
-  GameByGameIdAuthorIdAsc = 'GAME_BY_GAME_ID__AUTHOR_ID_ASC',
-  GameByGameIdAuthorIdDesc = 'GAME_BY_GAME_ID__AUTHOR_ID_DESC',
-  GameByGameIdFullAsc = 'GAME_BY_GAME_ID__FULL_ASC',
-  GameByGameIdFullDesc = 'GAME_BY_GAME_ID__FULL_DESC',
-  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
-  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
+  GameIdAsc = 'GAME_ID_ASC',
+  GameIdDesc = 'GAME_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
+  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
+  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
+  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
   MembershipByMemberIdArrivalDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC',
   MembershipByMemberIdArrivalDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_DESC',
   MembershipByMemberIdAttendanceAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_ASC',
@@ -2120,90 +2109,105 @@ export enum GameChoicesOrderBy {
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
   MembershipByMemberIdHotelRoomIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_DESC',
+  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
+  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
   MembershipByMemberIdInterestLevelAsc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_ASC',
   MembershipByMemberIdInterestLevelDesc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_DESC',
   MembershipByMemberIdMessageAsc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_ASC',
   MembershipByMemberIdMessageDesc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_DESC',
-  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
-  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
+  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
+  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
+  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
   MembershipByMemberIdRoomingPreferencesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_ASC',
   MembershipByMemberIdRoomingPreferencesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_DESC',
   MembershipByMemberIdRoomingWithAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_ASC',
   MembershipByMemberIdRoomingWithDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_DESC',
+  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
+  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
   MembershipByMemberIdUserIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_ASC',
   MembershipByMemberIdUserIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_DESC',
   MembershipByMemberIdVolunteerAsc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_ASC',
   MembershipByMemberIdVolunteerDesc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_DESC',
   MembershipByMemberIdYearAsc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_ASC',
   MembershipByMemberIdYearDesc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_DESC',
-  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
-  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
-  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
-  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
-  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
-  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
-  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
-  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
-  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
-  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
-  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
-  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
-  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
+  MemberIdAsc = 'MEMBER_ID_ASC',
+  MemberIdDesc = 'MEMBER_ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RankAsc = 'RANK_ASC',
+  RankDesc = 'RANK_DESC',
+  ReturningPlayerAsc = 'RETURNING_PLAYER_ASC',
+  ReturningPlayerDesc = 'RETURNING_PLAYER_DESC',
   SlotBySlotIdDayAsc = 'SLOT_BY_SLOT_ID__DAY_ASC',
   SlotBySlotIdDayDesc = 'SLOT_BY_SLOT_ID__DAY_DESC',
   SlotBySlotIdFormattedDateAsc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_ASC',
   SlotBySlotIdFormattedDateDesc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_DESC',
+  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
+  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
   SlotBySlotIdLengthAsc = 'SLOT_BY_SLOT_ID__LENGTH_ASC',
   SlotBySlotIdLengthDesc = 'SLOT_BY_SLOT_ID__LENGTH_DESC',
+  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
+  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
   SlotBySlotIdTimeAsc = 'SLOT_BY_SLOT_ID__TIME_ASC',
   SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
+  SlotIdAsc = 'SLOT_ID_ASC',
+  SlotIdDesc = 'SLOT_ID_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
 }
 
 /** A condition to be used against `Game` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface GameCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `lateFinish` field. */
-  lateFinish?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `lateStart` field. */
-  lateStart?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `name` field. */
-  name?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `playerMax` field. */
-  playerMax?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `playerMin` field. */
-  playerMin?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `roomId` field. */
-  roomId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `shortName` field. */
-  shortName?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `slotId` field. */
-  slotId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `authorId` field. */
+  authorId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `charInstructions` field. */
   charInstructions?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `description` field. */
+  description?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `estimatedLength` field. */
   estimatedLength?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `full` field. */
+  full?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `gameContactEmail` field. */
   gameContactEmail?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `genre` field. */
   genre?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `gmNames` field. */
   gmNames?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `lateFinish` field. */
+  lateFinish?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `lateStart` field. */
+  lateStart?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `message` field. */
   message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `name` field. */
+  name?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `playerMax` field. */
+  playerMax?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `playerMin` field. */
+  playerMin?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `playerPreference` field. */
   playerPreference?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `playersContactGm` field. */
   playersContactGm?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `returningPlayers` field. */
   returningPlayers?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `roomId` field. */
+  roomId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `setting` field. */
   setting?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `shortName` field. */
+  shortName?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `slotConflicts` field. */
   slotConflicts?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotId` field. */
+  slotId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `slotPreference` field. */
   slotPreference?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `teenFriendly` field. */
@@ -2212,56 +2216,62 @@ export interface GameCondition {
   type?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `authorId` field. */
-  authorId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `full` field. */
-  full?: Maybe<Scalars['Boolean']>
 }
 
 /** A filter to be used against `Game` object types. All fields are combined with a logical ‘and.’ */
 export interface GameFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>
-  /** Filter by the object’s `lateFinish` field. */
-  lateFinish?: Maybe<BooleanFilter>
-  /** Filter by the object’s `lateStart` field. */
-  lateStart?: Maybe<StringFilter>
-  /** Filter by the object’s `name` field. */
-  name?: Maybe<StringFilter>
-  /** Filter by the object’s `playerMax` field. */
-  playerMax?: Maybe<IntFilter>
-  /** Filter by the object’s `playerMin` field. */
-  playerMin?: Maybe<IntFilter>
-  /** Filter by the object’s `roomId` field. */
-  roomId?: Maybe<IntFilter>
-  /** Filter by the object’s `shortName` field. */
-  shortName?: Maybe<StringFilter>
-  /** Filter by the object’s `slotId` field. */
-  slotId?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameFilter>>
+  /** Filter by the object’s `authorId` field. */
+  authorId?: Maybe<IntFilter>
   /** Filter by the object’s `charInstructions` field. */
   charInstructions?: Maybe<StringFilter>
+  /** Filter by the object’s `description` field. */
+  description?: Maybe<StringFilter>
   /** Filter by the object’s `estimatedLength` field. */
   estimatedLength?: Maybe<StringFilter>
+  /** Filter by the object’s `full` field. */
+  full?: Maybe<BooleanFilter>
   /** Filter by the object’s `gameContactEmail` field. */
   gameContactEmail?: Maybe<StringFilter>
   /** Filter by the object’s `genre` field. */
   genre?: Maybe<StringFilter>
   /** Filter by the object’s `gmNames` field. */
   gmNames?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `lateFinish` field. */
+  lateFinish?: Maybe<BooleanFilter>
+  /** Filter by the object’s `lateStart` field. */
+  lateStart?: Maybe<StringFilter>
   /** Filter by the object’s `message` field. */
   message?: Maybe<StringFilter>
+  /** Filter by the object’s `name` field. */
+  name?: Maybe<StringFilter>
+  /** Negates the expression. */
+  not?: Maybe<GameFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameFilter>>
+  /** Filter by the object’s `playerMax` field. */
+  playerMax?: Maybe<IntFilter>
+  /** Filter by the object’s `playerMin` field. */
+  playerMin?: Maybe<IntFilter>
   /** Filter by the object’s `playerPreference` field. */
   playerPreference?: Maybe<StringFilter>
   /** Filter by the object’s `playersContactGm` field. */
   playersContactGm?: Maybe<BooleanFilter>
   /** Filter by the object’s `returningPlayers` field. */
   returningPlayers?: Maybe<StringFilter>
+  /** Filter by the object’s `roomId` field. */
+  roomId?: Maybe<IntFilter>
   /** Filter by the object’s `setting` field. */
   setting?: Maybe<StringFilter>
+  /** Filter by the object’s `shortName` field. */
+  shortName?: Maybe<StringFilter>
   /** Filter by the object’s `slotConflicts` field. */
   slotConflicts?: Maybe<StringFilter>
+  /** Filter by the object’s `slotId` field. */
+  slotId?: Maybe<IntFilter>
   /** Filter by the object’s `slotPreference` field. */
   slotPreference?: Maybe<IntFilter>
   /** Filter by the object’s `teenFriendly` field. */
@@ -2270,90 +2280,80 @@ export interface GameFilter {
   type?: Maybe<StringFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
-  /** Filter by the object’s `authorId` field. */
-  authorId?: Maybe<IntFilter>
-  /** Filter by the object’s `full` field. */
-  full?: Maybe<BooleanFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameFilter>>
-  /** Negates the expression. */
-  not?: Maybe<GameFilter>
 }
 
 /** An input for mutations affecting `Game` */
 export interface GameInput {
-  id?: Maybe<Scalars['Int']>
-  description: Scalars['String']
-  lateFinish?: Maybe<Scalars['Boolean']>
-  lateStart?: Maybe<Scalars['String']>
-  name: Scalars['String']
-  playerMax: Scalars['Int']
-  playerMin: Scalars['Int']
-  roomId?: Maybe<Scalars['Int']>
-  shortName?: Maybe<Scalars['String']>
-  slotId?: Maybe<Scalars['Int']>
+  authorId?: Maybe<Scalars['Int']>
   charInstructions: Scalars['String']
+  description: Scalars['String']
   estimatedLength: Scalars['String']
+  full?: Maybe<Scalars['Boolean']>
   gameContactEmail: Scalars['String']
   genre: Scalars['String']
   gmNames?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
+  lateFinish?: Maybe<Scalars['Boolean']>
+  lateStart?: Maybe<Scalars['String']>
   message: Scalars['String']
+  name: Scalars['String']
+  playerMax: Scalars['Int']
+  playerMin: Scalars['Int']
   playerPreference: Scalars['String']
   playersContactGm: Scalars['Boolean']
   returningPlayers: Scalars['String']
+  roomId?: Maybe<Scalars['Int']>
   setting: Scalars['String']
+  shortName?: Maybe<Scalars['String']>
   slotConflicts: Scalars['String']
+  slotId?: Maybe<Scalars['Int']>
   slotPreference: Scalars['Int']
   teenFriendly: Scalars['Boolean']
   type: Scalars['String']
   year: Scalars['Int']
-  authorId?: Maybe<Scalars['Int']>
-  full?: Maybe<Scalars['Boolean']>
 }
 
 /** Represents an update to a `Game`. Fields that are set will be updated. */
 export interface GamePatch {
-  id?: Maybe<Scalars['Int']>
-  description?: Maybe<Scalars['String']>
-  lateFinish?: Maybe<Scalars['Boolean']>
-  lateStart?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
-  playerMax?: Maybe<Scalars['Int']>
-  playerMin?: Maybe<Scalars['Int']>
-  roomId?: Maybe<Scalars['Int']>
-  shortName?: Maybe<Scalars['String']>
-  slotId?: Maybe<Scalars['Int']>
+  authorId?: Maybe<Scalars['Int']>
   charInstructions?: Maybe<Scalars['String']>
+  description?: Maybe<Scalars['String']>
   estimatedLength?: Maybe<Scalars['String']>
+  full?: Maybe<Scalars['Boolean']>
   gameContactEmail?: Maybe<Scalars['String']>
   genre?: Maybe<Scalars['String']>
   gmNames?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
+  lateFinish?: Maybe<Scalars['Boolean']>
+  lateStart?: Maybe<Scalars['String']>
   message?: Maybe<Scalars['String']>
+  name?: Maybe<Scalars['String']>
+  playerMax?: Maybe<Scalars['Int']>
+  playerMin?: Maybe<Scalars['Int']>
   playerPreference?: Maybe<Scalars['String']>
   playersContactGm?: Maybe<Scalars['Boolean']>
   returningPlayers?: Maybe<Scalars['String']>
+  roomId?: Maybe<Scalars['Int']>
   setting?: Maybe<Scalars['String']>
+  shortName?: Maybe<Scalars['String']>
   slotConflicts?: Maybe<Scalars['String']>
+  slotId?: Maybe<Scalars['Int']>
   slotPreference?: Maybe<Scalars['Int']>
   teenFriendly?: Maybe<Scalars['Boolean']>
   type?: Maybe<Scalars['String']>
   year?: Maybe<Scalars['Int']>
-  authorId?: Maybe<Scalars['Int']>
-  full?: Maybe<Scalars['Boolean']>
 }
 
 export interface GameSubmission extends Node {
   __typename: 'GameSubmission'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
   id: Scalars['Int']
-  memberId: Scalars['Int']
-  message: Scalars['String']
-  year: Scalars['Int']
   /** Reads a single `Membership` that is related to this `GameSubmission`. */
   member?: Maybe<Membership>
+  memberId: Scalars['Int']
+  message: Scalars['String']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  year: Scalars['Int']
 }
 
 /**
@@ -2373,20 +2373,20 @@ export interface GameSubmissionCondition {
 
 /** A filter to be used against `GameSubmission` object types. All fields are combined with a logical ‘and.’ */
 export interface GameSubmissionFilter {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<GameSubmissionFilter>>
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
   /** Filter by the object’s `memberId` field. */
   memberId?: Maybe<IntFilter>
   /** Filter by the object’s `message` field. */
   message?: Maybe<StringFilter>
-  /** Filter by the object’s `year` field. */
-  year?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<GameSubmissionFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<GameSubmissionFilter>>
   /** Negates the expression. */
   not?: Maybe<GameSubmissionFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<GameSubmissionFilter>>
+  /** Filter by the object’s `year` field. */
+  year?: Maybe<IntFilter>
 }
 
 /** An input for mutations affecting `GameSubmission` */
@@ -2408,10 +2408,10 @@ export interface GameSubmissionPatch {
 /** A connection to a list of `GameSubmission` values. */
 export interface GameSubmissionsConnection {
   __typename: 'GameSubmissionsConnection'
-  /** A list of `GameSubmission` objects. */
-  nodes: Array<Maybe<GameSubmission>>
   /** A list of edges which contains the `GameSubmission` and cursor to aid in pagination. */
   edges: Array<GameSubmissionsEdge>
+  /** A list of `GameSubmission` objects. */
+  nodes: Array<Maybe<GameSubmission>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `GameSubmission` you could get from the connection. */
@@ -2429,19 +2429,12 @@ export interface GameSubmissionsEdge {
 
 /** Methods to use when ordering `GameSubmission`. */
 export enum GameSubmissionsOrderBy {
-  Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  MemberIdAsc = 'MEMBER_ID_ASC',
-  MemberIdDesc = 'MEMBER_ID_DESC',
-  MessageAsc = 'MESSAGE_ASC',
-  MessageDesc = 'MESSAGE_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
-  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
+  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
+  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
+  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
+  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
   MembershipByMemberIdArrivalDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_ASC',
   MembershipByMemberIdArrivalDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__ARRIVAL_DATE_DESC',
   MembershipByMemberIdAttendanceAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_ASC',
@@ -2452,41 +2445,48 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
   MembershipByMemberIdHotelRoomIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_DESC',
+  MembershipByMemberIdIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__ID_ASC',
+  MembershipByMemberIdIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__ID_DESC',
   MembershipByMemberIdInterestLevelAsc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_ASC',
   MembershipByMemberIdInterestLevelDesc = 'MEMBERSHIP_BY_MEMBER_ID__INTEREST_LEVEL_DESC',
   MembershipByMemberIdMessageAsc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_ASC',
   MembershipByMemberIdMessageDesc = 'MEMBERSHIP_BY_MEMBER_ID__MESSAGE_DESC',
-  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
-  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
+  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
+  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
+  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
   MembershipByMemberIdRoomingPreferencesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_ASC',
   MembershipByMemberIdRoomingPreferencesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_PREFERENCES_DESC',
   MembershipByMemberIdRoomingWithAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_ASC',
   MembershipByMemberIdRoomingWithDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOMING_WITH_DESC',
+  MembershipByMemberIdRoomPreferenceAndNotesAsc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_ASC',
+  MembershipByMemberIdRoomPreferenceAndNotesDesc = 'MEMBERSHIP_BY_MEMBER_ID__ROOM_PREFERENCE_AND_NOTES_DESC',
+  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
+  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
   MembershipByMemberIdUserIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_ASC',
   MembershipByMemberIdUserIdDesc = 'MEMBERSHIP_BY_MEMBER_ID__USER_ID_DESC',
   MembershipByMemberIdVolunteerAsc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_ASC',
   MembershipByMemberIdVolunteerDesc = 'MEMBERSHIP_BY_MEMBER_ID__VOLUNTEER_DESC',
   MembershipByMemberIdYearAsc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_ASC',
   MembershipByMemberIdYearDesc = 'MEMBERSHIP_BY_MEMBER_ID__YEAR_DESC',
-  MembershipByMemberIdOfferSubsidyAsc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_ASC',
-  MembershipByMemberIdOfferSubsidyDesc = 'MEMBERSHIP_BY_MEMBER_ID__OFFER_SUBSIDY_DESC',
-  MembershipByMemberIdRequestOldPriceAsc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_ASC',
-  MembershipByMemberIdRequestOldPriceDesc = 'MEMBERSHIP_BY_MEMBER_ID__REQUEST_OLD_PRICE_DESC',
-  MembershipByMemberIdAmountOwedAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_ASC',
-  MembershipByMemberIdAmountOwedDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_OWED_DESC',
-  MembershipByMemberIdAmountPaidAsc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_ASC',
-  MembershipByMemberIdAmountPaidDesc = 'MEMBERSHIP_BY_MEMBER_ID__AMOUNT_PAID_DESC',
-  MembershipByMemberIdSlotsAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_ASC',
-  MembershipByMemberIdSlotsAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__SLOTS_ATTENDING_DESC',
+  MemberIdAsc = 'MEMBER_ID_ASC',
+  MemberIdDesc = 'MEMBER_ID_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
 }
 
 /** A connection to a list of `Game` values. */
 export interface GamesConnection {
   __typename: 'GamesConnection'
-  /** A list of `Game` objects. */
-  nodes: Array<Maybe<Game>>
   /** A list of edges which contains the `Game` and cursor to aid in pagination. */
   edges: Array<GamesEdge>
+  /** A list of `Game` objects. */
+  nodes: Array<Maybe<Game>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Game` you could get from the connection. */
@@ -2504,126 +2504,126 @@ export interface GamesEdge {
 
 /** Methods to use when ordering `Game`. */
 export enum GamesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
-  LateFinishAsc = 'LATE_FINISH_ASC',
-  LateFinishDesc = 'LATE_FINISH_DESC',
-  LateStartAsc = 'LATE_START_ASC',
-  LateStartDesc = 'LATE_START_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  PlayerMaxAsc = 'PLAYER_MAX_ASC',
-  PlayerMaxDesc = 'PLAYER_MAX_DESC',
-  PlayerMinAsc = 'PLAYER_MIN_ASC',
-  PlayerMinDesc = 'PLAYER_MIN_DESC',
-  RoomIdAsc = 'ROOM_ID_ASC',
-  RoomIdDesc = 'ROOM_ID_DESC',
-  ShortNameAsc = 'SHORT_NAME_ASC',
-  ShortNameDesc = 'SHORT_NAME_DESC',
-  SlotIdAsc = 'SLOT_ID_ASC',
-  SlotIdDesc = 'SLOT_ID_DESC',
+  AuthorIdAsc = 'AUTHOR_ID_ASC',
+  AuthorIdDesc = 'AUTHOR_ID_DESC',
   CharInstructionsAsc = 'CHAR_INSTRUCTIONS_ASC',
   CharInstructionsDesc = 'CHAR_INSTRUCTIONS_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
   EstimatedLengthAsc = 'ESTIMATED_LENGTH_ASC',
   EstimatedLengthDesc = 'ESTIMATED_LENGTH_DESC',
+  FullAsc = 'FULL_ASC',
+  FullDesc = 'FULL_DESC',
+  GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
+  GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
+  GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
+  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
   GameContactEmailAsc = 'GAME_CONTACT_EMAIL_ASC',
   GameContactEmailDesc = 'GAME_CONTACT_EMAIL_DESC',
   GenreAsc = 'GENRE_ASC',
   GenreDesc = 'GENRE_DESC',
   GmNamesAsc = 'GM_NAMES_ASC',
   GmNamesDesc = 'GM_NAMES_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LateFinishAsc = 'LATE_FINISH_ASC',
+  LateFinishDesc = 'LATE_FINISH_DESC',
+  LateStartAsc = 'LATE_START_ASC',
+  LateStartDesc = 'LATE_START_DESC',
   MessageAsc = 'MESSAGE_ASC',
   MessageDesc = 'MESSAGE_DESC',
-  PlayerPreferenceAsc = 'PLAYER_PREFERENCE_ASC',
-  PlayerPreferenceDesc = 'PLAYER_PREFERENCE_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
   PlayersContactGmAsc = 'PLAYERS_CONTACT_GM_ASC',
   PlayersContactGmDesc = 'PLAYERS_CONTACT_GM_DESC',
-  ReturningPlayersAsc = 'RETURNING_PLAYERS_ASC',
-  ReturningPlayersDesc = 'RETURNING_PLAYERS_DESC',
-  SettingAsc = 'SETTING_ASC',
-  SettingDesc = 'SETTING_DESC',
-  SlotConflictsAsc = 'SLOT_CONFLICTS_ASC',
-  SlotConflictsDesc = 'SLOT_CONFLICTS_DESC',
-  SlotPreferenceAsc = 'SLOT_PREFERENCE_ASC',
-  SlotPreferenceDesc = 'SLOT_PREFERENCE_DESC',
-  TeenFriendlyAsc = 'TEEN_FRIENDLY_ASC',
-  TeenFriendlyDesc = 'TEEN_FRIENDLY_DESC',
-  TypeAsc = 'TYPE_ASC',
-  TypeDesc = 'TYPE_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  AuthorIdAsc = 'AUTHOR_ID_ASC',
-  AuthorIdDesc = 'AUTHOR_ID_DESC',
-  FullAsc = 'FULL_ASC',
-  FullDesc = 'FULL_DESC',
+  PlayerMaxAsc = 'PLAYER_MAX_ASC',
+  PlayerMaxDesc = 'PLAYER_MAX_DESC',
+  PlayerMinAsc = 'PLAYER_MIN_ASC',
+  PlayerMinDesc = 'PLAYER_MIN_DESC',
+  PlayerPreferenceAsc = 'PLAYER_PREFERENCE_ASC',
+  PlayerPreferenceDesc = 'PLAYER_PREFERENCE_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoomByRoomIdIdAsc = 'ROOM_BY_ROOM_ID__ID_ASC',
-  RoomByRoomIdIdDesc = 'ROOM_BY_ROOM_ID__ID_DESC',
+  ReturningPlayersAsc = 'RETURNING_PLAYERS_ASC',
+  ReturningPlayersDesc = 'RETURNING_PLAYERS_DESC',
   RoomByRoomIdDescriptionAsc = 'ROOM_BY_ROOM_ID__DESCRIPTION_ASC',
   RoomByRoomIdDescriptionDesc = 'ROOM_BY_ROOM_ID__DESCRIPTION_DESC',
+  RoomByRoomIdIdAsc = 'ROOM_BY_ROOM_ID__ID_ASC',
+  RoomByRoomIdIdDesc = 'ROOM_BY_ROOM_ID__ID_DESC',
   RoomByRoomIdSizeAsc = 'ROOM_BY_ROOM_ID__SIZE_ASC',
   RoomByRoomIdSizeDesc = 'ROOM_BY_ROOM_ID__SIZE_DESC',
   RoomByRoomIdTypeAsc = 'ROOM_BY_ROOM_ID__TYPE_ASC',
   RoomByRoomIdTypeDesc = 'ROOM_BY_ROOM_ID__TYPE_DESC',
   RoomByRoomIdUpdatedAsc = 'ROOM_BY_ROOM_ID__UPDATED_ASC',
   RoomByRoomIdUpdatedDesc = 'ROOM_BY_ROOM_ID__UPDATED_DESC',
-  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
-  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
-  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
-  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
+  RoomIdAsc = 'ROOM_ID_ASC',
+  RoomIdDesc = 'ROOM_ID_DESC',
+  SettingAsc = 'SETTING_ASC',
+  SettingDesc = 'SETTING_DESC',
+  ShortNameAsc = 'SHORT_NAME_ASC',
+  ShortNameDesc = 'SHORT_NAME_DESC',
   SlotBySlotIdDayAsc = 'SLOT_BY_SLOT_ID__DAY_ASC',
   SlotBySlotIdDayDesc = 'SLOT_BY_SLOT_ID__DAY_DESC',
   SlotBySlotIdFormattedDateAsc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_ASC',
   SlotBySlotIdFormattedDateDesc = 'SLOT_BY_SLOT_ID__FORMATTED_DATE_DESC',
+  SlotBySlotIdIdAsc = 'SLOT_BY_SLOT_ID__ID_ASC',
+  SlotBySlotIdIdDesc = 'SLOT_BY_SLOT_ID__ID_DESC',
   SlotBySlotIdLengthAsc = 'SLOT_BY_SLOT_ID__LENGTH_ASC',
   SlotBySlotIdLengthDesc = 'SLOT_BY_SLOT_ID__LENGTH_DESC',
+  SlotBySlotIdSlotAsc = 'SLOT_BY_SLOT_ID__SLOT_ASC',
+  SlotBySlotIdSlotDesc = 'SLOT_BY_SLOT_ID__SLOT_DESC',
   SlotBySlotIdTimeAsc = 'SLOT_BY_SLOT_ID__TIME_ASC',
   SlotBySlotIdTimeDesc = 'SLOT_BY_SLOT_ID__TIME_DESC',
-  UserByAuthorIdIdAsc = 'USER_BY_AUTHOR_ID__ID_ASC',
-  UserByAuthorIdIdDesc = 'USER_BY_AUTHOR_ID__ID_DESC',
+  SlotConflictsAsc = 'SLOT_CONFLICTS_ASC',
+  SlotConflictsDesc = 'SLOT_CONFLICTS_DESC',
+  SlotIdAsc = 'SLOT_ID_ASC',
+  SlotIdDesc = 'SLOT_ID_DESC',
+  SlotPreferenceAsc = 'SLOT_PREFERENCE_ASC',
+  SlotPreferenceDesc = 'SLOT_PREFERENCE_DESC',
+  TeenFriendlyAsc = 'TEEN_FRIENDLY_ASC',
+  TeenFriendlyDesc = 'TEEN_FRIENDLY_DESC',
+  TypeAsc = 'TYPE_ASC',
+  TypeDesc = 'TYPE_DESC',
   UserByAuthorIdEmailAsc = 'USER_BY_AUTHOR_ID__EMAIL_ASC',
   UserByAuthorIdEmailDesc = 'USER_BY_AUTHOR_ID__EMAIL_DESC',
-  UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
-  UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
   UserByAuthorIdFirstNameAsc = 'USER_BY_AUTHOR_ID__FIRST_NAME_ASC',
   UserByAuthorIdFirstNameDesc = 'USER_BY_AUTHOR_ID__FIRST_NAME_DESC',
+  UserByAuthorIdFullNameAsc = 'USER_BY_AUTHOR_ID__FULL_NAME_ASC',
+  UserByAuthorIdFullNameDesc = 'USER_BY_AUTHOR_ID__FULL_NAME_DESC',
+  UserByAuthorIdIdAsc = 'USER_BY_AUTHOR_ID__ID_ASC',
+  UserByAuthorIdIdDesc = 'USER_BY_AUTHOR_ID__ID_DESC',
   UserByAuthorIdLastNameAsc = 'USER_BY_AUTHOR_ID__LAST_NAME_ASC',
   UserByAuthorIdLastNameDesc = 'USER_BY_AUTHOR_ID__LAST_NAME_DESC',
-  GameAssignmentsByGameIdCountAsc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_ASC',
-  GameAssignmentsByGameIdCountDesc = 'GAME_ASSIGNMENTS_BY_GAME_ID__COUNT_DESC',
-  GameChoicesByGameIdCountAsc = 'GAME_CHOICES_BY_GAME_ID__COUNT_ASC',
-  GameChoicesByGameIdCountDesc = 'GAME_CHOICES_BY_GAME_ID__COUNT_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
 }
 
 export interface HotelRoom extends Node {
   __typename: 'HotelRoom'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
+  bathroomType: Scalars['String']
   description: Scalars['String']
   gamingRoom: Scalars['Boolean']
+  id: Scalars['Int']
+  /** Reads and enables pagination through a set of `Membership`. */
+  memberships: MembershipsConnection
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
   occupancy: Scalars['String']
   quantity: Scalars['Int']
   rate: Scalars['String']
-  bathroomType: Scalars['String']
   type: Scalars['String']
-  /** Reads and enables pagination through a set of `Membership`. */
-  memberships: MembershipsConnection
 }
 
 export interface HotelRoomMembershipsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
 }
 
 /**
@@ -2631,40 +2631,40 @@ export interface HotelRoomMembershipsArgs {
  * for equality and combined with a logical ‘and.’
  */
 export interface HotelRoomCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `bathroomType` field. */
+  bathroomType?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `description` field. */
   description?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `gamingRoom` field. */
   gamingRoom?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `occupancy` field. */
   occupancy?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `quantity` field. */
   quantity?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `rate` field. */
   rate?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `bathroomType` field. */
-  bathroomType?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `type` field. */
   type?: Maybe<Scalars['String']>
 }
 
 export interface HotelRoomDetail extends Node {
   __typename: 'HotelRoomDetail'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['BigInt']
-  version: Scalars['BigInt']
   bathroomType: Scalars['String']
   comment: Scalars['String']
   enabled: Scalars['Boolean']
+  formattedRoomType: Scalars['String']
   gamingRoom: Scalars['Boolean']
+  id: Scalars['BigInt']
   internalRoomType: Scalars['String']
   name: Scalars['String']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
   reserved: Scalars['Boolean']
   reservedFor: Scalars['String']
   roomType: Scalars['String']
-  formattedRoomType: Scalars['String']
+  version: Scalars['BigInt']
 }
 
 /**
@@ -2672,18 +2672,18 @@ export interface HotelRoomDetail extends Node {
  * tested for equality and combined with a logical ‘and.’
  */
 export interface HotelRoomDetailCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['BigInt']>
-  /** Checks for equality with the object’s `version` field. */
-  version?: Maybe<Scalars['BigInt']>
   /** Checks for equality with the object’s `bathroomType` field. */
   bathroomType?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `comment` field. */
   comment?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `enabled` field. */
   enabled?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `formattedRoomType` field. */
+  formattedRoomType?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `gamingRoom` field. */
   gamingRoom?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['BigInt']>
   /** Checks for equality with the object’s `internalRoomType` field. */
   internalRoomType?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `name` field. */
@@ -2694,83 +2694,83 @@ export interface HotelRoomDetailCondition {
   reservedFor?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `roomType` field. */
   roomType?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `formattedRoomType` field. */
-  formattedRoomType?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `version` field. */
+  version?: Maybe<Scalars['BigInt']>
 }
 
 /** A filter to be used against `HotelRoomDetail` object types. All fields are combined with a logical ‘and.’ */
 export interface HotelRoomDetailFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<BigIntFilter>
-  /** Filter by the object’s `version` field. */
-  version?: Maybe<BigIntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<HotelRoomDetailFilter>>
   /** Filter by the object’s `bathroomType` field. */
   bathroomType?: Maybe<StringFilter>
   /** Filter by the object’s `comment` field. */
   comment?: Maybe<StringFilter>
   /** Filter by the object’s `enabled` field. */
   enabled?: Maybe<BooleanFilter>
+  /** Filter by the object’s `formattedRoomType` field. */
+  formattedRoomType?: Maybe<StringFilter>
   /** Filter by the object’s `gamingRoom` field. */
   gamingRoom?: Maybe<BooleanFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<BigIntFilter>
   /** Filter by the object’s `internalRoomType` field. */
   internalRoomType?: Maybe<StringFilter>
   /** Filter by the object’s `name` field. */
   name?: Maybe<StringFilter>
+  /** Negates the expression. */
+  not?: Maybe<HotelRoomDetailFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<HotelRoomDetailFilter>>
   /** Filter by the object’s `reserved` field. */
   reserved?: Maybe<BooleanFilter>
   /** Filter by the object’s `reservedFor` field. */
   reservedFor?: Maybe<StringFilter>
   /** Filter by the object’s `roomType` field. */
   roomType?: Maybe<StringFilter>
-  /** Filter by the object’s `formattedRoomType` field. */
-  formattedRoomType?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<HotelRoomDetailFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<HotelRoomDetailFilter>>
-  /** Negates the expression. */
-  not?: Maybe<HotelRoomDetailFilter>
+  /** Filter by the object’s `version` field. */
+  version?: Maybe<BigIntFilter>
 }
 
 /** An input for mutations affecting `HotelRoomDetail` */
 export interface HotelRoomDetailInput {
-  id?: Maybe<Scalars['BigInt']>
-  version: Scalars['BigInt']
   bathroomType: Scalars['String']
   comment: Scalars['String']
   enabled: Scalars['Boolean']
+  formattedRoomType: Scalars['String']
   gamingRoom: Scalars['Boolean']
+  id?: Maybe<Scalars['BigInt']>
   internalRoomType: Scalars['String']
   name: Scalars['String']
   reserved: Scalars['Boolean']
   reservedFor: Scalars['String']
   roomType: Scalars['String']
-  formattedRoomType: Scalars['String']
+  version: Scalars['BigInt']
 }
 
 /** Represents an update to a `HotelRoomDetail`. Fields that are set will be updated. */
 export interface HotelRoomDetailPatch {
-  id?: Maybe<Scalars['BigInt']>
-  version?: Maybe<Scalars['BigInt']>
   bathroomType?: Maybe<Scalars['String']>
   comment?: Maybe<Scalars['String']>
   enabled?: Maybe<Scalars['Boolean']>
+  formattedRoomType?: Maybe<Scalars['String']>
   gamingRoom?: Maybe<Scalars['Boolean']>
+  id?: Maybe<Scalars['BigInt']>
   internalRoomType?: Maybe<Scalars['String']>
   name?: Maybe<Scalars['String']>
   reserved?: Maybe<Scalars['Boolean']>
   reservedFor?: Maybe<Scalars['String']>
   roomType?: Maybe<Scalars['String']>
-  formattedRoomType?: Maybe<Scalars['String']>
+  version?: Maybe<Scalars['BigInt']>
 }
 
 /** A connection to a list of `HotelRoomDetail` values. */
 export interface HotelRoomDetailsConnection {
   __typename: 'HotelRoomDetailsConnection'
-  /** A list of `HotelRoomDetail` objects. */
-  nodes: Array<Maybe<HotelRoomDetail>>
   /** A list of edges which contains the `HotelRoomDetail` and cursor to aid in pagination. */
   edges: Array<HotelRoomDetailsEdge>
+  /** A list of `HotelRoomDetail` objects. */
+  nodes: Array<Maybe<HotelRoomDetail>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `HotelRoomDetail` you could get from the connection. */
@@ -2788,92 +2788,92 @@ export interface HotelRoomDetailsEdge {
 
 /** Methods to use when ordering `HotelRoomDetail`. */
 export enum HotelRoomDetailsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  VersionAsc = 'VERSION_ASC',
-  VersionDesc = 'VERSION_DESC',
   BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
   BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
   CommentAsc = 'COMMENT_ASC',
   CommentDesc = 'COMMENT_DESC',
   EnabledAsc = 'ENABLED_ASC',
   EnabledDesc = 'ENABLED_DESC',
+  FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
+  FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
   GamingRoomAsc = 'GAMING_ROOM_ASC',
   GamingRoomDesc = 'GAMING_ROOM_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
   InternalRoomTypeAsc = 'INTERNAL_ROOM_TYPE_ASC',
   InternalRoomTypeDesc = 'INTERNAL_ROOM_TYPE_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ReservedAsc = 'RESERVED_ASC',
   ReservedDesc = 'RESERVED_DESC',
   ReservedForAsc = 'RESERVED_FOR_ASC',
   ReservedForDesc = 'RESERVED_FOR_DESC',
   RoomTypeAsc = 'ROOM_TYPE_ASC',
   RoomTypeDesc = 'ROOM_TYPE_DESC',
-  FormattedRoomTypeAsc = 'FORMATTED_ROOM_TYPE_ASC',
-  FormattedRoomTypeDesc = 'FORMATTED_ROOM_TYPE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  VersionAsc = 'VERSION_ASC',
+  VersionDesc = 'VERSION_DESC',
 }
 
 /** A filter to be used against `HotelRoom` object types. All fields are combined with a logical ‘and.’ */
 export interface HotelRoomFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<HotelRoomFilter>>
+  /** Filter by the object’s `bathroomType` field. */
+  bathroomType?: Maybe<StringFilter>
   /** Filter by the object’s `description` field. */
   description?: Maybe<StringFilter>
   /** Filter by the object’s `gamingRoom` field. */
   gamingRoom?: Maybe<BooleanFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<HotelRoomFilter>
   /** Filter by the object’s `occupancy` field. */
   occupancy?: Maybe<StringFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<HotelRoomFilter>>
   /** Filter by the object’s `quantity` field. */
   quantity?: Maybe<IntFilter>
   /** Filter by the object’s `rate` field. */
   rate?: Maybe<StringFilter>
-  /** Filter by the object’s `bathroomType` field. */
-  bathroomType?: Maybe<StringFilter>
   /** Filter by the object’s `type` field. */
   type?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<HotelRoomFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<HotelRoomFilter>>
-  /** Negates the expression. */
-  not?: Maybe<HotelRoomFilter>
 }
 
 /** An input for mutations affecting `HotelRoom` */
 export interface HotelRoomInput {
-  id?: Maybe<Scalars['Int']>
+  bathroomType: Scalars['String']
   description: Scalars['String']
   gamingRoom: Scalars['Boolean']
+  id?: Maybe<Scalars['Int']>
   occupancy: Scalars['String']
   quantity: Scalars['Int']
   rate: Scalars['String']
-  bathroomType: Scalars['String']
   type: Scalars['String']
 }
 
 /** Represents an update to a `HotelRoom`. Fields that are set will be updated. */
 export interface HotelRoomPatch {
-  id?: Maybe<Scalars['Int']>
+  bathroomType?: Maybe<Scalars['String']>
   description?: Maybe<Scalars['String']>
   gamingRoom?: Maybe<Scalars['Boolean']>
+  id?: Maybe<Scalars['Int']>
   occupancy?: Maybe<Scalars['String']>
   quantity?: Maybe<Scalars['Int']>
   rate?: Maybe<Scalars['String']>
-  bathroomType?: Maybe<Scalars['String']>
   type?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `HotelRoom` values. */
 export interface HotelRoomsConnection {
   __typename: 'HotelRoomsConnection'
-  /** A list of `HotelRoom` objects. */
-  nodes: Array<Maybe<HotelRoom>>
   /** A list of edges which contains the `HotelRoom` and cursor to aid in pagination. */
   edges: Array<HotelRoomsEdge>
+  /** A list of `HotelRoom` objects. */
+  nodes: Array<Maybe<HotelRoom>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `HotelRoom` you could get from the connection. */
@@ -2891,90 +2891,88 @@ export interface HotelRoomsEdge {
 
 /** Methods to use when ordering `HotelRoom`. */
 export enum HotelRoomsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
+  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
+  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
   GamingRoomAsc = 'GAMING_ROOM_ASC',
   GamingRoomDesc = 'GAMING_ROOM_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  MembershipsByHotelRoomIdCountAsc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_ASC',
+  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC',
+  Natural = 'NATURAL',
   OccupancyAsc = 'OCCUPANCY_ASC',
   OccupancyDesc = 'OCCUPANCY_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   QuantityAsc = 'QUANTITY_ASC',
   QuantityDesc = 'QUANTITY_DESC',
   RateAsc = 'RATE_ASC',
   RateDesc = 'RATE_DESC',
-  BathroomTypeAsc = 'BATHROOM_TYPE_ASC',
-  BathroomTypeDesc = 'BATHROOM_TYPE_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  MembershipsByHotelRoomIdCountAsc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_ASC',
-  MembershipsByHotelRoomIdCountDesc = 'MEMBERSHIPS_BY_HOTEL_ROOM_ID__COUNT_DESC',
 }
 
 /** A filter to be used against Int fields. All fields are combined with a logical ‘and.’ */
 export interface IntFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['Int']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['Int']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['Int']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['Int']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['Int']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['Int']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['Int']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['Int']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['Int']>
   /** Greater than the specified value. */
   greaterThan?: Maybe<Scalars['Int']>
   /** Greater than or equal to the specified value. */
   greaterThanOrEqualTo?: Maybe<Scalars['Int']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['Int']>>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['Int']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['Int']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['Int']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['Int']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['Int']>>
 }
 
 export interface Lookup extends Node {
   __typename: 'Lookup'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
   codeMaximum?: Maybe<Scalars['String']>
   codeMinimum?: Maybe<Scalars['String']>
   codeScale?: Maybe<Scalars['Int']>
   codeType: Scalars['String']
+  id: Scalars['Int']
   internationalize: Scalars['Boolean']
+  /** Reads and enables pagination through a set of `LookupValue`. */
+  lookupValues: LookupValuesConnection
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
   ordering: Scalars['String']
   realm: Scalars['String']
   valueMaximum?: Maybe<Scalars['String']>
   valueMinimum?: Maybe<Scalars['String']>
   valueScale?: Maybe<Scalars['Int']>
   valueType: Scalars['String']
-  /** Reads and enables pagination through a set of `LookupValue`. */
-  lookupValues: LookupValuesConnection
 }
 
 export interface LookupLookupValuesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<LookupValueCondition>
+  filter?: Maybe<LookupValueFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<LookupValuesOrderBy>>
-  condition?: Maybe<LookupValueCondition>
-  filter?: Maybe<LookupValueFilter>
 }
 
 /** A condition to be used against `Lookup` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface LookupCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `codeMaximum` field. */
   codeMaximum?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `codeMinimum` field. */
@@ -2983,6 +2981,8 @@ export interface LookupCondition {
   codeScale?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `codeType` field. */
   codeType?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `internationalize` field. */
   internationalize?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `ordering` field. */
@@ -3001,8 +3001,8 @@ export interface LookupCondition {
 
 /** A filter to be used against `Lookup` object types. All fields are combined with a logical ‘and.’ */
 export interface LookupFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<LookupFilter>>
   /** Filter by the object’s `codeMaximum` field. */
   codeMaximum?: Maybe<StringFilter>
   /** Filter by the object’s `codeMinimum` field. */
@@ -3011,8 +3011,14 @@ export interface LookupFilter {
   codeScale?: Maybe<IntFilter>
   /** Filter by the object’s `codeType` field. */
   codeType?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `internationalize` field. */
   internationalize?: Maybe<BooleanFilter>
+  /** Negates the expression. */
+  not?: Maybe<LookupFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<LookupFilter>>
   /** Filter by the object’s `ordering` field. */
   ordering?: Maybe<StringFilter>
   /** Filter by the object’s `realm` field. */
@@ -3025,21 +3031,15 @@ export interface LookupFilter {
   valueScale?: Maybe<IntFilter>
   /** Filter by the object’s `valueType` field. */
   valueType?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<LookupFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<LookupFilter>>
-  /** Negates the expression. */
-  not?: Maybe<LookupFilter>
 }
 
 /** An input for mutations affecting `Lookup` */
 export interface LookupInput {
-  id?: Maybe<Scalars['Int']>
   codeMaximum?: Maybe<Scalars['String']>
   codeMinimum?: Maybe<Scalars['String']>
   codeScale?: Maybe<Scalars['Int']>
   codeType: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   internationalize: Scalars['Boolean']
   ordering: Scalars['String']
   realm: Scalars['String']
@@ -3051,11 +3051,11 @@ export interface LookupInput {
 
 /** Represents an update to a `Lookup`. Fields that are set will be updated. */
 export interface LookupPatch {
-  id?: Maybe<Scalars['Int']>
   codeMaximum?: Maybe<Scalars['String']>
   codeMinimum?: Maybe<Scalars['String']>
   codeScale?: Maybe<Scalars['Int']>
   codeType?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   internationalize?: Maybe<Scalars['Boolean']>
   ordering?: Maybe<Scalars['String']>
   realm?: Maybe<Scalars['String']>
@@ -3067,17 +3067,17 @@ export interface LookupPatch {
 
 export interface LookupValue extends Node {
   __typename: 'LookupValue'
+  code: Scalars['String']
+  id: Scalars['Int']
+  /** Reads a single `Lookup` that is related to this `LookupValue`. */
+  lookup?: Maybe<Lookup>
+  lookupId: Scalars['Int']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  code: Scalars['String']
-  lookupId: Scalars['Int']
   numericSequencer: Scalars['BigFloat']
   sequencer: Scalars['Int']
   stringSequencer: Scalars['String']
   value: Scalars['String']
-  /** Reads a single `Lookup` that is related to this `LookupValue`. */
-  lookup?: Maybe<Lookup>
 }
 
 /**
@@ -3085,10 +3085,10 @@ export interface LookupValue extends Node {
  * for equality and combined with a logical ‘and.’
  */
 export interface LookupValueCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `code` field. */
   code?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `lookupId` field. */
   lookupId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `numericSequencer` field. */
@@ -3103,32 +3103,32 @@ export interface LookupValueCondition {
 
 /** A filter to be used against `LookupValue` object types. All fields are combined with a logical ‘and.’ */
 export interface LookupValueFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<LookupValueFilter>>
   /** Filter by the object’s `code` field. */
   code?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `lookupId` field. */
   lookupId?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<LookupValueFilter>
   /** Filter by the object’s `numericSequencer` field. */
   numericSequencer?: Maybe<BigFloatFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<LookupValueFilter>>
   /** Filter by the object’s `sequencer` field. */
   sequencer?: Maybe<IntFilter>
   /** Filter by the object’s `stringSequencer` field. */
   stringSequencer?: Maybe<StringFilter>
   /** Filter by the object’s `value` field. */
   value?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<LookupValueFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<LookupValueFilter>>
-  /** Negates the expression. */
-  not?: Maybe<LookupValueFilter>
 }
 
 /** An input for mutations affecting `LookupValue` */
 export interface LookupValueInput {
-  id?: Maybe<Scalars['Int']>
   code: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   lookupId: Scalars['Int']
   numericSequencer: Scalars['BigFloat']
   sequencer: Scalars['Int']
@@ -3138,8 +3138,8 @@ export interface LookupValueInput {
 
 /** Represents an update to a `LookupValue`. Fields that are set will be updated. */
 export interface LookupValuePatch {
-  id?: Maybe<Scalars['Int']>
   code?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   lookupId?: Maybe<Scalars['Int']>
   numericSequencer?: Maybe<Scalars['BigFloat']>
   sequencer?: Maybe<Scalars['Int']>
@@ -3150,10 +3150,10 @@ export interface LookupValuePatch {
 /** A connection to a list of `LookupValue` values. */
 export interface LookupValuesConnection {
   __typename: 'LookupValuesConnection'
-  /** A list of `LookupValue` objects. */
-  nodes: Array<Maybe<LookupValue>>
   /** A list of edges which contains the `LookupValue` and cursor to aid in pagination. */
   edges: Array<LookupValuesEdge>
+  /** A list of `LookupValue` objects. */
+  nodes: Array<Maybe<LookupValue>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `LookupValue` you could get from the connection. */
@@ -3171,25 +3171,10 @@ export interface LookupValuesEdge {
 
 /** Methods to use when ordering `LookupValue`. */
 export enum LookupValuesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   CodeAsc = 'CODE_ASC',
   CodeDesc = 'CODE_DESC',
-  LookupIdAsc = 'LOOKUP_ID_ASC',
-  LookupIdDesc = 'LOOKUP_ID_DESC',
-  NumericSequencerAsc = 'NUMERIC_SEQUENCER_ASC',
-  NumericSequencerDesc = 'NUMERIC_SEQUENCER_DESC',
-  SequencerAsc = 'SEQUENCER_ASC',
-  SequencerDesc = 'SEQUENCER_DESC',
-  StringSequencerAsc = 'STRING_SEQUENCER_ASC',
-  StringSequencerDesc = 'STRING_SEQUENCER_DESC',
-  ValueAsc = 'VALUE_ASC',
-  ValueDesc = 'VALUE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  LookupByLookupIdIdAsc = 'LOOKUP_BY_LOOKUP_ID__ID_ASC',
-  LookupByLookupIdIdDesc = 'LOOKUP_BY_LOOKUP_ID__ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
   LookupByLookupIdCodeMaximumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_ASC',
   LookupByLookupIdCodeMaximumDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_MAXIMUM_DESC',
   LookupByLookupIdCodeMinimumAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_MINIMUM_ASC',
@@ -3198,6 +3183,8 @@ export enum LookupValuesOrderBy {
   LookupByLookupIdCodeScaleDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_SCALE_DESC',
   LookupByLookupIdCodeTypeAsc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_ASC',
   LookupByLookupIdCodeTypeDesc = 'LOOKUP_BY_LOOKUP_ID__CODE_TYPE_DESC',
+  LookupByLookupIdIdAsc = 'LOOKUP_BY_LOOKUP_ID__ID_ASC',
+  LookupByLookupIdIdDesc = 'LOOKUP_BY_LOOKUP_ID__ID_DESC',
   LookupByLookupIdInternationalizeAsc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_ASC',
   LookupByLookupIdInternationalizeDesc = 'LOOKUP_BY_LOOKUP_ID__INTERNATIONALIZE_DESC',
   LookupByLookupIdOrderingAsc = 'LOOKUP_BY_LOOKUP_ID__ORDERING_ASC',
@@ -3212,15 +3199,28 @@ export enum LookupValuesOrderBy {
   LookupByLookupIdValueScaleDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_SCALE_DESC',
   LookupByLookupIdValueTypeAsc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_ASC',
   LookupByLookupIdValueTypeDesc = 'LOOKUP_BY_LOOKUP_ID__VALUE_TYPE_DESC',
+  LookupIdAsc = 'LOOKUP_ID_ASC',
+  LookupIdDesc = 'LOOKUP_ID_DESC',
+  Natural = 'NATURAL',
+  NumericSequencerAsc = 'NUMERIC_SEQUENCER_ASC',
+  NumericSequencerDesc = 'NUMERIC_SEQUENCER_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  SequencerAsc = 'SEQUENCER_ASC',
+  SequencerDesc = 'SEQUENCER_DESC',
+  StringSequencerAsc = 'STRING_SEQUENCER_ASC',
+  StringSequencerDesc = 'STRING_SEQUENCER_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC',
 }
 
 /** A connection to a list of `Lookup` values. */
 export interface LookupsConnection {
   __typename: 'LookupsConnection'
-  /** A list of `Lookup` objects. */
-  nodes: Array<Maybe<Lookup>>
   /** A list of edges which contains the `Lookup` and cursor to aid in pagination. */
   edges: Array<LookupsEdge>
+  /** A list of `Lookup` objects. */
+  nodes: Array<Maybe<Lookup>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Lookup` you could get from the connection. */
@@ -3238,9 +3238,6 @@ export interface LookupsEdge {
 
 /** Methods to use when ordering `Lookup`. */
 export enum LookupsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   CodeMaximumAsc = 'CODE_MAXIMUM_ASC',
   CodeMaximumDesc = 'CODE_MAXIMUM_DESC',
   CodeMinimumAsc = 'CODE_MINIMUM_ASC',
@@ -3249,10 +3246,17 @@ export enum LookupsOrderBy {
   CodeScaleDesc = 'CODE_SCALE_DESC',
   CodeTypeAsc = 'CODE_TYPE_ASC',
   CodeTypeDesc = 'CODE_TYPE_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
   InternationalizeAsc = 'INTERNATIONALIZE_ASC',
   InternationalizeDesc = 'INTERNATIONALIZE_DESC',
+  LookupValuesByLookupIdCountAsc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_ASC',
+  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
+  Natural = 'NATURAL',
   OrderingAsc = 'ORDERING_ASC',
   OrderingDesc = 'ORDERING_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RealmAsc = 'REALM_ASC',
   RealmDesc = 'REALM_DESC',
   ValueMaximumAsc = 'VALUE_MAXIMUM_ASC',
@@ -3263,78 +3267,74 @@ export enum LookupsOrderBy {
   ValueScaleDesc = 'VALUE_SCALE_DESC',
   ValueTypeAsc = 'VALUE_TYPE_ASC',
   ValueTypeDesc = 'VALUE_TYPE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  LookupValuesByLookupIdCountAsc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_ASC',
-  LookupValuesByLookupIdCountDesc = 'LOOKUP_VALUES_BY_LOOKUP_ID__COUNT_DESC',
 }
 
 export interface Membership extends Node {
   __typename: 'Membership'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
+  amountOwed: Scalars['Float']
+  amountPaid: Scalars['Float']
   arrivalDate: Scalars['Datetime']
   attendance: Scalars['String']
   attending: Scalars['Boolean']
   departureDate: Scalars['Datetime']
-  hotelRoomId: Scalars['Int']
-  interestLevel: Scalars['String']
-  message: Scalars['String']
-  roomPreferenceAndNotes: Scalars['String']
-  roomingPreferences: Scalars['String']
-  roomingWith: Scalars['String']
-  userId: Scalars['Int']
-  volunteer: Scalars['Boolean']
-  year: Scalars['Int']
-  offerSubsidy: Scalars['Boolean']
-  requestOldPrice: Scalars['Boolean']
-  amountOwed: Scalars['Float']
-  amountPaid: Scalars['Float']
-  slotsAttending?: Maybe<Scalars['String']>
-  /** Reads a single `HotelRoom` that is related to this `Membership`. */
-  hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
   /** Reads and enables pagination through a set of `GameAssignment`. */
   gameAssignmentsByMemberId: GameAssignmentsConnection
   /** Reads and enables pagination through a set of `GameChoice`. */
   gameChoicesByMemberId: GameChoicesConnection
   /** Reads and enables pagination through a set of `GameSubmission`. */
   gameSubmissionsByMemberId: GameSubmissionsConnection
+  /** Reads a single `HotelRoom` that is related to this `Membership`. */
+  hotelRoom?: Maybe<HotelRoom>
+  hotelRoomId: Scalars['Int']
+  id: Scalars['Int']
+  interestLevel: Scalars['String']
+  message: Scalars['String']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  offerSubsidy: Scalars['Boolean']
+  requestOldPrice: Scalars['Boolean']
+  roomPreferenceAndNotes: Scalars['String']
+  roomingPreferences: Scalars['String']
+  roomingWith: Scalars['String']
+  slotsAttending?: Maybe<Scalars['String']>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
+  userId: Scalars['Int']
+  volunteer: Scalars['Boolean']
+  year: Scalars['Int']
 }
 
 export interface MembershipGameAssignmentsByMemberIdArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameAssignmentCondition>
+  filter?: Maybe<GameAssignmentFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-  condition?: Maybe<GameAssignmentCondition>
-  filter?: Maybe<GameAssignmentFilter>
 }
 
 export interface MembershipGameChoicesByMemberIdArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
 }
 
 export interface MembershipGameSubmissionsByMemberIdArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameSubmissionCondition>
+  filter?: Maybe<GameSubmissionFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-  condition?: Maybe<GameSubmissionCondition>
-  filter?: Maybe<GameSubmissionFilter>
 }
 
 /**
@@ -3342,8 +3342,10 @@ export interface MembershipGameSubmissionsByMemberIdArgs {
  * for equality and combined with a logical ‘and.’
  */
 export interface MembershipCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `amountOwed` field. */
+  amountOwed?: Maybe<Scalars['Float']>
+  /** Checks for equality with the object’s `amountPaid` field. */
+  amountPaid?: Maybe<Scalars['Float']>
   /** Checks for equality with the object’s `arrivalDate` field. */
   arrivalDate?: Maybe<Scalars['Datetime']>
   /** Checks for equality with the object’s `attendance` field. */
@@ -3354,38 +3356,40 @@ export interface MembershipCondition {
   departureDate?: Maybe<Scalars['Datetime']>
   /** Checks for equality with the object’s `hotelRoomId` field. */
   hotelRoomId?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `interestLevel` field. */
   interestLevel?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `message` field. */
   message?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `offerSubsidy` field. */
+  offerSubsidy?: Maybe<Scalars['Boolean']>
+  /** Checks for equality with the object’s `requestOldPrice` field. */
+  requestOldPrice?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `roomPreferenceAndNotes` field. */
   roomPreferenceAndNotes?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `roomingPreferences` field. */
   roomingPreferences?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `roomingWith` field. */
   roomingWith?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `userId` field. */
   userId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `volunteer` field. */
   volunteer?: Maybe<Scalars['Boolean']>
   /** Checks for equality with the object’s `year` field. */
   year?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `offerSubsidy` field. */
-  offerSubsidy?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `requestOldPrice` field. */
-  requestOldPrice?: Maybe<Scalars['Boolean']>
-  /** Checks for equality with the object’s `amountOwed` field. */
-  amountOwed?: Maybe<Scalars['Float']>
-  /** Checks for equality with the object’s `amountPaid` field. */
-  amountPaid?: Maybe<Scalars['Float']>
-  /** Checks for equality with the object’s `slotsAttending` field. */
-  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `Membership` object types. All fields are combined with a logical ‘and.’ */
 export interface MembershipFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Filter by the object’s `amountOwed` field. */
+  amountOwed?: Maybe<FloatFilter>
+  /** Filter by the object’s `amountPaid` field. */
+  amountPaid?: Maybe<FloatFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<MembershipFilter>>
   /** Filter by the object’s `arrivalDate` field. */
   arrivalDate?: Maybe<DatetimeFilter>
   /** Filter by the object’s `attendance` field. */
@@ -3396,93 +3400,89 @@ export interface MembershipFilter {
   departureDate?: Maybe<DatetimeFilter>
   /** Filter by the object’s `hotelRoomId` field. */
   hotelRoomId?: Maybe<IntFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `interestLevel` field. */
   interestLevel?: Maybe<StringFilter>
   /** Filter by the object’s `message` field. */
   message?: Maybe<StringFilter>
+  /** Negates the expression. */
+  not?: Maybe<MembershipFilter>
+  /** Filter by the object’s `offerSubsidy` field. */
+  offerSubsidy?: Maybe<BooleanFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<MembershipFilter>>
+  /** Filter by the object’s `requestOldPrice` field. */
+  requestOldPrice?: Maybe<BooleanFilter>
   /** Filter by the object’s `roomPreferenceAndNotes` field. */
   roomPreferenceAndNotes?: Maybe<StringFilter>
   /** Filter by the object’s `roomingPreferences` field. */
   roomingPreferences?: Maybe<StringFilter>
   /** Filter by the object’s `roomingWith` field. */
   roomingWith?: Maybe<StringFilter>
+  /** Filter by the object’s `slotsAttending` field. */
+  slotsAttending?: Maybe<StringFilter>
   /** Filter by the object’s `userId` field. */
   userId?: Maybe<IntFilter>
   /** Filter by the object’s `volunteer` field. */
   volunteer?: Maybe<BooleanFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
-  /** Filter by the object’s `offerSubsidy` field. */
-  offerSubsidy?: Maybe<BooleanFilter>
-  /** Filter by the object’s `requestOldPrice` field. */
-  requestOldPrice?: Maybe<BooleanFilter>
-  /** Filter by the object’s `amountOwed` field. */
-  amountOwed?: Maybe<FloatFilter>
-  /** Filter by the object’s `amountPaid` field. */
-  amountPaid?: Maybe<FloatFilter>
-  /** Filter by the object’s `slotsAttending` field. */
-  slotsAttending?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<MembershipFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<MembershipFilter>>
-  /** Negates the expression. */
-  not?: Maybe<MembershipFilter>
 }
 
 /** An input for mutations affecting `Membership` */
 export interface MembershipInput {
-  id?: Maybe<Scalars['Int']>
+  amountOwed: Scalars['Float']
+  amountPaid: Scalars['Float']
   arrivalDate: Scalars['Datetime']
   attendance: Scalars['String']
   attending: Scalars['Boolean']
   departureDate: Scalars['Datetime']
   hotelRoomId: Scalars['Int']
+  id?: Maybe<Scalars['Int']>
   interestLevel: Scalars['String']
   message: Scalars['String']
+  offerSubsidy: Scalars['Boolean']
+  requestOldPrice: Scalars['Boolean']
   roomPreferenceAndNotes: Scalars['String']
   roomingPreferences: Scalars['String']
   roomingWith: Scalars['String']
+  slotsAttending?: Maybe<Scalars['String']>
   userId: Scalars['Int']
   volunteer: Scalars['Boolean']
   year: Scalars['Int']
-  offerSubsidy: Scalars['Boolean']
-  requestOldPrice: Scalars['Boolean']
-  amountOwed: Scalars['Float']
-  amountPaid: Scalars['Float']
-  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `Membership`. Fields that are set will be updated. */
 export interface MembershipPatch {
-  id?: Maybe<Scalars['Int']>
+  amountOwed?: Maybe<Scalars['Float']>
+  amountPaid?: Maybe<Scalars['Float']>
   arrivalDate?: Maybe<Scalars['Datetime']>
   attendance?: Maybe<Scalars['String']>
   attending?: Maybe<Scalars['Boolean']>
   departureDate?: Maybe<Scalars['Datetime']>
   hotelRoomId?: Maybe<Scalars['Int']>
+  id?: Maybe<Scalars['Int']>
   interestLevel?: Maybe<Scalars['String']>
   message?: Maybe<Scalars['String']>
+  offerSubsidy?: Maybe<Scalars['Boolean']>
+  requestOldPrice?: Maybe<Scalars['Boolean']>
   roomPreferenceAndNotes?: Maybe<Scalars['String']>
   roomingPreferences?: Maybe<Scalars['String']>
   roomingWith?: Maybe<Scalars['String']>
+  slotsAttending?: Maybe<Scalars['String']>
   userId?: Maybe<Scalars['Int']>
   volunteer?: Maybe<Scalars['Boolean']>
   year?: Maybe<Scalars['Int']>
-  offerSubsidy?: Maybe<Scalars['Boolean']>
-  requestOldPrice?: Maybe<Scalars['Boolean']>
-  amountOwed?: Maybe<Scalars['Float']>
-  amountPaid?: Maybe<Scalars['Float']>
-  slotsAttending?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `Membership` values. */
 export interface MembershipsConnection {
   __typename: 'MembershipsConnection'
-  /** A list of `Membership` objects. */
-  nodes: Array<Maybe<Membership>>
   /** A list of edges which contains the `Membership` and cursor to aid in pagination. */
   edges: Array<MembershipsEdge>
+  /** A list of `Membership` objects. */
+  nodes: Array<Maybe<Membership>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Membership` you could get from the connection. */
@@ -3500,9 +3500,10 @@ export interface MembershipsEdge {
 
 /** Methods to use when ordering `Membership`. */
 export enum MembershipsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
+  AmountOwedAsc = 'AMOUNT_OWED_ASC',
+  AmountOwedDesc = 'AMOUNT_OWED_DESC',
+  AmountPaidAsc = 'AMOUNT_PAID_ASC',
+  AmountPaidDesc = 'AMOUNT_PAID_DESC',
   ArrivalDateAsc = 'ARRIVAL_DATE_ASC',
   ArrivalDateDesc = 'ARRIVAL_DATE_DESC',
   AttendanceAsc = 'ATTENDANCE_ASC',
@@ -3511,73 +3512,73 @@ export enum MembershipsOrderBy {
   AttendingDesc = 'ATTENDING_DESC',
   DepartureDateAsc = 'DEPARTURE_DATE_ASC',
   DepartureDateDesc = 'DEPARTURE_DATE_DESC',
-  HotelRoomIdAsc = 'HOTEL_ROOM_ID_ASC',
-  HotelRoomIdDesc = 'HOTEL_ROOM_ID_DESC',
-  InterestLevelAsc = 'INTEREST_LEVEL_ASC',
-  InterestLevelDesc = 'INTEREST_LEVEL_DESC',
-  MessageAsc = 'MESSAGE_ASC',
-  MessageDesc = 'MESSAGE_DESC',
-  RoomPreferenceAndNotesAsc = 'ROOM_PREFERENCE_AND_NOTES_ASC',
-  RoomPreferenceAndNotesDesc = 'ROOM_PREFERENCE_AND_NOTES_DESC',
-  RoomingPreferencesAsc = 'ROOMING_PREFERENCES_ASC',
-  RoomingPreferencesDesc = 'ROOMING_PREFERENCES_DESC',
-  RoomingWithAsc = 'ROOMING_WITH_ASC',
-  RoomingWithDesc = 'ROOMING_WITH_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  VolunteerAsc = 'VOLUNTEER_ASC',
-  VolunteerDesc = 'VOLUNTEER_DESC',
-  YearAsc = 'YEAR_ASC',
-  YearDesc = 'YEAR_DESC',
-  OfferSubsidyAsc = 'OFFER_SUBSIDY_ASC',
-  OfferSubsidyDesc = 'OFFER_SUBSIDY_DESC',
-  RequestOldPriceAsc = 'REQUEST_OLD_PRICE_ASC',
-  RequestOldPriceDesc = 'REQUEST_OLD_PRICE_DESC',
-  AmountOwedAsc = 'AMOUNT_OWED_ASC',
-  AmountOwedDesc = 'AMOUNT_OWED_DESC',
-  AmountPaidAsc = 'AMOUNT_PAID_ASC',
-  AmountPaidDesc = 'AMOUNT_PAID_DESC',
-  SlotsAttendingAsc = 'SLOTS_ATTENDING_ASC',
-  SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
-  HotelRoomByHotelRoomIdIdDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_DESC',
-  HotelRoomByHotelRoomIdDescriptionAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_ASC',
-  HotelRoomByHotelRoomIdDescriptionDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_DESC',
-  HotelRoomByHotelRoomIdGamingRoomAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_ASC',
-  HotelRoomByHotelRoomIdGamingRoomDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_DESC',
-  HotelRoomByHotelRoomIdOccupancyAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_ASC',
-  HotelRoomByHotelRoomIdOccupancyDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_DESC',
-  HotelRoomByHotelRoomIdQuantityAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_ASC',
-  HotelRoomByHotelRoomIdQuantityDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_DESC',
-  HotelRoomByHotelRoomIdRateAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_ASC',
-  HotelRoomByHotelRoomIdRateDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_DESC',
-  HotelRoomByHotelRoomIdBathroomTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_ASC',
-  HotelRoomByHotelRoomIdBathroomTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_DESC',
-  HotelRoomByHotelRoomIdTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_ASC',
-  HotelRoomByHotelRoomIdTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
-  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
-  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
-  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
-  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
   GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
   GameAssignmentsByMemberIdCountDesc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_DESC',
   GameChoicesByMemberIdCountAsc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_ASC',
   GameChoicesByMemberIdCountDesc = 'GAME_CHOICES_BY_MEMBER_ID__COUNT_DESC',
   GameSubmissionsByMemberIdCountAsc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_ASC',
   GameSubmissionsByMemberIdCountDesc = 'GAME_SUBMISSIONS_BY_MEMBER_ID__COUNT_DESC',
+  HotelRoomByHotelRoomIdBathroomTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_ASC',
+  HotelRoomByHotelRoomIdBathroomTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__BATHROOM_TYPE_DESC',
+  HotelRoomByHotelRoomIdDescriptionAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_ASC',
+  HotelRoomByHotelRoomIdDescriptionDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__DESCRIPTION_DESC',
+  HotelRoomByHotelRoomIdGamingRoomAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_ASC',
+  HotelRoomByHotelRoomIdGamingRoomDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__GAMING_ROOM_DESC',
+  HotelRoomByHotelRoomIdIdAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_ASC',
+  HotelRoomByHotelRoomIdIdDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__ID_DESC',
+  HotelRoomByHotelRoomIdOccupancyAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_ASC',
+  HotelRoomByHotelRoomIdOccupancyDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__OCCUPANCY_DESC',
+  HotelRoomByHotelRoomIdQuantityAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_ASC',
+  HotelRoomByHotelRoomIdQuantityDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__QUANTITY_DESC',
+  HotelRoomByHotelRoomIdRateAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_ASC',
+  HotelRoomByHotelRoomIdRateDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__RATE_DESC',
+  HotelRoomByHotelRoomIdTypeAsc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_ASC',
+  HotelRoomByHotelRoomIdTypeDesc = 'HOTEL_ROOM_BY_HOTEL_ROOM_ID__TYPE_DESC',
+  HotelRoomIdAsc = 'HOTEL_ROOM_ID_ASC',
+  HotelRoomIdDesc = 'HOTEL_ROOM_ID_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  InterestLevelAsc = 'INTEREST_LEVEL_ASC',
+  InterestLevelDesc = 'INTEREST_LEVEL_DESC',
+  MessageAsc = 'MESSAGE_ASC',
+  MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  OfferSubsidyAsc = 'OFFER_SUBSIDY_ASC',
+  OfferSubsidyDesc = 'OFFER_SUBSIDY_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RequestOldPriceAsc = 'REQUEST_OLD_PRICE_ASC',
+  RequestOldPriceDesc = 'REQUEST_OLD_PRICE_DESC',
+  RoomingPreferencesAsc = 'ROOMING_PREFERENCES_ASC',
+  RoomingPreferencesDesc = 'ROOMING_PREFERENCES_DESC',
+  RoomingWithAsc = 'ROOMING_WITH_ASC',
+  RoomingWithDesc = 'ROOMING_WITH_DESC',
+  RoomPreferenceAndNotesAsc = 'ROOM_PREFERENCE_AND_NOTES_ASC',
+  RoomPreferenceAndNotesDesc = 'ROOM_PREFERENCE_AND_NOTES_DESC',
+  SlotsAttendingAsc = 'SLOTS_ATTENDING_ASC',
+  SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
+  VolunteerAsc = 'VOLUNTEER_ASC',
+  VolunteerDesc = 'VOLUNTEER_DESC',
+  YearAsc = 'YEAR_ASC',
+  YearDesc = 'YEAR_DESC',
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
 export interface Mutation {
   __typename: 'Mutation'
+  createBareSlotChoices?: Maybe<CreateBareSlotChoicesPayload>
   /** Creates a single `Game`. */
   createGame?: Maybe<CreateGamePayload>
   /** Creates a single `GameAssignment`. */
@@ -3614,169 +3615,173 @@ export interface Mutation {
   createUser?: Maybe<CreateUserPayload>
   /** Creates a single `UserRole`. */
   createUserRole?: Maybe<CreateUserRolePayload>
-  /** Updates a single `Game` using its globally unique id and a patch. */
-  updateGameByNodeId?: Maybe<UpdateGamePayload>
-  /** Updates a single `Game` using a unique key and a patch. */
-  updateGame?: Maybe<UpdateGamePayload>
-  /** Updates a single `GameAssignment` using its globally unique id and a patch. */
-  updateGameAssignmentByNodeId?: Maybe<UpdateGameAssignmentPayload>
-  /** Updates a single `GameAssignment` using a unique key and a patch. */
-  updateGameAssignment?: Maybe<UpdateGameAssignmentPayload>
-  /** Updates a single `GameChoice` using its globally unique id and a patch. */
-  updateGameChoiceByNodeId?: Maybe<UpdateGameChoicePayload>
-  /** Updates a single `GameChoice` using a unique key and a patch. */
-  updateGameChoice?: Maybe<UpdateGameChoicePayload>
-  /** Updates a single `GameSubmission` using its globally unique id and a patch. */
-  updateGameSubmissionByNodeId?: Maybe<UpdateGameSubmissionPayload>
-  /** Updates a single `GameSubmission` using a unique key and a patch. */
-  updateGameSubmission?: Maybe<UpdateGameSubmissionPayload>
-  /** Updates a single `HotelRoom` using its globally unique id and a patch. */
-  updateHotelRoomByNodeId?: Maybe<UpdateHotelRoomPayload>
-  /** Updates a single `HotelRoom` using a unique key and a patch. */
-  updateHotelRoom?: Maybe<UpdateHotelRoomPayload>
-  /** Updates a single `HotelRoomDetail` using its globally unique id and a patch. */
-  updateHotelRoomDetailByNodeId?: Maybe<UpdateHotelRoomDetailPayload>
-  /** Updates a single `HotelRoomDetail` using a unique key and a patch. */
-  updateHotelRoomDetail?: Maybe<UpdateHotelRoomDetailPayload>
-  /** Updates a single `Lookup` using its globally unique id and a patch. */
-  updateLookupByNodeId?: Maybe<UpdateLookupPayload>
-  /** Updates a single `Lookup` using a unique key and a patch. */
-  updateLookup?: Maybe<UpdateLookupPayload>
-  /** Updates a single `Lookup` using a unique key and a patch. */
-  updateLookupByRealm?: Maybe<UpdateLookupPayload>
-  /** Updates a single `LookupValue` using its globally unique id and a patch. */
-  updateLookupValueByNodeId?: Maybe<UpdateLookupValuePayload>
-  /** Updates a single `LookupValue` using a unique key and a patch. */
-  updateLookupValue?: Maybe<UpdateLookupValuePayload>
-  /** Updates a single `LookupValue` using a unique key and a patch. */
-  updateLookupValueByLookupIdAndCode?: Maybe<UpdateLookupValuePayload>
-  /** Updates a single `Membership` using its globally unique id and a patch. */
-  updateMembershipByNodeId?: Maybe<UpdateMembershipPayload>
-  /** Updates a single `Membership` using a unique key and a patch. */
-  updateMembership?: Maybe<UpdateMembershipPayload>
-  /** Updates a single `Profile` using its globally unique id and a patch. */
-  updateProfileByNodeId?: Maybe<UpdateProfilePayload>
-  /** Updates a single `Profile` using a unique key and a patch. */
-  updateProfile?: Maybe<UpdateProfilePayload>
-  /** Updates a single `Role` using its globally unique id and a patch. */
-  updateRoleByNodeId?: Maybe<UpdateRolePayload>
-  /** Updates a single `Role` using a unique key and a patch. */
-  updateRole?: Maybe<UpdateRolePayload>
-  /** Updates a single `Role` using a unique key and a patch. */
-  updateRoleByAuthority?: Maybe<UpdateRolePayload>
-  /** Updates a single `Room` using its globally unique id and a patch. */
-  updateRoomByNodeId?: Maybe<UpdateRoomPayload>
-  /** Updates a single `Room` using a unique key and a patch. */
-  updateRoom?: Maybe<UpdateRoomPayload>
-  /** Updates a single `Setting` using its globally unique id and a patch. */
-  updateSettingByNodeId?: Maybe<UpdateSettingPayload>
-  /** Updates a single `Setting` using a unique key and a patch. */
-  updateSetting?: Maybe<UpdateSettingPayload>
-  /** Updates a single `ShirtOrder` using its globally unique id and a patch. */
-  updateShirtOrderByNodeId?: Maybe<UpdateShirtOrderPayload>
-  /** Updates a single `ShirtOrder` using a unique key and a patch. */
-  updateShirtOrder?: Maybe<UpdateShirtOrderPayload>
-  /** Updates a single `ShirtOrderItem` using its globally unique id and a patch. */
-  updateShirtOrderItemByNodeId?: Maybe<UpdateShirtOrderItemPayload>
-  /** Updates a single `ShirtOrderItem` using a unique key and a patch. */
-  updateShirtOrderItem?: Maybe<UpdateShirtOrderItemPayload>
-  /** Updates a single `Slot` using its globally unique id and a patch. */
-  updateSlotByNodeId?: Maybe<UpdateSlotPayload>
-  /** Updates a single `Slot` using a unique key and a patch. */
-  updateSlot?: Maybe<UpdateSlotPayload>
-  /** Updates a single `User` using its globally unique id and a patch. */
-  updateUserByNodeId?: Maybe<UpdateUserPayload>
-  /** Updates a single `User` using a unique key and a patch. */
-  updateUser?: Maybe<UpdateUserPayload>
-  /** Updates a single `User` using a unique key and a patch. */
-  updateUserByEmail?: Maybe<UpdateUserPayload>
-  /** Updates a single `UserRole` using its globally unique id and a patch. */
-  updateUserRoleByNodeId?: Maybe<UpdateUserRolePayload>
-  /** Updates a single `UserRole` using a unique key and a patch. */
-  updateUserRole?: Maybe<UpdateUserRolePayload>
-  /** Deletes a single `Game` using its globally unique id. */
-  deleteGameByNodeId?: Maybe<DeleteGamePayload>
   /** Deletes a single `Game` using a unique key. */
   deleteGame?: Maybe<DeleteGamePayload>
-  /** Deletes a single `GameAssignment` using its globally unique id. */
-  deleteGameAssignmentByNodeId?: Maybe<DeleteGameAssignmentPayload>
   /** Deletes a single `GameAssignment` using a unique key. */
   deleteGameAssignment?: Maybe<DeleteGameAssignmentPayload>
-  /** Deletes a single `GameChoice` using its globally unique id. */
-  deleteGameChoiceByNodeId?: Maybe<DeleteGameChoicePayload>
+  /** Deletes a single `GameAssignment` using its globally unique id. */
+  deleteGameAssignmentByNodeId?: Maybe<DeleteGameAssignmentPayload>
+  /** Deletes a single `Game` using its globally unique id. */
+  deleteGameByNodeId?: Maybe<DeleteGamePayload>
   /** Deletes a single `GameChoice` using a unique key. */
   deleteGameChoice?: Maybe<DeleteGameChoicePayload>
-  /** Deletes a single `GameSubmission` using its globally unique id. */
-  deleteGameSubmissionByNodeId?: Maybe<DeleteGameSubmissionPayload>
+  /** Deletes a single `GameChoice` using its globally unique id. */
+  deleteGameChoiceByNodeId?: Maybe<DeleteGameChoicePayload>
   /** Deletes a single `GameSubmission` using a unique key. */
   deleteGameSubmission?: Maybe<DeleteGameSubmissionPayload>
-  /** Deletes a single `HotelRoom` using its globally unique id. */
-  deleteHotelRoomByNodeId?: Maybe<DeleteHotelRoomPayload>
+  /** Deletes a single `GameSubmission` using its globally unique id. */
+  deleteGameSubmissionByNodeId?: Maybe<DeleteGameSubmissionPayload>
   /** Deletes a single `HotelRoom` using a unique key. */
   deleteHotelRoom?: Maybe<DeleteHotelRoomPayload>
-  /** Deletes a single `HotelRoomDetail` using its globally unique id. */
-  deleteHotelRoomDetailByNodeId?: Maybe<DeleteHotelRoomDetailPayload>
+  /** Deletes a single `HotelRoom` using its globally unique id. */
+  deleteHotelRoomByNodeId?: Maybe<DeleteHotelRoomPayload>
   /** Deletes a single `HotelRoomDetail` using a unique key. */
   deleteHotelRoomDetail?: Maybe<DeleteHotelRoomDetailPayload>
+  /** Deletes a single `HotelRoomDetail` using its globally unique id. */
+  deleteHotelRoomDetailByNodeId?: Maybe<DeleteHotelRoomDetailPayload>
+  /** Deletes a single `Lookup` using a unique key. */
+  deleteLookup?: Maybe<DeleteLookupPayload>
   /** Deletes a single `Lookup` using its globally unique id. */
   deleteLookupByNodeId?: Maybe<DeleteLookupPayload>
   /** Deletes a single `Lookup` using a unique key. */
-  deleteLookup?: Maybe<DeleteLookupPayload>
-  /** Deletes a single `Lookup` using a unique key. */
   deleteLookupByRealm?: Maybe<DeleteLookupPayload>
-  /** Deletes a single `LookupValue` using its globally unique id. */
-  deleteLookupValueByNodeId?: Maybe<DeleteLookupValuePayload>
   /** Deletes a single `LookupValue` using a unique key. */
   deleteLookupValue?: Maybe<DeleteLookupValuePayload>
   /** Deletes a single `LookupValue` using a unique key. */
   deleteLookupValueByLookupIdAndCode?: Maybe<DeleteLookupValuePayload>
-  /** Deletes a single `Membership` using its globally unique id. */
-  deleteMembershipByNodeId?: Maybe<DeleteMembershipPayload>
+  /** Deletes a single `LookupValue` using its globally unique id. */
+  deleteLookupValueByNodeId?: Maybe<DeleteLookupValuePayload>
   /** Deletes a single `Membership` using a unique key. */
   deleteMembership?: Maybe<DeleteMembershipPayload>
-  /** Deletes a single `Profile` using its globally unique id. */
-  deleteProfileByNodeId?: Maybe<DeleteProfilePayload>
+  /** Deletes a single `Membership` using its globally unique id. */
+  deleteMembershipByNodeId?: Maybe<DeleteMembershipPayload>
   /** Deletes a single `Profile` using a unique key. */
   deleteProfile?: Maybe<DeleteProfilePayload>
-  /** Deletes a single `Role` using its globally unique id. */
-  deleteRoleByNodeId?: Maybe<DeleteRolePayload>
+  /** Deletes a single `Profile` using its globally unique id. */
+  deleteProfileByNodeId?: Maybe<DeleteProfilePayload>
   /** Deletes a single `Role` using a unique key. */
   deleteRole?: Maybe<DeleteRolePayload>
   /** Deletes a single `Role` using a unique key. */
   deleteRoleByAuthority?: Maybe<DeleteRolePayload>
-  /** Deletes a single `Room` using its globally unique id. */
-  deleteRoomByNodeId?: Maybe<DeleteRoomPayload>
+  /** Deletes a single `Role` using its globally unique id. */
+  deleteRoleByNodeId?: Maybe<DeleteRolePayload>
   /** Deletes a single `Room` using a unique key. */
   deleteRoom?: Maybe<DeleteRoomPayload>
-  /** Deletes a single `Setting` using its globally unique id. */
-  deleteSettingByNodeId?: Maybe<DeleteSettingPayload>
+  /** Deletes a single `Room` using its globally unique id. */
+  deleteRoomByNodeId?: Maybe<DeleteRoomPayload>
   /** Deletes a single `Setting` using a unique key. */
   deleteSetting?: Maybe<DeleteSettingPayload>
-  /** Deletes a single `ShirtOrder` using its globally unique id. */
-  deleteShirtOrderByNodeId?: Maybe<DeleteShirtOrderPayload>
+  /** Deletes a single `Setting` using its globally unique id. */
+  deleteSettingByNodeId?: Maybe<DeleteSettingPayload>
   /** Deletes a single `ShirtOrder` using a unique key. */
   deleteShirtOrder?: Maybe<DeleteShirtOrderPayload>
-  /** Deletes a single `ShirtOrderItem` using its globally unique id. */
-  deleteShirtOrderItemByNodeId?: Maybe<DeleteShirtOrderItemPayload>
+  /** Deletes a single `ShirtOrder` using its globally unique id. */
+  deleteShirtOrderByNodeId?: Maybe<DeleteShirtOrderPayload>
   /** Deletes a single `ShirtOrderItem` using a unique key. */
   deleteShirtOrderItem?: Maybe<DeleteShirtOrderItemPayload>
-  /** Deletes a single `Slot` using its globally unique id. */
-  deleteSlotByNodeId?: Maybe<DeleteSlotPayload>
+  /** Deletes a single `ShirtOrderItem` using its globally unique id. */
+  deleteShirtOrderItemByNodeId?: Maybe<DeleteShirtOrderItemPayload>
   /** Deletes a single `Slot` using a unique key. */
   deleteSlot?: Maybe<DeleteSlotPayload>
-  /** Deletes a single `User` using its globally unique id. */
-  deleteUserByNodeId?: Maybe<DeleteUserPayload>
+  /** Deletes a single `Slot` using its globally unique id. */
+  deleteSlotByNodeId?: Maybe<DeleteSlotPayload>
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>
   /** Deletes a single `User` using a unique key. */
   deleteUserByEmail?: Maybe<DeleteUserPayload>
-  /** Deletes a single `UserRole` using its globally unique id. */
-  deleteUserRoleByNodeId?: Maybe<DeleteUserRolePayload>
+  /** Deletes a single `User` using its globally unique id. */
+  deleteUserByNodeId?: Maybe<DeleteUserPayload>
   /** Deletes a single `UserRole` using a unique key. */
   deleteUserRole?: Maybe<DeleteUserRolePayload>
-  createBareSlotChoices?: Maybe<CreateBareSlotChoicesPayload>
+  /** Deletes a single `UserRole` using its globally unique id. */
+  deleteUserRoleByNodeId?: Maybe<DeleteUserRolePayload>
   fTruncateTables?: Maybe<FTruncateTablesPayload>
   slotGmGame?: Maybe<SlotGmGamePayload>
+  /** Updates a single `Game` using a unique key and a patch. */
+  updateGame?: Maybe<UpdateGamePayload>
+  /** Updates a single `GameAssignment` using a unique key and a patch. */
+  updateGameAssignment?: Maybe<UpdateGameAssignmentPayload>
+  /** Updates a single `GameAssignment` using its globally unique id and a patch. */
+  updateGameAssignmentByNodeId?: Maybe<UpdateGameAssignmentPayload>
+  /** Updates a single `Game` using its globally unique id and a patch. */
+  updateGameByNodeId?: Maybe<UpdateGamePayload>
+  /** Updates a single `GameChoice` using a unique key and a patch. */
+  updateGameChoice?: Maybe<UpdateGameChoicePayload>
+  /** Updates a single `GameChoice` using its globally unique id and a patch. */
+  updateGameChoiceByNodeId?: Maybe<UpdateGameChoicePayload>
+  /** Updates a single `GameSubmission` using a unique key and a patch. */
+  updateGameSubmission?: Maybe<UpdateGameSubmissionPayload>
+  /** Updates a single `GameSubmission` using its globally unique id and a patch. */
+  updateGameSubmissionByNodeId?: Maybe<UpdateGameSubmissionPayload>
+  /** Updates a single `HotelRoom` using a unique key and a patch. */
+  updateHotelRoom?: Maybe<UpdateHotelRoomPayload>
+  /** Updates a single `HotelRoom` using its globally unique id and a patch. */
+  updateHotelRoomByNodeId?: Maybe<UpdateHotelRoomPayload>
+  /** Updates a single `HotelRoomDetail` using a unique key and a patch. */
+  updateHotelRoomDetail?: Maybe<UpdateHotelRoomDetailPayload>
+  /** Updates a single `HotelRoomDetail` using its globally unique id and a patch. */
+  updateHotelRoomDetailByNodeId?: Maybe<UpdateHotelRoomDetailPayload>
+  /** Updates a single `Lookup` using a unique key and a patch. */
+  updateLookup?: Maybe<UpdateLookupPayload>
+  /** Updates a single `Lookup` using its globally unique id and a patch. */
+  updateLookupByNodeId?: Maybe<UpdateLookupPayload>
+  /** Updates a single `Lookup` using a unique key and a patch. */
+  updateLookupByRealm?: Maybe<UpdateLookupPayload>
+  /** Updates a single `LookupValue` using a unique key and a patch. */
+  updateLookupValue?: Maybe<UpdateLookupValuePayload>
+  /** Updates a single `LookupValue` using a unique key and a patch. */
+  updateLookupValueByLookupIdAndCode?: Maybe<UpdateLookupValuePayload>
+  /** Updates a single `LookupValue` using its globally unique id and a patch. */
+  updateLookupValueByNodeId?: Maybe<UpdateLookupValuePayload>
+  /** Updates a single `Membership` using a unique key and a patch. */
+  updateMembership?: Maybe<UpdateMembershipPayload>
+  /** Updates a single `Membership` using its globally unique id and a patch. */
+  updateMembershipByNodeId?: Maybe<UpdateMembershipPayload>
+  /** Updates a single `Profile` using a unique key and a patch. */
+  updateProfile?: Maybe<UpdateProfilePayload>
+  /** Updates a single `Profile` using its globally unique id and a patch. */
+  updateProfileByNodeId?: Maybe<UpdateProfilePayload>
+  /** Updates a single `Role` using a unique key and a patch. */
+  updateRole?: Maybe<UpdateRolePayload>
+  /** Updates a single `Role` using a unique key and a patch. */
+  updateRoleByAuthority?: Maybe<UpdateRolePayload>
+  /** Updates a single `Role` using its globally unique id and a patch. */
+  updateRoleByNodeId?: Maybe<UpdateRolePayload>
+  /** Updates a single `Room` using a unique key and a patch. */
+  updateRoom?: Maybe<UpdateRoomPayload>
+  /** Updates a single `Room` using its globally unique id and a patch. */
+  updateRoomByNodeId?: Maybe<UpdateRoomPayload>
+  /** Updates a single `Setting` using a unique key and a patch. */
+  updateSetting?: Maybe<UpdateSettingPayload>
+  /** Updates a single `Setting` using its globally unique id and a patch. */
+  updateSettingByNodeId?: Maybe<UpdateSettingPayload>
+  /** Updates a single `ShirtOrder` using a unique key and a patch. */
+  updateShirtOrder?: Maybe<UpdateShirtOrderPayload>
+  /** Updates a single `ShirtOrder` using its globally unique id and a patch. */
+  updateShirtOrderByNodeId?: Maybe<UpdateShirtOrderPayload>
+  /** Updates a single `ShirtOrderItem` using a unique key and a patch. */
+  updateShirtOrderItem?: Maybe<UpdateShirtOrderItemPayload>
+  /** Updates a single `ShirtOrderItem` using its globally unique id and a patch. */
+  updateShirtOrderItemByNodeId?: Maybe<UpdateShirtOrderItemPayload>
+  /** Updates a single `Slot` using a unique key and a patch. */
+  updateSlot?: Maybe<UpdateSlotPayload>
+  /** Updates a single `Slot` using its globally unique id and a patch. */
+  updateSlotByNodeId?: Maybe<UpdateSlotPayload>
+  /** Updates a single `User` using a unique key and a patch. */
+  updateUser?: Maybe<UpdateUserPayload>
+  /** Updates a single `User` using a unique key and a patch. */
+  updateUserByEmail?: Maybe<UpdateUserPayload>
+  /** Updates a single `User` using its globally unique id and a patch. */
+  updateUserByNodeId?: Maybe<UpdateUserPayload>
+  /** Updates a single `UserRole` using a unique key and a patch. */
+  updateUserRole?: Maybe<UpdateUserRolePayload>
+  /** Updates a single `UserRole` using its globally unique id and a patch. */
+  updateUserRoleByNodeId?: Maybe<UpdateUserRolePayload>
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationCreateBareSlotChoicesArgs {
+  input: CreateBareSlotChoicesInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -3870,218 +3875,8 @@ export interface MutationCreateUserRoleArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameByNodeIdArgs {
-  input: UpdateGameByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameArgs {
-  input: UpdateGameInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameAssignmentByNodeIdArgs {
-  input: UpdateGameAssignmentByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameAssignmentArgs {
-  input: UpdateGameAssignmentInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameChoiceByNodeIdArgs {
-  input: UpdateGameChoiceByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameChoiceArgs {
-  input: UpdateGameChoiceInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameSubmissionByNodeIdArgs {
-  input: UpdateGameSubmissionByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateGameSubmissionArgs {
-  input: UpdateGameSubmissionInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateHotelRoomByNodeIdArgs {
-  input: UpdateHotelRoomByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateHotelRoomArgs {
-  input: UpdateHotelRoomInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateHotelRoomDetailByNodeIdArgs {
-  input: UpdateHotelRoomDetailByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateHotelRoomDetailArgs {
-  input: UpdateHotelRoomDetailInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupByNodeIdArgs {
-  input: UpdateLookupByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupArgs {
-  input: UpdateLookupInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupByRealmArgs {
-  input: UpdateLookupByRealmInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupValueByNodeIdArgs {
-  input: UpdateLookupValueByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupValueArgs {
-  input: UpdateLookupValueInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateLookupValueByLookupIdAndCodeArgs {
-  input: UpdateLookupValueByLookupIdAndCodeInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateMembershipByNodeIdArgs {
-  input: UpdateMembershipByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateMembershipArgs {
-  input: UpdateMembershipInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateProfileByNodeIdArgs {
-  input: UpdateProfileByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateProfileArgs {
-  input: UpdateProfileInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateRoleByNodeIdArgs {
-  input: UpdateRoleByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateRoleArgs {
-  input: UpdateRoleInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateRoleByAuthorityArgs {
-  input: UpdateRoleByAuthorityInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateRoomByNodeIdArgs {
-  input: UpdateRoomByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateRoomArgs {
-  input: UpdateRoomInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateSettingByNodeIdArgs {
-  input: UpdateSettingByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateSettingArgs {
-  input: UpdateSettingInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateShirtOrderByNodeIdArgs {
-  input: UpdateShirtOrderByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateShirtOrderArgs {
-  input: UpdateShirtOrderInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateShirtOrderItemByNodeIdArgs {
-  input: UpdateShirtOrderItemByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateShirtOrderItemArgs {
-  input: UpdateShirtOrderItemInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateSlotByNodeIdArgs {
-  input: UpdateSlotByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateSlotArgs {
-  input: UpdateSlotInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateUserByNodeIdArgs {
-  input: UpdateUserByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateUserArgs {
-  input: UpdateUserInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateUserByEmailArgs {
-  input: UpdateUserByEmailInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateUserRoleByNodeIdArgs {
-  input: UpdateUserRoleByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateUserRoleArgs {
-  input: UpdateUserRoleInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteGameByNodeIdArgs {
-  input: DeleteGameByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
 export interface MutationDeleteGameArgs {
   input: DeleteGameInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteGameAssignmentByNodeIdArgs {
-  input: DeleteGameAssignmentByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4090,8 +3885,13 @@ export interface MutationDeleteGameAssignmentArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteGameChoiceByNodeIdArgs {
-  input: DeleteGameChoiceByNodeIdInput
+export interface MutationDeleteGameAssignmentByNodeIdArgs {
+  input: DeleteGameAssignmentByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationDeleteGameByNodeIdArgs {
+  input: DeleteGameByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4100,8 +3900,8 @@ export interface MutationDeleteGameChoiceArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteGameSubmissionByNodeIdArgs {
-  input: DeleteGameSubmissionByNodeIdInput
+export interface MutationDeleteGameChoiceByNodeIdArgs {
+  input: DeleteGameChoiceByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4110,8 +3910,8 @@ export interface MutationDeleteGameSubmissionArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteHotelRoomByNodeIdArgs {
-  input: DeleteHotelRoomByNodeIdInput
+export interface MutationDeleteGameSubmissionByNodeIdArgs {
+  input: DeleteGameSubmissionByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4120,8 +3920,8 @@ export interface MutationDeleteHotelRoomArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteHotelRoomDetailByNodeIdArgs {
-  input: DeleteHotelRoomDetailByNodeIdInput
+export interface MutationDeleteHotelRoomByNodeIdArgs {
+  input: DeleteHotelRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4130,8 +3930,8 @@ export interface MutationDeleteHotelRoomDetailArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteLookupByNodeIdArgs {
-  input: DeleteLookupByNodeIdInput
+export interface MutationDeleteHotelRoomDetailByNodeIdArgs {
+  input: DeleteHotelRoomDetailByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4140,13 +3940,13 @@ export interface MutationDeleteLookupArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteLookupByRealmArgs {
-  input: DeleteLookupByRealmInput
+export interface MutationDeleteLookupByNodeIdArgs {
+  input: DeleteLookupByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteLookupValueByNodeIdArgs {
-  input: DeleteLookupValueByNodeIdInput
+export interface MutationDeleteLookupByRealmArgs {
+  input: DeleteLookupByRealmInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4160,8 +3960,8 @@ export interface MutationDeleteLookupValueByLookupIdAndCodeArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteMembershipByNodeIdArgs {
-  input: DeleteMembershipByNodeIdInput
+export interface MutationDeleteLookupValueByNodeIdArgs {
+  input: DeleteLookupValueByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4170,8 +3970,8 @@ export interface MutationDeleteMembershipArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteProfileByNodeIdArgs {
-  input: DeleteProfileByNodeIdInput
+export interface MutationDeleteMembershipByNodeIdArgs {
+  input: DeleteMembershipByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4180,8 +3980,8 @@ export interface MutationDeleteProfileArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteRoleByNodeIdArgs {
-  input: DeleteRoleByNodeIdInput
+export interface MutationDeleteProfileByNodeIdArgs {
+  input: DeleteProfileByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4195,8 +3995,8 @@ export interface MutationDeleteRoleByAuthorityArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteRoomByNodeIdArgs {
-  input: DeleteRoomByNodeIdInput
+export interface MutationDeleteRoleByNodeIdArgs {
+  input: DeleteRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4205,8 +4005,8 @@ export interface MutationDeleteRoomArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteSettingByNodeIdArgs {
-  input: DeleteSettingByNodeIdInput
+export interface MutationDeleteRoomByNodeIdArgs {
+  input: DeleteRoomByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4215,8 +4015,8 @@ export interface MutationDeleteSettingArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteShirtOrderByNodeIdArgs {
-  input: DeleteShirtOrderByNodeIdInput
+export interface MutationDeleteSettingByNodeIdArgs {
+  input: DeleteSettingByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4225,8 +4025,8 @@ export interface MutationDeleteShirtOrderArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteShirtOrderItemByNodeIdArgs {
-  input: DeleteShirtOrderItemByNodeIdInput
+export interface MutationDeleteShirtOrderByNodeIdArgs {
+  input: DeleteShirtOrderByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4235,8 +4035,8 @@ export interface MutationDeleteShirtOrderItemArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteSlotByNodeIdArgs {
-  input: DeleteSlotByNodeIdInput
+export interface MutationDeleteShirtOrderItemByNodeIdArgs {
+  input: DeleteShirtOrderItemByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4245,8 +4045,8 @@ export interface MutationDeleteSlotArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteUserByNodeIdArgs {
-  input: DeleteUserByNodeIdInput
+export interface MutationDeleteSlotByNodeIdArgs {
+  input: DeleteSlotByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4260,8 +4060,8 @@ export interface MutationDeleteUserByEmailArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteUserRoleByNodeIdArgs {
-  input: DeleteUserRoleByNodeIdInput
+export interface MutationDeleteUserByNodeIdArgs {
+  input: DeleteUserByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4270,8 +4070,8 @@ export interface MutationDeleteUserRoleArgs {
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
-export interface MutationCreateBareSlotChoicesArgs {
-  input: CreateBareSlotChoicesInput
+export interface MutationDeleteUserRoleByNodeIdArgs {
+  input: DeleteUserRoleByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4284,6 +4084,206 @@ export interface MutationSlotGmGameArgs {
   input: SlotGmGameInput
 }
 
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameArgs {
+  input: UpdateGameInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameAssignmentArgs {
+  input: UpdateGameAssignmentInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameAssignmentByNodeIdArgs {
+  input: UpdateGameAssignmentByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameByNodeIdArgs {
+  input: UpdateGameByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameChoiceArgs {
+  input: UpdateGameChoiceInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameChoiceByNodeIdArgs {
+  input: UpdateGameChoiceByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameSubmissionArgs {
+  input: UpdateGameSubmissionInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateGameSubmissionByNodeIdArgs {
+  input: UpdateGameSubmissionByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateHotelRoomArgs {
+  input: UpdateHotelRoomInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateHotelRoomByNodeIdArgs {
+  input: UpdateHotelRoomByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateHotelRoomDetailArgs {
+  input: UpdateHotelRoomDetailInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateHotelRoomDetailByNodeIdArgs {
+  input: UpdateHotelRoomDetailByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupArgs {
+  input: UpdateLookupInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupByNodeIdArgs {
+  input: UpdateLookupByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupByRealmArgs {
+  input: UpdateLookupByRealmInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupValueArgs {
+  input: UpdateLookupValueInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupValueByLookupIdAndCodeArgs {
+  input: UpdateLookupValueByLookupIdAndCodeInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateLookupValueByNodeIdArgs {
+  input: UpdateLookupValueByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateMembershipArgs {
+  input: UpdateMembershipInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateMembershipByNodeIdArgs {
+  input: UpdateMembershipByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateProfileArgs {
+  input: UpdateProfileInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateProfileByNodeIdArgs {
+  input: UpdateProfileByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoleArgs {
+  input: UpdateRoleInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoleByAuthorityArgs {
+  input: UpdateRoleByAuthorityInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoleByNodeIdArgs {
+  input: UpdateRoleByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoomArgs {
+  input: UpdateRoomInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateRoomByNodeIdArgs {
+  input: UpdateRoomByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateSettingArgs {
+  input: UpdateSettingInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateSettingByNodeIdArgs {
+  input: UpdateSettingByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateShirtOrderArgs {
+  input: UpdateShirtOrderInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateShirtOrderByNodeIdArgs {
+  input: UpdateShirtOrderByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateShirtOrderItemArgs {
+  input: UpdateShirtOrderItemInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateShirtOrderItemByNodeIdArgs {
+  input: UpdateShirtOrderItemByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateSlotArgs {
+  input: UpdateSlotInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateSlotByNodeIdArgs {
+  input: UpdateSlotByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateUserArgs {
+  input: UpdateUserInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateUserByEmailArgs {
+  input: UpdateUserByEmailInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateUserByNodeIdArgs {
+  input: UpdateUserByNodeIdInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateUserRoleArgs {
+  input: UpdateUserRoleInput
+}
+
+/** The root mutation type which contains root level fields which mutate data. */
+export interface MutationUpdateUserRoleByNodeIdArgs {
+  input: UpdateUserRoleByNodeIdInput
+}
+
 /** An object with a globally unique `ID`. */
 export interface Node {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
@@ -4293,81 +4293,81 @@ export interface Node {
 /** Information about pagination in a connection. */
 export interface PageInfo {
   __typename: 'PageInfo'
+  /** When paginating forwards, the cursor to continue. */
+  endCursor?: Maybe<Scalars['Cursor']>
   /** When paginating forwards, are there more items? */
   hasNextPage: Scalars['Boolean']
   /** When paginating backwards, are there more items? */
   hasPreviousPage: Scalars['Boolean']
   /** When paginating backwards, the cursor to continue. */
   startCursor?: Maybe<Scalars['Cursor']>
-  /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['Cursor']>
 }
 
 export interface Profile extends Node {
   __typename: 'Profile'
+  id: Scalars['Int']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  userId: Scalars['Int']
-  snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
   /** Reads a single `User` that is related to this `Profile`. */
   user?: Maybe<User>
+  userId: Scalars['Int']
 }
 
 /** A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface ProfileCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `phoneNumber` field. */
   phoneNumber?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: Maybe<Scalars['Int']>
 }
 
 /** A filter to be used against `Profile` object types. All fields are combined with a logical ‘and.’ */
 export interface ProfileFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `userId` field. */
-  userId?: Maybe<IntFilter>
-  /** Filter by the object’s `snailMailAddress` field. */
-  snailMailAddress?: Maybe<StringFilter>
-  /** Filter by the object’s `phoneNumber` field. */
-  phoneNumber?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<ProfileFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ProfileFilter>>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Negates the expression. */
   not?: Maybe<ProfileFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ProfileFilter>>
+  /** Filter by the object’s `phoneNumber` field. */
+  phoneNumber?: Maybe<StringFilter>
+  /** Filter by the object’s `snailMailAddress` field. */
+  snailMailAddress?: Maybe<StringFilter>
+  /** Filter by the object’s `userId` field. */
+  userId?: Maybe<IntFilter>
 }
 
 /** An input for mutations affecting `Profile` */
 export interface ProfileInput {
   id?: Maybe<Scalars['Int']>
-  userId: Scalars['Int']
-  snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  userId: Scalars['Int']
 }
 
 /** Represents an update to a `Profile`. Fields that are set will be updated. */
 export interface ProfilePatch {
   id?: Maybe<Scalars['Int']>
-  userId?: Maybe<Scalars['Int']>
-  snailMailAddress?: Maybe<Scalars['String']>
   phoneNumber?: Maybe<Scalars['String']>
+  snailMailAddress?: Maybe<Scalars['String']>
+  userId?: Maybe<Scalars['Int']>
 }
 
 /** A connection to a list of `Profile` values. */
 export interface ProfilesConnection {
   __typename: 'ProfilesConnection'
-  /** A list of `Profile` objects. */
-  nodes: Array<Maybe<Profile>>
   /** A list of edges which contains the `Profile` and cursor to aid in pagination. */
   edges: Array<ProfilesEdge>
+  /** A list of `Profile` objects. */
+  nodes: Array<Maybe<Profile>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Profile` you could get from the connection. */
@@ -4385,358 +4385,137 @@ export interface ProfilesEdge {
 
 /** Methods to use when ordering `Profile`. */
 export enum ProfilesOrderBy {
-  Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
-  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
-  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
+  Natural = 'NATURAL',
   PhoneNumberAsc = 'PHONE_NUMBER_ASC',
   PhoneNumberDesc = 'PHONE_NUMBER_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
+  SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
   UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
 }
 
 /** The root query type which gives access points into the data universe. */
 export interface Query extends Node {
   __typename: 'Query'
+  currentUserId?: Maybe<Scalars['Int']>
+  currentUserIsAdmin?: Maybe<Scalars['Boolean']>
+  game?: Maybe<Game>
+  gameAssignment?: Maybe<GameAssignment>
+  /** Reads a single `GameAssignment` using its globally unique `ID`. */
+  gameAssignmentByNodeId?: Maybe<GameAssignment>
+  /** Reads and enables pagination through a set of `GameAssignment`. */
+  gameAssignments?: Maybe<GameAssignmentsConnection>
+  /** Reads a single `Game` using its globally unique `ID`. */
+  gameByNodeId?: Maybe<Game>
+  gameChoice?: Maybe<GameChoice>
+  /** Reads a single `GameChoice` using its globally unique `ID`. */
+  gameChoiceByNodeId?: Maybe<GameChoice>
+  /** Reads and enables pagination through a set of `GameChoice`. */
+  gameChoices?: Maybe<GameChoicesConnection>
+  gameSubmission?: Maybe<GameSubmission>
+  /** Reads a single `GameSubmission` using its globally unique `ID`. */
+  gameSubmissionByNodeId?: Maybe<GameSubmission>
+  /** Reads and enables pagination through a set of `GameSubmission`. */
+  gameSubmissions?: Maybe<GameSubmissionsConnection>
+  /** Reads and enables pagination through a set of `Game`. */
+  games?: Maybe<GamesConnection>
+  hotelRoom?: Maybe<HotelRoom>
+  /** Reads a single `HotelRoom` using its globally unique `ID`. */
+  hotelRoomByNodeId?: Maybe<HotelRoom>
+  hotelRoomDetail?: Maybe<HotelRoomDetail>
+  /** Reads a single `HotelRoomDetail` using its globally unique `ID`. */
+  hotelRoomDetailByNodeId?: Maybe<HotelRoomDetail>
+  /** Reads and enables pagination through a set of `HotelRoomDetail`. */
+  hotelRoomDetails?: Maybe<HotelRoomDetailsConnection>
+  /** Reads and enables pagination through a set of `HotelRoom`. */
+  hotelRooms?: Maybe<HotelRoomsConnection>
+  lookup?: Maybe<Lookup>
+  /** Reads a single `Lookup` using its globally unique `ID`. */
+  lookupByNodeId?: Maybe<Lookup>
+  lookupByRealm?: Maybe<Lookup>
+  lookupValue?: Maybe<LookupValue>
+  lookupValueByLookupIdAndCode?: Maybe<LookupValue>
+  /** Reads a single `LookupValue` using its globally unique `ID`. */
+  lookupValueByNodeId?: Maybe<LookupValue>
+  /** Reads and enables pagination through a set of `LookupValue`. */
+  lookupValues?: Maybe<LookupValuesConnection>
+  /** Reads and enables pagination through a set of `Lookup`. */
+  lookups?: Maybe<LookupsConnection>
+  membership?: Maybe<Membership>
+  /** Reads a single `Membership` using its globally unique `ID`. */
+  membershipByNodeId?: Maybe<Membership>
+  /** Reads and enables pagination through a set of `Membership`. */
+  memberships?: Maybe<MembershipsConnection>
+  /** Fetches an object given its globally unique `ID`. */
+  node?: Maybe<Node>
+  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
+  nodeId: Scalars['ID']
+  profile?: Maybe<Profile>
+  /** Reads a single `Profile` using its globally unique `ID`. */
+  profileByNodeId?: Maybe<Profile>
+  /** Reads and enables pagination through a set of `Profile`. */
+  profiles?: Maybe<ProfilesConnection>
   /**
    * Exposes the root query type nested one level down. This is helpful for Relay 1
    * which can only query top level fields if they are in a particular form.
    */
   query: Query
-  /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
-  nodeId: Scalars['ID']
-  /** Fetches an object given its globally unique `ID`. */
-  node?: Maybe<Node>
-  /** Reads and enables pagination through a set of `Game`. */
-  games?: Maybe<GamesConnection>
-  /** Reads and enables pagination through a set of `GameAssignment`. */
-  gameAssignments?: Maybe<GameAssignmentsConnection>
-  /** Reads and enables pagination through a set of `GameChoice`. */
-  gameChoices?: Maybe<GameChoicesConnection>
-  /** Reads and enables pagination through a set of `GameSubmission`. */
-  gameSubmissions?: Maybe<GameSubmissionsConnection>
-  /** Reads and enables pagination through a set of `HotelRoom`. */
-  hotelRooms?: Maybe<HotelRoomsConnection>
-  /** Reads and enables pagination through a set of `HotelRoomDetail`. */
-  hotelRoomDetails?: Maybe<HotelRoomDetailsConnection>
-  /** Reads and enables pagination through a set of `Lookup`. */
-  lookups?: Maybe<LookupsConnection>
-  /** Reads and enables pagination through a set of `LookupValue`. */
-  lookupValues?: Maybe<LookupValuesConnection>
-  /** Reads and enables pagination through a set of `Membership`. */
-  memberships?: Maybe<MembershipsConnection>
-  /** Reads and enables pagination through a set of `Profile`. */
-  profiles?: Maybe<ProfilesConnection>
-  /** Reads and enables pagination through a set of `Role`. */
-  roles?: Maybe<RolesConnection>
-  /** Reads and enables pagination through a set of `Room`. */
-  rooms?: Maybe<RoomsConnection>
-  /** Reads and enables pagination through a set of `Setting`. */
-  settings?: Maybe<SettingsConnection>
-  /** Reads and enables pagination through a set of `ShirtOrder`. */
-  shirtOrders?: Maybe<ShirtOrdersConnection>
-  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
-  shirtOrderItems?: Maybe<ShirtOrderItemsConnection>
-  /** Reads and enables pagination through a set of `Slot`. */
-  slots?: Maybe<SlotsConnection>
-  /** Reads and enables pagination through a set of `User`. */
-  users?: Maybe<UsersConnection>
-  /** Reads and enables pagination through a set of `UserRole`. */
-  userRoles?: Maybe<UserRolesConnection>
-  game?: Maybe<Game>
-  gameAssignment?: Maybe<GameAssignment>
-  gameChoice?: Maybe<GameChoice>
-  gameSubmission?: Maybe<GameSubmission>
-  hotelRoom?: Maybe<HotelRoom>
-  hotelRoomDetail?: Maybe<HotelRoomDetail>
-  lookup?: Maybe<Lookup>
-  lookupByRealm?: Maybe<Lookup>
-  lookupValue?: Maybe<LookupValue>
-  lookupValueByLookupIdAndCode?: Maybe<LookupValue>
-  membership?: Maybe<Membership>
-  profile?: Maybe<Profile>
   role?: Maybe<Role>
   roleByAuthority?: Maybe<Role>
-  room?: Maybe<Room>
-  setting?: Maybe<Setting>
-  shirtOrder?: Maybe<ShirtOrder>
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  slot?: Maybe<Slot>
-  user?: Maybe<User>
-  userByEmail?: Maybe<User>
-  userRole?: Maybe<UserRole>
-  currentUserId?: Maybe<Scalars['Int']>
-  currentUserIsAdmin?: Maybe<Scalars['Boolean']>
-  /** Reads a single `Game` using its globally unique `ID`. */
-  gameByNodeId?: Maybe<Game>
-  /** Reads a single `GameAssignment` using its globally unique `ID`. */
-  gameAssignmentByNodeId?: Maybe<GameAssignment>
-  /** Reads a single `GameChoice` using its globally unique `ID`. */
-  gameChoiceByNodeId?: Maybe<GameChoice>
-  /** Reads a single `GameSubmission` using its globally unique `ID`. */
-  gameSubmissionByNodeId?: Maybe<GameSubmission>
-  /** Reads a single `HotelRoom` using its globally unique `ID`. */
-  hotelRoomByNodeId?: Maybe<HotelRoom>
-  /** Reads a single `HotelRoomDetail` using its globally unique `ID`. */
-  hotelRoomDetailByNodeId?: Maybe<HotelRoomDetail>
-  /** Reads a single `Lookup` using its globally unique `ID`. */
-  lookupByNodeId?: Maybe<Lookup>
-  /** Reads a single `LookupValue` using its globally unique `ID`. */
-  lookupValueByNodeId?: Maybe<LookupValue>
-  /** Reads a single `Membership` using its globally unique `ID`. */
-  membershipByNodeId?: Maybe<Membership>
-  /** Reads a single `Profile` using its globally unique `ID`. */
-  profileByNodeId?: Maybe<Profile>
   /** Reads a single `Role` using its globally unique `ID`. */
   roleByNodeId?: Maybe<Role>
+  /** Reads and enables pagination through a set of `Role`. */
+  roles?: Maybe<RolesConnection>
+  room?: Maybe<Room>
   /** Reads a single `Room` using its globally unique `ID`. */
   roomByNodeId?: Maybe<Room>
+  /** Reads and enables pagination through a set of `Room`. */
+  rooms?: Maybe<RoomsConnection>
+  setting?: Maybe<Setting>
   /** Reads a single `Setting` using its globally unique `ID`. */
   settingByNodeId?: Maybe<Setting>
+  /** Reads and enables pagination through a set of `Setting`. */
+  settings?: Maybe<SettingsConnection>
+  shirtOrder?: Maybe<ShirtOrder>
   /** Reads a single `ShirtOrder` using its globally unique `ID`. */
   shirtOrderByNodeId?: Maybe<ShirtOrder>
+  shirtOrderItem?: Maybe<ShirtOrderItem>
   /** Reads a single `ShirtOrderItem` using its globally unique `ID`. */
   shirtOrderItemByNodeId?: Maybe<ShirtOrderItem>
+  /** Reads and enables pagination through a set of `ShirtOrderItem`. */
+  shirtOrderItems?: Maybe<ShirtOrderItemsConnection>
+  /** Reads and enables pagination through a set of `ShirtOrder`. */
+  shirtOrders?: Maybe<ShirtOrdersConnection>
+  slot?: Maybe<Slot>
   /** Reads a single `Slot` using its globally unique `ID`. */
   slotByNodeId?: Maybe<Slot>
+  /** Reads and enables pagination through a set of `Slot`. */
+  slots?: Maybe<SlotsConnection>
+  user?: Maybe<User>
+  userByEmail?: Maybe<User>
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>
+  userRole?: Maybe<UserRole>
   /** Reads a single `UserRole` using its globally unique `ID`. */
   userRoleByNodeId?: Maybe<UserRole>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryNodeArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGamesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameAssignmentsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
-  condition?: Maybe<GameAssignmentCondition>
-  filter?: Maybe<GameAssignmentFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameChoicesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameSubmissionsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
-  condition?: Maybe<GameSubmissionCondition>
-  filter?: Maybe<GameSubmissionFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryHotelRoomsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
-  condition?: Maybe<HotelRoomCondition>
-  filter?: Maybe<HotelRoomFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryHotelRoomDetailsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
-  condition?: Maybe<HotelRoomDetailCondition>
-  filter?: Maybe<HotelRoomDetailFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryLookupsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<LookupsOrderBy>>
-  condition?: Maybe<LookupCondition>
-  filter?: Maybe<LookupFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryLookupValuesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<LookupValuesOrderBy>>
-  condition?: Maybe<LookupValueCondition>
-  filter?: Maybe<LookupValueFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryMembershipsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryProfilesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ProfilesOrderBy>>
-  condition?: Maybe<ProfileCondition>
-  filter?: Maybe<ProfileFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryRolesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<RolesOrderBy>>
-  condition?: Maybe<RoleCondition>
-  filter?: Maybe<RoleFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryRoomsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<RoomsOrderBy>>
-  condition?: Maybe<RoomCondition>
-  filter?: Maybe<RoomFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QuerySettingsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<SettingsOrderBy>>
-  condition?: Maybe<SettingCondition>
-  filter?: Maybe<SettingFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryShirtOrdersArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-  condition?: Maybe<ShirtOrderCondition>
-  filter?: Maybe<ShirtOrderFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryShirtOrderItemsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-  condition?: Maybe<ShirtOrderItemCondition>
-  filter?: Maybe<ShirtOrderItemFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QuerySlotsArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<SlotsOrderBy>>
-  condition?: Maybe<SlotCondition>
-  filter?: Maybe<SlotFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryUsersArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UsersOrderBy>>
-  condition?: Maybe<UserCondition>
-  filter?: Maybe<UserFilter>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryUserRolesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
+  /** Reads and enables pagination through a set of `UserRole`. */
+  userRoles?: Maybe<UserRolesConnection>
+  /** Reads and enables pagination through a set of `User`. */
+  users?: Maybe<UsersConnection>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4746,9 +4525,31 @@ export interface QueryGameArgs {
 
 /** The root query type which gives access points into the data universe. */
 export interface QueryGameAssignmentArgs {
-  memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
+  memberId: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameAssignmentByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameAssignmentsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameAssignmentCondition>
+  filter?: Maybe<GameAssignmentFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<GameAssignmentsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameByNodeIdArgs {
+  nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4757,8 +4558,54 @@ export interface QueryGameChoiceArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryGameChoiceByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameChoicesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<GameChoicesOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryGameSubmissionArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameSubmissionByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGameSubmissionsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameSubmissionCondition>
+  filter?: Maybe<GameSubmissionFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<GameSubmissionsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryGamesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4767,13 +4614,52 @@ export interface QueryHotelRoomArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryHotelRoomByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryHotelRoomDetailArgs {
   id: Scalars['BigInt']
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryHotelRoomDetailByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryHotelRoomDetailsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<HotelRoomDetailCondition>
+  filter?: Maybe<HotelRoomDetailFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<HotelRoomDetailsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryHotelRoomsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<HotelRoomCondition>
+  filter?: Maybe<HotelRoomFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<HotelRoomsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryLookupArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryLookupByNodeIdArgs {
+  nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4788,8 +4674,37 @@ export interface QueryLookupValueArgs {
 
 /** The root query type which gives access points into the data universe. */
 export interface QueryLookupValueByLookupIdAndCodeArgs {
-  lookupId: Scalars['Int']
   code: Scalars['String']
+  lookupId: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryLookupValueByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryLookupValuesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<LookupValueCondition>
+  filter?: Maybe<LookupValueFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<LookupValuesOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryLookupsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<LookupCondition>
+  filter?: Maybe<LookupFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<LookupsOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4798,8 +4713,47 @@ export interface QueryMembershipArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryMembershipByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryMembershipsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<MembershipsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryNodeArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryProfileArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryProfileByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryProfilesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<ProfilesOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4813,8 +4767,42 @@ export interface QueryRoleByAuthorityArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryRoleByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryRolesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<RoleCondition>
+  filter?: Maybe<RoleFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<RolesOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryRoomArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryRoomByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryRoomsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<RoomCondition>
+  filter?: Maybe<RoomFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<RoomsOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4823,8 +4811,30 @@ export interface QuerySettingArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QuerySettingByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QuerySettingsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<SettingCondition>
+  filter?: Maybe<SettingFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<SettingsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryShirtOrderArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryShirtOrderByNodeIdArgs {
+  nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4833,8 +4843,54 @@ export interface QueryShirtOrderItemArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryShirtOrderItemByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryShirtOrderItemsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ShirtOrderItemCondition>
+  filter?: Maybe<ShirtOrderItemFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryShirtOrdersArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ShirtOrderCondition>
+  filter?: Maybe<ShirtOrderFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QuerySlotArgs {
   id: Scalars['Int']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QuerySlotByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QuerySlotsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<SlotCondition>
+  filter?: Maybe<SlotFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<SlotsOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4848,94 +4904,14 @@ export interface QueryUserByEmailArgs {
 }
 
 /** The root query type which gives access points into the data universe. */
+export interface QueryUserByNodeIdArgs {
+  nodeId: Scalars['ID']
+}
+
+/** The root query type which gives access points into the data universe. */
 export interface QueryUserRoleArgs {
   roleId: Scalars['Int']
   userId: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameAssignmentByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameChoiceByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryGameSubmissionByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryHotelRoomByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryHotelRoomDetailByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryLookupByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryLookupValueByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryMembershipByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryProfileByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryRoleByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryRoomByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QuerySettingByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryShirtOrderByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryShirtOrderItemByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QuerySlotByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryUserByNodeIdArgs {
-  nodeId: Scalars['ID']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -4943,68 +4919,92 @@ export interface QueryUserRoleByNodeIdArgs {
   nodeId: Scalars['ID']
 }
 
+/** The root query type which gives access points into the data universe. */
+export interface QueryUserRolesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<UserRolesOrderBy>>
+}
+
+/** The root query type which gives access points into the data universe. */
+export interface QueryUsersArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<UserCondition>
+  filter?: Maybe<UserFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<UsersOrderBy>>
+}
+
 export interface Role extends Node {
   __typename: 'Role'
+  authority: Scalars['String']
+  id: Scalars['Int']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  authority: Scalars['String']
   /** Reads and enables pagination through a set of `UserRole`. */
   userRoles: UserRolesConnection
 }
 
 export interface RoleUserRolesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
 }
 
 /** A condition to be used against `Role` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface RoleCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `authority` field. */
   authority?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
 }
 
 /** A filter to be used against `Role` object types. All fields are combined with a logical ‘and.’ */
 export interface RoleFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `authority` field. */
-  authority?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<RoleFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<RoleFilter>>
+  /** Filter by the object’s `authority` field. */
+  authority?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Negates the expression. */
   not?: Maybe<RoleFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<RoleFilter>>
 }
 
 /** An input for mutations affecting `Role` */
 export interface RoleInput {
-  id?: Maybe<Scalars['Int']>
   authority: Scalars['String']
+  id?: Maybe<Scalars['Int']>
 }
 
 /** Represents an update to a `Role`. Fields that are set will be updated. */
 export interface RolePatch {
-  id?: Maybe<Scalars['Int']>
   authority?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
 }
 
 /** A connection to a list of `Role` values. */
 export interface RolesConnection {
   __typename: 'RolesConnection'
-  /** A list of `Role` objects. */
-  nodes: Array<Maybe<Role>>
   /** A list of edges which contains the `Role` and cursor to aid in pagination. */
   edges: Array<RolesEdge>
+  /** A list of `Role` objects. */
+  nodes: Array<Maybe<Role>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Role` you could get from the connection. */
@@ -5022,11 +5022,11 @@ export interface RolesEdge {
 
 /** Methods to use when ordering `Role`. */
 export enum RolesOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   AuthorityAsc = 'AUTHORITY_ASC',
   AuthorityDesc = 'AUTHORITY_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   UserRolesByRoleIdCountAsc = 'USER_ROLES_BY_ROLE_ID__COUNT_ASC',
@@ -5035,34 +5035,34 @@ export enum RolesOrderBy {
 
 export interface Room extends Node {
   __typename: 'Room'
+  description: Scalars['String']
+  /** Reads and enables pagination through a set of `Game`. */
+  games: GamesConnection
+  id: Scalars['Int']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  description: Scalars['String']
   size: Scalars['Int']
   type: Scalars['String']
   updated: Scalars['Boolean']
-  /** Reads and enables pagination through a set of `Game`. */
-  games: GamesConnection
 }
 
 export interface RoomGamesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
 }
 
 /** A condition to be used against `Room` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface RoomCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `description` field. */
   description?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `size` field. */
   size?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `type` field. */
@@ -5073,28 +5073,28 @@ export interface RoomCondition {
 
 /** A filter to be used against `Room` object types. All fields are combined with a logical ‘and.’ */
 export interface RoomFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<RoomFilter>>
   /** Filter by the object’s `description` field. */
   description?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<RoomFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<RoomFilter>>
   /** Filter by the object’s `size` field. */
   size?: Maybe<IntFilter>
   /** Filter by the object’s `type` field. */
   type?: Maybe<StringFilter>
   /** Filter by the object’s `updated` field. */
   updated?: Maybe<BooleanFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<RoomFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<RoomFilter>>
-  /** Negates the expression. */
-  not?: Maybe<RoomFilter>
 }
 
 /** An input for mutations affecting `Room` */
 export interface RoomInput {
-  id?: Maybe<Scalars['Int']>
   description: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   size: Scalars['Int']
   type: Scalars['String']
   updated: Scalars['Boolean']
@@ -5102,8 +5102,8 @@ export interface RoomInput {
 
 /** Represents an update to a `Room`. Fields that are set will be updated. */
 export interface RoomPatch {
-  id?: Maybe<Scalars['Int']>
   description?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   size?: Maybe<Scalars['Int']>
   type?: Maybe<Scalars['String']>
   updated?: Maybe<Scalars['Boolean']>
@@ -5112,10 +5112,10 @@ export interface RoomPatch {
 /** A connection to a list of `Room` values. */
 export interface RoomsConnection {
   __typename: 'RoomsConnection'
-  /** A list of `Room` objects. */
-  nodes: Array<Maybe<Room>>
   /** A list of edges which contains the `Room` and cursor to aid in pagination. */
   edges: Array<RoomsEdge>
+  /** A list of `Room` objects. */
+  nodes: Array<Maybe<Room>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Room` you could get from the connection. */
@@ -5133,39 +5133,39 @@ export interface RoomsEdge {
 
 /** Methods to use when ordering `Room`. */
 export enum RoomsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
+  GamesByRoomIdCountAsc = 'GAMES_BY_ROOM_ID__COUNT_ASC',
+  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   SizeAsc = 'SIZE_ASC',
   SizeDesc = 'SIZE_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
   UpdatedAsc = 'UPDATED_ASC',
   UpdatedDesc = 'UPDATED_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  GamesByRoomIdCountAsc = 'GAMES_BY_ROOM_ID__COUNT_ASC',
-  GamesByRoomIdCountDesc = 'GAMES_BY_ROOM_ID__COUNT_DESC',
 }
 
 export interface Setting extends Node {
   __typename: 'Setting'
+  code: Scalars['String']
+  id: Scalars['Int']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  code: Scalars['String']
   type: Scalars['String']
   value: Scalars['String']
 }
 
 /** A condition to be used against `Setting` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface SettingCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `code` field. */
   code?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `type` field. */
   type?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `value` field. */
@@ -5174,34 +5174,34 @@ export interface SettingCondition {
 
 /** A filter to be used against `Setting` object types. All fields are combined with a logical ‘and.’ */
 export interface SettingFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<SettingFilter>>
   /** Filter by the object’s `code` field. */
   code?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<SettingFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<SettingFilter>>
   /** Filter by the object’s `type` field. */
   type?: Maybe<StringFilter>
   /** Filter by the object’s `value` field. */
   value?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<SettingFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<SettingFilter>>
-  /** Negates the expression. */
-  not?: Maybe<SettingFilter>
 }
 
 /** An input for mutations affecting `Setting` */
 export interface SettingInput {
-  id?: Maybe<Scalars['Int']>
   code: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   type: Scalars['String']
   value: Scalars['String']
 }
 
 /** Represents an update to a `Setting`. Fields that are set will be updated. */
 export interface SettingPatch {
-  id?: Maybe<Scalars['Int']>
   code?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   type?: Maybe<Scalars['String']>
   value?: Maybe<Scalars['String']>
 }
@@ -5209,10 +5209,10 @@ export interface SettingPatch {
 /** A connection to a list of `Setting` values. */
 export interface SettingsConnection {
   __typename: 'SettingsConnection'
-  /** A list of `Setting` objects. */
-  nodes: Array<Maybe<Setting>>
   /** A list of edges which contains the `Setting` and cursor to aid in pagination. */
   edges: Array<SettingsEdge>
+  /** A list of `Setting` objects. */
+  nodes: Array<Maybe<Setting>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Setting` you could get from the connection. */
@@ -5230,43 +5230,43 @@ export interface SettingsEdge {
 
 /** Methods to use when ordering `Setting`. */
 export enum SettingsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   CodeAsc = 'CODE_ASC',
   CodeDesc = 'CODE_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
   ValueAsc = 'VALUE_ASC',
   ValueDesc = 'VALUE_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
 }
 
 export interface ShirtOrder extends Node {
   __typename: 'ShirtOrder'
+  deliveryMethod: Scalars['String']
+  id: Scalars['Int']
+  message: Scalars['String']
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
-  deliveryMethod: Scalars['String']
-  message: Scalars['String']
-  userId: Scalars['Int']
-  year: Scalars['Int']
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
   /** Reads and enables pagination through a set of `ShirtOrderItem`. */
   shirtOrderItemsByOrderId: ShirtOrderItemsConnection
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
+  userId: Scalars['Int']
+  year: Scalars['Int']
 }
 
 export interface ShirtOrderShirtOrderItemsByOrderIdArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ShirtOrderItemCondition>
+  filter?: Maybe<ShirtOrderItemFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<ShirtOrderItemsOrderBy>>
-  condition?: Maybe<ShirtOrderItemCondition>
-  filter?: Maybe<ShirtOrderItemFilter>
 }
 
 /**
@@ -5274,10 +5274,10 @@ export interface ShirtOrderShirtOrderItemsByOrderIdArgs {
  * for equality and combined with a logical ‘and.’
  */
 export interface ShirtOrderCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `deliveryMethod` field. */
   deliveryMethod?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `message` field. */
   message?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `userId` field. */
@@ -5288,28 +5288,28 @@ export interface ShirtOrderCondition {
 
 /** A filter to be used against `ShirtOrder` object types. All fields are combined with a logical ‘and.’ */
 export interface ShirtOrderFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ShirtOrderFilter>>
   /** Filter by the object’s `deliveryMethod` field. */
   deliveryMethod?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `message` field. */
   message?: Maybe<StringFilter>
+  /** Negates the expression. */
+  not?: Maybe<ShirtOrderFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ShirtOrderFilter>>
   /** Filter by the object’s `userId` field. */
   userId?: Maybe<IntFilter>
   /** Filter by the object’s `year` field. */
   year?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ShirtOrderFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ShirtOrderFilter>>
-  /** Negates the expression. */
-  not?: Maybe<ShirtOrderFilter>
 }
 
 /** An input for mutations affecting `ShirtOrder` */
 export interface ShirtOrderInput {
-  id?: Maybe<Scalars['Int']>
   deliveryMethod: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   message: Scalars['String']
   userId: Scalars['Int']
   year: Scalars['Int']
@@ -5317,16 +5317,16 @@ export interface ShirtOrderInput {
 
 export interface ShirtOrderItem extends Node {
   __typename: 'ShirtOrderItem'
+  id: Scalars['Int']
+  itemsIdx?: Maybe<Scalars['Int']>
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  id: Scalars['Int']
+  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
+  order?: Maybe<ShirtOrder>
   orderId: Scalars['Int']
   quantity: Scalars['Int']
   size: Scalars['String']
   style: Scalars['String']
-  itemsIdx?: Maybe<Scalars['Int']>
-  /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
-  order?: Maybe<ShirtOrder>
 }
 
 /**
@@ -5336,6 +5336,8 @@ export interface ShirtOrderItem extends Node {
 export interface ShirtOrderItemCondition {
   /** Checks for equality with the object’s `id` field. */
   id?: Maybe<Scalars['Int']>
+  /** Checks for equality with the object’s `itemsIdx` field. */
+  itemsIdx?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `orderId` field. */
   orderId?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `quantity` field. */
@@ -5344,14 +5346,20 @@ export interface ShirtOrderItemCondition {
   size?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `style` field. */
   style?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `itemsIdx` field. */
-  itemsIdx?: Maybe<Scalars['Int']>
 }
 
 /** A filter to be used against `ShirtOrderItem` object types. All fields are combined with a logical ‘and.’ */
 export interface ShirtOrderItemFilter {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<ShirtOrderItemFilter>>
   /** Filter by the object’s `id` field. */
   id?: Maybe<IntFilter>
+  /** Filter by the object’s `itemsIdx` field. */
+  itemsIdx?: Maybe<IntFilter>
+  /** Negates the expression. */
+  not?: Maybe<ShirtOrderItemFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<ShirtOrderItemFilter>>
   /** Filter by the object’s `orderId` field. */
   orderId?: Maybe<IntFilter>
   /** Filter by the object’s `quantity` field. */
@@ -5360,43 +5368,35 @@ export interface ShirtOrderItemFilter {
   size?: Maybe<StringFilter>
   /** Filter by the object’s `style` field. */
   style?: Maybe<StringFilter>
-  /** Filter by the object’s `itemsIdx` field. */
-  itemsIdx?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<ShirtOrderItemFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<ShirtOrderItemFilter>>
-  /** Negates the expression. */
-  not?: Maybe<ShirtOrderItemFilter>
 }
 
 /** An input for mutations affecting `ShirtOrderItem` */
 export interface ShirtOrderItemInput {
   id?: Maybe<Scalars['Int']>
+  itemsIdx?: Maybe<Scalars['Int']>
   orderId: Scalars['Int']
   quantity: Scalars['Int']
   size: Scalars['String']
   style: Scalars['String']
-  itemsIdx?: Maybe<Scalars['Int']>
 }
 
 /** Represents an update to a `ShirtOrderItem`. Fields that are set will be updated. */
 export interface ShirtOrderItemPatch {
   id?: Maybe<Scalars['Int']>
+  itemsIdx?: Maybe<Scalars['Int']>
   orderId?: Maybe<Scalars['Int']>
   quantity?: Maybe<Scalars['Int']>
   size?: Maybe<Scalars['String']>
   style?: Maybe<Scalars['String']>
-  itemsIdx?: Maybe<Scalars['Int']>
 }
 
 /** A connection to a list of `ShirtOrderItem` values. */
 export interface ShirtOrderItemsConnection {
   __typename: 'ShirtOrderItemsConnection'
-  /** A list of `ShirtOrderItem` objects. */
-  nodes: Array<Maybe<ShirtOrderItem>>
   /** A list of edges which contains the `ShirtOrderItem` and cursor to aid in pagination. */
   edges: Array<ShirtOrderItemsEdge>
+  /** A list of `ShirtOrderItem` objects. */
+  nodes: Array<Maybe<ShirtOrderItem>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `ShirtOrderItem` you could get from the connection. */
@@ -5414,37 +5414,37 @@ export interface ShirtOrderItemsEdge {
 
 /** Methods to use when ordering `ShirtOrderItem`. */
 export enum ShirtOrderItemsOrderBy {
-  Natural = 'NATURAL',
   IdAsc = 'ID_ASC',
   IdDesc = 'ID_DESC',
-  OrderIdAsc = 'ORDER_ID_ASC',
-  OrderIdDesc = 'ORDER_ID_DESC',
-  QuantityAsc = 'QUANTITY_ASC',
-  QuantityDesc = 'QUANTITY_DESC',
-  SizeAsc = 'SIZE_ASC',
-  SizeDesc = 'SIZE_DESC',
-  StyleAsc = 'STYLE_ASC',
-  StyleDesc = 'STYLE_DESC',
   ItemsIdxAsc = 'ITEMS_IDX_ASC',
   ItemsIdxDesc = 'ITEMS_IDX_DESC',
+  Natural = 'NATURAL',
+  OrderIdAsc = 'ORDER_ID_ASC',
+  OrderIdDesc = 'ORDER_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  ShirtOrderByOrderIdIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__ID_ASC',
-  ShirtOrderByOrderIdIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__ID_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC',
   ShirtOrderByOrderIdDeliveryMethodAsc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_ASC',
   ShirtOrderByOrderIdDeliveryMethodDesc = 'SHIRT_ORDER_BY_ORDER_ID__DELIVERY_METHOD_DESC',
+  ShirtOrderByOrderIdIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__ID_ASC',
+  ShirtOrderByOrderIdIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__ID_DESC',
   ShirtOrderByOrderIdMessageAsc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_ASC',
   ShirtOrderByOrderIdMessageDesc = 'SHIRT_ORDER_BY_ORDER_ID__MESSAGE_DESC',
   ShirtOrderByOrderIdUserIdAsc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_ASC',
   ShirtOrderByOrderIdUserIdDesc = 'SHIRT_ORDER_BY_ORDER_ID__USER_ID_DESC',
   ShirtOrderByOrderIdYearAsc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_ASC',
   ShirtOrderByOrderIdYearDesc = 'SHIRT_ORDER_BY_ORDER_ID__YEAR_DESC',
+  SizeAsc = 'SIZE_ASC',
+  SizeDesc = 'SIZE_DESC',
+  StyleAsc = 'STYLE_ASC',
+  StyleDesc = 'STYLE_DESC',
 }
 
 /** Represents an update to a `ShirtOrder`. Fields that are set will be updated. */
 export interface ShirtOrderPatch {
-  id?: Maybe<Scalars['Int']>
   deliveryMethod?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   message?: Maybe<Scalars['String']>
   userId?: Maybe<Scalars['Int']>
   year?: Maybe<Scalars['Int']>
@@ -5453,10 +5453,10 @@ export interface ShirtOrderPatch {
 /** A connection to a list of `ShirtOrder` values. */
 export interface ShirtOrdersConnection {
   __typename: 'ShirtOrdersConnection'
-  /** A list of `ShirtOrder` objects. */
-  nodes: Array<Maybe<ShirtOrder>>
   /** A list of edges which contains the `ShirtOrder` and cursor to aid in pagination. */
   edges: Array<ShirtOrdersEdge>
+  /** A list of `ShirtOrder` objects. */
+  nodes: Array<Maybe<ShirtOrder>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `ShirtOrder` you could get from the connection. */
@@ -5474,107 +5474,107 @@ export interface ShirtOrdersEdge {
 
 /** Methods to use when ordering `ShirtOrder`. */
 export enum ShirtOrdersOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   DeliveryMethodAsc = 'DELIVERY_METHOD_ASC',
   DeliveryMethodDesc = 'DELIVERY_METHOD_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
   MessageAsc = 'MESSAGE_ASC',
   MessageDesc = 'MESSAGE_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
+  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
+  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
+  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
+  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
+  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
+  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC',
   YearAsc = 'YEAR_ASC',
   YearDesc = 'YEAR_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
-  UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
-  UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
-  UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
-  UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
-  UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
-  UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
-  ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
-  ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
 }
 
 export interface Slot extends Node {
   __typename: 'Slot'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  slot: Scalars['Int']
   day: Scalars['String']
   formattedDate: Scalars['String']
-  length: Scalars['String']
-  time: Scalars['String']
-  /** Reads and enables pagination through a set of `Game`. */
-  games: GamesConnection
   /** Reads and enables pagination through a set of `GameChoice`. */
   gameChoices: GameChoicesConnection
-}
-
-export interface SlotGamesArgs {
-  first?: Maybe<Scalars['Int']>
-  last?: Maybe<Scalars['Int']>
-  offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
-  orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
+  /** Reads and enables pagination through a set of `Game`. */
+  games: GamesConnection
+  id: Scalars['Int']
+  length: Scalars['String']
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
+  slot: Scalars['Int']
+  time: Scalars['String']
 }
 
 export interface SlotGameChoicesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameChoiceCondition>
+  filter?: Maybe<GameChoiceFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GameChoicesOrderBy>>
-  condition?: Maybe<GameChoiceCondition>
-  filter?: Maybe<GameChoiceFilter>
+}
+
+export interface SlotGamesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
+  first?: Maybe<Scalars['Int']>
+  last?: Maybe<Scalars['Int']>
+  offset?: Maybe<Scalars['Int']>
+  orderBy?: Maybe<Array<GamesOrderBy>>
 }
 
 /** A condition to be used against `Slot` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface SlotCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
-  /** Checks for equality with the object’s `slot` field. */
-  slot?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `day` field. */
   day?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `formattedDate` field. */
   formattedDate?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `length` field. */
   length?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `slot` field. */
+  slot?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `time` field. */
   time?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `Slot` object types. All fields are combined with a logical ‘and.’ */
 export interface SlotFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `slot` field. */
-  slot?: Maybe<IntFilter>
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<SlotFilter>>
   /** Filter by the object’s `day` field. */
   day?: Maybe<StringFilter>
   /** Filter by the object’s `formattedDate` field. */
   formattedDate?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
   /** Filter by the object’s `length` field. */
   length?: Maybe<StringFilter>
-  /** Filter by the object’s `time` field. */
-  time?: Maybe<StringFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<SlotFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<SlotFilter>>
   /** Negates the expression. */
   not?: Maybe<SlotFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<SlotFilter>>
+  /** Filter by the object’s `slot` field. */
+  slot?: Maybe<IntFilter>
+  /** Filter by the object’s `time` field. */
+  time?: Maybe<StringFilter>
 }
 
 /** All input for the `slotGmGame` mutation. */
@@ -5604,31 +5604,31 @@ export interface SlotGmGamePayload {
 
 /** An input for mutations affecting `Slot` */
 export interface SlotInput {
-  id?: Maybe<Scalars['Int']>
-  slot: Scalars['Int']
   day: Scalars['String']
   formattedDate: Scalars['String']
+  id?: Maybe<Scalars['Int']>
   length: Scalars['String']
+  slot: Scalars['Int']
   time: Scalars['String']
 }
 
 /** Represents an update to a `Slot`. Fields that are set will be updated. */
 export interface SlotPatch {
-  id?: Maybe<Scalars['Int']>
-  slot?: Maybe<Scalars['Int']>
   day?: Maybe<Scalars['String']>
   formattedDate?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   length?: Maybe<Scalars['String']>
+  slot?: Maybe<Scalars['Int']>
   time?: Maybe<Scalars['String']>
 }
 
 /** A connection to a list of `Slot` values. */
 export interface SlotsConnection {
   __typename: 'SlotsConnection'
-  /** A list of `Slot` objects. */
-  nodes: Array<Maybe<Slot>>
   /** A list of edges which contains the `Slot` and cursor to aid in pagination. */
   edges: Array<SlotsEdge>
+  /** A list of `Slot` objects. */
+  nodes: Array<Maybe<Slot>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `Slot` you could get from the connection. */
@@ -5646,103 +5646,103 @@ export interface SlotsEdge {
 
 /** Methods to use when ordering `Slot`. */
 export enum SlotsOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  SlotAsc = 'SLOT_ASC',
-  SlotDesc = 'SLOT_DESC',
   DayAsc = 'DAY_ASC',
   DayDesc = 'DAY_DESC',
   FormattedDateAsc = 'FORMATTED_DATE_ASC',
   FormattedDateDesc = 'FORMATTED_DATE_DESC',
-  LengthAsc = 'LENGTH_ASC',
-  LengthDesc = 'LENGTH_DESC',
-  TimeAsc = 'TIME_ASC',
-  TimeDesc = 'TIME_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   GamesBySlotIdCountAsc = 'GAMES_BY_SLOT_ID__COUNT_ASC',
   GamesBySlotIdCountDesc = 'GAMES_BY_SLOT_ID__COUNT_DESC',
   GameChoicesBySlotIdCountAsc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_ASC',
   GameChoicesBySlotIdCountDesc = 'GAME_CHOICES_BY_SLOT_ID__COUNT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LengthAsc = 'LENGTH_ASC',
+  LengthDesc = 'LENGTH_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  SlotAsc = 'SLOT_ASC',
+  SlotDesc = 'SLOT_DESC',
+  TimeAsc = 'TIME_ASC',
+  TimeDesc = 'TIME_DESC',
 }
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export interface StringFilter {
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: Maybe<Scalars['Boolean']>
-  /** Equal to the specified value. */
-  equalTo?: Maybe<Scalars['String']>
-  /** Not equal to the specified value. */
-  notEqualTo?: Maybe<Scalars['String']>
   /** Not equal to the specified value, treating null like an ordinary value. */
   distinctFrom?: Maybe<Scalars['String']>
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: Maybe<Scalars['String']>
-  /** Included in the specified list. */
-  in?: Maybe<Array<Scalars['String']>>
-  /** Not included in the specified list. */
-  notIn?: Maybe<Array<Scalars['String']>>
-  /** Less than the specified value. */
-  lessThan?: Maybe<Scalars['String']>
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: Maybe<Scalars['String']>
-  /** Greater than the specified value. */
-  greaterThan?: Maybe<Scalars['String']>
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: Maybe<Scalars['String']>
-  /** Contains the specified string (case-sensitive). */
-  includes?: Maybe<Scalars['String']>
-  /** Does not contain the specified string (case-sensitive). */
-  notIncludes?: Maybe<Scalars['String']>
-  /** Contains the specified string (case-insensitive). */
-  includesInsensitive?: Maybe<Scalars['String']>
-  /** Does not contain the specified string (case-insensitive). */
-  notIncludesInsensitive?: Maybe<Scalars['String']>
-  /** Starts with the specified string (case-sensitive). */
-  startsWith?: Maybe<Scalars['String']>
-  /** Does not start with the specified string (case-sensitive). */
-  notStartsWith?: Maybe<Scalars['String']>
-  /** Starts with the specified string (case-insensitive). */
-  startsWithInsensitive?: Maybe<Scalars['String']>
-  /** Does not start with the specified string (case-insensitive). */
-  notStartsWithInsensitive?: Maybe<Scalars['String']>
-  /** Ends with the specified string (case-sensitive). */
-  endsWith?: Maybe<Scalars['String']>
-  /** Does not end with the specified string (case-sensitive). */
-  notEndsWith?: Maybe<Scalars['String']>
-  /** Ends with the specified string (case-insensitive). */
-  endsWithInsensitive?: Maybe<Scalars['String']>
-  /** Does not end with the specified string (case-insensitive). */
-  notEndsWithInsensitive?: Maybe<Scalars['String']>
-  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  like?: Maybe<Scalars['String']>
-  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLike?: Maybe<Scalars['String']>
-  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  likeInsensitive?: Maybe<Scalars['String']>
-  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
-  notLikeInsensitive?: Maybe<Scalars['String']>
-  /** Equal to the specified value (case-insensitive). */
-  equalToInsensitive?: Maybe<Scalars['String']>
-  /** Not equal to the specified value (case-insensitive). */
-  notEqualToInsensitive?: Maybe<Scalars['String']>
   /** Not equal to the specified value, treating null like an ordinary value (case-insensitive). */
   distinctFromInsensitive?: Maybe<Scalars['String']>
-  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
-  notDistinctFromInsensitive?: Maybe<Scalars['String']>
-  /** Included in the specified list (case-insensitive). */
-  inInsensitive?: Maybe<Array<Scalars['String']>>
-  /** Not included in the specified list (case-insensitive). */
-  notInInsensitive?: Maybe<Array<Scalars['String']>>
-  /** Less than the specified value (case-insensitive). */
-  lessThanInsensitive?: Maybe<Scalars['String']>
-  /** Less than or equal to the specified value (case-insensitive). */
-  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Ends with the specified string (case-sensitive). */
+  endsWith?: Maybe<Scalars['String']>
+  /** Ends with the specified string (case-insensitive). */
+  endsWithInsensitive?: Maybe<Scalars['String']>
+  /** Equal to the specified value. */
+  equalTo?: Maybe<Scalars['String']>
+  /** Equal to the specified value (case-insensitive). */
+  equalToInsensitive?: Maybe<Scalars['String']>
+  /** Greater than the specified value. */
+  greaterThan?: Maybe<Scalars['String']>
   /** Greater than the specified value (case-insensitive). */
   greaterThanInsensitive?: Maybe<Scalars['String']>
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: Maybe<Scalars['String']>
   /** Greater than or equal to the specified value (case-insensitive). */
   greaterThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Included in the specified list. */
+  in?: Maybe<Array<Scalars['String']>>
+  /** Included in the specified list (case-insensitive). */
+  inInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Contains the specified string (case-sensitive). */
+  includes?: Maybe<Scalars['String']>
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: Maybe<Scalars['String']>
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: Maybe<Scalars['Boolean']>
+  /** Less than the specified value. */
+  lessThan?: Maybe<Scalars['String']>
+  /** Less than the specified value (case-insensitive). */
+  lessThanInsensitive?: Maybe<Scalars['String']>
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: Maybe<Scalars['String']>
+  /** Less than or equal to the specified value (case-insensitive). */
+  lessThanOrEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  like?: Maybe<Scalars['String']>
+  /** Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  likeInsensitive?: Maybe<Scalars['String']>
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: Maybe<Scalars['String']>
+  /** Equal to the specified value, treating null like an ordinary value (case-insensitive). */
+  notDistinctFromInsensitive?: Maybe<Scalars['String']>
+  /** Does not end with the specified string (case-sensitive). */
+  notEndsWith?: Maybe<Scalars['String']>
+  /** Does not end with the specified string (case-insensitive). */
+  notEndsWithInsensitive?: Maybe<Scalars['String']>
+  /** Not equal to the specified value. */
+  notEqualTo?: Maybe<Scalars['String']>
+  /** Not equal to the specified value (case-insensitive). */
+  notEqualToInsensitive?: Maybe<Scalars['String']>
+  /** Not included in the specified list. */
+  notIn?: Maybe<Array<Scalars['String']>>
+  /** Not included in the specified list (case-insensitive). */
+  notInInsensitive?: Maybe<Array<Scalars['String']>>
+  /** Does not contain the specified string (case-sensitive). */
+  notIncludes?: Maybe<Scalars['String']>
+  /** Does not contain the specified string (case-insensitive). */
+  notIncludesInsensitive?: Maybe<Scalars['String']>
+  /** Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLike?: Maybe<Scalars['String']>
+  /** Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters. */
+  notLikeInsensitive?: Maybe<Scalars['String']>
+  /** Does not start with the specified string (case-sensitive). */
+  notStartsWith?: Maybe<Scalars['String']>
+  /** Does not start with the specified string (case-insensitive). */
+  notStartsWithInsensitive?: Maybe<Scalars['String']>
+  /** Starts with the specified string (case-sensitive). */
+  startsWith?: Maybe<Scalars['String']>
+  /** Starts with the specified string (case-insensitive). */
+  startsWithInsensitive?: Maybe<Scalars['String']>
 }
 
 /** All input for the `updateGameAssignmentByNodeId` mutation. */
@@ -5765,11 +5765,11 @@ export interface UpdateGameAssignmentInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
-  patch: GameAssignmentPatch
-  memberId: Scalars['Int']
   gameId: Scalars['Int']
   gm: Scalars['Int']
+  memberId: Scalars['Int']
+  /** An object where the defined keys will be set on the `GameAssignment` being updated. */
+  patch: GameAssignmentPatch
 }
 
 /** The output of our update `GameAssignment` mutation. */
@@ -5780,16 +5780,16 @@ export interface UpdateGameAssignmentPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameAssignment` that was updated by this mutation. */
-  gameAssignment?: Maybe<GameAssignment>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameAssignment`. */
-  member?: Maybe<Membership>
   /** Reads a single `Game` that is related to this `GameAssignment`. */
   game?: Maybe<Game>
+  /** The `GameAssignment` that was updated by this mutation. */
+  gameAssignment?: Maybe<GameAssignment>
   /** An edge for our `GameAssignment`. May be used by Relay 1. */
   gameAssignmentEdge?: Maybe<GameAssignmentsEdge>
+  /** Reads a single `Membership` that is related to this `GameAssignment`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `GameAssignment` mutation. */
@@ -5830,9 +5830,9 @@ export interface UpdateGameChoiceInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `GameChoice` being updated. */
   patch: GameChoicePatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `GameChoice` mutation. */
@@ -5843,18 +5843,18 @@ export interface UpdateGameChoicePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `GameChoice` that was updated by this mutation. */
-  gameChoice?: Maybe<GameChoice>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Game` that is related to this `GameChoice`. */
   game?: Maybe<Game>
-  /** Reads a single `Membership` that is related to this `GameChoice`. */
-  member?: Maybe<Membership>
-  /** Reads a single `Slot` that is related to this `GameChoice`. */
-  slot?: Maybe<Slot>
+  /** The `GameChoice` that was updated by this mutation. */
+  gameChoice?: Maybe<GameChoice>
   /** An edge for our `GameChoice`. May be used by Relay 1. */
   gameChoiceEdge?: Maybe<GameChoicesEdge>
+  /** Reads a single `Membership` that is related to this `GameChoice`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `Slot` that is related to this `GameChoice`. */
+  slot?: Maybe<Slot>
 }
 
 /** The output of our update `GameChoice` mutation. */
@@ -5869,14 +5869,16 @@ export interface UpdateGameInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Game` being updated. */
   patch: GamePatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Game` mutation. */
 export interface UpdateGamePayload {
   __typename: 'UpdateGamePayload'
+  /** Reads a single `User` that is related to this `Game`. */
+  author?: Maybe<User>
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
@@ -5884,16 +5886,14 @@ export interface UpdateGamePayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Game` that was updated by this mutation. */
   game?: Maybe<Game>
+  /** An edge for our `Game`. May be used by Relay 1. */
+  gameEdge?: Maybe<GamesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `Room` that is related to this `Game`. */
   room?: Maybe<Room>
   /** Reads a single `Slot` that is related to this `Game`. */
   slot?: Maybe<Slot>
-  /** Reads a single `User` that is related to this `Game`. */
-  author?: Maybe<User>
-  /** An edge for our `Game`. May be used by Relay 1. */
-  gameEdge?: Maybe<GamesEdge>
 }
 
 /** The output of our update `Game` mutation. */
@@ -5921,9 +5921,9 @@ export interface UpdateGameSubmissionInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `GameSubmission` being updated. */
   patch: GameSubmissionPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `GameSubmission` mutation. */
@@ -5936,12 +5936,12 @@ export interface UpdateGameSubmissionPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `GameSubmission` that was updated by this mutation. */
   gameSubmission?: Maybe<GameSubmission>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-  /** Reads a single `Membership` that is related to this `GameSubmission`. */
-  member?: Maybe<Membership>
   /** An edge for our `GameSubmission`. May be used by Relay 1. */
   gameSubmissionEdge?: Maybe<GameSubmissionsEdge>
+  /** Reads a single `Membership` that is related to this `GameSubmission`. */
+  member?: Maybe<Membership>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `GameSubmission` mutation. */
@@ -5982,9 +5982,9 @@ export interface UpdateHotelRoomDetailInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['BigInt']
   /** An object where the defined keys will be set on the `HotelRoomDetail` being updated. */
   patch: HotelRoomDetailPatch
-  id: Scalars['BigInt']
 }
 
 /** The output of our update `HotelRoomDetail` mutation. */
@@ -5997,10 +5997,10 @@ export interface UpdateHotelRoomDetailPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `HotelRoomDetail` that was updated by this mutation. */
   hotelRoomDetail?: Maybe<HotelRoomDetail>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoomDetail`. May be used by Relay 1. */
   hotelRoomDetailEdge?: Maybe<HotelRoomDetailsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `HotelRoomDetail` mutation. */
@@ -6015,9 +6015,9 @@ export interface UpdateHotelRoomInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `HotelRoom` being updated. */
   patch: HotelRoomPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `HotelRoom` mutation. */
@@ -6030,10 +6030,10 @@ export interface UpdateHotelRoomPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `HotelRoom` that was updated by this mutation. */
   hotelRoom?: Maybe<HotelRoom>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `HotelRoom`. May be used by Relay 1. */
   hotelRoomEdge?: Maybe<HotelRoomsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `HotelRoom` mutation. */
@@ -6073,9 +6073,9 @@ export interface UpdateLookupInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Lookup` being updated. */
   patch: LookupPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Lookup` mutation. */
@@ -6088,10 +6088,10 @@ export interface UpdateLookupPayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Lookup` that was updated by this mutation. */
   lookup?: Maybe<Lookup>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** An edge for our `Lookup`. May be used by Relay 1. */
   lookupEdge?: Maybe<LookupsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `Lookup` mutation. */
@@ -6106,10 +6106,10 @@ export interface UpdateLookupValueByLookupIdAndCodeInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  code: Scalars['String']
+  lookupId: Scalars['Int']
   /** An object where the defined keys will be set on the `LookupValue` being updated. */
   patch: LookupValuePatch
-  lookupId: Scalars['Int']
-  code: Scalars['String']
 }
 
 /** All input for the `updateLookupValueByNodeId` mutation. */
@@ -6132,9 +6132,9 @@ export interface UpdateLookupValueInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `LookupValue` being updated. */
   patch: LookupValuePatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `LookupValue` mutation. */
@@ -6145,14 +6145,14 @@ export interface UpdateLookupValuePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `LookupValue` that was updated by this mutation. */
-  lookupValue?: Maybe<LookupValue>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `Lookup` that is related to this `LookupValue`. */
   lookup?: Maybe<Lookup>
+  /** The `LookupValue` that was updated by this mutation. */
+  lookupValue?: Maybe<LookupValue>
   /** An edge for our `LookupValue`. May be used by Relay 1. */
   lookupValueEdge?: Maybe<LookupValuesEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
 }
 
 /** The output of our update `LookupValue` mutation. */
@@ -6180,9 +6180,9 @@ export interface UpdateMembershipInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Membership` being updated. */
   patch: MembershipPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Membership` mutation. */
@@ -6193,16 +6193,16 @@ export interface UpdateMembershipPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Membership` that was updated by this mutation. */
-  membership?: Maybe<Membership>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `HotelRoom` that is related to this `Membership`. */
   hotelRoom?: Maybe<HotelRoom>
-  /** Reads a single `User` that is related to this `Membership`. */
-  user?: Maybe<User>
+  /** The `Membership` that was updated by this mutation. */
+  membership?: Maybe<Membership>
   /** An edge for our `Membership`. May be used by Relay 1. */
   membershipEdge?: Maybe<MembershipsEdge>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** Reads a single `User` that is related to this `Membership`. */
+  user?: Maybe<User>
 }
 
 /** The output of our update `Membership` mutation. */
@@ -6230,9 +6230,9 @@ export interface UpdateProfileInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Profile` being updated. */
   patch: ProfilePatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Profile` mutation. */
@@ -6245,12 +6245,12 @@ export interface UpdateProfilePayload {
   clientMutationId?: Maybe<Scalars['String']>
   /** The `Profile` that was updated by this mutation. */
   profile?: Maybe<Profile>
+  /** An edge for our `Profile`. May be used by Relay 1. */
+  profileEdge?: Maybe<ProfilesEdge>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `User` that is related to this `Profile`. */
   user?: Maybe<User>
-  /** An edge for our `Profile`. May be used by Relay 1. */
-  profileEdge?: Maybe<ProfilesEdge>
 }
 
 /** The output of our update `Profile` mutation. */
@@ -6260,6 +6260,7 @@ export interface UpdateProfilePayloadProfileEdgeArgs {
 
 /** All input for the `updateRoleByAuthority` mutation. */
 export interface UpdateRoleByAuthorityInput {
+  authority: Scalars['String']
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -6267,7 +6268,6 @@ export interface UpdateRoleByAuthorityInput {
   clientMutationId?: Maybe<Scalars['String']>
   /** An object where the defined keys will be set on the `Role` being updated. */
   patch: RolePatch
-  authority: Scalars['String']
 }
 
 /** All input for the `updateRoleByNodeId` mutation. */
@@ -6290,9 +6290,9 @@ export interface UpdateRoleInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Role` being updated. */
   patch: RolePatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Role` mutation. */
@@ -6303,10 +6303,10 @@ export interface UpdateRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Role` that was updated by this mutation. */
-  role?: Maybe<Role>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Role` that was updated by this mutation. */
+  role?: Maybe<Role>
   /** An edge for our `Role`. May be used by Relay 1. */
   roleEdge?: Maybe<RolesEdge>
 }
@@ -6336,9 +6336,9 @@ export interface UpdateRoomInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Room` being updated. */
   patch: RoomPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Room` mutation. */
@@ -6349,10 +6349,10 @@ export interface UpdateRoomPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Room` that was updated by this mutation. */
-  room?: Maybe<Room>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Room` that was updated by this mutation. */
+  room?: Maybe<Room>
   /** An edge for our `Room`. May be used by Relay 1. */
   roomEdge?: Maybe<RoomsEdge>
 }
@@ -6382,9 +6382,9 @@ export interface UpdateSettingInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Setting` being updated. */
   patch: SettingPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Setting` mutation. */
@@ -6395,10 +6395,10 @@ export interface UpdateSettingPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Setting` that was updated by this mutation. */
-  setting?: Maybe<Setting>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Setting` that was updated by this mutation. */
+  setting?: Maybe<Setting>
   /** An edge for our `Setting`. May be used by Relay 1. */
   settingEdge?: Maybe<SettingsEdge>
 }
@@ -6428,9 +6428,9 @@ export interface UpdateShirtOrderInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `ShirtOrder` being updated. */
   patch: ShirtOrderPatch
-  id: Scalars['Int']
 }
 
 /** All input for the `updateShirtOrderItemByNodeId` mutation. */
@@ -6453,9 +6453,9 @@ export interface UpdateShirtOrderItemInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `ShirtOrderItem` being updated. */
   patch: ShirtOrderItemPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `ShirtOrderItem` mutation. */
@@ -6466,12 +6466,12 @@ export interface UpdateShirtOrderItemPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrderItem` that was updated by this mutation. */
-  shirtOrderItem?: Maybe<ShirtOrderItem>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
   /** Reads a single `ShirtOrder` that is related to this `ShirtOrderItem`. */
   order?: Maybe<ShirtOrder>
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>
+  /** The `ShirtOrderItem` that was updated by this mutation. */
+  shirtOrderItem?: Maybe<ShirtOrderItem>
   /** An edge for our `ShirtOrderItem`. May be used by Relay 1. */
   shirtOrderItemEdge?: Maybe<ShirtOrderItemsEdge>
 }
@@ -6489,14 +6489,14 @@ export interface UpdateShirtOrderPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `ShirtOrder` that was updated by this mutation. */
-  shirtOrder?: Maybe<ShirtOrder>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
-  /** Reads a single `User` that is related to this `ShirtOrder`. */
-  user?: Maybe<User>
+  /** The `ShirtOrder` that was updated by this mutation. */
+  shirtOrder?: Maybe<ShirtOrder>
   /** An edge for our `ShirtOrder`. May be used by Relay 1. */
   shirtOrderEdge?: Maybe<ShirtOrdersEdge>
+  /** Reads a single `User` that is related to this `ShirtOrder`. */
+  user?: Maybe<User>
 }
 
 /** The output of our update `ShirtOrder` mutation. */
@@ -6524,9 +6524,9 @@ export interface UpdateSlotInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `Slot` being updated. */
   patch: SlotPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `Slot` mutation. */
@@ -6537,10 +6537,10 @@ export interface UpdateSlotPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `Slot` that was updated by this mutation. */
-  slot?: Maybe<Slot>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `Slot` that was updated by this mutation. */
+  slot?: Maybe<Slot>
   /** An edge for our `Slot`. May be used by Relay 1. */
   slotEdge?: Maybe<SlotsEdge>
 }
@@ -6557,9 +6557,9 @@ export interface UpdateUserByEmailInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  email: Scalars['String']
   /** An object where the defined keys will be set on the `User` being updated. */
   patch: UserPatch
-  email: Scalars['String']
 }
 
 /** All input for the `updateUserByNodeId` mutation. */
@@ -6582,9 +6582,9 @@ export interface UpdateUserInput {
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: Maybe<Scalars['String']>
+  id: Scalars['Int']
   /** An object where the defined keys will be set on the `User` being updated. */
   patch: UserPatch
-  id: Scalars['Int']
 }
 
 /** The output of our update `User` mutation. */
@@ -6595,10 +6595,10 @@ export interface UpdateUserPayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `User` that was updated by this mutation. */
-  user?: Maybe<User>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
+  /** The `User` that was updated by this mutation. */
+  user?: Maybe<User>
   /** An edge for our `User`. May be used by Relay 1. */
   userEdge?: Maybe<UsersEdge>
 }
@@ -6642,14 +6642,14 @@ export interface UpdateUserRolePayload {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>
-  /** The `UserRole` that was updated by this mutation. */
-  userRole?: Maybe<UserRole>
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>
   /** Reads a single `Role` that is related to this `UserRole`. */
   role?: Maybe<Role>
   /** Reads a single `User` that is related to this `UserRole`. */
   user?: Maybe<User>
+  /** The `UserRole` that was updated by this mutation. */
+  userRole?: Maybe<UserRole>
   /** An edge for our `UserRole`. May be used by Relay 1. */
   userRoleEdge?: Maybe<UserRolesEdge>
 }
@@ -6661,17 +6661,17 @@ export interface UpdateUserRolePayloadUserRoleEdgeArgs {
 
 export interface User extends Node {
   __typename: 'User'
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-  id: Scalars['Int']
-  email: Scalars['String']
-  fullName?: Maybe<Scalars['String']>
-  firstName?: Maybe<Scalars['String']>
-  lastName?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Game`. */
   authoredGames: GamesConnection
+  email: Scalars['String']
+  firstName?: Maybe<Scalars['String']>
+  fullName?: Maybe<Scalars['String']>
+  id: Scalars['Int']
+  lastName?: Maybe<Scalars['String']>
   /** Reads and enables pagination through a set of `Membership`. */
   memberships: MembershipsConnection
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID']
   /** Reads and enables pagination through a set of `Profile`. */
   profiles: ProfilesConnection
   /** Reads and enables pagination through a set of `ShirtOrder`. */
@@ -6681,109 +6681,109 @@ export interface User extends Node {
 }
 
 export interface UserAuthoredGamesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<GameCondition>
+  filter?: Maybe<GameFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<GamesOrderBy>>
-  condition?: Maybe<GameCondition>
-  filter?: Maybe<GameFilter>
 }
 
 export interface UserMembershipsArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<MembershipCondition>
+  filter?: Maybe<MembershipFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<MembershipsOrderBy>>
-  condition?: Maybe<MembershipCondition>
-  filter?: Maybe<MembershipFilter>
 }
 
 export interface UserProfilesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ProfileCondition>
+  filter?: Maybe<ProfileFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<ProfilesOrderBy>>
-  condition?: Maybe<ProfileCondition>
-  filter?: Maybe<ProfileFilter>
 }
 
 export interface UserShirtOrdersArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<ShirtOrderCondition>
+  filter?: Maybe<ShirtOrderFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<ShirtOrdersOrderBy>>
-  condition?: Maybe<ShirtOrderCondition>
-  filter?: Maybe<ShirtOrderFilter>
 }
 
 export interface UserUserRolesArgs {
+  after?: Maybe<Scalars['Cursor']>
+  before?: Maybe<Scalars['Cursor']>
+  condition?: Maybe<UserRoleCondition>
+  filter?: Maybe<UserRoleFilter>
   first?: Maybe<Scalars['Int']>
   last?: Maybe<Scalars['Int']>
   offset?: Maybe<Scalars['Int']>
-  before?: Maybe<Scalars['Cursor']>
-  after?: Maybe<Scalars['Cursor']>
   orderBy?: Maybe<Array<UserRolesOrderBy>>
-  condition?: Maybe<UserRoleCondition>
-  filter?: Maybe<UserRoleFilter>
 }
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export interface UserCondition {
-  /** Checks for equality with the object’s `id` field. */
-  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `email` field. */
   email?: Maybe<Scalars['String']>
-  /** Checks for equality with the object’s `fullName` field. */
-  fullName?: Maybe<Scalars['String']>
   /** Checks for equality with the object’s `firstName` field. */
   firstName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `fullName` field. */
+  fullName?: Maybe<Scalars['String']>
+  /** Checks for equality with the object’s `id` field. */
+  id?: Maybe<Scalars['Int']>
   /** Checks for equality with the object’s `lastName` field. */
   lastName?: Maybe<Scalars['String']>
 }
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export interface UserFilter {
-  /** Filter by the object’s `id` field. */
-  id?: Maybe<IntFilter>
-  /** Filter by the object’s `email` field. */
-  email?: Maybe<StringFilter>
-  /** Filter by the object’s `fullName` field. */
-  fullName?: Maybe<StringFilter>
-  /** Filter by the object’s `firstName` field. */
-  firstName?: Maybe<StringFilter>
-  /** Filter by the object’s `lastName` field. */
-  lastName?: Maybe<StringFilter>
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<UserFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserFilter>>
+  /** Filter by the object’s `email` field. */
+  email?: Maybe<StringFilter>
+  /** Filter by the object’s `firstName` field. */
+  firstName?: Maybe<StringFilter>
+  /** Filter by the object’s `fullName` field. */
+  fullName?: Maybe<StringFilter>
+  /** Filter by the object’s `id` field. */
+  id?: Maybe<IntFilter>
+  /** Filter by the object’s `lastName` field. */
+  lastName?: Maybe<StringFilter>
   /** Negates the expression. */
   not?: Maybe<UserFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserFilter>>
 }
 
 /** An input for mutations affecting `User` */
 export interface UserInput {
-  id?: Maybe<Scalars['Int']>
   email: Scalars['String']
-  fullName?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
+  fullName?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   lastName?: Maybe<Scalars['String']>
 }
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export interface UserPatch {
-  id?: Maybe<Scalars['Int']>
   email?: Maybe<Scalars['String']>
-  fullName?: Maybe<Scalars['String']>
   firstName?: Maybe<Scalars['String']>
+  fullName?: Maybe<Scalars['String']>
+  id?: Maybe<Scalars['Int']>
   lastName?: Maybe<Scalars['String']>
 }
 
@@ -6791,12 +6791,12 @@ export interface UserRole extends Node {
   __typename: 'UserRole'
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID']
-  roleId: Scalars['Int']
-  userId: Scalars['Int']
   /** Reads a single `Role` that is related to this `UserRole`. */
   role?: Maybe<Role>
+  roleId: Scalars['Int']
   /** Reads a single `User` that is related to this `UserRole`. */
   user?: Maybe<User>
+  userId: Scalars['Int']
 }
 
 /**
@@ -6812,16 +6812,16 @@ export interface UserRoleCondition {
 
 /** A filter to be used against `UserRole` object types. All fields are combined with a logical ‘and.’ */
 export interface UserRoleFilter {
+  /** Checks for all expressions in this list. */
+  and?: Maybe<Array<UserRoleFilter>>
+  /** Negates the expression. */
+  not?: Maybe<UserRoleFilter>
+  /** Checks for any expressions in this list. */
+  or?: Maybe<Array<UserRoleFilter>>
   /** Filter by the object’s `roleId` field. */
   roleId?: Maybe<IntFilter>
   /** Filter by the object’s `userId` field. */
   userId?: Maybe<IntFilter>
-  /** Checks for all expressions in this list. */
-  and?: Maybe<Array<UserRoleFilter>>
-  /** Checks for any expressions in this list. */
-  or?: Maybe<Array<UserRoleFilter>>
-  /** Negates the expression. */
-  not?: Maybe<UserRoleFilter>
 }
 
 /** An input for mutations affecting `UserRole` */
@@ -6839,10 +6839,10 @@ export interface UserRolePatch {
 /** A connection to a list of `UserRole` values. */
 export interface UserRolesConnection {
   __typename: 'UserRolesConnection'
-  /** A list of `UserRole` objects. */
-  nodes: Array<Maybe<UserRole>>
   /** A list of edges which contains the `UserRole` and cursor to aid in pagination. */
   edges: Array<UserRolesEdge>
+  /** A list of `UserRole` objects. */
+  nodes: Array<Maybe<UserRole>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `UserRole` you could get from the connection. */
@@ -6861,35 +6861,35 @@ export interface UserRolesEdge {
 /** Methods to use when ordering `UserRole`. */
 export enum UserRolesOrderBy {
   Natural = 'NATURAL',
-  RoleIdAsc = 'ROLE_ID_ASC',
-  RoleIdDesc = 'ROLE_ID_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  RoleByRoleIdIdAsc = 'ROLE_BY_ROLE_ID__ID_ASC',
-  RoleByRoleIdIdDesc = 'ROLE_BY_ROLE_ID__ID_DESC',
   RoleByRoleIdAuthorityAsc = 'ROLE_BY_ROLE_ID__AUTHORITY_ASC',
   RoleByRoleIdAuthorityDesc = 'ROLE_BY_ROLE_ID__AUTHORITY_DESC',
-  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
-  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
+  RoleByRoleIdIdAsc = 'ROLE_BY_ROLE_ID__ID_ASC',
+  RoleByRoleIdIdDesc = 'ROLE_BY_ROLE_ID__ID_DESC',
+  RoleIdAsc = 'ROLE_ID_ASC',
+  RoleIdDesc = 'ROLE_ID_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
   UserByUserIdEmailDesc = 'USER_BY_USER_ID__EMAIL_DESC',
-  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
-  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
   UserByUserIdFirstNameAsc = 'USER_BY_USER_ID__FIRST_NAME_ASC',
   UserByUserIdFirstNameDesc = 'USER_BY_USER_ID__FIRST_NAME_DESC',
+  UserByUserIdFullNameAsc = 'USER_BY_USER_ID__FULL_NAME_ASC',
+  UserByUserIdFullNameDesc = 'USER_BY_USER_ID__FULL_NAME_DESC',
+  UserByUserIdIdAsc = 'USER_BY_USER_ID__ID_ASC',
+  UserByUserIdIdDesc = 'USER_BY_USER_ID__ID_DESC',
   UserByUserIdLastNameAsc = 'USER_BY_USER_ID__LAST_NAME_ASC',
   UserByUserIdLastNameDesc = 'USER_BY_USER_ID__LAST_NAME_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC',
 }
 
 /** A connection to a list of `User` values. */
 export interface UsersConnection {
   __typename: 'UsersConnection'
-  /** A list of `User` objects. */
-  nodes: Array<Maybe<User>>
   /** A list of edges which contains the `User` and cursor to aid in pagination. */
   edges: Array<UsersEdge>
+  /** A list of `User` objects. */
+  nodes: Array<Maybe<User>>
   /** Information to aid in pagination. */
   pageInfo: PageInfo
   /** The count of *all* `User` you could get from the connection. */
@@ -6907,23 +6907,23 @@ export interface UsersEdge {
 
 /** Methods to use when ordering `User`. */
 export enum UsersOrderBy {
-  Natural = 'NATURAL',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
   EmailAsc = 'EMAIL_ASC',
   EmailDesc = 'EMAIL_DESC',
-  FullNameAsc = 'FULL_NAME_ASC',
-  FullNameDesc = 'FULL_NAME_DESC',
   FirstNameAsc = 'FIRST_NAME_ASC',
   FirstNameDesc = 'FIRST_NAME_DESC',
-  LastNameAsc = 'LAST_NAME_ASC',
-  LastNameDesc = 'LAST_NAME_DESC',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  FullNameAsc = 'FULL_NAME_ASC',
+  FullNameDesc = 'FULL_NAME_DESC',
   GamesByAuthorIdCountAsc = 'GAMES_BY_AUTHOR_ID__COUNT_ASC',
   GamesByAuthorIdCountDesc = 'GAMES_BY_AUTHOR_ID__COUNT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  LastNameAsc = 'LAST_NAME_ASC',
+  LastNameDesc = 'LAST_NAME_DESC',
   MembershipsByUserIdCountAsc = 'MEMBERSHIPS_BY_USER_ID__COUNT_ASC',
   MembershipsByUserIdCountDesc = 'MEMBERSHIPS_BY_USER_ID__COUNT_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ProfilesByUserIdCountAsc = 'PROFILES_BY_USER_ID__COUNT_ASC',
   ProfilesByUserIdCountDesc = 'PROFILES_BY_USER_ID__COUNT_DESC',
   ShirtOrdersByUserIdCountAsc = 'SHIRT_ORDERS_BY_USER_ID__COUNT_ASC',

@@ -18,12 +18,12 @@ const getRegularSlotTimes = (year: number) => {
   // and just adding hours to the start date breaks
   return [
     /* 1 */ [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
-    /* 2 */ [start.plus({ day: 1 }).set({ hour: 9 }), start.plus({ day: 1 }).set({ hour: 13 })],
-    /* 3 */ [start.plus({ day: 1 }).set({ hour: 14 }), start.plus({ day: 1 }).set({ hour: 18, minute: 30 })],
-    /* 4 */ [start.plus({ day: 1 }).set({ hour: 20 }), start.plus({ day: 1 }).set({ hour: 24 })],
-    /* 5 */ [start.plus({ day: 2 }).set({ hour: 9 }), start.plus({ day: 2 }).set({ hour: 16, minute: 30 })],
-    /* 6 */ [start.plus({ day: 2 }).set({ hour: 19 }), start.plus({ day: 2 }).set({ hour: 24 })],
-    /* 7 */ [start.plus({ day: 3 }).set({ hour: 10 }), start.plus({ day: 3 }).set({ hour: 16, minute: 30 })],
+    /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
+    /* 3 */ [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
+    /* 4 */ [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
+    /* 5 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 16, minute: 30 })],
+    /* 6 */ [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
+    /* 7 */ [start.plus({ days: 3 }).set({ hour: 10 }), start.plus({ days: 3 }).set({ hour: 16, minute: 30 })],
   ] as const
 }
 
@@ -46,20 +46,20 @@ const getVirtualSlotTimes = (year: number) => {
   // and just adding hours to the start date breaks
   return [
     /* 1 */ [start.plus({ hours: 11 }), start.plus({ hours: 15 })],
-    /* 2 */ [start.plus({ day: 1 }).set({ hour: 9 }), start.plus({ day: 1 }).set({ hour: 13 })],
+    /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
     /* 3 */ [
-      start.plus({ day: 1 }).set({ hour: 14, minute: 30 }),
-      start.plus({ day: 1 }).set({ hour: 18, minute: 30 }),
+      start.plus({ days: 1 }).set({ hour: 14, minute: 30 }),
+      start.plus({ days: 1 }).set({ hour: 18, minute: 30 }),
     ],
-    /* 4 */ [start.plus({ day: 2 }).set({ hour: 9 }), start.plus({ day: 2 }).set({ hour: 13 })],
+    /* 4 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 13 })],
     /* 5 */ [
-      start.plus({ day: 2 }).set({ hour: 14, minute: 30 }),
-      start.plus({ day: 2 }).set({ hour: 18, minute: 30 }),
+      start.plus({ days: 2 }).set({ hour: 14, minute: 30 }),
+      start.plus({ days: 2 }).set({ hour: 18, minute: 30 }),
     ],
-    /* 6 */ [start.plus({ day: 3 }).set({ hour: 9 }), start.plus({ day: 3 }).set({ hour: 13 })],
+    /* 6 */ [start.plus({ days: 3 }).set({ hour: 9 }), start.plus({ days: 3 }).set({ hour: 13 })],
     /* 7 */ [
-      start.plus({ day: 3 }).set({ hour: 14, minute: 30 }),
-      start.plus({ day: 3 }).set({ hour: 18, minute: 30 }),
+      start.plus({ days: 3 }).set({ hour: 14, minute: 30 }),
+      start.plus({ days: 3 }).set({ hour: 18, minute: 30 }),
     ],
   ] as const
 }

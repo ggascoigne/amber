@@ -37,6 +37,7 @@ export default withApiHandler([
             g.returning_players as "Returning Players",
             g.players_contact_gm as "Contact GM",
             g.game_contact_email as "Game Contact Email",
+            g.slot_id as "Slot",
             g.slot_preference as "Slot Preference",
             g.slot_conflicts as "Slot Conflicts",
             g.estimated_length as "Estimated Length",

@@ -249,7 +249,7 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
             text: result.message,
             variant: 'success',
           })
-        } catch (e) {
+        } catch (e: any) {
           console.log(e)
           notify({
             text: e,

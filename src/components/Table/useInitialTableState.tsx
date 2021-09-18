@@ -13,7 +13,7 @@ interface PersistedState<T extends Record<string, unknown>> {
 
 export const useInitialTableState = <T extends Record<string, unknown>>(
   name: string,
-  columns: Column<T>[],
+  columns: ReadonlyArray<Column<T>>,
   userInitialState: Partial<TableState<T>>
 ) => {
   const createdFor = useMemo(
