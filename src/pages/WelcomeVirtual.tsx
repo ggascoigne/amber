@@ -68,17 +68,17 @@ export const WelcomeVirtual: React.FC = () => {
       <p>NOTE: all dates are tentative due to potential technological restrictions.</p>
       <ul>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             All attendee registrations due: <ConfigDate name='registrationDeadline' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span className={classes.deadlineExpired}>
             Game Book preview to GMs: <ConfigDate name='gameGmPreview' />
           </span>
         </li>
