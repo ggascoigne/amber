@@ -70,6 +70,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         optional: false,
         hasForm: false,
         render: <IntroStep />,
+        enabled: !short,
       },
       {
         name: 'Member Information',
@@ -77,6 +78,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         hasForm: true,
         render: <ProfileFormContent prefix='profile.' />,
         hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.profile,
+        enabled: !short, // note that the short page version is on the membership page, and doesn't have access to the member's profile
       },
       {
         name: 'Attendance',
@@ -90,6 +92,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         optional: false,
         hasForm: false,
         render: <MembershipStepPayment />,
+        enabled: !short,
       },
     ]
 

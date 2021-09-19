@@ -5,6 +5,7 @@
 Discord stuff
 
 
+- [ ] trim entries on profile page before save
 - [ ] support using esm modules in the ts-node tools
 - [ ] allow editing user roles
 - [ ] add option to mark a whole slot as absent (slot 3)
