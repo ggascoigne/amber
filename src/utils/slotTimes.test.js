@@ -1,6 +1,6 @@
 import { SlotFormat, getSlotDescription } from './slotTimes'
 
-describe('ordinals', () => {
+describe('slot times', () => {
   const data = [
     {
       input: getSlotDescription({
@@ -42,7 +42,7 @@ describe('ordinals', () => {
         slot: 3,
         local: true,
       }),
-      output: 'Slot 3 Fri, Nov 6, 2:00 pm to 6:00 pm PST',
+      output: 'Slot 3 Fri, Nov 6, 2:30 pm to 6:30 pm PST',
     },
   ]
 

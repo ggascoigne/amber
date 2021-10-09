@@ -42,8 +42,8 @@ exports.up = async function (knex) {
   const user = process.env.DATABASE_USER
   const password = process.env.DATABASE_USER_PASSWORD ?? ''
 
-  const res = knex.raw(`SELECT 1 FROM pg_roles WHERE rolname=${user}`)
-  if (res !== '1') {
+  const res = await knex.raw(`SELECT 1 FROM pg_roles WHERE rolname='${user}'`)
+  if (res?.rows?.[0]?.['?column?'] !== 1) {
     // note that users are per database and not per schema
     await knex.raw(`drop role if exists ${user}`)
     await knex.raw(`CREATE ROLE ${user} WITH LOGIN PASSWORD '${password}' NOINHERIT;`)

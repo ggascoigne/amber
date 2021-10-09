@@ -4,6 +4,8 @@
 
 Discord stuff
 
+fix styling on view game choice confirmation button
+add "send me an email of my choices" button
 
 - [ ] trim entries on profile page before save
 - [ ] support using esm modules in the ts-node tools
