@@ -2,6 +2,7 @@ import Button from '@material-ui/core/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
 import { stripIndents } from 'common-tags'
 import React, { createRef, useEffect, useMemo, useState } from 'react'
+import SHA from 'sha.js'
 import {
   GqlType,
   ICalEvent,
@@ -74,8 +75,9 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
         const [start, end] = getSlotTimes(gas.year)[slotId - 1]
         const gameUrl = `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`
         const { gms, players } = getGmsAndPlayers(game)
-        const gmNames = gms.map((p) => p.fullName)
-        const playerNames = players.map((p) => p.fullName)
+        const gmNames = gms.map((p) => `${p.fullName} (${p.email})`)
+        const playerNames = players.map((p) => `${p.fullName} (${p.email})`)
+        const uid = SHA('sha256').update(gameUrl).digest('hex')
 
         const description = stripIndents`
           Game Master:
@@ -95,6 +97,7 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
           startTime: start,
           endTime: end,
           url: gameUrl,
+          uid,
         }
         return ice
       })

@@ -9,6 +9,7 @@ export interface ICalEvent {
   startTime: DateTime
   endTime: DateTime
   url: string
+  uid: string
 }
 
 const dtToArray = (d: DateTime) => {
@@ -32,6 +33,7 @@ export function buildUrl(events: ICalEvent[]): string {
       description: event.description,
       // organizer: { email: configuration.contactEmail },
       url: event.url,
+      uid: event.uid,
     }))
   )
 
