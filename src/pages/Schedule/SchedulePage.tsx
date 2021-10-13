@@ -1,7 +1,9 @@
 import Button from '@material-ui/core/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
+import { stripIndents } from 'common-tags'
 import React, { createRef, useEffect, useMemo, useState } from 'react'
 import {
+  GqlType,
   ICalEvent,
   SettingValue,
   buildUrl,
@@ -23,10 +25,10 @@ import { Page } from '../../components/Page'
 interface GameSummaryProps {
   gas: GameAssignmentNode
 }
-const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
-  const game = gas.game
-  if (!game) return null
 
+type GameAndAssignment = GqlType<GameAssignmentNode, ['game']>
+
+const getGmsAndPlayers = (game: GameAndAssignment) => {
   const details = game.gameAssignments.nodes.map((g) => ({
     gm: g?.gm ?? 0,
     fullName: g?.member?.user?.fullName ?? '',
@@ -35,6 +37,18 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
 
   const gms = details.filter((d) => d.gm > 0).sort((a, b) => a.gm - b.gm)
   const players = details.filter((d) => d.gm === 0).sort((a, b) => -b.fullName.localeCompare(a.fullName))
+
+  return {
+    gms,
+    players,
+  }
+}
+
+const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
+  const game = gas.game
+  if (!game) return null
+
+  const { gms, players } = getGmsAndPlayers(game)
 
   return (
     <GameCard
@@ -58,13 +72,29 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
 
         const slotId = game.slotId!
         const [start, end] = getSlotTimes(gas.year)[slotId - 1]
+        const gameUrl = `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`
+        const { gms, players } = getGmsAndPlayers(game)
+        const gmNames = gms.map((p) => p.fullName)
+        const playerNames = players.map((p) => p.fullName)
+
+        const description = stripIndents`
+          Game Master:
+          ${gmNames.join(', ')}
+
+          Players:
+          ${playerNames.join(', ')}
+
+          Description:
+          ${game.description}...
+
+          ${gameUrl}`
 
         const ice: ICalEvent = {
           title: `Slot ${game.slotId!} - ${game.name}`,
-          description: `${game.description}...\n\n${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
+          description,
           startTime: start,
           endTime: end,
-          url: `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`,
+          url: gameUrl,
         }
         return ice
       })
