@@ -81,10 +81,10 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
 
         const description = stripIndents`
           Game Master:
-          ${gmNames.join(', ')}
+          ${gmNames.join('\n')}
 
           Players:
-          ${playerNames.join(', ')}
+          ${playerNames.join('\n')}
 
           Description:
           ${game.description}...
