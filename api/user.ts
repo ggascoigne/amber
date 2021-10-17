@@ -15,7 +15,7 @@ export default withApiHandler([
     try {
       /*const { access_token } =*/ await getManagementApiAccessToken()
       res.send({ message: 'nothing to see here' })
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

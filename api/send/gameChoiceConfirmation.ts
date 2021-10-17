@@ -62,7 +62,7 @@ export default withApiHandler([
         },
       })
       res.send({ result })
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

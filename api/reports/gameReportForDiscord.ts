@@ -32,7 +32,7 @@ export default withApiHandler([
           where g.year = ${year} and g.slot_id > 0
           order by "Slot", "Game Title"`
       await queryToExcelDownload(query, res)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

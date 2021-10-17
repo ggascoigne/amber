@@ -50,7 +50,7 @@ export function withApiHandler(handlers: Handler[]): Handler {
         }
       })
       return result
-    } catch (err) {
+    } catch (err: any) {
       return res.status(err.status || err.statusCode || 500).json({ errors: [{ message: err.message }] })
     }
   }

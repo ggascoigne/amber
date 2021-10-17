@@ -41,7 +41,7 @@ export default withApiHandler([
       // this ensures that an authenticated user does try and sniff other users passwords
       const result = await requestChangePasswordEmail(profile.email)
       res.send({ message: result })
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

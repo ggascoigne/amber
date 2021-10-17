@@ -36,7 +36,7 @@ export default withApiHandler([
           ) gm on gm.id = m.id
         where m.year = ${year}`
       await queryToExcelDownload(query, res)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

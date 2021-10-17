@@ -48,7 +48,7 @@ export default withApiHandler([
       // this ensures that an authenticated user does try and sniff other users passwords
       const result = await validatePassword(profile.email, password)
       res.send(result)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

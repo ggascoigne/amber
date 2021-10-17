@@ -23,7 +23,7 @@ export default withApiHandler([
         nodeVersion: process.version,
       }
       res.send(admin ? { ...summary, database } : { ...summary })
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

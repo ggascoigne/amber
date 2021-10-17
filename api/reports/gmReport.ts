@@ -30,7 +30,7 @@ export default withApiHandler([
             and ga.gm < 0
           order by "Full Name"`
       await queryToExcelDownload(query, res)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

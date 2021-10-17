@@ -48,7 +48,7 @@ export default withApiHandler([
             from game g join "user" u  on g.author_id = u.id
           where g.year = ${year}`
       await queryToExcelDownload(query, res)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },

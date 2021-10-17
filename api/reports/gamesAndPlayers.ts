@@ -34,7 +34,7 @@ export default withApiHandler([
           order by "Slot", "Game", ga.gm desc, "Member"
         `
       await queryToExcelDownload(query, res)
-    } catch (err) {
+    } catch (err: any) {
       handleError(err, res)
     }
   },
