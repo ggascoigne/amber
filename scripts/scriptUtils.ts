@@ -6,6 +6,7 @@ import cli from 'cli-ux'
 import { stripIndent } from 'common-tags'
 import tempy from 'tempy'
 
+// @ts-ignore
 import { DbConfig } from '../shared/config'
 
 export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
