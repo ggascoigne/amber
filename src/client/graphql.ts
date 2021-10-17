@@ -6939,58 +6939,72 @@ export type GetGamesBySlotForSignupQueryVariables = Exact<{
 
 export type GetGamesBySlotForSignupQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    edges: Array<{
-      __typename: 'GamesEdge'
-      node?: Maybe<{
-        __typename: 'Game'
-        nodeId: string
-        id: number
-        name: string
-        gmNames?: Maybe<string>
-        description: string
-        genre: string
-        type: string
-        setting: string
-        charInstructions: string
-        playerMax: number
-        playerMin: number
-        playerPreference: string
-        returningPlayers: string
-        playersContactGm: boolean
-        gameContactEmail: string
-        estimatedLength: string
-        slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
-        slotConflicts: string
-        message: string
-        slotId?: Maybe<number>
-        teenFriendly: boolean
-        year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
-        gameAssignments: {
-          __typename: 'GameAssignmentsConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
-              gameId: number
-              gm: number
-              memberId: number
-              nodeId: string
-              year: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        edges: Array<{
+          __typename: 'GamesEdge'
+          node?:
+            | {
+                __typename: 'Game'
+                nodeId: string
+                id: number
+                name: string
+                gmNames?: string | null | undefined
+                description: string
+                genre: string
+                type: string
+                setting: string
+                charInstructions: string
+                playerMax: number
+                playerMin: number
+                playerPreference: string
+                returningPlayers: string
+                playersContactGm: boolean
+                gameContactEmail: string
+                estimatedLength: string
+                slotPreference: number
+                lateStart?: string | null | undefined
+                lateFinish?: boolean | null | undefined
+                slotConflicts: string
+                message: string
+                slotId?: number | null | undefined
+                teenFriendly: boolean
+                year: number
+                full?: boolean | null | undefined
+                roomId?: number | null | undefined
+                gameAssignments: {
+                  __typename: 'GameAssignmentsConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'GameAssignment'
+                        gameId: number
+                        gm: number
+                        memberId: number
+                        nodeId: string
+                        year: number
+                        member?:
+                          | {
+                              __typename: 'Membership'
+                              user?:
+                                | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type GetGamesBySlotQueryVariables = Exact<{
@@ -7000,58 +7014,72 @@ export type GetGamesBySlotQueryVariables = Exact<{
 
 export type GetGamesBySlotQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    edges: Array<{
-      __typename: 'GamesEdge'
-      node?: Maybe<{
-        __typename: 'Game'
-        nodeId: string
-        id: number
-        name: string
-        gmNames?: Maybe<string>
-        description: string
-        genre: string
-        type: string
-        setting: string
-        charInstructions: string
-        playerMax: number
-        playerMin: number
-        playerPreference: string
-        returningPlayers: string
-        playersContactGm: boolean
-        gameContactEmail: string
-        estimatedLength: string
-        slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
-        slotConflicts: string
-        message: string
-        slotId?: Maybe<number>
-        teenFriendly: boolean
-        year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
-        gameAssignments: {
-          __typename: 'GameAssignmentsConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
-              gameId: number
-              gm: number
-              memberId: number
-              nodeId: string
-              year: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        edges: Array<{
+          __typename: 'GamesEdge'
+          node?:
+            | {
+                __typename: 'Game'
+                nodeId: string
+                id: number
+                name: string
+                gmNames?: string | null | undefined
+                description: string
+                genre: string
+                type: string
+                setting: string
+                charInstructions: string
+                playerMax: number
+                playerMin: number
+                playerPreference: string
+                returningPlayers: string
+                playersContactGm: boolean
+                gameContactEmail: string
+                estimatedLength: string
+                slotPreference: number
+                lateStart?: string | null | undefined
+                lateFinish?: boolean | null | undefined
+                slotConflicts: string
+                message: string
+                slotId?: number | null | undefined
+                teenFriendly: boolean
+                year: number
+                full?: boolean | null | undefined
+                roomId?: number | null | undefined
+                gameAssignments: {
+                  __typename: 'GameAssignmentsConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'GameAssignment'
+                        gameId: number
+                        gm: number
+                        memberId: number
+                        nodeId: string
+                        year: number
+                        member?:
+                          | {
+                              __typename: 'Membership'
+                              user?:
+                                | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type GetGamesByYearQueryVariables = Exact<{
@@ -7060,66 +7088,83 @@ export type GetGamesByYearQueryVariables = Exact<{
 
 export type GetGamesByYearQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    edges: Array<{
-      __typename: 'GamesEdge'
-      node?: Maybe<{
-        __typename: 'Game'
-        nodeId: string
-        id: number
-        name: string
-        gmNames?: Maybe<string>
-        description: string
-        genre: string
-        type: string
-        setting: string
-        charInstructions: string
-        playerMax: number
-        playerMin: number
-        playerPreference: string
-        returningPlayers: string
-        playersContactGm: boolean
-        gameContactEmail: string
-        estimatedLength: string
-        slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
-        slotConflicts: string
-        message: string
-        slotId?: Maybe<number>
-        teenFriendly: boolean
-        year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
-        room?: Maybe<{
-          __typename: 'Room'
-          id: number
-          description: string
-          size: number
-          type: string
-          updated: boolean
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        edges: Array<{
+          __typename: 'GamesEdge'
+          node?:
+            | {
+                __typename: 'Game'
+                nodeId: string
+                id: number
+                name: string
+                gmNames?: string | null | undefined
+                description: string
+                genre: string
+                type: string
+                setting: string
+                charInstructions: string
+                playerMax: number
+                playerMin: number
+                playerPreference: string
+                returningPlayers: string
+                playersContactGm: boolean
+                gameContactEmail: string
+                estimatedLength: string
+                slotPreference: number
+                lateStart?: string | null | undefined
+                lateFinish?: boolean | null | undefined
+                slotConflicts: string
+                message: string
+                slotId?: number | null | undefined
+                teenFriendly: boolean
+                year: number
+                full?: boolean | null | undefined
+                roomId?: number | null | undefined
+                room?:
+                  | {
+                      __typename: 'Room'
+                      id: number
+                      description: string
+                      size: number
+                      type: string
+                      updated: boolean
+                    }
+                  | null
+                  | undefined
+                gameAssignments: {
+                  __typename: 'GameAssignmentsConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'GameAssignment'
+                        gameId: number
+                        gm: number
+                        memberId: number
+                        nodeId: string
+                        year: number
+                        member?:
+                          | {
+                              __typename: 'Membership'
+                              user?:
+                                | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
         }>
-        gameAssignments: {
-          __typename: 'GameAssignmentsConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
-              gameId: number
-              gm: number
-              memberId: number
-              nodeId: string
-              year: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+      }
+    | null
+    | undefined
 }
 
 export type GetSmallGamesByYearQueryVariables = Exact<{
@@ -7128,58 +7173,72 @@ export type GetSmallGamesByYearQueryVariables = Exact<{
 
 export type GetSmallGamesByYearQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    edges: Array<{
-      __typename: 'GamesEdge'
-      node?: Maybe<{
-        __typename: 'Game'
-        nodeId: string
-        id: number
-        name: string
-        gmNames?: Maybe<string>
-        description: string
-        genre: string
-        type: string
-        setting: string
-        charInstructions: string
-        playerMax: number
-        playerMin: number
-        playerPreference: string
-        returningPlayers: string
-        playersContactGm: boolean
-        gameContactEmail: string
-        estimatedLength: string
-        slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
-        slotConflicts: string
-        message: string
-        slotId?: Maybe<number>
-        teenFriendly: boolean
-        year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
-        gameAssignments: {
-          __typename: 'GameAssignmentsConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
-              gameId: number
-              gm: number
-              memberId: number
-              nodeId: string
-              year: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        edges: Array<{
+          __typename: 'GamesEdge'
+          node?:
+            | {
+                __typename: 'Game'
+                nodeId: string
+                id: number
+                name: string
+                gmNames?: string | null | undefined
+                description: string
+                genre: string
+                type: string
+                setting: string
+                charInstructions: string
+                playerMax: number
+                playerMin: number
+                playerPreference: string
+                returningPlayers: string
+                playersContactGm: boolean
+                gameContactEmail: string
+                estimatedLength: string
+                slotPreference: number
+                lateStart?: string | null | undefined
+                lateFinish?: boolean | null | undefined
+                slotConflicts: string
+                message: string
+                slotId?: number | null | undefined
+                teenFriendly: boolean
+                year: number
+                full?: boolean | null | undefined
+                roomId?: number | null | undefined
+                gameAssignments: {
+                  __typename: 'GameAssignmentsConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'GameAssignment'
+                        gameId: number
+                        gm: number
+                        memberId: number
+                        nodeId: string
+                        year: number
+                        member?:
+                          | {
+                              __typename: 'Membership'
+                              user?:
+                                | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type UpdateGameByNodeIdMutationVariables = Exact<{
@@ -7188,55 +7247,69 @@ export type UpdateGameByNodeIdMutationVariables = Exact<{
 
 export type UpdateGameByNodeIdMutation = {
   __typename: 'Mutation'
-  updateGameByNodeId?: Maybe<{
-    __typename: 'UpdateGamePayload'
-    game?: Maybe<{
-      __typename: 'Game'
-      nodeId: string
-      id: number
-      name: string
-      gmNames?: Maybe<string>
-      description: string
-      genre: string
-      type: string
-      setting: string
-      charInstructions: string
-      playerMax: number
-      playerMin: number
-      playerPreference: string
-      returningPlayers: string
-      playersContactGm: boolean
-      gameContactEmail: string
-      estimatedLength: string
-      slotPreference: number
-      lateStart?: Maybe<string>
-      lateFinish?: Maybe<boolean>
-      slotConflicts: string
-      message: string
-      slotId?: Maybe<number>
-      teenFriendly: boolean
-      year: number
-      full?: Maybe<boolean>
-      roomId?: Maybe<number>
-      gameAssignments: {
-        __typename: 'GameAssignmentsConnection'
-        nodes: Array<
-          Maybe<{
-            __typename: 'GameAssignment'
-            gameId: number
-            gm: number
-            memberId: number
-            nodeId: string
-            year: number
-            member?: Maybe<{
-              __typename: 'Membership'
-              user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-            }>
-          }>
-        >
+  updateGameByNodeId?:
+    | {
+        __typename: 'UpdateGamePayload'
+        game?:
+          | {
+              __typename: 'Game'
+              nodeId: string
+              id: number
+              name: string
+              gmNames?: string | null | undefined
+              description: string
+              genre: string
+              type: string
+              setting: string
+              charInstructions: string
+              playerMax: number
+              playerMin: number
+              playerPreference: string
+              returningPlayers: string
+              playersContactGm: boolean
+              gameContactEmail: string
+              estimatedLength: string
+              slotPreference: number
+              lateStart?: string | null | undefined
+              lateFinish?: boolean | null | undefined
+              slotConflicts: string
+              message: string
+              slotId?: number | null | undefined
+              teenFriendly: boolean
+              year: number
+              full?: boolean | null | undefined
+              roomId?: number | null | undefined
+              gameAssignments: {
+                __typename: 'GameAssignmentsConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'GameAssignment'
+                      gameId: number
+                      gm: number
+                      memberId: number
+                      nodeId: string
+                      year: number
+                      member?:
+                        | {
+                            __typename: 'Membership'
+                            user?:
+                              | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
       }
-    }>
-  }>
+    | null
+    | undefined
 }
 
 export type UpdateGameMutationVariables = Exact<{
@@ -7245,55 +7318,69 @@ export type UpdateGameMutationVariables = Exact<{
 
 export type UpdateGameMutation = {
   __typename: 'Mutation'
-  updateGame?: Maybe<{
-    __typename: 'UpdateGamePayload'
-    game?: Maybe<{
-      __typename: 'Game'
-      nodeId: string
-      id: number
-      name: string
-      gmNames?: Maybe<string>
-      description: string
-      genre: string
-      type: string
-      setting: string
-      charInstructions: string
-      playerMax: number
-      playerMin: number
-      playerPreference: string
-      returningPlayers: string
-      playersContactGm: boolean
-      gameContactEmail: string
-      estimatedLength: string
-      slotPreference: number
-      lateStart?: Maybe<string>
-      lateFinish?: Maybe<boolean>
-      slotConflicts: string
-      message: string
-      slotId?: Maybe<number>
-      teenFriendly: boolean
-      year: number
-      full?: Maybe<boolean>
-      roomId?: Maybe<number>
-      gameAssignments: {
-        __typename: 'GameAssignmentsConnection'
-        nodes: Array<
-          Maybe<{
-            __typename: 'GameAssignment'
-            gameId: number
-            gm: number
-            memberId: number
-            nodeId: string
-            year: number
-            member?: Maybe<{
-              __typename: 'Membership'
-              user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-            }>
-          }>
-        >
+  updateGame?:
+    | {
+        __typename: 'UpdateGamePayload'
+        game?:
+          | {
+              __typename: 'Game'
+              nodeId: string
+              id: number
+              name: string
+              gmNames?: string | null | undefined
+              description: string
+              genre: string
+              type: string
+              setting: string
+              charInstructions: string
+              playerMax: number
+              playerMin: number
+              playerPreference: string
+              returningPlayers: string
+              playersContactGm: boolean
+              gameContactEmail: string
+              estimatedLength: string
+              slotPreference: number
+              lateStart?: string | null | undefined
+              lateFinish?: boolean | null | undefined
+              slotConflicts: string
+              message: string
+              slotId?: number | null | undefined
+              teenFriendly: boolean
+              year: number
+              full?: boolean | null | undefined
+              roomId?: number | null | undefined
+              gameAssignments: {
+                __typename: 'GameAssignmentsConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'GameAssignment'
+                      gameId: number
+                      gm: number
+                      memberId: number
+                      nodeId: string
+                      year: number
+                      member?:
+                        | {
+                            __typename: 'Membership'
+                            user?:
+                              | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
       }
-    }>
-  }>
+    | null
+    | undefined
 }
 
 export type CreateGameMutationVariables = Exact<{
@@ -7302,55 +7389,69 @@ export type CreateGameMutationVariables = Exact<{
 
 export type CreateGameMutation = {
   __typename: 'Mutation'
-  createGame?: Maybe<{
-    __typename: 'CreateGamePayload'
-    game?: Maybe<{
-      __typename: 'Game'
-      nodeId: string
-      id: number
-      name: string
-      gmNames?: Maybe<string>
-      description: string
-      genre: string
-      type: string
-      setting: string
-      charInstructions: string
-      playerMax: number
-      playerMin: number
-      playerPreference: string
-      returningPlayers: string
-      playersContactGm: boolean
-      gameContactEmail: string
-      estimatedLength: string
-      slotPreference: number
-      lateStart?: Maybe<string>
-      lateFinish?: Maybe<boolean>
-      slotConflicts: string
-      message: string
-      slotId?: Maybe<number>
-      teenFriendly: boolean
-      year: number
-      full?: Maybe<boolean>
-      roomId?: Maybe<number>
-      gameAssignments: {
-        __typename: 'GameAssignmentsConnection'
-        nodes: Array<
-          Maybe<{
-            __typename: 'GameAssignment'
-            gameId: number
-            gm: number
-            memberId: number
-            nodeId: string
-            year: number
-            member?: Maybe<{
-              __typename: 'Membership'
-              user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-            }>
-          }>
-        >
+  createGame?:
+    | {
+        __typename: 'CreateGamePayload'
+        game?:
+          | {
+              __typename: 'Game'
+              nodeId: string
+              id: number
+              name: string
+              gmNames?: string | null | undefined
+              description: string
+              genre: string
+              type: string
+              setting: string
+              charInstructions: string
+              playerMax: number
+              playerMin: number
+              playerPreference: string
+              returningPlayers: string
+              playersContactGm: boolean
+              gameContactEmail: string
+              estimatedLength: string
+              slotPreference: number
+              lateStart?: string | null | undefined
+              lateFinish?: boolean | null | undefined
+              slotConflicts: string
+              message: string
+              slotId?: number | null | undefined
+              teenFriendly: boolean
+              year: number
+              full?: boolean | null | undefined
+              roomId?: number | null | undefined
+              gameAssignments: {
+                __typename: 'GameAssignmentsConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'GameAssignment'
+                      gameId: number
+                      gm: number
+                      memberId: number
+                      nodeId: string
+                      year: number
+                      member?:
+                        | {
+                            __typename: 'Membership'
+                            user?:
+                              | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
       }
-    }>
-  }>
+    | null
+    | undefined
 }
 
 export type DeleteGameMutationVariables = Exact<{
@@ -7359,11 +7460,14 @@ export type DeleteGameMutationVariables = Exact<{
 
 export type DeleteGameMutation = {
   __typename: 'Mutation'
-  deleteGame?: Maybe<{
-    __typename: 'DeleteGamePayload'
-    clientMutationId?: Maybe<string>
-    deletedGameNodeId?: Maybe<string>
-  }>
+  deleteGame?:
+    | {
+        __typename: 'DeleteGamePayload'
+        clientMutationId?: string | null | undefined
+        deletedGameNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetFirstGameOfSlotQueryVariables = Exact<{
@@ -7372,54 +7476,67 @@ export type GetFirstGameOfSlotQueryVariables = Exact<{
 
 export type GetFirstGameOfSlotQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Game'
-        nodeId: string
-        id: number
-        name: string
-        gmNames?: Maybe<string>
-        description: string
-        genre: string
-        type: string
-        setting: string
-        charInstructions: string
-        playerMax: number
-        playerMin: number
-        playerPreference: string
-        returningPlayers: string
-        playersContactGm: boolean
-        gameContactEmail: string
-        estimatedLength: string
-        slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
-        slotConflicts: string
-        message: string
-        slotId?: Maybe<number>
-        teenFriendly: boolean
-        year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
-        gameAssignments: {
-          __typename: 'GameAssignmentsConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        nodes: Array<
+          | {
+              __typename: 'Game'
               nodeId: string
-              gm: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
-          >
-        }
-      }>
-    >
-  }>
+              id: number
+              name: string
+              gmNames?: string | null | undefined
+              description: string
+              genre: string
+              type: string
+              setting: string
+              charInstructions: string
+              playerMax: number
+              playerMin: number
+              playerPreference: string
+              returningPlayers: string
+              playersContactGm: boolean
+              gameContactEmail: string
+              estimatedLength: string
+              slotPreference: number
+              lateStart?: string | null | undefined
+              lateFinish?: boolean | null | undefined
+              slotConflicts: string
+              message: string
+              slotId?: number | null | undefined
+              teenFriendly: boolean
+              year: number
+              full?: boolean | null | undefined
+              roomId?: number | null | undefined
+              gameAssignments: {
+                __typename: 'GameAssignmentsConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'GameAssignment'
+                      nodeId: string
+                      gm: number
+                      member?:
+                        | {
+                            __typename: 'Membership'
+                            user?:
+                              | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetGamesByAuthorQueryVariables = Exact<{
@@ -7428,60 +7545,73 @@ export type GetGamesByAuthorQueryVariables = Exact<{
 
 export type GetGamesByAuthorQuery = {
   __typename: 'Query'
-  user?: Maybe<{
-    __typename: 'User'
-    authoredGames: {
-      __typename: 'GamesConnection'
-      nodes: Array<
-        Maybe<{
-          __typename: 'Game'
-          nodeId: string
-          id: number
-          name: string
-          gmNames?: Maybe<string>
-          description: string
-          genre: string
-          type: string
-          setting: string
-          charInstructions: string
-          playerMax: number
-          playerMin: number
-          playerPreference: string
-          returningPlayers: string
-          playersContactGm: boolean
-          gameContactEmail: string
-          estimatedLength: string
-          slotPreference: number
-          lateStart?: Maybe<string>
-          lateFinish?: Maybe<boolean>
-          slotConflicts: string
-          message: string
-          slotId?: Maybe<number>
-          teenFriendly: boolean
-          year: number
-          full?: Maybe<boolean>
-          roomId?: Maybe<number>
-          gameAssignments: {
-            __typename: 'GameAssignmentsConnection'
-            nodes: Array<
-              Maybe<{
-                __typename: 'GameAssignment'
-                gameId: number
-                gm: number
-                memberId: number
+  user?:
+    | {
+        __typename: 'User'
+        authoredGames: {
+          __typename: 'GamesConnection'
+          nodes: Array<
+            | {
+                __typename: 'Game'
                 nodeId: string
+                id: number
+                name: string
+                gmNames?: string | null | undefined
+                description: string
+                genre: string
+                type: string
+                setting: string
+                charInstructions: string
+                playerMax: number
+                playerMin: number
+                playerPreference: string
+                returningPlayers: string
+                playersContactGm: boolean
+                gameContactEmail: string
+                estimatedLength: string
+                slotPreference: number
+                lateStart?: string | null | undefined
+                lateFinish?: boolean | null | undefined
+                slotConflicts: string
+                message: string
+                slotId?: number | null | undefined
+                teenFriendly: boolean
                 year: number
-                member?: Maybe<{
-                  __typename: 'Membership'
-                  user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-                }>
-              }>
-            >
-          }
-        }>
-      >
-    }
-  }>
+                full?: boolean | null | undefined
+                roomId?: number | null | undefined
+                gameAssignments: {
+                  __typename: 'GameAssignmentsConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'GameAssignment'
+                        gameId: number
+                        gm: number
+                        memberId: number
+                        nodeId: string
+                        year: number
+                        member?:
+                          | {
+                              __typename: 'Membership'
+                              user?:
+                                | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+          >
+        }
+      }
+    | null
+    | undefined
 }
 
 export type GetGamesByYearAndAuthorQueryVariables = Exact<{
@@ -7491,15 +7621,85 @@ export type GetGamesByYearAndAuthorQueryVariables = Exact<{
 
 export type GetGamesByYearAndAuthorQuery = {
   __typename: 'Query'
-  games?: Maybe<{
-    __typename: 'GamesConnection'
-    nodes: Array<
-      Maybe<{
+  games?:
+    | {
+        __typename: 'GamesConnection'
+        nodes: Array<
+          | {
+              __typename: 'Game'
+              nodeId: string
+              id: number
+              name: string
+              gmNames?: string | null | undefined
+              description: string
+              genre: string
+              type: string
+              setting: string
+              charInstructions: string
+              playerMax: number
+              playerMin: number
+              playerPreference: string
+              returningPlayers: string
+              playersContactGm: boolean
+              gameContactEmail: string
+              estimatedLength: string
+              slotPreference: number
+              lateStart?: string | null | undefined
+              lateFinish?: boolean | null | undefined
+              slotConflicts: string
+              message: string
+              slotId?: number | null | undefined
+              teenFriendly: boolean
+              year: number
+              full?: boolean | null | undefined
+              roomId?: number | null | undefined
+              gameAssignments: {
+                __typename: 'GameAssignmentsConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'GameAssignment'
+                      gameId: number
+                      gm: number
+                      memberId: number
+                      nodeId: string
+                      year: number
+                      member?:
+                        | {
+                            __typename: 'Membership'
+                            user?:
+                              | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
+}
+
+export type GetGameByIdQueryVariables = Exact<{
+  id: Scalars['Int']
+}>
+
+export type GetGameByIdQuery = {
+  __typename: 'Query'
+  game?:
+    | {
         __typename: 'Game'
         nodeId: string
         id: number
         name: string
-        gmNames?: Maybe<string>
+        gmNames?: string | null | undefined
         description: string
         genre: string
         type: string
@@ -7513,89 +7713,43 @@ export type GetGamesByYearAndAuthorQuery = {
         gameContactEmail: string
         estimatedLength: string
         slotPreference: number
-        lateStart?: Maybe<string>
-        lateFinish?: Maybe<boolean>
+        lateStart?: string | null | undefined
+        lateFinish?: boolean | null | undefined
         slotConflicts: string
         message: string
-        slotId?: Maybe<number>
+        slotId?: number | null | undefined
         teenFriendly: boolean
         year: number
-        full?: Maybe<boolean>
-        roomId?: Maybe<number>
+        full?: boolean | null | undefined
+        roomId?: number | null | undefined
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<
-            Maybe<{
-              __typename: 'GameAssignment'
-              gameId: number
-              gm: number
-              memberId: number
-              nodeId: string
-              year: number
-              member?: Maybe<{
-                __typename: 'Membership'
-                user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-              }>
-            }>
+            | {
+                __typename: 'GameAssignment'
+                gameId: number
+                gm: number
+                memberId: number
+                nodeId: string
+                year: number
+                member?:
+                  | {
+                      __typename: 'Membership'
+                      user?:
+                        | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                        | null
+                        | undefined
+                    }
+                  | null
+                  | undefined
+              }
+            | null
+            | undefined
           >
         }
-      }>
-    >
-  }>
-}
-
-export type GetGameByIdQueryVariables = Exact<{
-  id: Scalars['Int']
-}>
-
-export type GetGameByIdQuery = {
-  __typename: 'Query'
-  game?: Maybe<{
-    __typename: 'Game'
-    nodeId: string
-    id: number
-    name: string
-    gmNames?: Maybe<string>
-    description: string
-    genre: string
-    type: string
-    setting: string
-    charInstructions: string
-    playerMax: number
-    playerMin: number
-    playerPreference: string
-    returningPlayers: string
-    playersContactGm: boolean
-    gameContactEmail: string
-    estimatedLength: string
-    slotPreference: number
-    lateStart?: Maybe<string>
-    lateFinish?: Maybe<boolean>
-    slotConflicts: string
-    message: string
-    slotId?: Maybe<number>
-    teenFriendly: boolean
-    year: number
-    full?: Maybe<boolean>
-    roomId?: Maybe<number>
-    gameAssignments: {
-      __typename: 'GameAssignmentsConnection'
-      nodes: Array<
-        Maybe<{
-          __typename: 'GameAssignment'
-          gameId: number
-          gm: number
-          memberId: number
-          nodeId: string
-          year: number
-          member?: Maybe<{
-            __typename: 'Membership'
-            user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-          }>
-        }>
-      >
-    }
-  }>
+      }
+    | null
+    | undefined
 }
 
 export type GameAssignmentFieldsFragment = {
@@ -7613,19 +7767,17 @@ export type GetGameAssignmentsByYearQueryVariables = Exact<{
 
 export type GetGameAssignmentsByYearQuery = {
   __typename: 'Query'
-  gameAssignments?: Maybe<{
-    __typename: 'GameAssignmentsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameAssignment'
-        gameId: number
-        gm: number
-        memberId: number
-        nodeId: string
-        year: number
-      }>
-    >
-  }>
+  gameAssignments?:
+    | {
+        __typename: 'GameAssignmentsConnection'
+        nodes: Array<
+          | { __typename: 'GameAssignment'; gameId: number; gm: number; memberId: number; nodeId: string; year: number }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetGameAssignmentsByGameIdQueryVariables = Exact<{
@@ -7634,19 +7786,17 @@ export type GetGameAssignmentsByGameIdQueryVariables = Exact<{
 
 export type GetGameAssignmentsByGameIdQuery = {
   __typename: 'Query'
-  gameAssignments?: Maybe<{
-    __typename: 'GameAssignmentsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameAssignment'
-        gameId: number
-        gm: number
-        memberId: number
-        nodeId: string
-        year: number
-      }>
-    >
-  }>
+  gameAssignments?:
+    | {
+        __typename: 'GameAssignmentsConnection'
+        nodes: Array<
+          | { __typename: 'GameAssignment'; gameId: number; gm: number; memberId: number; nodeId: string; year: number }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetGameAssignmentsByMemberIdQueryVariables = Exact<{
@@ -7655,19 +7805,17 @@ export type GetGameAssignmentsByMemberIdQueryVariables = Exact<{
 
 export type GetGameAssignmentsByMemberIdQuery = {
   __typename: 'Query'
-  gameAssignments?: Maybe<{
-    __typename: 'GameAssignmentsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameAssignment'
-        gameId: number
-        gm: number
-        memberId: number
-        nodeId: string
-        year: number
-      }>
-    >
-  }>
+  gameAssignments?:
+    | {
+        __typename: 'GameAssignmentsConnection'
+        nodes: Array<
+          | { __typename: 'GameAssignment'; gameId: number; gm: number; memberId: number; nodeId: string; year: number }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type UpdateGameAssignmentByNodeIdMutationVariables = Exact<{
@@ -7676,17 +7824,16 @@ export type UpdateGameAssignmentByNodeIdMutationVariables = Exact<{
 
 export type UpdateGameAssignmentByNodeIdMutation = {
   __typename: 'Mutation'
-  updateGameAssignmentByNodeId?: Maybe<{
-    __typename: 'UpdateGameAssignmentPayload'
-    gameAssignment?: Maybe<{
-      __typename: 'GameAssignment'
-      gameId: number
-      gm: number
-      memberId: number
-      nodeId: string
-      year: number
-    }>
-  }>
+  updateGameAssignmentByNodeId?:
+    | {
+        __typename: 'UpdateGameAssignmentPayload'
+        gameAssignment?:
+          | { __typename: 'GameAssignment'; gameId: number; gm: number; memberId: number; nodeId: string; year: number }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateGameAssignmentMutationVariables = Exact<{
@@ -7695,17 +7842,16 @@ export type CreateGameAssignmentMutationVariables = Exact<{
 
 export type CreateGameAssignmentMutation = {
   __typename: 'Mutation'
-  createGameAssignment?: Maybe<{
-    __typename: 'CreateGameAssignmentPayload'
-    gameAssignment?: Maybe<{
-      __typename: 'GameAssignment'
-      gameId: number
-      gm: number
-      memberId: number
-      nodeId: string
-      year: number
-    }>
-  }>
+  createGameAssignment?:
+    | {
+        __typename: 'CreateGameAssignmentPayload'
+        gameAssignment?:
+          | { __typename: 'GameAssignment'; gameId: number; gm: number; memberId: number; nodeId: string; year: number }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteGameAssignmentMutationVariables = Exact<{
@@ -7714,11 +7860,14 @@ export type DeleteGameAssignmentMutationVariables = Exact<{
 
 export type DeleteGameAssignmentMutation = {
   __typename: 'Mutation'
-  deleteGameAssignmentByNodeId?: Maybe<{
-    __typename: 'DeleteGameAssignmentPayload'
-    clientMutationId?: Maybe<string>
-    deletedGameAssignmentNodeId?: Maybe<string>
-  }>
+  deleteGameAssignmentByNodeId?:
+    | {
+        __typename: 'DeleteGameAssignmentPayload'
+        clientMutationId?: string | null | undefined
+        deletedGameAssignmentNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetScheduleQueryVariables = Exact<{
@@ -7727,65 +7876,81 @@ export type GetScheduleQueryVariables = Exact<{
 
 export type GetScheduleQuery = {
   __typename: 'Query'
-  gameAssignments?: Maybe<{
-    __typename: 'GameAssignmentsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameAssignment'
-        gameId: number
-        gm: number
-        memberId: number
-        nodeId: string
-        year: number
-        game?: Maybe<{
-          __typename: 'Game'
-          nodeId: string
-          id: number
-          name: string
-          gmNames?: Maybe<string>
-          description: string
-          genre: string
-          type: string
-          setting: string
-          charInstructions: string
-          playerMax: number
-          playerMin: number
-          playerPreference: string
-          returningPlayers: string
-          playersContactGm: boolean
-          gameContactEmail: string
-          estimatedLength: string
-          slotPreference: number
-          lateStart?: Maybe<string>
-          lateFinish?: Maybe<boolean>
-          slotConflicts: string
-          message: string
-          slotId?: Maybe<number>
-          teenFriendly: boolean
-          year: number
-          full?: Maybe<boolean>
-          roomId?: Maybe<number>
-          gameAssignments: {
-            __typename: 'GameAssignmentsConnection'
-            nodes: Array<
-              Maybe<{
-                __typename: 'GameAssignment'
-                gameId: number
-                gm: number
-                memberId: number
-                nodeId: string
-                year: number
-                member?: Maybe<{
-                  __typename: 'Membership'
-                  user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-                }>
-              }>
-            >
-          }
-        }>
-      }>
-    >
-  }>
+  gameAssignments?:
+    | {
+        __typename: 'GameAssignmentsConnection'
+        nodes: Array<
+          | {
+              __typename: 'GameAssignment'
+              gameId: number
+              gm: number
+              memberId: number
+              nodeId: string
+              year: number
+              game?:
+                | {
+                    __typename: 'Game'
+                    nodeId: string
+                    id: number
+                    name: string
+                    gmNames?: string | null | undefined
+                    description: string
+                    genre: string
+                    type: string
+                    setting: string
+                    charInstructions: string
+                    playerMax: number
+                    playerMin: number
+                    playerPreference: string
+                    returningPlayers: string
+                    playersContactGm: boolean
+                    gameContactEmail: string
+                    estimatedLength: string
+                    slotPreference: number
+                    lateStart?: string | null | undefined
+                    lateFinish?: boolean | null | undefined
+                    slotConflicts: string
+                    message: string
+                    slotId?: number | null | undefined
+                    teenFriendly: boolean
+                    year: number
+                    full?: boolean | null | undefined
+                    roomId?: number | null | undefined
+                    gameAssignments: {
+                      __typename: 'GameAssignmentsConnection'
+                      nodes: Array<
+                        | {
+                            __typename: 'GameAssignment'
+                            gameId: number
+                            gm: number
+                            memberId: number
+                            nodeId: string
+                            year: number
+                            member?:
+                              | {
+                                  __typename: 'Membership'
+                                  user?:
+                                    | { __typename: 'User'; email: string; fullName?: string | null | undefined }
+                                    | null
+                                    | undefined
+                                }
+                              | null
+                              | undefined
+                          }
+                        | null
+                        | undefined
+                      >
+                    }
+                  }
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GameSubmissionFieldsFragment = {
@@ -7799,7 +7964,7 @@ export type GameSubmissionFieldsFragment = {
 
 export type GameChoiceFieldsFragment = {
   __typename: 'GameChoice'
-  gameId?: Maybe<number>
+  gameId?: number | null | undefined
   id: number
   memberId: number
   nodeId: string
@@ -7816,7 +7981,10 @@ export type CreateGameChoicesMutationVariables = Exact<{
 
 export type CreateGameChoicesMutation = {
   __typename: 'Mutation'
-  createBareSlotChoices?: Maybe<{ __typename: 'CreateBareSlotChoicesPayload'; clientMutationId?: Maybe<string> }>
+  createBareSlotChoices?:
+    | { __typename: 'CreateBareSlotChoicesPayload'; clientMutationId?: string | null | undefined }
+    | null
+    | undefined
 }
 
 export type GetGameChoicesQueryVariables = Exact<{
@@ -7826,35 +7994,45 @@ export type GetGameChoicesQueryVariables = Exact<{
 
 export type GetGameChoicesQuery = {
   __typename: 'Query'
-  gameSubmissions?: Maybe<{
-    __typename: 'GameSubmissionsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameSubmission'
-        id: number
-        memberId: number
-        message: string
-        nodeId: string
-        year: number
-      }>
-    >
-  }>
-  gameChoices?: Maybe<{
-    __typename: 'GameChoicesConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'GameChoice'
-        gameId?: Maybe<number>
-        id: number
-        memberId: number
-        nodeId: string
-        rank: number
-        returningPlayer: boolean
-        slotId: number
-        year: number
-      }>
-    >
-  }>
+  gameSubmissions?:
+    | {
+        __typename: 'GameSubmissionsConnection'
+        nodes: Array<
+          | {
+              __typename: 'GameSubmission'
+              id: number
+              memberId: number
+              message: string
+              nodeId: string
+              year: number
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
+  gameChoices?:
+    | {
+        __typename: 'GameChoicesConnection'
+        nodes: Array<
+          | {
+              __typename: 'GameChoice'
+              gameId?: number | null | undefined
+              id: number
+              memberId: number
+              nodeId: string
+              rank: number
+              returningPlayer: boolean
+              slotId: number
+              year: number
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type ReadGameChoiceQueryVariables = Exact<{
@@ -7863,17 +8041,20 @@ export type ReadGameChoiceQueryVariables = Exact<{
 
 export type ReadGameChoiceQuery = {
   __typename: 'Query'
-  gameChoice?: Maybe<{
-    __typename: 'GameChoice'
-    gameId?: Maybe<number>
-    id: number
-    memberId: number
-    nodeId: string
-    rank: number
-    returningPlayer: boolean
-    slotId: number
-    year: number
-  }>
+  gameChoice?:
+    | {
+        __typename: 'GameChoice'
+        gameId?: number | null | undefined
+        id: number
+        memberId: number
+        nodeId: string
+        rank: number
+        returningPlayer: boolean
+        slotId: number
+        year: number
+      }
+    | null
+    | undefined
 }
 
 export type CreateGameSubmissionMutationVariables = Exact<{
@@ -7882,18 +8063,24 @@ export type CreateGameSubmissionMutationVariables = Exact<{
 
 export type CreateGameSubmissionMutation = {
   __typename: 'Mutation'
-  createGameSubmission?: Maybe<{
-    __typename: 'CreateGameSubmissionPayload'
-    clientMutationId?: Maybe<string>
-    gameSubmission?: Maybe<{
-      __typename: 'GameSubmission'
-      id: number
-      memberId: number
-      message: string
-      nodeId: string
-      year: number
-    }>
-  }>
+  createGameSubmission?:
+    | {
+        __typename: 'CreateGameSubmissionPayload'
+        clientMutationId?: string | null | undefined
+        gameSubmission?:
+          | {
+              __typename: 'GameSubmission'
+              id: number
+              memberId: number
+              message: string
+              nodeId: string
+              year: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type UpdateGameSubmissionByNodeIdMutationVariables = Exact<{
@@ -7902,18 +8089,24 @@ export type UpdateGameSubmissionByNodeIdMutationVariables = Exact<{
 
 export type UpdateGameSubmissionByNodeIdMutation = {
   __typename: 'Mutation'
-  updateGameSubmissionByNodeId?: Maybe<{
-    __typename: 'UpdateGameSubmissionPayload'
-    clientMutationId?: Maybe<string>
-    gameSubmission?: Maybe<{
-      __typename: 'GameSubmission'
-      id: number
-      memberId: number
-      message: string
-      nodeId: string
-      year: number
-    }>
-  }>
+  updateGameSubmissionByNodeId?:
+    | {
+        __typename: 'UpdateGameSubmissionPayload'
+        clientMutationId?: string | null | undefined
+        gameSubmission?:
+          | {
+              __typename: 'GameSubmission'
+              id: number
+              memberId: number
+              message: string
+              nodeId: string
+              year: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateGameChoiceMutationVariables = Exact<{
@@ -7922,21 +8115,27 @@ export type CreateGameChoiceMutationVariables = Exact<{
 
 export type CreateGameChoiceMutation = {
   __typename: 'Mutation'
-  createGameChoice?: Maybe<{
-    __typename: 'CreateGameChoicePayload'
-    clientMutationId?: Maybe<string>
-    gameChoice?: Maybe<{
-      __typename: 'GameChoice'
-      gameId?: Maybe<number>
-      id: number
-      memberId: number
-      nodeId: string
-      rank: number
-      returningPlayer: boolean
-      slotId: number
-      year: number
-    }>
-  }>
+  createGameChoice?:
+    | {
+        __typename: 'CreateGameChoicePayload'
+        clientMutationId?: string | null | undefined
+        gameChoice?:
+          | {
+              __typename: 'GameChoice'
+              gameId?: number | null | undefined
+              id: number
+              memberId: number
+              nodeId: string
+              rank: number
+              returningPlayer: boolean
+              slotId: number
+              year: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type UpdateGameChoiceByNodeIdMutationVariables = Exact<{
@@ -7945,21 +8144,27 @@ export type UpdateGameChoiceByNodeIdMutationVariables = Exact<{
 
 export type UpdateGameChoiceByNodeIdMutation = {
   __typename: 'Mutation'
-  updateGameChoiceByNodeId?: Maybe<{
-    __typename: 'UpdateGameChoicePayload'
-    clientMutationId?: Maybe<string>
-    gameChoice?: Maybe<{
-      __typename: 'GameChoice'
-      gameId?: Maybe<number>
-      id: number
-      memberId: number
-      nodeId: string
-      rank: number
-      returningPlayer: boolean
-      slotId: number
-      year: number
-    }>
-  }>
+  updateGameChoiceByNodeId?:
+    | {
+        __typename: 'UpdateGameChoicePayload'
+        clientMutationId?: string | null | undefined
+        gameChoice?:
+          | {
+              __typename: 'GameChoice'
+              gameId?: number | null | undefined
+              id: number
+              memberId: number
+              nodeId: string
+              rank: number
+              returningPlayer: boolean
+              slotId: number
+              year: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GameFieldsFragment = {
@@ -7967,7 +8172,7 @@ export type GameFieldsFragment = {
   nodeId: string
   id: number
   name: string
-  gmNames?: Maybe<string>
+  gmNames?: string | null | undefined
   description: string
   genre: string
   type: string
@@ -7981,15 +8186,15 @@ export type GameFieldsFragment = {
   gameContactEmail: string
   estimatedLength: string
   slotPreference: number
-  lateStart?: Maybe<string>
-  lateFinish?: Maybe<boolean>
+  lateStart?: string | null | undefined
+  lateFinish?: boolean | null | undefined
   slotConflicts: string
   message: string
-  slotId?: Maybe<number>
+  slotId?: number | null | undefined
   teenFriendly: boolean
   year: number
-  full?: Maybe<boolean>
-  roomId?: Maybe<number>
+  full?: boolean | null | undefined
+  roomId?: number | null | undefined
 }
 
 export type AssignmentFieldsFragment = {
@@ -7999,10 +8204,13 @@ export type AssignmentFieldsFragment = {
   memberId: number
   nodeId: string
   year: number
-  member?: Maybe<{
-    __typename: 'Membership'
-    user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-  }>
+  member?:
+    | {
+        __typename: 'Membership'
+        user?: { __typename: 'User'; email: string; fullName?: string | null | undefined } | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GameGmsFragment = {
@@ -8010,18 +8218,23 @@ export type GameGmsFragment = {
   gameAssignments: {
     __typename: 'GameAssignmentsConnection'
     nodes: Array<
-      Maybe<{
-        __typename: 'GameAssignment'
-        gameId: number
-        gm: number
-        memberId: number
-        nodeId: string
-        year: number
-        member?: Maybe<{
-          __typename: 'Membership'
-          user?: Maybe<{ __typename: 'User'; email: string; fullName?: Maybe<string> }>
-        }>
-      }>
+      | {
+          __typename: 'GameAssignment'
+          gameId: number
+          gm: number
+          memberId: number
+          nodeId: string
+          year: number
+          member?:
+            | {
+                __typename: 'Membership'
+                user?: { __typename: 'User'; email: string; fullName?: string | null | undefined } | null | undefined
+              }
+            | null
+            | undefined
+        }
+      | null
+      | undefined
     >
   }
 }
@@ -8039,12 +8252,17 @@ export type GetGameRoomsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetGameRoomsQuery = {
   __typename: 'Query'
-  rooms?: Maybe<{
-    __typename: 'RoomsConnection'
-    nodes: Array<
-      Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
-    >
-  }>
+  rooms?:
+    | {
+        __typename: 'RoomsConnection'
+        nodes: Array<
+          | { __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type UpdateGameRoomMutationVariables = Exact<{
@@ -8053,10 +8271,16 @@ export type UpdateGameRoomMutationVariables = Exact<{
 
 export type UpdateGameRoomMutation = {
   __typename: 'Mutation'
-  updateRoom?: Maybe<{
-    __typename: 'UpdateRoomPayload'
-    room?: Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
-  }>
+  updateRoom?:
+    | {
+        __typename: 'UpdateRoomPayload'
+        room?:
+          | { __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateGameRoomMutationVariables = Exact<{
@@ -8065,10 +8289,16 @@ export type CreateGameRoomMutationVariables = Exact<{
 
 export type CreateGameRoomMutation = {
   __typename: 'Mutation'
-  createRoom?: Maybe<{
-    __typename: 'CreateRoomPayload'
-    room?: Maybe<{ __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }>
-  }>
+  createRoom?:
+    | {
+        __typename: 'CreateRoomPayload'
+        room?:
+          | { __typename: 'Room'; id: number; description: string; size: number; type: string; updated: boolean }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteGameRoomMutationVariables = Exact<{
@@ -8077,11 +8307,14 @@ export type DeleteGameRoomMutationVariables = Exact<{
 
 export type DeleteGameRoomMutation = {
   __typename: 'Mutation'
-  deleteRoom?: Maybe<{
-    __typename: 'DeleteRoomPayload'
-    clientMutationId?: Maybe<string>
-    deletedRoomNodeId?: Maybe<string>
-  }>
+  deleteRoom?:
+    | {
+        __typename: 'DeleteRoomPayload'
+        clientMutationId?: string | null | undefined
+        deletedRoomNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetGameRoomAndGamesQueryVariables = Exact<{
@@ -8090,22 +8323,35 @@ export type GetGameRoomAndGamesQueryVariables = Exact<{
 
 export type GetGameRoomAndGamesQuery = {
   __typename: 'Query'
-  rooms?: Maybe<{
-    __typename: 'RoomsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Room'
-        id: number
-        description: string
-        games: {
-          __typename: 'GamesConnection'
-          nodes: Array<
-            Maybe<{ __typename: 'Game'; id: number; name: string; slotId?: Maybe<number>; gmNames?: Maybe<string> }>
-          >
-        }
-      }>
-    >
-  }>
+  rooms?:
+    | {
+        __typename: 'RoomsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Room'
+              id: number
+              description: string
+              games: {
+                __typename: 'GamesConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'Game'
+                      id: number
+                      name: string
+                      slotId?: number | null | undefined
+                      gmNames?: string | null | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type HotelRoomFieldsFragment = {
@@ -8125,24 +8371,30 @@ export type GetHotelRoomsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetHotelRoomsQuery = {
   __typename: 'Query'
-  hotelRooms?: Maybe<{
-    __typename: 'HotelRoomsConnection'
-    edges: Array<{
-      __typename: 'HotelRoomsEdge'
-      node?: Maybe<{
-        __typename: 'HotelRoom'
-        id: number
-        nodeId: string
-        description: string
-        gamingRoom: boolean
-        bathroomType: string
-        occupancy: string
-        rate: string
-        type: string
-        quantity: number
-      }>
-    }>
-  }>
+  hotelRooms?:
+    | {
+        __typename: 'HotelRoomsConnection'
+        edges: Array<{
+          __typename: 'HotelRoomsEdge'
+          node?:
+            | {
+                __typename: 'HotelRoom'
+                id: number
+                nodeId: string
+                description: string
+                gamingRoom: boolean
+                bathroomType: string
+                occupancy: string
+                rate: string
+                type: string
+                quantity: number
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type UpdateHotelRoomByNodeIdMutationVariables = Exact<{
@@ -8151,21 +8403,27 @@ export type UpdateHotelRoomByNodeIdMutationVariables = Exact<{
 
 export type UpdateHotelRoomByNodeIdMutation = {
   __typename: 'Mutation'
-  updateHotelRoomByNodeId?: Maybe<{
-    __typename: 'UpdateHotelRoomPayload'
-    hotelRoom?: Maybe<{
-      __typename: 'HotelRoom'
-      id: number
-      nodeId: string
-      description: string
-      gamingRoom: boolean
-      bathroomType: string
-      occupancy: string
-      rate: string
-      type: string
-      quantity: number
-    }>
-  }>
+  updateHotelRoomByNodeId?:
+    | {
+        __typename: 'UpdateHotelRoomPayload'
+        hotelRoom?:
+          | {
+              __typename: 'HotelRoom'
+              id: number
+              nodeId: string
+              description: string
+              gamingRoom: boolean
+              bathroomType: string
+              occupancy: string
+              rate: string
+              type: string
+              quantity: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateHotelRoomMutationVariables = Exact<{
@@ -8174,21 +8432,27 @@ export type CreateHotelRoomMutationVariables = Exact<{
 
 export type CreateHotelRoomMutation = {
   __typename: 'Mutation'
-  createHotelRoom?: Maybe<{
-    __typename: 'CreateHotelRoomPayload'
-    hotelRoom?: Maybe<{
-      __typename: 'HotelRoom'
-      id: number
-      nodeId: string
-      description: string
-      gamingRoom: boolean
-      bathroomType: string
-      occupancy: string
-      rate: string
-      type: string
-      quantity: number
-    }>
-  }>
+  createHotelRoom?:
+    | {
+        __typename: 'CreateHotelRoomPayload'
+        hotelRoom?:
+          | {
+              __typename: 'HotelRoom'
+              id: number
+              nodeId: string
+              description: string
+              gamingRoom: boolean
+              bathroomType: string
+              occupancy: string
+              rate: string
+              type: string
+              quantity: number
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteHotelRoomMutationVariables = Exact<{
@@ -8197,11 +8461,14 @@ export type DeleteHotelRoomMutationVariables = Exact<{
 
 export type DeleteHotelRoomMutation = {
   __typename: 'Mutation'
-  deleteHotelRoom?: Maybe<{
-    __typename: 'DeleteHotelRoomPayload'
-    clientMutationId?: Maybe<string>
-    deletedHotelRoomNodeId?: Maybe<string>
-  }>
+  deleteHotelRoom?:
+    | {
+        __typename: 'DeleteHotelRoomPayload'
+        clientMutationId?: string | null | undefined
+        deletedHotelRoomNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type HotelRoomDetailsFieldsFragment = {
@@ -8224,27 +8491,33 @@ export type GetHotelRoomDetailsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetHotelRoomDetailsQuery = {
   __typename: 'Query'
-  hotelRoomDetails?: Maybe<{
-    __typename: 'HotelRoomDetailsConnection'
-    edges: Array<{
-      __typename: 'HotelRoomDetailsEdge'
-      node?: Maybe<{
-        __typename: 'HotelRoomDetail'
-        id: any
-        nodeId: string
-        name: string
-        roomType: string
-        comment: string
-        reservedFor: string
-        bathroomType: string
-        gamingRoom: boolean
-        enabled: boolean
-        formattedRoomType: string
-        internalRoomType: string
-        reserved: boolean
-      }>
-    }>
-  }>
+  hotelRoomDetails?:
+    | {
+        __typename: 'HotelRoomDetailsConnection'
+        edges: Array<{
+          __typename: 'HotelRoomDetailsEdge'
+          node?:
+            | {
+                __typename: 'HotelRoomDetail'
+                id: any
+                nodeId: string
+                name: string
+                roomType: string
+                comment: string
+                reservedFor: string
+                bathroomType: string
+                gamingRoom: boolean
+                enabled: boolean
+                formattedRoomType: string
+                internalRoomType: string
+                reserved: boolean
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type UpdateHotelRoomDetailByNodeIdMutationVariables = Exact<{
@@ -8253,24 +8526,30 @@ export type UpdateHotelRoomDetailByNodeIdMutationVariables = Exact<{
 
 export type UpdateHotelRoomDetailByNodeIdMutation = {
   __typename: 'Mutation'
-  updateHotelRoomDetailByNodeId?: Maybe<{
-    __typename: 'UpdateHotelRoomDetailPayload'
-    hotelRoomDetail?: Maybe<{
-      __typename: 'HotelRoomDetail'
-      id: any
-      nodeId: string
-      name: string
-      roomType: string
-      comment: string
-      reservedFor: string
-      bathroomType: string
-      gamingRoom: boolean
-      enabled: boolean
-      formattedRoomType: string
-      internalRoomType: string
-      reserved: boolean
-    }>
-  }>
+  updateHotelRoomDetailByNodeId?:
+    | {
+        __typename: 'UpdateHotelRoomDetailPayload'
+        hotelRoomDetail?:
+          | {
+              __typename: 'HotelRoomDetail'
+              id: any
+              nodeId: string
+              name: string
+              roomType: string
+              comment: string
+              reservedFor: string
+              bathroomType: string
+              gamingRoom: boolean
+              enabled: boolean
+              formattedRoomType: string
+              internalRoomType: string
+              reserved: boolean
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateHotelRoomDetailMutationVariables = Exact<{
@@ -8279,24 +8558,30 @@ export type CreateHotelRoomDetailMutationVariables = Exact<{
 
 export type CreateHotelRoomDetailMutation = {
   __typename: 'Mutation'
-  createHotelRoomDetail?: Maybe<{
-    __typename: 'CreateHotelRoomDetailPayload'
-    hotelRoomDetail?: Maybe<{
-      __typename: 'HotelRoomDetail'
-      id: any
-      nodeId: string
-      name: string
-      roomType: string
-      comment: string
-      reservedFor: string
-      bathroomType: string
-      gamingRoom: boolean
-      enabled: boolean
-      formattedRoomType: string
-      internalRoomType: string
-      reserved: boolean
-    }>
-  }>
+  createHotelRoomDetail?:
+    | {
+        __typename: 'CreateHotelRoomDetailPayload'
+        hotelRoomDetail?:
+          | {
+              __typename: 'HotelRoomDetail'
+              id: any
+              nodeId: string
+              name: string
+              roomType: string
+              comment: string
+              reservedFor: string
+              bathroomType: string
+              gamingRoom: boolean
+              enabled: boolean
+              formattedRoomType: string
+              internalRoomType: string
+              reserved: boolean
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteHotelRoomDetailMutationVariables = Exact<{
@@ -8305,11 +8590,14 @@ export type DeleteHotelRoomDetailMutationVariables = Exact<{
 
 export type DeleteHotelRoomDetailMutation = {
   __typename: 'Mutation'
-  deleteHotelRoomDetail?: Maybe<{
-    __typename: 'DeleteHotelRoomDetailPayload'
-    clientMutationId?: Maybe<string>
-    deletedHotelRoomDetailNodeId?: Maybe<string>
-  }>
+  deleteHotelRoomDetail?:
+    | {
+        __typename: 'DeleteHotelRoomDetailPayload'
+        clientMutationId?: string | null | undefined
+        deletedHotelRoomDetailNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type LookupFieldsFragment = { __typename: 'Lookup'; nodeId: string; id: number; realm: string }
@@ -8327,31 +8615,39 @@ export type GetLookupsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetLookupsQuery = {
   __typename: 'Query'
-  lookups?: Maybe<{
-    __typename: 'LookupsConnection'
-    edges: Array<{
-      __typename: 'LookupsEdge'
-      node?: Maybe<{
-        __typename: 'Lookup'
-        nodeId: string
-        id: number
-        realm: string
-        lookupValues: {
-          __typename: 'LookupValuesConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'LookupValue'
-              nodeId: string
-              id: number
-              code: string
-              sequencer: number
-              value: string
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  lookups?:
+    | {
+        __typename: 'LookupsConnection'
+        edges: Array<{
+          __typename: 'LookupsEdge'
+          node?:
+            | {
+                __typename: 'Lookup'
+                nodeId: string
+                id: number
+                realm: string
+                lookupValues: {
+                  __typename: 'LookupValuesConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'LookupValue'
+                        nodeId: string
+                        id: number
+                        code: string
+                        sequencer: number
+                        value: string
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type GetLookupValuesQueryVariables = Exact<{
@@ -8360,31 +8656,39 @@ export type GetLookupValuesQueryVariables = Exact<{
 
 export type GetLookupValuesQuery = {
   __typename: 'Query'
-  lookups?: Maybe<{
-    __typename: 'LookupsConnection'
-    edges: Array<{
-      __typename: 'LookupsEdge'
-      node?: Maybe<{
-        __typename: 'Lookup'
-        nodeId: string
-        id: number
-        realm: string
-        lookupValues: {
-          __typename: 'LookupValuesConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'LookupValue'
-              nodeId: string
-              id: number
-              code: string
-              sequencer: number
-              value: string
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  lookups?:
+    | {
+        __typename: 'LookupsConnection'
+        edges: Array<{
+          __typename: 'LookupsEdge'
+          node?:
+            | {
+                __typename: 'Lookup'
+                nodeId: string
+                id: number
+                realm: string
+                lookupValues: {
+                  __typename: 'LookupValuesConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'LookupValue'
+                        nodeId: string
+                        id: number
+                        code: string
+                        sequencer: number
+                        value: string
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type GetSingleLookupValueQueryVariables = Exact<{
@@ -8394,31 +8698,39 @@ export type GetSingleLookupValueQueryVariables = Exact<{
 
 export type GetSingleLookupValueQuery = {
   __typename: 'Query'
-  lookups?: Maybe<{
-    __typename: 'LookupsConnection'
-    edges: Array<{
-      __typename: 'LookupsEdge'
-      node?: Maybe<{
-        __typename: 'Lookup'
-        nodeId: string
-        id: number
-        realm: string
-        lookupValues: {
-          __typename: 'LookupValuesConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'LookupValue'
-              nodeId: string
-              id: number
-              code: string
-              sequencer: number
-              value: string
-            }>
-          >
-        }
-      }>
-    }>
-  }>
+  lookups?:
+    | {
+        __typename: 'LookupsConnection'
+        edges: Array<{
+          __typename: 'LookupsEdge'
+          node?:
+            | {
+                __typename: 'Lookup'
+                nodeId: string
+                id: number
+                realm: string
+                lookupValues: {
+                  __typename: 'LookupValuesConnection'
+                  nodes: Array<
+                    | {
+                        __typename: 'LookupValue'
+                        nodeId: string
+                        id: number
+                        code: string
+                        sequencer: number
+                        value: string
+                      }
+                    | null
+                    | undefined
+                  >
+                }
+              }
+            | null
+            | undefined
+        }>
+      }
+    | null
+    | undefined
 }
 
 export type UpdateLookupByNodeIdMutationVariables = Exact<{
@@ -8427,10 +8739,13 @@ export type UpdateLookupByNodeIdMutationVariables = Exact<{
 
 export type UpdateLookupByNodeIdMutation = {
   __typename: 'Mutation'
-  updateLookupByNodeId?: Maybe<{
-    __typename: 'UpdateLookupPayload'
-    lookup?: Maybe<{ __typename: 'Lookup'; nodeId: string; id: number; realm: string }>
-  }>
+  updateLookupByNodeId?:
+    | {
+        __typename: 'UpdateLookupPayload'
+        lookup?: { __typename: 'Lookup'; nodeId: string; id: number; realm: string } | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateLookupMutationVariables = Exact<{
@@ -8439,10 +8754,13 @@ export type CreateLookupMutationVariables = Exact<{
 
 export type CreateLookupMutation = {
   __typename: 'Mutation'
-  createLookup?: Maybe<{
-    __typename: 'CreateLookupPayload'
-    lookup?: Maybe<{ __typename: 'Lookup'; nodeId: string; id: number; realm: string }>
-  }>
+  createLookup?:
+    | {
+        __typename: 'CreateLookupPayload'
+        lookup?: { __typename: 'Lookup'; nodeId: string; id: number; realm: string } | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteLookupMutationVariables = Exact<{
@@ -8451,11 +8769,14 @@ export type DeleteLookupMutationVariables = Exact<{
 
 export type DeleteLookupMutation = {
   __typename: 'Mutation'
-  deleteLookup?: Maybe<{
-    __typename: 'DeleteLookupPayload'
-    clientMutationId?: Maybe<string>
-    deletedLookupNodeId?: Maybe<string>
-  }>
+  deleteLookup?:
+    | {
+        __typename: 'DeleteLookupPayload'
+        clientMutationId?: string | null | undefined
+        deletedLookupNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type UpdateLookupValueByNodeIdMutationVariables = Exact<{
@@ -8464,17 +8785,16 @@ export type UpdateLookupValueByNodeIdMutationVariables = Exact<{
 
 export type UpdateLookupValueByNodeIdMutation = {
   __typename: 'Mutation'
-  updateLookupValueByNodeId?: Maybe<{
-    __typename: 'UpdateLookupValuePayload'
-    lookupValue?: Maybe<{
-      __typename: 'LookupValue'
-      nodeId: string
-      id: number
-      code: string
-      sequencer: number
-      value: string
-    }>
-  }>
+  updateLookupValueByNodeId?:
+    | {
+        __typename: 'UpdateLookupValuePayload'
+        lookupValue?:
+          | { __typename: 'LookupValue'; nodeId: string; id: number; code: string; sequencer: number; value: string }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateLookupValueMutationVariables = Exact<{
@@ -8483,17 +8803,16 @@ export type CreateLookupValueMutationVariables = Exact<{
 
 export type CreateLookupValueMutation = {
   __typename: 'Mutation'
-  createLookupValue?: Maybe<{
-    __typename: 'CreateLookupValuePayload'
-    lookupValue?: Maybe<{
-      __typename: 'LookupValue'
-      nodeId: string
-      id: number
-      code: string
-      sequencer: number
-      value: string
-    }>
-  }>
+  createLookupValue?:
+    | {
+        __typename: 'CreateLookupValuePayload'
+        lookupValue?:
+          | { __typename: 'LookupValue'; nodeId: string; id: number; code: string; sequencer: number; value: string }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteLookupValueMutationVariables = Exact<{
@@ -8502,11 +8821,14 @@ export type DeleteLookupValueMutationVariables = Exact<{
 
 export type DeleteLookupValueMutation = {
   __typename: 'Mutation'
-  deleteLookupValue?: Maybe<{
-    __typename: 'DeleteLookupValuePayload'
-    clientMutationId?: Maybe<string>
-    deletedLookupValueNodeId?: Maybe<string>
-  }>
+  deleteLookupValue?:
+    | {
+        __typename: 'DeleteLookupValuePayload'
+        clientMutationId?: string | null | undefined
+        deletedLookupValueNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetMembershipByYearAndIdQueryVariables = Exact<{
@@ -8516,43 +8838,51 @@ export type GetMembershipByYearAndIdQueryVariables = Exact<{
 
 export type GetMembershipByYearAndIdQuery = {
   __typename: 'Query'
-  memberships?: Maybe<{
-    __typename: 'MembershipsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Membership'
-        nodeId: string
-        id: number
-        arrivalDate: string
-        attendance: string
-        attending: boolean
-        hotelRoomId: number
-        departureDate: string
-        interestLevel: string
-        message: string
-        offerSubsidy: boolean
-        requestOldPrice: boolean
-        roomPreferenceAndNotes: string
-        roomingPreferences: string
-        roomingWith: string
-        userId: number
-        volunteer: boolean
-        year: number
-        slotsAttending?: Maybe<string>
-        amountOwed: number
-        amountPaid: number
-        user?: Maybe<{
-          __typename: 'User'
-          id: number
-          fullName?: Maybe<string>
-          firstName?: Maybe<string>
-          lastName?: Maybe<string>
-          email: string
-        }>
-        hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-      }>
-    >
-  }>
+  memberships?:
+    | {
+        __typename: 'MembershipsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetMembershipsByYearQueryVariables = Exact<{
@@ -8561,43 +8891,51 @@ export type GetMembershipsByYearQueryVariables = Exact<{
 
 export type GetMembershipsByYearQuery = {
   __typename: 'Query'
-  memberships?: Maybe<{
-    __typename: 'MembershipsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Membership'
-        nodeId: string
-        id: number
-        arrivalDate: string
-        attendance: string
-        attending: boolean
-        hotelRoomId: number
-        departureDate: string
-        interestLevel: string
-        message: string
-        offerSubsidy: boolean
-        requestOldPrice: boolean
-        roomPreferenceAndNotes: string
-        roomingPreferences: string
-        roomingWith: string
-        userId: number
-        volunteer: boolean
-        year: number
-        slotsAttending?: Maybe<string>
-        amountOwed: number
-        amountPaid: number
-        user?: Maybe<{
-          __typename: 'User'
-          id: number
-          fullName?: Maybe<string>
-          firstName?: Maybe<string>
-          lastName?: Maybe<string>
-          email: string
-        }>
-        hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-      }>
-    >
-  }>
+  memberships?:
+    | {
+        __typename: 'MembershipsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetMembershipRoomsByYearQueryVariables = Exact<{
@@ -8606,15 +8944,23 @@ export type GetMembershipRoomsByYearQueryVariables = Exact<{
 
 export type GetMembershipRoomsByYearQuery = {
   __typename: 'Query'
-  memberships?: Maybe<{
-    __typename: 'MembershipsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Membership'
-        hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string; gamingRoom: boolean; bathroomType: string }>
-      }>
-    >
-  }>
+  memberships?:
+    | {
+        __typename: 'MembershipsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Membership'
+              hotelRoom?:
+                | { __typename: 'HotelRoom'; type: string; gamingRoom: boolean; bathroomType: string }
+                | null
+                | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetMembershipsByIdQueryVariables = Exact<{
@@ -8623,43 +8969,51 @@ export type GetMembershipsByIdQueryVariables = Exact<{
 
 export type GetMembershipsByIdQuery = {
   __typename: 'Query'
-  memberships?: Maybe<{
-    __typename: 'MembershipsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Membership'
-        nodeId: string
-        id: number
-        arrivalDate: string
-        attendance: string
-        attending: boolean
-        hotelRoomId: number
-        departureDate: string
-        interestLevel: string
-        message: string
-        offerSubsidy: boolean
-        requestOldPrice: boolean
-        roomPreferenceAndNotes: string
-        roomingPreferences: string
-        roomingWith: string
-        userId: number
-        volunteer: boolean
-        year: number
-        slotsAttending?: Maybe<string>
-        amountOwed: number
-        amountPaid: number
-        user?: Maybe<{
-          __typename: 'User'
-          id: number
-          fullName?: Maybe<string>
-          firstName?: Maybe<string>
-          lastName?: Maybe<string>
-          email: string
-        }>
-        hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-      }>
-    >
-  }>
+  memberships?:
+    | {
+        __typename: 'MembershipsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetMembershipByYearAndRoomQueryVariables = Exact<{
@@ -8669,43 +9023,51 @@ export type GetMembershipByYearAndRoomQueryVariables = Exact<{
 
 export type GetMembershipByYearAndRoomQuery = {
   __typename: 'Query'
-  memberships?: Maybe<{
-    __typename: 'MembershipsConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'Membership'
-        nodeId: string
-        id: number
-        arrivalDate: string
-        attendance: string
-        attending: boolean
-        hotelRoomId: number
-        departureDate: string
-        interestLevel: string
-        message: string
-        offerSubsidy: boolean
-        requestOldPrice: boolean
-        roomPreferenceAndNotes: string
-        roomingPreferences: string
-        roomingWith: string
-        userId: number
-        volunteer: boolean
-        year: number
-        slotsAttending?: Maybe<string>
-        amountOwed: number
-        amountPaid: number
-        user?: Maybe<{
-          __typename: 'User'
-          id: number
-          fullName?: Maybe<string>
-          firstName?: Maybe<string>
-          lastName?: Maybe<string>
-          email: string
-        }>
-        hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-      }>
-    >
-  }>
+  memberships?:
+    | {
+        __typename: 'MembershipsConnection'
+        nodes: Array<
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type UpdateMembershipByNodeIdMutationVariables = Exact<{
@@ -8714,41 +9076,50 @@ export type UpdateMembershipByNodeIdMutationVariables = Exact<{
 
 export type UpdateMembershipByNodeIdMutation = {
   __typename: 'Mutation'
-  updateMembershipByNodeId?: Maybe<{
-    __typename: 'UpdateMembershipPayload'
-    membership?: Maybe<{
-      __typename: 'Membership'
-      nodeId: string
-      id: number
-      arrivalDate: string
-      attendance: string
-      attending: boolean
-      hotelRoomId: number
-      departureDate: string
-      interestLevel: string
-      message: string
-      offerSubsidy: boolean
-      requestOldPrice: boolean
-      roomPreferenceAndNotes: string
-      roomingPreferences: string
-      roomingWith: string
-      userId: number
-      volunteer: boolean
-      year: number
-      slotsAttending?: Maybe<string>
-      amountOwed: number
-      amountPaid: number
-      user?: Maybe<{
-        __typename: 'User'
-        id: number
-        fullName?: Maybe<string>
-        firstName?: Maybe<string>
-        lastName?: Maybe<string>
-        email: string
-      }>
-      hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-    }>
-  }>
+  updateMembershipByNodeId?:
+    | {
+        __typename: 'UpdateMembershipPayload'
+        membership?:
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type CreateMembershipMutationVariables = Exact<{
@@ -8757,41 +9128,50 @@ export type CreateMembershipMutationVariables = Exact<{
 
 export type CreateMembershipMutation = {
   __typename: 'Mutation'
-  createMembership?: Maybe<{
-    __typename: 'CreateMembershipPayload'
-    membership?: Maybe<{
-      __typename: 'Membership'
-      nodeId: string
-      id: number
-      arrivalDate: string
-      attendance: string
-      attending: boolean
-      hotelRoomId: number
-      departureDate: string
-      interestLevel: string
-      message: string
-      offerSubsidy: boolean
-      requestOldPrice: boolean
-      roomPreferenceAndNotes: string
-      roomingPreferences: string
-      roomingWith: string
-      userId: number
-      volunteer: boolean
-      year: number
-      slotsAttending?: Maybe<string>
-      amountOwed: number
-      amountPaid: number
-      user?: Maybe<{
-        __typename: 'User'
-        id: number
-        fullName?: Maybe<string>
-        firstName?: Maybe<string>
-        lastName?: Maybe<string>
-        email: string
-      }>
-      hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
-    }>
-  }>
+  createMembership?:
+    | {
+        __typename: 'CreateMembershipPayload'
+        membership?:
+          | {
+              __typename: 'Membership'
+              nodeId: string
+              id: number
+              arrivalDate: string
+              attendance: string
+              attending: boolean
+              hotelRoomId: number
+              departureDate: string
+              interestLevel: string
+              message: string
+              offerSubsidy: boolean
+              requestOldPrice: boolean
+              roomPreferenceAndNotes: string
+              roomingPreferences: string
+              roomingWith: string
+              userId: number
+              volunteer: boolean
+              year: number
+              slotsAttending?: string | null | undefined
+              amountOwed: number
+              amountPaid: number
+              user?:
+                | {
+                    __typename: 'User'
+                    id: number
+                    fullName?: string | null | undefined
+                    firstName?: string | null | undefined
+                    lastName?: string | null | undefined
+                    email: string
+                  }
+                | null
+                | undefined
+              hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteMembershipMutationVariables = Exact<{
@@ -8800,11 +9180,14 @@ export type DeleteMembershipMutationVariables = Exact<{
 
 export type DeleteMembershipMutation = {
   __typename: 'Mutation'
-  deleteMembership?: Maybe<{
-    __typename: 'DeleteMembershipPayload'
-    clientMutationId?: Maybe<string>
-    deletedMembershipNodeId?: Maybe<string>
-  }>
+  deleteMembership?:
+    | {
+        __typename: 'DeleteMembershipPayload'
+        clientMutationId?: string | null | undefined
+        deletedMembershipNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type MembershipFieldsFragment = {
@@ -8826,18 +9209,21 @@ export type MembershipFieldsFragment = {
   userId: number
   volunteer: boolean
   year: number
-  slotsAttending?: Maybe<string>
+  slotsAttending?: string | null | undefined
   amountOwed: number
   amountPaid: number
-  user?: Maybe<{
-    __typename: 'User'
-    id: number
-    fullName?: Maybe<string>
-    firstName?: Maybe<string>
-    lastName?: Maybe<string>
-    email: string
-  }>
-  hotelRoom?: Maybe<{ __typename: 'HotelRoom'; type: string }>
+  user?:
+    | {
+        __typename: 'User'
+        id: number
+        fullName?: string | null | undefined
+        firstName?: string | null | undefined
+        lastName?: string | null | undefined
+        email: string
+      }
+    | null
+    | undefined
+  hotelRoom?: { __typename: 'HotelRoom'; type: string } | null | undefined
 }
 
 export type SettingFieldsFragment = {
@@ -8853,12 +9239,17 @@ export type GetSettingsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetSettingsQuery = {
   __typename: 'Query'
-  settings?: Maybe<{
-    __typename: 'SettingsConnection'
-    nodes: Array<
-      Maybe<{ __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }>
-    >
-  }>
+  settings?:
+    | {
+        __typename: 'SettingsConnection'
+        nodes: Array<
+          | { __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type CreateSettingMutationVariables = Exact<{
@@ -8867,10 +9258,16 @@ export type CreateSettingMutationVariables = Exact<{
 
 export type CreateSettingMutation = {
   __typename: 'Mutation'
-  createSetting?: Maybe<{
-    __typename: 'CreateSettingPayload'
-    setting?: Maybe<{ __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }>
-  }>
+  createSetting?:
+    | {
+        __typename: 'CreateSettingPayload'
+        setting?:
+          | { __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type DeleteSettingMutationVariables = Exact<{
@@ -8879,11 +9276,14 @@ export type DeleteSettingMutationVariables = Exact<{
 
 export type DeleteSettingMutation = {
   __typename: 'Mutation'
-  deleteSetting?: Maybe<{
-    __typename: 'DeleteSettingPayload'
-    clientMutationId?: Maybe<string>
-    deletedSettingNodeId?: Maybe<string>
-  }>
+  deleteSetting?:
+    | {
+        __typename: 'DeleteSettingPayload'
+        clientMutationId?: string | null | undefined
+        deletedSettingNodeId?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type UpdateSettingByNodeIdMutationVariables = Exact<{
@@ -8892,22 +9292,33 @@ export type UpdateSettingByNodeIdMutationVariables = Exact<{
 
 export type UpdateSettingByNodeIdMutation = {
   __typename: 'Mutation'
-  updateSettingByNodeId?: Maybe<{
-    __typename: 'UpdateSettingPayload'
-    setting?: Maybe<{ __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }>
-  }>
+  updateSettingByNodeId?:
+    | {
+        __typename: 'UpdateSettingPayload'
+        setting?:
+          | { __typename: 'Setting'; nodeId: string; id: number; code: string; type: string; value: string }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetSlotsQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetSlotsQuery = {
   __typename: 'Query'
-  slots?: Maybe<{
-    __typename: 'SlotsConnection'
-    nodes: Array<
-      Maybe<{ __typename: 'Slot'; nodeId: string; id: number; slot: number; day: string; length: string; time: string }>
-    >
-  }>
+  slots?:
+    | {
+        __typename: 'SlotsConnection'
+        nodes: Array<
+          | { __typename: 'Slot'; nodeId: string; id: number; slot: number; day: string; length: string; time: string }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type SlotFieldsFragment = {
@@ -8926,27 +9337,32 @@ export type GetUserByEmailQueryVariables = Exact<{
 
 export type GetUserByEmailQuery = {
   __typename: 'Query'
-  userByEmail?: Maybe<{
-    __typename: 'User'
-    nodeId: string
-    id: number
-    email: string
-    fullName?: Maybe<string>
-    firstName?: Maybe<string>
-    lastName?: Maybe<string>
-    profiles: {
-      __typename: 'ProfilesConnection'
-      nodes: Array<
-        Maybe<{
-          __typename: 'Profile'
-          nodeId: string
-          userId: number
-          phoneNumber?: Maybe<string>
-          snailMailAddress?: Maybe<string>
-        }>
-      >
-    }
-  }>
+  userByEmail?:
+    | {
+        __typename: 'User'
+        nodeId: string
+        id: number
+        email: string
+        fullName?: string | null | undefined
+        firstName?: string | null | undefined
+        lastName?: string | null | undefined
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<
+            | {
+                __typename: 'Profile'
+                nodeId: string
+                userId: number
+                phoneNumber?: string | null | undefined
+                snailMailAddress?: string | null | undefined
+              }
+            | null
+            | undefined
+          >
+        }
+      }
+    | null
+    | undefined
 }
 
 export type GetUserByIdQueryVariables = Exact<{
@@ -8955,15 +9371,18 @@ export type GetUserByIdQueryVariables = Exact<{
 
 export type GetUserByIdQuery = {
   __typename: 'Query'
-  user?: Maybe<{
-    __typename: 'User'
-    nodeId: string
-    id: number
-    email: string
-    fullName?: Maybe<string>
-    firstName?: Maybe<string>
-    lastName?: Maybe<string>
-  }>
+  user?:
+    | {
+        __typename: 'User'
+        nodeId: string
+        id: number
+        email: string
+        fullName?: string | null | undefined
+        firstName?: string | null | undefined
+        lastName?: string | null | undefined
+      }
+    | null
+    | undefined
 }
 
 export type UpdateUserMutationVariables = Exact<{
@@ -8972,70 +9391,88 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = {
   __typename: 'Mutation'
-  updateUser?: Maybe<{
-    __typename: 'UpdateUserPayload'
-    user?: Maybe<{
-      __typename: 'User'
-      nodeId: string
-      id: number
-      email: string
-      fullName?: Maybe<string>
-      firstName?: Maybe<string>
-      lastName?: Maybe<string>
-    }>
-  }>
+  updateUser?:
+    | {
+        __typename: 'UpdateUserPayload'
+        user?:
+          | {
+              __typename: 'User'
+              nodeId: string
+              id: number
+              email: string
+              fullName?: string | null | undefined
+              firstName?: string | null | undefined
+              lastName?: string | null | undefined
+            }
+          | null
+          | undefined
+      }
+    | null
+    | undefined
 }
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllUsersQuery = {
   __typename: 'Query'
-  users?: Maybe<{
-    __typename: 'UsersConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'User'
-        nodeId: string
-        id: number
-        email: string
-        fullName?: Maybe<string>
-        firstName?: Maybe<string>
-        lastName?: Maybe<string>
-      }>
-    >
-  }>
+  users?:
+    | {
+        __typename: 'UsersConnection'
+        nodes: Array<
+          | {
+              __typename: 'User'
+              nodeId: string
+              id: number
+              email: string
+              fullName?: string | null | undefined
+              firstName?: string | null | undefined
+              lastName?: string | null | undefined
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetAllUsersAndProfilesQueryVariables = Exact<{ [key: string]: never }>
 
 export type GetAllUsersAndProfilesQuery = {
   __typename: 'Query'
-  users?: Maybe<{
-    __typename: 'UsersConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'User'
-        nodeId: string
-        id: number
-        email: string
-        fullName?: Maybe<string>
-        firstName?: Maybe<string>
-        lastName?: Maybe<string>
-        profiles: {
-          __typename: 'ProfilesConnection'
-          nodes: Array<
-            Maybe<{
-              __typename: 'Profile'
+  users?:
+    | {
+        __typename: 'UsersConnection'
+        nodes: Array<
+          | {
+              __typename: 'User'
               nodeId: string
-              userId: number
-              phoneNumber?: Maybe<string>
-              snailMailAddress?: Maybe<string>
-            }>
-          >
-        }
-      }>
-    >
-  }>
+              id: number
+              email: string
+              fullName?: string | null | undefined
+              firstName?: string | null | undefined
+              lastName?: string | null | undefined
+              profiles: {
+                __typename: 'ProfilesConnection'
+                nodes: Array<
+                  | {
+                      __typename: 'Profile'
+                      nodeId: string
+                      userId: number
+                      phoneNumber?: string | null | undefined
+                      snailMailAddress?: string | null | undefined
+                    }
+                  | null
+                  | undefined
+                >
+              }
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type GetAllUsersByQueryVariables = Exact<{
@@ -9044,24 +9481,29 @@ export type GetAllUsersByQueryVariables = Exact<{
 
 export type GetAllUsersByQuery = {
   __typename: 'Query'
-  users?: Maybe<{
-    __typename: 'UsersConnection'
-    nodes: Array<
-      Maybe<{
-        __typename: 'User'
-        nodeId: string
-        id: number
-        email: string
-        fullName?: Maybe<string>
-        firstName?: Maybe<string>
-        lastName?: Maybe<string>
-        memberships: {
-          __typename: 'MembershipsConnection'
-          nodes: Array<Maybe<{ __typename: 'Membership'; id: number; year: number }>>
-        }
-      }>
-    >
-  }>
+  users?:
+    | {
+        __typename: 'UsersConnection'
+        nodes: Array<
+          | {
+              __typename: 'User'
+              nodeId: string
+              id: number
+              email: string
+              fullName?: string | null | undefined
+              firstName?: string | null | undefined
+              lastName?: string | null | undefined
+              memberships: {
+                __typename: 'MembershipsConnection'
+                nodes: Array<{ __typename: 'Membership'; id: number; year: number } | null | undefined>
+              }
+            }
+          | null
+          | undefined
+        >
+      }
+    | null
+    | undefined
 }
 
 export type CreateProfileMutationVariables = Exact<{
@@ -9070,7 +9512,10 @@ export type CreateProfileMutationVariables = Exact<{
 
 export type CreateProfileMutation = {
   __typename: 'Mutation'
-  createProfile?: Maybe<{ __typename: 'CreateProfilePayload'; clientMutationId?: Maybe<string> }>
+  createProfile?:
+    | { __typename: 'CreateProfilePayload'; clientMutationId?: string | null | undefined }
+    | null
+    | undefined
 }
 
 export type UpdateProfileByNodeIdMutationVariables = Exact<{
@@ -9079,7 +9524,10 @@ export type UpdateProfileByNodeIdMutationVariables = Exact<{
 
 export type UpdateProfileByNodeIdMutation = {
   __typename: 'Mutation'
-  updateProfileByNodeId?: Maybe<{ __typename: 'UpdateProfilePayload'; clientMutationId?: Maybe<string> }>
+  updateProfileByNodeId?:
+    | { __typename: 'UpdateProfilePayload'; clientMutationId?: string | null | undefined }
+    | null
+    | undefined
 }
 
 export type UserFieldsFragment = {
@@ -9087,17 +9535,17 @@ export type UserFieldsFragment = {
   nodeId: string
   id: number
   email: string
-  fullName?: Maybe<string>
-  firstName?: Maybe<string>
-  lastName?: Maybe<string>
+  fullName?: string | null | undefined
+  firstName?: string | null | undefined
+  lastName?: string | null | undefined
 }
 
 export type ProfileFieldsFragment = {
   __typename: 'Profile'
   nodeId: string
   userId: number
-  phoneNumber?: Maybe<string>
-  snailMailAddress?: Maybe<string>
+  phoneNumber?: string | null | undefined
+  snailMailAddress?: string | null | undefined
 }
 
 export type UserAndProfileFieldsFragment = {
@@ -9105,19 +9553,21 @@ export type UserAndProfileFieldsFragment = {
   nodeId: string
   id: number
   email: string
-  fullName?: Maybe<string>
-  firstName?: Maybe<string>
-  lastName?: Maybe<string>
+  fullName?: string | null | undefined
+  firstName?: string | null | undefined
+  lastName?: string | null | undefined
   profiles: {
     __typename: 'ProfilesConnection'
     nodes: Array<
-      Maybe<{
-        __typename: 'Profile'
-        nodeId: string
-        userId: number
-        phoneNumber?: Maybe<string>
-        snailMailAddress?: Maybe<string>
-      }>
+      | {
+          __typename: 'Profile'
+          nodeId: string
+          userId: number
+          phoneNumber?: string | null | undefined
+          snailMailAddress?: string | null | undefined
+        }
+      | null
+      | undefined
     >
   }
 }
@@ -9903,7 +10353,7 @@ export const useGetGameRoomsQuery = <TData = GetGameRoomsQuery, TError = QueryEr
   options?: UseQueryOptions<GetGameRoomsQuery, TError, TData>
 ) =>
   useQuery<GetGameRoomsQuery, TError, TData>(
-    ['getGameRooms', variables],
+    variables === undefined ? ['getGameRooms'] : ['getGameRooms', variables],
     useFetchData<GetGameRoomsQuery, GetGameRoomsQueryVariables>(GetGameRoomsDocument).bind(null, variables),
     options
   )
@@ -9977,7 +10427,7 @@ export const useGetGameRoomAndGamesQuery = <TData = GetGameRoomAndGamesQuery, TE
   options?: UseQueryOptions<GetGameRoomAndGamesQuery, TError, TData>
 ) =>
   useQuery<GetGameRoomAndGamesQuery, TError, TData>(
-    ['getGameRoomAndGames', variables],
+    variables === undefined ? ['getGameRoomAndGames'] : ['getGameRoomAndGames', variables],
     useFetchData<GetGameRoomAndGamesQuery, GetGameRoomAndGamesQueryVariables>(GetGameRoomAndGamesDocument).bind(
       null,
       variables
@@ -10000,7 +10450,7 @@ export const useGetHotelRoomsQuery = <TData = GetHotelRoomsQuery, TError = Query
   options?: UseQueryOptions<GetHotelRoomsQuery, TError, TData>
 ) =>
   useQuery<GetHotelRoomsQuery, TError, TData>(
-    ['getHotelRooms', variables],
+    variables === undefined ? ['getHotelRooms'] : ['getHotelRooms', variables],
     useFetchData<GetHotelRoomsQuery, GetHotelRoomsQueryVariables>(GetHotelRoomsDocument).bind(null, variables),
     options
   )
@@ -10074,7 +10524,7 @@ export const useGetHotelRoomDetailsQuery = <TData = GetHotelRoomDetailsQuery, TE
   options?: UseQueryOptions<GetHotelRoomDetailsQuery, TError, TData>
 ) =>
   useQuery<GetHotelRoomDetailsQuery, TError, TData>(
-    ['getHotelRoomDetails', variables],
+    variables === undefined ? ['getHotelRoomDetails'] : ['getHotelRoomDetails', variables],
     useFetchData<GetHotelRoomDetailsQuery, GetHotelRoomDetailsQueryVariables>(GetHotelRoomDetailsDocument).bind(
       null,
       variables
@@ -10157,7 +10607,7 @@ export const useGetLookupsQuery = <TData = GetLookupsQuery, TError = QueryError>
   options?: UseQueryOptions<GetLookupsQuery, TError, TData>
 ) =>
   useQuery<GetLookupsQuery, TError, TData>(
-    ['getLookups', variables],
+    variables === undefined ? ['getLookups'] : ['getLookups', variables],
     useFetchData<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument).bind(null, variables),
     options
   )
@@ -10491,7 +10941,7 @@ export const useGetSettingsQuery = <TData = GetSettingsQuery, TError = QueryErro
   options?: UseQueryOptions<GetSettingsQuery, TError, TData>
 ) =>
   useQuery<GetSettingsQuery, TError, TData>(
-    ['getSettings', variables],
+    variables === undefined ? ['getSettings'] : ['getSettings', variables],
     useFetchData<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument).bind(null, variables),
     options
   )
@@ -10556,7 +11006,7 @@ export const useGetSlotsQuery = <TData = GetSlotsQuery, TError = QueryError>(
   options?: UseQueryOptions<GetSlotsQuery, TError, TData>
 ) =>
   useQuery<GetSlotsQuery, TError, TData>(
-    ['getSlots', variables],
+    variables === undefined ? ['getSlots'] : ['getSlots', variables],
     useFetchData<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument).bind(null, variables),
     options
   )
@@ -10622,7 +11072,7 @@ export const useGetAllUsersQuery = <TData = GetAllUsersQuery, TError = QueryErro
   options?: UseQueryOptions<GetAllUsersQuery, TError, TData>
 ) =>
   useQuery<GetAllUsersQuery, TError, TData>(
-    ['getAllUsers', variables],
+    variables === undefined ? ['getAllUsers'] : ['getAllUsers', variables],
     useFetchData<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument).bind(null, variables),
     options
   )
@@ -10640,7 +11090,7 @@ export const useGetAllUsersAndProfilesQuery = <TData = GetAllUsersAndProfilesQue
   options?: UseQueryOptions<GetAllUsersAndProfilesQuery, TError, TData>
 ) =>
   useQuery<GetAllUsersAndProfilesQuery, TError, TData>(
-    ['getAllUsersAndProfiles', variables],
+    variables === undefined ? ['getAllUsersAndProfiles'] : ['getAllUsersAndProfiles', variables],
     useFetchData<GetAllUsersAndProfilesQuery, GetAllUsersAndProfilesQueryVariables>(
       GetAllUsersAndProfilesDocument
     ).bind(null, variables),

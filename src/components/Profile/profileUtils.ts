@@ -12,9 +12,11 @@ export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'n
 type ProfileValues = ToFormValues<GqlType<UsersAndProfiles, ['profiles', 'nodes', number]>>
 
 export type UsersAndProfileType = Omit<UsersAndProfiles, 'profiles' | 'nodeId' | '__typename'> & {
-  profiles?: {
-    nodes?: Maybe<ProfileValues>[]
-  }
+  profiles?:
+    | {
+        nodes?: (Maybe<ProfileValues> | undefined)[] | undefined
+      }
+    | undefined
 }
 
 export const userFromProfileValues = (profileValues: UsersAndProfileType) =>

@@ -31,5 +31,5 @@ export const useProfile = (): ProfileFormType | null => {
     return null
   }
 
-  return data.userByEmail!
+  return data.userByEmail ? data.userByEmail : null
 }

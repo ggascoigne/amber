@@ -30,7 +30,7 @@ const AUTH_CONFIG = {
 
 type Auth0Client = ThenArg<ReturnType<typeof createAuth0Client>>
 
-type AccessToken = {
+export type AccessToken = {
   iss?: string
   sub?: string
   aud?: string[]
@@ -51,6 +51,7 @@ export interface Auth0User extends AuthInfo {
   nickname: string
   picture: string
   sub: string
+  decodedToken?: AccessToken
 }
 
 interface ContextValueType {
@@ -116,8 +117,8 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const getEnrichedUser = async (client: Auth0Client) => {
     const userProfile = await client.getUser()
     const token = await client.getTokenSilently()
-    const decodedToken: AccessToken | undefined = token && JwtDecode(token)
-    return decodedToken ? { ...userProfile, ...decodedToken[AUTH_CONFIG.audience] } : userProfile
+    const decodedToken: AccessToken | undefined = token ? JwtDecode<AccessToken>(token) : undefined
+    return decodedToken ? { ...userProfile, ...decodedToken[AUTH_CONFIG.audience], decodedToken } : userProfile
   }
 
   useEffect(() => {

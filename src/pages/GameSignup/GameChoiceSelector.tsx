@@ -201,12 +201,14 @@ export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
   }
 }
 
-export type MaybeGameChoice = Maybe<
-  { __typename: 'GameChoice' } & Pick<
-    GameChoice,
-    'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
-  > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
->
+export type MaybeGameChoice =
+  | Maybe<
+      { __typename: 'GameChoice' } & Pick<
+        GameChoice,
+        'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
+      > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
+    >
+  | undefined
 
 export interface SelectorUpdate {
   gameChoices?: MaybeGameChoice[]
