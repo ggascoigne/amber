@@ -34,6 +34,14 @@ const Reports = () => (
           Download GM Report
         </AuthenticatedDownloadButton>
       </ListItem>
+      <ListItem>
+        <AuthenticatedDownloadButton
+          url='/api/reports/gamesAndPlayers'
+          filename={`gamesAndPlayers-${configuration.year}.xlsx`}
+        >
+          Download Game and Players Report
+        </AuthenticatedDownloadButton>
+      </ListItem>
     </List>
   </Page>
 )
