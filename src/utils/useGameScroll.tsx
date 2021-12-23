@@ -32,7 +32,7 @@ export const useScrollToHash = () => {
             // todo: rewrite without accessing the DOM
             const el = document.getElementById(`game/${year}/${slot}/${game}`)
             if (el) {
-              const y = el.getBoundingClientRect().top + window.pageYOffset - 105
+              const y = el.getBoundingClientRect().top + window.scrollY - 105
               window.scrollTo({ top: y })
             }
           }),

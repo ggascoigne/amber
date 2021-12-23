@@ -13,3 +13,5 @@ export const range2 = (end: number, start = 0, step = 1) => {
     [Symbol.iterator]: generateRange,
   }
 }
+
+// also see https://github.com/GreLI/es-range-generator/blob/main/index.js

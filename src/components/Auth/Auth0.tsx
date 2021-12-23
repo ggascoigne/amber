@@ -61,7 +61,7 @@ interface ContextValueType {
   isPopupOpen?: boolean
   loginWithPopup?: (o?: PopupLoginOptions) => Promise<void>
   handleRedirectCallback?: () => Promise<RedirectLoginResult>
-  getIdTokenClaims?: (o?: getIdTokenClaimsOptions) => Promise<IdToken>
+  getIdTokenClaims?: (o?: getIdTokenClaimsOptions) => Promise<IdToken | undefined>
   loginWithRedirect?: (o?: RedirectLoginOptions) => Promise<void>
   getTokenSilently?: (o?: GetTokenSilentlyOptions) => Promise<string | undefined>
   getTokenWithPopup?: (o?: GetTokenWithPopupOptions) => Promise<string | undefined>
@@ -82,7 +82,7 @@ export const useAuth: () => ContextValueType = () => useContext(Auth0Context)
 
 interface Auth0ProviderOptions {
   children: React.ReactElement
-  onRedirectCallback?: (history: History<any>, result?: RedirectLoginResult) => void
+  onRedirectCallback?: (history: History, result?: RedirectLoginResult) => void
 }
 
 const auth0ClientConfig: Auth0ClientOptions = {
@@ -95,7 +95,7 @@ const auth0ClientConfig: Auth0ClientOptions = {
   scope: 'openid profile email',
 }
 
-const onAuthRedirectCallback = (history: History<any>, redirectResult?: RedirectLoginResult) => {
+const onAuthRedirectCallback = (history: History, redirectResult?: RedirectLoginResult) => {
   // Clears auth0 query string parameters from url
   const targetUrl = redirectResult?.appState?.targetUrl ? redirectResult.appState.targetUrl : window.location.pathname
 

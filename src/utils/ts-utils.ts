@@ -30,6 +30,10 @@ export type Edges<T> = Array<{ node: Maybe<T> }>
 
 export type ThenArg<T> = T extends PromiseLike<infer U> ? U : T
 
+export function keys<O extends Record<string, unknown>>(obj: O): Array<keyof O> {
+  return Object.keys(obj) as Array<keyof O>
+}
+
 // extract the type from an array
 export type UnpackArray<T> = T extends (infer U)[] ? U : T
 
@@ -40,6 +44,10 @@ export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 export function notEmpty<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined
 }
+
+type NonEmptyArray<T> = readonly [T, ...ReadonlyArray<T>]
+
+const isNonEmpty = <T>(array: ReadonlyArray<T> | undefined): array is NonEmptyArray<T> => !!array && array.length > 0
 
 export type ContentsOf<T, K extends keyof T> = NonNullable<UnpackArray<T[K]>>
 
@@ -63,7 +71,7 @@ export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: s
 // There are a lot of places where the obvious change would be to reference Record<string,unknown> but we pass objects
 // defined by interface rather than by type in a lot of places (in generated code that's tricky to change) When you do
 // that, you get tsc errors about Index Signatures missing. This is an issue with TypeScript interfaces in general: a
-// specific interface cannot be saved into a more generic interface. However a specific type can be saved into a more
+// specific interface cannot be saved into a more generic interface. However, a specific type can be saved into a more
 // generic type.  Using the ObjectOf construct enforces the object extension without falling into this trap.
 
 export type ObjectOf<T> = { [P in keyof T]: T[P] }
