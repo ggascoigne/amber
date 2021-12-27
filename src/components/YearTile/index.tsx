@@ -1,6 +1,5 @@
 import { Typography, createStyles, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import React from 'react'
 
 import { Card, CardBody, CardHeader } from '../Card'
 import { GameCard } from '../GameCard'

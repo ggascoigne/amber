@@ -26,7 +26,7 @@ describe('slot times', () => {
         local: true,
         altFormat: SlotFormat.SHORT,
       }),
-      output: 'Slot 1: Thu 11 am to 3 pm PST',
+      output: 'Slot 1: Thu 11:00 am to 3:00 pm PST',
     },
     {
       input: getSlotDescription({

@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core'
 import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@material-ui/core/RadioGroup'
 import { useField } from 'formik'
-import React from 'react'
 
 import { SelectValues, getSelectLabel, getSelectValue } from './SelectField'
 

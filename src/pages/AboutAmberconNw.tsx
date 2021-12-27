@@ -1,6 +1,5 @@
 import { useTheme } from '@material-ui/core'
 import { Page } from 'components/Page'
-import React from 'react'
 
 // @ts-ignore
 import AboutAmberconNwContent, { frontMatter as acnwFm } from '../content/AboutAmberconNwContent.mdx'

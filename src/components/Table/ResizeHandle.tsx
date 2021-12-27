@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import React, { ReactElement } from 'react'
+import { ReactElement } from 'react'
 import { ColumnInstance } from 'react-table'
 
 import { TableStyleOptions, useStyles } from './TableStyles'

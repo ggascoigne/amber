@@ -1,8 +1,5 @@
 import 'react-app-polyfill/ie11'
 
-///<reference types="webpack-env" />
-import './wdyr' // <--- first import
-
 import LuxonUtils from '@date-io/luxon'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { Provider as JotaiProvider } from 'jotai'

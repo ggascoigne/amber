@@ -2,7 +2,7 @@ import { MutableRefObject, RefCallback } from 'react'
 
 type RefType<T> = RefCallback<T> | MutableRefObject<T> | null
 
-export const mergeRefs = <T extends any>(...refs: RefType<T>[]) => {
+export const mergeRefs = <T>(...refs: RefType<T>[]) => {
   const filteredRefs = refs.filter(Boolean)
   if (!filteredRefs.length) return null
   if (filteredRefs.length === 0) return filteredRefs[0]

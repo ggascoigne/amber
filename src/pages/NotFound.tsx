@@ -1,7 +1,6 @@
 import { Typography } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 import { Page } from 'components/Page'
-import React from 'react'
 
 export const NotFound = () => (
   <Page title='Not Found'>

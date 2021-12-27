@@ -1,5 +1,4 @@
 import { DatePicker as MuiDatePicker, DatePickerProps as MuiDatePickerProps } from '@material-ui/pickers'
-import React from 'react'
 
 import { useDatePickerProps } from './datePickerUtils'
 

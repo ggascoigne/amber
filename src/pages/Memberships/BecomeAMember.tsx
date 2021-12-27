@@ -1,5 +1,5 @@
 import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import React, { MouseEventHandler, useCallback } from 'react'
+import { MouseEventHandler, useCallback } from 'react'
 import { Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import { IsNotMember, configuration, useSetting } from 'utils'
 

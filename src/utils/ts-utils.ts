@@ -47,7 +47,8 @@ export function notEmpty<T>(value: T): value is NonNullable<T> {
 
 type NonEmptyArray<T> = readonly [T, ...ReadonlyArray<T>]
 
-const isNonEmpty = <T>(array: ReadonlyArray<T> | undefined): array is NonEmptyArray<T> => !!array && array.length > 0
+export const isNonEmpty = <T>(array: ReadonlyArray<T> | undefined): array is NonEmptyArray<T> =>
+  !!array && array.length > 0
 
 export type ContentsOf<T, K extends keyof T> = NonNullable<UnpackArray<T[K]>>
 

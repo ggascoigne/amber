@@ -1,5 +1,3 @@
-import React from 'react'
-
 // @ts-ignore
 import AccommodationsContent, { frontMatter } from '../content/AccommodationsContent.mdx'
 import { MdxPage } from './MdxPage'

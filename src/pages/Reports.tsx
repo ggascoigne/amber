@@ -1,7 +1,6 @@
 import { List, ListItem } from '@material-ui/core'
 import { AuthenticatedDownloadButton } from 'components/AuthenticatedDownloadButton'
 import { Page } from 'components/Page'
-import React from 'react'
 
 import { configuration } from '../utils'
 

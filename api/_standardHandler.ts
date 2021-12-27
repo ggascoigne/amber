@@ -1,15 +1,15 @@
-import { NowRequest, NowResponse } from '@now/node'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
 export interface Handler {
-  (req: NowRequest, res: NowResponse, next: (err?: any) => void): Promise<any>
+  (req: VercelRequest, res: VercelResponse, next: (err?: any) => void): Promise<any>
 }
 
 export function combineHandlers(handlers: Array<Handler>) {
   return handlers.reduce(
     (
-        parent: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void,
-        fn: (req: NowRequest, res: NowResponse, next: (err?: any) => void) => void
-      ): ((req: NowRequest, res: NowResponse, next: (err?: any) => void) => void) =>
+        parent: (req: VercelRequest, res: VercelResponse, next: (err?: any) => void) => void,
+        fn: (req: VercelRequest, res: VercelResponse, next: (err?: any) => void) => void
+      ): ((req: VercelRequest, res: VercelResponse, next: (err?: any) => void) => void) =>
       (req, res, next) => {
         parent(req, res, (error) => {
           if (error) {
@@ -18,12 +18,12 @@ export function combineHandlers(handlers: Array<Handler>) {
           fn(req, res, next)
         })
       },
-    (_req: NowRequest, _res: NowResponse, next: (err?: any) => void) => next()
+    (_req: VercelRequest, _res: VercelResponse, next: (err?: any) => void) => next()
   )
 }
 
 export function withApiHandler(handlers: Handler[]): Handler {
-  return async (req: NowRequest, res: NowResponse) => {
+  return async (req: VercelRequest, res: VercelResponse) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Methods', 'GET')
     res.setHeader('Access-Control-Allow-Headers', 'Authorization, Accept, Content-Type')

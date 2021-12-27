@@ -8,5 +8,6 @@ const mdxComponents = {
 }
 
 export const MdxWithExternalLinks: React.FC = ({ children }) => (
+// @ts-ignore
   <MDXProvider components={mdxComponents}>{children}</MDXProvider>
 )

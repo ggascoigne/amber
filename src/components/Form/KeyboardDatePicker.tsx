@@ -2,7 +2,6 @@ import {
   KeyboardDatePicker as MuiKeyboardDatePicker,
   KeyboardDatePickerProps as MuiKeyboardDatePickerProps,
 } from '@material-ui/pickers'
-import React from 'react'
 
 import { useDatePickerProps } from './datePickerUtils'
 

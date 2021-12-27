@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { FormikProps } from 'formik/dist/types'
-import React, { ReactElement, ReactNode, useCallback } from 'react'
+import { ReactElement, ReactNode, useCallback } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 import { onCloseHandler } from '../utils'

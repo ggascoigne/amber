@@ -1,6 +1,5 @@
 import { GameBookMenu } from 'pages/GameBook/GameBookMenu'
 import { GameSignupMenu } from 'pages/GameSignup/GameSignupMenu'
-import React from 'react'
 
 // This controls overriding the nav menu based on the route
 

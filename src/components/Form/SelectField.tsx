@@ -1,6 +1,6 @@
 import { Checkbox, ListItemText, MenuItem, Theme, createStyles, makeStyles } from '@material-ui/core'
 import { useField } from 'formik'
-import React from 'react'
+import * as React from 'react'
 
 import { TextField, TextFieldProps } from './TextField'
 

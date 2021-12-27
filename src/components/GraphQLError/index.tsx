@@ -1,6 +1,5 @@
 import Typography from '@material-ui/core/Typography'
 import { QueryError } from 'client'
-import React from 'react'
 
 import { Quote } from '../Typography'
 
