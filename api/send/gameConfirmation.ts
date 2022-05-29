@@ -1,13 +1,13 @@
-import { Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
-import { GameConfirmation } from '../../src/utils/apiTypes'
+import { GameConfirmationBody } from '../../src/utils/apiTypes'
 import { getPlayerPreference } from '../../src/utils/selectValues'
 import { requireJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 import { withApiHandler } from '../_standardHandler'
-import { RequestOf, emailer } from './_email'
+import { emailer } from './_email'
 
 // /api/send/gameConfirmation
 // auth token: required
@@ -22,10 +22,10 @@ import { RequestOf, emailer } from './_email'
 
 export default withApiHandler([
   requireJwt,
-  async (req: RequestOf<GameConfirmation>, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
-      const { year, name, email, url, game, update = false } = req.body
+      const { year, name, email, url, game, update = false } = req.body as GameConfirmationBody
       if (!year) throw new JsonError(400, 'missing year')
       if (!name) throw new JsonError(400, 'missing name')
       if (!email) throw new JsonError(400, 'missing email')

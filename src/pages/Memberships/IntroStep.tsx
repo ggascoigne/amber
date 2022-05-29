@@ -1,4 +1,4 @@
-import { DialogContentText } from '@material-ui/core'
+import { DialogContentText } from '@mui/material'
 import { Acnw, ConfigDate } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'

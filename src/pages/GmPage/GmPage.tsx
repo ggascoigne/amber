@@ -1,4 +1,4 @@
-import { Button, Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Button, Theme } from '@mui/material'
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -10,6 +10,7 @@ import React, { MouseEventHandler, useState } from 'react'
 import { useQueryClient } from 'react-query'
 import { Redirect, Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 import { configuration, notEmpty, useGetMemberShip, useSetting, useUser, useYearFilter } from 'utils'
 
 import { GraphQLError } from '../../components/GraphQLError'
@@ -20,16 +21,14 @@ import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    blurb: {
-      '& li': {
-        paddingBottom: 10,
-        paddingRight: 40,
-      },
+const useStyles = makeStyles()((theme: Theme) => ({
+  blurb: {
+    '& li': {
+      paddingBottom: 10,
+      paddingRight: 40,
     },
-  })
-)
+  },
+}))
 
 const columns: Column<Game>[] = [
   {
@@ -92,7 +91,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useDeleteGameMutation()
   const queryClient = useQueryClient()
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { userId } = useUser()
   const displayGameBook = useSetting('display.game.book')
   // you can only delete games for the current year, and only if they haven't been published.

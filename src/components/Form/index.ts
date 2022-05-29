@@ -1,7 +1,6 @@
 export * from './Checkbox'
 export * from './CheckboxWithLabel'
 export * from './DatePicker'
-export * from './KeyboardDatePicker'
 export * from './LookupField'
 export * from './LookupRadioField'
 export * from './RadioGroupFieldWithLabel'

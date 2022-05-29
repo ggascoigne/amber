@@ -1,9 +1,13 @@
-import React, { createRef } from 'react'
+import React, { PropsWithChildren, createRef } from 'react'
 
 import { useToken } from './Auth/Auth0'
 import { useNotification } from './Notifications'
 
-export const AuthenticatedLink: React.FC<{ url: string; filename: string }> = ({ url, filename, children }) => {
+export const AuthenticatedLink: React.FC<PropsWithChildren<{ url: string; filename: string }>> = ({
+  url,
+  filename,
+  children,
+}) => {
   const [jwtToken] = useToken()
   const link = createRef<any>()
   const notify = useNotification()

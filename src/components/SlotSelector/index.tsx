@@ -1,14 +1,14 @@
-import { Tab, Tabs, Theme, createStyles, makeStyles } from '@material-ui/core'
-import clsx from 'clsx'
+import { Tab, Tabs, Theme } from '@mui/material'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
 
 import { Card, CardHeader } from '../Card'
 import { SlotDecorator, SlotDecoratorParams } from '../types'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
+const useStyles = makeStyles<void, 'tabsRoot' | 'cardHeader' | 'tabRootButton' | 'slot'>()(
+  (theme: Theme, _params, classes) => ({
     card: {
       // zIndex: 200
     },
@@ -90,16 +90,16 @@ const useStyles = makeStyles((theme: Theme) =>
       marginLeft: 5,
       marginBottom: 10,
       width: '95%',
-      '& $tabsRoot': {
+      [`& .${classes.tabsRoot}`]: {
         paddingLeft: 3,
       },
-      '& $cardHeader': {
+      [`& .${classes.cardHeader}`]: {
         padding: 0,
       },
-      '& $tabRootButton': {
+      [`& .${classes.tabRootButton}`]: {
         padding: '8px 9px',
       },
-      '& $slot': {
+      [`& .${classes.slot}`]: {
         marginBottom: 10,
         marginTop: -16,
       },
@@ -122,7 +122,7 @@ interface SlotSelectorProps {
 }
 
 export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, decorator, decoratorParams = {} }) => {
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
   const history = useHistory()
@@ -168,7 +168,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
 
   if (year === 0) return null
   return (
-    <div className={clsx({ [classes.small]: small })}>
+    <div className={cx({ [classes.small]: small })}>
       <Card className={classes.card}>
         <div ref={tabsRef}>
           <CardHeader color='success' className={classes.cardHeader} plain>
@@ -181,7 +181,8 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
               value={slot - 1}
               onChange={handleChange}
               variant='scrollable'
-              scrollButtons={scrollButtons}
+              allowScrollButtonsMobile
+              // scrollButtons={scrollButtons}
               classes={{
                 root: classes.tabsRoot,
                 indicator: classes.displayNone,
@@ -192,7 +193,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
                   classes={{
                     root: classes.tabRootButton,
                     selected: classes.tabSelected,
-                    wrapper: classes.tabWrapper,
+                    // wrapper: classes.tabWrapper,
                   }}
                   key={slot + 1}
                   label={

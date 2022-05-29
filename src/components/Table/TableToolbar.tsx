@@ -1,42 +1,40 @@
-import { Button, IconButton, Theme, Toolbar, Tooltip, createStyles, makeStyles } from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import CachedIcon from '@material-ui/icons/Cached'
-import CreateIcon from '@material-ui/icons/CreateOutlined'
-import DeleteIcon from '@material-ui/icons/DeleteOutline'
-import FilterListIcon from '@material-ui/icons/FilterList'
-import ViewColumnsIcon from '@material-ui/icons/ViewColumn'
-import clsx from 'clsx'
+import AddIcon from '@mui/icons-material/Add'
+import CachedIcon from '@mui/icons-material/Cached'
+import CreateIcon from '@mui/icons-material/CreateOutlined'
+import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import ViewColumnsIcon from '@mui/icons-material/ViewColumn'
+import { Button, IconButton, Theme, Toolbar, Tooltip } from '@mui/material'
 import { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
 import { ColumnHidePage } from './ColumnHidePage'
 import { FilterPage } from './FilterPage'
 
-export const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    toolbar: {
-      display: 'flex',
-      justifyContent: 'space-between',
+export const useStyles = makeStyles()((theme: Theme) => ({
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  leftButtons: {},
+  rightButtons: {},
+  leftIcons: {
+    '&:first-of-type': {
+      marginLeft: -12,
     },
-    leftButtons: {},
-    rightButtons: {},
-    leftIcons: {
-      '&:first-of-type': {
-        marginLeft: -12,
-      },
+  },
+  rightIcons: {
+    padding: 12,
+    marginTop: '-6px',
+    width: 48,
+    height: 48,
+    '&:last-of-type': {
+      marginRight: -12,
     },
-    rightIcons: {
-      padding: 12,
-      marginTop: '-6px',
-      width: 48,
-      height: 48,
-      '&:last-of-type': {
-        marginRight: -12,
-      },
-    },
-  })
-)
+  },
+}))
 
 interface ActionButton<T extends Record<string, unknown>> {
   instance: TableInstance<T>
@@ -69,14 +67,15 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
   enabled = () => true,
   variant,
 }: ActionButton<T>) => {
-  const classes = useStyles({})
+  const { classes, cx } = useStyles()
   return (
     <Tooltip title={label} aria-label={label}>
       <span>
         <IconButton
-          className={clsx({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
+          className={cx({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
           onClick={onClick(instance)}
           disabled={!enabled(instance)}
+          size='large'
         >
           {icon}
         </IconButton>
@@ -111,7 +110,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
   onRefresh,
 }: PropsWithChildren<TableToolbarProps<T>>): ReactElement | null {
   const { columns } = instance
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)
   const [columnsOpen, setColumnsOpen] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)

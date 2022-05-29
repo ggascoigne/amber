@@ -1,7 +1,9 @@
-import { audience, authDomain } from './_constants'
+import fs from 'fs'
 
-const jwt = require('express-jwt')
-const fs = require('fs')
+import { expressjwt as jwt } from 'express-jwt'
+
+import { audience, authDomain } from './_constants'
+import { Handler } from './_standardHandler'
 
 const public_key = fs.readFileSync(`${__dirname}/../shared/certs/${authDomain}.pem`).toString()
 
@@ -13,7 +15,7 @@ export const checkJwt = jwt({
   issuer: `https://${authDomain}/`,
   algorithms: ['RS256'],
   credentialsRequired: false,
-})
+}) as unknown as Handler
 
 export const requireJwt = jwt({
   secret: public_key,
@@ -21,7 +23,7 @@ export const requireJwt = jwt({
   issuer: `https://${authDomain}/`,
   algorithms: ['RS256'],
   credentialsRequired: true,
-})
+}) as unknown as Handler
 
 export const getUserId = (user: any) => user?.[audience]?.userId
 

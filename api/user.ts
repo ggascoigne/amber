@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
 import { requireJwt } from './_checkJwt'
 import { getManagementApiAccessToken } from './_getManagementApiAccessToken'
@@ -11,7 +11,7 @@ import { withApiHandler } from './_standardHandler'
 
 export default withApiHandler([
   requireJwt,
-  async (req: Request, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       /*const { access_token } =*/ await getManagementApiAccessToken()
       res.send({ message: 'nothing to see here' })

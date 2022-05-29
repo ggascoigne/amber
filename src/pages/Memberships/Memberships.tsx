@@ -1,4 +1,4 @@
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import { useDeleteMembershipMutation, useGetMembershipsByYearQuery } from 'client'
 import { BlankNoCell, DateCell, YesBlankCell } from 'components/CellFormatters'
 import { useProfile } from 'components/Profile'

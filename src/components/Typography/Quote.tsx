@@ -9,7 +9,7 @@ interface QuoteProps {
 
 export const Quote: React.FC<QuoteProps> = (props) => {
   const { text, author } = props
-  const classes = useTypographyStyles()
+  const { classes } = useTypographyStyles()
   return (
     <blockquote className={classes.defaultFontStyle + ' ' + classes.quote}>
       <p className={classes.quoteText}>{text}</p>

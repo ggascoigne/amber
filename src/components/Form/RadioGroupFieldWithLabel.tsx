@@ -1,29 +1,19 @@
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  MenuItem,
-  Radio,
-  Theme,
-  createStyles,
-  makeStyles,
-} from '@material-ui/core'
-import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@material-ui/core/RadioGroup'
+import { FormControl, FormControlLabel, FormLabel, MenuItem, Radio, Theme } from '@mui/material'
+import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
 import { useField } from 'formik'
+import { makeStyles } from 'tss-react/mui'
 
 import { SelectValues, getSelectLabel, getSelectValue } from './SelectField'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    menuItem: {
-      whiteSpace: 'normal',
-      height: 35,
-      '&:first-child': {
-        paddingTop: theme.spacing(2),
-      },
+const useStyles = makeStyles()((theme: Theme) => ({
+  menuItem: {
+    whiteSpace: 'normal',
+    height: 35,
+    '&:first-of-type': {
+      paddingTop: theme.spacing(2),
     },
-  })
-)
+  },
+}))
 
 export interface RadioGroupProps extends Omit<MuiRadioGroupProps, 'onChange' | 'value' | 'error'>, SelectValues {
   name: string
@@ -35,7 +25,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
   const { touched, error } = meta
   const showError = touched && !!error
   const { selectValues, children, ...rest } = props
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const fullProps = {
     ...rest,

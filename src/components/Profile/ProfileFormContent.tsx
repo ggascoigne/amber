@@ -1,6 +1,7 @@
-import { DialogContentText, createStyles, makeStyles } from '@material-ui/core'
+import { DialogContentText } from '@mui/material'
 import { TextField } from 'components/Form'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { HasPermission, Perms, useAuth } from '../Auth'
 import { GridContainer, GridItem } from '../Grid'
@@ -9,13 +10,11 @@ import { UsersAndProfileType } from './profileUtils'
 
 export type ProfileFormType = UsersAndProfileType
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    important: {
-      marginBottom: 12,
-    },
-  })
-)
+const useStyles = makeStyles()(() => ({
+  important: {
+    marginBottom: 12,
+  },
+}))
 
 interface ProfileFormContentProps {
   prefix?: string
@@ -24,7 +23,7 @@ interface ProfileFormContentProps {
 export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix = '' }) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const classes = useStyles({})
+  const { classes } = useStyles()
   return (
     <>
       <DialogContentText>

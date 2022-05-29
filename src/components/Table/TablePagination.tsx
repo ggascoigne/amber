@@ -1,21 +1,20 @@
-import { TablePagination as MuiTablePagination } from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import { Theme, createStyles, makeStyles, useTheme } from '@material-ui/core/styles'
-import FirstPageIcon from '@material-ui/icons/FirstPage'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import LastPageIcon from '@material-ui/icons/LastPage'
+import FirstPageIcon from '@mui/icons-material/FirstPage'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import LastPageIcon from '@mui/icons-material/LastPage'
+import { TablePagination as MuiTablePagination } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import { Theme, useTheme } from '@mui/material/styles'
 import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
 import type { TableInstance } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexShrink: 0,
-      marginLeft: theme.spacing(2.5),
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  root: {
+    flexShrink: 0,
+    marginLeft: theme.spacing(2.5),
+  },
+}))
 
 interface TablePaginationActionsProps {
   count: number
@@ -25,7 +24,7 @@ interface TablePaginationActionsProps {
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const theme = useTheme()
   const { count, page, rowsPerPage, onPageChange } = props
 
@@ -47,16 +46,17 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
   return (
     <div className={classes.root}>
-      <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label='first page'>
+      <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label='first page' size='large'>
         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
-      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label='previous page'>
+      <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label='previous page' size='large'>
         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
       </IconButton>
       <IconButton
         onClick={handleNextButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label='next page'
+        size='large'
       >
         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
       </IconButton>
@@ -64,6 +64,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
         onClick={handleLastPageButtonClick}
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         aria-label='last page'
+        size='large'
       >
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>

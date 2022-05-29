@@ -1,4 +1,3 @@
-import clsx from 'clsx'
 import { ReactElement } from 'react'
 import { ColumnInstance } from 'react-table'
 
@@ -11,12 +10,12 @@ export const ResizeHandle = <T extends Record<string, unknown>>({
   column: ColumnInstance<T>
   tableStyleOptions: TableStyleOptions
 }): ReactElement => {
-  const classes = useStyles(tableStyleOptions)
+  const { classes, cx } = useStyles(tableStyleOptions)
   return (
     <div
       {...column.getResizerProps()}
       style={{ cursor: 'col-resize' }} // override the useResizeColumns default
-      className={clsx({
+      className={cx({
         [classes.resizeHandle]: true,
         handleActive: column.isResizing,
       })}

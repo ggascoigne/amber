@@ -1,35 +1,33 @@
-import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import clsx from 'clsx'
-import React from 'react'
+import { Theme } from '@mui/material'
+import React, { PropsWithChildren } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { CardHeader } from './Card'
 import { GridItem } from './Grid'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    gridItem: {
-      paddingBottom: 10,
+const useStyles = makeStyles()((theme: Theme) => ({
+  gridItem: {
+    paddingBottom: 10,
+  },
+  label: {
+    fontWeight: 500,
+    minWidth: 80,
+  },
+  tinyHeaderText: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+  },
+  header: {
+    display: 'flex',
+    flex: 1,
+    justifyContent: 'space-between',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 0,
+      marginRight: 0,
     },
-    label: {
-      fontWeight: 500,
-      minWidth: 80,
-    },
-    tinyHeaderText: {
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      textOverflow: 'ellipsis',
-    },
-    header: {
-      display: 'flex',
-      flex: 1,
-      justifyContent: 'space-between',
-      [theme.breakpoints.down('sm')]: {
-        marginLeft: 0,
-        marginRight: 0,
-      },
-    },
-  })
-)
+  },
+}))
 
 export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   <>
@@ -39,13 +37,17 @@ export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   </>
 )
 
-export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name, tiny = false, children }) => {
-  const classes = useStyles()
+export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: boolean }>> = ({
+  name,
+  tiny = false,
+  children,
+}) => {
+  const { classes, cx } = useStyles()
   return (
     <CardHeader color='info' className={classes.header}>
       <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
         <GridItem xs={12} sm={children ? 7 : 12}>
-          <h4 className={clsx({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
+          <h4 className={cx({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
         </GridItem>
         {children && (
           <GridItem xs={12} sm={5}>
@@ -57,16 +59,16 @@ export const HeaderContent: React.FC<{ name: string; tiny?: boolean }> = ({ name
   )
 }
 
-export const Field: React.FC<{ label: string; small?: boolean; tiny?: boolean }> = ({
+export const Field: React.FC<PropsWithChildren<{ label: string; small?: boolean; tiny?: boolean }>> = ({
   label,
   children,
   small,
   tiny = false,
 }) => {
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   return (
     <>
-      <GridItem xs={12} sm={2} className={clsx(classes.gridItem, classes.label)}>
+      <GridItem xs={12} sm={2} className={cx(classes.gridItem, classes.label)}>
         {label}
       </GridItem>
       <GridItem xs={12} sm={small ? 4 : tiny ? 8 : 10} className={classes.gridItem}>

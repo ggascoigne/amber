@@ -6,9 +6,7 @@ import cli from 'cli-ux'
 import { printSchema } from 'graphql'
 import { createPostGraphileSchema } from 'postgraphile'
 
-// @ts-ignore
 import { PoolType, getPool, getSchemas } from '../shared/config'
-// @ts-ignore
 import { options } from '../shared/postgraphileOptions'
 
 // Download the schema for codegen, also (and as importantly), save the

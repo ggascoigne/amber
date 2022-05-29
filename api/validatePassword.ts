@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 import fetch from 'isomorphic-fetch'
 
 import { requireJwt } from './_checkJwt'
@@ -38,7 +38,7 @@ const validatePassword = async (username: string, password: string) => {
 
 export default withApiHandler([
   requireJwt,
-  async (req: Request, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       if (!req.body) throw new JsonError(400, 'missing body: expecting password')
       const { password } = req.body

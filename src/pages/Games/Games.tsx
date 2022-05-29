@@ -1,5 +1,4 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import CachedIcon from '@material-ui/icons/Cached'
+import CachedIcon from '@mui/icons-material/Cached'
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -7,12 +6,12 @@ import {
   useGetGamesByYearQuery,
   useGetMembershipsByYearQuery,
 } from 'client'
-import clsx from 'clsx'
 import { YesBlankCell } from 'components/CellFormatters'
 import { GraphQLError } from 'components/GraphQLError'
 import { Table } from 'components/Table'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 import { notEmpty, useYearFilter } from 'utils'
 
 import type { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -132,20 +131,19 @@ const columns: Column<Game>[] = [
   { accessor: 'full', Cell: YesBlankCell, sortType: 'basic' },
 ]
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    fixBusy: {
-      color: 'red',
-    },
-  })
-)
+const useStyles = makeStyles()({
+  fixBusy: {
+    color: 'red',
+  },
+})
+
 const Games: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useDeleteGameMutation()
   const [fixBusy, setFixBusy] = useState(false)
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const { error, data, refetch } = useGetGamesByYearQuery({
     year,
   })
@@ -178,11 +176,11 @@ const Games: React.FC = React.memo(() => {
       {
         label: 'Fix GM Names',
         onClick: onUpdateGmNames,
-        icon: <CachedIcon className={clsx({ [classes.fixBusy]: fixBusy })} />,
+        icon: <CachedIcon className={cx({ [classes.fixBusy]: fixBusy })} />,
         enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
       },
     ],
-    [classes.fixBusy, fixBusy, onUpdateGmNames]
+    [classes.fixBusy, cx, fixBusy, onUpdateGmNames]
   )
 
   if (error) {

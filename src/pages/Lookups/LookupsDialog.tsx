@@ -1,17 +1,6 @@
-import {
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Theme,
-  Typography,
-  createStyles,
-  makeStyles,
-} from '@material-ui/core'
-import AddIcon from '@material-ui/icons/Add'
-import DeleteIcon from '@material-ui/icons/Delete'
+import AddIcon from '@mui/icons-material/Add'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@mui/material'
 import {
   CreateLookupMutation,
   useCreateLookupMutation,
@@ -22,6 +11,7 @@ import {
 } from 'client'
 import { FieldArray, FormikHelpers } from 'formik'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 import Yup from 'utils/Yup'
 
 import { Card, CardBody, CardHeader } from '../../components/Card'
@@ -31,41 +21,39 @@ import { GridContainer, GridItem } from '../../components/Grid'
 import { ToFormValues } from '../../utils'
 import { LookupAndValues } from './Lookups'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-      marginTop: theme.spacing(3),
-      overflowX: 'auto',
+const useStyles = makeStyles()((theme: Theme) => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 700,
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 24,
+    paddingRight: 24,
+  },
+  title: {
+    color: '#fff',
+    fontWeight: 300,
+    textTransform: 'none',
+  },
+  iconButton: {
+    color: '#fff',
+    '&:hover': {
+      backgroundColor: 'rgba(255, 255, 255, 0.08)',
     },
-    table: {
-      minWidth: 700,
-    },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingLeft: 24,
-      paddingRight: 24,
-    },
-    title: {
-      color: '#fff',
-      fontWeight: 300,
-      textTransform: 'none',
-    },
-    iconButton: {
-      color: '#fff',
-      '&:hover': {
-        backgroundColor: 'rgba(255, 255, 255, 0.08)',
-      },
-    },
-    addIcon: {},
-    deleteIcon: {},
-    deleteButton: {
-      color: theme.palette.grey[500],
-    },
-  })
-)
+  },
+  addIcon: {},
+  deleteIcon: {},
+  deleteButton: {
+    color: theme.palette.grey[500],
+  },
+}))
 
 type LookupAndValuesType = ToFormValues<LookupAndValues>
 
@@ -94,7 +82,7 @@ const defaultValues: LookupAndValuesType = {
 }
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const createLookup = useCreateLookupMutation()
   const updateLookup = useUpdateLookupByNodeIdMutation()
   const createLookupValue = useCreateLookupValueMutation()
@@ -224,6 +212,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                       onClick={() =>
                         arrayHelpers.push({ sequencer: highestSequence(formikProps.values), code: '', value: '' })
                       }
+                      size='large'
                     >
                       <AddIcon className={classes.addIcon} />
                     </IconButton>
@@ -251,7 +240,11 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                               <TextField name={`lookupValues.nodes[${index}].value`} fullWidth />
                             </TableCell>
                             <TableCell align='right' style={{ width: '50px' }}>
-                              <IconButton className={classes.deleteButton} onClick={() => arrayHelpers.remove(index)}>
+                              <IconButton
+                                className={classes.deleteButton}
+                                onClick={() => arrayHelpers.remove(index)}
+                                size='large'
+                              >
                                 <DeleteIcon className={classes.deleteIcon} />
                               </IconButton>
                             </TableCell>

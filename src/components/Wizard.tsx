@@ -8,7 +8,7 @@ import {
   Stepper,
   useMediaQuery,
   useTheme,
-} from '@material-ui/core'
+} from '@mui/material'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { ReactElement, useCallback, useMemo } from 'react'
 import Zet from 'zet'
@@ -115,7 +115,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
     isEditing
   )
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('lg'))
   const handleClose = useDisableBackdropClick(onClose)
 
   const NextStep: React.FC<{ step: number }> = useCallback(({ step }) => activePages[step].render, [activePages])
@@ -125,12 +125,12 @@ export const Wizard = <T extends FormikValues = FormikValues>({
       <Formik initialValues={values} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
         {({ values, errors, touched, submitForm, isSubmitting }) => (
           <>
-            <Stepper activeStep={activeStep} alternativeLabel nonLinear>
+            <Stepper activeStep={activeStep} alternativeLabel nonLinear sx={{ p: 3 }}>
               {activePages.map((page, index) => (
                 <Step key={page.name} completed={isStepComplete(index)}>
                   <StepButton
                     onClick={handleStep(index, !errorsOnCurrentPage(activeStep, errors))}
-                    completed={!errorsOnCurrentPage(index, errors) && isStepComplete(index)}
+                    // completed={!errorsOnCurrentPage(index, errors) && isStepComplete(index)}
                     optional={activePages[index].optional ? `Optional` : undefined}
                   >
                     {page.name}

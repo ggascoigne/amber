@@ -1,8 +1,17 @@
-#!/usr/bin/env TS_NODE_PROJECT=./tsconfig.oclif.json node
+#!/usr/bin/env node
 
-// note that depends on patches/@oclif+config+1.17.0.patch
+const oclif = require('@oclif/core')
 
-// this is the oclif wrapper for the commands found in /shared/cliCommands
+const path = require('path')
+const project = path.join(__dirname, '..', 'tsconfig.oclif.json')
 
-require('dotenv').config()
-require('@oclif/command').run().then(require('@oclif/command/flush')).catch(require('@oclif/errors/handle'))
+// In dev mode -> use ts-node and dev plugins
+process.env.NODE_ENV = 'development'
+
+require('ts-node').register({ project })
+
+// In dev mode, always show stack traces
+oclif.settings.debug = true
+
+// Start the CLI
+oclif.run().then(oclif.flush).catch(oclif.Errors.handle)

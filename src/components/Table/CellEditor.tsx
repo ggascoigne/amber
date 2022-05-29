@@ -1,25 +1,24 @@
-import { Fade, Paper, Popper, PopperProps, Theme, createStyles, makeStyles } from '@material-ui/core'
-import MuiTextField from '@material-ui/core/TextField'
-import React, { ChangeEvent, ReactNode } from 'react'
+import { Fade, Paper, Popper, PopperProps, Theme } from '@mui/material'
+import MuiTextField from '@mui/material/TextField'
+import React, { CSSProperties, ChangeEvent, ReactNode } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { CellEditorProps, ColumnInstance } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    popper: {
-      zIndex: theme.zIndex.modal,
-    },
-    paper: {
-      ...theme.typography.body1,
-      overflow: 'hidden',
-      padding: 4,
-    },
-    positionHack: {
-      marginTop: -8,
-      marginBottom: -8,
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  popper: {
+    zIndex: theme.zIndex.modal,
+  },
+  paper: {
+    ...(theme.typography.body1 as CSSProperties),
+    overflow: 'hidden',
+    padding: 4,
+  },
+  positionHack: {
+    marginTop: -8,
+    marginBottom: -8,
+  },
+}))
 
 export const CellEditor = ({ value, onChange, onBlur }: CellEditorProps): ReactNode => (
   <MuiTextField
@@ -51,7 +50,7 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
   onClose,
   anchorElement,
 }) => {
-  const classes = useStyles({})
+  const { classes } = useStyles()
   const [value, setValue] = React.useState(initialValue)
   const { CellEditor } = column
 
@@ -80,18 +79,40 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
       open={!!anchorElement}
       className={classes.popper}
       transition
-      modifiers={{
-        // flip: { enabled: false },
-        inner: { enabled: true },
-        offset: { enabled: true, offset: '-15' },
-        computeStyle: {
-          gpuAcceleration: false,
+      modifiers={[
+        {
+          name: 'flip',
+          options: {
+            enabled: false,
+          },
         },
-        preventOverflow: {
-          enabled: false,
-          padding: 0,
+        {
+          name: 'inner',
+          options: {
+            enabled: true,
+          },
         },
-      }}
+        {
+          name: 'offset',
+          options: {
+            enabled: true,
+            offset: '-15',
+          },
+        },
+        {
+          name: 'computeStyle',
+          options: {
+            gpuAcceleration: false,
+          },
+        },
+        {
+          name: 'preventOverflow',
+          options: {
+            enabled: false,
+            padding: 0,
+          },
+        },
+      ]}
     >
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>

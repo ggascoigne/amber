@@ -1,5 +1,5 @@
-import { IconButton, TextField } from '@material-ui/core'
-import ClearIcon from '@material-ui/icons/Clear'
+import ClearIcon from '@mui/icons-material/Clear'
+import { IconButton, TextField } from '@mui/material'
 import React, { PropsWithChildren, ReactElement, useCallback, useEffect } from 'react'
 import { TableInstance } from 'react-table'
 
@@ -55,7 +55,7 @@ export function TableSearch<T extends Record<string, unknown>>({
       value={value}
       InputProps={{
         endAdornment: (
-          <IconButton onClick={() => setVars('')}>
+          <IconButton onClick={() => setVars('')} size='large'>
             <ClearIcon />
           </IconButton>
         ),

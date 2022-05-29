@@ -1,5 +1,5 @@
 import { DateTime, DateTimeFormatOptions } from 'luxon'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { ConfigurationDates, configuration } from 'utils'
 import getOrdinalWord from 'utils/ordinal'
 
@@ -7,7 +7,7 @@ interface SpacingProps {
   skipSpace?: 'before' | 'after' | 'both' | 'neither'
 }
 
-const Spacing: React.FC<SpacingProps> = ({ children, skipSpace }) => (
+const Spacing: React.FC<PropsWithChildren<SpacingProps>> = ({ children, skipSpace }) => (
   <>
     {skipSpace !== 'before' && skipSpace !== 'both' && ' '}
     {children}

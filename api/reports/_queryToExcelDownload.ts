@@ -1,10 +1,9 @@
-import { Response } from 'express'
-// @ts-ignore
+import { VercelResponse } from '@vercel/node'
 import json2xls from 'json2xls'
 
 import { PoolType, getPool } from '../../shared/config'
 
-export const queryToExcelDownload = async (query: string, res: Response) => {
+export const queryToExcelDownload = async (query: string, res: VercelResponse) => {
   const pool = getPool(PoolType.USER, `${__dirname}/../../shared/`)
   const client = await pool.connect()
   const result = await client.query(query)

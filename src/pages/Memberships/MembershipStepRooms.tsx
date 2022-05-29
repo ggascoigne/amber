@@ -1,8 +1,9 @@
-import { DialogContentText, FormControl, RadioGroup, Theme, createStyles, makeStyles } from '@material-ui/core'
+import { DialogContentText, FormControl, TextField as MuiTextField, RadioGroup, Theme } from '@mui/material'
 import { DatePicker, RadioGroupFieldWithLabel, TextField } from 'components/Form'
 import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { Acnw, ConfigDate } from '../../components'
 import { GridContainer, GridItem } from '../../components/Grid'
@@ -12,22 +13,20 @@ import { RoomPref, configuration, roomPrefOptions } from '../../utils'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    important: {
-      marginBottom: 12,
-    },
-    slotSelection: {
-      position: 'relative',
-      paddingTop: 0,
-    },
-    slotToggleWrapper: {
-      position: 'absolute',
-      top: 16,
-      right: 50,
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  important: {
+    marginBottom: 12,
+  },
+  slotSelection: {
+    position: 'relative',
+    paddingTop: 0,
+  },
+  slotToggleWrapper: {
+    position: 'absolute',
+    top: 16,
+    right: 50,
+  },
+}))
 
 const DatePickerLabelFn = (date: DateTime | null, invalidLabel: string) =>
   date ? date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
@@ -43,7 +42,7 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   )
 
 export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [hotelRoomField, meta, { setValue }] = useField(`${prefix}hotelRoomId`)
   const { touched, error: fieldError } = meta
@@ -94,13 +93,12 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
             clearable
-            autoOk
             disablePast
-            initialFocusedDate={null}
+            // initialFocusedDate={null}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
-            labelFunc={DatePickerLabelFn}
-            inputVariant='filled'
+            // labelFunc={DatePickerLabelFn}
+            renderInput={(props) => <MuiTextField {...props} helperText='invalid mask' variant='filled' />}
           />
         </GridItem>
         <GridItem xs={12} md={6}>
@@ -108,13 +106,12 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             label='Departure Date'
             name={`${prefix}departureDate`}
             clearable
-            autoOk
             disablePast
-            initialFocusedDate={null}
+            // initialFocusedDate={null}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
-            labelFunc={DatePickerLabelFn}
-            inputVariant='filled'
+            // labelFunc={DatePickerLabelFn}
+            renderInput={(props) => <MuiTextField {...props} helperText='invalid mask' variant='filled' />}
           />
         </GridItem>
       </GridContainer>

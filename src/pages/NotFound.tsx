@@ -1,5 +1,4 @@
-import { Typography } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Alert, Typography } from '@mui/material'
 import { Page } from 'components/Page'
 
 export const NotFound = () => (

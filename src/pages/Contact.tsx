@@ -1,29 +1,27 @@
-import { Card } from '@material-ui/core'
-import { Theme, makeStyles } from '@material-ui/core/styles'
-import createStyles from '@material-ui/core/styles/createStyles'
+import { Card } from '@mui/material'
+import { Theme } from '@mui/material/styles'
 import { Acnw } from 'components'
+import { makeStyles } from 'tss-react/mui'
 import { configuration } from 'utils'
 
 import { CardBody } from '../components/Card'
 import { Page } from '../components/Page'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
-    cardBody: {
-      paddingTop: 0,
-    },
-    address: {
-      paddingLeft: 20,
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  card: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  cardBody: {
+    paddingTop: 0,
+  },
+  address: {
+    paddingLeft: 20,
+  },
+}))
 
 const Contact = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Page title='Contact'>
       <Card className={classes.card} elevation={3}>

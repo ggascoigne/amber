@@ -1,4 +1,4 @@
-import { Card, useTheme } from '@material-ui/core'
+import { Card, useTheme } from '@mui/material'
 import { ConfigDate } from 'components'
 import { CardBody } from 'components/Card'
 import React from 'react'

@@ -1,21 +1,20 @@
-import { Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Theme } from '@mui/material'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import { configuration } from 'utils'
 
 import { GridContainer, GridItem } from './Grid'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    banner: {
-      maxWidth: '100%',
-      width: 'auto',
-      height: 'auto',
-      padding: '5px 5px 0px 12px',
-      marginBottom: '-12px',
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  banner: {
+    maxWidth: '100%',
+    width: 'auto',
+    height: 'auto',
+    padding: '5px 5px 0px 12px',
+    marginBottom: '-12px',
+  },
+}))
 
 const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = ({
   dates,
@@ -430,7 +429,7 @@ interface BannerProps {
 }
 
 const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const conventionStartDate = configuration.conventionStartDate
   const dateRange = `${conventionStartDate.toFormat('MMMM')} ${configuration.startDay}-${configuration.endDay}, ${
     configuration.year

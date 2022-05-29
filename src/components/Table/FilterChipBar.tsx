@@ -1,28 +1,27 @@
-import { Chip, createStyles, makeStyles } from '@material-ui/core'
+import { Chip } from '@mui/material'
 import { ReactElement, useCallback } from 'react'
 import type { ColumnInstance, FilterValue, IdType, TableInstance } from 'react-table'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(
-  createStyles({
-    filtersActiveLabel: {
-      color: '#998',
-      fontSize: '14px',
-      paddingRight: 10,
-    },
-    chipZone: {
-      padding: '18px 0 5px 10px',
-      width: '100%',
-    },
-    chipLabel: {
-      fontWeight: 500,
-      marginRight: 5,
-    },
-    filterChip: {
-      marginRight: 4,
-      color: '#222',
-    },
-  })
-)
+const useStyles = makeStyles()({
+  filtersActiveLabel: {
+    color: '#998',
+    fontSize: '14px',
+    paddingRight: 10,
+  },
+  chipZone: {
+    padding: '18px 0 5px 10px',
+    width: '100%',
+  },
+  chipLabel: {
+    fontWeight: 500,
+    marginRight: 5,
+  },
+  filterChip: {
+    marginRight: 4,
+    color: '#222',
+  },
+})
 
 interface FilterChipBarProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
@@ -41,7 +40,7 @@ const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) =
 export function FilterChipBar<T extends Record<string, unknown>>({
   instance,
 }: FilterChipBarProps<T>): ReactElement | null {
-  const classes = useStyles({})
+  const { classes } = useStyles()
   const {
     allColumns,
     setFilter,

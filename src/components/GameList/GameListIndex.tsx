@@ -1,21 +1,19 @@
-import { Theme, Typography, makeStyles } from '@material-ui/core'
-import List from '@material-ui/core/List'
-import createStyles from '@material-ui/core/styles/createStyles'
+import { Theme, Typography } from '@mui/material'
+import List from '@mui/material/List'
 import type { GameArray } from 'client'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 import { useUrlSource } from 'utils'
 
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    listItem: {
-      paddingTop: 5,
-      paddingBottom: 5,
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  listItem: {
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+}))
 
 interface GameListIndexProps {
   year: number
@@ -35,7 +33,7 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
   decorator,
   decoratorParams,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [urlSource] = useUrlSource()
   return (
     <List>
@@ -50,7 +48,6 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
             key={game.id}
             className={classes.listItem}
             selected={selectionKey === urlSource.url}
-            button
             to={{ pathname: slug, hash: `#${game.id}`, state: { fromClick: true } }}
           >
             <Typography variant='body1' noWrap>

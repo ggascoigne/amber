@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core'
+import { Button } from '@mui/material'
 import { useGetGameChoicesQuery } from 'client'
 import React from 'react'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from 'utils'

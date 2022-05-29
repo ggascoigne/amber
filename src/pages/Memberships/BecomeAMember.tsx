@@ -1,6 +1,7 @@
-import { Button, Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
+import { Button, Card, Theme, useTheme } from '@mui/material'
 import { MouseEventHandler, useCallback } from 'react'
 import { Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import { IsNotMember, configuration, useSetting } from 'utils'
 
 import { IsLoggedIn, IsNotLoggedIn, useAuth } from '../../components/Auth'
@@ -8,22 +9,20 @@ import { CardBody } from '../../components/Card'
 import { useProfile } from '../../components/Profile'
 import { MembershipWizard } from './MembershipWizard'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      paddingTop: 0,
+const useStyles = makeStyles()((theme: Theme) => ({
+  card: {
+    paddingTop: 0,
+  },
+  button: {
+    marginLeft: 10,
+    [theme.breakpoints.down('md')]: {
+      marginTop: 10,
     },
-    button: {
-      marginLeft: 10,
-      [theme.breakpoints.down('sm')]: {
-        marginTop: 10,
-      },
-    },
-  })
-)
+  },
+}))
 
 export const BecomeAMember = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const theme = useTheme()
 
   const { isInitializing = true, loginWithRedirect } = useAuth()

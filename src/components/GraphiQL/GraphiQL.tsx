@@ -1,53 +1,31 @@
 import 'graphiql/graphiql.css'
 
-import { createStyles, makeStyles } from '@material-ui/core'
-import clsx from 'clsx'
+import { GlobalStyles } from '@mui/material'
 import RealGraphiQL from 'graphiql'
 import GraphiQLExplorer from 'graphiql-explorer'
 import { GraphQLSchema, buildClientSchema, getIntrospectionQuery, parse } from 'graphql'
 import fetch from 'isomorphic-fetch'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { useToken } from '../Auth'
 import { Page } from '../Page'
 
-export const useStyles = makeStyles(
-  createStyles({
-    graphiQlWrapper: {
-      height: 'calc(100% - 64px) !Important',
-      maxHeight: '100vh',
-      padding: 12,
-    },
-    box: {
-      boxSizing: 'content-box',
-      height: '100%',
-      border: '1px solid #d6d6d6',
-      display: 'flex',
-      flexDirection: 'row',
-      width: '100%',
-    },
-    '@global': {
-      '.graphiql-explorer-root': {
-        overflow: 'unset !important',
-        padding: '0 !important',
-      },
-      '.graphiql-explorer-root > :first-child': {
-        padding: '8px 8px 0 8px',
-        overflowX: 'hidden !important',
-      },
-      '.graphiql-explorer-root > :nth-child(2)': {
-        padding: '0px 8px 0 8px',
-      },
-      '.graphiql-container .execute-button:focus': {
-        outline: 0,
-      },
-      '.graphiql-container .historyPaneWrap': {
-        width: '300px !important',
-        boxShadow: 'none !important',
-      },
-    },
-  })
-)
+export const useStyles = makeStyles()({
+  graphiQlWrapper: {
+    height: 'calc(100% - 64px) !Important',
+    maxHeight: '100vh',
+    padding: 12,
+  },
+  box: {
+    boxSizing: 'content-box',
+    height: '100%',
+    border: '1px solid #d6d6d6',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
+})
 
 const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
   fetch(window.location.origin + '/api/graphql', {
@@ -80,7 +58,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   const [schema, setSchema] = useState<GraphQLSchema | null>(null)
   const [query, setQuery] = useState<string>('')
   const [explorerIsOpen, setExplorerIsOpen] = useState<boolean>(true)
-  const classes = useStyles({})
+  const { classes, cx } = useStyles()
   const [jwtToken] = useToken()
 
   const handleInspectOperation = useCallback(
@@ -146,8 +124,27 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
   }, [])
 
   return (
-    <Page title='GraphiQL' hideTitle className={clsx(classes.graphiQlWrapper)}>
-      <div className={clsx(classes.box, 'graphiql-container')}>
+    <Page title='GraphiQL' hideTitle className={cx(classes.graphiQlWrapper)}>
+      <div className={cx(classes.box, 'graphiql-container')}>
+        <GlobalStyles
+          styles={{
+            '.graphiql-explorer-root': {
+              overflow: 'unset !important',
+              padding: '0 !important',
+            },
+            '.graphiql-explorer-root > :first-of-type': {
+              padding: '8px 8px 0 8px',
+              // overflowX: 'hidden !important',  // todo ggp: check this
+            },
+            '.graphiql-explorer-root > :nth-child(2)': {
+              padding: '0px 8px 0 8px',
+            },
+            '.graphiql-container .historyPaneWrap': {
+              width: '300px !important',
+              boxShadow: 'none !important',
+            },
+          }}
+        />
         <GraphiQLExplorer
           schema={schema}
           query={query}

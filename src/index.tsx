@@ -1,10 +1,13 @@
 import 'react-app-polyfill/ie11'
 
-import LuxonUtils from '@date-io/luxon'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import createCache from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
+import AdapterLuxon from '@mui/lab/AdapterLuxon'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { CssBaseline, ThemeProvider } from '@mui/material'
 import { Provider as JotaiProvider } from 'jotai'
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { PropsWithChildren } from 'react'
+import { createRoot } from 'react-dom/client'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
@@ -13,10 +16,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import { Auth0Provider } from './components/Auth'
 import { NotificationProvider } from './components/Notifications'
+import { theme } from './components/Theme'
 
 // Usage
 // window.toggleDevtools(true)
-
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import('react-query/devtools/development').then((d) => ({
     default: d.ReactQueryDevtools,
@@ -29,9 +32,14 @@ const ReactQueryDevtoolsProduction = React.lazy(() =>
 
 const queryClient = new QueryClient()
 
+export const muiCache = createCache({
+  key: 'mui',
+  prepend: true,
+})
+
 const rootElement = document.getElementById('root')
 
-const RootComponent: React.FC = ({ children }) => {
+const RootComponent: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
   const [showDevtools, setShowDevtools] = React.useState(false)
 
   React.useEffect(() => {
@@ -44,39 +52,42 @@ const RootComponent: React.FC = ({ children }) => {
     <HelmetProvider>
       <JotaiProvider>
         <BrowserRouter>
-          <MuiPickersUtilsProvider utils={LuxonUtils}>
-            <NotificationProvider>
-              <Auth0Provider>
-                <QueryClientProvider client={queryClient}>
-                  <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
-                    <html lang='en' />
-                  </Helmet>
-                  {children}
-                  <ReactQueryDevtools />
-                  {showDevtools ? (
-                    <React.Suspense fallback={null}>
-                      <ReactQueryDevtoolsProduction />
-                    </React.Suspense>
-                  ) : null}
-                </QueryClientProvider>
-              </Auth0Provider>
-            </NotificationProvider>
-          </MuiPickersUtilsProvider>
+          <CacheProvider value={muiCache}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <NotificationProvider>
+                  <Auth0Provider>
+                    <QueryClientProvider client={queryClient}>
+                      <Helmet defaultTitle='AmberCon Northwest' titleTemplate='AmberCon Northwest - %s'>
+                        <html lang='en' />
+                      </Helmet>
+                      {children}
+                      <ReactQueryDevtools />
+                      {showDevtools ? (
+                        <React.Suspense fallback={null}>
+                          <ReactQueryDevtoolsProduction />
+                        </React.Suspense>
+                      ) : null}
+                    </QueryClientProvider>
+                  </Auth0Provider>
+                </NotificationProvider>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </CacheProvider>
         </BrowserRouter>
       </JotaiProvider>
     </HelmetProvider>
   )
 }
 
-const render = (Component: React.ComponentType) =>
-  ReactDOM.render(
-    <RootComponent>
-      <Component />
-    </RootComponent>,
-    rootElement
-  )
+const root = createRoot(rootElement!)
 
-render(App)
+root.render(
+  <RootComponent>
+    <App />
+  </RootComponent>
+)
 
 // registerServiceWorker()
 

@@ -7,12 +7,10 @@ import {
   TableHead,
   TableRow,
   Theme,
-  createStyles,
-  makeStyles,
   useTheme,
-} from '@material-ui/core'
-import clsx from 'clsx'
+} from '@mui/material'
 import React, { useMemo } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { useGetHotelRoomsQuery } from '../client'
 import { useAvailableHotelRooms } from '../pages/HotelRoomDetails/HotelRoomDetails'
@@ -21,42 +19,40 @@ import { BathroomType, notEmpty } from '../utils'
 import { GraphQLError } from './GraphQLError'
 import { Loader } from './Loader'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    titleLine: {
-      // see tableCell
-    },
-    soldOut: {
-      color: 'rgba(0,0,0,0.38)',
+const useStyles = makeStyles<void, 'titleLine'>()((theme: Theme, _params, classes) => ({
+  titleLine: {
+    // see tableCell
+  },
+  soldOut: {
+    color: 'rgba(0,0,0,0.38)',
 
-      '&:after': {
-        color: 'black',
-        content: ' SOLD OUT',
-      },
+    '&:after': {
+      color: 'black',
+      content: ' SOLD OUT',
     },
-    tableRow: {
-      color: 'inherit',
-      outline: 0,
-      verticalAlign: 'middle',
-      '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.07)',
-      },
+  },
+  tableRow: {
+    color: 'inherit',
+    outline: 0,
+    verticalAlign: 'middle',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.07)',
     },
-    tableLabel: {},
-    tableCell: {
-      padding: '8px 16px',
-      fontSize: '0.875rem',
-      textAlign: 'left',
-      fontWeight: 300,
-      lineHeight: 1.3,
-      verticalAlign: 'inherit',
-      // color: theme.palette.text.primary,
-      '&$titleLine': {
-        fontWeight: 500,
-      },
+  },
+  tableLabel: {},
+  tableCell: {
+    padding: '8px 16px',
+    fontSize: '0.875rem',
+    textAlign: 'left',
+    fontWeight: 300,
+    lineHeight: 1.3,
+    verticalAlign: 'inherit',
+    // color: theme.palette.text.primary,
+    [`&.${classes.titleLine}`]: {
+      fontWeight: 500,
     },
-  })
-)
+  },
+}))
 
 const getRoomTypeDescription = (type: BathroomType) => {
   switch (type) {
@@ -119,7 +115,7 @@ const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) => 
 }
 
 const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const { getRoomAvailable } = useAvailableHotelRooms()
   const description = getRoomTypeDescription(type)
   const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
@@ -129,7 +125,7 @@ const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
       <>
         {description ? (
           <TableRow key={`${type}_0`} className={classes.tableRow}>
-            <TableCell className={clsx(classes.tableCell, classes.titleLine)} colSpan={3}>
+            <TableCell className={cx(classes.tableCell, classes.titleLine)} colSpan={3}>
               {description}
             </TableCell>
           </TableRow>
@@ -139,21 +135,21 @@ const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
           const disabled = available <= roomCountThreshold
           const label = <FancyDescription room={room} />
           return (
-            <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+            <TableRow key={`${type}_${index}`} className={cx(classes.tableRow, { [classes.soldOut]: disabled })}>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={disabled} />
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 <FancyRate room={room} />
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {room.occupancy}
               </TableCell>
               {/*
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {available}
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {room.id}
               </TableCell>
 */}
@@ -168,7 +164,7 @@ const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
 }
 
 const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const { getRoomAvailable } = useAvailableHotelRooms()
   const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
 
@@ -181,21 +177,21 @@ const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
           const disabled = available <= roomCountThreshold
           const label = <FancyDescription room={room} />
           return (
-            <TableRow key={`${type}_${index}`} className={clsx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+            <TableRow key={`${type}_${index}`} className={cx(classes.tableRow, { [classes.soldOut]: disabled })}>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {label}
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 <FancyRate room={room} />
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {room.occupancy}
               </TableCell>
               {/*
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {available}
               </TableCell>
-              <TableCell className={clsx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
                 {room.id}
               </TableCell>
               */}

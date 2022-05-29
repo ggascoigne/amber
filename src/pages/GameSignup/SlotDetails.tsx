@@ -1,32 +1,31 @@
-import { Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Theme } from '@mui/material'
 import { useGetGamesBySlotForSignupQuery } from 'client'
 import { Loader } from 'components/Loader'
 import React, { useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import { getSlotDescription, notEmpty, range } from 'utils'
 
 import { getGms } from '../Games'
 import { MaybeGameChoice, Rank, RankStyle, rankString } from './GameChoiceSelector'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    line: {
-      display: 'flex',
-      flex: 1,
+const useStyles = makeStyles()((theme: Theme) => ({
+  line: {
+    display: 'flex',
+    flex: 1,
+  },
+  rank: {
+    width: 40,
+    textAlign: 'right',
+    '& sup': {
+      lineHeight: 0,
+      display: 'inline-block',
+      // paddingBottom: 3,
     },
-    rank: {
-      width: 40,
-      textAlign: 'right',
-      '& sup': {
-        lineHeight: 0,
-        display: 'inline-block',
-        // paddingBottom: 3,
-      },
-    },
-    name: {
-      paddingLeft: 20,
-    },
-  })
-)
+  },
+  name: {
+    paddingLeft: 20,
+  },
+}))
 
 interface ChoiceSummaryProps {
   year: number
@@ -67,7 +66,7 @@ export interface SlotSummary {
 const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
 
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const { data } = useGetGamesBySlotForSignupQuery({ year, slotId })
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)

@@ -1,5 +1,5 @@
 // from https://raw.githubusercontent.com/piotrwitek/react-redux-typescript-guide/master/playground/src/hoc/with-error-boundary.tsx
-import React, { ErrorInfo } from 'react'
+import React, { ErrorInfo, PropsWithChildren } from 'react'
 import type { Subtract } from 'utility-types'
 
 import { ErrorMessage } from './ErrorMessage'
@@ -12,7 +12,7 @@ interface InjectedProps {
 }
 
 export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent: React.ComponentType<BaseProps>) => {
-  type HocProps = Subtract<BaseProps, InjectedProps> & {
+  type HocProps = PropsWithChildren<Subtract<BaseProps, InjectedProps>> & {
     // here you can extend hoc with new props
   }
   interface HocState {

@@ -1,38 +1,37 @@
-import { IconButton, Theme, createStyles, makeStyles } from '@material-ui/core'
-import { amber, green } from '@material-ui/core/colors'
-import CloseIcon from '@material-ui/icons/Close'
+import CloseIcon from '@mui/icons-material/Close'
+import { IconButton, Theme } from '@mui/material'
+import { amber, green } from '@mui/material/colors'
 import { OptionsObject, SnackbarProvider, VariantType, useSnackbar } from 'notistack'
-import { default as React, ReactElement, useCallback } from 'react'
+import { PropsWithChildren, default as React, ReactElement, useCallback } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
-export const useSnackbarStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    success: {
-      backgroundColor: green[600],
-    },
-    error: {
-      backgroundColor: theme.palette.error.dark,
-    },
-    info: {
-      backgroundColor: theme.palette.primary.main,
-    },
-    warning: {
-      backgroundColor: amber[700],
-    },
-    icon: {
-      fontSize: 20,
-    },
-    containerRoot: {
-      top: theme.spacing(9.5),
-      right: theme.spacing(2),
-    },
-    rootContainer: {
-      maxWidth: 600,
-    },
-  })
-)
+const useSnackbarStyles = makeStyles()((theme: Theme) => ({
+  success: {
+    backgroundColor: green[600],
+  },
+  error: {
+    backgroundColor: theme.palette.error.dark,
+  },
+  info: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  warning: {
+    backgroundColor: amber[700],
+  },
+  icon: {
+    fontSize: 20,
+  },
+  containerRoot: {
+    top: theme.spacing(9.5),
+    right: theme.spacing(2),
+  },
+  rootContainer: {
+    maxWidth: 600,
+  },
+}))
 
-export const NotificationProvider: React.FC = ({ children }) => {
-  const classes = useSnackbarStyles({})
+export const NotificationProvider: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
+  const { classes } = useSnackbarStyles()
   return (
     <SnackbarProvider
       classes={{
@@ -53,7 +52,7 @@ export const NotificationProvider: React.FC = ({ children }) => {
 
 const SnackBarActionHandler: React.FC<{ keyValue: OptionsObject['key'] }> = ({ keyValue }) => {
   const { closeSnackbar } = useSnackbar()
-  const classes = useSnackbarStyles({})
+  const { classes } = useSnackbarStyles()
   return (
     <IconButton
       key='close'
@@ -61,6 +60,7 @@ const SnackBarActionHandler: React.FC<{ keyValue: OptionsObject['key'] }> = ({ k
       color='inherit'
       onClick={() => closeSnackbar(keyValue)}
       data-test='snackbar-action-button'
+      size='large'
     >
       <CloseIcon className={classes.icon} />
     </IconButton>

@@ -1,4 +1,4 @@
-import { List, ListItemText } from '@material-ui/core'
+import { List, ListItemText } from '@mui/material'
 import React from 'react'
 import { useLocation } from 'react-router'
 import { useIsMember, useSettings, useUser } from 'utils'
@@ -39,7 +39,6 @@ export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
             const item = (
               <ListItemLink
                 key={link}
-                button
                 to={{ pathname: link, state: { fromClick: true } }}
                 selected={activeItem === link}
               >

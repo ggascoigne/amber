@@ -3,7 +3,6 @@ import { DateTime } from 'luxon'
 import { ReactNode } from 'react'
 
 import { DatePickerProps } from './DatePicker'
-import { KeyboardDatePickerProps } from './KeyboardDatePicker'
 
 const createErrorHandler =
   (fieldError: unknown, fieldName: string, setFieldError: (field: string, message: string | undefined) => void) =>
@@ -19,8 +18,8 @@ const getMinDateMessage = (message?: ReactNode, date?: DateTime | null) =>
 const getMaxDateMessage = (message?: ReactNode, date?: DateTime | null) =>
   message ? message : date ? `Date should not be after ${date.toLocaleString(DateTime.DATE_MED)}` : undefined
 
-export const useDatePickerProps = <T extends DatePickerProps | KeyboardDatePickerProps>(props: T) => {
-  const { disabled, onError, minDateMessage, maxDateMessage, ...rest } = props
+export const useDatePickerProps = <T extends DatePickerProps>(props: T) => {
+  const { disabled, onError, ...rest } = props
   const [field, meta] = useField(rest.name)
   const { isSubmitting, setFieldValue, setFieldError } = useFormikContext()
   const { touched, error } = meta
@@ -30,7 +29,7 @@ export const useDatePickerProps = <T extends DatePickerProps | KeyboardDatePicke
 
   return {
     error: showError,
-    helperText: showError ? error : rest.helperText,
+    // helperText: showError ? error : rest.helperText,
     disabled: disabled ?? isSubmitting,
     onError: onError ?? createErrorHandler(error, field.name, setFieldError),
     ...field,
@@ -38,8 +37,8 @@ export const useDatePickerProps = <T extends DatePickerProps | KeyboardDatePicke
     onChange: (date: any) => {
       setFieldValue(field.name, date)
     },
-    minDateMessage: getMinDateMessage(minDateMessage, props.minDate as DateTime),
-    maxDateMessage: getMaxDateMessage(maxDateMessage, props.maxDate as DateTime),
+    // minDateMessage: getMinDateMessage(minDateMessage, props.minDate as DateTime),
+    // maxDateMessage: getMaxDateMessage(maxDateMessage, props.maxDate as DateTime),
     ...rest,
   }
 }

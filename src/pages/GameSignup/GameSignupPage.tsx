@@ -1,5 +1,5 @@
-import { Button } from '@material-ui/core'
-import NavigationIcon from '@material-ui/icons/Navigation'
+import NavigationIcon from '@mui/icons-material/Navigation'
+import { Button } from '@mui/material'
 import {
   GameChoiceFieldsFragment,
   GetGameChoicesQuery,

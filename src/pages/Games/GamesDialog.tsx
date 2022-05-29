@@ -1,5 +1,4 @@
-import { Dialog, TextField as MuiTextField, Typography } from '@material-ui/core'
-import { Autocomplete } from '@material-ui/lab'
+import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
 import {
   GameFieldsFragment,
   GameGmsFragment,
