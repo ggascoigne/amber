@@ -1,4 +1,4 @@
-import { DialogContentText } from '@material-ui/core'
+import { DialogContentText } from '@mui/material'
 import { CheckboxWithLabel, RadioGroupFieldWithLabel } from 'components/Form'
 import { FormikErrors, FormikValues } from 'formik'
 import React from 'react'

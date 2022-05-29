@@ -1,24 +1,23 @@
-import { Card, Theme, createStyles, makeStyles, useTheme } from '@material-ui/core'
+import { Card, Theme, useTheme } from '@mui/material'
+import { makeStyles } from 'tss-react/mui'
 
 import { useSetting } from '../utils'
 import { CardBody } from './Card'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    card: {
-      paddingTop: 0,
-    },
-    betaCard: {
-      marginTop: 20,
-      marginBottom: 20,
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  card: {
+    paddingTop: 0,
+  },
+  betaCard: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+}))
 
 export const BetaWarning = () => {
   const isBeta = useSetting('display.test.warning')
   const theme = useTheme()
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return isBeta ? (
     <Card className={classes.betaCard} elevation={3}>

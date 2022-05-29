@@ -1,4 +1,4 @@
-import NavigationIcon from '@material-ui/icons/Navigation'
+import NavigationIcon from '@mui/icons-material/Navigation'
 import React from 'react'
 import { useGameScroll, useGameUrl } from 'utils'
 

@@ -1,24 +1,21 @@
-import { createStyles, makeStyles } from '@material-ui/core/styles'
-import clsx from 'clsx'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(
-  createStyles({
-    cardBody: {
-      padding: '0.9375rem 1.875rem',
-      flex: '1 1 auto',
-    },
-  })
-)
+const useStyles = makeStyles()({
+  cardBody: {
+    padding: '0.9375rem 1.875rem',
+    flex: '1 1 auto',
+  },
+})
 
 interface CardBodyProps {
   className?: string
 }
 
-export const CardBody: React.FC<CardBodyProps> = (props) => {
-  const classes = useStyles()
+export const CardBody: React.FC<PropsWithChildren<CardBodyProps>> = (props) => {
+  const { classes, cx } = useStyles()
   const { className, children, ...rest } = props
-  const cardBodyClasses = clsx(classes.cardBody, className)
+  const cardBodyClasses = cx(classes.cardBody, className)
   return (
     <div className={cardBodyClasses} {...rest}>
       {children}

@@ -1,16 +1,15 @@
-import { Checkbox, ListItemText, MenuItem, Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Checkbox, ListItemText, MenuItem, Theme } from '@mui/material'
 import { useField } from 'formik'
 import * as React from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { TextField, TextFieldProps } from './TextField'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    multiSelectCheckBox: {
-      paddingLeft: theme.spacing(1),
-    },
-  })
-)
+const useStyles = makeStyles()((theme: Theme) => ({
+  multiSelectCheckBox: {
+    paddingLeft: theme.spacing(1),
+  },
+}))
 
 export interface SelectFieldValueObject {
   value: any
@@ -34,7 +33,7 @@ export const getSelectValue = (value: SelectFieldValue): any => (typeof value ==
 export const getSelectLabel = (value: SelectFieldValue): string => (typeof value === 'string' ? value : value.text)
 
 export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
-  const classes = useStyles({})
+  const { classes } = useStyles()
   const [field] = useField(props.name)
   const { select, selectValues, children, ...rest } = props
   const multiSelect = !!props.SelectProps?.multiple

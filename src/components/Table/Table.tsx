@@ -1,7 +1,6 @@
-import { TableSortLabel, TextField, Tooltip } from '@material-ui/core'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp'
-import clsx from 'clsx'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
+import { TableSortLabel, TextField, Tooltip } from '@mui/material'
 import React, {
   CSSProperties,
   MouseEventHandler,
@@ -75,7 +74,7 @@ export interface TableProps<T extends Record<string, unknown>> extends TableOpti
   initialState?: Partial<TableState<T>>
 }
 
-const DefaultHeader: React.FC<HeaderProps<any>> = ({ column }) => (
+const DefaultHeader = <T extends Record<string, unknown>>({ column }: HeaderProps<T>) => (
   <>{column.id.startsWith('_') ? null : camelToWords(column.id)}</>
 )
 
@@ -189,7 +188,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     [updateData]
   )
 
-  const classes = useStyles(tableStyleOptions)
+  const { classes, cx } = useStyles(tableStyleOptions)
 
   const hooks = [
     useColumnOrder,
@@ -213,7 +212,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       Cell: TooltipCellRenderer,
       Header: DefaultHeader,
       aggregate: 'uniqueCount',
-      Aggregated: ({ cell: { value } }: CellProps<T>) => `${value} Unique Values`,
+      Aggregated: ({ cell: { value } }: CellProps<T>) => <>`${value} Unique Values`</>,
       // When using the useFlexLayout:
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow
@@ -346,7 +345,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
               <TableRow
                 key={rowKey}
                 {...getRowProps}
-                className={clsx({ rowSelected: row.isSelected, clickable: onClick })}
+                className={cx({ rowSelected: row.isSelected, clickable: !!onClick })}
                 tableStyleOptions={tableStyleOptions}
               >
                 {row.cells.map((cell) => {

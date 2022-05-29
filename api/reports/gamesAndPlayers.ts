@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
 import { requireJwt } from '../_checkJwt'
 import { configuration } from '../_constants'
@@ -14,7 +14,7 @@ import { queryToExcelDownload } from './_queryToExcelDownload'
 
 export default withApiHandler([
   requireJwt,
-  async (req: Request, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       const year = req.body?.year || configuration.year
       const query = `

@@ -1,6 +1,6 @@
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
+import { CSSProperties } from '@mui/material'
 
-declare module '@material-ui/core/styles/createMixins' {
+declare module '@mui/material/styles/createMixins' {
   interface BoxShadows {
     primary: CSSProperties['boxShadow']
     secondary: CSSProperties['boxShadow']
@@ -22,7 +22,7 @@ declare module '@material-ui/core/styles/createMixins' {
   }
 }
 
-declare module '@material-ui/core/createTheme' {
+declare module '@mui/material' {
   interface ThemeExtension {
     backgroundSlightlyDarker: CSSProperties['color']
     bannerShadow: CSSProperties['boxShadow']

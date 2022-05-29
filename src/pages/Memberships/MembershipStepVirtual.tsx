@@ -1,6 +1,7 @@
-import { DialogContentText, FormControlLabel, FormGroup, Switch, createStyles, makeStyles } from '@material-ui/core'
+import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
 import { CheckboxWithLabel, TextField } from 'components/Form'
 import React, { useState } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import { configuration, getSlotDescription, isNotPacificTime, range } from 'utils'
 
 import { ConfigDate } from '../../components'
@@ -9,22 +10,20 @@ import { Perms } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { MembershipFormContent } from './membershipUtils'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    slotSelection: {
-      position: 'relative',
-      paddingTop: 0,
-    },
-    slotToggleWrapper: {
-      position: 'absolute',
-      top: 16,
-      right: 50,
-    },
-  })
-)
+const useStyles = makeStyles()({
+  slotSelection: {
+    position: 'relative',
+    paddingTop: 0,
+  },
+  slotToggleWrapper: {
+    position: 'absolute',
+    top: 16,
+    right: 50,
+  },
+})
 
 export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const [showPT, setShowPT] = useState(false)
 
   return (
@@ -65,14 +64,12 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
           {range(7).map((i) => (
             <CheckboxWithLabel
               key={i}
-              Label={{
-                label: getSlotDescription({
-                  year: configuration.year,
-                  slot: i + 1,
-                  local: !showPT,
-                }),
-                labelPlacement: 'end',
-              }}
+              label={getSlotDescription({
+                year: configuration.year,
+                slot: i + 1,
+                local: !showPT,
+              })}
+              Label={{ labelPlacement: 'end' }}
               name={`${prefix}slotsAttendingData[${i}]`}
             />
           ))}

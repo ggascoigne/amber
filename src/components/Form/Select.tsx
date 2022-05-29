@@ -1,4 +1,4 @@
-import MuiSelect, { SelectProps as MuiSelectProps } from '@material-ui/core/Select'
+import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { useField, useFormikContext } from 'formik'
 import React from 'react'
 

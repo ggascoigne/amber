@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 
 import { DbConfig, config } from '../shared/config'
 import { checkJwt, isAdmin } from './_checkJwt'
@@ -11,7 +11,7 @@ import { withApiHandler } from './_standardHandler'
 
 export default withApiHandler([
   checkJwt,
-  async (req: Request, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       const { user } = req as any
       const admin = isAdmin(user)

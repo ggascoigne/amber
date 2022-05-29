@@ -1,5 +1,5 @@
 import { useAuth } from 'components/Auth'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
 import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
 import { notEmpty } from './ts-utils'
@@ -34,7 +34,7 @@ export const useIsMember = () => {
   return !!isAuthenticated && !!membership?.attending
 }
 
-export const IsMember: React.FC = ({ children }) => {
+export const IsMember: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
   const isMember = useIsMember()
 
   if (isMember) {
@@ -44,7 +44,7 @@ export const IsMember: React.FC = ({ children }) => {
   }
 }
 
-export const IsNotMember: React.FC = ({ children }) => {
+export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
   const isMember = useIsMember()
 
   if (isMember) {

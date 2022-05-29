@@ -1,134 +1,131 @@
-import { Theme, createStyles, makeStyles } from '@material-ui/core'
-import CheckIcon from '@material-ui/icons/Check'
-import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
+import CheckIcon from '@mui/icons-material/Check'
+import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { Game, GameChoice, GameEntry, Maybe } from 'client'
-import clsx from 'clsx'
 import { Perms, useAuth } from 'components/Auth'
 import React, { useEffect } from 'react'
+import { makeStyles } from 'tss-react/mui'
 import { range } from 'utils'
 
 export const isNoGame = (id: number) => id <= 7
 // 144 is the magic number of the Any Game entry :(
 export const isAnyGame = (id: number) => id === 144
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    spacer: {
-      flex: '1 0 auto',
-      display: 'flex',
-      flexDirection: 'row',
+const useStyles = makeStyles()((theme: Theme) => ({
+  spacer: {
+    flex: '1 0 auto',
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  container: {
+    flex: '1 1 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '-3px 0',
+  },
+  row: {
+    flex: '1 1 auto',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    '&:last-of-type': {
+      paddingTop: 3,
     },
-    container: {
-      flex: '1 1 auto',
-      display: 'flex',
-      flexDirection: 'column',
-      margin: '-3px 0',
+  },
+  full: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 52,
+  },
+  label: {
+    width: 60,
+    textAlign: 'inherit',
+    textTransform: 'inherit',
+    // flex: 1,
+  },
+  returning: {
+    textAlign: 'end',
+    textTransform: 'inherit',
+    // flex: 1,
+  },
+  button: {
+    textTransform: 'inherit',
+    color: 'white',
+    padding: '5px 7px',
+    borderColor: 'white',
+    '& sup': {
+      lineHeight: 0,
+      display: 'inline-block',
+      paddingBottom: 3,
     },
-    row: {
-      flex: '1 1 auto',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      '&:last-of-type': {
-        paddingTop: 3,
-      },
+    '&:hover': {
+      backgroundColor: 'rgba(102, 8, 22, .3)',
     },
-    full: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-      height: 52,
-    },
-    label: {
-      width: 60,
-      textAlign: 'inherit',
-      textTransform: 'inherit',
-      // flex: 1,
-    },
-    returning: {
-      textAlign: 'end',
-      textTransform: 'inherit',
-      // flex: 1,
-    },
-    button: {
-      textTransform: 'inherit',
+    '&.Mui-selected': {
       color: 'white',
-      padding: '5px 7px',
-      borderColor: 'white',
-      '& sup': {
-        lineHeight: 0,
-        display: 'inline-block',
-        paddingBottom: 3,
-      },
+      backgroundColor: 'rgba(102, 8, 22, 1)',
+      borderLeftColor: 'white',
       '&:hover': {
-        backgroundColor: 'rgba(102, 8, 22, .3)',
-      },
-      '&.Mui-selected': {
-        color: 'white',
-        backgroundColor: 'rgba(102, 8, 22, 1)',
-        borderLeftColor: 'white',
-        '&:hover': {
-          backgroundColor: 'rgba(102, 8, 22, .6)',
-        },
+        backgroundColor: 'rgba(102, 8, 22, .6)',
       },
     },
-    rankDecorator: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      display: 'flex',
-      textTransform: 'inherit',
-      width: 30,
-      borderRadius: 15,
-      borderWidth: 1,
-      fontSize: '0.72rem',
-      flexGrow: 0,
-      flexShrink: 0,
-      color: 'rgba(102, 8, 22, 1)',
-      backgroundColor: 'white',
-      padding: '5px',
-      borderColor: 'rgba(102, 8, 22, 1)',
-      lineHeight: '18px',
-      borderStyle: 'solid',
-      margin: -6,
-      '& sup': {
-        lineHeight: 0,
-        display: 'inline-block',
-        paddingBottom: 3,
-      },
+  },
+  rankDecorator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    textTransform: 'inherit',
+    width: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    fontSize: '0.72rem',
+    flexGrow: 0,
+    flexShrink: 0,
+    color: 'rgba(102, 8, 22, 1)',
+    backgroundColor: 'white',
+    padding: '5px',
+    borderColor: 'rgba(102, 8, 22, 1)',
+    lineHeight: '18px',
+    borderStyle: 'solid',
+    margin: -6,
+    '& sup': {
+      lineHeight: 0,
+      display: 'inline-block',
+      paddingBottom: 3,
     },
-    fullDecorator: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      display: 'flex',
-      textTransform: 'inherit',
-      width: 30,
-      borderRadius: 15,
-      borderWidth: 1,
-      fontSize: '0.72rem',
-      flexGrow: 0,
-      flexShrink: 0,
-      color: 'rgb(8,80,102)',
-      backgroundColor: 'white',
-      padding: '5px',
-      borderColor: 'rgb(8,80,102)',
-      lineHeight: '18px',
-      borderStyle: 'solid',
-      margin: -6,
-      '& sup': {
-        lineHeight: 0,
-        display: 'inline-block',
-        paddingBottom: 3,
-      },
+  },
+  fullDecorator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    textTransform: 'inherit',
+    width: 30,
+    borderRadius: 15,
+    borderWidth: 1,
+    fontSize: '0.72rem',
+    flexGrow: 0,
+    flexShrink: 0,
+    color: 'rgb(8,80,102)',
+    backgroundColor: 'white',
+    padding: '5px',
+    borderColor: 'rgb(8,80,102)',
+    lineHeight: '18px',
+    borderStyle: 'solid',
+    margin: -6,
+    '& sup': {
+      lineHeight: 0,
+      display: 'inline-block',
+      paddingBottom: 3,
     },
-    check: {
-      color: '#ffe100',
-      position: 'absolute',
-      left: -6,
-      bottom: -8,
-    },
-  })
-)
+  },
+  check: {
+    color: '#ffe100',
+    position: 'absolute',
+    left: -6,
+    bottom: -8,
+  },
+}))
 
 export enum RankStyle {
   small,
@@ -240,7 +237,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   updateChoice,
   gmSlots,
 }) => {
-  const classes = useStyles()
+  const { classes, cx } = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
@@ -339,7 +336,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
               value={returning}
               selected={returning}
               onChange={handleReturning}
-              className={clsx(classes.returning, classes.button)}
+              className={cx(classes.returning, classes.button)}
             >
               Returning Player
             </ToggleButton>
@@ -351,7 +348,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
 }
 
 export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, slot, game, gameChoices }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
 
@@ -403,7 +400,7 @@ export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) 
   )
 
 export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)
   const isComplete = isSlotComplete(thisSlotChoices)
   return isComplete ? <CheckIcon className={classes.check} /> : null

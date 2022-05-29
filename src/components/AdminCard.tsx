@@ -1,10 +1,10 @@
-import { CardContent, DialogContentText, useTheme } from '@material-ui/core'
-import React from 'react'
+import { CardContent, DialogContentText, useTheme } from '@mui/material'
+import React, { PropsWithChildren } from 'react'
 
 import { HasPermission, Perms } from './Auth'
 import { Card } from './Card'
 
-export const AdminCard: React.FC<{ permission: Perms }> = ({ permission, children }) => {
+export const AdminCard: React.FC<PropsWithChildren<{ permission: Perms }>> = ({ permission, children }) => {
   const theme = useTheme()
 
   return (

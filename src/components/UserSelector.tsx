@@ -1,13 +1,12 @@
-import { TextField, makeStyles, withStyles } from '@material-ui/core'
-import { Autocomplete } from '@material-ui/lab'
+import { Autocomplete, TextField } from '@mui/material'
 import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
-import clsx from 'clsx'
 import React, { useCallback, useEffect, useState } from 'react'
+import { makeStyles, withStyles } from 'tss-react/mui'
 import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from 'utils'
 
 import { useNotification } from './Notifications'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   divider: {
     borderRight: '1px solid rgba(255, 255, 255, 0.4)',
     fontSize: '35px',
@@ -30,6 +29,9 @@ const useStyles = makeStyles({
       },
     },
   },
+  paper: {
+    marginTop: 4,
+  },
   selectorMobile: {
     margin: '0 10px',
   },
@@ -48,7 +50,7 @@ const useStyles = makeStyles({
   },
 })
 
-const CleanTextField = withStyles({
+const CleanTextField = withStyles(TextField, {
   root: {
     '& input': {
       paddingLeft: '5px !important',
@@ -61,7 +63,7 @@ const CleanTextField = withStyles({
         borderBottomColor: 'inherit',
       },
   },
-})(TextField)
+})
 
 type UserType = ContentsOf<ContentsOf<GetAllUsersByQuery, 'users'>, 'nodes'>
 
@@ -72,7 +74,7 @@ interface UserSelectorProps {
 }
 
 export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
-  const classes = useStyles({})
+  const { classes, cx } = useStyles()
   const notify = useNotification()
   const [userInfo, setUserInfo] = useUserFilter()
   const [year] = useYearFilter()
@@ -90,14 +92,14 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
     }
   }, [data])
 
-  const onInputChange = useCallback((ev) => {
+  const onInputChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(ev.target.value ?? '')
   }, [])
 
   const onChange = useCallback(
-    (_, value) => {
+    (_: React.SyntheticEvent, value: UserType | null) => {
       setUserInfo(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
-      setSearchTerm(value?.fullName || '')
+      setSearchTerm(value?.fullName ?? '')
     },
     [setUserInfo]
   )
@@ -127,11 +129,12 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       loading={isLoading}
       options={dropdownOptions}
       getOptionLabel={(option: UserType) => option.fullName ?? ''}
-      className={clsx(classes.selector, {
+      className={cx(classes.selector, {
         [classes.selectorMobile]: mobile,
       })}
       value={selectedUser}
       classes={{
+        paper: classes.paper,
         endAdornment: classes.inheritColor,
         popupIndicator: classes.inheritColor,
         clearIndicator: classes.inheritColor,
@@ -139,15 +142,15 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       renderInput={(params) => (
         <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} variant='standard' />
       )}
-      renderOption={(params: UserType) => {
+      renderOption={(props, params: UserType) => {
         const isMember = !!params.memberships.nodes.find((m) => m?.year === year)
         return (
-          <div className={classes.holder}>
-            <span className={clsx(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
-          </div>
+          <li {...props} key={params.id} className={cx(props.className, classes.holder)}>
+            <span className={cx(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
+          </li>
         )
       }}
-      getOptionSelected={getOptionSelected}
+      isOptionEqualToValue={getOptionSelected}
       onChange={onChange}
       onBlur={onBlur}
       data-test='customer-select-dropdown'

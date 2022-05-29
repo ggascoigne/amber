@@ -1,29 +1,28 @@
-import { Fab, Theme, Zoom, createStyles, makeStyles, useTheme } from '@material-ui/core'
-import React, { useState } from 'react'
+import { Fab, Theme, Zoom, useTheme } from '@mui/material'
+import React, { PropsWithChildren, useState } from 'react'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    fab: {
-      position: 'fixed',
-      zIndex: 100,
-      top: 64 + theme.spacing(2),
-      right: theme.spacing(2),
-      '&&.MuiFab-extended': {
-        height: 48,
-        borderRadius: 24,
-        paddingRight: 13.5,
-      },
+const useStyles = makeStyles()((theme: Theme) => ({
+  fab: {
+    position: 'fixed',
+    zIndex: 100,
+    top: 64 + theme.spacing(2),
+    right: theme.spacing(2),
+    '&&.MuiFab-extended': {
+      height: 48,
+      borderRadius: 24,
+      paddingRight: 13.5,
     },
-  })
-)
+  },
+}))
 
-export const ExpandingFab: React.FC<{ label: string; show: boolean; onClick: () => void }> = ({
+export const ExpandingFab: React.FC<PropsWithChildren<{ label: string; show: boolean; onClick: () => void }>> = ({
   label,
   show,
   children,
   onClick,
 }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const [inHover, setHover] = useState(false)
   const theme = useTheme()

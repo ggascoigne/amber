@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 import fetch from 'isomorphic-fetch'
 
 import { requireJwt } from './_checkJwt'
@@ -34,7 +34,7 @@ const requestChangePasswordEmail = async (username: string) => {
 // body: {}
 export default withApiHandler([
   requireJwt,
-  async (req: Request, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       const profile = await getProfile(req.headers.authorization!)
       // note that we are validating the password for the user identified by the access token

@@ -1,307 +1,75 @@
-import { Avatar, Badge, Button, Theme, Tooltip, createStyles, makeStyles } from '@material-ui/core'
-import StarIcon from '@material-ui/icons/Star'
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
-import fetch from 'isomorphic-fetch'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { QueryClient } from 'react-query'
-import { useIsGm } from 'utils'
-
-import { Auth0User, Perms, Roles, useAuth, useRoleOverride, useToken } from './Auth'
-import { CustomDropdown } from './CustomDropdown'
-import { useNotification } from './Notifications'
-import { ProfileDialog, useProfile } from './Profile'
-
-const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
-const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
-const MENU_ITEM_VIEW_AS_USER = 'View as Regular User'
-const MENU_ITEM_VIEW_AS_ADMIN = 'View as Admin'
-const MENU_ITEM_SIGN_OUT = 'Sign out'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    loginButton: {
-      position: 'relative',
-      fontWeight: 400,
-      textTransform: 'uppercase',
-      fontSize: '12px',
-      lineHeight: '20px',
-      textDecoration: 'none',
-      marginRight: '20px',
-      display: 'inline-flex',
-      padding: '12px 30px',
-      color: 'inherit',
-      backgroundColor: 'rgba(255, 255, 255, 0.15)',
-      '&:hover': {
-        color: 'inherit',
-        background: 'transparent',
-        boxShadow: 'none',
-      },
-    },
-    navLink: {
-      color: 'inherit',
-      position: 'relative',
-      padding: '0 18px 0 0.9375rem',
-      marginRight: 7,
-      fontWeight: 400,
-      fontSize: '14px',
-      textTransform: 'uppercase',
-      borderRadius: '3px',
-      lineHeight: '20px',
-      textDecoration: 'none',
-      margin: '0px',
-      display: 'inline-flex',
-      '&:hover,&:focus': {
-        color: 'inherit',
-        background: 'rgba(200, 200, 200, 0.2)',
-      },
-      [theme.breakpoints.down('sm')]: {
-        width: 'calc(100% - 30px)',
-        marginBottom: '8px',
-        marginTop: '8px',
-        textAlign: 'left',
-        '& > span:first-child': {
-          justifyContent: 'flex-start',
-        },
-      },
-    },
-    email: {
-      textTransform: 'none',
-      padding: 15,
-    },
-    badge: { color: '#fcc60a', width: 18, height: 18 },
-  })
-)
-
-interface ProfileImageProps {
-  user: Auth0User
-}
-
-const OurAvatar: React.FC<ProfileImageProps> = ({ user }) => {
-  if (user.picture) {
-    return <Avatar src={user.picture} />
-  } else {
-    const initials = user.nickname ? user.nickname[0] : '...'
-    return <Avatar>{initials}</Avatar>
-  }
-}
-
-const AdminBadge: React.FC = ({ children }) => {
-  const classes = useStyles()
-  return (
-    <Tooltip title='Site Administrator'>
-      <Badge
-        overlap='circular'
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        badgeContent={<VerifiedUserIcon className={classes.badge} />}
-      >
-        {children}
-      </Badge>
-    </Tooltip>
-  )
-}
-
-const GmBadge: React.FC = ({ children }) => {
-  const classes = useStyles()
-  return (
-    <Tooltip title='GMs always get stars at ACNW'>
-      <Badge
-        overlap='circular'
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        badgeContent={<StarIcon className={classes.badge} />}
-      >
-        {children}
-      </Badge>
-    </Tooltip>
-  )
-}
-
-const ProfileImage: React.FC<ProfileImageProps> = ({ user }) => {
-  const { hasPermissions } = useAuth()
-  const isAdmin = hasPermissions(Perms.IsAdmin)
-  const isGm = useIsGm()
-
-  if (isAdmin) {
-    if (isGm) {
-      return (
-        <GmBadge>
-          <AdminBadge>
-            <OurAvatar user={user} />
-          </AdminBadge>
-        </GmBadge>
-      )
-    } else {
-      return (
-        <AdminBadge>
-          <OurAvatar user={user} />
-        </AdminBadge>
-      )
-    }
-  } else {
-    if (isGm) {
-      return (
-        <GmBadge>
-          <OurAvatar user={user} />
-        </GmBadge>
-      )
-    } else {
-      return <OurAvatar user={user} />
-    }
-  }
-}
-
-interface MenuButtonProps {
-  user: Auth0User
-  small: boolean
-}
-
-const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
-  const classes = useStyles()
-  const unverified = user.email_verified ? '' : ' (unverified)'
-  return small ? (
-    <>
-      <ProfileImage user={user} />
-      <span className={classes.email}>
-        {user.email}
-        {unverified}
-      </span>
-    </>
-  ) : (
-    <>
-      <span className={classes.email}>
-        {user.email}
-        {unverified}
-      </span>
-      <ProfileImage user={user} />
-    </>
-  )
-}
+import { Button, Menu, MenuItem } from '@mui/material'
+import React from 'react'
 
 interface LoginMenuProps {
-  small?: boolean
+  buttonText: React.ReactNode
+  dropdownList: Array<any>
+  buttonProps?: Record<string, string>
+  onClick?: (name: string) => void
 }
 
-export const LoginMenu: React.FC<LoginMenuProps> = ({ small = false }) => {
-  const classes = useStyles()
-  const { isInitializing = true, isAuthenticated, user, loginWithRedirect, logout, hasPermissions } = useAuth()
-  const [jwtToken] = useToken()
-  const notify = useNotification()
-  const [profileOpen, setProfileOpen] = useState(false)
-  const [authInitialized, setAuthInitialized] = useState(false)
-  const [roleOverride, setRoleOverride] = useRoleOverride()
-  const profile = useProfile()
-  const queryClient = new QueryClient()
+export const LoginMenu: React.FC<LoginMenuProps> = ({ buttonText, dropdownList, buttonProps, onClick }) => {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
 
-  useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
-
-  const login = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      return loginWithRedirect && (await loginWithRedirect())
-    },
-    [loginWithRedirect]
-  )
-
-  const menuItems = useMemo(() => {
-    const menu = [MENU_ITEM_EDIT_PROFILE]
-    if (user?.sub.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
-    if (hasPermissions(Perms.IsAdmin, { ignoreOverride: true })) {
-      if (!roleOverride) {
-        menu.push(MENU_ITEM_VIEW_AS_USER)
-      } else {
-        menu.push(MENU_ITEM_VIEW_AS_ADMIN)
-      }
-    }
-    menu.push(MENU_ITEM_SIGN_OUT)
-    return menu
-  }, [hasPermissions, roleOverride, user?.sub])
-
-  const editProfile = useCallback(() => {
-    setProfileOpen(true)
-  }, [])
-
-  const closeProfile = useCallback(() => {
-    setProfileOpen(false)
-  }, [])
-
-  const resetPassword = useCallback(() => {
-    fetch(window.location.origin + '/api/resetPassword', {
-      method: 'post',
-      headers: jwtToken
-        ? {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
-    })
-      .then((response) => response.text())
-      .then((responseBody) => {
-        try {
-          const result = JSON.parse(responseBody)
-          notify({
-            text: result.message,
-            variant: 'success',
-          })
-        } catch (e: any) {
-          console.log(e)
-          notify({
-            text: e,
-            variant: 'error',
-          })
-          return responseBody
-        }
-      })
-  }, [notify, jwtToken])
-
-  const viewAsUser = () => {
-    if (!roleOverride) {
-      setRoleOverride(Roles.ROLE_USER)
-    } else {
-      setRoleOverride(undefined)
-    }
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
   }
 
-  return isAuthenticated ? (
-    <>
-      <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
-      <CustomDropdown
-        caret={false}
-        hoverColor='black'
-        buttonText={<MenuButton small={small} user={user!} />}
-        buttonProps={{
-          className: classes.navLink,
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  return (
+    <div>
+      <div>
+        <Button
+          aria-label='Notifications'
+          aria-owns={anchorEl ? 'menu-list' : undefined}
+          aria-haspopup='true'
+          {...buttonProps}
+          onClick={handleClick}
+        >
+          {buttonText !== undefined ? buttonText : null}
+        </Button>
+      </div>
+      <Menu
+        anchorEl={anchorEl}
+        id='account-menu'
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 0.5,
+            '& .MuiMenuItem-root': {
+              fontSize: '13px',
+              padding: '10px 20px',
+              margin: '0 5px',
+              borderRadius: '2px',
+              position: 'relative',
+              transition: 'all 150ms linear',
+              display: 'block',
+              clear: 'both',
+              fontWeight: 400,
+              height: 'fit-content',
+              color: '#333',
+              whiteSpace: 'nowrap',
+              minHeight: 'unset',
+            },
+          },
         }}
-        dropdownList={menuItems}
-        onClick={(prop: string) => {
-          switch (prop) {
-            case MENU_ITEM_EDIT_PROFILE:
-              editProfile()
-              break
-            case MENU_ITEM_VIEW_AS_ADMIN:
-            case MENU_ITEM_VIEW_AS_USER:
-              viewAsUser()
-              break
-            case MENU_ITEM_RESET_PASSWORD:
-              resetPassword()
-              break
-            case MENU_ITEM_SIGN_OUT:
-              queryClient.clear()
-              logout?.()
-              break
-          }
-        }}
-      />
-    </>
-  ) : (
-    <Button disabled={!authInitialized} className={classes.loginButton} onClick={login}>
-      Login
-    </Button>
+        transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+      >
+        {dropdownList.map((prop, key) => (
+          <MenuItem key={key} onClick={() => onClick?.(prop)}>
+            {prop}
+          </MenuItem>
+        ))}
+      </Menu>
+    </div>
   )
 }

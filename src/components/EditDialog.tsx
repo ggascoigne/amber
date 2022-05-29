@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@mui/material'
 import { Form, Formik, FormikHelpers } from 'formik'
 import { FormikProps } from 'formik/dist/types'
 import { ReactElement, ReactNode, useCallback } from 'react'
@@ -41,7 +41,7 @@ export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
   const handleClose = useDisableBackdropClick(onClose)
 
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   return (
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <Formik initialValues={initialValues} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>

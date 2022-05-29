@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@mui/material'
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from 'client'
 import { Acnw } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -139,7 +139,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
   gameSubmission,
 }) => {
   const theme = useTheme()
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'))
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   const createOrUpdateChoiceConfirmation = useEditChoiceConfirmation(onClose)
   const [textResults, setTextResults] = useState<Record<number, SlotSummary>>({})
   const [createOrEditGameChoice] = useEditGameChoice()

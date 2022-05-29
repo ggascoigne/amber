@@ -1,4 +1,4 @@
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem'
+import ListItem, { ListItemProps } from '@mui/material/ListItem'
 import React, { LegacyRef } from 'react'
 import { Link, LinkProps } from 'react-router-dom'
 
@@ -9,7 +9,7 @@ export const ListItemLink: React.FC<ListItemProps & LinkProps> = ({ to, children
   const MyLink = React.forwardRef((props, ref: LegacyRef<Link>) => <Link {...props} to={to} ref={ref} />)
   return (
     // @ts-ignore
-    <ListItem {...rest} component={MyLink}>
+    <ListItem {...rest} button component={MyLink}>
       {children}
     </ListItem>
   )

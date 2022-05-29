@@ -1,8 +1,9 @@
-import { Button, FormControlLabel, Checkbox as MuiCheckbox, Switch, makeStyles } from '@material-ui/core'
+import { Button, FormControlLabel, Checkbox as MuiCheckbox, Switch } from '@mui/material'
 import { useGetHotelRoomsQuery, useGetMembershipByYearAndIdQuery } from 'client'
 import { DateTime } from 'luxon'
 import React, { MouseEventHandler, useEffect, useMemo, useState } from 'react'
 import { Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import {
   RoomPref,
   configuration,
@@ -29,7 +30,7 @@ import { BecomeAMember } from './BecomeAMember'
 import { MembershipType, fromSlotsAttending } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   card: {
     marginBottom: 50,
   },
@@ -54,7 +55,7 @@ interface VirtualDetailsProps {
 const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(membership)
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <GridContainer direction='column'>
       <h1>Your Membership for {configuration.year}</h1>
@@ -106,7 +107,7 @@ const formatDate = (date?: string) =>
   date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
 
 const VerticalGap = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <GridItem xs={12}>
       <br className={classes.vspace} />
@@ -174,7 +175,7 @@ const MembershipSummary: React.FC = () => {
   const { userId } = useUser()
   const [year] = useYearFilter()
   const { isLoading, error, data } = useGetMembershipByYearAndIdQuery({ year, userId: userId ?? 0 })
-  const classes = useStyles()
+  const { classes } = useStyles()
   const match = useRouteMatch()
   const history = useHistory()
   const isVirtual = configuration.startDates[year].virtual

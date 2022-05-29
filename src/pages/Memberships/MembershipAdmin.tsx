@@ -1,35 +1,33 @@
-import { createStyles, makeStyles } from '@material-ui/core'
 import { CheckboxWithLabel } from 'components/Form'
 import { FormikErrors, FormikValues } from 'formik'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { HasPermission, Perms } from '../../components/Auth'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { Important } from '../../components/Typography'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from './membershipUtils'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    important: {
-      marginBottom: 12,
-    },
-    slotSelection: {
-      position: 'relative',
-      paddingTop: 0,
-    },
-    slotToggleWrapper: {
-      position: 'absolute',
-      top: 16,
-      right: 50,
-    },
-  })
-)
+const useStyles = makeStyles()(() => ({
+  important: {
+    marginBottom: 12,
+  },
+  slotSelection: {
+    position: 'relative',
+    paddingTop: 0,
+  },
+  slotToggleWrapper: {
+    position: 'absolute',
+    top: 16,
+    right: 50,
+  },
+}))
 
 export const hasAdminStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors('admin', errors?.membership as MembershipErrorType, 'attending', 'volunteer')
 
 export const MembershipStepAdmin: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   return (
     <>

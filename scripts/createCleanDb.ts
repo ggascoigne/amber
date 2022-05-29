@@ -3,9 +3,7 @@
 import chalk from 'chalk'
 import cli from 'cli-ux'
 
-// @ts-ignore
 import { config } from '../shared/config'
-// @ts-ignore
 import { createCleanDb } from './scriptUtils'
 
 const database = config.rootDatabase.database

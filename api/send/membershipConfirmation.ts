@@ -1,14 +1,14 @@
-import { Response } from 'express'
+import { VercelRequest, VercelResponse } from '@vercel/node'
 import { DateTime } from 'luxon'
 
-import { MembershipConfirmation } from '../../src/utils/apiTypes'
+import { MembershipConfirmationBody } from '../../src/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from '../../src/utils/selectValues'
 import { requireJwt } from '../_checkJwt'
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 import { withApiHandler } from '../_standardHandler'
-import { RequestOf, emailer } from './_email'
+import { emailer } from './_email'
 
 // /api/send/membershipConfirmation
 // auth token: required
@@ -26,7 +26,7 @@ const formatDate = (date?: string) =>
 
 export default withApiHandler([
   requireJwt,
-  async (req: RequestOf<MembershipConfirmation>, res: Response) => {
+  async (req: VercelRequest, res: VercelResponse) => {
     try {
       if (!req.body)
         throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
@@ -43,7 +43,7 @@ export default withApiHandler([
         address,
         phoneNumber,
         room,
-      } = req.body
+      } = req.body as MembershipConfirmationBody
       if (!year) throw new JsonError(400, 'missing year')
       if (!name) throw new JsonError(400, 'missing name')
       if (!email) throw new JsonError(400, 'missing email')

@@ -1,10 +1,5 @@
-import { createTheme } from '@material-ui/core'
-import cyan from '@material-ui/core/colors/cyan'
-import green from '@material-ui/core/colors/green'
-import indigo from '@material-ui/core/colors/indigo'
-import orange from '@material-ui/core/colors/orange'
-import purple from '@material-ui/core/colors/purple'
-import red from '@material-ui/core/colors/red'
+import { createTheme } from '@mui/material'
+import { cyan, green, indigo, orange, purple, red } from '@mui/material/colors'
 import hexRgb from 'hex-rgb'
 
 const primaryColor = indigo[500]
@@ -28,42 +23,6 @@ const buildGradientShadow = (color: string) => {
 }
 
 export const theme = createTheme({
-  palette: {
-    type: 'light',
-    primary: {
-      main: primaryColor,
-    },
-    secondary: {
-      main: secondaryColor,
-    },
-    error: {
-      main: dangerColor,
-    },
-    warning: {
-      main: warningColor,
-    },
-    info: {
-      main: infoColor,
-    },
-    success: {
-      main: successColor,
-    },
-    background: {
-      paper: '#fff',
-      default: '#fafafa',
-    },
-  },
-  mixins: {
-    boxShadow: {
-      primary: buildGradientShadow(primaryColor),
-      secondary: buildGradientShadow(secondaryColor),
-      error: buildGradientShadow(dangerColor),
-      warning: buildGradientShadow(warningColor),
-      info: buildGradientShadow(infoColor),
-      success: buildGradientShadow(successColor),
-      page: '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
-    },
-  },
   typography: {
     fontFamily,
     fontSize: 12.5, // 14 looks too chunky
@@ -72,11 +31,15 @@ export const theme = createTheme({
       fontWeight: 400,
     },
   },
-  overrides: {
+  components: {
+    MuiTextField: {
+      defaultProps: {
+        variant: 'filled',
+        size: 'small',
+      },
+    },
     MuiCssBaseline: {
-      '@global': {
-        // since we're overriding nearly everything in the css baseline
-        // we include those values here as well
+      styleOverrides: {
         html: {
           boxSizing: 'border-box',
           WebkitFontSmoothing: 'antialiased',
@@ -197,27 +160,70 @@ export const theme = createTheme({
       },
     },
     MuiButton: {
-      root: {
-        letterSpacing: '0.02875em',
+      styleOverrides: {
+        root: {
+          letterSpacing: '0.02875em',
+        },
       },
     },
     MuiTableSortLabel: {
-      root: {
-        '&:hover': {
-          color: 'inherit',
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            color: 'inherit',
+          },
         },
       },
     },
     MuiDialogActions: {
-      root: {
-        padding: '8px 24px',
+      styleOverrides: {
+        root: {
+          padding: '8px 24px',
+        },
+      },
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: {
+          paddingBottom: 12,
+        },
       },
     },
   },
-  props: {
-    MuiTextField: {
-      variant: 'filled',
-      size: 'small',
+  mixins: {
+    boxShadow: {
+      primary: buildGradientShadow(primaryColor),
+      secondary: buildGradientShadow(secondaryColor),
+      error: buildGradientShadow(dangerColor),
+      warning: buildGradientShadow(warningColor),
+      info: buildGradientShadow(infoColor),
+      success: buildGradientShadow(successColor),
+      page: '0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2)',
     },
   },
-})
+  palette: {
+    mode: 'light',
+    primary: {
+      main: primaryColor,
+    },
+    secondary: {
+      main: secondaryColor,
+    },
+    error: {
+      main: dangerColor,
+    },
+    warning: {
+      main: warningColor,
+    },
+    info: {
+      main: infoColor,
+    },
+    success: {
+      main: successColor,
+    },
+    background: {
+      paper: '#fff',
+      default: '#fafafa',
+    },
+  },
+} as const)

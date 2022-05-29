@@ -1,21 +1,20 @@
-import { DialogContentText, createStyles, makeStyles } from '@material-ui/core'
+import { DialogContentText } from '@mui/material'
 import { Acnw } from 'components'
 import { useFormikContext } from 'formik'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 
 import { getOwed } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    address: {
-      paddingLeft: 20,
-    },
-  })
-)
+const useStyles = makeStyles()({
+  address: {
+    paddingLeft: 20,
+  },
+})
 
 export const MembershipStepPayment: React.FC = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   const { values } = useFormikContext<MembershipWizardFormValues>()
   const toPay = getOwed(values.membership)
   return (

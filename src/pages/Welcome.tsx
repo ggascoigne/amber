@@ -1,43 +1,41 @@
-import { Button, Theme, createStyles, makeStyles } from '@material-ui/core'
+import { Button, Theme } from '@mui/material'
 import { Acnw, ConfigDate } from 'components'
 import { Banner } from 'components/Banner'
 import { Page } from 'components/Page'
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { makeStyles } from 'tss-react/mui'
 import { IsMember } from 'utils'
 
 import { BetaWarning } from '../components/BetaWarning'
 import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
-// @ts-ignore
 import WelcomeContent from '../content/WelcomeContent.mdx'
 import { BecomeAMember } from './Memberships'
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    banner: {
-      textAlign: 'center',
+const useStyles = makeStyles()((theme: Theme) => ({
+  banner: {
+    textAlign: 'center',
+  },
+  deadline: {},
+  deadlineExpired: {
+    color: theme.palette.error.main,
+    '&:after': {
+      content: '" - date passed"',
     },
-    deadline: {},
-    deadlineExpired: {
-      color: theme.palette.error.main,
-      '&:after': {
-        content: '" - date passed"',
-      },
-    },
-    header: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingLeft: 24,
-      paddingRight: 24,
-    },
-    title: {
-      color: '#fff',
-      fontWeight: 300,
-      textTransform: 'none',
-    },
-  })
-)
+  },
+  header: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 24,
+    paddingRight: 24,
+  },
+  title: {
+    color: '#fff',
+    fontWeight: 300,
+    textTransform: 'none',
+  },
+}))
 
 export const DynamicMemberContent = () => (
   <>
@@ -51,7 +49,7 @@ export const DynamicMemberContent = () => (
 )
 
 export const Welcome: React.FC = () => {
-  const classes = useStyles()
+  const { classes } = useStyles()
 
   const titleElement = (
     <>

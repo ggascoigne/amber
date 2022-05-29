@@ -33,7 +33,7 @@ export const useSettings = () => {
       }
 
       if (error || isLoading || !data) {
-        return defaultValue
+        return `${defaultValue}`
       }
 
       const settings: SettingFieldsFragment[] | null = data.settings?.nodes.filter(notEmpty) ?? null
@@ -44,7 +44,7 @@ export const useSettings = () => {
   )
 
   const getSettingValue = useCallback(
-    (setting: string, defaultValue = false): SettingValue | null => {
+    (setting: string, defaultValue = false): SettingValue | boolean | null => {
       const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): SettingValue | null => {
         const s = settings?.find((s) => s.code === setting)
         if (s && s.type !== 'integer') throw new Error("can't call getSettingValue on a non-enum type")

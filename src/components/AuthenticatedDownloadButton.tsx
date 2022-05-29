@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core'
-import React, { createRef } from 'react'
+import { Button } from '@mui/material'
+import React, { PropsWithChildren, createRef } from 'react'
 
 import { useToken } from './Auth/Auth0'
 import { useNotification } from './Notifications'
 
-export const AuthenticatedDownloadButton: React.FC<{ url: string; filename: string }> = ({
+export const AuthenticatedDownloadButton: React.FC<PropsWithChildren<{ url: string; filename: string }>> = ({
   url,
   filename,
   children,

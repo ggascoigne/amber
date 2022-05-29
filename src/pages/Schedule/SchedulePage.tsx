@@ -1,7 +1,7 @@
-import Button from '@material-ui/core/Button'
+import Button from '@mui/material/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
 import { stripIndents } from 'common-tags'
-import React, { createRef, useEffect, useMemo, useState } from 'react'
+import React, { PropsWithChildren, createRef, useEffect, useMemo, useState } from 'react'
 import SHA from 'sha.js'
 import {
   GqlType,
@@ -104,7 +104,11 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
       .filter(notEmpty)
   )
 
-export const ICalDownloadButton: React.FC<{ url: string | null; filename: string }> = ({ url, filename, children }) => {
+export const ICalDownloadButton: React.FC<PropsWithChildren<{ url: string | null; filename: string }>> = ({
+  url,
+  filename,
+  children,
+}) => {
   const link = createRef<any>()
   const handleAction = async () => {
     link.current.download = filename

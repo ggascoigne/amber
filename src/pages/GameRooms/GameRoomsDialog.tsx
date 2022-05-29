@@ -1,15 +1,14 @@
-import { Dialog, Divider, TextField as MuiTextField, makeStyles } from '@material-ui/core'
-import { Autocomplete } from '@material-ui/lab'
+import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
 import {
   useCreateGameRoomMutation,
   useGetGamesByYearQuery,
   useUpdateGameMutation,
   useUpdateGameRoomMutation,
 } from 'client'
-import clsx from 'clsx'
 import { FormikHelpers } from 'formik'
 import React, { useCallback, useMemo } from 'react'
 import { useQueryClient } from 'react-query'
+import { makeStyles } from 'tss-react/mui'
 import { ToFormValues, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -21,7 +20,7 @@ import { Loader } from '../../components/Loader'
 import { useNotification } from '../../components/Notifications'
 import { GameRoom } from './GameRooms'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles()({
   hasRoom: {
     opacity: '.6',
   },
@@ -161,7 +160,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
     }
   )
 
-  const classes = useStyles({})
+  const { classes, cx } = useStyles()
 
   const games = useMemo(() => gData?.games?.edges.map((v) => v.node).filter(notEmpty), [gData])
   const gamesBySlot = useCallback(
@@ -245,12 +244,16 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
                       options={options}
                       getOptionLabel={(game) => game.name ?? ''}
                       value={value}
-                      renderOption={(game) => {
+                      renderOption={(props, game) => {
                         const hasRoom = !!game.roomId
                         const line = `${game.name}${game.gmNames ? ': ' + game.gmNames : ''}${
                           hasRoom ? ' (' + game.room?.description + ')' : ''
                         }`
-                        return <span className={clsx({ [classes.hasRoom]: hasRoom })}>{line}</span>
+                        return (
+                          <li {...props} className={cx({ [classes.hasRoom]: hasRoom })}>
+                            {line}
+                          </li>
+                        )
                       }}
                       fullWidth
                       renderInput={(params) => <MuiTextField {...params} label={`Slot ${slotId}`} variant='outlined' />}

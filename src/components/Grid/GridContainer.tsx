@@ -1,21 +1,20 @@
-import { Grid, createStyles, makeStyles } from '@material-ui/core'
-import type { GridProps } from '@material-ui/core/Grid'
+import { Grid } from '@mui/material'
+import type { GridProps } from '@mui/material/Grid'
 import React from 'react'
+import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    grid: {
-      width: 'auto',
-    },
-  })
-)
+const useStyles = makeStyles()(() => ({
+  grid: {
+    width: 'auto',
+  },
+}))
 
 interface GridContainerProps extends GridProps {
   className?: string
 }
 
 export const GridContainer: React.FC<GridContainerProps> = ({ children, className = '', ...rest }) => {
-  const classes = useStyles()
+  const { classes } = useStyles()
   return (
     <Grid container {...rest} className={classes.grid + ' ' + className}>
       {children}
