@@ -1,6 +1,6 @@
 #!/usr/bin/env TS_NODE_PROJECT=./tsconfig.commonjs.json yarn ts-node-script -r dotenv/config
 
-import chalk from 'chalk'
+import * as chalk from 'chalk'
 import cli from 'cli-ux'
 
 import { config } from '../shared/config'

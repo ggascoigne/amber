@@ -1,6 +1,5 @@
 import { Theme } from '@mui/material'
 import MuiDialogTitle from '@mui/material/DialogTitle'
-import Typography from '@mui/material/Typography'
 import React, { MouseEventHandler, PropsWithChildren } from 'react'
 import { makeStyles } from 'tss-react/mui'
 
@@ -21,8 +20,8 @@ interface DialogTitleProps {
 export const DialogTitle: React.FC<PropsWithChildren<DialogTitleProps>> = ({ children, onClose }) => {
   const { classes } = useStyles()
   return (
-    <MuiDialogTitle className={classes.root}>
-      <Typography variant='h6'>{children}</Typography>
+    <MuiDialogTitle className={classes.root} component='h6'>
+      {children}
       {onClose && <DialogClose onClose={onClose} />}
     </MuiDialogTitle>
   )

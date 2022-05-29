@@ -13,8 +13,8 @@ export default withApiHandler([
   checkJwt,
   async (req: VercelRequest, res: VercelResponse) => {
     try {
-      const { user } = req as any
-      const admin = isAdmin(user)
+      const { auth } = req as any
+      const admin = isAdmin(auth)
       const database: Partial<DbConfig> = { ...config.userDatabase }
       delete database.password
       const summary = {

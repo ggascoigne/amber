@@ -7,7 +7,7 @@ import { Handler } from './_standardHandler'
 
 const public_key = fs.readFileSync(`${__dirname}/../shared/certs/${authDomain}.pem`).toString()
 
-// note express-jwt doesn't just validate the token, it puts the decoded token on the request as `user`
+// note express-jwt doesn't just validate the token, it puts the decoded token on the request as `auth`
 
 export const checkJwt = jwt({
   secret: public_key,
