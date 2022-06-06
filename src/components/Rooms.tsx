@@ -28,7 +28,7 @@ const useStyles = makeStyles<void, 'titleLine'>()((theme: Theme, _params, classe
 
     '&:after': {
       color: 'black',
-      content: ' SOLD OUT',
+      content: '" SOLD OUT"',
     },
   },
   tableRow: {

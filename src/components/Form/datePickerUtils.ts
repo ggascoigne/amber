@@ -12,13 +12,7 @@ const createErrorHandler =
     }
   }
 
-const getMinDateMessage = (message?: ReactNode, date?: DateTime | null) =>
-  message ? message : date ? `Date should not be before ${date.toLocaleString(DateTime.DATE_MED)}` : undefined
-
-const getMaxDateMessage = (message?: ReactNode, date?: DateTime | null) =>
-  message ? message : date ? `Date should not be after ${date.toLocaleString(DateTime.DATE_MED)}` : undefined
-
-export const useDatePickerProps = <T extends DatePickerProps>(props: T) => {
+export const useDatePickerProps = <T extends DatePickerProps<DateTime, DateTime>>(props: T) => {
   const { disabled, onError, ...rest } = props
   const [field, meta] = useField(rest.name)
   const { isSubmitting, setFieldValue, setFieldError } = useFormikContext()
@@ -29,7 +23,7 @@ export const useDatePickerProps = <T extends DatePickerProps>(props: T) => {
 
   return {
     error: showError,
-    // helperText: showError ? error : rest.helperText,
+    helperText: showError ? error : 'tt',
     disabled: disabled ?? isSubmitting,
     onError: onError ?? createErrorHandler(error, field.name, setFieldError),
     ...field,
@@ -37,8 +31,6 @@ export const useDatePickerProps = <T extends DatePickerProps>(props: T) => {
     onChange: (date: any) => {
       setFieldValue(field.name, date)
     },
-    // minDateMessage: getMinDateMessage(minDateMessage, props.minDate as DateTime),
-    // maxDateMessage: getMaxDateMessage(maxDateMessage, props.maxDate as DateTime),
     ...rest,
   }
 }

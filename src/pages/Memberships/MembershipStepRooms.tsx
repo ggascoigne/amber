@@ -1,11 +1,12 @@
-import { DialogContentText, FormControl, TextField as MuiTextField, RadioGroup, Theme } from '@mui/material'
-import { DatePicker, RadioGroupFieldWithLabel, TextField } from 'components/Form'
-import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
+import { DialogContentText, FormControl, RadioGroup, Theme } from '@mui/material'
+import { RadioGroupFieldWithLabel, TextField } from 'components/Form'
+import { Field, FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
 import React, { useCallback } from 'react'
 import { makeStyles } from 'tss-react/mui'
 
 import { Acnw, ConfigDate } from '../../components'
+import { DatePickerField } from '../../components/Form/DatePickerField'
 import { GridContainer, GridItem } from '../../components/Grid'
 import { RoomFieldTable } from '../../components/Rooms'
 import { Important } from '../../components/Typography'
@@ -27,9 +28,6 @@ const useStyles = makeStyles()((theme: Theme) => ({
     right: 50,
   },
 }))
-
-const DatePickerLabelFn = (date: DateTime | null, invalidLabel: string) =>
-  date ? date.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
 
 export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -89,29 +87,27 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       </Important>
       <GridContainer spacing={2} direction='row'>
         <GridItem xs={12} md={6}>
-          <DatePicker
+          <Field
+            component={DatePickerField}
+            required
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
-            clearable
+            defaultCalendarMonth={DateTime.now().set({ month: 11 })}
             disablePast
-            // initialFocusedDate={null}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
-            // labelFunc={DatePickerLabelFn}
-            renderInput={(props) => <MuiTextField {...props} helperText='invalid mask' variant='filled' />}
           />
         </GridItem>
         <GridItem xs={12} md={6}>
-          <DatePicker
+          <Field
+            component={DatePickerField}
+            required
             label='Departure Date'
             name={`${prefix}departureDate`}
-            clearable
+            defaultCalendarMonth={DateTime.now().set({ month: 11 })}
             disablePast
-            // initialFocusedDate={null}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
-            // labelFunc={DatePickerLabelFn}
-            renderInput={(props) => <MuiTextField {...props} helperText='invalid mask' variant='filled' />}
           />
         </GridItem>
       </GridContainer>

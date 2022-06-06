@@ -1,12 +1,14 @@
-import MuiDatePicker, { DatePickerProps as MuiDatePickerProps } from '@mui/lab/DatePicker'
+import { DatePicker as MuiDatePicker, DatePickerProps as MuiDatePickerProps } from '@mui/x-date-pickers'
+import { DateTime } from 'luxon'
 
 import { useDatePickerProps } from './datePickerUtils'
 
-export interface DatePickerProps extends Omit<MuiDatePickerProps, 'onChange' | 'value' | 'error'> {
+export interface DatePickerProps<TInputDate, TDate = TInputDate>
+  extends Omit<MuiDatePickerProps<TInputDate, TDate>, 'onChange' | 'value' | 'error'> {
   name: string
 }
 
-export function DatePicker({ children, ...props }: DatePickerProps) {
+export function DatePicker({ children, ...props }: DatePickerProps<DateTime>) {
   const newProps = useDatePickerProps(props)
   return <MuiDatePicker {...newProps}>{children}</MuiDatePicker>
 }
