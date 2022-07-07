@@ -54,9 +54,9 @@ export const configuration = {
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
   wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
 
-  fourDayMembership: 185,
+  fourDayMembership: 220,
   fourDayVoucher: 70,
-  threeDayMembership: 135,
+  threeDayMembership: 170,
   threeDayVoucher: 50,
   deposit: 50,
 
