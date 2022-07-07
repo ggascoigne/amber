@@ -210,6 +210,12 @@ export const rootRoutes: RootRoutes = [
     permission: Perms.GraphiqlLoad,
   },
   {
+    path: '/covidPolicy',
+    label: 'COVID Policy',
+    exact: false,
+    component: React.lazy(() => import('pages/CovidPolicy')),
+  },
+  {
     path: '/antiHarassmentPolicy',
     label: 'Anti-Harassment Policy',
     exact: false,

@@ -1,5 +1,5 @@
 import { Button, Theme } from '@mui/material'
-import { Acnw, ConfigDate } from 'components'
+import { Acnw, ConfigDate, MDY } from 'components'
 import { Banner } from 'components/Banner'
 import { Page } from 'components/Page'
 import React from 'react'
@@ -72,80 +72,87 @@ export const Welcome: React.FC = () => {
       <p>
         If you are accessing this site after{' '}
         <strong>
-          <ConfigDate name='gameGmPreview' />
+          <ConfigDate name='gameGmPreview' format={MDY} />
         </strong>
         , please contact the organizers by e-mail at <Acnw.ContactEmail /> before registering.
       </p>
 
       <ul>
-        {/* search for Date Edit when changing */}
         <li>
           <span className={classes.deadline}>
-            Initial registration and deposits: <ConfigDate name='registrationDeadline' />
+            Registration Open: <ConfigDate name='registrationOpen' format={MDY} />
+          </span>
+        </li>
+        {/*
+        <li>
+          <span className={classes.deadline}>
+            Initial registration and deposits: <ConfigDate name='registrationDeadline' format={MDY}/>
+          </span>
+        </li>
+*/}
+        <li>
+          <span className={classes.deadline}>
+            Membership payment in full: <ConfigDate name='paymentDeadline' format={MDY} />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Membership payment in full: <ConfigDate name='gameSubmissionDeadline' />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadline}>
-            Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
+            Games and Events due: <ConfigDate name='gameSubmissionDeadline' format={MDY} />
           </span>
         </li>
         {/* and on home/gameBookClosed.gsp */}
         <li>
           <span className={classes.deadline}>
-            Game Book preview to GMs: <ConfigDate name='gameGmPreview' />
+            Game Book preview to GMs: <ConfigDate name='gameGmPreview' format={MDY} />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Game Books open for selections: <ConfigDate name='gameBookOpen' />
+            Game Books open for selections: <ConfigDate name='gameBookOpen' format={MDY} />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Game Selections due: <ConfigDate name='gameChoicesDue' />
+            Game Selections due: <ConfigDate name='gameChoicesDue' format={MDY} />
+          </span>
+        </li>
+        {/*<li>*/}
+        {/*  <span className={classes.deadline}>*/}
+        {/*    Last date for cancellation with full refund: <ConfigDate name='gameSubmissionDeadline' format={MDY}/>*/}
+        {/*  </span>*/}
+        {/*</li>*/}
+        <li>
+          <span className={classes.deadline}>
+            Schedule previews to GMs: <ConfigDate name='gmPreview' format={MDY} />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Last date for cancellation with full refund: <ConfigDate name='gameSubmissionDeadline' />
+            Schedules SENT to all players: <ConfigDate name='schedulesSent' format={MDY} />
           </span>
         </li>
-        <li>
-          <span className={classes.deadline}>
-            Schedule previews to GMs: <ConfigDate name='gmPreview' />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadline}>
-            Schedules SENT to all players: <ConfigDate name='schedulesSent' />
-          </span>
-        </li>
-        <li>
-          <span className={classes.deadline}>
-            Orders for shirts: October 9, <Acnw.ConventionYear />
-          </span>
-        </li>
+        {/*<li>*/}
+        {/*  <span className={classes.deadline}>*/}
+        {/*    Orders for shirts: October 9, <Acnw.ConventionYear />*/}
+        {/*  </span>*/}
+        {/*</li>*/}
         {/* referenced in shirtOrder / _form.gsp */}
         <li>
           <span className={classes.deadline}>
-            Travel coordination information due: October 16, <Acnw.ConventionYear />
+            Travel coordination information due: <ConfigDate name='travelCoordination' format={MDY} />
           </span>
         </li>
         <li>
           <span className={classes.deadline}>
-            Last date for cancellation with partial refund: October 20, <Acnw.ConventionYear />
+            Last date for cancellation with partial refund:{' '}
+            <ConfigDate name='lastCancellationFullRefund' format={MDY} />
           </span>
         </li>
-        <li>
-          <span className={classes.deadline}>
-            Wednesday dinner RSVP: October 23, <Acnw.ConventionYear />
-          </span>
-        </li>
+        {/*<li>*/}
+        {/*  <span className={classes.deadline}>*/}
+        {/*    Wednesday dinner RSVP: October 23, <Acnw.ConventionYear />*/}
+        {/*  </span>*/}
+        {/*</li>*/}
       </ul>
     </Page>
   )

@@ -18,6 +18,7 @@ const Spacing: React.FC<PropsWithChildren<SpacingProps>> = ({ children, skipSpac
 // common Date Formats
 export const WMD = 'cccc, LLLL d'
 export const WMDY = 'cccc, LLLL d yyyy'
+export const MDY = DateTime.DATE_FULL
 
 export const configDate = (
   name: keyof ConfigurationDates,
