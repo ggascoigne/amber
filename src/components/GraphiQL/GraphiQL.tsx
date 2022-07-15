@@ -117,7 +117,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
     })
   }, [handleInspectOperation, jwtToken])
 
-  const handleEditQuery = useCallback((query: string) => setQuery(query), [])
+  const handleEditQuery = useCallback((query: string | undefined) => setQuery(query ?? ''), [])
 
   const handleToggleExplorer = useCallback(() => {
     setExplorerIsOpen((old) => !old)
@@ -136,7 +136,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
               padding: '8px 8px 0 8px',
               // overflowX: 'hidden !important',  // todo ggp: check this
             },
-            '.graphiql-explorer-root > :nth-child(2)': {
+            '.graphiql-explorer-root > :nth-of-type(2)': {
               padding: '0px 8px 0 8px',
             },
             '.graphiql-container .historyPaneWrap': {
@@ -162,22 +162,22 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
         >
           <RealGraphiQL.Toolbar>
             <RealGraphiQL.Button
-              onClick={() => _graphiql.current.handlePrettifyQuery()}
+              onClick={() => _graphiql.current.ref.props.prettify()}
               label='Prettify'
               title='Prettify Query (Shift-Ctrl-P)'
             />
             <RealGraphiQL.Button
-              onClick={() => _graphiql.current.handleMergeQuery()}
+              onClick={() => _graphiql.current.ref.props.merge()}
               title='Merge Query (Shift-Ctrl-M)'
               label='Merge'
             />
             <RealGraphiQL.Button
-              onClick={() => _graphiql.current.handleCopyQuery()}
+              onClick={() => _graphiql.current.ref.props.copy()}
               title='Copy Query (Shift-Ctrl-C)'
               label='Copy'
             />{' '}
             <RealGraphiQL.Button
-              onClick={() => _graphiql.current.handleToggleHistory()}
+              onClick={() => _graphiql.current!.ref?.props.historyContext?.toggle()}
               label='History'
               title='Show History'
             />

@@ -110,17 +110,12 @@ interface RoomsFieldProps {
 // extracted to make debugging easier
 const roomCountThreshold = 0
 
-const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) => {
-  const { getRoomAvailable } = useAvailableHotelRooms()
-  return useMemo(
+const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) =>
+  useMemo(
     () =>
-      rooms
-        ?.filter((room) => room.bathroomType === type)
-        // ?.filter((room) => getRoomAvailable(room) > roomCountThreshold)
-        .sort((a, b) => -b.description.localeCompare(a.description)),
-    [getRoomAvailable, rooms, type]
+      rooms?.filter((room) => room.bathroomType === type).sort((a, b) => -b.description.localeCompare(a.description)),
+    [rooms, type]
   )
-}
 
 const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) => {
   const { classes, cx } = useStyles()

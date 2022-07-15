@@ -8500,11 +8500,12 @@ export type GetMembershipByYearAndIdQuery = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8543,11 +8544,12 @@ export type GetMembershipsByYearQuery = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8601,11 +8603,12 @@ export type GetMembershipsByIdQuery = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8645,11 +8648,12 @@ export type GetMembershipByYearAndRoomQuery = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8688,11 +8692,12 @@ export type UpdateMembershipByNodeIdMutation = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -8731,11 +8736,12 @@ export type CreateMembershipMutation = {
       amountPaid: number
       user?: {
         __typename: 'User'
+        nodeId: string
         id: number
+        email: string
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
-        email: string
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -8779,11 +8785,12 @@ export type MembershipFieldsFragment = {
   amountPaid: number
   user?: {
     __typename: 'User'
+    nodeId: string
     id: number
+    email: string
     fullName?: string | null
     firstName?: string | null
     lastName?: string | null
-    email: string
   } | null
   hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
 }
@@ -9203,6 +9210,16 @@ export const LookupValuesFieldsFragmentDoc = `
   value
 }
     `
+export const UserFieldsFragmentDoc = `
+    fragment userFields on User {
+  nodeId
+  id
+  email
+  fullName
+  firstName
+  lastName
+}
+    `
 export const MembershipFieldsFragmentDoc = `
     fragment membershipFields on Membership {
   nodeId
@@ -9226,17 +9243,13 @@ export const MembershipFieldsFragmentDoc = `
   amountOwed
   amountPaid
   user {
-    id
-    fullName
-    firstName
-    lastName
-    email
+    ...userFields
   }
   hotelRoom {
     type
   }
 }
-    `
+    ${UserFieldsFragmentDoc}`
 export const SettingFieldsFragmentDoc = `
     fragment settingFields on Setting {
   nodeId
@@ -9254,16 +9267,6 @@ export const SlotFieldsFragmentDoc = `
   day
   length
   time
-}
-    `
-export const UserFieldsFragmentDoc = `
-    fragment userFields on User {
-  nodeId
-  id
-  email
-  fullName
-  firstName
-  lastName
 }
     `
 export const ProfileFieldsFragmentDoc = `

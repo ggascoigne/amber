@@ -72,13 +72,11 @@ export class CustomLuxonUtils extends LuxonUtils {
   constructor() {
     super()
     this.wrapper = new DataWrapper('Sun')
-    console.log('CustomLuxonUtils constructor')
   }
 
   public getWeekdays = () => this.wrapper.processWeekDayOrder()
 
   public getWeekArray = (date: DateTime) => {
-    console.log('date', date)
     const index = this.wrapper.startDay.index
     const endDate = date
       .endOf('month')
@@ -109,7 +107,7 @@ export class CustomLuxonUtils extends LuxonUtils {
 
         weeks[weeks.length - 1].push(v)
       })
-    console.log('weeks', weeks)
+    // console.log('weeks', weeks)
     // a consequence of all this shifting back/forth 1 day is that you might end up with a week
     // where all the days are actually in the previous or next month.
     // this happens when the first day of the month is Sunday (Dec 2019 or Mar 2020 are examples)
