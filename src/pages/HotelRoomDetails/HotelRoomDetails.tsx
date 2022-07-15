@@ -65,11 +65,7 @@ export const useAvailableHotelRooms = () => {
   const getRequested = useCallback(
     (room: HotelRoom): number => {
       if (room.id === 13 /* no room */ || room.id === 14 /* sharing */) return 0
-      return (
-        roomsInUse?.filter(
-          (h) => h.type === room.type && h.gamingRoom === room.gamingRoom && h.bathroomType === room.bathroomType
-        ).length ?? 0
-      )
+      return roomsInUse?.filter((h) => h.id === room.id).length ?? 0
     },
     [roomsInUse]
   )

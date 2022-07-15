@@ -8566,7 +8566,13 @@ export type GetMembershipRoomsByYearQuery = {
     __typename: 'MembershipsConnection'
     nodes: Array<{
       __typename: 'Membership'
-      hotelRoom?: { __typename: 'HotelRoom'; type: string; gamingRoom: boolean; bathroomType: string } | null
+      hotelRoom?: {
+        __typename: 'HotelRoom'
+        id: number
+        type: string
+        gamingRoom: boolean
+        bathroomType: string
+      } | null
     } | null>
   } | null
 }
@@ -10340,6 +10346,7 @@ export const GetMembershipRoomsByYearDocument = `
   memberships(condition: {year: $year}) {
     nodes {
       hotelRoom {
+        id
         type
         gamingRoom
         bathroomType

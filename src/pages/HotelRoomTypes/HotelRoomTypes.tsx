@@ -68,6 +68,9 @@ const HotelRoomTypes: React.FC = () => {
         Header: 'General',
         columns: [
           {
+            accessor: 'id',
+          },
+          {
             accessor: 'description',
           },
           {
