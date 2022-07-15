@@ -3,9 +3,11 @@ import { Acnw, ConfigDate } from 'components'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+import { CheckboxWithLabel } from '../../components/Form'
+import { GridContainer, GridItem } from '../../components/Grid'
 import { configuration } from '../../utils'
 
-export const IntroStep: React.FC = () => (
+export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => (
   <>
     <DialogContentText>
       If you are accessing this site after{' '}
@@ -17,16 +19,31 @@ export const IntroStep: React.FC = () => (
 
     <DialogContentText>
       In order to run and play games offered through the convention, the first thing you must do is register. If you are
-      not already familiar with format of an AmberCon, review the AmberCon NW "What you get and what it costs" page{' '}
-      <Link to='/about-acnw'>here</Link>.
+      not already familiar with format of an AmberCon, review the AmberCon NW{' '}
+      <Link to='/about-acnw'>"what you get and what it costs" page</Link>.
     </DialogContentText>
 
     <DialogContentText>
-      You should also review our Anti-Harassment Policy <Link to='/antiHarassmentPolicy'>here</Link>. You will be asked
-      to agree to abide by the policy
-      {configuration.virtual
-        ? ', along with some adaptations specific to on-line interactions, when you first join the Discord server.'
-        : '.'}
+      <strong>
+        Masks are required in all convention spaces, as is vaccination or proof of negative covid PCR test.
+      </strong>
     </DialogContentText>
+
+    <DialogContentText>
+      You should also review both our <Link to='/antiHarassmentPolicy'>Anti-Harassment Policy</Link> and our{' '}
+      <Link to='/covidPolicy'>COVID Policy</Link>.
+      {configuration.virtual &&
+        ' You will be asked to agree to abide by these policy, along with some adaptations specific to on-line interactions, when you first join the Discord server.'}
+    </DialogContentText>
+    {!configuration.virtual && (
+      <GridContainer spacing={2}>
+        <GridItem xs={12} md={12}>
+          <CheckboxWithLabel
+            label='Click here to indicate acceptance of these policies'
+            name={`${prefix}acceptedPolicies`}
+          />
+        </GridItem>
+      </GridContainer>
+    )}
   </>
 )

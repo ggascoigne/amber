@@ -1,9 +1,6 @@
 #!/bin/bash
 #set -x
 
-echo "dont run this until you verify that the database permissions are going to be correct"
-exit 1
-
 source `dirname $0`/utils.sh
 
 while read line; do export $line; done < <(grep DATABASE .env.aws-prod | egrep -v '^#')
@@ -24,13 +21,18 @@ export PGPASSWORD=${DATABASE_ADMIN_PASSWORD}
 
 echo "expect a warning about 3 errors since we can't run as superuser on RDS"
 
-/usr/local/bin/pg_restore \
+PGPASSWROD=${DATABASE_USER_PASSWORD} /usr/local/bin/pg_restore \
   -j4 \
   --clean \
   -d ${DATABASE_NAME} \
+  -h ${DATABASE_HOST} \
+  -p ${DATABASE_PORT} \
+  -U ${PGUSER} \
   --no-privileges \
   --no-owner \
   --if-exists \
   ${ORIGINAL_DATABASE_NAME}.dump
+
+yarn tsnode ./scripts/resetDatabaseOwner.ts
 
 echo Done

@@ -3,7 +3,6 @@ import 'react-app-polyfill/ie11'
 import createCache from '@emotion/cache'
 import { CacheProvider } from '@emotion/react'
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { Provider as JotaiProvider } from 'jotai'
 import React, { PropsWithChildren } from 'react'
@@ -17,6 +16,8 @@ import { App } from './App'
 import { Auth0Provider } from './components/Auth'
 import { NotificationProvider } from './components/Notifications'
 import { theme } from './components/Theme'
+// import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
+import { CustomLuxonUtils } from './utils/luxonUtils'
 
 // Usage
 // window.toggleDevtools(true)
@@ -55,7 +56,7 @@ const RootComponent: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
           <CacheProvider value={muiCache}>
             <ThemeProvider theme={theme}>
               <CssBaseline />
-              <LocalizationProvider dateAdapter={AdapterLuxon}>
+              <LocalizationProvider dateAdapter={CustomLuxonUtils}>
                 <NotificationProvider>
                   <Auth0Provider>
                     <QueryClientProvider client={queryClient}>

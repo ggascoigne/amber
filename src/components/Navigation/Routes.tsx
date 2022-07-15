@@ -55,7 +55,7 @@ export const rootRoutes: RootRoutes = [
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
     exact: false,
     component: React.lazy(() => import('pages/Accommodations')),
-    condition: false, //!configuration.virtual,
+    condition: !configuration.virtual,
   },
   {
     path: '/virtual-details',

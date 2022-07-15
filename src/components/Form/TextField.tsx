@@ -48,7 +48,6 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const originalOnChange = fullProps.onChange
 
   const onChangeField = (event: ChangeEvent<HTMLInputElement>, ...rest: any[]) => {
-    console.log('here')
     const value = event.target.value
     setOldValue((prevState: unknown) => {
       if (prevState !== value)

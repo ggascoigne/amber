@@ -1,3 +1,5 @@
+import { useQueryClient } from 'react-query'
+
 import {
   GetAllUsersAndProfilesQuery,
   Maybe,
@@ -5,6 +7,7 @@ import {
   useUpdateProfileByNodeIdMutation,
   useUpdateUserMutation,
 } from '../../client'
+import { allUserQueries } from '../../client/querySets'
 import { GqlType, Omit, ToFormValues, onCloseHandler, pick } from '../../utils'
 import { useNotification } from '../Notifications'
 
@@ -32,37 +35,57 @@ export const useEditUserAndProfile = (onClose?: onCloseHandler) => {
   const createProfile = useCreateProfileMutation()
   const updateProfile = useUpdateProfileByNodeIdMutation()
   const notify = useNotification()
+  const queryClient = useQueryClient()
+
+  const invalidateProfileQueries = () => {
+    allUserQueries.map((q) => queryClient.invalidateQueries(q), { refetchActive: true, refetchInactive: true })
+  }
 
   return async (profileValues: UsersAndProfileType) =>
     await updateUser
-      .mutateAsync({
-        input: {
-          id: profileValues.id,
-          patch: {
-            ...userFromProfileValues(profileValues),
+      .mutateAsync(
+        {
+          input: {
+            id: profileValues.id,
+            patch: {
+              ...userFromProfileValues(profileValues),
+            },
           },
         },
-      })
+        {
+          onSuccess: invalidateProfileQueries,
+        }
+      )
       .then(async () => {
         if (profileValues?.profiles?.nodes?.[0]?.nodeId) {
-          await updateProfile.mutateAsync({
-            input: {
-              nodeId: profileValues.profiles.nodes[0].nodeId,
-              patch: {
-                userId: profileValues.id,
-                ...profileFromProfileValues(profileValues),
+          await updateProfile.mutateAsync(
+            {
+              input: {
+                nodeId: profileValues.profiles.nodes[0].nodeId,
+                patch: {
+                  userId: profileValues.id,
+                  ...profileFromProfileValues(profileValues),
+                },
               },
             },
-          })
+            {
+              onSuccess: invalidateProfileQueries,
+            }
+          )
         } else {
-          await createProfile.mutateAsync({
-            input: {
-              profile: {
-                userId: profileValues.id,
-                ...profileFromProfileValues(profileValues),
+          await createProfile.mutateAsync(
+            {
+              input: {
+                profile: {
+                  userId: profileValues.id,
+                  ...profileFromProfileValues(profileValues),
+                },
               },
             },
-          })
+            {
+              onSuccess: invalidateProfileQueries,
+            }
+          )
         }
         if (onClose) {
           notify({ text: 'User updated', variant: 'success' })

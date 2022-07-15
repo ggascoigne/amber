@@ -1,3 +1,5 @@
+#import "./userFragment.graphql"
+
 fragment membershipFields on Membership {
   nodeId
   id
@@ -20,11 +22,7 @@ fragment membershipFields on Membership {
   amountOwed
   amountPaid
   user {
-    id
-    fullName
-    firstName
-    lastName
-    email
+    ...userFields
   }
   hotelRoom {
     type

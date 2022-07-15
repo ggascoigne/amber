@@ -25,22 +25,19 @@ export function DatePickerField(props: DatePickerFieldProps) {
       value={field.value}
       // Make sure that your 3d param is set to `true` in order to run validation
       onChange={(newValue) => form.setFieldValue(field.name, newValue, true)}
-      renderInput={(inputProps) => {
-        console.log({ inputProps })
-        return (
-          <TextField
-            required={required}
-            name={field.name}
-            {...inputProps}
-            inputProps={{ ...inputProps.inputProps, placeholder: 'mm/dd/yyyy' }}
-            error={showError}
-            helperText={showError ? <>{currentError}</> : inputProps.helperText ?? inputProps?.placeholder}
-            // Make sure that your 3d param is set to `true` in order to run validation
-            onBlur={() => form.setFieldTouched(field.name, true, true)}
-            variant='filled'
-          />
-        )
-      }}
+      renderInput={(inputProps) => (
+        <TextField
+          required={required}
+          name={field.name}
+          {...inputProps}
+          inputProps={{ ...inputProps.inputProps, placeholder: 'mm/dd/yyyy' }}
+          error={showError}
+          helperText={showError ? <>{currentError}</> : inputProps.helperText ?? inputProps?.placeholder}
+          // Make sure that your 3d param is set to `true` in order to run validation
+          onBlur={() => form.setFieldTouched(field.name, true, true)}
+          variant='filled'
+        />
+      )}
       {...other}
     />
   )

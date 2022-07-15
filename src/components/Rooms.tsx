@@ -16,21 +16,18 @@ import { useGetHotelRoomsQuery } from '../client'
 import { useAvailableHotelRooms } from '../pages/HotelRoomDetails/HotelRoomDetails'
 import { HotelRoom } from '../pages/HotelRoomTypes/HotelRoomTypes'
 import { BathroomType, notEmpty } from '../utils'
+import { HasPermission, Perms } from './Auth'
 import { GraphQLError } from './GraphQLError'
 import { Loader } from './Loader'
 
-const useStyles = makeStyles<void, 'titleLine'>()((theme: Theme, _params, classes) => ({
+const useStyles = makeStyles<void, 'titleLine' | 'soldOut'>()((theme: Theme, _params, classes) => ({
   titleLine: {
     // see tableCell
   },
-  soldOut: {
+  disabled: {
     color: 'rgba(0,0,0,0.38)',
-
-    '&:after': {
-      color: 'black',
-      content: '" SOLD OUT"',
-    },
   },
+  soldOut: {},
   tableRow: {
     color: 'inherit',
     outline: 0,
@@ -50,6 +47,15 @@ const useStyles = makeStyles<void, 'titleLine'>()((theme: Theme, _params, classe
     // color: theme.palette.text.primary,
     [`&.${classes.titleLine}`]: {
       fontWeight: 500,
+    },
+    [`&.${classes.soldOut}`]: {
+      '&:after': {
+        color: 'black',
+        content: '" SOLD OUT"',
+        fontSize: '14px',
+        lineHeight: 1.42857,
+        verticalAlign: 'middle',
+      },
     },
   },
 }))
@@ -95,9 +101,10 @@ const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
   )
 }
 
-interface RoomsProps {
+interface RoomsFieldProps {
   rooms?: HotelRoom[]
   type: BathroomType
+  currentValue: number
 }
 
 // extracted to make debugging easier
@@ -109,12 +116,13 @@ const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) => 
     () =>
       rooms
         ?.filter((room) => room.bathroomType === type)
-        ?.filter((room) => getRoomAvailable(room) > roomCountThreshold),
+        // ?.filter((room) => getRoomAvailable(room) > roomCountThreshold)
+        .sort((a, b) => -b.description.localeCompare(a.description)),
     [getRoomAvailable, rooms, type]
   )
 }
 
-const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
+const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) => {
   const { classes, cx } = useStyles()
   const { getRoomAvailable } = useAvailableHotelRooms()
   const description = getRoomTypeDescription(type)
@@ -131,28 +139,41 @@ const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
           </TableRow>
         ) : null}
         {roomsOfType?.map((room, index) => {
-          const available = getRoomAvailable(room)
-          const disabled = available <= roomCountThreshold
+          // this fiddle ensures that if the currently displayed room has already been selected, that it's
+          // displayed as available for that user (since they already one of the allocation)
+          const available = currentValue === room.id ? getRoomAvailable(room) + 1 : getRoomAvailable(room)
+          const disabled = room.quantity <= 0
+          const soldOut = available <= roomCountThreshold && !disabled
           const label = <FancyDescription room={room} />
           return (
-            <TableRow key={`${type}_${index}`} className={cx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={disabled} />
+            <TableRow
+              key={`${type}_${index}`}
+              className={cx(classes.tableRow, {
+                [classes.disabled]: disabled,
+                [classes.soldOut]: soldOut,
+              })}
+            >
+              <TableCell
+                className={cx(classes.tableCell, { [classes.disabled]: disabled, [classes.soldOut]: soldOut })}
+                scope='row'
+              >
+                <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={soldOut} />
               </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
                 <FancyRate room={room} />
               </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.occupancy}
-              </TableCell>
-              {/*
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {available}
-              </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
-                {room.id}
-              </TableCell>
-*/}
+              <HasPermission
+                permission={Perms.IsAdmin}
+                denied={() => (
+                  <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
+                    {room.occupancy}
+                  </TableCell>
+                )}
+              >
+                <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
+                  {available}
+                </TableCell>
+              </HasPermission>
             </TableRow>
           )
         })}
@@ -161,6 +182,49 @@ const RoomsFields: React.FC<RoomsProps> = ({ rooms, type }) => {
   } else {
     return null
   }
+}
+
+export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValue }) => {
+  const { isLoading, error, data } = useGetHotelRoomsQuery()
+  const rooms: HotelRoom[] | undefined = useMemo(
+    () =>
+      data
+        ?.hotelRooms!.edges.map((v) => v.node)
+        .filter(notEmpty)
+        .filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
+    [data]
+  )
+
+  if (error) {
+    return <GraphQLError error={error} />
+  }
+  if (isLoading || !data) {
+    return <Loader />
+  }
+
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Room</TableCell>
+          <TableCell>Cost</TableCell>
+          <HasPermission permission={Perms.IsAdmin} denied={() => <TableCell>Occupancy</TableCell>}>
+            <TableCell>Available</TableCell>
+          </HasPermission>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <RoomsFields rooms={rooms} type={BathroomType.Other} currentValue={currentValue} />
+        <RoomsFields rooms={rooms} type={BathroomType.NoEnSuite} currentValue={currentValue} />
+        <RoomsFields rooms={rooms} type={BathroomType.EnSuite} currentValue={currentValue} />
+      </TableBody>
+    </Table>
+  )
+}
+
+interface RoomsProps {
+  rooms?: HotelRoom[]
+  type: BathroomType
 }
 
 const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
@@ -203,42 +267,6 @@ const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
   } else {
     return null
   }
-}
-
-export const RoomFieldTable: React.FC = () => {
-  const { isLoading, error, data } = useGetHotelRoomsQuery()
-  const rooms: HotelRoom[] | undefined = useMemo(
-    () =>
-      data
-        ?.hotelRooms!.edges.map((v) => v.node)
-        .filter(notEmpty)
-        .filter((r) => r.quantity > 0),
-    [data]
-  )
-
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Room</TableCell>
-          <TableCell>Cost</TableCell>
-          <TableCell>Occupancy</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        <RoomsFields rooms={rooms} type={BathroomType.Other} />
-        <RoomsFields rooms={rooms} type={BathroomType.NoEnSuite} />
-        <RoomsFields rooms={rooms} type={BathroomType.EnSuite} />
-      </TableBody>
-    </Table>
-  )
 }
 
 export interface RoomsTableProps {

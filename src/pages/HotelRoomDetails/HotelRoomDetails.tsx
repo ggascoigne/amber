@@ -23,9 +23,12 @@ export type HotelRoomDetail = GqlType<GetHotelRoomDetailsQuery, ['hotelRoomDetai
 export const useAvailableHotelRooms = () => {
   const { data: roomDetails } = useGetHotelRoomDetailsQuery()
   const [year] = useYearFilter()
-  const { data: roomsByMember } = useGetMembershipRoomsByYearQuery({
-    year,
-  })
+  const { data: roomsByMember } = useGetMembershipRoomsByYearQuery(
+    {
+      year,
+    },
+    { cacheTime: 30 * 1000 }
+  )
   const [, getSettingTruth] = useSettings()
   const shouldUseRoomTotal = getSettingTruth?.('use.detail.room.quantities') ?? false
 

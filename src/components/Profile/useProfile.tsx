@@ -11,10 +11,7 @@ export const useProfile = (): ProfileFormType | null => {
   const [lastEmail, setLastEmail] = useState('')
   const { isAuthenticated } = useAuth()
 
-  const { error, data } = useGetUserByEmailQuery(
-    { email: email ?? '' },
-    { enabled: !!isAuthenticated && !!email && email !== lastEmail }
-  )
+  const { error, data } = useGetUserByEmailQuery({ email: email ?? '' }, { enabled: !!isAuthenticated && !!email })
   const notify = useNotification()
 
   if (!email || !data) {

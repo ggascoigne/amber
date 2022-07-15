@@ -22,7 +22,12 @@ import {
   useEditMembership,
 } from './membershipUtils'
 
+interface IntroType {
+  acceptedPolicies: boolean
+}
+
 export interface MembershipWizardFormValues {
+  intro: IntroType
   membership: MembershipType
   profile: ProfileFormType
 }
@@ -43,6 +48,9 @@ interface MembershipWizardProps {
 // }
 
 const validationSchema = Yup.object().shape({
+  intro: Yup.object().shape({
+    acceptedPolicies: Yup.bool().required().oneOf([true], 'Policies must be accepted'),
+  }),
   membership: membershipValidationSchema,
   profile: profileValidationSchema,
 })
@@ -69,7 +77,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         name: 'Registration',
         optional: false,
         hasForm: false,
-        render: <IntroStep />,
+        render: <IntroStep prefix='intro.' />,
         enabled: !short,
       },
       {
@@ -100,9 +108,10 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
       {
         name: 'Registration',
         optional: false,
-        hasForm: false,
-        render: <IntroStep />,
+        hasForm: true,
+        render: <IntroStep prefix='intro.' />,
         enabled: !short,
+        hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.intro,
       },
       {
         name: 'Member Information',
@@ -160,6 +169,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     // everything else is very hotel centric
     const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
     const _values: MembershipWizardFormValues = {
+      intro: { acceptedPolicies: !!initialValues?.id },
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
       profile: { ...profile },
     }

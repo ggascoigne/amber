@@ -72,9 +72,10 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       </DialogContentText>
 
       <DialogContentText>
-        The listed price below does not include {configuration.oregonHotelTax} Oregon hotel tax. Also, each person over
-        two in a room will incur an additional {configuration.moreThanDoubleOccupancySurcharge} charge per night.
+        The listed price below does not include {configuration.oregonHotelTax} Oregon Lodging tax. Also, each person
+        over two in a room will incur an additional {configuration.moreThanDoubleOccupancySurcharge} charge per night.
       </DialogContentText>
+      {/*
       <Important component='span' className={classes.important}>
         These rates are subject to change. The latest room rates can be found at{' '}
       </Important>
@@ -85,11 +86,14 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       <Important className={classes.important}>
         Where there is a difference in price, those on the McMenamins site should always be considered correct.
       </Important>
+*/}
+
       <GridContainer spacing={2} direction='row'>
         <GridItem xs={12} md={6}>
           <Field
             component={DatePickerField}
             required
+            autofocus
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
             defaultCalendarMonth={DateTime.now().set({ month: 11 })}
@@ -126,15 +130,15 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
 
       <FormControl component='fieldset' error={showError}>
         <RadioGroup {...hotelRoomField} onChange={onChange}>
-          <RoomFieldTable />
+          <RoomFieldTable currentValue={meta.initialValue} />
         </RadioGroup>
       </FormControl>
 
       <Important className={classes.important}>
-        <br />* Game Rooms: These are suites reserved for game play and the listed price includes a $30 discount from
-        ACNW for gaming nights. Be advised that while we will do our best to make sure that the rooms are used for games
-        you are actually in, in exchange for the discount the game space will be scheduled{' '}
-        <b>at the discretion of the organizers</b>.<br />
+        <br />* Game Rooms: These are suites reserved for game play. Members who choose to have a Game room, will
+        receive a {configuration.gameRoomCredit} credit towards the room cost. Be advised that while we will do our best
+        to make sure that the rooms are used for games you are actually in, in exchange for the credit the game space
+        will be scheduled <b>at the discretion of the organizers</b>.<br />
         Game rooms are only available for members who are staying at the hotel from
         <b>Thursday</b> until <b>Monday</b>.
       </Important>

@@ -57,7 +57,7 @@ const useSteps = (steps: WizardPage[], isEditing: boolean) => {
     })
   }
 
-  const handleStep = (newStep: number, lastStepComplete: boolean) => () => {
+  const handleStep = (newStep: number, lastStepComplete: boolean) => {
     if (lastStepComplete) {
       setCompleted((previous) => setAdd(previous, activeStep))
     } else {
@@ -79,8 +79,10 @@ const useSteps = (steps: WizardPage[], isEditing: boolean) => {
 
   const isStepComplete = (step: number) => completed.has(step)
 
+  const getActiveStep = () => activeStep
+
   return {
-    activeStep,
+    getActiveStep,
     canSave,
     handleBack,
     handleStep,
@@ -110,7 +112,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   isEditing,
 }: WizardProps<T>) => {
   const activePages = useMemo(() => pages.filter(({ enabled = true }) => enabled), [pages])
-  const { activeStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } = useSteps(
+  const { getActiveStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } = useSteps(
     activePages,
     isEditing
   )
@@ -122,59 +124,80 @@ export const Wizard = <T extends FormikValues = FormikValues>({
 
   return (
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
-      <Formik initialValues={values} enableReinitialize validationSchema={validationSchema} onSubmit={onSubmit}>
-        {({ values, errors, touched, submitForm, isSubmitting }) => (
+      <Formik
+        initialValues={values}
+        validateOnMount
+        enableReinitialize
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+      >
+        {({ values, errors, touched, submitForm, isSubmitting, validateForm }) => (
           <>
-            <Stepper activeStep={activeStep} alternativeLabel nonLinear sx={{ p: 3 }}>
-              {activePages.map((page, index) => (
-                <Step key={page.name} completed={isStepComplete(index)}>
-                  <StepButton
-                    onClick={handleStep(index, !errorsOnCurrentPage(activeStep, errors))}
-                    // completed={!errorsOnCurrentPage(index, errors) && isStepComplete(index)}
-                    optional={activePages[index].optional ? `Optional` : undefined}
-                  >
-                    {page.name}
-                  </StepButton>
-                </Step>
-              ))}
-            </Stepper>
-            <Form>
-              <DialogClose onClose={onClose} />
-              <DialogContent>
-                <NextStep step={activeStep} />
-              </DialogContent>
-              <DialogActions className='modalFooterButtons'>
-                <HasPermission permission={Perms.IsAdmin}>
-                  <Button
-                    onClick={() => {
-                      console.log(`values = ${JSON.stringify(values, null, 2)}`)
-                    }}
-                    variant='outlined'
-                  >
-                    Debug
-                  </Button>
-                </HasPermission>
-                <Button onClick={onClose} variant='outlined'>
-                  Cancel
+            {/* note that this trick ensures that we don't get a vertical scroll when all we want is the horizontal one */}
+            <div style={{ overflowY: 'visible' }}>
+              <Stepper
+                activeStep={getActiveStep()}
+                alternativeLabel
+                nonLinear
+                sx={{ p: 3, width: 'calc(100% - 48px)', overflowX: 'auto' }}
+              >
+                {activePages.map((page, index) => (
+                  <Step key={page.name} completed={isStepComplete(index)}>
+                    <StepButton
+                      onClick={() => {
+                        validateForm().then(() => {
+                          handleStep(index, !errorsOnCurrentPage(getActiveStep(), errors))
+                        })
+                      }}
+                      optional={activePages[index].optional ? `Optional` : undefined}
+                    >
+                      {page.name}
+                    </StepButton>
+                  </Step>
+                ))}
+              </Stepper>
+            </div>
+            <DialogClose onClose={onClose} />
+            <DialogContent>
+              <Form>
+                <NextStep step={getActiveStep()} />
+              </Form>
+            </DialogContent>
+            <DialogActions className='modalFooterButtons'>
+              <HasPermission permission={Perms.IsAdmin}>
+                <Button
+                  onClick={() => {
+                    console.log(`values = ${JSON.stringify(values, null, 2)}`)
+                  }}
+                  variant='outlined'
+                >
+                  Debug
                 </Button>
-                <Button onClick={handleBack} variant='outlined' disabled={activeStep === 0}>
-                  Back
-                </Button>
-                {/*
+              </HasPermission>
+              <Button onClick={onClose} variant='outlined'>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => validateForm().then(() => handleBack())}
+                variant='outlined'
+                disabled={getActiveStep() === 0}
+              >
+                Back
+              </Button>
+              {/*
                   Note that this seems like a hack, but I can't stop formik submitting my form the
                   minute I add a submit button to the page
                   and simply doing things manually appears to work
                */}
-                <Button
-                  onClick={canSave() ? submitForm : handleNext}
-                  variant='contained'
-                  color='primary'
-                  disabled={isSubmitting || errorsOnCurrentPage(activeStep, errors)}
-                >
-                  {canSave() ? 'Save' : 'Next'}
-                </Button>
-              </DialogActions>
-            </Form>
+              <Button
+                onClick={() => validateForm().then(() => (canSave() ? submitForm() : handleNext()))}
+                variant='contained'
+                color='primary'
+                disabled={isSubmitting || errorsOnCurrentPage(getActiveStep(), errors)}
+              >
+                {canSave() ? 'Save' : 'Next'}
+              </Button>
+            </DialogActions>
           </>
         )}
       </Formik>
