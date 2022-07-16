@@ -220,8 +220,8 @@ export const getOwed = (values: MembershipType) => {
     return configuration.deposit
   }
   if (values.attendance === Attendance.ThursSun) {
-    return configuration.fourDayMembership
+    return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
   } else {
-    return configuration.threeDayMembership
+    return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
   }
 }

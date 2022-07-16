@@ -35,7 +35,23 @@ export const attendanceOptions = [
   },
 ]
 
+export const subsidizedAttendanceOptions = [
+  {
+    value: Attendance.ThursSun,
+    text: `Full: $${configuration.subsidizedMembership}.`,
+  },
+  {
+    value: Attendance.FriSun,
+    text: `Short: $${configuration.subsidizedMembershipShort}.`,
+  },
+]
+
 export const getAttendance = (value?: string) => getPref(attendanceOptions, value)
+
+export const getSubsidizedAttendance = (value?: string) => getPref(subsidizedAttendanceOptions, value)
+
+export const getCost = (membership: { requestOldPrice: boolean; attendance: string }) =>
+  membership.requestOldPrice ? getSubsidizedAttendance(membership.attendance) : getAttendance(membership.attendance)
 
 export enum InterestLevel {
   Full = 'Full',

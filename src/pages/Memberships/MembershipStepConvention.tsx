@@ -67,19 +67,31 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
         />
       </GridItem>
     </GridContainer>
-    <h4>Give Help</h4>
+    <h4>Need Help & Give Help</h4>
     <DialogContentText>
-      With all of the changes due to COVID this year, we have had to implement a significant price increase. If you are
-      one of the people who would like to contribute to help others, please check the appropriate box below.
+      With all of the changes due to COVID this year, we have had to implement a significant price increase. Through the
+      extraordinary generosity of our members, however, AmberCon NW can offer a small number of registrations at the a
+      subsidized rate of ${configuration.subsidizedMembership} for full memberships and $
+      {configuration.subsidizedMembershipShort} for short memberships.
     </DialogContentText>
+    <DialogContentText>
+      If you would like to take advantage of this support, or if you are one of the people who would like to contribute
+      to help others, please check the appropriate boxes below.
+    </DialogContentText>
+    <GridContainer spacing={2} sx={{ mb: 2, ml: 1 }}>
+      <GridItem xs={12} md={12}>
+        <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
+      </GridItem>
+      <GridItem xs={12} md={12} style={{ paddingTop: 0 }}>
+        <CheckboxWithLabel
+          label='To receive a subsidized membership rate, check this box'
+          name={`${prefix}requestOldPrice`}
+        />
+      </GridItem>
+    </GridContainer>
     <DialogContentText>
       While this selection will show to you on your registration page and to us for administration, it will be otherwise
       anonymous.
     </DialogContentText>
-    <GridContainer spacing={2}>
-      <GridItem xs={12} md={12}>
-        <CheckboxWithLabel label='To sign up to provide assistance, check this box' name={`${prefix}offerSubsidy`} />
-      </GridItem>
-    </GridContainer>
   </>
 )

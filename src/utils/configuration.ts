@@ -58,6 +58,8 @@ export const configuration = {
   fourDayVoucher: 70,
   threeDayMembership: 170,
   threeDayVoucher: 50,
+  subsidizedMembership: 150,
+  subsidizedMembershipShort: 120,
   deposit: 50,
 
   virtual: startDates[THIS_YEAR].virtual,

@@ -7,7 +7,7 @@ import { makeStyles } from 'tss-react/mui'
 import {
   RoomPref,
   configuration,
-  getAttendance,
+  getCost,
   getInterestLevel,
   getRoomPref,
   getSlotDescription,
@@ -27,7 +27,7 @@ import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { BecomeAMember } from './BecomeAMember'
-import { MembershipType, fromSlotsAttending } from './membershipUtils'
+import { MembershipType, fromSlotsAttending, getOwed } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
 
 const useStyles = makeStyles()({
@@ -139,6 +139,9 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   if (isLoading || !data) {
     return <Loader />
   }
+
+  const cost = getCost(membership)
+
   return (
     <Card>
       <HeaderContent name={`${year} Membership for ${profile.fullName!}`} />
@@ -146,9 +149,12 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
         <GridContainer>
           <Field label='Email'>{profile.email}</Field>
           <VerticalGap />
-          <Field label='Attendance'>{getAttendance(membership.attendance)}</Field>
+          <Field label='Attendance'>{cost}</Field>
           <Field label='Payment'>{getInterestLevel(membership.interestLevel)}</Field>
-          {membership.offerSubsidy && <Field label='You have offered to provide assistance'>Thank you</Field>}
+          {membership.offerSubsidy && (
+            <Field label=''>You have offered to contribute to the ACNW assistance fund, thank you.</Field>
+          )}
+          {membership.requestOldPrice && <Field label=''>You have requested the subsidized membership rate.</Field>}
           <Field label='Arrival Date'>{formatDate(membership.arrivalDate)}</Field>
           <Field label='Departure Date'>{formatDate(membership.departureDate)}</Field>
           <VerticalGap />
