@@ -212,7 +212,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       Cell: TooltipCellRenderer,
       Header: DefaultHeader,
       aggregate: 'uniqueCount',
-      Aggregated: ({ cell: { value } }: CellProps<T>) => <>`${value} Unique Values`</>,
+      Aggregated: ({ cell: { value } }: CellProps<T>) => <>{value} Unique Values</>,
       // When using the useFlexLayout:
       minWidth: 30, // minWidth is only used as a limit for resizing
       width: 150, // width is used for both the flex-basis and flex-grow

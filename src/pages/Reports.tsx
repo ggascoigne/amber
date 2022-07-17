@@ -20,14 +20,16 @@ const Reports = () => (
           Download Game Report
         </AuthenticatedDownloadButton>
       </ListItem>
-      <ListItem>
-        <AuthenticatedDownloadButton
-          url='/api/reports/gameReportForDiscord'
-          filename={`gamesDiscord-${configuration.year}.xlsx`}
-        >
-          Download Discord Game Report
-        </AuthenticatedDownloadButton>
-      </ListItem>
+      {configuration.virtual && (
+        <ListItem>
+          <AuthenticatedDownloadButton
+            url='/api/reports/gameReportForDiscord'
+            filename={`gamesDiscord-${configuration.year}.xlsx`}
+          >
+            Download Discord Game Report
+          </AuthenticatedDownloadButton>
+        </ListItem>
+      )}
       <ListItem>
         <AuthenticatedDownloadButton url='/api/reports/gmReport' filename={`gm-${configuration.year}.xlsx`}>
           Download GM Report

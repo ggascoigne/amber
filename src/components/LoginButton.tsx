@@ -14,9 +14,17 @@ import { ProfileDialog, useProfile } from './Profile'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
-const MENU_ITEM_VIEW_AS_USER = 'View as Regular User'
 const MENU_ITEM_VIEW_AS_ADMIN = 'View as Admin'
 const MENU_ITEM_SIGN_OUT = 'Sign out'
+
+const chosenRole = 'Regular User'
+
+const MENU_ITEM_VIEW_AS_USER = `View as ${chosenRole}`
+
+const roleName = {
+  'Regular User': Roles.ROLE_USER,
+  'Game Admin': Roles.ROLE_GAME_ADMIN,
+}
 
 const useStyles = makeStyles()((theme: Theme) => ({
   loginButton: {
@@ -261,7 +269,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
 
   const viewAsUser = () => {
     if (!roleOverride) {
-      setRoleOverride(Roles.ROLE_USER)
+      setRoleOverride(roleName[chosenRole])
     } else {
       setRoleOverride(undefined)
     }
