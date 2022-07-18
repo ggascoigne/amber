@@ -1,4 +1,5 @@
 import { VercelResponse } from '@vercel/node'
+// @ts-ignore
 import json2xls from 'json2xls'
 
 import { PoolType, getPool } from '../../shared/config'

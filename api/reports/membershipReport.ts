@@ -17,7 +17,8 @@ export default withApiHandler([
   async (req: VercelRequest, res: VercelResponse) => {
     try {
       const year = req.body?.year || configuration.year
-      const query = `
+      const query = configuration.virtual
+        ? `
         select 
           m.id as "Member Id",
           u.full_name as "Full Name",
@@ -35,6 +36,26 @@ export default withApiHandler([
                 where m.year = ${year} and ga.gm < 0
           ) gm on gm.id = m.id
         where m.year = ${year}`
+        : `
+        select
+          m.id as "Member Id",
+          u.full_name as "Full Name",
+          u.first_name as "First Name",
+          u.last_name as "Last Name",
+          u.email as "email",
+          h.description as "Room",
+          coalesce(gm.isGm,false) as "isGM",
+          m.message as "Message"
+        from membership m 
+          join "user" u on m.user_id = u.id 
+          left join (select distinct m.id, true as isGm
+                from membership m
+                  join game_assignment ga on ga.member_id = m.id
+                where m.year = ${year} and ga.gm < 0
+          ) gm on gm.id = m.id
+          join hotel_room h on m.hotel_room_id = h.id
+        where m.year = ${year};
+        `
       await queryToExcelDownload(query, res)
     } catch (err: any) {
       handleError(err, res)

@@ -43,6 +43,11 @@ const Reports = () => (
           Download Game and Players Report
         </AuthenticatedDownloadButton>
       </ListItem>
+      <ListItem>
+        <AuthenticatedDownloadButton url='/api/reports/roomReport' filename={`roomReport-${configuration.year}.xlsx`}>
+          Download Room Usage Report
+        </AuthenticatedDownloadButton>
+      </ListItem>
     </List>
   </Page>
 )
