@@ -45,6 +45,10 @@ export default withApiHandler([
           u.email as "email",
           h.description as "Room",
           coalesce(gm.isGm,false) as "isGM",
+          m.arrival_date,
+          m.departure_date,
+          m.rooming_with,
+          m.room_preference_and_notes,
           m.message as "Message"
         from membership m 
           join "user" u on m.user_id = u.id 
