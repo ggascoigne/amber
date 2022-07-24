@@ -1,5 +1,23 @@
 #Todos & Ideas
 
+
+## User merging
+
+### user references to update
+
+game.author_id
+membership.user_id
+profile.user_id - probably don't need to change this one.
+shirt_order.user_id
+
+drop trigger if exists memb_check_room_avail_trigger on membership;
+update membership set user_id = 3514 where membership.user_id = 160;
+update game set author_id = 3514 where game.author_id = 160;
+CREATE TRIGGER memb_check_room_avail_trigger
+	BEFORE INSERT OR UPDATE ON membership
+	FOR EACH ROW EXECUTE PROCEDURE memb_check_room_avail();
+
+
 ## 2021
 
 Discord stuff
