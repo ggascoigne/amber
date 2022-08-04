@@ -27,7 +27,7 @@ import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { BecomeAMember } from './BecomeAMember'
-import { MembershipType, fromSlotsAttending, getOwed } from './membershipUtils'
+import { MembershipType, fromSlotsAttending } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
 
 const useStyles = makeStyles()({
