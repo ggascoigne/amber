@@ -42,7 +42,7 @@ export const configuration = {
   registrationOpen: pdxDate({ year: conventionDates.year, month: 7, day: 15 }),
   registrationDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 2 }),
   paymentDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 12 }),
-  gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 12 }),
+  gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 15 }),
   gameGmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 2 }),
   gameGmFeedbackDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 23 }),
   gameBookOpen: pdxDate({ year: conventionDates.year, month: 9, day: 5 }),
