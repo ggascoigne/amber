@@ -147,7 +147,7 @@ const HotelRoomDetails: React.FC = () => {
     queryClient.invalidateQueries('getHotelRoomDetails')
   }
 
-  const onAdd: TableMouseEventHandler = () => () => {
+  const onAdd: TableMouseEventHandler<HotelRoomDetail> = () => () => {
     setShowEdit(true)
   }
 

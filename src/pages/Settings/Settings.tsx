@@ -49,7 +49,7 @@ const Settings: React.FC = React.memo(() => {
     queryClient.invalidateQueries('getSettings')
   }
 
-  const onAdd: TableMouseEventHandler = () => () => {
+  const onAdd: TableMouseEventHandler<Setting> = () => () => {
     setShowEdit(true)
   }
 

@@ -187,7 +187,7 @@ const Memberships: React.FC = React.memo(() => {
 
   const list: Membership[] = memberships!.nodes.filter(notEmpty)
 
-  const onAdd: TableMouseEventHandler = () => () => {
+  const onAdd: TableMouseEventHandler<Membership> = () => () => {
     setShowEdit(true)
   }
 

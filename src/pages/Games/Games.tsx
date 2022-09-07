@@ -197,7 +197,7 @@ const Games: React.FC = React.memo(() => {
     .filter(notEmpty)
     .filter((g) => g.year === year)
 
-  const onAdd: TableMouseEventHandler = () => () => {
+  const onAdd: TableMouseEventHandler<Game> = () => () => {
     setShowEdit(true)
   }
 

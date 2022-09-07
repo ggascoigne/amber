@@ -147,6 +147,6 @@ declare module 'react-table' {
   }
 }
 
-export interface TableMouseEventHandler {
+export interface TableMouseEventHandler<T extends Record<string, unknown>> {
   (instance: TableInstance<T>): MouseEventHandler
 }

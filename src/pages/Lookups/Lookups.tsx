@@ -37,7 +37,7 @@ const Lookups: React.FC = React.memo(() => {
 
   const list: LookupAndValues[] = data.lookups!.edges.map((v) => v.node).filter(notEmpty)
 
-  const onAdd: TableMouseEventHandler = () => () => {
+  const onAdd: TableMouseEventHandler<LookupAndValues> = () => () => {
     setShowEdit(true)
   }
 

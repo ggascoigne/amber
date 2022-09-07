@@ -29,10 +29,36 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
+export const linkRenderer = (string: string) => {
+  const linkExp = /^https?:\/\/[a-z0-9_./-]*$/i
+  return (
+    <>
+      {string.split(/(https?:\/\/[a-z0-9_./-]*)/gi).map((part, k) => (
+        <React.Fragment key={k}>
+          {linkExp.exec(part) ? (
+            <a
+              href={part}
+              onFocus={(e) => {
+                e.stopPropagation()
+              }}
+              target='_blank'
+              rel='noreferrer'
+            >
+              {part}
+            </a>
+          ) : (
+            part
+          )}
+        </React.Fragment>
+      ))}
+    </>
+  )
+}
+
 export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   <>
     {text.split('\n').map((i, key) => (
-      <p key={key}>{i}</p>
+      <p key={key}>{linkRenderer(i)}</p>
     ))}
   </>
 )

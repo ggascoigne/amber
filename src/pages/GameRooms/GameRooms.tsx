@@ -46,7 +46,7 @@ const GameRooms: React.FC = () => {
     queryClient.invalidateQueries('getGameRooms')
   }, [queryClient])
 
-  const onAdd: TableMouseEventHandler = useCallback(
+  const onAdd: TableMouseEventHandler<GameRoom> = useCallback(
     () => () => {
       setShowEdit(true)
     },
