@@ -46,9 +46,9 @@ export const configuration = {
   gameGmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 2 }),
   gameGmFeedbackDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 23 }),
   gameBookOpen: pdxDate({ year: conventionDates.year, month: 9, day: 5 }),
-  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 9, day: 10 }),
-  gmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 13 }),
-  schedulesSent: pdxDate({ year: conventionDates.year, month: 9, day: 16 }),
+  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 9, day: 25 }),
+  gmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
+  schedulesSent: pdxDate({ year: conventionDates.year, month: 9, day: 30 }),
   lastCancellationFullRefund: pdxDate({ year: conventionDates.year, month: 10, day: 19 }),
   travelCoordination: pdxDate({ year: conventionDates.year, month: 10, day: 19 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
