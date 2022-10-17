@@ -48,6 +48,7 @@ export default withApiHandler([
           mc.times_attending as "Times Attending",
           m.arrival_date as "Arriving",
           m.departure_date as "Departing",
+          m.attending as "isAttending",
           m.attendance as "Attendance",
           m.request_old_price as "Requests Subsidy",
           m.volunteer as "isVolunteer",
