@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=14",
+    "node": ">=16",
     "yarn": ">=1.19.1"
   },
   "repository": {
@@ -96,6 +96,7 @@
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.7.1",
+    "pretty-quick": "^3.1.3",
     "prettier-plugin-import-sort": "^0.0.7",
     "react-test-renderer": "^18.2.0",
     "source-map-explorer": "^2.5.2",
@@ -192,6 +193,7 @@
     "discord:register": "yarn tsnode ./scripts/discordRegister.ts",
     "debug": "vc dev --listen 30000",
     "format": "prettier --no-color --loglevel warn --write '{src,api,scripts,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
+    "format:quick": "pretty-quick",
     "gitHash": "./scripts/getGitHash.sh",
     "lint": "eslint '{src,api,scripts,support,types}/**/*.{js,jsx,ts,tsx}'",
     "postinstall": "patch-package",
@@ -222,11 +224,11 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
-      "prettier --no-color --write",
+      "pretty-quick --staged",
       "yarn lint"
     ],
     "*.{css,scss,graphql}": [
-      "prettier --no-color --write"
+      "pretty-quick --staged"
     ]
   },
   "browserslist": [
