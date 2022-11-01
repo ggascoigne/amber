@@ -1,7 +1,7 @@
 import { useCreateHotelRoomMutation, useUpdateHotelRoomByNodeIdMutation } from 'client'
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { ToFormValues, onCloseHandler, pick } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -59,7 +59,7 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getHotelRooms')
+              queryClient.invalidateQueries(['getHotelRooms'])
             },
           }
         )
@@ -93,7 +93,7 @@ export const useEditHotelRoomType = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getHotelRooms')
+              queryClient.invalidateQueries(['getHotelRooms'])
             },
           }
         )

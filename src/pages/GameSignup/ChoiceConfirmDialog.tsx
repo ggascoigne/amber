@@ -3,7 +3,7 @@ import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutatio
 import { Acnw } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { onCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -91,7 +91,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getGameChoices')
+              queryClient.invalidateQueries(['getGameChoices'])
             },
           }
         )
@@ -114,7 +114,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getGameChoices')
+              queryClient.invalidateQueries(['getGameChoices'])
             },
           }
         )

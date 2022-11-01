@@ -12,7 +12,7 @@ import {
   useUpdateGameByNodeIdMutation,
 } from 'client'
 import { useCallback, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { configuration, notEmpty, onCloseHandler, pick, useSendEmail, useSetting, useUser, useYearFilter } from 'utils'
 
 import { Perms, useAuth } from '../../components/Auth'
@@ -104,8 +104,8 @@ export const useUpdateGameAssignment = () => {
               },
               {
                 onSuccess: () => {
-                  queryClient.invalidateQueries('getGameAssignmentsByYear')
-                  gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+                  queryClient.invalidateQueries(['getGameAssignmentsByYear'])
+                  gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
                 },
               }
             )
@@ -208,7 +208,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             },
             {
               onSuccess: () => {
-                gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+                gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
               },
             }
           )
@@ -238,7 +238,7 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
             },
             {
               onSuccess: () => {
-                gameQueries.forEach((q) => queryClient.invalidateQueries(q))
+                gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
               },
             }
           )

@@ -1,4 +1,4 @@
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
   GetAllUsersAndProfilesQuery,
@@ -38,7 +38,7 @@ export const useEditUserAndProfile = (onClose?: onCloseHandler) => {
   const queryClient = useQueryClient()
 
   const invalidateProfileQueries = () => {
-    allUserQueries.map((q) => queryClient.invalidateQueries(q), { refetchActive: true, refetchInactive: true })
+    allUserQueries.map((q) => queryClient.invalidateQueries([q]), { refetchActive: true, refetchInactive: true })
   }
 
   return async (profileValues: UsersAndProfileType) =>

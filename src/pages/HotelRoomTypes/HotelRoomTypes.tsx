@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useMemo, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -149,7 +149,7 @@ const HotelRoomTypes: React.FC = () => {
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getHotelRooms')
+    queryClient.invalidateQueries(['getHotelRooms'])
   }
 
   const onAdd: TableMouseEventHandler<HotelRoom> = () => () => {

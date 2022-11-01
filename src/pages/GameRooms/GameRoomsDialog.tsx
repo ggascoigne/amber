@@ -7,7 +7,7 @@ import {
 } from 'client'
 import { FormikHelpers } from 'formik'
 import React, { useCallback, useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
 import { ToFormValues, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 import Yup from 'utils/Yup'
@@ -71,7 +71,7 @@ export const useEditGameRoom = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getGameRoom')
+              queryClient.invalidateQueries(['getGameRoom'])
             },
           }
         )
@@ -109,7 +109,7 @@ export const useEditGameRoom = (onClose: onCloseHandler) => {
             }, [])
             Promise.allSettled(updaters).then(([result]) => {
               actions.setSubmitting(false)
-              queryClient.invalidateQueries('getGamesByYear')
+              queryClient.invalidateQueries(['getGamesByYear'])
               notify({ text: 'Game Room updated', variant: 'success' })
               onClose()
             })
@@ -133,7 +133,7 @@ export const useEditGameRoom = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getGameRoom')
+              queryClient.invalidateQueries(['getGameRoom'])
             },
           }
         )

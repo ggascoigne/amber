@@ -1,7 +1,7 @@
 import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from 'client'
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { ToFormValues, onCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
 
@@ -47,7 +47,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getSettings')
+              queryClient.invalidateQueries(['getSettings'])
             },
           }
         )
@@ -70,7 +70,7 @@ export const useEditSetting = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getSettings')
+              queryClient.invalidateQueries(['getSettings'])
             },
           }
         )

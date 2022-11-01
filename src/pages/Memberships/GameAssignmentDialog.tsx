@@ -8,7 +8,7 @@ import {
 import { dequal as deepEqual } from 'dequal'
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { getGameAssignments, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
 
 import { EditDialog } from '../../components/EditDialog'
@@ -112,8 +112,8 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
             },
             {
               onSuccess: () => {
-                queryClient.invalidateQueries('getGameAssignmentsByYear')
-                queryClient.invalidateQueries('getSchedule')
+                queryClient.invalidateQueries(['getGameAssignmentsByYear'])
+                queryClient.invalidateQueries(['getSchedule'])
               },
             }
           )

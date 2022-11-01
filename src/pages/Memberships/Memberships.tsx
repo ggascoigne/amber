@@ -4,7 +4,7 @@ import { BlankNoCell, DateCell, YesBlankCell } from 'components/CellFormatters'
 import { useProfile } from 'components/Profile'
 import { Table } from 'components/Table'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { configuration, notEmpty, useLocalStorage, useYearFilter } from 'utils'
 
@@ -206,8 +206,8 @@ const Memberships: React.FC = React.memo(() => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries('getMembershipsByYear')
-            queryClient.invalidateQueries('getMembershipByYearAndId')
+            queryClient.invalidateQueries(['getMembershipsByYear'])
+            queryClient.invalidateQueries(['getMembershipByYearAndId'])
           },
         }
       )

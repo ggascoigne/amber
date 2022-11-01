@@ -1,5 +1,5 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
 
 import { TableMouseEventHandler } from '../../../types/react-table-config'
@@ -43,7 +43,7 @@ const GameRooms: React.FC = () => {
   const clearSelectionAndRefresh = useCallback(() => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getGameRooms')
+    queryClient.invalidateQueries(['getGameRooms'])
   }, [queryClient])
 
   const onAdd: TableMouseEventHandler<GameRoom> = useCallback(

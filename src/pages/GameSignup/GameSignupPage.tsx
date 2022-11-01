@@ -11,7 +11,7 @@ import {
 } from 'client'
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 import { InView } from 'react-intersection-observer'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Link, Redirect } from 'react-router-dom'
 import {
   ContentsOf,
@@ -48,7 +48,7 @@ export const useEditGameChoice = () => {
   const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
     onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
       const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
-      await queryClient.cancelQueries('getGameChoices')
+      await queryClient.cancelQueries(['getGameChoices'])
       const previousData = queryClient.getQueryData<GetGameChoicesQuery>(queryKey)
       // note that this isn't doing a deep copy, but since we're replacing the data that seems like a reasonably shortcut
       if (previousData?.gameChoices?.nodes && input?.input?.patch) {
@@ -75,7 +75,7 @@ export const useEditGameChoice = () => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries('getGameChoices')
+            queryClient.invalidateQueries(['getGameChoices'])
           },
         }
       )
@@ -96,7 +96,7 @@ export const useEditGameChoice = () => {
           },
           {
             onSettled: () => {
-              if (refetch) queryClient.invalidateQueries('getGameChoices')
+              if (refetch) queryClient.invalidateQueries(['getGameChoices'])
             },
           }
         )
@@ -115,7 +115,7 @@ export const useEditGameChoice = () => {
           },
           {
             onSettled: () => {
-              queryClient.invalidateQueries('getGameChoices')
+              queryClient.invalidateQueries(['getGameChoices'])
             },
           }
         )

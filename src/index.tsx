@@ -8,8 +8,8 @@ import { Provider as JotaiProvider } from 'jotai'
 import React, { PropsWithChildren } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { BrowserRouter } from 'react-router-dom'
 
 import { App } from './App'
@@ -22,7 +22,7 @@ import { CustomLuxonUtils } from './utils/luxonUtils'
 // Usage
 // window.toggleDevtools(true)
 const ReactQueryDevtoolsProduction = React.lazy(() =>
-  import('react-query/devtools/development').then((d) => ({
+  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then((d) => ({
     default: d.ReactQueryDevtools,
   }))
 )

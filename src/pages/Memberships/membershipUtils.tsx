@@ -1,7 +1,7 @@
 import { useCreateMembershipMutation, useGetHotelRoomsQuery, useUpdateMembershipByNodeIdMutation } from 'client'
 import { Perms, useAuth } from 'components/Auth'
 import { ProfileFormType } from 'components/Profile'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Attendance,
   InterestLevel,
@@ -139,7 +139,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getMembershipsByYear')
+              queryClient.invalidateQueries(['getMembershipsByYear'])
             },
           }
         )
@@ -166,8 +166,8 @@ export const useEditMembership = (onClose: onCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries('getMembershipsByYear')
-              queryClient.invalidateQueries('getMembershipByYearAndId')
+              queryClient.invalidateQueries(['getMembershipsByYear'])
+              queryClient.invalidateQueries(['getMembershipByYearAndId'])
             },
           }
         )

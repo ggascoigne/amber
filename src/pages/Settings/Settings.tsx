@@ -1,6 +1,6 @@
 import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
 import { GqlType, notEmpty } from 'utils'
 
@@ -46,7 +46,7 @@ const Settings: React.FC = React.memo(() => {
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getSettings')
+    queryClient.invalidateQueries(['getSettings'])
   }
 
   const onAdd: TableMouseEventHandler<Setting> = () => () => {

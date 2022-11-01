@@ -7,7 +7,7 @@ import {
   useGetGamesByYearAndAuthorQuery,
 } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Redirect, Route, Link as RouterLink, useHistory, useRouteMatch } from 'react-router-dom'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
@@ -247,9 +247,9 @@ const MemberGmPage: React.FC = React.memo(() => {
         },
         {
           onSuccess: () => {
-            queryClient.invalidateQueries('getGamesByYear')
-            queryClient.invalidateQueries('getGamesByAuthor')
-            queryClient.invalidateQueries('getGamesByYearAndAuthor')
+            queryClient.invalidateQueries(['getGamesByYear'])
+            queryClient.invalidateQueries(['getGamesByAuthor'])
+            queryClient.invalidateQueries(['getGamesByYearAndAuthor'])
           },
         }
       )

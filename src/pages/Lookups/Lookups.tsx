@@ -1,6 +1,6 @@
 import { GetLookupsQuery, useDeleteLookupMutation, useDeleteLookupValueMutation, useGetLookupsQuery } from 'client'
 import React, { MouseEventHandler, useState } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import type { Column, Row, TableInstance } from 'react-table'
 import { GqlType, notEmpty } from 'utils'
 
@@ -45,7 +45,7 @@ const Lookups: React.FC = React.memo(() => {
     setShowEdit(false)
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries('getLookups')
+    queryClient.invalidateQueries(['getLookups'])
   }
 
   const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
@@ -60,7 +60,7 @@ const Lookups: React.FC = React.memo(() => {
         return updaters
       })
       .flat()
-    Promise.allSettled(updater).then(() => queryClient.invalidateQueries('getLookups'))
+    Promise.allSettled(updater).then(() => queryClient.invalidateQueries(['getLookups']))
   }
 
   const onEdit = (instance: TableInstance<LookupAndValues>) => () => {
