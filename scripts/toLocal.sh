@@ -32,6 +32,6 @@ export PGPASSWORD=${DATABASE_ADMIN_PASSWORD}
   --exit-on-error \
   ${ORIGINAL_DATABASE_NAME}.dump
 
-yarn tsnode ./scripts/resetDatabaseOwner.ts
+pnpm tsnode ./scripts/resetDatabaseOwner.ts
 
 echo Done

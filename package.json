@@ -223,7 +223,7 @@
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
       "pretty-quick --staged",
-      "yarn lint"
+      "pnpm lint"
     ],
     "*.{css,scss,graphql}": [
       "pretty-quick --staged"

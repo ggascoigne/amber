@@ -33,6 +33,6 @@ PGPASSWROD=${DATABASE_USER_PASSWORD} /usr/local/bin/pg_restore \
   --if-exists \
   ${ORIGINAL_DATABASE_NAME}.dump
 
-yarn tsnode ./scripts/resetDatabaseOwner.ts
+pnpm tsnode ./scripts/resetDatabaseOwner.ts
 
 echo Done
