@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@mui/material'
-import { Form, Formik, FormikHelpers } from 'formik'
+import { Form, Formik, FormikHelpers, FormikValues } from 'formik'
 import { FormikProps } from 'formik/dist/types'
 import { ReactElement, ReactNode, useCallback } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -29,7 +29,7 @@ export const useDisableBackdropClick = (onClose?: onCloseHandler) =>
     [onClose]
   )
 
-export function EditDialog<T>(props: EditDialogProps<T>): ReactElement {
+export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): ReactElement {
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
   useHotkeys('Escape', onClose, { enableOnTags: ['INPUT', 'TEXTAREA'] })
 
