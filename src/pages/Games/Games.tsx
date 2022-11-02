@@ -129,6 +129,7 @@ const columns: Column<Game>[] = [
   { accessor: 'message', disableGlobalFilter: false },
   { accessor: 'teenFriendly', Cell: YesBlankCell, sortType: 'basic' },
   { accessor: 'full', Cell: YesBlankCell, sortType: 'basic' },
+  { accessor: 'roomId' },
 ]
 
 const useStyles = makeStyles()({

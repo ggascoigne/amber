@@ -2983,6 +2983,52 @@ type User implements Node {
   ): MembershipsConnection!
 
   """
+  Reads and enables pagination through a set of `Profile`.
+  """
+  profiles(
+    """
+    Only read the first `n` values of the set.
+    """
+    first: Int
+
+    """
+    Only read the last `n` values of the set.
+    """
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """
+    Read all values in the set before (above) this cursor.
+    """
+    before: Cursor
+
+    """
+    Read all values in the set after (below) this cursor.
+    """
+    after: Cursor
+
+    """
+    The method to use when ordering `Profile`.
+    """
+    orderBy: [ProfilesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ProfileCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ProfileFilter
+  ): ProfilesConnection!
+
+  """
   Reads and enables pagination through a set of `ShirtOrder`.
   """
   shirtOrders(
@@ -3073,52 +3119,154 @@ type User implements Node {
     """
     filter: UserRoleFilter
   ): UserRolesConnection!
+}
+
+"""
+A connection to a list of `Profile` values.
+"""
+type ProfilesConnection {
+  """
+  A list of `Profile` objects.
+  """
+  nodes: [Profile]!
 
   """
-  Reads and enables pagination through a set of `Profile`.
+  A list of edges which contains the `Profile` and cursor to aid in pagination.
   """
-  profiles(
-    """
-    Only read the first `n` values of the set.
-    """
-    first: Int
+  edges: [ProfilesEdge!]!
 
-    """
-    Only read the last `n` values of the set.
-    """
-    last: Int
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
 
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
+  """
+  The count of *all* `Profile` you could get from the connection.
+  """
+  totalCount: Int!
+}
 
-    """
-    Read all values in the set before (above) this cursor.
-    """
-    before: Cursor
+type Profile implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+  id: Int!
+  userId: Int!
+  snailMailAddress: String
+  phoneNumber: String
 
-    """
-    Read all values in the set after (below) this cursor.
-    """
-    after: Cursor
+  """
+  Reads a single `User` that is related to this `Profile`.
+  """
+  user: User
+}
 
-    """
-    The method to use when ordering `Profile`.
-    """
-    orderBy: [ProfilesOrderBy!] = [PRIMARY_KEY_ASC]
+"""
+A `Profile` edge in the connection.
+"""
+type ProfilesEdge {
+  """
+  A cursor for use in pagination.
+  """
+  cursor: Cursor
 
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: ProfileCondition
+  """
+  The `Profile` at the end of the edge.
+  """
+  node: Profile
+}
 
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: ProfileFilter
-  ): ProfilesConnection!
+"""
+Methods to use when ordering `Profile`.
+"""
+enum ProfilesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  SNAIL_MAIL_ADDRESS_ASC
+  SNAIL_MAIL_ADDRESS_DESC
+  PHONE_NUMBER_ASC
+  PHONE_NUMBER_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  USER_BY_USER_ID__ID_ASC
+  USER_BY_USER_ID__ID_DESC
+  USER_BY_USER_ID__EMAIL_ASC
+  USER_BY_USER_ID__EMAIL_DESC
+  USER_BY_USER_ID__FULL_NAME_ASC
+  USER_BY_USER_ID__FULL_NAME_DESC
+  USER_BY_USER_ID__FIRST_NAME_ASC
+  USER_BY_USER_ID__FIRST_NAME_DESC
+  USER_BY_USER_ID__LAST_NAME_ASC
+  USER_BY_USER_ID__LAST_NAME_DESC
+}
+
+"""
+A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input ProfileCondition {
+  """
+  Checks for equality with the object’s `id` field.
+  """
+  id: Int
+
+  """
+  Checks for equality with the object’s `userId` field.
+  """
+  userId: Int
+
+  """
+  Checks for equality with the object’s `snailMailAddress` field.
+  """
+  snailMailAddress: String
+
+  """
+  Checks for equality with the object’s `phoneNumber` field.
+  """
+  phoneNumber: String
+}
+
+"""
+A filter to be used against `Profile` object types. All fields are combined with a logical ‘and.’
+"""
+input ProfileFilter {
+  """
+  Filter by the object’s `id` field.
+  """
+  id: IntFilter
+
+  """
+  Filter by the object’s `userId` field.
+  """
+  userId: IntFilter
+
+  """
+  Filter by the object’s `snailMailAddress` field.
+  """
+  snailMailAddress: StringFilter
+
+  """
+  Filter by the object’s `phoneNumber` field.
+  """
+  phoneNumber: StringFilter
+
+  """
+  Checks for all expressions in this list.
+  """
+  and: [ProfileFilter!]
+
+  """
+  Checks for any expressions in this list.
+  """
+  or: [ProfileFilter!]
+
+  """
+  Negates the expression.
+  """
+  not: ProfileFilter
 }
 
 """
@@ -3691,154 +3839,6 @@ type UserRolesEdge {
   The `UserRole` at the end of the edge.
   """
   node: UserRole
-}
-
-"""
-A connection to a list of `Profile` values.
-"""
-type ProfilesConnection {
-  """
-  A list of `Profile` objects.
-  """
-  nodes: [Profile]!
-
-  """
-  A list of edges which contains the `Profile` and cursor to aid in pagination.
-  """
-  edges: [ProfilesEdge!]!
-
-  """
-  Information to aid in pagination.
-  """
-  pageInfo: PageInfo!
-
-  """
-  The count of *all* `Profile` you could get from the connection.
-  """
-  totalCount: Int!
-}
-
-type Profile implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  nodeId: ID!
-  id: Int!
-  userId: Int!
-  snailMailAddress: String
-  phoneNumber: String
-
-  """
-  Reads a single `User` that is related to this `Profile`.
-  """
-  user: User
-}
-
-"""
-A `Profile` edge in the connection.
-"""
-type ProfilesEdge {
-  """
-  A cursor for use in pagination.
-  """
-  cursor: Cursor
-
-  """
-  The `Profile` at the end of the edge.
-  """
-  node: Profile
-}
-
-"""
-Methods to use when ordering `Profile`.
-"""
-enum ProfilesOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  SNAIL_MAIL_ADDRESS_ASC
-  SNAIL_MAIL_ADDRESS_DESC
-  PHONE_NUMBER_ASC
-  PHONE_NUMBER_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-  USER_BY_USER_ID__ID_ASC
-  USER_BY_USER_ID__ID_DESC
-  USER_BY_USER_ID__EMAIL_ASC
-  USER_BY_USER_ID__EMAIL_DESC
-  USER_BY_USER_ID__FULL_NAME_ASC
-  USER_BY_USER_ID__FULL_NAME_DESC
-  USER_BY_USER_ID__FIRST_NAME_ASC
-  USER_BY_USER_ID__FIRST_NAME_DESC
-  USER_BY_USER_ID__LAST_NAME_ASC
-  USER_BY_USER_ID__LAST_NAME_DESC
-}
-
-"""
-A condition to be used against `Profile` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input ProfileCondition {
-  """
-  Checks for equality with the object’s `id` field.
-  """
-  id: Int
-
-  """
-  Checks for equality with the object’s `userId` field.
-  """
-  userId: Int
-
-  """
-  Checks for equality with the object’s `snailMailAddress` field.
-  """
-  snailMailAddress: String
-
-  """
-  Checks for equality with the object’s `phoneNumber` field.
-  """
-  phoneNumber: String
-}
-
-"""
-A filter to be used against `Profile` object types. All fields are combined with a logical ‘and.’
-"""
-input ProfileFilter {
-  """
-  Filter by the object’s `id` field.
-  """
-  id: IntFilter
-
-  """
-  Filter by the object’s `userId` field.
-  """
-  userId: IntFilter
-
-  """
-  Filter by the object’s `snailMailAddress` field.
-  """
-  snailMailAddress: StringFilter
-
-  """
-  Filter by the object’s `phoneNumber` field.
-  """
-  phoneNumber: StringFilter
-
-  """
-  Checks for all expressions in this list.
-  """
-  and: [ProfileFilter!]
-
-  """
-  Checks for any expressions in this list.
-  """
-  or: [ProfileFilter!]
-
-  """
-  Negates the expression.
-  """
-  not: ProfileFilter
 }
 
 """
@@ -6117,12 +6117,12 @@ enum UsersOrderBy {
   GAMES_BY_AUTHOR_ID__COUNT_DESC
   MEMBERSHIPS_BY_USER_ID__COUNT_ASC
   MEMBERSHIPS_BY_USER_ID__COUNT_DESC
+  PROFILES_BY_USER_ID__COUNT_ASC
+  PROFILES_BY_USER_ID__COUNT_DESC
   SHIRT_ORDERS_BY_USER_ID__COUNT_ASC
   SHIRT_ORDERS_BY_USER_ID__COUNT_DESC
   USER_ROLES_BY_USER_ID__COUNT_ASC
   USER_ROLES_BY_USER_ID__COUNT_DESC
-  PROFILES_BY_USER_ID__COUNT_ASC
-  PROFILES_BY_USER_ID__COUNT_DESC
 }
 
 """

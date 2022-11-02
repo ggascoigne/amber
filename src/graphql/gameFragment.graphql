@@ -27,6 +27,9 @@ fragment gameFields on Game {
   year
   full
   roomId
+  room {
+    description
+  }
 }
 
 fragment assignmentFields on GameAssignment {

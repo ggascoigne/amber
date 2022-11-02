@@ -72,7 +72,12 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
       teenFriendly,
       gameAssignments,
       setting,
+      lateStart,
+      lateFinish,
     } = game
+
+    const isMorningSlot = [2, 5, 7].includes(slot)
+    const isEveningSlot = [1, 4, 6].includes(slot)
 
     const content = (
       <CardBody className={classes.cardBody}>
@@ -119,6 +124,16 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
               ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
               : `Players need not contact the GM in advance of the convention.`}
           </Field>
+          {isMorningSlot && lateStart && lateStart !== 'Starts on time' && (
+            <Field label='Late Start' small tiny={tiny}>
+              <b>{lateStart}</b>
+            </Field>
+          )}
+          {isEveningSlot && lateFinish && (
+            <Field label='Late Finish' small tiny={tiny}>
+              <b>Evening Game: Game may run late into the evening</b>
+            </Field>
+          )}
         </GridContainer>
       </CardBody>
     )

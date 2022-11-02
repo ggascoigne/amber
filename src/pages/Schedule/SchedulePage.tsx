@@ -1,16 +1,16 @@
 import Button from '@mui/material/Button'
 import { GameAssignmentNode, useGetScheduleQuery } from 'client'
 import { stripIndents } from 'common-tags'
-import React, { PropsWithChildren, createRef, useEffect, useMemo, useState } from 'react'
+import React, { createRef, PropsWithChildren, useEffect, useMemo, useState } from 'react'
 import SHA from 'sha.js'
 import {
-  GqlType,
-  ICalEvent,
-  SettingValue,
   buildUrl,
   getGameAssignments,
   getSlotTimes,
+  GqlType,
+  ICalEvent,
   notEmpty,
+  SettingValue,
   useForceLogin,
   useGetMemberShip,
   useGetSettingValue,
@@ -22,6 +22,8 @@ import { GameCard } from '../../components/GameCard'
 import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
+import { GameDecorator } from '../../components/types'
+import { Box } from '@mui/system'
 
 interface GameSummaryProps {
   gas: GameAssignmentNode
@@ -45,6 +47,23 @@ const getGmsAndPlayers = (game: GameAndAssignment) => {
   }
 }
 
+const RoomDisplay = ({ game }: GameDecorator) => (
+  <Box
+    sx={{
+      display: 'flex',
+    }}
+  >
+    <Box
+      sx={{
+        flex: '1 0 auto',
+        display: 'flex',
+        flexDirection: 'row',
+      }}
+    />
+    <h4>{game?.room?.description}</h4>
+  </Box>
+)
+
 const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   const game = gas.game
   if (!game) return null
@@ -60,6 +79,8 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
       schedule
       gms={gms}
       players={players}
+      decorator={RoomDisplay}
+      decoratorParams={{ year: game?.year, slot: game?.slotId, game }}
     />
   )
 }

@@ -1,4 +1,4 @@
-#!/usr/bin/env TS_NODE_PROJECT=./tsconfig.commonjs.json yarn ts-node-script -r dotenv/config
+#!/usr/bin/env TS_NODE_PROJECT=./tsconfig.commonjs.json pnpm ts-node-script -r dotenv/config
 
 import * as chalk from 'chalk'
 import cli from 'cli-ux'

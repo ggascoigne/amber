@@ -6970,6 +6970,7 @@ export type GetGamesBySlotForSignupQuery = {
         year: number
         full?: boolean | null
         roomId?: number | null
+        room?: { __typename: 'Room'; description: string } | null
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<{
@@ -7029,6 +7030,7 @@ export type GetGamesBySlotQuery = {
         year: number
         full?: boolean | null
         roomId?: number | null
+        room?: { __typename: 'Room'; description: string } | null
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<{
@@ -7089,8 +7091,8 @@ export type GetGamesByYearQuery = {
         roomId?: number | null
         room?: {
           __typename: 'Room'
-          id: number
           description: string
+          id: number
           size: number
           type: string
           updated: boolean
@@ -7153,6 +7155,7 @@ export type GetSmallGamesByYearQuery = {
         year: number
         full?: boolean | null
         roomId?: number | null
+        room?: { __typename: 'Room'; description: string } | null
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<{
@@ -7209,6 +7212,7 @@ export type UpdateGameByNodeIdMutation = {
       year: number
       full?: boolean | null
       roomId?: number | null
+      room?: { __typename: 'Room'; description: string } | null
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<{
@@ -7264,6 +7268,7 @@ export type UpdateGameMutation = {
       year: number
       full?: boolean | null
       roomId?: number | null
+      room?: { __typename: 'Room'; description: string } | null
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<{
@@ -7319,6 +7324,7 @@ export type CreateGameMutation = {
       year: number
       full?: boolean | null
       roomId?: number | null
+      room?: { __typename: 'Room'; description: string } | null
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<{
@@ -7399,6 +7405,7 @@ export type GetFirstGameOfSlotQuery = {
           } | null
         } | null>
       }
+      room?: { __typename: 'Room'; description: string } | null
     } | null>
   } | null
 }
@@ -7441,6 +7448,7 @@ export type GetGamesByAuthorQuery = {
         year: number
         full?: boolean | null
         roomId?: number | null
+        room?: { __typename: 'Room'; description: string } | null
         gameAssignments: {
           __typename: 'GameAssignmentsConnection'
           nodes: Array<{
@@ -7498,6 +7506,7 @@ export type GetGamesByYearAndAuthorQuery = {
       year: number
       full?: boolean | null
       roomId?: number | null
+      room?: { __typename: 'Room'; description: string } | null
       gameAssignments: {
         __typename: 'GameAssignmentsConnection'
         nodes: Array<{
@@ -7551,6 +7560,7 @@ export type GetGameByIdQuery = {
     year: number
     full?: boolean | null
     roomId?: number | null
+    room?: { __typename: 'Room'; description: string } | null
     gameAssignments: {
       __typename: 'GameAssignmentsConnection'
       nodes: Array<{
@@ -7744,6 +7754,7 @@ export type GetScheduleQuery = {
             } | null
           } | null>
         }
+        room?: { __typename: 'Room'; description: string } | null
       } | null
     } | null>
   } | null
@@ -7947,6 +7958,7 @@ export type GameFieldsFragment = {
   year: number
   full?: boolean | null
   roomId?: number | null
+  room?: { __typename: 'Room'; description: string } | null
 }
 
 export type AssignmentFieldsFragment = {
@@ -9129,6 +9141,9 @@ export const GameFieldsFragmentDoc = `
   year
   full
   roomId
+  room {
+    description
+  }
 }
     `
 export const GameAssignmentFieldsFragmentDoc = `
