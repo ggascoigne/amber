@@ -5,12 +5,15 @@ import React, { createRef, PropsWithChildren, useEffect, useMemo, useState } fro
 import SHA from 'sha.js'
 import {
   buildUrl,
+  configuration,
   getGameAssignments,
+  getSlotDescription,
   getSlotTimes,
   GqlType,
   ICalEvent,
   notEmpty,
   SettingValue,
+  SlotFormat,
   useForceLogin,
   useGetMemberShip,
   useGetSettingValue,
@@ -23,7 +26,8 @@ import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { GameDecorator } from '../../components/types'
-import { Box } from '@mui/system'
+import { Box, useTheme } from '@mui/system'
+import { useMediaQuery } from '@mui/material'
 
 interface GameSummaryProps {
   gas: GameAssignmentNode
@@ -47,22 +51,38 @@ const getGmsAndPlayers = (game: GameAndAssignment) => {
   }
 }
 
-const RoomDisplay = ({ game }: GameDecorator) => (
-  <Box
-    sx={{
-      display: 'flex',
-    }}
-  >
+const RoomDisplay = ({ game, year }: GameDecorator) => {
+  const theme = useTheme()
+  const small = !useMediaQuery(theme.breakpoints.up('sm'))
+
+  const isVirtual = configuration.startDates[year].virtual
+  const slotDescription = getSlotDescription({
+    year,
+    slot: game.slotId!,
+    local: true,
+    altFormat: isVirtual ? SlotFormat.ALT_SHORT : small ? SlotFormat.TINY : SlotFormat.SHORT_NO_TZ,
+  })
+
+  return (
     <Box
       sx={{
-        flex: '1 0 auto',
         display: 'flex',
-        flexDirection: 'row',
+        mt: small ? -2 : undefined,
       }}
-    />
-    <h4>{game?.room?.description}</h4>
-  </Box>
-)
+    >
+      <Box
+        sx={{
+          flex: '1 0 auto',
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      />
+      <h5>
+        {slotDescription} - {game?.room?.description}
+      </h5>
+    </Box>
+  )
+}
 
 const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   const game = gas.game
@@ -80,7 +100,6 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
       gms={gms}
       players={players}
       decorator={RoomDisplay}
-      decoratorParams={{ year: game?.year, slot: game?.slotId, game }}
     />
   )
 }

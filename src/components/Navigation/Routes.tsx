@@ -50,6 +50,15 @@ export const rootRoutes: RootRoutes = [
     component: React.lazy(() => import('pages/AboutAmber')),
   },
   {
+    path: '/schedule',
+    label: 'Schedule',
+    subText: 'Your Schedule',
+    exact: true,
+    component: React.lazy(() => import('pages/Schedule/SchedulePage')),
+    userCondition: ({ getSetting }) => getSetting('display.schedule'),
+    alwaysAddRoute: true,
+  },
+  {
     path: '/about-edgefield',
     label: 'Accommodations',
     subText: 'McMenamins Edgefield, the site that makes ACNW unique',
@@ -121,15 +130,6 @@ export const rootRoutes: RootRoutes = [
     exact: true,
     component: React.lazy(() => import('pages/GameSignup/GameChoiceSummary')),
     userCondition: ({ getSetting }) => getSetting('display.game.signup'),
-  },
-  {
-    path: '/schedule',
-    label: 'Schedule',
-    subText: 'Your Schedule',
-    exact: true,
-    component: React.lazy(() => import('pages/Schedule/SchedulePage')),
-    userCondition: ({ getSetting }) => getSetting('display.schedule'),
-    alwaysAddRoute: true,
   },
   {
     path: '/game-history',

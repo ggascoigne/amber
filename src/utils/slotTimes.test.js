@@ -24,6 +24,33 @@ describe('slot times', () => {
         year: 2020,
         slot: 1,
         local: true,
+        altFormat: SlotFormat.ALT_SHORT,
+      }),
+      output: 'Thursday 11:00 am to 3:00 pm PST',
+    },
+    {
+      input: getSlotDescription({
+        year: 2020,
+        slot: 1,
+        local: true,
+        altFormat: SlotFormat.SHORT_NO_TZ,
+      }),
+      output: 'Thursday 11:00 am to 3:00 pm',
+    },
+    {
+      input: getSlotDescription({
+        year: 2020,
+        slot: 1,
+        local: true,
+        altFormat: SlotFormat.TINY,
+      }),
+      output: 'Thu 11:00 am to 3:00 pm',
+    },
+    {
+      input: getSlotDescription({
+        year: 2020,
+        slot: 1,
+        local: true,
         altFormat: SlotFormat.SHORT,
       }),
       output: 'Slot 1: Thu 11:00 am to 3:00 pm PST',

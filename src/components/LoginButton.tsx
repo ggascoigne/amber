@@ -11,6 +11,7 @@ import { Auth0User, Perms, Roles, useAuth, useRoleOverride, useToken } from './A
 import { LoginMenu } from './LoginMenu'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
+import { Box } from '@mui/system'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
@@ -171,13 +172,13 @@ const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
   const { classes } = useStyles()
   const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
-    <>
+    <Box>
       <ProfileImage user={user} />
       <span className={classes.email}>
         {user.email}
         {unverified}
       </span>
-    </>
+    </Box>
   ) : (
     <>
       <span className={classes.email}>
@@ -305,7 +306,12 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
       />
     </>
   ) : (
-    <Button disabled={!authInitialized} className={classes.loginButton} onClick={login}>
+    <Button
+      disabled={!authInitialized}
+      className={classes.loginButton}
+      onClick={login}
+      sx={{ ml: small ? '-13px' : undefined }}
+    >
       Login
     </Button>
   )

@@ -192,15 +192,7 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
     const { classes, cx } = useStyles()
     const { id, name, slotId = 0, description } = game
 
-    const slotName = schedule
-      ? getSlotDescription({
-          year,
-          slot: game.slotId!,
-          local: true,
-        })
-      : ''
-
-    const headerText = schedule ? `${slotName} - ${name}` : name
+    const headerText = schedule ? `${game.slotId!}: ${name}` : name
 
     const headerContent = (
       <>

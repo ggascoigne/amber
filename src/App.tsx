@@ -6,7 +6,7 @@ import { Banner } from './components/Banner'
 import { Footer } from './components/Footer'
 import { Header } from './components/Header'
 import { LoginButton } from './components/LoginButton'
-import { MenuItems, SelectedContent, rootRoutes } from './components/Navigation'
+import { MenuItems, rootRoutes, SelectedContent } from './components/Navigation'
 
 const drawerWidth = 240
 
@@ -57,14 +57,18 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
-const DrawerContents: React.FC = () => {
+const DrawerContents: React.FC<{ small?: boolean }> = ({ small = false }) => {
   const { classes } = useStyles()
   return (
     <>
-      <div className={classes.toolbar}>
-        <Banner to='/' />
-      </div>
-      <Divider />
+      {!small && (
+        <>
+          <div className={classes.toolbar}>
+            <Banner to='/' />
+          </div>
+          <Divider />
+        </>
+      )}
       <MenuItems menuItems={rootRoutes} />
       <div style={{ height: '100%' }} />
       <Footer />
@@ -109,9 +113,9 @@ export const App: React.FC = React.memo(() => {
               keepMounted: true, // Better open performance on mobile.
             }}
           >
-            <DrawerContents />
-            <Divider />
             <RightMenu small />
+            <Divider />
+            <DrawerContents small />
           </Drawer>
         </Hidden>
         <Hidden mdDown>
