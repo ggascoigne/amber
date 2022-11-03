@@ -4,7 +4,7 @@ import type { GameEntry } from 'client'
 import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
-import { getSlotDescription } from 'utils'
+import { isEveningSlot, isMorningSlot } from 'utils'
 import maskEmail from 'utils/maskEmail'
 
 import { Card, CardBody } from '../Card'
@@ -76,9 +76,6 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
       lateFinish,
     } = game
 
-    const isMorningSlot = [2, 5, 7].includes(slot)
-    const isEveningSlot = [1, 4, 6].includes(slot)
-
     const content = (
       <CardBody className={classes.cardBody}>
         <GridContainer className={cx({ [classes.cardTiny]: tiny })}>
@@ -124,12 +121,12 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
               ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
               : `Players need not contact the GM in advance of the convention.`}
           </Field>
-          {isMorningSlot && lateStart && lateStart !== 'Starts on time' && (
+          {isMorningSlot(slot) && lateStart && lateStart !== 'Starts on time' && (
             <Field label='Late Start' small tiny={tiny}>
               <b>{lateStart}</b>
             </Field>
           )}
-          {isEveningSlot && lateFinish && (
+          {isEveningSlot(slot) && lateFinish && (
             <Field label='Late Finish' small tiny={tiny}>
               <b>Evening Game: Game may run late into the evening</b>
             </Field>

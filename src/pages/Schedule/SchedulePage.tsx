@@ -11,6 +11,7 @@ import {
   getSlotTimes,
   GqlType,
   ICalEvent,
+  isMorningSlot,
   notEmpty,
   SettingValue,
   SlotFormat,
@@ -56,11 +57,20 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
   const small = !useMediaQuery(theme.breakpoints.up('sm'))
 
   const isVirtual = configuration.startDates[year].virtual
+  const [s] = getSlotTimes(year)[game.slotId! - 1]
+
+  const startString =
+    isMorningSlot(game.slotId!) && game.lateStart && game.lateStart !== 'Starts on time' ? game.lateStart : ''
+  const re = /Starts at (?<hour>\d\d)\.(?<minutes>\d\d) .?m/.exec(startString ?? '')
+  const h = re?.groups?.hour ? parseInt(re?.groups?.hour, 10) : s.hour
+  const m = re?.groups?.minutes ? parseInt(re?.groups?.minutes, 10) : s.minute
+  const lateStart = s.set({ hour: h, minute: m })
   const slotDescription = getSlotDescription({
     year,
     slot: game.slotId!,
     local: true,
     altFormat: isVirtual ? SlotFormat.ALT_SHORT : small ? SlotFormat.TINY : SlotFormat.SHORT_NO_TZ,
+    lateStart,
   })
 
   return (

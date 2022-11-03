@@ -112,16 +112,19 @@ export const getSlotDescription = ({
   slot,
   local = false,
   altFormat = SlotFormat.DEFAULT,
+  lateStart,
 }: {
   year: number
   slot: number
   local?: boolean
   altFormat?: SlotFormat
+  lateStart?: DateTime
 }) => {
   if (!slot) return 'unscheduled'
   const [start, end] = getSlotTimes(year)[slot - 1]
+  const realStart = lateStart ?? start
   // console.log({ slot, start, end })
-  return local ? formatSlotLocal(slot, start, end, altFormat) : formatSlot(slot, start, end, altFormat)
+  return local ? formatSlotLocal(slot, realStart, end, altFormat) : formatSlot(slot, realStart, end, altFormat)
 }
 
 // I thought that I could just check the TZ, but there turn out to be a ton of possible Pacific Time strings,
@@ -137,3 +140,6 @@ export const isNotPacificTime = () =>
     slot: 1,
     local: false,
   })
+
+export const isMorningSlot = (slot: number) => [2, 5, 7].includes(slot)
+export const isEveningSlot = (slot: number) => [1, 4, 6].includes(slot)

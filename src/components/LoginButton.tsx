@@ -172,7 +172,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
   const { classes } = useStyles()
   const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'row', ml: 1, alignItems: 'center' }}>
       <ProfileImage user={user} />
       <span className={classes.email}>
         {user.email}
