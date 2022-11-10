@@ -18,7 +18,7 @@ const validatePassword = async (username: string, password: string) => {
       grant_type: 'password',
       username,
       password,
-      client_id: managementClientId,
+      clientId: managementClientId,
       client_secret: managementClientSecret,
     }),
   }

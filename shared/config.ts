@@ -1,7 +1,10 @@
-const { Pool } = require('pg')
-const fs = require('fs')
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import * as pg from 'pg'
+import * as fs from 'fs'
 
-process.env.NODE_ENV !== 'production' && require('dotenv').config()
+const { Pool } = pg
+
+process.env.NODE_ENV !== 'production' && dotenv.config()
 
 export const getSchemas = () => (process.env.DATABASE_SCHEMAS ? process.env.DATABASE_SCHEMAS.split(',') : ['public'])
 
@@ -29,10 +32,11 @@ export const getPool = (poolType: PoolType, pathToRoot = './') => {
     host,
     database,
     password,
-    port,
+    port: port ? parseInt(port, 10) : undefined,
     ssl: ssl
       ? {
           rejectUnauthorized: true,
+          // @ts-ignore
           sslmode: 'verify-all',
           ca: fs.readFileSync(pathToRoot + ssl_cert).toString(),
         }
@@ -40,7 +44,7 @@ export const getPool = (poolType: PoolType, pathToRoot = './') => {
   })
 }
 
-export type DbConfig = {
+export interface DbConfig {
   database: string
   user: string
   port: number
@@ -50,7 +54,7 @@ export type DbConfig = {
   ssl_cert?: string
 }
 
-export type EmailConfig = {
+export interface EmailConfig {
   user: string
   port: number
   host: string
@@ -62,24 +66,24 @@ export const config: { rootDatabase: DbConfig; userDatabase: DbConfig; email: Em
     host: process.env.DATABASE_HOST!,
     database: process.env.DATABASE_NAME!,
     user: process.env.DATABASE_ADMIN!,
-    password: process.env.DATABASE_ADMIN_PASSWORD || '',
-    port: parseInt(process.env.DATABASE_PORT || '', 10),
+    password: process.env.DATABASE_ADMIN_PASSWORD ?? '',
+    port: parseInt(process.env.DATABASE_PORT ?? '', 10),
     ssl: process.env.DATABASE_SSL === '1',
-    ssl_cert: process.env.DATABASE_SSL_CERT || '',
+    ssl_cert: process.env.DATABASE_SSL_CERT ?? '',
   },
   userDatabase: {
     host: process.env.DATABASE_HOST!,
     database: process.env.DATABASE_NAME!,
     user: process.env.DATABASE_USER!,
-    password: process.env.DATABASE_USER_PASSWORD || '',
-    port: parseInt(process.env.DATABASE_PORT || '', 10),
+    password: process.env.DATABASE_USER_PASSWORD ?? '',
+    port: parseInt(process.env.DATABASE_PORT ?? '', 10),
     ssl: process.env.DATABASE_SSL === '1',
-    ssl_cert: process.env.DATABASE_SSL_CERT || '',
+    ssl_cert: process.env.DATABASE_SSL_CERT ?? '',
   },
   email: {
     host: process.env.SMTP_HOST!,
     user: process.env.SMTP_USERNAME!,
-    password: process.env.SMTP_PASSWORD || '',
-    port: parseInt(process.env.SMTP_PORT || '', 10),
+    password: process.env.SMTP_PASSWORD ?? '',
+    port: parseInt(process.env.SMTP_PORT ?? '', 10),
   },
 }

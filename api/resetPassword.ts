@@ -14,7 +14,7 @@ const requestChangePasswordEmail = async (username: string) => {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       email: username,
-      client_id: managementClientId,
+      clientId: managementClientId,
       connection: 'Username-Password-Authentication',
       client_secret: managementClientSecret,
     }),

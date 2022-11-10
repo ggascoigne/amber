@@ -1,13 +1,10 @@
-import { SpawnSyncReturns, spawn, spawnSync } from 'child_process'
-// @ts-ignore
-import fs from 'fs'
+import { spawn, spawnSync, SpawnSyncReturns } from 'child_process'
+import * as fs from 'fs'
 
-// @ts-ignore
-import chalk from 'chalk'
+import * as chalk from 'chalk'
 import cli from 'cli-ux'
 import { stripIndent } from 'common-tags'
-// @ts-ignore
-import tempy from 'tempy'
+import { temporaryFile } from 'tempy'
 
 import { DbConfig } from '../shared/config'
 
@@ -154,7 +151,9 @@ export async function mysqlExecScript(dbconfig: DbConfig, script: string, verbos
   database && args.push(`--database=${database}`)
 
   return new Promise((resolve, reject) => {
+    // @ts-ignore
     const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
+      // @ts-ignore
       .on('error', reject)
       .on('close', resolve)
       .on('exit', (code: number) => (code ? reject(code) : resolve(code)))
@@ -169,7 +168,7 @@ export async function mysqlExecScript(dbconfig: DbConfig, script: string, verbos
 }
 
 export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
-  const name = tempy.file()
+  const name = temporaryFile()
   fs.writeFileSync(name, script)
 
   const args = getPostgresArgs(dbconfig)
@@ -180,11 +179,12 @@ export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
 }
 
 export function pgloader(mySqlPassword: string, script: string, verbose: boolean) {
-  const name = tempy.file()
+  const name = temporaryFile()
   fs.writeFileSync(name, script)
 
   runOrExit(
     spawnSync('/usr/local/bin/pgloader', ['-v', /* '--debug', */ '--on-error-stop', name], {
+      // @ts-ignore
       env: { MYSQL_PWD: mySqlPassword },
       stdio: verbose ? 'inherit' : 'ignore',
     })

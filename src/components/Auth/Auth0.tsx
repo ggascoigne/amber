@@ -1,5 +1,7 @@
-import createAuth0Client, {
+import {
+  Auth0Client,
   Auth0ClientOptions,
+  createAuth0Client,
   GetTokenSilentlyOptions,
   GetTokenWithPopupOptions,
   IdToken,
@@ -7,14 +9,12 @@ import createAuth0Client, {
   PopupLoginOptions,
   RedirectLoginOptions,
   RedirectLoginResult,
-  getIdTokenClaimsOptions,
 } from '@auth0/auth0-spa-js'
 import type { History } from 'history'
 import JwtDecode from 'jwt-decode'
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { isDev } from 'utils/globals'
-import { ThenArg } from 'utils/ts-utils'
 import { useLocalStorage } from 'utils/useLocalStorage'
 
 import { useNotification } from '../Notifications'
@@ -27,8 +27,6 @@ const AUTH_CONFIG = {
   audience: 'https://amberconnw.org',
   clientId: process.env.REACT_APP_AUTH0_CLIENT_ID ?? '',
 }
-
-type Auth0Client = ThenArg<ReturnType<typeof createAuth0Client>>
 
 export type AccessToken = {
   iss?: string
@@ -61,7 +59,7 @@ interface ContextValueType {
   isPopupOpen?: boolean
   loginWithPopup?: (o?: PopupLoginOptions) => Promise<void>
   handleRedirectCallback?: () => Promise<RedirectLoginResult>
-  getIdTokenClaims?: (o?: getIdTokenClaimsOptions) => Promise<IdToken | undefined>
+  getIdTokenClaims?: () => Promise<IdToken | undefined>
   loginWithRedirect?: (o?: RedirectLoginOptions) => Promise<void>
   getTokenSilently?: (o?: GetTokenSilentlyOptions) => Promise<string | undefined>
   getTokenWithPopup?: (o?: GetTokenWithPopupOptions) => Promise<string | undefined>
@@ -87,12 +85,14 @@ interface Auth0ProviderOptions {
 
 const auth0ClientConfig: Auth0ClientOptions = {
   domain: AUTH_CONFIG.domain,
-  client_id: AUTH_CONFIG.clientId,
-  redirect_uri: window.location.origin,
+  clientId: AUTH_CONFIG.clientId,
+  authorizationParams: {
+    redirect_uri: window.location.origin,
+    audience: AUTH_CONFIG.audience,
+    responseType: 'token id_token',
+    scope: 'openid profile email',
+  },
   cacheLocation: 'localstorage',
-  audience: AUTH_CONFIG.audience,
-  responseType: 'token id_token',
-  scope: 'openid profile email',
 }
 
 const onAuthRedirectCallback = (history: History, redirectResult?: RedirectLoginResult) => {
@@ -194,8 +194,10 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
   const logout = useCallback(
     (options?: LogoutOptions) =>
       auth0Client!.logout({
-        returnTo: window.location.origin,
-        client_id: AUTH_CONFIG.clientId,
+        clientId: AUTH_CONFIG.clientId,
+        logoutParams: {
+          returnTo: window.location.origin,
+        },
         ...options,
       }),
     [auth0Client]
@@ -234,10 +236,7 @@ export const Auth0Provider = ({ children, onRedirectCallback = onAuthRedirectCal
     [auth0Client]
   )
 
-  const getIdTokenClaims = useCallback(
-    (options?: getIdTokenClaimsOptions) => auth0Client!.getIdTokenClaims(options),
-    [auth0Client]
-  )
+  const getIdTokenClaims = useCallback(() => auth0Client!.getIdTokenClaims(), [auth0Client])
 
   const getTokenWithPopup = useCallback(
     (options?: GetTokenWithPopupOptions) => auth0Client!.getTokenWithPopup(options),

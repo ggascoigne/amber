@@ -10,7 +10,7 @@ export const getManagementApiAccessToken = async () => {
     body: JSON.stringify({
       grant_type: 'client_credentials',
       audience: `https://${authDomain}/api/v2/`,
-      client_id: managementClientId,
+      clientId: managementClientId,
       client_secret: managementClientSecret,
     }),
   }

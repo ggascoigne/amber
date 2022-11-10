@@ -58,7 +58,7 @@ module.exports = {
       files: '*.{ts,tsx}',
       parser: `@typescript-eslint/parser`,
       parserOptions: {
-        project: `./tsconfig.eslint.json`,
+        project: `./tsconfig.json`,
       },
       rules: {
         // disabled because it conflicts with jsx-a11y/alt-text

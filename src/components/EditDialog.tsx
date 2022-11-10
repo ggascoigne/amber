@@ -31,7 +31,7 @@ export const useDisableBackdropClick = (onClose?: onCloseHandler) =>
 
 export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): ReactElement {
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
-  useHotkeys('Escape', onClose, { enableOnTags: ['INPUT', 'TEXTAREA'] })
+  useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA'] })
 
   const { isAuthenticated, user } = useAuth()
   if (!isAuthenticated || !user) {

@@ -54,7 +54,7 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
   const [value, setValue] = React.useState(initialValue)
   const { CellEditor } = column
 
-  useHotkeys('Escape', onClose, { enableOnTags: ['INPUT', 'TEXTAREA', 'SELECT'] })
+  useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'] })
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value)
