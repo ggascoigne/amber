@@ -15,13 +15,12 @@ specifiers:
   '@babel/helper-regex': ^7.10.5
   '@babel/plugin-syntax-flow': ^7.18.6
   '@babel/plugin-transform-react-jsx': ^7.19.0
-  '@babel/preset-react': ^7.18.6
   '@codemirror/language': ^6.3.0
   '@date-io/luxon': ^2.16.1
   '@emotion/cache': ^11.10.5
   '@emotion/react': ^11.10.5
   '@emotion/styled': ^11.10.5
-  '@ggascoigne/eslint-config': ^1.11.0
+  '@ggascoigne/eslint-config': ^1.11.1
   '@graphile-contrib/pg-order-by-related': ^1.0.0-beta.6
   '@graphile-contrib/pg-simplify-inflector': ^6.1.0
   '@graphql-codegen/add': 3.2.1
@@ -86,7 +85,6 @@ specifiers:
   enzyme: ^3.11.0
   enzyme-adapter-react-16: ^1.15.7
   eslint: ^8.27.0
-  eslint-config-prettier: ^8.5.0
   eslint-plugin-rulesdir: ^0.2.1
   execa: ^5.1.1
   express-jwt: ^7.7.7
@@ -247,9 +245,8 @@ devDependencies:
   '@babel/helper-regex': 7.10.5
   '@babel/plugin-syntax-flow': 7.18.6_@babel+core@7.20.2
   '@babel/plugin-transform-react-jsx': 7.19.0_@babel+core@7.20.2
-  '@babel/preset-react': 7.18.6_@babel+core@7.20.2
   '@codemirror/language': 6.3.0
-  '@ggascoigne/eslint-config': 1.11.0_rrs7cc7ocfaiuubfrh6xywg63u
+  '@ggascoigne/eslint-config': 1.11.1_y5bfegnogqyvdpkxfx2ihiqwte
   '@graphql-codegen/add': 3.2.1_graphql@15.8.0
   '@graphql-codegen/cli': 2.13.11_gsukmflugfnhcn36wt7filo2bi
   '@graphql-codegen/typescript': 2.8.1_graphql@15.8.0
@@ -294,7 +291,6 @@ devDependencies:
   enzyme: 3.11.0
   enzyme-adapter-react-16: 1.15.7_todk22eekuihjg65rlnudp4qdi
   eslint: 8.27.0
-  eslint-config-prettier: 8.5.0_eslint@8.27.0
   eslint-plugin-rulesdir: 0.2.1
   execa: 5.1.1
   fm-loader: 1.0.0
@@ -2080,11 +2076,12 @@ packages:
       eslint: 8.27.0
     dev: true
 
-  /@ggascoigne/eslint-config/1.11.0_rrs7cc7ocfaiuubfrh6xywg63u:
-    resolution: {integrity: sha512-ugzm+hg5TESaWZwDVcYRI9/vqTkICv/735oIL7eIZ6jAEHHFhI4vIYthybQnIgnmsOihUidWJfKA5jOH59kOqQ==}
+  /@ggascoigne/eslint-config/1.11.1_y5bfegnogqyvdpkxfx2ihiqwte:
+    resolution: {integrity: sha512-iUgpyAzcJyIGpe94glpDvBx84oNV9qlombhmunWPo4Ox4hNDMsikzVrtbteyBejpT0miGfD1gCa+sH6IvQabSA==}
     peerDependencies:
       eslint: '>= 8'
     dependencies:
+      '@babel/preset-react': 7.18.6_@babel+core@7.20.2
       '@getify/eslint-plugin-proper-ternary': 3.1.1_eslint@8.27.0
       '@typescript-eslint/eslint-plugin': 5.42.1_2udltptbznfmezdozpdoa2aemq
       '@typescript-eslint/parser': 5.42.1_rmayb2veg2btbq6mbmnyivgasy
@@ -2105,6 +2102,7 @@ packages:
       eslint-plugin-sonarjs: 0.16.0_eslint@8.27.0
       eslint-plugin-unicorn: 44.0.2_eslint@8.27.0
     transitivePeerDependencies:
+      - '@babel/core'
       - '@babel/plugin-syntax-flow'
       - '@babel/plugin-transform-react-jsx'
       - eslint-import-resolver-typescript
