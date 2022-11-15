@@ -30,9 +30,8 @@ export const getGms = (row: Game) => {
       .filter((val) => val!.gm !== 0)
       .map((val) => val?.member?.user?.fullName ?? '')
       .join(', ')
-  } else {
-    return ''
   }
+  return ''
 }
 
 const initialState: Partial<TableState<Game>> = {

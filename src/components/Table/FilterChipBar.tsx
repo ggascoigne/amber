@@ -1,3 +1,4 @@
+/* eslint-disable @getify/proper-ternary/nested */
 import { Chip } from '@mui/material'
 import { ReactElement, useCallback } from 'react'
 import type { ColumnInstance, FilterValue, IdType, TableInstance } from 'react-table'
@@ -29,10 +30,11 @@ interface FilterChipBarProps<T extends Record<string, unknown>> {
 
 const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) => {
   switch (column.filter) {
-    case 'between':
+    case 'between': {
       const min = filterValue[0]
       const max = filterValue[1]
       return min ? (max ? `${min}-${max}` : `>=${min}`) : `<=${max}`
+    }
   }
   return filterValue
 }

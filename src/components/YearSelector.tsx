@@ -47,8 +47,8 @@ export const YearSelector = () => {
   const [year, setYear] = useYearFilter()
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
-    const year = event.target.value as string
-    await setYear(parseInt(year))
+    const y = event.target.value as string
+    await setYear(parseInt(y, 10))
   }
 
   return (

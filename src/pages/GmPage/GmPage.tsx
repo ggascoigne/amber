@@ -1,3 +1,4 @@
+/* eslint-disable @getify/proper-ternary/nested */
 import { Button, Theme } from '@mui/material'
 import {
   GameFieldsFragment,
@@ -72,20 +73,6 @@ const columns: Column<Game>[] = [
     filter: 'numeric',
   },
 ]
-
-const GmPage = () => {
-  const { userId } = useUser()
-  const membership = useGetMemberShip(userId)
-  if (membership === undefined) {
-    // still loading
-    return <Loader />
-  } else if (membership == null || !membership.attending) {
-    // OK we know this is not a member
-    return <Redirect to='/membership' />
-  } else {
-    return <MemberGmPage />
-  }
-}
 
 const initialState: Partial<TableState<Game>> = {
   sortBy: [
@@ -296,5 +283,19 @@ const MemberGmPage: React.FC = React.memo(() => {
     </Page>
   )
 })
+
+const GmPage = () => {
+  const { userId } = useUser()
+  const membership = useGetMemberShip(userId)
+  if (membership === undefined) {
+    // still loading
+    return <Loader />
+  }
+  if (membership == null || !membership.attending) {
+    // OK we know this is not a member
+    return <Redirect to='/membership' />
+  }
+  return <MemberGmPage />
+}
 
 export default GmPage

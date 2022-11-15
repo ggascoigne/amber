@@ -21,6 +21,7 @@ const GameBookGamesPage: React.FC = () => {
       </ExpandingFab>
       <div>
         <GameListNavigator>
+          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
           {({ year, slot, games }) => <GameListFull year={year} slot={slot} games={games!} onEnterGame={setNewUrl} />}
         </GameListNavigator>
       </div>

@@ -23,7 +23,7 @@ export const useGetConfig = () => {
   const [config, setConfig] = useState<Config | undefined>()
 
   const getConfig = useCallback(() => {
-    fetch(window.location.origin + '/api/getConfig', {
+    fetch(`${window.location.origin}/api/getConfig`, {
       method: 'get',
       headers: jwtToken
         ? {
@@ -35,6 +35,7 @@ export const useGetConfig = () => {
           },
     })
       .then((response) => response.text())
+      // eslint-disable-next-line consistent-return
       .then((responseBody) => {
         try {
           const result = JSON.parse(responseBody)

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import type { MouseEvent } from 'react'
 import {
   ActionType,
@@ -26,21 +27,21 @@ actions.columnStartResizing = 'columnStartResizing'
 actions.columnResizing = 'columnResizing'
 actions.columnDoneResizing = 'columnDoneResizing'
 
-export const useResizeColumns = <D extends Record<string, unknown>>(hooks: Hooks<D>): void => {
-  hooks.getResizerProps = [defaultGetResizerProps]
-  hooks.getHeaderProps.push({
-    style: {
-      position: 'relative',
-    },
-  })
-  hooks.stateReducers.push(reducer)
-  hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
-  hooks.useInstance.push(useInstance)
+function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D>) {
+  const leafHeaders: ColumnInstance<D>[] = []
+  const recurseHeader = (header1: ColumnInstance<D>) => {
+    if (header1.columns?.length) {
+      header1.columns.map(recurseHeader)
+    }
+    leafHeaders.push(header1)
+  }
+  recurseHeader(header)
+  return leafHeaders
 }
 
 const defaultGetResizerProps = <D extends Record<string, unknown>>(
   props: any,
-  { instance, header }: Meta<D, { header: HeaderGroup<D> }>
+  { instance, header: headerInput }: Meta<D, { header: HeaderGroup<D> }>
 ) => {
   const { dispatch } = instance
 
@@ -67,9 +68,9 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     const handlersAndEvents = {
       mouse: {
         moveEvent: 'mousemove',
-        moveHandler: (e: MouseEvent) => dispatchMove(e.clientX),
+        moveHandler: (event: MouseEvent) => dispatchMove(event.clientX),
         upEvent: 'mouseup',
-        upHandler: (e: MouseEvent) => {
+        upHandler: (_event: MouseEvent) => {
           document.removeEventListener('mousemove', handlersAndEvents.mouse.moveHandler as unknown as EventListener)
           document.removeEventListener('mouseup', handlersAndEvents.mouse.upHandler as unknown as EventListener)
           dispatchEnd()
@@ -77,16 +78,16 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
       },
       touch: {
         moveEvent: 'touchmove',
-        moveHandler: (e: TouchEvent) => {
-          if (e.cancelable) {
-            e.preventDefault()
-            e.stopPropagation()
+        moveHandler: (event: TouchEvent) => {
+          if (event.cancelable) {
+            event.preventDefault()
+            event.stopPropagation()
           }
-          dispatchMove(e.touches[0].clientX)
+          dispatchMove(event.touches[0].clientX)
           return false
         },
         upEvent: 'touchend',
-        upHandler: (e: TouchEvent) => {
+        upHandler: (_event: TouchEvent) => {
           document.removeEventListener(
             handlersAndEvents.touch.moveEvent,
             handlersAndEvents.touch.moveHandler as unknown as EventListener
@@ -122,10 +123,10 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     {
       onMouseDown: (e: MouseEvent<HTMLDivElement>) => {
         e.persist()
-        onResizeStart(e, header)
+        onResizeStart(e, headerInput)
       },
       onTouchStart: (e: TouchEvent) => {
-        onResizeStart(e, header)
+        onResizeStart(e, headerInput)
       },
       style: {
         cursor: 'ew-resize',
@@ -135,8 +136,6 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     },
   ]
 }
-
-useResizeColumns.pluginName = 'useResizeColumns'
 
 function reducer<D extends Record<string, unknown>>(
   previousState: TableState<D>,
@@ -202,6 +201,7 @@ function reducer<D extends Record<string, unknown>>(
       },
     }
   }
+  return undefined
 }
 
 const useInstanceBeforeDimensions = <D extends Record<string, unknown>>(instance: TableInstance<D>) => {
@@ -234,14 +234,16 @@ function useInstance<D extends Record<string, unknown>>({ plugins }: TableInstan
   ensurePluginOrder(plugins, ['useAbsoluteLayout'], 'useResizeColumns')
 }
 
-function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D>) {
-  const leafHeaders: ColumnInstance<D>[] = []
-  const recurseHeader = (header: ColumnInstance<D>) => {
-    if (header.columns?.length) {
-      header.columns.map(recurseHeader)
-    }
-    leafHeaders.push(header)
-  }
-  recurseHeader(header)
-  return leafHeaders
+export const useResizeColumns = <D extends Record<string, unknown>>(hooks: Hooks<D>): void => {
+  hooks.getResizerProps = [defaultGetResizerProps]
+  hooks.getHeaderProps.push({
+    style: {
+      position: 'relative',
+    },
+  })
+  hooks.stateReducers.push(reducer)
+  hooks.useInstanceBeforeDimensions.push(useInstanceBeforeDimensions)
+  hooks.useInstance.push(useInstance)
 }
+
+useResizeColumns.pluginName = 'useResizeColumns'

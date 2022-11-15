@@ -27,6 +27,7 @@ export const GameListNavigator: React.FC<GameListNavigatorProps> = ({
     <SlotSelector small={small} name={name} decorator={decorator} decoratorParams={decoratorParams}>
       {({ slot, year }) => (
         <QueryComponent year={year} slot={slot}>
+          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
           {({ year, slot, games }) => children({ year, slot, games })}
         </QueryComponent>
       )}

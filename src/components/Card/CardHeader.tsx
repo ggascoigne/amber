@@ -42,11 +42,11 @@ const useStyles = makeStyles()((theme: Theme) => ({
     boxShadow: theme.mixins.boxShadow.primary,
   },
 }))
-type colorTypes = 'warning' | 'success' | 'error' | 'info' | 'primary'
+type ColorTypes = 'warning' | 'success' | 'error' | 'info' | 'primary'
 
 interface CardHeaderProps {
   className?: string
-  color?: colorTypes
+  color?: ColorTypes
   plain?: boolean
 }
 

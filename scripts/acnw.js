@@ -3,6 +3,7 @@
 const oclif = require('@oclif/core')
 
 const path = require('path')
+
 const project = path.join(__dirname, '..', 'tsconfig.oclif.json')
 
 // In dev mode -> use ts-node and dev plugins

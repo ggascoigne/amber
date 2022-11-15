@@ -13,7 +13,7 @@ export default withApiHandler([
   requireJwt,
   async (req: VercelRequest, res: VercelResponse) => {
     try {
-      /*const { access_token } =*/ await getManagementApiAccessToken()
+      /* const { access_token } = */ await getManagementApiAccessToken()
       res.send({ message: 'nothing to see here' })
     } catch (err: any) {
       handleError(err, res)

@@ -50,7 +50,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
   const onChange = useCallback(
     (e: React.ChangeEvent<any>) => {
       // needed to convert the string value that is returned by the DOM into the numeric ID we need
-      setValue(parseInt(e.target.value))
+      setValue(parseInt(e.target.value, 10))
     },
     [setValue]
   )

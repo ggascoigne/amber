@@ -9,8 +9,8 @@ export const useGameUrl = () => {
   const base = match?.groups?.base
   const yearStr = match?.groups?.year
   const slotIdStr = match?.groups?.slot
-  const hash = location.hash
-  const slot = slotIdStr ? parseInt(slotIdStr) : 1
-  const year = yearStr ? parseInt(yearStr) : 0
+  const { hash } = location
+  const slot = slotIdStr ? parseInt(slotIdStr, 10) : 1
+  const year = yearStr ? parseInt(yearStr, 10) : 0
   return { base, year, slot, hash }
 }

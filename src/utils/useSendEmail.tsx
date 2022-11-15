@@ -15,7 +15,7 @@ export const useSendEmail = (): SendEmail => {
 
   return useCallback(
     ({ type, body }: EmailConfirmation) => {
-      fetch(window.location.origin + `/api/send/${type}`, {
+      fetch(`${window.location.origin}/api/send/${type}`, {
         method: 'post',
         headers: jwtToken
           ? {
@@ -32,16 +32,15 @@ export const useSendEmail = (): SendEmail => {
           try {
             const result = JSON.parse(responseBody)
             if (result.messageId) {
-              return
+              return undefined
+            }
+            if (result.status && result.status !== 200) {
+              notify({
+                text: `${result.status}: ${result.error}`,
+                variant: 'error',
+              })
             } else {
-              if (result.status && result.status !== 200) {
-                notify({
-                  text: `${result.status}: ${result.error}`,
-                  variant: 'error',
-                })
-              } else {
-                console.log(`result = ${JSON.stringify(result, null, 2)}`)
-              }
+              console.log(`result = ${JSON.stringify(result, null, 2)}`)
             }
           } catch (e: any) {
             console.log(e)
@@ -51,6 +50,7 @@ export const useSendEmail = (): SendEmail => {
             })
             return responseBody
           }
+          return undefined
         })
     },
     [jwtToken, notify]

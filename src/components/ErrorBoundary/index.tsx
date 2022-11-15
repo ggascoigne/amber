@@ -22,6 +22,7 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
   return class Hoc extends React.Component<HocProps, HocState> {
     // Enhance component name for debugging and React-Dev-Tools
     static displayName = `withErrorBoundary(${BaseComponent.name})`
+
     // reference to original wrapped component
     static readonly WrappedComponent = BaseComponent
 
@@ -34,6 +35,7 @@ export const withErrorBoundary = <BaseProps extends InjectedProps>(BaseComponent
       this.logErrorToCloud(error, info)
     }
 
+    // eslint-disable-next-line class-methods-use-this
     logErrorToCloud = (error: Error | null, info: ErrorInfo) => {
       // TODO: send error report to service provider
     }

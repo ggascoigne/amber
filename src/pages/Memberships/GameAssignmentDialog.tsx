@@ -9,7 +9,7 @@ import { dequal as deepEqual } from 'dequal'
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { getGameAssignments, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
+import { getGameAssignments, notEmpty, OnCloseHandler, pick, range, useYearFilter } from 'utils'
 
 import { EditDialog } from '../../components/EditDialog'
 import { SelectField, TextField } from '../../components/Form'
@@ -25,7 +25,7 @@ type FormValues = GameAssignmentEditNode[]
 
 interface GameAssignmentDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   membership: MembershipType
 }
 

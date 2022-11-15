@@ -5,12 +5,12 @@ import { expressjwt as jwt } from 'express-jwt'
 import { audience, authDomain } from './_constants'
 import { Handler } from './_standardHandler'
 
-const public_key = fs.readFileSync(`${__dirname}/../shared/certs/${authDomain}.pem`).toString()
+const publicKey = fs.readFileSync(`${__dirname}/../shared/certs/${authDomain}.pem`).toString()
 
 // note express-jwt doesn't just validate the token, it puts the decoded token on the request as `auth`
 
 export const checkJwt = jwt({
-  secret: public_key,
+  secret: publicKey,
   audience,
   issuer: `https://${authDomain}/`,
   algorithms: ['RS256'],
@@ -18,7 +18,7 @@ export const checkJwt = jwt({
 }) as unknown as Handler
 
 export const requireJwt = jwt({
-  secret: public_key,
+  secret: publicKey,
   audience,
   issuer: `https://${authDomain}/`,
   algorithms: ['RS256'],

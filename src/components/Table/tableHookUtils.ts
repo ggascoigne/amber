@@ -11,4 +11,5 @@ export function getFirstDefined(...args: any[]) {
       return args[i]
     }
   }
+  return undefined
 }

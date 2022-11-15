@@ -187,7 +187,7 @@ const MembershipSummary: React.FC = () => {
   const isVirtual = configuration.startDates[year].virtual
 
   useEffect(() => {
-    const f = async () => await forceLogin({ appState: { targetUrl: '/membership' } })
+    const f = async () => forceLogin({ appState: { targetUrl: '/membership' } })
     f().then()
   }, [forceLogin])
 

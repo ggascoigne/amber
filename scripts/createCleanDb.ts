@@ -6,7 +6,7 @@ import cli from 'cli-ux'
 import { config } from '../shared/config'
 import { createCleanDb } from './scriptUtils'
 
-const database = config.rootDatabase.database
+const { database } = config.rootDatabase
 const targetUser = config.userDatabase.user
 const targetUserPassword = config.userDatabase.password
 

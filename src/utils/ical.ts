@@ -41,7 +41,6 @@ export function buildUrl(events: ICalEvent[]): string {
 
   if (value) {
     return URL.createObjectURL(new Blob([value], { type: 'text/calendar' }))
-  } else {
-    return ''
   }
+  return ''
 }

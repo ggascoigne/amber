@@ -21,14 +21,14 @@ import {
   useUser,
 } from 'utils'
 
+import { Box, useTheme } from '@mui/system'
+import { useMediaQuery } from '@mui/material'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
 import { GraphQLError } from '../../components/GraphQLError'
 import { Loader } from '../../components/Loader'
 import { Page } from '../../components/Page'
 import { GameDecorator } from '../../components/types'
-import { Box, useTheme } from '@mui/system'
-import { useMediaQuery } from '@mui/material'
 
 interface GameSummaryProps {
   gas: GameAssignmentNode
@@ -95,7 +95,7 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
 }
 
 const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
-  const game = gas.game
+  const { game } = gas
   if (!game) return null
 
   const { gms, players } = getGmsAndPlayers(game)
@@ -118,7 +118,7 @@ const getIcalUrl = (schedule: GameAssignmentNode[]) =>
   buildUrl(
     schedule
       .map((gas) => {
-        const game = gas.game
+        const { game } = gas
         if (!game || game.id < 8) return null
 
         const slotId = game.slotId!
@@ -189,7 +189,7 @@ const SchedulePage: React.FC = () => {
   const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
 
   useEffect(() => {
-    const f = async () => await forceLogin({ appState: { targetUrl: '/schedule' } })
+    const f = async () => forceLogin({ appState: { targetUrl: '/schedule' } })
     f().then()
   }, [forceLogin])
 

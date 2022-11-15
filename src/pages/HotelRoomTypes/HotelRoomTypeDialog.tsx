@@ -2,7 +2,7 @@ import { useCreateHotelRoomMutation, useUpdateHotelRoomByNodeIdMutation } from '
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { ToFormValues, onCloseHandler, pick } from 'utils'
+import { ToFormValues, OnCloseHandler, pick } from 'utils'
 import Yup from 'utils/Yup'
 
 import { EditDialog } from '../../components/EditDialog'
@@ -25,11 +25,11 @@ type HotelRoomType = ToFormValues<HotelRoom>
 
 interface HotelRoomTypeDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   initialValues?: HotelRoomType
 }
 
-export const useEditHotelRoomType = (onClose: onCloseHandler) => {
+export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
   const createHotelRoomType = useCreateHotelRoomMutation()
   const updateHotelRoomType = useUpdateHotelRoomByNodeIdMutation()
   const queryClient = useQueryClient()

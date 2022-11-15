@@ -19,10 +19,9 @@ export const useUser = (): Partial<UserInfo> => {
   return useMemo(() => {
     if (userInfo.userId) {
       return { ...userInfo }
-    } else {
-      const userId = user?.userId
-      const email = user?.email
-      return { userId, email }
     }
+    const userId = user?.userId
+    const email = user?.email
+    return { userId, email }
   }, [user?.email, user?.userId, userInfo])
 }

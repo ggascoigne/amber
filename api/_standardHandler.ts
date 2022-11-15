@@ -16,6 +16,7 @@ export function combineHandlers(handlers: Array<Handler>) {
             return next(error)
           }
           fn(req, res, next)
+          return undefined
         })
       },
     (_req: VercelRequest, _res: VercelResponse, next: (err?: any) => void) => next()
@@ -48,6 +49,7 @@ export function withApiHandler(handlers: Handler[]): Handler {
           }
           res.end(`'${req.url}' not found`)
         }
+        return undefined
       })
       return result
     } catch (err: any) {

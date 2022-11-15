@@ -110,22 +110,6 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
   return <SelectField {...rest} selectValues={selectValues} />
 }
 
-export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
-  const { id, initialValues } = props
-  const { isLoading, error, data } = useGetGameByIdQuery({ id: id ?? 0 }, { enabled: !initialValues && !!id })
-  if (initialValues) {
-    return <GamesDialog {...props} />
-  }
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-  const values = data.game
-  return values ? <GamesDialog {...props} initialValues={values} /> : null
-}
-
 export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const editing = initialValues !== defaultValues
   const { userId } = useUser()
@@ -165,6 +149,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
   const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
 
+  // eslint-disable-next-line no-param-reassign
   if (initialValues.slotId === null) initialValues.slotId = 0
 
   const onCopyGameChange =
@@ -244,7 +229,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 options={rooms}
                 getOptionLabel={(room) =>
                   `${room.description} (size ${room.size})${
-                    room.type && room.type !== room.description ? ', ' + room.type : ''
+                    room.type && room.type !== room.description ? `, ${room.type}` : ''
                   }`
                 }
                 fullWidth
@@ -400,4 +385,20 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
       )}
     </EditDialog>
   )
+}
+
+export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
+  const { id, initialValues } = props
+  const { isLoading, error, data } = useGetGameByIdQuery({ id: id ?? 0 }, { enabled: !initialValues && !!id })
+  if (initialValues) {
+    return <GamesDialog {...props} />
+  }
+  if (error) {
+    return <GraphQLError error={error} />
+  }
+  if (isLoading || !data) {
+    return <Loader />
+  }
+  const values = data.game
+  return values ? <GamesDialog {...props} initialValues={values} /> : null
 }

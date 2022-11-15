@@ -111,7 +111,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
           },
         })
 
-    const isCreateLookup = (value: typeof res): value is CreateLookupMutation => value.hasOwnProperty('createLookup')
+    const isCreateLookup = (value: typeof res): value is CreateLookupMutation => Object.hasOwn(value, 'createLookup')
 
     if (!res) {
       return

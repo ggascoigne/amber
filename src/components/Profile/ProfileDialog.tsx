@@ -26,8 +26,8 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
     return null
   }
 
-  const onSubmit = async (values: UsersAndProfileType, actions: FormikHelpers<UsersAndProfileType>) => {
-    await updateProfile(values)
+  const onSubmit = async (v: UsersAndProfileType, actions: FormikHelpers<UsersAndProfileType>) => {
+    await updateProfile(v)
   }
 
   return (

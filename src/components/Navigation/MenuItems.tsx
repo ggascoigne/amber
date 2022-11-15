@@ -22,40 +22,34 @@ export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
   const matchedContextRoute = contextRoutes(location.pathname)
   if (matchedContextRoute) {
     return matchedContextRoute.load
-  } else {
-    return (
-      <List>
-        {menuItems
-          // only display routes with a label
-          .filter((menuItem) => menuItem.label)
-          .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
-          .filter(
-            (menuItem) =>
-              menuItem.userCondition === undefined ||
-              (getSettingTruth ? menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth }) : false)
-          )
-          .map((menuItem) => {
-            const link = menuItem.link ? menuItem.link : menuItem.path
-            const item = (
-              <ListItemLink
-                key={link}
-                to={{ pathname: link, state: { fromClick: true } }}
-                selected={activeItem === link}
-              >
-                <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
-              </ListItemLink>
-            )
-            if (menuItem.permission) {
-              return (
-                <HasPermission key={link} permission={menuItem.permission}>
-                  {item}
-                </HasPermission>
-              )
-            } else {
-              return item
-            }
-          })}
-      </List>
-    )
   }
+  return (
+    <List>
+      {menuItems
+        // only display routes with a label
+        .filter((menuItem) => menuItem.label)
+        .filter((menuItem) => menuItem.condition === undefined || menuItem.condition)
+        .filter(
+          (menuItem) =>
+            menuItem.userCondition === undefined ||
+            (getSettingTruth ? menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth }) : false)
+        )
+        .map((menuItem) => {
+          const link = menuItem.link ? menuItem.link : menuItem.path
+          const item = (
+            <ListItemLink key={link} to={{ pathname: link, state: { fromClick: true } }} selected={activeItem === link}>
+              <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
+            </ListItemLink>
+          )
+          if (menuItem.permission) {
+            return (
+              <HasPermission key={link} permission={menuItem.permission}>
+                {item}
+              </HasPermission>
+            )
+          }
+          return item
+        })}
+    </List>
+  )
 }

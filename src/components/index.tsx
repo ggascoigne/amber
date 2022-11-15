@@ -1,7 +1,6 @@
 import { DateTime, DateTimeFormatOptions } from 'luxon'
 import React, { PropsWithChildren } from 'react'
-import { ConfigurationDates, configuration } from 'utils'
-import getOrdinalWord from 'utils/ordinal'
+import { configuration, ConfigurationDates, getOrdinalWord } from 'utils'
 
 interface SpacingProps {
   skipSpace?: 'before' | 'after' | 'both' | 'neither'

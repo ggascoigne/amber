@@ -28,7 +28,7 @@ export const useStyles = makeStyles()({
 })
 
 const graphQLFetcher = (jwtToken?: string) => (graphQLParams: any) =>
-  fetch(window.location.origin + '/api/graphql', {
+  fetch(`${window.location.origin}/api/graphql`, {
     method: 'post',
     headers: jwtToken
       ? {
@@ -78,8 +78,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
           return false
         }
 
-        const { start, end } = definition.loc
-        return start <= position.start && end >= position.end
+        return definition.loc.start <= position.start && definition.loc.end >= position.end
       })
 
       if (!def) {
@@ -100,6 +99,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
       const selector = `.graphiql-explorer-root #${operationKind}-${operationName}`
 
       document.querySelector(selector)?.scrollIntoView()
+      return undefined
     },
     [query]
   )
@@ -117,7 +117,7 @@ const GraphiQL: React.FC<Props> = ({ auth = {} }) => {
     })
   }, [handleInspectOperation, jwtToken])
 
-  const handleEditQuery = useCallback((query: string | undefined) => setQuery(query ?? ''), [])
+  const handleEditQuery = useCallback((q: string | undefined) => setQuery(q ?? ''), [])
 
   const handleToggleExplorer = useCallback(() => {
     setExplorerIsOpen((old) => !old)

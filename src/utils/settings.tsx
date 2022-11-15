@@ -27,8 +27,8 @@ export const useSettings = () => {
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): string | null => {
-        const s = settings?.find((s) => s.code === setting)
+      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): string | null => {
+        const s = settings?.find((s1) => s1.code === setting1)
         return s ? s.value : null
       }
 
@@ -45,8 +45,8 @@ export const useSettings = () => {
 
   const getSettingValue = useCallback(
     (setting: string, defaultValue = false): SettingValue | boolean | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting: string): SettingValue | null => {
-        const s = settings?.find((s) => s.code === setting)
+      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): SettingValue | null => {
+        const s = settings?.find((s1) => s1.code === setting1)
         if (s && s.type !== 'integer') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
       }
@@ -76,9 +76,9 @@ export const useSettings = () => {
         case SettingValue.Everyone:
         case SettingValue.Yes:
           return true
-        default:
         case null:
         case SettingValue.No:
+        default:
           return false
       }
     },
@@ -93,11 +93,11 @@ export const useSetting = (setting: string, defaultValue = false) => {
   return getSettingTruth ? getSettingTruth(setting, defaultValue) : undefined
 }
 
-interface useGetSettingValueType {
+interface UseGetSettingValueType {
   (setting: string, defaultValue?: boolean): string | null | undefined
 }
 
-export const useGetSettingValue: useGetSettingValueType = (setting: string, defaultValue = false) => {
+export const useGetSettingValue: UseGetSettingValueType = (setting: string, defaultValue = false) => {
   const [getSettingString] = useSettings()
   return getSettingString ? getSettingString(setting, defaultValue) : undefined
 }

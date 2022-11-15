@@ -13,12 +13,6 @@ const useStyles = makeStyles()({
   },
 })
 
-export const TooltipCellRenderer: React.FC<CellProps<any>> = (props) => {
-  const { updateData, cell, column } = props
-  const { align = 'left' } = column
-  return updateData ? <EditableCell {...props} /> : <TooltipCell text={cell.value} align={align} />
-}
-
 interface TooltipCellProps {
   text: string
   tooltip?: string
@@ -77,4 +71,10 @@ export const EditableCell: React.FC<CellProps<any>> = (props) => {
       />
     </>
   )
+}
+
+export const TooltipCellRenderer: React.FC<CellProps<any>> = (props) => {
+  const { updateData, cell, column } = props
+  const { align = 'left' } = column
+  return updateData ? <EditableCell {...props} /> : <TooltipCell text={cell.value} align={align} />
 }

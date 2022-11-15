@@ -13,7 +13,7 @@ import {
 } from 'client'
 import { useCallback, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { configuration, notEmpty, onCloseHandler, pick, useSendEmail, useSetting, useUser, useYearFilter } from 'utils'
+import { configuration, notEmpty, OnCloseHandler, pick, useSendEmail, useSetting, useUser, useYearFilter } from 'utils'
 
 import { Perms, useAuth } from '../../components/Auth'
 import { useNotification } from '../../components/Notifications'
@@ -58,7 +58,7 @@ export const useUpdateGameAssignment = () => {
       const gmMemberNames: string[] = getKnownNames(gmNames, membershipList)
       const gmMemberships = membershipList.filter((m) => {
         if (!m.user) return false
-        const fullName = m.user.fullName
+        const { fullName } = m.user
         return fullName ? gmMemberNames.indexOf(fullName) !== -1 : false
       })
       if (gameAssignmentData) {
@@ -128,7 +128,7 @@ export type GameDialogFormValues = Omit<
   Partial<{ id: number }> &
   Partial<Node>
 
-export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogFormValues) => {
+export const useEditGame = (onClose: OnCloseHandler, initialValues?: GameDialogFormValues) => {
   const createGame = useCreateGameMutation()
   const updateGame = useUpdateGameByNodeIdMutation()
   const queryClient = useQueryClient()
@@ -152,20 +152,21 @@ export const useEditGame = (onClose: onCloseHandler, initialValues?: GameDialogF
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (profile: ProfileFormType, values: GameFields, update = false) => {
+      const sendGameConfirmation = (p: ProfileFormType, v: GameFields, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: {
             year,
-            name: profile.fullName!,
-            email: profile.email,
+            name: p.fullName!,
+            email: p.email,
             url: `${window.location.origin}/gm`,
-            game: values,
+            game: v,
             update,
           },
         })
       }
 
+      // eslint-disable-next-line no-param-reassign
       if (values.slotId === 0) values.slotId = null
 
       const fields = pick(

@@ -4,7 +4,7 @@ import { FormikProps } from 'formik/dist/types'
 import { ReactElement, ReactNode, useCallback } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 
-import { onCloseHandler } from '../utils'
+import { OnCloseHandler } from '../utils'
 import { HasPermission, Perms, useAuth } from './Auth'
 import { DialogTitle } from './Dialog'
 
@@ -13,13 +13,13 @@ export interface EditDialogProps<T> {
   initialValues: T
   onSubmit: (values: T, actions: FormikHelpers<T>) => Promise<void>
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   validationSchema: any
   isEditing: boolean
   children?: ((props: FormikProps<T>) => ReactNode) | ReactNode
 }
 
-export const useDisableBackdropClick = (onClose?: onCloseHandler) =>
+export const useDisableBackdropClick = (onClose?: OnCloseHandler) =>
   useCallback(
     (event: unknown, reason: string) => {
       if (reason !== 'backdropClick') {

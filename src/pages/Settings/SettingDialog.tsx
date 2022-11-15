@@ -2,7 +2,7 @@ import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from 'clie
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { ToFormValues, onCloseHandler, pick, settingValues } from 'utils'
+import { ToFormValues, OnCloseHandler, pick, settingValues } from 'utils'
 import Yup from 'utils/Yup'
 
 import { EditDialog } from '../../components/EditDialog'
@@ -23,11 +23,11 @@ type FormValues = ToFormValues<Setting>
 
 interface SettingDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   initialValues?: FormValues
 }
 
-export const useEditSetting = (onClose: onCloseHandler) => {
+export const useEditSetting = (onClose: OnCloseHandler) => {
   const createSetting = useCreateSettingMutation()
   const updateSetting = useUpdateSettingByNodeIdMutation()
   const queryClient = useQueryClient()

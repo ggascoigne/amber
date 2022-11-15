@@ -161,7 +161,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const onSubmit = async (values: MembershipWizardFormValues, actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfile(profileValues).then(async () => await createOrUpdateMembership(membershipValues, profileValues))
+    await updateProfile(profileValues).then(async () => createOrUpdateMembership(membershipValues, profileValues))
   }
 
   const values = useMemo(() => {

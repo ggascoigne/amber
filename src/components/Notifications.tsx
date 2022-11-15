@@ -1,8 +1,8 @@
 import CloseIcon from '@mui/icons-material/Close'
 import { IconButton, Theme } from '@mui/material'
 import { amber, green } from '@mui/material/colors'
-import { OptionsObject, SnackbarProvider, VariantType, useSnackbar } from 'notistack'
-import { PropsWithChildren, default as React, ReactElement, useCallback } from 'react'
+import { OptionsObject, SnackbarProvider, useSnackbar, VariantType } from 'notistack'
+import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
 import { makeStyles } from 'tss-react/mui'
 
 const useSnackbarStyles = makeStyles()((theme: Theme) => ({

@@ -11,6 +11,7 @@
 
 export class JsonError extends Error {
   status: number
+
   constructor(status: number, message: string) {
     super(message) // 'Error' breaks prototype chain here
     this.name = 'JsonError'

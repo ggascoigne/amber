@@ -1,15 +1,5 @@
 import type { Cell, HeaderGroup, Hooks, Meta } from 'react-table'
 
-export function useFlexLayout<D extends Record<string, unknown>>(hooks: Hooks<D>) {
-  hooks.getTableBodyProps.push(getTableBodyProps)
-  hooks.getRowProps.push(getRowStyles)
-  hooks.getHeaderGroupProps.push(getRowStyles)
-  hooks.getHeaderProps.push(getHeaderProps)
-  hooks.getCellProps.push(getCellProps)
-}
-
-useFlexLayout.pluginName = 'useFlexLayout'
-
 const getTableBodyProps = <D extends Record<string, unknown>>(props: any, { instance }: Meta<D>) => [
   props,
   {
@@ -56,3 +46,13 @@ const getCellProps = <D extends Record<string, unknown>>(props: any, { cell }: M
     },
   },
 ]
+
+export function useFlexLayout<D extends Record<string, unknown>>(hooks: Hooks<D>) {
+  hooks.getTableBodyProps.push(getTableBodyProps)
+  hooks.getRowProps.push(getRowStyles)
+  hooks.getHeaderGroupProps.push(getRowStyles)
+  hooks.getHeaderProps.push(getHeaderProps)
+  hooks.getCellProps.push(getCellProps)
+}
+
+useFlexLayout.pluginName = 'useFlexLayout'

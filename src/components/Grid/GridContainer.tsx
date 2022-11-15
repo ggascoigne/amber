@@ -16,7 +16,7 @@ interface GridContainerProps extends GridProps {
 export const GridContainer: React.FC<GridContainerProps> = ({ children, className = '', ...rest }) => {
   const { classes } = useStyles()
   return (
-    <Grid container {...rest} className={classes.grid + ' ' + className}>
+    <Grid container {...rest} className={`${classes.grid} ${className}`}>
       {children}
     </Grid>
   )

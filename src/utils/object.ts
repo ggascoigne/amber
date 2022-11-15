@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 // copied then trimmed from https://raw.githubusercontent.com/auth0/auth0.js/master/src/helper/object.js
 
 function camelToSnake(str: string) {
@@ -17,7 +19,7 @@ function camelToSnake(str: string) {
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90
-    index++
+    index += 1
   }
 
   return newKey
@@ -71,7 +73,7 @@ export function camelToWords(str: string) {
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90
-    index++
+    index += 1
   }
 
   return newKey

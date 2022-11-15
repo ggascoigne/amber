@@ -19,6 +19,7 @@ export type ExpandRecursively<T> = T extends Record<string, unknown>
   : T
 
 // Cool trick
+// eslint-disable-next-line @typescript-eslint/naming-convention
 type _<T> = T
 export type FlattenTypes<T> = _<{ [k in keyof T]: T[k] }>
 

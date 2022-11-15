@@ -47,11 +47,11 @@ export const useAvailableHotelRooms = () => {
 
   const getTotal = useCallback(
     (room: HotelRoom): number => {
-      function getAvailable(detail: HotelRoomDetail, room: HotelRoom): boolean {
+      function getAvailable(detail: HotelRoomDetail, r: HotelRoom): boolean {
         return (
-          detail.gamingRoom === room.gamingRoom &&
-          detail.bathroomType === room.bathroomType &&
-          detail.roomType === room.type &&
+          detail.gamingRoom === r.gamingRoom &&
+          detail.bathroomType === r.bathroomType &&
+          detail.roomType === r.type &&
           !detail.reserved
         )
       }

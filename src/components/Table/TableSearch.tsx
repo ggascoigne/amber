@@ -20,11 +20,11 @@ export function TableSearch<T extends Record<string, unknown>>({
   const [value, setValue] = React.useState(globalFilter)
 
   const setVars = useCallback(
-    (value: string | undefined) => {
+    (v: string | undefined) => {
       if (!disableGlobalFilter) {
-        setGlobalFilter(value)
-        setValue(value ?? '')
-        if (value !== globalFilter) gotoPage(0)
+        setGlobalFilter(v)
+        setValue(v ?? '')
+        if (v !== globalFilter) gotoPage(0)
       }
     },
     [disableGlobalFilter, globalFilter, gotoPage, setGlobalFilter]

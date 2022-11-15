@@ -1,4 +1,4 @@
-import getOrdinalWord from './ordinal'
+import { getOrdinalWord } from './ordinal'
 
 describe('ordinals', () => {
   const data = [

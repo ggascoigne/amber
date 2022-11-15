@@ -9,7 +9,7 @@ import { FormikHelpers } from 'formik'
 import React, { useCallback, useMemo } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
-import { ToFormValues, notEmpty, onCloseHandler, pick, range, useYearFilter } from 'utils'
+import { ToFormValues, notEmpty, OnCloseHandler, pick, range, useYearFilter } from 'utils'
 import Yup from 'utils/Yup'
 
 import { EditDialog } from '../../components/EditDialog'
@@ -45,11 +45,11 @@ type GameRoomFormValues = GameRoomType & {
 
 interface GameRoomDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   initialValues?: GameRoomType
 }
 
-export const useEditGameRoom = (onClose: onCloseHandler) => {
+export const useEditGameRoom = (onClose: OnCloseHandler) => {
   const createGameRoomDetail = useCreateGameRoomMutation()
   const updateGameRoomDetail = useUpdateGameRoomMutation()
   const updateGame = useUpdateGameMutation()
@@ -168,7 +168,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
     [games]
   )
 
-  const values: GameRoomFormValues = useMemo(() => {
+  const workingValues: GameRoomFormValues = useMemo(() => {
     const gamesInThisRoom = games
       ? range(7).map((slot) => {
           const val =
@@ -208,13 +208,13 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
 
   return (
     <EditDialog
-      initialValues={values}
+      initialValues={workingValues}
       onClose={onClose}
       open={open}
       onSubmit={onSubmit}
       title='Game Room'
       validationSchema={validationSchema}
-      isEditing={!!values?.id}
+      isEditing={!!workingValues?.id}
     >
       {({ values, setFieldValue }) => (
         <GridContainer spacing={2}>
@@ -233,7 +233,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
           <GridItem xs={12} md={12}>
             <Divider orientation='horizontal' />
           </GridItem>
-          {!!values?.id
+          {values?.id
             ? range(8, 1).map((slotId) => {
                 const options = gamesBySlot(slotId)
                 const value = options.find((game) => game.id === values.games?.[slotId - 1]?.current) ?? null
@@ -246,8 +246,8 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
                       value={value}
                       renderOption={(props, game) => {
                         const hasRoom = !!game.roomId
-                        const line = `${game.name}${game.gmNames ? ': ' + game.gmNames : ''}${
-                          hasRoom ? ' (' + game.room?.description + ')' : ''
+                        const line = `${game.name}${game.gmNames ? `: ${game.gmNames}` : ''}${
+                          hasRoom ? ` (${game.room?.description})` : ''
                         }`
                         return (
                           <li {...props} className={cx({ [classes.hasRoom]: hasRoom })}>
@@ -257,9 +257,9 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
                       }}
                       fullWidth
                       renderInput={(params) => <MuiTextField {...params} label={`Slot ${slotId}`} variant='outlined' />}
-                      onChange={(e, value) => {
+                      onChange={(e, v) => {
                         setFieldValue('gamesChanged', true)
-                        setFieldValue(`games[${slotId - 1}].current`, value?.id ?? null)
+                        setFieldValue(`games[${slotId - 1}].current`, v?.id ?? null)
                       }}
                     />
                   </GridItem>

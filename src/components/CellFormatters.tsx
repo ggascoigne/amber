@@ -19,7 +19,7 @@ export const YesNoCell = <T extends Record<string, unknown>>({
   cell: { value },
   column: { align = 'left' },
 }: CellProps<T>) => {
-  const val = !!value ? 'Yes' : 'No'
+  const val = value ? 'Yes' : 'No'
   return <TooltipCell text={val} align={align} />
 }
 
@@ -27,7 +27,7 @@ export const YesBlankCell = <T extends Record<string, unknown>>({
   cell: { value },
   column: { align = 'left' },
 }: CellProps<T>) => {
-  const val = !!value ? 'Yes' : ''
+  const val = value ? 'Yes' : ''
   return <TooltipCell text={val} align={align} />
 }
 
@@ -35,6 +35,6 @@ export const BlankNoCell = <T extends Record<string, unknown>>({
   cell: { value },
   column: { align = 'left' },
 }: CellProps<T>) => {
-  const val = !!value ? '' : 'No'
+  const val = value ? '' : 'No'
   return <TooltipCell text={val} align={align} />
 }

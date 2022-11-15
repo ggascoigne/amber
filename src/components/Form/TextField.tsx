@@ -47,8 +47,8 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
 
   const originalOnChange = fullProps.onChange
 
-  const onChangeField = (event: ChangeEvent<HTMLInputElement>, ...rest: any[]) => {
-    const value = event.target.value
+  const onChangeField = (event: ChangeEvent<HTMLInputElement>, ...rest1: any[]) => {
+    const { value } = event.target
     setOldValue((prevState: unknown) => {
       if (prevState !== value)
         if (value === undefined) {
@@ -57,7 +57,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
       return value
     })
     // @ts-ignore
-    originalOnChange?.(event, ...rest!)
+    originalOnChange?.(event, ...rest1!)
   }
 
   return <MuiTextField {...fullProps} onChange={onChangeField} />

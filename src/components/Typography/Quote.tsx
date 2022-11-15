@@ -11,7 +11,7 @@ export const Quote: React.FC<QuoteProps> = (props) => {
   const { text, author } = props
   const { classes } = useTypographyStyles()
   return (
-    <blockquote className={classes.defaultFontStyle + ' ' + classes.quote}>
+    <blockquote className={`${classes.defaultFontStyle} ${classes.quote}`}>
       <p className={classes.quoteText}>{text}</p>
       <small className={classes.quoteAuthor}>{author}</small>
     </blockquote>

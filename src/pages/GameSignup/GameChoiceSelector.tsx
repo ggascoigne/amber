@@ -1,3 +1,4 @@
+/* eslint-disable @getify/proper-ternary/nested */
 import CheckIcon from '@mui/icons-material/Check'
 import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { Game, GameChoice, GameEntry, Maybe } from 'client'
@@ -157,9 +158,8 @@ export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
   if (rankStyle === RankStyle.small) {
     if (rank === 0) {
       return <>GM</>
-    } else {
-      return <>{rank}</>
     }
+    return <>{rank}</>
   }
 
   if (rankStyle === RankStyle.plain) {

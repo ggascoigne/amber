@@ -48,12 +48,12 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu })
   }, [getConfig])
 
   useEffect(() => {
-    const getConfigDetails = (config: Config | undefined, href: string | undefined) => {
+    const getConfigDetails = (conf: Config | undefined, href: string | undefined) => {
       // never show any sort of configuration debug on the two release sites
       // note that amberconnw.org is the real site
       // acnw.org is the "dev" release site
       if (href?.startsWith('https://amberconnw.org') || href?.startsWith('https://acnw.org')) return ''
-      return !config ? '' : config.local ? '(local)' : config.databaseName !== 'acnw' ? '(test)' : '(prod)'
+      return !conf ? '' : conf.local ? '(local)' : conf.databaseName !== 'acnw' ? '(test)' : '(prod)'
     }
 
     setConfigDetails(getConfigDetails(config, window.location.href))

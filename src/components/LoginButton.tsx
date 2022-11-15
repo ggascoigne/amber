@@ -7,11 +7,11 @@ import { QueryClient } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
 import { useIsGm } from 'utils'
 
+import { Box } from '@mui/system'
 import { Auth0User, Perms, Roles, useAuth, useRoleOverride, useToken } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
-import { Box } from '@mui/system'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
@@ -87,10 +87,9 @@ interface ProfileImageProps {
 const OurAvatar: React.FC<ProfileImageProps> = ({ user }) => {
   if (user.picture) {
     return <Avatar src={user.picture} />
-  } else {
-    const initials = user.nickname ? user.nickname[0] : '...'
-    return <Avatar>{initials}</Avatar>
   }
+  const initials = user.nickname ? user.nickname[0] : '...'
+  return <Avatar>{initials}</Avatar>
 }
 
 const AdminBadge: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -143,24 +142,21 @@ const ProfileImage: React.FC<ProfileImageProps> = ({ user }) => {
           </AdminBadge>
         </GmBadge>
       )
-    } else {
-      return (
-        <AdminBadge>
-          <OurAvatar user={user} />
-        </AdminBadge>
-      )
     }
-  } else {
-    if (isGm) {
-      return (
-        <GmBadge>
-          <OurAvatar user={user} />
-        </GmBadge>
-      )
-    } else {
-      return <OurAvatar user={user} />
-    }
+    return (
+      <AdminBadge>
+        <OurAvatar user={user} />
+      </AdminBadge>
+    )
   }
+  if (isGm) {
+    return (
+      <GmBadge>
+        <OurAvatar user={user} />
+      </GmBadge>
+    )
+  }
+  return <OurAvatar user={user} />
 }
 
 interface MenuButtonProps {
@@ -238,7 +234,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   }, [])
 
   const resetPassword = useCallback(() => {
-    fetch(window.location.origin + '/api/resetPassword', {
+    fetch(`${window.location.origin}/api/resetPassword`, {
       method: 'post',
       headers: jwtToken
         ? {
@@ -265,6 +261,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
           })
           return responseBody
         }
+        return undefined
       })
   }, [notify, jwtToken])
 

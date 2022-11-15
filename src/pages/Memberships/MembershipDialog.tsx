@@ -1,6 +1,6 @@
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { configuration, onCloseHandler, useUser, useYearFilter } from 'utils'
+import { configuration, OnCloseHandler, useUser, useYearFilter } from 'utils'
 
 import { useAuth } from '../../components/Auth'
 import { EditDialog } from '../../components/EditDialog'
@@ -19,7 +19,7 @@ type FormValues = MembershipType
 
 interface MembershipDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   initialValues?: MembershipType
   profile: ProfileFormType
 }
@@ -36,6 +36,7 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   } // todo test this
 
   const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+    // eslint-disable-next-line no-param-reassign
     values.slotsAttending = toSlotsAttending(values)
     await createOrUpdateMembership(values, profile)
   }

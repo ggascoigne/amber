@@ -6,7 +6,7 @@ import { makeStyles } from 'tss-react/mui'
 import { getSlotDescription, notEmpty, range } from 'utils'
 
 import { getGms } from '../Games'
-import { MaybeGameChoice, Rank, RankStyle, rankString } from './GameChoiceSelector'
+import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   line: {
@@ -26,26 +26,6 @@ const useStyles = makeStyles()((theme: Theme) => ({
     paddingLeft: 20,
   },
 }))
-
-interface ChoiceSummaryProps {
-  year: number
-  gameChoices?: MaybeGameChoice[]
-  storeTextResults?: any
-}
-
-export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => (
-  <>
-    {range(8, 1).map((slotId) => (
-      <SlotDetails
-        key={slotId}
-        slotId={slotId}
-        year={year}
-        gameChoices={gameChoices}
-        storeTextResults={storeTextResults}
-      />
-    ))}
-  </>
-)
 
 interface SlotDetailsProps {
   slotId: number
@@ -137,3 +117,23 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
     </>
   )
 }
+
+interface ChoiceSummaryProps {
+  year: number
+  gameChoices?: MaybeGameChoice[]
+  storeTextResults?: any
+}
+
+export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => (
+  <>
+    {range(8, 1).map((slotId) => (
+      <SlotDetails
+        key={slotId}
+        slotId={slotId}
+        year={year}
+        gameChoices={gameChoices}
+        storeTextResults={storeTextResults}
+      />
+    ))}
+  </>
+)

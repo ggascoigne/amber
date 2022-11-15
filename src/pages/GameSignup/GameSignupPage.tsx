@@ -41,10 +41,11 @@ import {
 } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
-export type choiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
+export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
 export const useEditGameChoice = () => {
   const createGameChoice = useCreateGameChoiceMutation()
+  const queryClient = useQueryClient()
   const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
     onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
       const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
@@ -62,7 +63,6 @@ export const useEditGameChoice = () => {
       return { previousData }
     },
   })
-  const queryClient = useQueryClient()
 
   const createGameChoices = useCreateGameChoicesMutation()
 
@@ -84,7 +84,7 @@ export const useEditGameChoice = () => {
       })
   }
 
-  const createOrUpdate = async (values: choiceType, refetch = false) => {
+  const createOrUpdate = async (values: ChoiceType, refetch = false) => {
     if (values.nodeId) {
       return updateGameChoice
         .mutateAsync(
@@ -103,29 +103,28 @@ export const useEditGameChoice = () => {
         .catch((error) => {
           console.log({ text: error.message, variant: 'error' })
         })
-    } else {
-      return createGameChoice
-        .mutateAsync(
-          {
-            input: {
-              gameChoice: {
-                ...pick(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-              },
+    }
+    return createGameChoice
+      .mutateAsync(
+        {
+          input: {
+            gameChoice: {
+              ...pick(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
             },
           },
-          {
-            onSettled: () => {
-              queryClient.invalidateQueries(['getGameChoices'])
-            },
-          }
-        )
-        .then(() => {
-          // console.log({ text: 'GameChoice created', variant: 'success' })
-        })
-        .catch((error) => {
-          console.log({ text: error.message, variant: 'error' })
-        })
-    }
+        },
+        {
+          onSettled: () => {
+            queryClient.invalidateQueries(['getGameChoices'])
+          },
+        }
+      )
+      .then(() => {
+        // console.log({ text: 'GameChoice created', variant: 'success' })
+      })
+      .catch((error) => {
+        console.log({ text: error.message, variant: 'error' })
+      })
   }
 
   return [createOrUpdate, createAllGameChoices] as const
@@ -161,6 +160,7 @@ const GameSignupPage: React.FC = () => {
 
   const updateChoice = useCallback(
     (params: SelectorUpdate) => {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const { gameChoices, gameId, rank, returningPlayer, slotId, year, oldRank } = params
 
       const empty = {
@@ -172,13 +172,13 @@ const GameSignupPage: React.FC = () => {
         modified: true,
       }
 
-      const thisSlotChoices: choiceType[] = orderChoices(
+      const thisSlotChoices: ChoiceType[] = orderChoices(
         gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
         // unset any other references to the same game
-        .map((c) => (c.gameId === gameId && c.rank !== rank ? { ...c, ...empty } : c)) as choiceType[]
+        .map((c) => (c.gameId === gameId && c.rank !== rank ? { ...c, ...empty } : c)) as ChoiceType[]
 
       if (rank === null) {
         if (oldRank) {
@@ -225,7 +225,8 @@ const GameSignupPage: React.FC = () => {
   if (membership === undefined) {
     // still loading
     return <Loader />
-  } else if (membership == null) {
+  }
+  if (membership == null) {
     // OK we know this is not a member
     return <Redirect to='/membership' />
   }
@@ -295,6 +296,7 @@ const GameSignupPage: React.FC = () => {
       )}
       <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>
         <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
+          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
           {({ year, slot, games }) => (
             <>
               <GameListFull

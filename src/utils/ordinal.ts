@@ -40,11 +40,9 @@ const prefixes: { [k: number]: string } = {
 }
 
 // note only good for ordinals between 1 and 99 inclusive
-const getOrdinalWord = (value: number): string =>
+export const getOrdinalWord = (value: number): string =>
   value < 1 || value > 99
     ? `${value}`
     : value <= 20 || value % 10 === 0
     ? ordinals[value]
-    : prefixes[Math.floor(value / 10)] + '-' + ordinals[value % 10]
-
-export default getOrdinalWord
+    : `${prefixes[Math.floor(value / 10)]}-${ordinals[value % 10]}`

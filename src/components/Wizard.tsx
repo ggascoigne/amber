@@ -104,7 +104,7 @@ interface WizardProps<T> {
 
 export const Wizard = <T extends FormikValues = FormikValues>({
   pages,
-  values,
+  values: workingValues,
   onSubmit,
   onClose,
   validationSchema,
@@ -125,7 +125,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   return (
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
       <Formik
-        initialValues={values}
+        initialValues={workingValues}
         validateOnMount
         enableReinitialize
         validationSchema={validationSchema}

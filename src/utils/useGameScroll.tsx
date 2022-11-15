@@ -23,7 +23,7 @@ export const useScrollToHash = () => {
   useEffect(() => {
     const scrollToId = (delay: number) => {
       if (!hash) {
-        return
+        return undefined
       }
       const game = hash.slice(1)
       const timer = setTimeout(

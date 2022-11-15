@@ -69,6 +69,7 @@ const getRoomTypeDescription = (type: BathroomType) => {
     case BathroomType.NoEnSuite:
       return "Rooms with bath facilities 'down the hall', bed & breakfast style"
   }
+  return undefined
 }
 
 const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
@@ -174,9 +175,8 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
         })}
       </>
     )
-  } else {
-    return null
   }
+  return null
 }
 
 export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValue }) => {
@@ -259,9 +259,8 @@ const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
         })}
       </>
     )
-  } else {
-    return null
   }
+  return null
 }
 
 export interface RoomsTableProps {

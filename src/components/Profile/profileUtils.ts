@@ -8,7 +8,7 @@ import {
   useUpdateUserMutation,
 } from '../../client'
 import { allUserQueries } from '../../client/querySets'
-import { GqlType, Omit, ToFormValues, onCloseHandler, pick } from '../../utils'
+import { GqlType, Omit, ToFormValues, OnCloseHandler, pick } from '../../utils'
 import { useNotification } from '../Notifications'
 
 export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'nodes', number]>
@@ -30,7 +30,7 @@ export const profileFromProfileValues = (profileValues: UsersAndProfileType) => 
   snailMailAddress: profileValues?.profiles?.nodes?.[0]?.snailMailAddress ?? '',
 })
 
-export const useEditUserAndProfile = (onClose?: onCloseHandler) => {
+export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
   const updateUser = useUpdateUserMutation()
   const createProfile = useCreateProfileMutation()
   const updateProfile = useUpdateProfileByNodeIdMutation()
@@ -42,7 +42,7 @@ export const useEditUserAndProfile = (onClose?: onCloseHandler) => {
   }
 
   return async (profileValues: UsersAndProfileType) =>
-    await updateUser
+    updateUser
       .mutateAsync(
         {
           input: {

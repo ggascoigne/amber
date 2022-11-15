@@ -39,9 +39,8 @@ export const IsMember: React.FC<PropsWithChildren<unknown>> = ({ children }) => 
 
   if (isMember) {
     return <>{children}</>
-  } else {
-    return null
   }
+  return null
 }
 
 export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -49,9 +48,8 @@ export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) 
 
   if (isMember) {
     return null
-  } else {
-    return <>{children}</>
   }
+  return <>{children}</>
 }
 
 export const useIsGm = () => {

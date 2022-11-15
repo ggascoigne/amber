@@ -29,13 +29,12 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   }
   if (options) {
     return <SelectField {...rest} selectValues={options} />
-  } else {
-    const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({
-      value: v!.code,
-      text: v!.value,
-    }))
-    return <SelectField {...rest} selectValues={selectValues} />
   }
+  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({
+    value: v!.code,
+    text: v!.value,
+  }))
+  return <SelectField {...rest} selectValues={selectValues} />
 }
 
 LookupField.displayName = 'LookupField'

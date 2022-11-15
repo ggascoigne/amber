@@ -1,14 +1,15 @@
+/* eslint-disable max-classes-per-file */
 import LuxonUtils from '@date-io/luxon'
 import { DateTime } from 'luxon'
 
-interface dayDefault {
+interface DayDefault {
   index: number
   name: string
   dayName: string
 }
 
 class DataWrapper {
-  default: dayDefault[] = [
+  default: DayDefault[] = [
     {
       index: 0,
       name: 'Sun',
@@ -45,14 +46,16 @@ class DataWrapper {
       dayName: 'S',
     },
   ]
+
   dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
 
   processedDayNames: string[] = []
 
-  startDay: dayDefault
+  startDay: DayDefault
 
   constructor(dayName: string) {
     const x = this.default.filter((day) => dayName === day.name)
+    // eslint-disable-next-line prefer-destructuring
     this.startDay = x[0]
   }
 
@@ -77,7 +80,7 @@ export class CustomLuxonUtils extends LuxonUtils {
   public getWeekdays = () => this.wrapper.processWeekDayOrder()
 
   public getWeekArray = (date: DateTime) => {
-    const index = this.wrapper.startDay.index
+    const { index } = this.wrapper.startDay
     const endDate = date
       .endOf('month')
       // if a month ends on sunday, luxon will consider it already the end of the week,

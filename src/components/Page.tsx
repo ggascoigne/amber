@@ -63,7 +63,7 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = ({
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      {!hideTitle ? titleElement ? titleElement : <h1 className={classes.smaller}>{title}</h1> : null}
+      {!hideTitle ? titleElement ?? <h1 className={classes.smaller}>{title}</h1> : null}
       {children}
     </div>
   )

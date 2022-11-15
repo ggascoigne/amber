@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { SlotFormat, getSlotDescription } from './slotTimes'
 
 describe('slot times', () => {

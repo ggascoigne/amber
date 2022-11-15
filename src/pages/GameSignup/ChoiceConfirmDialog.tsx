@@ -4,7 +4,7 @@ import { Acnw } from 'components'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { onCloseHandler, pick, range, useSendEmail } from 'utils'
+import { OnCloseHandler, pick, range, useSendEmail } from 'utils'
 import Yup from 'utils/Yup'
 
 import { DialogTitle } from '../../components/Dialog'
@@ -14,7 +14,7 @@ import { GridContainer, GridItem } from '../../components/Grid'
 import { useNotification } from '../../components/Notifications'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { MaybeGameChoice, isSlotComplete, orderChoices } from './GameChoiceSelector'
-import { choiceType, useEditGameChoice } from './GameSignupPage'
+import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
 interface FormValues {
@@ -27,7 +27,7 @@ interface FormValues {
 
 interface ChoiceConfirmDialogProps {
   open: boolean
-  onClose: onCloseHandler
+  onClose: OnCloseHandler
   year: number
   memberId: number
   gameChoices?: MaybeGameChoice[]
@@ -47,7 +47,7 @@ interface GameChoiceConfirmationEmail {
   message: string
 }
 
-export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
+export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   const createGameSubmission = useCreateGameSubmissionMutation()
   const updateGameSubmission = useUpdateGameSubmissionByNodeIdMutation()
   const queryClient = useQueryClient()
@@ -59,7 +59,7 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
   const sendGameChoiceConfirmation = ({
     gameChoiceDetails,
     year,
-    profile,
+    profile: profileInner,
     message,
     update = false,
   }: GameChoiceConfirmationEmail) => {
@@ -67,8 +67,8 @@ export const useEditChoiceConfirmation = (onClose: onCloseHandler) => {
       type: 'gameChoiceConfirmation',
       body: {
         year,
-        name: profile.fullName!,
-        email: profile.email,
+        name: profileInner.fullName!,
+        email: profileInner.email,
         update,
         message,
         url: `${window.location.origin}/game-choices`,
@@ -149,18 +149,17 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
     setTextResults((old) => {
       if (old[details.slotId]) {
         return old
-      } else {
-        return { ...old, [details.slotId]: details }
       }
+      return { ...old, [details.slotId]: details }
     })
   }
 
   const filledOutChoices = useMemo(
     () =>
       range(8, 1).flatMap((slotId) => {
-        const thisSlotChoices: choiceType[] = orderChoices(
+        const thisSlotChoices: ChoiceType[] = orderChoices(
           gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
-        ) as choiceType[]
+        ) as ChoiceType[]
 
         if (!isSlotComplete(thisSlotChoices)) {
           if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {

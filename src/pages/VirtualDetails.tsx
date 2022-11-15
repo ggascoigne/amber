@@ -15,7 +15,7 @@ const VirtualDetails = () => {
   const [, getSettingTruth] = useSettings()
 
   useEffect(() => {
-    const f = async () => await forceLogin({ appState: { targetUrl: '/virtual-details' } })
+    const f = async () => forceLogin({ appState: { targetUrl: '/virtual-details' } })
     f().then()
   }, [forceLogin])
 

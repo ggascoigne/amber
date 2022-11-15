@@ -234,7 +234,7 @@ const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = 
           fillOpacity='1'
           stroke='none'
         />
-        {/*<path id='Path-28' d='M51.109 41.726 L50.859 42.316 Z' fill='#ffffff' fillOpacity='1' stroke='none' />*/}
+        {/* <path id='Path-28' d='M51.109 41.726 L50.859 42.316 Z' fill='#ffffff' fillOpacity='1' stroke='none' /> */}
         <path
           id='Path-29'
           d='M139.891 41.253 C141.581 43.213 142.251 44.893 142.391 47.483 142.641 52.743 142.361 58.013 142.691 63.273 L140.901 62.873 C139.691 55.793 140.501 48.453 139.891 41.253 Z'
@@ -430,7 +430,7 @@ interface BannerProps {
 
 const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   const { classes } = useStyles()
-  const conventionStartDate = configuration.conventionStartDate
+  const { conventionStartDate } = configuration
   const dateRange = `${conventionStartDate.toFormat('MMMM')} ${configuration.startDay}-${configuration.endDay}, ${
     configuration.year
   }`

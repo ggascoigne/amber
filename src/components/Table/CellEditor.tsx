@@ -52,7 +52,7 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
 }) => {
   const { classes } = useStyles()
   const [value, setValue] = React.useState(initialValue)
-  const { CellEditor } = column
+  const { CellEditor: ColumnCellEditor } = column
 
   useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA', 'SELECT'] })
 
@@ -120,7 +120,7 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
           <div className={classes.positionHack}>
             <Paper className={classes.paper} elevation={8}>
               {/* @ts-ignore */}
-              <CellEditor value={value} onChange={onChange} onBlur={onBlur} />
+              <ColumnCellEditor value={value} onChange={onChange} onBlur={onBlur} />
             </Paper>
           </div>
         </Fade>

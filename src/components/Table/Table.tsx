@@ -1,3 +1,4 @@
+/* eslint-disable @getify/proper-ternary/nested */
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
 import { TableSortLabel, TextField, Tooltip } from '@mui/material'
@@ -104,9 +105,9 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, colum
       variant='standard'
       onChange={handleChange}
       onBlur={(e) => {
-        const value = e.target.value || undefined
-        setFilter(value)
-        if (value !== filterValue) gotoPage(0)
+        const v = e.target.value || undefined
+        setFilter(v)
+        if (v !== filterValue) gotoPage(0)
       }}
     />
   )
@@ -328,7 +329,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                           {column.render('Header')}
                         </TableLabel>
                       )}
-                      {/*<div>{column.canFilter ? column.render('Filter') : null}</div>*/}
+                      {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
                       {column.canResize && <ResizeHandle column={column} tableStyleOptions={tableStyleOptions} />}
                     </TableHeadCell>
                   )

@@ -4,14 +4,14 @@ import { ProfileFormType } from 'components/Profile'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   Attendance,
-  InterestLevel,
-  ToFormValues,
   configuration,
   extractErrors,
   getSlotDescription,
+  InterestLevel,
   notEmpty,
-  onCloseHandler,
+  OnCloseHandler,
   pick,
+  ToFormValues,
   useSendEmail,
   useSetting,
 } from 'utils'
@@ -33,6 +33,7 @@ export type MembershipErrorType = Record<keyof MembershipType, string>
 export const fromSlotsAttending = (membershipValues: MembershipType) => {
   const slotsAttendingData = Array(7).fill(false)
   // @ts-ignore
+  // eslint-disable-next-line no-return-assign
   membershipValues.slotsAttending?.split(',').forEach((i) => (slotsAttendingData[i - 1] = true))
   return slotsAttendingData
 }
@@ -43,6 +44,19 @@ export const toSlotsAttending = (membershipValues: MembershipType) =>
     ?.map((v, i) => (v ? i + 1 : 0))
     .filter((v) => !!v)
     .join(',') ?? ''
+
+export const getOwed = (values: MembershipType) => {
+  if (configuration.virtual) {
+    return configuration.virtualCost
+  }
+  if (values.interestLevel === InterestLevel.Deposit) {
+    return configuration.deposit
+  }
+  if (values.attendance === Attendance.ThursSun) {
+    return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
+  }
+  return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
+}
 
 export const fromMembershipValues = (membershipValues: MembershipType) =>
   pick(
@@ -75,11 +89,11 @@ export const membershipValidationSchema = Yup.object().shape({
   message: Yup.string().max(1024),
   roomPreferenceAndNotes: Yup.string().max(1024),
   roomingPreferences: Yup.string().max(255),
-  roomingWith: Yup.string().max(250), // yeah really - schema is super inconsistent here
+  roomingWith: Yup.string().max(250), // yeah, really - schema is super inconsistent here
   skipSlots: Yup.string().max(20),
 })
 
-export const useEditMembership = (onClose: onCloseHandler) => {
+export const useEditMembership = (onClose: OnCloseHandler) => {
   const createMembership = useCreateMembershipMutation()
   const updateMembership = useUpdateMembershipByNodeIdMutation()
   const queryClient = useQueryClient()
@@ -104,7 +118,7 @@ export const useEditMembership = (onClose: onCloseHandler) => {
 
     const slotDescriptions = membershipValues.slotsAttending
       ?.split(',')
-      .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i), local: true }))
+      .map((i) => getSlotDescription({ year: configuration.year, slot: parseInt(i, 10), local: true }))
 
     sendEmail({
       type: 'membershipConfirmation',
@@ -211,17 +225,3 @@ export const getDefaultMembership = (userId: number, isVirtual: boolean): Member
 
 export const hasMembershipStepErrors = <T, D extends keyof T = keyof T>(name: string, errors: T, ...props: D[]) =>
   !!extractErrors(errors, ...props)
-
-export const getOwed = (values: MembershipType) => {
-  if (configuration.virtual) {
-    return configuration.virtualCost
-  }
-  if (values.interestLevel === InterestLevel.Deposit) {
-    return configuration.deposit
-  }
-  if (values.attendance === Attendance.ThursSun) {
-    return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
-  } else {
-    return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
-  }
-}

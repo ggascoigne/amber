@@ -19,13 +19,13 @@ export const getPool = (poolType: PoolType, pathToRoot = './') => {
     DATABASE_NAME: database,
     DATABASE_PORT: port,
     DATABASE_SSL: ssl = false,
-    DATABASE_SSL_CERT: ssl_cert = '',
+    DATABASE_SSL_CERT: sslCert = '',
   } = process.env
   const user = poolType === 'ADMIN' ? process.env.DATABASE_ADMIN : process.env.DATABASE_USER
   const password =
     (poolType === 'ADMIN' ? process.env.DATABASE_ADMIN_PASSWORD : process.env.DATABASE_USER_PASSWORD) ?? ''
 
-  const sslChunk = ssl ? `?sslmode=verify-full&ssl=1&sslrootcert=${ssl_cert}` : ''
+  const sslChunk = ssl ? `?sslmode=verify-full&ssl=1&sslrootcert=${sslCert}` : ''
   console.log(`using: postgres://${user}:${password && '*****'}@${host}:${port}/${database}${sslChunk}`)
   return new Pool({
     user,
@@ -38,7 +38,7 @@ export const getPool = (poolType: PoolType, pathToRoot = './') => {
           rejectUnauthorized: true,
           // @ts-ignore
           sslmode: 'verify-all',
-          ca: fs.readFileSync(pathToRoot + ssl_cert).toString(),
+          ca: fs.readFileSync(pathToRoot + sslCert).toString(),
         }
       : false,
   })

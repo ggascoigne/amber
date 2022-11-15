@@ -19,7 +19,7 @@ interface GridItemProps extends GridProps {
 export const GridItem: React.FC<GridItemProps> = ({ children, className = '', ...rest }) => {
   const { classes } = useStyles()
   return (
-    <Grid item {...rest} className={classes.grid + ' ' + className}>
+    <Grid item {...rest} className={`${classes.grid} ${className}`}>
       {children}
     </Grid>
   )

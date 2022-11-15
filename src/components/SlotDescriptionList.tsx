@@ -11,19 +11,17 @@ export const SlotDescriptionList: React.FC = () => {
           return null
         }
         const description = displayLocal
-          ? getSlotDescription({
+          ? `${getSlotDescription({
               year: configuration.year,
               slot: i + 1,
               local: false,
               altFormat: SlotFormat.ALT,
-            }) +
-            ' / ' +
-            getSlotDescription({
+            })} / ${getSlotDescription({
               year: configuration.year,
               slot: i + 1,
               local: displayLocal,
               altFormat: SlotFormat.ALT_SHORT,
-            })
+            })}`
           : getSlotDescription({
               year: configuration.year,
               slot: i + 1,
