@@ -1,12 +1,12 @@
-import { spawn, spawnSync, SpawnSyncReturns } from 'child_process'
+import { spawnSync, SpawnSyncReturns } from 'child_process'
 import * as fs from 'fs'
 
+import { CliUx } from '@oclif/core'
 import * as chalk from 'chalk'
-import cli from 'cli-ux'
 import { stripIndent } from 'common-tags'
-import { temporaryFile } from 'tempy'
+import * as tempy from 'tempy'
 
-import { DbConfig } from '../shared/config'
+import { DbConfig } from '../../shared/config'
 
 export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
 
@@ -39,35 +39,34 @@ export function getPostgresArgs(dbconfig: DbConfig) {
 
 export const bail = (reason: any) => {
   if (reason) {
-    cli.error(chalk.bold.red('error detected'))
-    cli.error(reason)
+    CliUx.ux.error(chalk.bold.red('error detected'))
+    CliUx.ux.error(reason)
     process.exit(-1)
   }
 }
 export const runOrExit = (processStatus: SpawnSyncReturns<Buffer>, cmd?: string) => {
   if (processStatus.error) {
-    cmd && cli.log(`running ${cmd}`)
+    cmd && CliUx.ux.log(`running ${cmd}`)
     bail(processStatus.error)
   }
   if (processStatus.status) {
-    cmd && cli.log(`running ${cmd}`)
+    cmd && CliUx.ux.log(`running ${cmd}`)
     bail(processStatus.status)
   }
 }
-
 export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
-  const name = temporaryFile()
+  const name = tempy.file()
   fs.writeFileSync(name, script)
 
   const args = getPostgresArgs(dbconfig)
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
   const cmd = `psql ${args.join(' ')}`
-  verbose && cli.log(`running ${cmd}`)
+  verbose && CliUx.ux.log(`running ${cmd}`)
   runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }), cmd)
 }
 
 export function pgloader(mySqlPassword: string, script: string, verbose: boolean) {
-  const name = temporaryFile()
+  const name = tempy.file()
   fs.writeFileSync(name, script)
 
   runOrExit(
@@ -87,6 +86,9 @@ export async function createCleanDbMySql(dbconfig: DbConfig, verbose: boolean) {
     CREATE DATABASE ${database} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
 
   return mysqlExecScript({ ...dbconfig, database: '' }, script, verbose)
+}
+export function info(s: string) {
+  CliUx.ux.log(chalk.bold(s))
 }
 
 export async function resetOwner(dbconfig: DbConfig, targetUser: string, verbose: boolean) {
@@ -207,8 +209,4 @@ export function dropKnexMigrationTables(dbconfig: DbConfig, verbose: boolean) {
   // @formatter:on
 
   return psql(dbconfig, sql, verbose)
-}
-
-export function info(s: string) {
-  cli.log(chalk.bold(s))
 }
