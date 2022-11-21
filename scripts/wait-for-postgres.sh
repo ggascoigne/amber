@@ -83,7 +83,7 @@ if [[ ${CONTAINER} == "" ]] ; then
     CMD="pg_isready -q -h ${HOST} -p ${PORT}"
     echo -n "Verifying postgres on ${HOST}:${PORT} is accepting connections ..."
 else
-    CMD="docker exec -it ${CONTAINER} pg_isready -q -h localhost -p 5432"
+    CMD="docker exec -i ${CONTAINER} pg_isready -q -h localhost -p 5432"
     echo -n "Verifying postgres on ${CONTAINER} is accepting connections ..."
 fi
 
