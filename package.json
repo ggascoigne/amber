@@ -231,7 +231,7 @@
       ]
     },
     "db:docker:up": {
-      "command": "if [ \"${NODE_ENV}\" != \"production\" ]; then docker-compose up -d ; fi"
+      "command": "if [ \"${VERCEL_ENV}\" != \"\" ]; then docker-compose up -d ; fi"
     },
     "db:start": {
       "command": "./scripts/wait-for-postgres.sh -c acnw-postgres",
