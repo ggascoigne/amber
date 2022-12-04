@@ -181,37 +181,37 @@
     "zet": "^1.1.0"
   },
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "boot": "wireit",
     "build": "wireit",
-    "dev": "wireit",
+    "codegen": "wireit",
+    "db:clean": "wireit",
     "db:docker:up": "wireit",
-    "db:start": "wireit",
-    "db:migrate:up": "wireit",
     "db:import": "wireit",
     "db:migrate:down": "wireit",
     "db:migrate:generate": "wireit",
+    "db:migrate:up": "wireit",
     "db:setup": "wireit",
-    "db:clean": "wireit",
-    "prepareGraphql": "wireit",
-    "codegen": "wireit",
-    "gitHash": "./scripts/getGitHash.sh",
+    "db:start": "wireit",
+    "dev": "wireit",
     "format": "pretty-quick",
     "format:all": "prettier --loglevel warn --write '{src,api,scripts,types}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
+    "gitHash": "./scripts/getGitHash.sh",
     "lint": "eslint --cache --color '{src,api,scripts,shared,types}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "husky install",
+    "prepareGraphql": "wireit",
     "start": "wireit",
-    "setup": "wireit",
-    "test": "react-scripts test",
-    "prepare": "husky install"
+    "test": "react-scripts test"
   },
   "wireit": {
     "build": {
       "command": "NODE_ENV=production react-scripts build",
       "dependencies": [
-        "setup"
+        "boot"
       ]
     },
-    "setup": {
+    "boot": {
       "dependencies": [
         "db:migrate:up",
         "codegen",
@@ -231,10 +231,10 @@
       ]
     },
     "db:docker:up": {
-      "command": "if [ \"${VERCEL_ENV}\" != \"\" ]; then docker-compose up -d ; fi"
+      "command": "if [ \"${VERCEL_ENV}\" = \"\" ]; then docker-compose up -d; fi"
     },
     "db:start": {
-      "command": "./scripts/wait-for-postgres.sh -c acnw-postgres",
+      "command": "if [ \"${VERCEL_ENV}\" = \"\" ]; then ./scripts/wait-for-postgres.sh -c acnw-postgres; fi",
       "dependencies": [
         "db:docker:up"
       ]
@@ -283,7 +283,7 @@
       "service": true,
       "cascade": false,
       "dependencies": [
-        "setup"
+        "boot"
       ]
     }
   },
