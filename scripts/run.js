@@ -11,6 +11,7 @@ const project = path.join(__dirname, '..', 'tsconfig.json')
 process.env.NODE_ENV = 'development'
 
 require('ts-node').register({ project })
+require('tsconfig-paths').register()
 
 // In dev mode, always show stack traces
 oclif.settings.debug = true

@@ -1,9 +1,9 @@
 import { Theme, Typography } from '@mui/material'
 import List from '@mui/material/List'
-import type { GameArray } from 'client'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
-import { useUrlSource } from 'utils'
+import type { GameArray } from '@/client'
+import { useUrlSource } from '@/utils'
 
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
@@ -48,7 +48,7 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
             key={game.id}
             className={classes.listItem}
             selected={selectionKey === urlSource.url}
-            to={{ pathname: slug, hash: `#${game.id}`, state: { fromClick: true } }}
+            href={{ pathname: slug, hash: `#${game.id}` }}
           >
             <Typography variant='body1' noWrap>
               {game.name}

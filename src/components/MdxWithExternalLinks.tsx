@@ -1,13 +1,13 @@
 import { MDXProvider } from '@mdx-js/react'
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 
 import { ExternalLink } from './ExternalLink'
+import { Children } from '@/utils'
 
 const mdxComponents = {
   a: ExternalLink,
 }
 
-export const MdxWithExternalLinks: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
-  // @ts-ignore
+export const MdxWithExternalLinks: React.FC<Children> = ({ children }) => (
   <MDXProvider components={mdxComponents}>{children}</MDXProvider>
 )

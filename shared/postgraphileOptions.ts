@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const PgSimplifyInflectorPlugin = require('@graphile-contrib/pg-simplify-inflector')
 const ConnectionFilterPlugin = require('postgraphile-plugin-connection-filter')
 const PgOrderByRelatedPlugin = require('@graphile-contrib/pg-order-by-related')

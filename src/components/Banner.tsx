@@ -1,8 +1,8 @@
 import { Theme } from '@mui/material'
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
-import { configuration } from 'utils'
+import { Link } from '@/components/Navigation'
+import { configuration } from '@/utils'
 
 import { GridContainer, GridItem } from './Grid'
 
@@ -436,7 +436,7 @@ const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   }`
 
   const logo = <Logo dates={dateRange} className={classes.banner} virtual={configuration.virtual} />
-  return to ? <Link to={to}>{logo}</Link> : logo
+  return to ? <Link href={to}>{logo}</Link> : logo
 }
 
 export const Banner: React.FC<BannerProps> = ({ to }) => (

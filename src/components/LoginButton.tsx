@@ -1,14 +1,15 @@
 import StarIcon from '@mui/icons-material/Star'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
-import { Avatar, Badge, Button, Theme, Tooltip } from '@mui/material'
+import { Avatar, Badge, Button, Theme, Tooltip, Typography } from '@mui/material'
 import fetch from 'isomorphic-fetch'
-import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { QueryClient } from '@tanstack/react-query'
-import { makeStyles } from 'tss-react/mui'
-import { useIsGm } from 'utils'
-
 import { Box } from '@mui/system'
-import { Auth0User, Perms, Roles, useAuth, useRoleOverride, useToken } from './Auth'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Children, useIsGm } from '@/utils'
+
+import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { useNotification } from './Notifications'
 import { ProfileDialog, useProfile } from './Profile'
@@ -27,59 +28,6 @@ const roleName = {
   'Game Admin': Roles.ROLE_GAME_ADMIN,
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  loginButton: {
-    position: 'relative',
-    fontWeight: 400,
-    textTransform: 'uppercase',
-    fontSize: '12px',
-    lineHeight: '20px',
-    textDecoration: 'none',
-    marginRight: '20px',
-    display: 'inline-flex',
-    padding: '12px 30px',
-    color: 'inherit',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    '&:hover': {
-      color: 'inherit',
-      background: 'transparent',
-      boxShadow: 'none',
-    },
-  },
-  navLink: {
-    color: 'inherit',
-    position: 'relative',
-    padding: '0 18px 0 0.9375rem',
-    marginRight: 7,
-    fontWeight: 400,
-    fontSize: '14px',
-    textTransform: 'uppercase',
-    borderRadius: '3px',
-    lineHeight: '20px',
-    textDecoration: 'none',
-    margin: '0px',
-    display: 'inline-flex',
-    '&:hover,&:focus': {
-      color: 'inherit',
-      background: 'rgba(200, 200, 200, 0.2)',
-    },
-    [theme.breakpoints.down('md')]: {
-      width: 'calc(100% - 30px)',
-      marginBottom: '8px',
-      marginTop: '8px',
-      textAlign: 'left',
-      '& > span:first-of-type': {
-        justifyContent: 'flex-start',
-      },
-    },
-  },
-  email: {
-    textTransform: 'none',
-    padding: 15,
-  },
-  badge: { color: '#fcc60a', width: 18, height: 18 },
-}))
-
 interface ProfileImageProps {
   user: Auth0User
 }
@@ -92,41 +40,35 @@ const OurAvatar: React.FC<ProfileImageProps> = ({ user }) => {
   return <Avatar>{initials}</Avatar>
 }
 
-const AdminBadge: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
-  const { classes } = useStyles()
-  return (
-    <Tooltip title='Site Administrator'>
-      <Badge
-        overlap='circular'
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        badgeContent={<VerifiedUserIcon className={classes.badge} />}
-      >
-        {children}
-      </Badge>
-    </Tooltip>
-  )
-}
+const AdminBadge: React.FC<Children> = ({ children }) => (
+  <Tooltip title='Site Administrator'>
+    <Badge
+      overlap='circular'
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      badgeContent={<VerifiedUserIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+    >
+      {children}
+    </Badge>
+  </Tooltip>
+)
 
-const GmBadge: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
-  const { classes } = useStyles()
-  return (
-    <Tooltip title='GMs always get stars at ACNW'>
-      <Badge
-        overlap='circular'
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        badgeContent={<StarIcon className={classes.badge} />}
-      >
-        {children}
-      </Badge>
-    </Tooltip>
-  )
-}
+const GmBadge: React.FC<Children> = ({ children }) => (
+  <Tooltip title='GMs always get stars at ACNW'>
+    <Badge
+      overlap='circular'
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      badgeContent={<StarIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+    >
+      {children}
+    </Badge>
+  </Tooltip>
+)
 
 const ProfileImage: React.FC<ProfileImageProps> = ({ user }) => {
   const { hasPermissions } = useAuth()
@@ -165,22 +107,21 @@ interface MenuButtonProps {
 }
 
 const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
-  const { classes } = useStyles()
   const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
     <Box sx={{ display: 'flex', flexDirection: 'row', ml: 1, alignItems: 'center' }}>
       <ProfileImage user={user} />
-      <span className={classes.email}>
+      <Typography component='span' sx={{ textTransform: 'none', padding: 2 }}>
         {user.email}
         {unverified}
-      </span>
+      </Typography>
     </Box>
   ) : (
     <>
-      <span className={classes.email}>
+      <Typography component='span' sx={{ textTransform: 'none', padding: 2 }}>
         {user.email}
         {unverified}
-      </span>
+      </Typography>
       <ProfileImage user={user} />
     </>
   )
@@ -191,29 +132,20 @@ interface LoginButtonProps {
 }
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
-  const { classes } = useStyles()
-  const { isInitializing = true, isAuthenticated, user, loginWithRedirect, logout, hasPermissions } = useAuth()
-  const [jwtToken] = useToken()
+  const { isLoading = true, user, hasPermissions } = useAuth()
   const notify = useNotification()
-  const [profileOpen, setProfileOpen] = useState(false)
   const [authInitialized, setAuthInitialized] = useState(false)
   const [roleOverride, setRoleOverride] = useRoleOverride()
-  const profile = useProfile()
   const queryClient = new QueryClient()
+  const router = useRouter()
+  const [profileOpen, setProfileOpen] = useState(false)
+  const profile = useProfile()
 
-  useEffect(() => setAuthInitialized(!isInitializing), [isInitializing])
-
-  const login = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      return loginWithRedirect && (await loginWithRedirect())
-    },
-    [loginWithRedirect]
-  )
+  useEffect(() => setAuthInitialized(!isLoading), [isLoading])
 
   const menuItems = useMemo(() => {
     const menu = [MENU_ITEM_EDIT_PROFILE]
-    if (user?.sub.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
+    if (user?.sub?.startsWith('auth0')) menu.push(MENU_ITEM_RESET_PASSWORD)
     if (hasPermissions(Perms.IsAdmin, { ignoreOverride: true })) {
       if (!roleOverride) {
         menu.push(MENU_ITEM_VIEW_AS_USER)
@@ -236,14 +168,9 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const resetPassword = useCallback(() => {
     fetch(`${window.location.origin}/api/resetPassword`, {
       method: 'post',
-      headers: jwtToken
-        ? {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${jwtToken}`,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
       .then((response) => response.text())
       .then((responseBody) => {
@@ -263,7 +190,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
         }
         return undefined
       })
-  }, [notify, jwtToken])
+  }, [notify])
 
   const viewAsUser = () => {
     if (!roleOverride) {
@@ -273,13 +200,40 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
     }
   }
 
-  return isAuthenticated ? (
+  return user ? (
     <>
       <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
       <LoginMenu
         buttonText={<MenuButton small={small} user={user!} />}
         buttonProps={{
-          className: classes.navLink,
+          /*  @ts-ignore */
+          sx: (theme: Theme) => ({
+            color: 'inherit',
+            position: 'relative',
+            padding: '0 18px 0 0.9375rem',
+            marginRight: '7px',
+            fontWeight: 400,
+            fontSize: '14px',
+            textTransform: 'uppercase',
+            borderRadius: '3px',
+            lineHeight: '20px',
+            textDecoration: 'none',
+            margin: '0px',
+            display: 'inline-flex',
+            '&:hover,&:focus': {
+              color: 'inherit',
+              background: 'rgba(200, 200, 200, 0.2)',
+            },
+            [theme.breakpoints.down('md')]: {
+              width: 'calc(100% - 30px)',
+              marginBottom: '8px',
+              marginTop: '8px',
+              textAlign: 'left',
+              '& > span:first-of-type': {
+                justifyContent: 'flex-start',
+              },
+            },
+          }),
         }}
         dropdownList={menuItems}
         onClick={(prop: string) => {
@@ -296,7 +250,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
               break
             case MENU_ITEM_SIGN_OUT:
               queryClient.clear()
-              logout?.()
+              router.push('/api/auth/logout')
               break
           }
         }}
@@ -305,9 +259,26 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   ) : (
     <Button
       disabled={!authInitialized}
-      className={classes.loginButton}
-      onClick={login}
-      sx={{ ml: small ? '-13px' : undefined }}
+      sx={{
+        position: 'relative',
+        fontWeight: 400,
+        textTransform: 'uppercase',
+        fontSize: '12px',
+        lineHeight: '20px',
+        textDecoration: 'none',
+        marginRight: '20px',
+        display: 'inline-flex',
+        padding: '12px 30px',
+        color: 'inherit',
+        backgroundColor: 'rgba(255, 255, 255, 0.15)',
+        '&:hover': {
+          color: 'inherit',
+          background: 'transparent',
+          boxShadow: 'none',
+        },
+      }}
+      component={Link}
+      href='/api/auth/login'
     >
       Login
     </Button>

@@ -1,6 +1,6 @@
-import { useAuth } from 'components/Auth'
 import { atom, useAtom } from 'jotai'
 import { useMemo } from 'react'
+import { useAuth } from '@/components/Auth'
 
 interface UserInfo {
   userId: number
@@ -21,7 +21,7 @@ export const useUser = (): Partial<UserInfo> => {
       return { ...userInfo }
     }
     const userId = user?.userId
-    const email = user?.email
+    const email = user?.email ?? undefined
     return { userId, email }
   }, [user?.email, user?.userId, userInfo])
 }

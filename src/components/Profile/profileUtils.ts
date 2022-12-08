@@ -6,9 +6,9 @@ import {
   useCreateProfileMutation,
   useUpdateProfileByNodeIdMutation,
   useUpdateUserMutation,
-} from '../../client'
-import { allUserQueries } from '../../client/querySets'
-import { GqlType, Omit, ToFormValues, OnCloseHandler, pick } from '../../utils'
+} from '@/client'
+import { allUserQueries } from '@/client/querySets'
+import { GqlType, Omit, OnCloseHandler, pick, ToFormValues } from '@/utils'
 import { useNotification } from '../Notifications'
 
 export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'nodes', number]>

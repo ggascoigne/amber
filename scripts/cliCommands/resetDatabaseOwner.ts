@@ -1,8 +1,8 @@
 import { CliUx, Command } from '@oclif/core'
 import * as chalk from 'chalk'
 
+import { config } from '@/shared/config'
 import { getPostgresArgs, resetOwner } from '../shared/scriptUtils'
-import { config } from '../../shared/config'
 
 const targetUser = config.userDatabase.user
 

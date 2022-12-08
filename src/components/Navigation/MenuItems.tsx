@@ -1,25 +1,27 @@
-import { List, ListItemText } from '@mui/material'
+import { List, ListItemText, useTheme } from '@mui/material'
 import React from 'react'
-import { useLocation } from 'react-router'
-import { useIsMember, useSettings, useUser } from 'utils'
+import { useRouter } from 'next/router'
+import { useIsMember, useSettings, useUser } from '@/utils'
 
 import { HasPermission } from '../Auth'
-import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './Routes'
+import { contextRoutes } from '@/components/Navigation/ContextRoutes'
 
 interface MenuItemsProps {
   menuItems: RootRoutes
 }
 
 export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
-  const location = useLocation()
   const { userId } = useUser()
   const isMember = useIsMember()
   const [, getSettingTruth] = useSettings()
+  const router = useRouter()
+  const theme = useTheme()
 
-  const activeItem = location.pathname
-  const matchedContextRoute = contextRoutes(location.pathname)
+  const activeItem = router.asPath
+
+  const matchedContextRoute = contextRoutes(router.asPath)
   if (matchedContextRoute) {
     return matchedContextRoute.load
   }
@@ -37,7 +39,12 @@ export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
         .map((menuItem) => {
           const link = menuItem.link ? menuItem.link : menuItem.path
           const item = (
-            <ListItemLink key={link} to={{ pathname: link, state: { fromClick: true } }} selected={activeItem === link}>
+            <ListItemLink
+              key={link}
+              href={{ pathname: link }}
+              selected={activeItem === link}
+              sx={{ color: theme.palette.text.primary }}
+            >
               <ListItemText primary={menuItem.label} secondary={menuItem.subText} />
             </ListItemLink>
           )

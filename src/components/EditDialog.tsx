@@ -33,8 +33,8 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
   useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA'] })
 
-  const { isAuthenticated, user } = useAuth()
-  if (!isAuthenticated || !user) {
+  const { user } = useAuth()
+  if (!user) {
     throw new Error('login expired')
   } // todo test this
 

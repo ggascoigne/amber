@@ -20,12 +20,13 @@ export const useGameScroll = () => {
 
 export const useScrollToHash = () => {
   const { slot, year, hash } = useGameUrl()
+
   useEffect(() => {
     const scrollToId = (delay: number) => {
       if (!hash) {
         return undefined
       }
-      const game = hash.slice(1)
+      const game = hash
       const timer = setTimeout(
         () =>
           window.requestAnimationFrame(() => {

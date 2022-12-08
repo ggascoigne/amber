@@ -37,7 +37,7 @@ import {
   useSortBy,
   useTable,
 } from 'react-table'
-import { camelToWords, isDev, notEmpty, useDebounce } from 'utils'
+import { camelToWords, isDev, notEmpty, useDebounce } from '@/utils'
 
 import { CellEditor } from './CellEditor'
 import { FilterChipBar } from './FilterChipBar'

@@ -1,9 +1,8 @@
-import { useAuth } from 'components/Auth'
 import React, { PropsWithChildren } from 'react'
+import { useAuth } from '@/components/Auth'
 
 import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
 import { notEmpty } from './ts-utils'
-import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
@@ -28,10 +27,10 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
 }
 
 export const useIsMember = () => {
-  const { isAuthenticated } = useAuth()
-  const { userId } = useUser()
+  const { user } = useAuth()
+  const userId = user?.userId
   const membership = useGetMemberShip(userId)
-  return !!isAuthenticated && !!membership?.attending
+  return !!membership?.attending
 }
 
 export const IsMember: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
@@ -53,8 +52,8 @@ export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) 
 }
 
 export const useIsGm = () => {
-  const { isAuthenticated } = useAuth()
-  const { userId } = useUser()
+  const { user } = useAuth()
+  const userId = user?.userId
   const membership = useGetMemberShip(userId)
   const { data: gameAssignmentData } = useGetGameAssignmentsByMemberIdQuery(
     {
@@ -63,7 +62,7 @@ export const useIsGm = () => {
     { enabled: !!membership }
   )
 
-  if (!isAuthenticated || !membership || !gameAssignmentData) return false
+  if (!user || !membership || !gameAssignmentData) return false
 
   return (
     gameAssignmentData.gameAssignments?.nodes

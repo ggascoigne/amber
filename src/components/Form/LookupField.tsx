@@ -1,5 +1,5 @@
-import { useGetLookupValuesQuery } from 'client'
 import React from 'react'
+import { useGetLookupValuesQuery } from '@/client'
 
 import { getRealmOptions } from '../../utils'
 import { GraphQLError } from '../GraphQLError'

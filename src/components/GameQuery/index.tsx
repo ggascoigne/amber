@@ -1,5 +1,5 @@
-import { GameArray, useGetGamesBySlotQuery } from 'client'
 import React from 'react'
+import { GameArray, useGetGamesBySlotQuery } from '@/client'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'

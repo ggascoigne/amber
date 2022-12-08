@@ -1,15 +1,15 @@
-import { GameBookMenu } from 'pages/GameBook/GameBookMenu'
-import { GameSignupMenu } from 'pages/GameSignup/GameSignupMenu'
+import { GameBookMenu } from '@/views/GameBook/GameBookMenu'
+import { GameSignupMenu } from '@/views/GameSignup/GameSignupMenu'
 
 // This controls overriding the nav menu based on the route
 
 type ContextRoutes = Record<string, { load: any }>
 
 const data: ContextRoutes = {
-  '/game-book/\\d+': {
+  '/game-book(/.*|)$': {
     load: <GameBookMenu />,
   },
-  '/game-signup/\\d+': {
+  '/game-signup(/.*|)$': {
     load: <GameSignupMenu />,
   },
 }

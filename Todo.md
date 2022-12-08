@@ -1,5 +1,8 @@
 #Todos & Ideas
 
+## 2022
+
+* Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)
 
 ## User merging
 

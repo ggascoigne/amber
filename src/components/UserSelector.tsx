@@ -1,8 +1,8 @@
 import { Autocomplete, TextField } from '@mui/material'
-import { GetAllUsersByQuery, useGetAllUsersByQuery } from 'client'
 import React, { useCallback, useEffect, useState } from 'react'
 import { makeStyles, withStyles } from 'tss-react/mui'
-import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from 'utils'
+import { GetAllUsersByQuery, useGetAllUsersByQuery } from '@/client'
+import { ContentsOf, notEmpty, useUserFilter, useYearFilter } from '@/utils'
 
 import { useNotification } from './Notifications'
 

@@ -3,7 +3,7 @@ import { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { alpha } from '@mui/material/styles'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
-import { configuration, range, useYearFilter } from 'utils'
+import { configuration, range, useYearFilter } from '@/utils'
 
 import { getSelectLabel, getSelectValue } from './Form'
 

@@ -1,7 +1,6 @@
-import { useToken } from 'components/Auth'
-import { useNotification } from 'components/Notifications'
 import fetch from 'isomorphic-fetch'
 import { useCallback } from 'react'
+import { useNotification } from '@/components/Notifications'
 
 import { EmailConfirmation } from './apiTypes'
 
@@ -10,21 +9,15 @@ interface SendEmail {
 }
 
 export const useSendEmail = (): SendEmail => {
-  const [jwtToken] = useToken()
   const notify = useNotification()
 
   return useCallback(
     ({ type, body }: EmailConfirmation) => {
       fetch(`${window.location.origin}/api/send/${type}`, {
         method: 'post',
-        headers: jwtToken
-          ? {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${jwtToken}`,
-            }
-          : {
-              'Content-Type': 'application/json',
-            },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(body),
       })
         .then((response) => response.text())
@@ -53,6 +46,6 @@ export const useSendEmail = (): SendEmail => {
           return undefined
         })
     },
-    [jwtToken, notify]
+    [notify]
   )
 }

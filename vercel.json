@@ -1,5 +1,4 @@
 {
   "version": 2,
-  "rewrites": [{ "source": "/api/graphql/:match", "destination": "/api/graphql" }],
   "devCommand": "pnpm start"
 }

@@ -1,8 +1,8 @@
 import { Tab, Tabs, Theme } from '@mui/material'
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
 import { makeStyles } from 'tss-react/mui'
-import { SlotFormat, getSlotDescription, range, useGameUrl } from 'utils'
+import { useRouter } from 'next/router'
+import { SlotFormat, getSlotDescription, range, useGameUrl } from '@/utils'
 
 import { Card, CardHeader } from '../Card'
 import { SlotDecorator, SlotDecoratorParams } from '../types'
@@ -125,7 +125,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
   const { classes, cx } = useStyles()
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
-  const history = useHistory()
+  const router = useRouter()
   const { base, year, slot } = useGameUrl()
 
   const updateScrollButtons = useCallback(() => {
@@ -159,9 +159,9 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
   const handleChange = useCallback(
     (event: ChangeEvent<unknown>, value: any) => {
       const slotId = value + 1
-      history.replace(`${base}/${year}/${slotId}`)
+      router.replace(`${base}/${year}/${slotId}`)
     },
-    [base, history, year]
+    [base, router, year]
   )
 
   const slots = range(7)

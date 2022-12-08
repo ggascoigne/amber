@@ -1,41 +1,15 @@
-import { useTheme } from '@mui/material'
-import { Theme } from '@mui/material/styles'
+import { Box, useTheme } from '@mui/material'
+import { SxProps, Theme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import React, { PropsWithChildren, ReactNode } from 'react'
-import { Helmet } from 'react-helmet-async'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  main: {
-    background: '#FFFFFF',
-    position: 'relative',
-    zIndex: 3,
-  },
-  mainRaised: {
-    margin: '0px 20px 0px',
-    borderRadius: '6px',
-    boxShadow: theme.mixins.boxShadow.page,
-    padding: theme.spacing(3),
-  },
-  small: {
-    padding: 16,
-  },
-  smaller: {
-    fontSize: '2.25rem',
-    lineHeight: '1.5em',
-    fontWeight: 300,
-    color: 'inherit',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-}))
+import Head from 'next/head'
 
 interface PageProps {
   className?: string
   title: string
   titleElement?: ReactNode
   hideTitle?: boolean
-  smaller?: boolean
+  sx?: SxProps<Theme>
 }
 
 export const Page: React.FC<PropsWithChildren<PageProps>> = ({
@@ -44,27 +18,51 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = ({
   title,
   titleElement,
   hideTitle = false,
-  smaller = false,
+  sx,
 }) => {
-  const { classes, cx } = useStyles()
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   return (
-    <div
-      className={cx(
+    <Box
+      sx={[
         {
-          [classes.main]: true,
-          [classes.mainRaised]: !fullScreen,
-          [classes.small]: fullScreen,
+          background: '#FFFFFF',
+          position: 'relative',
+          zIndex: 3,
         },
-        className
-      )}
+        !fullScreen && {
+          margin: '0px 20px 0px',
+          borderRadius: '6px',
+          boxShadow: theme.mixins.boxShadow?.page,
+          padding: 3,
+        },
+        fullScreen && {
+          padding: 2,
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
     >
-      <Helmet>
+      <Head>
         <title>{title}</title>
-      </Helmet>
-      {!hideTitle ? titleElement ?? <h1 className={classes.smaller}>{title}</h1> : null}
+      </Head>
+      {!hideTitle
+        ? titleElement ?? (
+            <Box
+              component='h1'
+              sx={{
+                fontSize: '2.25rem',
+                lineHeight: '1.5em',
+                fontWeight: 300,
+                color: 'inherit',
+                marginTop: '20px',
+                marginBottom: '10px',
+              }}
+            >
+              {title}
+            </Box>
+          )
+        : null}
       {children}
-    </div>
+    </Box>
   )
 }

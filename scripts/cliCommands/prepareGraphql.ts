@@ -4,8 +4,8 @@ import { CliUx, Command } from '@oclif/core'
 import { printSchema } from 'graphql'
 import { createPostGraphileSchema } from 'postgraphile'
 
-import { getPool, getSchemas, PoolType } from '../../shared/config'
-import { options } from '../../shared/postgraphileOptions'
+import { PoolType, getPool, getSchemas } from '@/shared/config'
+import { options } from '@/shared/postgraphileOptions'
 
 // Download the schema for codegen, also (and as importantly), save the
 // postgraphile cache to speed the lambda  startup time (a lot).

@@ -44,7 +44,7 @@ export const getPool = (poolType: PoolType, pathToRoot = './') => {
   })
 }
 
-export interface DbConfig {
+export type DbConfig = {
   database: string
   user: string
   port: number
@@ -54,7 +54,7 @@ export interface DbConfig {
   ssl_cert?: string
 }
 
-export interface EmailConfig {
+export type EmailConfig = {
   user: string
   port: number
   host: string
