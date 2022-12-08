@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { O } from 'ts-toolbelt'
 import { Key } from 'ts-toolbelt/out/Any/Key'
 import { List } from 'ts-toolbelt/out/List/List'
@@ -77,3 +78,7 @@ export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: s
 // generic type.  Using the ObjectOf construct enforces the object extension without falling into this trap.
 
 export type ObjectOf<T> = { [P in keyof T]: T[P] }
+
+export interface Children {
+  children?: ReactNode | undefined
+}

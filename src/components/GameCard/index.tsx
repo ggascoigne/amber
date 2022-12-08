@@ -1,10 +1,10 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Theme } from '@mui/material'
-import type { GameEntry } from 'client'
 import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
-import { isEveningSlot, isMorningSlot, maskEmail } from 'utils'
+import type { GameEntry } from '@/client'
+import { isEveningSlot, isMorningSlot, maskEmail } from '@/utils'
 
 import { Card, CardBody } from '../Card'
 import { Field, HeaderContent, MultiLine } from '../CardUtils'

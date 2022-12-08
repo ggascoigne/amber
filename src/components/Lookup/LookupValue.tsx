@@ -1,5 +1,5 @@
-import { useGetSingleLookupValueQuery } from 'client'
 import React from 'react'
+import { useGetSingleLookupValueQuery } from '@/client'
 import {
   getAttendance,
   getBathroomType,
@@ -7,7 +7,7 @@ import {
   getPlayerPreference,
   getRoomPref,
   getRoomType,
-} from 'utils/selectValues'
+} from '@/utils/selectValues'
 
 import { GraphQLError } from '../GraphQLError'
 import { Loader } from '../Loader'

@@ -1,7 +1,7 @@
 import { DialogContentText } from '@mui/material'
-import { TextField } from 'components/Form'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
+import { TextField } from '@/components/Form'
 
 import { HasPermission, Perms, useAuth } from '../Auth'
 import { GridContainer, GridItem } from '../Grid'

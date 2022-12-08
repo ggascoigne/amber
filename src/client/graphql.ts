@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/ban-types,no-duplicate-imports,etc/prefer-interface,import/order,import/newline-after-import */
 import { QueryError } from './error'
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query'
-import { useFetchData } from 'client/fetcher'
+import { useFetchData } from '@/client/fetcher'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }

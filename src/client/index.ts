@@ -1,4 +1,4 @@
-import { ContentsOf, UnpackArray } from '../utils'
+import { ContentsOf, UnpackArray } from '@/utils'
 import type { GetGamesBySlotQuery, GetScheduleQuery } from './graphql'
 
 export * from './error'

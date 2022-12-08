@@ -24,7 +24,7 @@ generates:
       - "typescript-react-query"
     config:
       fetcher:
-        func: 'client/fetcher#useFetchData'
+        func: '@/client/fetcher#useFetchData'
         isReactHook: true
       errorType: QueryError
       optimizeDocumentNode: true

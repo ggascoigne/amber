@@ -1,4 +1,4 @@
-import Yup from 'utils/Yup'
+import Yup from '@/utils/Yup'
 
 // note not exported as part of the rest of the folder since that seems to cause too issues
 

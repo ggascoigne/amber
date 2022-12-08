@@ -1,54 +1,38 @@
-import { Popover } from '@mui/material'
+import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
 import React, { Suspense } from 'react'
-import { makeStyles } from 'tss-react/mui'
-import { useGetConfig } from 'utils'
-import { gitHash } from 'version'
-
+import { useGetConfig } from '@/utils'
+import { gitHash } from '@/version'
 import { HasPermission, Perms, useAuth } from './Auth'
 import { Loader } from './Loader'
 
 const ReactJson = React.lazy(() => import('react-json-view'))
 
-const useStyles = makeStyles()({
-  footer: {
-    padding: '0.9375rem 0',
-    textAlign: 'center',
-    display: 'flex',
-    zIndex: 2,
-    position: 'relative',
+const containerFluid = {
+  paddingRight: '15px',
+  paddingLeft: '15px',
+  marginRight: 'auto',
+  marginLeft: 'auto',
+  width: '100%',
+}
+const container = {
+  ...containerFluid,
+  '@media (min-width: 576px)': {
+    maxWidth: '540px',
   },
-  container: {
-    paddingRight: '15px',
-    paddingLeft: '15px',
-    marginRight: 'auto',
-    marginLeft: 'auto',
-    width: '100%',
-    '@media (min-width: 576px)': {
-      maxWidth: '540px',
-    },
-    '@media (min-width: 768px)': {
-      maxWidth: '720px',
-    },
-    '@media (min-width: 992px)': {
-      maxWidth: '960px',
-    },
-    '@media (min-width: 1200px)': {
-      maxWidth: '1140px',
-    },
-    fontSize: '0.75rem',
+  '@media (min-width: 768px)': {
+    maxWidth: '720px',
   },
-  popup: {
-    padding: 20,
+  '@media (min-width: 992px)': {
+    maxWidth: '960px',
   },
-  versionInfo: {
-    cursor: 'pointer',
+  '@media (min-width: 1200px)': {
+    maxWidth: '1140px',
   },
-})
+}
 
 export const Footer: React.FC = (props) => {
   const { hasPermissions } = useAuth()
-  const { classes } = useStyles()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [config, getConfig] = useGetConfig()
 
@@ -68,8 +52,11 @@ export const Footer: React.FC = (props) => {
   const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
   return (
-    <footer className={classes.footer}>
-      <div className={classes.container}>
+    <Box
+      component='footer'
+      sx={{ padding: '0.9375rem 0', textAlign: 'center', display: 'flex', zIndex: 2, position: 'relative' }}
+    >
+      <Box sx={{ ...container, fontSize: '0.75rem' }}>
         <HasPermission permission={Perms.IsAdmin}>
           {open && (
             <Popover
@@ -78,36 +65,35 @@ export const Footer: React.FC = (props) => {
               anchorEl={anchorEl}
               onClose={handleClose}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'center',
+                vertical: 'bottom',
+                horizontal: 'left',
               }}
               transformOrigin={{
                 vertical: 'bottom',
-                horizontal: 'center',
+                horizontal: 'left',
               }}
             >
-              <div className={classes.popup}>
+              <Box sx={{ padding: '20px' }}>
                 <h3>Site configuration</h3>
                 <Suspense fallback={<Loader />}>
                   <ReactJson
                     src={{
                       commitDate: commitDate.toLocaleString(DateTime.DATETIME_FULL),
-                      authDomain: process.env.REACT_APP_AUTH0_DOMAIN,
                       config,
                     }}
                     enableClipboard={false}
                     indentWidth={2}
                   />
                 </Suspense>
-              </div>
+              </Box>
             </Popover>
           )}
         </HasPermission>
-        <span className={classes.versionInfo} onClick={handleClick}>
+        <Box component='span' sx={{ cursor: 'pointer' }} onClick={handleClick}>
           {hash}
-        </span>{' '}
-        | &copy; {DateTime.fromJSDate(new Date()).year} amberconnw.org
-      </div>
-    </footer>
+        </Box>{' '}
+        | &copy; {DateTime.fromJSDate(new Date()).year} festivebeverage.com
+      </Box>
+    </Box>
   )
 }

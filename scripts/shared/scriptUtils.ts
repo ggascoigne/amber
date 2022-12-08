@@ -6,7 +6,7 @@ import * as chalk from 'chalk'
 import { stripIndent } from 'common-tags'
 import * as tempy from 'tempy'
 
-import { DbConfig } from '../../shared/config'
+import { DbConfig } from '@/shared/config'
 
 export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
 

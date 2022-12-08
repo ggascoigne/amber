@@ -52,7 +52,7 @@ export const GameMenu: React.FC<PropsWithChildren<GameMenuProps>> = ({
   return (
     <>
       <List>
-        <ListItemLink to={to}>
+        <ListItemLink href={to}>
           <ListItemIcon>
             <ArrowBackIcon />
           </ListItemIcon>

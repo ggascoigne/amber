@@ -1,7 +1,6 @@
 import { Button } from '@mui/material'
-import React, { PropsWithChildren, createRef } from 'react'
+import React, { createRef, PropsWithChildren } from 'react'
 
-import { useToken } from './Auth/Auth0'
 import { useNotification } from './Notifications'
 
 export const AuthenticatedDownloadButton: React.FC<PropsWithChildren<{ url: string; filename: string }>> = ({
@@ -9,7 +8,6 @@ export const AuthenticatedDownloadButton: React.FC<PropsWithChildren<{ url: stri
   filename,
   children,
 }) => {
-  const [jwtToken] = useToken()
   const link = createRef<any>()
   const notify = useNotification()
 
@@ -19,14 +17,9 @@ export const AuthenticatedDownloadButton: React.FC<PropsWithChildren<{ url: stri
     }
 
     const result = await fetch(url, {
-      headers: jwtToken
-        ? {
-            'Content-Type': 'application/octet-stream',
-            Authorization: `Bearer ${jwtToken}`,
-          }
-        : {
-            'Content-Type': 'application/octet-stream',
-          },
+      headers: {
+        'Content-Type': 'application/octet-stream',
+      },
     })
 
     if (result.status !== 200) {
