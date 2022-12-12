@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 FILE=./version.ts
-if [ -d .git ]
+if [ -d ../../.git ]
 then
   val=$(git show --no-patch --no-notes --pretty='{ hash: "%H", date: "%cI" }' HEAD)
 else
