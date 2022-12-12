@@ -62,7 +62,7 @@ build/
 .eslintcache
 
 # generated at build time
-src/version.ts
+packages/ui/version.ts
 
 # contains user details that shouldn't get checked in here
 name_cleanup.js
@@ -71,3 +71,4 @@ name_cleanup.js
 .wireit
 .next
 tsconfig.tsbuildinfo
+packages/database/shared/graphql-schema.graphql

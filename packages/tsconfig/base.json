@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "ts-node": {
+    "files": true,
+    "swc": true,
+    "compilerOptions": {
+      "module": "commonjs",
+      "outDir": "lib",
+      "rootDir": ".",
+      "strict": true,
+      "target": "es2020"
+    }
+  },
+  "compilerOptions": {
+    "composite": false,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "inlineSources": false,
+    "isolatedModules": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "jsxImportSource": "@emotion/react",
+    "noErrorTruncation": true,
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"]
+}

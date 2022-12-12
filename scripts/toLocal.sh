@@ -5,11 +5,11 @@
 
 source `dirname $0`/utils.sh
 
-while read line; do export $line; done < <(grep DATABASE .env.aws-prod | egrep -v '^#')
+while read line; do export $line; done < <(grep DATABASE ./apps/acnw/.env.aws-prod | egrep -v '^#')
 PG_INPUT_ARGS=$(getPgString)
 ORIGINAL_DATABASE_NAME=${DATABASE_NAME}
 
-while read line; do export $line; done < <(grep DATABASE .env.local | egrep -v '^#')
+while read line; do export $line; done < <(grep DATABASE ./apps/acnw/.env.local | egrep -v '^#')
 PG_OUTPUT_ARGS=$(getPgString)
 
 cleanDb ${DATABASE_ADMIN} ${DATABASE_NAME} ${PG_OUTPUT_ARGS} 2>&1 | grep -v NOTICE
@@ -32,6 +32,8 @@ export PGPASSWORD=${DATABASE_ADMIN_PASSWORD}
   --exit-on-error \
   ${ORIGINAL_DATABASE_NAME}.dump
 
-pnpm node ./scripts/run resetDatabaseOwner
+pnpm node ./packages/database/scripts/run resetDatabaseOwner
+
+rm ${ORIGINAL_DATABASE_NAME}.dump
 
 echo Done

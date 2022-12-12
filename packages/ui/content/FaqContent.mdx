@@ -1,0 +1,45 @@
+---
+title: Frequently Asked Questions
+---
+
+import { ContactEmail } from '../components'
+
+## Login
+
+All login issues we've seen so far seem to fall into one of two categories.
+
+- I was registered on the old site and my password doesn't work.
+- I can't remember how I logged in last time.
+
+Both of these lead to people trying to get a password reset link sent to them, and this is where we tend to run
+into problems.
+
+### TL;DR
+
+If you asked for a password reset and didn't receive an email, then you aren't signed up like that.
+
+### Details
+
+We can only send password reset emails for accounts that are handled by us (and by Auth0 behind the scenes). If
+you login with Google or Facebook, they own your credentials. In fact, they own them to the point that we don't
+know that they exist, we just know when they tell us that someone verified that they are who they said they are.
+What this means is if you logged in with Google or Facebook, we can't send a password reset email.
+
+Likewise, if you haven't signed up for the site using the new system, we don't have any information about you and
+so won't send you a password reset email.
+
+For security reasons, we don't send any information to email addresses that aren't attached to accounts in the
+auth system. There really are good reasons for this, but I'll admit that it's not very user-friendly.
+
+### So what can I do about it?
+
+The key information that you need to know is what **email address** you used to register with
+**this** site. If you know that your Google or your Facebook account uses that same email address,
+then just login with them. It really doesn't matter which one that you use, they are just verifying an email
+address, and as long as it's the right address, you're all set.
+
+If the addresses are not the same, then you probably want to sign up using that email address directly.
+
+Finally, if the address is out of date, or you simply want to change it, then you should contact us at
+
+<ContactEmail />, and we can help you sort it out.
