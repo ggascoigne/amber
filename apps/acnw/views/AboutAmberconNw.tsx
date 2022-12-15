@@ -1,11 +1,11 @@
 import { useTheme } from '@mui/material'
-import { Page } from '../components/Page'
+import { Page } from 'ui/components/Page'
+
+import { configuration, useYearFilter } from 'ui/utils'
+import { FrontMatter, MdxPage } from 'ui/components/MdxPage'
 
 import * as aboutAmberconNwContent from '../content/AboutAmberconNwContent.mdx'
 import * as aboutAmberconNwContentVirtual from '../content/AboutAmberconNwContentVirtual.mdx'
-
-import { configuration, useYearFilter } from '../utils'
-import { FrontMatter, MdxPage } from './MdxPage'
 
 const { default: AboutAmberconNwContent, ...acnwFm } = aboutAmberconNwContent
 const { default: AboutAmberconNwContentVirtual, ...virtualFm } = aboutAmberconNwContentVirtual

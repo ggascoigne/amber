@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import AboutAmberconNw from 'ui/views/AboutAmberconNw'
+import AboutAmberconNw from '../views/AboutAmberconNw'
 
 const Page: NextPage = () => <AboutAmberconNw />
 

@@ -1,4 +1,4 @@
-import { MdxPage } from './MdxPage'
+import { MdxPage } from '../components/MdxPage'
 import * as content from '../content/CreditsContent.mdx'
 
 const { default: CreditsContent, ...frontMatter } = content

@@ -1,10 +1,10 @@
 import React from 'react'
-import { useGetSettingValue, useSettings } from '../utils'
+import { useGetSettingValue, useSettings } from 'ui/utils'
 
-import { useAuth } from '../components/Auth'
-import { Loader } from '../components/Loader'
-import { Page } from '../components/Page'
-import { Redirect } from '../components/Navigation'
+import { useAuth } from 'ui/components/Auth'
+import { Loader } from 'ui/components/Loader'
+import { Page } from 'ui/components/Page'
+import { Redirect } from 'ui/components/Navigation'
 
 const VirtualDetails = () => {
   const { user, isLoading } = useAuth()

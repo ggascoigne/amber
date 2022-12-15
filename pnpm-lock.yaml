@@ -83,6 +83,7 @@ importers:
       react-dom: ^18.2.0
       react-is: ^18.2.0
       tsconfig: workspace:*
+      tss-react: ^4.4.4
       typescript: ^4.9.3
       ui: workspace:*
       webpack: ^5.75.0
@@ -115,6 +116,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-is: 18.2.0
+      tss-react: 4.4.4_7gkcoq2nf4xufkduddb7kah6jm
       ui: link:../../packages/ui
     devDependencies:
       '@babel/core': 7.20.2
@@ -12286,6 +12288,24 @@ packages:
 
   /tslib/2.4.1:
     resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+
+  /tss-react/4.4.4_7gkcoq2nf4xufkduddb7kah6jm:
+    resolution: {integrity: sha512-Bzyg99bIQq3Lk4Rwc5XMOps58c1biw1rghCkApIX5XkAB+/VjGCIFSl63PePhmiRNvKRxJRpawGPPxHytiw1TA==}
+    peerDependencies:
+      '@emotion/react': ^11.4.1
+      '@emotion/server': ^11.4.0
+      react: ^16.8.0 || ^17.0.2 || ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/server':
+        optional: true
+    dependencies:
+      '@emotion/cache': 11.10.5
+      '@emotion/react': 11.10.5_cuziicjcvwawlf5iuhzacuhqcy
+      '@emotion/serialize': 1.1.1
+      '@emotion/server': 11.10.0
+      '@emotion/utils': 1.2.0
+      react: 18.2.0
+    dev: false
 
   /tss-react/4.4.4_hp5f5nkljdiwilp4rgxyefcplu:
     resolution: {integrity: sha512-Bzyg99bIQq3Lk4Rwc5XMOps58c1biw1rghCkApIX5XkAB+/VjGCIFSl63PePhmiRNvKRxJRpawGPPxHytiw1TA==}

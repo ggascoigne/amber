@@ -1,16 +1,16 @@
 import { Button, Theme } from '@mui/material'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
-import { Link } from '../components/Navigation'
-import { Acnw, ConfigDate, MDY } from '../components'
-import { Banner } from '../components/Banner'
-import { Page } from '../components/Page'
-import { IsMember } from '../utils'
+import { Link } from 'ui/components/Navigation'
+import { Acnw, ConfigDate, MDY } from 'ui/components'
+import { Banner } from 'ui/components/Banner'
+import { Page } from 'ui/components/Page'
+import { IsMember } from 'ui/utils'
 
-import { BetaWarning } from '../components/BetaWarning'
-import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
+import { BetaWarning } from 'ui/components/BetaWarning'
+import { MdxWithExternalLinks } from 'ui/components/MdxWithExternalLinks'
+import { BecomeAMember } from 'ui/views/Memberships'
 import WelcomeContent from '../content/WelcomeContent.mdx'
-import { BecomeAMember } from './Memberships'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   banner: {

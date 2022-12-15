@@ -44,6 +44,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "json2xls": "^0.1.2",
+    "tss-react": "^4.4.4",
     "ui": "workspace:*"
   },
   "devDependencies": {

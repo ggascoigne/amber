@@ -1,4 +1,4 @@
-import { MdxPage } from './MdxPage'
+import { MdxPage } from 'ui/components/MdxPage'
 import * as content from '../content/FaqContent.mdx'
 
 const { default: FaqContent, ...frontMatter } = content

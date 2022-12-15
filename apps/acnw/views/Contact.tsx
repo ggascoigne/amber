@@ -1,10 +1,10 @@
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-import { Acnw } from '../components'
-import { configuration } from '../utils'
-import { CardBody } from '../components/Card'
-import { Page } from '../components/Page'
+import { Acnw } from 'ui/components'
+import { configuration } from 'ui/utils'
+import { CardBody } from 'ui/components/Card'
+import { Page } from 'ui/components/Page'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
