@@ -12,6 +12,7 @@
     "dev": "pnpm boot && next dev -p 30000",
     "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
     "start": "next start",
+    "tsc": "tsc -p ./tsconfig.json",
     "test": "next test"
   },
   "dependencies": {

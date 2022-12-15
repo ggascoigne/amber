@@ -28,7 +28,8 @@
     "db:migrate:generate": "knex-migrate --cwd ./support --knexfile ./knexfile.ts generate",
     "db:migrate:up": "knex-migrate --cwd ./support --knexfile ./knexfile.ts up",
     "db:setup": "pnpm db:clean && pnpm db:migrate:up",
-    "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres"
+    "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c acnw-postgres",
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^2.0.1",

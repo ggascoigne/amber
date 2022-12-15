@@ -29,7 +29,8 @@
     "strict": true,
     "jsxImportSource": "@emotion/react",
     "noErrorTruncation": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true
   },
   "exclude": ["node_modules"]
 }
