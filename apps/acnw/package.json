@@ -8,7 +8,8 @@
   "files": [],
   "scripts": {
     "boot": "pnpm --filter database db:migrate:up && pnpm --filter ui boot",
-    "build": "pnpm boot && NODE_ENV=production next build",
+    "build": "pnpm boot && pnpm next:build",
+    "next:build": "NODE_ENV=production next build",
     "dev": "pnpm boot && next dev -p 30000",
     "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
     "start": "next start",

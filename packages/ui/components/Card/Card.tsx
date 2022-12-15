@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 import { makeStyles } from 'tss-react/mui'
+import {} from 'tss-react'
 
 export const useStyles = makeStyles()({
   card: {
