@@ -1,7 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
 import React, { ReactNode, useEffect, useState } from 'react'
-import { makeStyles } from 'tss-react/mui'
 import { Config, useGetConfig } from '../utils'
 
 import { HasPermission, Perms } from './Auth'
@@ -10,36 +9,12 @@ import { YearSelector } from './YearSelector'
 
 const drawerWidth = 240
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  appBar: {
-    flex: '1 1 auto',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginLeft: drawerWidth,
-    [theme.breakpoints.up('md')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-    },
-  },
-  menuButton: {
-    marginRight: 20,
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
-  toolbar: {
-    width: '100%',
-  },
-}))
-
 interface HeaderProps {
   handleDrawerToggle: () => void
   rightMenu: (props?: any) => ReactNode
 }
 
 export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu }) => {
-  const { classes } = useStyles()
-
   const [config, getConfig] = useGetConfig()
   const [configDetails, setConfigDetails] = useState('')
 
@@ -60,13 +35,30 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu })
   }, [config])
 
   return (
-    <AppBar position='fixed' className={classes.appBar}>
-      <Toolbar className={classes.toolbar}>
+    <AppBar
+      position='fixed'
+      sx={(theme: Theme) => ({
+        flex: '1 1 auto',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginLeft: drawerWidth,
+        [theme.breakpoints.up('md')]: {
+          width: `calc(100% - ${drawerWidth}px)`,
+        },
+      })}
+    >
+      <Toolbar sx={{ width: '100%' }}>
         <IconButton
           color='inherit'
           aria-label='Open drawer'
           onClick={handleDrawerToggle}
-          className={classes.menuButton}
+          sx={(theme: Theme) => ({
+            marginRight: 20,
+            [theme.breakpoints.up('md')]: {
+              display: 'none',
+            },
+          })}
           size='large'
         >
           <MenuIcon />

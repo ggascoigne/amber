@@ -5,7 +5,6 @@ import React, { PropsWithChildren, ReactNode } from 'react'
 import Head from 'next/head'
 
 interface PageProps {
-  className?: string
   title: string
   titleElement?: ReactNode
   hideTitle?: boolean
@@ -14,7 +13,6 @@ interface PageProps {
 
 export const Page: React.FC<PropsWithChildren<PageProps>> = ({
   children,
-  className,
   title,
   titleElement,
   hideTitle = false,
