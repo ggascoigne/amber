@@ -1,26 +1,6 @@
-import { configuration } from '../../utils'
-
-import { Perms } from '../Auth'
-
-interface UserCondition {
-  userId: number | null | undefined
-  isMember: boolean
-  getSetting: (setting: string, defaultValue?: any) => boolean
-}
-
-// note that entries are only displayed if they have a label
-export interface RouteInfo {
-  path: string
-  label?: string
-  link?: string
-  subText?: string
-  exact: boolean
-  permission?: Perms
-  condition?: boolean
-  userCondition?: (params: UserCondition) => boolean
-}
-
-export type RootRoutes = RouteInfo[]
+import { configuration } from 'ui/utils'
+import { Perms } from 'ui/components/Auth'
+import { RootRoutes } from 'ui/components/Navigation'
 
 export const rootRoutes: RootRoutes = [
   {

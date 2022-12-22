@@ -1,4 +1,4 @@
 {
   "version": 2,
-  "devCommand": "pnpm acnw:dev"
+  "devCommand": "pnpm dev:nw"
 }

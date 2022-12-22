@@ -10,11 +10,12 @@ import { YearSelector } from './YearSelector'
 const drawerWidth = 240
 
 interface HeaderProps {
+  title: string
   handleDrawerToggle: () => void
   rightMenu: (props?: any) => ReactNode
 }
 
-export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu }) => {
+export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, title }) => {
   const [config, getConfig] = useGetConfig()
   const [configDetails, setConfigDetails] = useState('')
 
@@ -64,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu })
           <MenuIcon />
         </IconButton>
         <Typography variant='h6' color='inherit' noWrap>
-          AmberCon Northwest
+          {title}
         </Typography>
         &nbsp;{configDetails}
       </Toolbar>

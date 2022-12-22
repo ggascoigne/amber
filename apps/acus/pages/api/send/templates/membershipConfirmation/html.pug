@@ -1,0 +1,74 @@
+img(
+    src="https://acnw.org/Logo.png"
+    width="300"
+    height="75"
+    alt="AmberCon NW"
+    title="AmberCon NW"
+    style="-ms-interpolation-mode: bicubic;border: 0;height: auto;line-height: 100%;outline: none;text-decoration: none;"
+)
+
+h1 #{update ? "Updated Registration Confirmation" : "Registration Confirmation"}
+
+p Registration for #{virtual ? "Virtual " : ""}ACNW #{year}
+
+ul
+    li User: #{name}
+    li Email: #{email}
+
+if ! virtual
+    h3 Interest
+
+    ul
+        li Attendance: #{membership.attendance}
+        li Interest Level: #{membership.interestLevel}
+        li Arrival Date: #{membership.arrivalDate}
+        li Departure Date: #{membership.departureDate}
+    if membership.offerSubsidy
+        ul
+            li You have offered to provide assistance, thank you!
+
+    h3 Room Information
+
+    if membership.roomingWith
+        ul
+            li Hotel Room: #{room.description}
+            li Room Preference And Notes: #{membership.roomPreferenceAndNotes}
+            li Rooming Preferences: #{membership.roomingPreferences}
+            li Rooming With: #{membership.roomingWith}
+    else
+        ul
+            li Hotel Room: #{room.description}
+            li Room Preference And Notes: #{membership.roomPreferenceAndNotes}
+            li Rooming Preferences: #{membership.roomingPreferences}
+
+    h3 Details
+
+    ul
+        li Postal Address: #{address}
+        li Phone Number: #{phoneNumber}
+
+//p If you need to make changes to your registration, please email #{contactEmail}.
+
+if membership.slotsAttending
+    p You've indicated that you are likely to attend the following slots:
+    ul
+        each sd in slotDescriptions
+            li=sd
+
+if membership.message
+    p Message to Simone: #{membership.message}
+
+if owed
+    h3 Payment of $#{owed} should be made out to
+
+    p Simone Cooper
+
+    p and sent to
+
+    p
+     | AmberCon NW<br>
+     | c/o Simone Cooper<br>
+     | 8047 N. Syracuse St.<br>
+     | Portland, OR 97203-4939
+
+p You can view or edit your #{year} membership at #{url}.

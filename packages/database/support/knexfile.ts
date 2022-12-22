@@ -3,7 +3,13 @@
 // @ts-ignore
 require('ts-node/register')
 
-process.env.NODE_ENV !== 'production' && require('dotenv').config({ path: '../../apps/acnw/.env' })
+if (process.env.NODE_ENV !== 'production') {
+  const dbEnv = process.env.DB_ENV
+  if (!dbEnv || !['acnw', 'acus'].includes(dbEnv)) {
+    throw new Error('DB_ENV must be set to either "acnw" or "acus"')
+  }
+  require('dotenv').config({ path: `../../apps/${dbEnv}/.env` })
+}
 
 const path = require('path')
 const { certs } = require('../shared/dbCerts')

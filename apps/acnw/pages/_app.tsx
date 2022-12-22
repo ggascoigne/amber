@@ -14,6 +14,7 @@ import { NotificationProvider } from 'ui/components/Notifications'
 import { Layout } from 'ui/components/Layout'
 import createEmotionCache from 'ui/utils/createEmotionCache'
 import { CustomLuxonUtils } from 'ui/utils/luxonUtils'
+import { rootRoutes } from '../views/Routes'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -58,7 +59,7 @@ export default function MyApp(props: MyAppProps) {
               <NotificationProvider>
                 <UserProvider user={user}>
                   <QueryClientProvider client={queryClient}>
-                    <Layout>
+                    <Layout rootRoutes={rootRoutes} title='AmberCon Northwest'>
                       <Component {...pageProps} />
                       <ReactQueryDevtools />
                       {showDevtools ? (

@@ -5,12 +5,12 @@ import { Banner } from './Banner'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { LoginButton } from './LoginButton'
-import { MenuItems, rootRoutes } from './Navigation'
+import { MenuItems, RootRoutes } from './Navigation'
 import { Children } from '../utils'
 
 const drawerWidth = 240
 
-const DrawerContents: React.FC<{ small?: boolean }> = ({ small = false }) => (
+const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes }> = ({ small = false, rootRoutes }) => (
   <>
     {!small && (
       <>
@@ -54,65 +54,67 @@ const RightMenu: React.FC<{ small?: boolean }> = (props) => (
   </List>
 )
 
-export const Layout: React.FC<Children> = React.memo(({ children }) => {
-  const [mobileOpen, setMobileOpen] = useState(false)
+export const Layout: React.FC<Children & { rootRoutes: RootRoutes; title: string }> = React.memo(
+  ({ children, rootRoutes, title }) => {
+    const [mobileOpen, setMobileOpen] = useState(false)
 
-  const handleDrawerToggle = useCallback(() => {
-    setMobileOpen(!mobileOpen)
-  }, [mobileOpen])
+    const handleDrawerToggle = useCallback(() => {
+      setMobileOpen(!mobileOpen)
+    }, [mobileOpen])
 
-  return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <Header handleDrawerToggle={handleDrawerToggle} rightMenu={RightMenu} />
-      <Box
-        component='nav'
-        sx={(theme) => ({
-          [theme.breakpoints.up('md')]: {
-            width: drawerWidth,
-            flexShrink: 0,
-          },
-        })}
-      >
-        <Hidden mdUp>
-          <Drawer
-            variant='temporary'
-            anchor='left'
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            PaperProps={{
-              sx: {
-                width: drawerWidth,
-                overflowX: 'hidden',
-              },
-            }}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-          >
-            <RightMenu small />
-            <Divider />
-            <DrawerContents small />
-          </Drawer>
-        </Hidden>
-        <Hidden mdDown>
-          <Drawer
-            PaperProps={{
-              sx: {
-                width: drawerWidth,
-                overflowX: 'hidden',
-              },
-            }}
-            variant='permanent'
-            open
-          >
-            <DrawerContents />
-          </Drawer>
-        </Hidden>
+    return (
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <Header handleDrawerToggle={handleDrawerToggle} rightMenu={RightMenu} title={title} />
+        <Box
+          component='nav'
+          sx={(theme) => ({
+            [theme.breakpoints.up('md')]: {
+              width: drawerWidth,
+              flexShrink: 0,
+            },
+          })}
+        >
+          <Hidden mdUp>
+            <Drawer
+              variant='temporary'
+              anchor='left'
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              PaperProps={{
+                sx: {
+                  width: drawerWidth,
+                  overflowX: 'hidden',
+                },
+              }}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+            >
+              <RightMenu small />
+              <Divider />
+              <DrawerContents small rootRoutes={rootRoutes} />
+            </Drawer>
+          </Hidden>
+          <Hidden mdDown>
+            <Drawer
+              PaperProps={{
+                sx: {
+                  width: drawerWidth,
+                  overflowX: 'hidden',
+                },
+              }}
+              variant='permanent'
+              open
+            >
+              <DrawerContents rootRoutes={rootRoutes} />
+            </Drawer>
+          </Hidden>
+        </Box>
+        <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
+          <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
+          {children}
+        </Box>
       </Box>
-      <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
-        <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
-        {children}
-      </Box>
-    </Box>
-  )
-})
+    )
+  }
+)

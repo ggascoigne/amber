@@ -8,7 +8,6 @@ import { createPostGraphileSchema } from 'postgraphile'
 import { PoolType, getPool, getSchemas } from '../../shared/config'
 import { options } from '../../shared/postgraphileOptions'
 
-console.log({ pwd: process.cwd() })
 // Download the schema for codegen, also (and as importantly), save the
 // postgraphile cache to speed the lambda  startup time (a lot).
 

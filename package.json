@@ -28,8 +28,10 @@
     ]
   },
   "scripts": {
-    "acnw:dev": "pnpm --filter acnw dev",
-    "acnw:build": "pnpm --filter acnw build",
+    "dev:nw": "pnpm --filter acnw dev",
+    "build:nw": "pnpm --filter acnw build",
+    "dev:us": "pnpm --filter acus dev",
+    "build:us": "pnpm --filter acus build",
     "format": "pretty-quick",
     "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "lint": "pnpm -r --parallel lint",
@@ -109,7 +111,7 @@
   ],
   "pnpm": {
     "patchedDependencies": {
-      "@eslint/eslintrc@1.3.3": "patches/@eslint__eslintrc@1.3.3.patch"
+      "@eslint/eslintrc@1.4.0": "patches/@eslint__eslintrc@1.4.0.patch"
     }
   }
 }

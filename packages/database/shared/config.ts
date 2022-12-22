@@ -5,8 +5,15 @@ import { certs } from './dbCerts'
 
 const { Pool } = pg
 
-const envPath = path.join(__dirname, '../../../apps/acnw/.env')
-process.env.NODE_ENV !== 'production' && dotenv.config({ path: envPath })
+if (process.env.NODE_ENV !== 'production') {
+  const envFilename = process.env.ENV_FILENAME ?? '.env'
+  const dbEnv = process.env.DB_ENV
+  if (!dbEnv || !['acnw', 'acus'].includes(dbEnv)) {
+    throw new Error('DB_ENV must be set to either "acnw" or "acus"')
+  }
+  const envPath = path.join(__dirname, `../../../apps/${dbEnv}/${envFilename}`)
+  dotenv.config({ path: envPath })
+}
 
 export const getSchemas = () => (process.env.DATABASE_SCHEMAS ? process.env.DATABASE_SCHEMAS.split(',') : ['public'])
 

@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'Old Stamper';
+  src: url('OldStamper.woff2') format('woff2'), url('OldStamper.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
