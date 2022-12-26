@@ -3,9 +3,7 @@ import { Form, Formik, FormikHelpers, FormikValues } from 'formik'
 import { FormikProps } from 'formik/dist/types'
 import { ReactElement, ReactNode, useCallback } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-
-import { OnCloseHandler } from '../utils'
-import { HasPermission, Perms, useAuth } from './Auth'
+import { isDev, OnCloseHandler } from '../utils'
 import { DialogTitle } from './Dialog'
 
 export interface EditDialogProps<T> {
@@ -33,11 +31,6 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
   const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
   useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA'] })
 
-  const { user } = useAuth()
-  if (!user) {
-    throw new Error('login expired')
-  } // todo test this
-
   const handleClose = useDisableBackdropClick(onClose)
 
   const theme = useTheme()
@@ -54,7 +47,7 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
               </DialogTitle>
               <DialogContent>{typeof children === 'function' ? children?.(formikProps) : children}</DialogContent>
               <DialogActions className='modalFooterButtons'>
-                <HasPermission permission={Perms.IsAdmin}>
+                {isDev && (
                   <Button
                     onClick={() => {
                       console.log(`values = ${JSON.stringify({ values, errors }, null, 2)}`)
@@ -63,7 +56,7 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
                   >
                     Debug
                   </Button>
-                </HasPermission>
+                )}
                 <Button onClick={onClose} variant='outlined'>
                   Cancel
                 </Button>

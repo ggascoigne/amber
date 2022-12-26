@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Users from 'ui/views/Users/Users'
+import Users from 'amber/views/Users/Users'
 
 const Page: NextPage = () => <Users />
 

@@ -1,7 +1,7 @@
 {
   "name": "ui",
   "version": "0.1.0",
-  "description": "Shared AmberCon NW components",
+  "description": "AmberCon UI library",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "private": true,

@@ -62,7 +62,7 @@ build/
 .eslintcache
 
 # generated at build time
-packages/ui/version.ts
+packages/amber/version.ts
 
 .vercel
 .wireit

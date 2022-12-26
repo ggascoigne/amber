@@ -3,7 +3,7 @@ import { O } from 'ts-toolbelt'
 import { Key } from 'ts-toolbelt/out/Any/Key'
 import { List } from 'ts-toolbelt/out/List/List'
 
-import type { Maybe } from '../client'
+export type Maybe<T> = T | null
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N

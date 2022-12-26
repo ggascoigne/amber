@@ -1,7 +1,7 @@
 import React from 'react'
-import { Page } from '../components/Page'
+import { Page } from './Page'
 
-import { MdxWithExternalLinks } from '../components/MdxWithExternalLinks'
+import { MdxWithExternalLinks } from './MdxWithExternalLinks'
 
 export type FrontMatter = Record<string, string>
 

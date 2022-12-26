@@ -1,4 +1,4 @@
-import { MdxPage } from 'ui/components/MdxPage'
+import { MdxPage } from 'ui'
 import * as content from '../content/AccommodationsContent.mdx'
 
 const { default: AccommodationsContent, ...frontMatter } = content

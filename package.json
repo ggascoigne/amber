@@ -40,32 +40,6 @@
     "test": "next test",
     "tsc": "pnpm -r tsc"
   },
-  "wireit": {
-    "build": {
-      "command": "NODE_ENV=production next build",
-      "dependencies": [
-        "boot"
-      ]
-    },
-    "boot": {
-      "dependencies": [
-        "db:migrate:up",
-        "codegen",
-        "gitHash"
-      ]
-    },
-    "start": {
-      "command": "BROWSER=none next start"
-    },
-    "dev": {
-      "command": "next dev -p 30000",
-      "service": true,
-      "cascade": false,
-      "dependencies": [
-        "boot"
-      ]
-    }
-  },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "husky": "^8.0.2",

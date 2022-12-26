@@ -1,8 +1,7 @@
 import { useTheme } from '@mui/material'
-import { Page } from 'ui/components/Page'
+import { FrontMatter, MdxPage, Page } from 'ui'
 
-import { configuration, useYearFilter } from 'ui/utils'
-import { FrontMatter, MdxPage } from 'ui/components/MdxPage'
+import { configuration, useYearFilter } from 'amber/utils'
 
 import * as aboutAmberconUsContent from '../content/AboutAmberconUsContent.mdx'
 import * as aboutAmberconUsContentVirtual from '../content/AboutAmberconUsContentVirtual.mdx'

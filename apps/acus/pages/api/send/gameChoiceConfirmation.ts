@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
-import { GameChoiceConfirmationBody } from 'ui/utils/apiTypes'
+import { GameChoiceConfirmationBody } from 'amber/utils/apiTypes'
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'

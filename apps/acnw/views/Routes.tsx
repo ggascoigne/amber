@@ -1,6 +1,6 @@
-import { configuration } from 'ui/utils'
-import { Perms } from 'ui/components/Auth'
-import { RootRoutes } from 'ui/components/Navigation'
+import { configuration } from 'amber/utils'
+import { Perms } from 'amber/components/Auth'
+import { RootRoutes } from 'amber/components/Navigation'
 
 export const rootRoutes: RootRoutes = [
   {

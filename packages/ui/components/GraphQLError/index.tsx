@@ -1,13 +1,22 @@
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import { QueryError } from '../../client'
+import { GraphQLError as _GraphQLError } from 'graphql'
+
+export type QueryError = Error & {
+  message: string
+  locations?: Array<{ line: number; column: number }>
+  graphQLErrors: ReadonlyArray<_GraphQLError>
+  networkError: {
+    result?: { errors: Array<Error> }
+  }
+}
 
 interface QuoteProps {
   text: React.ReactNode
   author?: React.ReactNode
 }
 
-export const Quote: React.FC<QuoteProps> = (props) => {
+const Quote: React.FC<QuoteProps> = (props) => {
   const { text, author } = props
   return (
     <Typography

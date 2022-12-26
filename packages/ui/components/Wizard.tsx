@@ -13,10 +13,9 @@ import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { ReactElement, useCallback, useMemo } from 'react'
 import Zet from 'zet'
 
-import { notEmpty } from '../utils'
-import { HasPermission, Perms } from './Auth'
-import { DialogClose } from './Dialog'
 import { useDisableBackdropClick } from './EditDialog'
+import { isDev, notEmpty } from '../utils'
+import { DialogClose } from './Dialog'
 
 export interface WizardPage {
   name: string
@@ -164,7 +163,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
               </Form>
             </DialogContent>
             <DialogActions className='modalFooterButtons'>
-              <HasPermission permission={Perms.IsAdmin}>
+              {isDev && (
                 <Button
                   onClick={() => {
                     console.log(`values = ${JSON.stringify(values, null, 2)}`)
@@ -173,7 +172,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
                 >
                   Debug
                 </Button>
-              </HasPermission>
+              )}
               <Button onClick={onClose} variant='outlined'>
                 Cancel
               </Button>

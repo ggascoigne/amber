@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import GameChoiceSummary from 'ui/views/GameSignup/GameChoiceSummary'
+import GameChoiceSummary from 'amber/views/GameSignup/GameChoiceSummary'
 
 const Page: NextPage = () => <GameChoiceSummary />
 
