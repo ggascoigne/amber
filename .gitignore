@@ -64,11 +64,13 @@ build/
 # generated at build time
 packages/ui/version.ts
 
-# contains user details that shouldn't get checked in here
-name_cleanup.js
-
 .vercel
 .wireit
 .next
 tsconfig.tsbuildinfo
 packages/database/shared/graphql-schema.graphql
+
+# excluded since it contain PII
+name_cleanup.js
+packages/database/scripts/cliCommands/import.ts
+scripts/backup_private.sh
