@@ -4,6 +4,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import JwtDecode from 'jwt-decode'
 import { auth0Audience } from '../_constants'
 
+process.env.AUTH0_BASE_URL = process.env.AUTH0_BASE_URL ?? process.env.VERCEL_URL
+
 export default handleAuth({
   async login(req, res) {
     try {
