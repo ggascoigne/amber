@@ -11,6 +11,7 @@ import MuiTableRow from '@mui/material/TableRow'
 import { TableRowTypeMap } from '@mui/material/TableRow/TableRow'
 import React, { CSSProperties, PropsWithChildren } from 'react'
 import { makeStyles } from 'tss-react/mui'
+import {} from '@mui/system'
 
 export interface TableStyleOptions {
   selectionStyle: 'row' | 'cell'
