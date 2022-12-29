@@ -2,8 +2,7 @@ import { Theme } from '@mui/material'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { GridContainer, GridItem } from 'ui'
-import { Link } from './Navigation'
-import { configuration } from '../utils'
+import { Link, useConfiguration } from 'amber'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   banner: {
@@ -429,6 +428,7 @@ interface BannerProps {
 
 const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   const { classes } = useStyles()
+  const configuration = useConfiguration()
   const { conventionStartDate } = configuration
   const dateRange = `${conventionStartDate.toFormat('MMMM')} ${configuration.startDay}-${configuration.endDay}, ${
     configuration.year

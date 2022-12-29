@@ -1,8 +1,8 @@
-import { configuration } from 'amber/utils'
+import { Configuration } from 'amber/utils'
 import { Perms } from 'amber/components/Auth'
 import { RootRoutes } from 'amber/components/Navigation'
 
-export const rootRoutes: RootRoutes = [
+export const rootRoutes = (configuration: Configuration): RootRoutes => [
   {
     path: '/',
     label: 'Welcome',
@@ -10,7 +10,7 @@ export const rootRoutes: RootRoutes = [
     exact: true,
   },
   {
-    path: '/about-acus',
+    path: '/about',
     label: 'AmberCon US',
     subText: 'What you get and what it costs',
     exact: false,

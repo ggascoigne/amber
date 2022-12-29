@@ -3,7 +3,6 @@ import CheckIcon from '@mui/icons-material/Check'
 import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import React, { useEffect } from 'react'
 import { makeStyles } from 'tss-react/mui'
-import { range } from 'ui'
 import { Game, GameChoice, GameEntry, Maybe } from '../../client'
 import { Perms, useAuth } from '../../components/Auth'
 
@@ -392,12 +391,6 @@ export const isSlotComplete = (choices?: MaybeGameChoice[]) => {
   if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(ordered[3])) return true
   return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(ordered[4]))
 }
-
-export const allSlotsComplete = (year: number, gameChoices?: MaybeGameChoice[]) =>
-  range(7).reduce(
-    (acc, slot) => acc && isSlotComplete(gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)),
-    true
-  )
 
 export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
   const { classes } = useStyles()

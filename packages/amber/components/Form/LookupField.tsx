@@ -3,7 +3,7 @@ import type { TextFieldProps } from 'ui'
 import { GraphQLError, Loader, SelectField } from 'ui'
 import { useGetLookupValuesQuery } from '../../client'
 
-import { getRealmOptions } from '../../utils'
+import { useRealmOptions } from '../../utils'
 
 export interface LookupFieldProps extends TextFieldProps {
   realm: string
@@ -11,7 +11,7 @@ export interface LookupFieldProps extends TextFieldProps {
 
 export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   const { select, realm, ...rest } = props
-  const options = getRealmOptions(realm)
+  const options = useRealmOptions(realm)
   const { isLoading, error, data } = useGetLookupValuesQuery(
     { realm },
     {

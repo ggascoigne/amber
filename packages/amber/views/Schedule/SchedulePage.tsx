@@ -7,7 +7,7 @@ import { Box, useMediaQuery, useTheme } from '@mui/material'
 import { GqlType, GraphQLError, Loader, notEmpty, Page } from 'ui'
 import {
   buildUrl,
-  configuration,
+  Configuration,
   getGameAssignments,
   getSlotDescription,
   getSlotTimes,
@@ -15,6 +15,7 @@ import {
   isMorningSlot,
   SettingValue,
   SlotFormat,
+  useConfiguration,
   useGetMemberShip,
   useGetSettingValue,
   useUser,
@@ -47,11 +48,12 @@ const getGmsAndPlayers = (game: GameAndAssignment) => {
 }
 
 const RoomDisplay = ({ game, year }: GameDecorator) => {
+  const configuration = useConfiguration()
   const theme = useTheme()
   const small = !useMediaQuery(theme.breakpoints.up('sm'))
 
   const isVirtual = configuration.startDates[year].virtual
-  const [s] = getSlotTimes(year)[game.slotId! - 1]
+  const [s] = getSlotTimes(configuration, year)[game.slotId! - 1]
 
   const startString =
     isMorningSlot(game.slotId!) && game.lateStart && game.lateStart !== 'Starts on time' ? game.lateStart : ''
@@ -59,7 +61,7 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
   const h = re?.groups?.hour ? parseInt(re?.groups?.hour, 10) : s.hour
   const m = re?.groups?.minutes ? parseInt(re?.groups?.minutes, 10) : s.minute
   const lateStart = s.set({ hour: h, minute: m })
-  const slotDescription = getSlotDescription({
+  const slotDescription = getSlotDescription(configuration, {
     year,
     slot: game.slotId!,
     local: true,
@@ -108,15 +110,16 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   )
 }
 
-const getIcalUrl = (schedule: GameAssignmentNode[]) =>
+const getIcalUrl = (configuration: Configuration, schedule: GameAssignmentNode[]) =>
   buildUrl(
+    configuration.abbr,
     schedule
       .map((gas) => {
         const { game } = gas
         if (!game || game.id < 8) return null
 
         const slotId = game.slotId!
-        const [start, end] = getSlotTimes(gas.year)[slotId - 1]
+        const [start, end] = getSlotTimes(configuration, gas.year)[slotId - 1]
         const gameUrl = `${window.location.origin}/game-book/${gas.year}/${slotId}#${game.id}`
         const { gms, players } = getGmsAndPlayers(game)
         const gmNames = gms.map((p) => `${p.fullName} (${p.email})`)
@@ -172,6 +175,7 @@ export const ICalDownloadButton: React.FC<PropsWithChildren<{ url: string | null
 }
 
 const SchedulePage: React.FC = () => {
+  const configuration = useConfiguration()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { userId } = useUser()
@@ -192,7 +196,7 @@ const SchedulePage: React.FC = () => {
 
   const gamesAndAssignments = useMemo(() => getGameAssignments(data, memberId, gmOnly), [data, gmOnly, memberId])
 
-  const exportUrl = useMemo(() => getIcalUrl(gamesAndAssignments), [gamesAndAssignments])
+  const exportUrl = useMemo(() => getIcalUrl(configuration, gamesAndAssignments), [configuration, gamesAndAssignments])
 
   if (error) {
     return <GraphQLError error={error} />
@@ -209,7 +213,7 @@ const SchedulePage: React.FC = () => {
         </Button>
         <br />
       </HasPermission>
-      <ICalDownloadButton url={exportUrl} filename='acnw-schedule.ics'>
+      <ICalDownloadButton url={exportUrl} filename={`${configuration.name.toLowerCase()}-schedule.ics`}>
         Export Schedule
       </ICalDownloadButton>
       {gmOnly ? <h3>GM Preview</h3> : null}

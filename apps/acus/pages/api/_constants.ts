@@ -1,4 +1,4 @@
-import { configuration as _conf } from 'amber/utils/configuration'
+import { configuration as _conf } from '../_config'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const assert = require('assert').strict

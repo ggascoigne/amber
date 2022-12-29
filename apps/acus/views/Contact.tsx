@@ -1,8 +1,8 @@
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-import { Acnw } from 'amber/components'
-import { configuration } from 'amber/utils'
+import { ContactEmail } from 'amber/components'
+import { useConfiguration } from 'amber/utils'
 import { CardBody, Page } from 'ui'
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -20,6 +20,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
 const Contact = () => {
   const { classes } = useStyles()
+  const configuration = useConfiguration()
   return (
     <Page title='Contact'>
       <Card className={classes.card} elevation={3}>
@@ -43,7 +44,7 @@ const Contact = () => {
           </h5>
 
           <p>
-            If you should need to contact Simone, do so at <Acnw.ContactEmail />.
+            If you should need to contact Simone, do so at <ContactEmail />.
           </p>
         </CardBody>
       </Card>
@@ -59,7 +60,7 @@ const Contact = () => {
       </p>
 
       <p>
-        Write in and say "hi" by emailing <Acnw.ContactEmail />
+        Write in and say "hi" by emailing <ContactEmail />
       </p>
 
       <h3>Game Book Goddess</h3>

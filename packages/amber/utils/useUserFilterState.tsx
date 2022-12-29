@@ -1,4 +1,6 @@
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai/vanilla'
+import { useAtom } from 'jotai/react'
+
 import { useMemo } from 'react'
 import { useAuth } from '../components/Auth'
 

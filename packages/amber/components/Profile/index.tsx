@@ -1,4 +1,5 @@
 export * from './ProfileDialog'
 export * from './ProfileFormContent'
-export * from './useProfile'
+export * from './profileUtils'
 export * from './profileValidationSchema'
+export * from './useProfile'

@@ -2,10 +2,7 @@ import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/mat
 import React, { useState } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from 'ui'
-import { configuration, getSlotDescription, isNotPacificTime } from '../../utils'
-import { ConfigDate } from '../../components'
-import { AdminCard } from '../../components/AdminCard'
-import { Perms } from '../../components/Auth'
+import { AdminCard, ConfigDate, getSlotDescription, isNotPacificTime, Perms, useConfiguration } from 'amber'
 import { MembershipFormContent } from './membershipUtils'
 
 const useStyles = makeStyles()({
@@ -21,6 +18,7 @@ const useStyles = makeStyles()({
 })
 
 export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+  const configuration = useConfiguration()
   const { classes } = useStyles()
   const [showPT, setShowPT] = useState(false)
 
@@ -43,7 +41,7 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
         separately from the ACNW main game book.
       </DialogContentText>
       <div className={classes.slotSelection}>
-        {isNotPacificTime() && (
+        {isNotPacificTime(configuration) && (
           <div>
             <FormControlLabel
               control={
@@ -59,10 +57,10 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
           </div>
         )}
         <FormGroup>
-          {range(7).map((i) => (
+          {range(configuration.numberOfSlots).map((i) => (
             <CheckboxWithLabel
               key={i}
-              label={getSlotDescription({
+              label={getSlotDescription(configuration, {
                 year: configuration.year,
                 slot: i + 1,
                 local: !showPT,

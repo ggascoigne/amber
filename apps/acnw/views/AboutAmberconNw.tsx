@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material'
 import { FrontMatter, MdxPage, Page } from 'ui'
 
-import { configuration, useYearFilter } from 'amber/utils'
+import { useConfiguration, useYearFilter } from 'amber/utils'
 
 import * as aboutAmberconNwContent from '../content/AboutAmberconNwContent.mdx'
 import * as aboutAmberconNwContentVirtual from '../content/AboutAmberconNwContentVirtual.mdx'
@@ -12,7 +12,8 @@ const { default: AboutAmberconNwContentVirtual, ...virtualFm } = aboutAmberconNw
 const AboutAmberconNw = () => {
   const theme = useTheme()
   const [year] = useYearFilter()
-  const isVirtual = configuration.startDates[year].virtual
+  const configuration = useConfiguration()
+  const isVirtual = configuration.startDates[year]?.virtual
 
   return !isVirtual ? (
     <MdxPage frontMatter={acnwFm} component={<AboutAmberconNwContent />} />

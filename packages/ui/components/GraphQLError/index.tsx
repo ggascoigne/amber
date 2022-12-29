@@ -45,7 +45,7 @@ interface GraphQLErrorProps {
 }
 
 export const GraphQLError = ({ error }: GraphQLErrorProps) => {
-  console.log(JSON.stringify(error, null, 2))
+  console.log('GraphQLError', JSON.stringify(error, null, 2))
   const networkErrors = error?.networkError?.result?.errors
   return (
     <>

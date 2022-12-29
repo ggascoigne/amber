@@ -2,10 +2,18 @@ import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { useMemo } from 'react'
 import Yup from 'ui/utils/Yup'
 import { Wizard, WizardPage } from 'ui'
-import { configuration, useUser, useYearFilter } from '../../utils'
-import { Perms, useAuth } from '../../components/Auth'
-import { ProfileFormContent, ProfileFormType, profileValidationSchema } from '../../components/Profile'
-import { useEditUserAndProfile } from '../../components/Profile/profileUtils'
+import {
+  Perms,
+  ProfileFormContent,
+  ProfileFormType,
+  profileValidationSchema,
+  useAuth,
+  useConfiguration,
+  useEditUserAndProfile,
+  useUser,
+  useYearFilter,
+} from 'amber'
+import { MembershipType } from 'amber/utils/apiTypes'
 import { IntroStep } from './IntroStep'
 import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
@@ -17,10 +25,8 @@ import {
   getDefaultMembership,
   membershipValidationSchema,
   toSlotsAttending,
-  useEditMembership
+  useEditMembership,
 } from './membershipUtils'
-
-import type { MembershipType } from '../../utils/apiTypes'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -62,6 +68,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   initialValues,
   short = false,
 }) => {
+  const configuration = useConfiguration()
   const { user, hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
@@ -167,7 +174,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const values = useMemo(() => {
     // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
-    const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
+    const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values: MembershipWizardFormValues = {
       intro: { acceptedPolicies: !!initialValues?.id },
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
@@ -175,7 +182,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     }
     _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
     return _values
-  }, [initialValues, isVirtual, profile, userId])
+  }, [configuration, initialValues, isVirtual, profile, userId])
 
   return (
     <Wizard

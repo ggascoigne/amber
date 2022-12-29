@@ -2,8 +2,8 @@ import React from 'react'
 import { GraphQLError, GridContainer, GridItem, Loader, Page, range } from 'ui'
 import { useGetSmallGamesByYearQuery } from '../../client'
 import { Link } from '../../components/Navigation'
-import { configuration } from '../../utils'
 import { YearTile } from '../../components/YearTile'
+import { useConfiguration } from '../../utils'
 
 const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
   const { error, data } = useGetSmallGamesByYearQuery({ year })
@@ -23,7 +23,9 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
 }
 
 const GameBookPage: React.FC = () => {
-  const years = range(2012, configuration.year - 1, -1)
+  const configuration = useConfiguration()
+
+  const years = range(configuration.firstYear - 1, configuration.year - 1, -1)
   return (
     <Page title='Game Book' hideTitle>
       <GridContainer spacing={2} justifyContent='center'>

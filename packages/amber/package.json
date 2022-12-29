@@ -67,6 +67,7 @@
     "ts-toolbelt": "^9.6.0",
     "tss-react": "^4.4.5",
     "ui": "workspace:*",
+    "use-constant": "^1.1.1",
     "yup": "^0.32.11",
     "zet": "^1.1.0"
   },

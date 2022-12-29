@@ -3,7 +3,7 @@ import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { useRouter } from 'next/router'
 import { Card, CardHeader, range } from 'ui'
-import { SlotFormat, getSlotDescription, useGameUrl } from '../../utils'
+import { getSlotDescription, SlotFormat, useConfiguration, useGameUrl } from '../../utils'
 
 import { SlotDecorator, SlotDecoratorParams } from '../types'
 
@@ -122,6 +122,7 @@ interface SlotSelectorProps {
 }
 
 export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, decorator, decoratorParams = {} }) => {
+  const configuration = useConfiguration()
   const { classes, cx } = useStyles()
   const tabsRef = React.createRef<HTMLDivElement>()
   const [scrollButtons, setScrollButtons] = useState<'off' | 'on'>('off')
@@ -164,7 +165,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
     [base, router, year]
   )
 
-  const slots = range(7)
+  const slots = range(configuration.numberOfSlots)
 
   if (year === 0) return null
   return (
@@ -208,7 +209,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
           </CardHeader>
         </div>
       </Card>
-      <h4 className={classes.slot}>{getSlotDescription({ slot, year, altFormat: SlotFormat.SHORT })}</h4>
+      <h4 className={classes.slot}>{getSlotDescription(configuration, { slot, year, altFormat: SlotFormat.SHORT })}</h4>
       {children({ slot, year })}
     </div>
   )

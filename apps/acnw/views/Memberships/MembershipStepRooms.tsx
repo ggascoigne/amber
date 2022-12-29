@@ -5,9 +5,7 @@ import React, { useCallback } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from 'ui'
 
-import { Acnw, ConfigDate } from '../../components'
-import { RoomFieldTable } from '../../components/Rooms'
-import { configuration, RoomPref, roomPrefOptions } from '../../utils'
+import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from 'amber'
 import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
@@ -37,6 +35,7 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   )
 
 export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+  const configuration = useConfiguration()
   const { classes } = useStyles()
 
   const [hotelRoomField, meta, { setValue }] = useField(`${prefix}hotelRoomId`)
@@ -115,8 +114,8 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       <DialogContentText>
         <br />
         The hotel rooms reserved by the convention are subject to a 48 hour cancellation policy. If you must change your
-        reservation, contact <Acnw.ContactEmail /> at least 48 hours in advance. Later changes or cancellations may
-        result in charges for hotel nights reserved but not used.
+        reservation, contact <ContactEmail /> at least 48 hours in advance. Later changes or cancellations may result in
+        charges for hotel nights reserved but not used.
       </DialogContentText>
 
       <Important component='span' className={classes.important}>

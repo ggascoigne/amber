@@ -4,7 +4,7 @@ import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 
 import { MembershipConfirmationBody } from 'amber/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from 'amber/utils/selectValues'
-import { emails } from '../_constants'
+import { configuration, emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 import { emailer } from './_email'
@@ -51,8 +51,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
 
     const formattedMembership = {
       ...membership,
-      interestLevel: getInterestLevel(membership.interestLevel),
-      attendance: getAttendance(membership.attendance),
+      interestLevel: getInterestLevel(configuration, membership.interestLevel),
+      attendance: getAttendance(configuration, membership.attendance),
       arrivalDate: formatDate(membership.arrivalDate),
       departureDate: formatDate(membership.departureDate),
       roomingPreferences: getRoomPref(membership.roomingPreferences),

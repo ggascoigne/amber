@@ -3,10 +3,7 @@ import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CardBody } from 'ui'
-import { configuration, IsNotMember, useSetting } from '../../utils'
-
-import { IsLoggedIn, IsNotLoggedIn } from '../../components/Auth'
-import { useProfile } from '../../components/Profile'
+import { IsLoggedIn, IsNotLoggedIn, IsNotMember, useConfiguration, useProfile, useSetting } from 'amber'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
@@ -22,6 +19,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
 
 export const BecomeAMember = () => {
   const { classes } = useStyles()
+  const configuration = useConfiguration()
   const theme = useTheme()
   const router = useRouter()
   const profile = useProfile()
@@ -33,10 +31,10 @@ export const BecomeAMember = () => {
         <CardBody className={classes.card}>
           {configuration.virtual ? (
             <h2>
-              Attending <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon NW
+              Attending <span style={{ color: theme.palette.error.main }}>virtual</span> {configuration.title}
             </h2>
           ) : (
-            <h2>Attending AmberCon NW</h2>
+            <h2>Attending {configuration.title}</h2>
           )}
           <IsNotLoggedIn>
             <Button
@@ -52,7 +50,7 @@ export const BecomeAMember = () => {
 
           <IsLoggedIn>
             <p>
-              If you are interested in attending AmberCon NW this year, please
+              If you are interested in attending {configuration.title} this year, please
               {allowed ? (
                 <Button
                   variant='outlined'

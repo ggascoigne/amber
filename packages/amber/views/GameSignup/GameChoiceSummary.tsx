@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field, GraphQLError, Loader, MultiLine, Page } from 'ui'
 import { useGetGameChoicesQuery } from '../../client'
-import { Acnw } from '../../components'
+import { ContactEmail } from '../../components'
 import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
 import { ChoiceSummary } from './SlotDetails'
 import { Redirect } from '../../components/Navigation'
@@ -57,7 +57,7 @@ const GameChoiceSummary: React.FC = () => {
         </Field>
       )}
       <p>
-        If you need to make changes to this schedule please email <Acnw.ContactEmail />
+        If you need to make changes to this schedule please email <ContactEmail />
       </p>
     </Page>
   )

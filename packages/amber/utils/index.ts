@@ -1,4 +1,4 @@
-export * from './configuration'
+export * from './configContext'
 export * from './extractErrors'
 export * from './gameAssignment'
 export * from './getConfig'

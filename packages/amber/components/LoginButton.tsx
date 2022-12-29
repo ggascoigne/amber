@@ -56,7 +56,7 @@ const AdminBadge: React.FC<Children> = ({ children }) => (
 )
 
 const GmBadge: React.FC<Children> = ({ children }) => (
-  <Tooltip title='GMs always get stars at ACNW'>
+  <Tooltip title='GMs always get stars at Ambercon'>
     <Badge
       overlap='circular'
       anchorOrigin={{

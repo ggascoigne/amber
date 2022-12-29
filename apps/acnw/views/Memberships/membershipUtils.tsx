@@ -1,20 +1,25 @@
 import { useQueryClient } from '@tanstack/react-query'
 import Yup from 'ui/utils/Yup'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
-import { useCreateMembershipMutation, useGetHotelRoomsQuery, useUpdateMembershipByNodeIdMutation } from '../../client'
-import { Perms, useAuth } from '../../components/Auth'
-import { ProfileFormType } from '../../components/Profile'
 import {
   Attendance,
-  configuration,
+  Configuration,
   extractErrors,
   getSlotDescription,
   InterestLevel,
+  Perms,
+  ProfileFormType,
+  useAuth,
+  useConfiguration,
+  useCreateMembershipMutation,
+  useGetHotelRoomsQuery,
   useSendEmail,
   useSetting,
-} from '../../utils'
+  useUpdateMembershipByNodeIdMutation,
+} from 'amber'
 
-import type { MembershipType } from '../../utils/apiTypes'
+import type { MembershipType } from 'amber/utils/apiTypes'
+import {} from 'yup'
 
 export interface MembershipFormContent {
   prefix?: string
@@ -37,7 +42,7 @@ export const toSlotsAttending = (membershipValues: MembershipType) =>
     .filter((v: number) => !!v)
     .join(',') ?? ''
 
-export const getOwed = (values: MembershipType) => {
+export const getOwed = (configuration: Configuration, values: MembershipType) => {
   if (configuration.virtual) {
     return configuration.virtualCost
   }
@@ -86,6 +91,7 @@ export const membershipValidationSchema = Yup.object().shape({
 })
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
+  const configuration = useConfiguration()
   const createMembership = useCreateMembershipMutation()
   const updateMembership = useUpdateMembershipByNodeIdMutation()
   const queryClient = useQueryClient()
@@ -110,7 +116,9 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
 
     const slotDescriptions = membershipValues.slotsAttending
       ?.split(',')
-      .map((i: string) => getSlotDescription({ year: configuration.year, slot: parseInt(i, 10), local: true }))
+      .map((i: string) =>
+        getSlotDescription(configuration, { year: configuration.year, slot: parseInt(i, 10), local: true })
+      )
 
     sendEmail({
       type: 'membershipConfirmation',
@@ -125,7 +133,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
         slotDescriptions,
-        owed: getOwed(membershipValues),
+        owed: getOwed(configuration, membershipValues),
         room,
       },
     })
@@ -194,7 +202,11 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   }
 }
 
-export const getDefaultMembership = (userId: number, isVirtual: boolean): MembershipType => ({
+export const getDefaultMembership = (
+  configuration: Configuration,
+  userId: number,
+  isVirtual: boolean
+): MembershipType => ({
   userId,
   arrivalDate: isVirtual ? configuration.conventionStartDate.toISO() : '',
   attendance: 'Thurs-Sun',

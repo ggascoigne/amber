@@ -3,12 +3,16 @@ import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
-import { useDeleteMembershipMutation, useGetMembershipsByYearQuery } from '../../client'
-import { useProfile } from '../../components/Profile'
-import { configuration, useYearFilter } from '../../utils'
+import {
+  useConfiguration,
+  useDeleteMembershipMutation,
+  useGetMembershipsByYearQuery,
+  useProfile,
+  useYearFilter,
+} from 'amber'
 
+import { Membership } from 'amber/utils/apiTypes'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
-import { Membership } from '../../utils/apiTypes'
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 import { MembershipWizard } from './MembershipWizard'
 
@@ -139,6 +143,7 @@ const virtualColumns: Column<Membership>[] = [
 
 const Memberships: React.FC = React.memo(() => {
   const profile = useProfile()
+  const configuration = useConfiguration()
   const [year] = useYearFilter()
   const [_, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
 

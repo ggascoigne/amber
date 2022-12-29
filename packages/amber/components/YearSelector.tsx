@@ -1,10 +1,10 @@
 import { FormControl, MenuItem, TextField, Theme } from '@mui/material'
 import { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { alpha } from '@mui/material/styles'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { getSelectLabel, getSelectValue, range } from 'ui'
-import { configuration, useYearFilter } from '../utils'
+import { useConfiguration, useYearFilter } from '../utils'
 
 export type SelectProps = MuiSelectProps & {
   name: string
@@ -37,13 +37,18 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
-const possibleYears: string[] = range(2011, configuration.year, -1)
-  .map((v: number) => `${v}`)
-  .concat(['0'])
-
 export const YearSelector = () => {
   const { classes } = useStyles()
   const [year, setYear] = useYearFilter()
+  const configuration = useConfiguration()
+
+  const possibleYears: string[] = useMemo(
+    () =>
+      range(configuration.firstYear, configuration.year, -1)
+        .map((v: number) => `${v}`)
+        .concat(['0']),
+    [configuration.firstYear, configuration.year]
+  )
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
     const y = event.target.value as string

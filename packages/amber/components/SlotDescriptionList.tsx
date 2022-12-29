@@ -1,29 +1,30 @@
 import React from 'react'
 
 import { range } from 'ui'
-import { configuration, getSlotDescription, isNotPacificTime, SlotFormat } from '../utils'
+import { getSlotDescription, isNotPacificTime, SlotFormat, useConfiguration } from '../utils'
 
 export const SlotDescriptionList: React.FC = () => {
-  const displayLocal = isNotPacificTime() && configuration.virtual
+  const configuration = useConfiguration()
+  const displayLocal = isNotPacificTime(configuration) && configuration.virtual
   return (
     <ul>
-      {range(7).map((i) => {
+      {range(configuration.numberOfSlots).map((i) => {
         if (configuration.skippedSlots?.includes(i + 1)) {
           return null
         }
         const description = displayLocal
-          ? `${getSlotDescription({
+          ? `${getSlotDescription(configuration, {
               year: configuration.year,
               slot: i + 1,
               local: false,
               altFormat: SlotFormat.ALT,
-            })} / ${getSlotDescription({
+            })} / ${getSlotDescription(configuration, {
               year: configuration.year,
               slot: i + 1,
               local: displayLocal,
               altFormat: SlotFormat.ALT_SHORT,
             })}`
-          : getSlotDescription({
+          : getSlotDescription(configuration, {
               year: configuration.year,
               slot: i + 1,
               local: false,

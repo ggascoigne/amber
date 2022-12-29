@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { CheckboxWithLabel, GridContainer, GridItem, Important } from 'ui'
 
-import { HasPermission, Perms } from '../../components/Auth'
+import { HasPermission, Perms } from 'amber'
 import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from './membershipUtils'
 
 const useStyles = makeStyles()(() => ({

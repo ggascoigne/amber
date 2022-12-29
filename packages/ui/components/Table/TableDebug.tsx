@@ -1,6 +1,7 @@
 import BugReportTwoToneIcon from '@mui/icons-material/BugReportTwoTone'
 import { IconButton, Theme, Tooltip } from '@mui/material'
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai/vanilla'
+import { useAtom } from 'jotai/react'
 import React, { Suspense } from 'react'
 import { makeStyles } from 'tss-react/mui'
 

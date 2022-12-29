@@ -1,11 +1,11 @@
 import { DateTime } from 'luxon'
+import { useMemo } from 'react'
+import { Configuration, useConfiguration } from './configContext'
 
-import { configuration } from './configuration'
-
-export const getPref = (values: { value: string; text: string }[], value?: string) =>
+const getPref = (values: { value: string; text: string }[], value: string) =>
   values.find((v) => v.value === value)?.text
 
-export enum PlayerPreference {
+enum PlayerPreference {
   Any = 'any',
   RetOnly = 'ret-only',
   RetPref = 'ret-pref',
@@ -17,14 +17,14 @@ export const playerPreferenceOptions = [
   { value: PlayerPreference.RetPref, text: 'Returning players have preference, new players welcome.' },
 ]
 
-export const getPlayerPreference = (value?: string) => getPref(playerPreferenceOptions, value)
+export const getPlayerPreference = (value: string) => getPref(playerPreferenceOptions, value)
 
 export enum Attendance {
   ThursSun = 'Thurs-Sun',
   FriSun = 'Fri-Sun',
 }
 
-export const attendanceOptions = [
+const getAttendanceOptions = (configuration: Configuration) => [
   {
     value: Attendance.ThursSun,
     text: `Full: $${configuration.fourDayMembership}.`,
@@ -35,7 +35,15 @@ export const attendanceOptions = [
   },
 ]
 
-export const subsidizedAttendanceOptions = [
+export const getAttendance = (configuration: Configuration, value: string) =>
+  getPref(getAttendanceOptions(configuration), value)
+
+export const useGetAttendanceOptions = () => {
+  const configuration = useConfiguration()
+  return useMemo(() => getAttendanceOptions(configuration), [configuration])
+}
+
+const getSubsidizedAttendanceOptions = (configuration: Configuration) => [
   {
     value: Attendance.ThursSun,
     text: `Full: $${configuration.subsidizedMembership}.`,
@@ -46,19 +54,25 @@ export const subsidizedAttendanceOptions = [
   },
 ]
 
-export const getAttendance = (value?: string) => getPref(attendanceOptions, value)
+const getSubsidizedAttendance = (configuration: Configuration, value: string) =>
+  getPref(getSubsidizedAttendanceOptions(configuration), value)
 
-export const getSubsidizedAttendance = (value?: string) => getPref(subsidizedAttendanceOptions, value)
+const getCost = (configuration: Configuration, membership: { requestOldPrice: boolean; attendance: string }) =>
+  membership.requestOldPrice
+    ? getSubsidizedAttendance(configuration, membership.attendance)
+    : getAttendance(configuration, membership.attendance)
 
-export const getCost = (membership: { requestOldPrice: boolean; attendance: string }) =>
-  membership.requestOldPrice ? getSubsidizedAttendance(membership.attendance) : getAttendance(membership.attendance)
+export const useGetCost = (membership: { requestOldPrice: boolean; attendance: string }) => {
+  const configuration = useConfiguration()
+  return useMemo(() => getCost(configuration, membership), [configuration, membership])
+}
 
 export enum InterestLevel {
   Full = 'Full',
   Deposit = 'Deposit',
 }
 
-export const interestOptions = [
+const getInterestOptions = (configuration: Configuration) => [
   {
     value: InterestLevel.Full,
     text: 'I am sending payment in full now',
@@ -71,7 +85,13 @@ export const interestOptions = [
   },
 ]
 
-export const getInterestLevel = (value?: string) => getPref(interestOptions, value)
+export const getInterestLevel = (configuration: Configuration, value: string) =>
+  getPref(getInterestOptions(configuration), value)
+
+export const useGetInterestOptions = () => {
+  const configuration = useConfiguration()
+  return useMemo(() => getInterestOptions(configuration), [configuration])
+}
 
 export enum BathroomType {
   EnSuite = 'en-suite',
@@ -94,7 +114,7 @@ export const bathroomTypeOptions = [
   },
 ]
 
-export const getBathroomType = (value?: string) => getPref(bathroomTypeOptions, value)
+export const getBathroomType = (value: string) => getPref(bathroomTypeOptions, value)
 
 export enum RoomPref {
   RoomWith = 'room-with',
@@ -117,7 +137,7 @@ export const roomPrefOptions = [
   },
 ]
 
-export const getRoomPref = (value?: string) => getPref(roomPrefOptions, value)
+export const getRoomPref = (value: string) => getPref(roomPrefOptions, value)
 
 export enum RoomType {
   Twin = 'twin',
@@ -139,25 +159,27 @@ export const roomTypeOptions = [
   { value: RoomType.Other, text: 'Other' },
 ]
 
-export const getRoomType = (value?: string) => getPref(roomTypeOptions, value)
+export const getRoomType = (value: string) => getPref(roomTypeOptions, value)
 
-//---
-
-export const getRealmOptions = (realm: string) => {
-  switch (realm) {
-    case 'gamePlayerPref':
-      return playerPreferenceOptions
-    case 'attendance':
-      return attendanceOptions
-    case 'bathroomType':
-      return bathroomTypeOptions
-    case 'interest':
-      return interestOptions
-    case 'roomPref':
-      return roomPrefOptions
-    case 'roomType':
-      return roomTypeOptions
-    default:
-      return undefined
-  }
+export const useRealmOptions = (realm: string) => {
+  const attendanceOptions = useGetAttendanceOptions()
+  const interestOptions = useGetInterestOptions()
+  return useMemo(() => {
+    switch (realm) {
+      case 'gamePlayerPref':
+        return playerPreferenceOptions
+      case 'attendance':
+        return attendanceOptions
+      case 'bathroomType':
+        return bathroomTypeOptions
+      case 'interest':
+        return interestOptions
+      case 'roomPref':
+        return roomPrefOptions
+      case 'roomType':
+        return roomTypeOptions
+      default:
+        return undefined
+    }
+  }, [attendanceOptions, interestOptions, realm])
 }

@@ -23,10 +23,10 @@ const dtToArray = (d: DateTime) => {
   return val
 }
 
-export function buildUrl(events: ICalEvent[]): string {
+export function buildUrl(productId: string, events: ICalEvent[]): string {
   const { error, value } = ics.createEvents(
     events.map((event) => ({
-      productId: 'acnw',
+      productId,
       start: dtToArray(event.startTime),
       end: dtToArray(event.endTime),
       title: event.title,

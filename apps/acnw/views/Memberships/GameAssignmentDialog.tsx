@@ -18,14 +18,16 @@ import {
 } from 'ui'
 import {
   GameAssignmentNode,
+  getGameAssignments,
+  useConfiguration,
   useCreateGameAssignmentMutation,
   useDeleteGameAssignmentMutation,
   useGetGamesByYearQuery,
   useGetScheduleQuery,
-} from '../../client'
-import { getGameAssignments, useYearFilter } from '../../utils'
+  useYearFilter,
+} from 'amber'
+import { MembershipType } from 'amber/utils/apiTypes'
 import { membershipValidationSchema } from './membershipUtils'
-import { MembershipType } from '../../utils/apiTypes'
 
 type GameAssignmentEditNode = GameAssignmentNode
 
@@ -38,6 +40,7 @@ interface GameAssignmentDialogProps {
 }
 
 export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open, onClose, membership }) => {
+  const configuration = useConfiguration()
   const [year] = useYearFilter()
   const createGameAssignment = useCreateGameAssignmentMutation()
   const deleteGameAssignment = useDeleteGameAssignmentMutation()
@@ -59,10 +62,10 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const gameOptions = useMemo(() => {
     const games = gData?.games?.edges.map((v) => v.node).filter(notEmpty)
-    return range(7).map((slot) =>
+    return range(configuration.numberOfSlots).map((slot) =>
       games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name }))
     )
-  }, [gData])
+  }, [configuration.numberOfSlots, gData?.games?.edges])
 
   if (sError || gError) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
@@ -80,7 +83,9 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   })
 
   const fillAssignments = (assignments?: GameAssignmentEditNode[]) =>
-    range(8, 1).map((slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot))
+    range(configuration.numberOfSlots + 1, 1).map(
+      (slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot)
+    )
 
   const gamesAndAssignments = fillAssignments(getGameAssignments(sData, memberId)).map((ga) =>
     pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId')
@@ -90,7 +95,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const toDelete: GameAssignmentEditNode[] = []
     const toCreate: GameAssignmentEditNode[] = []
 
-    range(7).forEach((slot) => {
+    range(configuration.numberOfSlots).forEach((slot) => {
       if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
         if (gamesAndAssignments[slot]?.nodeId) {
           toDelete.push(gamesAndAssignments[slot])

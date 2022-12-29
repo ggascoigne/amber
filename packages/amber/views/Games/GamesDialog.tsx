@@ -1,6 +1,6 @@
 import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
 import { FormikHelpers } from 'formik'
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -26,7 +26,7 @@ import {
 } from '../../client'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
-import { configuration, getSlotDescription, playerPreferenceOptions, useUser } from '../../utils'
+import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -60,13 +60,14 @@ const typeOptions = [
   'Other; N/A',
 ]
 
-const estimatedLengthOptions = configuration.virtual
-  ? ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8']
-  : ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '10', '12+']
+const getEstimatedLengthOptions = (configuration: Configuration) =>
+  configuration.virtual
+    ? ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8']
+    : ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '10', '12+']
 
 const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
 
-const defaultValues: GameDialogFormValues = {
+const getDefaultValues = (configuration: Configuration): GameDialogFormValues => ({
   slotId: 0,
   name: '',
   gmNames: '',
@@ -89,7 +90,7 @@ const defaultValues: GameDialogFormValues = {
   message: '',
   teenFriendly: false,
   year: configuration.year,
-}
+})
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(100).required(),
@@ -104,12 +105,13 @@ const validationSchema = Yup.object().shape({
 })
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
+  const configuration = useConfiguration()
   const { select, year, ...rest } = props
-  const selectValues = range(7).reduce(
+  const selectValues = range(configuration.numberOfSlots).reduce(
     (acc, current) => {
       acc.push({
         value: current + 1,
-        text: getSlotDescription({ year, slot: current + 1, local: true }),
+        text: getSlotDescription(configuration, { year, slot: current + 1, local: true }),
       })
       return acc
     },
@@ -119,11 +121,15 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
   return <SelectField {...rest} selectValues={selectValues} />
 }
 
-export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
+export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues: userInitialValues }) => {
+  const configuration = useConfiguration()
+  const defaultValues = useMemo(() => getDefaultValues(configuration), [configuration])
+  const initialValues = userInitialValues === undefined ? defaultValues : userInitialValues
   const editing = initialValues !== defaultValues
   const { userId } = useUser()
   const createOrUpdateGame = useEditGame(onClose, initialValues)
   const handleClose = useDisableBackdropClick(onClose)
+  const estimatedLengthOptions = useMemo(() => getEstimatedLengthOptions(configuration), [configuration])
 
   const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)

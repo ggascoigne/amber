@@ -1,6 +1,6 @@
 import * as React from 'react'
 import type { NextPage } from 'next'
-import Memberships from 'amber/views/Memberships/Memberships'
+import Memberships from '../views/Memberships/Memberships'
 
 const Page: NextPage = () => <Memberships />
 

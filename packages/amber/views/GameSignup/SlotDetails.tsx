@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { Loader, notEmpty, range } from 'ui'
 import { useGetGamesBySlotForSignupQuery } from '../../client'
-import { getSlotDescription } from '../../utils'
+import { getSlotDescription, useConfiguration } from '../../utils'
 
 import { getGms } from '../Games'
 import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
@@ -46,6 +46,7 @@ export interface SlotSummary {
 const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
 
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
+  const configuration = useConfiguration()
   const { classes } = useStyles()
 
   const { data } = useGetGamesBySlotForSignupQuery({ year, slotId })
@@ -53,7 +54,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
 
   const games = data?.games?.edges
 
-  const slotDescription = getSlotDescription({
+  const slotDescription = getSlotDescription(configuration, {
     year,
     slot: slotId,
     local: true,
@@ -124,16 +125,19 @@ interface ChoiceSummaryProps {
   storeTextResults?: any
 }
 
-export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => (
-  <>
-    {range(8, 1).map((slotId) => (
-      <SlotDetails
-        key={slotId}
-        slotId={slotId}
-        year={year}
-        gameChoices={gameChoices}
-        storeTextResults={storeTextResults}
-      />
-    ))}
-  </>
-)
+export const ChoiceSummary: React.FC<ChoiceSummaryProps> = ({ year, gameChoices, storeTextResults }) => {
+  const configuration = useConfiguration()
+  return (
+    <>
+      {range(configuration.numberOfSlots + 1, 1).map((slotId) => (
+        <SlotDetails
+          key={slotId}
+          slotId={slotId}
+          year={year}
+          gameChoices={gameChoices}
+          storeTextResults={storeTextResults}
+        />
+      ))}
+    </>
+  )
+}

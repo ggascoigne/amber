@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
+import { Configuration } from './configContext'
 
-import { configuration } from './configuration'
+export type SlotConfiguration = Pick<Configuration, 'startDates' | 'virtual' | 'year' | 'numberOfSlots'>
 
-const { startDates } = configuration
-
+// ACNW
 // 1 : Thur 7-12
 // 2 : Fri 9-1
 // 3 : Fri 2-6.30
@@ -12,21 +12,45 @@ const { startDates } = configuration
 // 6 : Sat 7-12
 // 7 : Sun 10-4.30
 
-const getRegularSlotTimes = (year: number) => {
+// ACUS
+// 1 : Thur 7-12
+// 2 : Fri 9-1
+// 3 : Fri 2-6.30
+// 4 : Fri 8-12
+// 5 : Sat 10-5
+// 6 : Sat 7-12
+// 7 : Sun 11-5
+// 8 : Sun 7-12
+
+const getRegularSlotTimes = ({ startDates, numberOfSlots }: SlotConfiguration, year: number) => {
   const start = startDates[year].date
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
-  return [
-    /* 1 */ [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
-    /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
-    /* 3 */ [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
-    /* 4 */ [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
-    /* 5 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 16, minute: 30 })],
-    /* 6 */ [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
-    /* 7 */ [start.plus({ days: 3 }).set({ hour: 10 }), start.plus({ days: 3 }).set({ hour: 16, minute: 30 })],
-  ] as const
+  if (numberOfSlots === 7) {
+    return [
+      /* 1 */ [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
+      /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
+      /* 3 */ [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
+      /* 4 */ [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
+      /* 5 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 16, minute: 30 })],
+      /* 6 */ [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
+      /* 7 */ [start.plus({ days: 3 }).set({ hour: 10 }), start.plus({ days: 3 }).set({ hour: 16, minute: 30 })],
+    ] as const
+  } else {
+    return [
+      /* 1 */ [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
+      /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
+      /* 3 */ [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
+      /* 4 */ [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
+      /* 5 */ [start.plus({ days: 2 }).set({ hour: 10 }), start.plus({ days: 2 }).set({ hour: 17 })],
+      /* 6 */ [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
+      /* 7 */ [start.plus({ days: 3 }).set({ hour: 11 }), start.plus({ days: 3 }).set({ hour: 17 })],
+      /* 8 */ [start.plus({ days: 3 }).set({ hour: 19 }), start.plus({ days: 3 }).set({ hour: 24 })],
+    ] as const
+  }
 }
 
+// ACNW
 // Virtual Times will be
 // Thursday ACNW Welcome: 10 am Pacific.
 // Thurs. Slot 1:  11 am to 3 pm Pacific
@@ -40,28 +64,51 @@ const getRegularSlotTimes = (year: number) => {
 
 // PDT = Pacific Daylight time = summer, PST = Pacific Standard time = winter
 
-const getVirtualSlotTimes = (year: number) => {
+// ACUS
+// 1 : Thur 7-12
+// 2 : Fri 10-2
+// 3 : Fri 3-7
+// 4 : Fri 8-12
+// 5 : Sat 12-6
+// 6 : Sat 7-12
+// 7 : Sun 12-6
+// 8 : Sun 7-11
+
+const getVirtualSlotTimes = ({ startDates, numberOfSlots }: SlotConfiguration, year: number) => {
   const start = startDates[year].date
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
-  return [
-    /* 1 */ [start.plus({ hours: 11 }), start.plus({ hours: 15 })],
-    /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
-    /* 3 */ [
-      start.plus({ days: 1 }).set({ hour: 14, minute: 30 }),
-      start.plus({ days: 1 }).set({ hour: 18, minute: 30 }),
-    ],
-    /* 4 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 13 })],
-    /* 5 */ [
-      start.plus({ days: 2 }).set({ hour: 14, minute: 30 }),
-      start.plus({ days: 2 }).set({ hour: 18, minute: 30 }),
-    ],
-    /* 6 */ [start.plus({ days: 3 }).set({ hour: 9 }), start.plus({ days: 3 }).set({ hour: 13 })],
-    /* 7 */ [
-      start.plus({ days: 3 }).set({ hour: 14, minute: 30 }),
-      start.plus({ days: 3 }).set({ hour: 18, minute: 30 }),
-    ],
-  ] as const
+  if (numberOfSlots === 7) {
+    return [
+      /* 1 */ [start.plus({ hours: 11 }), start.plus({ hours: 15 })],
+      /* 2 */ [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
+      /* 3 */ [
+        start.plus({ days: 1 }).set({ hour: 14, minute: 30 }),
+        start.plus({ days: 1 }).set({ hour: 18, minute: 30 }),
+      ],
+      /* 4 */ [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 13 })],
+      /* 5 */ [
+        start.plus({ days: 2 }).set({ hour: 14, minute: 30 }),
+        start.plus({ days: 2 }).set({ hour: 18, minute: 30 }),
+      ],
+      /* 6 */ [start.plus({ days: 3 }).set({ hour: 9 }), start.plus({ days: 3 }).set({ hour: 13 })],
+      /* 7 */ [
+        start.plus({ days: 3 }).set({ hour: 14, minute: 30 }),
+        start.plus({ days: 3 }).set({ hour: 18, minute: 30 }),
+      ],
+    ] as const
+  } else {
+    return [
+      /* 1 */ [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
+      /* 2 */ [start.plus({ days: 1 }).set({ hour: 10 }), start.plus({ days: 1 }).set({ hour: 14 })],
+      /* 3 */ [start.plus({ days: 1 }).set({ hour: 15 }), start.plus({ days: 1 }).set({ hour: 19 })],
+      /* 4 */ [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
+      /* 5 */ [start.plus({ days: 2 }).set({ hour: 12 }), start.plus({ days: 2 }).set({ hour: 18 })],
+      /* 6 */ [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
+      /* 7 */ [start.plus({ days: 3 }).set({ hour: 12 }), start.plus({ days: 3 }).set({ hour: 18 })],
+      /* 8 */ [start.plus({ days: 3 }).set({ hour: 19 }), start.plus({ days: 3 }).set({ hour: 23 })],
+    ] as const
+  }
 }
 
 export enum SlotFormat {
@@ -104,24 +151,29 @@ const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotForma
 const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) =>
   formatSlot(slot, s.setZone('local'), e.setZone('local'), altFormat)
 
-export const getSlotTimes = (year: number) =>
-  startDates[year].virtual ? getVirtualSlotTimes(year) : getRegularSlotTimes(year)
+export const getSlotTimes = (configuration: SlotConfiguration, year: number) =>
+  configuration.startDates[year].virtual
+    ? getVirtualSlotTimes(configuration, year)
+    : getRegularSlotTimes(configuration, year)
 
-export const getSlotDescription = ({
-  year,
-  slot,
-  local = false,
-  altFormat = SlotFormat.DEFAULT,
-  lateStart,
-}: {
-  year: number
-  slot: number
-  local?: boolean
-  altFormat?: SlotFormat
-  lateStart?: DateTime
-}) => {
+export const getSlotDescription = (
+  configuration: SlotConfiguration,
+  {
+    year,
+    slot,
+    local = false,
+    altFormat = SlotFormat.DEFAULT,
+    lateStart,
+  }: {
+    year: number
+    slot: number
+    local?: boolean
+    altFormat?: SlotFormat
+    lateStart?: DateTime
+  }
+) => {
   if (!slot) return 'unscheduled'
-  const [start, end] = getSlotTimes(year)[slot - 1]
+  const [start, end] = getSlotTimes(configuration, year)[slot - 1]
   const realStart = lateStart ?? start
   // console.log({ slot, start, end })
   return local ? formatSlotLocal(slot, realStart, end, altFormat) : formatSlot(slot, realStart, end, altFormat)
@@ -129,17 +181,17 @@ export const getSlotDescription = ({
 
 // I thought that I could just check the TZ, but there turn out to be a ton of possible Pacific Time strings,
 // this way cheats but is easy. And it re-uses a function that I know works
-export const isNotPacificTime = () =>
-  getSlotDescription({
+export const isNotPacificTime = (configuration: SlotConfiguration) =>
+  getSlotDescription(configuration, {
     year: configuration.year,
     slot: 1,
     local: true,
   }) !==
-  getSlotDescription({
+  getSlotDescription(configuration, {
     year: configuration.year,
     slot: 1,
     local: false,
   })
 
 export const isMorningSlot = (slot: number) => [2, 5, 7].includes(slot)
-export const isEveningSlot = (slot: number) => [1, 4, 6].includes(slot)
+export const isEveningSlot = (slot: number) => [1, 4, 6, 8].includes(slot)

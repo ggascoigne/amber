@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
+import { Configuration } from 'amber'
 
-export const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>
+const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>
   DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })
 
 // note that specifying the time zone is important otherwise when you try and display the times in a different tz, it all screws up
@@ -23,13 +24,10 @@ const THIS_YEAR = 2022
 
 const conventionStartDate = startDates[THIS_YEAR].date
 
-const conventionDates = {
-  year: conventionStartDate.year,
-  startDay: conventionStartDate.day,
-  endDay: conventionStartDate.day + 3,
-}
-
-export const configuration = {
+export const configuration: Configuration = {
+  title: 'Ambercon NW',
+  name: 'ACNW',
+  abbr: 'acnw',
   startDates,
   contactEmail: 'acnw@wyrdrune.com',
   gameEmail: 'game@wyrdrune.com',
@@ -37,20 +35,21 @@ export const configuration = {
   conventionStartDate,
   conventionEndDate: conventionStartDate.plus({ days: 3 }),
   year: THIS_YEAR,
-  startDay: conventionDates.startDay,
-  endDay: conventionDates.endDay,
-  registrationOpen: pdxDate({ year: conventionDates.year, month: 7, day: 15 }),
-  registrationDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 2 }),
-  paymentDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 12 }),
-  gameSubmissionDeadline: pdxDate({ year: conventionDates.year, month: 8, day: 15 }),
-  gameGmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 2 }),
-  gameGmFeedbackDeadline: pdxDate({ year: conventionDates.year, month: 9, day: 23 }),
-  gameBookOpen: pdxDate({ year: conventionDates.year, month: 9, day: 5 }),
-  gameChoicesDue: pdxDate({ year: conventionDates.year, month: 9, day: 25 }),
-  gmPreview: pdxDate({ year: conventionDates.year, month: 9, day: 28 }),
-  schedulesSent: pdxDate({ year: conventionDates.year, month: 9, day: 30 }),
-  lastCancellationFullRefund: pdxDate({ year: conventionDates.year, month: 10, day: 19 }),
-  travelCoordination: pdxDate({ year: conventionDates.year, month: 10, day: 19 }),
+  firstYear: 2012,
+  startDay: conventionStartDate.day,
+  endDay: conventionStartDate.day + 3,
+  registrationOpen: pdxDate({ year: conventionStartDate.year, month: 7, day: 15 }),
+  registrationDeadline: pdxDate({ year: conventionStartDate.year, month: 9, day: 2 }),
+  paymentDeadline: pdxDate({ year: conventionStartDate.year, month: 8, day: 12 }),
+  gameSubmissionDeadline: pdxDate({ year: conventionStartDate.year, month: 8, day: 15 }),
+  gameGmPreview: pdxDate({ year: conventionStartDate.year, month: 9, day: 2 }),
+  gameGmFeedbackDeadline: pdxDate({ year: conventionStartDate.year, month: 9, day: 23 }),
+  gameBookOpen: pdxDate({ year: conventionStartDate.year, month: 9, day: 5 }),
+  gameChoicesDue: pdxDate({ year: conventionStartDate.year, month: 9, day: 25 }),
+  gmPreview: pdxDate({ year: conventionStartDate.year, month: 9, day: 28 }),
+  schedulesSent: pdxDate({ year: conventionStartDate.year, month: 9, day: 30 }),
+  lastCancellationFullRefund: pdxDate({ year: conventionStartDate.year, month: 10, day: 19 }),
+  travelCoordination: pdxDate({ year: conventionStartDate.year, month: 10, day: 19 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
   wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
 
@@ -70,7 +69,3 @@ export const configuration = {
   moreThanDoubleOccupancySurcharge: '$15',
   gameRoomCredit: '$120',
 }
-
-export type ConfigurationType = typeof configuration
-type DateFields<T> = { [K in keyof T]: T[K] extends DateTime ? K : never }[keyof T]
-export type ConfigurationDates = Pick<ConfigurationType, DateFields<ConfigurationType>>

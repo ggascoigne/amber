@@ -2,10 +2,10 @@ import { Theme } from '@mui/material'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
 
-import { Acnw, ConfigDate } from 'amber/components'
-import { Banner } from 'amber/components/Banner'
+import { ConfigDate, ContactEmail } from 'amber/components'
 import { BetaWarning } from 'amber/components/BetaWarning'
 import { MdxWithExternalLinks, Page } from 'ui'
+import { Banner } from '../components'
 import WelcomeContentVirtual from '../content/WelcomeContentVirtual.mdx'
 import { DynamicMemberContent } from './Welcome'
 
@@ -60,7 +60,7 @@ export const WelcomeVirtual: React.FC = () => {
         <strong>
           <ConfigDate name='gameGmPreview' />
         </strong>
-        , please contact the organizers by e-mail at <Acnw.ContactEmail /> before registering.
+        , please contact the organizers by e-mail at <ContactEmail /> before registering.
       </p>
       <p>NOTE: all dates are tentative due to potential technological restrictions.</p>
       <ul>

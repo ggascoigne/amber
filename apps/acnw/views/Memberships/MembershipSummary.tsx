@@ -18,24 +18,25 @@ import {
   Page,
   range,
 } from 'ui'
-import { useGetHotelRoomsQuery, useGetMembershipByYearAndIdQuery } from '../../client'
 import {
-  configuration,
-  getCost,
   getInterestLevel,
   getRoomPref,
   getSlotDescription,
   isNotPacificTime,
+  ProfileFormType,
   RoomPref,
+  useConfiguration,
+  useGetCost,
+  useGetHotelRoomsQuery,
+  useGetMembershipByYearAndIdQuery,
+  useProfile,
   useUser,
   useYearFilter,
-} from '../../utils'
-
-import { ProfileFormType, useProfile } from '../../components/Profile'
+} from 'amber'
+import { MembershipType } from 'amber/utils/apiTypes'
 import { BecomeAMember } from './BecomeAMember'
 import { fromSlotsAttending } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
-import { MembershipType } from '../../utils/apiTypes'
 
 const useStyles = makeStyles()({
   card: {
@@ -60,6 +61,7 @@ interface VirtualDetailsProps {
 }
 
 const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
+  const configuration = useConfiguration()
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(membership)
   const { classes } = useStyles()
@@ -69,7 +71,7 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
       <GridContainer item>
         <Field label='Slots you intend to play'>
           <div className={classes.slotSelection}>
-            {isNotPacificTime() && (
+            {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
                   control={
@@ -84,13 +86,13 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
                 />
               </div>
             )}
-            {range(7).map((i) => (
+            {range(configuration.numberOfSlots).map((i) => (
               <FormControlLabel
                 key={i}
                 name={`slotsAttendingData[${i}]`}
                 control={<MuiCheckbox {...{ disabled: true, checked: slotsAttendingData[i] }} />}
                 {...{
-                  label: getSlotDescription({
+                  label: getSlotDescription(configuration, {
                     year: configuration.year,
                     slot: i + 1,
                     local: !showPT,
@@ -128,8 +130,10 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+  const configuration = useConfiguration()
   const { isLoading, error, data } = useGetHotelRoomsQuery()
   const [year] = useYearFilter()
+  const cost = useGetCost(membership)
 
   const room = useMemo(
     () =>
@@ -147,8 +151,6 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
     return <Loader />
   }
 
-  const cost = getCost(membership)
-
   return (
     <Card>
       <HeaderContent name={`${year} Membership for ${profile.fullName!}`} />
@@ -157,7 +159,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           <Field label='Email'>{profile.email}</Field>
           <VerticalGap />
           <Field label='Attendance'>{cost}</Field>
-          <Field label='Payment'>{getInterestLevel(membership.interestLevel)}</Field>
+          <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
           {membership.offerSubsidy && (
             <Field label=''>You have offered to contribute to the ACNW assistance fund, thank you.</Field>
           )}
@@ -183,6 +185,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
 }
 
 const MembershipSummary: React.FC = () => {
+  const configuration = useConfiguration()
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()

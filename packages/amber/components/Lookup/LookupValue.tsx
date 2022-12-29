@@ -8,6 +8,7 @@ import {
   getPlayerPreference,
   getRoomPref,
   getRoomType,
+  useConfiguration,
 } from '../../utils'
 
 interface LookupValueProps {
@@ -27,17 +28,19 @@ export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code })
 }
 
 export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
+  const configuration = useConfiguration()
+
   // note that in several cases we're moving away from using the database lookup values.
   // though there are some that are potentially a bit more fluid and are worth pulling from the database
   switch (realm) {
     case 'gamePlayerPref':
       return <>{getPlayerPreference(code)}</>
     case 'attendance':
-      return <>{getAttendance(code)}</>
+      return <>{getAttendance(configuration, code)}</>
     case 'bathroomType':
       return <>{getBathroomType(code)}</>
     case 'interest':
-      return <>{getInterestLevel(code)}</>
+      return <>{getInterestLevel(configuration, code)}</>
     case 'roomPref':
       return <>{getRoomPref(code)}</>
     case 'roomType':

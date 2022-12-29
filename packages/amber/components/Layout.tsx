@@ -1,8 +1,7 @@
 import { Box, Divider, Drawer, Hidden, List, ListItem } from '@mui/material'
-import React, { useCallback, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 
 import { Children } from 'ui'
-import { Banner } from './Banner'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { LoginButton } from './LoginButton'
@@ -10,13 +9,15 @@ import { MenuItems, RootRoutes } from './Navigation'
 
 const drawerWidth = 240
 
-const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes }> = ({ small = false, rootRoutes }) => (
+const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes; banner: ReactNode }> = ({
+  small = false,
+  rootRoutes,
+  banner,
+}) => (
   <>
     {!small && (
       <>
-        <Box sx={(theme) => ({ ...theme.mixins.toolbar })}>
-          <Banner to='/' />
-        </Box>
+        <Box sx={(theme) => ({ ...theme.mixins.toolbar })}>{banner}</Box>
         <Divider />
       </>
     )}
@@ -54,67 +55,67 @@ const RightMenu: React.FC<{ small?: boolean }> = (props) => (
   </List>
 )
 
-export const Layout: React.FC<Children & { rootRoutes: RootRoutes; title: string }> = React.memo(
-  ({ children, rootRoutes, title }) => {
-    const [mobileOpen, setMobileOpen] = useState(false)
+export type LayoutProps = Children & { rootRoutes: RootRoutes; title: string; banner: ReactNode }
 
-    const handleDrawerToggle = useCallback(() => {
-      setMobileOpen(!mobileOpen)
-    }, [mobileOpen])
+export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes, title, banner }) => {
+  const [mobileOpen, setMobileOpen] = useState(false)
 
-    return (
-      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-        <Header handleDrawerToggle={handleDrawerToggle} rightMenu={RightMenu} title={title} />
-        <Box
-          component='nav'
-          sx={(theme) => ({
-            [theme.breakpoints.up('md')]: {
-              width: drawerWidth,
-              flexShrink: 0,
-            },
-          })}
-        >
-          <Hidden mdUp>
-            <Drawer
-              variant='temporary'
-              anchor='left'
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              PaperProps={{
-                sx: {
-                  width: drawerWidth,
-                  overflowX: 'hidden',
-                },
-              }}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-              }}
-            >
-              <RightMenu small />
-              <Divider />
-              <DrawerContents small rootRoutes={rootRoutes} />
-            </Drawer>
-          </Hidden>
-          <Hidden mdDown>
-            <Drawer
-              PaperProps={{
-                sx: {
-                  width: drawerWidth,
-                  overflowX: 'hidden',
-                },
-              }}
-              variant='permanent'
-              open
-            >
-              <DrawerContents rootRoutes={rootRoutes} />
-            </Drawer>
-          </Hidden>
-        </Box>
-        <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
-          <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
-          {children}
-        </Box>
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen(!mobileOpen)
+  }, [mobileOpen])
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+      <Header handleDrawerToggle={handleDrawerToggle} rightMenu={RightMenu} title={title} />
+      <Box
+        component='nav'
+        sx={(theme) => ({
+          [theme.breakpoints.up('md')]: {
+            width: drawerWidth,
+            flexShrink: 0,
+          },
+        })}
+      >
+        <Hidden mdUp>
+          <Drawer
+            variant='temporary'
+            anchor='left'
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            PaperProps={{
+              sx: {
+                width: drawerWidth,
+                overflowX: 'hidden',
+              },
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            <RightMenu small />
+            <Divider />
+            <DrawerContents small rootRoutes={rootRoutes} banner={banner} />
+          </Drawer>
+        </Hidden>
+        <Hidden mdDown>
+          <Drawer
+            PaperProps={{
+              sx: {
+                width: drawerWidth,
+                overflowX: 'hidden',
+              },
+            }}
+            variant='permanent'
+            open
+          >
+            <DrawerContents rootRoutes={rootRoutes} banner={banner} />
+          </Drawer>
+        </Hidden>
       </Box>
-    )
-  }
-)
+      <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
+        <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
+        {children}
+      </Box>
+    </Box>
+  )
+})

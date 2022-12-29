@@ -2,23 +2,26 @@ import { Card, useTheme } from '@mui/material'
 import React from 'react'
 import { CardBody } from 'ui'
 import { ConfigDate } from '../../components'
-import { configuration } from '../../utils'
+import { useConfiguration } from '../../utils'
 
 interface SignupInstructionsProps {
   year: number
 }
 export const SignupInstructions: React.FC<SignupInstructionsProps> = ({ year }) => {
+  const configuration = useConfiguration()
   const theme = useTheme()
 
   return (
     <>
-      <h2>Game Book - ACNW {year}</h2>
+      <h2>
+        Game Book - {configuration.name} {year}
+      </h2>
 
       {configuration.virtual ? (
         <>
           <h4>
-            Instructions for Game Selections - <span style={{ color: theme.palette.error.main }}>virtual</span> AmberCon
-            NW edition
+            Instructions for Game Selections - <span style={{ color: theme.palette.error.main }}>virtual</span>{' '}
+            {configuration.title} edition
           </h4>
 
           <p>
@@ -44,10 +47,10 @@ export const SignupInstructions: React.FC<SignupInstructionsProps> = ({ year }) 
           <Card elevation={3}>
             <CardBody>
               <p>
-                Some games require technology, rules purchases, or subscriptions beyond AmberCon NW's Discord official
-                server. Some may also extend in duration past the end of the official slot. Make sure you are willing
-                and technologically able to meet any special requirements before choosing one of those games. Please be
-                aware of this if you choose "any game" in a slot.
+                Some games require technology, rules purchases, or subscriptions beyond {configuration.name}'s Discord
+                official server. Some may also extend in duration past the end of the official slot. Make sure you are
+                willing and technologically able to meet any special requirements before choosing one of those games.
+                Please be aware of this if you choose "any game" in a slot.
               </p>
             </CardBody>
           </Card>

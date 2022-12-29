@@ -1,7 +1,11 @@
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai/vanilla'
+import { useAtom } from 'jotai/react'
+import { useConfiguration } from './configContext'
 
-import { configuration } from './configuration'
+const yearFilterAtom = atom<number>(0)
 
-const yearFilterAtom = atom<number>(configuration.year)
-
-export const useYearFilter = () => useAtom(yearFilterAtom)
+export const useYearFilter = (): [number, (args: ((prev: number) => number) | number) => void] => {
+  const configuration = useConfiguration()
+  const [year, setter] = useAtom(yearFilterAtom)
+  return [year === 0 ? configuration.year : year, setter]
+}

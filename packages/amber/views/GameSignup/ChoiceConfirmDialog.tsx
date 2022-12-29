@@ -14,9 +14,9 @@ import {
   useDisableBackdropClick,
   useNotification,
 } from 'ui'
-import { Acnw } from '../../components'
+import { ContactEmail } from '../../components'
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from '../../client'
-import { useSendEmail } from '../../utils'
+import { useConfiguration, useSendEmail } from '../../utils'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelector'
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
@@ -144,6 +144,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
   gameSubmission,
 }) => {
   const theme = useTheme()
+  const configuration = useConfiguration()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
   const createOrUpdateChoiceConfirmation = useEditChoiceConfirmation(onClose)
   const [textResults, setTextResults] = useState<Record<number, SlotSummary>>({})
@@ -161,7 +162,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
 
   const filledOutChoices = useMemo(
     () =>
-      range(8, 1).flatMap((slotId) => {
+      range(configuration.numberOfSlots + 1, 1).flatMap((slotId) => {
         const thisSlotChoices: ChoiceType[] = orderChoices(
           gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
         ) as ChoiceType[]
@@ -180,7 +181,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         }
         return thisSlotChoices
       }),
-    [gameChoices, year]
+    [configuration.numberOfSlots, gameChoices, year]
   )
 
   const updateChoices = useCallback(() => {
@@ -212,12 +213,13 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>
       <DialogContent>
         <p>
-          The following is a preview of your game selections for ACNW {year}. Once you're satisfied that everything is
-          in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this page.
+          The following is a preview of your game selections for {configuration.name} {year}. Once you're satisfied that
+          everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this
+          page.
         </p>
 
         <p>
-          Gaming or convention related questions should be sent to <Acnw.ContactEmail />
+          Gaming or convention related questions should be sent to <ContactEmail />
         </p>
       </DialogContent>
       <DialogContent>

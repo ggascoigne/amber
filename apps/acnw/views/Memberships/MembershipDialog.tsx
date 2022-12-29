@@ -1,10 +1,8 @@
 import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { EditDialog, OnCloseHandler } from 'ui'
-import { configuration, useUser, useYearFilter } from '../../utils'
-
-import { useAuth } from '../../components/Auth'
-import { ProfileFormType } from '../../components/Profile'
+import { ProfileFormType, useAuth, useConfiguration, useUser, useYearFilter } from 'amber'
+import type { MembershipType } from 'amber/utils/apiTypes'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   fromSlotsAttending,
@@ -13,7 +11,6 @@ import {
   toSlotsAttending,
   useEditMembership,
 } from './membershipUtils'
-import type { MembershipType } from '../../utils/apiTypes'
 
 type FormValues = MembershipType
 
@@ -25,6 +22,7 @@ interface MembershipDialogProps {
 }
 
 export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClose, profile, initialValues }) => {
+  const configuration = useConfiguration()
   const { user } = useAuth()
   const { userId } = useUser()
   const createOrUpdateMembership = useEditMembership(onClose)
@@ -42,13 +40,13 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   }
 
   const values = useMemo(() => {
-    // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
+    // note that for Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
-    const defaultValues: MembershipType = getDefaultMembership(userId!, isVirtual)
+    const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values = initialValues ? { ...initialValues } : { ...defaultValues }
     _values.slotsAttendingData = fromSlotsAttending(_values)
     return _values
-  }, [initialValues, isVirtual, userId])
+  }, [configuration, initialValues, isVirtual, userId])
 
   return (
     <EditDialog

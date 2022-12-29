@@ -2,13 +2,13 @@ import { Button, Theme } from '@mui/material'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { Link } from 'amber/components/Navigation'
-import { Acnw, ConfigDate, MDY } from 'amber/components'
-import { Banner } from 'amber/components/Banner'
+import { ConfigDate, ContactEmail, MDY } from 'amber/components'
 import { MdxWithExternalLinks, Page } from 'ui'
 import { IsMember } from 'amber/utils'
 
 import { BetaWarning } from 'amber/components/BetaWarning'
-import { BecomeAMember } from 'amber/views/Memberships'
+import { Banner } from '../components'
+import { BecomeAMember } from './Memberships'
 import WelcomeContent from '../content/WelcomeContent.mdx'
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -73,7 +73,7 @@ export const Welcome: React.FC = () => {
         <strong>
           <ConfigDate name='gameGmPreview' format={MDY} />
         </strong>
-        , please contact the organizers by e-mail at <Acnw.ContactEmail /> before registering.
+        , please contact the organizers by e-mail at <ContactEmail /> before registering.
       </p>
 
       <ul>

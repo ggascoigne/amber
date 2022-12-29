@@ -5,6 +5,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
 import {
   CheckboxWithLabel,
+  EditDialog,
   GraphQLError,
   GridContainer,
   GridItem,
@@ -24,10 +25,8 @@ import {
   useUpdateGameMutation,
   useUpdateGameRoomMutation,
 } from '../../client'
-
-import { EditDialog } from 'ui'
 import { GameRoom } from './GameRooms'
-import { useYearFilter } from '../../utils'
+import { useConfiguration, useYearFilter } from '../../utils'
 
 const useStyles = makeStyles()({
   hasRoom: {
@@ -59,6 +58,8 @@ interface GameRoomDialogProps {
 }
 
 export const useEditGameRoom = (onClose: OnCloseHandler) => {
+  const configuration = useConfiguration()
+
   const createGameRoomDetail = useCreateGameRoomMutation()
   const updateGameRoomDetail = useUpdateGameRoomMutation()
   const updateGame = useUpdateGameMutation()
@@ -86,7 +87,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         )
         .then(() => {
           if (values.gamesChanged) {
-            const updaters = range(7).reduce((acc: Promise<any>[], slot: number) => {
+            const updaters = range(configuration.numberOfSlots).reduce((acc: Promise<any>[], slot: number) => {
               const { original, current } = values.games[slot]
               if (current !== original) {
                 if (current) {
@@ -158,6 +159,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
 }
 
 export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, initialValues }) => {
+  const configuration = useConfiguration()
   const createOrUpdateGameRoom = useEditGameRoom(onClose)
   const [year] = useYearFilter()
   const { error: gameError, data: gData } = useGetGamesByYearQuery(
@@ -179,7 +181,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
 
   const workingValues: GameRoomFormValues = useMemo(() => {
     const gamesInThisRoom = games
-      ? range(7).map((slot) => {
+      ? range(configuration.numberOfSlots).map((slot) => {
           const val =
             games?.filter((g) => g.slotId === slot + 1).find((g) => g.roomId === initialValues?.id)?.id ?? null
           return {
@@ -198,7 +200,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
       ...defaultGames,
     }
     return initialValues ? { ...initialValues, ...defaultGames } : { ...defaultValues }
-  }, [games, initialValues])
+  }, [configuration.numberOfSlots, games, initialValues])
 
   if (gameError) {
     return <GraphQLError error={gameError} />
@@ -243,7 +245,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
             <Divider orientation='horizontal' />
           </GridItem>
           {values?.id
-            ? range(8, 1).map((slotId) => {
+            ? range(configuration.numberOfSlots + 1, 1).map((slotId) => {
                 const options = gamesBySlot(slotId)
                 const value = options.find((game) => game.id === values.games?.[slotId - 1]?.current) ?? null
                 return (

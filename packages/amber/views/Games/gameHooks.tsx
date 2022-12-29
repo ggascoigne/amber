@@ -14,7 +14,7 @@ import {
   useGetMembershipsByYearQuery,
   useUpdateGameByNodeIdMutation,
 } from '../../client'
-import { configuration, useSendEmail, useSetting, useUser, useYearFilter } from '../../utils'
+import { useConfiguration, useSendEmail, useSetting, useUser, useYearFilter } from '../../utils'
 
 import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormType, useProfile } from '../../components/Profile'
@@ -129,6 +129,7 @@ export type GameDialogFormValues = Omit<
   Partial<Node>
 
 export const useEditGame = (onClose: OnCloseHandler, initialValues?: GameDialogFormValues) => {
+  const configuration = useConfiguration()
   const createGame = useCreateGameMutation()
   const updateGame = useUpdateGameByNodeIdMutation()
   const queryClient = useQueryClient()
@@ -256,6 +257,7 @@ export const useEditGame = (onClose: OnCloseHandler, initialValues?: GameDialogF
       }
     },
     [
+      configuration.year,
       createGame,
       membershipList,
       notify,

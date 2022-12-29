@@ -2,7 +2,7 @@ import { DialogContentText } from '@mui/material'
 import { useFormikContext } from 'formik'
 import React from 'react'
 import { makeStyles } from 'tss-react/mui'
-import { Acnw } from '../../components'
+import { ContactEmail, useConfiguration } from 'amber'
 
 import { getOwed } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
@@ -14,9 +14,10 @@ const useStyles = makeStyles()({
 })
 
 export const MembershipStepPayment: React.FC = () => {
+  const configuration = useConfiguration()
   const { classes } = useStyles()
   const { values } = useFormikContext<MembershipWizardFormValues>()
-  const toPay = getOwed(values.membership)
+  const toPay = getOwed(configuration, values.membership)
   return (
     <>
       {toPay && (
@@ -36,7 +37,7 @@ export const MembershipStepPayment: React.FC = () => {
             Portland, OR 97203-4939
           </DialogContentText>
           <DialogContentText>
-            If you need to contact Simone, do so at <Acnw.ContactEmail />
+            If you need to contact Simone, do so at <ContactEmail />
           </DialogContentText>
 
           <DialogContentText>
@@ -46,7 +47,7 @@ export const MembershipStepPayment: React.FC = () => {
       )}
       <DialogContentText>
         Click below to complete your registration. You will receive an email confirmation. If you don't receive this
-        confirmation, let us know as soon as possible at <Acnw.ContactEmail />.
+        confirmation, let us know as soon as possible at <ContactEmail />.
       </DialogContentText>
     </>
   )

@@ -14,7 +14,7 @@ import {
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
 } from '../../client'
-import { configuration, getSlotDescription, useGetMemberShip, useSetting, useUser, useYearFilter } from '../../utils'
+import { getSlotDescription, useConfiguration, useGetMemberShip, useSetting, useUser, useYearFilter } from '../../utils'
 
 import { ConfigDate, MDY } from '../../components'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
@@ -74,22 +74,24 @@ const initialState: Partial<TableState<Game>> = {
 }
 
 const VirtualGmBlurb = () => {
+  const configuration = useConfiguration()
   const { classes } = useStyles()
   return (
     <>
-      <p>Thank you for considering offering games for virtualACNW!</p>
+      <p>Thank you for considering offering games for virtual{configuration.name}!</p>
       <p>While most things we need are similar to our usual years, there are a few key differences:</p>
       <ol className={classes.blurb}>
         <li>
           <p>
             <strong>Slot times and durations</strong>: Rather than our usual mix of short slots and long slots, all
-            slots for virtualACNW are four hours long. If you plan to run, say, a 6-hour game, simply choose 2 slots in
-            the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part 1 and part 2.
+            slots for virtual{configuration.name} are four hours long. If you plan to run, say, a 6-hour game, simply
+            choose 2 slots in the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part
+            1 and part 2.
           </p>
 
           <p>
-            Just like at a regular AmberCon NW, when your game's scheduled time is over, another group may need to use
-            your room, and your players may need to go off to their next events.
+            Just like at a regular {configuration.title}, when your game's scheduled time is over, another group may
+            need to use your room, and your players may need to go off to their next events.
           </p>
         </li>
 
@@ -112,8 +114,8 @@ const VirtualGmBlurb = () => {
         <li>
           <p>
             <strong>Off-book games</strong>: Night owls, early birds, and our European members may wish to run games in
-            addition to those in the official game book. We will be arranging space on the AmberCon NW Discord server
-            for you to list your games.
+            addition to those in the official game book. We will be arranging space on the {configuration.name} Discord
+            server for you to list your games.
           </p>
         </li>
       </ol>
@@ -123,9 +125,10 @@ const VirtualGmBlurb = () => {
 
 const GmBlurb = () => {
   const { classes } = useStyles()
+  const configuration = useConfiguration()
   return (
     <>
-      <p>Thank you for considering offering games for ACNW!</p>
+      <p>Thank you for considering offering games for {configuration.name}!</p>
 
       <p>
         The deadline for game submissions is <ConfigDate name='gameSubmissionDeadline' format={MDY} />
@@ -158,8 +161,10 @@ const GmBlurb = () => {
             slots. Saturday and Sunday offer longer slots. The schedule is as follows:
           </p>
           <ul>
-            {range(7).map((slotNo) => (
-              <li key={slotNo}>{getSlotDescription({ year: configuration.year, slot: slotNo + 1, local: true })}</li>
+            {range(configuration.numberOfSlots).map((slotNo) => (
+              <li key={slotNo}>
+                {getSlotDescription(configuration, { year: configuration.year, slot: slotNo + 1, local: true })}
+              </li>
             ))}
           </ul>
         </li>
@@ -183,6 +188,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   const deleteGame = useDeleteGameMutation()
   const queryClient = useQueryClient()
   const { userId } = useUser()
+  const configuration = useConfiguration()
   const displayGameBook = useSetting('display.game.book')
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
