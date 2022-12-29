@@ -14,8 +14,8 @@ assert.ok(managementClientSecret, 'The "MANAGEMENT_CLIENT_SECRET" environment va
 
 export const auth0Secret = process.env.AUTH0_SECRET
 assert.ok(auth0Secret, 'The "AUTH0_SECRET" environment variable is required')
-export const auth0BaseUrl = process.env.AUTH0_BASE_URL
-assert.ok(auth0BaseUrl, 'The "AUTH0_BASE_URL" environment variable is required')
+export const auth0BaseUrl = process.env.AUTH0_BASE_URL ?? process.env.VERCEL_URL
+assert.ok(auth0BaseUrl, 'Either the "AUTH0_BASE_URL" or "VERCEL_URL" environment variable is required')
 export const auth0IssuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL
 assert.ok(auth0IssuerBaseUrl, 'The "AUTH0_ISSUER_BASE_URL" environment variable is required')
 export const auth0ClientId = process.env.AUTH0_CLIENT_ID
