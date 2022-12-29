@@ -14,6 +14,7 @@ packages/server/ui
 .DS_Store
 **/.env
 **/.env.*
+!**/.env.production
 
 **/npm-debug.log*
 **/lerna-debug.log*
