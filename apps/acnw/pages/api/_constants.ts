@@ -1,4 +1,4 @@
-import { configuration as _conf } from '../_config'
+import { configuration as _conf } from '../../config'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const assert = require('assert').strict

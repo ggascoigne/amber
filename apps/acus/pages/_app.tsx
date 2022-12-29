@@ -15,7 +15,7 @@ import { Layout } from 'amber/components/Layout'
 import { CustomLuxonUtils } from 'amber/utils/luxonUtils'
 import { ConfigProvider } from 'amber/utils'
 import { rootRoutes } from '../views/Routes'
-import { configuration } from './_config'
+import { configuration } from '../config'
 import { Banner } from '../components'
 
 // Client-side cache, shared for the whole session of the user in the browser.
