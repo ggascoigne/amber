@@ -11,7 +11,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
   },
   {
     path: '/about',
-    label: 'AmberCon US',
+    label: 'Ambercon US',
     subText: 'What you get and what it costs',
     exact: false,
   },
@@ -104,7 +104,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
   {
     path: '/graphiql',
     label: 'GraphiQL',
-    subText: 'Dynamically query the ACNW database',
+    subText: 'Dynamically query the ACUS database',
     exact: false,
     permission: Perms.GraphiqlLoad,
   },

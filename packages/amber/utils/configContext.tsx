@@ -19,7 +19,10 @@ export type Configuration = {
   conventionStartDate: DateTime
   conventionEndDate: DateTime
   year: number
+  // the first year that we have data for
   firstYear: number
+  // the first year that convention ran
+  startYear: number
   startDay: import('luxon').DayNumbers
   endDay: number
   registrationOpen: DateTime

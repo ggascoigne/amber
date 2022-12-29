@@ -36,11 +36,13 @@ export const configuration: Configuration = {
   conventionEndDate: conventionStartDate.plus({ days: 3 }),
   year: THIS_YEAR,
   firstYear: 2012,
+  startYear: 1997,
   startDay: conventionStartDate.day,
   endDay: conventionStartDate.day + 3,
   registrationOpen: pdxDate({ year: conventionStartDate.year, month: 7, day: 15 }),
   registrationDeadline: pdxDate({ year: conventionStartDate.year, month: 9, day: 2 }),
   paymentDeadline: pdxDate({ year: conventionStartDate.year, month: 8, day: 12 }),
+
   gameSubmissionDeadline: pdxDate({ year: conventionStartDate.year, month: 8, day: 15 }),
   gameGmPreview: pdxDate({ year: conventionStartDate.year, month: 9, day: 2 }),
   gameGmFeedbackDeadline: pdxDate({ year: conventionStartDate.year, month: 9, day: 23 }),
@@ -48,6 +50,7 @@ export const configuration: Configuration = {
   gameChoicesDue: pdxDate({ year: conventionStartDate.year, month: 9, day: 25 }),
   gmPreview: pdxDate({ year: conventionStartDate.year, month: 9, day: 28 }),
   schedulesSent: pdxDate({ year: conventionStartDate.year, month: 9, day: 30 }),
+
   lastCancellationFullRefund: pdxDate({ year: conventionStartDate.year, month: 10, day: 19 }),
   travelCoordination: pdxDate({ year: conventionStartDate.year, month: 10, day: 19 }),
   mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2

@@ -46,9 +46,9 @@ export const ConventionsDatesFull: React.FC<{ pre?: string; intra?: string; post
   </>
 )
 
-export const AcnwOrdinal = ({ skipSpace = 'neither' }: SpacingProps) => {
+export const ConventionOrdinal = ({ skipSpace = 'neither' }: SpacingProps) => {
   const configuration = useConfiguration()
-  return <Spacing skipSpace={skipSpace}>{getOrdinalWord(1 + configuration.year - 1997)} </Spacing>
+  return <Spacing skipSpace={skipSpace}>{getOrdinalWord(1 + configuration.year - configuration.startYear)} </Spacing>
 }
 
 export const ConventionYear = ({ skipSpace = 'neither' }: SpacingProps) => {
