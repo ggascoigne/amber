@@ -82,13 +82,6 @@ export const Welcome: React.FC = () => {
             Registration Open: <ConfigDate name='registrationOpen' format={MDY} />
           </span>
         </li>
-        {/*
-        <li>
-          <span className={classes.deadline}>
-            Initial registration and deposits: <ConfigDate name='registrationDeadline' format={MDY}/>
-          </span>
-        </li>
-*/}
         <li>
           <span className={classes.deadline}>
             Membership payment in full: <ConfigDate name='paymentDeadline' format={MDY} />
@@ -99,7 +92,6 @@ export const Welcome: React.FC = () => {
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' format={MDY} />
           </span>
         </li>
-        {/* and on home/gameBookClosed.gsp */}
         <li>
           <span className={classes.deadline}>
             Game Book preview to GMs: <ConfigDate name='gameGmPreview' format={MDY} />
@@ -115,11 +107,6 @@ export const Welcome: React.FC = () => {
             Game Selections due: <ConfigDate name='gameChoicesDue' format={MDY} />
           </span>
         </li>
-        {/* <li> */}
-        {/*  <span className={classes.deadline}> */}
-        {/*    Last date for cancellation with full refund: <ConfigDate name='gameSubmissionDeadline' format={MDY}/> */}
-        {/*  </span> */}
-        {/* </li> */}
         <li>
           <span className={classes.deadline}>
             Schedule previews to GMs: <ConfigDate name='gmPreview' format={MDY} />
@@ -130,30 +117,6 @@ export const Welcome: React.FC = () => {
             Schedules SENT to all players: <ConfigDate name='schedulesSent' format={MDY} />
           </span>
         </li>
-        {/* <li> */}
-        {/*  <span className={classes.deadline}> */}
-        {/*    Orders for shirts: October 9, <Acnw.ConventionYear /> */}
-        {/*  </span> */}
-        {/* </li> */}
-        {/* referenced in shirtOrder / _form.gsp */}
-        {/*
-        <li>
-          <span className={classes.deadline}>
-            Travel coordination information due: <ConfigDate name='travelCoordination' format={MDY} />
-          </span>
-        </li>
-*/}
-        <li>
-          <span className={classes.deadline}>
-            Last date for cancellation with partial refund:{' '}
-            <ConfigDate name='lastCancellationFullRefund' format={MDY} />
-          </span>
-        </li>
-        {/* <li> */}
-        {/*  <span className={classes.deadline}> */}
-        {/*    Wednesday dinner RSVP: October 23, <Acnw.ConventionYear /> */}
-        {/*  </span> */}
-        {/* </li> */}
       </ul>
     </Page>
   )

@@ -24,6 +24,7 @@ export const BecomeAMember = () => {
   const router = useRouter()
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
+  const disableLogin = useSetting('disable.login', false)
 
   return (
     <IsNotMember>
@@ -37,15 +38,17 @@ export const BecomeAMember = () => {
             <h2>Attending {configuration.title}</h2>
           )}
           <IsNotLoggedIn>
-            <Button
-              variant='outlined'
-              color='primary'
-              size='large'
-              component={Link}
-              href={`/api/auth/login?returnTo=${router.asPath}`}
-            >
-              Login / Sign Up
-            </Button>
+            {!disableLogin ? (
+              <Button
+                variant='outlined'
+                color='primary'
+                size='large'
+                component={Link}
+                href={`/api/auth/login?returnTo=${router.asPath}`}
+              >
+                Login / Sign Up
+              </Button>
+            ) : null}
           </IsNotLoggedIn>
 
           <IsLoggedIn>

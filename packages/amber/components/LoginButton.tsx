@@ -8,7 +8,7 @@ import { Box } from '@mui/system'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Children, useNotification } from 'ui'
-import { useIsGm } from '../utils'
+import { useIsGm, useSetting } from '../utils'
 
 import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
@@ -140,6 +140,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const router = useRouter()
   const [profileOpen, setProfileOpen] = useState(false)
   const profile = useProfile()
+  const disableLogin = useSetting('disable.login', false)
 
   useEffect(() => setAuthInitialized(!isLoading), [isLoading])
 
@@ -258,7 +259,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
     </>
   ) : (
     <Button
-      disabled={!authInitialized}
+      disabled={!authInitialized || disableLogin}
       sx={{
         position: 'relative',
         fontWeight: 400,
