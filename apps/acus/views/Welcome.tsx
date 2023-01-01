@@ -71,7 +71,7 @@ export const Welcome: React.FC = () => {
       <p>
         If you are accessing this site after{' '}
         <strong>
-          <ConfigDate name='gameGmPreview' format={MDY} />
+          <ConfigDate name='gameChoicesDue' format={MDY} />
         </strong>
         , please contact the organizers by e-mail at <ContactEmail /> before registering.
       </p>
