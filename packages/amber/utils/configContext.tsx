@@ -53,6 +53,7 @@ export type Configuration = {
   virtualCost: undefined
   moreThanDoubleOccupancySurcharge: string
   gameRoomCredit: string
+  useUsAttendanceOptions: boolean
 }
 
 export type ConfigurationType = Configuration

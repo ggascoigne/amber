@@ -49,10 +49,20 @@ export const getOwed = (configuration: Configuration, values: MembershipType) =>
   if (values.interestLevel === InterestLevel.Deposit) {
     return configuration.deposit
   }
-  if (values.attendance === Attendance.ThursSun) {
-    return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
+  if (configuration.useUsAttendanceOptions) {
+    const acusPrices: Record<string, number> = {
+      '1': 25,
+      '2': 40,
+      '3': 55,
+      '4': 70,
+    }
+    return acusPrices[values.attendance] ?? 0
+  } else {
+    if (values.attendance === Attendance.ThursSun) {
+      return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
+    }
+    return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
   }
-  return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
 }
 
 export const fromMembershipValues = (membershipValues: MembershipType) =>

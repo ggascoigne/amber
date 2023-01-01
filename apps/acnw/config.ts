@@ -71,4 +71,5 @@ export const configuration: Configuration = {
   virtualCost: undefined,
   moreThanDoubleOccupancySurcharge: '$15',
   gameRoomCredit: '$120',
+  useUsAttendanceOptions: false,
 }

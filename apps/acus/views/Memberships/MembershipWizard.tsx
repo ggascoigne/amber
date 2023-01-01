@@ -136,13 +136,6 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         hasErrors: hasConventionStepErrors,
       },
       {
-        name: 'Rooms',
-        optional: false,
-        hasForm: true,
-        render: <MembershipStepRooms prefix='membership.' />,
-        hasErrors: hasRoomsStepErrors,
-      },
-      {
         name: 'Admin',
         optional: false,
         hasForm: true,

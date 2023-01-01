@@ -39,15 +39,29 @@ export const BecomeAMember = () => {
           )}
           <IsNotLoggedIn>
             {!disableLogin ? (
-              <Button
-                variant='outlined'
-                color='primary'
-                size='large'
-                component={Link}
-                href={`/api/auth/login?returnTo=${router.asPath}`}
-              >
-                Login / Sign Up
-              </Button>
+              <>
+                <h4>New Authentication system.</h4>
+                <p>
+                  We have a new authentication system. If you had an account for a previous Ambercon, you can link back
+                  to it by signing up again using the same email address as before and then confirming that email
+                  address. If you are a GM, this will give you option of copying games forward.
+                </p>
+                {/*
+                <p>
+                  Please note, that you can also login with either Facebook or Google. The same email advice applies in
+                  this case too.
+                </p>
+*/}
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  size='large'
+                  component={Link}
+                  href={`/api/auth/login?returnTo=${router.asPath}`}
+                >
+                  Login / Sign Up
+                </Button>
+              </>
             ) : null}
           </IsNotLoggedIn>
 

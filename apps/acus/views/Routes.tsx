@@ -22,6 +22,12 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     exact: false,
   },
   {
+    path: '/hotel',
+    label: 'Hotel',
+    subText: 'Convention Hotel Details',
+    exact: false,
+  },
+  {
     path: '/schedule',
     label: 'Schedule',
     subText: 'Your Schedule',

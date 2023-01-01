@@ -207,7 +207,7 @@ const MembershipSummary: React.FC = () => {
     return <Loader />
   }
   const membership = data.memberships?.nodes[0]
-  if (!membership) {
+  if (!membership && !query.all) {
     return (
       <Page title='Become a Member'>
         <BecomeAMember />
@@ -223,14 +223,23 @@ const MembershipSummary: React.FC = () => {
       )}
 
       <br />
-      {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
-      <GridContainer>
-        <GridItem xs={12} sm={5} className={classes.gridItem}>
-          <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
-            Edit
-          </Button>
-        </GridItem>
-      </GridContainer>
+      {membership ? (
+        <>
+          {/* eslint-disable-next-line @getify/proper-ternary/nested */}
+          {isVirtual ? (
+            <VirtualDetails membership={membership} />
+          ) : (
+            <Details membership={membership} profile={profile!} />
+          )}
+          <GridContainer>
+            <GridItem xs={12} sm={5} className={classes.gridItem}>
+              <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
+                Edit
+              </Button>
+            </GridItem>
+          </GridContainer>
+        </>
+      ) : null}
     </Page>
   )
 }

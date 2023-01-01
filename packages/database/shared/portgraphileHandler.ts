@@ -20,6 +20,7 @@ export const getPostgraphileHandler = (pool: any, req: NextApiRequest, res: Next
     pgSettings: async (request) => {
       const { user } = (await getSession(request, res)) ?? { user: null }
       const settings: Record<string, any> = {}
+
       if (user) {
         const admin = isAdmin(user)
         const userId = getUserId(user)

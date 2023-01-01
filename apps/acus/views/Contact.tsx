@@ -1,9 +1,10 @@
-import { Card } from '@mui/material'
+import { Box, Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
 import { ContactEmail } from 'amber/components'
 import { useConfiguration } from 'amber/utils'
 import { CardBody, Page } from 'ui'
+import { ReactNode } from 'react'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
@@ -18,6 +19,31 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
+type PersonType = {
+  name: string
+  title: string
+  linkedIn?: string
+  facebook?: string
+  children: ReactNode
+}
+
+const Person: React.FC<PersonType> = ({ name, title, children, facebook, linkedIn }) => {
+  const { classes } = useStyles()
+  return (
+    <Card className={classes.card}>
+      <CardBody>
+        <h4>
+          {name}: ({title})
+        </h4>
+        <Box>{children}</Box>
+        <Box sx={{ pt: 2 }}>
+          Public Profile: <a href={linkedIn}>LinkedIn</a> | <a href={facebook}>FaceBook</a>
+        </Box>
+      </CardBody>
+    </Card>
+  )
+}
+
 const Contact = () => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
@@ -28,56 +54,56 @@ const Contact = () => {
           <h3>Payments</h3>
           <p>Payments should be made out to:</p>
 
-          <h5 className={classes.address}>Simone Cooper</h5>
-
-          <p>and sent to</p>
-
-          <h5 className={classes.address}>
-            AmberCon NW
-            <br />
-            c/o Simone Cooper
-            <br />
-            8047 N. Syracuse St.
-            <br />
-            Portland, OR 97203-4939
-            <br />
-          </h5>
-
-          <p>
-            If you should need to contact Simone, do so at <ContactEmail />.
-          </p>
+          <p>Details to come</p>
         </CardBody>
       </Card>
-      <h3>Organizer</h3>
-      <p>
-        Simone Cooper was also the founder and organizer of AmberCon UK, the first Amber Diceless Role Playing Game
-        convention to take place outside of the US, and in fact outside of Detroit, the game's birthplace.
-      </p>
 
-      <p>
-        After running the convention successfully for four years, Simone moved to Portland, Oregon in 1996, where she
-        discovered McMenamins Edgefield, an AmberCon waiting to happen.
-      </p>
-
-      <p>
-        Write in and say "hi" by emailing <ContactEmail />
-      </p>
-
-      <h3>Game Book Goddess</h3>
-      <p>
-        As a child Amber Cook looked up and saw the Zelazny books on her grandparent's bookshelf. Her father noticed and
-        laughed, and said she was named after them. She couldn't wait to get old enough to read them. This was all fine
-        until one day during her freshman year at college she decided to reread 'Nine Princes' and happened to actually
-        look at the publication date - which was two years after she was born. Very funny, Dad.
-      </p>
-
-      <p>Amber 'wrastles' with the Game Schedule, and it usually wins.</p>
-
-      <h3>Web, database & code monkey</h3>
-      <p>
-        If you have any suggestions for this web site, or if you run into any problems with it, please contact Guy at{' '}
+      <Person
+        name='Joe Saul'
+        title='Con Chair, Hotel Liaison'
+        linkedIn='http://www.linkedin.com/in/josephmsaul'
+        facebook='http://www.facebook.com/profile.php?id=599498658'
+      >
+        Joe edited Amberzine 7 and has been the president of the U-CON gaming convention.
+      </Person>
+      <Person
+        name='Liz Trumitchl'
+        title='Treasurer'
+        linkedIn='http://lnkd.in/uC2xXu'
+        facebook='http://www.facebook.com/profile.php?id=504206423'
+      >
+        Liz was Co-chair of the tenth AmberCon US with Karen Moreno, and the chair of the next three, before running a
+        fifth one with Kris Fazzari.
+      </Person>
+      <Person
+        name='Christopher "Kit" Kindred'
+        title='Gamebook'
+        linkedIn='http://www.linkedin.com/pub/kit-kindred/2b/282/44'
+        facebook='https://www.facebook.com/kitkindred'
+      >
+        Kit has been the Games Scheduler since 2011.
+      </Person>
+      <Person
+        name='Edwin Voskamp'
+        title='Programming, Player Scheduling'
+        linkedIn='http://www.linkedin.com/in/edwinvoskamp'
+        facebook='http://www.facebook.com/profile.php?id=1184095812'
+      >
+        Edwin is one half of Diceless by Design which holds the copyright to the Amber Diceless Role Playing Game, has
+        been a vocal, hopefully constructive, critic of many aspects of various AmberCons. Thanks to a variety of Real
+        World factors, he has been lucky, and, between AmberCon US, AmberCon North, AmberCon NorthWest, and AmberCon UK,
+        this will be his 56th AmberCon.
+      </Person>
+      <Person
+        name='Guy Gascoigne-Piggford'
+        title='Website'
+        linkedIn='https://www.linkedin.com/in/guy-gascoigne-piggford/'
+        facebook='https://www.facebook.com/guy.piggford'
+      >
+        After years working on the AmberCon NW web site, Guy has adapted the site to support Ambercon US. If you have
+        any suggestions for this web site, or if you run into any problems with it, please contact Guy at{' '}
         {configuration.webEmail}.
-      </p>
+      </Person>
     </Page>
   )
 }

@@ -2,7 +2,7 @@ import { DateTime } from 'luxon'
 import { useMemo } from 'react'
 import { Configuration, useConfiguration } from './configContext'
 
-const getPref = (values: { value: string; text: string }[], value: string) =>
+export const getPref = (values: { value: string; text: string }[], value: string) =>
   values.find((v) => v.value === value)?.text
 
 enum PlayerPreference {
@@ -24,16 +24,38 @@ export enum Attendance {
   FriSun = 'Fri-Sun',
 }
 
-const getAttendanceOptions = (configuration: Configuration) => [
-  {
-    value: Attendance.ThursSun,
-    text: `Full: $${configuration.fourDayMembership}.`,
-  },
-  {
-    value: Attendance.FriSun,
-    text: `Short: $${configuration.threeDayMembership}.`,
-  },
-]
+const getAttendanceOptions = (configuration: Configuration) => {
+  if (configuration.useUsAttendanceOptions) {
+    return [
+      {
+        value: '1',
+        text: '1 Day: $25',
+      },
+      {
+        value: '2',
+        text: '2 Day: $40',
+      },
+      {
+        value: '3',
+        text: '3 Day: $55',
+      },
+      {
+        value: '4',
+        text: '4 Day: $70',
+      },
+    ]
+  } else
+    return [
+      {
+        value: Attendance.ThursSun,
+        text: `Full: $${configuration.fourDayMembership}.`,
+      },
+      {
+        value: Attendance.FriSun,
+        text: `Short: $${configuration.threeDayMembership}.`,
+      },
+    ]
+}
 
 export const getAttendance = (configuration: Configuration, value: string) =>
   getPref(getAttendanceOptions(configuration), value)
