@@ -159,20 +159,6 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           <Field label='Email'>{profile.email}</Field>
           <VerticalGap />
           <Field label='Attendance'>{cost}</Field>
-          <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
-          {membership.offerSubsidy && (
-            <Field label=''>You have offered to contribute to the ACNW assistance fund, thank you.</Field>
-          )}
-          {membership.requestOldPrice && <Field label=''>You have requested the subsidized membership rate.</Field>}
-          <Field label='Arrival Date'>{formatDate(membership.arrivalDate)}</Field>
-          <Field label='Departure Date'>{formatDate(membership.departureDate)}</Field>
-          <VerticalGap />
-          <Field label='Hotel room'>{room?.description}</Field>
-          <Field label='Room Preference And Notes'>{membership.roomPreferenceAndNotes}</Field>
-          <Field label='Rooming Preferences'>{getRoomPref(membership.roomingPreferences)}</Field>
-          {membership.roomingPreferences === RoomPref.RoomWith && (
-            <Field label='Rooming with'>{membership.roomingWith}</Field>
-          )}
           <VerticalGap />
           <Field label='Postal Address'>{profile?.profiles?.nodes?.[0]?.snailMailAddress}</Field>
           <Field label='Phone Number'>{profile?.profiles?.nodes?.[0]?.phoneNumber}</Field>

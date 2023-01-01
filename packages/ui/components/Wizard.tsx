@@ -167,6 +167,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
                 <Button
                   onClick={() => {
                     console.log(`values = ${JSON.stringify(values, null, 2)}`)
+                    console.log(`errors = ${JSON.stringify(errors, null, 2)}`)
                   }}
                   variant='outlined'
                 >

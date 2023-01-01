@@ -21,8 +21,13 @@ export type UsersAndProfileType = Omit<UsersAndProfiles, 'profiles' | 'nodeId' |
     | undefined
 }
 
-export const userFromProfileValues = (profileValues: UsersAndProfileType) =>
-  pick(profileValues, 'firstName', 'lastName', 'fullName', 'email')
+export const userFromProfileValues = (profileValues: UsersAndProfileType) => {
+  const values = pick(profileValues, 'firstName', 'lastName', 'fullName', 'displayName', 'email')
+  return {
+    ...values,
+    displayName: values.displayName?.length ? values.displayName : values.fullName,
+  }
+}
 
 export const profileFromProfileValues = (profileValues: UsersAndProfileType) => ({
   phoneNumber: profileValues?.profiles?.nodes?.[0]?.phoneNumber ?? '',
@@ -102,6 +107,7 @@ export const fillUserAndProfileValues = (values: UsersAndProfileType): UsersAndP
   firstName: values.firstName ?? '',
   lastName: values.lastName ?? '',
   fullName: values.fullName ?? '',
+  displayName: values.displayName ?? '',
   profiles: {
     nodes: [
       {

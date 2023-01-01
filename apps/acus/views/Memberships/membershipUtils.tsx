@@ -89,9 +89,7 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
   )
 
 export const membershipValidationSchema = Yup.object().shape({
-  arrivalDate: Yup.date().required(),
   attendance: Yup.string().max(255).required(),
-  departureDate: Yup.date().required(),
   interestLevel: Yup.string().max(255).required(),
   message: Yup.string().max(1024),
   roomPreferenceAndNotes: Yup.string().max(1024),
@@ -218,11 +216,11 @@ export const getDefaultMembership = (
   isVirtual: boolean
 ): MembershipType => ({
   userId,
-  arrivalDate: isVirtual ? configuration.conventionStartDate.toISO() : '',
-  attendance: 'Thurs-Sun',
+  arrivalDate: configuration.conventionStartDate.toISO(),
+  attendance: configuration.useUsAttendanceOptions ? '4' : 'Thurs-Sun',
   attending: true,
-  hotelRoomId: 13, // no room required
-  departureDate: isVirtual ? configuration.conventionEndDate.toISO() : '',
+  hotelRoomId: 1, // dummy room
+  departureDate: configuration.conventionEndDate.toISO(),
   interestLevel: 'Full',
   message: '',
   offerSubsidy: false,

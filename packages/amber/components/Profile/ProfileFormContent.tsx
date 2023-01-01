@@ -46,6 +46,9 @@ export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix =
           <TextField name={`${prefix}fullName`} label='Full Name' fullWidth required />
         </GridItem>
         <GridItem xs={12} md={12}>
+          <TextField name={`${prefix}displayName`} label='Display Name' fullWidth />
+        </GridItem>
+        <GridItem xs={12} md={12}>
           <TextField
             name={`${prefix}profiles.nodes[0].snailMailAddress`}
             label='Address'

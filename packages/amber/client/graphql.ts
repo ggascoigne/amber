@@ -343,38 +343,6 @@ export interface CreateHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: InputMaybe<Array<HotelRoomsOrderBy>>
 }
 
-/** All input for the create `KnexMigration` mutation. */
-export interface CreateKnexMigrationInput {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>
-  /** The `KnexMigration` to be created by this mutation. */
-  knexMigration: KnexMigrationInput
-}
-
-/** The output of our create `KnexMigration` mutation. */
-export interface CreateKnexMigrationPayload {
-  __typename: 'CreateKnexMigrationPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `KnexMigration` that was created by this mutation. */
-  knexMigration?: Maybe<KnexMigration>
-  /** An edge for our `KnexMigration`. May be used by Relay 1. */
-  knexMigrationEdge?: Maybe<KnexMigrationsEdge>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-}
-
-/** The output of our create `KnexMigration` mutation. */
-export interface CreateKnexMigrationPayloadKnexMigrationEdgeArgs {
-  orderBy?: InputMaybe<Array<KnexMigrationsOrderBy>>
-}
-
 /** All input for the create `Lookup` mutation. */
 export interface CreateLookupInput {
   /**
@@ -1077,49 +1045,6 @@ export interface DeleteHotelRoomPayload {
 /** The output of our delete `HotelRoom` mutation. */
 export interface DeleteHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: InputMaybe<Array<HotelRoomsOrderBy>>
-}
-
-/** All input for the `deleteKnexMigrationByNodeId` mutation. */
-export interface DeleteKnexMigrationByNodeIdInput {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `KnexMigration` to be deleted. */
-  nodeId: Scalars['ID']
-}
-
-/** All input for the `deleteKnexMigration` mutation. */
-export interface DeleteKnexMigrationInput {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>
-  id: Scalars['Int']
-}
-
-/** The output of our delete `KnexMigration` mutation. */
-export interface DeleteKnexMigrationPayload {
-  __typename: 'DeleteKnexMigrationPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  deletedKnexMigrationNodeId?: Maybe<Scalars['ID']>
-  /** The `KnexMigration` that was deleted by this mutation. */
-  knexMigration?: Maybe<KnexMigration>
-  /** An edge for our `KnexMigration`. May be used by Relay 1. */
-  knexMigrationEdge?: Maybe<KnexMigrationsEdge>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-}
-
-/** The output of our delete `KnexMigration` mutation. */
-export interface DeleteKnexMigrationPayloadKnexMigrationEdgeArgs {
-  orderBy?: InputMaybe<Array<KnexMigrationsOrderBy>>
 }
 
 /** All input for the `deleteLookupByNodeId` mutation. */
@@ -3016,102 +2941,6 @@ export interface IntFilter {
   notIn?: InputMaybe<Array<Scalars['Int']>>
 }
 
-export interface KnexMigration extends Node {
-  __typename: 'KnexMigration'
-  batch?: Maybe<Scalars['Int']>
-  id: Scalars['Int']
-  migrationTime?: Maybe<Scalars['Datetime']>
-  name?: Maybe<Scalars['String']>
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID']
-}
-
-/**
- * A condition to be used against `KnexMigration` object types. All fields are
- * tested for equality and combined with a logical ‘and.’
- */
-export interface KnexMigrationCondition {
-  /** Checks for equality with the object’s `batch` field. */
-  batch?: InputMaybe<Scalars['Int']>
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['Int']>
-  /** Checks for equality with the object’s `migrationTime` field. */
-  migrationTime?: InputMaybe<Scalars['Datetime']>
-  /** Checks for equality with the object’s `name` field. */
-  name?: InputMaybe<Scalars['String']>
-}
-
-/** A filter to be used against `KnexMigration` object types. All fields are combined with a logical ‘and.’ */
-export interface KnexMigrationFilter {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<KnexMigrationFilter>>
-  /** Filter by the object’s `batch` field. */
-  batch?: InputMaybe<IntFilter>
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<IntFilter>
-  /** Filter by the object’s `migrationTime` field. */
-  migrationTime?: InputMaybe<DatetimeFilter>
-  /** Filter by the object’s `name` field. */
-  name?: InputMaybe<StringFilter>
-  /** Negates the expression. */
-  not?: InputMaybe<KnexMigrationFilter>
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<KnexMigrationFilter>>
-}
-
-/** An input for mutations affecting `KnexMigration` */
-export interface KnexMigrationInput {
-  batch?: InputMaybe<Scalars['Int']>
-  id?: InputMaybe<Scalars['Int']>
-  migrationTime?: InputMaybe<Scalars['Datetime']>
-  name?: InputMaybe<Scalars['String']>
-}
-
-/** Represents an update to a `KnexMigration`. Fields that are set will be updated. */
-export interface KnexMigrationPatch {
-  batch?: InputMaybe<Scalars['Int']>
-  id?: InputMaybe<Scalars['Int']>
-  migrationTime?: InputMaybe<Scalars['Datetime']>
-  name?: InputMaybe<Scalars['String']>
-}
-
-/** A connection to a list of `KnexMigration` values. */
-export interface KnexMigrationsConnection {
-  __typename: 'KnexMigrationsConnection'
-  /** A list of edges which contains the `KnexMigration` and cursor to aid in pagination. */
-  edges: Array<KnexMigrationsEdge>
-  /** A list of `KnexMigration` objects. */
-  nodes: Array<Maybe<KnexMigration>>
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo
-  /** The count of *all* `KnexMigration` you could get from the connection. */
-  totalCount: Scalars['Int']
-}
-
-/** A `KnexMigration` edge in the connection. */
-export interface KnexMigrationsEdge {
-  __typename: 'KnexMigrationsEdge'
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>
-  /** The `KnexMigration` at the end of the edge. */
-  node?: Maybe<KnexMigration>
-}
-
-/** Methods to use when ordering `KnexMigration`. */
-export enum KnexMigrationsOrderBy {
-  BatchAsc = 'BATCH_ASC',
-  BatchDesc = 'BATCH_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  MigrationTimeAsc = 'MIGRATION_TIME_ASC',
-  MigrationTimeDesc = 'MIGRATION_TIME_DESC',
-  NameAsc = 'NAME_ASC',
-  NameDesc = 'NAME_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-}
-
 export interface Lookup extends Node {
   __typename: 'Lookup'
   codeMaximum?: Maybe<Scalars['String']>
@@ -3765,8 +3594,6 @@ export interface Mutation {
   createHotelRoom?: Maybe<CreateHotelRoomPayload>
   /** Creates a single `HotelRoomDetail`. */
   createHotelRoomDetail?: Maybe<CreateHotelRoomDetailPayload>
-  /** Creates a single `KnexMigration`. */
-  createKnexMigration?: Maybe<CreateKnexMigrationPayload>
   /** Creates a single `Lookup`. */
   createLookup?: Maybe<CreateLookupPayload>
   /** Creates a single `LookupValue`. */
@@ -3815,10 +3642,6 @@ export interface Mutation {
   deleteHotelRoomDetail?: Maybe<DeleteHotelRoomDetailPayload>
   /** Deletes a single `HotelRoomDetail` using its globally unique id. */
   deleteHotelRoomDetailByNodeId?: Maybe<DeleteHotelRoomDetailPayload>
-  /** Deletes a single `KnexMigration` using a unique key. */
-  deleteKnexMigration?: Maybe<DeleteKnexMigrationPayload>
-  /** Deletes a single `KnexMigration` using its globally unique id. */
-  deleteKnexMigrationByNodeId?: Maybe<DeleteKnexMigrationPayload>
   /** Deletes a single `Lookup` using a unique key. */
   deleteLookup?: Maybe<DeleteLookupPayload>
   /** Deletes a single `Lookup` using its globally unique id. */
@@ -3901,10 +3724,6 @@ export interface Mutation {
   updateHotelRoomDetail?: Maybe<UpdateHotelRoomDetailPayload>
   /** Updates a single `HotelRoomDetail` using its globally unique id and a patch. */
   updateHotelRoomDetailByNodeId?: Maybe<UpdateHotelRoomDetailPayload>
-  /** Updates a single `KnexMigration` using a unique key and a patch. */
-  updateKnexMigration?: Maybe<UpdateKnexMigrationPayload>
-  /** Updates a single `KnexMigration` using its globally unique id and a patch. */
-  updateKnexMigrationByNodeId?: Maybe<UpdateKnexMigrationPayload>
   /** Updates a single `Lookup` using a unique key and a patch. */
   updateLookup?: Maybe<UpdateLookupPayload>
   /** Updates a single `Lookup` using its globally unique id and a patch. */
@@ -3996,11 +3815,6 @@ export interface MutationCreateHotelRoomArgs {
 /** The root mutation type which contains root level fields which mutate data. */
 export interface MutationCreateHotelRoomDetailArgs {
   input: CreateHotelRoomDetailInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationCreateKnexMigrationArgs {
-  input: CreateKnexMigrationInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4121,16 +3935,6 @@ export interface MutationDeleteHotelRoomDetailArgs {
 /** The root mutation type which contains root level fields which mutate data. */
 export interface MutationDeleteHotelRoomDetailByNodeIdArgs {
   input: DeleteHotelRoomDetailByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteKnexMigrationArgs {
-  input: DeleteKnexMigrationInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationDeleteKnexMigrationByNodeIdArgs {
-  input: DeleteKnexMigrationByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4341,16 +4145,6 @@ export interface MutationUpdateHotelRoomDetailArgs {
 /** The root mutation type which contains root level fields which mutate data. */
 export interface MutationUpdateHotelRoomDetailByNodeIdArgs {
   input: UpdateHotelRoomDetailByNodeIdInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateKnexMigrationArgs {
-  input: UpdateKnexMigrationInput
-}
-
-/** The root mutation type which contains root level fields which mutate data. */
-export interface MutationUpdateKnexMigrationByNodeIdArgs {
-  input: UpdateKnexMigrationByNodeIdInput
 }
 
 /** The root mutation type which contains root level fields which mutate data. */
@@ -4654,11 +4448,6 @@ export interface Query extends Node {
   hotelRoomDetails?: Maybe<HotelRoomDetailsConnection>
   /** Reads and enables pagination through a set of `HotelRoom`. */
   hotelRooms?: Maybe<HotelRoomsConnection>
-  knexMigration?: Maybe<KnexMigration>
-  /** Reads a single `KnexMigration` using its globally unique `ID`. */
-  knexMigrationByNodeId?: Maybe<KnexMigration>
-  /** Reads and enables pagination through a set of `KnexMigration`. */
-  knexMigrations?: Maybe<KnexMigrationsConnection>
   lookup?: Maybe<Lookup>
   /** Reads a single `Lookup` using its globally unique `ID`. */
   lookupByNodeId?: Maybe<Lookup>
@@ -4866,28 +4655,6 @@ export interface QueryHotelRoomsArgs {
   last?: InputMaybe<Scalars['Int']>
   offset?: InputMaybe<Scalars['Int']>
   orderBy?: InputMaybe<Array<HotelRoomsOrderBy>>
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryKnexMigrationArgs {
-  id: Scalars['Int']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryKnexMigrationByNodeIdArgs {
-  nodeId: Scalars['ID']
-}
-
-/** The root query type which gives access points into the data universe. */
-export interface QueryKnexMigrationsArgs {
-  after?: InputMaybe<Scalars['Cursor']>
-  before?: InputMaybe<Scalars['Cursor']>
-  condition?: InputMaybe<KnexMigrationCondition>
-  filter?: InputMaybe<KnexMigrationFilter>
-  first?: InputMaybe<Scalars['Int']>
-  last?: InputMaybe<Scalars['Int']>
-  offset?: InputMaybe<Scalars['Int']>
-  orderBy?: InputMaybe<Array<KnexMigrationsOrderBy>>
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -6279,52 +6046,6 @@ export interface UpdateHotelRoomPayload {
 /** The output of our update `HotelRoom` mutation. */
 export interface UpdateHotelRoomPayloadHotelRoomEdgeArgs {
   orderBy?: InputMaybe<Array<HotelRoomsOrderBy>>
-}
-
-/** All input for the `updateKnexMigrationByNodeId` mutation. */
-export interface UpdateKnexMigrationByNodeIdInput {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>
-  /** The globally unique `ID` which will identify a single `KnexMigration` to be updated. */
-  nodeId: Scalars['ID']
-  /** An object where the defined keys will be set on the `KnexMigration` being updated. */
-  patch: KnexMigrationPatch
-}
-
-/** All input for the `updateKnexMigration` mutation. */
-export interface UpdateKnexMigrationInput {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>
-  id: Scalars['Int']
-  /** An object where the defined keys will be set on the `KnexMigration` being updated. */
-  patch: KnexMigrationPatch
-}
-
-/** The output of our update `KnexMigration` mutation. */
-export interface UpdateKnexMigrationPayload {
-  __typename: 'UpdateKnexMigrationPayload'
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>
-  /** The `KnexMigration` that was updated by this mutation. */
-  knexMigration?: Maybe<KnexMigration>
-  /** An edge for our `KnexMigration`. May be used by Relay 1. */
-  knexMigrationEdge?: Maybe<KnexMigrationsEdge>
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>
-}
-
-/** The output of our update `KnexMigration` mutation. */
-export interface UpdateKnexMigrationPayloadKnexMigrationEdgeArgs {
-  orderBy?: InputMaybe<Array<KnexMigrationsOrderBy>>
 }
 
 /** All input for the `updateLookupByNodeId` mutation. */
@@ -8814,6 +8535,7 @@ export type GetMembershipByYearAndIdQuery = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8858,6 +8580,7 @@ export type GetMembershipsByYearQuery = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8923,6 +8646,7 @@ export type GetMembershipsByIdQuery = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -8968,6 +8692,7 @@ export type GetMembershipByYearAndRoomQuery = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -9012,6 +8737,7 @@ export type UpdateMembershipByNodeIdMutation = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -9056,6 +8782,7 @@ export type CreateMembershipMutation = {
         fullName?: string | null
         firstName?: string | null
         lastName?: string | null
+        displayName?: string | null
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -9105,6 +8832,7 @@ export type MembershipFieldsFragment = {
     fullName?: string | null
     firstName?: string | null
     lastName?: string | null
+    displayName?: string | null
   } | null
   hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
 }
@@ -9214,6 +8942,7 @@ export type GetUserByEmailQuery = {
     fullName?: string | null
     firstName?: string | null
     lastName?: string | null
+    displayName?: string | null
     profiles: {
       __typename: 'ProfilesConnection'
       nodes: Array<{
@@ -9241,6 +8970,7 @@ export type GetUserByIdQuery = {
     fullName?: string | null
     firstName?: string | null
     lastName?: string | null
+    displayName?: string | null
   } | null
 }
 
@@ -9260,6 +8990,7 @@ export type UpdateUserMutation = {
       fullName?: string | null
       firstName?: string | null
       lastName?: string | null
+      displayName?: string | null
     } | null
   } | null
 }
@@ -9278,6 +9009,7 @@ export type GetAllUsersQuery = {
       fullName?: string | null
       firstName?: string | null
       lastName?: string | null
+      displayName?: string | null
     } | null>
   } | null
 }
@@ -9296,6 +9028,7 @@ export type GetAllUsersAndProfilesQuery = {
       fullName?: string | null
       firstName?: string | null
       lastName?: string | null
+      displayName?: string | null
       profiles: {
         __typename: 'ProfilesConnection'
         nodes: Array<{
@@ -9326,6 +9059,7 @@ export type GetAllUsersByQuery = {
       fullName?: string | null
       firstName?: string | null
       lastName?: string | null
+      displayName?: string | null
       memberships: {
         __typename: 'MembershipsConnection'
         nodes: Array<{ __typename: 'Membership'; id: number; year: number } | null>
@@ -9360,6 +9094,7 @@ export type UserFieldsFragment = {
   fullName?: string | null
   firstName?: string | null
   lastName?: string | null
+  displayName?: string | null
 }
 
 export type ProfileFieldsFragment = {
@@ -9378,6 +9113,7 @@ export type UserAndProfileFieldsFragment = {
   fullName?: string | null
   firstName?: string | null
   lastName?: string | null
+  displayName?: string | null
   profiles: {
     __typename: 'ProfilesConnection'
     nodes: Array<{
@@ -9535,6 +9271,7 @@ export const UserFieldsFragmentDoc = `
   fullName
   firstName
   lastName
+  displayName
 }
     `
 export const MembershipFieldsFragmentDoc = `

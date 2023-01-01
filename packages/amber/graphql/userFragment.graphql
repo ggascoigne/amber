@@ -5,6 +5,7 @@ fragment userFields on User {
   fullName
   firstName
   lastName
+  displayName
 }
 
 fragment profileFields on Profile {

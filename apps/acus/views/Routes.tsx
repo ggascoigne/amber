@@ -115,6 +115,16 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.GraphiqlLoad,
   },
   {
+    path: '/covid-policy',
+    label: 'COVID Policy',
+    exact: false,
+  },
+  {
+    path: '/anti-harassment-policy',
+    label: 'Anti-Harassment Policy',
+    exact: false,
+  },
+  {
     path: '/faq',
     label: 'Frequently Asked Questions',
     subText: 'Hopefully with some answers',

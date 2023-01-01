@@ -131,6 +131,8 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const handleClose = useDisableBackdropClick(onClose)
   const estimatedLengthOptions = useMemo(() => getEstimatedLengthOptions(configuration), [configuration])
 
+  const slim = configuration.numberOfSlots === 8
+
   const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
   }
@@ -266,42 +268,48 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
             </GridItem>
-            <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-              <GridItem xs={12} md={6}>
-                <SelectField
-                  required
-                  name='genre'
-                  label='Genre'
-                  margin='normal'
-                  fullWidth
-                  selectValues={genreOptions}
-                />
+            {!slim && (
+              <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
+                <GridItem xs={12} md={6}>
+                  <SelectField
+                    required
+                    name='genre'
+                    label='Genre'
+                    margin='normal'
+                    fullWidth
+                    selectValues={genreOptions}
+                  />
+                </GridItem>
+                <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
+                  <SelectField required name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
+                </GridItem>
               </GridItem>
-              <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
-                <SelectField required name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
-              </GridItem>
-            </GridItem>
+            )}
             <GridItem xs={12} md={12}>
               <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
             </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField
-                name='setting'
-                label='Setting - Where/When in the Multiverse'
-                margin='normal'
-                fullWidth
-                multiline
-              />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField
-                name='charInstructions'
-                label='Character/Player Instructions & Restrictions'
-                margin='normal'
-                fullWidth
-                multiline
-              />
-            </GridItem>
+            {!slim && (
+              <>
+                <GridItem xs={12} md={12}>
+                  <TextField
+                    name='setting'
+                    label='Setting - Where/When in the Multiverse'
+                    margin='normal'
+                    fullWidth
+                    multiline
+                  />
+                </GridItem>
+                <GridItem xs={12} md={12}>
+                  <TextField
+                    name='charInstructions'
+                    label='Character/Player Instructions & Restrictions'
+                    margin='normal'
+                    fullWidth
+                    multiline
+                  />
+                </GridItem>
+              </>
+            )}
             <GridItem xs={12} md={12}>
               <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
             </GridItem>
@@ -348,7 +356,9 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 You are welcome to start and end the game at any time (within reason), but if the game overlaps two
                 slots, please enter two games and mark them as parts one and two.
               </p>
-              <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
+              {configuration.virtual && (
+                <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
+              )}
               <SelectField
                 name='estimatedLength'
                 label='Estimated Length'
