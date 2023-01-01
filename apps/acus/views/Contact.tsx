@@ -67,7 +67,7 @@ const Contact = () => {
         Joe edited Amberzine 7 and has been the president of the U-CON gaming convention.
       </Person>
       <Person
-        name='Liz Trumitchl'
+        name='Liz Trumitch'
         title='Treasurer'
         linkedIn='http://lnkd.in/uC2xXu'
         facebook='http://www.facebook.com/profile.php?id=504206423'
@@ -91,8 +91,7 @@ const Contact = () => {
       >
         Edwin is one half of Diceless by Design which holds the copyright to the Amber Diceless Role Playing Game, has
         been a vocal, hopefully constructive, critic of many aspects of various AmberCons. Thanks to a variety of Real
-        World factors, he has been lucky, and, between AmberCon US, AmberCon North, AmberCon NorthWest, and AmberCon UK,
-        this will be his 56th AmberCon.
+        World factors, he has been lucky, to attend dozens of AmberCon US, AmberCon North, AmberCon NorthWest, and AmberCon UK conventions.
       </Person>
       <Person
         name='Guy Gascoigne-Piggford'
