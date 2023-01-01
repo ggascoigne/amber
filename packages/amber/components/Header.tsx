@@ -28,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
       if (
         href?.startsWith('https://amberconnw.org') ||
         href?.startsWith('https://ambercon.com') ||
+        href?.startsWith('https://www.ambercon.com') ||
         href?.startsWith('https://acnw.org')
       )
         return ''
