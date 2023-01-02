@@ -163,7 +163,11 @@ const GmBlurb = () => {
           <ul>
             {range(configuration.numberOfSlots).map((slotNo) => (
               <li key={slotNo}>
-                {getSlotDescription(configuration, { year: configuration.year, slot: slotNo + 1, local: true })}
+                {getSlotDescription(configuration, {
+                  year: configuration.year,
+                  slot: slotNo + 1,
+                  local: configuration.virtual,
+                })}
               </li>
             ))}
           </ul>

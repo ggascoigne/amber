@@ -64,7 +64,7 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
   const slotDescription = getSlotDescription(configuration, {
     year,
     slot: game.slotId!,
-    local: true,
+    local: configuration.virtual,
     altFormat: isVirtual ? SlotFormat.ALT_SHORT : small ? SlotFormat.TINY : SlotFormat.SHORT_NO_TZ,
     lateStart,
   })

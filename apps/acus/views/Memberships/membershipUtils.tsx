@@ -125,7 +125,11 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
     const slotDescriptions = membershipValues.slotsAttending
       ?.split(',')
       .map((i: string) =>
-        getSlotDescription(configuration, { year: configuration.year, slot: parseInt(i, 10), local: true })
+        getSlotDescription(configuration, {
+          year: configuration.year,
+          slot: parseInt(i, 10),
+          local: configuration.virtual,
+        })
       )
 
     sendEmail({

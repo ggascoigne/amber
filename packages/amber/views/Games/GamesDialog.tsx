@@ -111,7 +111,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
     (acc, current) => {
       acc.push({
         value: current + 1,
-        text: getSlotDescription(configuration, { year, slot: current + 1, local: true }),
+        text: getSlotDescription(configuration, { year, slot: current + 1, local: configuration.virtual }),
       })
       return acc
     },
