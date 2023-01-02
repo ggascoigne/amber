@@ -44,9 +44,14 @@ export const BecomeAMember = () => {
               <>
                 <h4>New Authentication system.</h4>
                 <p>
-                  We have a new authentication system. If you had an account for a previous Ambercon, you can link back
+                  We have a new authentication system. If you have never logged into the new site, you 
+                  have to sign up for a userid / password with auth0. Click on "LOGIN / SIGN UP" and on the screen, click on the little blue link "Sign up" at the bottom of the white popup box. You will get a verification email: you have to verify the email you use, sign out from the Ambercon website, and sign back in.
+                </p>
+                <p>
+                  If you had an account for a previous Ambercon, you can link back
                   to it by signing up again using the same email address as before and then confirming that email
                   address. If you are a GM, this will give you option of copying games forward.
+                  If you don't know what email you used, please contact us at signup@ambercon.com.
                 </p>
                 {/*
                 <p>
