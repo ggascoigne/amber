@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 
+# Copy from local to aws-prod
+
 source `dirname $0`/utils.sh
 
 cd `dirname $0`/..

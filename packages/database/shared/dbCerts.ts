@@ -1,7 +1,7 @@
 import { stripIndent } from 'common-tags'
 
 export const certs = {
-  'us-west-3-bundle': stripIndent`
+  'us-west-2-bundle': stripIndent`
       -----BEGIN CERTIFICATE-----
       MIIEBjCCAu6gAwIBAgIJAMc0ZzaSUK51MA0GCSqGSIb3DQEBCwUAMIGPMQswCQYD
       VQQGEwJVUzEQMA4GA1UEBwwHU2VhdHRsZTETMBEGA1UECAwKV2FzaGluZ3RvbjEi
