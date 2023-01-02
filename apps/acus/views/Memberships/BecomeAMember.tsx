@@ -3,7 +3,7 @@ import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CardBody } from 'ui'
-import { IsLoggedIn, IsNotLoggedIn, IsNotMember, useConfiguration, useProfile, useSetting } from 'amber'
+import { IsLoggedIn, IsNotLoggedIn, IsNotMember, useAuth, useConfiguration, useProfile, useSetting } from 'amber'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
@@ -25,6 +25,8 @@ export const BecomeAMember = () => {
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
   const disableLogin = useSetting('disable.login', false)
+  const { user } = useAuth()
+  const verified = !!user?.email_verified
 
   return (
     <IsNotMember>
@@ -66,24 +68,34 @@ export const BecomeAMember = () => {
           </IsNotLoggedIn>
 
           <IsLoggedIn>
-            <p>
-              If you are interested in attending {configuration.title} this year, please
-              {allowed ? (
-                <Button
-                  variant='outlined'
-                  color='primary'
-                  size='large'
-                  className={classes.button}
-                  disabled={!profile}
-                  component={Link}
-                  href='/membership/new'
-                >
-                  Register
-                </Button>
-              ) : (
-                <span> check back as we'll be opening registration soon.</span>
-              )}
-            </p>
+            {verified ? (
+              <p>
+                If you are interested in attending {configuration.title} this year, please
+                {/* eslint-disable-next-line @getify/proper-ternary/nested */}
+                {allowed ? (
+                  <Button
+                    variant='outlined'
+                    color='primary'
+                    size='large'
+                    className={classes.button}
+                    disabled={!profile}
+                    component={Link}
+                    href='/membership/new'
+                  >
+                    Register
+                  </Button>
+                ) : (
+                  <span> check back as we'll be opening registration soon.</span>
+                )}
+              </p>
+            ) : (
+              <>
+                <p>
+                  Your email is unverified, once you respond to the verification email you will be able to register for
+                  the convention.
+                </p>
+              </>
+            )}
           </IsLoggedIn>
         </CardBody>
       </Card>
