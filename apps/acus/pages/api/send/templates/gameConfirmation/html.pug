@@ -1,15 +1,6 @@
-img(
-    src="https://acnw.org/Logo.png"
-    width="300"
-    height="75"
-    alt="AmberCon NW"
-    title="AmberCon NW"
-    style="-ms-interpolation-mode: bicubic;border: 0;height: auto;line-height: 100%;outline: none;text-decoration: none;"
-)
-
 h1 #{update ? "Updated Game Submission Details" : "Game Submission Confirmation"}
 
-p Thank you for your Game Submission for ACNW #{year}
+p Thank you for your Game Submission for Ambercon #{year}
 
 ul
     li Name: #{game.name}
@@ -17,11 +8,8 @@ ul
 
 ul
     li Game Master(s):  #{game.gmNames}
-    li Genre/Type: #{game.type}
     li Teen Friendly: #{game.teenFriendly ? "Yes" : "No"}
     li Game Description: #{game.description}
-    li Setting: #{game.setting}
-    li Character Instructions: #{game.charInstructions}
     li Player Min: #{game.playerMin}
     li Player Max: #{game.playerMax}
     li Player Preference: #{game.playerPreference}
@@ -32,14 +20,3 @@ ul
     li Slot Preference: #{game.slotPreference}
     li Slot Conflicts: #{game.slotConflicts}
     li Message: #{game.message}
-
-
-//<li>
-//  <g:message code="game.lateStart.label" default="Late Start"/>:
-//  <g:fieldValue bean="#{game}" field="lateStart"/>
-//</li>
-//
-//<li>
-//  <g:message code="game.lateFinish.label" default="Late Finish"/>:
-//  <g:formatBoolean boolean="#{game.lateFinish}" true="Yes" false="No"/>
-//</li>
