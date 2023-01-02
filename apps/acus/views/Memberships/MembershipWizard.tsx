@@ -3,6 +3,7 @@ import React, { useMemo } from 'react'
 import Yup from 'ui/utils/Yup'
 import { Wizard, WizardPage } from 'ui'
 import {
+  fillUserAndProfileValues,
   Perms,
   ProfileFormContent,
   ProfileFormType,
@@ -18,7 +19,6 @@ import { IntroStep } from './IntroStep'
 import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
 import { MembershipStepPayment } from './MembershipStepPayment'
-import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 import {
   fromSlotsAttending,
@@ -171,7 +171,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     const _values: MembershipWizardFormValues = {
       intro: { acceptedPolicies: !!initialValues?.id },
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
-      profile: { ...profile },
+      profile: { ...fillUserAndProfileValues(profile) },
     }
     _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
     return _values
