@@ -3,7 +3,16 @@ import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CardBody } from 'ui'
-import { IsLoggedIn, IsNotLoggedIn, IsNotMember, useConfiguration, useProfile, useSetting } from 'amber'
+import {
+  IsLoggedIn,
+  IsNotLoggedIn,
+  IsNotMember,
+  IsUnverified,
+  IsVerifiedIncomplete,
+  useConfiguration,
+  useProfile,
+  useSetting,
+} from 'amber'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
@@ -24,6 +33,7 @@ export const BecomeAMember = () => {
   const router = useRouter()
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
+  const disableLogin = useSetting('disable.login', false)
 
   return (
     <IsNotMember>
@@ -37,16 +47,30 @@ export const BecomeAMember = () => {
             <h2>Attending {configuration.title}</h2>
           )}
           <IsNotLoggedIn>
-            <Button
-              variant='outlined'
-              color='primary'
-              size='large'
-              component={Link}
-              href={`/api/auth/login?returnTo=${router.asPath}`}
-            >
-              Login / Sign Up
-            </Button>
+            {!disableLogin ? (
+              <Button
+                variant='outlined'
+                color='primary'
+                size='large'
+                component={Link}
+                href={`/api/auth/login?returnTo=${router.asPath}`}
+              >
+                Login / Sign Up
+              </Button>
+            ) : null}
           </IsNotLoggedIn>
+
+          <IsUnverified>
+            <p>
+              Your email is unverified, once you respond to the verification email you will be able to register for the
+              convention.
+            </p>
+            <p>After you verify your email, you have to Sign Out and Sign In again.</p>
+          </IsUnverified>
+
+          <IsVerifiedIncomplete>
+            <p>Please Sign Out and Sign again to complete the registration process.</p>
+          </IsVerifiedIncomplete>
 
           <IsLoggedIn>
             <p>

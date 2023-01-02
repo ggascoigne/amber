@@ -3,7 +3,16 @@ import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { CardBody } from 'ui'
-import { IsLoggedIn, IsNotLoggedIn, IsNotMember, useAuth, useConfiguration, useProfile, useSetting } from 'amber'
+import {
+  IsLoggedIn,
+  IsNotLoggedIn,
+  IsNotMember,
+  IsUnverified,
+  IsVerifiedIncomplete,
+  useConfiguration,
+  useProfile,
+  useSetting,
+} from 'amber'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {
@@ -25,8 +34,6 @@ export const BecomeAMember = () => {
   const profile = useProfile()
   const allowed = useSetting('allow.registrations', true)
   const disableLogin = useSetting('disable.login', false)
-  const { user } = useAuth()
-  const verified = !!user?.email_verified
 
   return (
     <IsNotMember>
@@ -44,21 +51,17 @@ export const BecomeAMember = () => {
               <>
                 <h4>New Authentication system.</h4>
                 <p>
-                  We have a new authentication system. If you have never logged into the new site, you 
-                  have to sign up for a userid / password with auth0. Click on "LOGIN / SIGN UP" and on the screen, click on the little blue link "Sign up" at the bottom of the white popup box. You will get a verification email: you have to verify the email you use, sign out from the Ambercon website, and sign back in.
+                  We have a new authentication system. If you have never logged into the new site, you have to sign up
+                  for a userid / password with auth0. Click on "LOGIN / SIGN UP" and on the screen, click on the little
+                  blue link "Sign up" at the bottom of the white popup box. You will get a verification email: you have
+                  to verify the email you use, sign out from the Ambercon website, and sign back in.
                 </p>
                 <p>
-                  If you had an account for a previous Ambercon, you can link back
-                  to it by signing up again using the same email address as before and then confirming that email
-                  address. If you are a GM, this will give you option of copying games forward.
-                  If you don't know what email you used, please contact us at signup@ambercon.com.
+                  If you had an account for a previous Ambercon, you can link back to it by signing up again using the
+                  same email address as before and then confirming that email address. If you are a GM, this will give
+                  you option of copying games forward. If you don't know what email you used, please contact us at
+                  signup@ambercon.com.
                 </p>
-                {/*
-                <p>
-                  Please note, that you can also login with either Facebook or Google. The same email advice applies in
-                  this case too.
-                </p>
-*/}
                 <Button
                   variant='outlined'
                   color='primary'
@@ -72,36 +75,37 @@ export const BecomeAMember = () => {
             ) : null}
           </IsNotLoggedIn>
 
+          <IsUnverified>
+            <p>
+              Your email is unverified, once you respond to the verification email you will be able to register for the
+              convention.
+            </p>
+            <p>After you verify your email, you have to Sign Out and Sign In again.</p>
+          </IsUnverified>
+
+          <IsVerifiedIncomplete>
+            <p>Please Sign Out and Sign again to complete the registration process.</p>
+          </IsVerifiedIncomplete>
+
           <IsLoggedIn>
-            {verified ? (
-              <p>
-                If you are interested in attending {configuration.title} this year, please
-                {/* eslint-disable-next-line @getify/proper-ternary/nested */}
-                {allowed ? (
-                  <Button
-                    variant='outlined'
-                    color='primary'
-                    size='large'
-                    className={classes.button}
-                    disabled={!profile}
-                    component={Link}
-                    href='/membership/new'
-                  >
-                    Register
-                  </Button>
-                ) : (
-                  <span> check back as we'll be opening registration soon.</span>
-                )}
-              </p>
-            ) : (
-              <>
-                <p>
-                  Your email is unverified, once you respond to the verification email you will be able to register for 
-                  the convention. 
-                  After you verify your email, you have to Sign Out and Sign In again.
-                </p>
-              </>
-            )}
+            <p>
+              If you are interested in attending {configuration.title} this year, please
+              {allowed ? (
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  size='large'
+                  className={classes.button}
+                  disabled={!profile}
+                  component={Link}
+                  href='/membership/new'
+                >
+                  Register
+                </Button>
+              ) : (
+                <span> check back as we'll be opening registration soon.</span>
+              )}
+            </p>
           </IsLoggedIn>
         </CardBody>
       </Card>

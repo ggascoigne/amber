@@ -1,9 +1,8 @@
 import React, { PropsWithChildren } from 'react'
 
-import { useUser } from '@auth0/nextjs-auth0/client'
 import { Children } from 'ui'
 import type { Perms } from './PermissionRules'
-import { useAuth } from './useAuth'
+import { Auth0User, useAuth } from './useAuth'
 
 interface PermissionProps {
   permission: Perms
@@ -24,12 +23,42 @@ export const HasPermission: React.FC<PropsWithChildren<PermissionProps>> = ({
   return allowed ? <>{children}</> : denied()
 }
 
-export const IsLoggedIn: React.FC<Children> = ({ children }) => {
-  const { user } = useUser()
-  return user ? <>{children}</> : null
+enum LoginStates {
+  NOT_LOGGED_IN = 'notLoggedIn',
+  UNVERIFIED = 'unverified',
+  INCOMPLETE = 'incomplete',
+  LOGGED_IN = 'loggedIn',
+}
+
+const getLoginState = (user?: Auth0User): LoginStates => {
+  if (!user) {
+    return LoginStates.NOT_LOGGED_IN
+  }
+  if (!user?.email_verified) {
+    return LoginStates.UNVERIFIED
+  }
+  if (!user?.userId) {
+    return LoginStates.INCOMPLETE
+  }
+  return LoginStates.LOGGED_IN
 }
 
 export const IsNotLoggedIn: React.FC<Children> = ({ children }) => {
-  const { user } = useUser()
-  return !user ? <>{children}</> : null
+  const { user } = useAuth()
+  return getLoginState(user) === LoginStates.NOT_LOGGED_IN ? <>{children}</> : null
+}
+
+export const IsUnverified: React.FC<Children> = ({ children }) => {
+  const { user } = useAuth()
+  return getLoginState(user) === LoginStates.UNVERIFIED ? <>{children}</> : null
+}
+
+export const IsVerifiedIncomplete: React.FC<Children> = ({ children }) => {
+  const { user } = useAuth()
+  return getLoginState(user) === LoginStates.INCOMPLETE ? <>{children}</> : null
+}
+
+export const IsLoggedIn: React.FC<Children> = ({ children }) => {
+  const { user } = useAuth()
+  return getLoginState(user) === LoginStates.LOGGED_IN ? <>{children}</> : null
 }
