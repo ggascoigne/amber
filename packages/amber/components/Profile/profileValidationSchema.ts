@@ -7,7 +7,7 @@ export const profileValidationSchema = Yup.object().shape({
   firstName: Yup.string().min(2).max(20).required('Required'),
   lastName: Yup.string().min(2).max(40).required('Required'),
   fullName: Yup.string().min(2).max(64).required('Required'),
-  displayName: Yup.string().min(2).max(40),
+  displayName: Yup.string().min(2).max(40).nullable(),
   email: Yup.string().min(2).max(64).required('Required'),
   profiles: Yup.object().shape({
     nodes: Yup.array().of(
