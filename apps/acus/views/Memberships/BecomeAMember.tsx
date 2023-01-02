@@ -91,8 +91,9 @@ export const BecomeAMember = () => {
             ) : (
               <>
                 <p>
-                  Your email is unverified, once you respond to the verification email you will be able to register for
-                  the convention.
+                  Your email is unverified, once you respond to the verification email you will be able to register for 
+                  the convention. 
+                  After you verify your email, you have to Sign Out and Sign In again.
                 </p>
               </>
             )}
