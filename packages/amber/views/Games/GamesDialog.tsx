@@ -76,8 +76,8 @@ const getDefaultValues = (configuration: Configuration): GameDialogFormValues =>
   type: '',
   setting: '',
   charInstructions: '',
-  playerMin: configuration.virtual ? 2 : 4,
-  playerMax: configuration.virtual ? 7 : 10,
+  playerMin: configuration.virtual ? 2 : configuration.numberOfSlots === 8 ? 3 : 4,
+  playerMax: configuration.virtual ? 7 : configuration.numberOfSlots === 8 ? 6 : 10,
   playerPreference: '',
   returningPlayers: '',
   playersContactGm: false,
@@ -132,6 +132,10 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const estimatedLengthOptions = useMemo(() => getEstimatedLengthOptions(configuration), [configuration])
 
   const slim = configuration.numberOfSlots === 8
+  const minPlayersFloor = slim ? 1 : 1
+  const minPlayersCeiling = slim ? 3 : 10
+  const maxPlayersFloor = slim ? 4 : 1
+  const maxPlayersCeiling = slim ? 20 : 150
 
   const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
@@ -315,10 +319,26 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             </GridItem>
             <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
               <GridItem xs={12} md={6}>
-                <TextField name='playerMin' label='Min' margin='normal' fullWidth type='number' required />
+                <TextField
+                  name='playerMin'
+                  label='Min'
+                  margin='normal'
+                  fullWidth
+                  type='number'
+                  required
+                  InputProps={{ inputProps: { min: minPlayersFloor, max: minPlayersCeiling } }}
+                />
               </GridItem>
               <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
-                <TextField name='playerMax' label='Max' margin='normal' fullWidth type='number' required />
+                <TextField
+                  name='playerMax'
+                  label='Max'
+                  margin='normal'
+                  fullWidth
+                  type='number'
+                  required
+                  InputProps={{ inputProps: { min: maxPlayersFloor, max: maxPlayersCeiling } }}
+                />
               </GridItem>
             </GridItem>
             <GridItem xs={12} md={12}>
@@ -351,32 +371,36 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 inputProps={{ autoCapitalize: 'none' }}
               />
             </GridItem>
-            <GridItem xs={12} md={12}>
-              <p>
-                You are welcome to start and end the game at any time (within reason), but if the game overlaps two
-                slots, please enter two games and mark them as parts one and two.
-              </p>
-              {configuration.virtual && (
-                <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
-              )}
-              <SelectField
-                name='estimatedLength'
-                label='Estimated Length'
-                margin='normal'
-                fullWidth
-                selectValues={estimatedLengthOptions}
-              />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <SlotOptionsSelect
-                name='slotPreference'
-                label='Slot Preference'
-                year={values.year}
-                margin='normal'
-                required
-                fullWidth
-              />
-            </GridItem>
+            {!slim && (
+              <>
+                <GridItem xs={12} md={12}>
+                  <p>
+                    You are welcome to start and end the game at any time (within reason), but if the game overlaps two
+                    slots, please enter two games and mark them as parts one and two.
+                  </p>
+                  {configuration.virtual && (
+                    <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
+                  )}
+                  <SelectField
+                    name='estimatedLength'
+                    label='Estimated Length'
+                    margin='normal'
+                    fullWidth
+                    selectValues={estimatedLengthOptions}
+                  />
+                </GridItem>
+                <GridItem xs={12} md={12}>
+                  <SlotOptionsSelect
+                    name='slotPreference'
+                    label='Slot Preference'
+                    year={values.year}
+                    margin='normal'
+                    required
+                    fullWidth
+                  />
+                </GridItem>
+              </>
+            )}
             {!configuration.startDates[values.year].virtual && (
               <>
                 <GridItem xs={12} md={12}>
