@@ -126,39 +126,54 @@ const VirtualGmBlurb = () => {
 const GmBlurb = () => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
+  const acus = configuration.numberOfSlots === 8
+  const acnw = !acus
   return (
     <>
-      <p>Thank you for considering offering games for {configuration.name}!</p>
-
       <p>
-        The deadline for game submissions is <ConfigDate name='gameSubmissionDeadline' format={MDY} />
+        Thank you for considering offering games for {configuration.name}! The <strong>deadline</strong> for game
+        submissions is{' '}
+        <strong>
+          <ConfigDate name='gameSubmissionDeadline' format={MDY} />
+        </strong>
       </p>
       <ol className={classes.blurb}>
         <li>
+          {acnw && (
+            <p>
+              <strong>Non-Amber Games</strong>: We encourage people to be creative with the diceless format. If you have
+              a game that uses a form of the basic Amber DRPG rules but is not set in Amber, you are welcome to post the
+              game. Remember, however, that most people attending the convention want at least a majority of their games
+              to be set in the Amber multiverse. Unlike a regular Amber game, if a non-Amber game does not completely
+              fill we cannot freely assign people to it to complete the schedule since we cannot assume a basic
+              familiarity and interest in the setting.
+            </p>
+          )}
+          {acus && (
+            <p>
+              <strong>Non-Amber or non-Diceless Games</strong>: We encourage you to be creative and run games that are
+              fun for you. We welcome a wide variety of games and settings. If you like to run it, chances are, we'll
+              have people that want to play in it! We have had games from classic Amber, to other diceless games using
+              the same or GM-created systems, narrative and GM-less games, to games using dice and other mechanics.
+              Please include the setting, game system, and mechanics in your description, so attendees can make informed
+              choices.
+            </p>
+          )}
+        </li>
+        <li>
           <p>
-            <strong>Non-Amber Games</strong>: We encourage people to be creative with the diceless format. If you have a
-            game that uses a form of the basic Amber DRPG rules but is not set in Amber, you are welcome to post the
-            game. Remember, however, that most people attending the convention want at least a majority of their games
-            to be set in the Amber multiverse. Unlike a regular Amber game, if a non-Amber game does not completely fill
-            we cannot freely assign people to it to complete the schedule since we cannot assume a basic familiarity and
-            interest in the setting.
+            <strong>Continuing Campaigns/Ongoing Games</strong>: Please run the game in the same slot that it ran in
+            last year. This way people participating in more than one continuing game do not have to drop out of one to
+            fit schedule changes of another. As a word of advice, don't build your game around a specific player
+            playing. Please consider ways in which new players can be brought into your game.
           </p>
         </li>
         <li>
           <p>
-            <strong>Continuing Campaigns</strong>: If you are running a game that is a continuing campaign, please plan
-            to run the game in the same slot (or one of the same slots) that it ran in last year. This way people
-            participating in more than one continuing game do not have to drop out of one to fit the schedule changes of
-            another. Please consider ways in which new players can be brought into your game smoothly. It is very rare
-            that enough &quot;veteran&quot; players sign up for a game to run without new players.
-          </p>
-        </li>
-        <li>
-          <p>
-            <strong>Schedule</strong>: Not all slots are equal. Some are as short as four hours, others are as long as
-            seven hours. Please keep the length of the slots in mind when choosing a preferred game slot. If your game
-            must run on Friday but is longer than a short slot, you may request that the game run over two or even three
-            slots. Saturday and Sunday offer longer slots. The schedule is as follows:
+            <strong>Schedule</strong>: Please keep the length of the slots in mind when choosing a preferred game slot.
+            If you pick to allow us to run your game in any slot, you will earn the undying gratitude of the genie
+            building the game book. You can also run your game over two slots: please title them as part 1 and part 2
+            and put in the description that people must sign up for both parts. The slots are as follows:
           </p>
           <ul>
             {range(configuration.numberOfSlots).map((slotNo) => (
@@ -174,13 +189,24 @@ const GmBlurb = () => {
         </li>
         <li>
           <p>
-            <strong>Teen Friendly</strong>: Because of the increasing number of teens attending the con with their
-            parents, we have a field asking if the game is "Teen Friendly." By saying "Yes" you assert that (a) you
-            don't mind having a younger player in your group and (b) the game is unlikely to have content that would
-            earn it the equivalent of an "R" rating. We realize that not everyone wants to GM for younger players, but
-            we appreciate those who do.
+            <strong>Teen Friendly</strong>: Because of teens attending the con, usually with their parents, we have a
+            field asking if the game is "Teen Friendly." By saying "Yes" you assert that (a) you don't mind having a
+            younger player in your group and (b) the game is unlikely to have content that would earn it the equivalent
+            of an "R" rating. We realize that not everyone wants to GM for younger players, but we appreciate those who
+            do.
           </p>
         </li>
+        {acus && (
+          <li>
+            <p>
+              <strong>Minimum Number of Players</strong>: We no longer accept games that require more than three
+              players: they are hard to schedule, they do not always run, sometimes have to be canceled after
+              scheduling, and that hurts players. To have more people play in their first choices we request that you
+              try to figure out a way to run it with fewer players as a minimum. If that is absolutely not possible,
+              please email <a href='mailto:games@ambercon.com'>games@ambercon.com</a>.
+            </p>
+          </li>
+        )}
       </ol>
     </>
   )
