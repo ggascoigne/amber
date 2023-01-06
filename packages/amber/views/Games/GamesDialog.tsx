@@ -419,13 +419,17 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             )}
             <GridItem xs={12} md={12}>
               <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
-                In the event we have to change your slot, list any and all known slot conflicts including other games
-                you are running, returning or ongoing games, and any slots you are taking off.
+                To schedule, or in the event we have to change your requested slot, list any and all known slot
+                conflicts (other games you are running, returning or ongoing games, and any slots you are taking off).
+                If you have any constraints or if there is anything else the organizers need to know th schedule your
+                game, and schedule players to your game, please let us know:
               </Typography>
             </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
-            </GridItem>
+            {!slim && (
+              <GridItem xs={12} md={12}>
+                <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
+              </GridItem>
+            )}
             <GridItem xs={12} md={12}>
               <TextField name='message' label='Messages for the Organizers' margin='normal' fullWidth multiline />
             </GridItem>
