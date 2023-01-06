@@ -421,7 +421,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
               <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
                 To schedule, or in the event we have to change your requested slot, list any and all known slot
                 conflicts (other games you are running, returning or ongoing games, and any slots you are taking off).
-                If you have any constraints or if there is anything else the organizers need to know th schedule your
+                If you have any constraints or if there is anything else the organizers need to know to schedule your
                 game, and schedule players to your game, please let us know:
               </Typography>
             </GridItem>
