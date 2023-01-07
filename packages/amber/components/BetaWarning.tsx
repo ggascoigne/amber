@@ -1,4 +1,5 @@
-import { Card, Theme, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Card, Theme } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
 import { CardBody } from 'ui'

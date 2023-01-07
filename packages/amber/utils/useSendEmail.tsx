@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch'
 import { useCallback } from 'react'
-import { useNotification } from 'ui'
+import { isDev, useNotification } from 'ui'
 
 import { EmailConfirmation } from './apiTypes'
 
@@ -33,7 +33,7 @@ export const useSendEmail = (): SendEmail => {
                 variant: 'error',
               })
             } else {
-              console.log(`result = ${JSON.stringify(result, null, 2)}`)
+              isDev && console.log(`result = ${JSON.stringify(result, null, 2)}`)
             }
           } catch (e: any) {
             console.log(e)

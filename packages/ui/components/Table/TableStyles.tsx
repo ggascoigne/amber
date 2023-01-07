@@ -1,4 +1,5 @@
-import { Checkbox, Theme, styled } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { Checkbox, Theme } from '@mui/material'
 import MuiTableTable from '@mui/material/Table'
 import { TableTypeMap } from '@mui/material/Table/Table'
 import MuiTableBody from '@mui/material/TableBody'

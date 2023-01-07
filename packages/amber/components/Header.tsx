@@ -32,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
         href?.startsWith('https://acnw.org')
       )
         return ''
-      return !conf ? '' : conf.local ? '(local)' : ['acnw', 'acus'].includes(conf.databaseName) ? '(test)' : '(prod)'
+      return !conf ? '' : conf.local ? '(local)' : ['acnw', 'acus'].includes(conf.databaseName) ? '(prod)' : '(test)'
     }
 
     setConfigDetails(getConfigDetails(config, window.location.href))

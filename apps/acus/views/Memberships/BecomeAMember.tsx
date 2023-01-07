@@ -1,4 +1,5 @@
-import { Button, Card, Theme, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Button, Card, Theme } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'

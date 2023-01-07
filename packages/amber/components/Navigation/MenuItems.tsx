@@ -1,4 +1,5 @@
-import { List, ListItemText, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { List, ListItemText } from '@mui/material'
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useIsMember, useSettings, useUser } from '../../utils'

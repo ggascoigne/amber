@@ -3,7 +3,8 @@ import { stripIndents } from 'common-tags'
 import React, { createRef, PropsWithChildren, useMemo, useState } from 'react'
 import SHA from 'sha.js'
 
-import { Box, useMediaQuery, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Box, useMediaQuery } from '@mui/material'
 import { GqlType, GraphQLError, Loader, notEmpty, Page } from 'ui'
 import {
   buildUrl,

@@ -1,14 +1,5 @@
-import {
-  FormControlLabel,
-  Radio,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Theme,
-  useTheme,
-} from '@mui/material'
+import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import React, { useMemo } from 'react'
 import { makeStyles } from 'tss-react/mui'
 

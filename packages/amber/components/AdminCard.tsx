@@ -1,4 +1,5 @@
-import { CardContent, DialogContentText, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { CardContent, DialogContentText } from '@mui/material'
 import React, { PropsWithChildren } from 'react'
 
 import { Card } from 'ui'

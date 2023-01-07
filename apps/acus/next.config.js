@@ -15,21 +15,20 @@ const withMdxFm = require('next-mdx-frontmatter')({
 
 module.exports = withMdxFm({
   reactStrictMode: true,
-  experimental: {
-    transpilePackages: ['ui', 'database', 'amber'],
-  },
+  transpilePackages: ['ui', 'database', 'amber'],
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  modularizeImports: {
+    '@mui/material': {
+      transform: '@mui/material/{{member}}',
+    },
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
+    },
+  },
   // Append the default value with md extensions
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  webpack: (config) => {
-    Object.assign(config.externals, {
-      bufferutil: 'bufferutil',
-      'utf-8-validate': 'utf-8-validate',
-    })
-    return config
-  },
 })
