@@ -372,35 +372,33 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
               />
             </GridItem>
             {!slim && (
-              <>
-                <GridItem xs={12} md={12}>
-                  <p>
-                    You are welcome to start and end the game at any time (within reason), but if the game overlaps two
-                    slots, please enter two games and mark them as parts one and two.
-                  </p>
-                  {configuration.virtual && (
-                    <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
-                  )}
-                  <SelectField
-                    name='estimatedLength'
-                    label='Estimated Length'
-                    margin='normal'
-                    fullWidth
-                    selectValues={estimatedLengthOptions}
-                  />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  <SlotOptionsSelect
-                    name='slotPreference'
-                    label='Slot Preference'
-                    year={values.year}
-                    margin='normal'
-                    required
-                    fullWidth
-                  />
-                </GridItem>
-              </>
+              <GridItem xs={12} md={12}>
+                <p>
+                  You are welcome to start and end the game at any time (within reason), but if the game overlaps two
+                  slots, please enter two games and mark them as parts one and two.
+                </p>
+                {configuration.virtual && (
+                  <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
+                )}
+                <SelectField
+                  name='estimatedLength'
+                  label='Estimated Length'
+                  margin='normal'
+                  fullWidth
+                  selectValues={estimatedLengthOptions}
+                />
+              </GridItem>
             )}
+            <GridItem xs={12} md={12}>
+              <SlotOptionsSelect
+                name='slotPreference'
+                label='Slot Preference'
+                year={values.year}
+                margin='normal'
+                required
+                fullWidth
+              />
+            </GridItem>
             {!configuration.startDates[values.year].virtual && (
               <>
                 <GridItem xs={12} md={12}>
