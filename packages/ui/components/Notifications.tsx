@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close'
-import { Box, IconButton, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Box, IconButton } from '@mui/material'
 import { amber, green } from '@mui/material/colors'
 import {
   CustomContentProps,

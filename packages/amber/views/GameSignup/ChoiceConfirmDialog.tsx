@@ -1,4 +1,5 @@
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'

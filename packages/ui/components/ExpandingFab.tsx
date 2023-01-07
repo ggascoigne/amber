@@ -1,4 +1,5 @@
-import { Fab, Theme, Zoom, useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Fab, Theme, Zoom } from '@mui/material'
 import React, { PropsWithChildren, useState } from 'react'
 import { makeStyles } from 'tss-react/mui'
 

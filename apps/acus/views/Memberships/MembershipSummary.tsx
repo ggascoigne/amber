@@ -1,6 +1,5 @@
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
-import { DateTime } from 'luxon'
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -14,17 +13,13 @@ import {
   HeaderContent,
   Loader,
   MultiLine,
-  notEmpty,
   Page,
   range,
 } from 'ui'
 import {
-  getInterestLevel,
-  getRoomPref,
   getSlotDescription,
   isNotPacificTime,
   ProfileFormType,
-  RoomPref,
   useConfiguration,
   useGetCost,
   useGetHotelRoomsQuery,
@@ -112,9 +107,6 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
   )
 }
 
-const formatDate = (date?: string) =>
-  date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
-
 const VerticalGap = () => {
   const { classes } = useStyles()
   return (
@@ -130,19 +122,9 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
-  const configuration = useConfiguration()
   const { isLoading, error, data } = useGetHotelRoomsQuery()
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
-
-  const room = useMemo(
-    () =>
-      data
-        ?.hotelRooms!.edges.map((v) => v.node)
-        .filter(notEmpty)
-        .find((r) => r.id === membership.hotelRoomId),
-    [data, membership.hotelRoomId]
-  )
 
   if (error) {
     return <GraphQLError error={error} />

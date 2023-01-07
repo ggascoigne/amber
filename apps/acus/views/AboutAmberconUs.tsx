@@ -1,4 +1,4 @@
-import { useTheme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { FrontMatter, MdxPage, Page } from 'ui'
 
 import { useConfiguration, useYearFilter } from 'amber/utils'

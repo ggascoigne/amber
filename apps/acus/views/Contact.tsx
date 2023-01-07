@@ -1,7 +1,6 @@
 import { Box, Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-import { ContactEmail } from 'amber/components'
 import { useConfiguration } from 'amber/utils'
 import { CardBody, Page } from 'ui'
 import { ReactNode } from 'react'
@@ -91,7 +90,8 @@ const Contact = () => {
       >
         Edwin is one half of Diceless by Design which holds the copyright to the Amber Diceless Role Playing Game, has
         been a vocal, hopefully constructive, critic of many aspects of various AmberCons. Thanks to a variety of Real
-        World factors, he has been lucky, to attend dozens of AmberCon US, AmberCon North, AmberCon NorthWest, and AmberCon UK conventions.
+        World factors, he has been lucky, to attend dozens of AmberCon US, AmberCon North, AmberCon NorthWest, and
+        AmberCon UK conventions.
       </Person>
       <Person
         name='Guy Gascoigne-Piggford'

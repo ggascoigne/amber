@@ -1,5 +1,5 @@
-import { Box, useTheme } from '@mui/material'
-import { SxProps, Theme } from '@mui/material/styles'
+import { SxProps, Theme, useTheme } from '@mui/material/styles'
+import { Box } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import React, { PropsWithChildren, ReactNode } from 'react'
 import Head from 'next/head'

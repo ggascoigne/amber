@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material'
+import { createTheme } from '@mui/material/styles'
 import { cyan, green, indigo, orange, purple, red } from '@mui/material/colors'
 import hexRgb from 'hex-rgb'
 
