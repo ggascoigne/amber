@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 patchedDependencies:
-  '@eslint/eslintrc@1.4.0':
-    hash: zjo37zvwzuexn6h76evvtjwvrq
-    path: patches/@eslint__eslintrc@1.4.0.patch
+  '@eslint/eslintrc@1.4.1':
+    hash: mkydzutvagp3qjcpwmlk5laid4
+    path: patches/@eslint__eslintrc@1.4.1.patch
 
 importers:
 
@@ -33,6 +33,7 @@ importers:
 
   apps/acnw:
     specifiers:
+      '@amber/api': workspace:*
       '@auth0/nextjs-auth0': 2.0.1
       '@babel/core': ^7.20.12
       '@babel/helper-regex': ^7.10.5
@@ -93,6 +94,7 @@ importers:
       webpack: ^5.75.0
       yup: ^0.32.11
     dependencies:
+      '@amber/api': link:../../packages/api
       '@auth0/nextjs-auth0': 2.0.1_next@13.1.1
       '@emotion/react': 11.10.5_jp5qgyg6plq757v5hojp7ls2oe
       '@emotion/server': 11.10.0
@@ -156,6 +158,7 @@ importers:
 
   apps/acus:
     specifiers:
+      '@amber/api': workspace:*
       '@auth0/nextjs-auth0': 2.0.1
       '@babel/core': ^7.20.12
       '@babel/helper-regex': ^7.10.5
@@ -216,6 +219,7 @@ importers:
       webpack: ^5.75.0
       yup: ^0.32.11
     dependencies:
+      '@amber/api': link:../../packages/api
       '@auth0/nextjs-auth0': 2.0.1_next@13.1.1
       '@emotion/react': 11.10.5_jp5qgyg6plq757v5hojp7ls2oe
       '@emotion/server': 11.10.0
@@ -433,6 +437,31 @@ importers:
       tsconfig: link:../tsconfig
       typescript: 4.9.4
       webpack: 5.75.0
+
+  packages/api:
+    specifiers:
+      '@auth0/nextjs-auth0': ^2.0.1
+      '@types/node': ^18.11.18
+      '@types/pg': ^8.6.6
+      common-tags: ^1.8.2
+      database: workspace:*
+      dotenv: ^16.0.3
+      eslint-config-custom: workspace:*
+      next: ^13.1.1
+      pg: ^8.8.0
+      typescript: ^4.9.4
+    dependencies:
+      '@auth0/nextjs-auth0': 2.0.1_next@13.1.1
+      common-tags: 1.8.2
+      database: link:../database
+      next: 13.1.1
+      pg: 8.8.0
+    devDependencies:
+      '@types/node': 18.11.18
+      '@types/pg': 8.6.6
+      dotenv: 16.0.3
+      eslint-config-custom: link:../elsint-config-custom
+      typescript: 4.9.4
 
   packages/database:
     specifiers:
@@ -2268,7 +2297,7 @@ packages:
     resolution: {integrity: sha512-AHPmaAx+RYfZz0eYu6Gviiagpmiyw98ySSlQvCUhVGDRtDFe4DBS0x1bSjdF3gqUDYOczB+yYvBTtEylYSdRhg==}
     dev: false
 
-  /@eslint/eslintrc/1.4.1:
+  /@eslint/eslintrc/1.4.1_mkydzutvagp3qjcpwmlk5laid4:
     resolution: {integrity: sha512-XXrH9Uarn0stsyldqDYq8r++mROmWRI1xKMXa640Bb//SY1+ECYX6VzT6Lcx5frD0V30XieqJ0oX9I2Xj5aoMA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
@@ -2283,6 +2312,7 @@ packages:
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
+    patched: true
 
   /@getify/eslint-plugin-proper-ternary/3.1.1_eslint@8.31.0:
     resolution: {integrity: sha512-KMW2/F3uQT14bUt4Di+Jo7Dyeu/kclilCkKVdnuBvWm3SIJH/TjKDo1yqIpGUljjZLj7C3S0BY0XPG4pP176Gg==}
@@ -7149,7 +7179,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     hasBin: true
     dependencies:
-      '@eslint/eslintrc': 1.4.1
+      '@eslint/eslintrc': 1.4.1_mkydzutvagp3qjcpwmlk5laid4
       '@humanwhocodes/config-array': 0.11.8
       '@humanwhocodes/module-importer': 1.0.1
       '@nodelib/fs.walk': 1.2.8
@@ -10069,6 +10099,48 @@ packages:
       - react
     dev: false
 
+  /next/13.1.1:
+    resolution: {integrity: sha512-R5eBAaIa3X7LJeYvv1bMdGnAVF4fVToEjim7MkflceFPuANY3YyvFxXee/A+acrSYwYPvOvf7f6v/BM/48ea5w==}
+    engines: {node: '>=14.6.0'}
+    hasBin: true
+    peerDependencies:
+      fibers: '>= 3.1.0'
+      node-sass: ^6.0.0 || ^7.0.0
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      sass: ^1.3.0
+    peerDependenciesMeta:
+      fibers:
+        optional: true
+      node-sass:
+        optional: true
+      sass:
+        optional: true
+    dependencies:
+      '@next/env': 13.1.1
+      '@swc/helpers': 0.4.14
+      caniuse-lite: 1.0.30001441
+      postcss: 8.4.14
+      styled-jsx: 5.1.1
+    optionalDependencies:
+      '@next/swc-android-arm-eabi': 13.1.1
+      '@next/swc-android-arm64': 13.1.1
+      '@next/swc-darwin-arm64': 13.1.1
+      '@next/swc-darwin-x64': 13.1.1
+      '@next/swc-freebsd-x64': 13.1.1
+      '@next/swc-linux-arm-gnueabihf': 13.1.1
+      '@next/swc-linux-arm64-gnu': 13.1.1
+      '@next/swc-linux-arm64-musl': 13.1.1
+      '@next/swc-linux-x64-gnu': 13.1.1
+      '@next/swc-linux-x64-musl': 13.1.1
+      '@next/swc-win32-arm64-msvc': 13.1.1
+      '@next/swc-win32-ia32-msvc': 13.1.1
+      '@next/swc-win32-x64-msvc': 13.1.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+    dev: false
+
   /next/13.1.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-R5eBAaIa3X7LJeYvv1bMdGnAVF4fVToEjim7MkflceFPuANY3YyvFxXee/A+acrSYwYPvOvf7f6v/BM/48ea5w==}
     engines: {node: '>=14.6.0'}
@@ -12126,6 +12198,22 @@ packages:
     resolution: {integrity: sha512-CzFnRRXhzWIdItT3OmF8SQfWyahHhjq3HwcMNCNLn+N7klOOqPjMeG/4JSu77D7ypZdGvSzvkrbyeTMizz2VrA==}
     dependencies:
       inline-style-parser: 0.1.1
+    dev: false
+
+  /styled-jsx/5.1.1:
+    resolution: {integrity: sha512-pW7uC1l4mBZ8ugbiZrcIsiIvVx1UmTfw7UkC3Um2tmfUq9Bhk8IiyEIPl6F8agHgjzku6j0xQEZbfA5uSgSaCw==}
+    engines: {node: '>= 12.0.0'}
+    peerDependencies:
+      '@babel/core': '*'
+      babel-plugin-macros: '*'
+      react: '>= 16.8.0 || 17.x.x || ^18.0.0-0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      babel-plugin-macros:
+        optional: true
+    dependencies:
+      client-only: 0.0.1
     dev: false
 
   /styled-jsx/5.1.1_2exiyaescjxorpwwmy4ejghgte:
