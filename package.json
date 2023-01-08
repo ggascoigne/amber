@@ -85,7 +85,7 @@
   ],
   "pnpm": {
     "patchedDependencies": {
-      "@eslint/eslintrc@1.4.0": "patches/@eslint__eslintrc@1.4.0.patch"
+      "@eslint/eslintrc@1.4.1": "patches/@eslint__eslintrc@1.4.1.patch"
     }
   }
 }

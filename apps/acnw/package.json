@@ -50,6 +50,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "tss-react": "^4.5.2",
+    "@amber/api": "workspace:*",
     "ui": "workspace:*",
     "yup": "^0.32.11"
   },
