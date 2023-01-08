@@ -20,6 +20,7 @@ export enum Roles {
   ROLE_ADMIN = 'ROLE_ADMIN',
   ROLE_GAME_ADMIN = 'ROLE_GAME_ADMIN',
   ROLE_USER = 'ROLE_USER',
+  ROLE_REPORTS = 'ROLE_REPORTS',
 }
 
 const rules: Rules = {
@@ -30,6 +31,9 @@ const rules: Rules = {
   },
   [Roles.ROLE_GAME_ADMIN]: {
     static: [Perms.FullGameBook, Perms.GameAdmin, Perms.Reports, Perms.IsLoggedIn],
+  },
+  [Roles.ROLE_REPORTS]: {
+    static: [Perms.Reports, Perms.IsLoggedIn],
   },
   [Roles.ROLE_USER]: {
     static: [Perms.IsLoggedIn],
