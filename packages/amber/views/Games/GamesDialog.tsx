@@ -65,7 +65,15 @@ const getEstimatedLengthOptions = (configuration: Configuration) =>
     ? ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8']
     : ['3', '3.5', '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5', '8', '8.5', '9', '10', '12+']
 
-const morningGamesOptions = ['Starts on time', 'Starts at 9.30 am', 'Starts at 10.00 am', 'Starts at 10.30 am']
+const morningGamesOptions = [
+  'Starts on time',
+  'Starts at 9.30 am',
+  'Starts at 10.00 am',
+  'Starts at 10.30 am',
+  'Starts at 11.00 am',
+  'Starts at 11.30 am',
+  'Starts at 12.00 pm',
+]
 
 const getDefaultValues = (configuration: Configuration): GameDialogFormValues => ({
   slotId: 0,
