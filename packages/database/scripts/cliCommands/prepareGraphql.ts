@@ -5,7 +5,7 @@ import { CliUx, Command } from '@oclif/core'
 import { printSchema } from 'graphql'
 import { createPostGraphileSchema } from 'postgraphile'
 
-import { PoolType, getPool, getSchemas } from '../../shared/config'
+import { PoolType, getPool, getSchemas, dbEnv } from '../../shared/config'
 import { options } from '../../shared/postgraphileOptions'
 
 // Download the schema for codegen, also (and as importantly), save the
@@ -20,7 +20,7 @@ export default class PrepareGraphQL extends Command {
     const pgPool = await getPool(PoolType.ADMIN)
     const schema = await createPostGraphileSchema(pgPool, getSchemas(), {
       ...options,
-      writeCache: path.join(__dirname, '../../shared/postgraphileCache.json'),
+      writeCache: path.join(__dirname, `../../shared/${dbEnv}/postgraphileCache.json`),
     })
     await pgPool.end()
     fs.writeFileSync(path.join(__dirname, '../../shared/graphql-schema.graphql'), printSchema(schema))

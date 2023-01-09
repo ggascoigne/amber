@@ -5,9 +5,10 @@ import { certs } from './dbCerts'
 
 const { Pool } = pg
 
+export const dbEnv = process.env.DB_ENV
+
 if (process.env.NODE_ENV !== 'production') {
   const envFilename = process.env.ENV_FILENAME ?? '.env'
-  const dbEnv = process.env.DB_ENV
   if (!dbEnv || !['acnw', 'acus'].includes(dbEnv)) {
     throw new Error('DB_ENV must be set to either "acnw" or "acus"')
   }

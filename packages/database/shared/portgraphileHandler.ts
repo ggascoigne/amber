@@ -1,8 +1,8 @@
 import { postgraphile } from 'postgraphile'
 import { getSession } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSchemas } from './config'
-import { options, readCache } from './postgraphileOptions'
+import { getSchemas, dbEnv } from './config'
+import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 
 export const getUserId = (user: any) => user?.userId
 
@@ -16,7 +16,7 @@ export const isDev = process.env.NODE_ENV !== 'production'
 export const getPostgraphileHandler = (pool: any, req: NextApiRequest, res: NextApiResponse) =>
   postgraphile(pool, getSchemas(), {
     ...options,
-    readCache,
+    readCache: dbEnv === 'acnw' ? acnwReadCache : acusReadCache,
     pgSettings: async (request) => {
       const { user } = (await getSession(request, res)) ?? { user: null }
       const settings: Record<string, any> = {}
