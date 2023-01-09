@@ -1,43 +1,44 @@
-import { AtLeastOne } from 'ui'
+import { asEnumLike, AtLeastOne, keys } from 'ui'
 
-type Permissions = AtLeastOne<{
-  dynamic?: Record<string, unknown>
+export type PermissionDeclaration = AtLeastOne<{
+  dynamic?: Record<string, (data: any) => boolean>
   static?: Perms[]
 }>
 
-export type Rules = Record<string, Permissions>
+export type Rules = Record<string, PermissionDeclaration>
 
-export enum Perms {
-  GraphiqlLoad = 'graphiql:load',
-  IsAdmin = 'is:Admin',
-  IsLoggedIn = 'is:LoggedIn',
-  FullGameBook = 'gameBook:load',
-  GameAdmin = 'game:admin',
-  Reports = 'reports:load',
-}
+export const Perms = asEnumLike([
+  'GraphiqlLoad',
+  'IsAdmin',
+  'IsLoggedIn',
+  'FullGameBook',
+  'GameAdmin',
+  'Reports',
+] as const)
 
-export enum Roles {
-  ROLE_ADMIN = 'ROLE_ADMIN',
-  ROLE_GAME_ADMIN = 'ROLE_GAME_ADMIN',
-  ROLE_USER = 'ROLE_USER',
-  ROLE_REPORTS = 'ROLE_REPORTS',
-}
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type Perms = keyof typeof Perms
 
-const rules: Rules = {
-  [Roles.ROLE_ADMIN]: {
+const rules = {
+  ROLE_ADMIN: {
     dynamic: {
       '*': () => true,
     },
   },
-  [Roles.ROLE_GAME_ADMIN]: {
+  ROLE_GAME_ADMIN: {
     static: [Perms.FullGameBook, Perms.GameAdmin, Perms.Reports, Perms.IsLoggedIn],
   },
-  [Roles.ROLE_REPORTS]: {
+  ROLE_REPORTS: {
     static: [Perms.Reports, Perms.IsLoggedIn],
   },
-  [Roles.ROLE_USER]: {
+  ROLE_USER: {
     static: [Perms.IsLoggedIn],
   },
-}
+} satisfies Rules
+
+export const Roles = asEnumLike(keys(rules))
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type Roles = keyof typeof Roles
 
 export default rules

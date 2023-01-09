@@ -1,4 +1,4 @@
-import { Perms } from '../Auth'
+import type { Perms } from '../Auth'
 
 interface UserCondition {
   userId: number | null | undefined
