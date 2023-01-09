@@ -1,4 +1,5 @@
-import _readCache from './postgraphileCache.json'
+import _acnwReadCache from './acnw/postgraphileCache.json'
+import _acusReadCache from './acus/postgraphileCache.json'
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const PgSimplifyInflectorPlugin = require('@graphile-contrib/pg-simplify-inflector')
@@ -20,4 +21,5 @@ export const options = {
   appendPlugins: [PgSimplifyInflectorPlugin, ConnectionFilterPlugin, PgOrderByRelatedPlugin],
 }
 
-export const readCache = _readCache
+export const acnwReadCache = _acnwReadCache
+export const acusReadCache = _acusReadCache
