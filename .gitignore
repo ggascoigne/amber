@@ -70,6 +70,7 @@ packages/amber/version.ts
 .next
 tsconfig.tsbuildinfo
 packages/database/shared/graphql-schema.graphql
+packages/database/shared/postgraphileCache.json
 
 # excluded since it contain PII
 name_cleanup.js
