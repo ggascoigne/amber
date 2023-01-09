@@ -15,25 +15,18 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     const year = req.body?.year || configuration.year
     const query = `
           select 
-            g.id as "Game Id",
-            u.full_name as "Full Name",
-            u.first_name as "First Name",
-            u.last_name as "Last Name",
-            u.email as "email",
+            g.id as "Game ID",
+            u.full_name as "Submitted By",
+            u.email as "Email",
             g.name as "Game Title",
+            g.gm_names as "GM Names",
             g.description as "Description",
             g.teen_friendly as "Teen Friendly",
-            g.player_max as "Player Max",
             g.player_min as "Player Min",
+            g.player_max as "Player Max",
             g.player_preference as "Player Preference",
-            g.returning_players as "Returning Players",
-            g.players_contact_gm as "Contact GM",
-            g.game_contact_email as "Game Contact Email",
             g.slot_id as "Slot",
             g.slot_preference as "Slot Preference",
-            g.gm_names as "GM Names",
-            g.late_start as "Late Start",
-            g.late_finish as "Late Finish",
             g.message as "Message"
             from game g join "user" u  on g.author_id = u.id
           where g.year = ${year}`

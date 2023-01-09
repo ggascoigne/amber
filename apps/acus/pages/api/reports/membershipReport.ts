@@ -39,17 +39,11 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
           u.first_name as "First Name",
           u.last_name as "Last Name",
           u.email as "email",
-          h.description as "Room",
           coalesce(gm.isGm,false) as "isGM",
           mc.times_attending as "Times Attending",
-          m.arrival_date as "Arriving",
-          m.departure_date as "Departing",
           m.attending as "isAttending",
           m.attendance as "Attendance",
-          m.request_old_price as "Requests Subsidy",
           m.volunteer as "isVolunteer",
-          m.rooming_with as "Rooming With",
-          m.room_preference_and_notes as "Room Preferences/Notes", 
           m.message as "Message"
           from membership m 
           join "user" u on m.user_id = u.id 
