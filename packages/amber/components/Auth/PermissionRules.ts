@@ -7,14 +7,7 @@ export type PermissionDeclaration = AtLeastOne<{
 
 export type Rules = Record<string, PermissionDeclaration>
 
-export const Perms = asEnumLike([
-  'GraphiqlLoad',
-  'IsAdmin',
-  'IsLoggedIn',
-  'FullGameBook',
-  'GameAdmin',
-  'Reports',
-] as const)
+export const Perms = asEnumLike(['GraphiqlLoad', 'IsAdmin', 'IsLoggedIn', 'FullGameBook', 'GameAdmin', 'Reports'])
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Perms = keyof typeof Perms

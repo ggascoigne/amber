@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { O } from 'ts-toolbelt'
+import { O, F } from 'ts-toolbelt'
 import { Key } from 'ts-toolbelt/out/Any/Key'
 import { List } from 'ts-toolbelt/out/List/List'
 
@@ -15,7 +15,7 @@ export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 type SelfProp<T extends string> = { [U in T]: U }
 
 // export convert a string array [ 'a', 'b', 'c' ] to a correctly typed object { a: 'a', b: 'b', c: 'c' }
-export const asEnumLike = <T extends readonly string[]>(v: T) =>
+export const asEnumLike = <T extends readonly string[]>(v: F.Narrow<T>) =>
   Object.fromEntries(v.map((k) => [k, k])) as Expand<SelfProp<T[number]>>
 
 // expands object types recursively

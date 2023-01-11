@@ -1,46 +1,52 @@
 import { List, ListItem } from '@mui/material'
 import { Page } from 'ui'
-import { AuthenticatedDownloadButton } from '../components/AuthenticatedDownloadButton'
+import React, { useMemo } from 'react'
+import { AuthenticatedDownloadButton } from '../components'
 import { useConfiguration } from '../utils'
 
-const Reports = () => {
+export type ReportRecord = {
+  name: string
+  url?: string
+  fileLabel?: string
+  virtual?: boolean
+}
+
+const toCamelCase = (words: string) => {
+  const parts = words.split(' ')
+  return parts.reduce((p, c) => p + c.charAt(0).toUpperCase() + c.slice(1), parts.shift()!.toLowerCase())
+}
+
+type ReportsProps = {
+  reports: ReportRecord[]
+}
+
+export const Reports: React.FC<ReportsProps> = ({ reports }) => {
   const configuration = useConfiguration()
   // name is used in title case in the button as "Download Label Report"
-  // if url is not set, it uses lowercased name as api/reports/nameReport
-  // if filelabel is not set, it uses name
-  // if apps is not set it is always generated, otherwise only for matching configuration.abbr
+  // if fileLabel is not set, it uses camelCased name
+  // if url is not set, it uses fileLabel as api/reports/fileLabelReport
   // if virtual is not set it is always generated, if set, only if matching configuration.virtual
-  type ReportRecord = { name: string; url?: string; filelabel?: string; apps?: string[]; virtual?: boolean }
-  const reports: ReportRecord[] = [
-    { name: 'Membership' },
-    { name: 'Game' },
-    { name: 'Discord Game', url: 'gameReportForDiscord', filelabel: 'gamesDiscord', virtual: true },
-    { name: 'GM' },
-    { name: 'Game And Players', url: 'gamesAndPlayers', filelabel: 'gamesAndPlayers' },
-    { name: 'Room Usage', url: 'roomReport', filelabel: 'room', apps: ['acnw'] },
-    { name: 'Gamescheduler', apps: ['acus'] },
-  ]
-  const timestamp = new Date().toISOString().replaceAll('-', '_').replaceAll('.', '_')
+  const abbr = configuration.abbr.toUpperCase()
+  const timestamp = new Date().toISOString().replaceAll('[-.]', '_')
+
+  const filteredReports = useMemo(
+    () => reports.filter((r) => (r.virtual !== undefined ? r.virtual === configuration.virtual : true)),
+    [configuration.virtual, reports]
+  )
 
   return (
     <Page title='Reports'>
       <List>
-        {reports.map((r) => {
-          if (r.apps !== undefined && !r.apps.includes(configuration.abbr)) {
-            return <></>
-          }
-          if (r.virtual !== undefined && r.virtual !== configuration.virtual) {
-            return <></>
-          }
-          const filelabel = r.filelabel !== undefined ? r.filelabel : r.name.toLowerCase()
-          const url = r.url !== undefined ? r.url : `${r.name.toLowerCase()}Report`
-          console.log(r.name)
-          console.log(url)
+        {filteredReports.map((r) => {
+          const fileLabel = r?.fileLabel ?? toCamelCase(r.name)
+          const url = r?.url ?? `${fileLabel}Report`
+          // console.log({ name: r.name, url })
+
           return (
-            <ListItem>
+            <ListItem key={url}>
               <AuthenticatedDownloadButton
                 url={`/api/reports/${url}`}
-                filename={`${configuration.abbr.toUpperCase()}${configuration.year}-${filelabel}-${timestamp}.xlsx`}
+                filename={`${abbr}${configuration.year}-${fileLabel}-${timestamp}.xlsx`}
               >
                 Download {r.name} Report
               </AuthenticatedDownloadButton>
@@ -51,5 +57,3 @@ const Reports = () => {
     </Page>
   )
 }
-
-export default Reports
