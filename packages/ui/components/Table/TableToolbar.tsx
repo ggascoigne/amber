@@ -4,6 +4,7 @@ import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import ViewColumnsIcon from '@mui/icons-material/ViewColumn'
+import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
 import { Button, IconButton, Theme, Toolbar, Tooltip } from '@mui/material'
 import { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
@@ -138,6 +139,54 @@ export function TableToolbar<T extends Record<string, unknown>>({
     setAnchorEl(undefined)
   }
 
+  function handleFileDownloadClick() {
+    const textColumnEnclosure = '"'
+    const columnSeparator = ','
+    const rowSeparator = '\n'
+    const timestamp = new Date().toISOString().replaceAll(/[-.]/g, '_')
+    const formatColumnValue = (c: any) => {
+      return typeof c === 'string' ? `${textColumnEnclosure}${c.replaceAll('"', '""')}${textColumnEnclosure}` : c
+    }
+    console.log(instance)
+    const filename = `${instance.name}-${timestamp}.csv`
+    const csvHeaders = instance.visibleColumns
+      .filter((fc) => {
+        return fc.id !== '_selector'
+      })
+      .map((c) => {
+        return formatColumnValue(c.id)
+      })
+      .join(columnSeparator)
+      .concat(rowSeparator)
+    const csvData = instance.rows
+      .map((r) => {
+        instance.prepareRow(r)
+        return r.cells
+          .filter((fc) => {
+            return fc.column.id !== '_selector'
+          })
+          .map((c) => {
+            return formatColumnValue(c.value)
+          })
+          .join(columnSeparator)
+      })
+      .join(rowSeparator)
+      .concat(rowSeparator)
+    const csvContent = csvHeaders.concat(csvData)
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    if (link.download !== undefined) {
+      // Browsers that support HTML5 download attribute
+      const url = URL.createObjectURL(blob)
+      link.setAttribute('href', url)
+      link.setAttribute('download', filename)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    }
+  }
+
   // toolbar with add, edit, delete, filter/search column select.
   return (
     <Toolbar className={classes.toolbar}>
@@ -222,6 +271,13 @@ export function TableToolbar<T extends Record<string, unknown>>({
           icon={<FilterListIcon />}
           onClick={() => handleFilterClick}
           label='Filter by columns'
+          variant='right'
+        />
+        <SmallIconActionButton<T>
+          instance={instance}
+          icon={<FileDownloadSharpIcon />}
+          onClick={() => handleFileDownloadClick}
+          label='Download as CSV'
           variant='right'
         />
       </div>
