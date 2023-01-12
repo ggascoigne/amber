@@ -27,7 +27,7 @@ export const Reports: React.FC<ReportsProps> = ({ reports }) => {
   // if url is not set, it uses fileLabel as api/reports/fileLabelReport
   // if virtual is not set it is always generated, if set, only if matching configuration.virtual
   const abbr = configuration.abbr.toUpperCase()
-  const timestamp = new Date().toISOString().replaceAll('[-.]', '_')
+  const timestamp = new Date().toISOString().replaceAll(/[-.]/g, '_')
 
   const filteredReports = useMemo(
     () => reports.filter((r) => (r.virtual !== undefined ? r.virtual === configuration.virtual : true)),
