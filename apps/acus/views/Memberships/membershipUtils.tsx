@@ -122,15 +122,13 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
       .filter(notEmpty)
       .find((r) => r.id === membershipValues.hotelRoomId)
 
-    const slotDescriptions = membershipValues.slotsAttending
-      ?.split(',')
-      .map((i: string) =>
-        getSlotDescription(configuration, {
-          year: configuration.year,
-          slot: parseInt(i, 10),
-          local: configuration.virtual,
-        })
-      )
+    const slotDescriptions = membershipValues.slotsAttending?.split(',').map((i: string) =>
+      getSlotDescription(configuration, {
+        year: configuration.year,
+        slot: parseInt(i, 10),
+        local: configuration.virtual,
+      })
+    )
 
     sendEmail({
       type: 'membershipConfirmation',
