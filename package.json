@@ -28,6 +28,7 @@
     ]
   },
   "scripts": {
+    "boot": "pnpm --filter acnw boot && pnpm --filter acus boot",
     "dev:nw": "pnpm --filter acnw dev",
     "build:nw": "pnpm --filter acnw build",
     "dev:us": "pnpm --filter acus dev",
@@ -37,6 +38,7 @@
     "lint": "pnpm -r --parallel lint",
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
+    "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "next test",
     "tsc": "pnpm -r tsc"
   },

@@ -13,6 +13,7 @@ import { makeStyles } from 'tss-react/mui'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { ColumnHidePage } from './ColumnHidePage'
 import { FilterPage } from './FilterPage'
+import { camelToWords } from '../../utils'
 
 export const useStyles = makeStyles()((theme: Theme) => ({
   toolbar: {
@@ -139,35 +140,28 @@ export function TableToolbar<T extends Record<string, unknown>>({
     setAnchorEl(undefined)
   }
 
-  function handleFileDownloadClick() {
+  const formatColumnValue = (c: any) => {
     const textColumnEnclosure = '"'
+    return typeof c === 'string' ? `${textColumnEnclosure}${c.replaceAll('"', '""')}${textColumnEnclosure}` : c
+  }
+
+  function handleFileDownloadClick() {
     const columnSeparator = ','
     const rowSeparator = '\n'
     const timestamp = new Date().toISOString().replaceAll(/[-.]/g, '_')
-    const formatColumnValue = (c: any) => {
-      return typeof c === 'string' ? `${textColumnEnclosure}${c.replaceAll('"', '""')}${textColumnEnclosure}` : c
-    }
-    console.log(instance)
+    // console.log(instance)
     const filename = `${instance.name}-${timestamp}.csv`
     const csvHeaders = instance.visibleColumns
-      .filter((fc) => {
-        return fc.id !== '_selector'
-      })
-      .map((c) => {
-        return formatColumnValue(c.id)
-      })
+      .filter((fc) => fc.id !== '_selector')
+      .map((c) => formatColumnValue(camelToWords(c.id)))
       .join(columnSeparator)
       .concat(rowSeparator)
     const csvData = instance.rows
       .map((r) => {
         instance.prepareRow(r)
         return r.cells
-          .filter((fc) => {
-            return fc.column.id !== '_selector'
-          })
-          .map((c) => {
-            return formatColumnValue(c.value)
-          })
+          .filter((fc) => fc.column.id !== '_selector')
+          .map((c) => formatColumnValue(c.value))
           .join(columnSeparator)
       })
       .join(rowSeparator)
