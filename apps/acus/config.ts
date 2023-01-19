@@ -38,18 +38,18 @@ export const configuration: Configuration = {
   registrationDeadline: dtwDate({ year: conventionStartDate.year, month: 2, day: 15 }),
   paymentDeadline: dtwDate({ year: conventionStartDate.year, month: 2, day: 15 }),
 
-  gameSubmissionDeadline: dtwDate({ year: conventionStartDate.year, month: 1, day: 17 }),
-  gameGmPreview: dtwDate({ year: conventionStartDate.year, month: 1, day: 24 }),
-  gameGmFeedbackDeadline: dtwDate({ year: conventionStartDate.year, month: 1, day: 29 }),
-  gameBookOpen: dtwDate({ year: conventionStartDate.year, month: 1, day: 30 }),
-  gameChoicesDue: dtwDate({ year: conventionStartDate.year, month: 2, day: 3 }),
-  gmPreview: dtwDate({ year: conventionStartDate.year, month: 2, day: 9 }),
-  schedulesSent: dtwDate({ year: conventionStartDate.year, month: 2, day: 12 }),
+  gameSubmissionDeadline: dtwDate({ year: conventionStartDate.year, month: 1, day: 27 }),
+  gameGmPreview: dtwDate({ year: conventionStartDate.year, month: 2, day: 6 }),
+  gameGmFeedbackDeadline: dtwDate({ year: conventionStartDate.year, month: 2, day: 12 }),
+  gameBookOpen: dtwDate({ year: conventionStartDate.year, month: 2, day: 13 }),
+  gameChoicesDue: dtwDate({ year: conventionStartDate.year, month: 2, day: 20 }),
+  gmPreview: dtwDate({ year: conventionStartDate.year, month: 2, day: 24 }),
+  schedulesSent: dtwDate({ year: conventionStartDate.year, month: 2, day: 26 }),
 
   lastCancellationFullRefund: dtwDate({ year: conventionStartDate.year, month: 2, day: 28 }),
   travelCoordination: dtwDate({ year: conventionStartDate.year, month: 10, day: 19 }),
-  mondayBeforeCon: conventionStartDate.minus({ days: 3 }), // 11/2
-  wednesdayAfterCon: conventionStartDate.plus({ days: 6 }), // 11/11
+  mondayBeforeCon: conventionStartDate.minus({ days: 3 }),
+  wednesdayAfterCon: conventionStartDate.plus({ days: 6 }),
 
   fourDayMembership: 220,
   fourDayVoucher: 70,
