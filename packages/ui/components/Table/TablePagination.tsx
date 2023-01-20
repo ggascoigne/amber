@@ -108,6 +108,11 @@ export function TablePagination<T extends Record<string, unknown>>({
         setPageSize(Number(e.target.value))
       }}
       ActionsComponent={TablePaginationActions}
+      sx={{
+        '& p': {
+          m: 0,
+        },
+      }}
     />
   ) : null
 }

@@ -388,6 +388,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       </TableTable>
       <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
         <TableDebugButton enabled={isDev} instance={instance} />
+        <div />
         <TablePagination<T> instance={instance} />
       </div>
       <TableDebug enabled={isDev} instance={instance} />
