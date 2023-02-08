@@ -12,6 +12,10 @@ export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N
 // expands object types one level deep
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
+// from https://twitter.com/mattpocockuk/status/1622730173446557697
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type Prettify<T> = { [K in keyof T]: T[K] } & {}
+
 type SelfProp<T extends string> = { [U in T]: U }
 
 // export convert a string array [ 'a', 'b', 'c' ] to a correctly typed object { a: 'a', b: 'b', c: 'c' }

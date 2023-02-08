@@ -1,17 +1,8 @@
-import { PopperProps, Tooltip } from '@mui/material'
-import React, { CSSProperties, useCallback, useRef, useState } from 'react'
+import { Box, PopperProps, Tooltip } from '@mui/material'
+import React, { useCallback, useRef, useState } from 'react'
 import type { CellProps } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
 
 import { CellEditorWrapper } from './CellEditor'
-
-const useStyles = makeStyles()({
-  truncated: {
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-  },
-})
 
 interface TooltipCellProps {
   text: string
@@ -21,7 +12,6 @@ interface TooltipCellProps {
 }
 
 export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = text || '', align, onClick }) => {
-  const { classes } = useStyles()
   const [isOverflowed, setIsOverflow] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)
 
@@ -33,14 +23,19 @@ export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = t
 
   return (
     <Tooltip
-      className={classes.truncated}
-      style={{ textAlign: align, width: '100%' } as CSSProperties}
+      sx={{
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textAlign: align,
+        width: '100%',
+      }}
       title={tooltip}
       disableHoverListener={!showTooltip}
     >
-      <span ref={textRef} onMouseEnter={compareSize} onClick={onClick}>
+      <Box component='span' ref={textRef} onMouseEnter={compareSize} onClick={onClick}>
         {text}
-      </span>
+      </Box>
     </Tooltip>
   )
 }

@@ -43,10 +43,12 @@ export const useUpdateGameAssignment = () => {
       .map((m) => {
         const fullName = m.user?.fullName
         const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
+        const displayName = m.user?.displayName
         const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`)
         return (
           (fullName && gmNames.includes(fullName) ? fullName : undefined) ??
           (firstAndLast && gmNames.includes(firstAndLast) ? fullName : undefined) ??
+          (displayName && gmNames.includes(displayName) ? fullName : undefined) ??
           (pat.exec(gmNames) ? fullName : undefined)
         )
       })
