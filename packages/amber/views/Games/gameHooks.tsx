@@ -27,6 +27,27 @@ type Membership = MembershipFieldsFragment
 
 export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
 
+const getKnownNames = (gmNames: string | null | undefined, membershipList: Membership[]) => {
+  const includes = (long: string, short: string) => long.toLocaleLowerCase().includes(short.toLocaleLowerCase())
+
+  if (!gmNames) return []
+  return membershipList
+    .map((m) => {
+      const fullName = m.user?.fullName
+      const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
+      const displayName = m.user?.displayName
+      const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`, 'i')
+
+      return (
+        (fullName && includes(gmNames, fullName) ? fullName : undefined) ??
+        (firstAndLast && includes(gmNames, firstAndLast) ? fullName : undefined) ??
+        (displayName && includes(gmNames, displayName) ? fullName : undefined) ??
+        (pat.exec(gmNames) ? fullName : undefined)
+      )
+    })
+    .filter(notEmpty)
+}
+
 export const useUpdateGameAssignment = () => {
   const [year] = useYearFilter()
   const notify = useNotification()
@@ -36,24 +57,6 @@ export const useUpdateGameAssignment = () => {
   const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
     year,
   })
-
-  const getKnownNames = (gmNames: string | null | undefined, membershipList: Membership[]) => {
-    if (!gmNames) return []
-    return membershipList
-      .map((m) => {
-        const fullName = m.user?.fullName
-        const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
-        const displayName = m.user?.displayName
-        const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`)
-        return (
-          (fullName && gmNames.includes(fullName) ? fullName : undefined) ??
-          (firstAndLast && gmNames.includes(firstAndLast) ? fullName : undefined) ??
-          (displayName && gmNames.includes(displayName) ? fullName : undefined) ??
-          (pat.exec(gmNames) ? fullName : undefined)
-        )
-      })
-      .filter(notEmpty)
-  }
 
   return useCallback(
     async (gameId: number, gmNames: string | null | undefined, membershipList: Membership[]) => {
