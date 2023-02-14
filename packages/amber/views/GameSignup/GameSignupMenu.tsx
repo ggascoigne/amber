@@ -12,6 +12,7 @@ export const GameSignupMenu: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const [_, setShowConfirmDialog] = useConfirmDialogOpen()
+  // todo - work out why this is needed and then remove it
   const [hackCount, setHackCount] = useState(0)
 
   const { error, data } = useGetGameChoicesQuery(

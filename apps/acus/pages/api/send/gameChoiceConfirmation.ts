@@ -43,6 +43,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
       gameChoiceDetails[5],
       gameChoiceDetails[6],
       gameChoiceDetails[7],
+      gameChoiceDetails[8],
     ]
 
     const result = await emailer.send({
