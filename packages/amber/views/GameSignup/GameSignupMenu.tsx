@@ -1,5 +1,5 @@
 import { Button } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import { GraphQLError, Loader } from 'ui'
 import { useGetGameChoicesQuery } from '../../client'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
@@ -12,8 +12,17 @@ export const GameSignupMenu: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const [_, setShowConfirmDialog] = useConfirmDialogOpen()
+  const [hackCount, setHackCount] = useState(0)
 
-  const { error, data } = useGetGameChoicesQuery({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership })
+  const { error, data } = useGetGameChoicesQuery(
+    { year, memberId: membership?.id ?? 0 },
+    {
+      enabled: !!membership,
+      onSuccess: () => {
+        setHackCount((old) => old + 1)
+      },
+    }
+  )
 
   if (error) {
     return <GraphQLError error={error} />
@@ -31,6 +40,7 @@ export const GameSignupMenu: React.FC = () => {
 
   return (
     <GameMenu
+      key={`hack ${hackCount}`}
       to='/'
       text='Main Menu'
       title={`Game Signup ${year}`}

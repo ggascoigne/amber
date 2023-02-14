@@ -143,12 +143,7 @@ const GameSignupPage: React.FC = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { error, data } = useGetGameChoicesQuery(
-    { year, memberId: membership?.id ?? 0 },
-    {
-      enabled: !!membership,
-    }
-  )
+  const { error, data } = useGetGameChoicesQuery({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership })
 
   const onCloseConfirm: MouseEventHandler = () => {
     setShowConfirmDialog(false)
