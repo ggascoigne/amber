@@ -5,10 +5,26 @@ import React, { useEffect } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { Game, GameChoice, GameEntry, Maybe } from '../../client'
 import { Perms, useAuth } from '../../components/Auth'
+import { Configuration, useConfiguration } from '../../utils'
 
-export const isNoGame = (id: number) => id <= 7
+export const isNoGame = (configuration: Configuration, id: number) => {
+  const acus = configuration.numberOfSlots === 8
+  if (acus) {
+    return id >= 596 && id <= 603
+  } else {
+    return id <= 7
+  }
+}
+
 // 144 is the magic number of the Any Game entry :(
-export const isAnyGame = (id: number) => id === 144
+export const isAnyGame = (configuration: Configuration, id: number) => {
+  const acus = configuration.numberOfSlots === 8
+  if (acus) {
+    return id === 604
+  } else {
+    return id === 144
+  }
+}
 
 const useStyles = makeStyles()((theme: Theme) => ({
   spacer: {
@@ -242,6 +258,9 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
+  const configuration = useConfiguration()
+  const acus = configuration.numberOfSlots === 8
+  const acnw = !acus
 
   const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length
 
@@ -275,7 +294,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
     })
   }
 
-  const isNoOrAnyGame = isNoGame(game.id) || isAnyGame(game.id)
+  const isNoOrAnyGame = isNoGame(configuration, game.id) || isAnyGame(configuration, game.id)
 
   if (game.full && !isAdmin) {
     return (
