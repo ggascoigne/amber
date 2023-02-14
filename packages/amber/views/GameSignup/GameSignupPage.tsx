@@ -14,7 +14,14 @@ import {
   useUpdateGameChoiceByNodeIdMutation,
 } from '../../client'
 import { Link, Redirect } from '../../components/Navigation'
-import { useConfirmDialogOpen, useGameScroll, useGameUrl, useGetMemberShip, useUser } from '../../utils'
+import {
+  useConfiguration,
+  useConfirmDialogOpen,
+  useGameScroll,
+  useGameUrl,
+  useGetMemberShip,
+  useUser,
+} from '../../utils'
 
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
@@ -130,6 +137,7 @@ const GameSignupPage: React.FC = () => {
   const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
+  const configuration = useConfiguration()
 
   const [showFab, setShowFab] = useState(false)
   const { hasPermissions } = useAuth()
@@ -184,7 +192,7 @@ const GameSignupPage: React.FC = () => {
           thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
         }
 
-        if ((isNoGame(gameId) || isAnyGame(gameId)) && rank < 4) {
+        if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {
           for (let i = rank + 1; i <= 4; i++) {
             if (thisSlotChoices[i].gameId) thisSlotChoices[i] = { ...thisSlotChoices[i], ...empty }
           }
@@ -204,7 +212,7 @@ const GameSignupPage: React.FC = () => {
         // console.log('all updaters complete')
       })
     },
-    [createOrEditGameChoice, membership?.id]
+    [configuration, createOrEditGameChoice, membership?.id]
   )
 
   const gameChoices = data?.gameChoices?.nodes

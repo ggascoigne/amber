@@ -168,7 +168,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
           gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
         ) as ChoiceType[]
 
-        if (!isSlotComplete(thisSlotChoices)) {
+        if (!isSlotComplete(configuration, thisSlotChoices)) {
           if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {
             thisSlotChoices[1] = { ...thisSlotChoices[1], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
           } else {
@@ -182,7 +182,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         }
         return thisSlotChoices
       }),
-    [configuration.numberOfSlots, gameChoices, year]
+    [configuration, gameChoices, year]
   )
 
   const updateChoices = useCallback(() => {

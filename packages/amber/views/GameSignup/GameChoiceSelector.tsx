@@ -259,8 +259,6 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
 
   const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length
 
@@ -385,9 +383,9 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, s
 type SlotDecoratorCheckMarkProps = { year: number; slot: number } & SelectorParams
 
 // 144 is the magic number of the Any Game entry :(
-const isNoGameOrAnyGame = (choice?: MaybeGameChoice) => {
+const isNoGameOrAnyGame = (configuration: Configuration, choice?: MaybeGameChoice) => {
   const id = choice?.gameId
-  return id && (isNoGame(id) || isAnyGame(id))
+  return id && (isNoGame(configuration, id) || isAnyGame(configuration, id))
 }
 
 export const orderChoices = (choices?: MaybeGameChoice[]) => [
@@ -398,22 +396,23 @@ export const orderChoices = (choices?: MaybeGameChoice[]) => [
   choices?.find((c) => c?.rank === 4),
 ]
 
-export const isSlotComplete = (choices?: MaybeGameChoice[]) => {
+export const isSlotComplete = (configuration: Configuration, choices?: MaybeGameChoice[]) => {
   if (!choices?.length) return false
 
   const ordered = orderChoices(choices)
 
   const firstOrRunning = ordered[1]?.gameId ?? ordered[0]?.gameId
   if (firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && ordered[4]?.gameId) return true
-  if (isNoGameOrAnyGame(ordered[1])) return true
-  if (firstOrRunning && isNoGameOrAnyGame(ordered[2])) return true
-  if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(ordered[3])) return true
-  return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(ordered[4]))
+  if (isNoGameOrAnyGame(configuration, ordered[1])) return true
+  if (firstOrRunning && isNoGameOrAnyGame(configuration, ordered[2])) return true
+  if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(configuration, ordered[3])) return true
+  return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(configuration, ordered[4]))
 }
 
 export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
   const { classes } = useStyles()
+  const configuration = useConfiguration()
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)
-  const isComplete = isSlotComplete(thisSlotChoices)
+  const isComplete = isSlotComplete(configuration, thisSlotChoices)
   return isComplete ? <CheckIcon className={classes.check} /> : null
 }
