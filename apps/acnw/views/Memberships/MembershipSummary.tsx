@@ -14,17 +14,17 @@ import {
   HeaderContent,
   Loader,
   MultiLine,
-  notEmpty,
   Page,
+  notEmpty,
   range,
 } from 'ui'
 import {
+  ProfileFormType,
+  RoomPref,
   getInterestLevel,
   getRoomPref,
   getSlotDescription,
   isNotPacificTime,
-  ProfileFormType,
-  RoomPref,
   useConfiguration,
   useGetCost,
   useGetHotelRoomsQuery,
@@ -33,9 +33,10 @@ import {
   useUser,
   useYearFilter,
 } from 'amber'
+import { fromSlotsAttending } from 'amber/utils/membershipUtils'
+
 import { MembershipType } from 'amber/utils/apiTypes'
 import { BecomeAMember } from './BecomeAMember'
-import { fromSlotsAttending } from './membershipUtils'
 import { MembershipWizard } from './MembershipWizard'
 
 const useStyles = makeStyles()({
@@ -63,7 +64,7 @@ interface VirtualDetailsProps {
 const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
   const configuration = useConfiguration()
   const [showPT, setShowPT] = useState(false)
-  const slotsAttendingData = fromSlotsAttending(membership)
+  const slotsAttendingData = fromSlotsAttending(configuration, membership)
   const { classes } = useStyles()
   return (
     <GridContainer direction='column'>

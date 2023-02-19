@@ -6,7 +6,9 @@ import { makeStyles } from 'tss-react/mui'
 import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from 'ui'
 
 import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from 'amber'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from './membershipUtils'
+
+import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
+
 import { MembershipWizardFormValues } from './MembershipWizard'
 
 const useStyles = makeStyles()((theme: Theme) => ({

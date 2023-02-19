@@ -13,6 +13,7 @@ import {
   useUser,
   useYearFilter,
 } from 'amber'
+import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
 import { MembershipType } from 'amber/utils/apiTypes'
 import { IntroStep } from './IntroStep'
 import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
@@ -20,13 +21,7 @@ import { hasConventionStepErrors, MembershipStepConvention } from './MembershipS
 import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import {
-  fromSlotsAttending,
-  getDefaultMembership,
-  membershipValidationSchema,
-  toSlotsAttending,
-  useEditMembership,
-} from './membershipUtils'
+import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -73,7 +68,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose)
+  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
   const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
@@ -180,7 +175,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
       profile: { ...profile },
     }
-    _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
+    _values.membership.slotsAttendingData = fromSlotsAttending(configuration, _values.membership)
     return _values
   }, [configuration, initialValues, isVirtual, profile, userId])
 
