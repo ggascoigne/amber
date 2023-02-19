@@ -118,7 +118,8 @@ export interface CreateBareSlotChoicesInput {
    */
   clientMutationId?: InputMaybe<Scalars['String']>
   memberId?: InputMaybe<Scalars['Int']>
-  yearno?: InputMaybe<Scalars['Int']>
+  noSlots?: InputMaybe<Scalars['Int']>
+  yearNo?: InputMaybe<Scalars['Int']>
 }
 
 /** The output of our `createBareSlotChoices` mutation. */
@@ -7802,6 +7803,7 @@ export type GameChoiceFieldsFragment = {
 
 export type CreateGameChoicesMutationVariables = Exact<{
   year: Scalars['Int']
+  slots: Scalars['Int']
   memberId: Scalars['Int']
 }>
 
@@ -9765,8 +9767,10 @@ export const useGetScheduleQuery = <TData = GetScheduleQuery, TError = QueryErro
     options
   )
 export const CreateGameChoicesDocument = `
-    mutation createGameChoices($year: Int!, $memberId: Int!) {
-  createBareSlotChoices(input: {memberId: $memberId, yearno: $year}) {
+    mutation createGameChoices($year: Int!, $slots: Int!, $memberId: Int!) {
+  createBareSlotChoices(
+    input: {memberId: $memberId, yearNo: $year, noSlots: $slots}
+  ) {
     clientMutationId
   }
 }

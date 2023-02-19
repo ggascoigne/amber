@@ -17,8 +17,8 @@ fragment gameChoiceFields on GameChoice {
   year
 }
 
-mutation createGameChoices($year: Int!, $memberId: Int!) {
-  createBareSlotChoices(input: { memberId: $memberId, yearno: $year }) {
+mutation createGameChoices($year: Int!, $slots: Int!, $memberId: Int!) {
+  createBareSlotChoices(input: { memberId: $memberId, yearNo: $year, noSlots: $slots }) {
     clientMutationId
   }
 }
