@@ -9,7 +9,8 @@ const reports: ReportRecord[] = [
   { name: 'GM' },
   { name: 'Game And Players' },
   { name: 'Games Scheduler' },
-  { name: 'Game Choices', perm: Perms.GameAdmin },
+  { name: 'Game Choices', perm: Perms.PlayerAdmin },
+  { name: 'Members Without Game Choices' },
 ]
 
 const Page: NextPage = () => <Reports reports={reports} />
