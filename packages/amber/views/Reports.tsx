@@ -3,12 +3,14 @@ import { Page } from 'ui'
 import React, { useMemo } from 'react'
 import { AuthenticatedDownloadButton } from '../components'
 import { useConfiguration } from '../utils'
+import { HasPermission, Perms } from '../components/Auth'
 
 export type ReportRecord = {
   name: string
   url?: string
   fileLabel?: string
   virtual?: boolean
+  perm?: Perms
 }
 
 const toCamelCase = (words: string) => {
@@ -40,18 +42,20 @@ export const Reports: React.FC<ReportsProps> = ({ reports }) => {
         {filteredReports.map((r) => {
           const fileLabel = r?.fileLabel ?? toCamelCase(r.name)
           const url = r?.url ?? `${fileLabel}Report`
-          // console.log({ name: r.name, url })
-
-          return (
-            <ListItem key={url}>
-              <AuthenticatedDownloadButton
-                url={`/api/reports/${url}`}
-                filename={`${abbr}${configuration.year}-${fileLabel}-${timestamp}.xlsx`}
-              >
-                Download {r.name} Report
-              </AuthenticatedDownloadButton>
-            </ListItem>
-          )
+          if (r.perm === undefined || HasPermission(r.perm)) {
+            return (
+              <ListItem key={url}>
+                <AuthenticatedDownloadButton
+                  url={`/api/reports/${url}`}
+                  filename={`${abbr}${configuration.year}-${fileLabel}-${timestamp}.xlsx`}
+                >
+                  Download {r.name} Report
+                </AuthenticatedDownloadButton>
+              </ListItem>
+            )
+          } else {
+            return null
+          }
         })}
       </List>
     </Page>
