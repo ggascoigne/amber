@@ -26,6 +26,7 @@ const MENU_ITEM_VIEW_AS_USER = `View as ${chosenRole}`
 const roleName = {
   'Regular User': Roles.ROLE_USER,
   'Game Admin': Roles.ROLE_GAME_ADMIN,
+  'Player Admin': Roles.ROLE_PLAYER_ADMIN,
 }
 
 interface ProfileImageProps {
