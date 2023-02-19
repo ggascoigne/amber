@@ -39,6 +39,7 @@ import { SignupInstructions } from './SignupInstructions'
 export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
 export const useEditGameChoice = () => {
+  const configuration = useConfiguration()
   const createGameChoice = useCreateGameChoiceMutation()
   const queryClient = useQueryClient()
   const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
@@ -66,6 +67,7 @@ export const useEditGameChoice = () => {
       .mutateAsync(
         {
           memberId,
+          slots: configuration.numberOfSlots,
           year,
         },
         {
