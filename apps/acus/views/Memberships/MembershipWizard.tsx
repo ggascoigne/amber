@@ -3,10 +3,10 @@ import React, { useMemo } from 'react'
 import Yup from 'ui/utils/Yup'
 import { Wizard, WizardPage } from 'ui'
 import {
-  fillUserAndProfileValues,
   Perms,
   ProfileFormContent,
   ProfileFormType,
+  fillUserAndProfileValues,
   profileValidationSchema,
   useAuth,
   useConfiguration,
@@ -14,19 +14,15 @@ import {
   useUser,
   useYearFilter,
 } from 'amber'
+import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+
 import { MembershipType } from 'amber/utils/apiTypes'
 import { IntroStep } from './IntroStep'
 import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
 import { MembershipStepPayment } from './MembershipStepPayment'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import {
-  fromSlotsAttending,
-  getDefaultMembership,
-  membershipValidationSchema,
-  toSlotsAttending,
-  useEditMembership,
-} from './membershipUtils'
+import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -73,7 +69,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose)
+  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
   const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
@@ -173,7 +169,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
       profile: { ...fillUserAndProfileValues(profile) },
     }
-    _values.membership.slotsAttendingData = fromSlotsAttending(_values.membership)
+    _values.membership.slotsAttendingData = fromSlotsAttending(configuration, _values.membership)
     return _values
   }, [configuration, initialValues, isVirtual, profile, userId])
 

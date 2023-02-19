@@ -10,7 +10,8 @@ import {
   useGetAttendanceOptions,
   useGetInterestOptions,
 } from 'amber'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from './membershipUtils'
+
+import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(

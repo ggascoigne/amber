@@ -2,15 +2,10 @@ import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 import { EditDialog, OnCloseHandler } from 'ui'
 import { ProfileFormType, useAuth, useConfiguration, useUser, useYearFilter } from 'amber'
+import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
 import type { MembershipType } from 'amber/utils/apiTypes'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import {
-  fromSlotsAttending,
-  getDefaultMembership,
-  membershipValidationSchema,
-  toSlotsAttending,
-  useEditMembership,
-} from './membershipUtils'
+import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 type FormValues = MembershipType
 
@@ -25,7 +20,7 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
   const configuration = useConfiguration()
   const { user } = useAuth()
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose)
+  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
 
@@ -44,7 +39,7 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
     // everything else is very hotel centric
     const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values = initialValues ? { ...initialValues } : { ...defaultValues }
-    _values.slotsAttendingData = fromSlotsAttending(_values)
+    _values.slotsAttendingData = fromSlotsAttending(configuration, _values)
     return _values
   }, [configuration, initialValues, isVirtual, userId])
 

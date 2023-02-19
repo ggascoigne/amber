@@ -4,7 +4,7 @@ import { makeStyles } from 'tss-react/mui'
 import { CheckboxWithLabel, GridContainer, GridItem, Important } from 'ui'
 
 import { HasPermission, Perms } from 'amber'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from './membershipUtils'
+import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from 'amber/utils/membershipUtils'
 
 const useStyles = makeStyles()(() => ({
   important: {
