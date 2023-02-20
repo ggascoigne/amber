@@ -21,7 +21,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         u.first_name as "First Name",
         u.last_name as "Last Name",
         REPLACE(u.display_name, u.display_name, '') as "Phone Number",
-        u.id as "Username",
+        m.id as "Member ID",
         u.email as "E-mail",
         mc.times_attending as "Times Attending",
         coalesce(gm.isGm,false) as "Is GM",
