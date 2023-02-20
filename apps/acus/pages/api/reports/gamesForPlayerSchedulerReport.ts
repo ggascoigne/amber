@@ -29,8 +29,9 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         g.player_min as "Min",
         g.player_max as "Max",
         g.returning_players as "Returning Players"
-      from game g join "user" u on g.author_id = u.id
-      where g.year = ${year} and g.slot_id >=1 and g.slot_id <= 8;`
+      from game g left join "user" u on g.author_id = u.id
+      where (g.year = ${year} and g.slot_id >=1 and g.slot_id <=8) or (g.id >= 596 and g.id <= 604);`
+
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)
