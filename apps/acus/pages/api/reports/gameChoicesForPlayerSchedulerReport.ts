@@ -33,7 +33,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         join membership m on gc.member_id = m.id 
         join game_submission gs on m.id = gs.member_id and m.year = gs.year 
         join "user" u on m.user_id = u.id 
-      where gc.year = ${year} and gc.game_id in (select g.id from "game" g where g.year = 2023 or (g.id >= 596 and g.id <= 604))
+      where gc.year = ${year} and gc.game_id in (select g.id from "game" g where g.year = ${year} or (g.id >= 596 and g.id <= 604))
       order by u.id, gc.year, s.slot, gc.rank;`
     await queryToExcelDownload(query, res)
   } catch (err: any) {
