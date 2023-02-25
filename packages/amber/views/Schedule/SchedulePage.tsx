@@ -70,6 +70,8 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
     lateStart,
   })
 
+  const hasRoomDescription = !!(game?.room?.description ? game.room.description.trim().length > 0 : false)
+
   return (
     <Box
       sx={{
@@ -85,7 +87,13 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
         }}
       />
       <h5>
-        {slotDescription} - {game?.room?.description}
+        {hasRoomDescription ? (
+          <>
+            {slotDescription} - {game?.room?.description}
+          </>
+        ) : (
+          <>{slotDescription}</>
+        )}
       </h5>
     </Box>
   )
