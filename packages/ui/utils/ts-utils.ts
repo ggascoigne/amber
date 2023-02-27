@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import { ReactElement, ReactNode } from 'react'
 import { O, F } from 'ts-toolbelt'
 import { Key } from 'ts-toolbelt/out/Any/Key'
 import { List } from 'ts-toolbelt/out/List/List'
@@ -90,5 +90,5 @@ export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: s
 export type ObjectOf<T> = { [P in keyof T]: T[P] }
 
 export interface Children {
-  children?: ReactNode | undefined
+  children?: ReactElement<any, any> | ReactNode | undefined | null
 }

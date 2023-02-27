@@ -14,6 +14,7 @@ import { createEmotionCache, NotificationProvider, theme } from 'ui'
 import { Layout } from 'amber/components/Layout'
 import { CustomLuxonUtils } from 'amber/utils/luxonUtils'
 import { ConfigProvider } from 'amber/utils'
+import { RouteGuard } from 'amber/components/Auth'
 import { rootRoutes } from '../views/Routes'
 import { configuration } from '../config'
 import { Banner } from '../components'
@@ -62,7 +63,9 @@ const MyAppInner = (props: MyAppProps) => {
               <UserProvider user={user}>
                 <QueryClientProvider client={queryClient}>
                   <Layout rootRoutes={routes} title='AmberCon Northwest' banner={<Banner to='/' />}>
-                    <Component {...pageProps} />
+                    <RouteGuard routes={routes}>
+                      <Component {...pageProps} />
+                    </RouteGuard>
                     <ReactQueryDevtools />
                     {showDevtools ? (
                       <React.Suspense fallback={null}>
