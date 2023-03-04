@@ -26,8 +26,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
           join game_assignment ga on m.id = ga.member_id
           join game g on g.id = ga.game_id
           join "user" u on m.user_id = u.id
-          where m.year = ${year} and g.name != 'No Game' and ga.gm >= 0
-          order by g.slot_id, g.name, ga.gm desc, u.full_name
+          where m.year = ${year} and ga.gm >= 0
+          order by "Slot", "Game", ga.gm desc, "Member"
         `
     await queryToExcelDownload(query, res)
   } catch (err: any) {

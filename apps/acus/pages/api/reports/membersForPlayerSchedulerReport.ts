@@ -41,7 +41,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         from membership m 
         group by m.user_id
         ) mc on u.id = mc.user_id
-    where m.year = ${year};`
+    where m.year = ${year}
+    order by u.full_name;`
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

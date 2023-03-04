@@ -28,8 +28,10 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
             g.slot_id as "Slot",
             g.slot_preference as "Slot Preference",
             g.message as "Message"
-            from game g join "user" u  on g.author_id = u.id
-          where g.year = ${year}`
+            from game g 
+            join "user" u  on g.author_id = u.id
+          where g.year = ${year}
+          order by g.year, g.slot_id, g.name`
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)
