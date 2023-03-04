@@ -71,7 +71,7 @@ export const useUpdateGameAssignment = () => {
         const oldAssignments = gameAssignmentData.gameAssignments?.nodes
           .filter(notEmpty)
           .filter((ga) => ga.gameId === gameId)
-          .filter((ga) => ga.gm !== 0) as GameAssignment[]
+          .filter((ga) => ga.gm < 0) as GameAssignment[]
 
         const oldIds = oldAssignments.map((o) => o.memberId).sort((a, b) => a - b)
         const newIds = gmMemberships.map((m) => m.id).sort((a, b) => a - b)
