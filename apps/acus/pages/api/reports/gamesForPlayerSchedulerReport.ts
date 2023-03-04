@@ -31,7 +31,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         g.returning_players as "Returning Players"
       from game g
       left join "user" u on g.author_id = u.id
-      where (g.year = ${year} and g.slot_id >=1 and g.slot_id <=8) or (g.id >= 596 and g.id <= 604)
+      where (g.year = ${year} and g.slot_id >=1 and g.slot_id <=8) or (g.author_id is null)
       order by g.slot_id, g.year desc, g.name;`
 
     await queryToExcelDownload(query, res)
