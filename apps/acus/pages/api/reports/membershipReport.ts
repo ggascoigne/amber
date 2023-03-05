@@ -31,7 +31,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
                   join game_assignment ga on ga.member_id = m.id
                 where m.year = ${year} and ga.gm < 0
           ) gm on gm.id = m.id
-        where m.year = ${year}`
+        where m.year = ${year}
+        order by u.full_name`
       : `
         select 
           m.id as "Member Id",
@@ -57,7 +58,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
             from membership m 
             group by m.user_id
           ) mc on u.id = mc.user_id
-        where m.year = ${year};
+        where m.year = ${year}
+        order by u.full_name;
         `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
