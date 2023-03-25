@@ -1,9 +1,17 @@
 exports.up = function (knex) {
   return knex.raw(`
-  delete from "user" where id in (select u.id from "user" u
-  left join membership m on u.id = m.user_id
-  where user_id is null)
-  `)
+    DELETE FROM "user"
+    WHERE
+      id IN (
+        SELECT
+          u.id
+        FROM
+          "user" u
+          LEFT JOIN membership m ON u.id = m.user_id
+        WHERE
+          user_id IS NULL
+      )
+    `)
 }
 
 exports.down = function (knex) {}

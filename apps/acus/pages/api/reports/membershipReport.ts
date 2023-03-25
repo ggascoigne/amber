@@ -15,60 +15,94 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     const year = req.body?.year || configuration.year
     const query = configuration.virtual
       ? `
-        select 
-          m.id as "Member Id",
-          u.full_name as "Full Name",
-          u.first_name as "First Name",
-          u.last_name as "Last Name",
-          u.email as "email",
-          m.slots_attending as "Slots Attending",
-          coalesce(gm.isGm,false) as "isGM",
-          m.message as "Message"
-        from membership m 
-          join "user" u on m.user_id = u.id 
-          left join (select distinct m.id, true as isGm
-                from membership m
-                  join game_assignment ga on ga.member_id = m.id
-                where m.year = ${year} and ga.gm < 0
-          ) gm on gm.id = m.id
-        where m.year = ${year}
-        order by u.full_name`
+        SELECT
+          m.id AS "Member Id",
+          u.full_name AS "Full Name",
+          u.first_name AS "First Name",
+          u.last_name AS "Last Name",
+          u.email AS "email",
+          m.slots_attending AS "Slots Attending",
+          COALESCE(gm.isGm, FALSE) AS "isGM",
+          m.message AS "Message"
+        FROM
+          membership m
+          JOIN "user" u ON m.user_id = u.id
+          LEFT JOIN (
+            SELECT DISTINCT
+              m.id,
+              TRUE AS isGm
+            FROM
+              membership m
+              JOIN game_assignment ga ON ga.member_id = m.id
+            WHERE
+              m.year = ${year}
+              AND ga.gm < 0
+          ) gm ON gm.id = m.id
+        WHERE
+          m.year = ${year}
+        ORDER BY
+          u.full_name
+        `
       : `
-      select 
-        m.id as "Member Id",
-        u.full_name as "Full Name",
-        u.first_name as "First Name",
-        u.last_name as "Last Name",
-        u.email as "email",
-        coalesce(gm.isGm,false) as "isGM",
-        gmc.times_gming as "timesGMing",
-        mc.times_attending as "Times Attending",
-        m.attending as "isAttending",
-        m.attendance as "daysAttending",
-        m.attendance as "Attendance",
-        m.volunteer as "isVolunteer",
-        m.message as "Message"
-        from membership m 
-        join "user" u on m.user_id = u.id 
-        left join (select distinct m.id, true as isGm
-            from membership m
-              join game_assignment ga on ga.member_id = m.id
-            where m.year = ${year} and ga.gm < 0
-        ) gm on gm.id = m.id
-        join hotel_room h on m.hotel_room_id = h.id
-        left join (select m.user_id, count(m.user_id) as times_attending 
-          from membership m 
-          group by m.user_id
-        ) mc on u.id = mc.user_id
-        left join (select ga.member_id, ga.year, count(ga.member_id) as times_gming 
-          from game_assignment ga
-          join game g
-          on ga.game_id = g.id 
-          where ga.gm < 0 and g.slot_id >=1 and g.slot_id <= 8
-          group by ga.member_id, ga.year
-          ) gmc on m.id = gmc.member_id AND m.year = gmc.year
-        where m.year = ${year}
-        order by u.full_name;
+        SELECT
+          m.id AS "Member Id",
+          u.full_name AS "Full Name",
+          u.first_name AS "First Name",
+          u.last_name AS "Last Name",
+          u.email AS "email",
+          COALESCE(gm.isGm, FALSE) AS "isGM",
+          gmc.times_gming AS "timesGMing",
+          mc.times_attending AS "Times Attending",
+          m.attending AS "isAttending",
+          m.attendance AS "daysAttending",
+          m.attendance AS "Attendance",
+          m.volunteer AS "isVolunteer",
+          m.message AS "Message"
+        FROM
+          membership m
+          JOIN "user" u ON m.user_id = u.id
+          LEFT JOIN (
+            SELECT DISTINCT
+              m.id,
+              TRUE AS isGm
+            FROM
+              membership m
+              JOIN game_assignment ga ON ga.member_id = m.id
+            WHERE
+              m.year = ${year}
+              AND ga.gm < 0
+          ) gm ON gm.id = m.id
+          JOIN hotel_room h ON m.hotel_room_id = h.id
+          LEFT JOIN (
+            SELECT
+              m.user_id,
+              COUNT(m.user_id) AS times_attending
+            FROM
+              membership m
+            GROUP BY
+              m.user_id
+          ) mc ON u.id = mc.user_id
+          LEFT JOIN (
+            SELECT
+              ga.member_id,
+              ga.year,
+              COUNT(ga.member_id) AS times_gming
+            FROM
+              game_assignment ga
+              JOIN game g ON ga.game_id = g.id
+            WHERE
+              ga.gm < 0
+              AND g.slot_id >= 1
+              AND g.slot_id <= 8
+            GROUP BY
+              ga.member_id,
+              ga.year
+          ) gmc ON m.id = gmc.member_id
+          AND m.year = gmc.year
+        WHERE
+          m.year = ${year}
+        ORDER BY
+          u.full_name 
         `
     await queryToExcelDownload(query, res)
   } catch (err: any) {

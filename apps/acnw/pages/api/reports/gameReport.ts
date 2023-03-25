@@ -14,35 +14,39 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-          select 
-            g.id as "Game Id",
-            u.full_name as "Full Name",
-            u.first_name as "First Name",
-            u.last_name as "Last Name",
-            u.email as "email",
-            g.name as "Game Title",
-            g.description as "Description",
-            g.genre as "Genre",
-            g.type as "Type",
-            g.teen_friendly as "Teen Friendly",
-            g.setting as "Setting",
-            g.char_instructions as "Character Instructions",
-            g.player_max as "Player Max",
-            g.player_min as "Player Min",
-            g.player_preference as "Player Preference",
-            g.returning_players as "Returning Players",
-            g.players_contact_gm as "Contact GM",
-            g.game_contact_email as "Game Contact Email",
-            g.slot_id as "Slot",
-            g.slot_preference as "Slot Preference",
-            g.slot_conflicts as "Slot Conflicts",
-            g.estimated_length as "Estimated Length",
-            g.gm_names as "GM Names",
-            g.late_start as "Late Start",
-            g.late_finish as "Late Finish",
-            g.message as "Message"
-            from game g join "user" u  on g.author_id = u.id
-          where g.year = ${year}`
+      SELECT
+        g.id AS "Game Id",
+        u.full_name AS "Full Name",
+        u.first_name AS "First Name",
+        u.last_name AS "Last Name",
+        u.email AS "email",
+        g.name AS "Game Title",
+        g.description AS "Description",
+        g.genre AS "Genre",
+        g.type AS "Type",
+        g.teen_friendly AS "Teen Friendly",
+        g.setting AS "Setting",
+        g.char_instructions AS "Character Instructions",
+        g.player_max AS "Player Max",
+        g.player_min AS "Player Min",
+        g.player_preference AS "Player Preference",
+        g.returning_players AS "Returning Players",
+        g.players_contact_gm AS "Contact GM",
+        g.game_contact_email AS "Game Contact Email",
+        g.slot_id AS "Slot",
+        g.slot_preference AS "Slot Preference",
+        g.slot_conflicts AS "Slot Conflicts",
+        g.estimated_length AS "Estimated Length",
+        g.gm_names AS "GM Names",
+        g.late_start AS "Late Start",
+        g.late_finish AS "Late Finish",
+        g.message AS "Message"
+      FROM
+        game g
+        JOIN "user" u ON g.author_id = u.id
+      WHERE
+        g.year = ${year}
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

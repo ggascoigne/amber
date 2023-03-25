@@ -14,26 +14,48 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-      select 
-        u.id as "userId", 
-        g.id as "gameId", 
-        m.id as "memberId", 
-        u.full_name as "Full Name", 
-        u.email as "Email",
-        gc.year as "Year", 
-        gc.slot_id as "Slot", 
-        gc.rank as "Choice", 
-        g.name as "Game Title",
-        g.gm_names as "GM Names",
-        (case when gc.returning_player then 'Yes' else 'No' end) as "Returning Player",
-        gs.message as "Message"
-      from game_choice gc 
-        join game g on gc.game_id = g.id 
-        join membership m on gc.member_id = m.id 
-        join game_submission gs on m.id = gs.member_id and m.year = gs.year 
-        join "user" u on m.user_id = u.id 
-      where gc.year = ${year} and gc.game_id in (select g.id from "game" g where g.year = ${year} or (g.author_id is null))
-      order by u.full_name, gc.year, gc.slot_id, gc.rank;`
+      SELECT
+        u.id AS "userId",
+        g.id AS "gameId",
+        m.id AS "memberId",
+        u.full_name AS "Full Name",
+        u.email AS "Email",
+        gc.year AS "Year",
+        gc.slot_id AS "Slot",
+        gc.rank AS "Choice",
+        g.name AS "Game Title",
+        g.gm_names AS "GM Names",
+        (
+          CASE
+            WHEN gc.returning_player THEN 'Yes'
+            ELSE 'No'
+          END
+        ) AS "Returning Player",
+        gs.message AS "Message"
+      FROM
+        game_choice gc
+        JOIN game g ON gc.game_id = g.id
+        JOIN membership m ON gc.member_id = m.id
+        JOIN game_submission gs ON m.id = gs.member_id
+        AND m.year = gs.year
+        JOIN "user" u ON m.user_id = u.id
+      WHERE
+        gc.year = ${year}
+        AND gc.game_id IN (
+          SELECT
+            g.id
+          FROM
+            "game" g
+          WHERE
+            g.year = ${year}
+            OR (g.author_id IS NULL)
+        )
+      ORDER BY
+        u.full_name,
+        gc.year,
+        gc.slot_id,
+        gc.rank
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

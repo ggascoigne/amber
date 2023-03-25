@@ -1,7 +1,14 @@
 exports.up = async function (knex) {
   await knex.raw(`
-      insert into profile (user_id, snail_mail_address, phone_number)
-      (select id, snail_mail_address, phone_number from "user");
+    INSERT INTO
+    profile (user_id, snail_mail_address, phone_number) (
+      SELECT
+        id,
+        snail_mail_address,
+        phone_number
+      FROM
+        "user"
+    )
     `)
   return knex.schema.table('user', (table) => {
     table.dropColumn('snail_mail_address')

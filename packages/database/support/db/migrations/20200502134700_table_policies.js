@@ -23,19 +23,19 @@ const tables = [
 const q = (name) => (name === 'user' ? '"user"' : name)
 
 const anyUserUpdatePolicy = (table) => `
-  create policy ${table}_sel_policy on ${q(table)}
-    for select
-    using (true);
-  create policy ${table}_mod_policy on ${q(table)}
-    using (current_user_id() != null);
+  CREATE POLICY ${table}_sel_policy ON ${q(table)}
+    FOR SELECT
+    USING (TRUE);
+  CREATE POLICY ${table}_mod_policy ON ${q(table)}
+    USING (current_user_id() != NULL);
   `
 
 const adminUpdatePolicy = (table) => `
-  create policy ${table}_sel_policy on ${q(table)}
-    for select
-    using (true);
-  create policy ${table}_mod_policy on ${q(table)}
-    using (current_user_is_admin());
+  CREATE POLICY ${table}_sel_policy ON ${q(table)}
+    FOR SELECT
+    USING (TRUE);
+  CREATE POLICY ${table}_mod_policy ON ${q(table)}
+    USING (current_user_is_admin());
   `
 
 exports.up = async function (knex) {
@@ -48,10 +48,9 @@ exports.down = async function (knex) {
   await knex.raw(
     tables
       .map(
-        (table) =>
-          `
-            drop policy if exists ${table.name}_sel_policy on ${q(table.name)};
-            drop policy if exists ${table.name}_mod_policy on ${q(table.name)};
+        (table) => `
+            DROP POLICY IF EXISTS ${table.name}_sel_policy ON ${q(table.name)};
+            DROP POLICY IF EXISTS ${table.name}_mod_policy ON ${q(table.name)};
           `
       )
       .join('\n')

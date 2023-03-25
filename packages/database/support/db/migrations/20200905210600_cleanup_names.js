@@ -2,27 +2,48 @@ const toFix = require('../../../../../name_cleanup')
 
 exports.up = async function (knex) {
   await knex.raw(`
-                  update "user"
-                  set first_name = array_to_string(ary[1:len - 1], ' '),
-                      last_name = ary[len]
-                  from (
-                           select id, ary, array_length(ary, 1) as len
-                           from (
-                                    select id, regexp_split_to_array(full_name, E'\\\\s+') as ary
-                                    from "user"
-                                ) sub1
-                       ) sub2
-                  where sub2.id = "user".id
-              `)
+    UPDATE "user"
+    SET
+      first_name = ARRAY_TO_STRING(ary[1:len - 1], ' '),
+      last_name = ary[len]
+    FROM
+      (
+        SELECT
+          id,
+          ary,
+          ARRAY_LENGTH(ary, 1) AS len
+        FROM
+          (
+            SELECT
+              id,
+              REGEXP_SPLIT_TO_ARRAY(full_name, E'\\\\s+') AS ary
+            FROM
+              "user"
+          ) sub1
+      ) sub2
+    WHERE
+      sub2.id = "user".id
+    `)
 
   await Promise.allSettled(
     toFix.map(async (u) => {
       if (u.full)
-        await knex.raw(
-          `update "user" set first_name = '${u.first}', last_name = '${u.last}', full_name = '${u.full}' where "user".id=${u.id}`
-        )
+        await knex.raw(`
+          UPDATE "user"
+          SET 
+            first_name = '${u.first}', 
+            last_name = '${u.last}', 
+            full_name = '${u.full}' 
+          WHERE "user".id=${u.id}
+          `)
       else
-        await knex.raw(`update "user" set first_name = '${u.first}', last_name = '${u.last}' where "user".id=${u.id}`)
+        await knex.raw(`
+          UPDATE "user" 
+          SET 
+            first_name = '${u.first}',
+            last_name = '${u.last}'
+          WHERE "user".id=${u.id}
+          `)
     })
   )
 }

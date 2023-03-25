@@ -14,17 +14,22 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-        select distinct m.id as "Member Id",
-          u.full_name  as "Full Name",
-          u.first_name as "First Name",
-          u.last_name  as "Last Name",
-          u.email      as "email"
-          from membership m
-            join "user" u on m.user_id = u.id
-            join game_assignment ga on ga.member_id = m.id
-          where m.year = ${year}
-            and ga.gm < 0
-          order by "Full Name"`
+      SELECT DISTINCT
+        m.id AS "Member Id",
+        u.full_name AS "Full Name",
+        u.first_name AS "First Name",
+        u.last_name AS "Last Name",
+        u.email AS "email"
+      FROM
+        membership m
+        JOIN "user" u ON m.user_id = u.id
+        JOIN game_assignment ga ON ga.member_id = m.id
+      WHERE
+        m.year = ${year}
+        AND ga.gm < 0
+      ORDER BY
+        "Full Name"
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

@@ -14,24 +14,30 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-          select 
-            g.id as "Game ID",
-            u.full_name as "Submitted By",
-            u.email as "Email",
-            g.name as "Game Title",
-            g.gm_names as "GM Names",
-            g.description as "Description",
-            g.teen_friendly as "Teen Friendly",
-            g.player_min as "Player Min",
-            g.player_max as "Player Max",
-            g.player_preference as "Player Preference",
-            g.slot_id as "Slot",
-            g.slot_preference as "Slot Preference",
-            g.message as "Message"
-            from game g 
-            join "user" u  on g.author_id = u.id
-          where g.year = ${year}
-          order by g.year, g.slot_id, g.name`
+      SELECT
+        g.id AS "Game ID",
+        u.full_name AS "Submitted By",
+        u.email AS "Email",
+        g.name AS "Game Title",
+        g.gm_names AS "GM Names",
+        g.description AS "Description",
+        g.teen_friendly AS "Teen Friendly",
+        g.player_min AS "Player Min",
+        g.player_max AS "Player Max",
+        g.player_preference AS "Player Preference",
+        g.slot_id AS "Slot",
+        g.slot_preference AS "Slot Preference",
+        g.message AS "Message"
+      FROM
+        game g
+        JOIN "user" u ON g.author_id = u.id
+      WHERE
+        g.year = ${year}
+      ORDER BY
+        g.year,
+        g.slot_id,
+        g.name
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)
