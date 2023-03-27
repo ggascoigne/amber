@@ -3,7 +3,7 @@ import { Page } from 'ui'
 import React, { useMemo } from 'react'
 import { AuthenticatedDownloadButton } from '../components'
 import { useConfiguration } from '../utils'
-import { HasPermission, Perms, useAuth } from '../components/Auth'
+import { Perms, useAuth } from '../components/Auth'
 
 export type ReportRecord = {
   name: string
