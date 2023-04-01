@@ -12,7 +12,12 @@ const toFix = [
 exports.up = async function (knex) {
   await Promise.allSettled(
     toFix.map(async (u) => {
-      await knex.raw(`update setting set value = '${u.value}' where setting.code='${u.code}'`)
+      await knex.raw(`
+        UPDATE setting
+        SET
+          value = '${u.value}'
+        WHERE setting.code='${u.code}'
+        `)
     })
   )
 }

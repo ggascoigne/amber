@@ -23,19 +23,19 @@ const tables = [
 const q = (name) => (name === 'user' ? '"user"' : name)
 
 const anyUserUpdatePolicy = (table) => `
-  create policy ${table}_sel_policy on ${q(table)}
-    for select
-    using (true);
-  create policy ${table}_mod_policy on ${q(table)}
-    using (current_user_id()::boolean);
+  CREATE POLICY ${table}_sel_policy ON ${q(table)}
+    FOR SELECT
+    USING (TRUE);
+  CREATE POLICY ${table}_mod_policy ON ${q(table)}
+    USING (current_user_id()::BOOLEAN);
   `
 
 const adminUpdatePolicy = (table) => `
-  create policy ${table}_sel_policy on ${q(table)}
-    for select
-    using (true);
-  create policy ${table}_mod_policy on ${q(table)}
-    using (current_user_is_admin());
+  CREATE POLICY ${table}_sel_policy ON ${q(table)}
+    FOR SELECT
+    USING (TRUE);
+  CREATE POLICY ${table}_mod_policy ON ${q(table)}
+    USING (current_user_is_admin());
   `
 
 exports.up = async function (knex) {
@@ -45,21 +45,21 @@ exports.up = async function (knex) {
   const res = await knex.raw(`SELECT 1 FROM pg_roles WHERE rolname='${user}'`)
   if (res?.rows?.[0]?.['?column?'] !== 1) {
     // note that users are per database and not per schema
-    await knex.raw(`drop role if exists ${user}`)
+    await knex.raw(`DROP ROLE IF EXISTS ${user}`)
     await knex.raw(`CREATE ROLE ${user} WITH LOGIN PASSWORD '${password}' NOINHERIT;`)
   }
-  await knex.raw(`grant usage on schema public to ${user};`)
-  await knex.raw(`grant select, insert, update, delete on all tables in schema public to ${user};`)
-  await knex.raw(`grant select, update, usage on all sequences in schema public to ${user};`)
-  await knex.raw(`grant execute on all routines in schema public to ${user};`)
+  await knex.raw(`GRANT USAGE ON SCHEMA public TO ${user};`)
+  await knex.raw(`GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${user};`)
+  await knex.raw(`GRANT SELECT, UPDATE, USAGE ON ALL SEQUENCES IN SCHEMA public TO ${user};`)
+  await knex.raw(`GRANT EXECUTE ON ALL ROUTINES IN SCHEMA public TO ${user};`)
 
   await knex.raw(
     tables
       .map(
         (table) =>
           `
-            drop policy if exists ${table.name}_sel_policy on ${q(table.name)};
-            drop policy if exists ${table.name}_mod_policy on ${q(table.name)};
+            DROP POLICY IF EXISTS ${table.name}_sel_policy ON ${q(table.name)};
+            DROP POLICY IF EXISTS ${table.name}_mod_policy ON ${q(table.name)};
           `
       )
       .join('\n')
@@ -70,14 +70,14 @@ exports.up = async function (knex) {
   )
 
   await knex.raw(`
-    drop policy if exists profile_sel_policy on profile;
+    DROP POLICY IF EXISTS profile_sel_policy ON profile;
 
-    create policy profile_sel_policy on profile
-      for select
-      using ("user_id" = current_user_id() or current_user_is_admin());
-  `)
+    CREATE POLICY profile_sel_policy ON profile
+      FOR SELECT
+      USING ("user_id" = current_user_id() OR current_user_is_admin());
+    `)
 
-  await knex.raw(tables.map((table) => `alter table ${q(table.name)} enable row level security;`).join('\n'))
+  await knex.raw(tables.map((table) => `ALTER TABLE ${q(table.name)} ENABLE ROW LEVEL SECURITY;`).join('\n'))
 }
 
 exports.down = async function (knex) {}

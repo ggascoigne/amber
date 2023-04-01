@@ -14,23 +14,31 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-          select distinct 
-              h.id, 
-              h.description, 
-              h.quantity, 
-              coalesce(hr.allocated,0) as allocated, 
-              h.gaming_room, 
-              h.bathroom_type, 
-              h.type 
-          from hotel_room h
-          join membership m on m.hotel_room_id = h.id
-          left join (
-            select 
-                m.hotel_room_id as id, 
-                count(m.hotel_room_id) as allocated 
-            from membership m where year = ${year} group by m.hotel_room_id) hr 
-              on h.id = hr.id
-          order by h.id`
+      SELECT DISTINCT
+        h.id,
+        h.description,
+        h.quantity,
+        COALESCE(hr.allocated, 0) AS allocated,
+        h.gaming_room,
+        h.bathroom_type,
+        h.type
+      FROM
+        hotel_room h
+        JOIN membership m ON m.hotel_room_id = h.id
+        LEFT JOIN (
+          SELECT
+            m.hotel_room_id AS id,
+            COUNT(m.hotel_room_id) AS allocated
+          FROM
+            membership m
+          WHERE
+            YEAR = ${year}
+          GROUP BY
+            m.hotel_room_id
+        ) hr ON h.id = hr.id
+      ORDER BY
+        h.id
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

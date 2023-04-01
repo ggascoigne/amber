@@ -1,40 +1,43 @@
 exports.up = async function (knex) {
   await knex.raw(`
-			create or replace function memb_check_room_avail()
-			returns trigger as $$
-			declare
-				number_already_allocated integer;
-				number_available integer;
-			begin
-				select into number_already_allocated
-					count(*) from membership
-					where membership.year = new.year
-					and membership.hotel_room_id = new.hotel_room_id
-					and membership.id != new.id;
-				
-				select into number_available
-					quantity from hotel_room
-					where hotel_room.id = new.hotel_room_id;
-				
-				if (number_available - number_already_allocated) < 1
-				then
-					raise exception 'All rooms of that type are sold out, please choose another room type.';
-				end if;
-				
-				return new;
-			end;
-			$$ language plpgsql;
-		`)
+    CREATE OR REPLACE FUNCTION memb_check_room_avail () RETURNS TRIGGER AS $$
+    DECLARE
+      number_already_allocated INTEGER;
+      number_available INTEGER;
+    BEGIN
+      SELECT INTO number_already_allocated COUNT(*)
+      FROM
+        membership
+      WHERE
+        membership.year = NEW.year
+        AND membership.hotel_room_id = NEW.hotel_room_id
+        AND membership.id != NEW.id;
 
-  await knex.raw(`
-			drop trigger if exists memb_check_room_avail_trigger on membership;
-		`)
+      SELECT INTO number_available quantity
+      FROM
+        hotel_room
+      WHERE
+        hotel_room.id = NEW.hotel_room_id;
 
-  await knex.raw(`
-		create trigger memb_check_room_avail_trigger
-			before insert or update on membership
-			for each row execute procedure memb_check_room_avail();
+      IF (number_available - number_already_allocated) < 1 THEN 
+        raise exception 'All rooms of that type are sold out, please choose another room type.';
+      END IF;
+
+      RETURN new;
+    END;
+    $$ LANGUAGE plpgsql;
 	`)
+
+  await knex.raw(`
+    DROP TRIGGER IF EXISTS memb_check_room_avail_trigger ON membership
+		`)
+
+  await knex.raw(`
+    CREATE TRIGGER memb_check_room_avail_trigger BEFORE INSERT
+    OR
+    UPDATE ON membership FOR EACH ROW
+    EXECUTE PROCEDURE memb_check_room_avail ()
+  	`)
 }
 
 exports.down = async function (knex) {}

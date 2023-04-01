@@ -7,11 +7,17 @@ exports.up = async function (knex) {
       table.string('phone_number', 32).defaultTo(null)
     }),
     knex.raw(`
-      update "user" u
-      set email = p.email, full_name = p.full_name, phone_number = p.phone_number, snail_mail_address = p.snail_mail_address
-      from profile p 
-      where p.id = u.profile_id;
-    `),
+      UPDATE "user" u
+      SET
+        email = p.email,
+        full_name = p.full_name,
+        phone_number = p.phone_number,
+        snail_mail_address = p.snail_mail_address
+      FROM
+        profile p
+      WHERE
+        p.id = u.profile_id;
+      `),
     knex.schema.table('user', (table) => {
       table.string('email', 64).notNullable().unique().alter()
     }),

@@ -14,19 +14,39 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-          select 
-          	concat(g.slot_id, lpad(cast(row_number() over(partition by g.slot_id order by g.name) as VARCHAR),2,'0')) as "GameNumber",
-          	g.slot_id as "Slot",
-          	g.name as "Game Title",
-          	g.id as "Game Id",
-          	u.full_name as "Author",
-          	g.gm_names as "GM Names",
-          	r.description as "Room"
-          from game g 
-          join "user" u on g.author_id = u.id
-          left join room r on g.room_id = r.id
-          where g.year = ${year} and g.slot_id > 0
-          order by "Slot", "Game Title"`
+      SELECT
+        CONCAT(
+          g.slot_id,
+          LPAD(
+            CAST(
+              ROW_NUMBER() OVER (
+                PARTITION BY
+                  g.slot_id
+                ORDER BY
+                  g.name
+              ) AS VARCHAR
+            ),
+            2,
+            '0'
+          )
+        ) AS "GameNumber",
+        g.slot_id AS "Slot",
+        g.name AS "Game Title",
+        g.id AS "Game Id",
+        u.full_name AS "Author",
+        g.gm_names AS "GM Names",
+        r.description AS "Room"
+      FROM
+        game g
+        JOIN "user" u ON g.author_id = u.id
+        LEFT JOIN room r ON g.room_id = r.id
+      WHERE
+        g.year = ${year}
+        AND g.slot_id > 0
+      ORDER BY
+        "Slot",
+        "Game Title"
+      `
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

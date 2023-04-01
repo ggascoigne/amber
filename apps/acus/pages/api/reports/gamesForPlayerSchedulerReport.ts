@@ -14,25 +14,57 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const year = req.body?.year || configuration.year
     const query = `
-      select 
-        g.id as "NID",
-        g.year as "Con",
-        g.slot_id as "Slot",
-        REPLACE(REPLACE(REPLACE(g.player_preference,'ret-only','Returning Players Only'),'ret-pref','Open Spaces'),'any','Open Spaces') as "Space",
-        g.name as "Title",
-        g.gm_names as "GM(s)",
-        REGEXP_REPLACE(g.gm_names, '\n', ' & ') as "GM(s)",
-        REGEXP_REPLACE(g.gm_names, '\n', ',') as "GMUserNames",
-        g.description as "Description",
-        (case when g.teen_friendly then 'Yes' else 'No' end) as "Teen",
-        REPLACE(REPLACE(REPLACE(g.player_preference,'ret-only','Returning Players Only'),'ret-pref','Returning Players Given Preference, New Players Welcome'),'any','Any (Returning Players not given preference)') as "Accepted",
-        g.player_min as "Min",
-        g.player_max as "Max",
-        g.returning_players as "Returning Players"
-      from game g
-      left join "user" u on g.author_id = u.id
-      where (g.year = ${year} and g.slot_id >=1 and g.slot_id <=8) or (g.author_id is null)
-      order by g.slot_id, g.year desc, g.name;`
+      SELECT
+        g.id AS "NID",
+        g.year AS "Con",
+        g.slot_id AS "Slot",
+        REPLACE(
+          REPLACE(
+            REPLACE(g.player_preference, 'ret-only', 'Returning Players Only'),
+            'ret-pref',
+            'Open Spaces'
+          ),
+          'any',
+          'Open Spaces'
+        ) AS "Space",
+        g.name AS "Title",
+        g.gm_names AS "GM(s)",
+        REGEXP_REPLACE(g.gm_names, '\n', ' & ') AS "GM(s)",
+        REGEXP_REPLACE(g.gm_names, '\n', ',') AS "GMUserNames",
+        g.description AS "Description",
+        (
+          CASE
+            WHEN g.teen_friendly THEN 'Yes'
+            ELSE 'No'
+          END
+        ) AS "Teen",
+        REPLACE(
+          REPLACE(
+            REPLACE(g.player_preference, 'ret-only', 'Returning Players Only'),
+            'ret-pref',
+            'Returning Players Given Preference, New Players Welcome'
+          ),
+          'any',
+          'Any (Returning Players not given preference)'
+        ) AS "Accepted",
+        g.player_min AS "Min",
+        g.player_max AS "Max",
+        g.returning_players AS "Returning Players"
+      FROM
+        game g
+        LEFT JOIN "user" u ON g.author_id = u.id
+      WHERE
+        (
+          g.year = ${year}
+          AND g.slot_id >= 1
+          AND g.slot_id <= 8
+        )
+        OR (g.author_id IS NULL)
+      ORDER BY
+        g.slot_id,
+        g.year DESC,
+        g.name
+      `
 
     await queryToExcelDownload(query, res)
   } catch (err: any) {
