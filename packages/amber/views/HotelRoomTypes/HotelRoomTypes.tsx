@@ -31,7 +31,7 @@ const RequestedNames: React.FC<{ names: string[] }> = ({ names }) => (
 export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
   cell: { value, row },
   column: { align = 'left' },
-}: CellProps<any>) => {
+}) => {
   const hotelRoomId = row.original.id
   const [year] = useYearFilter()
 

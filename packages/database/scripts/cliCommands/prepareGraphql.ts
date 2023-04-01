@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-import { CliUx, Command } from '@oclif/core'
+import { ux, Command } from '@oclif/core'
 import { printSchema } from 'graphql'
 import { createPostGraphileSchema } from 'postgraphile'
 
@@ -16,7 +16,7 @@ export default class PrepareGraphQL extends Command {
 
   // eslint-disable-next-line class-methods-use-this
   async run() {
-    CliUx.ux.action.start('transforming postgraphile schema')
+    ux.action.start('transforming postgraphile schema')
     const pgPool = await getPool(PoolType.ADMIN)
     const schema = await createPostGraphileSchema(pgPool, getSchemas(), {
       ...options,
@@ -24,6 +24,6 @@ export default class PrepareGraphQL extends Command {
     })
     await pgPool.end()
     fs.writeFileSync(path.join(__dirname, '../../shared/graphql-schema.graphql'), printSchema(schema))
-    CliUx.ux.action.stop()
+    ux.action.stop()
   }
 }

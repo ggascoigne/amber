@@ -20,6 +20,7 @@ const GraphiQL: React.FC = () => {
   const explorerPlugin = useExplorerPlugin({
     query,
     onEdit: setQuery,
+    showAttribution: false, // credited on the credits page
   })
 
   return (
