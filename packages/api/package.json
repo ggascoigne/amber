@@ -12,7 +12,7 @@
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^2.3.1",
+    "@auth0/nextjs-auth0": "^2.4.0",
     "common-tags": "^1.8.2",
     "database": "workspace:*",
     "next": "^13.3.0",
