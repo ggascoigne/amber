@@ -1,10 +1,10 @@
-import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
 import React, { useState } from 'react'
+
+import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
+import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from 'amber'
+import { MembershipFormContent } from 'amber/utils/membershipUtils'
 import { makeStyles } from 'tss-react/mui'
 import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from 'ui'
-import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from 'amber'
-
-import { MembershipFormContent } from 'amber/utils/membershipUtils'
 
 const useStyles = makeStyles()({
   slotSelection: {

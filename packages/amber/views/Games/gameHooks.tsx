@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
+
 import {
   GameAssignmentFieldsFragment,
   GameFieldsFragment,
@@ -14,10 +16,9 @@ import {
   useGetMembershipsByYearQuery,
   useUpdateGameByNodeIdMutation,
 } from '../../client'
-import { useConfiguration, useSendEmail, useSetting, useUser, useYearFilter } from '../../utils'
-
 import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useConfiguration, useSendEmail, useSetting, useUser, useYearFilter } from '../../utils'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
@@ -133,7 +134,7 @@ export type GameDialogFormValues = Omit<
   Partial<{ id: number }> &
   Partial<Node>
 
-export const useEditGame = (onClose: OnCloseHandler, initialValues?: GameDialogFormValues) => {
+export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialogFormValues) => {
   const configuration = useConfiguration()
   const createGame = useCreateGameMutation()
   const updateGame = useUpdateGameByNodeIdMutation()

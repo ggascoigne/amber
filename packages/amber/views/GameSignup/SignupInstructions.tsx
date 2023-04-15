@@ -1,7 +1,9 @@
-import { useTheme } from '@mui/material/styles'
-import { Card } from '@mui/material'
 import React from 'react'
+
+import { Card } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { CardBody } from 'ui'
+
 import { ConfigDate } from '../../components'
 import { useConfiguration } from '../../utils'
 

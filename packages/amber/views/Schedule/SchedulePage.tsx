@@ -1,11 +1,16 @@
-import Button from '@mui/material/Button'
-import { stripIndents } from 'common-tags'
 import React, { createRef, PropsWithChildren, useMemo, useState } from 'react'
-import SHA from 'sha.js'
 
-import { useTheme } from '@mui/material/styles'
 import { Box, useMediaQuery } from '@mui/material'
+import Button from '@mui/material/Button'
+import { useTheme } from '@mui/material/styles'
+import { stripIndents } from 'common-tags'
+import SHA from 'sha.js'
 import { GqlType, GraphQLError, Loader, notEmpty, Page } from 'ui'
+
+import { GameAssignmentNode, useGetScheduleQuery } from '../../client'
+import { HasPermission, Perms, useAuth } from '../../components/Auth'
+import { GameCard } from '../../components/GameCard'
+import { GameDecorator } from '../../components/types'
 import {
   buildUrl,
   Configuration,
@@ -21,10 +26,6 @@ import {
   useGetSettingValue,
   useUser,
 } from '../../utils'
-import { GameAssignmentNode, useGetScheduleQuery } from '../../client'
-import { HasPermission, Perms, useAuth } from '../../components/Auth'
-import { GameCard } from '../../components/GameCard'
-import { GameDecorator } from '../../components/types'
 
 interface GameSummaryProps {
   gas: GameAssignmentNode

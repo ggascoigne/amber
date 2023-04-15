@@ -1,4 +1,5 @@
 import { ReactElement } from 'react'
+
 import { ColumnInstance } from 'react-table'
 
 import { TableStyleOptions, useStyles } from './TableStyles'

@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 const withMdxFm = require('next-mdx-frontmatter')({
   extension: /\.mdx?$/,
   MDXOptions: {
@@ -11,10 +14,6 @@ const withMdxFm = require('next-mdx-frontmatter')({
     // If you use `MDXProvider`, uncomment the following line.
     providerImportSource: '@mdx-js/react',
   },
-})
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
 })
 
 module.exports = withBundleAnalyzer(

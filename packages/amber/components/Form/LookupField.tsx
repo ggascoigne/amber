@@ -1,8 +1,9 @@
 import React from 'react'
+
 import type { TextFieldProps } from 'ui'
 import { GraphQLError, Loader, SelectField } from 'ui'
-import { useGetLookupValuesQuery } from '../../client'
 
+import { useGetLookupValuesQuery } from '../../client'
 import { useRealmOptions } from '../../utils'
 
 export interface LookupFieldProps extends TextFieldProps {

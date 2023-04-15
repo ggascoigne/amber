@@ -1,14 +1,16 @@
-import { Theme } from '@mui/material'
 import React, { useEffect } from 'react'
+
+import { Theme } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import { Loader, notEmpty, range } from 'ui'
-import { useGetGamesBySlotForSignupQuery } from '../../client'
-import { getSlotDescription, useConfiguration } from '../../utils'
 
-import { getGms } from '../Games'
 import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+import { useGetGamesBySlotForSignupQuery } from '../../client'
+import { getSlotDescription, useConfiguration } from '../../utils'
+import { getGms } from '../Games'
+
+const useStyles = makeStyles()((_theme: Theme) => ({
   line: {
     display: 'flex',
     flex: 1,

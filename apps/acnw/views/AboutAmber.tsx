@@ -1,4 +1,5 @@
 import { MdxPage } from 'ui'
+
 import * as content from '../content/AboutAmberContent.mdx'
 
 const { default: AboutAmberContent, ...frontMatter } = content

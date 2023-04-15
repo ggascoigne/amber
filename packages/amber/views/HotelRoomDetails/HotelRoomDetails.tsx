@@ -1,18 +1,20 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-
 import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
-import { TableMouseEventHandler } from '../../types/react-table-config'
+
+import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
+
 import {
   GetHotelRoomDetailsQuery,
   useDeleteHotelRoomDetailMutation,
   useGetHotelRoomDetailsQuery,
   useGetMembershipRoomsByYearQuery,
 } from '../../client'
+import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useSettings, useYearFilter } from '../../utils'
 import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
-import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
 export type HotelRoomDetail = GqlType<GetHotelRoomDetailsQuery, ['hotelRoomDetails', 'edges', number, 'node']>
 

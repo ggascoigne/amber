@@ -1,7 +1,4 @@
 /* eslint-disable @getify/proper-ternary/nested */
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
-import { TableSortLabel, TextField, Tooltip } from '@mui/material'
 import React, {
   CSSProperties,
   MouseEventHandler,
@@ -11,6 +8,10 @@ import React, {
   useEffect,
   useMemo,
 } from 'react'
+
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
+import { TableSortLabel, TextField, Tooltip } from '@mui/material'
 import {
   Cell,
   CellProps,
@@ -37,7 +38,6 @@ import {
   useSortBy,
   useTable,
 } from 'react-table'
-import { camelToWords, isDev, notEmpty, useDebounce } from '../../utils'
 
 import { CellEditor } from './CellEditor'
 import { FilterChipBar } from './FilterChipBar'
@@ -63,6 +63,8 @@ import {
 import { Command, TableToolbar } from './TableToolbar'
 import { TooltipCellRenderer } from './TooltipCellRenderer'
 import { useInitialTableState } from './useInitialTableState'
+
+import { camelToWords, isDev, notEmpty, useDebounce } from '../../utils'
 
 export interface TableProps<T extends Record<string, unknown>> extends TableOptions<T> {
   name: string
@@ -113,7 +115,7 @@ function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, colum
   )
 }
 
-const getStyles = (props: any, disableResizing = false, align = 'left') => [
+const getStyles = (props: any, _disableResizing = false, align = 'left') => [
   props,
   {
     style: {
@@ -125,7 +127,7 @@ const getStyles = (props: any, disableResizing = false, align = 'left') => [
 ]
 
 const useSelectionUi = (hooks: Hooks<any>) => {
-  hooks.allColumns.push((columns, { instance }) => [
+  hooks.allColumns.push((columns, { instance: _instance }) => [
     // Let's make a column for selection
     {
       id: '_selector',

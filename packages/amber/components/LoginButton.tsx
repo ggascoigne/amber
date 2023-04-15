@@ -1,18 +1,20 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import StarIcon from '@mui/icons-material/Star'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import { Avatar, Badge, Button, Theme, Tooltip, Typography } from '@mui/material'
-import fetch from 'isomorphic-fetch'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { QueryClient } from '@tanstack/react-query'
 import { Box } from '@mui/system'
-import { useRouter } from 'next/navigation'
+import { QueryClient } from '@tanstack/react-query'
+import fetch from 'isomorphic-fetch'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Children, useNotification } from 'ui'
-import { useIsGm, useSetting } from '../utils'
 
 import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { ProfileDialog, useProfile } from './Profile'
+
+import { useIsGm, useSetting } from '../utils'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'

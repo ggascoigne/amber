@@ -1,6 +1,7 @@
+import React, { MouseEventHandler, PropsWithChildren } from 'react'
+
 import { Theme } from '@mui/material'
 import MuiDialogTitle from '@mui/material/DialogTitle'
-import React, { MouseEventHandler, PropsWithChildren } from 'react'
 import { makeStyles } from 'tss-react/mui'
 
 import { DialogClose } from './DialogClose'

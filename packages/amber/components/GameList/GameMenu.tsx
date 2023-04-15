@@ -1,3 +1,5 @@
+import React, { PropsWithChildren } from 'react'
+
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
@@ -5,13 +7,13 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import { Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import React, { PropsWithChildren } from 'react'
 import { makeStyles } from 'tss-react/mui'
+
+import { GameListIndex } from './GameListIndex'
+import { GameListNavigator } from './GameListNavigator'
 
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
-import { GameListIndex } from './GameListIndex'
-import { GameListNavigator } from './GameListNavigator'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   title: {

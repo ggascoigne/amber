@@ -1,13 +1,15 @@
-import { Theme } from '@mui/material'
 import React from 'react'
-import { makeStyles } from 'tss-react/mui'
 
+import { Theme } from '@mui/material'
 import { ConfigDate, ContactEmail } from 'amber/components'
 import { BetaWarning } from 'amber/components/BetaWarning'
+import { makeStyles } from 'tss-react/mui'
 import { MdxWithExternalLinks, Page } from 'ui'
+
+import { DynamicMemberContent } from './Welcome'
+
 import { Banner } from '../components/Banner'
 import WelcomeContentVirtual from '../content/WelcomeContentVirtual.mdx'
-import { DynamicMemberContent } from './Welcome'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   banner: {

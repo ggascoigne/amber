@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { AfterCallback, handleCallback } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
+
 import { getUserRoles } from './apiAuthUtils'
 
-const afterCallback: AfterCallback = async (req, res, session, state) => {
+const afterCallback: AfterCallback = async (_req, _res, session, _state) => {
   const authorization = await getUserRoles(session)
   if (authorization) {
     return {

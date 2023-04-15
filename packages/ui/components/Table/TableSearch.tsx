@@ -1,6 +1,7 @@
+import React, { PropsWithChildren, ReactElement, useCallback, useEffect } from 'react'
+
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconButton, TextField } from '@mui/material'
-import React, { PropsWithChildren, ReactElement, useCallback, useEffect } from 'react'
 import { TableInstance } from 'react-table'
 
 interface TableSearchProps<T extends Record<string, unknown>> {

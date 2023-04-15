@@ -1,17 +1,16 @@
+import React, { useCallback } from 'react'
+
 import { DialogContentText, FormControl, RadioGroup, Theme } from '@mui/material'
+import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from 'amber'
+import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
 import { Field, FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
-import React, { useCallback } from 'react'
 import { makeStyles } from 'tss-react/mui'
 import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from 'ui'
 
-import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from 'amber'
-
-import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
-
 import { MembershipWizardFormValues } from './MembershipWizard'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   important: {
     marginBottom: 12,
   },

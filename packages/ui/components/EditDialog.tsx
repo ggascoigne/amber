@@ -1,11 +1,14 @@
-import { useTheme } from '@mui/material/styles'
+import { ReactElement, ReactNode, useCallback } from 'react'
+
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik'
 import { FormikProps } from 'formik/dist/types'
-import { ReactElement, ReactNode, useCallback } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { isDev, OnCloseHandler } from '../utils'
+
 import { DialogTitle } from './Dialog'
+
+import { isDev, OnCloseHandler } from '../utils'
 
 export interface EditDialogProps<T> {
   title: string

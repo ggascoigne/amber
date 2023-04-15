@@ -1,6 +1,8 @@
-import { dequal as deepEqual } from 'dequal'
 import { useCallback, useMemo } from 'react'
+
+import { dequal as deepEqual } from 'dequal'
 import { Column, TableState } from 'react-table'
+
 import { useLocalStorage } from '../../utils'
 
 interface PersistedState<T extends Record<string, unknown>> {

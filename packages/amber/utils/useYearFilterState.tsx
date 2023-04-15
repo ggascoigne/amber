@@ -1,5 +1,6 @@
-import { atom } from 'jotai/vanilla'
 import { useAtom } from 'jotai/react'
+import { atom } from 'jotai/vanilla'
+
 import { useConfiguration } from './configContext'
 
 const yearFilterAtom = atom<number>(0)

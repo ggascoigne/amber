@@ -1,14 +1,16 @@
-import { Button, Theme } from '@mui/material'
 import React from 'react'
-import { makeStyles } from 'tss-react/mui'
-import { Link } from 'amber/components/Navigation'
-import { ConfigDate, ContactEmail, MDY } from 'amber/components'
-import { MdxWithExternalLinks, Page } from 'ui'
-import { IsMember } from 'amber/utils'
 
+import { Button, Theme } from '@mui/material'
+import { ConfigDate, ContactEmail, MDY } from 'amber/components'
 import { BetaWarning } from 'amber/components/BetaWarning'
-import { Banner } from '../components'
+import { Link } from 'amber/components/Navigation'
+import { IsMember } from 'amber/utils'
+import { makeStyles } from 'tss-react/mui'
+import { MdxWithExternalLinks, Page } from 'ui'
+
 import { BecomeAMember } from './Memberships'
+
+import { Banner } from '../components'
 import WelcomeContent from '../content/WelcomeContent.mdx'
 
 const useStyles = makeStyles()((theme: Theme) => ({

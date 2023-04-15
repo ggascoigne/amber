@@ -1,6 +1,6 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
 
+import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 
 const GraphiQL = dynamic(() => import('ui/components/GraphiQL/GraphiQL'), {

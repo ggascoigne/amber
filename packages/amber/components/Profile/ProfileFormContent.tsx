@@ -1,10 +1,12 @@
-import { DialogContentText } from '@mui/material'
 import React from 'react'
+
+import { DialogContentText } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import { GridContainer, GridItem, Important, TextField } from 'ui'
 
-import { HasPermission, Perms, useAuth } from '../Auth'
 import { UsersAndProfileType } from './profileUtils'
+
+import { HasPermission, Perms, useAuth } from '../Auth'
 
 export type ProfileFormType = UsersAndProfileType
 

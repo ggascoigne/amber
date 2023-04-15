@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import ReactDOM from 'react-dom'
 
+import ReactDOM from 'react-dom'
 import { isDev } from 'ui'
 
 export function useAxe(): void {

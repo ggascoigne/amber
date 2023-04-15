@@ -1,6 +1,7 @@
 /* eslint-disable @getify/proper-ternary/nested */
-import { Chip } from '@mui/material'
 import { ReactElement, useCallback } from 'react'
+
+import { Chip } from '@mui/material'
 import type { ColumnInstance, FilterValue, IdType, TableInstance } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 

@@ -15,17 +15,17 @@
     "@auth0/nextjs-auth0": "^2.3.1",
     "common-tags": "^1.8.2",
     "database": "workspace:*",
-    "next": "^13.2.4",
+    "next": "^13.3.0",
     "pg": "^8.10.0"
   },
   "devDependencies": {
-    "@types/node": "^18.15.10",
+    "@types/node": "^18.15.11",
     "@types/pg": "^8.6.6",
     "common-tags": "^1.8.2",
     "dotenv": "^16.0.3",
     "eslint-config-custom": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   }
 }

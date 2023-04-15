@@ -1,11 +1,12 @@
-import { Box, Card } from '@mui/material'
-import { Theme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-import { useConfiguration } from 'amber/utils'
-import { CardBody, Page } from 'ui'
 import { ReactNode } from 'react'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+import { Box, Card } from '@mui/material'
+import { Theme } from '@mui/material/styles'
+import { useConfiguration } from 'amber/utils'
+import { makeStyles } from 'tss-react/mui'
+import { CardBody, Page } from 'ui'
+
+const useStyles = makeStyles()((_theme: Theme) => ({
   card: {
     marginTop: 20,
     marginBottom: 20,

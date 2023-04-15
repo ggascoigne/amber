@@ -1,6 +1,7 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
+
 import Games from 'amber/views/Games/Games'
+import type { NextPage } from 'next'
 
 const Page: NextPage = () => <Games />
 

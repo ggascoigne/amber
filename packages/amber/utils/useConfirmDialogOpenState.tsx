@@ -1,5 +1,5 @@
-import { atom } from 'jotai/vanilla'
 import { useAtom } from 'jotai/react'
+import { atom } from 'jotai/vanilla'
 
 const confirmDialogOpenAtom = atom<boolean>(false)
 

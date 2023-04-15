@@ -1,6 +1,8 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
+
 import { useConfiguration } from 'amber/utils'
+import type { NextPage } from 'next'
+
 import { Welcome, WelcomeVirtual } from '../views'
 
 const Home: NextPage = () => {

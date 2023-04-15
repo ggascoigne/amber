@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import { NextApiRequest, NextApiResponse } from 'next'
 import { getPool, PoolType } from 'database/shared/config'
 import { getPostgraphileHandler } from 'database/shared/portgraphileHandler'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 // note that the route here is /api/graphql/[:operation] because I like to append the query
 // operation name to the path to make debugging the queries easier in Chrome dev tools.

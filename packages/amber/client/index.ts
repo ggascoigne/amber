@@ -1,4 +1,5 @@
 import { ContentsOf, UnpackArray } from 'ui'
+
 import type { GetGamesBySlotQuery, GetScheduleQuery } from './graphql'
 
 export * from './error'

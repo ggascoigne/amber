@@ -1,12 +1,14 @@
-import { useTheme } from '@mui/material/styles'
-import { Button, Dialog, DialogActions, DialogContent, Step, StepButton, Stepper, useMediaQuery } from '@mui/material'
-import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { ReactElement, useCallback, useMemo } from 'react'
+
+import { Button, Dialog, DialogActions, DialogContent, Step, StepButton, Stepper, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import Zet from 'zet'
 
-import { useDisableBackdropClick } from './EditDialog'
-import { isDev, notEmpty } from '../utils'
 import { DialogClose } from './Dialog'
+import { useDisableBackdropClick } from './EditDialog'
+
+import { isDev, notEmpty } from '../utils'
 
 export interface WizardPage {
   name: string
@@ -121,7 +123,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
         validationSchema={validationSchema}
         onSubmit={onSubmit}
       >
-        {({ values, errors, touched, submitForm, isSubmitting, validateForm }) => (
+        {({ values, errors, submitForm, isSubmitting, validateForm }) => (
           <>
             {/* note that this trick ensures that we don't get a vertical scroll when all we want is the horizontal one */}
             <div style={{ overflowY: 'visible' }}>

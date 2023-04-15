@@ -1,8 +1,23 @@
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import React, { useState } from 'react'
-import { makeStyles } from 'tss-react/mui'
+
+import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import {
+  ProfileFormType,
+  getSlotDescription,
+  isNotPacificTime,
+  useConfiguration,
+  useGetCost,
+  useGetHotelRoomsQuery,
+  useGetMembershipByYearAndIdQuery,
+  useProfile,
+  useUser,
+  useYearFilter,
+} from 'amber'
+import { MembershipType } from 'amber/utils/apiTypes'
+import { fromSlotsAttending } from 'amber/utils/membershipUtils'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { makeStyles } from 'tss-react/mui'
 import {
   Card,
   CardBody,
@@ -16,21 +31,7 @@ import {
   Page,
   range,
 } from 'ui'
-import {
-  ProfileFormType,
-  getSlotDescription,
-  isNotPacificTime,
-  useConfiguration,
-  useGetCost,
-  useGetHotelRoomsQuery,
-  useGetMembershipByYearAndIdQuery,
-  useProfile,
-  useUser,
-  useYearFilter,
-} from 'amber'
-import { fromSlotsAttending } from 'amber/utils/membershipUtils'
 
-import { MembershipType } from 'amber/utils/apiTypes'
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
 

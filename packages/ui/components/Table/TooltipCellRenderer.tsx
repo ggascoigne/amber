@@ -1,5 +1,6 @@
-import { Box, PopperProps, Tooltip } from '@mui/material'
 import React, { useCallback, useRef, useState } from 'react'
+
+import { Box, PopperProps, Tooltip } from '@mui/material'
 import type { CellProps } from 'react-table'
 
 import { CellEditorWrapper } from './CellEditor'

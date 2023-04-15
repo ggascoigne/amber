@@ -1,7 +1,6 @@
-import Yup from 'ui/utils/Yup'
 import { Attendance, Configuration, InterestLevel } from 'amber'
-
 import type { MembershipType } from 'amber/utils/apiTypes'
+import Yup from 'ui/utils/Yup'
 import {} from 'yup'
 
 export const getOwed = (configuration: Configuration, values: MembershipType): number | undefined => {
@@ -40,6 +39,7 @@ export const membershipValidationSchema = Yup.object().shape({
 export const getDefaultMembership = (
   configuration: Configuration,
   userId: number,
+  // eslint-disable-next-line unused-imports/no-unused-vars
   isVirtual: boolean
 ): MembershipType => ({
   userId,

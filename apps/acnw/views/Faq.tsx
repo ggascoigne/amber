@@ -1,4 +1,5 @@
 import { MdxPage } from 'ui'
+
 import * as content from '../content/FaqContent.mdx'
 
 const { default: FaqContent, ...frontMatter } = content

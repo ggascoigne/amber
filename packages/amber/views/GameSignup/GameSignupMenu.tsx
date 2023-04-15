@@ -1,11 +1,13 @@
-import { Button } from '@mui/material'
 import React, { useState } from 'react'
-import { GraphQLError, Loader } from 'ui'
-import { useGetGameChoicesQuery } from '../../client'
-import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
-import { GameMenu } from '../../components/GameList'
+import { Button } from '@mui/material'
+import { GraphQLError, Loader } from 'ui'
+
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
+
+import { useGetGameChoicesQuery } from '../../client'
+import { GameMenu } from '../../components/GameList'
+import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
 export const GameSignupMenu: React.FC = () => {
   const { year } = useGameUrl()

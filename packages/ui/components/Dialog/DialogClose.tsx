@@ -1,7 +1,8 @@
+import React, { MouseEventHandler } from 'react'
+
 import CloseIcon from '@mui/icons-material/Close'
 import { Theme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
-import React, { MouseEventHandler } from 'react'
 import { makeStyles } from 'tss-react/mui'
 
 const useStyles = makeStyles()((theme: Theme) => ({

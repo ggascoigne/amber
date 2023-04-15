@@ -1,6 +1,7 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
+
 import Settings from 'amber/views/Settings/Settings'
+import type { NextPage } from 'next'
 
 const Page: NextPage = () => <Settings />
 

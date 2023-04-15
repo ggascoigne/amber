@@ -1,8 +1,7 @@
-import Yup from 'ui/utils/Yup'
 import { Attendance, Configuration, InterestLevel } from 'amber'
-
-import {} from 'yup'
 import { MembershipType } from 'amber/utils/apiTypes'
+import Yup from 'ui/utils/Yup'
+import {} from 'yup'
 
 export const getOwed = (configuration: Configuration, values: MembershipType): number | undefined => {
   if (configuration.virtual) {

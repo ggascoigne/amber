@@ -1,5 +1,7 @@
-import { styled } from '@mui/material/styles'
+import React, { CSSProperties, PropsWithChildren } from 'react'
+
 import { Checkbox, Theme } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import MuiTableTable from '@mui/material/Table'
 import { TableTypeMap } from '@mui/material/Table/Table'
 import MuiTableBody from '@mui/material/TableBody'
@@ -10,9 +12,8 @@ import MuiTableHead from '@mui/material/TableHead'
 import { TableHeadTypeMap } from '@mui/material/TableHead/TableHead'
 import MuiTableRow from '@mui/material/TableRow'
 import { TableRowTypeMap } from '@mui/material/TableRow/TableRow'
-import React, { CSSProperties, PropsWithChildren } from 'react'
-import { makeStyles } from 'tss-react/mui'
 import {} from '@mui/system'
+import { makeStyles } from 'tss-react/mui'
 
 export interface TableStyleOptions {
   selectionStyle: 'row' | 'cell'

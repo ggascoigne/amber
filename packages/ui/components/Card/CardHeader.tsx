@@ -1,5 +1,6 @@
-import { Theme } from '@mui/material'
 import React, { PropsWithChildren } from 'react'
+
+import { Theme } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
 const useStyles = makeStyles()((theme: Theme) => ({

@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react'
+
 import { DateTime } from 'luxon'
 
 export type ConventionInfo = {
@@ -23,7 +24,7 @@ export type Configuration = {
   firstYear: number
   // the first year that convention ran
   startYear: number
-  startDay: import('luxon').DayNumbers
+  startDay: number
   endDay: number
   registrationOpen: DateTime
   registrationDeadline: DateTime

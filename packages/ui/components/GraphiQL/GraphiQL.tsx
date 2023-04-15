@@ -1,13 +1,13 @@
-import 'graphiql/graphiql.css'
-import '@graphiql/plugin-explorer/dist/style.css'
+import React, { useState } from 'react'
 
 import { useExplorerPlugin } from '@graphiql/plugin-explorer'
+import '@graphiql/plugin-explorer/dist/style.css'
 import { createGraphiQLFetcher } from '@graphiql/toolkit'
-import { GraphiQL as RealGraphiQL } from 'graphiql'
-
 import { Box } from '@mui/material'
+import { GraphiQL as RealGraphiQL } from 'graphiql'
+import 'graphiql/graphiql.css'
 import fetch from 'isomorphic-fetch'
-import React, { useState } from 'react'
+
 import { Page } from '../Page'
 
 const fetcher = createGraphiQLFetcher({

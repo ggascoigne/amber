@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-const oclif = require('@oclif/core')
-
 const path = require('path')
+
+const oclif = require('@oclif/core')
 
 const project = path.join(__dirname, '..', 'tsconfig.json')
 

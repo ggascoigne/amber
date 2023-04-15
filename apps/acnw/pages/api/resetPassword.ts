@@ -1,6 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import fetch from 'isomorphic-fetch'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import fetch from 'isomorphic-fetch'
+import { NextApiRequest, NextApiResponse } from 'next'
+
 import { authDomain, managementClientId, managementClientSecret } from './_constants'
 import { getProfile } from './_getProfile'
 import { handleError } from './_handleError'

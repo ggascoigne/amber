@@ -1,7 +1,8 @@
-import { print } from 'graphql'
-import gql from 'graphql-tag'
-import { OperationDefinitionNode } from 'graphql/language/ast'
 import { useCallback } from 'react'
+
+import { print } from 'graphql'
+import { OperationDefinitionNode } from 'graphql/language/ast'
+import gql from 'graphql-tag'
 
 // eslint-disable-next-line etc/no-misused-generics
 export const fetchData = async <TData, TVariables>(query: string, variables?: TVariables) => {

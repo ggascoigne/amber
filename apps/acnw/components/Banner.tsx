@@ -1,10 +1,11 @@
-import { Theme } from '@mui/material'
 import React from 'react'
+
+import { Theme } from '@mui/material'
+import { Link, useConfiguration } from 'amber'
 import { makeStyles } from 'tss-react/mui'
 import { GridContainer, GridItem } from 'ui'
-import { Link, useConfiguration } from 'amber'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   banner: {
     maxWidth: '100%',
     width: 'auto',

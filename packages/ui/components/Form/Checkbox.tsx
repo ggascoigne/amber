@@ -1,6 +1,7 @@
+import React from 'react'
+
 import MuiCheckbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox'
 import { useField, useFormikContext } from 'formik'
-import React from 'react'
 
 export interface CheckboxProps
   extends Omit<MuiCheckboxProps, 'form' | 'checked' | 'defaultChecked' | 'onChange' | 'value'> {

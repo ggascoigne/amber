@@ -1,5 +1,5 @@
-import { createTheme } from '@mui/material/styles'
 import { cyan, green, indigo, orange, purple, red } from '@mui/material/colors'
+import { createTheme } from '@mui/material/styles'
 import hexRgb from 'hex-rgb'
 
 const primaryColor = indigo[500]

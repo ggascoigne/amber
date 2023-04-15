@@ -1,5 +1,6 @@
-import { DateTime } from 'luxon'
 import React from 'react'
+
+import { DateTime } from 'luxon'
 import { CellProps } from 'react-table'
 
 import { TooltipCell } from './Table/TooltipCellRenderer'

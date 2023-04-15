@@ -1,21 +1,23 @@
+import { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
+
 import AddIcon from '@mui/icons-material/Add'
 import CachedIcon from '@mui/icons-material/Cached'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import ViewColumnsIcon from '@mui/icons-material/ViewColumn'
-import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
 import { Button, IconButton, Theme, Toolbar, Tooltip } from '@mui/material'
-import { MouseEvent, MouseEventHandler, PropsWithChildren, ReactElement, useCallback, useState } from 'react'
 import type { TableInstance } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 
-import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { ColumnHidePage } from './ColumnHidePage'
 import { FilterPage } from './FilterPage'
+
+import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { camelToWords } from '../../utils'
 
-export const useStyles = makeStyles()((theme: Theme) => ({
+export const useStyles = makeStyles()((_theme: Theme) => ({
   toolbar: {
     display: 'flex',
     justifyContent: 'space-between',

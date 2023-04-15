@@ -1,6 +1,7 @@
+import React, { CSSProperties, ChangeEvent, ReactNode } from 'react'
+
 import { Fade, Paper, Popper, PopperProps, Theme } from '@mui/material'
 import MuiTextField from '@mui/material/TextField'
-import React, { CSSProperties, ChangeEvent, ReactNode } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { CellEditorProps, ColumnInstance } from 'react-table'
 import { makeStyles } from 'tss-react/mui'

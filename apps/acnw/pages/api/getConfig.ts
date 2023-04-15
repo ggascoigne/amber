@@ -1,9 +1,9 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-
 import { getSession } from '@auth0/nextjs-auth0'
 import { config, DbConfig } from 'database/shared/config'
-import { handleError } from './_handleError'
+import { NextApiRequest, NextApiResponse } from 'next'
+
 import { authDomain } from './_constants'
+import { handleError } from './_handleError'
 import { isAdmin } from './_utils'
 
 // /api/getConfig

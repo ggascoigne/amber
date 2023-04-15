@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { range } from 'ui'
+
 import { getSlotDescription, isNotPacificTime, SlotFormat, useConfiguration } from '../utils'
 
 export const SlotDescriptionList: React.FC = () => {

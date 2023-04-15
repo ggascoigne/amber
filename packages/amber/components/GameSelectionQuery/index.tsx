@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GraphQLError, Loader } from 'ui'
+
 import { GameArray, useGetGamesBySlotForSignupQuery } from '../../client'
 
 interface GameQueryChild {

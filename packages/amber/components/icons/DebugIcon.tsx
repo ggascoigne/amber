@@ -1,6 +1,7 @@
+import React from 'react'
+
 import { SvgIcon } from '@mui/material'
 import { SvgIconProps } from '@mui/material/SvgIcon'
-import React from 'react'
 
 export const DebugIcon: React.FC<SvgIconProps> = (props) => (
   // Made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>

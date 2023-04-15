@@ -1,8 +1,10 @@
-import { UserProfile, useUser } from '@auth0/nextjs-auth0/client'
 import { useCallback } from 'react'
-import { useRoleOverride } from './useRoleOverride'
-import rules, { Perms } from './PermissionRules'
+
+import { UserProfile, useUser } from '@auth0/nextjs-auth0/client'
+
 import { checkMany } from './authUtils'
+import rules, { Perms } from './PermissionRules'
+import { useRoleOverride } from './useRoleOverride'
 
 interface AuthInfo {
   roles?: string[]

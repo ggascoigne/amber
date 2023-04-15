@@ -1,7 +1,8 @@
-import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
-import { FormikHelpers } from 'formik'
 import React, { useCallback, useMemo } from 'react'
+
+import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
+import { FormikHelpers } from 'formik'
 import { makeStyles } from 'tss-react/mui'
 import {
   CheckboxWithLabel,
@@ -19,13 +20,15 @@ import {
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
+
+import { GameRoom } from './GameRooms'
+
 import {
   useCreateGameRoomMutation,
   useGetGamesByYearQuery,
   useUpdateGameMutation,
   useUpdateGameRoomMutation,
 } from '../../client'
-import { GameRoom } from './GameRooms'
 import { useConfiguration, useYearFilter } from '../../utils'
 
 const useStyles = makeStyles()({
@@ -117,7 +120,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
               }
               return acc
             }, [])
-            Promise.allSettled(updaters).then(([result]) => {
+            Promise.allSettled(updaters).then(([_result]) => {
               actions.setSubmitting(false)
               queryClient.invalidateQueries(['getGamesByYear'])
               notify({ text: 'Game Room updated', variant: 'success' })
@@ -147,7 +150,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
             },
           }
         )
-        .then((res) => {
+        .then((_res) => {
           notify({ text: 'Game Room created', variant: 'success' })
           onClose()
         })

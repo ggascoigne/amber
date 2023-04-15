@@ -1,6 +1,7 @@
-import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
+import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -13,9 +14,11 @@ import {
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
+
+import { HotelRoom } from './HotelRoomTypes'
+
 import { useCreateHotelRoomMutation, useUpdateHotelRoomByNodeIdMutation } from '../../client'
 import { LookupField } from '../../components/Form'
-import { HotelRoom } from './HotelRoomTypes'
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().min(2).max(156).required('Required'),
@@ -103,7 +106,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
             },
           }
         )
-        .then((res) => {
+        .then((_res) => {
           notify({ text: 'HotelRoomType created', variant: 'success' })
           onClose()
         })
@@ -117,7 +120,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
 export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateHotelRoomType = useEditHotelRoomType(onClose)
 
-  const onSubmit = async (values: HotelRoomType, actions: FormikHelpers<HotelRoomType>) => {
+  const onSubmit = async (values: HotelRoomType, _actions: FormikHelpers<HotelRoomType>) => {
     await createOrUpdateHotelRoomType(values)
   }
 

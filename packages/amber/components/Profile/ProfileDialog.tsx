@@ -1,7 +1,8 @@
-import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
 
+import { FormikHelpers } from 'formik'
 import { EditDialog } from 'ui'
+
 import { ProfileFormContent } from './ProfileFormContent'
 import { fillUserAndProfileValues, useEditUserAndProfile, UsersAndProfileType } from './profileUtils'
 import { profileValidationSchema } from './profileValidationSchema'
@@ -26,7 +27,7 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
     return null
   }
 
-  const onSubmit = async (v: UsersAndProfileType, actions: FormikHelpers<UsersAndProfileType>) => {
+  const onSubmit = async (v: UsersAndProfileType, _actions: FormikHelpers<UsersAndProfileType>) => {
     await updateProfile(v)
   }
 

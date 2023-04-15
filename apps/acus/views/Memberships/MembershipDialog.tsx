@@ -1,10 +1,11 @@
-import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
-import { EditDialog, OnCloseHandler } from 'ui'
-import { ProfileFormType, useAuth, useConfiguration, useUser, useYearFilter } from 'amber'
-import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
 
+import { ProfileFormType, useAuth, useConfiguration, useUser, useYearFilter } from 'amber'
 import type { MembershipType } from 'amber/utils/apiTypes'
+import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import { FormikHelpers } from 'formik'
+import { EditDialog, OnCloseHandler } from 'ui'
+
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
@@ -29,7 +30,7 @@ export const MembershipDialog: React.FC<MembershipDialogProps> = ({ open, onClos
     throw new Error('login expired')
   } // todo test this
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     // eslint-disable-next-line no-param-reassign
     values.slotsAttending = toSlotsAttending(values)
     await createOrUpdateMembership(values, profile)

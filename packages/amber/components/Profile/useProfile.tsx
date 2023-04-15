@@ -1,8 +1,11 @@
 import { useState } from 'react'
+
 import { useNotification } from 'ui'
+
+import { ProfileFormType } from './ProfileFormContent'
+
 import { useGetUserByEmailQuery } from '../../client'
 import { useUser } from '../../utils'
-import { ProfileFormType } from './ProfileFormContent'
 
 export const useProfile = (): ProfileFormType | null => {
   const { email } = useUser()

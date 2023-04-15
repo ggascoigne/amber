@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
+
 import { notEmpty } from 'ui'
-import { Perms, useAuth } from '../components/Auth'
+
+import { useIsGm, useIsMember } from './membership'
 
 import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
-import { useIsGm, useIsMember } from './membership'
+import { Perms, useAuth } from '../components/Auth'
 
 export enum SettingValue {
   No = 'No',
