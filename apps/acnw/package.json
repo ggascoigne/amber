@@ -44,7 +44,7 @@
     "json2xls": "^0.1.2",
     "jwt-decode": "^3.1.2",
     "luxon": "^3.3.0",
-    "next": "^13.3.0",
+    "next": "13.2.4",
     "next-mdx-frontmatter": "^0.0.4",
     "nodemailer": "^6.9.1",
     "pg": "^8.10.0",

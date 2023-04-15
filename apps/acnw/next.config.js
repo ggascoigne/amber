@@ -35,5 +35,10 @@ module.exports = withBundleAnalyzer(
     },
     // Append the default value with md extensions
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    experimental: {
+      outputFileTracingExcludes: {
+        '*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+      },
+    },
   })
 )
