@@ -1,6 +1,7 @@
+import React, { useMemo } from 'react'
+
 import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
 import { FormikHelpers } from 'formik'
-import React, { useMemo } from 'react'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -17,6 +18,9 @@ import {
   useDisableBackdropClick,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
+
+import { GameDialogFormValues, useEditGame } from './gameHooks'
+
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -27,7 +31,6 @@ import {
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
-import { GameDialogFormValues, useEditGame } from './gameHooks'
 
 type Game = GameFieldsFragment & GameGmsFragment
 
@@ -145,7 +148,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const maxPlayersFloor = slim ? 4 : 1
   const maxPlayersCeiling = slim ? 20 : 150
 
-  const onSubmit = async (values: GameDialogFormValues, actions: FormikHelpers<GameDialogFormValues>) => {
+  const onSubmit = async (values: GameDialogFormValues, _actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
   }
 

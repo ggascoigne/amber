@@ -1,4 +1,5 @@
 import { MdxPage } from 'ui'
+
 import * as content from '../content/AntiHarassmentPolicyContent.mdx'
 
 const { default: AntiHarassmentPolicyContent, ...frontMatter } = content

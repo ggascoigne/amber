@@ -1,11 +1,13 @@
+import React, { ReactNode, useEffect, useState } from 'react'
+
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
-import React, { ReactNode, useEffect, useState } from 'react'
-import { Config, useGetConfig } from '../utils'
 
 import { HasPermission, Perms } from './Auth'
 import { UserSelector } from './UserSelector'
 import { YearSelector } from './YearSelector'
+
+import { Config, useGetConfig } from '../utils'
 
 const drawerWidth = 240
 

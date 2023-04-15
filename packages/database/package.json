@@ -39,20 +39,20 @@
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "common-tags": "^1.8.2",
     "graphql": "^15.8.0",
-    "next": "^13.2.4",
+    "next": "^13.3.0",
     "pg": "^8.10.0",
     "postgraphile": "^4.13.0",
     "postgraphile-plugin-connection-filter": "^2.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.1.2"
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
-    "@oclif/core": "^2.7.1",
-    "@oclif/plugin-help": "^5.2.8",
+    "@oclif/core": "^2.8.0",
+    "@oclif/plugin-help": "^5.2.9",
     "@types/common-tags": "^1.8.1",
-    "@types/node": "^18.15.10",
+    "@types/node": "^18.15.11",
     "@types/pg": "^8.6.6",
     "alasql": "^3.1.0",
     "chalk": "^4.1.2",
@@ -62,7 +62,7 @@
     "knex": "^2.4.2",
     "knex-migrate": "^1.7.4",
     "tempy": "0.6.0",
-    "typescript": "^5.0.2",
+    "typescript": "^5.0.4",
     "xlsx": "^0.18.5",
     "zod": "^3.21.4"
   }

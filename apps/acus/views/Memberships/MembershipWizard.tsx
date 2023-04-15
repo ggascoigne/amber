@@ -1,7 +1,5 @@
-import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import React, { useMemo } from 'react'
-import Yup from 'ui/utils/Yup'
-import { Wizard, WizardPage } from 'ui'
+
 import {
   Perms,
   ProfileFormContent,
@@ -14,9 +12,12 @@ import {
   useUser,
   useYearFilter,
 } from 'amber'
-import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
-
 import { MembershipType } from 'amber/utils/apiTypes'
+import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
+import { Wizard, WizardPage } from 'ui'
+import Yup from 'ui/utils/Yup'
+
 import { IntroStep } from './IntroStep'
 import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
@@ -154,7 +155,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     throw new Error('login expired')
   } // todo test this
 
-  const onSubmit = async (values: MembershipWizardFormValues, actions: FormikHelpers<MembershipWizardFormValues>) => {
+  const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
     await updateProfile(profileValues).then(async () => createOrUpdateMembership(membershipValues, profileValues))

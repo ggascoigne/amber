@@ -1,7 +1,19 @@
+import React, { useMemo } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+import {
+  GameAssignmentNode,
+  getGameAssignments,
+  useConfiguration,
+  useCreateGameAssignmentMutation,
+  useDeleteGameAssignmentMutation,
+  useGetGamesByYearQuery,
+  useGetScheduleQuery,
+  useYearFilter,
+} from 'amber'
+import { MembershipType } from 'amber/utils/apiTypes'
 import { dequal as deepEqual } from 'dequal'
 import { FormikHelpers } from 'formik'
-import React, { useMemo } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import {
   EditDialog,
   GraphQLError,
@@ -16,17 +28,7 @@ import {
   TextField,
   useNotification,
 } from 'ui'
-import {
-  GameAssignmentNode,
-  getGameAssignments,
-  useConfiguration,
-  useCreateGameAssignmentMutation,
-  useDeleteGameAssignmentMutation,
-  useGetGamesByYearQuery,
-  useGetScheduleQuery,
-  useYearFilter,
-} from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
+
 import { membershipValidationSchema } from './membershipUtils'
 
 type GameAssignmentEditNode = GameAssignmentNode
@@ -91,7 +93,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId')
   )
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     const toDelete: GameAssignmentEditNode[] = []
     const toCreate: GameAssignmentEditNode[] = []
 

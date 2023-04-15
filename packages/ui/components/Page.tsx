@@ -1,7 +1,8 @@
-import { SxProps, Theme, useTheme } from '@mui/material/styles'
-import { Box } from '@mui/material'
-import useMediaQuery from '@mui/material/useMediaQuery'
 import React, { PropsWithChildren, ReactNode } from 'react'
+
+import { Box } from '@mui/material'
+import { SxProps, Theme, useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Head from 'next/head'
 
 interface PageProps {

@@ -1,11 +1,11 @@
-import { useTheme } from '@mui/material/styles'
 import { Card, Theme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-
 import { CardBody } from 'ui'
+
 import { useSetting } from '../utils'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   card: {
     paddingTop: 0,
   },

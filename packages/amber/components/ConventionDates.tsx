@@ -1,5 +1,7 @@
-import { DateTime, DateTimeFormatOptions } from 'luxon'
 import React, { PropsWithChildren } from 'react'
+
+import { DateTime, DateTimeFormatOptions } from 'luxon'
+
 import { ConfigurationDates, getOrdinalWord, useConfiguration } from '../utils'
 
 interface SpacingProps {

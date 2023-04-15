@@ -1,11 +1,11 @@
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
 import { ContactEmail } from 'amber/components'
 import { useConfiguration } from 'amber/utils'
+import { makeStyles } from 'tss-react/mui'
 import { CardBody, Page } from 'ui'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   card: {
     marginTop: 20,
     marginBottom: 20,

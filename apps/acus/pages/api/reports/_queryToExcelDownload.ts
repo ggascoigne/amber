@@ -1,8 +1,7 @@
+import { getPool, PoolType } from 'database/shared/config'
+import json2xls from 'json2xls'
 import { NextApiResponse } from 'next'
 // @ts-ignore
-import json2xls from 'json2xls'
-
-import { getPool, PoolType } from 'database/shared/config'
 
 export const queryToExcelDownload = async (query: string, res: NextApiResponse) => {
   const pool = await getPool(PoolType.USER)

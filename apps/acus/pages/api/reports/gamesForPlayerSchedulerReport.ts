@@ -1,8 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import { queryToExcelDownload } from './_queryToExcelDownload'
+
 import { configuration } from '../_constants'
 import { handleError } from '../_handleError'
-import { queryToExcelDownload } from './_queryToExcelDownload'
 
 // /api/send/gameReport
 // auth token: required

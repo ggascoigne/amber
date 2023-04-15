@@ -1,12 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
-
 import { GameConfirmationBody } from 'amber/utils/apiTypes'
 import { getPlayerPreference } from 'amber/utils/selectValues'
+import { NextApiRequest, NextApiResponse } from 'next'
+
+import { emailer } from './_email'
+
 import { emails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
-import { emailer } from './_email'
 
 // /api/send/gameConfirmation
 // auth token: required

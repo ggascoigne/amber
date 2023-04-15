@@ -1,7 +1,7 @@
 import React from 'react'
-import DotLoader from 'react-spinners/DotLoader'
 
 import { Box } from '@mui/material'
+import DotLoader from 'react-spinners/DotLoader'
 
 interface ILoader {
   error?: boolean

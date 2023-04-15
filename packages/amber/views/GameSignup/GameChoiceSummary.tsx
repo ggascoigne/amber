@@ -1,10 +1,13 @@
 import React from 'react'
+
 import { Field, GraphQLError, Loader, MultiLine, Page } from 'ui'
+
+import { ChoiceSummary } from './SlotDetails'
+
 import { useGetGameChoicesQuery } from '../../client'
 import { ContactEmail } from '../../components'
-import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
-import { ChoiceSummary } from './SlotDetails'
 import { Redirect } from '../../components/Navigation'
+import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
 const GameChoiceSummary: React.FC = () => {
   const { year } = useGameUrl()

@@ -1,10 +1,10 @@
-import { FormikErrors, FormikValues } from 'formik'
 import React from 'react'
-import { makeStyles } from 'tss-react/mui'
-import { CheckboxWithLabel, GridContainer, GridItem, Important } from 'ui'
 
 import { HasPermission, Perms } from 'amber'
 import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from 'amber/utils/membershipUtils'
+import { FormikErrors, FormikValues } from 'formik'
+import { makeStyles } from 'tss-react/mui'
+import { CheckboxWithLabel, GridContainer, GridItem, Important } from 'ui'
 
 const useStyles = makeStyles()(() => ({
   important: {

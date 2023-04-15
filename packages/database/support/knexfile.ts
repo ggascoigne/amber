@@ -12,6 +12,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const path = require('path')
+
 const { certs } = require('../shared/dbCerts')
 
 const ssl = process.env.DATABASE_SSL === '1'

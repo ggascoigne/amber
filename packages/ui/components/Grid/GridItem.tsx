@@ -1,6 +1,7 @@
+import React from 'react'
+
 import { Grid } from '@mui/material'
 import type { GridProps } from '@mui/material/Grid'
-import React from 'react'
 import { makeStyles } from 'tss-react/mui'
 
 const useStyles = makeStyles()(() => ({

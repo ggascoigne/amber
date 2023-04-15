@@ -1,14 +1,15 @@
+import React from 'react'
+
 import { Theme, Typography } from '@mui/material'
 import List from '@mui/material/List'
-import React from 'react'
 import { makeStyles } from 'tss-react/mui'
+
 import type { GameArray } from '../../client'
 import { useUrlSource } from '../../utils'
-
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   listItem: {
     paddingTop: 5,
     paddingBottom: 5,

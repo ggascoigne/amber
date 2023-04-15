@@ -1,7 +1,8 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
-import { Reports, ReportRecord } from 'amber/views/Reports'
+
 import { Perms } from 'amber/components/Auth'
+import { Reports, ReportRecord } from 'amber/views/Reports'
+import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [
   { name: 'Membership' },

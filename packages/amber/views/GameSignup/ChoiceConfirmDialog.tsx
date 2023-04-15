@@ -1,9 +1,9 @@
-import { useTheme } from '@mui/material/styles'
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
-import { Form, Formik, FormikHelpers } from 'formik'
 import React, { useCallback, useMemo, useState } from 'react'
+
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import { useQueryClient } from '@tanstack/react-query'
-import Yup from 'ui/utils/Yup'
+import { Form, Formik, FormikHelpers } from 'formik'
 import {
   DialogTitle,
   GridContainer,
@@ -15,13 +15,16 @@ import {
   useDisableBackdropClick,
   useNotification,
 } from 'ui'
-import { ContactEmail } from '../../components'
-import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from '../../client'
-import { useConfiguration, useSendEmail } from '../../utils'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import Yup from 'ui/utils/Yup'
+
 import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelector'
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
+
+import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from '../../client'
+import { ContactEmail } from '../../components'
+import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useConfiguration, useSendEmail } from '../../utils'
 
 interface FormValues {
   year: number
@@ -198,7 +201,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
     })
   }, [createOrEditGameChoice, filledOutChoices])
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     await createOrUpdateChoiceConfirmation(values, year, textResults)
     updateChoices()
   }

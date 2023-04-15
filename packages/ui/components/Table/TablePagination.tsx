@@ -1,3 +1,5 @@
+import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
+
 import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
@@ -5,7 +7,6 @@ import LastPageIcon from '@mui/icons-material/LastPage'
 import { TablePagination as MuiTablePagination } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import { Theme, useTheme } from '@mui/material/styles'
-import React, { PropsWithChildren, ReactElement, useCallback } from 'react'
 import type { TableInstance } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 

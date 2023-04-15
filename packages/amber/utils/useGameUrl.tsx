@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+
 import { useConfiguration } from './configContext'
 
 const pattern = /(?<base>\/.*?)\/(?<year>\d+)(?:\/(?<slot>\d+))?/

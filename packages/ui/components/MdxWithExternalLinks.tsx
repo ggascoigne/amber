@@ -1,7 +1,9 @@
-import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 
+import { MDXProvider } from '@mdx-js/react'
+
 import { ExternalLink } from './ExternalLink'
+
 import { Children } from '../utils'
 
 const mdxComponents = {

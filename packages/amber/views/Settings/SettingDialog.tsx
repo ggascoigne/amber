@@ -1,7 +1,7 @@
-import { FormikHelpers } from 'formik'
 import React, { useMemo } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
-import Yup from 'ui/utils/Yup'
+import { FormikHelpers } from 'formik'
 import {
   EditDialog,
   GridContainer,
@@ -13,9 +13,12 @@ import {
   ToFormValues,
   useNotification,
 } from 'ui'
+import Yup from 'ui/utils/Yup'
+
+import { Setting } from './Settings'
+
 import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
 import { settingValues } from '../../utils'
-import { Setting } from './Settings'
 
 const validationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),
@@ -80,7 +83,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
             },
           }
         )
-        .then((res) => {
+        .then((_res) => {
           notify({ text: 'Setting created', variant: 'success' })
           onClose()
         })
@@ -94,7 +97,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
 export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateSetting = useEditSetting(onClose)
 
-  const onSubmit = async (values: FormValues, actions: FormikHelpers<FormValues>) => {
+  const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     await createOrUpdateSetting(values)
   }
 

@@ -1,8 +1,7 @@
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import { useQueryClient } from '@tanstack/react-query'
-import { Column, Row, TableInstance, TableState } from 'react-table'
-import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
 import {
   useConfiguration,
   useDeleteMembershipMutation,
@@ -10,11 +9,14 @@ import {
   useProfile,
   useYearFilter,
 } from 'amber'
-
 import { Membership } from 'amber/utils/apiTypes'
-import type { TableMouseEventHandler } from '../../types/react-table-config'
+import { Column, Row, TableInstance, TableState } from 'react-table'
+import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
+
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 import { MembershipWizard } from './MembershipWizard'
+
+import type { TableMouseEventHandler } from '../../types/react-table-config'
 
 const initialState: Partial<TableState<Membership>> = {
   sortBy: [

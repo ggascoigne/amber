@@ -1,8 +1,13 @@
-import CachedIcon from '@mui/icons-material/Cached'
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+
+import CachedIcon from '@mui/icons-material/Cached'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 import { GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+
+import { useUpdateGameAssignment } from './gameHooks'
+import { GamesDialog } from './GamesDialog'
+
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -10,11 +15,8 @@ import {
   useGetGamesByYearQuery,
   useGetMembershipsByYearQuery,
 } from '../../client'
-import { useYearFilter } from '../../utils'
-
 import type { TableMouseEventHandler } from '../../types/react-table-config'
-import { useUpdateGameAssignment } from './gameHooks'
-import { GamesDialog } from './GamesDialog'
+import { useYearFilter } from '../../utils'
 
 type Game = GameFieldsFragment & GameGmsFragment
 

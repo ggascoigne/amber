@@ -1,14 +1,16 @@
+import React, { useMemo } from 'react'
+
 import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import React, { useMemo } from 'react'
 import { makeStyles } from 'tss-react/mui'
-
 import { GraphQLError, Loader, notEmpty } from 'ui'
+
+import { HasPermission, Perms } from './Auth'
+
 import { useGetHotelRoomsQuery } from '../client'
+import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
 import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'
-import { BathroomType } from '../utils'
-import { HasPermission, Perms } from './Auth'
 
 const useStyles = makeStyles<void, 'titleLine' | 'soldOut'>()((theme: Theme, _params, classes) => ({
   titleLine: {

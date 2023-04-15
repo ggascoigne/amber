@@ -1,6 +1,7 @@
-import { postgraphile } from 'postgraphile'
 import { getSession } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { postgraphile } from 'postgraphile'
+
 import { getSchemas, dbEnv } from './config'
 import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 

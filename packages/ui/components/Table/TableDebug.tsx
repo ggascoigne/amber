@@ -1,8 +1,9 @@
+import React, { Suspense } from 'react'
+
 import BugReportTwoToneIcon from '@mui/icons-material/BugReportTwoTone'
 import { IconButton, Theme, Tooltip } from '@mui/material'
-import { atom } from 'jotai/vanilla'
 import { useAtom } from 'jotai/react'
-import React, { Suspense } from 'react'
+import { atom } from 'jotai/vanilla'
 import { makeStyles } from 'tss-react/mui'
 
 import { Loader } from '../Loader'
@@ -12,7 +13,7 @@ const ReactJson = React.lazy(() => import('react-json-view'))
 const debugIsOpen = atom<boolean>(false)
 export const useDebugIsOpen = () => useAtom(debugIsOpen)
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   button: {
     marginLeft: -2,
     '& svg': {

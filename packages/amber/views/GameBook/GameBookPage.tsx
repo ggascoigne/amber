@@ -1,5 +1,7 @@
 import React from 'react'
+
 import { GraphQLError, GridContainer, GridItem, Loader, Page, range } from 'ui'
+
 import { useGetSmallGamesByYearQuery } from '../../client'
 import { Link } from '../../components/Navigation'
 import { YearTile } from '../../components/YearTile'

@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import { DateTime } from 'luxon'
+
 import { getSlotDescription, SlotConfiguration, SlotFormat } from './slotTimes'
 
 const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>

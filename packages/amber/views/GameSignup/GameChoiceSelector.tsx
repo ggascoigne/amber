@@ -1,8 +1,10 @@
 /* eslint-disable @getify/proper-ternary/nested */
+import React, { useEffect } from 'react'
+
 import CheckIcon from '@mui/icons-material/Check'
 import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import React, { useEffect } from 'react'
 import { makeStyles } from 'tss-react/mui'
+
 import { Game, GameChoice, GameEntry, Maybe } from '../../client'
 import { Perms, useAuth } from '../../components/Auth'
 import { Configuration, useConfiguration } from '../../utils'
@@ -26,7 +28,7 @@ export const isAnyGame = (configuration: Configuration, id: number) => {
   }
 }
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   spacer: {
     flex: '1 0 auto',
     display: 'flex',

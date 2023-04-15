@@ -1,6 +1,5 @@
-import nodemailer from 'nodemailer'
-
 import { config } from 'database/shared/config'
+import nodemailer from 'nodemailer'
 
 export const transport = nodemailer.createTransport({
   host: config.email.host,

@@ -1,30 +1,11 @@
+import React, { MouseEventHandler, useCallback, useState } from 'react'
+
 import NavigationIcon from '@mui/icons-material/Navigation'
 import { Button } from '@mui/material'
-import React, { MouseEventHandler, useCallback, useState } from 'react'
-import { InView } from 'react-intersection-observer'
 import { useQueryClient } from '@tanstack/react-query'
+import { InView } from 'react-intersection-observer'
 import { ContentsOf, ExpandingFab, GraphQLError, Loader, notEmpty, Page, pick } from 'ui'
-import {
-  GameChoiceFieldsFragment,
-  GetGameChoicesQuery,
-  UpdateGameChoiceByNodeIdMutationVariables,
-  useCreateGameChoiceMutation,
-  useCreateGameChoicesMutation,
-  useGetGameChoicesQuery,
-  useUpdateGameChoiceByNodeIdMutation,
-} from '../../client'
-import { Link, Redirect } from '../../components/Navigation'
-import {
-  useConfiguration,
-  useConfirmDialogOpen,
-  useGameScroll,
-  useGameUrl,
-  useGetMemberShip,
-  useUser,
-} from '../../utils'
 
-import { Perms, useAuth } from '../../components/Auth'
-import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
@@ -35,6 +16,27 @@ import {
   SlotDecoratorCheckMark,
 } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
+
+import {
+  GameChoiceFieldsFragment,
+  GetGameChoicesQuery,
+  UpdateGameChoiceByNodeIdMutationVariables,
+  useCreateGameChoiceMutation,
+  useCreateGameChoicesMutation,
+  useGetGameChoicesQuery,
+  useUpdateGameChoiceByNodeIdMutation,
+} from '../../client'
+import { Perms, useAuth } from '../../components/Auth'
+import { GameListFull, GameListNavigator } from '../../components/GameList'
+import { Link, Redirect } from '../../components/Navigation'
+import {
+  useConfiguration,
+  useConfirmDialogOpen,
+  useGameScroll,
+  useGameUrl,
+  useGetMemberShip,
+  useUser,
+} from '../../utils'
 
 export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 

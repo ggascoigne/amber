@@ -1,10 +1,13 @@
+import React, { Suspense } from 'react'
+
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
-import React, { Suspense } from 'react'
 import { Loader } from 'ui'
+
+import { HasPermission, Perms, useAuth } from './Auth'
+
 import { useGetConfig } from '../utils'
 import { gitHash } from '../version'
-import { HasPermission, Perms, useAuth } from './Auth'
 
 const ReactJson = React.lazy(() => import('react-json-view'))
 
@@ -31,7 +34,7 @@ const container = {
   },
 }
 
-export const Footer: React.FC = (props) => {
+export const Footer: React.FC = (_props) => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const [config, getConfig] = useGetConfig()

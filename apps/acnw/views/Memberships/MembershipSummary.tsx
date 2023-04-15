@@ -1,23 +1,6 @@
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
-import { DateTime } from 'luxon'
 import React, { useMemo, useState } from 'react'
-import { makeStyles } from 'tss-react/mui'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import {
-  Card,
-  CardBody,
-  Field,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  HeaderContent,
-  Loader,
-  MultiLine,
-  Page,
-  notEmpty,
-  range,
-} from 'ui'
+
+import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import {
   ProfileFormType,
   RoomPref,
@@ -33,9 +16,27 @@ import {
   useUser,
   useYearFilter,
 } from 'amber'
-import { fromSlotsAttending } from 'amber/utils/membershipUtils'
-
 import { MembershipType } from 'amber/utils/apiTypes'
+import { fromSlotsAttending } from 'amber/utils/membershipUtils'
+import { DateTime } from 'luxon'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { makeStyles } from 'tss-react/mui'
+import {
+  Card,
+  CardBody,
+  Field,
+  GraphQLError,
+  GridContainer,
+  GridItem,
+  HeaderContent,
+  Loader,
+  MultiLine,
+  Page,
+  notEmpty,
+  range,
+} from 'ui'
+
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
 

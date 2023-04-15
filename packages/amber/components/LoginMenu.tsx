@@ -1,5 +1,6 @@
-import { Button, Menu, MenuItem } from '@mui/material'
 import React from 'react'
+
+import { Button, Menu, MenuItem } from '@mui/material'
 
 interface LoginMenuProps {
   buttonText: React.ReactNode

@@ -1,7 +1,8 @@
+import { GqlType, ToFormValues } from './ts-utils'
+
 import { GameFieldsFragment, GetMembershipsByYearQuery } from '../client'
 import { SlotSummary } from '../pages/GameSignup/SlotDetails'
 import { HotelRoom } from '../pages/HotelRoomTypes/HotelRoomTypes'
-import { GqlType, ToFormValues } from './ts-utils'
 
 export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
 

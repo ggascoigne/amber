@@ -1,7 +1,8 @@
+import React from 'react'
+
 import MuiCheckbox from '@mui/material/Checkbox'
 import FormControlLabel, { FormControlLabelProps as MuiFormControlLabelProps } from '@mui/material/FormControlLabel'
 import { useField, useFormikContext } from 'formik'
-import React from 'react'
 
 import type { CheckboxProps } from './Checkbox'
 

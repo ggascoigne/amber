@@ -1,5 +1,6 @@
-import Typography from '@mui/material/Typography'
 import React from 'react'
+
+import Typography from '@mui/material/Typography'
 import { GraphQLError as _GraphQLError } from 'graphql'
 
 export type QueryError = Error & {

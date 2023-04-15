@@ -1,7 +1,8 @@
 // credits to https://usehooks.com/useLocalStorage/
 
-import { dequal as deepEqual } from 'dequal'
 import { useCallback, useState } from 'react'
+
+import { dequal as deepEqual } from 'dequal'
 
 export function useLocalStorage<T = any>(key: string, initialValue: T): [T, (value: T) => void] {
   // State to store our value

@@ -1,6 +1,8 @@
 import React, { MouseEventHandler, useState } from 'react'
+
 import { Column, Row, TableInstance } from 'react-table'
 import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+
 import { useGetAllUsersAndProfilesQuery } from '../../client'
 import { ProfileDialog } from '../../components/Profile'
 import { UsersAndProfileType } from '../../components/Profile/profileUtils'

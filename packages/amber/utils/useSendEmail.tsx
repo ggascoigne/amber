@@ -1,5 +1,6 @@
-import fetch from 'isomorphic-fetch'
 import { useCallback } from 'react'
+
+import fetch from 'isomorphic-fetch'
 import { isDev, useNotification } from 'ui'
 
 import { EmailConfirmation } from './apiTypes'

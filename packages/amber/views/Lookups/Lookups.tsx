@@ -1,7 +1,11 @@
 import React, { MouseEventHandler, useState } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
 import type { Column, Row, TableInstance } from 'react-table'
 import { GqlType, GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+
+import { LookupsDialog } from './LookupsDialog'
+
 import {
   GetLookupsQuery,
   useDeleteLookupMutation,
@@ -9,7 +13,6 @@ import {
   useGetLookupsQuery,
 } from '../../client'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
-import { LookupsDialog } from './LookupsDialog'
 
 export type LookupAndValues = GqlType<GetLookupsQuery, ['lookups', 'edges', number, 'node']>
 

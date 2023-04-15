@@ -1,5 +1,6 @@
-import fetch from 'isomorphic-fetch'
 import { useCallback, useState } from 'react'
+
+import fetch from 'isomorphic-fetch'
 
 export interface DbConfig {
   database: string

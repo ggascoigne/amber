@@ -1,12 +1,14 @@
 /* eslint-disable @getify/proper-ternary/nested */
-import { Button, Theme } from '@mui/material'
 import React, { MouseEventHandler, useState } from 'react'
+
+import { Button, Theme } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
 import { GraphQLError, Loader, notEmpty, Page, range, Table } from 'ui'
+
 import {
   GameFieldsFragment,
   GameGmsFragment,
@@ -14,15 +16,14 @@ import {
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
 } from '../../client'
-import { getSlotDescription, useConfiguration, useGetMemberShip, useSetting, useUser, useYearFilter } from '../../utils'
-
 import { ConfigDate, MDY } from '../../components'
-import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 import { Redirect } from '../../components/Navigation'
+import { getSlotDescription, useConfiguration, useGetMemberShip, useSetting, useUser, useYearFilter } from '../../utils'
+import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
 
-const useStyles = makeStyles()((theme: Theme) => ({
+const useStyles = makeStyles()((_theme: Theme) => ({
   blurb: {
     '& li': {
       paddingBottom: 10,

@@ -1,8 +1,6 @@
-import { DialogContentText } from '@mui/material'
-import { FormikErrors, FormikValues } from 'formik'
 import React from 'react'
-import { CheckboxWithLabel, GridContainer, GridItem, RadioGroupFieldWithLabel } from 'ui'
 
+import { DialogContentText } from '@mui/material'
 import {
   ContactEmail,
   ConventionsDatesFull,
@@ -10,8 +8,9 @@ import {
   useGetAttendanceOptions,
   useGetInterestOptions,
 } from 'amber'
-
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
+import { FormikErrors, FormikValues } from 'formik'
+import { CheckboxWithLabel, GridContainer, GridItem, RadioGroupFieldWithLabel } from 'ui'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(

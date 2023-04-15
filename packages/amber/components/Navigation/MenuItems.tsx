@@ -1,13 +1,15 @@
-import { useTheme } from '@mui/material/styles'
-import { List, ListItemText } from '@mui/material'
 import React from 'react'
-import { useRouter } from 'next/router'
-import { useIsMember, useSettings, useUser } from '../../utils'
 
-import { HasPermission } from '../Auth'
+import { List, ListItemText } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+
+import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './types'
-import { contextRoutes } from './ContextRoutes'
+
+import { useIsMember, useSettings, useUser } from '../../utils'
+import { HasPermission } from '../Auth'
 
 interface MenuItemsProps {
   menuItems: RootRoutes

@@ -1,7 +1,8 @@
-import { atom } from 'jotai/vanilla'
-import { useAtom } from 'jotai/react'
-
 import { useMemo } from 'react'
+
+import { useAtom } from 'jotai/react'
+import { atom } from 'jotai/vanilla'
+
 import { useAuth } from '../components/Auth'
 
 interface UserInfo {

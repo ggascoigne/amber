@@ -1,9 +1,11 @@
 import React, { PropsWithChildren } from 'react'
+
 import { notEmpty } from 'ui'
-import { useAuth } from '../components/Auth'
+
+import { useYearFilter } from './useYearFilterState'
 
 import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
-import { useYearFilter } from './useYearFilterState'
+import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()

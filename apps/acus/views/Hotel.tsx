@@ -1,4 +1,5 @@
 import { MdxPage } from 'ui'
+
 import * as content from '../content/HotelContent.mdx'
 
 const { default: HotelContent, ...frontMatter } = content

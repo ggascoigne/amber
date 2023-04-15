@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
-
 import { Card, CardBody, CardHeader } from 'ui'
+
 import { GameCard } from '../GameCard'
 
 const useStyles = makeStyles()({

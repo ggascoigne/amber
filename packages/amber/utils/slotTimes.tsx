@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+
 import { Configuration } from './configContext'
 
 export type SlotConfiguration = Pick<Configuration, 'startDates' | 'virtual' | 'year' | 'numberOfSlots'>

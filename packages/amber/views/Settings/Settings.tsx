@@ -1,11 +1,13 @@
 import React, { MouseEventHandler, useState } from 'react'
+
 import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
 import { GqlType, GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
-import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
 
-import { TableMouseEventHandler } from '../../types/react-table-config'
 import { SettingDialog } from './SettingDialog'
+
+import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
+import { TableMouseEventHandler } from '../../types/react-table-config'
 
 export type Setting = GqlType<GetSettingsQuery, ['settings', 'nodes', number]>
 

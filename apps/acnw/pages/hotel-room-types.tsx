@@ -1,6 +1,7 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
+
 import HotelRoomTypes from 'amber/views/HotelRoomTypes/HotelRoomTypes'
+import type { NextPage } from 'next'
 
 const Page: NextPage = () => <HotelRoomTypes />
 

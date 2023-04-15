@@ -1,4 +1,5 @@
 import { MdxPage } from 'ui'
+
 import * as content from '../content/CreditsContent.mdx'
 
 const { default: CreditsContent, ...frontMatter } = content

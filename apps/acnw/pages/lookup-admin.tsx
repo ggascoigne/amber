@@ -1,6 +1,7 @@
 import * as React from 'react'
-import type { NextPage } from 'next'
+
 import Lookups from 'amber/views/Lookups/Lookups'
+import type { NextPage } from 'next'
 
 const Page: NextPage = () => <Lookups />
 

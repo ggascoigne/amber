@@ -1,12 +1,13 @@
+import React, { ReactNode } from 'react'
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Theme } from '@mui/material'
-import React, { ReactNode } from 'react'
 import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
-
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from 'ui'
-import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
+
 import type { GameEntry } from '../../client'
+import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
@@ -53,7 +54,7 @@ const PlayerDetails: React.FC<{ player: Player }> = ({ player }) => {
 type GameCardDetailsProps = GameCardProps & { header: ReactNode; gms?: Player[]; players?: Player[] }
 
 const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
-  ({ game, year, slot, onEnter, tiny, header, players = [], gms = [] }) => {
+  ({ game, year, slot, tiny, header, players = [], gms = [] }) => {
     const { classes, cx } = useStyles()
     const {
       id,

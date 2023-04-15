@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
+
 import type { GameArray } from '../../client'
 import { useScrollToHash, useUrlSource } from '../../utils'
-
 import { GameCard } from '../GameCard'
 import { GameDecorator, GameDecoratorParams } from '../types'
 
