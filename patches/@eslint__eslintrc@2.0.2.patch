@@ -1,5 +1,5 @@
 diff --git a/dist/eslintrc.cjs b/dist/eslintrc.cjs
-index 753117b3244df70d4305a599b9d97c346ddfac44..d3784d36bf036445d7fafcd551bd2f8bd74e3cf0 100644
+index 753117b3244df70d4305a599b9d97c346ddfac44..78d81c971b96a7f23e3184e69877fb80ff4cb14c 100644
 --- a/dist/eslintrc.cjs
 +++ b/dist/eslintrc.cjs
 @@ -563,12 +563,24 @@ class PluginConflictError extends Error {
@@ -28,32 +28,12 @@ index 753117b3244df70d4305a599b9d97c346ddfac44..d3784d36bf036445d7fafcd551bd2f8b
  /**
   * Merge plugins.
   * `target`'s definition is prior to `source`'s.
-@@ -594,17 +606,17 @@ function mergePlugins(target, source) {
+@@ -594,7 +606,7 @@ function mergePlugins(target, source) {
                  throw sourceValue.error;
              }
              target[key] = sourceValue;
 -        } else if (sourceValue.filePath !== targetValue.filePath) {
--            throw new PluginConflictError(key, [
--                {
--                    filePath: targetValue.filePath,
--                    importerName: targetValue.importerName
--                },
--                {
--                    filePath: sourceValue.filePath,
--                    importerName: sourceValue.importerName
--                }
--            ]);
 +        } else if (!isSameFile(sourceValue.filePath, targetValue.filePath)) {
-+          throw new PluginConflictError(key, [
-+            {
-+              filePath: targetValue.filePath,
-+              importerName: targetValue.importerName,
-+            },
-+            {
-+              filePath: sourceValue.filePath,
-+              importerName: sourceValue.importerName,
-+            },
-+          ]);
-         }
-     }
- }
+             throw new PluginConflictError(key, [
+                 {
+                     filePath: targetValue.filePath,
