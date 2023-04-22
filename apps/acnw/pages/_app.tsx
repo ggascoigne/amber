@@ -5,13 +5,13 @@ import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { RouteGuard } from 'amber/components/Auth'
 import { Layout } from 'amber/components/Layout'
 import { ConfigProvider } from 'amber/utils'
-import { CustomLuxonUtils } from 'amber/utils/luxonUtils'
 import { Provider as JotaiProvider } from 'jotai'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
@@ -60,7 +60,7 @@ const MyAppInner = (props: MyAppProps) => {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <LocalizationProvider dateAdapter={CustomLuxonUtils}>
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
             <NotificationProvider>
               <UserProvider user={user}>
                 <QueryClientProvider client={queryClient}>
