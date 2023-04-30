@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
 import { Reports, ReportRecord } from 'amber/views/Reports'
 import type { NextPage } from 'next'
 
@@ -11,6 +12,8 @@ const reports: ReportRecord[] = [
   { name: 'Game And Players' },
   { name: 'Room Usage', fileLabel: 'room' },
 ]
+
+export const getServerSideProps = configGetServerSideProps
 
 const Page: NextPage = () => <Reports reports={reports} />
 

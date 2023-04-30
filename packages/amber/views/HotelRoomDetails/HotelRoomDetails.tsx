@@ -13,7 +13,7 @@ import {
   useGetMembershipRoomsByYearQuery,
 } from '../../client'
 import { TableMouseEventHandler } from '../../types/react-table-config'
-import { useSettings, useYearFilter } from '../../utils'
+import { useFlag, useYearFilter } from '../../utils'
 import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
 
 export type HotelRoomDetail = GqlType<GetHotelRoomDetailsQuery, ['hotelRoomDetails', 'edges', number, 'node']>
@@ -27,8 +27,7 @@ export const useAvailableHotelRooms = () => {
     },
     { cacheTime: 30 * 1000 }
   )
-  const [, getSettingTruth] = useSettings()
-  const shouldUseRoomTotal = getSettingTruth?.('use.detail.room.quantities') ?? false
+  const shouldUseRoomTotal = useFlag('dev_use_detail_rome_quantities', false)
 
   const rooms: HotelRoomDetail[] | undefined = useMemo(
     () => roomDetails?.hotelRoomDetails!.edges.map((v) => v.node).filter(notEmpty),

@@ -1,9 +1,12 @@
 import React, { useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
+import { Field, FormikHelpers } from 'formik'
+import { DateTime } from 'luxon'
+import { match } from 'ts-pattern'
 import {
   EditDialog,
+  DatePickerField,
   GridContainer,
   GridItem,
   OnCloseHandler,
@@ -18,15 +21,15 @@ import Yup from 'ui/utils/Yup'
 import { Setting } from './Settings'
 
 import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
-import { settingValues } from '../../utils'
+import { permissionGateValues, useConfiguration } from '../../utils'
 
 const validationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),
-  type: Yup.string().min(2).max(7).required('Required'),
+  type: Yup.string().min(2).max(15).required('Required'),
   value: Yup.string().max(100).required('Required'),
 })
 
-export const typeValues = ['integer', 'string']
+export const typeValues = ['perm-gate', 'string', 'date', 'number', 'boolean']
 
 type FormValues = ToFormValues<Setting>
 
@@ -96,15 +99,16 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
 
 export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateSetting = useEditSetting(onClose)
+  const configuration = useConfiguration()
 
   const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     await createOrUpdateSetting(values)
   }
 
-  const values = useMemo(() => {
+  const startingValues = useMemo(() => {
     const defaultValues: FormValues = {
       code: '',
-      type: 'integer',
+      type: 'date',
       value: '',
     }
     return initialValues ? { ...initialValues } : { ...defaultValues }
@@ -112,29 +116,43 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
 
   return (
     <EditDialog
-      initialValues={values}
+      initialValues={startingValues}
       onClose={onClose}
       open={open}
       onSubmit={onSubmit}
       title='Setting'
       validationSchema={validationSchema}
-      isEditing={!!values.nodeId}
+      isEditing={!!startingValues.nodeId}
     >
-      <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
-          <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
-        </GridItem>
-        <GridItem xs={12} md={12}>
-          <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
-        </GridItem>
-        <GridItem xs={12} md={12}>
-          {values.type === 'integer' ? (
-            <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={settingValues} />
-          ) : (
-            <TextField name='value' label='Value' margin='normal' fullWidth required />
-          )}
-        </GridItem>
-      </GridContainer>
+      {({ values }) => (
+        <GridContainer spacing={2}>
+          <GridItem xs={12} md={12}>
+            <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
+          </GridItem>
+          <GridItem xs={12} md={12}>
+            <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
+          </GridItem>
+          <GridItem xs={12} md={12}>
+            {match(values)
+              .with({ type: 'perm-gate' }, () => (
+                <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={permissionGateValues} />
+              ))
+              .with({ type: 'date' }, () => (
+                <Field
+                  component={DatePickerField}
+                  required
+                  label='Value'
+                  name='value'
+                  defaultCalendarMonth={DateTime.now()}
+                  timeZone={configuration.baseTimeZone}
+                />
+              ))
+              .otherwise(() => (
+                <TextField name='value' label='Value' margin='normal' fullWidth required />
+              ))}
+          </GridItem>
+        </GridContainer>
+      )}
     </EditDialog>
   )
 }

@@ -5,7 +5,7 @@ import {} from 'yup'
 
 export const getOwed = (configuration: Configuration, values: MembershipType): number | undefined => {
   if (configuration.virtual) {
-    return configuration.virtualCost
+    return parseInt(configuration.virtualCost, 10) || 0
   }
   if (values.interestLevel === InterestLevel.Deposit) {
     return configuration.deposit

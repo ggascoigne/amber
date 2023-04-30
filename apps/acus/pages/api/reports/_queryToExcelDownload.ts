@@ -1,11 +1,9 @@
 import { getPool, PoolType } from 'database/shared/config'
 import json2xls from 'json2xls'
 import { NextApiResponse } from 'next'
-// @ts-ignore
 
 export const queryToExcelDownload = async (query: string, res: NextApiResponse) => {
-  const pool = await getPool(PoolType.USER)
-  const client = await pool.connect()
+  const client = await getPool(PoolType.USER).connect()
   const result = await client.query(query)
   client.release()
 

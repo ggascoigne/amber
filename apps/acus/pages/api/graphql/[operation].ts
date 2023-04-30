@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { getPool, PoolType } from 'database/shared/config'
-import { getPostgraphileHandler } from 'database/shared/portgraphileHandler'
+import { getPostgraphileHandler } from 'database/shared/postgraphileHandler'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // note that the route here is /api/graphql/[:operation] because I like to append the query
 // operation name to the path to make debugging the queries easier in Chrome dev tools.
 
-// FYI export DEBUG="postgraphile:postgres*"to access the postgraphile debugging
+// FYI export DEBUG="postgraphile:postgres*" to access the postgraphile debugging
 
 // /api/graphql
 // auth token: optional
@@ -27,8 +27,7 @@ const runMiddleware = (req: NextApiRequest, res: NextApiResponse, fn: any) =>
 export const graphqlRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.url?.startsWith('/api/graphql')) req.url = '/api/graphql'
 
-  const pool = await getPool(PoolType.USER)
-  await runMiddleware(req, res, getPostgraphileHandler(pool, req, res))
+  await runMiddleware(req, res, getPostgraphileHandler(getPool(PoolType.USER), req, res))
   res.end()
 }
 

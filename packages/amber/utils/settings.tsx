@@ -18,7 +18,7 @@ export enum SettingValue {
 
 const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof typeof SettingValue]
 
-export const settingValues = ['No', 'Admin', 'GM', 'Member', 'Everyone', 'Yes']
+export const permissionGateValues = ['No', 'Admin', 'GM', 'Member', 'Everyone', 'Yes']
 
 export const useSettings = () => {
   const isGm = useIsGm()
@@ -49,7 +49,7 @@ export const useSettings = () => {
     (setting: string, defaultValue = false): SettingValue | boolean | null => {
       const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): SettingValue | null => {
         const s = settings?.find((s1) => s1.code === setting1)
-        if (s && s.type !== 'integer') throw new Error("can't call getSettingValue on a non-enum type")
+        if (s && s.type !== 'perm-gate') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
       }
 
@@ -64,9 +64,10 @@ export const useSettings = () => {
     [data, error, isLoading]
   )
 
-  const getSettingTruth = useCallback(
+  const getFlagBoolean = useCallback(
     (setting: string, defaultValue = false) => {
-      const s = getSettingValue(setting, defaultValue)
+      // todo rework this to use configuration.flag object
+      const s = getSettingValue(`flag.${setting}`, defaultValue)
 
       switch (s) {
         case SettingValue.Admin:
@@ -87,12 +88,12 @@ export const useSettings = () => {
     [getSettingValue, isAdmin, isGm, isMember]
   )
 
-  return error || isLoading || !data ? [undefined, undefined] : ([getSettingString, getSettingTruth] as const)
+  return error || isLoading || !data ? [undefined, undefined] : ([getSettingString, getFlagBoolean] as const)
 }
 
-export const useSetting = (setting: string, defaultValue = false) => {
-  const [, getSettingTruth] = useSettings()
-  return getSettingTruth ? getSettingTruth(setting, defaultValue) : undefined
+export const useFlag = (setting: string, defaultValue = false) => {
+  const [, getFlagBoolean] = useSettings()
+  return getFlagBoolean?.(setting, defaultValue)
 }
 
 interface UseGetSettingValueType {
@@ -101,5 +102,5 @@ interface UseGetSettingValueType {
 
 export const useGetSettingValue: UseGetSettingValueType = (setting: string, defaultValue = false) => {
   const [getSettingString] = useSettings()
-  return getSettingString ? getSettingString(setting, defaultValue) : undefined
+  return getSettingString?.(setting, defaultValue)
 }

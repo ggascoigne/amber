@@ -25,7 +25,7 @@ export enum PoolType {
   USER = 'USER',
 }
 
-export const getPool = async (poolType: PoolType) => {
+export const getPool = (poolType: PoolType) => {
   const {
     DATABASE_HOST: host,
     DATABASE_NAME: database,

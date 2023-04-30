@@ -10,9 +10,6 @@ export const SlotDescriptionList: React.FC = () => {
   return (
     <ul>
       {range(configuration.numberOfSlots).map((i) => {
-        if (configuration.skippedSlots?.includes(i + 1)) {
-          return null
-        }
         const description = displayLocal
           ? `${getSlotDescription(configuration, {
               year: configuration.year,

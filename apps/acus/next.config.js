@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-
+const { headers } = require('amber/utils/next-headers')
 const withMdxFm = require('next-mdx-frontmatter')({
   extension: /\.mdx?$/,
   MDXOptions: {
@@ -36,4 +36,5 @@ module.exports = withMdxFm({
       '*': ['node_modules/@swc/**'],
     },
   },
+  headers,
 })

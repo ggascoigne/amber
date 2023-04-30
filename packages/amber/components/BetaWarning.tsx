@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
 import { CardBody } from 'ui'
 
-import { useSetting } from '../utils'
+import { useFlag } from '../utils'
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   card: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles()((_theme: Theme) => ({
 }))
 
 export const BetaWarning = () => {
-  const isBeta = useSetting('display.test.warning')
+  const isBeta = useFlag('is_beta')
   const theme = useTheme()
   const { classes } = useStyles()
 

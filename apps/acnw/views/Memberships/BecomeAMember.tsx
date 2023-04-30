@@ -8,7 +8,7 @@ import {
   IsVerifiedIncomplete,
   useConfiguration,
   useProfile,
-  useSetting,
+  useFlag,
 } from 'amber'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -33,8 +33,7 @@ export const BecomeAMember = () => {
   const theme = useTheme()
   const router = useRouter()
   const profile = useProfile()
-  const allowed = useSetting('allow.registrations', true)
-  const disableLogin = useSetting('disable.login', false)
+  const allowed = useFlag('allow_registration', true)
 
   return (
     <IsNotMember>
@@ -48,17 +47,15 @@ export const BecomeAMember = () => {
             <h2>Attending {configuration.title}</h2>
           )}
           <IsNotLoggedIn>
-            {!disableLogin ? (
-              <Button
-                variant='outlined'
-                color='primary'
-                size='large'
-                component={Link}
-                href={`/api/auth/login?returnTo=${router.asPath}`}
-              >
-                Login / Sign Up
-              </Button>
-            ) : null}
+            <Button
+              variant='outlined'
+              color='primary'
+              size='large'
+              component={Link}
+              href={`/api/auth/login?returnTo=${router.asPath}`}
+            >
+              Login / Sign Up
+            </Button>
           </IsNotLoggedIn>
 
           <IsUnverified>

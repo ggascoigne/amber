@@ -18,7 +18,7 @@ interface MenuItemsProps {
 export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
   const { userId } = useUser()
   const isMember = useIsMember()
-  const [, getSettingTruth] = useSettings()
+  const [, getFlagBoolean] = useSettings()
   const router = useRouter()
   const theme = useTheme()
 
@@ -37,7 +37,7 @@ export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
         .filter(
           (menuItem) =>
             menuItem.userCondition === undefined ||
-            (getSettingTruth ? menuItem.userCondition({ userId, isMember, getSetting: getSettingTruth }) : false)
+            (getFlagBoolean ? menuItem.userCondition({ userId, isMember, getFlag: getFlagBoolean }) : false)
         )
         .map((menuItem) => {
           const link = menuItem.link ? menuItem.link : menuItem.path

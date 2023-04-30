@@ -1,8 +1,10 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+import { DateTime } from 'luxon'
+import { CellProps, Column, Row, TableInstance } from 'react-table'
+import { match } from 'ts-pattern'
+import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
 import { SettingDialog } from './SettingDialog'
 
@@ -11,12 +13,20 @@ import { TableMouseEventHandler } from '../../types/react-table-config'
 
 export type Setting = GqlType<GetSettingsQuery, ['settings', 'nodes', number]>
 
+export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
+  const s = match(row.original)
+    .with({ type: 'date' }, () => DateTime.fromISO(value).toLocaleString())
+    .otherwise(() => value)
+  return <TooltipCell text={s} align='left' tooltip={s} />
+}
+
 const columns: Column<Setting>[] = [
   {
     accessor: 'code',
   },
   {
     accessor: 'value',
+    Cell: ValueCell,
   },
   {
     accessor: 'type',

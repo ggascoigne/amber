@@ -5,7 +5,7 @@ import { getPool, PoolType } from 'database/shared/config'
 type AuthInfo = { userId: number; roles: string[] }
 
 const runAdminQuery = async (query: string, values?: any[]) => {
-  const pool = await getPool(PoolType.ADMIN)
+  const pool = getPool(PoolType.ADMIN)
   let result
   let client
   try {

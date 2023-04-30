@@ -3,6 +3,7 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
+const { headers } = require('amber/utils/next-headers')
 const withMdxFm = require('next-mdx-frontmatter')({
   extension: /\.mdx?$/,
   MDXOptions: {
@@ -40,5 +41,6 @@ module.exports = withBundleAnalyzer(
         '*': ['node_modules/@swc/**'],
       },
     },
+    headers,
   })
 )

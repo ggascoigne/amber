@@ -46,10 +46,10 @@ export const YearSelector = () => {
 
   const possibleYears: string[] = useMemo(
     () =>
-      range(configuration.firstYear, configuration.year, -1)
+      range(configuration.firstDataYear, configuration.year, -1)
         .map((v: number) => `${v}`)
         .concat(['0']),
-    [configuration.firstYear, configuration.year]
+    [configuration.firstDataYear, configuration.year]
   )
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {

@@ -18,7 +18,7 @@ import {
 } from '../../client'
 import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormType, useProfile } from '../../components/Profile'
-import { useConfiguration, useSendEmail, useSetting, useUser, useYearFilter } from '../../utils'
+import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
@@ -143,7 +143,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
   const sendEmail = useSendEmail()
   const profile = useProfile()
   const { userId } = useUser()
-  const sendAdminEmail = useSetting('send.admin.email')
+  const sendAdminEmail = useFlag('send_admin_email')
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
   const [year] = useYearFilter()

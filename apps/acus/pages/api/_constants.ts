@@ -1,9 +1,26 @@
-import { configuration as _conf } from '../../config'
+import { Configuration, GetSettingsDocument, GetSettingsQuery, getSettingsObject } from 'amber'
+import { makeQueryRunner } from 'database/shared/queryRunner'
+
+import { JsonError } from './_JsonError'
+
+let _conf: Configuration | undefined
+
+export const getConfig = async () => {
+  if (!_conf) {
+    const { query, release } = await makeQueryRunner()
+    const data = await query<GetSettingsQuery>(GetSettingsDocument)
+    if (data) {
+      _conf = getSettingsObject(data).config
+    } else {
+      throw new JsonError(400, 'unable to load configuration')
+    }
+    release()
+  }
+  return _conf
+}
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const assert = require('assert').strict
-
-export const configuration = _conf
 
 export const isDev = process.env.NODE_ENV !== 'production'
 
@@ -34,7 +51,10 @@ export const authDomain = auth0IssuerBaseUrl!.slice(8)
 //
 // export const discordApiEndpoint = `https://discord.com/api/v8/applications/${discordClientId}/guilds/${discordGuildId}/commands`
 
-export const emails = {
-  contactEmail: configuration.contactEmail,
-  gameEmail: configuration.gameEmail,
+export const getEmails = async () => {
+  const configuration = await getConfig()
+  return {
+    contactEmail: configuration?.contactEmail,
+    gameEmail: configuration?.gameEmail,
+  }
 }
