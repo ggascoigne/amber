@@ -16,8 +16,8 @@ export interface EditDialogProps<T> {
   onSubmit: (values: T, actions: FormikHelpers<T>) => Promise<void>
   open: boolean
   onClose: OnCloseHandler
-  validationSchema: any
-  isEditing: boolean
+  validationSchema?: any
+  isEditing?: boolean
   children?: ((props: FormikProps<T>) => ReactNode) | ReactNode
 }
 
@@ -32,7 +32,7 @@ export const useDisableBackdropClick = (onClose?: OnCloseHandler) =>
   )
 
 export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): ReactElement {
-  const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing } = props
+  const { children, initialValues, onSubmit, open, onClose, title, validationSchema, isEditing = false } = props
   useHotkeys('Escape', onClose, { enableOnFormTags: ['INPUT', 'TEXTAREA'] })
 
   const handleClose = useDisableBackdropClick(onClose)

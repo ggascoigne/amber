@@ -1,17 +1,19 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
 import { useQueryClient } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
+import { GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
+import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
+import { Setting } from './shared'
 
-import { GetSettingsQuery, useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
+import { useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
 import { TableMouseEventHandler } from '../../types/react-table-config'
-
-export type Setting = GqlType<GetSettingsQuery, ['settings', 'nodes', number]>
 
 export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
   const s = match(row.original)
@@ -20,22 +22,62 @@ export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }
   return <TooltipCell text={s} align='left' tooltip={s} />
 }
 
-const columns: Column<Setting>[] = [
+const tabs = [
   {
-    accessor: 'code',
+    name: 'config',
+    label: 'Configuration',
+    exclude: 'config.startDates',
   },
   {
-    accessor: 'value',
-    Cell: ValueCell,
+    name: 'config.startDates',
+    label: 'Start Dates',
   },
-  {
-    accessor: 'type',
-  },
+  { name: 'flag', label: 'Flags' },
+  { name: 'url', label: 'Urls' },
 ]
 
 const Settings: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])
+  const [value, setValue] = React.useState('config')
+  const [showAddNewYear, setShowAddNewYear] = useState(false)
+
+  const tab = tabs.find((t) => t.name === value)
+
+  const columns: Column<Setting>[] = useMemo(
+    () => [
+      {
+        accessor: (originalRow: Setting) => originalRow.code.substring(tab?.name ? tab.name.length + 1 : 0),
+        id: 'code',
+      },
+      {
+        accessor: 'value',
+        Cell: ValueCell,
+      },
+      {
+        accessor: 'type',
+      },
+    ],
+    [tab?.name]
+  )
+
+  const onAddNewYear = useCallback(
+    () => () => {
+      setShowAddNewYear(true)
+    },
+    []
+  )
+  const commands = useMemo(
+    () => [
+      {
+        label: 'Add New Year',
+        onClick: onAddNewYear,
+        enabled: () => true,
+        type: 'button' as const,
+      },
+    ],
+    [onAddNewYear]
+  )
 
   const deleteSetting = useDeleteSettingMutation()
   const queryClient = useQueryClient()
@@ -49,7 +91,12 @@ const Settings: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const list: Setting[] = data.settings!.nodes.filter(notEmpty)
+  const list: Setting[] = data.settings!.nodes.filter(notEmpty).filter((v) => {
+    if (tab?.exclude) {
+      return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
+    }
+    return v.code.startsWith(`${value}.`)
+  })
 
   const clearSelectionAndRefresh = () => {
     setSelection([])
@@ -63,12 +110,13 @@ const Settings: React.FC = React.memo(() => {
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
+    setShowAddNewYear(false)
     clearSelectionAndRefresh()
   }
 
   const onDelete = (instance: TableInstance<Setting>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id } }))
+    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id! } }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()
@@ -86,9 +134,25 @@ const Settings: React.FC = React.memo(() => {
     setSelection([row.original])
   }
 
+  const a11yProps = (t: string) => ({
+    id: `settings-tab-${t}`,
+    'aria-controls': `simple-tabpanel-${t}`,
+  })
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }
+
   return (
     <Page title='Settings'>
       {showEdit && <SettingDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+      <Tabs value={value} onChange={handleTabChange} aria-label='settings tabs'>
+        {tabs.map((t) => (
+          <Tab key={t.name} label={t.label} {...a11yProps(t.name)} value={t.name} />
+        ))}
+      </Tabs>
+      {showAddNewYear && <AddNewYearDialog open={showAddNewYear} onClose={onCloseEdit} />}
+
       <Table<Setting>
         name='settings'
         data={list}
@@ -99,6 +163,7 @@ const Settings: React.FC = React.memo(() => {
         onEdit={onEdit}
         onClick={onClick}
         onRefresh={() => refetch()}
+        extraCommands={commands}
       />
     </Page>
   )

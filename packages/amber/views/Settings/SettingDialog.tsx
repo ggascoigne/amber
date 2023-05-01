@@ -1,27 +1,13 @@
 import React, { useMemo } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
-import { Field, FormikHelpers } from 'formik'
-import { DateTime } from 'luxon'
-import { match } from 'ts-pattern'
-import {
-  EditDialog,
-  DatePickerField,
-  GridContainer,
-  GridItem,
-  OnCloseHandler,
-  pick,
-  SelectField,
-  TextField,
-  ToFormValues,
-  useNotification,
-} from 'ui'
+import { FormikHelpers } from 'formik'
+import { EditDialog, GridContainer, GridItem, OnCloseHandler, pick, SelectField, TextField, useNotification } from 'ui'
 import Yup from 'ui/utils/Yup'
 
-import { Setting } from './Settings'
+import { Setting, SettingValue, typeValues } from './shared'
 
 import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
-import { permissionGateValues, useConfiguration } from '../../utils'
 
 const validationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),
@@ -29,9 +15,7 @@ const validationSchema = Yup.object().shape({
   value: Yup.string().max(100).required('Required'),
 })
 
-export const typeValues = ['perm-gate', 'string', 'date', 'number', 'boolean']
-
-type FormValues = ToFormValues<Setting>
+type FormValues = Setting
 
 interface SettingDialogProps {
   open: boolean
@@ -99,8 +83,6 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
 
 export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateSetting = useEditSetting(onClose)
-  const configuration = useConfiguration()
-
   const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
     await createOrUpdateSetting(values)
   }
@@ -133,23 +115,7 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
             <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
           </GridItem>
           <GridItem xs={12} md={12}>
-            {match(values)
-              .with({ type: 'perm-gate' }, () => (
-                <SelectField name='value' label='Value' margin='normal' fullWidth selectValues={permissionGateValues} />
-              ))
-              .with({ type: 'date' }, () => (
-                <Field
-                  component={DatePickerField}
-                  required
-                  label='Value'
-                  name='value'
-                  defaultCalendarMonth={DateTime.now()}
-                  timeZone={configuration.baseTimeZone}
-                />
-              ))
-              .otherwise(() => (
-                <TextField name='value' label='Value' margin='normal' fullWidth required />
-              ))}
+            <SettingValue name='value' value={values} />
           </GridItem>
         </GridContainer>
       )}
