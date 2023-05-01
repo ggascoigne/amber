@@ -13,7 +13,7 @@ const createErrorHandler =
     }
   }
 
-export const useDatePickerProps = <T extends DatePickerProps<DateTime, DateTime>>(props: T) => {
+export const useDatePickerProps = <T extends DatePickerProps<DateTime>>(props: T) => {
   const { disabled, onError, ...rest } = props
   const [field, meta] = useField(rest.name)
   const { isSubmitting, setFieldValue, setFieldError } = useFormikContext()

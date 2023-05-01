@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-
+const { headers } = require('amber/utils/next-headers')
 const withMdxFm = require('next-mdx-frontmatter')({
   extension: /\.mdx?$/,
   MDXOptions: {
@@ -33,7 +33,8 @@ module.exports = withMdxFm({
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   experimental: {
     outputFileTracingExcludes: {
-      '*': ['node_modules/@swc/core-linux-x64-gnu', 'node_modules/@swc/core-linux-x64-musl'],
+      '*': ['node_modules/@swc/**'],
     },
   },
+  headers,
 })

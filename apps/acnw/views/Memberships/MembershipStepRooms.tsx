@@ -93,8 +93,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             autofocus
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
-            defaultCalendarMonth={DateTime.now().set({ month: 11 })}
-            disablePast
+            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
           />
@@ -105,8 +104,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             required
             label='Departure Date'
             name={`${prefix}departureDate`}
-            defaultCalendarMonth={DateTime.now().set({ month: 11 })}
-            disablePast
+            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
           />

@@ -18,7 +18,7 @@ import {
 } from '../../client'
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
-import { getSlotDescription, useConfiguration, useGetMemberShip, useSetting, useUser, useYearFilter } from '../../utils'
+import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -220,7 +220,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   const queryClient = useQueryClient()
   const { userId } = useUser()
   const configuration = useConfiguration()
-  const displayGameBook = useSetting('display.game.book')
+  const displayGameBook = useFlag('display_gamebook')
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
   const router = useRouter()

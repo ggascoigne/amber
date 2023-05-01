@@ -2,7 +2,7 @@ import React from 'react'
 
 import { useAuth } from 'amber/components/Auth'
 import { Redirect } from 'amber/components/Navigation'
-import { useGetSettingValue, useSettings } from 'amber/utils'
+import { useGetSettingValue, useFlag } from 'amber/utils'
 import { Loader, Page } from 'ui'
 
 const VirtualDetails = () => {
@@ -10,9 +10,7 @@ const VirtualDetails = () => {
 
   const discordUrl = useGetSettingValue('url.discord') ?? ''
   const wikiUrl = useGetSettingValue('url.wiki') ?? ''
-  const [, getSettingTruth] = useSettings()
-
-  const isVisible = getSettingTruth?.('display.virtual.details')
+  const isVisible = useFlag('display_virtual_details', false)
 
   if (isLoading || !user) {
     return <Loader />

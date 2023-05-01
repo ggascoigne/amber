@@ -2,9 +2,8 @@
 title:  What is AmberCon NW?
 ---
 
-import { ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
+import { ConfigurationValue, ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
 import { SlotDescriptionList } from 'amber/components/SlotDescriptionList'
-import { configuration } from '../config'
 
 AmberCon Northwest is a fully scheduled role-playing game convention devoted diceless / story-focused / character driven
 RPGs. While a large portion of the games use Erick Wujcik's **Amber Diceless RPG** as their base ruleset, or are set in
@@ -28,7 +27,7 @@ AmberCon NW offers a **long weekend** of scheduled gaming events,
 and receive their schedule in advance of the convention. Likewise, GMs receive their player lists in advance, so everyone
 can prepare.
 
-The convention is divided into {configuration.numberOfSlots} event slots:
+The convention is divided into <ConfigurationValue field='numberOfSlots'/> event slots:
 
 <SlotDescriptionList />
 
@@ -47,17 +46,17 @@ the convention resort's cafes, pubs, and restaurants.
 
 Check out the [McMenamins Edgefield](https://www.mcmenamins.com/edgefield) web page for a preview of their facilities.
 
-**Full Membership - ${configuration.fourDayMembership}** includes
+**Full Membership - $<ConfigurationValue field='fourDayMembership' skipSpace='before' />** includes
 
-- up to all {configuration.numberOfSlots} game slots, Thursday evening through Sunday evening
-- a ${configuration.fourDayVoucher} meal card
+- up to all <ConfigurationValue field='numberOfSlots'/> game slots, Thursday evening through Sunday evening
+- a $<ConfigurationValue field='fourDayVoucher'skipSpace='before'/> meal card
 - 3 breakfasts
 - snacks, tea and coffee during the day.
 
-**Short Membership - ${configuration.threeDayMembership}** includes
+**Short Membership - $<ConfigurationValue field='threeDayMembership' skipSpace='before'/>** includes
 
 - up to 4 game slots, Friday evening through Sunday evening, for example
-- a ${configuration.threeDayVoucher} meal card
+- a $<ConfigurationValue field='threeDayVoucher' skipSpace='before'/> meal card
 - 2 breakfasts
 - snacks, tea and coffee during the day.
 

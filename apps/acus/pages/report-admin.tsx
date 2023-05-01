@@ -1,8 +1,11 @@
 import * as React from 'react'
 
 import { Perms } from 'amber/components/Auth'
+import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
 import { Reports, ReportRecord } from 'amber/views/Reports'
 import type { NextPage } from 'next'
+
+export const getServerSideProps = configGetServerSideProps
 
 const reports: ReportRecord[] = [
   { name: 'Membership' },

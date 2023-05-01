@@ -14,7 +14,7 @@ import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { ProfileDialog, useProfile } from './Profile'
 
-import { useIsGm, useSetting } from '../utils'
+import { useIsGm } from '../utils'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'
@@ -143,7 +143,6 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const router = useRouter()
   const [profileOpen, setProfileOpen] = useState(false)
   const profile = useProfile()
-  const disableLogin = useSetting('disable.login', false)
 
   useEffect(() => setAuthInitialized(!isLoading), [isLoading])
 
@@ -262,7 +261,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
     </>
   ) : (
     <Button
-      disabled={!authInitialized || disableLogin}
+      disabled={!authInitialized}
       sx={{
         position: 'relative',
         fontWeight: 400,

@@ -1,3 +1,5 @@
+const { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } = require('../utils/policyUtils')
+
 const tables = [
   { name: 'game', admin: false },
   { name: 'game_assignment', admin: false },
@@ -19,25 +21,6 @@ const tables = [
   { name: 'user_role', admin: true },
 ]
 
-// protect the user column from causing syntax errors
-const q = (name) => (name === 'user' ? '"user"' : name)
-
-const anyUserUpdatePolicy = (table) => `
-  CREATE POLICY ${table}_sel_policy ON ${q(table)}
-    FOR SELECT
-    USING (TRUE);
-  CREATE POLICY ${table}_mod_policy ON ${q(table)}
-    USING (current_user_id()::BOOLEAN);
-  `
-
-const adminUpdatePolicy = (table) => `
-  CREATE POLICY ${table}_sel_policy ON ${q(table)}
-    FOR SELECT
-    USING (TRUE);
-  CREATE POLICY ${table}_mod_policy ON ${q(table)}
-    USING (current_user_is_admin());
-  `
-
 exports.up = async function (knex) {
   const user = process.env.DATABASE_USER
   const password = process.env.DATABASE_USER_PASSWORD ?? ''
@@ -53,17 +36,7 @@ exports.up = async function (knex) {
   await knex.raw(`GRANT SELECT, UPDATE, USAGE ON ALL SEQUENCES IN SCHEMA public TO ${user};`)
   await knex.raw(`GRANT EXECUTE ON ALL ROUTINES IN SCHEMA public TO ${user};`)
 
-  await knex.raw(
-    tables
-      .map(
-        (table) =>
-          `
-            DROP POLICY IF EXISTS ${table.name}_sel_policy ON ${q(table.name)};
-            DROP POLICY IF EXISTS ${table.name}_mod_policy ON ${q(table.name)};
-          `
-      )
-      .join('\n')
-  )
+  await knex.raw(tables.map((table) => dropPolicies(table.name)).join('\n'))
 
   await knex.raw(
     tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n')
@@ -77,7 +50,7 @@ exports.up = async function (knex) {
       USING ("user_id" = current_user_id() OR current_user_is_admin());
     `)
 
-  await knex.raw(tables.map((table) => `ALTER TABLE ${q(table.name)} ENABLE ROW LEVEL SECURITY;`).join('\n'))
+  await knex.raw(tables.map((table) => enableRls(table)).join('\n'))
 }
 
 exports.down = async function (knex) {}

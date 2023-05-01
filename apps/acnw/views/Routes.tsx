@@ -26,7 +26,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     label: 'Schedule',
     subText: 'Your Schedule',
     exact: true,
-    userCondition: ({ getSetting }) => getSetting('display.schedule'),
+    userCondition: ({ getFlag }) => getFlag('display_schedule'),
   },
   {
     path: '/about-edgefield',
@@ -41,7 +41,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     subText: 'Accessing the virtual convention',
     exact: false,
     condition: configuration.virtual,
-    userCondition: ({ getSetting }) => getSetting('display.virtual.details'),
+    userCondition: ({ getFlag }) => getFlag('display_virtual_details'),
   },
   {
     path: '/membership',
@@ -60,19 +60,19 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     label: `${configuration.year} Game Book`,
     subText: "This year's games",
     exact: true,
-    userCondition: ({ getSetting }) => getSetting('display.game.book'),
+    userCondition: ({ getFlag }) => getFlag('display_gamebook'),
   },
   {
     path: '/game-signup',
     label: 'Game Signup',
     subText: 'Choose your games',
     exact: true,
-    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+    userCondition: ({ getFlag }) => getFlag('allow_game_signup'),
   },
   {
     path: '/game-choices',
     exact: true,
-    userCondition: ({ getSetting }) => getSetting('display.game.signup'),
+    userCondition: ({ getFlag }) => getFlag('allow_game_signup'),
   },
   {
     path: '/game-history',

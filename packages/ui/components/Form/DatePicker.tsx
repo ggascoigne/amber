@@ -3,14 +3,13 @@ import { DateTime } from 'luxon'
 
 import { useDatePickerProps } from './datePickerUtils'
 
-export interface DatePickerProps<TInputDate, TDate = TInputDate>
-  extends Omit<MuiDatePickerProps<TInputDate, TDate>, 'onChange' | 'value' | 'error'> {
+export interface DatePickerProps<TDate> extends Omit<MuiDatePickerProps<TDate>, 'onChange' | 'value' | 'error'> {
   name: string
 }
 
-export function DatePicker({ children, ...props }: DatePickerProps<DateTime>) {
+export function DatePicker({ ...props }: DatePickerProps<DateTime>) {
   const newProps = useDatePickerProps(props)
-  return <MuiDatePicker {...newProps}>{children}</MuiDatePicker>
+  return <MuiDatePicker {...newProps} />
 }
 
 DatePicker.displayName = 'FormikMaterialUIDatePicker'

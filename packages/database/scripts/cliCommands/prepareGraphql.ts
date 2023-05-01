@@ -17,7 +17,7 @@ export default class PrepareGraphQL extends Command {
   // eslint-disable-next-line class-methods-use-this
   async run() {
     ux.action.start('transforming postgraphile schema')
-    const pgPool = await getPool(PoolType.ADMIN)
+    const pgPool = getPool(PoolType.ADMIN)
     const schema = await createPostGraphileSchema(pgPool, getSchemas(), {
       ...options,
       writeCache: path.join(__dirname, `../../shared/${dbEnv}/postgraphileCache.json`),

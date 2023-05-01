@@ -430,10 +430,11 @@ interface BannerProps {
 const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
-  const { conventionStartDate } = configuration
-  const dateRange = `${conventionStartDate.toFormat('MMMM')} ${configuration.startDay}-${configuration.endDay}, ${
-    configuration.year
-  }`
+  const { conventionStartDate, conventionEndDate } = configuration
+  const startDay = conventionStartDate.day
+  const endDay = conventionEndDate.day
+
+  const dateRange = `${conventionStartDate.toFormat('MMMM')} ${startDay}-${endDay}, ${configuration.year}`
 
   const logo = <Logo dates={dateRange} className={classes.banner} virtual={configuration.virtual} />
   return to ? <Link href={to}>{logo}</Link> : logo

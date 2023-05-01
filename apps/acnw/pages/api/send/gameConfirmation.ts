@@ -5,7 +5,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { emailer } from './_email'
 
-import { emails } from '../_constants'
+import { getEmails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 
@@ -21,6 +21,7 @@ import { JsonError } from '../_JsonError'
 // }
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+  const emails = await getEmails()
   try {
     if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
     const { year, name, email, url, game, update = false } = req.body as GameConfirmationBody

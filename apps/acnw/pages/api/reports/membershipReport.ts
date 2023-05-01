@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { queryToExcelDownload } from './_queryToExcelDownload'
 
-import { configuration } from '../_constants'
+import { getConfig } from '../_constants'
 import { handleError } from '../_handleError'
 
 // /api/send/membershipReport
@@ -14,8 +14,9 @@ import { handleError } from '../_handleError'
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const year = req.body?.year || configuration.year
-    const query = configuration.virtual
+    const configuration = await getConfig()
+    const year = req.body?.year || configuration?.year
+    const query = configuration?.virtual
       ? `
         SELECT
           m.id AS "Member Id",

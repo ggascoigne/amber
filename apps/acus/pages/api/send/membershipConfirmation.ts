@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 import { emailer } from './_email'
 
-import { configuration, emails } from '../_constants'
+import { getConfig, getEmails } from '../_constants'
 import { handleError } from '../_handleError'
 import { JsonError } from '../_JsonError'
 
@@ -25,9 +25,12 @@ const formatDate = (date?: string) =>
   date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+  const emails = await getEmails()
   try {
     if (!req.body)
       throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
+    const configuration = await getConfig()
+    if (!configuration) throw new JsonError(400, 'unable to load configuration')
     const {
       year,
       name,

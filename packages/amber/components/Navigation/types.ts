@@ -3,7 +3,7 @@ import type { Perms } from '../Auth'
 interface UserCondition {
   userId: number | null | undefined
   isMember: boolean
-  getSetting: (setting: string, defaultValue?: any) => boolean
+  getFlag: (setting: string, defaultValue?: any) => boolean
 }
 
 // note that entries are only displayed if they have a label

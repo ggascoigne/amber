@@ -5,7 +5,7 @@ import {} from 'yup'
 import type { MembershipType } from './apiTypes'
 import { Configuration, useConfiguration } from './configContext'
 import { extractErrors } from './extractErrors'
-import { useSetting } from './settings'
+import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
 import { useSendEmail } from './useSendEmail'
 
@@ -68,7 +68,7 @@ export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => 
   const queryClient = useQueryClient()
   const notify = useNotification()
   const sendEmail = useSendEmail()
-  const sendAdminEmail = useSetting('send.admin.email')
+  const sendAdminEmail = useFlag('send_admin_email')
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail
 

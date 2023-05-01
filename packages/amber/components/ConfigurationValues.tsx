@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react'
 
 import { DateTime, DateTimeFormatOptions } from 'luxon'
 
-import { ConfigurationDates, getOrdinalWord, useConfiguration } from '../utils'
+import { ConfigurationNonDates, ConfigurationDates, getOrdinalWord, useConfiguration } from '../utils'
 
 interface SpacingProps {
   skipSpace?: 'before' | 'after' | 'both' | 'neither'
@@ -61,4 +61,12 @@ export const ConventionYear = ({ skipSpace = 'neither' }: SpacingProps) => {
 export const ContactEmail = ({ skipSpace = 'neither' }: SpacingProps) => {
   const configuration = useConfiguration()
   return <Spacing skipSpace={skipSpace}>{configuration.contactEmail} </Spacing>
+}
+
+export const ConfigurationValue = ({
+  skipSpace = 'neither',
+  field,
+}: SpacingProps & { field: keyof ConfigurationNonDates }) => {
+  const configuration = useConfiguration()
+  return <Spacing skipSpace={skipSpace}>{configuration[field]} </Spacing>
 }

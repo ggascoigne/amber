@@ -2,9 +2,8 @@
 title: What is Ambercon US?
 ---
 
-import { ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
+import { ConfigurationValue, ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
 import { SlotDescriptionList } from 'amber/components/SlotDescriptionList'
-import { configuration } from '../config'
 
 Ambercon US is a fully scheduled role-playing game convention devoted diceless / story-focused / character driven
 RPGs. While a large portion of the games use Erick Wujcik's **Amber Diceless RPG** as their base ruleset, or are set in
@@ -26,7 +25,7 @@ Ambercon offers a **long weekend** of scheduled gaming events,
 and receive their schedule in advance of the convention. Likewise, GMs receive their player lists in advance, so everyone
 can prepare.
 
-The convention is divided into {configuration.numberOfSlots} event slots:
+The convention is divided into <ConfigurationValue field='numberOfSlots'/> event slots:
 
 <SlotDescriptionList />
 

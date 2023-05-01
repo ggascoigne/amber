@@ -8,7 +8,7 @@ import {
   IsVerifiedIncomplete,
   useConfiguration,
   useProfile,
-  useSetting,
+  useFlag,
 } from 'amber'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -33,8 +33,7 @@ export const BecomeAMember = () => {
   const theme = useTheme()
   const router = useRouter()
   const profile = useProfile()
-  const allowed = useSetting('allow.registrations', true)
-  const disableLogin = useSetting('disable.login', false)
+  const allowed = useFlag('allow_registration', true)
 
   return (
     <IsNotMember>
@@ -48,45 +47,40 @@ export const BecomeAMember = () => {
             <h2>Logging In to this {configuration.title} Site</h2>
           )}
           <IsNotLoggedIn>
-            {!disableLogin ? (
-              <>
-                <p>
-                  We have a new authentication system.{' '}
-                  <strong>Your userid and password from before 2023 are gone</strong>. You have to{' '}
-                  <strong>create a new userid and password</strong>. You can{' '}
-                  <strong>re-create your userid with the same email address</strong>. For more information see our{' '}
-                  <a href='/faq'>Frequently Asked Questions</a>.
-                </p>
-                <h4>Creating a Userid and Password</h4>
-                <ol>
-                  <li>Click on "LOGIN / SIGN UP"</li>
-                  <li>On the white popup log in screen, click on the little blue link "Sign up" at the bottom</li>
-                  <li>
-                    Create your userid. <b>If you've used the Ambercon site since 2009, use the same email address</b>.
-                    If you had an account for a previous Ambercon, you can link back to it by signing up again using the
-                    same email address as before and then confirming that email address. If you are a GM, this will give
-                    you option of copying games forward. If you don't know what email you used, please contact us at
-                    <a href='mailto:signup@ambercon.com'>signup@ambercon.com</a>.
-                  </li>
-                  <li>Though it logs you in, nothing will work until your email address is verified.</li>
-                  <li>
-                    You will get a <strong>verification email</strong>
-                  </li>
-                  <li>Follow the instructions in the email (click on a link)</li>
-                  <li>Sign out from the Ambercon website</li>
-                  <li>Sign back in</li>
-                </ol>
-                <Button
-                  variant='outlined'
-                  color='primary'
-                  size='large'
-                  component={Link}
-                  href={`/api/auth/login?returnTo=${router.asPath}`}
-                >
-                  Login / Sign Up
-                </Button>
-              </>
-            ) : null}
+            <p>
+              We have a new authentication system. <strong>Your userid and password from before 2023 are gone</strong>.
+              You have to <strong>create a new userid and password</strong>. You can{' '}
+              <strong>re-create your userid with the same email address</strong>. For more information see our{' '}
+              <a href='/faq'>Frequently Asked Questions</a>.
+            </p>
+            <h4>Creating a Userid and Password</h4>
+            <ol>
+              <li>Click on "LOGIN / SIGN UP"</li>
+              <li>On the white popup log in screen, click on the little blue link "Sign up" at the bottom</li>
+              <li>
+                Create your userid. <b>If you've used the Ambercon site since 2009, use the same email address</b>. If
+                you had an account for a previous Ambercon, you can link back to it by signing up again using the same
+                email address as before and then confirming that email address. If you are a GM, this will give you
+                option of copying games forward. If you don't know what email you used, please contact us at
+                <a href='mailto:signup@ambercon.com'>signup@ambercon.com</a>.
+              </li>
+              <li>Though it logs you in, nothing will work until your email address is verified.</li>
+              <li>
+                You will get a <strong>verification email</strong>
+              </li>
+              <li>Follow the instructions in the email (click on a link)</li>
+              <li>Sign out from the Ambercon website</li>
+              <li>Sign back in</li>
+            </ol>
+            <Button
+              variant='outlined'
+              color='primary'
+              size='large'
+              component={Link}
+              href={`/api/auth/login?returnTo=${router.asPath}`}
+            >
+              Login / Sign Up
+            </Button>
           </IsNotLoggedIn>
 
           <IsUnverified>

@@ -2,10 +2,9 @@
 title: About the AmberCon NW Venue
 ---
 
-import { ConventionOrdinal, ConventionYear, ConfigDate, RedStar } from 'amber/components'
+import { ConfigurationValue, ConventionOrdinal, ConventionYear, ConfigDate, RedStar } from 'amber/components'
 import { RoomsTable } from 'amber/components/Rooms'
 import { BathroomType } from 'amber/utils'
-import { configuration } from '../config'
 
 ## McMenamins Edgefield
 
@@ -41,7 +40,7 @@ rooms are also "Gaming Rooms."
 
 Several Double Queens, Double Queen Suites, Kings, and King Suites have
 been reserved by the convention for game play. If you book space in these rooms
-the convention will contribute {configuration.gameRoomCredit} towards the cost.
+the convention will contribute <ConfigurationValue field='gameRoomCredit'/> towards the cost.
 Gaming rooms require a minimum Thursday through Monday stay.
 
 ## Rooming at AmberCon NW
@@ -52,8 +51,8 @@ them in October, <ConventionYear/>.
 To make a room reservation for your stay at AmberCon NW please complete
 our Registration Form. **Do not make reservations directly with the hotel.**
 
-McMenamins adds a {configuration.moreThanDoubleOccupancySurcharge} charge for each person over 2 in
-room. Price shown does not include {configuration.oregonHotelTax} hotel tax.
+McMenamins adds a <ConfigurationValue field='moreThanDoubleOccupancySurcharge'/> charge for each person over 2 in
+room. Price shown does not include <ConfigurationValue field='oregonHotelTax'/> hotel tax.
 
 ### Rooms with bath facilities "down the hall" bed & breakfast style
 
@@ -76,7 +75,7 @@ that allow us to bump attendees up into their preferred room type.
 <br />
 
 <span>*</span> Game Rooms: These are suites reserved for game play. Members who choose to have a Game room, will receive
-a {configuration.gameRoomCredit} credit towards the room cost. Be advised that while we will do our best to make sure that
+a <ConfigurationValue field='gameRoomCredit'/> credit towards the room cost. Be advised that while we will do our best to make sure that
 the rooms are used for games you are actually in, in exchange for the credit the game space will be scheduled **at the discretion
 of the organizers**.
 

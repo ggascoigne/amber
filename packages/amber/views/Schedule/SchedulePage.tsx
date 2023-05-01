@@ -191,7 +191,7 @@ const SchedulePage: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const memberId = membership?.id ?? 0
-  const displayScheduleValue = useGetSettingValue('display.schedule')
+  const displayScheduleValue = useGetSettingValue('display_schedule')
   const [showGmPreviewOverride, setShowGmPreviewOverride] = useState(false)
   const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
 
