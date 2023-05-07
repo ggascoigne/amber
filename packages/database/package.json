@@ -41,7 +41,7 @@
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
     "luxon": "^3.3.0",
-    "next": "13.3.2",
+    "next": "13.4.1",
     "pg": "^8.10.0",
     "postgraphile": "^4.13.0",
     "postgraphile-plugin-connection-filter": "^2.3.0",
@@ -51,11 +51,11 @@
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
-    "@oclif/core": "^2.8.2",
+    "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@types/common-tags": "^1.8.1",
     "@types/luxon": "^3.3.0",
-    "@types/node": "^18.16.3",
+    "@types/node": "^20.1.0",
     "@types/pg": "^8.6.6",
     "alasql": "^3.1.0",
     "chalk": "^4.1.2",
