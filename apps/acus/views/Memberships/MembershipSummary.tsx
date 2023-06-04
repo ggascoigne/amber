@@ -189,7 +189,7 @@ const MembershipSummary: React.FC = () => {
     <Page title='Membership Summary'>
       {query.all?.[0] === 'new' && <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
       {query.all?.[0] === 'edit' && (
-        <MembershipWizard open onClose={onCloseMembershipDialog} initialValues={membership} profile={profile!} />
+        <MembershipWizard open onClose={onCloseMembershipDialog} initialValues={membership!} profile={profile!} />
       )}
 
       <br />

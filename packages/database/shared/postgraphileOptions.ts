@@ -6,6 +6,8 @@ const PgOrderByRelatedPlugin = require('@graphile-contrib/pg-order-by-related')
 const PgSimplifyInflectorPlugin = require('@graphile-contrib/pg-simplify-inflector')
 const ConnectionFilterPlugin = require('postgraphile-plugin-connection-filter')
 
+const PgSmallNumericToFloatPlugin = require('./postgraphilePlugins/PgSmallNumericToFloatPlugin')
+
 export const options = {
   dynamicJson: true,
   cors: false,
@@ -18,7 +20,12 @@ export const options = {
   ignoreRBAC: false,
   showErrorStack: false,
   watchPg: false,
-  appendPlugins: [PgSimplifyInflectorPlugin, ConnectionFilterPlugin, PgOrderByRelatedPlugin],
+  appendPlugins: [
+    PgSimplifyInflectorPlugin,
+    ConnectionFilterPlugin,
+    PgOrderByRelatedPlugin,
+    PgSmallNumericToFloatPlugin,
+  ],
 }
 
 export const acnwReadCache = _acnwReadCache

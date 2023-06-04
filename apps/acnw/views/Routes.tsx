@@ -129,6 +129,17 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/transactions',
+    label: 'Transactions',
+    exact: true,
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/payment',
+    label: 'Payment',
+    exact: true,
+  },
+  {
     path: '/report-admin',
     label: 'Reports',
     exact: true,

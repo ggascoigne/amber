@@ -208,19 +208,23 @@ const MembershipSummary: React.FC = () => {
   if (isLoading || !data) {
     return <Loader />
   }
+  const displayNew = query.all?.[0] === 'new'
   const membership = data.memberships?.nodes[0]
-  if (!membership) {
+
+  if (!membership || displayNew) {
     return (
       <Page title='Become a Member'>
+        {displayNew && <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
         <BecomeAMember />
       </Page>
     )
   }
 
+  const displayEdit = query.all?.[0] === 'edit'
+
   return (
     <Page title='Membership Summary'>
-      {query.all?.[0] === 'new' && <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
-      {query.all?.[0] === 'edit' && (
+      {displayEdit && (
         <MembershipWizard open onClose={onCloseMembershipDialog} initialValues={membership} profile={profile!} />
       )}
 

@@ -1,14 +1,11 @@
+import { emailer, handleError, JsonError } from '@amber/api'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 import { MembershipConfirmationBody } from 'amber/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from 'amber/utils/selectValues'
 import { DateTime } from 'luxon'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { emailer } from './_email'
-
-import { getConfig, getEmails } from '../_constants'
-import { handleError } from '../_handleError'
-import { JsonError } from '../_JsonError'
+import { getConfig, getEmails } from '../_config'
 
 // /api/send/membershipConfirmation
 // auth token: required

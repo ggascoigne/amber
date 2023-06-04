@@ -2,15 +2,15 @@ import React from 'react'
 
 import { DialogContentText } from '@mui/material'
 import { ContactEmail, useConfiguration } from 'amber'
+import { getMembershipCost } from 'amber/utils/transactionUtils'
 import { useFormikContext } from 'formik'
 
-import { getOwed } from './membershipUtils'
 import { MembershipWizardFormValues } from './MembershipWizard'
 
 export const MembershipStepPayment: React.FC = () => {
   const configuration = useConfiguration()
   const { values } = useFormikContext<MembershipWizardFormValues>()
-  const toPay = getOwed(configuration, values.membership)
+  const toPay = getMembershipCost(configuration, values.membership)
   return (
     <>
       {toPay ? (

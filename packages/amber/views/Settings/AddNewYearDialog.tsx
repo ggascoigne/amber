@@ -1,7 +1,6 @@
 import React, { useMemo, useCallback } from 'react'
 
 import { Typography } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
 import {
@@ -18,6 +17,7 @@ import {
 import { Setting, SettingValue } from './shared'
 
 import { useGetSettingsQuery, useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
+import { useInvalidateSettingsQueries } from '../../client/querySets'
 
 interface AddNewYearDialogProps {
   open: boolean
@@ -61,7 +61,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
   const { isLoading, error, data } = useGetSettingsQuery()
   const createSetting = useCreateSettingMutation()
   const updateSetting = useUpdateSettingByNodeIdMutation()
-  const queryClient = useQueryClient()
+  const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
   const allFields: Setting[] | undefined = data?.settings!.nodes.filter(notEmpty)
@@ -93,17 +93,17 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
       const newValues = [...values]
         .concat([
           {
-            code: `startDates.${newYear}.slots`,
+            code: `config.startDates.${newYear}.slots`,
             type: 'number',
             value: getSetting(allFields, 'config.numberOfSlots')?.value ?? '',
           },
           {
-            code: `startDates.${newYear}.virtual`,
+            code: `config.startDates.${newYear}.virtual`,
             type: 'boolean',
             value: 'false',
           },
           {
-            code: `startDates.${newYear}.date`,
+            code: `config.startDates.${newYear}.date`,
             type: 'date',
             value: getSetting(values, 'config.conventionStartDate')!.value,
           },
@@ -160,18 +160,18 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         return acc
       }, [])
 
-      Promise.allSettled(updaters).then((res: { status: string }[]) => {
+      Promise.allSettled(updaters).then((res) => {
         const failureCount = res.filter((r) => r.status !== 'fulfilled').length
         if (failureCount) {
           console.warn('Some updates failed', res)
         }
         actions.setSubmitting(false)
         notify({ text: 'Settings created', variant: 'success' })
-        queryClient.invalidateQueries(['getSettings'])
+        invalidateSettingsQueries()
         onClose(null)
       })
     },
-    [allFields, createSetting, newYear, notify, onClose, queryClient, timeZone, updateSetting]
+    [allFields, createSetting, invalidateSettingsQueries, newYear, notify, onClose, timeZone, updateSetting]
   )
 
   if (error) {

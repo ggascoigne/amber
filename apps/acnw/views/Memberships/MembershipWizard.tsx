@@ -8,22 +8,27 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
+  useGetTransactionByUserQuery,
   useUser,
   useYearFilter,
 } from 'amber'
 import { MembershipType } from 'amber/utils/apiTypes'
 import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+import {
+  getDefaultMembership,
+  membershipValidationSchemaNW as membershipValidationSchema,
+} from 'amber/views/Memberships/membershipUtils'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
+import { useRouter } from 'next/router'
 import { Wizard, WizardPage } from 'ui'
 import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
-import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
 import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -70,10 +75,18 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
+  const createOrUpdateMembership = useEditMembership(onClose)
   const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
+  const router = useRouter()
+
+  const { data: usersTransactions } = useGetTransactionByUserQuery(
+    {
+      userId: initialValues?.userId ?? -1,
+    },
+    { enabled: !!initialValues?.userId }
+  )
 
   const pages = useMemo(() => {
     const virtualPages: WizardPage[] = [
@@ -100,7 +113,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
       },
       {
-        name: 'Payment',
+        name: 'Summary',
         optional: false,
         hasForm: false,
         render: <MembershipStepPayment />,
@@ -148,7 +161,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         enabled: isAdmin,
       },
       {
-        name: 'Payment',
+        name: 'Summary',
         optional: false,
         hasForm: false,
         render: <MembershipStepPayment />,
@@ -165,7 +178,12 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfile(profileValues).then(async () => createOrUpdateMembership(membershipValues, profileValues))
+    await updateProfile(profileValues).then(async () => {
+      await createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+    })
+    if (!short) {
+      router.push('/payment')
+    }
   }
 
   const values = useMemo(() => {

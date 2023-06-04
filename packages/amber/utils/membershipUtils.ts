@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 import {} from 'yup'
 
@@ -7,9 +6,16 @@ import { Configuration, useConfiguration } from './configContext'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
+import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
-import { useCreateMembershipMutation, useGetHotelRoomsQuery, useUpdateMembershipByNodeIdMutation } from '../client'
+import {
+  GetTransactionByUserQuery,
+  useCreateMembershipMutation,
+  useGetHotelRoomsQuery,
+  useUpdateMembershipByNodeIdMutation,
+} from '../client'
+import { useInvalidateMembershipQueries } from '../client/querySets'
 import { Perms, ProfileFormType, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
@@ -54,18 +60,15 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
     'roomingWith',
     'volunteer',
     'year',
-    'slotsAttending',
-    'amountOwed',
-    'amountPaid'
+    'slotsAttending'
   )
 
-type GetOwed = (configuration: Configuration, values: MembershipType) => number | undefined
-
-export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => {
+export const useEditMembership = (onClose: OnCloseHandler) => {
   const configuration = useConfiguration()
   const createMembership = useCreateMembershipMutation()
   const updateMembership = useUpdateMembershipByNodeIdMutation()
-  const queryClient = useQueryClient()
+  const invalidateMembershipQueries = useInvalidateMembershipQueries()
+  const createOrUpdateTransaction = useEditMembershipTransaction(onClose)
   const notify = useNotification()
   const sendEmail = useSendEmail()
   const sendAdminEmail = useFlag('send_admin_email')
@@ -74,12 +77,7 @@ export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => 
 
   const { data: roomData } = useGetHotelRoomsQuery()
 
-  const sendMembershipConfirmation = (
-    membershipId: number,
-    profile: ProfileFormType,
-    membershipValues: MembershipType,
-    update = false
-  ) => {
+  const sendMembershipConfirmation = (profile: ProfileFormType, membershipValues: MembershipType, update = false) => {
     const room = roomData
       ?.hotelRooms!.edges.map((v) => v.node)
       .filter(notEmpty)
@@ -106,13 +104,17 @@ export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => 
         url: `${window.location.origin}/membership`,
         membership: membershipValues,
         slotDescriptions,
-        owed: getOwed(configuration, membershipValues),
+        owed: getMembershipCost(configuration, membershipValues),
         room,
       },
     })
   }
 
-  return async (membershipValues: MembershipType, profile: ProfileFormType) => {
+  return async (
+    membershipValues: MembershipType,
+    profile: ProfileFormType,
+    usersTransactions: GetTransactionByUserQuery | undefined
+  ) => {
     if (membershipValues.nodeId) {
       await updateMembership
         .mutateAsync(
@@ -125,20 +127,21 @@ export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => 
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getMembershipsByYear'])
-            },
+            onSuccess: invalidateMembershipQueries,
           }
         )
-        .then(() => {
+        .then(async (res) => {
+          const membershipId = res?.updateMembershipByNodeId?.membership?.id
+          console.log(JSON.stringify(res, null, 2))
+
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates
           if (shouldSendEmail) {
-            sendMembershipConfirmation(membershipValues.id!, profile, membershipValues, true)
+            sendMembershipConfirmation(profile, membershipValues, true)
           }
-          onClose()
+          await createOrUpdateTransaction(membershipValues, membershipId!, usersTransactions)
         })
-        .catch((error) => {
+        .catch((error: any) => {
           notify({ text: error.message, variant: 'error' })
         })
     } else {
@@ -152,18 +155,15 @@ export const useEditMembership = (onClose: OnCloseHandler, getOwed: GetOwed) => 
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getMembershipsByYear'])
-              queryClient.invalidateQueries(['getMembershipByYearAndId'])
-            },
+            onSuccess: invalidateMembershipQueries,
           }
         )
-        .then((res) => {
+        .then(async (res) => {
           const membershipId = res?.createMembership?.membership?.id
           if (membershipId) {
             notify({ text: 'Membership created', variant: 'success' })
-            sendMembershipConfirmation(membershipId, profile, membershipValues)
-            onClose()
+            sendMembershipConfirmation(profile, membershipValues)
+            await createOrUpdateTransaction(membershipValues, membershipId, usersTransactions)
           } else {
             notify({ text: 'Membership creation failed', variant: 'error' })
           }

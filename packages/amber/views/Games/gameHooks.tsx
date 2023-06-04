@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 
 import {
@@ -16,6 +15,7 @@ import {
   useGetMembershipsByYearQuery,
   useUpdateGameByNodeIdMutation,
 } from '../../client'
+import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
@@ -54,7 +54,9 @@ export const useUpdateGameAssignment = () => {
   const notify = useNotification()
   const createGameAssignment = useCreateGameAssignmentMutation()
   const deleteGameAssignment = useDeleteGameAssignmentMutation()
-  const queryClient = useQueryClient()
+  const invalidateGameQueries = useInvalidateGameQueries()
+  const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
+
   const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
     year,
   })
@@ -110,8 +112,8 @@ export const useUpdateGameAssignment = () => {
               },
               {
                 onSuccess: () => {
-                  queryClient.invalidateQueries(['getGameAssignmentsByYear'])
-                  gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
+                  invalidateGameAssignmentQueries()
+                  invalidateGameQueries()
                 },
               }
             )
@@ -123,7 +125,15 @@ export const useUpdateGameAssignment = () => {
       })
       await Promise.allSettled(updaters)
     },
-    [createGameAssignment, deleteGameAssignment, gameAssignmentData, notify, queryClient, year]
+    [
+      createGameAssignment,
+      deleteGameAssignment,
+      gameAssignmentData,
+      invalidateGameAssignmentQueries,
+      invalidateGameQueries,
+      notify,
+      year,
+    ]
   )
 }
 
@@ -138,7 +148,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
   const configuration = useConfiguration()
   const createGame = useCreateGameMutation()
   const updateGame = useUpdateGameByNodeIdMutation()
-  const queryClient = useQueryClient()
+  const invalidateGameQueries = useInvalidateGameQueries()
   const notify = useNotification()
   const sendEmail = useSendEmail()
   const profile = useProfile()
@@ -215,9 +225,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
               },
             },
             {
-              onSuccess: () => {
-                gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
-              },
+              onSuccess: invalidateGameQueries,
             }
           )
           .then(async () => {
@@ -245,9 +253,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
               },
             },
             {
-              onSuccess: () => {
-                gameQueries.forEach((q) => queryClient.invalidateQueries([q]))
-              },
+              onSuccess: invalidateGameQueries,
             }
           )
           .then(async (res) => {
@@ -265,11 +271,11 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
     [
       configuration.year,
       createGame,
+      invalidateGameQueries,
       membershipList,
       notify,
       onClose,
       profile,
-      queryClient,
       sendEmail,
       setGameGmAssignments,
       shouldSendEmail,

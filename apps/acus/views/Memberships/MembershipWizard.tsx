@@ -9,21 +9,25 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
+  useGetTransactionByUserQuery,
   useUser,
   useYearFilter,
 } from 'amber'
 import { MembershipType } from 'amber/utils/apiTypes'
 import { fromSlotsAttending, toSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+import {
+  getDefaultMembership,
+  membershipValidationSchemaUS as membershipValidationSchema,
+} from 'amber/views/Memberships/membershipUtils'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { Wizard, WizardPage } from 'ui'
 import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
-import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
 import { MembershipStepPayment } from './MembershipStepPayment'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -70,10 +74,14 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
+  const createOrUpdateMembership = useEditMembership(onClose)
   const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
+
+  const { data: usersTransactions } = useGetTransactionByUserQuery({
+    userId: initialValues!.userId!,
+  })
 
   const pages = useMemo(() => {
     const virtualPages: WizardPage[] = [
@@ -158,7 +166,9 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfile(profileValues).then(async () => createOrUpdateMembership(membershipValues, profileValues))
+    await updateProfile(profileValues).then(async () =>
+      createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+    )
   }
 
   const values = useMemo(() => {

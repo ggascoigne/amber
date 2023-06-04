@@ -6,11 +6,12 @@ import { useField, useFormikContext } from 'formik'
 export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> {
   name: string
   overrideFormik?: boolean
+  parse?: (value: string) => any
 }
 
 export const TextField: React.ComponentType<TextFieldProps> = (props) => {
-  const { overrideFormik, ...rest } = props
-  const [field, meta] = useField(rest.name)
+  const { overrideFormik, parse, ...rest } = props
+  const [field, meta, helpers] = useField(rest.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
   const [oldValue, setOldValue] = useState(field.value)
@@ -25,6 +26,13 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
 
   if (oldValue === undefined) {
     console.log(`field${field.name} is uncontrolled`)
+  }
+
+  const parseValue = (event: ChangeEvent<HTMLInputElement>) => {
+    if (parse) {
+      const parsedValue = parse(event.target.value)
+      helpers.setValue(parsedValue)
+    }
   }
 
   // I really don't want to do this by accident so the default always forces the formik overrides
@@ -59,6 +67,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
     })
     // @ts-ignore
     originalOnChange?.(event, ...rest1!)
+    parseValue(event)
   }
 
   return <MuiTextField {...fullProps} onChange={onChangeField} />

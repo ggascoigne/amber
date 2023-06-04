@@ -1,6 +1,6 @@
-import { GqlType, ToFormValues } from './ts-utils'
+import { GqlType, ToFormValues } from 'ui/utils/ts-utils'
 
-import { GameFieldsFragment, GetMembershipsByYearQuery } from '../client'
+import { GameFieldsFragment, GetMembershipsByYearQuery, GetUserByIdQuery } from '../client'
 import { SlotSummary } from '../pages/GameSignup/SlotDetails'
 import { HotelRoom } from '../pages/HotelRoomTypes/HotelRoomTypes'
 
@@ -9,6 +9,8 @@ export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nod
 export type MembershipType = ToFormValues<Membership> & {
   slotsAttendingData?: boolean[]
 }
+
+export type UserType = GqlType<GetUserByIdQuery, ['user']>
 
 export interface MembershipConfirmationBody {
   update?: boolean

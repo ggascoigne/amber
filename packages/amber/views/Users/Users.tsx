@@ -15,6 +15,7 @@ const columns: Column<UsersAndProfileType>[] = [
   { accessor: 'email' },
   { id: 'snailMailAddress', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.snailMailAddress },
   { id: 'phoneNumber', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.phoneNumber },
+  { accessor: 'amountOwed' },
 ]
 
 const Users: React.FC = React.memo(() => {

@@ -47,8 +47,6 @@ if ! virtual
         li Postal Address: #{address}
         li Phone Number: #{phoneNumber}
 
-//p If you need to make changes to your registration, please email #{contactEmail}.
-
 if membership.slotsAttending
     p You've indicated that you are likely to attend the following slots:
     ul
@@ -56,19 +54,23 @@ if membership.slotsAttending
             li=sd
 
 if membership.message
-    p Message to Simone: #{membership.message}
+    p Message to the organizers: #{membership.message}
 
 if owed
-    h3 Payment of $#{owed} should be made out to
+    h3 Payment of $#{owed} can be made by visiting:
 
-    p Simone Cooper
+    https://amberconnw.org/payment
+
+    p or by sending a check for $#{owed} made out to:
+
+    p AmberCon NorthWest Inc
 
     p and sent to
 
     p
-     | AmberCon NW<br>
+     | AmberCon NorthWest Inc<br>
      | c/o Simone Cooper<br>
-     | 8047 N. Syracuse St.<br>
-     | Portland, OR 97203-4939
+     | 1914 SE 24th Ave<br>
+     | Portland OR 97214
 
 p You can view or edit your #{year} membership at #{url}.

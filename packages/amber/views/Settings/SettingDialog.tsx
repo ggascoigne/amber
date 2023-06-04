@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import { EditDialog, GridContainer, GridItem, OnCloseHandler, pick, SelectField, TextField, useNotification } from 'ui'
 import Yup from 'ui/utils/Yup'
@@ -8,6 +7,7 @@ import Yup from 'ui/utils/Yup'
 import { Setting, SettingValue, typeValues } from './shared'
 
 import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
+import { useInvalidateSettingsQueries } from '../../client/querySets'
 
 const validationSchema = Yup.object().shape({
   code: Yup.string().min(2).max(100).required('Required'),
@@ -26,7 +26,7 @@ interface SettingDialogProps {
 export const useEditSetting = (onClose: OnCloseHandler) => {
   const createSetting = useCreateSettingMutation()
   const updateSetting = useUpdateSettingByNodeIdMutation()
-  const queryClient = useQueryClient()
+  const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
   return async (values: FormValues) => {
@@ -42,9 +42,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getSettings'])
-            },
+            onSuccess: invalidateSettingsQueries,
           }
         )
         .then(() => {
@@ -65,9 +63,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getSettings'])
-            },
+            onSuccess: invalidateSettingsQueries,
           }
         )
         .then((_res) => {

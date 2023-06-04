@@ -2,7 +2,6 @@ import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
-import { useQueryClient } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
@@ -13,6 +12,7 @@ import { SettingDialog } from './SettingDialog'
 import { Setting } from './shared'
 
 import { useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
+import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 
 export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
@@ -80,7 +80,7 @@ const Settings: React.FC = React.memo(() => {
   )
 
   const deleteSetting = useDeleteSettingMutation()
-  const queryClient = useQueryClient()
+  const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
   const { isLoading, error, data, refetch } = useGetSettingsQuery()
 
@@ -100,8 +100,7 @@ const Settings: React.FC = React.memo(() => {
 
   const clearSelectionAndRefresh = () => {
     setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries(['getSettings'])
+    invalidateSettingsQueries()
   }
 
   const onAdd: TableMouseEventHandler<Setting> = () => () => {

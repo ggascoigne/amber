@@ -138,11 +138,11 @@ export const Welcome: React.FC = () => {
         {/*  </span> */}
         {/* </li> */}
         {/* referenced in shirtOrder / _form.gsp */}
-        <li>
+        {/* <li>
           <span className={classes.deadline}>
             Travel coordination information due: <ConfigDate name='travelCoordination' format={MDY} />
           </span>
-        </li>
+        </li> */}
         <li>
           <span className={classes.deadline}>
             Last date for cancellation with partial refund:{' '}

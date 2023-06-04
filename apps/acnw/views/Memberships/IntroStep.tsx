@@ -23,12 +23,6 @@ export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       </DialogContentText>
 
       <DialogContentText>
-        <strong>
-          Masks are required in all convention spaces, as is vaccination or proof of negative covid PCR test.
-        </strong>
-      </DialogContentText>
-
-      <DialogContentText>
         You should also review both our <Link href='/anti-harassment-policy'>Anti-Harassment Policy</Link> and our{' '}
         <Link href='/covid-policy'>COVID Policy</Link>.
         {configuration.virtual &&

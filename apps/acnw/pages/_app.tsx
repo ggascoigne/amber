@@ -11,7 +11,6 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
   configData?: any
 }
-
 export default function MyApp(props: MyAppProps) {
   return <RootComponent title='AmberCon Northwest' banner={<Banner to='/' />} rootRoutes={rootRoutes} {...props} />
 }
