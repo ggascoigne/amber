@@ -132,7 +132,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
         )
         .then(async (res) => {
           const membershipId = res?.updateMembershipByNodeId?.membership?.id
-          console.log(JSON.stringify(res, null, 2))
+          // console.log(JSON.stringify(res, null, 2))
 
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates

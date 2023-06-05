@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useMemo } from 'react'
+import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react'
 
 import { Button, Dialog, DialogActions, DialogContent, Step, StepButton, Stepper, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -84,6 +84,26 @@ const useSteps = (steps: WizardPage[], isEditing: boolean) => {
   }
 }
 
+export const SaveButtonDefault: React.FC<{
+  disabled: boolean
+  validateForm: (values?: any) => Promise<FormikErrors<any>>
+  submitForm: (() => Promise<void>) & (() => Promise<any>)
+  children: ReactNode
+}> = ({ disabled, children, validateForm, submitForm }) => (
+  <Button
+    onClick={() =>
+      validateForm().then(() => {
+        submitForm()
+      })
+    }
+    variant='contained'
+    color='primary'
+    disabled={disabled}
+  >
+    {children}
+  </Button>
+)
+
 interface WizardProps<T> {
   pages: WizardPage[]
   values: T
@@ -92,6 +112,12 @@ interface WizardProps<T> {
   validationSchema: any
   open: boolean
   isEditing: boolean
+  SaveButton?: React.FC<{
+    disabled: boolean
+    validateForm: (values?: any) => Promise<FormikErrors<any>>
+    submitForm: (() => Promise<void>) & (() => Promise<any>)
+    children: ReactNode
+  }>
 }
 
 export const Wizard = <T extends FormikValues = FormikValues>({
@@ -102,6 +128,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   validationSchema,
   open,
   isEditing,
+  SaveButton = SaveButtonDefault,
 }: WizardProps<T>) => {
   const activePages = useMemo(() => pages.filter(({ enabled = true }) => enabled), [pages])
   const { getActiveStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } = useSteps(
@@ -182,14 +209,24 @@ export const Wizard = <T extends FormikValues = FormikValues>({
                   minute I add a submit button to the page
                   and simply doing things manually appears to work
                */}
-              <Button
-                onClick={() => validateForm().then(() => (canSave() ? submitForm() : handleNext()))}
-                variant='contained'
-                color='primary'
-                disabled={isSubmitting || errorsOnCurrentPage(getActiveStep(), errors)}
-              >
-                {canSave() ? 'Save' : 'Next'}
-              </Button>
+              {canSave() ? (
+                <SaveButton
+                  validateForm={validateForm}
+                  submitForm={submitForm}
+                  disabled={isSubmitting || errorsOnCurrentPage(getActiveStep(), errors)}
+                >
+                  Save
+                </SaveButton>
+              ) : (
+                <Button
+                  onClick={() => validateForm().then(() => handleNext())}
+                  variant='contained'
+                  color='primary'
+                  disabled={isSubmitting || errorsOnCurrentPage(getActiveStep(), errors)}
+                >
+                  Next
+                </Button>
+              )}
             </DialogActions>
           </>
         )}

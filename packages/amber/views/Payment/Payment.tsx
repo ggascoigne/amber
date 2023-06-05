@@ -31,7 +31,7 @@ export const Payment: React.FC = () => {
     }
   }, [setPaymentIntent])
 
-  console.log('Payment', { paymentIntent })
+  // console.log('Payment', { paymentIntent })
 
   return (
     <Page title='Make Payment'>

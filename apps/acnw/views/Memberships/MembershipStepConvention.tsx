@@ -1,13 +1,7 @@
 import React from 'react'
 
 import { DialogContentText } from '@mui/material'
-import {
-  ContactEmail,
-  ConventionsDatesFull,
-  useConfiguration,
-  useGetAttendanceOptions,
-  useGetInterestOptions,
-} from 'amber'
+import { ContactEmail, ConventionsDatesFull, useConfiguration, useGetAttendanceOptions } from 'amber'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
 import { FormikErrors, FormikValues } from 'formik'
 import { CheckboxWithLabel, GridContainer, GridItem, RadioGroupFieldWithLabel } from 'ui'
@@ -24,7 +18,6 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
 export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const configuration = useConfiguration()
   const attendanceOptions = useGetAttendanceOptions()
-  const interestOptions = useGetInterestOptions()
   return (
     <>
       <DialogContentText>
@@ -62,23 +55,10 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
             selectValues={attendanceOptions}
           />
         </GridItem>
-        <GridItem xs={12} md={12}>
-          <DialogContentText>
-            {configuration.title} currently accepts payment only by check or money order. Payment instructions are at
-            the bottom of this page.
-          </DialogContentText>
-          <RadioGroupFieldWithLabel
-            aria-label='Payment'
-            name={`${prefix}interestLevel`}
-            label='Payment'
-            selectValues={interestOptions}
-          />
-        </GridItem>
       </GridContainer>
       <h4>Need Help & Give Help</h4>
       <DialogContentText>
-        With all of the changes due to COVID this year, we have had to implement a significant price increase. Through
-        the extraordinary generosity of our members, however, {configuration.title} can offer a small number of
+        Through the extraordinary generosity of our members, {configuration.title} can offer a small number of
         registrations at the a subsidized rate of ${configuration.subsidizedMembership} for full memberships and $
         {configuration.subsidizedMembershipShort} for short memberships.
       </DialogContentText>

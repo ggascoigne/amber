@@ -22,7 +22,7 @@ export const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onCl
     await updateTransaction(v)
   }
 
-  console.log({ initialValues })
+  // console.log({ initialValues })
 
   return (
     <EditDialog

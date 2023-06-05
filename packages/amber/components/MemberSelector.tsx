@@ -80,8 +80,6 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({ year, label, onC
   }, [data])
 
   const onInputChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('onInputChange', ev.target.value)
-
     setSearchTerm(ev.target.value ?? '')
   }, [])
 

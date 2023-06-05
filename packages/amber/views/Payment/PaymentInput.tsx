@@ -60,12 +60,12 @@ const calculateState = (state: ReducerState) => {
       .with('other', () => state.customValue)
       .exhaustive(),
   }
-  console.log('calculateState', result)
+  // console.log('calculateState', result)
   return result
 }
 
 const reducer = (state: ReducerState, action: ReducerAction) => {
-  console.log('reducer state', state)
+  // console.log('reducer state', state)
 
   switch (action.type) {
     case 'setButtonState': {
@@ -205,11 +205,6 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                 {displayFullMembershipPayment && (
                   <>
                     <FormControlLabel
-                      value='deposit'
-                      control={<Radio />}
-                      label={`Deposit: ${formatAmountForDisplay(configuration.deposit)}`}
-                    />
-                    <FormControlLabel
                       value='full'
                       control={<Radio />}
                       label={
@@ -218,18 +213,23 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                           : null
                       }
                     />
+                    <FormControlLabel
+                      value='deposit'
+                      control={<Radio />}
+                      label={`Deposit: ${formatAmountForDisplay(configuration.deposit)}`}
+                    />
                   </>
                 )}
                 <FormControlLabel
                   value='other'
                   control={<Radio />}
-                  label={displayFullMembershipPayment ? 'Other Amount' : 'Payment'}
+                  label={displayFullMembershipPayment ? 'Partial Payment' : 'Payment'}
                 />
               </RadioGroup>
             </Grid>
             <Grid item>
               <TextField
-                label='Other Amount'
+                label={displayFullMembershipPayment ? 'Partial Payment' : 'Payment'}
                 value={state.customValue}
                 variant='outlined'
                 onChange={handleCustomValueChange}
@@ -351,7 +351,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
           </Grid>
         ))}
         <Grid item xs sx={{ width: '100%' }}>
-          <MemberSelector year={year} label='Add Payment for another Member' onChange={onAddAnotherMember} />
+          <MemberSelector year={year} label='Add Payment for another Registered Member' onChange={onAddAnotherMember} />
         </Grid>
       </Grid>
     </Box>

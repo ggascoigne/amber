@@ -28,6 +28,7 @@
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.132",
     "@mui/material": "^5.13.3",
     "@mui/system": "^5.13.2",
     "@mui/x-date-pickers": "^6.6.0",

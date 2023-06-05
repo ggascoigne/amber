@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Perms,
   ProfileFormContent,
@@ -48,13 +49,6 @@ interface MembershipWizardProps {
   short?: boolean
 }
 
-// what hard coded lists did the old system map to
-// const legacyValueLists = {
-//   interestLevel: ['Full', 'Deposit'],
-//   attendance: ['Thurs-Sun', 'Fri-Sun'],
-//   roomingPreferences: ['room-with', 'assign-me', 'other'],
-// }
-
 const validationSchema = Yup.object().shape({
   intro: Yup.object().shape({
     acceptedPolicies: Yup.bool().required().oneOf([true], 'Policies must be accepted'),
@@ -62,6 +56,59 @@ const validationSchema = Yup.object().shape({
   membership: membershipValidationSchema,
   profile: profileValidationSchema,
 })
+
+type RedirectInfo = {
+  shouldRedirect: boolean
+}
+
+export const redirectContext = createContext<
+  [RedirectInfo, React.Dispatch<React.SetStateAction<RedirectInfo>>] | undefined
+>(undefined)
+const RedirectProvider = redirectContext.Provider
+
+export const SaveButton: React.FC<{
+  disabled: boolean
+  validateForm: (values?: any) => Promise<FormikErrors<any>>
+  submitForm: (() => Promise<void>) & (() => Promise<any>)
+  children: ReactNode
+}> = ({ disabled, validateForm, submitForm }) => {
+  const [isLoading, setIsLoading] = useState<'now' | 'later' | undefined>(undefined)
+  const [, setShouldRedirect] = useContext(redirectContext)!
+  return (
+    <>
+      <LoadingButton
+        onClick={() =>
+          validateForm().then(() => {
+            submitForm()
+            setIsLoading('later')
+            setShouldRedirect({ shouldRedirect: false })
+          })
+        }
+        variant='contained'
+        color='primary'
+        loading={isLoading === 'later'}
+        disabled={disabled || isLoading !== undefined}
+      >
+        Pay Later
+      </LoadingButton>
+      <LoadingButton
+        onClick={() =>
+          validateForm().then(() => {
+            submitForm()
+            setIsLoading('now')
+            setShouldRedirect({ shouldRedirect: true })
+          })
+        }
+        variant='contained'
+        color='primary'
+        loading={isLoading === 'now'}
+        disabled={disabled || isLoading !== undefined}
+      >
+        Pay Now
+      </LoadingButton>
+    </>
+  )
+}
 
 export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   open,
@@ -80,6 +127,8 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
+  const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
+  const [redirectInfo] = redirectContextState
 
   const { data: usersTransactions } = useGetTransactionByUserQuery(
     {
@@ -181,7 +230,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     await updateProfile(profileValues).then(async () => {
       await createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
     })
-    if (!short) {
+    if (!short && redirectInfo.shouldRedirect) {
       router.push('/payment')
     }
   }
@@ -200,14 +249,17 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   }, [configuration, initialValues, isVirtual, profile, userId])
 
   return (
-    <Wizard
-      pages={pages}
-      values={values}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      onClose={onClose}
-      open={open}
-      isEditing={!!initialValues}
-    />
+    <RedirectProvider value={redirectContextState}>
+      <Wizard
+        pages={pages}
+        values={values}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        onClose={onClose}
+        open={open}
+        isEditing={!!initialValues}
+        SaveButton={SaveButton}
+      />
+    </RedirectProvider>
   )
 }

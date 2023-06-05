@@ -50,6 +50,11 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     exact: false,
   },
   {
+    path: '/payment',
+    label: 'Payment',
+    exact: true,
+  },
+  {
     path: '/gm',
     label: 'Become a GM',
     subText: `Manage your games`,
@@ -133,11 +138,6 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     label: 'Transactions',
     exact: true,
     permission: Perms.IsAdmin,
-  },
-  {
-    path: '/payment',
-    label: 'Payment',
-    exact: true,
   },
   {
     path: '/report-admin',
