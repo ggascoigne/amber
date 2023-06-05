@@ -8,10 +8,14 @@ import { handleError } from '../handleError'
 // body: {}
 
 export const getStripeConfigRoute = async (req: NextApiRequest, res: NextApiResponse) => {
+  const baseUrl = process.env.VERCEL_URL?.startsWith('http')
+    ? process.env.VERCEL_URL
+    : `https://${process.env.VERCEL_URL}`
+
   try {
     res.send({
       publishableKey: stripePublishableKey,
-      baseUrl: process.env.VERCEL_URL,
+      baseUrl,
     })
   } catch (err) {
     handleError(err, res)
