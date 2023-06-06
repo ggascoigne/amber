@@ -21,6 +21,8 @@ const afterCallback: AfterCallback = async (_req, _res, session, _state) => {
 
 export const authHandlers = {
   async callback(req: NextApiRequest, res: NextApiResponse) {
+    console.log(JSON.stringify(req, null, 2))
+
     try {
       await handleCallback(req, res, {
         afterCallback,
