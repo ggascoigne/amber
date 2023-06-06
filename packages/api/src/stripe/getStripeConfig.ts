@@ -8,7 +8,7 @@ import { handleError } from '../handleError'
 // body: {}
 
 export const getStripeConfigRoute = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log('req', JSON.stringify(req, null, 2))
+  console.log('req', req)
   console.log('Using env', JSON.stringify(process.env, null, 2))
 
   const baseUrl = process.env.VERCEL_URL?.startsWith('http')
