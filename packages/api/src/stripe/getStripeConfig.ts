@@ -8,12 +8,6 @@ import { handleError } from '../handleError'
 // body: {}
 
 export const getStripeConfigRoute = async (req: NextApiRequest, res: NextApiResponse) => {
-  // @ts-ignore
-  console.log({ 'req.hostname': req.hostname, 'headers.host': req.headers.host, originalUrl: req.originalUrl })
-  Object.entries(process.env)
-    .filter(([k]) => k.startsWith('VERCEL'))
-    .forEach(([k, v]) => console.log(`${k}=${v}`))
-
   const baseUrl = process.env.VERCEL_URL?.startsWith('http')
     ? process.env.VERCEL_URL
     : `https://${process.env.VERCEL_URL}`
