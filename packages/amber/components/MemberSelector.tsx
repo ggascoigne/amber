@@ -57,11 +57,17 @@ interface MemberSelectorProps {
   label: string
   year: number
   onChange: (newValue: UserMemberType | null) => void
+  onlyDisplayMembersWithBalances: boolean
 }
 
 let keyVal = 0
 
-export const MemberSelector: React.FC<MemberSelectorProps> = ({ year, label, onChange }) => {
+export const MemberSelector: React.FC<MemberSelectorProps> = ({
+  year,
+  label,
+  onChange,
+  onlyDisplayMembersWithBalances,
+}) => {
   const { classes, cx } = useStyles()
   const notify = useNotification()
   const [searchTerm, setSearchTerm] = useState('')
@@ -75,9 +81,15 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({ year, label, onC
   useEffect(() => {
     if (data) {
       const users = data.users?.nodes ?? []
-      setDropdownOptions(users.filter(notEmpty).filter((u) => u.memberships.nodes.length > 0))
+      setDropdownOptions(
+        users.filter(notEmpty).filter((u) => {
+          const hasMembership = u.memberships.nodes.length > 0
+          const hasBalance = u.amountOwed < 0
+          return onlyDisplayMembersWithBalances ? hasMembership && hasBalance : hasMembership
+        })
+      )
     }
-  }, [data])
+  }, [data, onlyDisplayMembersWithBalances])
 
   const onInputChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(ev.target.value ?? '')

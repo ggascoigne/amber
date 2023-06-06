@@ -84,7 +84,7 @@ export const SaveButton: React.FC<{
             setShouldRedirect({ shouldRedirect: false })
           })
         }
-        variant='contained'
+        variant='outlined'
         color='primary'
         loading={isLoading === 'later'}
         disabled={disabled || isLoading !== undefined}

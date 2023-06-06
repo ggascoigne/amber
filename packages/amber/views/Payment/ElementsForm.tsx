@@ -103,7 +103,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
         metadata: {
           userId,
           year,
-          payments: JSON.stringify(payments),
+          payments: JSON.stringify(payments.filter((p) => p.amount > 0)),
         },
       })
       setPaymentStatus(response)

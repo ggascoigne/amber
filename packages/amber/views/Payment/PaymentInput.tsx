@@ -145,7 +145,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       deposit: configuration.deposit,
       balance: amountOwed,
       buttonState: defaultButtonState(membership, amountOwed, displayFullMembershipPayment),
-      donation: 0,
+      donation: membership ? (membership.offerSubsidy ? 70 : 0) : 0,
       customValue: membership && displayFullMembershipPayment ? 0 : 0 - user.amountOwed,
       membershipPayment: 0,
     },
@@ -351,7 +351,12 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
           </Grid>
         ))}
         <Grid item xs sx={{ width: '100%' }}>
-          <MemberSelector year={year} label='Add Payment for another Registered Member' onChange={onAddAnotherMember} />
+          <MemberSelector
+            year={year}
+            label='Add Payment for another Registered Member'
+            onChange={onAddAnotherMember}
+            onlyDisplayMembersWithBalances
+          />
         </Grid>
       </Grid>
     </Box>
