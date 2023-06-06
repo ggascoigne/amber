@@ -53,6 +53,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     path: '/payment',
     label: 'Payment',
     exact: true,
+    permission: Perms.IsLoggedIn,
   },
   {
     path: '/gm',

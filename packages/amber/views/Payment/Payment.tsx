@@ -53,7 +53,7 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {amountOwed && (
+      {amountOwed ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${0 - amountOwed}</strong> made out to{' '}
@@ -67,7 +67,7 @@ export const Payment: React.FC = () => {
             Portland OR 97214
           </DialogContentText>
         </>
-      )}
+      ) : null}
       <DialogContentText>
         If you need to contact the organizers, do so at <ContactEmail />
       </DialogContentText>
