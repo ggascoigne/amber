@@ -1,0 +1,28 @@
+#import "./userFragment.graphql"
+
+fragment membershipFields on Membership {
+  nodeId
+  id
+  arrivalDate
+  attendance
+  attending
+  hotelRoomId
+  departureDate
+  interestLevel
+  message
+  offerSubsidy
+  requestOldPrice
+  roomPreferenceAndNotes
+  roomingPreferences
+  roomingWith
+  userId
+  volunteer
+  year
+  slotsAttending
+  user {
+    ...userFields
+  }
+  hotelRoom {
+    type
+  }
+}

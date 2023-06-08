@@ -1,4 +1,3 @@
-import { useQueryClient } from '@tanstack/react-query'
 import { GqlType, Omit, OnCloseHandler, pick, ToFormValues, useNotification } from 'ui'
 
 import {
@@ -8,7 +7,7 @@ import {
   useUpdateProfileByNodeIdMutation,
   useUpdateUserMutation,
 } from '../../client'
-import { allUserQueries } from '../../client/querySets'
+import { useInvalidateUserQueries } from '../../client/querySets'
 
 export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'nodes', number]>
 type ProfileValues = ToFormValues<GqlType<UsersAndProfiles, ['profiles', 'nodes', number]>>
@@ -39,11 +38,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
   const createProfile = useCreateProfileMutation()
   const updateProfile = useUpdateProfileByNodeIdMutation()
   const notify = useNotification()
-  const queryClient = useQueryClient()
-
-  const invalidateProfileQueries = () => {
-    allUserQueries.map((q) => queryClient.invalidateQueries([q]), { refetchActive: true, refetchInactive: true })
-  }
+  const invalidateUserQueries = useInvalidateUserQueries()
 
   return async (profileValues: UsersAndProfileType) =>
     updateUser
@@ -57,7 +52,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
           },
         },
         {
-          onSuccess: invalidateProfileQueries,
+          onSuccess: invalidateUserQueries,
         }
       )
       .then(async () => {
@@ -73,7 +68,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
               },
             },
             {
-              onSuccess: invalidateProfileQueries,
+              onSuccess: invalidateUserQueries,
             }
           )
         } else {
@@ -87,7 +82,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
               },
             },
             {
-              onSuccess: invalidateProfileQueries,
+              onSuccess: invalidateUserQueries,
             }
           )
         }
@@ -108,6 +103,7 @@ export const fillUserAndProfileValues = (values: UsersAndProfileType): UsersAndP
   lastName: values.lastName ?? '',
   fullName: values.fullName ?? '',
   displayName: values.displayName ?? '',
+  amountOwed: 0,
   profiles: {
     nodes: [
       {

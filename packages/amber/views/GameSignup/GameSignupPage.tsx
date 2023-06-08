@@ -26,6 +26,7 @@ import {
   useGetGameChoicesQuery,
   useUpdateGameChoiceByNodeIdMutation,
 } from '../../client'
+import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
@@ -43,11 +44,12 @@ export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?
 export const useEditGameChoice = () => {
   const configuration = useConfiguration()
   const createGameChoice = useCreateGameChoiceMutation()
+  const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
   const queryClient = useQueryClient()
   const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
     onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
       const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
-      await queryClient.cancelQueries(['getGameChoices'])
+      await invalidateGameChoiceQueries()
       const previousData = queryClient.getQueryData<GetGameChoicesQuery>(queryKey)
       // note that this isn't doing a deep copy, but since we're replacing the data that seems like a reasonably shortcut
       if (previousData?.gameChoices?.nodes && input?.input?.patch) {
@@ -73,9 +75,7 @@ export const useEditGameChoice = () => {
           year,
         },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries(['getGameChoices'])
-          },
+          onSuccess: invalidateGameChoiceQueries,
         }
       )
       .then(() => {
@@ -95,7 +95,7 @@ export const useEditGameChoice = () => {
           },
           {
             onSettled: () => {
-              if (refetch) queryClient.invalidateQueries(['getGameChoices'])
+              if (refetch) invalidateGameChoiceQueries()
             },
           }
         )
@@ -113,9 +113,7 @@ export const useEditGameChoice = () => {
           },
         },
         {
-          onSettled: () => {
-            queryClient.invalidateQueries(['getGameChoices'])
-          },
+          onSettled: invalidateGameChoiceQueries,
         }
       )
       .then(() => {

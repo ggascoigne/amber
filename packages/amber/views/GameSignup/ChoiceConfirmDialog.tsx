@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { useQueryClient } from '@tanstack/react-query'
 import { Form, Formik, FormikHelpers } from 'formik'
 import {
   DialogTitle,
@@ -22,6 +21,7 @@ import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
 import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from '../../client'
+import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { ContactEmail } from '../../components'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'
@@ -59,7 +59,7 @@ interface GameChoiceConfirmationEmail {
 export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   const createGameSubmission = useCreateGameSubmissionMutation()
   const updateGameSubmission = useUpdateGameSubmissionByNodeIdMutation()
-  const queryClient = useQueryClient()
+  const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
 
   const notify = useNotification()
   const sendEmail = useSendEmail()
@@ -99,9 +99,7 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getGameChoices'])
-            },
+            onSuccess: invalidateGameChoiceQueries,
           }
         )
         .then(() => {
@@ -122,9 +120,7 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
             },
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['getGameChoices'])
-            },
+            onSuccess: invalidateGameChoiceQueries,
           }
         )
         .then(() => {

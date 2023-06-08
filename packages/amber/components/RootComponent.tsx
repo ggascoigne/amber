@@ -18,7 +18,7 @@ import { RouteGuard } from './Auth'
 import { Layout } from './Layout'
 import { RootRoutes } from './Navigation'
 
-import { ConfigProvider, Configuration, getSettingsObject, useConfiguration } from '../utils'
+import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -43,6 +43,7 @@ const RootInner = (props: RootComponentProps) => {
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
   const [showDevtools, setShowDevtools] = React.useState(false)
+  useInitializeStripe()
 
   React.useEffect(() => {
     // @ts-ignore
@@ -50,38 +51,36 @@ const RootInner = (props: RootComponentProps) => {
   }, [])
 
   return (
-    <JotaiProvider>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>{title}</title>
-          <meta
-            name='viewport'
-            content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
-          />
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <LocalizationProvider dateAdapter={AdapterLuxon}>
-            <NotificationProvider>
-              <UserProvider user={user}>
-                <Layout rootRoutes={routes} title={title} banner={banner}>
-                  <RouteGuard routes={routes}>
-                    <Component {...pageProps} />
-                  </RouteGuard>
-                  <ReactQueryDevtools />
-                  {showDevtools ? (
-                    <React.Suspense fallback={null}>
-                      <ReactQueryDevtoolsProduction />
-                    </React.Suspense>
-                  ) : null}
-                </Layout>
-              </UserProvider>
-            </NotificationProvider>
-          </LocalizationProvider>
-        </ThemeProvider>
-      </CacheProvider>
-    </JotaiProvider>
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <title>{title}</title>
+        <meta
+          name='viewport'
+          content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
+        />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <LocalizationProvider dateAdapter={AdapterLuxon}>
+          <NotificationProvider>
+            <UserProvider user={user}>
+              <Layout rootRoutes={routes} title={title} banner={banner}>
+                <RouteGuard routes={routes}>
+                  <Component {...pageProps} />
+                </RouteGuard>
+                <ReactQueryDevtools />
+                {showDevtools ? (
+                  <React.Suspense fallback={null}>
+                    <ReactQueryDevtoolsProduction />
+                  </React.Suspense>
+                ) : null}
+              </Layout>
+            </UserProvider>
+          </NotificationProvider>
+        </LocalizationProvider>
+      </ThemeProvider>
+    </CacheProvider>
   )
 }
 
@@ -97,7 +96,9 @@ export default function RootComponent(props: RootComponentProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={dehydratedState}>
         <ConfigProvider value={config}>
-          <RootInner {...props} />
+          <JotaiProvider>
+            <RootInner {...props} />
+          </JotaiProvider>
         </ConfigProvider>
       </Hydrate>
     </QueryClientProvider>

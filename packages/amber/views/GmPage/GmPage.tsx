@@ -2,7 +2,6 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Button, Theme } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
@@ -16,6 +15,7 @@ import {
   useGetGamesByAuthorQuery,
   useGetGamesByYearAndAuthorQuery,
 } from '../../client'
+import { useInvalidateGameQueries } from '../../client/querySets'
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
@@ -217,7 +217,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useDeleteGameMutation()
-  const queryClient = useQueryClient()
+  const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
   const displayGameBook = useFlag('display_gamebook')
@@ -260,11 +260,7 @@ const MemberGmPage: React.FC = React.memo(() => {
           input: { id: g.id },
         },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries(['getGamesByYear'])
-            queryClient.invalidateQueries(['getGamesByAuthor'])
-            queryClient.invalidateQueries(['getGamesByYearAndAuthor'])
-          },
+          onSuccess: invalidateGameQueries,
         }
       )
     )

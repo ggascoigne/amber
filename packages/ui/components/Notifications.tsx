@@ -112,7 +112,7 @@ export const useNotification = () => {
       enqueueSnackbar(text, {
         variant,
         disableWindowBlurListener: true,
-        autoHideDuration: /* variant !== 'error' ? 6000 : */ null,
+        autoHideDuration: variant === 'error' ? null : 6000,
         anchorOrigin: { vertical: 'top', horizontal: 'right' },
         action: (keyValue) => <SnackBarActionHandler keyValue={keyValue} />,
         ...options,

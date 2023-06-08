@@ -1,0 +1,83 @@
+#import "./membershipFragment.graphql"
+#import "./userFragment.graphql"
+
+query getMembershipByYearAndId($year: Int!, $userId: Int!) {
+  memberships(condition: { userId: $userId, year: $year }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+query getMembershipsByYear($year: Int!) {
+  memberships(condition: { year: $year }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+query getMembershipRoomsByYear($year: Int!) {
+  memberships(condition: { year: $year }) {
+    nodes {
+      hotelRoom {
+        id
+        type
+        gamingRoom
+        bathroomType
+      }
+    }
+  }
+}
+
+query getMembershipsById($id: Int!) {
+  memberships(condition: { id: $id }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+query getMembershipByYearAndRoom($year: Int!, $hotelRoomId: Int!) {
+  memberships(condition: { year: $year, hotelRoomId: $hotelRoomId }) {
+    nodes {
+      ...membershipFields
+    }
+  }
+}
+
+mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
+  updateMembershipByNodeId(input: $input) {
+    membership {
+      ...membershipFields
+    }
+  }
+}
+
+mutation createMembership($input: CreateMembershipInput!) {
+  createMembership(input: $input) {
+    membership {
+      ...membershipFields
+    }
+  }
+}
+
+mutation deleteMembership($input: DeleteMembershipInput!) {
+  deleteMembership(input: $input) {
+    clientMutationId
+    deletedMembershipNodeId
+  }
+}
+
+query getAllMembersBy($year: Int!, $query: String!) {
+  users(orderBy: LAST_NAME_ASC, filter: { fullName: { includesInsensitive: $query } }) {
+    nodes {
+      ...userFields
+      memberships(condition: { attending: true, year: $year }) {
+        nodes {
+          ...membershipFields
+        }
+      }
+    }
+  }
+}

@@ -6,5 +6,6 @@ module.exports = {
   rules: {
     // 'local/no-promise-all': 'error',
     'no-console': 'off',
+    'no-plusplus': 'off',
   },
 }

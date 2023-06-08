@@ -3,6 +3,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
 
+import { AmountOwed } from './AmountOwed'
 import { HasPermission, Perms } from './Auth'
 import { UserSelector } from './UserSelector'
 import { YearSelector } from './YearSelector'
@@ -79,6 +80,9 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
       </HasPermission>
       <HasPermission permission={Perms.IsAdmin}>
         <YearSelector />
+      </HasPermission>
+      <HasPermission permission={Perms.IsLoggedIn}>
+        <AmountOwed />
       </HasPermission>
       <Hidden mdDown implementation='css'>
         {rightMenu()}

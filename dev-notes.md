@@ -45,3 +45,19 @@ Note that this builds acnw by default, but for this sort of problem that's proba
 
 This will log the sizes of the various libraries that are taking up your serverless function space.  Use that information to edit `outputFileTracingExcludes` entry in the `next.config.js`.
 
+
+# Testing with Stripe
+
+There's an annoying circular reference when trying to test Stripe on a Preview build.  The Auth0 path defaults to the randomly generated hostname, but the Stripe webhook need to be created with a known host before you can get the webhook secret, and that needs to be passed in as an environment variable and build time, before you know what the hostname will be.
+
+To work around this you need to do a few things.
+
+Push your branch to git, a branch like ggp/stripe-payments will be deployed with a random name as well as a redirect to a predictable name such as https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/.
+
+Create new environment variables that are applied to the Preview environment, and most importantly, only applied to this new branch.
+
+set AUTH0_BASE_URL=https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/ or whatever the branch deployment url is.  Without this you can't login.
+
+set STRIPE_WEBHOOK_SECRET= the secret you get when you reveal it for the new webhook that you add at https://dashboard.stripe.com/test/webhooks.  Note that for the above url, the webhook address is 
+https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/api/stripe/webhooks
+

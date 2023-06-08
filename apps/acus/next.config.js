@@ -15,7 +15,7 @@ const withMdxFm = require('next-mdx-frontmatter')({
 
 module.exports = withMdxFm({
   reactStrictMode: true,
-  transpilePackages: ['ui', 'database', 'amber'],
+  transpilePackages: ['ui', 'database', 'amber', '@mui/material'],
   eslint: {
     // Warning: This allows production builds to successfully complete even if
     // your project has ESLint errors.

@@ -1,0 +1,64 @@
+#import "./transactionFragment.graphql"
+
+query getTransaction {
+  transactions {
+    nodes {
+      ...transactionFields
+    }
+  }
+}
+
+query getTransactionByYear($year: Int!) {
+  transactions(condition: { year: $year }) {
+    nodes {
+      ...transactionFields
+    }
+  }
+}
+
+query getTransactionByUser($userId: Int!) {
+  transactions(condition: { userId: $userId }) {
+    nodes {
+      ...transactionFields
+    }
+  }
+}
+
+query getTransactionByYearAndUser($year: Int!, $userId: Int!) {
+  transactions(condition: { year: $year, userId: $userId }) {
+    nodes {
+      ...transactionFields
+    }
+  }
+}
+
+query getTransactionByYearAndMember($year: Int!, $memberId: Int!) {
+  transactions(condition: { year: $year, memberId: $memberId }) {
+    nodes {
+      ...transactionFields
+    }
+  }
+}
+
+mutation createTransaction($input: CreateTransactionInput!) {
+  createTransaction(input: $input) {
+    transaction {
+      ...transactionFields
+    }
+  }
+}
+
+mutation deleteTransaction($input: DeleteTransactionInput!) {
+  deleteTransaction(input: $input) {
+    clientMutationId
+    deletedTransactionNodeId
+  }
+}
+
+mutation updateTransactionByNodeId($input: UpdateTransactionByNodeIdInput!) {
+  updateTransactionByNodeId(input: $input) {
+    transaction {
+      ...transactionFields
+    }
+  }
+}

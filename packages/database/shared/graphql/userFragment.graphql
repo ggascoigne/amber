@@ -1,0 +1,26 @@
+fragment userFields on User {
+  nodeId
+  id
+  email
+  fullName
+  firstName
+  lastName
+  displayName
+  amountOwed
+}
+
+fragment profileFields on Profile {
+  nodeId
+  userId
+  phoneNumber
+  snailMailAddress
+}
+
+fragment userAndProfileFields on User {
+  ...userFields
+  profiles {
+    nodes {
+      ...profileFields
+    }
+  }
+}

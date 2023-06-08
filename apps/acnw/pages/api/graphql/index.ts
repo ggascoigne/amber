@@ -1,4 +1,4 @@
-import { graphqlRoute } from './[operation]'
+import { graphqlRoute } from '@amber/api'
 
 export const config = {
   api: {

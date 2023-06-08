@@ -9,3 +9,11 @@ SET
 TYPE = 'perm-gate'
 WHERE
 TYPE = 'integer';
+
+
+SELECT
+  SUM(amount)
+FROM
+  transactions
+WHERE
+  user_id = 1;

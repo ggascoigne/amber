@@ -27,3 +27,11 @@ exports.adminUpdatePolicy = adminUpdatePolicy
 
 const enableRls = (table) => `ALTER TABLE ${q(table)} ENABLE ROW LEVEL SECURITY;`
 exports.enableRls = enableRls
+
+const fixGrants = (user) => `
+  GRANT USAGE ON SCHEMA public TO ${user};
+  GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${user};
+  GRANT SELECT, UPDATE, USAGE ON ALL SEQUENCES IN SCHEMA public TO ${user};
+  GRANT EXECUTE ON ALL ROUTINES IN SCHEMA public TO ${user};
+`
+exports.fixGrants = fixGrants

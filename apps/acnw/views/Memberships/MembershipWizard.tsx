@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react'
+import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Perms,
   ProfileFormContent,
@@ -8,22 +9,27 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
+  useGetTransactionByUserQuery,
   useUser,
   useYearFilter,
 } from 'amber'
 import { MembershipType } from 'amber/utils/apiTypes'
 import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+import {
+  getDefaultMembership,
+  membershipValidationSchemaNW as membershipValidationSchema,
+} from 'amber/views/Memberships/membershipUtils'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
+import { useRouter } from 'next/router'
 import { Wizard, WizardPage } from 'ui'
 import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
-import { hasAdminStepErrors, MembershipStepAdmin } from './MembershipAdmin'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
 import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
-import { getDefaultMembership, getOwed, membershipValidationSchema } from './membershipUtils'
 
 interface IntroType {
   acceptedPolicies: boolean
@@ -43,13 +49,6 @@ interface MembershipWizardProps {
   short?: boolean
 }
 
-// what hard coded lists did the old system map to
-// const legacyValueLists = {
-//   interestLevel: ['Full', 'Deposit'],
-//   attendance: ['Thurs-Sun', 'Fri-Sun'],
-//   roomingPreferences: ['room-with', 'assign-me', 'other'],
-// }
-
 const validationSchema = Yup.object().shape({
   intro: Yup.object().shape({
     acceptedPolicies: Yup.bool().required().oneOf([true], 'Policies must be accepted'),
@@ -57,6 +56,59 @@ const validationSchema = Yup.object().shape({
   membership: membershipValidationSchema,
   profile: profileValidationSchema,
 })
+
+type RedirectInfo = {
+  shouldRedirect: boolean
+}
+
+export const redirectContext = createContext<
+  [RedirectInfo, React.Dispatch<React.SetStateAction<RedirectInfo>>] | undefined
+>(undefined)
+const RedirectProvider = redirectContext.Provider
+
+export const SaveButton: React.FC<{
+  disabled: boolean
+  validateForm: (values?: any) => Promise<FormikErrors<any>>
+  submitForm: (() => Promise<void>) & (() => Promise<any>)
+  children: ReactNode
+}> = ({ disabled, validateForm, submitForm }) => {
+  const [isLoading, setIsLoading] = useState<'now' | 'later' | undefined>(undefined)
+  const [, setShouldRedirect] = useContext(redirectContext)!
+  return (
+    <>
+      <LoadingButton
+        onClick={() =>
+          validateForm().then(() => {
+            submitForm()
+            setIsLoading('later')
+            setShouldRedirect({ shouldRedirect: false })
+          })
+        }
+        variant='outlined'
+        color='primary'
+        loading={isLoading === 'later'}
+        disabled={disabled || isLoading !== undefined}
+      >
+        Pay Later
+      </LoadingButton>
+      <LoadingButton
+        onClick={() =>
+          validateForm().then(() => {
+            submitForm()
+            setIsLoading('now')
+            setShouldRedirect({ shouldRedirect: true })
+          })
+        }
+        variant='contained'
+        color='primary'
+        loading={isLoading === 'now'}
+        disabled={disabled || isLoading !== undefined}
+      >
+        Pay Now
+      </LoadingButton>
+    </>
+  )
+}
 
 export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   open,
@@ -70,10 +122,20 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
   const { userId } = useUser()
-  const createOrUpdateMembership = useEditMembership(onClose, getOwed)
+  const createOrUpdateMembership = useEditMembership(onClose)
   const updateProfile = useEditUserAndProfile()
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
+  const router = useRouter()
+  const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
+  const [redirectInfo] = redirectContextState
+
+  const { data: usersTransactions } = useGetTransactionByUserQuery(
+    {
+      userId: initialValues?.userId ?? -1,
+    },
+    { enabled: !!initialValues?.userId }
+  )
 
   const pages = useMemo(() => {
     const virtualPages: WizardPage[] = [
@@ -100,7 +162,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         hasErrors: (errors: FormikErrors<FormikValues>) => !!errors.membership,
       },
       {
-        name: 'Payment',
+        name: 'Summary',
         optional: false,
         hasForm: false,
         render: <MembershipStepPayment />,
@@ -148,7 +210,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
         enabled: isAdmin,
       },
       {
-        name: 'Payment',
+        name: 'Summary',
         optional: false,
         hasForm: false,
         render: <MembershipStepPayment />,
@@ -165,7 +227,12 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
-    await updateProfile(profileValues).then(async () => createOrUpdateMembership(membershipValues, profileValues))
+    await updateProfile(profileValues).then(async () => {
+      await createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+    })
+    if (!short && redirectInfo.shouldRedirect) {
+      router.push('/payment')
+    }
   }
 
   const values = useMemo(() => {
@@ -182,14 +249,17 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   }, [configuration, initialValues, isVirtual, profile, userId])
 
   return (
-    <Wizard
-      pages={pages}
-      values={values}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      onClose={onClose}
-      open={open}
-      isEditing={!!initialValues}
-    />
+    <RedirectProvider value={redirectContextState}>
+      <Wizard
+        pages={pages}
+        values={values}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        onClose={onClose}
+        open={open}
+        isEditing={!!initialValues}
+        SaveButton={SaveButton}
+      />
+    </RedirectProvider>
   )
 }
