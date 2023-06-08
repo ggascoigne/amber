@@ -54,6 +54,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     label: 'Payment',
     exact: true,
     permission: Perms.IsLoggedIn,
+    userCondition: ({ getFlag }) => getFlag('allow_payment'),
   },
   {
     path: '/gm',
