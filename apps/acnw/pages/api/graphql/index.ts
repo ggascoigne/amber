@@ -1,4 +1,4 @@
-import { graphqlRoute } from '@amber/api'
+import { graphqlHandler } from '@amber/api'
 
 export const config = {
   api: {
@@ -6,4 +6,4 @@ export const config = {
   },
 }
 
-export default graphqlRoute
+export default graphqlHandler

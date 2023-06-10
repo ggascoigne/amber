@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { authDomain, managementClientId, managementClientSecret } from './constants'
-import { getProfile } from './getProfile'
+import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
 
@@ -40,7 +40,7 @@ export const validatePasswordHandler = withApiAuthRequired(async (req: NextApiRe
     if (!req.body) throw new JsonError(400, 'missing body: expecting password')
     const { password } = req.body
     if (!password) throw new JsonError(400, 'missing password')
-    const profile = await getProfile(req.headers.authorization!)
+    const profile = await getProfileHandler(req.headers.authorization!)
     // note that we are validating the password for the user identified by the access token
     // this ensures that an authenticated user does try and sniff other users passwords
     const result = await validatePassword(profile.email, password)

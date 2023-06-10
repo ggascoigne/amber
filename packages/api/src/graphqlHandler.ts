@@ -24,7 +24,7 @@ const runMiddleware = (req: NextApiRequest, res: NextApiResponse, fn: any) =>
   })
 
 // GraphQL route that handles queries
-export const graphqlRoute = async (req: NextApiRequest, res: NextApiResponse) => {
+export const graphqlHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.url?.startsWith('/api/graphql')) req.url = '/api/graphql'
 
   await runMiddleware(req, res, getPostgraphileHandler(getPool(PoolType.USER), req, res))

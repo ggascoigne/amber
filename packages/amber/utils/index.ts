@@ -1,6 +1,5 @@
 export * from './array'
 export * from './configContext'
-export * from './dot2val'
 export * from './extractErrors'
 export * from './gameAssignment'
 export * from './getConfig'

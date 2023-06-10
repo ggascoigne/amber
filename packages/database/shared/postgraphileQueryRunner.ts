@@ -6,6 +6,11 @@ import { createPostGraphileSchema, withPostGraphileContext } from 'postgraphile'
 import { PoolType, getPool, getSchemas, dbEnv } from './config'
 import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 
+export type QueryResult<T> = {
+  data: T
+  errors: readonly any[] | undefined
+}
+
 export const makeQueryRunner = async () => {
   const pgPool = getPool(PoolType.ADMIN)
 
@@ -19,7 +24,7 @@ export const makeQueryRunner = async () => {
     graphqlQuery: string | DocumentNode,
     variables?: TVariables,
     operationName: Maybe<string> = null
-  ) => {
+  ): Promise<QueryResult<TData>> => {
     const document: DocumentNode = typeof graphqlQuery === 'string' ? gql(graphqlQuery) : graphqlQuery
     const { data, errors } = await withPostGraphileContext(
       {

@@ -1,0 +1,22 @@
+img(
+    src="https://acnw.org/Logo.png"
+    width="300"
+    height="75"
+    alt="AmberCon NW"
+    title="AmberCon NW"
+    style="-ms-interpolation-mode: bicubic;border: 0;height: auto;line-height: 100%;outline: none;text-decoration: none;"
+)
+
+h1 Payment Confirmation
+
+if paymentDetails.length === 1
+  p This email confirms your payment of $#{paymentDetails[0].amount} for #{paymentDetails[0].name}.
+
+else
+  p This email confirms your payment of:
+  each entry in paymentDetails
+    p $#{entry.amount} for #{entry.name}
+
+p Thank you
+
+p Gaming or convention related questions should be sent to #{contactEmail}

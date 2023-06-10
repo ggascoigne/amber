@@ -1,3 +1,3 @@
-import { getStripeConfigRoute } from '@amber/api'
+import { getStripeConfigHandler } from '@amber/api'
 
-export default getStripeConfigRoute
+export default getStripeConfigHandler

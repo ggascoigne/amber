@@ -1,29 +1,29 @@
-import { getSession } from '@auth0/nextjs-auth0'
-import { config, DbConfig } from 'database/shared/config'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 
-import { authDomain } from './constants'
-import { handleError } from './handleError'
-import { isAdmin } from './utils'
+import { GetSettings, GetSettingsQuery } from './client/graphql'
+import { JsonError } from './JsonError'
+import { Configuration, getSettingsObject } from './utils'
 
-// /api/getConfig
-// auth token: required
-// body: {}
+let _conf: Configuration | undefined
 
-export const getConfigRoute = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { user } = (await getSession(req, res)) ?? { user: null }
-    const admin = isAdmin(user)
-    const database: Partial<DbConfig> = { ...config.userDatabase }
-    delete database.password
-    const summary = {
-      local: !database.host?.includes('aws'),
-      databaseName: database.database,
-      nodeVersion: process.version,
-      authDomain,
+export const getConfig = async () => {
+  if (!_conf) {
+    const { query, release } = await makeQueryRunner()
+    const { data, errors } = await query<GetSettingsQuery>(GetSettings)
+    if (data) {
+      _conf = getSettingsObject(data).config
+    } else {
+      throw new JsonError(400, `unable to load configuration: ${JSON.stringify(errors, null, 2)}`)
     }
-    res.send(admin ? { ...summary, database } : { ...summary })
-  } catch (err) {
-    handleError(err, res)
+    release()
+  }
+  return _conf
+}
+
+export const getEmails = async () => {
+  const configuration = await getConfig()
+  return {
+    contactEmail: configuration?.contactEmail,
+    gameEmail: configuration?.gameEmail,
   }
 }

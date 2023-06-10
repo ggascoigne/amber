@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch'
 import { auth0IssuerBaseUrl } from './constants'
 import { JsonError } from './JsonError'
 
-export const getProfile = async (authHeader: string) => {
+export const getProfileHandler = async (authHeader: string) => {
   const options = {
     method: 'GET',
     headers: { authorization: authHeader },
