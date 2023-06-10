@@ -1,3 +1,3 @@
-import { getConfigRoute } from '@amber/api'
+import { getConfigHandler } from '@amber/api'
 
-export default getConfigRoute
+export default getConfigHandler

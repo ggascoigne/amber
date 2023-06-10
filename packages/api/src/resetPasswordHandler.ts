@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { authDomain, managementClientId, managementClientSecret } from './constants'
-import { getProfile } from './getProfile'
+import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
 
@@ -33,7 +33,7 @@ const requestChangePasswordEmail = async (username: string) => {
 // body: {}
 export const resetPasswordHandler = withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const profile = await getProfile(req.headers.authorization!)
+    const profile = await getProfileHandler(req.headers.authorization!)
     // note that we are validating the password for the user identified by the access token
     // this ensures that an authenticated user does try and sniff other users passwords
     const result = await requestChangePasswordEmail(profile.email)

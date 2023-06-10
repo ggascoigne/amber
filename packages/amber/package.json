@@ -17,6 +17,7 @@
     "test": "next test"
   },
   "dependencies": {
+    "@amber/api": "workspace:*",
     "@auth0/nextjs-auth0": "2.6.0",
     "@axe-core/react": "^4.7.2",
     "@codemirror/language": "^6.7.0",

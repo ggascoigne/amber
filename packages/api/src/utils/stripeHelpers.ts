@@ -29,3 +29,12 @@ export function formatAmountFromStripe(amount: number, currency: string): number
   }
   return zeroDecimalCurrency ? amount : Math.round(amount / 100)
 }
+
+export function formatAmountForDisplay(amount: number, currency = 'usd'): string {
+  const numberFormat = new Intl.NumberFormat(['en-US'], {
+    style: 'currency',
+    currency,
+    currencyDisplay: 'symbol',
+  })
+  return numberFormat.format(amount)
+}

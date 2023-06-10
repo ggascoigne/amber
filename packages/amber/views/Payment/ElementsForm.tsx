@@ -13,7 +13,7 @@ import { PaymentInput, UserPaymentDetails } from './PaymentInput'
 
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe, useYearFilter } from '../../utils'
 
-// keep in sync with packages/api/src/stripe/webhooks.ts
+// keep in sync with packages/api/src/stripe/types.ts
 type ElementsFormProps = {
   paymentIntent?: PaymentIntent | null
   userId: number
@@ -75,6 +75,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
 
   useEffect(() => {
     setTotal(payments)
+    // console.log({ payments })
   }, [setTotal, payments])
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

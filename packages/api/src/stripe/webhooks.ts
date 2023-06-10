@@ -4,6 +4,9 @@ import { buffer } from 'micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
+import { sendEmailConfirmation } from './sendEmailConfirmation'
+import { UserPaymentDetails } from './types'
+
 import {
   CreateTransactionMutation,
   CreateTransaction,
@@ -17,13 +20,6 @@ import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 const stripe = new Stripe(stripeSecretKey!, {
   apiVersion: '2022-11-15',
 })
-
-// keep in sync with packages/amber/views/Payment/ElementsForm.tsx
-type UserPaymentDetails = {
-  userId: number
-  memberId: number | null
-  amount: number
-}
 
 const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]) => {
   const { amount, amount_captured, currency, outcome } = charge
@@ -121,11 +117,17 @@ const handleSuccess = async (charge: Stripe.Charge) => {
         },
       })
     )
-    await Promise.allSettled(result).then((res) => {
+    await Promise.allSettled(result).then(async (res) => {
       const failureCount = res.filter((r) => r.status !== 'fulfilled').length
       if (failureCount) {
         console.warn('Creation of some transactions failed', res)
       }
+      await sendEmailConfirmation({
+        userId: parseInt(userId, 10),
+        year: parseInt(year, 10),
+        amount,
+        paymentInfo,
+      })
     })
   }
   release()

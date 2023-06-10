@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from 'react'
 
+import { ConfigurationNonDates, ConfigurationDates } from '@amber/api'
 import { DateTime, DateTimeFormatOptions } from 'luxon'
 
-import { ConfigurationNonDates, ConfigurationDates, getOrdinalWord, useConfiguration } from '../utils'
+import { getOrdinalWord, useConfiguration } from '../utils'
 
 interface SpacingProps {
   skipSpace?: 'before' | 'after' | 'both' | 'neither'

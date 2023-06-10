@@ -1,8 +1,6 @@
-import { queryToExcelDownload, handleError } from '@amber/api'
+import { getConfig, queryToExcelDownload, handleError } from '@amber/api'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
-
-import { getConfig } from '../_config'
 
 // /api/send/membershipReport
 // auth token: required

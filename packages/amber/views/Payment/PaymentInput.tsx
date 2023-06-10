@@ -145,7 +145,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       deposit: configuration.deposit,
       balance: amountOwed,
       buttonState: defaultButtonState(membership, amountOwed, displayFullMembershipPayment),
-      donation: membership ? (membership.offerSubsidy ? 70 : 0) : 0,
+      donation: membership ? (loggedInUserId === user.id && membership.offerSubsidy ? 70 : 0) : 0,
       customValue: membership && displayFullMembershipPayment ? 0 : 0 - user.amountOwed,
       membershipPayment: 0,
     },
