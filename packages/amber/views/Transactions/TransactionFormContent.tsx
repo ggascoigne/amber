@@ -41,6 +41,9 @@ export const TransactionFormContent: React.FC<TransactionFormContentProps> = ({ 
         multiline
         InputProps={{
           readOnly: true,
+          sx: {
+            fontFamily: 'monospace',
+          },
         }}
       />
     </GridItem>

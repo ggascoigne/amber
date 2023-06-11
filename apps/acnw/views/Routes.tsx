@@ -142,6 +142,12 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/stripe',
+    label: 'Stripe Log',
+    exact: true,
+    permission: Perms.IsAdmin,
+  },
+  {
     path: '/report-admin',
     label: 'Reports',
     exact: true,
