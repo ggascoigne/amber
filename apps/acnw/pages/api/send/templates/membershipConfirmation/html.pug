@@ -59,7 +59,7 @@ if membership.message
 if owed
     h3 Payment of $#{owed} can be made by visiting:
 
-    https://amberconnw.org/payment
+    p #{paymentUrl}
 
     p or by sending a check for $#{owed} made out to:
 
@@ -72,5 +72,7 @@ if owed
      | c/o Simone Cooper<br>
      | 1914 SE 24th Ave<br>
      | Portland OR 97214
+else
+    p You have a balance of $0.00, and are fully paid up.
 
 p You can view or edit your #{year} membership at #{url}.

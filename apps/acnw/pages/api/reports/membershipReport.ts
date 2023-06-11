@@ -20,6 +20,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
           u.first_name AS "First Name",
           u.last_name AS "Last Name",
           u.email AS "email",
+          u.amount_owed AS "Amount Owed",
           m.slots_attending AS "Slots Attending",
           COALESCE(gm.isGm, FALSE) AS "isGM",
           m.message AS "Message"
@@ -47,6 +48,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
           u.first_name AS "First Name",
           u.last_name AS "Last Name",
           u.email AS "email",
+          u.amount_owed AS "Amount Owed",
           h.description AS "Room",
           COALESCE(gm.isGm, FALSE) AS "isGM",
           mc.times_attending AS "Times Attending",

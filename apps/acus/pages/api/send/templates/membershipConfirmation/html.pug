@@ -23,9 +23,9 @@ if membership.message
     p Message to the organizers: #{membership.message}
 
 if owed
-    h3 Payment of $#{owed} should be made out to
+    h3 Payment of $#{owed} can be made by visiting:
 
-    p Details to follow
+    p #{paymentUrl}
 
 
 p You can view or edit your #{year} membership at #{url}.

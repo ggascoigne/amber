@@ -12,6 +12,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  name: string
 //  email: string
 //  url: string
+//  paymentUrl: string
 //  membership: Membership
 //  update?; boolean
 // }
@@ -25,13 +26,13 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
       throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
     const configuration = await getConfig()
     if (!configuration) throw new JsonError(400, 'unable to load configuration')
-
     const emails = await getEmails()
     const {
       year,
       name,
       email,
       url,
+      paymentUrl,
       membership,
       slotDescriptions,
       update = false,
@@ -45,6 +46,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     if (!name) throw new JsonError(400, 'missing name')
     if (!email) throw new JsonError(400, 'missing email')
     if (!url) throw new JsonError(400, 'missing url')
+    if (!paymentUrl) throw new JsonError(400, 'missing paymentUrl')
     if (!membership) throw new JsonError(400, 'missing membership')
     if (!slotDescriptions) throw new JsonError(400, 'missing slotDescriptions')
     if (virtual === undefined) throw new JsonError(400, 'missing virtual')
@@ -70,6 +72,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
         email,
         year,
         url,
+        paymentUrl,
         membership: formattedMembership,
         slotDescriptions,
         virtual,

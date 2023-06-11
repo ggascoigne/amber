@@ -81,6 +81,7 @@ export type EmailConfig = {
   port: number
   host: string
   password: string
+  fromAddress: string
 }
 
 export const config: { rootDatabase: DbConfig; userDatabase: DbConfig; email: EmailConfig } = {
@@ -107,5 +108,6 @@ export const config: { rootDatabase: DbConfig; userDatabase: DbConfig; email: Em
     user: process.env.SMTP_USERNAME!,
     password: process.env.SMTP_PASSWORD ?? '',
     port: parseInt(process.env.SMTP_PORT ?? '', 10),
+    fromAddress: process.env.EMAIL_FROM_ADDRESS!,
   },
 }

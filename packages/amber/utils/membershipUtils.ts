@@ -6,7 +6,7 @@ import { Configuration, useConfiguration } from './configContext'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
-import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
+import { useEditMembershipTransaction } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
 import {
@@ -102,9 +102,10 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
         phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
         update,
         url: `${window.location.origin}/membership`,
+        paymentUrl: `${window.location.origin}/payment`,
         membership: membershipValues,
         slotDescriptions,
-        owed: getMembershipCost(configuration, membershipValues),
+        owed: profile.amountOwed,
         room,
       },
     })

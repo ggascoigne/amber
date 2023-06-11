@@ -102,7 +102,6 @@ const Transactions: React.FC = React.memo(() => {
         name='users'
         data={list}
         columns={columns}
-        disableGroupBy
         onAdd={onAdd}
         onDelete={onDelete}
         onEdit={onEdit}

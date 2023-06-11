@@ -18,6 +18,7 @@ export interface MembershipConfirmationBody {
   name: string
   email: string
   url: string
+  paymentUrl: string
 
   virtual: boolean
   owed: number | undefined
