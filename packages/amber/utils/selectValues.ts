@@ -31,30 +31,30 @@ const getAttendanceOptions = (configuration: Configuration) => {
     return [
       {
         value: '1',
-        text: '1 Day: $25',
+        text: '1 Day: $25.00',
       },
       {
         value: '2',
-        text: '2 Day: $40',
+        text: '2 Day: $40.00',
       },
       {
         value: '3',
-        text: '3 Day: $55',
+        text: '3 Day: $55.00',
       },
       {
         value: '4',
-        text: '4 Day: $70',
+        text: '4 Day: $70.00',
       },
     ]
   } else
     return [
       {
         value: Attendance.ThursSun,
-        text: `Full: $${configuration.fourDayMembership}.`,
+        text: `Full: $${configuration.fourDayMembership}.00.`,
       },
       {
         value: Attendance.FriSun,
-        text: `Short: $${configuration.threeDayMembership}.`,
+        text: `Short: $${configuration.threeDayMembership}.00.`,
       },
     ]
 }
@@ -70,11 +70,11 @@ export const useGetAttendanceOptions = () => {
 const getSubsidizedAttendanceOptions = (configuration: Configuration) => [
   {
     value: Attendance.ThursSun,
-    text: `Full: $${configuration.subsidizedMembership}.`,
+    text: `Full: $${configuration.subsidizedMembership}.00.`,
   },
   {
     value: Attendance.FriSun,
-    text: `Short: $${configuration.subsidizedMembershipShort}.`,
+    text: `Short: $${configuration.subsidizedMembershipShort}.00.`,
   },
 ]
 
@@ -105,7 +105,7 @@ const getInterestOptions = (configuration: Configuration) => [
     value: InterestLevel.Deposit,
     text: `I am paying a deposit of $${
       configuration.deposit
-    } now. I understand payment in full is due ${configuration.paymentDeadline.toLocaleString(DateTime.DATE_MED)}.`,
+    }.00 now. I understand payment in full is due ${configuration.paymentDeadline.toLocaleString(DateTime.DATE_MED)}.`,
   },
 ]
 
