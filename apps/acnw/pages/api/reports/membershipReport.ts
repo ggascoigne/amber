@@ -44,6 +44,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
       : `
         SELECT
           m.id AS "Member Id",
+          u.id AS "User Id",
           u.full_name AS "Full Name",
           u.first_name AS "First Name",
           u.last_name AS "Last Name",

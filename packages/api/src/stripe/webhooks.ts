@@ -98,7 +98,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
         input: {
           transaction: {
             amount: p.amount,
-            memberId: p.memberId,
+            // memberId: p.memberId,
             notes: 'Payment Received',
             origin: parseInt(userId, 10),
             stripe: true,

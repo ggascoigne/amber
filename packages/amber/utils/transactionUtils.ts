@@ -154,7 +154,7 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
 
   return async (membershipValues: MembershipType, membershipId: number, transactions?: GetTransactionByUserQuery) => {
     const membershipTransactionNodeId = transactions?.transactions?.nodes.find(
-      (t) => t?.memberId === membershipId
+      (t) => t?.memberId === membershipId && t?.stripe === false
     )?.nodeId
 
     if (membershipTransactionNodeId) {
