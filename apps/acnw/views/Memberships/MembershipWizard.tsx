@@ -229,10 +229,10 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
     await updateProfile(profileValues).then(async () => {
       await createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+      if (!short && redirectInfo.shouldRedirect) {
+        router.push('/payment')
+      }
     })
-    if (!short && redirectInfo.shouldRedirect) {
-      router.push('/payment')
-    }
   }
 
   const values = useMemo(() => {
