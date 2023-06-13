@@ -56,7 +56,8 @@
     "stripe": "^12.8.0",
     "tss-react": "^4.8.6",
     "ui": "workspace:*",
-    "yup": "^1.2.0"
+    "yup": "^1.2.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",

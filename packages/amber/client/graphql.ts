@@ -9288,6 +9288,16 @@ export type GetMembershipByYearAndIdQuery = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -9332,6 +9342,16 @@ export type GetMembershipsByYearQuery = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -9397,6 +9417,16 @@ export type GetMembershipsByIdQuery = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -9442,6 +9472,16 @@ export type GetMembershipByYearAndRoomQuery = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null>
@@ -9486,6 +9526,16 @@ export type UpdateMembershipByNodeIdMutation = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -9530,6 +9580,16 @@ export type CreateMembershipMutation = {
         lastName?: string | null
         displayName?: string | null
         amountOwed: number
+        profiles: {
+          __typename: 'ProfilesConnection'
+          nodes: Array<{
+            __typename: 'Profile'
+            nodeId: string
+            userId: number
+            phoneNumber?: string | null
+            snailMailAddress?: string | null
+          } | null>
+        }
       } | null
       hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
     } | null
@@ -9600,6 +9660,16 @@ export type GetAllMembersByQuery = {
             lastName?: string | null
             displayName?: string | null
             amountOwed: number
+            profiles: {
+              __typename: 'ProfilesConnection'
+              nodes: Array<{
+                __typename: 'Profile'
+                nodeId: string
+                userId: number
+                phoneNumber?: string | null
+                snailMailAddress?: string | null
+              } | null>
+            }
           } | null
           hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
         } | null>
@@ -9638,6 +9708,16 @@ export type MembershipFieldsFragment = {
     lastName?: string | null
     displayName?: string | null
     amountOwed: number
+    profiles: {
+      __typename: 'ProfilesConnection'
+      nodes: Array<{
+        __typename: 'Profile'
+        nodeId: string
+        userId: number
+        phoneNumber?: string | null
+        snailMailAddress?: string | null
+      } | null>
+    }
   } | null
   hotelRoom?: { __typename: 'HotelRoom'; type: string } | null
 }
@@ -10334,6 +10414,25 @@ export const UserFieldsFragmentDoc = `
   amountOwed
 }
     `
+export const ProfileFieldsFragmentDoc = `
+    fragment profileFields on Profile {
+  nodeId
+  userId
+  phoneNumber
+  snailMailAddress
+}
+    `
+export const UserAndProfileFieldsFragmentDoc = `
+    fragment userAndProfileFields on User {
+  ...userFields
+  profiles {
+    nodes {
+      ...profileFields
+    }
+  }
+}
+    ${UserFieldsFragmentDoc}
+${ProfileFieldsFragmentDoc}`
 export const MembershipFieldsFragmentDoc = `
     fragment membershipFields on Membership {
   nodeId
@@ -10355,13 +10454,13 @@ export const MembershipFieldsFragmentDoc = `
   year
   slotsAttending
   user {
-    ...userFields
+    ...userAndProfileFields
   }
   hotelRoom {
     type
   }
 }
-    ${UserFieldsFragmentDoc}`
+    ${UserAndProfileFieldsFragmentDoc}`
 export const SettingFieldsFragmentDoc = `
     fragment settingFields on Setting {
   nodeId
@@ -10405,25 +10504,6 @@ export const TransactionFieldsFragmentDoc = `
   }
 }
     `
-export const ProfileFieldsFragmentDoc = `
-    fragment profileFields on Profile {
-  nodeId
-  userId
-  phoneNumber
-  snailMailAddress
-}
-    `
-export const UserAndProfileFieldsFragmentDoc = `
-    fragment userAndProfileFields on User {
-  ...userFields
-  profiles {
-    nodes {
-      ...profileFields
-    }
-  }
-}
-    ${UserFieldsFragmentDoc}
-${ProfileFieldsFragmentDoc}`
 export const GetGamesBySlotForSignupDocument = `
     query getGamesBySlotForSignup($year: Int!, $slotId: Int!) {
   games(

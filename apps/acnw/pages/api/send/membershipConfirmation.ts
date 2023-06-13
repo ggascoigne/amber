@@ -1,6 +1,6 @@
 import { getConfig, getEmails, emailer, handleError, JsonError } from '@amber/api'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
-import { MembershipConfirmationBody } from 'amber/utils/apiTypes'
+import { membershipConfirmationSchema } from 'amber/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from 'amber/utils/selectValues'
 import { DateTime } from 'luxon'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -27,63 +27,60 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     const configuration = await getConfig()
     if (!configuration) throw new JsonError(400, 'unable to load configuration')
     const emails = await getEmails()
-    const {
-      year,
-      name,
-      email,
-      url,
-      paymentUrl,
-      membership,
-      slotDescriptions,
-      update = false,
-      virtual,
-      owed,
-      address,
-      phoneNumber,
-      room,
-    } = req.body as MembershipConfirmationBody
-    if (!year) throw new JsonError(400, 'missing year')
-    if (!name) throw new JsonError(400, 'missing name')
-    if (!email) throw new JsonError(400, 'missing email')
-    if (!url) throw new JsonError(400, 'missing url')
-    if (!paymentUrl) throw new JsonError(400, 'missing paymentUrl')
-    if (!membership) throw new JsonError(400, 'missing membership')
-    if (!slotDescriptions) throw new JsonError(400, 'missing slotDescriptions')
-    if (virtual === undefined) throw new JsonError(400, 'missing virtual')
+    const values = membershipConfirmationSchema.parse(req.body)
 
-    const formattedMembership = {
-      ...membership,
-      interestLevel: getInterestLevel(configuration, membership.interestLevel),
-      attendance: getAttendance(configuration, membership.attendance),
-      arrivalDate: formatDate(membership.arrivalDate),
-      departureDate: formatDate(membership.departureDate),
-      roomingPreferences: getRoomPref(membership.roomingPreferences),
-    }
-
-    const result = await emailer.send({
-      template: 'membershipConfirmation',
-      message: {
-        to: email,
-        cc: emails.contactEmail,
-      },
-      locals: {
-        update,
+    const emailResults = values.map((v) => {
+      const {
+        year,
         name,
         email,
-        year,
         url,
         paymentUrl,
-        membership: formattedMembership,
+        membership,
         slotDescriptions,
+        update = false,
         virtual,
         owed,
         address,
         phoneNumber,
         room,
-        ...emails,
-      },
+      } = v
+
+      const formattedMembership = {
+        ...membership,
+        interestLevel: getInterestLevel(configuration, membership.interestLevel),
+        attendance: getAttendance(configuration, membership.attendance),
+        arrivalDate: formatDate(membership.arrivalDate),
+        departureDate: formatDate(membership.departureDate),
+        roomingPreferences: getRoomPref(membership.roomingPreferences),
+      }
+
+      return emailer.send({
+        template: 'membershipConfirmation',
+        message: {
+          to: email,
+          cc: emails.contactEmail,
+        },
+        locals: {
+          update,
+          name,
+          email,
+          year,
+          url,
+          paymentUrl,
+          membership: formattedMembership,
+          slotDescriptions,
+          virtual,
+          owed,
+          address,
+          phoneNumber,
+          room,
+          ...emails,
+        },
+      })
     })
-    res.send({ result })
+    const promiseResults = await Promise.allSettled(emailResults)
+    res.send({ promiseResults })
   } catch (err: any) {
     handleError(err, res)
   }

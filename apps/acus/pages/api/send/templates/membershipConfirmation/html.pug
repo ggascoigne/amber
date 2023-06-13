@@ -1,5 +1,5 @@
 
-h1 #{update ? "Updated Registration Confirmation" : "Registration Confirmation"}
+h1 #{update === "update" ? "Updated Registration Confirmation" : update === "new" ? "Registration Confirmation" : "Registration Status"}
 
 p Registration for #{virtual ? "Virtual " : ""}Ambercon #{year}
 
@@ -26,6 +26,8 @@ if owed
     h3 Payment of $#{owed} can be made by visiting:
 
     p #{paymentUrl}
+else
+    h3 You have a balance of $0.00, and are fully paid up.
 
 
 p You can view or edit your #{year} membership at #{url}.

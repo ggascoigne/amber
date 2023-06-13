@@ -56,7 +56,7 @@ export const LabeledActionButton = <T extends Record<string, unknown>>({
   label,
   enabled = () => true,
 }: ActionButton<T>): ReactElement => (
-  <Button variant='outlined' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
+  <Button sx={{ ml: 1 }} variant='outlined' color='primary' onClick={onClick(instance)} disabled={!enabled(instance)}>
     {icon}
     &nbsp;
     {label}
