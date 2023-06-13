@@ -1,12 +1,12 @@
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 import {} from 'yup'
 
-import type { MembershipType } from './apiTypes'
+import type { MembershipConfirmationBodyUpdateType, MembershipType } from './apiTypes'
 import { Configuration, useConfiguration } from './configContext'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
-import { useEditMembershipTransaction } from './transactionUtils'
+import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
 import {
@@ -77,7 +77,13 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
 
   const { data: roomData } = useGetHotelRoomsQuery()
 
-  const sendMembershipConfirmation = (profile: ProfileFormType, membershipValues: MembershipType, update = false) => {
+  // note that we pass in profile values since they might well have just been updated
+  // and are later than the cached version off the membershipValues.
+  const sendMembershipConfirmation = (
+    profile: ProfileFormType,
+    membershipValues: MembershipType,
+    update: MembershipConfirmationBodyUpdateType = 'new'
+  ) => {
     const room = roomData
       ?.hotelRooms!.edges.map((v) => v.node)
       .filter(notEmpty)
@@ -93,21 +99,24 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
 
     sendEmail({
       type: 'membershipConfirmation',
-      body: {
-        year: configuration.year,
-        virtual: configuration.virtual,
-        name: profile.fullName!,
-        email: profile.email,
-        address: profile.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
-        phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
-        update,
-        url: `${window.location.origin}/membership`,
-        paymentUrl: `${window.location.origin}/payment`,
-        membership: membershipValues,
-        slotDescriptions,
-        owed: profile.amountOwed,
-        room,
-      },
+      body: [
+        {
+          year: configuration.year,
+          virtual: configuration.virtual,
+          name: profile.fullName!,
+          email: profile.email,
+          address: profile.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
+          phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
+          update,
+          url: `${window.location.origin}/membership`,
+          paymentUrl: `${window.location.origin}/payment`,
+          membership: membershipValues,
+          slotDescriptions,
+          // for new registrations don't rely on the profile value, it's out of date
+          owed: update === 'new' ? getMembershipCost(configuration, membershipValues) : profile.amountOwed,
+          room,
+        },
+      ],
     })
   }
 
@@ -138,7 +147,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           notify({ text: 'Membership updated', variant: 'success' })
           // create always sends email, but generally updates skip sending email about admin updates
           if (shouldSendEmail) {
-            sendMembershipConfirmation(profile, membershipValues, true)
+            sendMembershipConfirmation(profile, membershipValues, 'update')
           }
           await createOrUpdateTransaction(membershipValues, membershipId!, usersTransactions)
         })

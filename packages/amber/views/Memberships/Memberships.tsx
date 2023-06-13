@@ -1,17 +1,18 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
-import { useDeleteMembershipMutation, useGetMembershipsByYearQuery } from '../../client'
+import { useDeleteMembershipMutation, useGetHotelRoomsQuery, useGetMembershipsByYearQuery } from '../../client'
 import { useInvalidateMembershipQueries } from '../../client/querySets'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
-import { useConfiguration, useYearFilter } from '../../utils'
-import { Membership, MembershipType } from '../../utils/apiTypes'
+import { getSlotDescription, useConfiguration, useSendEmail, useYearFilter } from '../../utils'
+import { Membership, MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
 
 export interface MembershipWizardProps {
   open: boolean
@@ -152,6 +153,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
     const [year] = useYearFilter()
     const [, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
     const invalidateMembershipQueries = useInvalidateMembershipQueries()
+    const sendEmail = useSendEmail()
 
     const [showEdit, setShowEdit] = useState(false)
     const [showGameAssignment, setShowGameAssignment] = useState(false)
@@ -161,12 +163,56 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
       year,
     })
 
+    const { data: roomData } = useGetHotelRoomsQuery()
+
     const onUpdateGameAssignments = useCallback(
       (instance: TableInstance<Membership>) => async () => {
         setShowGameAssignment(true)
         setSelection(instance.selectedFlatRows.map((r) => r.original))
       },
       []
+    )
+
+    const onSendRegistrationEmail = useCallback(
+      (instance: TableInstance<Membership>) => async () => {
+        const selected = instance.selectedFlatRows.map((r) => r.original)
+        const payload = selected.map((m) => {
+          const room = roomData
+            ?.hotelRooms!.edges.map((v) => v.node)
+            .filter(notEmpty)
+            .find((r) => r.id === m.hotelRoomId)
+
+          const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
+            getSlotDescription(configuration, {
+              year: configuration.year,
+              slot: parseInt(i, 10),
+              local: configuration.virtual,
+            })
+          )
+          const owed = (m.user?.amountOwed || 0) < 0 ? 0 - m.user!.amountOwed : 0
+          return {
+            year: configuration.year,
+            virtual: configuration.virtual,
+            name: m.user?.fullName,
+            email: m.user?.email,
+            address: m.user?.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
+            phoneNumber: m.user?.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
+            update: 'status',
+            url: `${window.location.origin}/membership`,
+            paymentUrl: `${window.location.origin}/payment`,
+            membership: m,
+            slotDescriptions,
+            owed,
+            room,
+          } as MembershipConfirmationItem
+        })
+
+        sendEmail({
+          type: 'membershipConfirmation',
+          body: payload,
+        })
+      },
+      [configuration, roomData?.hotelRooms, sendEmail]
     )
 
     const commands = useMemo(
@@ -178,8 +224,15 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length === 1,
           type: 'button' as const,
         },
+        {
+          label: 'Resend Registration Email',
+          onClick: onSendRegistrationEmail,
+          icon: <MailOutlineIcon />,
+          enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length > 0,
+          type: 'button' as const,
+        },
       ],
-      [onUpdateGameAssignments]
+      [onSendRegistrationEmail, onUpdateGameAssignments]
     )
 
     if (error) {

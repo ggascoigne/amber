@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -158,6 +158,9 @@ importers:
       yup:
         specifier: ^1.2.0
         version: 1.2.0
+      zod:
+        specifier: ^3.21.4
+        version: 3.21.4
     devDependencies:
       '@babel/core':
         specifier: ^7.22.1
