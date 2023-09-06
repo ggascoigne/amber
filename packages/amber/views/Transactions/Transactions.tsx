@@ -46,7 +46,7 @@ const Transactions: React.FC = React.memo(() => {
     () => () => {
       setShowEdit(true)
     },
-    []
+    [],
   )
 
   const onDelete = useCallback(
@@ -59,7 +59,7 @@ const Transactions: React.FC = React.memo(() => {
         instance.toggleAllRowsSelected(false)
       })
     },
-    [clearSelectionAndRefresh, deleteTransaction]
+    [clearSelectionAndRefresh, deleteTransaction],
   )
 
   if (error) {

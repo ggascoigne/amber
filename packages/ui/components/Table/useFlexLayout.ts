@@ -22,7 +22,7 @@ const getRowStyles = <D extends Record<string, unknown>>(props: any, { instance 
 
 const getHeaderProps = <D extends Record<string, unknown>>(
   props: any,
-  { column }: Meta<D, { column: HeaderGroup<D> }>
+  { column }: Meta<D, { column: HeaderGroup<D> }>,
 ) => [
   props,
   {

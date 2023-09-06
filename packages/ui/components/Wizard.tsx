@@ -33,7 +33,7 @@ const useSteps = (steps: WizardPage[], isEditing: boolean) => {
   const canSave = () => {
     const allFormSteps = new Zet(
       // note that we ignore the last page here regardless of if it's a form
-      steps.map((step, index) => (step.hasForm && index !== steps.length - 1 ? index : undefined)).filter(notEmpty)
+      steps.map((step, index) => (step.hasForm && index !== steps.length - 1 ? index : undefined)).filter(notEmpty),
     )
     const allFormStepsComplete = completed.superset(allFormSteps)
     const allStepsVisited = visited.size === steps.length
@@ -133,7 +133,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   const activePages = useMemo(() => pages.filter(({ enabled = true }) => enabled), [pages])
   const { getActiveStep, canSave, handleBack, handleStep, handleNext, isStepComplete, errorsOnCurrentPage } = useSteps(
     activePages,
-    isEditing
+    isEditing,
   )
   const theme = useTheme()
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'))

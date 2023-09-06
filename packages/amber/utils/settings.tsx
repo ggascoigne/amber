@@ -42,7 +42,7 @@ export const useSettings = () => {
 
       return getSetting(settings, setting)
     },
-    [data, error, isLoading]
+    [data, error, isLoading],
   )
 
   const getSettingValue = useCallback(
@@ -61,7 +61,7 @@ export const useSettings = () => {
 
       return getSetting(settings, setting)
     },
-    [data, error, isLoading]
+    [data, error, isLoading],
   )
 
   const getFlagBoolean = useCallback(
@@ -85,7 +85,7 @@ export const useSettings = () => {
           return false
       }
     },
-    [getSettingValue, isAdmin, isGm, isMember]
+    [getSettingValue, isAdmin, isGm, isMember],
   )
 
   return error || isLoading || !data ? [undefined, undefined] : ([getSettingString, getFlagBoolean] as const)

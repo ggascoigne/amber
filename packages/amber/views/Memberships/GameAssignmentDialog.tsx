@@ -54,7 +54,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     { memberId },
     {
       enabled: !!memberId,
-    }
+    },
   )
 
   const { error: gError, data: gData } = useGetGamesByYearQuery({
@@ -63,8 +63,8 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const gameOptions = useMemo(() => {
     const games = gData?.games?.edges.map((v) => v.node).filter(notEmpty)
-    return range(configuration.numberOfSlots).map((slot) =>
-      games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name }))
+    return range(configuration.numberOfSlots).map(
+      (slot) => games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
     )
   }, [configuration.numberOfSlots, gData?.games?.edges])
 
@@ -85,11 +85,11 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const fillAssignments = (assignments?: GameAssignmentEditNode[]) =>
     range(configuration.numberOfSlots + 1, 1).map(
-      (slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot)
+      (slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot),
     )
 
   const gamesAndAssignments = fillAssignments(getGameAssignments(sData, memberId)).map((ga) =>
-    pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId')
+    pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId'),
   )
 
   const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
@@ -112,7 +112,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       updaters.push(
         deleteGameAssignment.mutateAsync({ input: { nodeId: assignment.nodeId! } }).catch((error) => {
           notify({ text: error.message, variant: 'error' })
-        })
+        }),
       )
     })
     toCreate.forEach((assignment) => {
@@ -126,12 +126,12 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
             },
             {
               onSuccess: invalidateGameAssignmentQueries,
-            }
+            },
           )
           .catch((error) => {
             console.log(`error = ${JSON.stringify(error, null, 2)}`)
             if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
-          })
+          }),
       )
     })
     await Promise.allSettled(updaters)

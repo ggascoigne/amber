@@ -40,7 +40,7 @@ const adminUpdatePolicy = (table) => `
 
 exports.up = async function (knex) {
   await knex.raw(
-    tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n')
+    tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n'),
   )
 }
 
@@ -51,8 +51,8 @@ exports.down = async function (knex) {
         (table) => `
             DROP POLICY IF EXISTS ${table.name}_sel_policy ON ${q(table.name)};
             DROP POLICY IF EXISTS ${table.name}_mod_policy ON ${q(table.name)};
-          `
+          `,
       )
-      .join('\n')
+      .join('\n'),
   )
 }

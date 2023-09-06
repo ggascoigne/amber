@@ -170,7 +170,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
         setShowGameAssignment(true)
         setSelection(instance.selectedFlatRows.map((r) => r.original))
       },
-      []
+      [],
     )
 
     const onSendRegistrationEmail = useCallback(
@@ -187,7 +187,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
               year: configuration.year,
               slot: parseInt(i, 10),
               local: configuration.virtual,
-            })
+            }),
           )
           const owed = (m.user?.amountOwed || 0) < 0 ? 0 - m.user!.amountOwed : 0
           return {
@@ -212,7 +212,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           body: payload,
         })
       },
-      [configuration, roomData?.hotelRooms, sendEmail]
+      [configuration, roomData?.hotelRooms, sendEmail],
     )
 
     const commands = useMemo(
@@ -232,7 +232,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           type: 'button' as const,
         },
       ],
-      [onSendRegistrationEmail, onUpdateGameAssignments]
+      [onSendRegistrationEmail, onUpdateGameAssignments],
     )
 
     if (error) {
@@ -265,8 +265,8 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           },
           {
             onSuccess: invalidateMembershipQueries,
-          }
-        )
+          },
+        ),
       )
       Promise.allSettled(updater).then(() => {
         console.log('deleted')
@@ -316,7 +316,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
         />
       </Page>
     )
-  }
+  },
 )
 
 export default Memberships

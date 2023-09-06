@@ -24,7 +24,7 @@ export const GameSignupMenu: React.FC = () => {
       onSuccess: () => {
         setHackCount((old) => old + 1)
       },
-    }
+    },
   )
 
   if (error) {

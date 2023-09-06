@@ -47,7 +47,7 @@ const GameRooms: React.FC = () => {
     () => () => {
       setShowEdit(true)
     },
-    []
+    [],
   )
 
   const onCloseEdit: MouseEventHandler = useCallback(() => {
@@ -65,7 +65,7 @@ const GameRooms: React.FC = () => {
         instance.toggleAllRowsSelected(false)
       })
     },
-    [clearSelectionAndRefresh, deleteGameRoom]
+    [clearSelectionAndRefresh, deleteGameRoom],
   )
 
   const onEdit = useCallback(
@@ -73,7 +73,7 @@ const GameRooms: React.FC = () => {
       setShowEdit(true)
       setSelection(instance.selectedFlatRows.map((r) => r.original))
     },
-    []
+    [],
   )
 
   const onClick = useCallback((row: Row<GameRoom>) => {

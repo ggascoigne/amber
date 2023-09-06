@@ -29,7 +29,7 @@ export const membershipValidationSchemaUS = Yup.object().shape({
 export const getDefaultMembership = (
   configuration: Configuration,
   userId: number,
-  isVirtual: boolean
+  isVirtual: boolean,
 ): MembershipType => ({
   userId,
   // note the difference in logic here is that NW wants to make users check their

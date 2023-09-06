@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, forwardRef } from 'react'
 
 import { O, F } from 'ts-toolbelt'
 import { Key } from 'ts-toolbelt/out/Any/Key'
@@ -93,3 +93,13 @@ export type ObjectOf<T> = { [P in keyof T]: T[P] }
 export interface Children {
   children?: ReactElement<any, any> | ReactNode | undefined | null
 }
+
+// see https://twitter.com/mattpocockuk/status/1683414495291486208
+// declare a type that works with generic components
+// eslint-disable-next-line @typescript-eslint/ban-types
+type FixedForwardRef = <T, P = {}>(
+  render: (props: P, ref: React.Ref<T>) => React.ReactNode,
+) => (props: P & React.RefAttributes<T>) => React.ReactNode
+
+// Cast the old forwardRef to the new one
+export const fixedForwardRef = forwardRef as FixedForwardRef

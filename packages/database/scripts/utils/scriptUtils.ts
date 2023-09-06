@@ -74,7 +74,7 @@ export function pgloader(mySqlPassword: string, script: string, verbose: boolean
       // @ts-ignore
       env: { MYSQL_PWD: mySqlPassword },
       stdio: verbose ? 'inherit' : 'ignore',
-    })
+    }),
   )
 }
 
@@ -108,7 +108,7 @@ export async function createCleanDb(
   dbconfig: DbConfig,
   targetUser: string,
   targetUserPassword: string,
-  verbose: boolean
+  verbose: boolean,
 ) {
   const { database, user } = dbconfig
   // useful for tests since it forces dropping local connections

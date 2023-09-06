@@ -16,14 +16,14 @@ interface PersistedState<T extends Record<string, unknown>> {
 export const useInitialTableState = <T extends Record<string, unknown>>(
   name: string,
   columns: ReadonlyArray<Column<T>>,
-  userInitialState: Partial<TableState<T>>
+  userInitialState: Partial<TableState<T>>,
 ) => {
   const createdFor = useMemo(
     () => ({
       columns: columns.map((c) => c.id ?? (c.accessor as string)).join(','),
       initialState: userInitialState,
     }),
-    [columns, userInitialState]
+    [columns, userInitialState],
   )
 
   const [initialState, setInitialState] = useLocalStorage<PersistedState<T>>(name, {
@@ -48,7 +48,7 @@ export const useInitialTableState = <T extends Record<string, unknown>>(
         },
       })
     },
-    [createdFor, setInitialState]
+    [createdFor, setInitialState],
   )
   const value = deepEqual(initialState.createdFor, createdFor) ? initialState.value : userInitialState
 

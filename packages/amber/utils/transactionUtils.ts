@@ -87,7 +87,7 @@ export const useEditTransaction = (onClose?: OnCloseHandler) => {
           },
           {
             onSuccess: invalidatePaymentQueries,
-          }
+          },
         )
         .catch((error) => {
           notify({ text: error.message, variant: 'error' })
@@ -114,7 +114,7 @@ export const useEditTransaction = (onClose?: OnCloseHandler) => {
           },
           {
             onSuccess: invalidatePaymentQueries,
-          }
+          },
         )
         .catch((error) => {
           notify({ text: error.message, variant: 'error' })
@@ -140,7 +140,7 @@ export const useTransactionValues = (values: TransactionValue | null | undefined
       notes: values?.notes ?? '',
       data: {},
     }),
-    [userId, values, year]
+    [userId, values, year],
   )
 }
 
@@ -154,7 +154,7 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
 
   return async (membershipValues: MembershipType, membershipId: number, transactions?: GetTransactionByUserQuery) => {
     const membershipTransactionNodeId = transactions?.transactions?.nodes.find(
-      (t) => t?.memberId === membershipId && t?.stripe === false
+      (t) => t?.memberId === membershipId && t?.stripe === false,
     )?.nodeId
 
     if (membershipTransactionNodeId) {
@@ -176,7 +176,7 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidatePaymentQueries,
-          }
+          },
         )
         .then(() => {
           onClose()
@@ -203,7 +203,7 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidatePaymentQueries,
-          }
+          },
         )
         .then(() => {
           onClose()

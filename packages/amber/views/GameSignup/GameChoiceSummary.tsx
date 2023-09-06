@@ -21,7 +21,7 @@ const GameChoiceSummary: React.FC = () => {
     },
     {
       enabled: !!membership,
-    }
+    },
   )
 
   const gameChoices = data?.gameChoices?.nodes

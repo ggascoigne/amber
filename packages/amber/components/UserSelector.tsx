@@ -102,7 +102,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       setUserInfo(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
       setSearchTerm(value?.fullName ?? '')
     },
-    [setUserInfo]
+    [setUserInfo],
   )
 
   const onBlur = useCallback(() => {

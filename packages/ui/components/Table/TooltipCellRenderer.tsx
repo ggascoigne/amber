@@ -14,13 +14,14 @@ interface TooltipCellProps {
 
 export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = text || '', align, onClick }) => {
   const [isOverflowed, setIsOverflow] = useState(false)
+  const [open, setOpen] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)
 
   const compareSize = () => {
     setIsOverflow(!!(textRef?.current && textRef.current?.scrollWidth > textRef.current?.clientWidth))
   }
 
-  const showTooltip = text !== tooltip || isOverflowed
+  const enableTooltip = text !== tooltip || isOverflowed
 
   return (
     <Tooltip
@@ -32,14 +33,26 @@ export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = t
         width: '100%',
       }}
       title={tooltip}
-      disableHoverListener={!showTooltip}
+      disableHoverListener={!enableTooltip}
+      open={open}
+      onOpen={() => {
+        if (enableTooltip) {
+          setOpen(true)
+        }
+      }}
+      onClose={() => {
+        if (enableTooltip) {
+          setOpen(false)
+        }
+      }}
     >
-      <Box component='span' ref={textRef} onMouseEnter={compareSize} onClick={onClick}>
+      <Box ref={textRef} onMouseEnter={compareSize} onClick={onClick}>
         {text}
       </Box>
     </Tooltip>
   )
 }
+
 // TooltipCell.whyDidYouRender = true
 
 export const EditableCell: React.FC<CellProps<any>> = (props) => {
@@ -51,7 +64,7 @@ export const EditableCell: React.FC<CellProps<any>> = (props) => {
     (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(anchorEl ? null : event.currentTarget)
     },
-    [anchorEl]
+    [anchorEl],
   )
 
   return (

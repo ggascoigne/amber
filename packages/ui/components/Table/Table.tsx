@@ -188,7 +188,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     () => ({
       selectionStyle: updateData ? 'cell' : 'row',
     }),
-    [updateData]
+    [updateData],
   )
 
   const { classes, cx } = useStyles(tableStyleOptions)
@@ -226,7 +226,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       disableGlobalFilter: defaultColumnDisableGlobalFilter,
       CellEditor,
     }),
-    [defaultColumnDisableGlobalFilter]
+    [defaultColumnDisableGlobalFilter],
   )
 
   const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, {
@@ -250,7 +250,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       autoResetFilters: false,
       disableSortRemove: true,
     },
-    ...hooks
+    ...hooks,
   )
 
   const { getTableProps, headerGroups, getTableBodyProps, page, prepareRow, state } = instance
@@ -264,7 +264,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     (cell: Cell<T>) => () => {
       onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
     },
-    [onClick]
+    [onClick],
   )
 
   const { role: tableRole, ...tableProps } = getTableProps()

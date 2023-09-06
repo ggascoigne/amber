@@ -39,9 +39,9 @@ export const Reports: React.FC<ReportsProps> = ({ reports }) => {
       reports.filter(
         (r) =>
           (r.virtual !== undefined ? r.virtual === configuration.virtual : true) &&
-          (r.perm !== undefined ? hasPermissions(r.perm) : true)
+          (r.perm !== undefined ? hasPermissions(r.perm) : true),
       ),
-    [configuration.virtual, hasPermissions, reports]
+    [configuration.virtual, hasPermissions, reports],
   )
 
   return (

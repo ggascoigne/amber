@@ -89,7 +89,7 @@ export const useUpdateGameAssignment = () => {
           updaters.push(
             deleteGameAssignment.mutateAsync({ input: { nodeId: oldAssignment.nodeId } }).catch((error) => {
               notify({ text: error.message, variant: 'error' })
-            })
+            }),
           )
         })
         await Promise.allSettled(updaters)
@@ -115,12 +115,12 @@ export const useUpdateGameAssignment = () => {
                   invalidateGameAssignmentQueries()
                   invalidateGameQueries()
                 },
-              }
+              },
             )
             .catch((error) => {
               console.log(`error = ${JSON.stringify(error, null, 2)}`)
               if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
-            })
+            }),
         )
       })
       await Promise.allSettled(updaters)
@@ -133,7 +133,7 @@ export const useUpdateGameAssignment = () => {
       invalidateGameQueries,
       notify,
       year,
-    ]
+    ],
   )
 }
 
@@ -164,7 +164,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
 
   const membershipList: Membership[] = useMemo(
     () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
-    [membershipData?.memberships?.nodes]
+    [membershipData?.memberships?.nodes],
   )
 
   return useCallback(
@@ -210,7 +210,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
         'teenFriendly',
         'slotId',
         'full',
-        'roomId'
+        'roomId',
       )
 
       if (values.nodeId) {
@@ -226,7 +226,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
             },
             {
               onSuccess: invalidateGameQueries,
-            }
+            },
           )
           .then(async () => {
             await setGameGmAssignments(values.id!, values.gmNames, membershipList)
@@ -254,7 +254,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
             },
             {
               onSuccess: invalidateGameQueries,
-            }
+            },
           )
           .then(async (res) => {
             const gameId = res?.createGame?.game?.id
@@ -282,6 +282,6 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
       updateGame,
       userId,
       year,
-    ]
+    ],
   )
 }

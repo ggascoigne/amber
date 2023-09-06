@@ -61,7 +61,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
                   'occupancy',
                   'rate',
                   'type',
-                  'quantity'
+                  'quantity',
                 ),
               },
             },
@@ -70,7 +70,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getHotelRooms'])
             },
-          }
+          },
         )
         .then(() => {
           notify({ text: 'HotelRoomType updated', variant: 'success' })
@@ -94,7 +94,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
                   'bathroomType',
                   'occupancy',
                   'rate',
-                  'type'
+                  'type',
                 ),
                 quantity: 0,
               },
@@ -104,7 +104,7 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getHotelRooms'])
             },
-          }
+          },
         )
         .then((_res) => {
           notify({ text: 'HotelRoomType created', variant: 'success' })

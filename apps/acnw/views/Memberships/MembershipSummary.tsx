@@ -143,7 +143,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
         ?.hotelRooms!.edges.map((v) => v.node)
         .filter(notEmpty)
         .find((r) => r.id === membership.hotelRoomId),
-    [data, membership.hotelRoomId]
+    [data, membership.hotelRoomId],
   )
 
   if (error) {

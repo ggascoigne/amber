@@ -13,7 +13,7 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
     { year, userId: userId! },
     {
       enabled: !!userId,
-    }
+    },
   )
 
   if (!userId) {
@@ -61,7 +61,7 @@ export const useIsGm = () => {
     {
       memberId: membership?.id ?? 0,
     },
-    { enabled: !!membership }
+    { enabled: !!membership },
   )
 
   if (!user || !membership || !gameAssignmentData) return false

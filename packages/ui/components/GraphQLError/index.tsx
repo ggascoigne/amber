@@ -57,9 +57,7 @@ export const GraphQLError = ({ error }: GraphQLErrorProps) => {
       {error?.graphQLErrors && error?.graphQLErrors.length !== 0 && (
         <Quote text={JSON.stringify(error.graphQLErrors, null, 2)} />
       )}
-      {networkErrors?.map((e: any, i: any) => (
-        <Quote key={i} text={e.message} />
-      ))}
+      {networkErrors?.map((e: any, i: any) => <Quote key={i} text={e.message} />)}
     </>
   )
 }

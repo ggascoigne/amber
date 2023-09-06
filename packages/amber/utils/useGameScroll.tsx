@@ -14,7 +14,7 @@ export const useGameScroll = () => {
         setUrlSource({ source: 'scroll', url: slug })
       }
     },
-    [lastSlug, setUrlSource, setLastSlug]
+    [lastSlug, setUrlSource, setLastSlug],
   )
 }
 
@@ -37,7 +37,7 @@ export const useScrollToHash = () => {
               window.scrollTo({ top: y })
             }
           }),
-        delay
+        delay,
       )
       return () => clearTimeout(timer)
     }

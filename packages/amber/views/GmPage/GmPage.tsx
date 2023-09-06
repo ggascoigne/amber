@@ -261,8 +261,8 @@ const MemberGmPage: React.FC = React.memo(() => {
         },
         {
           onSuccess: invalidateGameQueries,
-        }
-      )
+        },
+      ),
     )
     Promise.allSettled(updater).then(() => console.log('deleted'))
   }

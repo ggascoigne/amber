@@ -12,7 +12,7 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
     errors?.membership as MembershipErrorType,
     'attendance',
     'interestLevel',
-    'offerSubsidy'
+    'offerSubsidy',
   )
 
 export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ prefix = '' }) => {

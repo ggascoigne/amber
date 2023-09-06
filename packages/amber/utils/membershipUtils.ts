@@ -60,7 +60,7 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
     'roomingWith',
     'volunteer',
     'year',
-    'slotsAttending'
+    'slotsAttending',
   )
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
@@ -82,7 +82,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   const sendMembershipConfirmation = (
     profile: ProfileFormType,
     membershipValues: MembershipType,
-    update: MembershipConfirmationBodyUpdateType = 'new'
+    update: MembershipConfirmationBodyUpdateType = 'new',
   ) => {
     const room = roomData
       ?.hotelRooms!.edges.map((v) => v.node)
@@ -94,7 +94,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
         year: configuration.year,
         slot: parseInt(i, 10),
         local: configuration.virtual,
-      })
+      }),
     )
 
     sendEmail({
@@ -123,7 +123,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   return async (
     membershipValues: MembershipType,
     profile: ProfileFormType,
-    usersTransactions: GetTransactionByUserQuery | undefined
+    usersTransactions: GetTransactionByUserQuery | undefined,
   ) => {
     if (membershipValues.nodeId) {
       await updateMembership
@@ -138,7 +138,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateMembershipQueries,
-          }
+          },
         )
         .then(async (res) => {
           const membershipId = res?.updateMembershipByNodeId?.membership?.id
@@ -166,7 +166,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateMembershipQueries,
-          }
+          },
         )
         .then(async (res) => {
           const membershipId = res?.createMembership?.membership?.id

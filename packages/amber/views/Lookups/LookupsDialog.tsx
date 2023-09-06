@@ -69,7 +69,7 @@ const validationSchema = Yup.object().shape({
         sequencer: Yup.number().required(),
         code: Yup.string().min(2).max(50).required(),
         value: Yup.string().min(2).max(255).required(),
-      })
+      }),
     ),
   }),
 })
@@ -138,7 +138,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                   lookupId,
                 },
               },
-            })
+            }),
           )
         } else {
           acc.push(
@@ -153,7 +153,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                   stringSequencer: '_',
                 },
               },
-            })
+            }),
           )
         }
       }

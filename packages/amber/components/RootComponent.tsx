@@ -26,7 +26,7 @@ const clientSideEmotionCache = createEmotionCache()
 const ReactQueryDevtoolsProduction = React.lazy(() =>
   import('@tanstack/react-query-devtools/build/lib/index.prod.js').then((d) => ({
     default: d.ReactQueryDevtools,
-  }))
+  })),
 )
 
 interface RootComponentProps extends AppProps {

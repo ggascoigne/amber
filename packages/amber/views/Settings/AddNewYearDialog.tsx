@@ -124,7 +124,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
                 newValue.value = DateTime.fromISO(newValue.value).plus({ year: 1 })?.setZone(timeZone)?.toISO() ?? ''
               }
               return newValue
-            }) ?? []
+            }) ?? [],
         )
         .concat(allFields?.filter((s) => flags.includes(s.code)).map((v) => ({ ...v, value: 'No' })) ?? [])
 
@@ -141,7 +141,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
                     type: v.type,
                   },
                 },
-              })
+              }),
             )
           } else {
             acc.push(
@@ -153,7 +153,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
                     type: v.type,
                   },
                 },
-              })
+              }),
             )
           }
         }
@@ -171,7 +171,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         onClose(null)
       })
     },
-    [allFields, createSetting, invalidateSettingsQueries, newYear, notify, onClose, timeZone, updateSetting]
+    [allFields, createSetting, invalidateSettingsQueries, newYear, notify, onClose, timeZone, updateSetting],
   )
 
   if (error) {

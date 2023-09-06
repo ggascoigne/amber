@@ -42,7 +42,7 @@ function getLeafHeaders<D extends Record<string, unknown>>(header: HeaderGroup<D
 
 const defaultGetResizerProps = <D extends Record<string, unknown>>(
   props: any,
-  { instance, header: headerInput }: Meta<D, { header: HeaderGroup<D> }>
+  { instance, header: headerInput }: Meta<D, { header: HeaderGroup<D> }>,
 ) => {
   const { dispatch } = instance
 
@@ -91,11 +91,11 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
         upHandler: (_event: TouchEvent) => {
           document.removeEventListener(
             handlersAndEvents.touch.moveEvent,
-            handlersAndEvents.touch.moveHandler as unknown as EventListener
+            handlersAndEvents.touch.moveHandler as unknown as EventListener,
           )
           document.removeEventListener(
             handlersAndEvents.touch.upEvent,
-            handlersAndEvents.touch.moveHandler as unknown as EventListener
+            handlersAndEvents.touch.moveHandler as unknown as EventListener,
           )
           dispatchEnd()
         },
@@ -140,7 +140,7 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
 
 function reducer<D extends Record<string, unknown>>(
   previousState: TableState<D>,
-  action: ActionType
+  action: ActionType,
 ): ReducerTableState<D> | undefined {
   const state: TableState<D> & UseResizeColumnsState<D> = previousState as TableState<D> & UseResizeColumnsState<D>
   if (action.type === actions.init) {
@@ -215,7 +215,7 @@ const useInstanceBeforeDimensions = <D extends Record<string, unknown>>(instance
     const canResize = getFirstDefined(
       header.disableResizing === true ? false : undefined,
       disableResizing === true ? false : undefined,
-      true
+      true,
     )
 
     header.canResize = canResize

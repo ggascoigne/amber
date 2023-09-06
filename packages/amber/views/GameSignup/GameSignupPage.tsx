@@ -76,7 +76,7 @@ export const useEditGameChoice = () => {
         },
         {
           onSuccess: invalidateGameChoiceQueries,
-        }
+        },
       )
       .then(() => {
         // console.log('choices created')
@@ -97,7 +97,7 @@ export const useEditGameChoice = () => {
             onSettled: () => {
               if (refetch) invalidateGameChoiceQueries()
             },
-          }
+          },
         )
         .catch((error) => {
           console.log({ text: error.message, variant: 'error' })
@@ -114,7 +114,7 @@ export const useEditGameChoice = () => {
         },
         {
           onSettled: invalidateGameChoiceQueries,
-        }
+        },
       )
       .then(() => {
         // console.log({ text: 'GameChoice created', variant: 'success' })
@@ -166,7 +166,7 @@ const GameSignupPage: React.FC = () => {
       }
 
       const thisSlotChoices: ChoiceType[] = orderChoices(
-        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
+        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
@@ -209,7 +209,7 @@ const GameSignupPage: React.FC = () => {
         // console.log('all updaters complete')
       })
     },
-    [configuration, createOrEditGameChoice, membership?.id]
+    [configuration, createOrEditGameChoice, membership?.id],
   )
 
   const gameChoices = data?.gameChoices?.nodes

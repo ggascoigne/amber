@@ -126,7 +126,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
       })
       return acc
     },
-    [{ value: 0, text: "Any Slot -- Doesn't Matter" }]
+    [{ value: 0, text: "Any Slot -- Doesn't Matter" }],
   )
 
   return <SelectField {...rest} selectValues={selectValues} />
@@ -176,7 +176,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
       (a, b) =>
         b.year - a.year ||
         (a.slotId ?? a.slotPreference ?? 0) - (b.slotId ?? b.slotPreference ?? 0) ||
-        -b.name.localeCompare(a.name)
+        -b.name.localeCompare(a.name),
     )
 
   const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
@@ -211,7 +211,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
           'lateFinish',
           'slotConflicts',
           'message',
-          'teenFriendly'
+          'teenFriendly',
         ),
       })
     }

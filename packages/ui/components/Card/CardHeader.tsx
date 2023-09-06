@@ -65,7 +65,7 @@ export const CardHeader: React.FC<PropsWithChildren<CardHeaderProps>> = (props) 
       // [getKeyValue(classes)((color + 'CardHeader') as keyof typeof classes)]: color,
       [classes.cardHeaderPlain]: plain,
     },
-    className
+    className,
   )
   return (
     <div className={cardHeaderClasses} {...rest}>
