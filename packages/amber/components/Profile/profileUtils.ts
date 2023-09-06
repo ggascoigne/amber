@@ -53,7 +53,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
         },
         {
           onSuccess: invalidateUserQueries,
-        }
+        },
       )
       .then(async () => {
         if (profileValues?.profiles?.nodes?.[0]?.nodeId) {
@@ -69,7 +69,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
             },
             {
               onSuccess: invalidateUserQueries,
-            }
+            },
           )
         } else {
           await createProfile.mutateAsync(
@@ -83,7 +83,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
             },
             {
               onSuccess: invalidateUserQueries,
-            }
+            },
           )
         }
         if (onClose) {

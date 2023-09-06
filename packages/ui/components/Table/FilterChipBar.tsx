@@ -53,7 +53,7 @@ export function FilterChipBar<T extends Record<string, unknown>>({
     (id: string | number) => {
       setFilter(id as IdType<T>, undefined)
     },
-    [setFilter]
+    [setFilter],
   )
 
   return Object.keys(filters).length > 0 ? (

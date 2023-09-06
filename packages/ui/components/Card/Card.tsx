@@ -47,7 +47,7 @@ export const Card: React.FC<PropsWithChildren<CardProps>> = (props) => {
       [classes.cardPlain]: plain,
       [classes.cardCarousel]: carousel,
     },
-    className
+    className,
   )
   return (
     <div className={cardClasses} {...rest}>

@@ -10522,14 +10522,14 @@ export const GetGamesBySlotForSignupDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetGamesBySlotForSignupQuery = <TData = GetGamesBySlotForSignupQuery, TError = QueryError>(
   variables: GetGamesBySlotForSignupQueryVariables,
-  options?: UseQueryOptions<GetGamesBySlotForSignupQuery, TError, TData>
+  options?: UseQueryOptions<GetGamesBySlotForSignupQuery, TError, TData>,
 ) =>
   useQuery<GetGamesBySlotForSignupQuery, TError, TData>(
     ['getGamesBySlotForSignup', variables],
     useFetchData<GetGamesBySlotForSignupQuery, GetGamesBySlotForSignupQueryVariables>(
-      GetGamesBySlotForSignupDocument
+      GetGamesBySlotForSignupDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetGamesBySlotDocument = `
     query getGamesBySlot($year: Int!, $slotId: Int!) {
@@ -10549,12 +10549,12 @@ export const GetGamesBySlotDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetGamesBySlotQuery = <TData = GetGamesBySlotQuery, TError = QueryError>(
   variables: GetGamesBySlotQueryVariables,
-  options?: UseQueryOptions<GetGamesBySlotQuery, TError, TData>
+  options?: UseQueryOptions<GetGamesBySlotQuery, TError, TData>,
 ) =>
   useQuery<GetGamesBySlotQuery, TError, TData>(
     ['getGamesBySlot', variables],
     useFetchData<GetGamesBySlotQuery, GetGamesBySlotQueryVariables>(GetGamesBySlotDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetGamesByYearDocument = `
     query getGamesByYear($year: Int!) {
@@ -10578,12 +10578,12 @@ ${GameGmsFragmentDoc}
 ${GameRoomFieldsFragmentDoc}`
 export const useGetGamesByYearQuery = <TData = GetGamesByYearQuery, TError = QueryError>(
   variables: GetGamesByYearQueryVariables,
-  options?: UseQueryOptions<GetGamesByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetGamesByYearQuery, TError, TData>,
 ) =>
   useQuery<GetGamesByYearQuery, TError, TData>(
     ['getGamesByYear', variables],
     useFetchData<GetGamesByYearQuery, GetGamesByYearQueryVariables>(GetGamesByYearDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetSmallGamesByYearDocument = `
     query getSmallGamesByYear($year: Int!) {
@@ -10600,15 +10600,15 @@ export const GetSmallGamesByYearDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetSmallGamesByYearQuery = <TData = GetSmallGamesByYearQuery, TError = QueryError>(
   variables: GetSmallGamesByYearQueryVariables,
-  options?: UseQueryOptions<GetSmallGamesByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetSmallGamesByYearQuery, TError, TData>,
 ) =>
   useQuery<GetSmallGamesByYearQuery, TError, TData>(
     ['getSmallGamesByYear', variables],
     useFetchData<GetSmallGamesByYearQuery, GetSmallGamesByYearQueryVariables>(GetSmallGamesByYearDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const UpdateGameByNodeIdDocument = `
     mutation updateGameByNodeId($input: UpdateGameByNodeIdInput!) {
@@ -10622,12 +10622,12 @@ export const UpdateGameByNodeIdDocument = `
     ${GameFieldsFragmentDoc}
 ${GameGmsFragmentDoc}`
 export const useUpdateGameByNodeIdMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateGameByNodeIdMutation, TError, UpdateGameByNodeIdMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateGameByNodeIdMutation, TError, UpdateGameByNodeIdMutationVariables, TContext>,
 ) =>
   useMutation<UpdateGameByNodeIdMutation, TError, UpdateGameByNodeIdMutationVariables, TContext>(
     ['updateGameByNodeId'],
     useFetchData<UpdateGameByNodeIdMutation, UpdateGameByNodeIdMutationVariables>(UpdateGameByNodeIdDocument),
-    options
+    options,
   )
 export const UpdateGameDocument = `
     mutation updateGame($input: UpdateGameInput!) {
@@ -10641,12 +10641,12 @@ export const UpdateGameDocument = `
     ${GameFieldsFragmentDoc}
 ${GameGmsFragmentDoc}`
 export const useUpdateGameMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateGameMutation, TError, UpdateGameMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateGameMutation, TError, UpdateGameMutationVariables, TContext>,
 ) =>
   useMutation<UpdateGameMutation, TError, UpdateGameMutationVariables, TContext>(
     ['updateGame'],
     useFetchData<UpdateGameMutation, UpdateGameMutationVariables>(UpdateGameDocument),
-    options
+    options,
   )
 export const CreateGameDocument = `
     mutation createGame($input: CreateGameInput!) {
@@ -10660,12 +10660,12 @@ export const CreateGameDocument = `
     ${GameFieldsFragmentDoc}
 ${GameGmsFragmentDoc}`
 export const useCreateGameMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameMutation, TError, CreateGameMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameMutation, TError, CreateGameMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameMutation, TError, CreateGameMutationVariables, TContext>(
     ['createGame'],
     useFetchData<CreateGameMutation, CreateGameMutationVariables>(CreateGameDocument),
-    options
+    options,
   )
 export const DeleteGameDocument = `
     mutation deleteGame($input: DeleteGameInput!) {
@@ -10676,12 +10676,12 @@ export const DeleteGameDocument = `
 }
     `
 export const useDeleteGameMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteGameMutation, TError, DeleteGameMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteGameMutation, TError, DeleteGameMutationVariables, TContext>,
 ) =>
   useMutation<DeleteGameMutation, TError, DeleteGameMutationVariables, TContext>(
     ['deleteGame'],
     useFetchData<DeleteGameMutation, DeleteGameMutationVariables>(DeleteGameDocument),
-    options
+    options,
   )
 export const GetFirstGameOfSlotDocument = `
     query getFirstGameOfSlot($year: Int!) {
@@ -10706,15 +10706,15 @@ export const GetFirstGameOfSlotDocument = `
     ${GameFieldsFragmentDoc}`
 export const useGetFirstGameOfSlotQuery = <TData = GetFirstGameOfSlotQuery, TError = QueryError>(
   variables: GetFirstGameOfSlotQueryVariables,
-  options?: UseQueryOptions<GetFirstGameOfSlotQuery, TError, TData>
+  options?: UseQueryOptions<GetFirstGameOfSlotQuery, TError, TData>,
 ) =>
   useQuery<GetFirstGameOfSlotQuery, TError, TData>(
     ['getFirstGameOfSlot', variables],
     useFetchData<GetFirstGameOfSlotQuery, GetFirstGameOfSlotQueryVariables>(GetFirstGameOfSlotDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetGamesByAuthorDocument = `
     query getGamesByAuthor($id: Int!) {
@@ -10731,12 +10731,12 @@ export const GetGamesByAuthorDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetGamesByAuthorQuery = <TData = GetGamesByAuthorQuery, TError = QueryError>(
   variables: GetGamesByAuthorQueryVariables,
-  options?: UseQueryOptions<GetGamesByAuthorQuery, TError, TData>
+  options?: UseQueryOptions<GetGamesByAuthorQuery, TError, TData>,
 ) =>
   useQuery<GetGamesByAuthorQuery, TError, TData>(
     ['getGamesByAuthor', variables],
     useFetchData<GetGamesByAuthorQuery, GetGamesByAuthorQueryVariables>(GetGamesByAuthorDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetGamesByYearAndAuthorDocument = `
     query getGamesByYearAndAuthor($year: Int!, $id: Int!) {
@@ -10751,14 +10751,14 @@ export const GetGamesByYearAndAuthorDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetGamesByYearAndAuthorQuery = <TData = GetGamesByYearAndAuthorQuery, TError = QueryError>(
   variables: GetGamesByYearAndAuthorQueryVariables,
-  options?: UseQueryOptions<GetGamesByYearAndAuthorQuery, TError, TData>
+  options?: UseQueryOptions<GetGamesByYearAndAuthorQuery, TError, TData>,
 ) =>
   useQuery<GetGamesByYearAndAuthorQuery, TError, TData>(
     ['getGamesByYearAndAuthor', variables],
     useFetchData<GetGamesByYearAndAuthorQuery, GetGamesByYearAndAuthorQueryVariables>(
-      GetGamesByYearAndAuthorDocument
+      GetGamesByYearAndAuthorDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetGameByIdDocument = `
     query getGameById($id: Int!) {
@@ -10771,12 +10771,12 @@ export const GetGameByIdDocument = `
 ${GameGmsFragmentDoc}`
 export const useGetGameByIdQuery = <TData = GetGameByIdQuery, TError = QueryError>(
   variables: GetGameByIdQueryVariables,
-  options?: UseQueryOptions<GetGameByIdQuery, TError, TData>
+  options?: UseQueryOptions<GetGameByIdQuery, TError, TData>,
 ) =>
   useQuery<GetGameByIdQuery, TError, TData>(
     ['getGameById', variables],
     useFetchData<GetGameByIdQuery, GetGameByIdQueryVariables>(GetGameByIdDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetGameAssignmentsByYearDocument = `
     query getGameAssignmentsByYear($year: Int!) {
@@ -10789,14 +10789,14 @@ export const GetGameAssignmentsByYearDocument = `
     ${GameAssignmentFieldsFragmentDoc}`
 export const useGetGameAssignmentsByYearQuery = <TData = GetGameAssignmentsByYearQuery, TError = QueryError>(
   variables: GetGameAssignmentsByYearQueryVariables,
-  options?: UseQueryOptions<GetGameAssignmentsByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetGameAssignmentsByYearQuery, TError, TData>,
 ) =>
   useQuery<GetGameAssignmentsByYearQuery, TError, TData>(
     ['getGameAssignmentsByYear', variables],
     useFetchData<GetGameAssignmentsByYearQuery, GetGameAssignmentsByYearQueryVariables>(
-      GetGameAssignmentsByYearDocument
+      GetGameAssignmentsByYearDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetGameAssignmentsByGameIdDocument = `
     query getGameAssignmentsByGameId($gameId: Int!) {
@@ -10809,14 +10809,14 @@ export const GetGameAssignmentsByGameIdDocument = `
     ${GameAssignmentFieldsFragmentDoc}`
 export const useGetGameAssignmentsByGameIdQuery = <TData = GetGameAssignmentsByGameIdQuery, TError = QueryError>(
   variables: GetGameAssignmentsByGameIdQueryVariables,
-  options?: UseQueryOptions<GetGameAssignmentsByGameIdQuery, TError, TData>
+  options?: UseQueryOptions<GetGameAssignmentsByGameIdQuery, TError, TData>,
 ) =>
   useQuery<GetGameAssignmentsByGameIdQuery, TError, TData>(
     ['getGameAssignmentsByGameId', variables],
     useFetchData<GetGameAssignmentsByGameIdQuery, GetGameAssignmentsByGameIdQueryVariables>(
-      GetGameAssignmentsByGameIdDocument
+      GetGameAssignmentsByGameIdDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetGameAssignmentsByMemberIdDocument = `
     query getGameAssignmentsByMemberId($memberId: Int!) {
@@ -10829,14 +10829,14 @@ export const GetGameAssignmentsByMemberIdDocument = `
     ${GameAssignmentFieldsFragmentDoc}`
 export const useGetGameAssignmentsByMemberIdQuery = <TData = GetGameAssignmentsByMemberIdQuery, TError = QueryError>(
   variables: GetGameAssignmentsByMemberIdQueryVariables,
-  options?: UseQueryOptions<GetGameAssignmentsByMemberIdQuery, TError, TData>
+  options?: UseQueryOptions<GetGameAssignmentsByMemberIdQuery, TError, TData>,
 ) =>
   useQuery<GetGameAssignmentsByMemberIdQuery, TError, TData>(
     ['getGameAssignmentsByMemberId', variables],
     useFetchData<GetGameAssignmentsByMemberIdQuery, GetGameAssignmentsByMemberIdQueryVariables>(
-      GetGameAssignmentsByMemberIdDocument
+      GetGameAssignmentsByMemberIdDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const UpdateGameAssignmentByNodeIdDocument = `
     mutation updateGameAssignmentByNodeId($input: UpdateGameAssignmentByNodeIdInput!) {
@@ -10853,14 +10853,14 @@ export const useUpdateGameAssignmentByNodeIdMutation = <TError = QueryError, TCo
     TError,
     UpdateGameAssignmentByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateGameAssignmentByNodeIdMutation, TError, UpdateGameAssignmentByNodeIdMutationVariables, TContext>(
     ['updateGameAssignmentByNodeId'],
     useFetchData<UpdateGameAssignmentByNodeIdMutation, UpdateGameAssignmentByNodeIdMutationVariables>(
-      UpdateGameAssignmentByNodeIdDocument
+      UpdateGameAssignmentByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateGameAssignmentDocument = `
     mutation createGameAssignment($input: CreateGameAssignmentInput!) {
@@ -10872,12 +10872,12 @@ export const CreateGameAssignmentDocument = `
 }
     ${GameAssignmentFieldsFragmentDoc}`
 export const useCreateGameAssignmentMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameAssignmentMutation, TError, CreateGameAssignmentMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameAssignmentMutation, TError, CreateGameAssignmentMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameAssignmentMutation, TError, CreateGameAssignmentMutationVariables, TContext>(
     ['createGameAssignment'],
     useFetchData<CreateGameAssignmentMutation, CreateGameAssignmentMutationVariables>(CreateGameAssignmentDocument),
-    options
+    options,
   )
 export const DeleteGameAssignmentDocument = `
     mutation deleteGameAssignment($input: DeleteGameAssignmentByNodeIdInput!) {
@@ -10888,12 +10888,12 @@ export const DeleteGameAssignmentDocument = `
 }
     `
 export const useDeleteGameAssignmentMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteGameAssignmentMutation, TError, DeleteGameAssignmentMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteGameAssignmentMutation, TError, DeleteGameAssignmentMutationVariables, TContext>,
 ) =>
   useMutation<DeleteGameAssignmentMutation, TError, DeleteGameAssignmentMutationVariables, TContext>(
     ['deleteGameAssignment'],
     useFetchData<DeleteGameAssignmentMutation, DeleteGameAssignmentMutationVariables>(DeleteGameAssignmentDocument),
-    options
+    options,
   )
 export const GetScheduleDocument = `
     query getSchedule($memberId: Int!) {
@@ -10919,12 +10919,12 @@ ${AssignmentFieldsFragmentDoc}
 ${GameAssignmentFieldsFragmentDoc}`
 export const useGetScheduleQuery = <TData = GetScheduleQuery, TError = QueryError>(
   variables: GetScheduleQueryVariables,
-  options?: UseQueryOptions<GetScheduleQuery, TError, TData>
+  options?: UseQueryOptions<GetScheduleQuery, TError, TData>,
 ) =>
   useQuery<GetScheduleQuery, TError, TData>(
     ['getSchedule', variables],
     useFetchData<GetScheduleQuery, GetScheduleQueryVariables>(GetScheduleDocument).bind(null, variables),
-    options
+    options,
   )
 export const CreateGameChoicesDocument = `
     mutation createGameChoices($year: Int!, $slots: Int!, $memberId: Int!) {
@@ -10936,12 +10936,12 @@ export const CreateGameChoicesDocument = `
 }
     `
 export const useCreateGameChoicesMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameChoicesMutation, TError, CreateGameChoicesMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameChoicesMutation, TError, CreateGameChoicesMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameChoicesMutation, TError, CreateGameChoicesMutationVariables, TContext>(
     ['createGameChoices'],
     useFetchData<CreateGameChoicesMutation, CreateGameChoicesMutationVariables>(CreateGameChoicesDocument),
-    options
+    options,
   )
 export const GetGameChoicesDocument = `
     query getGameChoices($year: Int!, $memberId: Int!) {
@@ -10960,12 +10960,12 @@ export const GetGameChoicesDocument = `
 ${GameChoiceFieldsFragmentDoc}`
 export const useGetGameChoicesQuery = <TData = GetGameChoicesQuery, TError = QueryError>(
   variables: GetGameChoicesQueryVariables,
-  options?: UseQueryOptions<GetGameChoicesQuery, TError, TData>
+  options?: UseQueryOptions<GetGameChoicesQuery, TError, TData>,
 ) =>
   useQuery<GetGameChoicesQuery, TError, TData>(
     ['getGameChoices', variables],
     useFetchData<GetGameChoicesQuery, GetGameChoicesQueryVariables>(GetGameChoicesDocument).bind(null, variables),
-    options
+    options,
   )
 export const ReadGameChoiceDocument = `
     query readGameChoice($id: Int!) {
@@ -10976,12 +10976,12 @@ export const ReadGameChoiceDocument = `
     ${GameChoiceFieldsFragmentDoc}`
 export const useReadGameChoiceQuery = <TData = ReadGameChoiceQuery, TError = QueryError>(
   variables: ReadGameChoiceQueryVariables,
-  options?: UseQueryOptions<ReadGameChoiceQuery, TError, TData>
+  options?: UseQueryOptions<ReadGameChoiceQuery, TError, TData>,
 ) =>
   useQuery<ReadGameChoiceQuery, TError, TData>(
     ['readGameChoice', variables],
     useFetchData<ReadGameChoiceQuery, ReadGameChoiceQueryVariables>(ReadGameChoiceDocument).bind(null, variables),
-    options
+    options,
   )
 export const CreateGameSubmissionDocument = `
     mutation createGameSubmission($input: CreateGameSubmissionInput!) {
@@ -10994,12 +10994,12 @@ export const CreateGameSubmissionDocument = `
 }
     ${GameSubmissionFieldsFragmentDoc}`
 export const useCreateGameSubmissionMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameSubmissionMutation, TError, CreateGameSubmissionMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameSubmissionMutation, TError, CreateGameSubmissionMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameSubmissionMutation, TError, CreateGameSubmissionMutationVariables, TContext>(
     ['createGameSubmission'],
     useFetchData<CreateGameSubmissionMutation, CreateGameSubmissionMutationVariables>(CreateGameSubmissionDocument),
-    options
+    options,
   )
 export const UpdateGameSubmissionByNodeIdDocument = `
     mutation updateGameSubmissionByNodeId($input: UpdateGameSubmissionByNodeIdInput!) {
@@ -11017,14 +11017,14 @@ export const useUpdateGameSubmissionByNodeIdMutation = <TError = QueryError, TCo
     TError,
     UpdateGameSubmissionByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateGameSubmissionByNodeIdMutation, TError, UpdateGameSubmissionByNodeIdMutationVariables, TContext>(
     ['updateGameSubmissionByNodeId'],
     useFetchData<UpdateGameSubmissionByNodeIdMutation, UpdateGameSubmissionByNodeIdMutationVariables>(
-      UpdateGameSubmissionByNodeIdDocument
+      UpdateGameSubmissionByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateGameChoiceDocument = `
     mutation createGameChoice($input: CreateGameChoiceInput!) {
@@ -11037,12 +11037,12 @@ export const CreateGameChoiceDocument = `
 }
     ${GameChoiceFieldsFragmentDoc}`
 export const useCreateGameChoiceMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameChoiceMutation, TError, CreateGameChoiceMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameChoiceMutation, TError, CreateGameChoiceMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameChoiceMutation, TError, CreateGameChoiceMutationVariables, TContext>(
     ['createGameChoice'],
     useFetchData<CreateGameChoiceMutation, CreateGameChoiceMutationVariables>(CreateGameChoiceDocument),
-    options
+    options,
   )
 export const UpdateGameChoiceByNodeIdDocument = `
     mutation updateGameChoiceByNodeId($input: UpdateGameChoiceByNodeIdInput!) {
@@ -11060,14 +11060,14 @@ export const useUpdateGameChoiceByNodeIdMutation = <TError = QueryError, TContex
     TError,
     UpdateGameChoiceByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateGameChoiceByNodeIdMutation, TError, UpdateGameChoiceByNodeIdMutationVariables, TContext>(
     ['updateGameChoiceByNodeId'],
     useFetchData<UpdateGameChoiceByNodeIdMutation, UpdateGameChoiceByNodeIdMutationVariables>(
-      UpdateGameChoiceByNodeIdDocument
+      UpdateGameChoiceByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const GetGameRoomsDocument = `
     query getGameRooms {
@@ -11080,12 +11080,12 @@ export const GetGameRoomsDocument = `
     ${GameRoomFieldsFragmentDoc}`
 export const useGetGameRoomsQuery = <TData = GetGameRoomsQuery, TError = QueryError>(
   variables?: GetGameRoomsQueryVariables,
-  options?: UseQueryOptions<GetGameRoomsQuery, TError, TData>
+  options?: UseQueryOptions<GetGameRoomsQuery, TError, TData>,
 ) =>
   useQuery<GetGameRoomsQuery, TError, TData>(
     variables === undefined ? ['getGameRooms'] : ['getGameRooms', variables],
     useFetchData<GetGameRoomsQuery, GetGameRoomsQueryVariables>(GetGameRoomsDocument).bind(null, variables),
-    options
+    options,
   )
 export const UpdateGameRoomDocument = `
     mutation updateGameRoom($input: UpdateRoomInput!) {
@@ -11097,12 +11097,12 @@ export const UpdateGameRoomDocument = `
 }
     ${GameRoomFieldsFragmentDoc}`
 export const useUpdateGameRoomMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateGameRoomMutation, TError, UpdateGameRoomMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateGameRoomMutation, TError, UpdateGameRoomMutationVariables, TContext>,
 ) =>
   useMutation<UpdateGameRoomMutation, TError, UpdateGameRoomMutationVariables, TContext>(
     ['updateGameRoom'],
     useFetchData<UpdateGameRoomMutation, UpdateGameRoomMutationVariables>(UpdateGameRoomDocument),
-    options
+    options,
   )
 export const CreateGameRoomDocument = `
     mutation createGameRoom($input: CreateRoomInput!) {
@@ -11114,12 +11114,12 @@ export const CreateGameRoomDocument = `
 }
     ${GameRoomFieldsFragmentDoc}`
 export const useCreateGameRoomMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateGameRoomMutation, TError, CreateGameRoomMutationVariables, TContext>
+  options?: UseMutationOptions<CreateGameRoomMutation, TError, CreateGameRoomMutationVariables, TContext>,
 ) =>
   useMutation<CreateGameRoomMutation, TError, CreateGameRoomMutationVariables, TContext>(
     ['createGameRoom'],
     useFetchData<CreateGameRoomMutation, CreateGameRoomMutationVariables>(CreateGameRoomDocument),
-    options
+    options,
   )
 export const DeleteGameRoomDocument = `
     mutation deleteGameRoom($input: DeleteRoomInput!) {
@@ -11130,12 +11130,12 @@ export const DeleteGameRoomDocument = `
 }
     `
 export const useDeleteGameRoomMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>,
 ) =>
   useMutation<DeleteGameRoomMutation, TError, DeleteGameRoomMutationVariables, TContext>(
     ['deleteGameRoom'],
     useFetchData<DeleteGameRoomMutation, DeleteGameRoomMutationVariables>(DeleteGameRoomDocument),
-    options
+    options,
   )
 export const GetGameRoomAndGamesDocument = `
     query getGameRoomAndGames($year: Int) {
@@ -11157,15 +11157,15 @@ export const GetGameRoomAndGamesDocument = `
     `
 export const useGetGameRoomAndGamesQuery = <TData = GetGameRoomAndGamesQuery, TError = QueryError>(
   variables?: GetGameRoomAndGamesQueryVariables,
-  options?: UseQueryOptions<GetGameRoomAndGamesQuery, TError, TData>
+  options?: UseQueryOptions<GetGameRoomAndGamesQuery, TError, TData>,
 ) =>
   useQuery<GetGameRoomAndGamesQuery, TError, TData>(
     variables === undefined ? ['getGameRoomAndGames'] : ['getGameRoomAndGames', variables],
     useFetchData<GetGameRoomAndGamesQuery, GetGameRoomAndGamesQueryVariables>(GetGameRoomAndGamesDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetHotelRoomsDocument = `
     query getHotelRooms {
@@ -11180,12 +11180,12 @@ export const GetHotelRoomsDocument = `
     ${HotelRoomFieldsFragmentDoc}`
 export const useGetHotelRoomsQuery = <TData = GetHotelRoomsQuery, TError = QueryError>(
   variables?: GetHotelRoomsQueryVariables,
-  options?: UseQueryOptions<GetHotelRoomsQuery, TError, TData>
+  options?: UseQueryOptions<GetHotelRoomsQuery, TError, TData>,
 ) =>
   useQuery<GetHotelRoomsQuery, TError, TData>(
     variables === undefined ? ['getHotelRooms'] : ['getHotelRooms', variables],
     useFetchData<GetHotelRoomsQuery, GetHotelRoomsQueryVariables>(GetHotelRoomsDocument).bind(null, variables),
-    options
+    options,
   )
 export const UpdateHotelRoomByNodeIdDocument = `
     mutation updateHotelRoomByNodeId($input: UpdateHotelRoomByNodeIdInput!) {
@@ -11202,14 +11202,14 @@ export const useUpdateHotelRoomByNodeIdMutation = <TError = QueryError, TContext
     TError,
     UpdateHotelRoomByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateHotelRoomByNodeIdMutation, TError, UpdateHotelRoomByNodeIdMutationVariables, TContext>(
     ['updateHotelRoomByNodeId'],
     useFetchData<UpdateHotelRoomByNodeIdMutation, UpdateHotelRoomByNodeIdMutationVariables>(
-      UpdateHotelRoomByNodeIdDocument
+      UpdateHotelRoomByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateHotelRoomDocument = `
     mutation createHotelRoom($input: CreateHotelRoomInput!) {
@@ -11221,12 +11221,12 @@ export const CreateHotelRoomDocument = `
 }
     ${HotelRoomFieldsFragmentDoc}`
 export const useCreateHotelRoomMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>
+  options?: UseMutationOptions<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>,
 ) =>
   useMutation<CreateHotelRoomMutation, TError, CreateHotelRoomMutationVariables, TContext>(
     ['createHotelRoom'],
     useFetchData<CreateHotelRoomMutation, CreateHotelRoomMutationVariables>(CreateHotelRoomDocument),
-    options
+    options,
   )
 export const DeleteHotelRoomDocument = `
     mutation deleteHotelRoom($input: DeleteHotelRoomInput!) {
@@ -11237,12 +11237,12 @@ export const DeleteHotelRoomDocument = `
 }
     `
 export const useDeleteHotelRoomMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>,
 ) =>
   useMutation<DeleteHotelRoomMutation, TError, DeleteHotelRoomMutationVariables, TContext>(
     ['deleteHotelRoom'],
     useFetchData<DeleteHotelRoomMutation, DeleteHotelRoomMutationVariables>(DeleteHotelRoomDocument),
-    options
+    options,
   )
 export const GetHotelRoomDetailsDocument = `
     query getHotelRoomDetails {
@@ -11257,15 +11257,15 @@ export const GetHotelRoomDetailsDocument = `
     ${HotelRoomDetailsFieldsFragmentDoc}`
 export const useGetHotelRoomDetailsQuery = <TData = GetHotelRoomDetailsQuery, TError = QueryError>(
   variables?: GetHotelRoomDetailsQueryVariables,
-  options?: UseQueryOptions<GetHotelRoomDetailsQuery, TError, TData>
+  options?: UseQueryOptions<GetHotelRoomDetailsQuery, TError, TData>,
 ) =>
   useQuery<GetHotelRoomDetailsQuery, TError, TData>(
     variables === undefined ? ['getHotelRoomDetails'] : ['getHotelRoomDetails', variables],
     useFetchData<GetHotelRoomDetailsQuery, GetHotelRoomDetailsQueryVariables>(GetHotelRoomDetailsDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const UpdateHotelRoomDetailByNodeIdDocument = `
     mutation updateHotelRoomDetailByNodeId($input: UpdateHotelRoomDetailByNodeIdInput!) {
@@ -11282,14 +11282,14 @@ export const useUpdateHotelRoomDetailByNodeIdMutation = <TError = QueryError, TC
     TError,
     UpdateHotelRoomDetailByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateHotelRoomDetailByNodeIdMutation, TError, UpdateHotelRoomDetailByNodeIdMutationVariables, TContext>(
     ['updateHotelRoomDetailByNodeId'],
     useFetchData<UpdateHotelRoomDetailByNodeIdMutation, UpdateHotelRoomDetailByNodeIdMutationVariables>(
-      UpdateHotelRoomDetailByNodeIdDocument
+      UpdateHotelRoomDetailByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateHotelRoomDetailDocument = `
     mutation createHotelRoomDetail($input: CreateHotelRoomDetailInput!) {
@@ -11301,12 +11301,12 @@ export const CreateHotelRoomDetailDocument = `
 }
     ${HotelRoomDetailsFieldsFragmentDoc}`
 export const useCreateHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>
+  options?: UseMutationOptions<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>,
 ) =>
   useMutation<CreateHotelRoomDetailMutation, TError, CreateHotelRoomDetailMutationVariables, TContext>(
     ['createHotelRoomDetail'],
     useFetchData<CreateHotelRoomDetailMutation, CreateHotelRoomDetailMutationVariables>(CreateHotelRoomDetailDocument),
-    options
+    options,
   )
 export const DeleteHotelRoomDetailDocument = `
     mutation deleteHotelRoomDetail($input: DeleteHotelRoomDetailInput!) {
@@ -11317,12 +11317,12 @@ export const DeleteHotelRoomDetailDocument = `
 }
     `
 export const useDeleteHotelRoomDetailMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>,
 ) =>
   useMutation<DeleteHotelRoomDetailMutation, TError, DeleteHotelRoomDetailMutationVariables, TContext>(
     ['deleteHotelRoomDetail'],
     useFetchData<DeleteHotelRoomDetailMutation, DeleteHotelRoomDetailMutationVariables>(DeleteHotelRoomDetailDocument),
-    options
+    options,
   )
 export const GetLookupsDocument = `
     query getLookups {
@@ -11343,12 +11343,12 @@ export const GetLookupsDocument = `
 ${LookupValuesFieldsFragmentDoc}`
 export const useGetLookupsQuery = <TData = GetLookupsQuery, TError = QueryError>(
   variables?: GetLookupsQueryVariables,
-  options?: UseQueryOptions<GetLookupsQuery, TError, TData>
+  options?: UseQueryOptions<GetLookupsQuery, TError, TData>,
 ) =>
   useQuery<GetLookupsQuery, TError, TData>(
     variables === undefined ? ['getLookups'] : ['getLookups', variables],
     useFetchData<GetLookupsQuery, GetLookupsQueryVariables>(GetLookupsDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetLookupValuesDocument = `
     query getLookupValues($realm: String!) {
@@ -11369,12 +11369,12 @@ export const GetLookupValuesDocument = `
 ${LookupValuesFieldsFragmentDoc}`
 export const useGetLookupValuesQuery = <TData = GetLookupValuesQuery, TError = QueryError>(
   variables: GetLookupValuesQueryVariables,
-  options?: UseQueryOptions<GetLookupValuesQuery, TError, TData>
+  options?: UseQueryOptions<GetLookupValuesQuery, TError, TData>,
 ) =>
   useQuery<GetLookupValuesQuery, TError, TData>(
     ['getLookupValues', variables],
     useFetchData<GetLookupValuesQuery, GetLookupValuesQueryVariables>(GetLookupValuesDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetSingleLookupValueDocument = `
     query getSingleLookupValue($realm: String!, $code: String!) {
@@ -11395,15 +11395,15 @@ export const GetSingleLookupValueDocument = `
 ${LookupValuesFieldsFragmentDoc}`
 export const useGetSingleLookupValueQuery = <TData = GetSingleLookupValueQuery, TError = QueryError>(
   variables: GetSingleLookupValueQueryVariables,
-  options?: UseQueryOptions<GetSingleLookupValueQuery, TError, TData>
+  options?: UseQueryOptions<GetSingleLookupValueQuery, TError, TData>,
 ) =>
   useQuery<GetSingleLookupValueQuery, TError, TData>(
     ['getSingleLookupValue', variables],
     useFetchData<GetSingleLookupValueQuery, GetSingleLookupValueQueryVariables>(GetSingleLookupValueDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const UpdateLookupByNodeIdDocument = `
     mutation updateLookupByNodeId($input: UpdateLookupByNodeIdInput!) {
@@ -11415,12 +11415,12 @@ export const UpdateLookupByNodeIdDocument = `
 }
     ${LookupFieldsFragmentDoc}`
 export const useUpdateLookupByNodeIdMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateLookupByNodeIdMutation, TError, UpdateLookupByNodeIdMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateLookupByNodeIdMutation, TError, UpdateLookupByNodeIdMutationVariables, TContext>,
 ) =>
   useMutation<UpdateLookupByNodeIdMutation, TError, UpdateLookupByNodeIdMutationVariables, TContext>(
     ['updateLookupByNodeId'],
     useFetchData<UpdateLookupByNodeIdMutation, UpdateLookupByNodeIdMutationVariables>(UpdateLookupByNodeIdDocument),
-    options
+    options,
   )
 export const CreateLookupDocument = `
     mutation createLookup($input: CreateLookupInput!) {
@@ -11432,12 +11432,12 @@ export const CreateLookupDocument = `
 }
     ${LookupFieldsFragmentDoc}`
 export const useCreateLookupMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateLookupMutation, TError, CreateLookupMutationVariables, TContext>
+  options?: UseMutationOptions<CreateLookupMutation, TError, CreateLookupMutationVariables, TContext>,
 ) =>
   useMutation<CreateLookupMutation, TError, CreateLookupMutationVariables, TContext>(
     ['createLookup'],
     useFetchData<CreateLookupMutation, CreateLookupMutationVariables>(CreateLookupDocument),
-    options
+    options,
   )
 export const DeleteLookupDocument = `
     mutation deleteLookup($input: DeleteLookupInput!) {
@@ -11448,12 +11448,12 @@ export const DeleteLookupDocument = `
 }
     `
 export const useDeleteLookupMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteLookupMutation, TError, DeleteLookupMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteLookupMutation, TError, DeleteLookupMutationVariables, TContext>,
 ) =>
   useMutation<DeleteLookupMutation, TError, DeleteLookupMutationVariables, TContext>(
     ['deleteLookup'],
     useFetchData<DeleteLookupMutation, DeleteLookupMutationVariables>(DeleteLookupDocument),
-    options
+    options,
   )
 export const UpdateLookupValueByNodeIdDocument = `
     mutation updateLookupValueByNodeId($input: UpdateLookupValueByNodeIdInput!) {
@@ -11470,14 +11470,14 @@ export const useUpdateLookupValueByNodeIdMutation = <TError = QueryError, TConte
     TError,
     UpdateLookupValueByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateLookupValueByNodeIdMutation, TError, UpdateLookupValueByNodeIdMutationVariables, TContext>(
     ['updateLookupValueByNodeId'],
     useFetchData<UpdateLookupValueByNodeIdMutation, UpdateLookupValueByNodeIdMutationVariables>(
-      UpdateLookupValueByNodeIdDocument
+      UpdateLookupValueByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateLookupValueDocument = `
     mutation createLookupValue($input: CreateLookupValueInput!) {
@@ -11489,12 +11489,12 @@ export const CreateLookupValueDocument = `
 }
     ${LookupValuesFieldsFragmentDoc}`
 export const useCreateLookupValueMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateLookupValueMutation, TError, CreateLookupValueMutationVariables, TContext>
+  options?: UseMutationOptions<CreateLookupValueMutation, TError, CreateLookupValueMutationVariables, TContext>,
 ) =>
   useMutation<CreateLookupValueMutation, TError, CreateLookupValueMutationVariables, TContext>(
     ['createLookupValue'],
     useFetchData<CreateLookupValueMutation, CreateLookupValueMutationVariables>(CreateLookupValueDocument),
-    options
+    options,
   )
 export const DeleteLookupValueDocument = `
     mutation deleteLookupValue($input: DeleteLookupValueInput!) {
@@ -11505,12 +11505,12 @@ export const DeleteLookupValueDocument = `
 }
     `
 export const useDeleteLookupValueMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteLookupValueMutation, TError, DeleteLookupValueMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteLookupValueMutation, TError, DeleteLookupValueMutationVariables, TContext>,
 ) =>
   useMutation<DeleteLookupValueMutation, TError, DeleteLookupValueMutationVariables, TContext>(
     ['deleteLookupValue'],
     useFetchData<DeleteLookupValueMutation, DeleteLookupValueMutationVariables>(DeleteLookupValueDocument),
-    options
+    options,
   )
 export const GetMembershipByYearAndIdDocument = `
     query getMembershipByYearAndId($year: Int!, $userId: Int!) {
@@ -11523,14 +11523,14 @@ export const GetMembershipByYearAndIdDocument = `
     ${MembershipFieldsFragmentDoc}`
 export const useGetMembershipByYearAndIdQuery = <TData = GetMembershipByYearAndIdQuery, TError = QueryError>(
   variables: GetMembershipByYearAndIdQueryVariables,
-  options?: UseQueryOptions<GetMembershipByYearAndIdQuery, TError, TData>
+  options?: UseQueryOptions<GetMembershipByYearAndIdQuery, TError, TData>,
 ) =>
   useQuery<GetMembershipByYearAndIdQuery, TError, TData>(
     ['getMembershipByYearAndId', variables],
     useFetchData<GetMembershipByYearAndIdQuery, GetMembershipByYearAndIdQueryVariables>(
-      GetMembershipByYearAndIdDocument
+      GetMembershipByYearAndIdDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetMembershipsByYearDocument = `
     query getMembershipsByYear($year: Int!) {
@@ -11543,15 +11543,15 @@ export const GetMembershipsByYearDocument = `
     ${MembershipFieldsFragmentDoc}`
 export const useGetMembershipsByYearQuery = <TData = GetMembershipsByYearQuery, TError = QueryError>(
   variables: GetMembershipsByYearQueryVariables,
-  options?: UseQueryOptions<GetMembershipsByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetMembershipsByYearQuery, TError, TData>,
 ) =>
   useQuery<GetMembershipsByYearQuery, TError, TData>(
     ['getMembershipsByYear', variables],
     useFetchData<GetMembershipsByYearQuery, GetMembershipsByYearQueryVariables>(GetMembershipsByYearDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetMembershipRoomsByYearDocument = `
     query getMembershipRoomsByYear($year: Int!) {
@@ -11569,14 +11569,14 @@ export const GetMembershipRoomsByYearDocument = `
     `
 export const useGetMembershipRoomsByYearQuery = <TData = GetMembershipRoomsByYearQuery, TError = QueryError>(
   variables: GetMembershipRoomsByYearQueryVariables,
-  options?: UseQueryOptions<GetMembershipRoomsByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetMembershipRoomsByYearQuery, TError, TData>,
 ) =>
   useQuery<GetMembershipRoomsByYearQuery, TError, TData>(
     ['getMembershipRoomsByYear', variables],
     useFetchData<GetMembershipRoomsByYearQuery, GetMembershipRoomsByYearQueryVariables>(
-      GetMembershipRoomsByYearDocument
+      GetMembershipRoomsByYearDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetMembershipsByIdDocument = `
     query getMembershipsById($id: Int!) {
@@ -11589,15 +11589,15 @@ export const GetMembershipsByIdDocument = `
     ${MembershipFieldsFragmentDoc}`
 export const useGetMembershipsByIdQuery = <TData = GetMembershipsByIdQuery, TError = QueryError>(
   variables: GetMembershipsByIdQueryVariables,
-  options?: UseQueryOptions<GetMembershipsByIdQuery, TError, TData>
+  options?: UseQueryOptions<GetMembershipsByIdQuery, TError, TData>,
 ) =>
   useQuery<GetMembershipsByIdQuery, TError, TData>(
     ['getMembershipsById', variables],
     useFetchData<GetMembershipsByIdQuery, GetMembershipsByIdQueryVariables>(GetMembershipsByIdDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetMembershipByYearAndRoomDocument = `
     query getMembershipByYearAndRoom($year: Int!, $hotelRoomId: Int!) {
@@ -11610,14 +11610,14 @@ export const GetMembershipByYearAndRoomDocument = `
     ${MembershipFieldsFragmentDoc}`
 export const useGetMembershipByYearAndRoomQuery = <TData = GetMembershipByYearAndRoomQuery, TError = QueryError>(
   variables: GetMembershipByYearAndRoomQueryVariables,
-  options?: UseQueryOptions<GetMembershipByYearAndRoomQuery, TError, TData>
+  options?: UseQueryOptions<GetMembershipByYearAndRoomQuery, TError, TData>,
 ) =>
   useQuery<GetMembershipByYearAndRoomQuery, TError, TData>(
     ['getMembershipByYearAndRoom', variables],
     useFetchData<GetMembershipByYearAndRoomQuery, GetMembershipByYearAndRoomQueryVariables>(
-      GetMembershipByYearAndRoomDocument
+      GetMembershipByYearAndRoomDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const UpdateMembershipByNodeIdDocument = `
     mutation updateMembershipByNodeId($input: UpdateMembershipByNodeIdInput!) {
@@ -11634,14 +11634,14 @@ export const useUpdateMembershipByNodeIdMutation = <TError = QueryError, TContex
     TError,
     UpdateMembershipByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateMembershipByNodeIdMutation, TError, UpdateMembershipByNodeIdMutationVariables, TContext>(
     ['updateMembershipByNodeId'],
     useFetchData<UpdateMembershipByNodeIdMutation, UpdateMembershipByNodeIdMutationVariables>(
-      UpdateMembershipByNodeIdDocument
+      UpdateMembershipByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const CreateMembershipDocument = `
     mutation createMembership($input: CreateMembershipInput!) {
@@ -11653,12 +11653,12 @@ export const CreateMembershipDocument = `
 }
     ${MembershipFieldsFragmentDoc}`
 export const useCreateMembershipMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateMembershipMutation, TError, CreateMembershipMutationVariables, TContext>
+  options?: UseMutationOptions<CreateMembershipMutation, TError, CreateMembershipMutationVariables, TContext>,
 ) =>
   useMutation<CreateMembershipMutation, TError, CreateMembershipMutationVariables, TContext>(
     ['createMembership'],
     useFetchData<CreateMembershipMutation, CreateMembershipMutationVariables>(CreateMembershipDocument),
-    options
+    options,
   )
 export const DeleteMembershipDocument = `
     mutation deleteMembership($input: DeleteMembershipInput!) {
@@ -11669,12 +11669,12 @@ export const DeleteMembershipDocument = `
 }
     `
 export const useDeleteMembershipMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteMembershipMutation, TError, DeleteMembershipMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteMembershipMutation, TError, DeleteMembershipMutationVariables, TContext>,
 ) =>
   useMutation<DeleteMembershipMutation, TError, DeleteMembershipMutationVariables, TContext>(
     ['deleteMembership'],
     useFetchData<DeleteMembershipMutation, DeleteMembershipMutationVariables>(DeleteMembershipDocument),
-    options
+    options,
   )
 export const GetAllMembersByDocument = `
     query getAllMembersBy($year: Int!, $query: String!) {
@@ -11693,12 +11693,12 @@ export const GetAllMembersByDocument = `
 ${MembershipFieldsFragmentDoc}`
 export const useGetAllMembersByQuery = <TData = GetAllMembersByQuery, TError = QueryError>(
   variables: GetAllMembersByQueryVariables,
-  options?: UseQueryOptions<GetAllMembersByQuery, TError, TData>
+  options?: UseQueryOptions<GetAllMembersByQuery, TError, TData>,
 ) =>
   useQuery<GetAllMembersByQuery, TError, TData>(
     ['getAllMembersBy', variables],
     useFetchData<GetAllMembersByQuery, GetAllMembersByQueryVariables>(GetAllMembersByDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetSettingsDocument = `
     query getSettings {
@@ -11711,12 +11711,12 @@ export const GetSettingsDocument = `
     ${SettingFieldsFragmentDoc}`
 export const useGetSettingsQuery = <TData = GetSettingsQuery, TError = QueryError>(
   variables?: GetSettingsQueryVariables,
-  options?: UseQueryOptions<GetSettingsQuery, TError, TData>
+  options?: UseQueryOptions<GetSettingsQuery, TError, TData>,
 ) =>
   useQuery<GetSettingsQuery, TError, TData>(
     variables === undefined ? ['getSettings'] : ['getSettings', variables],
     useFetchData<GetSettingsQuery, GetSettingsQueryVariables>(GetSettingsDocument).bind(null, variables),
-    options
+    options,
   )
 export const CreateSettingDocument = `
     mutation createSetting($input: CreateSettingInput!) {
@@ -11728,12 +11728,12 @@ export const CreateSettingDocument = `
 }
     ${SettingFieldsFragmentDoc}`
 export const useCreateSettingMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateSettingMutation, TError, CreateSettingMutationVariables, TContext>
+  options?: UseMutationOptions<CreateSettingMutation, TError, CreateSettingMutationVariables, TContext>,
 ) =>
   useMutation<CreateSettingMutation, TError, CreateSettingMutationVariables, TContext>(
     ['createSetting'],
     useFetchData<CreateSettingMutation, CreateSettingMutationVariables>(CreateSettingDocument),
-    options
+    options,
   )
 export const DeleteSettingDocument = `
     mutation deleteSetting($input: DeleteSettingInput!) {
@@ -11744,12 +11744,12 @@ export const DeleteSettingDocument = `
 }
     `
 export const useDeleteSettingMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteSettingMutation, TError, DeleteSettingMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteSettingMutation, TError, DeleteSettingMutationVariables, TContext>,
 ) =>
   useMutation<DeleteSettingMutation, TError, DeleteSettingMutationVariables, TContext>(
     ['deleteSetting'],
     useFetchData<DeleteSettingMutation, DeleteSettingMutationVariables>(DeleteSettingDocument),
-    options
+    options,
   )
 export const UpdateSettingByNodeIdDocument = `
     mutation updateSettingByNodeId($input: UpdateSettingByNodeIdInput!) {
@@ -11761,12 +11761,12 @@ export const UpdateSettingByNodeIdDocument = `
 }
     ${SettingFieldsFragmentDoc}`
 export const useUpdateSettingByNodeIdMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateSettingByNodeIdMutation, TError, UpdateSettingByNodeIdMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateSettingByNodeIdMutation, TError, UpdateSettingByNodeIdMutationVariables, TContext>,
 ) =>
   useMutation<UpdateSettingByNodeIdMutation, TError, UpdateSettingByNodeIdMutationVariables, TContext>(
     ['updateSettingByNodeId'],
     useFetchData<UpdateSettingByNodeIdMutation, UpdateSettingByNodeIdMutationVariables>(UpdateSettingByNodeIdDocument),
-    options
+    options,
   )
 export const GetSlotsDocument = `
     query getSlots {
@@ -11779,12 +11779,12 @@ export const GetSlotsDocument = `
     ${SlotFieldsFragmentDoc}`
 export const useGetSlotsQuery = <TData = GetSlotsQuery, TError = QueryError>(
   variables?: GetSlotsQueryVariables,
-  options?: UseQueryOptions<GetSlotsQuery, TError, TData>
+  options?: UseQueryOptions<GetSlotsQuery, TError, TData>,
 ) =>
   useQuery<GetSlotsQuery, TError, TData>(
     variables === undefined ? ['getSlots'] : ['getSlots', variables],
     useFetchData<GetSlotsQuery, GetSlotsQueryVariables>(GetSlotsDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetStripeDocument = `
     query getStripe {
@@ -11798,12 +11798,12 @@ export const GetStripeDocument = `
     `
 export const useGetStripeQuery = <TData = GetStripeQuery, TError = QueryError>(
   variables?: GetStripeQueryVariables,
-  options?: UseQueryOptions<GetStripeQuery, TError, TData>
+  options?: UseQueryOptions<GetStripeQuery, TError, TData>,
 ) =>
   useQuery<GetStripeQuery, TError, TData>(
     variables === undefined ? ['getStripe'] : ['getStripe', variables],
     useFetchData<GetStripeQuery, GetStripeQueryVariables>(GetStripeDocument).bind(null, variables),
-    options
+    options,
   )
 export const CreateStripeDocument = `
     mutation createStripe($input: CreateStripeInput!) {
@@ -11813,12 +11813,12 @@ export const CreateStripeDocument = `
 }
     `
 export const useCreateStripeMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateStripeMutation, TError, CreateStripeMutationVariables, TContext>
+  options?: UseMutationOptions<CreateStripeMutation, TError, CreateStripeMutationVariables, TContext>,
 ) =>
   useMutation<CreateStripeMutation, TError, CreateStripeMutationVariables, TContext>(
     ['createStripe'],
     useFetchData<CreateStripeMutation, CreateStripeMutationVariables>(CreateStripeDocument),
-    options
+    options,
   )
 export const GetTransactionDocument = `
     query getTransaction {
@@ -11831,12 +11831,12 @@ export const GetTransactionDocument = `
     ${TransactionFieldsFragmentDoc}`
 export const useGetTransactionQuery = <TData = GetTransactionQuery, TError = QueryError>(
   variables?: GetTransactionQueryVariables,
-  options?: UseQueryOptions<GetTransactionQuery, TError, TData>
+  options?: UseQueryOptions<GetTransactionQuery, TError, TData>,
 ) =>
   useQuery<GetTransactionQuery, TError, TData>(
     variables === undefined ? ['getTransaction'] : ['getTransaction', variables],
     useFetchData<GetTransactionQuery, GetTransactionQueryVariables>(GetTransactionDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetTransactionByYearDocument = `
     query getTransactionByYear($year: Int!) {
@@ -11849,15 +11849,15 @@ export const GetTransactionByYearDocument = `
     ${TransactionFieldsFragmentDoc}`
 export const useGetTransactionByYearQuery = <TData = GetTransactionByYearQuery, TError = QueryError>(
   variables: GetTransactionByYearQueryVariables,
-  options?: UseQueryOptions<GetTransactionByYearQuery, TError, TData>
+  options?: UseQueryOptions<GetTransactionByYearQuery, TError, TData>,
 ) =>
   useQuery<GetTransactionByYearQuery, TError, TData>(
     ['getTransactionByYear', variables],
     useFetchData<GetTransactionByYearQuery, GetTransactionByYearQueryVariables>(GetTransactionByYearDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetTransactionByUserDocument = `
     query getTransactionByUser($userId: Int!) {
@@ -11870,15 +11870,15 @@ export const GetTransactionByUserDocument = `
     ${TransactionFieldsFragmentDoc}`
 export const useGetTransactionByUserQuery = <TData = GetTransactionByUserQuery, TError = QueryError>(
   variables: GetTransactionByUserQueryVariables,
-  options?: UseQueryOptions<GetTransactionByUserQuery, TError, TData>
+  options?: UseQueryOptions<GetTransactionByUserQuery, TError, TData>,
 ) =>
   useQuery<GetTransactionByUserQuery, TError, TData>(
     ['getTransactionByUser', variables],
     useFetchData<GetTransactionByUserQuery, GetTransactionByUserQueryVariables>(GetTransactionByUserDocument).bind(
       null,
-      variables
+      variables,
     ),
-    options
+    options,
   )
 export const GetTransactionByYearAndUserDocument = `
     query getTransactionByYearAndUser($year: Int!, $userId: Int!) {
@@ -11891,14 +11891,14 @@ export const GetTransactionByYearAndUserDocument = `
     ${TransactionFieldsFragmentDoc}`
 export const useGetTransactionByYearAndUserQuery = <TData = GetTransactionByYearAndUserQuery, TError = QueryError>(
   variables: GetTransactionByYearAndUserQueryVariables,
-  options?: UseQueryOptions<GetTransactionByYearAndUserQuery, TError, TData>
+  options?: UseQueryOptions<GetTransactionByYearAndUserQuery, TError, TData>,
 ) =>
   useQuery<GetTransactionByYearAndUserQuery, TError, TData>(
     ['getTransactionByYearAndUser', variables],
     useFetchData<GetTransactionByYearAndUserQuery, GetTransactionByYearAndUserQueryVariables>(
-      GetTransactionByYearAndUserDocument
+      GetTransactionByYearAndUserDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetTransactionByYearAndMemberDocument = `
     query getTransactionByYearAndMember($year: Int!, $memberId: Int!) {
@@ -11911,14 +11911,14 @@ export const GetTransactionByYearAndMemberDocument = `
     ${TransactionFieldsFragmentDoc}`
 export const useGetTransactionByYearAndMemberQuery = <TData = GetTransactionByYearAndMemberQuery, TError = QueryError>(
   variables: GetTransactionByYearAndMemberQueryVariables,
-  options?: UseQueryOptions<GetTransactionByYearAndMemberQuery, TError, TData>
+  options?: UseQueryOptions<GetTransactionByYearAndMemberQuery, TError, TData>,
 ) =>
   useQuery<GetTransactionByYearAndMemberQuery, TError, TData>(
     ['getTransactionByYearAndMember', variables],
     useFetchData<GetTransactionByYearAndMemberQuery, GetTransactionByYearAndMemberQueryVariables>(
-      GetTransactionByYearAndMemberDocument
+      GetTransactionByYearAndMemberDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const CreateTransactionDocument = `
     mutation createTransaction($input: CreateTransactionInput!) {
@@ -11930,12 +11930,12 @@ export const CreateTransactionDocument = `
 }
     ${TransactionFieldsFragmentDoc}`
 export const useCreateTransactionMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateTransactionMutation, TError, CreateTransactionMutationVariables, TContext>
+  options?: UseMutationOptions<CreateTransactionMutation, TError, CreateTransactionMutationVariables, TContext>,
 ) =>
   useMutation<CreateTransactionMutation, TError, CreateTransactionMutationVariables, TContext>(
     ['createTransaction'],
     useFetchData<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument),
-    options
+    options,
   )
 export const DeleteTransactionDocument = `
     mutation deleteTransaction($input: DeleteTransactionInput!) {
@@ -11946,12 +11946,12 @@ export const DeleteTransactionDocument = `
 }
     `
 export const useDeleteTransactionMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<DeleteTransactionMutation, TError, DeleteTransactionMutationVariables, TContext>
+  options?: UseMutationOptions<DeleteTransactionMutation, TError, DeleteTransactionMutationVariables, TContext>,
 ) =>
   useMutation<DeleteTransactionMutation, TError, DeleteTransactionMutationVariables, TContext>(
     ['deleteTransaction'],
     useFetchData<DeleteTransactionMutation, DeleteTransactionMutationVariables>(DeleteTransactionDocument),
-    options
+    options,
   )
 export const UpdateTransactionByNodeIdDocument = `
     mutation updateTransactionByNodeId($input: UpdateTransactionByNodeIdInput!) {
@@ -11968,14 +11968,14 @@ export const useUpdateTransactionByNodeIdMutation = <TError = QueryError, TConte
     TError,
     UpdateTransactionByNodeIdMutationVariables,
     TContext
-  >
+  >,
 ) =>
   useMutation<UpdateTransactionByNodeIdMutation, TError, UpdateTransactionByNodeIdMutationVariables, TContext>(
     ['updateTransactionByNodeId'],
     useFetchData<UpdateTransactionByNodeIdMutation, UpdateTransactionByNodeIdMutationVariables>(
-      UpdateTransactionByNodeIdDocument
+      UpdateTransactionByNodeIdDocument,
     ),
-    options
+    options,
   )
 export const GetUserByEmailDocument = `
     query getUserByEmail($email: String!) {
@@ -11986,12 +11986,12 @@ export const GetUserByEmailDocument = `
     ${UserAndProfileFieldsFragmentDoc}`
 export const useGetUserByEmailQuery = <TData = GetUserByEmailQuery, TError = QueryError>(
   variables: GetUserByEmailQueryVariables,
-  options?: UseQueryOptions<GetUserByEmailQuery, TError, TData>
+  options?: UseQueryOptions<GetUserByEmailQuery, TError, TData>,
 ) =>
   useQuery<GetUserByEmailQuery, TError, TData>(
     ['getUserByEmail', variables],
     useFetchData<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetUserByIdDocument = `
     query getUserById($id: Int!) {
@@ -12002,12 +12002,12 @@ export const GetUserByIdDocument = `
     ${UserFieldsFragmentDoc}`
 export const useGetUserByIdQuery = <TData = GetUserByIdQuery, TError = QueryError>(
   variables: GetUserByIdQueryVariables,
-  options?: UseQueryOptions<GetUserByIdQuery, TError, TData>
+  options?: UseQueryOptions<GetUserByIdQuery, TError, TData>,
 ) =>
   useQuery<GetUserByIdQuery, TError, TData>(
     ['getUserById', variables],
     useFetchData<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument).bind(null, variables),
-    options
+    options,
   )
 export const UpdateUserDocument = `
     mutation updateUser($input: UpdateUserInput!) {
@@ -12019,12 +12019,12 @@ export const UpdateUserDocument = `
 }
     ${UserFieldsFragmentDoc}`
 export const useUpdateUserMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateUserMutation, TError, UpdateUserMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateUserMutation, TError, UpdateUserMutationVariables, TContext>,
 ) =>
   useMutation<UpdateUserMutation, TError, UpdateUserMutationVariables, TContext>(
     ['updateUser'],
     useFetchData<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument),
-    options
+    options,
   )
 export const GetAllUsersDocument = `
     query getAllUsers {
@@ -12037,12 +12037,12 @@ export const GetAllUsersDocument = `
     ${UserFieldsFragmentDoc}`
 export const useGetAllUsersQuery = <TData = GetAllUsersQuery, TError = QueryError>(
   variables?: GetAllUsersQueryVariables,
-  options?: UseQueryOptions<GetAllUsersQuery, TError, TData>
+  options?: UseQueryOptions<GetAllUsersQuery, TError, TData>,
 ) =>
   useQuery<GetAllUsersQuery, TError, TData>(
     variables === undefined ? ['getAllUsers'] : ['getAllUsers', variables],
     useFetchData<GetAllUsersQuery, GetAllUsersQueryVariables>(GetAllUsersDocument).bind(null, variables),
-    options
+    options,
   )
 export const GetAllUsersAndProfilesDocument = `
     query getAllUsersAndProfiles {
@@ -12055,14 +12055,14 @@ export const GetAllUsersAndProfilesDocument = `
     ${UserAndProfileFieldsFragmentDoc}`
 export const useGetAllUsersAndProfilesQuery = <TData = GetAllUsersAndProfilesQuery, TError = QueryError>(
   variables?: GetAllUsersAndProfilesQueryVariables,
-  options?: UseQueryOptions<GetAllUsersAndProfilesQuery, TError, TData>
+  options?: UseQueryOptions<GetAllUsersAndProfilesQuery, TError, TData>,
 ) =>
   useQuery<GetAllUsersAndProfilesQuery, TError, TData>(
     variables === undefined ? ['getAllUsersAndProfiles'] : ['getAllUsersAndProfiles', variables],
     useFetchData<GetAllUsersAndProfilesQuery, GetAllUsersAndProfilesQueryVariables>(
-      GetAllUsersAndProfilesDocument
+      GetAllUsersAndProfilesDocument,
     ).bind(null, variables),
-    options
+    options,
   )
 export const GetAllUsersByDocument = `
     query getAllUsersBy($query: String!) {
@@ -12081,12 +12081,12 @@ export const GetAllUsersByDocument = `
     ${UserFieldsFragmentDoc}`
 export const useGetAllUsersByQuery = <TData = GetAllUsersByQuery, TError = QueryError>(
   variables: GetAllUsersByQueryVariables,
-  options?: UseQueryOptions<GetAllUsersByQuery, TError, TData>
+  options?: UseQueryOptions<GetAllUsersByQuery, TError, TData>,
 ) =>
   useQuery<GetAllUsersByQuery, TError, TData>(
     ['getAllUsersBy', variables],
     useFetchData<GetAllUsersByQuery, GetAllUsersByQueryVariables>(GetAllUsersByDocument).bind(null, variables),
-    options
+    options,
   )
 export const CreateProfileDocument = `
     mutation createProfile($input: CreateProfileInput!) {
@@ -12096,12 +12096,12 @@ export const CreateProfileDocument = `
 }
     `
 export const useCreateProfileMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>
+  options?: UseMutationOptions<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>,
 ) =>
   useMutation<CreateProfileMutation, TError, CreateProfileMutationVariables, TContext>(
     ['createProfile'],
     useFetchData<CreateProfileMutation, CreateProfileMutationVariables>(CreateProfileDocument),
-    options
+    options,
   )
 export const UpdateProfileByNodeIdDocument = `
     mutation updateProfileByNodeId($input: UpdateProfileByNodeIdInput!) {
@@ -12111,10 +12111,10 @@ export const UpdateProfileByNodeIdDocument = `
 }
     `
 export const useUpdateProfileByNodeIdMutation = <TError = QueryError, TContext = unknown>(
-  options?: UseMutationOptions<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>
+  options?: UseMutationOptions<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>,
 ) =>
   useMutation<UpdateProfileByNodeIdMutation, TError, UpdateProfileByNodeIdMutationVariables, TContext>(
     ['updateProfileByNodeId'],
     useFetchData<UpdateProfileByNodeIdMutation, UpdateProfileByNodeIdMutationVariables>(UpdateProfileByNodeIdDocument),
-    options
+    options,
   )

@@ -44,7 +44,7 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
     },
     {
       enabled: value > 0,
-    }
+    },
   )
   const names = data?.memberships?.nodes
     .filter(notEmpty)
@@ -126,7 +126,7 @@ const HotelRoomTypes: React.FC = () => {
         ],
       },
     ],
-    [getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal]
+    [getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal],
   )
 
   const deleteHotelRoom = useDeleteHotelRoomMutation()

@@ -34,7 +34,7 @@ export function buildUrl(productId: string, events: ICalEvent[]): string {
       // organizer: { email: configuration.contactEmail },
       url: event.url,
       uid: event.uid,
-    }))
+    })),
   )
 
   error && console.log(error)

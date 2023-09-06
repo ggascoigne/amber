@@ -110,7 +110,7 @@ const useStyles = makeStyles<void, 'tabsRoot' | 'cardHeader' | 'tabRootButton' |
         paddingLeft: '16px',
       },
     },
-  })
+  }),
 )
 
 interface SlotSelectorProps {
@@ -163,7 +163,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
       const slotId = value + 1
       router.replace(`${base}/${year}/${slotId}`)
     },
-    [base, router, year]
+    [base, router, year],
   )
 
   const slots = range(configuration.numberOfSlots)

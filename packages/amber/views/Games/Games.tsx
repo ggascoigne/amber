@@ -152,7 +152,7 @@ const Games: React.FC = React.memo(() => {
 
   const membershipList = useMemo(
     () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
-    [membershipData?.memberships?.nodes]
+    [membershipData?.memberships?.nodes],
   )
 
   const onUpdateGmNames = useCallback(
@@ -166,7 +166,7 @@ const Games: React.FC = React.memo(() => {
       await Promise.allSettled(queue)
       setFixBusy(false)
     },
-    [membershipList, setGameGmAssignments]
+    [membershipList, setGameGmAssignments],
   )
 
   const commands = useMemo(
@@ -178,7 +178,7 @@ const Games: React.FC = React.memo(() => {
         enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
       },
     ],
-    [classes.fixBusy, cx, fixBusy, onUpdateGmNames]
+    [classes.fixBusy, cx, fixBusy, onUpdateGmNames],
   )
 
   if (error) {

@@ -30,7 +30,7 @@ export const useAuth = (): UseAuth => {
   const { user } = userContext
   const hasPermissions = useCallback(
     (perm: Perms, d?: any) => !!user && checkMany(rules, user.roles, perm, roleOverride, d),
-    [roleOverride, user]
+    [roleOverride, user],
   )
   return {
     ...userContext,

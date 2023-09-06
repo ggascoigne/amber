@@ -47,6 +47,6 @@ export const useSendEmail = (): SendEmail => {
           return undefined
         })
     },
-    [notify]
+    [notify],
   )
 }

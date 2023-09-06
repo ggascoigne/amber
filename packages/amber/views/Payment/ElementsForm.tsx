@@ -137,7 +137,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
         setPaymentStatus(confirmResult.paymentIntent)
       }
     },
-    [baseUrl, elements, input.cardholderName, input.total, paymentIntent, payments, stripe, userId, year]
+    [baseUrl, elements, input.cardholderName, input.total, paymentIntent, payments, stripe, userId, year],
   )
 
   return (

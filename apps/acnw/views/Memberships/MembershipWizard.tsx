@@ -134,7 +134,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     {
       userId: initialValues?.userId ?? -1,
     },
-    { enabled: !!initialValues?.userId }
+    { enabled: !!initialValues?.userId },
   )
 
   const pages = useMemo(() => {

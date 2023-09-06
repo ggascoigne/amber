@@ -117,6 +117,6 @@ export const useNotification = () => {
         action: (keyValue) => <SnackBarActionHandler keyValue={keyValue} />,
         ...options,
       }),
-    [enqueueSnackbar]
+    [enqueueSnackbar],
   )
 }

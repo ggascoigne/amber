@@ -72,7 +72,7 @@ const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
       dangerouslySetInnerHTML={{
         __html: room.description.replaceAll(
           /\*/g,
-          `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`
+          `<span style='color:${theme.palette.error.main};font-weight:bold;font-size:larger'>*</span>`,
         ),
       }}
     />
@@ -87,7 +87,7 @@ const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
       dangerouslySetInnerHTML={{
         __html: room.rate.replaceAll(
           /(\$\d+ \/ night T.*S??\*)/g,
-          `<span style='color:${theme.palette.error.main};'>$1</span>`
+          `<span style='color:${theme.palette.error.main};'>$1</span>`,
         ),
       }}
     />
@@ -107,7 +107,7 @@ const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) =>
   useMemo(
     () =>
       rooms?.filter((room) => room.bathroomType === type).sort((a, b) => -b.description.localeCompare(a.description)),
-    [rooms, type]
+    [rooms, type],
   )
 
 const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) => {
@@ -179,7 +179,7 @@ export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValu
         ?.hotelRooms!.edges.map((v) => v.node)
         .filter(notEmpty)
         .filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
-    [data]
+    [data],
   )
 
   if (error) {

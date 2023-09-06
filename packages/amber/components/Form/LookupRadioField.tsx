@@ -15,7 +15,7 @@ export const LookupRadioField: React.ComponentType<LookupRadioFieldProps> = (pro
     { realm },
     {
       staleTime: 10 * 60 * 1000,
-    }
+    },
   )
   if (error) {
     return <GraphQLError error={error} />

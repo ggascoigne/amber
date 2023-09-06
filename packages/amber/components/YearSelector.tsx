@@ -49,7 +49,7 @@ export const YearSelector = () => {
       range(configuration.firstDataYear, configuration.year, -1)
         .map((v: number) => `${v}`)
         .concat(['0']),
-    [configuration.firstDataYear, configuration.year]
+    [configuration.firstDataYear, configuration.year],
   )
 
   const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {

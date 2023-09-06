@@ -23,7 +23,7 @@ export const makeQueryRunner = async () => {
   const query = async <TData, TVariables = Maybe<{ [key: string]: any }>>(
     graphqlQuery: string | DocumentNode,
     variables?: TVariables,
-    operationName: Maybe<string> = null
+    operationName: Maybe<string> = null,
   ): Promise<QueryResult<TData>> => {
     const document: DocumentNode = typeof graphqlQuery === 'string' ? gql(graphqlQuery) : graphqlQuery
     const { data, errors } = await withPostGraphileContext(
@@ -32,7 +32,7 @@ export const makeQueryRunner = async () => {
         pgPool,
       },
       async (context) =>
-        graphql(schema, print(document), null, { ...context, explain: true }, variables ?? {}, operationName)
+        graphql(schema, print(document), null, { ...context, explain: true }, variables ?? {}, operationName),
     )
     if (errors) {
       console.log(JSON.stringify(errors, null, 2))

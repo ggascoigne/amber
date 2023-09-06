@@ -39,7 +39,7 @@ exports.up = async function (knex) {
   await knex.raw(tables.map((table) => dropPolicies(table.name)).join('\n'))
 
   await knex.raw(
-    tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n')
+    tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n'),
   )
 
   await knex.raw(`

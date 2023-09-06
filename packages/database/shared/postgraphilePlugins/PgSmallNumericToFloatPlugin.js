@@ -12,7 +12,7 @@
 
 module.exports = function PgSmallNumericToFloatPlugin(
   builder,
-  { pgNumericToFloatPrecisionCap = 12, pgNumericToFloatScaleCap = 2 }
+  { pgNumericToFloatPrecisionCap = 12, pgNumericToFloatScaleCap = 2 },
 ) {
   builder.hook('build', (build) => {
     // Register a type handler for NUMERIC / DECIMAL (oid = 1700)

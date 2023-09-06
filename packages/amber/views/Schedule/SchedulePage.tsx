@@ -158,7 +158,7 @@ const getIcalUrl = (configuration: Configuration, schedule: GameAssignmentNode[]
         }
         return ice
       })
-      .filter(notEmpty)
+      .filter(notEmpty),
   )
 
 export const ICalDownloadButton: React.FC<PropsWithChildren<{ url: string | null; filename: string }>> = ({
@@ -201,7 +201,7 @@ const SchedulePage: React.FC = () => {
     },
     {
       enabled: !!membership,
-    }
+    },
   )
 
   const gamesAndAssignments = useMemo(() => getGameAssignments(data, memberId, gmOnly), [data, gmOnly, memberId])

@@ -115,7 +115,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
             },
           },
         },
-      })
+      }),
     )
     await Promise.allSettled(result).then(async (res) => {
       const failureCount = res.filter((r) => r.status !== 'fulfilled').length

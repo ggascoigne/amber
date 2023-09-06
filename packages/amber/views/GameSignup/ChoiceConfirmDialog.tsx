@@ -100,7 +100,7 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateGameChoiceQueries,
-          }
+          },
         )
         .then(() => {
           notify({ text: 'Game Submission updated', variant: 'success' })
@@ -121,7 +121,7 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateGameChoiceQueries,
-          }
+          },
         )
         .then(() => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })
@@ -164,7 +164,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
     () =>
       range(configuration.numberOfSlots + 1, 1).flatMap((slotId) => {
         const thisSlotChoices: ChoiceType[] = orderChoices(
-          gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
+          gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
         ) as ChoiceType[]
 
         if (!isSlotComplete(configuration, thisSlotChoices)) {
@@ -181,7 +181,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         }
         return thisSlotChoices
       }),
-    [configuration, gameChoices, year]
+    [configuration, gameChoices, year],
   )
 
   const updateChoices = useCallback(() => {

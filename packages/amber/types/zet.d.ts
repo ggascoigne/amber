@@ -19,7 +19,7 @@ declare module 'zet' {
     static reduce<T>(
       set: Set<T>,
       func: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => any,
-      initializer?: any
+      initializer?: any,
     ): T
 
     union(...sets: Set<T>[]): Zet<T>

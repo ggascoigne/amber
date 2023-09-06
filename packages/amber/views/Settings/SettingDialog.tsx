@@ -43,7 +43,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateSettingsQueries,
-          }
+          },
         )
         .then(() => {
           notify({ text: 'Setting updated', variant: 'success' })
@@ -64,7 +64,7 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: invalidateSettingsQueries,
-          }
+          },
         )
         .then((_res) => {
           notify({ text: 'Setting created', variant: 'success' })

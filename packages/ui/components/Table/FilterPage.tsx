@@ -58,7 +58,7 @@ export function FilterPage<T extends Record<string, unknown>>({
       e.preventDefault()
       onClose()
     },
-    [onClose]
+    [onClose],
   )
 
   const resetFilters = useCallback(() => {

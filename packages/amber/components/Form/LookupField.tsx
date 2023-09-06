@@ -18,7 +18,7 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
     {
       staleTime: 10 * 60 * 1000,
       enabled: !options,
-    }
+    },
   )
   if (error) {
     return <GraphQLError error={error} />

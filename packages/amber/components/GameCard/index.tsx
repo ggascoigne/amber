@@ -153,7 +153,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
         )}
       </Card>
     )
-  }
+  },
 )
 
 export interface GameCardChild {
@@ -246,5 +246,5 @@ export const GameCard: React.FC<GameCardProps> = React.memo(
     return slotId ? (
       <GameCardDetails game={game} year={year} slot={slot} tiny={tiny} header={header} gms={gms} players={players} />
     ) : null
-  }
+  },
 )

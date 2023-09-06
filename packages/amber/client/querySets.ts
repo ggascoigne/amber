@@ -7,9 +7,9 @@ const useInvalidateQueries = (queries: string[]) => {
   return useCallback(
     () =>
       Promise.allSettled(
-        queries.map((q) => queryClient.invalidateQueries([q]), { refetchActive: true, refetchInactive: true })
+        queries.map((q) => queryClient.invalidateQueries([q]), { refetchActive: true, refetchInactive: true }),
       ),
-    [queries, queryClient]
+    [queries, queryClient],
   )
 }
 

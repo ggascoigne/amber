@@ -44,6 +44,6 @@ exports.up = async function (knex) {
             last_name = '${u.last}'
           WHERE "user".id=${u.id}
           `)
-    })
+    }),
   )
 }

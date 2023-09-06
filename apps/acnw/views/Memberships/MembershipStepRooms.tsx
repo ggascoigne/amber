@@ -32,7 +32,7 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
     'arrivalDate',
     'departureDate',
     'hotelRoomId',
-    'message'
+    'message',
   )
 
 export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
@@ -49,7 +49,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       // needed to convert the string value that is returned by the DOM into the numeric ID we need
       setValue(parseInt(e.target.value, 10))
     },
-    [setValue]
+    [setValue],
   )
 
   return (

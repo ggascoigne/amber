@@ -22,7 +22,7 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
       ? paymentInfo.map((pi) =>
           query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserById, {
             id: pi.userId,
-          })
+          }),
         )
       : [
           query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserById, {

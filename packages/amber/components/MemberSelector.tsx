@@ -86,7 +86,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
           const hasMembership = u.memberships.nodes.length > 0
           const hasBalance = u.amountOwed < 0
           return onlyDisplayMembersWithBalances ? hasMembership && hasBalance : hasMembership
-        })
+        }),
       )
     }
   }, [data, onlyDisplayMembersWithBalances])
@@ -101,7 +101,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
       onChange(value ?? null)
       keyVal++
     },
-    [onChange]
+    [onChange],
   )
 
   const onBlur = useCallback(() => {

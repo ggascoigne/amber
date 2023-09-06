@@ -67,7 +67,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
                   'enabled',
                   'formattedRoomType',
                   'internalRoomType',
-                  'reserved'
+                  'reserved',
                 ),
               },
             },
@@ -76,7 +76,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getHotelRoomDetails'])
             },
-          }
+          },
         )
         .then(() => {
           notify({ text: 'Hotel Room updated', variant: 'success' })
@@ -104,7 +104,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
                   'enabled',
                   'formattedRoomType',
                   'internalRoomType',
-                  'reserved'
+                  'reserved',
                 ),
                 version: 1,
               },
@@ -114,7 +114,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getHotelRoomDetails'])
             },
-          }
+          },
         )
         .then((_res) => {
           notify({ text: 'Hotel Room created', variant: 'success' })

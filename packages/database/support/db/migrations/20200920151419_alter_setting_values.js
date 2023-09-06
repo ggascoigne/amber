@@ -18,7 +18,7 @@ exports.up = async function (knex) {
           value = '${u.value}'
         WHERE setting.code='${u.code}'
         `)
-    })
+    }),
   )
 }
 

@@ -25,13 +25,13 @@ export const useAvailableHotelRooms = () => {
     {
       year,
     },
-    { cacheTime: 30 * 1000 }
+    { cacheTime: 30 * 1000 },
   )
   const shouldUseRoomTotal = useFlag('dev_use_detail_rome_quantities', false)
 
   const rooms: HotelRoomDetail[] | undefined = useMemo(
     () => roomDetails?.hotelRoomDetails!.edges.map((v) => v.node).filter(notEmpty),
-    [roomDetails?.hotelRoomDetails]
+    [roomDetails?.hotelRoomDetails],
   )
   const roomsInUse = useMemo(
     () =>
@@ -39,7 +39,7 @@ export const useAvailableHotelRooms = () => {
         ?.filter(notEmpty)
         .map((n) => n.hotelRoom)
         .filter(notEmpty),
-    [roomsByMember?.memberships?.nodes]
+    [roomsByMember?.memberships?.nodes],
   )
 
   const getTotal = useCallback(
@@ -56,7 +56,7 @@ export const useAvailableHotelRooms = () => {
       if (room.id === 13 /* no room */ || room.id === 14 /* sharing */) return 999
       return rooms?.filter((detail) => getAvailable(detail, room)).length ?? 0
     },
-    [rooms]
+    [rooms],
   )
 
   const getRequested = useCallback(
@@ -64,17 +64,17 @@ export const useAvailableHotelRooms = () => {
       if (room.id === 13 /* no room */ || room.id === 14 /* sharing */) return 0
       return roomsInUse?.filter((h) => h.id === room.id).length ?? 0
     },
-    [roomsInUse]
+    [roomsInUse],
   )
 
   const getAvailableFromTotal = useCallback(
     (room: HotelRoom): number => getTotal(room) - getRequested(room),
-    [getRequested, getTotal]
+    [getRequested, getTotal],
   )
 
   const getAvailableFromQuantity = useCallback(
     (room: HotelRoom): number => room.quantity - getRequested(room),
-    [getRequested]
+    [getRequested],
   )
 
   const getRoomAvailable = shouldUseRoomTotal ? getAvailableFromTotal : getAvailableFromQuantity

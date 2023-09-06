@@ -140,7 +140,7 @@ export const useStyles = makeStyles<TableStyleOptions, 'resizeHandle'>()(
         marginTop: 3,
       },
     },
-  })
+  }),
 )
 
 interface CN {
@@ -272,7 +272,7 @@ export const HeaderCheckbox = React.memo(
       backgroundColor: 'transparent',
     },
   }),
-  areEqual
+  areEqual,
 )
 
 export const RowCheckbox = React.memo(
@@ -288,5 +288,5 @@ export const RowCheckbox = React.memo(
       height: 24,
     },
   }),
-  areEqual
+  areEqual,
 )

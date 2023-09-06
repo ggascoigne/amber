@@ -40,5 +40,5 @@ export const checkMany = (
   roles: string[] | undefined,
   action: Perms,
   roleOverride: Roles | undefined,
-  data?: any
+  data?: any,
 ) => !!roles?.find((role) => check(rules, role, action, roleOverride, data))

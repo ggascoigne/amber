@@ -20,7 +20,7 @@ export const PaymentSuccess = () => {
     { id: user.userId! },
     {
       refetchInterval: 10_000,
-    }
+    },
   )
   const amountOwed = data?.data?.user?.amountOwed
 

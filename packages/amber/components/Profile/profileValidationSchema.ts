@@ -14,7 +14,7 @@ export const profileValidationSchema = Yup.object().shape({
       Yup.object().shape({
         snailMailAddress: Yup.string().min(2).max(250).required('Required'),
         phoneNumber: Yup.string().min(2).max(32).required('Required'),
-      })
+      }),
     ),
   }),
 })

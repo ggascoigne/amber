@@ -58,7 +58,7 @@ export const GameListFull: React.FC<GameListFullProps> = ({
             decorator={decorator}
             decoratorParams={decoratorParams}
           />
-        ) : null
+        ) : null,
       )}
     </React.Fragment>
   )

@@ -94,7 +94,7 @@ export function TablePagination<T extends Record<string, unknown>>({
         gotoPage(newPage)
       }
     },
-    [gotoPage, nextPage, pageIndex, previousPage]
+    [gotoPage, nextPage, pageIndex, previousPage],
   )
 
   return rowCount ? (

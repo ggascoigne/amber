@@ -111,13 +111,13 @@ type ButtonState = 'deposit' | 'full' | 'other'
 const canDoFullMembershipPayment = (
   membership: MembershipType | undefined,
   amountOwed: number,
-  configuration: Configuration
+  configuration: Configuration,
 ) => (membership ? amountOwed === getMembershipCost(configuration, membership) : false)
 
 const defaultButtonState = (
   membership: MembershipType | undefined,
   amountOwed: number,
-  displayFullMembershipPayment: boolean
+  displayFullMembershipPayment: boolean,
 ) =>
   !membership || !displayFullMembershipPayment
     ? 'other'
@@ -149,7 +149,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       customValue: membership && displayFullMembershipPayment ? 0 : 0 - user.amountOwed,
       membershipPayment: 0,
     },
-    calculateState
+    calculateState,
   )
 
   useEffect(() => {
@@ -312,7 +312,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
     (info: UserPaymentDetails) => {
       setPayments((old) => updateArray(old, 'userId', info))
     },
-    [setPayments]
+    [setPayments],
   )
 
   const onAddAnotherMember = useCallback((newValue: UserMemberType | null) => {
@@ -330,7 +330,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
         return Array.from(vals)
       })
     },
-    [setPayments]
+    [setPayments],
   )
 
   return (

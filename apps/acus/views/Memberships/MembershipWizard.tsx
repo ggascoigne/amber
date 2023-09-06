@@ -167,7 +167,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
     const { membership: membershipValues, profile: profileValues } = values
     membershipValues.slotsAttending = toSlotsAttending(membershipValues)
     await updateProfile(profileValues).then(async () =>
-      createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+      createOrUpdateMembership(membershipValues, profileValues, usersTransactions!),
     )
   }
 

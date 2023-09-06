@@ -125,7 +125,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
       setAnchorEl(event.currentTarget)
       setColumnsOpen(true)
     },
-    [setAnchorEl, setColumnsOpen]
+    [setAnchorEl, setColumnsOpen],
   )
 
   const handleFilterClick = useCallback(
@@ -133,7 +133,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
       setAnchorEl(event.currentTarget)
       setFilterOpen(true)
     },
-    [setAnchorEl, setFilterOpen]
+    [setAnchorEl, setFilterOpen],
   )
 
   function handleClose() {

@@ -86,7 +86,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getGameRoom'])
             },
-          }
+          },
         )
         .then(() => {
           if (values.gamesChanged) {
@@ -102,7 +102,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
                           roomId: values.id,
                         },
                       },
-                    })
+                    }),
                   )
                 }
                 if (original) {
@@ -114,7 +114,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
                           roomId: null,
                         },
                       },
-                    })
+                    }),
                   )
                 }
               }
@@ -148,7 +148,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
             onSuccess: () => {
               queryClient.invalidateQueries(['getGameRoom'])
             },
-          }
+          },
         )
         .then((_res) => {
           notify({ text: 'Game Room created', variant: 'success' })
@@ -171,7 +171,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
     },
     {
       enabled: !!initialValues?.id,
-    }
+    },
   )
 
   const { classes, cx } = useStyles()
@@ -179,7 +179,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
   const games = useMemo(() => gData?.games?.edges.map((v) => v.node).filter(notEmpty), [gData])
   const gamesBySlot = useCallback(
     (slotId: number) => games?.filter((g) => g.slotId === slotId).filter(notEmpty) ?? [],
-    [games]
+    [games],
   )
 
   const workingValues: GameRoomFormValues = useMemo(() => {

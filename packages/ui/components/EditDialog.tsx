@@ -28,7 +28,7 @@ export const useDisableBackdropClick = (onClose?: OnCloseHandler) =>
         onClose?.()
       }
     },
-    [onClose]
+    [onClose],
   )
 
 export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): ReactElement {

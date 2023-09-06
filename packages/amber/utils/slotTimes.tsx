@@ -171,7 +171,7 @@ export const getSlotDescription = (
     local?: boolean
     altFormat?: SlotFormat
     lateStart?: DateTime
-  }
+  },
 ) => {
   if (!slot) return 'unscheduled'
   const [start, end] = getSlotTimes(configuration, year)[slot - 1]

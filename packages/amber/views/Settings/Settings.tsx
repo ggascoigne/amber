@@ -58,14 +58,14 @@ const Settings: React.FC = React.memo(() => {
         accessor: 'type',
       },
     ],
-    [tab?.name]
+    [tab?.name],
   )
 
   const onAddNewYear = useCallback(
     () => () => {
       setShowAddNewYear(true)
     },
-    []
+    [],
   )
   const commands = useMemo(
     () => [
@@ -76,7 +76,7 @@ const Settings: React.FC = React.memo(() => {
         type: 'button' as const,
       },
     ],
-    [onAddNewYear]
+    [onAddNewYear],
   )
 
   const deleteSetting = useDeleteSettingMutation()
