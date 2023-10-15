@@ -14,22 +14,22 @@
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.1.0",
+    "@auth0/nextjs-auth0": "^3.2.0",
     "common-tags": "^1.8.2",
     "database": "workspace:*",
-    "email-templates": "^11.0.5",
+    "email-templates": "^11.1.1",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
     "isomorphic-fetch": "^3.0.0",
     "json2xls": "^0.1.2",
-    "luxon": "^3.3.0",
-    "micro": "^9.4.1",
-    "next": "13.4.19",
-    "nodemailer": "^6.9.3",
-    "pg": "^8.11.0",
+    "luxon": "^3.4.3",
+    "micro": "^10.0.1",
+    "next": "13.5.4",
+    "nodemailer": "^6.9.6",
+    "pg": "^8.11.3",
     "pug": "^3.0.2",
     "stripe": "^12.8.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@graphql-codegen/add": "5.0.0",
@@ -37,17 +37,17 @@
     "@graphql-codegen/typescript": "4.0.0",
     "@graphql-codegen/typescript-document-nodes": "^4.0.0",
     "@graphql-codegen/typescript-operations": "4.0.0",
-    "@types/email-templates": "^10.0.1",
-    "@types/isomorphic-fetch": "^0.0.36",
-    "@types/luxon": "^3.3.0",
-    "@types/node": "^20.2.5",
-    "@types/nodemailer": "^6.4.8",
-    "@types/pg": "^8.10.1",
+    "@types/email-templates": "^10.0.2",
+    "@types/isomorphic-fetch": "^0.0.37",
+    "@types/luxon": "^3.3.2",
+    "@types/node": "^20.8.6",
+    "@types/nodemailer": "^6.4.11",
+    "@types/pg": "^8.10.5",
     "common-tags": "^1.8.2",
     "dotenv": "^16.3.1",
     "eslint-config-custom": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   }
 }

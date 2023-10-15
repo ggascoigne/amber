@@ -4,13 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.22.1",
-    "@babel/plugin-syntax-flow": "^7.21.4",
-    "@babel/plugin-transform-react-jsx": "^7.22.3",
-    "@ggascoigne/eslint-config": "^1.12.0",
-    "eslint": "^8.48.0",
+    "@babel/core": "^7.23.2",
+    "@babel/plugin-syntax-flow": "^7.22.5",
+    "@babel/plugin-transform-react-jsx": "^7.22.15",
+    "@ggascoigne/eslint-config": "^1.13.4",
+    "eslint": "^8.51.0",
     "eslint-plugin-local": "workspace:*",
     "prettier": "^3.0.3",
-    "typescript": "^5.0.4"
+    "typescript": "^5.2.2"
   }
 }
