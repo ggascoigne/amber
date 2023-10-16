@@ -1,6 +1,7 @@
 {
   "name": "@amber/api",
   "version": "0.1.0",
+  "description": "Shared server-side api calls",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "main": "./src/index.ts",
@@ -8,19 +9,16 @@
   "files": [],
   "private": true,
   "scripts": {
-    "boot": "pnpm codegen",
-    "codegen": "graphql-codegen",
     "lint": "eslint --cache --color 'src/**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.2.0",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "common-tags": "^1.8.2",
+    "@amber/client": "workspace:*",
     "database": "workspace:*",
     "email-templates": "^11.1.1",
     "graphql": "^15.8.0",
-    "graphql-tag": "^2.12.6",
     "isomorphic-fetch": "^3.0.0",
     "json2xls": "^0.1.2",
     "luxon": "^3.4.3",
@@ -33,16 +31,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "5.0.0",
-    "@graphql-codegen/cli": "5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
     "@types/email-templates": "^10.0.2",
     "@types/isomorphic-fetch": "^0.0.37",
     "@types/luxon": "^3.3.2",
     "@types/node": "^20.8.6",
     "@types/nodemailer": "^6.4.11",
     "@types/pg": "^8.10.5",
-    "common-tags": "^1.8.2",
     "dotenv": "^16.3.1",
     "eslint-config-custom": "workspace:*",
     "react": "^18.2.0",

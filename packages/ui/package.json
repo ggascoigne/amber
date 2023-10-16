@@ -8,8 +8,6 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "boot": "pnpm prepareGraphql && pnpm codegen && pnpm gitHash",
-    "codegen": "graphql-codegen --config codegen.yml",
     "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}'",
     "prepareGraphql": "../database/scripts/run.js prepareGraphql",
     "gitHash": "../../scripts/getGitHash.sh",
@@ -73,9 +71,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
-    "@graphql-codegen/add": "5.0.0",
-    "@graphql-codegen/cli": "5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
     "@types/common-tags": "^1.8.2",
     "@types/isomorphic-fetch": "^0.0.37",
     "@types/jest": "^29.5.5",

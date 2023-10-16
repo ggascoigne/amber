@@ -1,6 +1,6 @@
+import { GetSettingsDocument, GetSettingsQuery } from '@amber/client'
 import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 
-import { GetSettingsDocument, GetSettingsQuery } from './client'
 import { JsonError } from './JsonError'
 import { Configuration, getSettingsObject } from './utils'
 

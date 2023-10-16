@@ -1,8 +1,8 @@
+import { GetUserByIdDocument, GetUserByIdQuery, GetUserByIdQueryVariables } from '@amber/client'
 import { makeQueryRunner, QueryResult } from 'database/shared/postgraphileQueryRunner'
 
 import { UserPaymentDetails } from './types'
 
-import { GetUserByIdDocument, GetUserByIdQuery, GetUserByIdQueryVariables } from '../client'
 import { emailer } from '../email/email'
 import { getEmails } from '../getConfig'
 
