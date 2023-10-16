@@ -11,7 +11,7 @@ import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
 import { Setting } from './shared'
 
-import { useDeleteSettingMutation, useGetSettingsQuery } from '../../client'
+import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 
@@ -79,10 +79,10 @@ const Settings: React.FC = React.memo(() => {
     [onAddNewYear],
   )
 
-  const deleteSetting = useDeleteSettingMutation()
+  const deleteSetting = useGraphQLMutation(DeleteSettingDocument)
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = useGetSettingsQuery()
+  const { isLoading, error, data, refetch } = useGraphQL(GetSettingsDocument)
 
   if (error) {
     return <GraphQLError error={error} />

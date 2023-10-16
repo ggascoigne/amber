@@ -1,9 +1,9 @@
+import type { GetGamesBySlotQuery, GetScheduleQuery } from '@amber/client'
 import { ContentsOf, UnpackArray } from 'ui'
 
-import type { GetGamesBySlotQuery, GetScheduleQuery } from './graphql'
-
 export * from './error'
-export * from './graphql'
+export * from './useGraphQL'
+export * from '@amber/client'
 
 export type GameArray = NonNullable<GetGamesBySlotQuery['games']>['edges']
 export type GameEntry = NonNullable<Omit<UnpackArray<GameArray>, '__typename'>['node']>

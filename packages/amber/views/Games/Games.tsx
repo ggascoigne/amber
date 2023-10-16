@@ -11,9 +11,11 @@ import { GamesDialog } from './GamesDialog'
 import {
   GameFieldsFragment,
   GameGmsFragment,
-  useDeleteGameMutation,
-  useGetGamesByYearQuery,
-  useGetMembershipsByYearQuery,
+  useGraphQL,
+  useGraphQLMutation,
+  DeleteGameDocument,
+  GetGamesByYearDocument,
+  GetMembershipsByYearDocument,
 } from '../../client'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
@@ -139,14 +141,14 @@ const Games: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
-  const deleteGame = useDeleteGameMutation()
+  const deleteGame = useGraphQLMutation(DeleteGameDocument)
   const [fixBusy, setFixBusy] = useState(false)
   const { classes, cx } = useStyles()
-  const { error, data, refetch } = useGetGamesByYearQuery({
+  const { error, data, refetch } = useGraphQL(GetGamesByYearDocument, {
     year,
   })
   const setGameGmAssignments = useUpdateGameAssignment()
-  const { data: membershipData } = useGetMembershipsByYearQuery({
+  const { data: membershipData } = useGraphQL(GetMembershipsByYearDocument, {
     year,
   })
 

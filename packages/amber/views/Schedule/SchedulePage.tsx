@@ -7,7 +7,7 @@ import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
 import { GqlType, GraphQLError, Loader, notEmpty, Page } from 'ui'
 
-import { GameAssignmentNode, useGetScheduleQuery } from '../../client'
+import { GameAssignmentNode, useGraphQL, GetScheduleDocument } from '../../client'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
 import { GameDecorator } from '../../components/types'
@@ -195,7 +195,8 @@ const SchedulePage: React.FC = () => {
   const [showGmPreviewOverride, setShowGmPreviewOverride] = useState(false)
   const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
 
-  const { error, data } = useGetScheduleQuery(
+  const { error, data } = useGraphQL(
+    GetScheduleDocument,
     {
       memberId,
     },

@@ -1,9 +1,8 @@
+import { GetSettingsQuery } from '@amber/client'
 import { DateTime } from 'luxon'
 import { z } from 'zod'
 
 import { setVal } from './dot2val'
-
-import { GetSettingsQuery } from '../client/graphql'
 
 export function notEmpty<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined

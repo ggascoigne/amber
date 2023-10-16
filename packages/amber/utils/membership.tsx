@@ -4,17 +4,17 @@ import { notEmpty } from 'ui'
 
 import { useYearFilter } from './useYearFilterState'
 
-import { useGetGameAssignmentsByMemberIdQuery, useGetMembershipByYearAndIdQuery } from '../client'
+import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client'
 import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()
-  const { data } = useGetMembershipByYearAndIdQuery(
-    { year, userId: userId! },
-    {
+  const { data } = useGraphQL(GetMembershipByYearAndIdDocument, {
+    variables: { year, userId: userId! },
+    options: {
       enabled: !!userId,
     },
-  )
+  })
 
   if (!userId) {
     return null
@@ -57,12 +57,12 @@ export const useIsGm = () => {
   const { user } = useAuth()
   const userId = user?.userId
   const membership = useGetMemberShip(userId)
-  const { data: gameAssignmentData } = useGetGameAssignmentsByMemberIdQuery(
-    {
+  const { data: gameAssignmentData } = useGraphQL(GetGameAssignmentsByMemberIdDocument, {
+    variables: {
       memberId: membership?.id ?? 0,
     },
-    { enabled: !!membership },
-  )
+    options: { enabled: !!membership },
+  })
 
   if (!user || !membership || !gameAssignmentData) return false
 

@@ -17,7 +17,7 @@ import Yup from 'ui/utils/Yup'
 
 import { HotelRoom } from './HotelRoomTypes'
 
-import { useCreateHotelRoomMutation, useUpdateHotelRoomByNodeIdMutation } from '../../client'
+import { useGraphQLMutation, CreateHotelRoomDocument, UpdateHotelRoomByNodeIdDocument } from '../../client'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
@@ -39,8 +39,8 @@ interface HotelRoomTypeDialogProps {
 }
 
 export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
-  const createHotelRoomType = useCreateHotelRoomMutation()
-  const updateHotelRoomType = useUpdateHotelRoomByNodeIdMutation()
+  const createHotelRoomType = useGraphQLMutation(CreateHotelRoomDocument)
+  const updateHotelRoomType = useGraphQLMutation(UpdateHotelRoomByNodeIdDocument)
   const queryClient = useQueryClient()
   const notify = useNotification()
 

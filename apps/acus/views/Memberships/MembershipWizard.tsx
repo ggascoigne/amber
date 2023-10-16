@@ -9,7 +9,8 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
-  useGetTransactionByUserQuery,
+  GetTransactionByUserDocument,
+  useGraphQL,
   useUser,
   useYearFilter,
 } from 'amber'
@@ -79,7 +80,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
 
-  const { data: usersTransactions } = useGetTransactionByUserQuery({
+  const { data: usersTransactions } = useGraphQL(GetTransactionByUserDocument, {
     userId: initialValues!.userId!,
   })
 

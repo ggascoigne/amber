@@ -6,7 +6,13 @@ import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } fr
 
 import { GameRoomsDialog } from './GameRoomsDialog'
 
-import { GetGameRoomsQuery, useDeleteGameRoomMutation, useGetGameRoomsQuery } from '../../client'
+import {
+  GetGameRoomsQuery,
+  useGraphQLMutation,
+  useGraphQL,
+  DeleteGameRoomDocument,
+  GetGameRoomsDocument,
+} from '../../client'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 
 export type GameRoom = GqlType<GetGameRoomsQuery, ['rooms', 'nodes', 0]>
@@ -32,10 +38,10 @@ const GameRooms: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<GameRoom[]>([])
 
-  const deleteGameRoom = useDeleteGameRoomMutation()
+  const deleteGameRoom = useGraphQLMutation(DeleteGameRoomDocument)
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGetGameRoomsQuery()
+  const { isLoading, error, data, refetch } = useGraphQL(GetGameRoomsDocument)
 
   const clearSelectionAndRefresh = useCallback(() => {
     setSelection([])

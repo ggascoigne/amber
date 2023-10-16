@@ -4,7 +4,7 @@ import { Field, GraphQLError, Loader, MultiLine, Page } from 'ui'
 
 import { ChoiceSummary } from './SlotDetails'
 
-import { useGetGameChoicesQuery } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client'
 import { ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
@@ -14,7 +14,8 @@ const GameChoiceSummary: React.FC = () => {
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
 
-  const { error, data } = useGetGameChoicesQuery(
+  const { error, data } = useGraphQL(
+    GetGameChoicesDocument,
     {
       year,
       memberId: membership?.id ?? 0,

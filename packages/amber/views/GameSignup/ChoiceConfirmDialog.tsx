@@ -20,7 +20,7 @@ import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelec
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-import { useCreateGameSubmissionMutation, useUpdateGameSubmissionByNodeIdMutation } from '../../client'
+import { useGraphQLMutation, CreateGameSubmissionDocument, UpdateGameSubmissionByNodeIdDocument } from '../../client'
 import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { ContactEmail } from '../../components'
 import { ProfileFormType, useProfile } from '../../components/Profile'
@@ -57,8 +57,8 @@ interface GameChoiceConfirmationEmail {
 }
 
 export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
-  const createGameSubmission = useCreateGameSubmissionMutation()
-  const updateGameSubmission = useUpdateGameSubmissionByNodeIdMutation()
+  const createGameSubmission = useGraphQLMutation(CreateGameSubmissionDocument)
+  const updateGameSubmission = useGraphQLMutation(UpdateGameSubmissionByNodeIdDocument)
   const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
 
   const notify = useNotification()

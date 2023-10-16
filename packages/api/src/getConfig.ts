@@ -1,6 +1,6 @@
+import { GetSettingsDocument, GetSettingsQuery } from '@amber/client'
 import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 
-import { GetSettings, GetSettingsQuery } from './client/graphql'
 import { JsonError } from './JsonError'
 import { Configuration, getSettingsObject } from './utils'
 
@@ -9,7 +9,7 @@ let _conf: Configuration | undefined
 export const getConfig = async () => {
   if (!_conf) {
     const { query, release } = await makeQueryRunner()
-    const { data, errors } = await query<GetSettingsQuery>(GetSettings)
+    const { data, errors } = await query<GetSettingsQuery>(GetSettingsDocument)
     if (data) {
       _conf = getSettingsObject(data).config
     } else {

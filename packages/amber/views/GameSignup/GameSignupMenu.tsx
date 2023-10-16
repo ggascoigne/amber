@@ -5,7 +5,7 @@ import { GraphQLError, Loader } from 'ui'
 
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
-import { useGetGameChoicesQuery } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client'
 import { GameMenu } from '../../components/GameList'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
@@ -17,7 +17,8 @@ export const GameSignupMenu: React.FC = () => {
   // todo - work out why this is needed and then remove it
   const [hackCount, setHackCount] = useState(0)
 
-  const { error, data } = useGetGameChoicesQuery(
+  const { error, data } = useGraphQL(
+    GetGameChoicesDocument,
     { year, memberId: membership?.id ?? 0 },
     {
       enabled: !!membership,

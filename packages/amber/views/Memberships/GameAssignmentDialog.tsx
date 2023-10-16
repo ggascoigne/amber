@@ -21,10 +21,12 @@ import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './me
 
 import {
   GameAssignmentNode,
-  useCreateGameAssignmentMutation,
-  useDeleteGameAssignmentMutation,
-  useGetGamesByYearQuery,
-  useGetScheduleQuery,
+  useGraphQL,
+  useGraphQLMutation,
+  CreateGameAssignmentDocument,
+  DeleteGameAssignmentDocument,
+  GetGamesByYearDocument,
+  GetScheduleDocument,
 } from '../../client'
 import { useInvalidateGameAssignmentQueries } from '../../client/querySets'
 import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
@@ -43,21 +45,22 @@ interface GameAssignmentDialogProps {
 export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open, onClose, membership }) => {
   const configuration = useConfiguration()
   const [year] = useYearFilter()
-  const createGameAssignment = useCreateGameAssignmentMutation()
-  const deleteGameAssignment = useDeleteGameAssignmentMutation()
+  const createGameAssignment = useGraphQLMutation(CreateGameAssignmentDocument)
+  const deleteGameAssignment = useGraphQLMutation(DeleteGameAssignmentDocument)
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
   const notify = useNotification()
 
   const memberId = membership.id ?? 0
 
-  const { error: sError, data: sData } = useGetScheduleQuery(
+  const { error: sError, data: sData } = useGraphQL(
+    GetScheduleDocument,
     { memberId },
     {
       enabled: !!memberId,
     },
   )
 
-  const { error: gError, data: gData } = useGetGamesByYearQuery({
+  const { error: gError, data: gData } = useGraphQL(GetGamesByYearDocument, {
     year,
   })
 

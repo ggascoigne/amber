@@ -2,7 +2,7 @@ import React from 'react'
 
 import { GraphQLError, Loader } from 'ui'
 
-import { useGetSingleLookupValueQuery } from '../../client'
+import { useGraphQL, GetSingleLookupValueDocument } from '../../client'
 import {
   getAttendance,
   getBathroomType,
@@ -19,7 +19,7 @@ interface LookupValueProps {
 }
 
 export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
-  const { isLoading, error, data } = useGetSingleLookupValueQuery({ realm, code })
+  const { isLoading, error, data } = useGraphQL(GetSingleLookupValueDocument, { realm, code })
   if (error) {
     return <GraphQLError error={error} />
   }

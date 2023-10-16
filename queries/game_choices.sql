@@ -19,7 +19,15 @@ WHERE
   AND m.year = 2023;
 
 
--- who has wonky game coice counts - note that 40 is 35 for NW
+-- who has wonky game choice counts - note that 40 is 35 for NW
+SELECT
+  u.id AS "user.id",
+  m.id AS "member.id",
+  u.full_name,
+  u.email
+FROM
+  membership m
+  LEFT JOIN "user" u ON m.user_id = u.id
 JOIN (
   SELECT
     c.member_id,

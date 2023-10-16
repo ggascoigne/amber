@@ -4,7 +4,7 @@ import { Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Page } from 'ui/components'
 
-import { useGetUserByIdQuery } from '../../client'
+import { useGraphQL, GetUserByIdDocument } from '../../client'
 import { useInvalidatePaymentQueries } from '../../client/querySets'
 import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
 
@@ -16,7 +16,8 @@ export const PaymentSuccess = () => {
   const paymentIntentSecret = router.query.paymentIntentSecret as string
   const refresh = useInvalidatePaymentQueries()
   const user = useUser()
-  const data = useGetUserByIdQuery(
+  const data = useGraphQL(
+    GetUserByIdDocument,
     { id: user.userId! },
     {
       refetchInterval: 10_000,

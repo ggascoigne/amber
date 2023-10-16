@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useExplorerPlugin } from '@graphiql/plugin-explorer'
+import { explorerPlugin } from '@graphiql/plugin-explorer'
 import '@graphiql/plugin-explorer/dist/style.css'
 import { createGraphiQLFetcher } from '@graphiql/toolkit'
 import { Box } from '@mui/material'
@@ -17,11 +17,7 @@ const fetcher = createGraphiQLFetcher({
 
 const GraphiQL: React.FC = () => {
   const [query, setQuery] = useState<string>('')
-  const explorerPlugin = useExplorerPlugin({
-    query,
-    onEdit: setQuery,
-    showAttribution: false, // credited on the credits page
-  })
+  const explorer = explorerPlugin({ showAttribution: false })
 
   return (
     <Page
@@ -44,7 +40,7 @@ const GraphiQL: React.FC = () => {
         }}
         className='graphiql-container'
       >
-        <RealGraphiQL fetcher={fetcher} query={query} onEditQuery={setQuery} plugins={[explorerPlugin]} />
+        <RealGraphiQL fetcher={fetcher} query={query} onEditQuery={setQuery} plugins={[explorer]} />
       </Box>
     </Page>
   )

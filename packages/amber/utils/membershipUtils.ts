@@ -11,9 +11,11 @@ import { useSendEmail } from './useSendEmail'
 
 import {
   GetTransactionByUserQuery,
-  useCreateMembershipMutation,
-  useGetHotelRoomsQuery,
-  useUpdateMembershipByNodeIdMutation,
+  useGraphQL,
+  useGraphQLMutation,
+  CreateMembershipDocument,
+  GetHotelRoomsDocument,
+  UpdateMembershipByNodeIdDocument,
 } from '../client'
 import { useInvalidateMembershipQueries } from '../client/querySets'
 import { Perms, ProfileFormType, useAuth } from '../components'
@@ -65,8 +67,8 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
   const configuration = useConfiguration()
-  const createMembership = useCreateMembershipMutation()
-  const updateMembership = useUpdateMembershipByNodeIdMutation()
+  const createMembership = useGraphQLMutation(CreateMembershipDocument)
+  const updateMembership = useGraphQLMutation(UpdateMembershipByNodeIdDocument)
   const invalidateMembershipQueries = useInvalidateMembershipQueries()
   const createOrUpdateTransaction = useEditMembershipTransaction(onClose)
   const notify = useNotification()
@@ -75,7 +77,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail
 
-  const { data: roomData } = useGetHotelRoomsQuery()
+  const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
 
   // note that we pass in profile values since they might well have just been updated
   // and are later than the cached version off the membershipValues.

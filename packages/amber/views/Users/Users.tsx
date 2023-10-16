@@ -3,7 +3,7 @@ import React, { MouseEventHandler, useState } from 'react'
 import { Column, Row, TableInstance } from 'react-table'
 import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
 
-import { useGetAllUsersAndProfilesQuery } from '../../client'
+import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client'
 import { ProfileDialog } from '../../components/Profile'
 import { UsersAndProfileType } from '../../components/Profile/profileUtils'
 
@@ -22,7 +22,7 @@ const Users: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<UsersAndProfileType[]>([])
 
-  const { error, data, refetch } = useGetAllUsersAndProfilesQuery()
+  const { error, data, refetch } = useGraphQL(GetAllUsersAndProfilesDocument)
 
   if (error) {
     return <GraphQLError error={error} />

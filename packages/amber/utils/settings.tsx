@@ -4,7 +4,7 @@ import { notEmpty } from 'ui'
 
 import { useIsGm, useIsMember } from './membership'
 
-import { SettingFieldsFragment, useGetSettingsQuery } from '../client'
+import { SettingFieldsFragment, useGraphQL, GetSettingsDocument } from '../client'
 import { Perms, useAuth } from '../components/Auth'
 
 export enum SettingValue {
@@ -25,7 +25,7 @@ export const useSettings = () => {
   const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const { isLoading, error, data } = useGetSettingsQuery()
+  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {

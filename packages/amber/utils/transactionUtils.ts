@@ -12,8 +12,9 @@ import { useYearFilter } from './useYearFilterState'
 import {
   GetTransactionByUserQuery,
   GetTransactionQuery,
-  useCreateTransactionMutation,
-  useUpdateTransactionByNodeIdMutation,
+  useGraphQLMutation,
+  CreateTransactionDocument,
+  UpdateTransactionByNodeIdDocument,
 } from '../client'
 import { useInvalidatePaymentQueries } from '../client/querySets'
 
@@ -61,8 +62,8 @@ export const getMembershipString = (configuration: Configuration, values: Member
 }
 
 export const useEditTransaction = (onClose?: OnCloseHandler) => {
-  const createTransaction = useCreateTransactionMutation()
-  const updateTransaction = useUpdateTransactionByNodeIdMutation()
+  const createTransaction = useGraphQLMutation(CreateTransactionDocument)
+  const updateTransaction = useGraphQLMutation(UpdateTransactionByNodeIdDocument)
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
   const { userId } = useUser()
   const [year] = useYearFilter()
@@ -147,8 +148,8 @@ export const useTransactionValues = (values: TransactionValue | null | undefined
 export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
   const configuration = useConfiguration()
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
-  const createTransaction = useCreateTransactionMutation()
-  const updateTransaction = useUpdateTransactionByNodeIdMutation()
+  const createTransaction = useGraphQLMutation(CreateTransactionDocument)
+  const updateTransaction = useGraphQLMutation(UpdateTransactionByNodeIdDocument)
   const notify = useNotification()
   const { userId } = useUser()
 

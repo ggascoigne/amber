@@ -24,9 +24,10 @@ import { GameDialogFormValues, useEditGame } from './gameHooks'
 import {
   GameFieldsFragment,
   GameGmsFragment,
-  useGetGameByIdQuery,
-  useGetGameRoomsQuery,
-  useGetGamesByAuthorQuery,
+  useGraphQL,
+  GetGameByIdDocument,
+  GetGameRoomsDocument,
+  GetGamesByAuthorDocument,
 } from '../../client'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
@@ -152,11 +153,11 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     await createOrUpdateGame(values)
   }
 
-  const { error: gameError, data: gameData } = useGetGamesByAuthorQuery({
+  const { error: gameError, data: gameData } = useGraphQL(GetGamesByAuthorDocument, {
     id: userId!,
   })
 
-  const { error: roomError, data: roomData } = useGetGameRoomsQuery()
+  const { error: roomError, data: roomData } = useGraphQL(GetGameRoomsDocument)
 
   if (gameError || roomError) {
     return <GraphQLError error={gameError ?? roomError} />
@@ -451,7 +452,11 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
 export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
   const { id, initialValues } = props
-  const { isLoading, error, data } = useGetGameByIdQuery({ id: id ?? 0 }, { enabled: !initialValues && !!id })
+  const { isLoading, error, data } = useGraphQL(
+    GetGameByIdDocument,
+    { id: id ?? 0 },
+    { enabled: !initialValues && !!id },
+  )
   if (initialValues) {
     return <GamesDialog {...props} />
   }

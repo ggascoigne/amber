@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography'
 import { match } from 'ts-pattern'
 import { DialogClose, Loader } from 'ui'
 
-import { useGetMembershipByYearAndIdQuery, useGetUserByIdQuery } from '../../client'
+import { useGraphQL, GetMembershipByYearAndIdDocument, GetUserByIdDocument } from '../../client'
 import { MemberSelector, UserMemberType } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
 import {
@@ -276,9 +276,9 @@ const UserPayment: React.FC<UserPaymentProps> = ({
   loggedInUserId,
   onRemoveUserPayment,
 }) => {
-  const userData = useGetUserByIdQuery({ id: userId })
+  const userData = useGraphQL(GetUserByIdDocument, { id: userId })
   const user = userData?.data?.user
-  const membershipData = useGetMembershipByYearAndIdQuery({ year, userId })
+  const membershipData = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId })
   const membership = membershipData.data?.memberships?.nodes?.[0] ?? undefined
 
   const amountOwed = 0 - (user?.amountOwed ?? 0)

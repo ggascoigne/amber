@@ -3,11 +3,11 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Router from 'next/router'
 
-import { useGetUserByIdQuery } from '../client'
+import { GetUserByIdDocument, useGraphQL } from '../client'
 import { formatAmountForDisplay, useUser } from '../utils'
 
 const AmountOwedInner: React.FC<{ userId: number }> = ({ userId }) => {
-  const data = useGetUserByIdQuery({ id: userId })
+  const data = useGraphQL(GetUserByIdDocument, { id: userId })
   const amountOwed = data?.data?.user?.amountOwed
 
   if (!amountOwed) return null

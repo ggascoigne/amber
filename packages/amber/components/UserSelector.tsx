@@ -4,7 +4,7 @@ import { Autocomplete, TextField } from '@mui/material'
 import { makeStyles, withStyles } from 'tss-react/mui'
 import { ContentsOf, notEmpty, useNotification } from 'ui'
 
-import { GetAllUsersByQuery, useGetAllUsersByQuery } from '../client'
+import { GetAllUsersByQuery, useGraphQL, GetAllUsersByDocument } from '../client'
 import { useUserFilter, useYearFilter } from '../utils'
 
 const useStyles = makeStyles()({
@@ -82,7 +82,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
 
-  const { isLoading, error, data } = useGetAllUsersByQuery({
+  const { isLoading, error, data } = useGraphQL(GetAllUsersByDocument, {
     query: searchTerm,
   })
 

@@ -1,8 +1,8 @@
+import { GetUserByIdDocument, GetUserByIdQuery, GetUserByIdQueryVariables } from '@amber/client'
 import { makeQueryRunner, QueryResult } from 'database/shared/postgraphileQueryRunner'
 
 import { UserPaymentDetails } from './types'
 
-import { GetUserById, GetUserByIdQuery, GetUserByIdQueryVariables } from '../client/graphql'
 import { emailer } from '../email/email'
 import { getEmails } from '../getConfig'
 
@@ -20,12 +20,12 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
   try {
     const paymentDetailsPromises = paymentInfo
       ? paymentInfo.map((pi) =>
-          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserById, {
+          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, {
             id: pi.userId,
           }),
         )
       : [
-          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserById, {
+          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, {
             id: userId,
           }),
         ]

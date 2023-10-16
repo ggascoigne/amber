@@ -13,7 +13,7 @@ const config: CodegenConfig = {
     nonOptionalTypename: true,
   },
   generates: {
-    'src/client/graphql/': {
+    'src/graphql/': {
       preset: 'client',
       presetConfig: {
         fragmentMasking: false,

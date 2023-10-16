@@ -34,15 +34,15 @@
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^3.1.0",
+    "@auth0/nextjs-auth0": "^3.2.0",
     "@graphile-contrib/pg-order-by-related": "^1.0.0",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
     "common-tags": "^1.8.2",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
-    "luxon": "^3.3.0",
-    "next": "13.4.19",
-    "pg": "^8.11.0",
+    "luxon": "^3.4.3",
+    "next": "13.5.4",
+    "pg": "^8.11.3",
     "postgraphile": "^4.13.0",
     "postgraphile-plugin-connection-filter": "^2.3.0",
     "react": "^18.2.0",
@@ -53,20 +53,20 @@
   "devDependencies": {
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
-    "@types/common-tags": "^1.8.1",
-    "@types/luxon": "^3.3.0",
-    "@types/node": "^20.2.5",
-    "@types/pg": "^8.10.1",
-    "alasql": "^4.0.2",
+    "@types/common-tags": "^1.8.2",
+    "@types/luxon": "^3.3.2",
+    "@types/node": "^20.8.6",
+    "@types/pg": "^8.10.5",
+    "alasql": "^4.1.10",
     "chalk": "^4.1.2",
     "common-tags": "^1.8.2",
     "dotenv": "^16.3.1",
     "eslint-config-custom": "workspace:*",
-    "knex": "^2.4.2",
+    "knex": "^3.0.1",
     "knex-migrate": "^1.7.4",
     "tempy": "0.6.0",
-    "typescript": "^5.0.4",
+    "typescript": "^5.2.2",
     "xlsx": "^0.18.5",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   }
 }

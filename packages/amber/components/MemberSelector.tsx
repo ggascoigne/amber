@@ -4,7 +4,7 @@ import { Autocomplete, TextField } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import { ContentsOf, notEmpty, useNotification } from 'ui'
 
-import { GetAllMembersByQuery, useGetAllMembersByQuery } from '../client'
+import { GetAllMembersByQuery, useGraphQL, GetAllMembersByDocument } from '../client'
 
 const useStyles = makeStyles()({
   divider: {
@@ -73,7 +73,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserMemberType[]>([])
 
-  const { isLoading, error, data } = useGetAllMembersByQuery({
+  const { isLoading, error, data } = useGraphQL(GetAllMembersByDocument, {
     year,
     query: searchTerm,
   })
