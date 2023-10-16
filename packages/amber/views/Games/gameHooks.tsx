@@ -8,12 +8,14 @@ import {
   GameGmsFragment,
   MembershipFieldsFragment,
   Node,
-  useCreateGameAssignmentMutation,
-  useCreateGameMutation,
-  useDeleteGameAssignmentMutation,
-  useGetGameAssignmentsByYearQuery,
-  useGetMembershipsByYearQuery,
-  useUpdateGameByNodeIdMutation,
+  useGraphQL,
+  useGraphQLMutation,
+  CreateGameAssignmentDocument,
+  CreateGameDocument,
+  DeleteGameAssignmentDocument,
+  GetGameAssignmentsByYearDocument,
+  GetMembershipsByYearDocument,
+  UpdateGameByNodeIdDocument,
 } from '../../client'
 import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
@@ -52,12 +54,12 @@ const getKnownNames = (gmNames: string | null | undefined, membershipList: Membe
 export const useUpdateGameAssignment = () => {
   const [year] = useYearFilter()
   const notify = useNotification()
-  const createGameAssignment = useCreateGameAssignmentMutation()
-  const deleteGameAssignment = useDeleteGameAssignmentMutation()
+  const createGameAssignment = useGraphQLMutation(CreateGameAssignmentDocument)
+  const deleteGameAssignment = useGraphQLMutation(DeleteGameAssignmentDocument)
   const invalidateGameQueries = useInvalidateGameQueries()
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
 
-  const { data: gameAssignmentData } = useGetGameAssignmentsByYearQuery({
+  const { data: gameAssignmentData } = useGraphQL(GetGameAssignmentsByYearDocument, {
     year,
   })
 
@@ -146,8 +148,8 @@ export type GameDialogFormValues = Omit<
 
 export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialogFormValues) => {
   const configuration = useConfiguration()
-  const createGame = useCreateGameMutation()
-  const updateGame = useUpdateGameByNodeIdMutation()
+  const createGame = useGraphQLMutation(CreateGameDocument)
+  const updateGame = useGraphQLMutation(UpdateGameByNodeIdDocument)
   const invalidateGameQueries = useInvalidateGameQueries()
   const notify = useNotification()
   const sendEmail = useSendEmail()
@@ -158,7 +160,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
   const [year] = useYearFilter()
   const setGameGmAssignments = useUpdateGameAssignment()
-  const { data: membershipData } = useGetMembershipsByYearQuery({
+  const { data: membershipData } = useGraphQL(GetMembershipsByYearDocument, {
     year,
   })
 

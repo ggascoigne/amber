@@ -9,7 +9,8 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
-  useGetTransactionByUserQuery,
+  useGraphQL,
+  GetTransactionByUserDocument,
   useUser,
   useYearFilter,
 } from 'amber'
@@ -130,7 +131,8 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
   const [redirectInfo] = redirectContextState
 
-  const { data: usersTransactions } = useGetTransactionByUserQuery(
+  const { data: usersTransactions } = useGraphQL(
+    GetTransactionByUserDocument,
     {
       userId: initialValues?.userId ?? -1,
     },

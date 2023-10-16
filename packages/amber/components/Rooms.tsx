@@ -7,7 +7,7 @@ import { GraphQLError, Loader, notEmpty } from 'ui'
 
 import { HasPermission, Perms } from './Auth'
 
-import { useGetHotelRoomsQuery } from '../client'
+import { useGraphQL, GetHotelRoomsDocument } from '../client'
 import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
 import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'
@@ -172,7 +172,7 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
 }
 
 export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValue }) => {
-  const { isLoading, error, data } = useGetHotelRoomsQuery()
+  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
   const rooms: HotelRoom[] | undefined = useMemo(
     () =>
       data
@@ -260,7 +260,7 @@ export interface RoomsTableProps {
 }
 
 export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
-  const { isLoading, error, data } = useGetHotelRoomsQuery()
+  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
 
   if (error) {
     return <GraphQLError error={error} />

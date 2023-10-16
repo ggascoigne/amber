@@ -7,10 +7,12 @@ import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } fr
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
 import {
+  useGraphQL,
+  useGraphQLMutation,
   GetHotelRoomDetailsQuery,
-  useDeleteHotelRoomDetailMutation,
-  useGetHotelRoomDetailsQuery,
-  useGetMembershipRoomsByYearQuery,
+  DeleteHotelRoomDetailDocument,
+  GetHotelRoomDetailsDocument,
+  GetMembershipRoomsByYearDocument,
 } from '../../client'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useFlag, useYearFilter } from '../../utils'
@@ -19,9 +21,10 @@ import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
 export type HotelRoomDetail = GqlType<GetHotelRoomDetailsQuery, ['hotelRoomDetails', 'edges', number, 'node']>
 
 export const useAvailableHotelRooms = () => {
-  const { data: roomDetails } = useGetHotelRoomDetailsQuery()
+  const { data: roomDetails } = useGraphQL(GetHotelRoomDetailsDocument)
   const [year] = useYearFilter()
-  const { data: roomsByMember } = useGetMembershipRoomsByYearQuery(
+  const { data: roomsByMember } = useGraphQL(
+    GetMembershipRoomsByYearDocument,
     {
       year,
     },
@@ -124,10 +127,10 @@ const HotelRoomDetails: React.FC = () => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoomDetail[]>([])
 
-  const deleteHotelRoomDetail = useDeleteHotelRoomDetailMutation()
+  const deleteHotelRoomDetail = useGraphQLMutation(DeleteHotelRoomDetailDocument)
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGetHotelRoomDetailsQuery()
+  const { isLoading, error, data, refetch } = useGraphQL(GetHotelRoomDetailsDocument)
 
   if (error) {
     return <GraphQLError error={error} />

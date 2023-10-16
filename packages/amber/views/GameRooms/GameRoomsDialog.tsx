@@ -24,10 +24,12 @@ import Yup from 'ui/utils/Yup'
 import { GameRoom } from './GameRooms'
 
 import {
-  useCreateGameRoomMutation,
-  useGetGamesByYearQuery,
-  useUpdateGameMutation,
-  useUpdateGameRoomMutation,
+  useGraphQLMutation,
+  useGraphQL,
+  CreateGameRoomDocument,
+  GetGamesByYearDocument,
+  UpdateGameDocument,
+  UpdateGameRoomDocument,
 } from '../../client'
 import { useConfiguration, useYearFilter } from '../../utils'
 
@@ -63,9 +65,9 @@ interface GameRoomDialogProps {
 export const useEditGameRoom = (onClose: OnCloseHandler) => {
   const configuration = useConfiguration()
 
-  const createGameRoomDetail = useCreateGameRoomMutation()
-  const updateGameRoomDetail = useUpdateGameRoomMutation()
-  const updateGame = useUpdateGameMutation()
+  const createGameRoomDetail = useGraphQLMutation(CreateGameRoomDocument)
+  const updateGameRoomDetail = useGraphQLMutation(UpdateGameRoomDocument)
+  const updateGame = useGraphQLMutation(UpdateGameDocument)
 
   const queryClient = useQueryClient()
   const notify = useNotification()
@@ -165,7 +167,8 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
   const configuration = useConfiguration()
   const createOrUpdateGameRoom = useEditGameRoom(onClose)
   const [year] = useYearFilter()
-  const { error: gameError, data: gData } = useGetGamesByYearQuery(
+  const { error: gameError, data: gData } = useGraphQL(
+    GetGamesByYearDocument,
     {
       year,
     },

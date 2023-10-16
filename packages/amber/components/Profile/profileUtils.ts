@@ -3,9 +3,10 @@ import { GqlType, Omit, OnCloseHandler, pick, ToFormValues, useNotification } fr
 import {
   GetAllUsersAndProfilesQuery,
   Maybe,
-  useCreateProfileMutation,
-  useUpdateProfileByNodeIdMutation,
-  useUpdateUserMutation,
+  useGraphQLMutation,
+  CreateProfileDocument,
+  UpdateProfileByNodeIdDocument,
+  UpdateUserDocument,
 } from '../../client'
 import { useInvalidateUserQueries } from '../../client/querySets'
 
@@ -34,9 +35,9 @@ export const profileFromProfileValues = (profileValues: UsersAndProfileType) => 
 })
 
 export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
-  const updateUser = useUpdateUserMutation()
-  const createProfile = useCreateProfileMutation()
-  const updateProfile = useUpdateProfileByNodeIdMutation()
+  const updateUser = useGraphQLMutation(UpdateUserDocument)
+  const createProfile = useGraphQLMutation(CreateProfileDocument)
+  const updateProfile = useGraphQLMutation(UpdateProfileByNodeIdDocument)
   const notify = useNotification()
   const invalidateUserQueries = useInvalidateUserQueries()
 

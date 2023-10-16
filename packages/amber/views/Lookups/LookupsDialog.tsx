@@ -12,11 +12,12 @@ import { LookupAndValues } from './Lookups'
 
 import {
   CreateLookupMutation,
-  useCreateLookupMutation,
-  useCreateLookupValueMutation,
-  useDeleteLookupValueMutation,
-  useUpdateLookupByNodeIdMutation,
-  useUpdateLookupValueByNodeIdMutation,
+  useGraphQLMutation,
+  CreateLookupDocument,
+  CreateLookupValueDocument,
+  DeleteLookupValueDocument,
+  UpdateLookupByNodeIdDocument,
+  UpdateLookupValueByNodeIdDocument,
 } from '../../client'
 
 const useStyles = makeStyles()((theme: Theme) => ({
@@ -81,11 +82,11 @@ const defaultValues: LookupAndValuesType = {
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const { classes } = useStyles()
-  const createLookup = useCreateLookupMutation()
-  const updateLookup = useUpdateLookupByNodeIdMutation()
-  const createLookupValue = useCreateLookupValueMutation()
-  const updateLookupValue = useUpdateLookupValueByNodeIdMutation()
-  const deleteLookupValue = useDeleteLookupValueMutation()
+  const createLookup = useGraphQLMutation(CreateLookupDocument)
+  const updateLookup = useGraphQLMutation(UpdateLookupByNodeIdDocument)
+  const createLookupValue = useGraphQLMutation(CreateLookupValueDocument)
+  const updateLookupValue = useGraphQLMutation(UpdateLookupValueByNodeIdDocument)
+  const deleteLookupValue = useGraphQLMutation(DeleteLookupValueDocument)
 
   const onSubmit = async (values: LookupAndValuesType, actions: FormikHelpers<LookupAndValuesType>) => {
     const res = values.nodeId

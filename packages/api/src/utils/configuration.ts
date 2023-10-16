@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { setVal } from './dot2val'
 
-import { GetSettingsQuery } from '../client/graphql'
+import { GetSettingsQuery } from '../client'
 
 export function notEmpty<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined

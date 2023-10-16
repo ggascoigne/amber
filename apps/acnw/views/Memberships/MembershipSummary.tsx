@@ -10,8 +10,9 @@ import {
   isNotPacificTime,
   useConfiguration,
   useGetCost,
-  useGetHotelRoomsQuery,
-  useGetMembershipByYearAndIdQuery,
+  useGraphQL,
+  GetHotelRoomsDocument,
+  GetMembershipByYearAndIdDocument,
   useProfile,
   useUser,
   useYearFilter,
@@ -133,7 +134,7 @@ interface DetailsProps {
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   const configuration = useConfiguration()
-  const { isLoading, error, data } = useGetHotelRoomsQuery()
+  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
 
@@ -191,7 +192,7 @@ const MembershipSummary: React.FC = () => {
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()
-  const { isLoading, error, data } = useGetMembershipByYearAndIdQuery({ year, userId: userId ?? 0 })
+  const { isLoading, error, data } = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId: userId ?? 0 })
   const { classes } = useStyles()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()

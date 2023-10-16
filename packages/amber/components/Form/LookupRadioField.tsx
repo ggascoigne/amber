@@ -2,7 +2,7 @@ import React from 'react'
 
 import { GraphQLError, Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
 
-import { useGetLookupValuesQuery } from '../../client'
+import { useGraphQL, GetLookupValuesDocument } from '../../client'
 
 export interface LookupRadioFieldProps extends RadioGroupProps {
   realm: string
@@ -11,12 +11,12 @@ export interface LookupRadioFieldProps extends RadioGroupProps {
 export const LookupRadioField: React.ComponentType<LookupRadioFieldProps> = (props) => {
   const { realm, ...rest } = props
 
-  const { isLoading, error, data } = useGetLookupValuesQuery(
-    { realm },
-    {
+  const { isLoading, error, data } = useGraphQL(GetLookupValuesDocument, {
+    variables: { realm },
+    options: {
       staleTime: 10 * 60 * 1000,
     },
-  )
+  })
   if (error) {
     return <GraphQLError error={error} />
   }

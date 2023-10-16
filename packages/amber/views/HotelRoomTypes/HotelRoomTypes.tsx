@@ -7,10 +7,12 @@ import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, TooltipCell, YesB
 import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 
 import {
+  useGraphQL,
+  useGraphQLMutation,
   GetHotelRoomsQuery,
-  useDeleteHotelRoomMutation,
-  useGetHotelRoomsQuery,
-  useGetMembershipByYearAndRoomQuery,
+  DeleteHotelRoomDocument,
+  GetHotelRoomsDocument,
+  GetMembershipByYearAndRoomDocument,
 } from '../../client'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
@@ -37,7 +39,8 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
   const hotelRoomId = row.original.id
   const [year] = useYearFilter()
 
-  const { data } = useGetMembershipByYearAndRoomQuery(
+  const { data } = useGraphQL(
+    GetMembershipByYearAndRoomDocument,
     {
       year,
       hotelRoomId,
@@ -129,10 +132,10 @@ const HotelRoomTypes: React.FC = () => {
     [getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal],
   )
 
-  const deleteHotelRoom = useDeleteHotelRoomMutation()
+  const deleteHotelRoom = useGraphQLMutation(DeleteHotelRoomDocument)
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGetHotelRoomsQuery()
+  const { isLoading, error, data, refetch } = useGraphQL(GetHotelRoomsDocument)
 
   if (error) {
     return <GraphQLError error={error} />

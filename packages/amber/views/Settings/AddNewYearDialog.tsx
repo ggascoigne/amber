@@ -16,7 +16,13 @@ import {
 
 import { Setting, SettingValue } from './shared'
 
-import { useGetSettingsQuery, useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
+import {
+  useGraphQL,
+  useGraphQLMutation,
+  GetSettingsDocument,
+  CreateSettingDocument,
+  UpdateSettingByNodeIdDocument,
+} from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
 
 interface AddNewYearDialogProps {
@@ -58,9 +64,9 @@ const newYearFields = ['config.year', ...dateFields]
 const getSetting = (settingList: Setting[] | undefined, key: string) => settingList?.find((f) => f.code === key)
 
 export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClose }) => {
-  const { isLoading, error, data } = useGetSettingsQuery()
-  const createSetting = useCreateSettingMutation()
-  const updateSetting = useUpdateSettingByNodeIdMutation()
+  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
+  const createSetting = useGraphQLMutation(CreateSettingDocument)
+  const updateSetting = useGraphQLMutation(UpdateSettingByNodeIdDocument)
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 

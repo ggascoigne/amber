@@ -8,7 +8,7 @@ import { Loader, Page } from 'ui'
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
-import { useGetUserByIdQuery } from '../../client'
+import { useGraphQL, GetUserByIdDocument } from '../../client'
 import { ContactEmail } from '../../components'
 import { useGetStripe, useUser } from '../../utils'
 
@@ -17,7 +17,7 @@ export const Payment: React.FC = () => {
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
   const user = useUser()
   const isCalledRef = useRef(false)
-  const userData = useGetUserByIdQuery({ id: user?.userId ?? -1 })
+  const userData = useGraphQL(GetUserByIdDocument, { id: user?.userId ?? -1 })
   const amountOwed = userData?.data?.user?.amountOwed
 
   useEffect(() => {

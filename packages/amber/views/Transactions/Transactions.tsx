@@ -6,7 +6,7 @@ import { TableMouseEventHandler } from 'ui/types/react-table-config'
 
 import { TransactionDialog } from './TransactionDialog'
 
-import { useDeleteTransactionMutation, useGetTransactionQuery } from '../../client'
+import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client'
 import { useInvalidatePaymentQueries } from '../../client/querySets'
 import { formatAmountForDisplay } from '../../utils'
 import { TransactionValue } from '../../utils/transactionUtils'
@@ -31,9 +31,9 @@ const columns: Column<TransactionValue>[] = [
 const Transactions: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<TransactionValue[]>([])
-  const deleteTransaction = useDeleteTransactionMutation()
+  const deleteTransaction = useGraphQLMutation(DeleteTransactionDocument)
 
-  const { error, data, refetch } = useGetTransactionQuery()
+  const { error, data, refetch } = useGraphQL(GetTransactionDocument)
 
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
 

@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.2.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "common-tags": "^1.8.2",
     "database": "workspace:*",
     "email-templates": "^11.1.1",
@@ -33,10 +34,8 @@
   },
   "devDependencies": {
     "@graphql-codegen/add": "5.0.0",
-    "@graphql-codegen/cli": "4.0.1",
-    "@graphql-codegen/typescript": "4.0.0",
-    "@graphql-codegen/typescript-document-nodes": "^4.0.0",
-    "@graphql-codegen/typescript-operations": "4.0.0",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "^4.1.0",
     "@types/email-templates": "^10.0.2",
     "@types/isomorphic-fetch": "^0.0.37",
     "@types/luxon": "^3.3.2",

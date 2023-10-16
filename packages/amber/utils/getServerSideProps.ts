@@ -1,7 +1,7 @@
 import { dehydrate, QueryClient } from '@tanstack/react-query'
 import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 
-import { GetSettingsDocument } from '../client/graphql'
+import { GetSettingsDocument } from '../client'
 
 export async function configGetServerSideProps() {
   const { query, release } = await makeQueryRunner()

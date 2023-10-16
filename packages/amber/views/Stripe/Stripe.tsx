@@ -5,7 +5,7 @@ import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, ToFormValues } fr
 
 import { StripeDialog } from './StripeDialog'
 
-import { GetStripeQuery, useGetStripeQuery } from '../../client'
+import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client'
 
 export type StripeValue = ToFormValues<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
 
@@ -21,7 +21,7 @@ const Stripes: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<StripeValue[]>([])
 
-  const { error, data, refetch } = useGetStripeQuery()
+  const { error, data, refetch } = useGraphQL(GetStripeDocument)
 
   if (error) {
     return <GraphQLError error={error} />

@@ -4,14 +4,14 @@ import { useNotification } from 'ui'
 
 import { ProfileFormType } from './ProfileFormContent'
 
-import { useGetUserByEmailQuery } from '../../client'
+import { useGraphQL, GetUserByEmailDocument } from '../../client'
 import { useUser } from '../../utils'
 
 export const useProfile = (): ProfileFormType | null => {
   const { email } = useUser()
   const [lastEmail, setLastEmail] = useState('')
 
-  const { error, data } = useGetUserByEmailQuery({ email: email ?? '' }, { enabled: !!email })
+  const { error, data } = useGraphQL(GetUserByEmailDocument, { email: email ?? '' }, { enabled: !!email })
   const notify = useNotification()
 
   if (!email || !data) {

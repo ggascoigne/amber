@@ -2,7 +2,7 @@ import React from 'react'
 
 import { GraphQLError, Loader } from 'ui'
 
-import { GameArray, useGetGamesBySlotForSignupQuery } from '../../client'
+import { GameArray, useGraphQL, GetGamesBySlotForSignupDocument } from '../../client'
 
 interface GameQueryChild {
   year: number
@@ -17,7 +17,7 @@ interface GameQueryProps {
 }
 
 export const GameSelectionQuery: React.FC<GameQueryProps> = ({ year, slot, children }) => {
-  const { error, data } = useGetGamesBySlotForSignupQuery({
+  const { error, data } = useGraphQL(GetGamesBySlotForSignupDocument, {
     year,
     slotId: slot,
   })

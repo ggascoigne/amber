@@ -9,12 +9,12 @@ import { UserPaymentDetails } from './types'
 
 import {
   CreateTransactionMutation,
-  CreateTransaction,
+  CreateTransactionDocument,
   CreateTransactionMutationVariables,
   CreateStripeMutation,
   CreateStripeMutationVariables,
-  CreateStripe,
-} from '../client/graphql'
+  CreateStripeDocument,
+} from '../client'
 import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 
 const stripe = new Stripe(stripeSecretKey!, {
@@ -63,7 +63,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
 
   const error = validateCharge(charge, paymentInfo)
 
-  await query<CreateStripeMutation, CreateStripeMutationVariables>(CreateStripe, {
+  await query<CreateStripeMutation, CreateStripeMutationVariables>(CreateStripeDocument, {
     input: {
       stripe: { data: charge },
     },
@@ -71,7 +71,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
 
   if (error) {
     // something went wrong so just record the bare payment - this will need manual fixing based on some unexpected issue
-    await query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransaction, {
+    await query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
       input: {
         transaction: {
           amount,
@@ -94,7 +94,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
     })
   } else {
     const result = paymentInfo.map((p) =>
-      query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransaction, {
+      query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
         input: {
           transaction: {
             amount: p.amount,

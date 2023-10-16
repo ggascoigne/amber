@@ -11,9 +11,11 @@ import { GraphQLError, Loader, notEmpty, Page, range, Table } from 'ui'
 import {
   GameFieldsFragment,
   GameGmsFragment,
-  useDeleteGameMutation,
-  useGetGamesByAuthorQuery,
-  useGetGamesByYearAndAuthorQuery,
+  useGraphQL,
+  useGraphQLMutation,
+  DeleteGameDocument,
+  GetGamesByAuthorDocument,
+  GetGamesByYearAndAuthorDocument,
 } from '../../client'
 import { useInvalidateGameQueries } from '../../client/querySets'
 import { ConfigDate, MDY } from '../../components'
@@ -216,7 +218,7 @@ const GmBlurb = () => {
 const MemberGmPage: React.FC = React.memo(() => {
   const [year] = useYearFilter()
   const [selection, setSelection] = useState<Game[]>([])
-  const deleteGame = useDeleteGameMutation()
+  const deleteGame = useGraphQLMutation(DeleteGameDocument)
   const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
@@ -226,13 +228,13 @@ const MemberGmPage: React.FC = React.memo(() => {
   const router = useRouter()
   const { query } = router
 
-  const { error, data, refetch } = useGetGamesByYearAndAuthorQuery({
+  const { error, data, refetch } = useGraphQL(GetGamesByYearAndAuthorDocument, {
     year,
     id: userId!,
   })
 
   // just kick this off now so that it's cached by the tie the user clicks the button
-  useGetGamesByAuthorQuery({
+  useGraphQL(GetGamesByAuthorDocument, {
     id: userId!,
   })
 

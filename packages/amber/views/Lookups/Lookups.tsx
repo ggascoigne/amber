@@ -8,9 +8,11 @@ import { LookupsDialog } from './LookupsDialog'
 
 import {
   GetLookupsQuery,
-  useDeleteLookupMutation,
-  useDeleteLookupValueMutation,
-  useGetLookupsQuery,
+  useGraphQLMutation,
+  useGraphQL,
+  DeleteLookupDocument,
+  DeleteLookupValueDocument,
+  GetLookupsDocument,
 } from '../../client'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 
@@ -25,11 +27,11 @@ const columns: Column<LookupAndValues>[] = [
 const Lookups: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<LookupAndValues[]>([])
-  const deleteLookup = useDeleteLookupMutation()
-  const deleteLookupValue = useDeleteLookupValueMutation()
+  const deleteLookup = useGraphQLMutation(DeleteLookupDocument)
+  const deleteLookupValue = useGraphQLMutation(DeleteLookupValueDocument)
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGetLookupsQuery()
+  const { isLoading, error, data, refetch } = useGraphQL(GetLookupsDocument)
 
   if (error) {
     return <GraphQLError error={error} />

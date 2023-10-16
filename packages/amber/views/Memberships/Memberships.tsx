@@ -7,7 +7,13 @@ import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, use
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
-import { useDeleteMembershipMutation, useGetHotelRoomsQuery, useGetMembershipsByYearQuery } from '../../client'
+import {
+  useGraphQL,
+  useGraphQLMutation,
+  DeleteMembershipDocument,
+  GetHotelRoomsDocument,
+  GetMembershipsByYearDocument,
+} from '../../client'
 import { useInvalidateMembershipQueries } from '../../client/querySets'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
@@ -158,12 +164,12 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
     const [showEdit, setShowEdit] = useState(false)
     const [showGameAssignment, setShowGameAssignment] = useState(false)
     const [selection, setSelection] = useState<Membership[]>([])
-    const deleteMembership = useDeleteMembershipMutation()
-    const { error, data, refetch } = useGetMembershipsByYearQuery({
+    const deleteMembership = useGraphQLMutation(DeleteMembershipDocument)
+    const { error, data, refetch } = useGraphQL(GetMembershipsByYearDocument, {
       year,
     })
 
-    const { data: roomData } = useGetHotelRoomsQuery()
+    const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
 
     const onUpdateGameAssignments = useCallback(
       (instance: TableInstance<Membership>) => async () => {

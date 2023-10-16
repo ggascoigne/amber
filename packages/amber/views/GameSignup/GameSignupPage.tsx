@@ -20,11 +20,13 @@ import { SignupInstructions } from './SignupInstructions'
 import {
   GameChoiceFieldsFragment,
   GetGameChoicesQuery,
+  useGraphQL,
+  useGraphQLMutation,
   UpdateGameChoiceByNodeIdMutationVariables,
-  useCreateGameChoiceMutation,
-  useCreateGameChoicesMutation,
-  useGetGameChoicesQuery,
-  useUpdateGameChoiceByNodeIdMutation,
+  CreateGameChoiceDocument,
+  CreateGameChoicesDocument,
+  GetGameChoicesDocument,
+  UpdateGameChoiceByNodeIdDocument,
 } from '../../client'
 import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
@@ -43,10 +45,10 @@ export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?
 
 export const useEditGameChoice = () => {
   const configuration = useConfiguration()
-  const createGameChoice = useCreateGameChoiceMutation()
+  const createGameChoice = useGraphQLMutation(CreateGameChoiceDocument)
   const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
   const queryClient = useQueryClient()
-  const updateGameChoice = useUpdateGameChoiceByNodeIdMutation({
+  const updateGameChoice = useGraphQLMutation(UpdateGameChoiceByNodeIdDocument, {
     onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
       const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
       await invalidateGameChoiceQueries()
@@ -64,7 +66,7 @@ export const useEditGameChoice = () => {
     },
   })
 
-  const createGameChoices = useCreateGameChoicesMutation()
+  const createGameChoices = useGraphQLMutation(CreateGameChoicesDocument)
 
   const createAllGameChoices = async (memberId: number, year: number) => {
     createGameChoices
@@ -145,7 +147,11 @@ const GameSignupPage: React.FC = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { error, data } = useGetGameChoicesQuery({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership })
+  const { error, data } = useGraphQL(
+    GetGameChoicesDocument,
+    { year, memberId: membership?.id ?? 0 },
+    { enabled: !!membership },
+  )
 
   const onCloseConfirm: MouseEventHandler = () => {
     setShowConfirmDialog(false)

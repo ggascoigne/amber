@@ -6,7 +6,7 @@ import { Loader, notEmpty, range } from 'ui'
 
 import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-import { useGetGamesBySlotForSignupQuery } from '../../client'
+import { useGraphQL, GetGamesBySlotForSignupDocument } from '../../client'
 import { getSlotDescription, useConfiguration } from '../../utils'
 import { getGms } from '../Games'
 
@@ -51,7 +51,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
   const configuration = useConfiguration()
   const { classes } = useStyles()
 
-  const { data } = useGetGamesBySlotForSignupQuery({ year, slotId })
+  const { data } = useGraphQL(GetGamesBySlotForSignupDocument, { year, slotId })
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
 
   const games = data?.games?.edges

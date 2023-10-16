@@ -6,7 +6,7 @@ import Yup from 'ui/utils/Yup'
 
 import { Setting, SettingValue, typeValues } from './shared'
 
-import { useCreateSettingMutation, useUpdateSettingByNodeIdMutation } from '../../client'
+import { useGraphQLMutation, CreateSettingDocument, UpdateSettingByNodeIdDocument } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
 
 const validationSchema = Yup.object().shape({
@@ -24,8 +24,8 @@ interface SettingDialogProps {
 }
 
 export const useEditSetting = (onClose: OnCloseHandler) => {
-  const createSetting = useCreateSettingMutation()
-  const updateSetting = useUpdateSettingByNodeIdMutation()
+  const createSetting = useGraphQLMutation(CreateSettingDocument)
+  const updateSetting = useGraphQLMutation(UpdateSettingByNodeIdDocument)
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
