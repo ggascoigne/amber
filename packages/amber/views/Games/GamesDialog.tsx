@@ -136,7 +136,7 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
 export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues: userInitialValues }) => {
   const configuration = useConfiguration()
   const defaultValues = useMemo(() => getDefaultValues(configuration), [configuration])
-  const initialValues = userInitialValues === undefined ? defaultValues : userInitialValues
+  const initialValues = userInitialValues ?? defaultValues
   const editing = initialValues !== defaultValues
   const { userId } = useUser()
   const createOrUpdateGame = useEditGame(onClose, initialValues)

@@ -22,13 +22,13 @@ export const CheckboxWithLabel: React.ComponentType<CheckboxWithLabelProps> = ({
   const fullProps = {
     ...props,
     ...field,
-    disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
+    disabled: props.disabled ?? isSubmitting,
     checked: field.value,
     value: field.value ? 'checked' : '',
   }
 
   const labelProps = {
-    disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
+    disabled: props.disabled ?? isSubmitting,
     style: { marginLeft: 0 },
     labelPlacement: 'start',
     label,

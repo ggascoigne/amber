@@ -51,7 +51,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
     ...newProps,
     error: showError,
     helperText: showError ? error : rest.helperText,
-    disabled: rest.disabled !== undefined ? rest.disabled : isSubmitting,
+    disabled: rest.disabled ?? isSubmitting,
   }
 
   const originalOnChange = fullProps.onChange

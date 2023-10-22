@@ -18,7 +18,7 @@ export const Checkbox: React.ComponentType<CheckboxProps> = (props: CheckboxProp
     ...props,
     ...field,
     error: showError,
-    disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
+    disabled: props.disabled ?? isSubmitting,
     checked: field.value,
     value: field.value ? 'checked' : '',
   }

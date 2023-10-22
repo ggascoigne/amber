@@ -115,7 +115,7 @@ const columns: Column<Membership>[] = [
       },
       { accessor: 'hotelRoomId' },
       { accessor: 'offerSubsidy' },
-      { accessor: 'requestOldPrice' },
+      { accessor: 'requestOldPrice', Cell: YesBlankCell, sortType: 'basic' },
       { accessor: 'roomPreferenceAndNotes' },
       { accessor: 'roomingPreferences' },
       { accessor: 'roomingWith' },
