@@ -41,9 +41,7 @@ export const TooltipCell: React.FC<TooltipCellProps> = ({ text = '', tooltip = t
         }
       }}
       onClose={() => {
-        if (enableTooltip) {
-          setOpen(false)
-        }
+        setOpen(false)
       }}
     >
       <Box ref={textRef} onMouseEnter={compareSize} onClick={onClick}>

@@ -15,7 +15,7 @@ export const Select: React.ComponentType<SelectProps> = (props: SelectProps) => 
   const showError = touched && !!error
 
   const fullProps = {
-    disabled: props.disabled !== undefined ? props.disabled : isSubmitting,
+    disabled: props.disabled ?? isSubmitting,
     ...props,
     ...field,
     error: showError,
