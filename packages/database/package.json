@@ -51,11 +51,11 @@
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
-    "@oclif/core": "^3.5.0",
+    "@oclif/core": "^3.9.1",
     "@oclif/plugin-help": "^6.0.4",
     "@types/common-tags": "^1.8.3",
     "@types/luxon": "^3.3.3",
-    "@types/node": "^20.8.7",
+    "@types/node": "^20.8.9",
     "@types/pg": "^8.10.7",
     "alasql": "^4.1.10",
     "chalk": "^4.1.2",

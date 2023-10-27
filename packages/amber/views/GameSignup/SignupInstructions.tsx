@@ -109,8 +109,8 @@ export const SignupInstructions: React.FC<SignupInstructionsProps> = ({ year }) 
               Games will be filled on a first come, first served basis - moderated so that everyone will have at least
               one first-choice game in their schedule. Please register for games as soon as possible. There is a selfish
               reason and an organizer's reason for doing this. The selfish reason is so that you get into the games you
-              want; the reason Simone cares is so she can get your registrations, make and confirm your schedules in
-              time for you to communicate with your GMs before people start traveling on the week of the convention.
+              want; the reason we care is so we can get your registrations, make and confirm your schedules in time for
+              you to communicate with your GMs before people start traveling on the week of the convention.
             </li>
             <li>
               If you have not registered for games by <ConfigDate name='gameChoicesDue' /> will be assigned games at

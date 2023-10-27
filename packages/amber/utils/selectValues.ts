@@ -142,7 +142,7 @@ export const getBathroomType = (value: string) => getPref(bathroomTypeOptions, v
 
 export enum RoomPref {
   RoomWith = 'room-with',
-  AssignMe = 'assign-me',
+  // AssignMe = 'assign-me',
   Other = 'other',
 }
 
@@ -151,10 +151,10 @@ export const roomPrefOptions = [
     value: RoomPref.RoomWith,
     text: 'I will be rooming with (list names)',
   },
-  {
-    value: RoomPref.AssignMe,
-    text: "I don't mind who I room with; please assign me a roommate. (Double Queen only.)",
-  },
+  // {
+  //   value: RoomPref.AssignMe,
+  //   text: "I don't mind who I room with; please assign me a roommate. (Double Queen only.)",
+  // },
   {
     value: RoomPref.Other,
     text: 'None',
