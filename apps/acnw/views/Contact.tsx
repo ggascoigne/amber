@@ -1,7 +1,7 @@
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { ContactEmail } from 'amber/components'
-import { useConfiguration } from 'amber/utils'
+import { Link, useConfiguration } from 'amber'
 import { makeStyles } from 'tss-react/mui'
 import { CardBody, Page } from 'ui'
 
@@ -26,29 +26,29 @@ const Contact = () => {
       <Card className={classes.card} elevation={3}>
         <CardBody className={classes.cardBody}>
           <h3>Payments</h3>
-          <p>Payments should be made out to:</p>
+          <p>
+            Ideally, payments should be made by visiting our <Link href='/payment'>payment page</Link> and paying
+            online.
+          </p>
+          <p>Alternatively, if you'd prefer to pay by cheque, then payments should be made out to:</p>
 
-          <h5 className={classes.address}>Simone Cooper</h5>
+          <h5 className={classes.address}>AmberCon NorthWest Inc</h5>
 
-          <p>and sent to</p>
+          <p>and sent to:</p>
 
           <h5 className={classes.address}>
-            AmberCon NW
+            AmberCon NorthWest Inc
             <br />
-            c/o Simone Cooper
+            1914 SE 24th Ave
             <br />
-            8047 N. Syracuse St.
-            <br />
-            Portland, OR 97203-4939
-            <br />
+            Portland OR 97214
           </h5>
-
           <p>
-            If you should need to contact Simone, do so at <ContactEmail />.
+            If you need to contact the organizers, do so at <ContactEmail />.
           </p>
         </CardBody>
       </Card>
-      <h3>Organizer</h3>
+      <h3>Founder</h3>
       <p>
         Simone Cooper was also the founder and organizer of AmberCon UK, the first Amber Diceless Role Playing Game
         convention to take place outside of the US, and in fact outside of Detroit, the game's birthplace.
