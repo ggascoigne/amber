@@ -1,7 +1,7 @@
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
 import { ContactEmail } from 'amber/components'
-import { useConfiguration } from 'amber/utils'
+import { Link, useConfiguration } from 'amber'
 import { makeStyles } from 'tss-react/mui'
 import { CardBody, Page } from 'ui'
 
@@ -26,11 +26,15 @@ const Contact = () => {
       <Card className={classes.card} elevation={3}>
         <CardBody className={classes.cardBody}>
           <h3>Payments</h3>
-          <p>Payments should be made out to:</p>
+          <p>
+            Ideally, payments should be made by visiting our <Link href='/payment'>payment page</Link> and paying
+            online.
+          </p>
+          <p>Alternatively, if you'd prefer to pay by cheque, then payments should be made out to:</p>
 
           <h5 className={classes.address}>AmberCon NorthWest Inc</h5>
 
-          <p>and sent to</p>
+          <p>and sent to:</p>
 
           <h5 className={classes.address}>
             AmberCon NorthWest Inc
@@ -40,7 +44,7 @@ const Contact = () => {
             Portland OR 97214
           </h5>
           <p>
-            If you should need to contact the organizers, do so at <ContactEmail />.
+            If you need to contact the organizers, do so at <ContactEmail />.
           </p>
         </CardBody>
       </Card>
