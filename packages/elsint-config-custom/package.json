@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/plugin-syntax-flow": "^7.22.5",
+    "@babel/core": "^7.23.3",
+    "@babel/plugin-syntax-flow": "^7.23.3",
     "@babel/plugin-transform-react-jsx": "^7.22.15",
     "@ggascoigne/eslint-config": "^1.13.4",
-    "eslint": "^8.52.0",
+    "eslint": "^8.53.0",
     "eslint-plugin-local": "workspace:*",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"

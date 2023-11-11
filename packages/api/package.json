@@ -31,12 +31,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/email-templates": "^10.0.3",
-    "@types/isomorphic-fetch": "^0.0.38",
-    "@types/luxon": "^3.3.3",
-    "@types/node": "^20.8.9",
-    "@types/nodemailer": "^6.4.13",
-    "@types/pg": "^8.10.7",
+    "@types/email-templates": "^10.0.4",
+    "@types/isomorphic-fetch": "^0.0.39",
+    "@types/luxon": "^3.3.4",
+    "@types/node": "^20.9.0",
+    "@types/nodemailer": "^6.4.14",
+    "@types/pg": "^8.10.9",
     "dotenv": "^16.3.1",
     "eslint-config-custom": "workspace:*",
     "react": "^18.2.0",
