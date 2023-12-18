@@ -196,7 +196,6 @@ const MembershipSummary: React.FC = () => {
       <br />
       {membership ? (
         <>
-          {/* eslint-disable-next-line @getify/proper-ternary/nested */}
           {isVirtual ? (
             <VirtualDetails membership={membership} />
           ) : (

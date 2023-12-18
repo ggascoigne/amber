@@ -1,4 +1,3 @@
-/* eslint-disable @getify/proper-ternary/nested */
 import * as React from 'react'
 import { useReducer, useEffect, useState, useCallback } from 'react'
 
@@ -122,10 +121,10 @@ const defaultButtonState = (
   !membership || !displayFullMembershipPayment
     ? 'other'
     : membership.interestLevel === InterestLevel.Deposit
-    ? 'deposit'
-    : amountOwed > 0
-    ? 'full'
-    : 'other'
+      ? 'deposit'
+      : amountOwed > 0
+        ? 'full'
+        : 'other'
 
 const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
   membership,

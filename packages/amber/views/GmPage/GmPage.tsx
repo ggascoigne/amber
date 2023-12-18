@@ -1,4 +1,3 @@
-/* eslint-disable @getify/proper-ternary/nested */
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Button, Theme } from '@mui/material'

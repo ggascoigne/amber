@@ -1,4 +1,3 @@
-/* eslint-disable @getify/proper-ternary/nested */
 import React, {
   CSSProperties,
   MouseEventHandler,

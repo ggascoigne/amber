@@ -16,6 +16,9 @@ module.exports = {
     },
     {
       files: '*.{js,cjs}',
+      parserOptions: {
+        ecmaVersion: 2020,
+      },
       rules: {
         // this is node.js code, it needs require
         'import/no-extraneous-dependencies': 'off',
