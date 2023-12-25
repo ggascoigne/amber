@@ -27,7 +27,7 @@ export const GameListFull: React.FC<GameListFullProps> = ({
   decorator,
   decoratorParams,
 }) => {
-  const [_, setUrlSource] = useUrlSource()
+  const [, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
   const firstGameId = games[0]?.node?.id
   const slot = slotInput || 0

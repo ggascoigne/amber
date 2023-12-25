@@ -104,7 +104,7 @@ export const fillUserAndProfileValues = (values: UsersAndProfileType): UsersAndP
   lastName: values.lastName ?? '',
   fullName: values.fullName ?? '',
   displayName: values.displayName ?? '',
-  amountOwed: 0,
+  balance: 0,
   profiles: {
     nodes: [
       {

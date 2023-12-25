@@ -46,7 +46,7 @@ const GameRooms: React.FC = () => {
   const clearSelectionAndRefresh = useCallback(() => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries(['getGameRooms'])
+    queryClient.invalidateQueries({ queryKey: ['getGameRooms'] })
   }, [queryClient])
 
   const onAdd: TableMouseEventHandler<GameRoom> = useCallback(

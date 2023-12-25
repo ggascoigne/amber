@@ -115,7 +115,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           membership: membershipValues,
           slotDescriptions,
           // for new registrations don't rely on the profile value, it's out of date
-          owed: update === 'new' ? getMembershipCost(configuration, membershipValues) : profile.amountOwed,
+          owed: update === 'new' ? getMembershipCost(configuration, membershipValues) : profile.balance,
           room,
         },
       ],

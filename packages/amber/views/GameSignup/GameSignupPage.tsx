@@ -297,16 +297,14 @@ const GameSignupPage: React.FC = () => {
         <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
           {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
           {({ year, slot, games }) => (
-            <>
-              <GameListFull
-                year={year}
-                slot={slot}
-                games={games!}
-                onEnterGame={setNewUrl}
-                decorator={GameChoiceSelector}
-                decoratorParams={selectorParams}
-              />
-            </>
+            <GameListFull
+              year={year}
+              slot={slot}
+              games={games!}
+              onEnterGame={setNewUrl}
+              decorator={GameChoiceSelector}
+              decoratorParams={selectorParams}
+            />
           )}
         </GameListNavigator>
       </InView>

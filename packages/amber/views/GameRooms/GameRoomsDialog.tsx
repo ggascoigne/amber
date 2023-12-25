@@ -86,7 +86,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries(['getGameRoom'])
+              queryClient.invalidateQueries({ queryKey: ['getGameRoom'] })
             },
           },
         )
@@ -124,7 +124,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
             }, [])
             Promise.allSettled(updaters).then(([_result]) => {
               actions.setSubmitting(false)
-              queryClient.invalidateQueries(['getGamesByYear'])
+              queryClient.invalidateQueries({ queryKey: ['getGamesByYear'] })
               notify({ text: 'Game Room updated', variant: 'success' })
               onClose()
             })
@@ -148,7 +148,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries(['getGameRoom'])
+              queryClient.invalidateQueries({ queryKey: ['getGameRoom'] })
             },
           },
         )

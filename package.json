@@ -6,7 +6,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=18",
+    "node": ">=20",
     "pnpm": ">=8"
   },
   "repository": {
@@ -35,7 +35,7 @@
     "dev:us": "pnpm --filter acus dev",
     "build:us": "pnpm --filter acus build",
     "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
-    "format": "pretty-quick",
+    "format": "pnpm format:all --cache",
     "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "lint": "pnpm -r --parallel lint",
     "preinstall": "npx only-allow pnpm",
@@ -47,15 +47,14 @@
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
     "husky": "^8.0.3",
-    "lint-staged": "^15.1.0",
-    "next": "13.5.6",
-    "prettier": "^3.0.3",
-    "pretty-quick": "^3.1.3",
+    "lint-staged": "^15.2.0",
+    "next": "14.0.4",
+    "prettier": "^3.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsconfig": "workspace:*",
-    "turbo": "^1.10.16",
-    "typescript": "^5.2.2"
+    "turbo": "^1.11.2",
+    "typescript": "^5.3.3"
   },
   "prettier": {
     "printWidth": 120,
@@ -78,5 +77,10 @@
     "not dead",
     "not ie 11",
     "not op_mini all"
-  ]
+  ],
+  "pnpm": {
+    "patchedDependencies": {
+      "ts-node@11.0.0-beta.1": "patches/ts-node@11.0.0-beta.1.patch"
+    }
+  }
 }

@@ -50,7 +50,7 @@ const Lookups: React.FC = React.memo(() => {
     setShowEdit(false)
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries(['getLookups'])
+    queryClient.invalidateQueries({ queryKey: ['getLookups'] })
   }
 
   const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
@@ -65,7 +65,7 @@ const Lookups: React.FC = React.memo(() => {
         return updaters
       })
       .flat()
-    Promise.allSettled(updater).then(() => queryClient.invalidateQueries(['getLookups']))
+    Promise.allSettled(updater).then(() => queryClient.invalidateQueries({ queryKey: ['getLookups'] }))
   }
 
   const onEdit = (instance: TableInstance<LookupAndValues>) => () => {

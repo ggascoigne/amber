@@ -7,7 +7,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
 import { AppProps } from 'next/app'
@@ -23,12 +23,6 @@ import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, use
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
-const ReactQueryDevtoolsProduction = React.lazy(() =>
-  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
-)
-
 interface RootComponentProps extends AppProps {
   emotionCache?: EmotionCache
   configData?: any
@@ -42,13 +36,7 @@ const RootInner = (props: RootComponentProps) => {
   const { user } = pageProps
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
-  const [showDevtools, setShowDevtools] = React.useState(false)
   useInitializeStripe()
-
-  React.useEffect(() => {
-    // @ts-ignore
-    window.toggleDevtools = () => setShowDevtools((old) => !old)
-  }, [])
 
   return (
     <CacheProvider value={emotionCache}>
@@ -69,12 +57,7 @@ const RootInner = (props: RootComponentProps) => {
                 <RouteGuard routes={routes}>
                   <Component {...pageProps} />
                 </RouteGuard>
-                <ReactQueryDevtools />
-                {showDevtools ? (
-                  <React.Suspense fallback={null}>
-                    <ReactQueryDevtoolsProduction />
-                  </React.Suspense>
-                ) : null}
+                <ReactQueryDevtools buttonPosition='bottom-left' />
               </Layout>
             </UserProvider>
           </NotificationProvider>
@@ -94,13 +77,13 @@ export default function RootComponent(props: RootComponentProps) {
 
   return config ? (
     <QueryClientProvider client={queryClient}>
-      <Hydrate state={dehydratedState}>
+      <HydrationBoundary state={dehydratedState}>
         <ConfigProvider value={config}>
           <JotaiProvider>
             <RootInner {...props} />
           </JotaiProvider>
         </ConfigProvider>
-      </Hydrate>
+      </HydrationBoundary>
     </QueryClientProvider>
   ) : null
 }

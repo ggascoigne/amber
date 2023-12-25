@@ -28,7 +28,7 @@ export const useAvailableHotelRooms = () => {
     {
       year,
     },
-    { cacheTime: 30 * 1000 },
+    { gcTime: 30 * 1000 },
   )
   const shouldUseRoomTotal = useFlag('dev_use_detail_rome_quantities', false)
 
@@ -144,7 +144,7 @@ const HotelRoomDetails: React.FC = () => {
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries(['getHotelRoomDetails'])
+    queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
   }
 
   const onAdd: TableMouseEventHandler<HotelRoomDetail> = () => () => {

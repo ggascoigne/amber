@@ -74,7 +74,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries(['getHotelRoomDetails'])
+              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
             },
           },
         )
@@ -112,7 +112,7 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries(['getHotelRoomDetails'])
+              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
             },
           },
         )

@@ -84,7 +84,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
       setDropdownOptions(
         users.filter(notEmpty).filter((u) => {
           const hasMembership = u.memberships.nodes.length > 0
-          const hasBalance = u.amountOwed < 0
+          const hasBalance = u.balance < 0
           return onlyDisplayMembersWithBalances ? hasMembership && hasBalance : hasMembership
         }),
       )

@@ -23,7 +23,7 @@ export const PaymentSuccess = () => {
       refetchInterval: 10_000,
     },
   )
-  const amountOwed = data?.data?.user?.amountOwed
+  const balance = data?.data?.user?.balance
 
   useEffect(() => {
     if (stripe) {
@@ -40,7 +40,7 @@ export const PaymentSuccess = () => {
   return (
     <Page title='Payment Successful'>
       <Typography>Thank you. Your payment of {formatAmountForDisplay(amount)} has been received.</Typography>
-      <Typography>Your balance is {formatAmountForDisplay(amountOwed ?? 0)}</Typography>
+      <Typography>Your balance is {formatAmountForDisplay(balance ?? 0)}</Typography>
     </Page>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Button } from '@mui/material'
 import { GraphQLError, Loader } from 'ui'
@@ -13,19 +13,12 @@ export const GameSignupMenu: React.FC = () => {
   const { year } = useGameUrl()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const [_, setShowConfirmDialog] = useConfirmDialogOpen()
-  // todo - work out why this is needed and then remove it
-  const [hackCount, setHackCount] = useState(0)
+  const [, setShowConfirmDialog] = useConfirmDialogOpen()
 
   const { error, data } = useGraphQL(
     GetGameChoicesDocument,
-    { year, memberId: membership?.id ?? 0 },
-    {
-      enabled: !!membership,
-      onSuccess: () => {
-        setHackCount((old) => old + 1)
-      },
-    },
+    { year, memberId: membership?.id ?? 0, foo: 0 },
+    { enabled: !!membership },
   )
 
   if (error) {
@@ -36,7 +29,7 @@ export const GameSignupMenu: React.FC = () => {
     return <Loader />
   }
 
-  const gameChoices = data?.gameChoices?.nodes
+  const gameChoices = data?.gameChoices?.nodes?.filter((c) => c?.gameId)
 
   const decoratorParams = {
     gameChoices,
@@ -44,7 +37,6 @@ export const GameSignupMenu: React.FC = () => {
 
   return (
     <GameMenu
-      key={`hack ${hackCount}`}
       to='/'
       text='Main Menu'
       title={`Game Signup ${year}`}

@@ -1,4 +1,3 @@
-/* eslint-disable @getify/proper-ternary/nested */
 import React, { useEffect } from 'react'
 
 import CheckIcon from '@mui/icons-material/Check'

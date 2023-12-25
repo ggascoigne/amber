@@ -18,7 +18,7 @@ import { UserPaymentDetails } from './types'
 import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 
 const stripe = new Stripe(stripeSecretKey!, {
-  apiVersion: '2022-11-15',
+  apiVersion: '2023-10-16',
 })
 
 const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]) => {

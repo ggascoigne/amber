@@ -1,4 +1,3 @@
-/* eslint-disable @getify/proper-ternary/nested */
 import { ReactElement, useCallback } from 'react'
 
 import { Chip } from '@mui/material'

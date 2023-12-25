@@ -44,8 +44,6 @@ const initialState: Partial<TableState<Membership>> = {
     'roomPreferenceAndNotes',
     'roomingPreferences',
     'roomingWith',
-    'amountOwed',
-    'amountPaid',
   ],
 }
 
@@ -195,7 +193,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
               local: configuration.virtual,
             }),
           )
-          const owed = (m.user?.amountOwed || 0) < 0 ? 0 - m.user!.amountOwed : 0
+          const owed = (m.user?.balance || 0) < 0 ? 0 - m.user!.balance : 0
           return {
             year: configuration.year,
             virtual: configuration.virtual,
