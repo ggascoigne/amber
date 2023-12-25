@@ -20,7 +20,7 @@ const userSchema = z
       firstName: z.union([z.string(), z.undefined()]).optional().nullable(),
       lastName: z.union([z.string(), z.undefined()]).optional().nullable(),
       displayName: z.union([z.string(), z.undefined()]).optional().nullable(),
-      amountOwed: z.number(),
+      balance: z.number(),
     }),
     z.undefined(),
   ])

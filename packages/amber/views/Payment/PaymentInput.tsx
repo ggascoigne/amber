@@ -99,7 +99,7 @@ type MemberOrUserPaymentProps = {
   loggedInUserId: number
   membership: MembershipType | undefined
   year: number
-  amountOwed: number
+  balance: number
   user: UserType
   onChange: (info: UserPaymentDetails) => void
   onRemoveUserPayment: (userId: number) => void
@@ -109,20 +109,20 @@ type ButtonState = 'deposit' | 'full' | 'other'
 
 const canDoFullMembershipPayment = (
   membership: MembershipType | undefined,
-  amountOwed: number,
+  balance: number,
   configuration: Configuration,
-) => (membership ? amountOwed === getMembershipCost(configuration, membership) : false)
+) => (membership ? balance === getMembershipCost(configuration, membership) : false)
 
 const defaultButtonState = (
   membership: MembershipType | undefined,
-  amountOwed: number,
+  balance: number,
   displayFullMembershipPayment: boolean,
 ) =>
   !membership || !displayFullMembershipPayment
     ? 'other'
     : membership.interestLevel === InterestLevel.Deposit
       ? 'deposit'
-      : amountOwed > 0
+      : balance > 0
         ? 'full'
         : 'other'
 
@@ -130,22 +130,22 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
   membership,
   user,
   year,
-  amountOwed,
+  balance,
   onChange,
   loggedInUserId,
   onRemoveUserPayment,
 }) => {
   const configuration = useConfiguration()
-  const displayFullMembershipPayment = canDoFullMembershipPayment(membership, amountOwed, configuration)
+  const displayFullMembershipPayment = canDoFullMembershipPayment(membership, balance, configuration)
 
   const [state, dispatch] = useReducer(
     reducer,
     {
       deposit: configuration.deposit,
-      balance: amountOwed,
-      buttonState: defaultButtonState(membership, amountOwed, displayFullMembershipPayment),
+      balance,
+      buttonState: defaultButtonState(membership, balance, displayFullMembershipPayment),
       donation: membership ? (loggedInUserId === user.id && membership.offerSubsidy ? 70 : 0) : 0,
-      customValue: membership && displayFullMembershipPayment ? 0 : 0 - user.amountOwed,
+      customValue: Math.max(membership && displayFullMembershipPayment ? 0 : 0 - user.balance, 0),
       membershipPayment: 0,
     },
     calculateState,
@@ -154,9 +154,9 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
   useEffect(() => {
     dispatch({
       type: 'setButtonState',
-      value: defaultButtonState(membership, amountOwed, displayFullMembershipPayment),
+      value: defaultButtonState(membership, balance, displayFullMembershipPayment),
     })
-  }, [amountOwed, configuration, displayFullMembershipPayment, membership, year])
+  }, [balance, configuration, displayFullMembershipPayment, membership, year])
 
   useEffect(() => {
     onChange({
@@ -189,7 +189,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
         <Grid container spacing={2} sx={{ py: 1 }} flexDirection='column'>
           <Grid item>
             <Typography sx={{ pt: 1 }}>
-              {user.fullName} has a balance of {formatAmountForDisplay(0 - user.amountOwed)}
+              {user.fullName} has a balance of {user.balance < 0 ? formatAmountForDisplay(0 - user.balance) : 0}
             </Typography>
           </Grid>
           <Grid item container flexDirection='row'>
@@ -208,7 +208,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                       control={<Radio />}
                       label={
                         membership
-                          ? `${getMembershipString(configuration, membership)}: ${formatAmountForDisplay(amountOwed)}`
+                          ? `${getMembershipString(configuration, membership)}: ${formatAmountForDisplay(balance)}`
                           : null
                       }
                     />
@@ -280,13 +280,13 @@ const UserPayment: React.FC<UserPaymentProps> = ({
   const membershipData = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId })
   const membership = membershipData.data?.memberships?.nodes?.[0] ?? undefined
 
-  const amountOwed = 0 - (user?.amountOwed ?? 0)
+  const balance = (user?.balance ?? 0) > 0 ? 0 - user!.balance : 0
 
   if (!user) return <Loader />
 
   return (
     <MemberOrUserPayment
-      amountOwed={amountOwed}
+      balance={balance}
       membership={membership}
       year={year}
       user={user}

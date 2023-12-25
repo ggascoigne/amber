@@ -50,7 +50,7 @@ const documents = {
     types.TransactionFieldsFragmentDoc,
   'query getUserByEmail($email: String!) {\n  userByEmail(email: $email) {\n    ...userAndProfileFields\n  }\n}\n\nquery getUserById($id: Int!) {\n  user(id: $id) {\n    ...userFields\n  }\n}\n\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(input: $input) {\n    user {\n      ...userFields\n    }\n  }\n}\n\nquery getAllUsers {\n  users(orderBy: LAST_NAME_ASC) {\n    nodes {\n      ...userFields\n    }\n  }\n}\n\nquery getAllUsersAndProfiles {\n  users(orderBy: LAST_NAME_ASC) {\n    nodes {\n      ...userAndProfileFields\n    }\n  }\n}\n\nquery getAllUsersBy($query: String!) {\n  users(orderBy: LAST_NAME_ASC, filter: {fullName: {includesInsensitive: $query}}) {\n    nodes {\n      ...userFields\n      memberships(condition: {attending: true}) {\n        nodes {\n          id\n          year\n        }\n      }\n    }\n  }\n}\n\nmutation createProfile($input: CreateProfileInput!) {\n  createProfile(input: $input) {\n    clientMutationId\n  }\n}\n\nmutation updateProfileByNodeId($input: UpdateProfileByNodeIdInput!) {\n  updateProfileByNodeId(input: $input) {\n    clientMutationId\n  }\n}':
     types.GetUserByEmailDocument,
-  'fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  amountOwed\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}':
+  'fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  balance\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}':
     types.UserFieldsFragmentDoc,
 }
 
@@ -192,8 +192,8 @@ export function graphql(
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: 'fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  amountOwed\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}',
-): (typeof documents)['fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  amountOwed\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}']
+  source: 'fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  balance\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}',
+): (typeof documents)['fragment userFields on User {\n  nodeId\n  id\n  email\n  fullName\n  firstName\n  lastName\n  displayName\n  balance\n}\n\nfragment profileFields on Profile {\n  nodeId\n  userId\n  phoneNumber\n  snailMailAddress\n}\n\nfragment userAndProfileFields on User {\n  ...userFields\n  profiles {\n    nodes {\n      ...profileFields\n    }\n  }\n}']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

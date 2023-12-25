@@ -6,11 +6,11 @@ import Router from 'next/router'
 import { GetUserByIdDocument, useGraphQL } from '../client'
 import { formatAmountForDisplay, useUser } from '../utils'
 
-const AmountOwedInner: React.FC<{ userId: number }> = ({ userId }) => {
+const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
   const data = useGraphQL(GetUserByIdDocument, { id: userId })
-  const amountOwed = data?.data?.user?.amountOwed
+  const balance = data?.data?.user?.balance
 
-  if (!amountOwed) return null
+  if (!balance) return null
 
   return (
     <Button
@@ -48,17 +48,17 @@ const AmountOwedInner: React.FC<{ userId: number }> = ({ userId }) => {
           sx={{
             weight: 500,
             fontSize: '15px',
-            color: amountOwed !== undefined && amountOwed < 0 ? 'error.main' : 'success.main',
+            color: balance !== undefined && balance < 0 ? 'error.main' : 'success.main',
           }}
         >
-          {formatAmountForDisplay(amountOwed ?? 0)}
+          {formatAmountForDisplay(balance ?? 0)}
         </Typography>
       </Box>
     </Button>
   )
 }
 
-export const AmountOwed = () => {
+export const Balance = () => {
   const user = useUser()
-  return user?.userId ? <AmountOwedInner userId={user.userId} /> : null
+  return user?.userId ? <BalanceInner userId={user.userId} /> : null
 }

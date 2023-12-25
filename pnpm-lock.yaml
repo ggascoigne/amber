@@ -90,10 +90,10 @@ importers:
         version: 14.0.4(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@stripe/react-stripe-js':
         specifier: ^2.4.0
-        version: 2.4.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.4.0(@stripe/stripe-js@2.2.2)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
-        specifier: ^1.54.0
-        version: 1.54.2
+        specifier: ^2.2.2
+        version: 2.2.2
       '@tanstack/react-query':
         specifier: ^5.14.6
         version: 5.14.6(react@18.2.0)
@@ -149,8 +149,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0
       stripe:
-        specifier: ^12.8.0
-        version: 12.18.0
+        specifier: ^14.10.0
+        version: 14.10.0
       tss-react:
         specifier: ^4.9.3
         version: 4.9.3(@emotion/react@11.11.3)(@emotion/server@11.11.0)(@mui/material@5.15.1)(react@18.2.0)
@@ -286,10 +286,10 @@ importers:
         version: 14.0.4(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@stripe/react-stripe-js':
         specifier: ^2.4.0
-        version: 2.4.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.4.0(@stripe/stripe-js@2.2.2)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
-        specifier: ^1.54.0
-        version: 1.54.2
+        specifier: ^2.2.2
+        version: 2.2.2
       '@tanstack/react-query':
         specifier: ^5.14.6
         version: 5.14.6(react@18.2.0)
@@ -345,8 +345,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0
       stripe:
-        specifier: ^12.8.0
-        version: 12.18.0
+        specifier: ^14.10.0
+        version: 14.10.0
       tss-react:
         specifier: ^4.9.3
         version: 4.9.3(@emotion/react@11.11.3)(@emotion/server@11.11.0)(@mui/material@5.15.1)(react@18.2.0)
@@ -494,10 +494,10 @@ importers:
         version: 14.0.4(@mdx-js/loader@3.0.0)(@mdx-js/react@3.0.0)
       '@stripe/react-stripe-js':
         specifier: ^2.4.0
-        version: 2.4.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.4.0(@stripe/stripe-js@2.2.2)(react-dom@18.2.0)(react@18.2.0)
       '@stripe/stripe-js':
-        specifier: ^1.54.0
-        version: 1.54.2
+        specifier: ^2.2.2
+        version: 2.2.2
       '@tanstack/react-query':
         specifier: ^5.14.6
         version: 5.14.6(react@18.2.0)
@@ -731,8 +731,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       stripe:
-        specifier: ^12.8.0
-        version: 12.18.0
+        specifier: ^14.10.0
+        version: 14.10.0
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -1216,7 +1216,7 @@ packages:
     dependencies:
       '@panva/hkdf': 1.1.1
       cookie: 0.6.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       joi: 17.11.0
       jose: 4.15.4
       next: 14.0.4(@babel/core@7.23.6)(react-dom@18.2.0)(react@18.2.0)
@@ -1268,7 +1268,7 @@ packages:
       '@babel/traverse': 7.23.6
       '@babel/types': 7.23.6
       convert-source-map: 2.0.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -1836,7 +1836,7 @@ packages:
       '@babel/helper-split-export-declaration': 7.22.6
       '@babel/parser': 7.23.6
       '@babel/types': 7.23.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -2075,7 +2075,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.0
@@ -2887,7 +2887,7 @@ packages:
       '@types/json-stable-stringify': 1.0.35
       '@whatwg-node/fetch': 0.9.13
       chalk: 4.1.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       dotenv: 16.3.1
       graphql: 15.8.0
       graphql-request: 6.1.0(graphql@15.8.0)
@@ -3060,7 +3060,7 @@ packages:
     engines: {node: '>=10.10.0'}
     dependencies:
       '@humanwhocodes/object-schema': 2.0.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -4581,21 +4581,21 @@ packages:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
     dev: true
 
-  /@stripe/react-stripe-js@2.4.0(@stripe/stripe-js@1.54.2)(react-dom@18.2.0)(react@18.2.0):
+  /@stripe/react-stripe-js@2.4.0(@stripe/stripe-js@2.2.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-1jVQEL3OuhuzNlf4OdfqovHt+MkWh8Uh8xpLxx/xUFUDdF+7/kDOrGKy+xJO3WLCfZUL7NAy+/ypwXbbYZi0tg==}
     peerDependencies:
       '@stripe/stripe-js': ^1.44.1 || ^2.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@stripe/stripe-js': 1.54.2
+      '@stripe/stripe-js': 2.2.2
       prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@stripe/stripe-js@1.54.2:
-    resolution: {integrity: sha512-R1PwtDvUfs99cAjfuQ/WpwJ3c92+DAMy9xGApjqlWQMj0FKQabUAys2swfTRNzuYAYJh7NqK2dzcYVNkKLEKUg==}
+  /@stripe/stripe-js@2.2.2:
+    resolution: {integrity: sha512-LvFZRZEBoMe6vXC6RoOAIbXWo/0JDdndq43ekL9M6affcM7PtF5KALmwt91BazW7q49sbSl0l7TunWhhSwEW4w==}
     dev: false
 
   /@swc/core-darwin-arm64@1.3.101:
@@ -5446,7 +5446,7 @@ packages:
     resolution: {integrity: sha512-o/zjMZRhJxny7OyEF+Op8X+efiELC7k7yOjMzgfzVqOzXqkBkWI79YoTdOtsuWd5BWhAGAuOY/Xa6xpiaWXiNg==}
     engines: {node: '>= 14'}
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -6685,6 +6685,17 @@ packages:
       ms: 2.1.3
     dev: false
 
+  /debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+    dependencies:
+      ms: 2.1.2
+
   /debug@4.3.4(supports-color@8.1.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -7603,7 +7614,7 @@ packages:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
@@ -8710,7 +8721,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8720,7 +8731,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       agent-base: 7.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -8762,7 +8773,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       '@messageformat/core': 3.2.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       fast-printf: 1.6.9
       make-plural: 7.3.0
       math-interval-parser: 2.0.1
@@ -10477,7 +10488,7 @@ packages:
     resolution: {integrity: sha512-o/sd0nMof8kYff+TqcDx3VSrgBTcZpSvYcAHIfHhv5VAuNmisCxjhx6YmxS8PFEpb9z5WKWKPdzf0jM23ro3RQ==}
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.4
       decode-named-character-reference: 1.0.2
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.0
@@ -12741,8 +12752,8 @@ packages:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
 
-  /stripe@12.18.0:
-    resolution: {integrity: sha512-cYjgBM2SY/dTm8Lr6eMyyONaHTZHA/QjHxFUIW5WH8FevSRIGAVtXEmBkUXF1fsqe7QvvRgQSGSJZmjDacegGg==}
+  /stripe@14.10.0:
+    resolution: {integrity: sha512-zI6yxYVFJtjibgb06Xn08KsJy1Zq+KE3jLkhZ8bJOTrxNVi2CtCreQdUn+NjXN5lTEdiNhxIqL0NmuSza+rOGw==}
     engines: {node: '>=12.*'}
     dependencies:
       '@types/node': 20.10.5

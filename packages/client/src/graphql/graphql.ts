@@ -2736,8 +2736,8 @@ export enum GamesOrderBy {
   TeenFriendlyDesc = 'TEEN_FRIENDLY_DESC',
   TypeAsc = 'TYPE_ASC',
   TypeDesc = 'TYPE_DESC',
-  UserByAuthorIdAmountOwedAsc = 'USER_BY_AUTHOR_ID__AMOUNT_OWED_ASC',
-  UserByAuthorIdAmountOwedDesc = 'USER_BY_AUTHOR_ID__AMOUNT_OWED_DESC',
+  UserByAuthorIdBalanceAsc = 'USER_BY_AUTHOR_ID__BALANCE_ASC',
+  UserByAuthorIdBalanceDesc = 'USER_BY_AUTHOR_ID__BALANCE_DESC',
   UserByAuthorIdDisplayNameAsc = 'USER_BY_AUTHOR_ID__DISPLAY_NAME_ASC',
   UserByAuthorIdDisplayNameDesc = 'USER_BY_AUTHOR_ID__DISPLAY_NAME_DESC',
   UserByAuthorIdEmailAsc = 'USER_BY_AUTHOR_ID__EMAIL_ASC',
@@ -3745,8 +3745,8 @@ export enum MembershipsOrderBy {
   SlotsAttendingDesc = 'SLOTS_ATTENDING_DESC',
   TransactionsByMemberIdCountAsc = 'TRANSACTIONS_BY_MEMBER_ID__COUNT_ASC',
   TransactionsByMemberIdCountDesc = 'TRANSACTIONS_BY_MEMBER_ID__COUNT_DESC',
-  UserByUserIdAmountOwedAsc = 'USER_BY_USER_ID__AMOUNT_OWED_ASC',
-  UserByUserIdAmountOwedDesc = 'USER_BY_USER_ID__AMOUNT_OWED_DESC',
+  UserByUserIdBalanceAsc = 'USER_BY_USER_ID__BALANCE_ASC',
+  UserByUserIdBalanceDesc = 'USER_BY_USER_ID__BALANCE_DESC',
   UserByUserIdDisplayNameAsc = 'USER_BY_USER_ID__DISPLAY_NAME_ASC',
   UserByUserIdDisplayNameDesc = 'USER_BY_USER_ID__DISPLAY_NAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
@@ -4656,8 +4656,8 @@ export enum ProfilesOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   SnailMailAddressAsc = 'SNAIL_MAIL_ADDRESS_ASC',
   SnailMailAddressDesc = 'SNAIL_MAIL_ADDRESS_DESC',
-  UserByUserIdAmountOwedAsc = 'USER_BY_USER_ID__AMOUNT_OWED_ASC',
-  UserByUserIdAmountOwedDesc = 'USER_BY_USER_ID__AMOUNT_OWED_DESC',
+  UserByUserIdBalanceAsc = 'USER_BY_USER_ID__BALANCE_ASC',
+  UserByUserIdBalanceDesc = 'USER_BY_USER_ID__BALANCE_DESC',
   UserByUserIdDisplayNameAsc = 'USER_BY_USER_ID__DISPLAY_NAME_ASC',
   UserByUserIdDisplayNameDesc = 'USER_BY_USER_ID__DISPLAY_NAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
@@ -5805,8 +5805,8 @@ export enum ShirtOrdersOrderBy {
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ShirtOrderItemsByOrderIdCountAsc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_ASC',
   ShirtOrderItemsByOrderIdCountDesc = 'SHIRT_ORDER_ITEMS_BY_ORDER_ID__COUNT_DESC',
-  UserByUserIdAmountOwedAsc = 'USER_BY_USER_ID__AMOUNT_OWED_ASC',
-  UserByUserIdAmountOwedDesc = 'USER_BY_USER_ID__AMOUNT_OWED_DESC',
+  UserByUserIdBalanceAsc = 'USER_BY_USER_ID__BALANCE_ASC',
+  UserByUserIdBalanceDesc = 'USER_BY_USER_ID__BALANCE_DESC',
   UserByUserIdDisplayNameAsc = 'USER_BY_USER_ID__DISPLAY_NAME_ASC',
   UserByUserIdDisplayNameDesc = 'USER_BY_USER_ID__DISPLAY_NAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
@@ -6328,8 +6328,8 @@ export enum TransactionsOrderBy {
   StripeDesc = 'STRIPE_DESC',
   TimestampAsc = 'TIMESTAMP_ASC',
   TimestampDesc = 'TIMESTAMP_DESC',
-  UserByOriginAmountOwedAsc = 'USER_BY_ORIGIN__AMOUNT_OWED_ASC',
-  UserByOriginAmountOwedDesc = 'USER_BY_ORIGIN__AMOUNT_OWED_DESC',
+  UserByOriginBalanceAsc = 'USER_BY_ORIGIN__BALANCE_ASC',
+  UserByOriginBalanceDesc = 'USER_BY_ORIGIN__BALANCE_DESC',
   UserByOriginDisplayNameAsc = 'USER_BY_ORIGIN__DISPLAY_NAME_ASC',
   UserByOriginDisplayNameDesc = 'USER_BY_ORIGIN__DISPLAY_NAME_DESC',
   UserByOriginEmailAsc = 'USER_BY_ORIGIN__EMAIL_ASC',
@@ -6342,8 +6342,8 @@ export enum TransactionsOrderBy {
   UserByOriginIdDesc = 'USER_BY_ORIGIN__ID_DESC',
   UserByOriginLastNameAsc = 'USER_BY_ORIGIN__LAST_NAME_ASC',
   UserByOriginLastNameDesc = 'USER_BY_ORIGIN__LAST_NAME_DESC',
-  UserByUserIdAmountOwedAsc = 'USER_BY_USER_ID__AMOUNT_OWED_ASC',
-  UserByUserIdAmountOwedDesc = 'USER_BY_USER_ID__AMOUNT_OWED_DESC',
+  UserByUserIdBalanceAsc = 'USER_BY_USER_ID__BALANCE_ASC',
+  UserByUserIdBalanceDesc = 'USER_BY_USER_ID__BALANCE_DESC',
   UserByUserIdDisplayNameAsc = 'USER_BY_USER_ID__DISPLAY_NAME_ASC',
   UserByUserIdDisplayNameDesc = 'USER_BY_USER_ID__DISPLAY_NAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
@@ -7376,9 +7376,9 @@ export type UpdateUserRolePayloadUserRoleEdgeArgs = {
 
 export type User = Node & {
   __typename: 'User'
-  amountOwed: Scalars['Float']['output']
   /** Reads and enables pagination through a set of `Game`. */
   authoredGames: GamesConnection
+  balance: Scalars['Float']['output']
   displayName?: Maybe<Scalars['String']['output']>
   email: Scalars['String']['output']
   firstName?: Maybe<Scalars['String']['output']>
@@ -7480,8 +7480,8 @@ export type UserUserRolesArgs = {
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type UserCondition = {
-  /** Checks for equality with the object’s `amountOwed` field. */
-  amountOwed?: InputMaybe<Scalars['Float']['input']>
+  /** Checks for equality with the object’s `balance` field. */
+  balance?: InputMaybe<Scalars['Float']['input']>
   /** Checks for equality with the object’s `displayName` field. */
   displayName?: InputMaybe<Scalars['String']['input']>
   /** Checks for equality with the object’s `email` field. */
@@ -7498,10 +7498,10 @@ export type UserCondition = {
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
-  /** Filter by the object’s `amountOwed` field. */
-  amountOwed?: InputMaybe<FloatFilter>
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserFilter>>
+  /** Filter by the object’s `balance` field. */
+  balance?: InputMaybe<FloatFilter>
   /** Filter by the object’s `displayName` field. */
   displayName?: InputMaybe<StringFilter>
   /** Filter by the object’s `email` field. */
@@ -7522,7 +7522,7 @@ export type UserFilter = {
 
 /** An input for mutations affecting `User` */
 export type UserInput = {
-  amountOwed?: InputMaybe<Scalars['Float']['input']>
+  balance?: InputMaybe<Scalars['Float']['input']>
   displayName?: InputMaybe<Scalars['String']['input']>
   email: Scalars['String']['input']
   firstName?: InputMaybe<Scalars['String']['input']>
@@ -7533,7 +7533,7 @@ export type UserInput = {
 
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
-  amountOwed?: InputMaybe<Scalars['Float']['input']>
+  balance?: InputMaybe<Scalars['Float']['input']>
   displayName?: InputMaybe<Scalars['String']['input']>
   email?: InputMaybe<Scalars['String']['input']>
   firstName?: InputMaybe<Scalars['String']['input']>
@@ -7624,8 +7624,8 @@ export enum UserRolesOrderBy {
   RoleByRoleIdIdDesc = 'ROLE_BY_ROLE_ID__ID_DESC',
   RoleIdAsc = 'ROLE_ID_ASC',
   RoleIdDesc = 'ROLE_ID_DESC',
-  UserByUserIdAmountOwedAsc = 'USER_BY_USER_ID__AMOUNT_OWED_ASC',
-  UserByUserIdAmountOwedDesc = 'USER_BY_USER_ID__AMOUNT_OWED_DESC',
+  UserByUserIdBalanceAsc = 'USER_BY_USER_ID__BALANCE_ASC',
+  UserByUserIdBalanceDesc = 'USER_BY_USER_ID__BALANCE_DESC',
   UserByUserIdDisplayNameAsc = 'USER_BY_USER_ID__DISPLAY_NAME_ASC',
   UserByUserIdDisplayNameDesc = 'USER_BY_USER_ID__DISPLAY_NAME_DESC',
   UserByUserIdEmailAsc = 'USER_BY_USER_ID__EMAIL_ASC',
@@ -7666,8 +7666,8 @@ export type UsersEdge = {
 
 /** Methods to use when ordering `User`. */
 export enum UsersOrderBy {
-  AmountOwedAsc = 'AMOUNT_OWED_ASC',
-  AmountOwedDesc = 'AMOUNT_OWED_DESC',
+  BalanceAsc = 'BALANCE_ASC',
+  BalanceDesc = 'BALANCE_DESC',
   DisplayNameAsc = 'DISPLAY_NAME_ASC',
   DisplayNameDesc = 'DISPLAY_NAME_DESC',
   EmailAsc = 'EMAIL_ASC',
@@ -9284,7 +9284,7 @@ export type GetMembershipByYearAndIdQuery = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9338,7 +9338,7 @@ export type GetMembershipsByYearQuery = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9413,7 +9413,7 @@ export type GetMembershipsByIdQuery = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9468,7 +9468,7 @@ export type GetMembershipByYearAndRoomQuery = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9522,7 +9522,7 @@ export type UpdateMembershipByNodeIdMutation = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9576,7 +9576,7 @@ export type CreateMembershipMutation = {
         firstName?: string | null
         lastName?: string | null
         displayName?: string | null
-        amountOwed: number
+        balance: number
         profiles: {
           __typename: 'ProfilesConnection'
           nodes: Array<{
@@ -9624,7 +9624,7 @@ export type GetAllMembersByQuery = {
       firstName?: string | null
       lastName?: string | null
       displayName?: string | null
-      amountOwed: number
+      balance: number
       memberships: {
         __typename: 'MembershipsConnection'
         nodes: Array<{
@@ -9656,7 +9656,7 @@ export type GetAllMembersByQuery = {
             firstName?: string | null
             lastName?: string | null
             displayName?: string | null
-            amountOwed: number
+            balance: number
             profiles: {
               __typename: 'ProfilesConnection'
               nodes: Array<{
@@ -9704,7 +9704,7 @@ export type MembershipFieldsFragment = {
     firstName?: string | null
     lastName?: string | null
     displayName?: string | null
-    amountOwed: number
+    balance: number
     profiles: {
       __typename: 'ProfilesConnection'
       nodes: Array<{
@@ -10071,7 +10071,7 @@ export type GetUserByEmailQuery = {
     firstName?: string | null
     lastName?: string | null
     displayName?: string | null
-    amountOwed: number
+    balance: number
     profiles: {
       __typename: 'ProfilesConnection'
       nodes: Array<{
@@ -10100,7 +10100,7 @@ export type GetUserByIdQuery = {
     firstName?: string | null
     lastName?: string | null
     displayName?: string | null
-    amountOwed: number
+    balance: number
   } | null
 }
 
@@ -10121,7 +10121,7 @@ export type UpdateUserMutation = {
       firstName?: string | null
       lastName?: string | null
       displayName?: string | null
-      amountOwed: number
+      balance: number
     } | null
   } | null
 }
@@ -10141,7 +10141,7 @@ export type GetAllUsersQuery = {
       firstName?: string | null
       lastName?: string | null
       displayName?: string | null
-      amountOwed: number
+      balance: number
     } | null>
   } | null
 }
@@ -10161,7 +10161,7 @@ export type GetAllUsersAndProfilesQuery = {
       firstName?: string | null
       lastName?: string | null
       displayName?: string | null
-      amountOwed: number
+      balance: number
       profiles: {
         __typename: 'ProfilesConnection'
         nodes: Array<{
@@ -10193,7 +10193,7 @@ export type GetAllUsersByQuery = {
       firstName?: string | null
       lastName?: string | null
       displayName?: string | null
-      amountOwed: number
+      balance: number
       memberships: {
         __typename: 'MembershipsConnection'
         nodes: Array<{ __typename: 'Membership'; id: number; year: number } | null>
@@ -10229,7 +10229,7 @@ export type UserFieldsFragment = {
   firstName?: string | null
   lastName?: string | null
   displayName?: string | null
-  amountOwed: number
+  balance: number
 }
 
 export type ProfileFieldsFragment = {
@@ -10249,7 +10249,7 @@ export type UserAndProfileFieldsFragment = {
   firstName?: string | null
   lastName?: string | null
   displayName?: string | null
-  amountOwed: number
+  balance: number
   profiles: {
     __typename: 'ProfilesConnection'
     nodes: Array<{
@@ -10654,7 +10654,7 @@ export const UserFieldsFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -10724,7 +10724,7 @@ export const UserAndProfileFieldsFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -10805,7 +10805,7 @@ export const MembershipFieldsFragmentDoc = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -16186,7 +16186,7 @@ export const GetMembershipByYearAndIdDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -16345,7 +16345,7 @@ export const GetMembershipsByYearDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -16573,7 +16573,7 @@ export const GetMembershipsByIdDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -16742,7 +16742,7 @@ export const GetMembershipByYearAndRoomDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -16895,7 +16895,7 @@ export const UpdateMembershipByNodeIdDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -17048,7 +17048,7 @@ export const CreateMembershipDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -17311,7 +17311,7 @@ export const GetAllMembersByDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18521,7 +18521,7 @@ export const GetUserByEmailDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18618,7 +18618,7 @@ export const GetUserByIdDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18682,7 +18682,7 @@ export const UpdateUserDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18739,7 +18739,7 @@ export const GetAllUsersDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18796,7 +18796,7 @@ export const GetAllUsersAndProfilesDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },
@@ -18963,7 +18963,7 @@ export const GetAllUsersByDocument = {
           { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
           { kind: 'Field', name: { kind: 'Name', value: 'displayName' } },
-          { kind: 'Field', name: { kind: 'Name', value: 'amountOwed' } },
+          { kind: 'Field', name: { kind: 'Name', value: 'balance' } },
         ],
       },
     },

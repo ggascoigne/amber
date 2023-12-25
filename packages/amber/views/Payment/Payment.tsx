@@ -18,7 +18,7 @@ export const Payment: React.FC = () => {
   const user = useUser()
   const isCalledRef = useRef(false)
   const userData = useGraphQL(GetUserByIdDocument, { id: user?.userId ?? -1 })
-  const amountOwed = userData?.data?.user?.amountOwed
+  const balance = userData?.data?.user?.balance ?? 0
 
   useEffect(() => {
     if (!isCalledRef.current) {
@@ -53,10 +53,10 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {amountOwed ? (
+      {balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
-            Alternatively, write a check for <strong>${0 - amountOwed}</strong> made out to{' '}
+            Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}
             <strong>AmberCon NorthWest Inc</strong>, and send to:
           </DialogContentText>
           <DialogContentText sx={{ pl: 2 }}>

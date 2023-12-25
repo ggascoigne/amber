@@ -27,7 +27,7 @@
     "nodemailer": "^6.9.6",
     "pg": "^8.11.3",
     "pug": "^3.0.2",
-    "stripe": "^12.8.0",
+    "stripe": "^14.10.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
