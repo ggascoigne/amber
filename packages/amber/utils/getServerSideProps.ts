@@ -9,7 +9,7 @@ export async function configGetServerSideProps() {
   release()
 
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(['getSettings'], () => data)
+  await queryClient.prefetchQuery({ queryKey: ['getSettings'], queryFn: () => data })
 
   return {
     props: {

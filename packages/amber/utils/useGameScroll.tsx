@@ -5,7 +5,7 @@ import { useUrlSource } from './useUrlSourceState'
 
 export const useGameScroll = () => {
   const [lastSlug, setLastSlug] = useState<string>('')
-  const [_, setUrlSource] = useUrlSource()
+  const [, setUrlSource] = useUrlSource()
 
   return useCallback(
     (slug: string) => {

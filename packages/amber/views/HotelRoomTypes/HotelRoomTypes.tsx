@@ -149,7 +149,7 @@ const HotelRoomTypes: React.FC = () => {
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries(['getHotelRooms'])
+    queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
   }
 
   const onAdd: TableMouseEventHandler<HotelRoom> = () => () => {
