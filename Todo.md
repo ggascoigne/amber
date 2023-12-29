@@ -4,6 +4,15 @@
 
 * Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)
 
+## Stripe
+
+track completed & refunds, track fees
+
+report, # memberships by type, fees, refunds, gifts
+
+track transactions to payments to us - is this by time?
+
+
 ## User merging
 
 ### user references to update
