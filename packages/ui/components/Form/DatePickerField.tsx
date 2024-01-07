@@ -9,7 +9,7 @@ interface DatePickerFieldProps
     Omit<DatePickerProps<DateTime>, 'onChange' | 'value' | 'error' | 'renderInput'> {
   required?: boolean
   getShouldDisableDateError: (date: Date) => string
-  // Force the creation timeZOne for dates, this allows values to be created that differ from local time
+  // Force the creation timeZone for dates, this allows values to be created that differ from local time
   timeZone?: string
 }
 
@@ -19,7 +19,7 @@ export function DatePickerField(props: DatePickerFieldProps) {
     <DatePicker
       minDate={minDate}
       maxDate={maxDate}
-      value={DateTime.fromISO(field.value)}
+      value={timeZone ? DateTime.fromISO(field.value).setZone(timeZone) : DateTime.fromISO(field.value)}
       // Make sure that your 3d param is set to `true` in order to run validation
       onChange={(newValue: DateTime | null) => {
         const newDate = timeZone ? newValue?.setZone(timeZone)?.toISO() : newValue?.toISO()

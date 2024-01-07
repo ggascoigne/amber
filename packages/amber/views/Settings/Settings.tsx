@@ -14,10 +14,12 @@ import { Setting } from './shared'
 import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TableMouseEventHandler } from '../../types/react-table-config'
+import { useConfiguration } from '../../utils'
 
 export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
+  const { baseTimeZone } = useConfiguration()
   const s = match(row.original)
-    .with({ type: 'date' }, () => DateTime.fromISO(value).toLocaleString())
+    .with({ type: 'date' }, () => DateTime.fromISO(value).setZone(baseTimeZone).toLocaleString())
     .otherwise(() => value)
   return <TooltipCell text={s} align='left' tooltip={s} />
 }

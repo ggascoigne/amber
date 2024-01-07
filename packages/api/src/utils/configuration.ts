@@ -4,6 +4,8 @@ import { z } from 'zod'
 
 import { setVal } from './dot2val'
 
+let baseTimeZone: string | undefined
+
 export function notEmpty<T>(value: T): value is NonNullable<T> {
   return value !== null && value !== undefined
 }
@@ -20,7 +22,7 @@ const toDateTime = () =>
   z
     .string()
     .datetime({ offset: true })
-    .transform((val) => DateTime.fromISO(val))
+    .transform((val) => (baseTimeZone ? DateTime.fromISO(val).setZone(baseTimeZone) : DateTime.fromISO(val)))
 
 export const conventionInfoSchema = z.object({
   date: toDateTime(),
@@ -90,9 +92,12 @@ export const getSettingsObject = (data: GetSettingsQuery | undefined) => {
   const settings = data?.settings?.nodes?.map((n) => n && pick(n, 'id', 'code', 'type', 'value'))?.filter(notEmpty)
   const obj: any = {}
   settings?.forEach((i) => setVal(obj, i.code, i.value))
-  // console.log('getSettingsObject', { data, settings, obj })
+  // set global so we can use it in the transform
+  baseTimeZone = obj?.config?.baseTimeZone
+
   const config = obj?.config ? configurationSchema.parse(obj.config) : undefined
   const flags = obj?.flag ? flagSchema.parse(obj.flag) : undefined
   const urls = obj?.url ? urlSchema.parse(obj.url) : undefined
+  // console.log('getSettingsObject', { data, settings, obj, config, flags, urls })
   return { config, flags, urls }
 }
