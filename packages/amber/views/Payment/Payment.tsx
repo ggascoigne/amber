@@ -10,7 +10,7 @@ import { fetchPostJSON } from './fetchUtils'
 
 import { useGraphQL, GetUserByIdDocument } from '../../client'
 import { ContactEmail } from '../../components'
-import { useGetStripe, useConfiguration, useUser } from '../../utils'
+import { useGetStripe, useUser } from '../../utils'
 
 export const Payment: React.FC = () => {
   const [stripe] = useGetStripe()
@@ -33,10 +33,6 @@ export const Payment: React.FC = () => {
 
   // console.log('Payment', { paymentIntent })
 
-  const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
-
   return (
     <Page title='Make Payment'>
       {stripe && paymentIntent?.client_secret && user.userId ? (
@@ -57,7 +53,7 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {acnw && balance < 0 ? (
+      {balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}
