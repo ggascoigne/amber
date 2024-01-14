@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import {
   ProfileFormType,
+  getInterestLevel,
   getSlotDescription,
   isNotPacificTime,
   useConfiguration,
@@ -125,6 +126,7 @@ interface DetailsProps {
 }
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+  const configuration = useConfiguration()
   const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
@@ -144,6 +146,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           <Field label='Email'>{profile.email}</Field>
           <VerticalGap />
           <Field label='Attendance'>{cost}</Field>
+          <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
           <VerticalGap />
           <Field label='Postal Address'>{profile?.profiles?.nodes?.[0]?.snailMailAddress}</Field>
           <Field label='Phone Number'>{profile?.profiles?.nodes?.[0]?.phoneNumber}</Field>
@@ -177,39 +180,35 @@ const MembershipSummary: React.FC = () => {
   if (isLoading || !data) {
     return <Loader />
   }
+  const displayNew = query.all?.[0] === 'new'
   const membership = data.memberships?.nodes[0]
-  if (!membership && !query.all) {
+
+  if (!membership || displayNew) {
     return (
       <Page title='Become a Member'>
+        {displayNew && <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
         <BecomeAMember />
       </Page>
     )
   }
 
+  const displayEdit = query.all?.[0] === 'edit'
+
   return (
     <Page title='Membership Summary'>
-      {query.all?.[0] === 'new' && <MembershipWizard open onClose={onCloseMembershipDialog} profile={profile!} />}
-      {query.all?.[0] === 'edit' && (
-        <MembershipWizard open onClose={onCloseMembershipDialog} initialValues={membership!} profile={profile!} />
+      {displayEdit && (
+        <MembershipWizard open onClose={onCloseMembershipDialog} initialValues={membership} profile={profile!} />
       )}
 
       <br />
-      {membership ? (
-        <>
-          {isVirtual ? (
-            <VirtualDetails membership={membership} />
-          ) : (
-            <Details membership={membership} profile={profile!} />
-          )}
-          <GridContainer>
-            <GridItem xs={12} sm={5} className={classes.gridItem}>
-              <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
-                Edit
-              </Button>
-            </GridItem>
-          </GridContainer>
-        </>
-      ) : null}
+      {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
+      <GridContainer>
+        <GridItem xs={12} sm={5} className={classes.gridItem}>
+          <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
+            Edit
+          </Button>
+        </GridItem>
+      </GridContainer>
     </Page>
   )
 }

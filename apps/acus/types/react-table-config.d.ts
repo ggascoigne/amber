@@ -1,4 +1,4 @@
-/* eslint-disable unused-imports/no-unused-vars,  @typescript-eslint/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ChangeEvent, MouseEventHandler, ReactNode } from 'react'
 
 import {
