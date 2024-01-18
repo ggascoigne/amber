@@ -96,7 +96,7 @@ export const Welcome: React.FC = () => {
         </li>
         <li>
           <span className={classes.deadline}>
-            Game Book preview to GMs: <ConfigDate name='gameGmPreview' format={MDY} />
+            Game Book Preview to GMs: <ConfigDate name='gameGmPreview' format={MDY} />
           </span>
         </li>
         <li>
@@ -111,7 +111,7 @@ export const Welcome: React.FC = () => {
         </li>
         <li>
           <span className={classes.deadline}>
-            Schedules SENT to all GMs and Players: <ConfigDate name='schedulesSent' format={MDY} />
+            Schedules sent to all GMs and Players: <ConfigDate name='schedulesSent' format={MDY} />
           </span>
         </li>
       </ul>
