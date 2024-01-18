@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
+
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
 const { headers } = require('amber/utils/next-headers')
 const withMdxFm = require('next-mdx-frontmatter')({
   extension: /\.mdx?$/,
@@ -13,28 +17,30 @@ const withMdxFm = require('next-mdx-frontmatter')({
   },
 })
 
-module.exports = withMdxFm({
-  reactStrictMode: true,
-  transpilePackages: ['ui', 'database', 'amber', '@mui/material', '@amber/api'],
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
-  modularizeImports: {
-    '@mui/material': {
-      transform: '@mui/material/{{member}}',
+module.exports = withBundleAnalyzer(
+  withMdxFm({
+    reactStrictMode: true,
+    transpilePackages: ['ui', 'database', 'amber', '@mui/material', '@amber/api'],
+    eslint: {
+      // Warning: This allows production builds to successfully complete even if
+      // your project has ESLint errors.
+      ignoreDuringBuilds: true,
     },
-    '@mui/icons-material': {
-      transform: '@mui/icons-material/{{member}}',
+    modularizeImports: {
+      '@mui/material': {
+        transform: '@mui/material/{{member}}',
+      },
+      '@mui/icons-material': {
+        transform: '@mui/icons-material/{{member}}',
+      },
     },
-  },
-  // Append the default value with md extensions
-  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': ['node_modules/@swc/**'],
+    // Append the default value with md extensions
+    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+    experimental: {
+      outputFileTracingExcludes: {
+        '*': ['node_modules/@swc/**'],
+      },
     },
-  },
-  headers,
-})
+    headers,
+  }),
+)

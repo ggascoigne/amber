@@ -6,12 +6,11 @@ import type { NextPage } from 'next'
 
 import { Welcome, WelcomeVirtual } from '../views'
 
-export const getServerSideProps = configGetServerSideProps
-
 const Home: NextPage = () => {
   const configuration = useConfiguration()
-
   return configuration.virtual ? <WelcomeVirtual /> : <Welcome />
 }
+
+export const getServerSideProps = configGetServerSideProps
 
 export default Home

@@ -5,7 +5,7 @@ import type { NextPage } from 'next'
 
 import AboutAmber from '../views/AboutAmber'
 
-export const getServerSideProps = configGetServerSideProps
 const Page: NextPage = () => <AboutAmber />
+export const getServerSideProps = configGetServerSideProps
 
 export default Page

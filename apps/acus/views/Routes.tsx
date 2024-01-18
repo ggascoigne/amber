@@ -41,6 +41,13 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     exact: false,
   },
   {
+    path: '/payment',
+    label: 'Payment',
+    exact: true,
+    permission: Perms.IsLoggedIn,
+    userCondition: ({ getFlag }) => getFlag('allow_payment'),
+  },
+  {
     path: '/gm',
     label: 'Become a GM',
     subText: `Manage your games`,
@@ -98,6 +105,18 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
   {
     path: '/member-admin',
     label: 'Members',
+    exact: true,
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/transactions',
+    label: 'Transactions',
+    exact: true,
+    permission: Perms.IsAdmin,
+  },
+  {
+    path: '/stripe',
+    label: 'Stripe Log',
     exact: true,
     permission: Perms.IsAdmin,
   },

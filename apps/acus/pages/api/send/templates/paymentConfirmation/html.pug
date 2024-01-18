@@ -1,0 +1,13 @@
+h1 Payment Confirmation
+
+if paymentDetails.length === 1
+  p This email confirms your payment of $#{paymentDetails[0].amount} for #{paymentDetails[0].name}.
+
+else
+  p This email confirms your payment of:
+  each entry in paymentDetails
+    p $#{entry.amount} for #{entry.name}
+
+p Thank you
+
+p Gaming or convention related questions should be sent to #{contactEmail}
