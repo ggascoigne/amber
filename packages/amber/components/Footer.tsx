@@ -6,7 +6,7 @@ import { Loader } from 'ui'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 
-import { useGetConfig } from '../utils'
+import { useGetConfig, useConfiguration } from '../utils'
 import { gitHash } from '../version'
 
 const ReactJson = React.lazy(() => import('react-json-view'))
@@ -54,6 +54,10 @@ export const Footer: React.FC = (_props) => {
   const open = Boolean(anchorEl)
   const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
+  const configuration = useConfiguration()
+  const acus = configuration.numberOfSlots === 8
+  const acnw = !acus
+  const copyrightUrl = acnw ? 'amberconnw.org' : 'ambercon.com'
   return (
     <Box
       component='footer'
@@ -95,7 +99,7 @@ export const Footer: React.FC = (_props) => {
         <Box component='span' sx={{ cursor: 'pointer' }} onClick={handleClick}>
           {hash}
         </Box>{' '}
-        | &copy; {DateTime.fromJSDate(new Date()).year} amberconnw.org
+        | &copy; {DateTime.fromJSDate(new Date()).year} {copyrightUrl}
       </Box>
     </Box>
   )
