@@ -14,8 +14,16 @@ class MyDocument extends Document {
           <meta name='apple-mobile-web-app-status-bar-style' content='default' />
           <meta name='apple-mobile-web-app-title' content='AmberCon US' />
           <meta
+            name='description'
+            content='A fully residential roleplaying convention located in Livonia, Michigan, just outside Detroit, Michigan.'
+          />
+          <meta
+            name='summary'
+            content="AmberCon US is a fully residential roleplaying convention devoted to all forms of roleplaying, primarily diceless, and originally set in the world of Roger Zelazny's 'Amber' and based on the rules created by Erick Wujick and published thgrough Phage Ppress."
+          />
+          <meta
             name='keywords'
-            content='game, gaming, rpg, roleplaying, amber, Zelazny, Wujick, convention, science fiction, fantasy, fans, amberites, trumps, gamers, playing, Phage Press'
+            content='game, gaming, rpg, roleplaying, amber, Zelazny, Wujick, convention, science fiction, fantasy, fans, amberites, trumps, gamers, playing, Livonia, Detroit, Michigan, Phage Press'
           />
           <meta name='mobile-web-app-capable' content='yes' />
           <meta name='theme-color' content={theme.palette.primary.main} />

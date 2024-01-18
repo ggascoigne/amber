@@ -5,8 +5,6 @@ import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
 import { Reports, ReportRecord } from 'amber/views/Reports'
 import type { NextPage } from 'next'
 
-export const getServerSideProps = configGetServerSideProps
-
 const reports: ReportRecord[] = [
   { name: 'Membership' },
   { name: 'Members Without Game Choices' },
@@ -18,6 +16,8 @@ const reports: ReportRecord[] = [
   { name: 'Game Choices for Player Scheduler', perm: Perms.PlayerAdmin },
   { name: 'Game And Players' },
 ]
+
+export const getServerSideProps = configGetServerSideProps
 
 const Page: NextPage = () => <Reports reports={reports} />
 

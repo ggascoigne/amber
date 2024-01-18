@@ -11,19 +11,15 @@ export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       <DialogContentText>
         If you are accessing this site after{' '}
         <strong>
-          <ConfigDate name='gameGmPreview' />
+          <ConfigDate name='gameBookOpen' />
         </strong>
         , please contact the organizers by e-mail at <ContactEmail /> before registering.
       </DialogContentText>
 
       <DialogContentText>
         In order to run and play games offered through the convention, the first thing you must do is register. If you
-        are not already familiar with format of an Ambercon, review the {configuration.title}{' '}
-        <Link href='/about'>"what you get and what it costs"</Link> page.
-      </DialogContentText>
-
-      <DialogContentText>
-        <strong>Masks are required in all convention spaces.</strong>
+        are not already familiar with format of an AmberCon, review the {configuration.title}{' '}
+        <Link href='/about'>"what you get and what it costs" page</Link>.
       </DialogContentText>
 
       <DialogContentText>
