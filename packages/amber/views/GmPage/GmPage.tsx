@@ -128,8 +128,6 @@ const VirtualGmBlurb = () => {
 const GmBlurb = () => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
-  const acus = configuration.abbr === 'acus'
-  const acnw = !acus
   return (
     <>
       <p>
@@ -141,7 +139,7 @@ const GmBlurb = () => {
       </p>
       <ol className={classes.blurb}>
         <li>
-          {acnw && (
+          {configuration.abbr === 'acnw' && (
             <p>
               <strong>Non-Amber Games</strong>: We encourage people to be creative with the diceless format. If you have
               a game that uses a form of the basic Amber DRPG rules but is not set in Amber, you are welcome to post the
@@ -151,7 +149,7 @@ const GmBlurb = () => {
               familiarity and interest in the setting.
             </p>
           )}
-          {acus && (
+          {configuration.abbr === 'acus' && (
             <p>
               <strong>Non-Amber or non-Diceless Games</strong>: We encourage you to be creative and run games that are
               fun for you. We welcome a wide variety of games and settings. If you like to run it, chances are, we'll
@@ -198,7 +196,7 @@ const GmBlurb = () => {
             do.
           </p>
         </li>
-        {acus && (
+        {configuration.abbr === 'acus' && (
           <li>
             <p>
               <strong>Minimum Number of Players</strong>: We no longer accept games that require more than three

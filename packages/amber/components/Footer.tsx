@@ -55,7 +55,6 @@ export const Footer: React.FC = (_props) => {
   const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
   const configuration = useConfiguration()
-  const copyrightUrl = configuration.copyright
   return (
     <Box
       component='footer'
@@ -97,7 +96,7 @@ export const Footer: React.FC = (_props) => {
         <Box component='span' sx={{ cursor: 'pointer' }} onClick={handleClick}>
           {hash}
         </Box>{' '}
-        | &copy; {DateTime.fromJSDate(new Date()).year} {copyrightUrl}
+        | &copy; {DateTime.fromJSDate(new Date()).year} {configuration.copyright}
       </Box>
     </Box>
   )
