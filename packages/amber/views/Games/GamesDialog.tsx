@@ -88,8 +88,9 @@ const getDefaultValues = (configuration: Configuration): GameDialogFormValues =>
   type: '',
   setting: '',
   charInstructions: '',
-  playerMin: configuration.virtual ? 2 : configuration.numberOfSlots === 8 ? 3 : 4,
-  playerMax: configuration.virtual ? 7 : configuration.numberOfSlots === 8 ? 6 : 10,
+  playerMin: configuration.playerMin,
+  playerMax: configuration.playerMax,
+
   playerPreference: '',
   returningPlayers: '',
   playersContactGm: false,
@@ -142,12 +143,6 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const createOrUpdateGame = useEditGame(onClose, initialValues)
   const handleClose = useDisableBackdropClick(onClose)
   const estimatedLengthOptions = useMemo(() => getEstimatedLengthOptions(configuration), [configuration])
-
-  const slim = configuration.numberOfSlots === 8
-  const minPlayersFloor = slim ? 1 : 1
-  const minPlayersCeiling = slim ? 3 : 10
-  const maxPlayersFloor = slim ? 4 : 1
-  const maxPlayersCeiling = slim ? 20 : 150
 
   const onSubmit = async (values: GameDialogFormValues, _actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
@@ -284,7 +279,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
             </GridItem>
-            {!slim && (
+            {configuration.abbr === 'acnw' && (
               <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
                 <GridItem xs={12} md={6}>
                   <SelectField
@@ -304,7 +299,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
             </GridItem>
-            {!slim && (
+            {configuration.abbr === 'acnw' && (
               <>
                 <GridItem xs={12} md={12}>
                   <TextField
@@ -338,7 +333,9 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                   fullWidth
                   type='number'
                   required
-                  InputProps={{ inputProps: { min: minPlayersFloor, max: minPlayersCeiling } }}
+                  InputProps={{
+                    inputProps: { min: configuration.minPlayersFloor, max: configuration.minPlayersCeiling },
+                  }}
                 />
               </GridItem>
               <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
@@ -349,7 +346,9 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                   fullWidth
                   type='number'
                   required
-                  InputProps={{ inputProps: { min: maxPlayersFloor, max: maxPlayersCeiling } }}
+                  InputProps={{
+                    inputProps: { min: configuration.maxPlayersFloor, max: configuration.maxPlayersCeiling },
+                  }}
                 />
               </GridItem>
             </GridItem>
@@ -383,7 +382,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 inputProps={{ autoCapitalize: 'none' }}
               />
             </GridItem>
-            {!slim && (
+            {configuration.abbr === 'acnw' && (
               <GridItem xs={12} md={12}>
                 <p>
                   You are welcome to start and end the game at any time (within reason), but if the game overlaps two
@@ -435,7 +434,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 game, and schedule players to your game, please let us know:
               </Typography>
             </GridItem>
-            {!slim && (
+            {configuration.abbr === 'acnw' && (
               <GridItem xs={12} md={12}>
                 <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
               </GridItem>
