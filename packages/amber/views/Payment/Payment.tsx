@@ -45,7 +45,7 @@ export const Payment: React.FC = () => {
   // console.log('Payment', { paymentIntent })
 
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
+  const acus = configuration.abbr === 'acus'
   const acnw = !acus
 
   const onSubmit = useCallback(() => {

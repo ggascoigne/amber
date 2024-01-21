@@ -36,6 +36,7 @@ export const configurationSchema = z.object({
   title: z.string(),
   name: z.string(),
   abbr: z.string(),
+  copyright: z.string(),
   contactEmail: z.string(),
   gameEmail: z.string(),
   webEmail: z.string(),
@@ -70,11 +71,23 @@ export const configurationSchema = z.object({
   deposit: toNumber(),
   virtual: toBoolean(),
   numberOfSlots: toNumber(),
+
+  playerMin: toNumber(),
+  playerMax: toNumber(),
+  minPlayersFloor: toNumber(),
+  minPlayersCeiling: toNumber(),
+  maxPlayersFloor: toNumber(),
+  maxPlayersCeiling: toNumber(),
+
   oregonHotelTax: z.string(),
   virtualCost: z.string(),
   moreThanDoubleOccupancySurcharge: z.string(),
   gameRoomCredit: z.string(),
   useUsAttendanceOptions: toBoolean(),
+
+  hotelBookingCode: z.string(),
+  hotelBookingUrl: z.string(),
+  hotelBookingLastdate: toDateTime(),
 
   startDates: z.record(toNumber(), conventionInfoSchema),
 })

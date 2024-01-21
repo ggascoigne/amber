@@ -129,7 +129,7 @@ const VirtualGmBlurb = () => {
 const GmBlurb = () => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
+  const acus = configuration.abbr === 'acus'
   const acnw = !acus
   return (
     <>

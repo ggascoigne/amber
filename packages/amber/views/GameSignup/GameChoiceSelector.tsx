@@ -8,24 +8,11 @@ import { Game, GameChoice, GameEntry, Maybe } from '../../client-graphql'
 import { Perms, useAuth } from '../../components/Auth'
 import { Configuration, useConfiguration } from '../../utils'
 
-export const isNoGame = (configuration: Configuration, id: number) => {
-  const acus = configuration.numberOfSlots === 8
-  if (acus) {
-    return id >= 596 && id <= 603
-  } else {
-    return id <= 7
-  }
-}
+// first N game ids are the No Game in Slot N entries ... :(
+export const isNoGame = (configuration: Configuration, id: number) => id <= configuration.numberOfSlots
 
 // 144 is the magic number of the Any Game entry :(
-export const isAnyGame = (configuration: Configuration, id: number) => {
-  const acus = configuration.numberOfSlots === 8
-  if (acus) {
-    return id === 604
-  } else {
-    return id === 144
-  }
-}
+export const isAnyGame = (configuration: Configuration, id: number) => id === 144
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   spacer: {

@@ -55,9 +55,7 @@ export const Footer: React.FC = (_props) => {
   const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
-  const copyrightUrl = acnw ? 'amberconnw.org' : 'ambercon.com'
+  const copyrightUrl = configuration.copyright
   return (
     <Box
       component='footer'
