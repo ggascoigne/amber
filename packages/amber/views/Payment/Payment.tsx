@@ -45,8 +45,6 @@ export const Payment: React.FC = () => {
   // console.log('Payment', { paymentIntent })
 
   const configuration = useConfiguration()
-  const acus = configuration.abbr === 'acus'
-  const acnw = !acus
 
   const onSubmit = useCallback(() => {
     paymentStateRef.current = 'submitted'
@@ -72,7 +70,7 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {acnw && balance < 0 ? (
+      {configuration.abbr === 'acnw' && balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}
