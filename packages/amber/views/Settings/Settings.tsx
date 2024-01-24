@@ -29,13 +29,15 @@ const tabs = [
     name: 'config',
     label: 'Configuration',
     exclude: 'config.startDates',
+    exclude2: 'config.timelineDates',
   },
+  { name: 'flag', label: 'Flags' },
+  { name: 'url', label: 'Urls' },
+  { name: 'config.timelineDates', label: 'Timeline Dates' },
   {
     name: 'config.startDates',
     label: 'Start Dates',
   },
-  { name: 'flag', label: 'Flags' },
-  { name: 'url', label: 'Urls' },
 ]
 
 const Settings: React.FC = React.memo(() => {
@@ -95,7 +97,15 @@ const Settings: React.FC = React.memo(() => {
 
   const list: Setting[] = data.settings!.nodes.filter(notEmpty).filter((v) => {
     if (tab?.exclude) {
-      return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
+      if (tab?.exclude2) {
+        return (
+          v.code.startsWith(`${value}.`) &&
+          !v.code.startsWith(`${tab.exclude}.`) &&
+          !v.code.startsWith(`${tab.exclude2}.`)
+        )
+      } else {
+        return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
+      }
     }
     return v.code.startsWith(`${value}.`)
   })

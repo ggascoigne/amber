@@ -75,6 +75,7 @@ export const configurationSchema = z.object({
   useUsAttendanceOptions: toBoolean(),
 
   startDates: z.record(toNumber(), conventionInfoSchema),
+  timelineDates: z.record(z.string(), toDateTime()),
 })
 
 export const flagSchema = z.record(z.string(), z.string())

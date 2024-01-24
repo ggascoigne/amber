@@ -30,9 +30,11 @@ interface ConfigDateProps extends SpacingProps {
 export const ConfigDate = ({ name, format, skipSpace = 'neither' }: ConfigDateProps) => {
   const configuration = useConfiguration()
   const configDate =
-    typeof format === 'string'
-      ? configuration[name].setZone(configuration.baseTimeZone).toFormat(format)
-      : configuration[name].setZone(configuration.baseTimeZone).toLocaleString(format)
+    configuration[name] !== undefined
+      ? typeof format === 'string'
+        ? configuration[name].setZone(configuration.baseTimeZone).toFormat(format)
+        : configuration[name].setZone(configuration.baseTimeZone).toLocaleString(format)
+      : ''
   return <Spacing skipSpace={skipSpace}>{configDate}</Spacing>
 }
 
