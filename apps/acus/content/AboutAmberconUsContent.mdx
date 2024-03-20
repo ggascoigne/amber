@@ -2,7 +2,8 @@
 title: What is Ambercon US?
 ---
 
-import { ConfigurationValue, ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
+import { DateTime } from 'luxon'
+import { ConfigurationValue, ConventionYear, ConventionsDatesFull, ConfigDate, ContactEmail } from 'amber/components'
 import { SlotDescriptionList } from 'amber/components/SlotDescriptionList'
 
 Ambercon US is a fully scheduled role-playing game convention devoted diceless / story-focused / character driven
@@ -32,14 +33,13 @@ You buy a membership.
 
 If you are a Game Master, **please consider running one or more games at Ambercon**.
 
-## What do we get?
+## What do we get Where and When?
 
-Ambercon offers a **long weekend** of scheduled gaming events,
-**Thursday evening through Sunday evening**. All members choose the game events they wish to play
-and receive their schedule in advance of the convention. Likewise, GMs receive their player lists in advance, so everyone
-can prepare.
+Ambercon offers a **four-day weekend** of an opening reception and scheduled gaming events **Thursday evening through Sunday evening**. 
 
-The convention is divided into <ConfigurationValue field='numberOfSlots'/> event slots:
+The convention starts with a **welcome reception <ConfigDate name='conventionStartDate' format={DateTime.DATE_HUGE}/> at 5:30pm EDT** in the atrium of the hotel, beside the breakfast area, before the restaurant.
+
+The convention then continues with the **<ConfigurationValue field='numberOfSlots'/> game slots**:
 
 <SlotDescriptionList />
 
