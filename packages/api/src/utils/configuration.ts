@@ -75,11 +75,11 @@ export const configurationSchema = z.object({
   useUsAttendanceOptions: toBoolean(),
 
   startDates: z.record(toNumber(), conventionInfoSchema),
-  timelineDates: z.record(z.string(), toDateTime()),
 })
 
 export const flagSchema = z.record(z.string(), z.string())
 export const urlSchema = z.record(z.string(), z.string())
+export const timelineSchema = z.record(z.string(), toDateTime())
 
 export type ConventionInfo = z.infer<typeof conventionInfoSchema>
 export type Configuration = z.infer<typeof configurationSchema>
@@ -99,6 +99,7 @@ export const getSettingsObject = (data: GetSettingsQuery | undefined) => {
   const config = obj?.config ? configurationSchema.parse(obj.config) : undefined
   const flags = obj?.flag ? flagSchema.parse(obj.flag) : undefined
   const urls = obj?.url ? urlSchema.parse(obj.url) : undefined
-  // console.log('getSettingsObject', { data, settings, obj, config, flags, urls })
-  return { config, flags, urls }
+  const timelineDates = obj?.url ? timelineSchema.parse(obj.timelineDate) : undefined
+  // console.log('getSettingsObject', { data, settings, obj, config, flags, urls, timelineDates })
+  return { config, flags, urls, timelineDates }
 }
