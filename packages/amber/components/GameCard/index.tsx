@@ -102,22 +102,19 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
               <MultiLine text={charInstructions} />
             </Field>
           )}
-          <Field label='Genre/Type' small tiny={tiny}>
-            {genre} - {type}
+          {genre && (
+            <Field label='Genre/Type' small tiny={tiny}>
+              {genre} - {type}
+            </Field>
+          )}
+          <Field label='Number of Players' small tiny={tiny}>
+            {playerMin} - {playerMax}
           </Field>
           <Field label='Teen Friendly' small tiny={tiny}>
             {teenFriendly ? 'Yes' : 'No'}
           </Field>
-          <Field label='Number of Players' small tiny={tiny}>
-            {playerMin} - {playerMax}
-          </Field>
           <Field label='Player Preference' small tiny={tiny}>
             <LookupValue realm='gamePlayerPref' code={playerPreference} />
-          </Field>
-          <Field label='' tiny={tiny}>
-            {playersContactGm
-              ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
-              : `Players need not contact the GM in advance of the convention.`}
           </Field>
           {isMorningSlot(slot) && lateStart && lateStart !== 'Starts on time' && (
             <Field label='Late Start' small tiny={tiny}>
@@ -129,6 +126,11 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
               <b>Evening Game: Game may run late into the evening</b>
             </Field>
           )}
+          <Field label='' tiny={tiny}>
+            {playersContactGm
+              ? `Players should contact the GM at '${maskEmail(gameContactEmail)}' prior to the convention.`
+              : `Players need not contact the GM in advance of the convention.`}
+          </Field>
         </GridContainer>
       </CardBody>
     )
