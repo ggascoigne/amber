@@ -79,7 +79,6 @@ export const useSettings = () => {
           return isAdmin || isGameAdmin || isGm
         case SettingValue.Member:
           return isAdmin || isMember
-        case SettingValue.Everyone:
         case SettingValue.Yes:
           return true
         case null:
