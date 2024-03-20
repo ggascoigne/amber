@@ -13,13 +13,12 @@ export enum SettingValue {
   GameAdmin = 'GameAdmin',
   GM = 'GM',
   Member = 'Member',
-  Everyone = 'Everyone',
   Yes = 'Yes',
 }
 
 const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof typeof SettingValue]
 
-export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Everyone', 'Yes']
+export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Yes']
 
 export const useSettings = () => {
   const isGm = useIsGm()
