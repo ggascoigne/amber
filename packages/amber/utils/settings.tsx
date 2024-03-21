@@ -10,21 +10,22 @@ import { Perms, useAuth } from '../components/Auth'
 export enum SettingValue {
   No = 'No',
   Admin = 'Admin',
+  GameAdmin = 'GameAdmin',
   GM = 'GM',
   Member = 'Member',
-  Everyone = 'Everyone',
   Yes = 'Yes',
 }
 
 const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof typeof SettingValue]
 
-export const permissionGateValues = ['No', 'Admin', 'GM', 'Member', 'Everyone', 'Yes']
+export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Yes']
 
 export const useSettings = () => {
   const isGm = useIsGm()
   const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
+  const isGameAdmin = hasPermissions(Perms.GameAdmin)
   const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
 
   const getSettingString = useCallback(
@@ -72,11 +73,12 @@ export const useSettings = () => {
       switch (s) {
         case SettingValue.Admin:
           return isAdmin
+        case SettingValue.GameAdmin:
+          return isAdmin || isGameAdmin
         case SettingValue.GM:
-          return isAdmin || isGm
+          return isAdmin || isGameAdmin || isGm
         case SettingValue.Member:
           return isAdmin || isMember
-        case SettingValue.Everyone:
         case SettingValue.Yes:
           return true
         case null:
