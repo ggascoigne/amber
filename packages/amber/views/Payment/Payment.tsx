@@ -34,8 +34,6 @@ export const Payment: React.FC = () => {
   // console.log('Payment', { paymentIntent })
 
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
 
   return (
     <Page title='Make Payment'>
@@ -57,7 +55,7 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {acnw && balance < 0 ? (
+      {configuration.abbr === 'acnw' && balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}
