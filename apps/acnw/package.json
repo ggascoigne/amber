@@ -46,7 +46,7 @@
     "jwt-decode": "^4.0.0",
     "luxon": "^3.4.4",
     "micro-cors": "^0.1.1",
-    "next": "13.5.6",
+    "next": "14.1.1",
     "next-mdx-frontmatter": "^0.0.4",
     "pg": "^8.11.3",
     "pug": "^3.0.2",
