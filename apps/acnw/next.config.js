@@ -38,7 +38,7 @@ module.exports = withBundleAnalyzer(
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     experimental: {
       outputFileTracingExcludes: {
-        '*': ['node_modules/@swc/**'],
+        '*': ['node_modules/@swc/**', '.next/**'],
       },
     },
     headers,
