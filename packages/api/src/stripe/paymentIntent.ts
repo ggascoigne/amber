@@ -10,7 +10,7 @@ import { stripeSecretKey } from '../constants'
 import { formatAmountForStripe } from '../utils'
 
 const stripe = new Stripe(stripeSecretKey!, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2024-04-10',
 })
 
 type OrderInfo = {
@@ -26,6 +26,8 @@ export const paymentIntentHandler = async (req: NextApiRequest, res: NextApiResp
     return
   }
   const { amount, payment_intent_id, metadata }: OrderInfo = req.body
+  console.log({ amount, payment_intent_id, metadata })
+
   // Validate the amount that was passed from the client.
   if (!(amount >= MIN_AMOUNT && amount <= MAX_AMOUNT)) {
     res.status(500).json({ statusCode: 400, message: 'Invalid amount.' })
@@ -66,6 +68,7 @@ export const paymentIntentHandler = async (req: NextApiRequest, res: NextApiResp
 
     res.status(200).json(paymentIntent)
   } catch (err) {
+    console.log('paymentIntent:', err)
     const errorMessage = err instanceof Error ? err.message : 'Internal server error'
     res.status(500).json({ statusCode: 500, message: errorMessage })
   }

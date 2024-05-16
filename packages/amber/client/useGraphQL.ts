@@ -43,7 +43,11 @@ export function useGraphQL<TResult, TVariables>(
   return useQuery<TResult, QueryError, TResult, TQueryKey<TVariables>>({
     queryKey: [operationName, vars],
     queryFn: async ({ queryKey }) =>
-      request(`/api/graphql/${operationName}`, document, queryKey[1] ? queryKey[1] : undefined),
+      request(
+        `${window.location.origin}/api/graphql/${operationName}`,
+        document,
+        queryKey[1] ? queryKey[1] : undefined,
+      ),
     ...opts,
   })
 }
@@ -55,7 +59,8 @@ export const useGraphQLMutation = <TResult, TVariables, QueryError, TContext = u
   const operationName = getKey(document)
   return useMutation<TResult, QueryError, TVariables, TContext>({
     mutationKey: [operationName],
-    mutationFn: (variables) => request(`/api/graphql/${operationName}`, document, variables ?? undefined),
+    mutationFn: (variables) =>
+      request(`${window.location.origin}/api/graphql/${operationName}`, document, variables ?? undefined),
     ...options,
   })
 }
@@ -65,5 +70,5 @@ export function fetchGraphQl<TResult, TVariables>(
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
   const operationName = getKey(document)
-  return request(`/api/graphql/${operationName}`, document, variables ?? undefined)
+  return request(`${window.location.origin}/api/graphql/${operationName}`, document, variables ?? undefined)
 }

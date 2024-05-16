@@ -61,3 +61,12 @@ set AUTH0_BASE_URL=https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.ap
 set STRIPE_WEBHOOK_SECRET= the secret you get when you reveal it for the new webhook that you add at https://dashboard.stripe.com/test/webhooks.  Note that for the above url, the webhook address is 
 https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/api/stripe/webhooks
 
+## Testing Stripe locally
+
+Update the stripe cli tools, on mac that's `brew upgrade stripe`
+
+login - `stripe login`, make sure that the webhook signing secret matches what's in your .env file
+
+run `stripe listen --forward-to http://localhost:30000/api/stripe/webhooks` or port 30001 for acus
+
+Make sure that you don't have ZScaler running in "Internet Security" mode unless you can get your IT admin to allow stripe passthrough.  If you start getting weird stripe connectivity errors, this was it for me.
