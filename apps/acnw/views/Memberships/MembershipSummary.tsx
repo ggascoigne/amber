@@ -140,8 +140,8 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
 
   const room = useMemo(
     () =>
-      data
-        ?.hotelRooms!.edges.map((v) => v.node)
+      data?.hotelRooms?.edges
+        .map((v) => v.node)
         .filter(notEmpty)
         .find((r) => r.id === membership.hotelRoomId),
     [data, membership.hotelRoomId],
