@@ -6,6 +6,8 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
+// see https://github.com/mui/mui-x/issues/12640
+import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
