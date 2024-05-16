@@ -33,7 +33,7 @@ export const useAvailableHotelRooms = () => {
   const shouldUseRoomTotal = useFlag('dev_use_detail_rome_quantities', false)
 
   const rooms: HotelRoomDetail[] | undefined = useMemo(
-    () => roomDetails?.hotelRoomDetails!.edges.map((v) => v.node).filter(notEmpty),
+    () => roomDetails?.hotelRoomDetails?.edges.map((v) => v.node).filter(notEmpty),
     [roomDetails?.hotelRoomDetails],
   )
   const roomsInUse = useMemo(

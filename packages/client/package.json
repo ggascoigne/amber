@@ -20,11 +20,11 @@
     "graphql": "^15.8.0"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "5.0.0",
-    "@graphql-codegen/cli": "5.0.0",
-    "@graphql-codegen/client-preset": "^4.1.0",
+    "@graphql-codegen/add": "5.0.2",
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "^4.2.5",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.5"
   }
 }
