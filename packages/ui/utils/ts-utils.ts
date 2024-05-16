@@ -47,6 +47,10 @@ export function keys<O extends Record<string, unknown>>(obj: O): Array<keyof O> 
   return Object.keys(obj) as Array<keyof O>
 }
 
+export function entries<T extends Record<PropertyKey, unknown>, K extends keyof T, V extends T[K]>(o: T) {
+  return Object.entries(o) as [K, V][]
+}
+
 // extract the type from an array
 export type UnpackArray<T> = T extends (infer U)[] ? U : T
 
@@ -103,3 +107,9 @@ type FixedForwardRef = <T, P = {}>(
 
 // Cast the old forwardRef to the new one
 export const fixedForwardRef = forwardRef as FixedForwardRef
+
+export const isFulfilled = <T>(value: PromiseSettledResult<T>): value is PromiseFulfilledResult<T> =>
+  value.status === 'fulfilled'
+
+export const isRejected = <T>(value: PromiseSettledResult<T>): value is PromiseRejectedResult =>
+  value.status === 'rejected'

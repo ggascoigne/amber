@@ -7,5 +7,7 @@ module.exports = {
     // 'local/no-promise-all': 'error',
     'no-console': 'off',
     'no-plusplus': 'off',
+    // see https://www.totaltypescript.com/method-shorthand-syntax-considered-harmful
+    '@typescript-eslint/method-signature-style': ['error', 'property'],
   },
 }

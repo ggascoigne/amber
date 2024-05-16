@@ -119,7 +119,7 @@ interface SlotSelectorProps {
   decorator?: (props: SlotDecorator) => React.ReactNode
   decoratorParams?: SlotDecoratorParams
 
-  children({ slot, year }: { slot: number; year: number }): React.ReactNode
+  children: ({ slot, year }: { slot: number; year: number }) => React.ReactNode
 }
 
 export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, decorator, decoratorParams = {} }) => {
