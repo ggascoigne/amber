@@ -143,12 +143,12 @@ const GmBlurb = () => {
         <li>
           {acnw && (
             <p>
-              <strong>Non-Amber Games</strong>: We encourage people to be creative with the diceless format. If you have
-              a game that uses a form of the basic Amber DRPG rules but is not set in Amber, you are welcome to post the
-              game. Remember, however, that most people attending the convention want at least a majority of their games
-              to be set in the Amber multiverse. Unlike a regular Amber game, if a non-Amber game does not completely
-              fill we cannot freely assign people to it to complete the schedule since we cannot assume a basic
-              familiarity and interest in the setting.
+              <strong>Non-Amber Games</strong>: We encourage GMs to be creative with diceless and system-lite
+              roleplaying, whether you run Amber Diceless Role-Playing, another diceless system, an indie rpg, or
+              something entirely of your own design. Please include the setting, game system, and mechanics in your
+              description, so attendees can make informed choices. Unless you note otherwise in your description, we
+              will assume that any non-Amber game is accessible enough that attendees can participate without prior
+              knowledge of the system or setting.
             </p>
           )}
           {acus && (
@@ -198,6 +198,15 @@ const GmBlurb = () => {
             do.
           </p>
         </li>
+        {acnw && (
+          <li>
+            <p>
+              <strong>Room Assignments</strong>: Although we try to schedule all games into Edgefield event spaces or
+              AmberCon subsidized game rooms, games with 5 or fewer players may be scheduled to run in the GM's room, in
+              some slots.
+            </p>
+          </li>
+        )}
         {acus && (
           <li>
             <p>
