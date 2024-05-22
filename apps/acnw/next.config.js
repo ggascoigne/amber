@@ -19,6 +19,13 @@ const withMdxFm = require('next-mdx-frontmatter')({
 
 module.exports = withBundleAnalyzer(
   withMdxFm({
+    webpack: (config, { dev, isServer }) => {
+      if (!dev) {
+        // eslint-disable-next-line no-param-reassign
+        config.devtool = 'source-map'
+      }
+      return config
+    },
     reactStrictMode: true,
     transpilePackages: ['ui', 'database', 'amber', '@mui/material', '@amber/api'],
     eslint: {
@@ -38,7 +45,7 @@ module.exports = withBundleAnalyzer(
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     experimental: {
       outputFileTracingExcludes: {
-        '*': ['node_modules/@swc/**', '.next/**'],
+        '*': ['node_modules/@swc/**'],
       },
     },
     headers,
