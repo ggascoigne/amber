@@ -36,14 +36,12 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
           <li>up to all {configuration.numberOfSlots} game slots, Thursday evening through Sunday evening</li>
           <li>a ${configuration.fourDayVoucher} meal card</li>
           <li>3 breakfasts</li>
-          <li>snacks, tea and coffee during the day.</li>
         </ul>
         <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
         <ul>
           <li>up to 4 game slots, Friday evening through Sunday evening, for example</li>
           <li>a ${configuration.threeDayVoucher} meal card</li>
           <li>2 breakfasts</li>
-          <li>snacks, tea and coffee during the day.</li>
         </ul>
       </DialogContentText>
       <GridContainer spacing={2}>
