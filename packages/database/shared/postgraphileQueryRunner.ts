@@ -11,6 +11,19 @@ export type QueryResult<T> = {
   errors: readonly any[] | undefined
 }
 
+export type QueryRunner = <
+  TData,
+  TVariables = Maybe<{
+    [key: string]: any
+  }>,
+>(
+  graphqlQuery: string | DocumentNode,
+  variables?: TVariables | undefined,
+  operationName?: Maybe<string>,
+) => Promise<QueryResult<TData>>
+
+export type Release = () => void
+
 export const makeQueryRunner = async () => {
   const pgPool = getPool(PoolType.ADMIN)
 
@@ -20,7 +33,7 @@ export const makeQueryRunner = async () => {
   })
 
   // eslint-disable-next-line etc/no-misused-generics
-  const query = async <TData, TVariables = Maybe<{ [key: string]: any }>>(
+  const query: QueryRunner = async <TData, TVariables = Maybe<{ [key: string]: any }>>(
     graphqlQuery: string | DocumentNode,
     variables?: TVariables,
     operationName: Maybe<string> = null,
@@ -41,7 +54,7 @@ export const makeQueryRunner = async () => {
   }
 
   // Should we need to release this query runner, the cleanup tasks:
-  const release = () => {
+  const release: Release = () => {
     pgPool.end()
   }
 

@@ -7,7 +7,7 @@ import {
   CreateStripeMutationVariables,
   CreateStripeDocument,
 } from '@amber/client'
-import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
+import { QueryRunner, makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 import { buffer } from 'micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
@@ -31,7 +31,7 @@ const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]
   if (currency !== 'usd') {
     errors.push(`unexpected currency, ${currency} !== usd`)
   }
-  const total = 100 * paymentInfo.reduce((prev, curr) => prev + curr.amount, 0)
+  const total = 100 * paymentInfo.reduce((prev, curr) => prev + curr.total, 0)
 
   if (total !== amount) {
     errors.push(`amount !== calculated total, ${amount} !== ${total}`)
@@ -46,15 +46,80 @@ const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]
   return errors.length > 0 ? errors : null
 }
 
-const handleSuccess = async (charge: Stripe.Charge) => {
+const toTransaction = (
+  charge: Stripe.Charge,
+  targetUserId: number,
+  itemAmount: number,
+  notes: string,
+  extra: Record<string, any>,
+) => {
   const {
     id,
-    amount,
     amount_captured,
     currency,
-    metadata: { userId, year, payments },
+    metadata: { userId, year },
     outcome,
     payment_intent,
+  } = charge
+  return {
+    amount: itemAmount,
+    notes,
+    origin: parseInt(userId, 10),
+    stripe: true,
+    userId: targetUserId,
+    year: parseInt(year, 10),
+    data: {
+      ...extra,
+      chargeId: id,
+      amount_captured,
+      currency,
+      outcome,
+      payment_intent,
+    },
+  }
+}
+
+const createErrorPaymentTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, error: string[]) => {
+  const {
+    amount,
+    metadata: { userId },
+  } = charge
+
+  const transaction = toTransaction(charge, parseInt(userId, 10), amount, 'Payment Received with Stripe Error', {
+    error,
+    amount_adjusted: Math.round(amount / 100),
+  })
+  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
+    input: {
+      transaction,
+    },
+  })
+}
+
+const createPaymentTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, p: UserPaymentDetails) => {
+  const { amount } = charge
+  const transaction = toTransaction(charge, p.userId, p.total, 'Payment Received', { type: 'user payment', amount })
+  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
+    input: {
+      transaction,
+    },
+  })
+}
+
+const createDonationTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, p: UserPaymentDetails) => {
+  const { amount } = charge
+  const transaction = toTransaction(charge, p.userId, 0 - p.donation, 'Donation', { type: 'donation payment', amount })
+  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
+    input: {
+      transaction,
+    },
+  })
+}
+
+const handleSuccess = async (charge: Stripe.Charge) => {
+  const {
+    amount,
+    metadata: { userId, year, payments },
   } = charge
 
   const paymentInfo: UserPaymentDetails[] = JSON.parse(payments)
@@ -71,51 +136,12 @@ const handleSuccess = async (charge: Stripe.Charge) => {
 
   if (error) {
     // something went wrong so just record the bare payment - this will need manual fixing based on some unexpected issue
-    await query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-      input: {
-        transaction: {
-          amount,
-          notes: 'Payment Received',
-          origin: parseInt(userId, 10),
-          stripe: true,
-          userId: parseInt(userId, 10),
-          year: parseInt(year, 10),
-          data: {
-            error,
-            charge_id: id,
-            amount_adjusted: Math.round(amount / 100),
-            amount_captured,
-            currency,
-            outcome,
-            payment_intent,
-          },
-        },
-      },
-    })
+    await createErrorPaymentTransactionRecord(query, charge, error)
   } else {
-    const result = paymentInfo.map((p) =>
-      query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-        input: {
-          transaction: {
-            amount: p.amount,
-            // memberId: p.memberId,
-            notes: 'Payment Received',
-            origin: parseInt(userId, 10),
-            stripe: true,
-            userId: p.userId,
-            year: parseInt(year, 10),
-            data: {
-              type: 'user payment',
-              chargeId: id,
-              amount,
-              amount_captured,
-              currency,
-              outcome,
-              payment_intent,
-            },
-          },
-        },
-      }),
+    const result = paymentInfo.flatMap((p) =>
+      p.donation > 0
+        ? [createPaymentTransactionRecord(query, charge, p), createDonationTransactionRecord(query, charge, p)]
+        : [createPaymentTransactionRecord(query, charge, p)],
     )
     await Promise.allSettled(result).then(async (res) => {
       const failureCount = res.filter((r) => r.status !== 'fulfilled').length

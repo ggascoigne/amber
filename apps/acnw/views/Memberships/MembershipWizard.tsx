@@ -90,7 +90,7 @@ export const SaveButton: React.FC<{
         loading={isLoading === 'later'}
         disabled={disabled || isLoading !== undefined}
       >
-        Pay Later
+        Confirm
       </LoadingButton>
       <LoadingButton
         onClick={() =>
@@ -105,7 +105,7 @@ export const SaveButton: React.FC<{
         loading={isLoading === 'now'}
         disabled={disabled || isLoading !== undefined}
       >
-        Pay Now
+        Confirm & Pay
       </LoadingButton>
     </>
   )

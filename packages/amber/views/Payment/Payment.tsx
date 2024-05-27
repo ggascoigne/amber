@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
@@ -16,26 +16,39 @@ export const Payment: React.FC = () => {
   const [stripe] = useGetStripe()
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
   const user = useUser()
-  const isCalledRef = useRef(false)
+  const paymentStateRef = useRef<'empty' | 'created' | 'submitted'>('empty')
   const userData = useGraphQL(GetUserByIdDocument, { id: user?.userId ?? -1 })
   const balance = userData?.data?.user?.balance ?? 0
 
   useEffect(() => {
-    if (!isCalledRef.current) {
-      isCalledRef.current = true
+    if (paymentStateRef.current === 'empty') {
+      paymentStateRef.current = 'created'
       fetchPostJSON('/api/stripe/paymentIntents', {
+        action: 'create',
         amount: 10,
       }).then((data: PaymentIntent | null) => {
         setPaymentIntent(data)
       })
     }
-  }, [setPaymentIntent])
+    return () => {
+      if (paymentStateRef.current === 'created' && paymentIntent) {
+        fetchPostJSON('/api/stripe/paymentIntents', {
+          action: 'cancel',
+          payment_intent_id: paymentIntent?.id,
+        })
+      }
+    }
+  }, [paymentIntent, setPaymentIntent])
 
   // console.log('Payment', { paymentIntent })
 
   const configuration = useConfiguration()
   const acus = configuration.numberOfSlots === 8
   const acnw = !acus
+
+  const onSubmit = useCallback(() => {
+    paymentStateRef.current = 'submitted'
+  }, [])
 
   return (
     <Page title='Make Payment'>
@@ -52,7 +65,7 @@ export const Payment: React.FC = () => {
             clientSecret: paymentIntent.client_secret,
           }}
         >
-          <ElementsForm paymentIntent={paymentIntent} userId={user.userId} />
+          <ElementsForm paymentIntent={paymentIntent} userId={user.userId} onSubmit={onSubmit} />
         </Elements>
       ) : (
         <Loader />

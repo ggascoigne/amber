@@ -46,7 +46,7 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
         return {
           name: r.value.data.user?.fullName ?? '',
           email: r.value.data.user?.email ?? '',
-          amount: `${userPaymentRecord?.amount}`,
+          amount: `${userPaymentRecord?.total}`,
         }
       })
 

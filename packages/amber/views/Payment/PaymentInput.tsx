@@ -28,10 +28,13 @@ import {
 import { MembershipType, UserType } from '../../utils/apiTypes'
 import { getMembershipCost, getMembershipString } from '../../utils/transactionUtils'
 
+// keep in sync with ./packages/api/src/stripe/types.ts
 export type UserPaymentDetails = {
   userId: number
   memberId: number | null
-  amount: number
+  total: number
+  membership: number
+  donation: number
 }
 
 type ReducerActionKind = 'setButtonState' | 'setDonation' | 'setCustomValue'
@@ -162,7 +165,9 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
     onChange({
       userId: user.id,
       memberId: membership?.id ?? null,
-      amount: state.membershipPayment + state.donation,
+      total: state.membershipPayment + state.donation,
+      membership: state.membershipPayment,
+      donation: state.donation,
     })
   }, [membership?.id, onChange, state, user.id])
 

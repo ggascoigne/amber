@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react'
 
 import { notEmpty } from 'ui'
 
+import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
 
 import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client'
@@ -29,8 +30,7 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
 }
 
 export const useIsMember = () => {
-  const { user } = useAuth()
-  const userId = user?.userId
+  const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   return !!membership?.attending
 }
