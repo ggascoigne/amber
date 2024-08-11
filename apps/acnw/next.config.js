@@ -37,7 +37,7 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   experimental: {
     outputFileTracingExcludes: {
-      '*': ['node_modules/@swc/**', '.next/**'],
+        '*': ['node_modules/@swc/**', './.next/**'],
     },
   },
   headers,
