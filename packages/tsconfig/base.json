@@ -30,7 +30,8 @@
     "jsxImportSource": "@emotion/react",
     "noErrorTruncation": true,
     "resolveJsonModule": true,
-    "noEmit": true
+    "noEmit": true,
+    "target": "es2022"
   },
   "exclude": ["node_modules"]
 }

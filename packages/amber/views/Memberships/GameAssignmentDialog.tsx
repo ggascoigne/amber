@@ -66,8 +66,8 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   const gameOptions = useMemo(() => {
     const games = gData?.games?.edges.map((v) => v.node).filter(notEmpty)
-    return range(configuration.numberOfSlots).map(
-      (slot) => games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
+    return range(configuration.numberOfSlots).map((slot) =>
+      games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
     )
   }, [configuration.numberOfSlots, gData?.games?.edges])
 

@@ -615,9 +615,6 @@ importers:
       yup:
         specifier: ^1.4.0
         version: 1.4.0
-      zet:
-        specifier: ^1.1.0
-        version: 1.1.0
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -1098,9 +1095,6 @@ importers:
       yup:
         specifier: ^1.4.0
         version: 1.4.0
-      zet:
-        specifier: ^1.1.0
-        version: 1.1.0
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -13954,10 +13948,6 @@ packages:
       tiny-case: 1.0.3
       toposort: 2.0.2
       type-fest: 2.19.0
-    dev: false
-
-  /zet@1.1.0:
-    resolution: {integrity: sha512-Sqc22jbayJ7X/C+ICUh45IsuRrhHSYnJfOqK13fbL/jUrrR22vH7ObFNwwgnZG2GbTlqIG8qUoN/tFLL/YBj2g==}
     dev: false
 
   /zod@3.23.8:

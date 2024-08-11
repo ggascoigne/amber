@@ -24,11 +24,8 @@ export const asEnumLike = <T extends readonly string[]>(v: F.Narrow<T>) =>
   Object.fromEntries(v.map((k) => [k, k])) as Expand<SelfProp<T[number]>>
 
 // expands object types recursively
-export type ExpandRecursively<T> = T extends Record<string, unknown>
-  ? T extends infer O
-    ? { [K in keyof O]: ExpandRecursively<O[K]> }
-    : never
-  : T
+export type ExpandRecursively<T> =
+  T extends Record<string, unknown> ? (T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never) : T
 
 // Cool trick
 // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -45,7 +45,7 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = ({
         <title>{title}</title>
       </Head>
       {!hideTitle
-        ? titleElement ?? (
+        ? (titleElement ?? (
             <Box
               component='h1'
               sx={{
@@ -59,7 +59,7 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = ({
             >
               {title}
             </Box>
-          )
+          ))
         : null}
       {children}
     </Box>

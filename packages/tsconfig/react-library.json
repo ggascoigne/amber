@@ -6,7 +6,7 @@
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "target": "es6"
+    "moduleResolution": "Bundler"
+    // "target": "es6"
   }
 }

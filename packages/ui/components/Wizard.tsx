@@ -3,12 +3,11 @@ import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, Step, StepButton, Stepper, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
-import Zet from 'zet'
 
 import { DialogClose } from './Dialog'
 import { useDisableBackdropClick } from './EditDialog'
 
-import { isDev, notEmpty } from '../utils'
+import { isDev, notEmpty, SetSuperset } from '../utils'
 
 export interface WizardPage {
   name: string
@@ -19,23 +18,23 @@ export interface WizardPage {
   enabled?: boolean
 }
 
-const setAdd = (input: Zet<number>, value: number) => input.union(new Zet([value]))
+const setAdd = (input: Set<number>, value: number) => input.union(new Set([value]))
 
-const setDelete = (input: Zet<number>, value: number) => input.difference(new Zet([value]))
+const setDelete = (input: Set<number>, value: number) => input.difference(new Set([value]))
 
 const useSteps = (steps: WizardPage[], isEditing: boolean) => {
   const [activeStep, setActiveStep] = React.useState(0)
-  const [completed, setCompleted] = React.useState(new Zet<number>())
-  const [visited, setVisited] = React.useState(new Zet<number>([0]))
+  const [completed, setCompleted] = React.useState(new Set<number>())
+  const [visited, setVisited] = React.useState(new Set<number>([0]))
 
   const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => !!steps[step].hasErrors?.(errors)
 
   const canSave = () => {
-    const allFormSteps = new Zet(
+    const allFormSteps = new Set(
       // note that we ignore the last page here regardless of if it's a form
       steps.map((step, index) => (step.hasForm && index !== steps.length - 1 ? index : undefined)).filter(notEmpty),
     )
-    const allFormStepsComplete = completed.superset(allFormSteps)
+    const allFormStepsComplete = SetSuperset(completed, allFormSteps)
     const allStepsVisited = visited.size === steps.length
     // console.log({ allStepsVisited, allFormStepsComplete })
     return (allStepsVisited && allFormStepsComplete) || isEditing
