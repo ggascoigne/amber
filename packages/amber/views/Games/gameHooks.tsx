@@ -31,22 +31,26 @@ type Membership = MembershipFieldsFragment
 export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
 
 const getKnownNames = (gmNames: string | null | undefined, membershipList: Membership[]) => {
-  const includes = (long: string, short: string) => long.toLocaleLowerCase().includes(short.toLocaleLowerCase())
-
   if (!gmNames) return []
-  return membershipList
-    .map((m) => {
-      const fullName = m.user?.fullName
-      const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
-      const displayName = m.user?.displayName
-      const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`, 'i')
 
-      return (
-        (fullName && includes(gmNames, fullName) ? fullName : undefined) ??
-        (firstAndLast && includes(gmNames, firstAndLast) ? fullName : undefined) ??
-        (displayName && includes(gmNames, displayName) ? fullName : undefined) ??
-        (pat.exec(gmNames) ? fullName : undefined)
-      )
+  return gmNames
+    .toLocaleLowerCase()
+    .split('\n')
+    .map((name) => {
+      const member = membershipList.find((m) => {
+        const fullName = m.user?.fullName ?? ''
+        const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
+        const displayName = m.user?.displayName ?? ''
+        const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w?\\s+${m.user?.lastName}`, 'i')
+        const patMatch = pat.exec(name)
+        return (
+          name === fullName.toLocaleLowerCase() ||
+          name === firstAndLast.toLocaleLowerCase() ||
+          !!patMatch ||
+          name === displayName.toLocaleLowerCase()
+        )
+      })
+      return member?.user?.fullName
     })
     .filter(notEmpty)
 }
