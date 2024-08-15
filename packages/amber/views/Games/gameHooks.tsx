@@ -37,17 +37,18 @@ const getKnownNames = (gmNames: string | null | undefined, membershipList: Membe
     .toLocaleLowerCase()
     .split('\n')
     .map((name) => {
+      const cleanedName = name.trim()
       const member = membershipList.find((m) => {
         const fullName = m.user?.fullName ?? ''
         const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
         const displayName = m.user?.displayName ?? ''
         const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w?\\s+${m.user?.lastName}`, 'i')
-        const patMatch = pat.exec(name)
+        const patMatch = pat.exec(cleanedName)
         return (
-          name === fullName.toLocaleLowerCase() ||
-          name === firstAndLast.toLocaleLowerCase() ||
+          cleanedName === fullName.toLocaleLowerCase() ||
+          cleanedName === firstAndLast.toLocaleLowerCase() ||
           !!patMatch ||
-          name === displayName.toLocaleLowerCase()
+          cleanedName === displayName.toLocaleLowerCase()
         )
       })
       return member?.user?.fullName
