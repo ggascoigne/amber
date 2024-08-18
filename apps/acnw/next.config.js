@@ -35,11 +35,11 @@ const nextConfig = {
     },
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  experimental: {
-    outputFileTracingExcludes: {
-        '*': ['.next/cache'],
-    },
-  },
+    // experimental: {
+    //   outputFileTracingExcludes: {
+    //     '*': ['.next/cache'],
+    //   },
+    // },
   headers,
 }
 
