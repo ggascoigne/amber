@@ -7,7 +7,7 @@
   "private": true,
   "engines": {
     "node": ">=20",
-    "pnpm": ">=8"
+    "pnpm": ">=9"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,6 @@
     "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
     "lint": "pnpm -r --parallel lint",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "next test",
     "tsc": "pnpm -r tsc"
