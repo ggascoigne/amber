@@ -45,8 +45,8 @@
   },
   "devDependencies": {
     "eslint-config-custom": "workspace:*",
-    "husky": "^9.1.4",
-    "lint-staged": "^15.2.8",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.9",
     "next": "13.5.6",
     "prettier": "^3.3.3",
     "react": "^18.3.1",

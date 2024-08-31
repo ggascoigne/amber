@@ -12,14 +12,13 @@ for j in "${FORBIDDEN[@]}"
 do
   for i in `git diff --cached --name-only | grep -v $(basename $0) | grep -vE "eslint|.*lock.*|package.json"`
   do
+    if [[ -f $i ]]; then
+      # the trick is here...use `git show :file` to output what is staged
+      # test it against each of the FORBIDDEN strings ($j)
 
-    # the trick is here...use `git show :file` to output what is staged
-    # test it against each of the FORBIDDEN strings ($j)
-
-    if echo `git show :$i` | grep -iq "$j"; then
-
-      FOUND+="${BLUE}$i ${RED}contains ${RESTORE}\"$j\"${RESTORE}\n"
-
+      if echo `git show :$i` | grep -iq "$j"; then
+        FOUND+="${BLUE}$i ${RED}contains ${RESTORE}\"$j\"${RESTORE}\n"
+      fi
     fi
   done
 done
