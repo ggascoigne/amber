@@ -87,7 +87,7 @@ export const useSettings = () => {
           return false
       }
     },
-    [getSettingValue, isAdmin, isGm, isMember],
+    [getSettingValue, isAdmin, isGameAdmin, isGm, isMember],
   )
 
   return error || isLoading || !data ? [undefined, undefined] : ([getSettingString, getFlagBoolean] as const)

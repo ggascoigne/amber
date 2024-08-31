@@ -22,14 +22,14 @@
   "scripts": {
     "lint": "eslint --cache --color '{src,scripts,shared,support}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
     "db:clean": "./scripts/run.js createCleanDb",
-    "db:docker:down": "docker-compose down",
-    "db:docker:up": "docker-compose up -d",
+    "db:docker:down": "docker compose down",
+    "db:docker:up": "docker compose up -d",
     "db:import": "../../scripts/toLocal.sh",
     "db:migrate:down": "knex-migrate --cwd ./support --knexfile ./knexfile.ts down",
     "db:migrate:generate": "knex-migrate --cwd ./support --knexfile ./knexfile.ts generate",
     "db:migrate:up": "knex-migrate --cwd ./support --knexfile ./knexfile.ts up",
     "db:setup": "pnpm db:clean && pnpm db:migrate:up",
-    "db:start": "docker-compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
+    "db:start": "docker compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
     "db:startFromClean": "pnpm db:start && pnpm db:setup && pnpm db:import",
     "tsc": "tsc -p ./tsconfig.json"
   },
