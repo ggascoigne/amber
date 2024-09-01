@@ -1,4 +1,4 @@
-import { GraphQLError } from 'graphql'
+import type { GraphQLError } from 'graphql'
 
 export type QueryError = Error & {
   message: string

@@ -58,7 +58,7 @@
     "jwt-decode": "^4.0.0",
     "luxon": "^3.5.0",
     "match-sorter": "^6.3.4",
-    "next": "14.2.5",
+    "next": "14.2.7",
     "next-mdx-frontmatter": "^0.0.4",
     "notistack": "^3.0.1",
     "react": "^18.3.1",
@@ -82,9 +82,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@graphql-codegen/add": "5.0.3",
-    "@graphql-codegen/cli": "5.0.2",
-    "@graphql-codegen/client-preset": "^4.3.3",
     "@types/common-tags": "^1.8.4",
     "@types/isomorphic-fetch": "^0.0.39",
     "@types/jest": "^29.5.12",
@@ -98,7 +95,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.56.0",
     "eslint-config-custom": "workspace:*",
-    "graphql-ws": "^5.16.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.5.4",
     "webpack": "^5.94.0"

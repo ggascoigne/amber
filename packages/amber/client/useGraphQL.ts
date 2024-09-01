@@ -1,11 +1,11 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { UseMutationOptions, UseQueryOptions, useMutation, useQuery } from '@tanstack/react-query'
-import { Kind, ASTNode, OperationDefinitionNode } from 'graphql'
+import type { ASTNode, OperationDefinitionNode } from 'graphql'
 import request from 'graphql-request'
 
 import { QueryError } from './error'
 
-const isOperationDefinition = (def: ASTNode): def is OperationDefinitionNode => def.kind === Kind.OPERATION_DEFINITION
+const isOperationDefinition = (def: ASTNode): def is OperationDefinitionNode => def.kind === 'OperationDefinition'
 
 const getKey = <TResult, TVariables>(document: TypedDocumentNode<TResult, TVariables>) =>
   document.definitions.find(isOperationDefinition)?.name?.value ?? 'missing operation'

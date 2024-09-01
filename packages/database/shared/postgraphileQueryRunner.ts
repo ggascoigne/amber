@@ -1,4 +1,5 @@
-import { DocumentNode, graphql, print } from 'graphql'
+import type { DocumentNode } from 'graphql'
+import { graphql, print } from 'graphql'
 import type { Maybe } from 'graphql/jsutils/Maybe'
 import gql from 'graphql-tag'
 import { createPostGraphileSchema, withPostGraphileContext } from 'postgraphile'
