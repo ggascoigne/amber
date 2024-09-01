@@ -4,6 +4,7 @@
   "description": "AmberCon US site",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
+  "type": "module",
   "private": true,
   "files": [],
   "scripts": {
@@ -13,7 +14,7 @@
     "next:build": "NODE_ENV=production next build",
     "db:import": "DB_ENV=acus pnpm --filter database db:import",
     "dev": "pnpm boot && next dev -p 30001",
-    "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}' ./.eslintrc.js",
+    "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "start": "next start",
     "tsc": "tsc -p ./tsconfig.json",
     "test": "next test"

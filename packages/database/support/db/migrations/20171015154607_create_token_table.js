@@ -5,7 +5,7 @@
 // the dropped tables are application data rather than domain data and will just
 // be handled a different way
 
-exports.up = function (knex) {
+export async function up(knex) {
   return knex.schema.createTable('token', (table) => {
     table.increments('id').primary()
     table.integer('user_id').notNullable().references('user.id').unsigned().index()
@@ -15,4 +15,5 @@ exports.up = function (knex) {
   })
 }
 
-exports.down = function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

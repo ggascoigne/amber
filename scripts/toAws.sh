@@ -39,6 +39,6 @@ PGPASSWROD=${DATABASE_USER_PASSWORD} /usr/local/bin/pg_restore \
 
 export ENV_FILENAME=.env.aws-prod
 
-pnpm node ./packages/database/scripts/run resetDatabaseOwner
+./packages/database/scripts/resetDatabaseOwner.ts
 
 echo Done

@@ -1,4 +1,4 @@
-exports.up = function (knex) {
+export async function up(knex) {
   return Promise.allSettled([
     knex.schema.table('hotel_room', (table) => {
       table.string('type', 255).notNullable()
@@ -12,6 +12,6 @@ exports.up = function (knex) {
   ])
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   // no revert
 }

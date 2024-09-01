@@ -1,5 +1,5 @@
-const jsxNoLogicalExpression = require('./jsx-no-logical-expression')
-const noPromiseAll = require('./no-promise-all')
+const jsxNoLogicalExpression = require('./jsx-no-logical-expression.cjs')
+const noPromiseAll = require('./no-promise-all.cjs')
 
 const RULES = {
   jsxNoLogicalExpression: 'jsx-no-logical-expression',

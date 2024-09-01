@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     ALTER TABLE game_assignment
     DROP CONSTRAINT game_assignment_game_id_foreign
@@ -9,4 +9,5 @@ exports.up = async function (knex) {
   `)
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

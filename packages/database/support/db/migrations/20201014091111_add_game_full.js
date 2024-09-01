@@ -1,7 +1,8 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   return knex.schema.table('game', (table) => {
     table.boolean('full').defaultTo(false)
   })
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

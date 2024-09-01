@@ -1,20 +1,23 @@
-import * as path from 'path'
+/* eslint-disable @typescript-eslint/naming-convention */
+import path from 'path'
 
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import * as pg from 'pg'
+import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import pg from 'pg'
 
 import { certs } from './dbCerts'
+import { getPaths } from './filePaths'
 
 const { Pool } = pg
 
 export const dbEnv = process.env.DB_ENV
 
 if (process.env.NODE_ENV !== 'production') {
+  const { dirname } = getPaths(import.meta.url)
   const envFilename = process.env.ENV_FILENAME ?? '.env'
   if (!dbEnv || !['acnw', 'acus'].includes(dbEnv)) {
     throw new Error('DB_ENV must be set to either "acnw" or "acus"')
   }
-  const envPath = path.join(__dirname, `../../../apps/${dbEnv}/${envFilename}`)
+  const envPath = path.join(dirname, `../../../apps/${dbEnv}/${envFilename}`)
   dotenv.config({ path: envPath })
 }
 

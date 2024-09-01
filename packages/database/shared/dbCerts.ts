@@ -2955,4 +2955,4 @@ export const certs = {
       rM2p0kk=
       -----END CERTIFICATE-----
     `,
-}
+} as Record<string, string>

@@ -1,4 +1,4 @@
-exports.up = function (knex) {
+export async function up(knex) {
   return knex.raw(`
     DELETE FROM "user"
     WHERE
@@ -14,4 +14,5 @@ exports.up = function (knex) {
     `)
 }
 
-exports.down = function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

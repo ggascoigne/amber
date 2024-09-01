@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     INSERT INTO
     profile (user_id, snail_mail_address, phone_number) (
@@ -16,4 +16,5 @@ exports.up = async function (knex) {
   })
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

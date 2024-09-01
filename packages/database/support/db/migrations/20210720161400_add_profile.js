@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   return knex.schema.createTable('profile', (table) => {
     table.increments('id').primary()
     table.integer('user_id').notNullable().references('user.id').unsigned().index()
@@ -7,4 +7,5 @@ exports.up = async function (knex) {
   })
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

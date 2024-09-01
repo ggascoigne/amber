@@ -1,4 +1,4 @@
-const headers = async () => [
+export const headers = async () => [
   {
     source: '/:path*',
     headers: [
@@ -9,5 +9,3 @@ const headers = async () => [
     ],
   },
 ]
-
-exports.headers = headers

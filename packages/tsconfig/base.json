@@ -1,17 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Default",
-  "ts-node": {
-    "files": true,
-    "swc": true,
-    "compilerOptions": {
-      "module": "commonjs",
-      "outDir": "lib",
-      "rootDir": ".",
-      "strict": true,
-      "target": "es2022"
-    }
-  },
   "compilerOptions": {
     "composite": false,
     "declaration": false,
@@ -31,6 +20,7 @@
     "noErrorTruncation": true,
     "resolveJsonModule": true,
     "noEmit": true,
+    "module": "esnext",
     "target": "es2022"
   },
   "exclude": ["node_modules"]

@@ -32,7 +32,7 @@ export PGPASSWORD=${DATABASE_ADMIN_PASSWORD}
   --exit-on-error \
   ${ORIGINAL_DATABASE_NAME}.dump
 
-pnpm node ./packages/database/scripts/run resetDatabaseOwner
+./packages/database/scripts/resetDatabaseOwner.ts
 
 rm ${ORIGINAL_DATABASE_NAME}.dump
 

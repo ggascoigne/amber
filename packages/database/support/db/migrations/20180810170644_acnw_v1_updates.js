@@ -1,4 +1,4 @@
-exports.up = function (knex) {
+export async function up(knex) {
   return Promise.allSettled([
     knex.schema.createTable('hotel_room_details', (table) => {
       table.bigIncrements().primary()
@@ -24,6 +24,6 @@ exports.up = function (knex) {
   ])
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   // no revert
 }

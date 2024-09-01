@@ -1,19 +1,21 @@
-/* eslint-disable global-require */
-// noinspection ES6ConvertRequireIntoImport,TypeScriptUnresolvedFunction
-// @ts-ignore
-require('ts-node/register')
+import path from 'path'
+
+import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+
+import { certs } from '../shared/dbCerts'
+import { getPaths } from '../shared/filePaths.js'
+
+export const dbEnv = process.env.DB_ENV
 
 if (process.env.NODE_ENV !== 'production') {
-  const dbEnv = process.env.DB_ENV
+  const { dirname } = getPaths(import.meta.url)
+  const envFilename = process.env.ENV_FILENAME ?? '.env'
   if (!dbEnv || !['acnw', 'acus'].includes(dbEnv)) {
     throw new Error('DB_ENV must be set to either "acnw" or "acus"')
   }
-  require('dotenv').config({ path: `../../apps/${dbEnv}/.env` })
+  const envPath = path.join(dirname, `../../../apps/${dbEnv}/${envFilename}`)
+  dotenv.config({ path: envPath })
 }
-
-const path = require('path')
-
-const { certs } = require('../shared/dbCerts')
 
 const ssl = process.env.DATABASE_SSL === '1'
 
@@ -51,7 +53,7 @@ const knexConfig = {
   acquireConnectionTimeout: 5000,
 }
 
-module.exports = knexConfig
-
 const config = knexConfig.connection
 console.log(`using: postgres://${config.user}:*****@${config.host}:${config.port}/${config.database}`)
+
+export default knexConfig

@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   return Promise.allSettled([
     knex.schema.table('user', (table) => {
       table.string('email', 64)
@@ -33,4 +33,5 @@ exports.up = async function (knex) {
   ])
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

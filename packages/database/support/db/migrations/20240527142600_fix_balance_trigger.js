@@ -1,6 +1,6 @@
-const { fixGrants } = require('../utils/policyUtils')
+import { fixGrants } from '../utils/policyUtils.js'
 
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     CREATE OR REPLACE FUNCTION collect_affected_users()
       RETURNS TRIGGER AS $$
@@ -69,6 +69,6 @@ exports.up = async function (knex) {
   await knex.raw(fixGrants(user))
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   // no revert
 }

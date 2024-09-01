@@ -9,7 +9,7 @@ const toFix = [
   { code: 'send.admin.email', value: 'No' },
 ]
 
-exports.up = async function (knex) {
+export async function up(knex) {
   await Promise.allSettled(
     toFix.map(async (u) => {
       await knex.raw(`
@@ -22,4 +22,5 @@ exports.up = async function (knex) {
   )
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

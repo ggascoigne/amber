@@ -38,13 +38,13 @@ const adminUpdatePolicy = (table) => `
     USING (current_user_is_admin());
   `
 
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(
     tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n'),
   )
 }
 
-exports.down = async function (knex) {
+export async function down(knex) {
   await knex.raw(
     tables
       .map(

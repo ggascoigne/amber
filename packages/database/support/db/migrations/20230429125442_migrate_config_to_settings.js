@@ -1,6 +1,6 @@
-const { DateTime } = require('luxon')
+import { DateTime } from 'luxon'
 
-const { anyUserUpdatePolicy, dropPolicies, enableRls } = require('../utils/policyUtils')
+import { anyUserUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
 
 const pdxDate = ({ year, month, day }) => DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })
 const dtwDate = ({ year, month, day }) => DateTime.fromObject({ year, month, day }, { zone: 'America/Detroit' })
@@ -60,7 +60,7 @@ const saveConfig = async (knex, strings, numbers, dates, booleans, startDates) =
   }
 }
 
-exports.up = async function (knex) {
+export async function up(knex) {
   if (process.env.DB_ENV === 'acnw') {
     const startDates = {
       2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false, slots: 7 },
@@ -219,4 +219,5 @@ exports.up = async function (knex) {
   }
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

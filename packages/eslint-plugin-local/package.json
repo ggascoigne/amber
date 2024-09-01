@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-local",
   "version": "0.0.0",
-  "main": "index.js",
+  "main": "index.cjs",
   "license": "MIT",
   "dependencies": {
     "eslint": "^8.56.0"

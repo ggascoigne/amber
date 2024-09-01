@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     DROP TRIGGER transactions_update_trigger ON transactions;
   `)
@@ -47,6 +47,6 @@ exports.up = async function (knex) {
   `)
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   // no revert
 }

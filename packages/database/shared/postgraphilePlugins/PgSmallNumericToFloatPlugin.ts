@@ -10,13 +10,15 @@
  */
 // from https://www.graphile.org/postgraphile/plugin-gallery/#Types__PgSmallNumericToFloatPlugin
 
-module.exports = function PgSmallNumericToFloatPlugin(
+import type { Plugin } from 'graphile-build'
+
+export const PgSmallNumericToFloatPlugin: Plugin = (
   builder,
   { pgNumericToFloatPrecisionCap = 12, pgNumericToFloatScaleCap = 2 },
-) {
+) => {
   builder.hook('build', (build) => {
     // Register a type handler for NUMERIC / DECIMAL (oid = 1700)
-    build.pgRegisterGqlTypeByTypeId('1700', (_set, modifier) => {
+    build.pgRegisterGqlTypeByTypeId('1700', (_set: any, modifier: any) => {
       if (modifier && typeof modifier === 'number' && modifier > 0) {
         // Ref: https://stackoverflow.com/a/3351120/141284
         const precision = ((modifier - 4) >> 16) & 65535

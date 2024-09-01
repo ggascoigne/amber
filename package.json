@@ -5,6 +5,7 @@
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "engines": {
     "node": ">=20",
     "pnpm": ">=9"
@@ -14,19 +15,6 @@
     "url": "https://github.com/ggascoigne/amber.git"
   },
   "files": [],
-  "oclif": {
-    "additionalHelpFlags": [
-      "-h"
-    ],
-    "additionalVersionFlags": [
-      "-v"
-    ],
-    "commands": "./scripts/cliCommands",
-    "bin": "run",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
-  },
   "scripts": {
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
     "boot": "pnpm --filter acnw boot && pnpm --filter acus boot",
@@ -52,6 +40,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig": "workspace:*",
+    "tsx": "^4.19.0",
     "turbo": "^1.13.3",
     "typescript": "^5.5.4"
   },
@@ -79,10 +68,5 @@
     "not dead",
     "not ie 11",
     "not op_mini all"
-  ],
-  "pnpm": {
-    "patchedDependencies": {
-      "ts-node@11.0.0-beta.1": "patches/ts-node@11.0.0-beta.1.patch"
-    }
-  }
+  ]
 }

@@ -1,6 +1,6 @@
-const { anyUserUpdatePolicy, enableRls, fixGrants } = require('../utils/policyUtils')
+import { anyUserUpdatePolicy, enableRls, fixGrants } from '../utils/policyUtils.js'
 
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.schema.createTable('transactions', (table) => {
     table.bigIncrements().primary()
     table.integer('user_id', 20).notNullable().references('user.id').unsigned().index()
@@ -73,6 +73,6 @@ exports.up = async function (knex) {
   await knex.raw(fixGrants(user))
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   // no revert
 }

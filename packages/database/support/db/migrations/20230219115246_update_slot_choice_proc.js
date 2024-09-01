@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
       drop function if exists create_bare_slot_choices( member_id integer, yearNo integer );
     `)
@@ -42,4 +42,5 @@ exports.up = async function (knex) {
     `)
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

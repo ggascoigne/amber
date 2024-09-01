@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
       CREATE OR REPLACE FUNCTION slot_gm_game (member_id INTEGER, slot_id INTEGER, yearNo INTEGER) RETURNS INTEGER AS $$
       DECLARE
@@ -62,4 +62,5 @@ exports.up = async function (knex) {
     `)
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

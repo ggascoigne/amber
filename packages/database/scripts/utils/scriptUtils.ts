@@ -1,72 +1,49 @@
 import { spawnSync, SpawnSyncReturns } from 'child_process'
-import * as fs from 'fs'
+import fs from 'fs'
 
-import { ux } from '@oclif/core'
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 import { stripIndent } from 'common-tags'
-import * as tempy from 'tempy'
+import { temporaryFile } from 'tempy'
 
 import { DbConfig } from '../../shared/config'
 
-export const MYSQL_PATH = '/usr/local/opt/mysql@5.7/bin'
-
-export async function mysqlExecScript(dbconfig: DbConfig, script: string, verbose: boolean) {
-  const { database, host, port, user, password } = dbconfig
-  const args = [`--host=${host}`, `--port=${port}`, `--user=${user}`, '--default-character-set=utf8']
-  database && args.push(`--database=${database}`)
-
-  return new Promise((resolve, reject) => {
-    // @ts-ignore
-    const child = spawn(`${MYSQL_PATH}/mysql`, args, { env: { MYSQL_PWD: password } })
-      // @ts-ignore
-      .on('error', reject)
-      .on('close', resolve)
-      .on('exit', (code: number) => (code ? reject(code) : resolve(code)))
-
-    if (verbose) {
-      child.stdout.pipe(process.stdout)
-      child.stderr.pipe(process.stderr)
-    }
-    child.stdin.write(script)
-    child.stdin.end()
-  })
-}
-
 export function getPostgresArgs(dbconfig: DbConfig) {
   const { database, host, port, user, password, ssl } = dbconfig
-  return [`postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`]
+  return `postgresql://${user}:${password}@${host}:${port}/${database}${ssl ? '?sslmode=require' : ''}`
 }
 
 export const bail = (reason: any) => {
   if (reason) {
-    ux.error(chalk.bold.red('error detected'))
-    ux.error(reason)
+    console.error(chalk.bold.red('error detected'))
+    console.error(reason)
     process.exit(-1)
   }
 }
+
 export const runOrExit = (processStatus: SpawnSyncReturns<Buffer>, cmd?: string) => {
   if (processStatus.error) {
-    cmd && ux.log(`running ${cmd}`)
+    cmd && console.log(`running ${cmd}`)
     bail(processStatus.error)
   }
   if (processStatus.status) {
-    cmd && ux.log(`running ${cmd}`)
+    cmd && console.log(`running ${cmd}`)
     bail(processStatus.status)
   }
 }
+
 export function psql(dbconfig: DbConfig, script: string, verbose: boolean) {
-  const name = tempy.file()
+  const name = temporaryFile()
   fs.writeFileSync(name, script)
 
-  const args = getPostgresArgs(dbconfig)
+  const args = [getPostgresArgs(dbconfig)]
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
   const cmd = `psql ${args.join(' ')}`
-  verbose && ux.log(`running ${cmd}`)
+  verbose && console.log(`running ${cmd}`)
   runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }), cmd)
 }
 
 export function pgloader(mySqlPassword: string, script: string, verbose: boolean) {
-  const name = tempy.file()
+  const name = temporaryFile()
   fs.writeFileSync(name, script)
 
   runOrExit(
@@ -78,17 +55,8 @@ export function pgloader(mySqlPassword: string, script: string, verbose: boolean
   )
 }
 
-export async function createCleanDbMySql(dbconfig: DbConfig, verbose: boolean) {
-  const { database } = dbconfig
-  // language=MySQL
-  const script = stripIndent`
-    DROP DATABASE IF EXISTS ${database};
-    CREATE DATABASE ${database} DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;`
-
-  return mysqlExecScript({ ...dbconfig, database: '' }, script, verbose)
-}
 export function info(s: string) {
-  ux.log(chalk.bold(s))
+  console.log(chalk.bold(s))
 }
 
 export async function resetOwner(dbconfig: DbConfig, targetUser: string, verbose: boolean) {

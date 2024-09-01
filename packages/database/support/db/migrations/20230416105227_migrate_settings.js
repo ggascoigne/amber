@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     ALTER TABLE setting
     ALTER COLUMN "type"
@@ -45,4 +45,5 @@ exports.up = async function (knex) {
   }
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

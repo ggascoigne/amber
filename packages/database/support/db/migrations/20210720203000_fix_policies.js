@@ -1,4 +1,4 @@
-const { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } = require('../utils/policyUtils')
+import { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
 
 const tables = [
   { name: 'game', admin: false },
@@ -21,7 +21,7 @@ const tables = [
   { name: 'user_role', admin: true },
 ]
 
-exports.up = async function (knex) {
+export async function up(knex) {
   const user = process.env.DATABASE_USER
   const password = process.env.DATABASE_USER_PASSWORD ?? ''
 
@@ -53,4 +53,5 @@ exports.up = async function (knex) {
   await knex.raw(tables.map((table) => enableRls(table)).join('\n'))
 }
 
-exports.down = async function (knex) {}
+// eslint-disable-next-line no-empty-function
+export async function down(knex) {}

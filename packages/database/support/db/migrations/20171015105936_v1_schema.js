@@ -3,7 +3,7 @@
 // fyi the biggest difference is that this just uses increments as keys, these are unsigned int(10)
 // grails used signed bigint(20).
 
-exports.up = function (knex) {
+export async function up(knex) {
   return knex.schema
     .createTable('async_mail_bcc', (table) => {
       table.integer('message_id').notNullable()
@@ -295,7 +295,7 @@ exports.up = function (knex) {
     })
 }
 
-exports.down = function (knex) {
+export async function down(knex) {
   return knex.schema
     .dropTableIfExists('async_mail_attachment')
     .dropTableIfExists('async_mail_bcc')

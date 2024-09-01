@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     CREATE FUNCTION current_user_id () RETURNS INTEGER AS $$
           select nullif(current_setting('user.id', true), '')::integer;
@@ -10,7 +10,7 @@ exports.up = async function (knex) {
   `)
 }
 
-exports.down = async function (knex) {
+export async function down(knex) {
   await knex.raw(`
     DROP FUNCTION current_user_id;
     DROP FUNCTION current_user_is_admin;

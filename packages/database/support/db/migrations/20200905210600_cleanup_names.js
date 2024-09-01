@@ -1,6 +1,7 @@
-const toFix = require('../../../../../name_cleanup')
+// eslint-disable-next-line import/no-relative-packages
+import toFix from '../../../../../name_cleanup.js'
 
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.raw(`
     UPDATE "user"
     SET
