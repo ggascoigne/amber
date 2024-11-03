@@ -894,6 +894,7 @@ export type DeleteGameAssignmentInput = {
   gameId: Scalars['Int']['input']
   gm: Scalars['Int']['input']
   memberId: Scalars['Int']['input']
+  year: Scalars['Int']['input']
 }
 
 /** The output of our delete `GameAssignment` mutation. */
@@ -4997,6 +4998,7 @@ export type QueryGameAssignmentArgs = {
   gameId: Scalars['Int']['input']
   gm: Scalars['Int']['input']
   memberId: Scalars['Int']['input']
+  year: Scalars['Int']['input']
 }
 
 /** The root query type which gives access points into the data universe. */
@@ -6602,6 +6604,7 @@ export type UpdateGameAssignmentInput = {
   memberId: Scalars['Int']['input']
   /** An object where the defined keys will be set on the `GameAssignment` being updated. */
   patch: GameAssignmentPatch
+  year: Scalars['Int']['input']
 }
 
 /** The output of our update `GameAssignment` mutation. */

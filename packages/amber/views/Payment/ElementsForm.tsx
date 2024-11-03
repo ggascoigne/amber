@@ -67,7 +67,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
   }
 
   const setTotal = useCallback((value: UserPaymentDetails[]) => {
-    const total = value.reduce((prev, curr) => prev + curr.total ?? 0, 0)
+    const total = value.reduce((prev, curr) => prev + curr.total, 0)
     setInput((inp) => ({
       ...inp,
       total,
