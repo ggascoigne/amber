@@ -1,11 +1,12 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, ToFormValues } from 'ui'
+import { GqlType, Loader, notEmpty, Page, Table, ToFormValues } from 'ui'
 
 import { StripeDialog } from './StripeDialog'
 
 import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client'
+import { TransportError } from '../../components/TransportError'
 
 export type StripeValue = ToFormValues<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
 
@@ -24,7 +25,7 @@ const Stripes: React.FC = React.memo(() => {
   const { error, data, refetch } = useGraphQL(GetStripeDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (!data) {

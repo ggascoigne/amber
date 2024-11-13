@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import {
   ProfileFormType,
+  TransportError,
   getInterestLevel,
   getSlotDescription,
   isNotPacificTime,
@@ -20,19 +21,7 @@ import { fromSlotsAttending } from 'amber/utils/membershipUtils'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { makeStyles } from 'tss-react/mui'
-import {
-  Card,
-  CardBody,
-  Field,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  HeaderContent,
-  Loader,
-  MultiLine,
-  Page,
-  range,
-} from 'ui'
+import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, Page, range } from 'ui'
 
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
@@ -132,7 +121,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   const cost = useGetCost(membership)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -174,7 +163,7 @@ const MembershipSummary: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (isLoading || !data) {

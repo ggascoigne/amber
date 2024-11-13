@@ -1,10 +1,11 @@
 import React from 'react'
 
 import type { TextFieldProps } from 'ui'
-import { GraphQLError, Loader, SelectField } from 'ui'
+import { Loader, SelectField } from 'ui'
 
 import { useGraphQL, GetLookupValuesDocument } from '../../client'
 import { useRealmOptions } from '../../utils'
+import { TransportError } from '../TransportError'
 
 export interface LookupFieldProps extends TextFieldProps {
   realm: string
@@ -21,7 +22,7 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
     },
   })
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading && !options) {
     return <Loader />

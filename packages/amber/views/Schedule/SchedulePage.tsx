@@ -5,11 +5,12 @@ import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
-import { GqlType, GraphQLError, Loader, notEmpty, Page } from 'ui'
+import { GqlType, Loader, notEmpty, Page } from 'ui'
 
 import { GameAssignmentNode, useGraphQL, GetScheduleDocument } from '../../client'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
+import { TransportError } from '../../components/TransportError'
 import { GameDecorator } from '../../components/types'
 import {
   buildUrl,
@@ -211,7 +212,7 @@ const SchedulePage: React.FC = () => {
   const exportUrl = useMemo(() => getIcalUrl(configuration, gamesAndAssignments), [configuration, gamesAndAssignments])
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

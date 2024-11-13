@@ -1,11 +1,12 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Column, Row, TableInstance } from 'react-table'
-import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+import { Loader, notEmpty, Page, Table } from 'ui'
 
 import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client'
 import { ProfileDialog } from '../../components/Profile'
 import { UsersAndProfileType } from '../../components/Profile/profileUtils'
+import { TransportError } from '../../components/TransportError'
 
 const columns: Column<UsersAndProfileType>[] = [
   { accessor: 'fullName' },
@@ -25,7 +26,7 @@ const Users: React.FC = React.memo(() => {
   const { error, data, refetch } = useGraphQL(GetAllUsersAndProfilesDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (!data) {

@@ -3,9 +3,10 @@ import React, { useMemo } from 'react'
 import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty } from 'ui'
+import { Loader, notEmpty } from 'ui'
 
 import { HasPermission, Perms } from './Auth'
+import { TransportError } from './TransportError'
 
 import { useGraphQL, GetHotelRoomsDocument } from '../client'
 import { BathroomType } from '../utils'
@@ -183,7 +184,7 @@ export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValu
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -263,7 +264,7 @@ export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
   const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

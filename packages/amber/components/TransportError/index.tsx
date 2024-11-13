@@ -1,16 +1,8 @@
 import React from 'react'
 
 import Typography from '@mui/material/Typography'
-import { GraphQLError as _GraphQLError } from 'graphql'
 
-export type QueryError = Error & {
-  message: string
-  locations?: Array<{ line: number; column: number }>
-  graphQLErrors: ReadonlyArray<_GraphQLError>
-  networkError: {
-    result?: { errors: Array<Error> }
-  }
-}
+import type { QueryError } from '../../client'
 
 interface QuoteProps {
   text: React.ReactNode
@@ -41,12 +33,12 @@ const Quote: React.FC<QuoteProps> = (props) => {
   )
 }
 
-interface GraphQLErrorProps {
+interface TransportErrorProps {
   error: QueryError | null
 }
 
-export const GraphQLError = ({ error }: GraphQLErrorProps) => {
-  console.log('GraphQLError', JSON.stringify(error, null, 2))
+export const TransportError = ({ error }: TransportErrorProps) => {
+  console.log('TransportError', JSON.stringify(error, null, 2))
   const networkErrors = error?.networkError?.result?.errors
   return (
     <>
@@ -54,8 +46,8 @@ export const GraphQLError = ({ error }: GraphQLErrorProps) => {
         GraphQL Error
       </Typography>
       {error?.message && <Quote text={error.message} />}
-      {error?.graphQLErrors && error?.graphQLErrors.length !== 0 && (
-        <Quote text={JSON.stringify(error.graphQLErrors, null, 2)} />
+      {error?.TransportErrors && error?.TransportErrors.length !== 0 && (
+        <Quote text={JSON.stringify(error.TransportErrors, null, 2)} />
       )}
       {networkErrors?.map((e: any, i: any) => <Quote key={i} text={e.message} />)}
     </>

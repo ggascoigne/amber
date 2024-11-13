@@ -4,7 +4,7 @@ import NavigationIcon from '@mui/icons-material/Navigation'
 import { Button } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
-import { ContentsOf, ExpandingFab, GraphQLError, Loader, notEmpty, Page, pick } from 'ui'
+import { ContentsOf, ExpandingFab, Loader, notEmpty, Page, pick } from 'ui'
 
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
@@ -32,6 +32,7 @@ import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import {
   useConfiguration,
   useConfirmDialogOpen,
@@ -231,7 +232,7 @@ const GameSignupPage: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

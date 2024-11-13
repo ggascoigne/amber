@@ -3,7 +3,7 @@ import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import CachedIcon from '@mui/icons-material/Cached'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
@@ -17,6 +17,7 @@ import {
   GetGamesByYearDocument,
   GetMembershipsByYearDocument,
 } from '../../client'
+import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
 
@@ -184,7 +185,7 @@ const Games: React.FC = React.memo(() => {
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

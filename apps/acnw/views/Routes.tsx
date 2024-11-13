@@ -154,13 +154,6 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.Reports,
   },
   {
-    path: '/graphiql',
-    label: 'GraphiQL',
-    subText: 'Dynamically query the ACNW database',
-    exact: false,
-    permission: Perms.GraphiqlLoad,
-  },
-  {
     path: '/covid-policy',
     label: 'COVID Policy',
     exact: false,

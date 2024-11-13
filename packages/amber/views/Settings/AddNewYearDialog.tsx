@@ -3,16 +3,7 @@ import React, { useMemo, useCallback } from 'react'
 import { Typography } from '@mui/material'
 import { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
-import {
-  EditDialog,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  Loader,
-  notEmpty,
-  OnCloseHandler,
-  useNotification,
-} from 'ui'
+import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from 'ui'
 
 import { Setting, SettingValue } from './shared'
 
@@ -24,6 +15,7 @@ import {
   UpdateSettingByNodeIdDocument,
 } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 
 interface AddNewYearDialogProps {
   open: boolean
@@ -181,7 +173,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data || !newList) {
     return <Loader />
