@@ -129,7 +129,7 @@ const getIcalUrl = (configuration: Configuration, schedule: GameAssignmentNode[]
         if (!game || game.id < 8) return null
 
         const slotId = game.slotId!
-        const [start, end] = getSlotTimes(configuration, game.year)[slotId - 1]
+        const [start, end] = getSlotTimes(configuration, game.year || configuration.year)[slotId - 1]
         const gameUrl = `${window.location.origin}/game-book/${game.year}/${slotId}#${game.id}`
         const { gms, players } = getGmsAndPlayers(game)
         const gmNames = gms.map((p) => `${p.fullName} (${p.email})`)
