@@ -13,8 +13,7 @@
     "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}'",
     "prepareGraphql": "../database/scripts/prepareGraphql.ts",
     "gitHash": "../../scripts/getGitHash.sh",
-    "tsc": "tsc -p ./tsconfig.json",
-    "test": "next test"
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/api": "workspace:*",
@@ -83,7 +82,6 @@
     "@graphql-codegen/client-preset": "^4.6.3",
     "@types/common-tags": "^1.8.4",
     "@types/isomorphic-fetch": "^0.0.39",
-    "@types/jest": "^29.5.14",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22.13.5",
     "@types/react": "^18.3.18",

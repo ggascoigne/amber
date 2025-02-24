@@ -16,8 +16,7 @@
     "dev": "pnpm boot && next dev -p 30001",
     "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "start": "next start",
-    "tsc": "tsc -p ./tsconfig.json",
-    "test": "next test"
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/api": "workspace:*",
