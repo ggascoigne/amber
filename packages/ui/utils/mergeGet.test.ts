@@ -1,4 +1,5 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect } from 'vitest'
+
 import { mergeGet } from './mergeGet'
 
 describe('mergeGet', () => {

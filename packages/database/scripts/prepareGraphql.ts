@@ -5,10 +5,11 @@ import path from 'path'
 
 import chalk from 'chalk'
 import { printSchema } from 'graphql'
-import Listr from 'listr'
+import { Listr } from 'listr2'
 import { createPostGraphileSchema } from 'postgraphile'
 
-import { PoolType, getPool, getSchemas, dbEnv } from '../shared/config'
+import { PoolType, getPool, getSchemas } from '../shared/config'
+import { dbEnv } from '../shared/env'
 import { getPaths } from '../shared/filePaths'
 import { options } from '../shared/postgraphileOptions'
 

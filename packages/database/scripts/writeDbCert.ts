@@ -2,11 +2,11 @@
 import chalk from 'chalk'
 import { Listr } from 'listr2'
 
-import { createCleanDbTask } from './lib'
+import { writeCertsTask } from './lib'
 
-const tasks = new Listr(createCleanDbTask)
+const tasks = new Listr(writeCertsTask)
 
-tasks.run().catch((reason: any) => {
+await tasks.run().catch((reason: any) => {
   console.error(chalk.bold.red('error detected'))
   console.error(reason)
   process.exit(-1)

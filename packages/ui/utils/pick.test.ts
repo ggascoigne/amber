@@ -1,4 +1,5 @@
 import { test, expect } from 'vitest'
+
 import { omit, pick } from './pick'
 
 const person = {
