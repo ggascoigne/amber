@@ -1,16 +1,17 @@
 import React from 'react'
 
-import { GraphQLError, GridContainer, GridItem, Loader, Page, range } from 'ui'
+import { GridContainer, GridItem, Loader, Page, range } from 'ui'
 
 import { useGraphQL, GetSmallGamesByYearDocument } from '../../client'
 import { Link } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import { YearTile } from '../../components/YearTile'
 import { useConfiguration } from '../../utils'
 
 const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
   const { error, data } = useGraphQL(GetSmallGamesByYearDocument, { year })
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

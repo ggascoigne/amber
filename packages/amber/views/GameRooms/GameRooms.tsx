@@ -2,7 +2,7 @@ import React, { MouseEventHandler, useCallback, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import { GqlType, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 
 import { GameRoomsDialog } from './GameRoomsDialog'
 
@@ -13,6 +13,7 @@ import {
   DeleteGameRoomDocument,
   GetGameRoomsDocument,
 } from '../../client'
+import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 
 export type GameRoom = GqlType<GetGameRoomsQuery, ['rooms', 'nodes', 0]>
@@ -88,7 +89,7 @@ const GameRooms: React.FC = () => {
   }, [])
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

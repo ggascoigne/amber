@@ -7,7 +7,6 @@ import { makeStyles } from 'tss-react/mui'
 import {
   CheckboxWithLabel,
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
@@ -31,6 +30,7 @@ import {
   UpdateGameDocument,
   UpdateGameRoomDocument,
 } from '../../client'
+import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
 
 const useStyles = makeStyles()({
@@ -209,7 +209,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
   }, [configuration.numberOfSlots, games, initialValues])
 
   if (gameError) {
-    return <GraphQLError error={gameError} />
+    return <TransportError error={gameError} />
   }
   if (!gData) {
     return (

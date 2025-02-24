@@ -5,7 +5,6 @@ import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
@@ -31,6 +30,7 @@ import {
 } from '../../client'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
+import { TransportError } from '../../components/TransportError'
 import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -160,7 +160,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const { error: roomError, data: roomData } = useGraphQL(GetGameRoomsDocument)
 
   if (gameError || roomError) {
-    return <GraphQLError error={gameError ?? roomError} />
+    return <TransportError error={gameError ?? roomError} />
   }
   if (!gameData || !roomData) {
     return (
@@ -461,7 +461,7 @@ export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
     return <GamesDialog {...props} />
   }
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

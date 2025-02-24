@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import {
   ProfileFormType,
+  TransportError,
   RoomPref,
   getInterestLevel,
   getRoomPref,
@@ -27,7 +28,6 @@ import {
   Card,
   CardBody,
   Field,
-  GraphQLError,
   GridContainer,
   GridItem,
   HeaderContent,
@@ -148,7 +148,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -203,7 +203,7 @@ const MembershipSummary: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (isLoading || !data) {

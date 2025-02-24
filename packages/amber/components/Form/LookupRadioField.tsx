@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { GraphQLError, Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
+import { Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
 
 import { useGraphQL, GetLookupValuesDocument } from '../../client'
+import { TransportError } from '../TransportError'
 
 export interface LookupRadioFieldProps extends RadioGroupProps {
   realm: string
@@ -18,7 +19,7 @@ export const LookupRadioField: React.ComponentType<LookupRadioFieldProps> = (pro
     },
   })
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading) {
     return <Loader />

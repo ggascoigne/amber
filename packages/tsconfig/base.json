@@ -10,7 +10,7 @@
     "noFallthroughCasesInSwitch": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -21,7 +21,8 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "module": "esnext",
-    "target": "es2022"
+    "target": "es2022",
+    "allowImportingTsExtensions": true
   },
   "exclude": ["node_modules"]
 }

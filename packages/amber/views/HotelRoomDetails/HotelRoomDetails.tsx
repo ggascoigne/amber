@@ -2,7 +2,7 @@ import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import { GqlType, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
@@ -14,6 +14,7 @@ import {
   GetHotelRoomDetailsDocument,
   GetMembershipRoomsByYearDocument,
 } from '../../client'
+import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useFlag, useYearFilter } from '../../utils'
 import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
@@ -133,7 +134,7 @@ const HotelRoomDetails: React.FC = () => {
   const { isLoading, error, data, refetch } = useGraphQL(GetHotelRoomDetailsDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

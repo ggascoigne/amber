@@ -2,7 +2,7 @@ import React, { MouseEventHandler, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 import type { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+import { GqlType, Loader, notEmpty, Page, Table } from 'ui'
 
 import { LookupsDialog } from './LookupsDialog'
 
@@ -14,6 +14,7 @@ import {
   DeleteLookupValueDocument,
   GetLookupsDocument,
 } from '../../client'
+import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 
 export type LookupAndValues = GqlType<GetLookupsQuery, ['lookups', 'edges', number, 'node']>
@@ -34,7 +35,7 @@ const Lookups: React.FC = React.memo(() => {
   const { isLoading, error, data, refetch } = useGraphQL(GetLookupsDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

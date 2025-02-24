@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { GraphQLError, Loader } from 'ui'
+import { Loader } from 'ui'
 
 import { useGraphQL, GetSingleLookupValueDocument } from '../../client'
 import {
@@ -12,6 +12,7 @@ import {
   getRoomType,
   useConfiguration,
 } from '../../utils'
+import { TransportError } from '../TransportError'
 
 interface LookupValueProps {
   realm: string
@@ -21,7 +22,7 @@ interface LookupValueProps {
 export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
   const { isLoading, error, data } = useGraphQL(GetSingleLookupValueDocument, { realm, code })
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading) {
     return <Loader />

@@ -1,13 +1,14 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 
 import { Column, Row, TableInstance } from 'react-table'
-import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+import { Loader, notEmpty, Page, Table } from 'ui'
 import { TableMouseEventHandler } from 'ui/types/react-table-config'
 
 import { TransactionDialog } from './TransactionDialog'
 
 import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client'
 import { useInvalidatePaymentQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 import { formatAmountForDisplay } from '../../utils'
 import { TransactionValue } from '../../utils/transactionUtils'
 
@@ -63,7 +64,7 @@ const Transactions: React.FC = React.memo(() => {
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (!data) {

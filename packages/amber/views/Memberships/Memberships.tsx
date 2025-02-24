@@ -3,7 +3,7 @@ import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { Column, Row, TableInstance, TableState } from 'react-table'
-import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
+import { BlankNoCell, DateCell, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
@@ -16,6 +16,7 @@ import {
 } from '../../client'
 import { useInvalidateMembershipQueries } from '../../client/querySets'
 import { ProfileFormType, useProfile } from '../../components/Profile'
+import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { getSlotDescription, useConfiguration, useSendEmail, useYearFilter } from '../../utils'
 import { Membership, MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
@@ -240,7 +241,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
     )
 
     if (error) {
-      return <GraphQLError error={error} />
+      return <TransportError error={error} />
     }
 
     if (!data) {

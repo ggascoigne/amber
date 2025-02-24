@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty, Page, range, Table } from 'ui'
+import { Loader, notEmpty, Page, range, Table } from 'ui'
 
 import {
   GameFieldsFragment,
@@ -19,6 +19,7 @@ import {
 import { useInvalidateGameQueries } from '../../client/querySets'
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
@@ -247,7 +248,7 @@ const MemberGmPage: React.FC = React.memo(() => {
   })
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

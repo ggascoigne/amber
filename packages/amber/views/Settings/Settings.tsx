@@ -5,7 +5,7 @@ import Tabs from '@mui/material/Tabs'
 import { DateTime } from 'luxon'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
-import { GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
+import { Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
 import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
@@ -13,6 +13,7 @@ import { Setting } from './shared'
 
 import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useConfiguration } from '../../utils'
 
@@ -87,7 +88,7 @@ const Settings: React.FC = React.memo(() => {
   const { isLoading, error, data, refetch } = useGraphQL(GetSettingsDocument)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
