@@ -1,5 +1,12 @@
 #Todos & Ideas
 
+##2025
+
+- [ ] is there's something that we can do to better track returning players
+- [ ] change convention rate to letting folks enter how much they want to pay, that way we can track who said they'd pay and forgot.
+- [ ] Review donation text on the payment page with Andi
+- [ ] talk to Malcolm & Andi re legal name and use name
+
 ## 2022
 
 * Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)

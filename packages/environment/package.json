@@ -1,0 +1,37 @@
+{
+  "name": "@amber/environment",
+  "version": "0.1.0",
+  "description": "Shared AmberCon NW environment config",
+  "author": "guy@wyrdrune.com",
+  "license": "MIT",
+  "type": "module",
+  "files": [],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --cache --color '{src,scripts,shared,support}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
+    "tsc": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.12.0",
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "debug": "^4.4.0",
+    "next": "13.5.6",
+    "pg": "^8.14.1",
+    "superjson": "^2.2.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/debug": "~4.1.12",
+    "@types/node": "^22.13.11",
+    "@types/pg": "^8.11.11",
+    "dotenv": "^16.4.7",
+    "eslint-config-custom": "workspace:*",
+    "prisma": "^6.5.0",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
+  }
+}

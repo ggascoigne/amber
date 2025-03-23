@@ -3,13 +3,13 @@
 import fs from 'fs'
 import path from 'path'
 
+import { dbEnv } from '@amber/environment'
 import chalk from 'chalk'
 import { printSchema } from 'graphql'
 import { Listr } from 'listr2'
 import { createPostGraphileSchema } from 'postgraphile'
 
 import { PoolType, getPool, getSchemas } from '../shared/config'
-import { dbEnv } from '../shared/env'
 import { getPaths } from '../shared/filePaths'
 import { options } from '../shared/postgraphileOptions'
 

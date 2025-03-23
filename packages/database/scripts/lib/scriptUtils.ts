@@ -1,13 +1,13 @@
 import { spawnSync, SpawnSyncReturns } from 'child_process'
 import fs from 'fs'
 
+import { parsePostgresConnectionString, recreatePostgresConnectionString } from '@amber/environment'
 import chalk from 'chalk'
 import { stripIndent } from 'common-tags'
 import debug from 'debug'
 import { temporaryFile } from 'tempy'
 
 import type { DbConfig } from '../../shared/config.ts'
-import { parsePostgresConnectionString, recreatePostgresConnectionString } from '../../shared/connectionStringUtils.ts'
 
 const log = debug('script')
 

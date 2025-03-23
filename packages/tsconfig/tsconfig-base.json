@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Default",
+  "compilerOptions": {
+    // /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    // "allowJs": true,
+    "resolveJsonModule": true,
+    // // "moduleDetection": "force",
+    "isolatedModules": true,
+
+    // /* Strictness */
+    "strict": true,
+    // "noUncheckedIndexedAccess": true,  // really should enable this, but it generates a ton of errors in code I want to delete, so I'm holding off for now
+    "noImplicitOverride": true,
+    "checkJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // /* Bundled projects */
+    // "lib": ["dom", "dom.iterable", "ESNext"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    // "jsx": "preserve",
+    // // "plugins": [{ "name": "next" }],
+    // // "incremental": true,
+    "allowImportingTsExtensions": true,
+
+    // // "module": "Preserve",
+    // "rootDir": ".",
+    // "baseUrl": ".",
+    "jsxImportSource": "@emotion/react",
+    "noErrorTruncation": true,
+
+    // // original
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "inlineSources": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "preserveWatchOutput": true
+  },
+  "exclude": ["node_modules"]
+}

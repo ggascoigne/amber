@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign, no-unsafe-optional-chaining */
 
 // copied then trimmed from https://raw.githubusercontent.com/auth0/auth0.js/master/src/helper/object.js
 
@@ -13,9 +13,9 @@ function camelToSnake(str: string) {
     code = str.charCodeAt(index)
     if ((!wasPrevUppercase && code >= 65 && code <= 90) || (!wasPrevNumber && code >= 48 && code <= 57)) {
       newKey += '_'
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     } else {
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90
@@ -64,12 +64,12 @@ export function camelToWords(str: string) {
   while (index < str.length) {
     code = str.charCodeAt(index)
     if (index === 0) {
-      newKey += str[index].toUpperCase()
+      newKey += str[index]?.toUpperCase()
     } else if ((!wasPrevUppercase && code >= 65 && code <= 90) || (!wasPrevNumber && code >= 48 && code <= 57)) {
       newKey += ' '
-      newKey += str[index].toUpperCase()
+      newKey += str[index]?.toUpperCase()
     } else {
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90

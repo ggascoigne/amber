@@ -27,7 +27,7 @@ const useSteps = (steps: WizardPage[], isEditing: boolean) => {
   const [completed, setCompleted] = React.useState(new Set<number>())
   const [visited, setVisited] = React.useState(new Set<number>([0]))
 
-  const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => !!steps[step].hasErrors?.(errors)
+  const errorsOnCurrentPage = (step: number, errors: FormikErrors<FormikValues>) => !!steps[step]?.hasErrors?.(errors)
 
   const canSave = () => {
     const allFormSteps = new Set(
@@ -138,7 +138,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
   const fullScreen = useMediaQuery(theme.breakpoints.down('lg'))
   const handleClose = useDisableBackdropClick(onClose)
 
-  const NextStep: React.FC<{ step: number }> = useCallback(({ step }) => activePages[step].render, [activePages])
+  const NextStep: React.FC<{ step: number }> = useCallback(({ step }) => activePages[step]?.render, [activePages])
 
   return (
     <Dialog fullWidth maxWidth='md' fullScreen={fullScreen} open={open} onClose={handleClose}>
@@ -167,7 +167,7 @@ export const Wizard = <T extends FormikValues = FormikValues>({
                           handleStep(index, !errorsOnCurrentPage(getActiveStep(), errors))
                         })
                       }}
-                      optional={activePages[index].optional ? `Optional` : undefined}
+                      optional={activePages[index]?.optional ? `Optional` : undefined}
                     >
                       {page.name}
                     </StepButton>

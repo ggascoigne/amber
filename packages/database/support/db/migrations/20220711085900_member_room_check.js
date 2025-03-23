@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     CREATE OR REPLACE FUNCTION memb_check_room_avail () RETURNS TRIGGER AS $$
@@ -40,5 +44,9 @@ export async function up(knex) {
   	`)
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

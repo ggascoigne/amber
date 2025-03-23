@@ -9,6 +9,10 @@ const toFix = [
   { code: 'send.admin.email', value: 'No' },
 ]
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await Promise.allSettled(
     toFix.map(async (u) => {
@@ -22,5 +26,9 @@ export async function up(knex) {
   )
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

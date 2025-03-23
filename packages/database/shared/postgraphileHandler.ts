@@ -1,9 +1,9 @@
+import { dbEnv } from '@amber/environment'
 import { getSession } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { postgraphile } from 'postgraphile'
 
 import { getSchemas } from './config'
-import { dbEnv } from './env'
 import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 
 export const getUserId = (user: any) => user?.userId

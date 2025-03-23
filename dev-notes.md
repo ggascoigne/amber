@@ -70,3 +70,37 @@ login - `stripe login`, make sure that the webhook signing secret matches what's
 run `stripe listen --forward-to http://localhost:30000/api/stripe/webhooks` or port 30001 for acus
 
 Make sure that you don't have ZScaler running in "Internet Security" mode unless you can get your IT admin to allow stripe passthrough.  If you start getting weird stripe connectivity errors, this was it for me.
+
+## Package hierarchy
+
+
+api -> (depends on) database
+amber -> database (via getServerSideProps, which in turn depends on client)
+acnw/pages -> api
+acus -> api
+amber -> api (though not for much)
+acnw -> amber
+acus -> amber
+amber -> ui
+amber -> client
+api -> client
+cli/script tools depend on database
+
+client doesn't directly depend on database, but is generated from the postgres database which is in turn generated from database
+
+acnw -> amber ->  database
+                  ui
+                  api
+                  client (graphql)
+        api ->    database
+                  client (graphql)
+
+Plan:
+
+client gets deleted
+
+server depends on database
+
+cli/script tools depend on database
+
+api gets replaced by server

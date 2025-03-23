@@ -11,7 +11,7 @@ export interface MdxPageProps {
 }
 
 export const MdxPage: React.FC<MdxPageProps> = ({ component, frontMatter }) => (
-  <Page title={frontMatter?.title}>
+  <Page title={frontMatter?.title ?? ''}>
     <MdxWithExternalLinks>{component}</MdxWithExternalLinks>
   </Page>
 )

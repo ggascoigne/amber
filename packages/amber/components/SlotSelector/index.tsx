@@ -135,7 +135,7 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
     if (!container || small) {
       return
     }
-    const containerStyles = getComputedStyle(container.children[0])
+    const containerStyles = getComputedStyle(container.children[0]!)
     const containerWidth =
       container.clientWidth - (parseInt(containerStyles.paddingLeft, 10) + parseInt(containerStyles.paddingRight, 10))
     const tabs = Array.from(container.getElementsByTagName('button'))

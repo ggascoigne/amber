@@ -37,11 +37,10 @@ const container = {
 export const Footer: React.FC = (_props) => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-  const [config, getConfig] = useGetConfig()
+  const config = useGetConfig()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasPermissions(Perms.IsAdmin)) {
-      getConfig()
       setAnchorEl(event.currentTarget)
     }
   }

@@ -411,7 +411,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 fullWidth
               />
             </GridItem>
-            {!configuration.startDates[values.year].virtual && (
+            {!configuration.startDates[values.year]!.virtual && (
               <>
                 <GridItem xs={12} md={12}>
                   <SelectField

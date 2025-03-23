@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   return knex.raw(`
     DELETE FROM "user"
@@ -14,5 +18,9 @@ export async function up(knex) {
     `)
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

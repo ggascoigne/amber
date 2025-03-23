@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { queryClient } from '@amber/server'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -9,7 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 // see https://github.com/mui/mui-x/issues/12640
 import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { HydrationBoundary, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
 import { AppProps } from 'next/app'
@@ -74,7 +75,6 @@ export default function RootComponent(props: RootComponentProps) {
     pageProps: { dehydratedState, configData },
   } = props
 
-  const [queryClient] = React.useState(() => new QueryClient())
   const { config } = getSettingsObject(configData)
 
   return config ? (

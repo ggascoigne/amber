@@ -82,7 +82,7 @@ const DefaultHeader = <T extends Record<string, unknown>>({ column }: HeaderProp
 
 // yes this is recursive, but the depth never exceeds three, so it seems safe enough
 const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>
-  columns[0].columns ? findFirstColumn(columns[0].columns) : columns[0]
+  columns[0]!.columns ? findFirstColumn(columns[0]!.columns) : columns[0]!
 
 function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, column, gotoPage }: FilterProps<T>) {
   const { id, filterValue, setFilter, render } = column
@@ -149,7 +149,7 @@ const useSelectionUi = (hooks: Hooks<any>) => {
   ])
   hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
-    const selectionGroupHeader = headerGroups[0].headers[0]
+    const selectionGroupHeader = headerGroups[0]!.headers[0]!
     selectionGroupHeader.canResize = false
   })
 }

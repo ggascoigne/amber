@@ -53,11 +53,11 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
       const result = await emailer.send({
         template: 'paymentConfirmation',
         message: {
-          to: paymentDetails?.[0].email,
+          to: paymentDetails?.[0]?.email,
           cc: emails.contactEmail,
         },
         locals: {
-          name: paymentDetails?.[0].name,
+          name: paymentDetails?.[0]?.name,
           year,
           amount,
           paymentDetails,

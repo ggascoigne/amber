@@ -1,4 +1,4 @@
-import type { EnvType } from '../../shared/processEnv'
+import type { EnvType } from '@amber/environment'
 
 export type TaskContext = {
   env?: EnvType

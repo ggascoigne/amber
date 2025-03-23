@@ -5,6 +5,10 @@
 // the dropped tables are application data rather than domain data and will just
 // be handled a different way
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   return knex.schema.createTable('token', (table) => {
     table.increments('id').primary()
@@ -15,5 +19,9 @@ export async function up(knex) {
   })
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

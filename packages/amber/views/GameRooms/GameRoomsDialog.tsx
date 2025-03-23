@@ -93,7 +93,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         .then(() => {
           if (values.gamesChanged) {
             const updaters = range(configuration.numberOfSlots).reduce((acc: Promise<any>[], slot: number) => {
-              const { original, current } = values.games[slot]
+              const { original, current } = values.games[slot]!
               if (current !== original) {
                 if (current) {
                   acc.push(

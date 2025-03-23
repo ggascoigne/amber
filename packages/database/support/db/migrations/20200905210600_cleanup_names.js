@@ -1,6 +1,10 @@
 // eslint-disable-next-line import/no-relative-packages
 import toFix from '../../../../../name_cleanup.js'
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     UPDATE "user"

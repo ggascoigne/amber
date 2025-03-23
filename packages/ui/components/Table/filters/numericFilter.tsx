@@ -11,17 +11,17 @@ function parseValue(filterValue: FilterValue) {
   }
   switch (tokens[1]) {
     case '>':
-      return (val: any) => parseFloat(val) > parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) > parseFloat(tokens[2]!)
     case '<':
-      return (val: any) => parseFloat(val) < parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) < parseFloat(tokens[2]!)
     case '<=':
-      return (val: any) => parseFloat(val) <= parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) <= parseFloat(tokens[2]!)
     case '>=':
-      return (val: any) => parseFloat(val) >= parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) >= parseFloat(tokens[2]!)
     case '=':
-      return (val: any) => parseFloat(val) === parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) === parseFloat(tokens[2]!)
     case '!':
-      return (val: any) => parseFloat(val) !== parseFloat(tokens[2])
+      return (val: any) => parseFloat(val) !== parseFloat(tokens[2]!)
   }
   return defaultComparator
 }
@@ -32,7 +32,7 @@ export function numericTextFilter<T extends Record<string, unknown>>(
   filterValue: FilterValue,
 ) {
   const comparator = parseValue(filterValue)
-  return rows.filter((row) => comparator(row.values[id[0]]))
+  return rows.filter((row) => comparator(row.values[id[0]!]))
 }
 
 // Let the table remove the filter if the string is empty

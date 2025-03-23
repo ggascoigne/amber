@@ -168,12 +168,12 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         ) as ChoiceType[]
 
         if (!isSlotComplete(configuration, thisSlotChoices)) {
-          if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {
-            thisSlotChoices[1] = { ...thisSlotChoices[1], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+          if (!thisSlotChoices[0]!.gameId && !thisSlotChoices[1]!.gameId) {
+            thisSlotChoices[1] = { ...thisSlotChoices[1]!, gameId: slotId, modified: true } // only update the modified property since thisSlotChoices[1] is already of type ChoiceType
           } else {
             for (let i = 2; i < 5; i++) {
-              if (!thisSlotChoices[i].gameId) {
-                thisSlotChoices[i] = { ...thisSlotChoices[i], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+              if (!thisSlotChoices[i]!.gameId) {
+                thisSlotChoices[i] = { ...thisSlotChoices[i]!, gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
                 break
               }
             }

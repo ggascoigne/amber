@@ -1,0 +1,48 @@
+{
+  "name": "@amber/server",
+  "version": "0.1.0",
+  "description": "Shared AmberCon NW trpc server",
+  "author": "guy@wyrdrune.com",
+  "license": "MIT",
+  "type": "module",
+  "files": [],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --cache --color '{src,scripts,shared,support}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
+    "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --sql",
+    "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull",
+    "tsc": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^3.6.0",
+    "@amber/environment": "workspace:*",
+    "@prisma/client": "^6.5.0",
+    "@t3-oss/env-core": "^0.12.0",
+    "@t3-oss/env-nextjs": "^0.12.0",
+    "@trpc/next": "11.0.0",
+    "@trpc/react-query": "11.0.0",
+    "@trpc/server": "11.0.0",
+    "@trpc/client": "11.0.0",
+    "@tanstack/react-query": "^5.69.0",
+    "database": "workspace:*",
+    "debug": "^4.4.0",
+    "next": "13.5.6",
+    "pg": "^8.14.1",
+    "superjson": "^2.2.2",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.3"
+  },
+  "devDependencies": {
+    "@types/debug": "~4.1.12",
+    "@types/node": "^22.13.11",
+    "@types/pg": "^8.11.11",
+    "dotenv": "^16.4.7",
+    "eslint-config-custom": "workspace:*",
+    "prisma": "^6.5.0",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
+  }
+}

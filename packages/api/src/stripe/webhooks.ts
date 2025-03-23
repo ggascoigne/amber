@@ -64,10 +64,10 @@ const toTransaction = (
   return {
     amount: itemAmount,
     notes,
-    origin: parseInt(userId, 10),
+    origin: parseInt(userId!, 10),
     stripe: true,
     userId: targetUserId,
-    year: parseInt(year, 10),
+    year: parseInt(year!, 10),
     data: {
       ...extra,
       chargeId: id,
@@ -85,7 +85,7 @@ const createErrorPaymentTransactionRecord = async (query: QueryRunner, charge: S
     metadata: { userId },
   } = charge
 
-  const transaction = toTransaction(charge, parseInt(userId, 10), amount, 'Payment Received with Stripe Error', {
+  const transaction = toTransaction(charge, parseInt(userId!, 10), amount, 'Payment Received with Stripe Error', {
     error,
     amount_adjusted: Math.round(amount / 100),
   })
@@ -122,7 +122,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
     metadata: { userId, year, payments },
   } = charge
 
-  const paymentInfo: UserPaymentDetails[] = JSON.parse(payments)
+  const paymentInfo: UserPaymentDetails[] = JSON.parse(payments!)
 
   const { query, release } = await makeQueryRunner()
 
@@ -149,8 +149,8 @@ const handleSuccess = async (charge: Stripe.Charge) => {
         console.warn('Creation of some transactions failed', res)
       }
       await sendEmailConfirmation({
-        userId: parseInt(userId, 10),
-        year: parseInt(year, 10),
+        userId: parseInt(userId!, 10),
+        year: parseInt(year!, 10),
         amount,
         paymentInfo,
       })

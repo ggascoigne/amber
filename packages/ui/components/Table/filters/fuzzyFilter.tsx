@@ -7,7 +7,7 @@ export function fuzzyTextFilter<T extends Record<string, unknown>>(
   filterValue: FilterValue,
 ): Array<Row<T>> {
   return matchSorter(rows, filterValue, {
-    keys: [(row: Row<T>) => row.values[id[0]]],
+    keys: [(row: Row<T>) => row.values[id[0]!]],
   })
 }
 

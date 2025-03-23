@@ -1,5 +1,6 @@
 import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
+import { api, RouterOutputs } from '@amber/server'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { DateTime } from 'luxon'
@@ -9,13 +10,14 @@ import { Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
 import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
-import { Setting } from './shared'
 
-import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
+import { useGraphQLMutation, DeleteSettingDocument } from '../../client'
 import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useConfiguration } from '../../utils'
+
+export type Setting = RouterOutputs['settings']['getSettings'][0]
 
 export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
   const { baseTimeZone } = useConfiguration()
@@ -85,7 +87,7 @@ const Settings: React.FC = React.memo(() => {
   const deleteSetting = useGraphQLMutation(DeleteSettingDocument)
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetSettingsDocument)
+  const { isLoading, error, data, refetch } = api.settings.getSettings.useQuery()
 
   if (error) {
     return <TransportError error={error} />
@@ -94,7 +96,7 @@ const Settings: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const list: Setting[] = data.settings!.nodes.filter(notEmpty).filter((v) => {
+  const list: Setting[] = data.filter(notEmpty).filter((v) => {
     if (tab?.exclude) {
       return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
     }

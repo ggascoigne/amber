@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   // create a stored procedure that can be used to quickly drop all data - used for a fast cleanup in tests
   return knex.schema.raw(`
@@ -18,5 +22,9 @@ export async function up(knex) {
     `)
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

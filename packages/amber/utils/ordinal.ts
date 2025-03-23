@@ -44,5 +44,5 @@ export const getOrdinalWord = (value: number): string =>
   value < 1 || value > 99
     ? `${value}`
     : value <= 20 || value % 10 === 0
-      ? ordinals[value]
+      ? ordinals[value]!
       : `${prefixes[Math.floor(value / 10)]}-${ordinals[value % 10]}`

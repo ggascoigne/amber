@@ -21,6 +21,7 @@
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
+    "@amber/environment": "workspace:*",
     "@auth0/nextjs-auth0": "^3.6.0",
     "@graphile-contrib/pg-order-by-related": "^1.0.0",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
@@ -34,7 +35,7 @@
     "listr2": "^8.2.5",
     "luxon": "^3.5.0",
     "next": "13.5.6",
-    "pg": "^8.13.3",
+    "pg": "^8.14.1",
     "postgraphile": "^4.14.0",
     "postgraphile-plugin-connection-filter": "^2.3.0",
     "react": "^18.3.1",
@@ -46,9 +47,8 @@
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.13.11",
     "@types/pg": "^8.11.11",
-    "alasql": "^4.6.3",
     "chalk": "^5.4.1",
     "common-tags": "^1.8.2",
     "dotenv": "^16.4.7",
@@ -57,9 +57,10 @@
     "knex-migrate": "^1.7.4",
     "tempy": "^3.1.0",
     "tsconfig": "workspace:*",
-    "typescript": "^5.7.3",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^5.8.2",
     "xlsx": "^0.18.5",
     "zod": "^3.24.2",
-    "zx": "^8.3.0"
+    "zx": "^8.4.1"
   }
 }

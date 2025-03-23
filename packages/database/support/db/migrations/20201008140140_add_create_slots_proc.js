@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
       CREATE OR REPLACE FUNCTION slot_gm_game (member_id INTEGER, slot_id INTEGER, yearNo INTEGER) RETURNS INTEGER AS $$
@@ -62,5 +66,9 @@ export async function up(knex) {
     `)
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

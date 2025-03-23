@@ -1,10 +1,10 @@
+import { dbEnv } from '@amber/environment'
 import { DocumentNode, graphql, print } from 'graphql'
 import type { Maybe } from 'graphql/jsutils/Maybe'
 import gql from 'graphql-tag'
 import { createPostGraphileSchema, withPostGraphileContext } from 'postgraphile'
 
 import { PoolType, getPool, getSchemas } from './config'
-import { dbEnv } from './env'
 import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 
 export type QueryResult<T> = {

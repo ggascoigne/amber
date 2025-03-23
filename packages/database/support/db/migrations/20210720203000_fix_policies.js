@@ -21,6 +21,10 @@ const tables = [
   { name: 'user_role', admin: true },
 ]
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   const user = process.env.DATABASE_USER
   const password = process.env.DATABASE_USER_PASSWORD ?? ''
@@ -50,8 +54,12 @@ export async function up(knex) {
       USING ("user_id" = current_user_id() OR current_user_is_admin());
     `)
 
-  await knex.raw(tables.map((table) => enableRls(table)).join('\n'))
+  await knex.raw(tables.map((table) => enableRls(table.name)).join('\n'))
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 // eslint-disable-next-line no-empty-function
 export async function down(knex) {}

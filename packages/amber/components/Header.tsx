@@ -19,12 +19,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, title }) => {
-  const [config, getConfig] = useGetConfig()
+  const config = useGetConfig()
   const [configDetails, setConfigDetails] = useState('')
-
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
 
   useEffect(() => {
     const getConfigDetails = (conf: Config | undefined, href: string | undefined) => {

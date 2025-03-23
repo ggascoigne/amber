@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import { parsePostgresConnectionString } from '@amber/environment'
+import { type EnvType, processEnv } from '@amber/environment'
 import debug from 'debug'
 import { config as dotenvConfig } from 'dotenv'
 import type { ListrTaskWrapper, ListrTask } from 'listr2'
@@ -10,9 +12,7 @@ import { $ } from 'zx'
 import { getPostgresArgs } from './scriptUtils'
 import type { TaskContext } from './taskContext'
 
-import { parsePostgresConnectionString } from '../../shared/connectionStringUtils'
 import { getPaths } from '../../shared/filePaths'
-import { type EnvType, processEnv } from '../../shared/processEnv'
 
 const tracing = !!process.env.DEBUG
 

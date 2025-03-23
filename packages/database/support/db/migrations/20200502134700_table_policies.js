@@ -19,9 +19,19 @@ const tables = [
   { name: 'user_role', admin: true },
 ]
 
-// protect the user column from causing syntax errors
+/**
+ * protect the user column from causing syntax errors
+ *
+ * @param {string} name
+ * @returns {string}
+ */
 const q = (name) => (name === 'user' ? '"user"' : name)
 
+/**
+ * read only if not logged on
+ * @param {string} table
+ * @returns {string}
+ */
 const anyUserUpdatePolicy = (table) => `
   CREATE POLICY ${table}_sel_policy ON ${q(table)}
     FOR SELECT
@@ -30,7 +40,10 @@ const anyUserUpdatePolicy = (table) => `
     USING (current_user_id() != NULL);
   `
 
-const adminUpdatePolicy = (table) => `
+/**
+ * @param {string} table
+ * @returns {string}
+ */ const adminUpdatePolicy = (table) => `
   CREATE POLICY ${table}_sel_policy ON ${q(table)}
     FOR SELECT
     USING (TRUE);
@@ -38,12 +51,20 @@ const adminUpdatePolicy = (table) => `
     USING (current_user_is_admin());
   `
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(
     tables.map((table) => (table.admin ? adminUpdatePolicy(table.name) : anyUserUpdatePolicy(table.name))).join('\n'),
   )
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function down(knex) {
   await knex.raw(
     tables

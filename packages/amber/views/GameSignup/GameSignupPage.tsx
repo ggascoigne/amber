@@ -182,7 +182,7 @@ const GameSignupPage: React.FC = () => {
 
       if (rank === null) {
         if (oldRank) {
-          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank], ...empty }
+          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank]!, ...empty }
         } else {
           console.log(`update changed rank, but didn't pass in the old rank`)
         }
@@ -190,15 +190,15 @@ const GameSignupPage: React.FC = () => {
         if (rank !== oldRank && (rank === 0 || rank === 1)) {
           const otherRank = rank ? 0 : 1
           // if rank is GM or 1st then nuke the other one
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
-          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank], ...empty }
+          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
+          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank]!, ...empty }
         } else {
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
+          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
         }
 
         if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {
           for (let i = rank + 1; i <= 4; i++) {
-            if (thisSlotChoices[i].gameId) thisSlotChoices[i] = { ...thisSlotChoices[i], ...empty }
+            if (thisSlotChoices[i]!.gameId) thisSlotChoices[i] = { ...thisSlotChoices[i]!, ...empty }
           }
         }
       }

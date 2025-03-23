@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import { parsePostgresConnectionString, safeConnectionString } from '@amber/environment'
+import { type EnvType, processEnv } from '@amber/environment'
 import debug from 'debug'
 import type { Listr, ListrTask, ListrTaskWrapper } from 'listr2'
 
@@ -8,9 +10,7 @@ import { dumpDatabaseTask, restoreDatabaseTask } from './importUtils'
 import { createCleanDb, resetOwner } from './scriptUtils'
 import type { TaskContext } from './taskContext'
 
-import { parsePostgresConnectionString, safeConnectionString } from '../../shared/connectionStringUtils'
 import { certs } from '../../shared/dbCerts'
-import { type EnvType, processEnv } from '../../shared/processEnv'
 
 const log = debug('tasks')
 const filename = '/tmp/rds-cert.pem'
