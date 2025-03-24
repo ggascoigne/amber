@@ -12,7 +12,7 @@ export type QueryResult<T> = {
   errors: readonly any[] | undefined
 }
 
-export type QueryRunner = <TData, TVariables = Maybe<{ [key: string]: any }>>(
+export type QueryRunner = <TData, TVariables = Maybe<Record<string, any>>>(
   graphqlQuery: string | DocumentNode,
   variables?: TVariables | undefined,
   operationName?: Maybe<string>,
@@ -28,8 +28,7 @@ export const makeQueryRunner = async () => {
     readCache: dbEnv === 'acnw' ? acnwReadCache : acusReadCache,
   })
 
-  // eslint-disable-next-line etc/no-misused-generics
-  const query: QueryRunner = async <TData, TVariables = Maybe<{ [key: string]: any }>>(
+  const query: QueryRunner = async <TData, TVariables = Maybe<Record<string, any>>>(
     graphqlQuery: string | DocumentNode,
     variables?: TVariables,
     operationName: Maybe<string> = null,

@@ -1,4 +1,4 @@
-const ordinals: { [k: number]: string } = {
+const ordinals: Record<number, string> = {
   1: 'first',
   2: 'second',
   3: 'third',
@@ -28,7 +28,7 @@ const ordinals: { [k: number]: string } = {
   90: 'ninetieth',
 }
 
-const prefixes: { [k: number]: string } = {
+const prefixes: Record<number, string> = {
   2: 'twenty',
   3: 'thirty',
   4: 'forty',

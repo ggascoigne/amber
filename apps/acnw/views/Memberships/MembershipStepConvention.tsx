@@ -21,12 +21,12 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
   return (
     <>
       <DialogContentText>
-        Per Edgefield's room policy, you must be at least 18 or older to register. If you are younger and wish to
+        Per Edgefield&apos;s room policy, you must be at least 18 or older to register. If you are younger and wish to
         attend, please contact Simone at <ContactEmail />.
       </DialogContentText>
       <DialogContentText>
         I plan to attend {configuration.title}, <ConventionsDatesFull pre='from' intra='through' post=',' /> at
-        McMenamin's Edgefield Bed & Breakfast in Troutdale, Oregon. I understand that my hotel room is held but not
+        McMenamin&apos;s Edgefield Bed & Breakfast in Troutdale, Oregon. I understand that my hotel room is held but not
         reserved until I have paid my membership fee in full and received confirmation from the organizers.
       </DialogContentText>
       <h3>Convention Registration</h3>

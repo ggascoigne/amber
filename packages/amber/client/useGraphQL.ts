@@ -43,11 +43,7 @@ export function useGraphQL<TResult, TVariables>(
   return useQuery<TResult, QueryError, TResult, TQueryKey<TVariables>>({
     queryKey: [operationName, vars],
     queryFn: async ({ queryKey }) =>
-      request(
-        `${window.location.origin}/api/graphql/${operationName}`,
-        document,
-        queryKey[1] ? queryKey[1] : undefined,
-      ),
+      request(`${window.location.origin}/api/graphql/${operationName}`, document, queryKey[1] ?? undefined),
     ...opts,
   })
 }

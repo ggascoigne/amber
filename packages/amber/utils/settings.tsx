@@ -98,9 +98,7 @@ export const useFlag = (setting: string, defaultValue = false) => {
   return getFlagBoolean?.(setting, defaultValue)
 }
 
-interface UseGetSettingValueType {
-  (setting: string, defaultValue?: boolean): string | null | undefined
-}
+type UseGetSettingValueType = (setting: string, defaultValue?: boolean) => string | null | undefined
 
 export const useGetSettingValue: UseGetSettingValueType = (setting: string, defaultValue = false) => {
   const [getSettingString] = useSettings()

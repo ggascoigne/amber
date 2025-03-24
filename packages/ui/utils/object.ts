@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign, no-unsafe-optional-chaining */
+/* eslint-disable no-param-reassign */
 
 // copied then trimmed from https://raw.githubusercontent.com/auth0/auth0.js/master/src/helper/object.js
 
@@ -35,7 +35,7 @@ export function toSnakeCase(object: any, exceptions: string[] = []) {
     return object
   }
 
-  return Object.keys(object).reduce((p: { [key: string]: any }, key: string) => {
+  return Object.keys(object).reduce((p: Record<string, any>, key: string) => {
     const newKey = exceptions.indexOf(key) === -1 ? camelToSnake(key) : key
     p[newKey] = toSnakeCase(object[key])
     return p
@@ -47,7 +47,7 @@ export function toCamelCase(object: any, exceptions: string[] = []) {
     return object
   }
 
-  return Object.keys(object).reduce((p: { [key: string]: any }, key: string) => {
+  return Object.keys(object).reduce((p: Record<string, any>, key: string) => {
     const newKey = exceptions.indexOf(key) === -1 ? snakeToCamel(key) : key
     p[newKey] = toCamelCase(object[key])
     return p

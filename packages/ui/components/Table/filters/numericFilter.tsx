@@ -22,6 +22,8 @@ function parseValue(filterValue: FilterValue) {
       return (val: any) => parseFloat(val) === parseFloat(tokens[2]!)
     case '!':
       return (val: any) => parseFloat(val) !== parseFloat(tokens[2]!)
+    default:
+      throw new Error(`Unknown comparator ${tokens[1]}`)
   }
   return defaultComparator
 }

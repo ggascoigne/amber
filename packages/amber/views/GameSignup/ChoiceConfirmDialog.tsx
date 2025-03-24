@@ -213,9 +213,9 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>
       <DialogContent>
         <p>
-          The following is a preview of your game selections for {configuration.name} {year}. Once you're satisfied that
-          everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this
-          page.
+          The following is a preview of your game selections for {configuration.name} {year}. Once you&apos;re satisfied
+          that everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of
+          this page.
         </p>
 
         <p>

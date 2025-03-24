@@ -12,10 +12,3 @@ export async function up(knex) {
     ADD CONSTRAINT game_assignment_game_id_foreign FOREIGN KEY (game_id) REFERENCES game (id) MATCH SIMPLE ON DELETE CASCADE
   `)
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

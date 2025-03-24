@@ -9,10 +9,3 @@ export async function up(knex) {
     COMMENT ON TABLE knex_migrations IS E'@omit';
     `)
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

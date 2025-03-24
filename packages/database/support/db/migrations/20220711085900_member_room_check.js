@@ -41,12 +41,5 @@ export async function up(knex) {
     OR
     UPDATE ON membership FOR EACH ROW
     EXECUTE PROCEDURE memb_check_room_avail ()
-  	`)
+    `)
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

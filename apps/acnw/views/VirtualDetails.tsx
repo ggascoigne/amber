@@ -24,7 +24,7 @@ const VirtualDetails = () => {
     <Page title='Amber Virtual'>
       <h1>Accessing the Virtual Convention</h1>
 
-      <h3>AmberCon NW's Discord server</h3>
+      <h3>AmberCon NW&apos;s Discord server</h3>
 
       <p>
         Our virtual McMenamins Edgefield, is open. We would love all of the GMs and players to have signed in and gotten
@@ -39,8 +39,9 @@ const VirtualDetails = () => {
       </p>
 
       <p>
-        Here is your link. You will land on the server's Welcome Page, where you will have to click to agree to ACNW and
-        Discord's anti-harassment and use policies. Then you will put yourself "in line" for a volunteer.
+        Here is your link. You will land on the server&apos;s Welcome Page, where you will have to click to agree to
+        ACNW and Discord&apos;s anti-harassment and use policies. Then you will put yourself &ldquo;in line&rdquo; for a
+        volunteer.
       </p>
 
       <p>

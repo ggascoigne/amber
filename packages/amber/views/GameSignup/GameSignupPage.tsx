@@ -160,20 +160,19 @@ const GameSignupPage: React.FC = () => {
 
   const updateChoice = useCallback(
     (params: SelectorUpdate) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { gameChoices, gameId, rank, returningPlayer, slotId, year, oldRank } = params
+      const { gameChoices, gameId, rank, returningPlayer, slotId, year: newYear, oldRank } = params
 
       const empty = {
         memberId: membership?.id ?? 0,
         slotId,
-        year,
+        year: newYear,
         gameId: null,
         returningPlayer: false,
         modified: true,
       }
 
       const thisSlotChoices: ChoiceType[] = orderChoices(
-        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
+        gameChoices?.filter((c) => c?.year === newYear && c.slotId === slotId),
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
@@ -296,11 +295,10 @@ const GameSignupPage: React.FC = () => {
       )}
       <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>
         <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
-          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
-          {({ year, slot, games }) => (
+          {({ year: y, slot: s, games }) => (
             <GameListFull
-              year={year}
-              slot={slot}
+              year={y}
+              slot={s}
               games={games!}
               onEnterGame={setNewUrl}
               decorator={GameChoiceSelector}

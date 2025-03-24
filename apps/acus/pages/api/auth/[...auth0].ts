@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { authHandlers } from '@amber/api'
 import { handleAuth } from '@auth0/nextjs-auth0'
 

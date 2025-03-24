@@ -219,7 +219,7 @@ const useInstanceBeforeDimensions = <D extends Record<string, unknown>>(instance
     )
 
     header.canResize = canResize
-    header.width = columnResizing.columnWidths[header.id] || header.width
+    header.width = columnResizing.columnWidths[header.id] ?? header.width
     header.isResizing = columnResizing.isResizingColumn === header.id
 
     if (canResize) {

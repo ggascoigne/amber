@@ -255,6 +255,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
               queryClient.clear()
               router.push('/api/auth/logout')
               break
+            default:
+              throw new Error(`Unknown menu item: ${prop}`)
           }
         }}
       />

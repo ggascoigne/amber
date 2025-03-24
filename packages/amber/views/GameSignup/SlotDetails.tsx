@@ -29,13 +29,6 @@ const useStyles = makeStyles()((_theme: Theme) => ({
   },
 }))
 
-interface SlotDetailsProps {
-  slotId: number
-  year: number
-  gameChoices?: MaybeGameChoice[]
-  storeTextResults?: (details: SlotSummary) => void
-}
-
 export interface SlotSummary {
   slotId: number
   slotDescription: string
@@ -43,6 +36,13 @@ export interface SlotSummary {
     rank: string
     description: string
   }[]
+}
+
+interface SlotDetailsProps {
+  slotId: number
+  year: number
+  gameChoices?: MaybeGameChoice[]
+  storeTextResults?: (details: SlotSummary) => void
 }
 
 const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)

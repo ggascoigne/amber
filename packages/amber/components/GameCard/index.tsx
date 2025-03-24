@@ -42,6 +42,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
+interface Player {
+  gm: number
+  fullName: string
+  email: string
+}
+
 const PlayerDetails: React.FC<{ player: Player }> = ({ player }) => {
   const { classes } = useStyles()
   return (
@@ -49,6 +55,20 @@ const PlayerDetails: React.FC<{ player: Player }> = ({ player }) => {
       <span>{player.fullName}</span> (<span>{player.email}</span>)
     </div>
   )
+}
+
+interface GameCardProps {
+  game: GameEntry
+  year: number
+  slot: number
+  onEnter?: (param?: string) => void
+  tiny?: boolean
+  schedule?: boolean
+  gms?: Player[]
+  players?: Player[]
+  // these next two are required together
+  decorator?: (props: GameDecorator) => React.ReactNode
+  decoratorParams?: GameDecoratorParams
 }
 
 type GameCardDetailsProps = GameCardProps & { header: ReactNode; gms?: Player[]; players?: Player[] }
@@ -160,26 +180,6 @@ export interface GameCardChild {
   year: number
   slot: number
   gameId: number
-}
-
-interface Player {
-  gm: number
-  fullName: string
-  email: string
-}
-
-interface GameCardProps {
-  game: GameEntry
-  year: number
-  slot: number
-  onEnter?: (param?: string) => void
-  tiny?: boolean
-  schedule?: boolean
-  gms?: Player[]
-  players?: Player[]
-  // these next two are required together
-  decorator?: (props: GameDecorator) => React.ReactNode
-  decoratorParams?: GameDecoratorParams
 }
 
 export const GameCard: React.FC<GameCardProps> = React.memo(

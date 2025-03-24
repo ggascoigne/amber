@@ -12,5 +12,3 @@ export async function up(knex: Knex): Promise<void> {
     ADD PRIMARY KEY (member_id, game_id, gm, year);
   `)
 }
-
-export async function down(_knex: Knex): Promise<void> {}

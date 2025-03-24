@@ -99,6 +99,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
     (_: React.SyntheticEvent, value: UserMemberType | null) => {
       setSearchTerm('')
       onChange(value ?? null)
+
       keyVal++
     },
     [onChange],

@@ -40,7 +40,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
             <FormControlLabel value={getSelectValue(s)} control={<Radio />} label={getSelectLabel(s)} />
           </MenuItem>
         ))}
-        {children && children}
+        {children}
       </MuiRadioGroup>
     </FormControl>
   )

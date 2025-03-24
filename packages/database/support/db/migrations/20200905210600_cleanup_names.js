@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-relative-packages
-import toFix from '../../../../../name_cleanup.js'
+import { toFix } from '../../../../../name_cleanup.js'
 
 /**
  * @param {import('knex').Knex} knex

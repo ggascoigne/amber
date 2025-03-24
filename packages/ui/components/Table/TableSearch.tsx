@@ -43,7 +43,7 @@ export function TableSearch<T extends Record<string, unknown>>({
 
   // ensure that reset loads the new value
   useEffect(() => {
-    setValue(globalFilter || '')
+    setValue(globalFilter ?? '')
   }, [globalFilter])
 
   if (disableGlobalFilter) return null

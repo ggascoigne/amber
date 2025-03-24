@@ -10,7 +10,6 @@
   "types": "./index.ts",
   "scripts": {
     "boot": "pnpm prepareGraphql && pnpm gitHash",
-    "lint": "eslint --cache --color '**/*.{js,jsx,ts,tsx}'",
     "prepareGraphql": "../database/scripts/prepareGraphql.ts",
     "gitHash": "../../scripts/getGitHash.sh",
     "tsc": "tsc -p ./tsconfig.json"
@@ -93,8 +92,6 @@
     "@types/sha.js": "^2.4.4",
     "babel-loader": "^9.2.1",
     "cross-env": "^7.0.3",
-    "eslint": "^8.57.1",
-    "eslint-config-custom": "workspace:*",
     "graphql-ws": "^5.16.2",
     "tsconfig": "workspace:*",
     "typescript": "^5.8.2",

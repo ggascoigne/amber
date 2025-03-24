@@ -37,6 +37,8 @@ export type UserPaymentDetails = {
   donation: number
 }
 
+type ButtonState = 'deposit' | 'full' | 'other'
+
 type ReducerActionKind = 'setButtonState' | 'setDonation' | 'setCustomValue'
 
 type ReducerState = {
@@ -107,8 +109,6 @@ type MemberOrUserPaymentProps = {
   onChange: (info: UserPaymentDetails) => void
   onRemoveUserPayment: (userId: number) => void
 }
-
-type ButtonState = 'deposit' | 'full' | 'other'
 
 const canDoFullMembershipPayment = (
   membership: MembershipType | undefined,

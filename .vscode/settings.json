@@ -10,6 +10,7 @@
     "postgraphile",
     "sslmode",
     "sslrootcert",
+    "toolbelt",
     "WMDY"
   ]
 }

@@ -76,11 +76,3 @@ export async function up(knex) {
   const user = process.env.DATABASE_USER ?? ''
   await knex.raw(fixGrants(user))
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-export async function down(knex) {
-  // no revert
-}

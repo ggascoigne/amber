@@ -12,7 +12,7 @@ export interface LookupFieldProps extends TextFieldProps {
 }
 
 export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
-  const { select, realm, ...rest } = props
+  const { select: _select, realm, ...rest } = props
   const options = useRealmOptions(realm)
   const { isLoading, error, data } = useGraphQL(GetLookupValuesDocument, {
     variables: { realm },

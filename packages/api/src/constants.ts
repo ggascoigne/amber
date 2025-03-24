@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const assert = require('assert').strict
 
 export const isDev = process.env.NODE_ENV !== 'production'

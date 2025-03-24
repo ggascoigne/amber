@@ -8,7 +8,6 @@
   "files": [],
   "private": true,
   "scripts": {
-    "lint": "eslint --cache --color '{src,scripts,shared,support}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "db:clean": "./scripts/createCleanDb.ts",
     "db:docker:down": "docker compose down",
     "db:docker:up": "docker compose up -d",
@@ -52,7 +51,6 @@
     "chalk": "^5.4.1",
     "common-tags": "^1.8.2",
     "dotenv": "^16.4.7",
-    "eslint-config-custom": "workspace:*",
     "knex": "^3.1.0",
     "knex-migrate": "^1.7.4",
     "tempy": "^3.1.0",

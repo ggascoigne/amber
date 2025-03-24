@@ -10,7 +10,6 @@
   "files": [],
   "private": true,
   "scripts": {
-    "lint": "eslint --cache --color 'src/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
@@ -40,7 +39,6 @@
     "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.11.11",
     "dotenv": "^16.4.7",
-    "eslint-config-custom": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig": "workspace:*",

@@ -61,15 +61,16 @@ const getRoomTypeDescription = (type: BathroomType) => {
       return 'Rooms with en-suite bath facilities'
     case BathroomType.NoEnSuite:
       return "Rooms with bath facilities 'down the hall', bed & breakfast style"
+    default:
+      return undefined
   }
-  return undefined
 }
 
 const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.description.replaceAll(
           /\*/g,
@@ -84,7 +85,7 @@ const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.rate.replaceAll(
           /(\$\d+ \/ night T.*S??\*)/g,

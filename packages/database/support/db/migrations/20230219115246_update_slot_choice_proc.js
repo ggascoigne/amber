@@ -45,10 +45,3 @@ export async function up(knex) {
     $$ LANGUAGE plpgsql;
     `)
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

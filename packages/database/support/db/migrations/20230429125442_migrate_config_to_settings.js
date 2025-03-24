@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import { DateTime } from 'luxon'
 
 import { anyUserUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
@@ -244,10 +245,3 @@ export async function up(knex) {
     await knex.raw(enableRls('setting'))
   }
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

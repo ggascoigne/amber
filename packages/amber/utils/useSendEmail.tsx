@@ -5,9 +5,7 @@ import { isDev, useNotification } from 'ui'
 
 import { EmailConfirmation } from './apiTypes'
 
-interface SendEmail {
-  (p: EmailConfirmation): void
-}
+type SendEmail = (p: EmailConfirmation) => void
 
 export const useSendEmail = (): SendEmail => {
   const notify = useNotification()

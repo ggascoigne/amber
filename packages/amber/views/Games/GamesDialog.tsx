@@ -118,7 +118,7 @@ const validationSchema = Yup.object().shape({
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
   const configuration = useConfiguration()
-  const { select, year, ...rest } = props
+  const { select: _select, year, ...rest } = props
   const selectValues = range(configuration.numberOfSlots).reduce(
     (acc, current) => {
       acc.push({
@@ -182,11 +182,10 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
   const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
 
-  // eslint-disable-next-line no-param-reassign
   if (initialValues.slotId === null) initialValues.slotId = 0
 
   const onCopyGameChange =
-    (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
+    (values: GameDialogFormValues, setValues: (val: GameDialogFormValues, shouldValidate?: boolean) => void) =>
     (_: any, value: Game | null): void => {
       if (!value) return
       setValues({
@@ -236,7 +235,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                   id='prior-games'
                   options={priorGamesList}
                   groupBy={(game) => `${game.year}`}
-                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})` ?? 0}: ${game.name}`}
+                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})`}: ${game.name}`}
                   fullWidth
                   renderInput={(params) => (
                     <MuiTextField

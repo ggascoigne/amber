@@ -6,6 +6,6 @@ export const addContext = async <T, C = any>(context: C, promise: Promise<T>) =>
     return await Promise.resolve({ context, value: result })
   } catch (reason) {
     // eslint-disable-next-line prefer-promise-reject-errors
-    return await Promise.reject({ context, value: reason })
+    return Promise.reject({ context, value: reason })
   }
 }

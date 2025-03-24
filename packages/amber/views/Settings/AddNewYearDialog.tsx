@@ -187,9 +187,9 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         than once.
       </Typography>
       <Typography variant='body1' gutterBottom>
-        That said, you don't actually need to edit too much on this page, it lists every field that's added or changed
-        by adding a new year, and guarantees that all the required settings are created, after this point the items can
-        be safely edited individually.
+        That said, you don&apos;t actually need to edit too much on this page, it lists every field that&apos;s added or
+        changed by adding a new year, and guarantees that all the required settings are created, after this point the
+        items can be safely edited individually.
       </Typography>
       <GridContainer spacing={2} sx={{ pt: 2 }}>
         {newList.map((s, index) => (

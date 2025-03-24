@@ -14,7 +14,16 @@ interface DatePickerFieldProps
 }
 
 export function DatePickerField(props: DatePickerFieldProps) {
-  const { field, form, getShouldDisableDateError, maxDate, minDate, required, timeZone, ...other } = props
+  const {
+    field,
+    form,
+    getShouldDisableDateError: _getShouldDisableDateError,
+    maxDate,
+    minDate,
+    required: _required,
+    timeZone,
+    ...other
+  } = props
   return (
     <DatePicker
       minDate={minDate}

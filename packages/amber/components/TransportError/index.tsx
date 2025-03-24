@@ -46,7 +46,7 @@ export const TransportError = ({ error }: TransportErrorProps) => {
           GraphQL Error
         </Typography>
         <Quote>
-          {error?.message && error.message}
+          {error?.message}
           {error?.TransportErrors && error?.TransportErrors.length !== 0 && (
             <pre>{JSON.stringify(error.TransportErrors, null, 2)}</pre>
           )}
@@ -64,7 +64,7 @@ export const TransportError = ({ error }: TransportErrorProps) => {
           TRPC Error
         </Typography>
         <Quote>
-          {error?.message && error.message}
+          {error?.message}
           <pre>{JSON.stringify(details, null, 2)}</pre>
         </Quote>
       </>

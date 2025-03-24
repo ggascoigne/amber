@@ -86,7 +86,7 @@ export const BecomeAMember = () => {
                   Register
                 </Button>
               ) : (
-                <span> check back as we'll be opening registration soon.</span>
+                <span> check back as we&apos;ll be opening registration soon.</span>
               )}
             </p>
           </IsLoggedIn>

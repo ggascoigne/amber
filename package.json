@@ -10,7 +10,7 @@
     "node": ">=20",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.5.2",
+  "packageManager": "pnpm@10.6.5",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggascoigne/amber.git"
@@ -26,7 +26,7 @@
     "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
     "format": "pnpm format:all --cache",
     "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
-    "lint": "pnpm -r --parallel lint",
+    "lint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "vitest",
@@ -34,14 +34,13 @@
     "tsc": "pnpm -r tsc"
   },
   "devDependencies": {
+    "@ggascoigne/eslint-config": "^2.2.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.0.1",
     "@vitejs/plugin-react": "^4.3.3",
     "dotenv": "16.4.7",
     "dotenv-cli": "8.0.0",
-    "eslint-config-custom": "workspace:*",
-    "@typescript-eslint/eslint-plugin": "^5.8.2",
-    "@typescript-eslint/parser": "^5.8.2",
+    "eslint": "^9.23.0",
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
     "lint-staged": "^15.5.0",

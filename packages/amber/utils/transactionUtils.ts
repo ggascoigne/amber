@@ -132,7 +132,7 @@ export const useTransactionValues = (values: TransactionValue | null | undefined
   return useMemo(
     () => ({
       timestamp: Date.now().toLocaleString(),
-      ...(values ?? {}),
+      ...values,
       userId: values?.userId ?? userId!,
       amount: values?.amount ?? 0,
       origin: values?.origin ?? userId,

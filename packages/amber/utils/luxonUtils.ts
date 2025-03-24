@@ -55,7 +55,7 @@ class DataWrapper {
 
   constructor(dayName: string) {
     const x = this.default.filter((day) => dayName === day.name)
-    // eslint-disable-next-line prefer-destructuring
+
     this.startDay = x[0]!
   }
 
@@ -98,7 +98,7 @@ export class CustomLuxonUtils extends LuxonUtils {
     const { days } = endDate.diff(startDate, 'days').toObject()
 
     const weeks: DateTime[][] = []
-    new Array<number>(Math.round(days!))
+    Array.from({ length: Math.round(days!) })
       .fill(0)
       .map((_, i) => i)
       .map((day) => startDate.plus({ days: day }))

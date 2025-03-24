@@ -10,7 +10,6 @@
   "types": "./src/index.ts",
   "private": true,
   "scripts": {
-    "lint": "eslint --cache --color '{src,scripts,shared,support}/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull",
     "tsc": "tsc -p ./tsconfig.json"
@@ -39,7 +38,6 @@
     "@types/node": "^22.13.11",
     "@types/pg": "^8.11.11",
     "dotenv": "^16.4.7",
-    "eslint-config-custom": "workspace:*",
     "prisma": "^6.5.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.8.2",

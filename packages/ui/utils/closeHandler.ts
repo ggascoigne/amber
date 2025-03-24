@@ -1,3 +1,1 @@
-export interface OnCloseHandler {
-  (event?: any): void
-}
+export type OnCloseHandler = (event?: any) => void

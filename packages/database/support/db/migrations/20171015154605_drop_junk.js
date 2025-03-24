@@ -93,12 +93,3 @@ export async function up(knex) {
       table.dropColumn('last_updated')
     })
 }
-
-/**
- * @param {import('knex').Knex} knex
- * @returns {Promise<void>}
- */
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {
-  // there's no rolling this back!
-}

@@ -123,5 +123,7 @@ export const paymentIntentHandler = async (req: NextApiRequest, res: NextApiResp
       }
       break
     }
+    default:
+      break
   }
 }
