@@ -6,7 +6,7 @@ import { Loader, notEmpty, range } from 'ui'
 
 import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-import { useGraphQL, GetGamesBySlotForSignupDocument } from '../../client'
+import { useGraphQL, GetGamesBySlotForSignupDocument } from '../../client-graphql'
 import { getSlotDescription, useConfiguration } from '../../utils'
 import { getGms } from '../Games'
 

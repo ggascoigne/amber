@@ -1,20 +1,13 @@
-import { dehydrate, QueryClient } from '@tanstack/react-query'
-import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
-
-import { GetSettingsDocument } from '../client'
+import { ssrHelpers } from '@amber/server/src/api/ssr'
 
 export async function configGetServerSideProps() {
-  const { query, release } = await makeQueryRunner()
-  const { data } = await query(GetSettingsDocument)
-  release()
+  await ssrHelpers.settings.getSettings.prefetch()
 
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery({ queryKey: ['getSettings'], queryFn: () => data })
-
-  return {
+  const ret = {
     props: {
-      configData: data,
-      dehydratedState: dehydrate(queryClient),
+      trpcState: ssrHelpers.dehydrate(),
     },
   }
+  console.log('getServerSideProps:', ret)
+  return ret
 }

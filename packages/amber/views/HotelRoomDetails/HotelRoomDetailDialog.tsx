@@ -17,7 +17,11 @@ import Yup from 'ui/utils/Yup'
 
 import { HotelRoomDetail } from './HotelRoomDetails'
 
-import { useGraphQLMutation, CreateHotelRoomDetailDocument, UpdateHotelRoomDetailByNodeIdDocument } from '../../client'
+import {
+  useGraphQLMutation,
+  CreateHotelRoomDetailDocument,
+  UpdateHotelRoomDetailByNodeIdDocument,
+} from '../../client-graphql'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({

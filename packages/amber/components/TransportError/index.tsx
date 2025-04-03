@@ -4,7 +4,7 @@ import { type AppRouter } from '@amber/server/src/api/appRouter' // Assuming App
 import Typography from '@mui/material/Typography'
 import { TRPCClientErrorLike } from '@trpc/client'
 
-import type { QueryError } from '../../client'
+import type { QueryError } from '../../client-graphql'
 
 const Quote: React.FC<{
   children: React.ReactNode

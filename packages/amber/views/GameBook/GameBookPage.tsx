@@ -2,7 +2,7 @@ import React from 'react'
 
 import { GridContainer, GridItem, Loader, Page, range } from 'ui'
 
-import { useGraphQL, GetSmallGamesByYearDocument } from '../../client'
+import { useGraphQL, GetSmallGamesByYearDocument } from '../../client-graphql'
 import { Link } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { YearTile } from '../../components/YearTile'

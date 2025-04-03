@@ -19,3 +19,9 @@ export const dbAdmin = globalForPrisma.prismaAdmin ?? createPrismaClient('ADMIN'
 
 if (isDev) globalForPrisma.prisma = db
 if (isDev) globalForPrisma.prismaAdmin = dbAdmin
+
+// db.$use(async (params, next) => {
+//   const result = await next(params)
+//   console.log(`Prisma: ${params.model}.${params.action}`, result)
+//   return result
+// })

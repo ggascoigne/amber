@@ -1,12 +1,4 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  CreateTransactionMutation,
-  CreateTransactionDocument,
-  CreateTransactionMutationVariables,
-  CreateStripeMutation,
-  CreateStripeMutationVariables,
-  CreateStripeDocument,
-} from '@amber/client'
 import { QueryRunner, makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
 import { buffer } from 'micro'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -15,6 +7,14 @@ import Stripe from 'stripe'
 import { sendEmailConfirmation } from './sendEmailConfirmation'
 import { UserPaymentDetails } from './types'
 
+import {
+  CreateTransactionMutation,
+  CreateTransactionDocument,
+  CreateTransactionMutationVariables,
+  CreateStripeMutation,
+  CreateStripeMutationVariables,
+  CreateStripeDocument,
+} from '../../../client-graphql/src'
 import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 
 const stripe = new Stripe(stripeSecretKey!, {

@@ -15,8 +15,8 @@ import {
   useGraphQLMutation,
   CreateTransactionDocument,
   UpdateTransactionByNodeIdDocument,
-} from '../client'
-import { useInvalidatePaymentQueries } from '../client/querySets'
+} from '../client-graphql'
+import { useInvalidatePaymentQueries } from '../client-graphql/querySets'
 
 export type TransactionValue = ToFormValues<GqlType<GetTransactionQuery, ['transactions', 'nodes', number]>>
 

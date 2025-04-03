@@ -7,8 +7,8 @@ import {
   CreateProfileDocument,
   UpdateProfileByNodeIdDocument,
   UpdateUserDocument,
-} from '../../client'
-import { useInvalidateUserQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateUserQueries } from '../../client-graphql/querySets'
 
 export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'nodes', number]>
 type ProfileValues = ToFormValues<GqlType<UsersAndProfiles, ['profiles', 'nodes', number]>>

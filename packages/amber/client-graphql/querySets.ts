@@ -51,6 +51,6 @@ const allGameChoiceQueries = ['getGameChoices']
 
 export const useInvalidateGameChoiceQueries = () => useInvalidateQueries(allGameChoiceQueries)
 
-const settingsQueries = ['getSettings']
+// const settingsQueries = ['getSettings']
 
-export const useInvalidateSettingsQueries = () => useInvalidateQueries(settingsQueries)
+// export const useInvalidateSettingsQueries = () => useInvalidateQueries(settingsQueries)

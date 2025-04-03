@@ -1,4 +1,4 @@
-import { api } from '@amber/server'
+import { api } from '@amber/server/src/utils/api'
 import { EmotionCache } from '@emotion/react'
 import RootComponent from 'amber/components/RootComponent'
 import { AppProps } from 'next/app'

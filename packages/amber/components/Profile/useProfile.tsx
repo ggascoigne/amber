@@ -4,7 +4,7 @@ import { useNotification } from 'ui'
 
 import { ProfileFormType } from './ProfileFormContent'
 
-import { useGraphQL, GetUserByEmailDocument } from '../../client'
+import { useGraphQL, GetUserByEmailDocument } from '../../client-graphql'
 import { useUser } from '../../utils'
 
 export const useProfile = (): ProfileFormType | null => {

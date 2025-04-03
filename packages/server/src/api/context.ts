@@ -28,14 +28,6 @@ export const createInnerTRPCContext = async ({ session }: CreateContextOptions =
   const userId = user?.userId
   const isAdmin = user?.roles?.includes('ROLE_ADMIN')
 
-  // console.log('context:', { session, user, userId, isAdmin })
-
-  if (userId) {
-    await db.$executeRawUnsafe(`SET LOCAL "user.id" = '${userId}'`)
-    await db.$executeRawUnsafe(`SET LOCAL "user.admin" = '${isAdmin}'`)
-    console.log(`userId(${userId}) is ${isAdmin ? 'admin' : 'not-admin'}`)
-  }
-
   return {
     db,
     session,

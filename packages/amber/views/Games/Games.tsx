@@ -16,7 +16,7 @@ import {
   DeleteGameDocument,
   GetGamesByYearDocument,
   GetMembershipsByYearDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'

@@ -12,7 +12,7 @@ import {
   useGraphQL,
   DeleteGameRoomDocument,
   GetGameRoomsDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 

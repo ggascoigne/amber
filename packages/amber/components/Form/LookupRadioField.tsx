@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
 
-import { useGraphQL, GetLookupValuesDocument } from '../../client'
+import { useGraphQL, GetLookupValuesDocument } from '../../client-graphql'
 import { TransportError } from '../TransportError'
 
 export interface LookupRadioFieldProps extends RadioGroupProps {

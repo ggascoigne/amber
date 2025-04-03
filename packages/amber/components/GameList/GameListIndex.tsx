@@ -4,7 +4,7 @@ import { Theme, Typography } from '@mui/material'
 import List from '@mui/material/List'
 import { makeStyles } from 'tss-react/mui'
 
-import type { GameArray } from '../../client'
+import type { GameArray } from '../../client-graphql'
 import { useUrlSource } from '../../utils'
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'

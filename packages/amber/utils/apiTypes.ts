@@ -1,7 +1,7 @@
 import { GqlType, ToFormValues } from 'ui/utils/ts-utils'
 import { z } from 'zod'
 
-import { GameFieldsFragment, GetMembershipsByYearQuery, GetUserByIdQuery } from '../client'
+import { GameFieldsFragment, GetMembershipsByYearQuery, GetUserByIdQuery } from '../client-graphql'
 import { SlotSummary } from '../views/GameSignup/SlotDetails'
 
 export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>

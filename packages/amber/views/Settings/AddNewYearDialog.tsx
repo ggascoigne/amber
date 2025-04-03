@@ -1,20 +1,19 @@
 import React, { useMemo, useCallback } from 'react'
 
+import {
+  useGetSettingsQuery,
+  Setting,
+  useCreateSettingMutation,
+  useUpdateSettingByIdMutation,
+  useInvalidateSettingsQueries,
+} from '@amber/client'
 import { Typography } from '@mui/material'
 import { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
 import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from 'ui'
 
-import { Setting, SettingValue } from './shared'
+import { SettingValue } from './shared'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  GetSettingsDocument,
-  CreateSettingDocument,
-  UpdateSettingByNodeIdDocument,
-} from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TransportError } from '../../components/TransportError'
 
 interface AddNewYearDialogProps {
@@ -56,13 +55,13 @@ const newYearFields = ['config.year', ...dateFields]
 const getSetting = (settingList: Setting[] | undefined, key: string) => settingList?.find((f) => f.code === key)
 
 export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClose }) => {
-  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
-  const createSetting = useGraphQLMutation(CreateSettingDocument)
-  const updateSetting = useGraphQLMutation(UpdateSettingByNodeIdDocument)
+  const { isLoading, error, data } = useGetSettingsQuery()
+  const createSetting = useCreateSettingMutation()
+  const updateSetting = useUpdateSettingByIdMutation()
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
-  const allFields: Setting[] | undefined = data?.settings!.nodes.filter(notEmpty)
+  const allFields: Setting[] | undefined = data?.filter(notEmpty)
   const oldYear = parseInt(getSetting(allFields, 'config.year')?.value ?? '0', 10)
   const newYear = oldYear + 1
   const timeZone = getSetting(allFields, 'config.baseTimeZone')?.value ?? ''
@@ -91,16 +90,19 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
       const newValues = [...values]
         .concat([
           {
+            id: 0,
             code: `config.startDates.${newYear}.slots`,
             type: 'number',
             value: getSetting(allFields, 'config.numberOfSlots')?.value ?? '',
           },
           {
+            id: 0,
             code: `config.startDates.${newYear}.virtual`,
             type: 'boolean',
             value: 'false',
           },
           {
+            id: 0,
             code: `config.startDates.${newYear}.date`,
             type: 'date',
             value: getSetting(values, 'config.conventionStartDate')!.value,
@@ -128,29 +130,21 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
 
       const updaters = newValues.reduce((acc: Promise<any>[], v) => {
         if (v) {
-          if (v.nodeId) {
+          if (v.id) {
             acc.push(
               updateSetting.mutateAsync({
-                input: {
-                  nodeId: v.nodeId,
-                  patch: {
-                    code: v.code,
-                    value: v.value,
-                    type: v.type,
-                  },
-                },
+                id: v.id,
+                code: v.code,
+                value: v.value,
+                type: v.type,
               }),
             )
           } else {
             acc.push(
               createSetting.mutateAsync({
-                input: {
-                  setting: {
-                    code: v.code,
-                    value: v.value,
-                    type: v.type,
-                  },
-                },
+                code: v.code,
+                value: v.value,
+                type: v.type,
               }),
             )
           }

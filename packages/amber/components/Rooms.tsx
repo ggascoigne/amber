@@ -8,7 +8,7 @@ import { Loader, notEmpty } from 'ui'
 import { HasPermission, Perms } from './Auth'
 import { TransportError } from './TransportError'
 
-import { useGraphQL, GetHotelRoomsDocument } from '../client'
+import { useGraphQL, GetHotelRoomsDocument } from '../client-graphql'
 import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
 import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'

@@ -3,7 +3,7 @@ import React, { MouseEventHandler, useState } from 'react'
 import { Column, Row, TableInstance } from 'react-table'
 import { Loader, notEmpty, Page, Table } from 'ui'
 
-import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client'
+import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client-graphql'
 import { ProfileDialog } from '../../components/Profile'
 import { UsersAndProfileType } from '../../components/Profile/profileUtils'
 import { TransportError } from '../../components/TransportError'

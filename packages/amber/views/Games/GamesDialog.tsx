@@ -27,7 +27,7 @@ import {
   GetGameByIdDocument,
   GetGameRoomsDocument,
   GetGamesByAuthorDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { TransportError } from '../../components/TransportError'

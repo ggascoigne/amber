@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography'
 import { match } from 'ts-pattern'
 import { DialogClose, Loader } from 'ui'
 
-import { useGraphQL, GetMembershipByYearAndIdDocument, GetUserByIdDocument } from '../../client'
+import { useGraphQL, GetMembershipByYearAndIdDocument, GetUserByIdDocument } from '../../client-graphql'
 import { MemberSelector, UserMemberType } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
 import {

@@ -17,6 +17,7 @@
   "dependencies": {
     "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
+    "@amber/client-graphql": "workspace:*",
     "@amber/server": "workspace:*",
     "@auth0/nextjs-auth0": "3.5.0",
     "@axe-core/react": "^4.10.1",
@@ -25,8 +26,6 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@graphql-typed-document-node/core": "^3.2.0",
-    "@trpc/react-query": "11.0.0",
-    "@trpc/client": "11.0.0",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/mdx": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
@@ -39,6 +38,9 @@
     "@stripe/stripe-js": "^3.5.0",
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
+    "@trpc/client": "11.0.0",
+    "@trpc/react-query": "11.0.0",
+    "@trpc/tanstack-react-query": "11.0.0",
     "clsx": "^2.1.1",
     "common-tags": "^1.8.2",
     "csstype": "^3.1.3",
@@ -67,6 +69,7 @@
     "react-spinners": "^0.13.8",
     "react-table": "^7.8.0",
     "sha.js": "^2.4.11",
+    "superjson": "^2.2.2",
     "tempy": "3.1.0",
     "ts-pattern": "^5.6.2",
     "ts-toolbelt": "^9.6.0",
@@ -75,7 +78,8 @@
     "ui": "workspace:*",
     "use-constant": "^1.1.1",
     "yup": "^1.6.1",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "zod-formik-adapter": "^1.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",

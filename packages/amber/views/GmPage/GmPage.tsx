@@ -15,8 +15,8 @@ import {
   DeleteGameDocument,
   GetGamesByAuthorDocument,
   GetGamesByYearAndAuthorDocument,
-} from '../../client'
-import { useInvalidateGameQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameQueries } from '../../client-graphql/querySets'
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'

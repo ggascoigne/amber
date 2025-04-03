@@ -29,7 +29,7 @@ import {
   GetGamesByYearDocument,
   UpdateGameDocument,
   UpdateGameRoomDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
 

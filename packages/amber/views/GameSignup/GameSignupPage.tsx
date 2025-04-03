@@ -27,8 +27,8 @@ import {
   CreateGameChoicesDocument,
   GetGameChoicesDocument,
   UpdateGameChoiceByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'

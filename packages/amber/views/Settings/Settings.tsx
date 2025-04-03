@@ -1,6 +1,7 @@
 import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
-import { api, RouterOutputs } from '@amber/server'
+import { useInvalidateSettingsQueries, useDeleteSettingMutation, useGetSettingsQuery } from '@amber/client'
+import { RouterOutputs } from '@amber/server'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { DateTime } from 'luxon'
@@ -11,8 +12,6 @@ import { Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
 
-import { useGraphQLMutation, DeleteSettingDocument } from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
 import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useConfiguration } from '../../utils'
@@ -83,11 +82,10 @@ const Settings: React.FC = React.memo(() => {
     ],
     [onAddNewYear],
   )
-
-  const deleteSetting = useGraphQLMutation(DeleteSettingDocument)
+  const deleteSetting = useDeleteSettingMutation()
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = api.settings.getSettings.useQuery()
+  const { isLoading, error, data, refetch } = useGetSettingsQuery()
 
   if (error) {
     return <TransportError error={error} />
@@ -120,7 +118,7 @@ const Settings: React.FC = React.memo(() => {
 
   const onDelete = (instance: TableInstance<Setting>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id! } }))
+    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ id: s.id! }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()

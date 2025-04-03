@@ -6,7 +6,7 @@ import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from 'ui'
 
-import type { GameEntry } from '../../client'
+import type { GameEntry } from '../../client-graphql'
 import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import { GameDecorator, GameDecoratorParams } from '../types'

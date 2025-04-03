@@ -5,7 +5,7 @@ import { notEmpty } from 'ui'
 import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
 
-import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client'
+import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client-graphql'
 import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {

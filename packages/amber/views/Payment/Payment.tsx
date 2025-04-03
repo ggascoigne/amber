@@ -8,7 +8,7 @@ import { Loader, Page } from 'ui'
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
-import { useGraphQL, GetUserByIdDocument } from '../../client'
+import { useGraphQL, GetUserByIdDocument } from '../../client-graphql'
 import { ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useUser } from '../../utils'
 

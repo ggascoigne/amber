@@ -7,7 +7,7 @@ import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
 import { GqlType, Loader, notEmpty, Page } from 'ui'
 
-import { GameAssignmentNode, useGraphQL, GetScheduleDocument } from '../../client'
+import { GameAssignmentNode, useGraphQL, GetScheduleDocument } from '../../client-graphql'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
 import { TransportError } from '../../components/TransportError'

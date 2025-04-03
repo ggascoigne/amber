@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Loader } from 'ui'
 
-import { useGraphQL, GetSingleLookupValueDocument } from '../../client'
+import { useGraphQL, GetSingleLookupValueDocument } from '../../client-graphql'
 import {
   getAttendance,
   getBathroomType,

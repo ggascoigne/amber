@@ -13,8 +13,8 @@ import {
   DeleteMembershipDocument,
   GetHotelRoomsDocument,
   GetMembershipsByYearDocument,
-} from '../../client'
-import { useInvalidateMembershipQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateMembershipQueries } from '../../client-graphql/querySets'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'

@@ -4,7 +4,7 @@ import { Autocomplete, TextField } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import { ContentsOf, notEmpty, useNotification } from 'ui'
 
-import { GetAllMembersByQuery, useGraphQL, GetAllMembersByDocument } from '../client'
+import { GetAllMembersByQuery, useGraphQL, GetAllMembersByDocument } from '../client-graphql'
 
 const useStyles = makeStyles()({
   divider: {

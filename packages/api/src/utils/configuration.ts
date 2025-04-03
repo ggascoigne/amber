@@ -1,8 +1,10 @@
-import { GetSettingsQuery } from '@amber/client'
+import { RouterOutputs } from '@amber/server'
 import { DateTime } from 'luxon'
 import { z } from 'zod'
 
 import { setVal } from './dot2val'
+
+type SettingsQueryResult = RouterOutputs['settings']['getSettings']
 
 let baseTimeZone: string | undefined
 
@@ -88,8 +90,8 @@ type DateFields<T> = { [K in keyof T]: T[K] extends DateTime ? K : never }[keyof
 export type ConfigurationDates = Pick<ConfigurationType, DateFields<ConfigurationType>>
 export type ConfigurationNonDates = Omit<ConfigurationType, DateFields<ConfigurationType> | 'startDates'>
 
-export const getSettingsObject = (data: GetSettingsQuery | undefined) => {
-  const settings = data?.settings?.nodes?.map((n) => n && pick(n, 'id', 'code', 'type', 'value'))?.filter(notEmpty)
+export const getSettingsObject = (data: SettingsQueryResult | undefined) => {
+  const settings = data?.map((n) => n && pick(n, 'id', 'code', 'type', 'value'))?.filter(notEmpty)
   const obj: any = {}
   settings?.forEach((i) => setVal(obj, i.code, i.value))
   // set global so we can use it in the transform

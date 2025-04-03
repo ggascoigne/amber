@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
+import { useGetSettingsQuery, Setting } from '@amber/client'
 import { notEmpty } from 'ui'
 
 import { useIsGm, useIsMember } from './membership'
 
-import { SettingFieldsFragment, useGraphQL, GetSettingsDocument } from '../client'
 import { Perms, useAuth } from '../components/Auth'
 
 export enum SettingValue {
@@ -26,11 +26,11 @@ export const useSettings = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const isGameAdmin = hasPermissions(Perms.GameAdmin)
-  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
+  const { isLoading, error, data } = useGetSettingsQuery()
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): string | null => {
+      const getSetting = (settings: Setting[] | null, setting1: string): string | null => {
         const s = settings?.find((s1) => s1.code === setting1)
         return s ? s.value : null
       }
@@ -39,7 +39,7 @@ export const useSettings = () => {
         return `${defaultValue}`
       }
 
-      const settings: SettingFieldsFragment[] | null = data.settings?.nodes.filter(notEmpty) ?? null
+      const settings: Setting[] | null = data.filter(notEmpty) ?? null
 
       return getSetting(settings, setting)
     },
@@ -48,7 +48,7 @@ export const useSettings = () => {
 
   const getSettingValue = useCallback(
     (setting: string, defaultValue = false): SettingValue | boolean | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): SettingValue | null => {
+      const getSetting = (settings: Setting[] | null, setting1: string): SettingValue | null => {
         const s = settings?.find((s1) => s1.code === setting1)
         if (s && s.type !== 'perm-gate') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
@@ -58,7 +58,7 @@ export const useSettings = () => {
         return defaultValue
       }
 
-      const settings: SettingFieldsFragment[] | null = data.settings?.nodes.filter(notEmpty) ?? null
+      const settings: Setting[] | null = data.filter(notEmpty) ?? null
 
       return getSetting(settings, setting)
     },

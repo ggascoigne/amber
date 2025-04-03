@@ -18,7 +18,7 @@ import {
   DeleteLookupValueDocument,
   UpdateLookupByNodeIdDocument,
   UpdateLookupValueByNodeIdDocument,
-} from '../../client'
+} from '../../client-graphql'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   root: {

@@ -4,7 +4,7 @@ import { Field, Loader, MultiLine, Page } from 'ui'
 
 import { ChoiceSummary } from './SlotDetails'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client-graphql'
 import { ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'

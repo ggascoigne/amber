@@ -5,7 +5,7 @@ import { GqlType, Loader, notEmpty, Page, Table, ToFormValues } from 'ui'
 
 import { StripeDialog } from './StripeDialog'
 
-import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client'
+import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 
 export type StripeValue = ToFormValues<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>

@@ -4,5 +4,8 @@ packages:
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
-  - 'esbuild'
+  - '@swc/core'
+  - bufferutil
+  - esbuild
   - prisma
+  - utf-8-validate

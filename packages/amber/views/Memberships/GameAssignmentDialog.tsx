@@ -26,8 +26,8 @@ import {
   DeleteGameAssignmentDocument,
   GetGamesByYearDocument,
   GetScheduleDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameAssignmentQueries } from '../../client-graphql/querySets'
 import { TransportError } from '../../components/TransportError'
 import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
 import { MembershipType } from '../../utils/apiTypes'

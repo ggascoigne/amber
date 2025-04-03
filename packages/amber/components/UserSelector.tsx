@@ -4,7 +4,7 @@ import { Autocomplete, TextField } from '@mui/material'
 import { makeStyles, withStyles } from 'tss-react/mui'
 import { ContentsOf, notEmpty, useNotification } from 'ui'
 
-import { GetAllUsersByQuery, useGraphQL, GetAllUsersByDocument } from '../client'
+import { GetAllUsersByQuery, useGraphQL, GetAllUsersByDocument } from '../client-graphql'
 import { useUserFilter, useYearFilter } from '../utils'
 
 const useStyles = makeStyles()({

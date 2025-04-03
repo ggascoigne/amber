@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Router from 'next/router'
 
-import { GetUserByIdDocument, useGraphQL } from '../client'
+import { GetUserByIdDocument, useGraphQL } from '../client-graphql'
 import { formatAmountForDisplay, useUser } from '../utils'
 
 const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {

@@ -4,7 +4,7 @@
  *
  * We also create a few inference helpers for input and output types.
  */
-import { QueryClient } from '@tanstack/react-query'
+// import { QueryClient } from '@tanstack/react-query'
 import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferReactQueryProcedureOptions } from '@trpc/react-query'
@@ -15,19 +15,18 @@ import superjson from 'superjson'
 import { type AppRouter } from '../api/appRouter'
 
 // TODO: work out how to be env from @amber/environment to load correctly in the browser
-const getBaseUrl = () => {
+export const getBaseUrl = () => {
   if (typeof window !== 'undefined') return '' // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}` // SSR should use vercel url
   return `http://localhost:${process.env.NEXT_PUBLIC_PORT ?? 3000}` // dev SSR should use localhost
 }
 
-export const queryClient = new QueryClient()
+// export const queryClient = new QueryClient()
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({
   config() {
     return {
-      queryClient,
       /**
        * Links used to determine request flow from client to server.
        *

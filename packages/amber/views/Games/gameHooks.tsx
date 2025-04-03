@@ -16,8 +16,8 @@ import {
   GetGameAssignmentsByYearDocument,
   GetMembershipsByYearDocument,
   UpdateGameByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client-graphql/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'

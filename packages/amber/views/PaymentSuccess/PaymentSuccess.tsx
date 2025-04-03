@@ -4,8 +4,8 @@ import { Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import { Page } from 'ui/components'
 
-import { useGraphQL, GetUserByIdDocument } from '../../client'
-import { useInvalidatePaymentQueries } from '../../client/querySets'
+import { useGraphQL, GetUserByIdDocument } from '../../client-graphql'
+import { useInvalidatePaymentQueries } from '../../client-graphql/querySets'
 import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
 
 export const PaymentSuccess = () => {

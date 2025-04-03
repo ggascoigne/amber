@@ -12,6 +12,7 @@
   "scripts": {
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull",
+    "postinstall": "DB_ENV=acnw pnpm prisma:generate",
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
@@ -22,6 +23,7 @@
     "@t3-oss/env-nextjs": "^0.12.0",
     "@trpc/next": "11.0.0",
     "@trpc/react-query": "11.0.0",
+    "@trpc/tanstack-react-query": "11.0.0",
     "@trpc/server": "11.0.0",
     "@trpc/client": "11.0.0",
     "@tanstack/react-query": "^5.69.0",

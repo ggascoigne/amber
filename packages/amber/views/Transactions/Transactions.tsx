@@ -6,8 +6,8 @@ import { TableMouseEventHandler } from 'ui/types/react-table-config'
 
 import { TransactionDialog } from './TransactionDialog'
 
-import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client'
-import { useInvalidatePaymentQueries } from '../../client/querySets'
+import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client-graphql'
+import { useInvalidatePaymentQueries } from '../../client-graphql/querySets'
 import { TransportError } from '../../components/TransportError'
 import { formatAmountForDisplay } from '../../utils'
 import { TransactionValue } from '../../utils/transactionUtils'

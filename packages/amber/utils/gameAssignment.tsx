@@ -1,4 +1,4 @@
-import { GameAssignmentNode, GetScheduleQuery } from '../client'
+import { GameAssignmentNode, GetScheduleQuery } from '../client-graphql'
 
 export const getGameAssignments = (
   data: GetScheduleQuery | undefined,

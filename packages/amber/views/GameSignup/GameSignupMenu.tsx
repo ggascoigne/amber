@@ -5,7 +5,7 @@ import { Loader } from 'ui'
 
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client-graphql'
 import { GameMenu } from '../../components/GameList'
 import { TransportError } from '../../components/TransportError'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'

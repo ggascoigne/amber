@@ -20,8 +20,12 @@ import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelec
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-import { useGraphQLMutation, CreateGameSubmissionDocument, UpdateGameSubmissionByNodeIdDocument } from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
+import {
+  useGraphQLMutation,
+  CreateGameSubmissionDocument,
+  UpdateGameSubmissionByNodeIdDocument,
+} from '../../client-graphql'
+import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { ContactEmail } from '../../components'
 import { ProfileFormType, useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'

@@ -1,19 +1,25 @@
 import React, { useMemo } from 'react'
 
+import {
+  Setting,
+  useInvalidateSettingsQueries,
+  useCreateSettingMutation,
+  useUpdateSettingByIdMutation,
+} from '@amber/client'
 import { FormikHelpers } from 'formik'
 import { EditDialog, GridContainer, GridItem, OnCloseHandler, pick, SelectField, TextField, useNotification } from 'ui'
-import Yup from 'ui/utils/Yup'
+import { z } from 'zod'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
-import { Setting, SettingValue, typeValues } from './shared'
+import { SettingValue, typeValues } from './shared'
 
-import { useGraphQLMutation, CreateSettingDocument, UpdateSettingByNodeIdDocument } from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
-
-const validationSchema = Yup.object().shape({
-  code: Yup.string().min(2).max(100).required('Required'),
-  type: Yup.string().min(2).max(15).required('Required'),
-  value: Yup.string().max(100).required('Required'),
-})
+const validationSchema = toFormikValidationSchema(
+  z.object({
+    code: z.string().min(2, 'Required').max(100, 'Required'),
+    type: z.string().min(2, 'Required').max(15, 'Required'),
+    value: z.string().max(100, 'Required'),
+  }),
+)
 
 type FormValues = Setting
 
@@ -24,27 +30,17 @@ interface SettingDialogProps {
 }
 
 export const useEditSetting = (onClose: OnCloseHandler) => {
-  const createSetting = useGraphQLMutation(CreateSettingDocument)
-  const updateSetting = useGraphQLMutation(UpdateSettingByNodeIdDocument)
+  const createSetting = useCreateSettingMutation()
+  const updateSetting = useUpdateSettingByIdMutation()
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
   return async (values: FormValues) => {
-    if (values.nodeId) {
-      await updateSetting
-        .mutateAsync(
-          {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(values, 'id', 'code', 'type', 'value'),
-              },
-            },
-          },
-          {
-            onSuccess: invalidateSettingsQueries,
-          },
-        )
+    if (values.id) {
+      updateSetting
+        .mutateAsync(pick(values, 'id', 'code', 'type', 'value'), {
+          onSuccess: invalidateSettingsQueries,
+        })
         .then(() => {
           notify({ text: 'Setting updated', variant: 'success' })
           onClose()
@@ -54,18 +50,9 @@ export const useEditSetting = (onClose: OnCloseHandler) => {
         })
     } else {
       await createSetting
-        .mutateAsync(
-          {
-            input: {
-              setting: {
-                ...pick(values, 'nodeId', 'id', 'code', 'type', 'value'),
-              },
-            },
-          },
-          {
-            onSuccess: invalidateSettingsQueries,
-          },
-        )
+        .mutateAsync(pick(values, 'id', 'code', 'type', 'value'), {
+          onSuccess: invalidateSettingsQueries,
+        })
         .then((_res) => {
           notify({ text: 'Setting created', variant: 'success' })
           onClose()
@@ -88,6 +75,7 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
       code: '',
       type: 'date',
       value: '',
+      id: 0,
     }
     return initialValues ? { ...initialValues } : { ...defaultValues }
   }, [initialValues])
@@ -100,7 +88,7 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
       onSubmit={onSubmit}
       title='Setting'
       validationSchema={validationSchema}
-      isEditing={!!startingValues.nodeId}
+      isEditing={!!startingValues.id}
     >
       {({ values }) => (
         <GridContainer spacing={2}>

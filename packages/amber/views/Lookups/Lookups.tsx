@@ -13,7 +13,7 @@ import {
   DeleteLookupDocument,
   DeleteLookupValueDocument,
   GetLookupsDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 

@@ -16,8 +16,8 @@ import {
   CreateMembershipDocument,
   GetHotelRoomsDocument,
   UpdateMembershipByNodeIdDocument,
-} from '../client'
-import { useInvalidateMembershipQueries } from '../client/querySets'
+} from '../client-graphql'
+import { useInvalidateMembershipQueries } from '../client-graphql/querySets'
 import { Perms, ProfileFormType, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes

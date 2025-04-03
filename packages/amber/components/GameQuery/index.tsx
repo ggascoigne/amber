@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Loader } from 'ui'
 
-import { GameArray, useGraphQL, GetGamesBySlotDocument } from '../../client'
+import { GameArray, useGraphQL, GetGamesBySlotDocument } from '../../client-graphql'
 import { TransportError } from '../TransportError'
 
 export interface GameQueryChild {

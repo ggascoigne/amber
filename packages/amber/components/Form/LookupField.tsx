@@ -3,7 +3,7 @@ import React from 'react'
 import type { TextFieldProps } from 'ui'
 import { Loader, SelectField } from 'ui'
 
-import { useGraphQL, GetLookupValuesDocument } from '../../client'
+import { useGraphQL, GetLookupValuesDocument } from '../../client-graphql'
 import { useRealmOptions } from '../../utils'
 import { TransportError } from '../TransportError'
 

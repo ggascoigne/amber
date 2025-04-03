@@ -13,8 +13,9 @@
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/client": "workspace:*",
+    "@amber/client-graphql": "workspace:*",
     "@amber/environment": "workspace:*",
+    "@amber/server": "workspace:*",
     "@auth0/nextjs-auth0": "^3.6.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "database": "workspace:*",
