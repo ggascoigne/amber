@@ -13,6 +13,7 @@ import { useSendEmail } from './useSendEmail'
 
 import { GetTransactionByUserQuery, useGraphQL, GetHotelRoomsDocument } from '../client-graphql'
 import { Perms, useAuth } from '../components'
+import { DateTime } from 'luxon'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
 // circular import explosions
@@ -22,6 +23,12 @@ export interface MembershipFormContent {
 }
 
 export type MembershipErrorType = Record<keyof MembershipType, string>
+
+export const toLegacyApiMembership = (membershipValues: MembershipType) => ({
+  ...membershipValues,
+  arrivalDate: DateTime.fromJSDate(membershipValues.arrivalDate).toISO()!,
+  departureDate: DateTime.fromJSDate(membershipValues.departureDate).toISO()!,
+})
 
 export const fromSlotsAttending = (configuration: Configuration, membershipValues: MembershipType) => {
   const slotsAttendingData = Array(configuration.numberOfSlots).fill(false)
@@ -107,7 +114,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           update,
           url: `${window.location.origin}/membership`,
           paymentUrl: `${window.location.origin}/payment`,
-          membership: membershipValues,
+          membership: toLegacyApiMembership(membershipValues),
           slotDescriptions,
           // for new registrations don't rely on the profile value, it's out of date
           owed: update === 'new' ? getMembershipCost(configuration, membershipValues) : profile.balance,

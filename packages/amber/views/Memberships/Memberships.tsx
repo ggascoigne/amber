@@ -15,6 +15,7 @@ import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { getSlotDescription, useConfiguration, useSendEmail, useYearFilter } from '../../utils'
 import { MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
+import { toLegacyApiMembership } from '../../utils/membershipUtils'
 
 export interface MembershipWizardProps {
   open: boolean
@@ -204,7 +205,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
             update: 'status',
             url: `${window.location.origin}/membership`,
             paymentUrl: `${window.location.origin}/payment`,
-            membership: m,
+            membership: toLegacyApiMembership(m),
             slotDescriptions,
             owed,
             room,
