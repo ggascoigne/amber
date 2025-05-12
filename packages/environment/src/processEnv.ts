@@ -17,7 +17,7 @@ export const processEnv = (src = process.env) =>
       MANAGEMENT_CLIENT_ID: z.string(),
       MANAGEMENT_CLIENT_SECRET: z.string(),
       AUTH0_SECRET: z.string(),
-      AUTH0_BASE_URL: z.string().url().optional(),
+      AUTH0_BASE_URL: z.string().optional(),
       AUTH0_ISSUER_BASE_URL: z.string().url(),
       AUTH0_CLIENT_ID: z.string(),
       AUTH0_CLIENT_SECRET: z.string(),
