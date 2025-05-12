@@ -1,4 +1,4 @@
-import * as $runtime from '../runtime/library'
+import * as $runtime from "../runtime/library"
 
 /**
  * @param email

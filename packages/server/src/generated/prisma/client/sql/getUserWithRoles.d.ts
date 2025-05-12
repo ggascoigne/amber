@@ -1,11 +1,9 @@
-import * as $runtime from '../runtime/library'
+import * as $runtime from "../runtime/library"
 
 /**
  * @param email
  */
-export const getUserWithRoles: (
-  email: string,
-) => $runtime.TypedSql<getUserWithRoles.Parameters, getUserWithRoles.Result>
+export const getUserWithRoles: (email: string) => $runtime.TypedSql<getUserWithRoles.Parameters, getUserWithRoles.Result>
 
 export namespace getUserWithRoles {
   export type Parameters = [email: string]

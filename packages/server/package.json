@@ -10,7 +10,7 @@
   "types": "./src/index.ts",
   "private": true,
   "scripts": {
-    "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --sql",
+    "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --schema ./prisma/schema.prisma --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
     "postinstall": "DB_ENV=acnw pnpm prisma:generate",
