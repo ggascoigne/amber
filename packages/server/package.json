@@ -13,7 +13,7 @@
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma generate --schema ./prisma/schema.prisma --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
-    "postinstall": "DB_ENV=acnw pnpm prisma:generate",
+    "postinstall": "DB_ENV=acnw pnpm prisma:generate && ls -l ./src/generated",
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
