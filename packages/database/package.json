@@ -9,11 +9,12 @@
   "private": true,
   "scripts": {
     "db:clean": "./scripts/createCleanDb.ts",
+    "db:writeDbCert": "./scripts/writeDbCert.ts",
     "db:docker:down": "docker compose down",
     "db:docker:up": "docker compose up -d",
     "db:import": "./scripts/toLocal.ts",
     "db:migrate:generate": "tsx node_modules/knex/bin/cli.js migrate:make --knexfile ./support/knexfile.ts generate",
-    "db:migrate:up": "tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up",
+    "db:migrate:up": "pnpm db:writeDbCert && tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up",
     "db:setup": "pnpm db:clean && pnpm db:migrate:up",
     "db:start": "docker compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
     "db:startFromClean": "pnpm db:start && pnpm db:setup && pnpm db:import",
