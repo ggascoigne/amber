@@ -119,6 +119,9 @@ importers:
       '@next/mdx':
         specifier: ^13.5.11
         version: 13.5.11(@mdx-js/loader@2.3.0(webpack@5.99.5(@swc/core@1.11.20)))(@mdx-js/react@2.3.0(react@18.3.1))
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^6.7.0
+        version: 6.7.0
       '@stripe/react-stripe-js':
         specifier: ^2.9.0
         version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2836,6 +2839,9 @@ packages:
 
   '@prisma/internals@4.16.2':
     resolution: {integrity: sha512-/3OiSADA3RRgsaeEE+MDsBgL6oAMwddSheXn6wtYGUnjERAV/BmF5bMMLnTykesQqwZ1s8HrISrJ0Vf6cjOxMg==}
+
+  '@prisma/nextjs-monorepo-workaround-plugin@6.7.0':
+    resolution: {integrity: sha512-5rrgAAxhlmfZXNBkaussmCZe8y86L38B6QCbRgBIO/AaI4EkO+2OJolztpbAp+YRr9sOSPj4geinUVZol1drfg==}
 
   '@prisma/prisma-fmt-wasm@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81':
     resolution: {integrity: sha512-g090+dEH7wrdCw359+8J9+TGH84qK28V/dxwINjhhNCtju9lej99z9w/AVsJP9UhhcCPS4psYz4iu8d53uxVpA==}
@@ -9987,6 +9993,8 @@ snapshots:
     transitivePeerDependencies:
       - encoding
       - supports-color
+
+  '@prisma/nextjs-monorepo-workaround-plugin@6.7.0': {}
 
   '@prisma/prisma-fmt-wasm@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81': {}
 

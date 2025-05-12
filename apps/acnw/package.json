@@ -35,6 +35,7 @@
     "@mui/system": "^5.17.1",
     "@mui/x-date-pickers": "^7.28.3",
     "@next/mdx": "^13.5.11",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^6.7.0",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^3.5.0",
     "@tanstack/react-query": "^5.73.3",
