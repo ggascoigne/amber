@@ -1,24 +1,14 @@
 import React from 'react'
 
+import { useInvalidateLookupQueries, useTRPC, type Lookup } from '@amber/client'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@mui/material'
+import { useMutation } from '@tanstack/react-query'
 import { FieldArray, FormikHelpers } from 'formik'
 import { makeStyles } from 'tss-react/mui'
 import { Card, CardBody, CardHeader, EditDialog, GridContainer, GridItem, TextField, ToFormValues } from 'ui'
 import Yup from 'ui/utils/Yup'
-
-import { LookupAndValues } from './Lookups'
-
-import {
-  CreateLookupMutation,
-  useGraphQLMutation,
-  CreateLookupDocument,
-  CreateLookupValueDocument,
-  DeleteLookupValueDocument,
-  UpdateLookupByNodeIdDocument,
-  UpdateLookupValueByNodeIdDocument,
-} from '../../client-graphql'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   root: {
@@ -54,12 +44,12 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
-type LookupAndValuesType = ToFormValues<LookupAndValues>
+type LookupFormType = ToFormValues<Lookup>
 
 interface LookupsDialogProps {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: LookupAndValuesType
+  initialValues?: LookupFormType
 }
 
 const validationSchema = Yup.object().shape({
@@ -75,85 +65,67 @@ const validationSchema = Yup.object().shape({
   }),
 })
 
-const defaultValues: LookupAndValuesType = {
+const defaultValues: LookupFormType = {
   realm: '',
-  lookupValues: { __typename: 'LookupValuesConnection', nodes: [] },
+  lookupValue: [],
+
+  codeMaximum: null,
+  codeMinimum: null,
+  codeScale: null,
+  codeType: 'string',
+  internationalize: false,
+  ordering: 'sequencer',
+  valueMaximum: null,
+  valueMinimum: null,
+  valueScale: null,
+  valueType: 'string',
 }
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
   const { classes } = useStyles()
-  const createLookup = useGraphQLMutation(CreateLookupDocument)
-  const updateLookup = useGraphQLMutation(UpdateLookupByNodeIdDocument)
-  const createLookupValue = useGraphQLMutation(CreateLookupValueDocument)
-  const updateLookupValue = useGraphQLMutation(UpdateLookupValueByNodeIdDocument)
-  const deleteLookupValue = useGraphQLMutation(DeleteLookupValueDocument)
+  const trpc = useTRPC()
 
-  const onSubmit = async (values: LookupAndValuesType, actions: FormikHelpers<LookupAndValuesType>) => {
-    const res = values.nodeId
+  const createLookup = useMutation(trpc.lookups.createLookup.mutationOptions())
+  const updateLookup = useMutation(trpc.lookups.updateLookup.mutationOptions())
+  const createLookupValue = useMutation(trpc.lookups.createLookupValue.mutationOptions())
+  const updateLookupValue = useMutation(trpc.lookups.updateLookupValue.mutationOptions())
+  const deleteLookupValue = useMutation(trpc.lookups.deleteLookupValue.mutationOptions())
+
+  const invalidateQueries = useInvalidateLookupQueries()
+
+  const onSubmit = async (values: LookupFormType, actions: FormikHelpers<LookupFormType>) => {
+    const res = values.id
       ? await updateLookup.mutateAsync({
-          input: {
-            nodeId: values.nodeId,
-            patch: {
-              realm: values.realm,
-            },
-          },
+          id: values.id,
+          realm: values.realm,
         })
       : await createLookup.mutateAsync({
-          input: {
-            lookup: {
-              realm: values.realm,
-              codeType: 'string',
-              internationalize: false,
-              valueType: 'string',
-              ordering: 'sequencer',
-            },
-          },
+          realm: values.realm,
         })
-
-    // eslint-disable-next-line no-prototype-builtins
-    const isCreateLookup = (value: typeof res): value is CreateLookupMutation => value.hasOwnProperty('createLookup')
 
     if (!res) {
       return
     }
-    if (isCreateLookup(res) && !res.createLookup) {
-      return
-    }
-    if (!isCreateLookup(res) && !res.updateLookupByNodeId) {
-      return
-    }
+    const lookupId = res.lookup?.id
 
-    const lookupId = isCreateLookup(res) ? res.createLookup?.lookup?.id : res.updateLookupByNodeId?.lookup?.id
-
-    const updaters = values.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
+    const updaters = values.lookupValue.reduce((acc: Promise<any>[], lv) => {
       if (lv) {
-        if (lv.nodeId) {
+        if (lv.id) {
           acc.push(
             updateLookupValue.mutateAsync({
-              input: {
-                nodeId: lv.nodeId,
-                patch: {
-                  code: lv.code,
-                  sequencer: lv.sequencer,
-                  value: lv.value,
-                  lookupId,
-                },
-              },
+              id: lv.id,
+              code: lv.code,
+              sequencer: lv.sequencer,
+              value: lv.value,
             }),
           )
         } else {
           acc.push(
             createLookupValue.mutateAsync({
-              input: {
-                lookupValue: {
-                  code: lv.code,
-                  sequencer: lv.sequencer,
-                  value: lv.value,
-                  lookupId: lookupId!,
-                  numericSequencer: 0.0,
-                  stringSequencer: '_',
-                },
-              },
+              code: lv.code,
+              sequencer: lv.sequencer,
+              value: lv.value,
+              lookupId: lookupId!,
             }),
           )
         }
@@ -161,27 +133,27 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
       return acc
     }, [])
 
-    const currentLookupValueIds = values.lookupValues.nodes.reduce((acc: number[], lv) => {
+    const currentLookupValueIds = values.lookupValue.reduce((acc: number[], lv) => {
       lv?.id && acc.push(lv.id)
       return acc
     }, [])
 
-    initialValues.lookupValues.nodes.map((ilv) => {
+    initialValues.lookupValue.map((ilv) => {
       if (ilv?.id) {
-        currentLookupValueIds.includes(ilv.id) ||
-          updaters.push(deleteLookupValue.mutateAsync({ input: { id: ilv.id } }))
+        currentLookupValueIds.includes(ilv.id) || updaters.push(deleteLookupValue.mutateAsync({ id: ilv.id }))
       }
       return null
     })
 
     Promise.allSettled(updaters).then(() => {
       actions.setSubmitting(false)
+      invalidateQueries()
       onClose(null)
     })
   }
 
-  const highestSequence = (values: LookupAndValuesType) =>
-    values.lookupValues.nodes.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
+  const highestSequence = (values: LookupFormType) =>
+    values.lookupValue.reduce((acc, val) => Math.max(val ? val.sequencer : 0, acc), -1) + 1
 
   return (
     <EditDialog
@@ -200,7 +172,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
           </GridItem>
           <GridItem>
             <FieldArray
-              name='lookupValues.nodes'
+              name='lookupValue'
               render={(arrayHelpers) => (
                 <Card>
                   <CardHeader color='success' className={classes.header}>
@@ -228,16 +200,16 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {formikProps.values.lookupValues.nodes.map((lv, index) => (
+                        {formikProps.values.lookupValue.map((lv, index) => (
                           <TableRow key={index}>
                             <TableCell scope='row' style={{ width: '10%' }}>
-                              <TextField name={`lookupValues.nodes[${index}].sequencer`} fullWidth type='number' />
+                              <TextField name={`lookupValue[${index}].sequencer`} fullWidth type='number' />
                             </TableCell>
                             <TableCell style={{ width: '20%' }}>
-                              <TextField name={`lookupValues.nodes[${index}].code`} fullWidth />
+                              <TextField name={`lookupValue[${index}].code`} fullWidth />
                             </TableCell>
                             <TableCell>
-                              <TextField name={`lookupValues.nodes[${index}].value`} fullWidth />
+                              <TextField name={`lookupValue[${index}].value`} fullWidth />
                             </TableCell>
                             <TableCell align='right' style={{ width: '50px' }}>
                               <IconButton

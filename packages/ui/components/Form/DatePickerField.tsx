@@ -24,14 +24,18 @@ export function DatePickerField(props: DatePickerFieldProps) {
     timeZone,
     ...other
   } = props
+  const isDate = typeof field.value === 'object' && field.value instanceof Date
+  const dateValue = isDate ? DateTime.fromJSDate(field.value) : DateTime.fromISO(field.value)
+
   return (
     <DatePicker
       minDate={minDate}
       maxDate={maxDate}
-      value={timeZone ? DateTime.fromISO(field.value).setZone(timeZone) : DateTime.fromISO(field.value)}
+      value={timeZone ? dateValue.setZone(timeZone) : dateValue}
       // Make sure that your 3d param is set to `true` in order to run validation
       onChange={(newValue: DateTime | null) => {
-        const newDate = timeZone ? newValue?.setZone(timeZone)?.toISO() : newValue?.toISO()
+        const updatedValue = timeZone ? newValue?.setZone(timeZone) : newValue
+        const newDate = isDate ? updatedValue?.toJSDate() : updatedValue?.toISO()
         return form.setFieldValue(field.name, newDate, true)
       }}
       {...other}

@@ -1,35 +1,30 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
+import { MembershipAndUserAndRoom, UserAndProfile, useTRPC } from '@amber/client'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Column, Row, TableInstance, TableState } from 'react-table'
 import { BlankNoCell, DateCell, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  DeleteMembershipDocument,
-  GetHotelRoomsDocument,
-  GetMembershipsByYearDocument,
-} from '../../client-graphql'
 import { useInvalidateMembershipQueries } from '../../client-graphql/querySets'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { getSlotDescription, useConfiguration, useSendEmail, useYearFilter } from '../../utils'
-import { Membership, MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
+import { MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
 
 export interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
   short?: boolean
 }
 
-const initialState: Partial<TableState<Membership>> = {
+const initialState: Partial<TableState<MembershipAndUserAndRoom>> = {
   sortBy: [
     {
       id: 'lastName',
@@ -48,7 +43,7 @@ const initialState: Partial<TableState<Membership>> = {
   ],
 }
 
-const memberColumns: Column<Membership>[] = [
+const memberColumns: Column<MembershipAndUserAndRoom>[] = [
   {
     accessor: 'id',
     Header: 'Member ID',
@@ -56,25 +51,25 @@ const memberColumns: Column<Membership>[] = [
   },
   {
     id: 'userId',
-    accessor: (r: Membership) => r.user?.id,
+    accessor: (r: MembershipAndUserAndRoom) => r.user?.id,
     Header: 'User ID',
     width: 60,
   },
   {
     id: 'firstName',
-    accessor: (r: Membership) => r.user?.firstName,
+    accessor: (r: MembershipAndUserAndRoom) => r.user?.firstName,
     width: 70,
     disableGlobalFilter: false,
   },
   {
     id: 'lastName',
-    accessor: (r: Membership) => r.user?.lastName,
+    accessor: (r: MembershipAndUserAndRoom) => r.user?.lastName,
     width: 100,
     disableGlobalFilter: false,
   },
 ]
 
-const columns: Column<Membership>[] = [
+const columns: Column<MembershipAndUserAndRoom>[] = [
   {
     Header: 'Member',
     columns: memberColumns,
@@ -122,7 +117,7 @@ const columns: Column<Membership>[] = [
   },
 ]
 
-const virtualColumns: Column<Membership>[] = [
+const virtualColumns: Column<MembershipAndUserAndRoom>[] = [
   {
     Header: 'Member',
     columns: memberColumns,
@@ -152,6 +147,7 @@ const virtualColumns: Column<Membership>[] = [
 
 const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProps> }> = React.memo(
   ({ newMembershipDialog }) => {
+    const trpc = useTRPC()
     const MembershipWizard = newMembershipDialog
     const profile = useProfile()
     const configuration = useConfiguration()
@@ -162,16 +158,22 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
 
     const [showEdit, setShowEdit] = useState(false)
     const [showGameAssignment, setShowGameAssignment] = useState(false)
-    const [selection, setSelection] = useState<Membership[]>([])
-    const deleteMembership = useGraphQLMutation(DeleteMembershipDocument)
-    const { error, data, refetch } = useGraphQL(GetMembershipsByYearDocument, {
-      year,
-    })
+    const [selection, setSelection] = useState<MembershipAndUserAndRoom[]>([])
+    const deleteMembership = useMutation(trpc.memberships.deleteMembership.mutationOptions())
+    const {
+      error,
+      data: memberships,
+      refetch,
+    } = useQuery(
+      trpc.memberships.getMembershipsByYear.queryOptions({
+        year,
+      }),
+    )
 
-    const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
+    const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
     const onUpdateGameAssignments = useCallback(
-      (instance: TableInstance<Membership>) => async () => {
+      (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
         setShowGameAssignment(true)
         setSelection(instance.selectedFlatRows.map((r) => r.original))
       },
@@ -179,13 +181,10 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
     )
 
     const onSendRegistrationEmail = useCallback(
-      (instance: TableInstance<Membership>) => async () => {
+      (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
         const selected = instance.selectedFlatRows.map((r) => r.original)
         const payload = selected.map((m) => {
-          const room = roomData
-            ?.hotelRooms!.edges.map((v) => v.node)
-            .filter(notEmpty)
-            .find((r) => r.id === m.hotelRoomId)
+          const room = roomData?.filter(notEmpty).find((r) => r.id === m.hotelRoomId)
 
           const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
             getSlotDescription(configuration, {
@@ -200,8 +199,8 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
             virtual: configuration.virtual,
             name: m.user?.fullName,
             email: m.user?.email,
-            address: m.user?.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
-            phoneNumber: m.user?.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
+            address: m.user?.profile?.[0]?.snailMailAddress ?? undefined,
+            phoneNumber: m.user?.profile?.[0]?.phoneNumber ?? undefined,
             update: 'status',
             url: `${window.location.origin}/membership`,
             paymentUrl: `${window.location.origin}/payment`,
@@ -217,7 +216,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           body: payload,
         })
       },
-      [configuration, roomData?.hotelRooms, sendEmail],
+      [configuration, roomData, sendEmail],
     )
 
     const commands = useMemo(
@@ -226,14 +225,15 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
           label: 'Edit Game Assignments',
           onClick: onUpdateGameAssignments,
           icon: <AssignmentIndIcon />,
-          enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length === 1,
+          enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) =>
+            Object.keys(state.selectedRowIds).length === 1,
           type: 'button' as const,
         },
         {
           label: 'Resend Registration Email',
           onClick: onSendRegistrationEmail,
           icon: <MailOutlineIcon />,
-          enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length > 0,
+          enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) => Object.keys(state.selectedRowIds).length > 0,
           type: 'button' as const,
         },
       ],
@@ -244,14 +244,13 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
       return <TransportError error={error} />
     }
 
-    if (!data) {
+    if (!memberships) {
       return <Loader />
     }
-    const { memberships } = data
 
-    const list: Membership[] = memberships!.nodes.filter(notEmpty)
+    const list: MembershipAndUserAndRoom[] = memberships!.filter(notEmpty)
 
-    const onAdd: TableMouseEventHandler<Membership> = () => () => {
+    const onAdd: TableMouseEventHandler<MembershipAndUserAndRoom> = () => () => {
       setShowEdit(true)
     }
 
@@ -261,12 +260,12 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
       setSelection([])
     }
 
-    const onDelete = (instance: TableInstance<Membership>) => () => {
+    const onDelete = (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
       const toDelete = instance.selectedFlatRows.map((r) => r.original)
       const updater = toDelete.map((m) =>
         deleteMembership.mutateAsync(
           {
-            input: { id: m.id },
+            id: m.id,
           },
           {
             onSuccess: invalidateMembershipQueries,
@@ -281,12 +280,12 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
       })
     }
 
-    const onEdit = (instance: TableInstance<Membership>) => () => {
+    const onEdit = (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
       setShowEdit(true)
       setSelection(instance.selectedFlatRows.map((r) => r.original))
     }
 
-    const onClick = (row: Row<Membership>) => {
+    const onClick = (row: Row<MembershipAndUserAndRoom>) => {
       setShowEdit(true)
       setSelection([row.original])
     }
@@ -305,7 +304,7 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
         {showGameAssignment && (
           <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />
         )}
-        <Table<Membership>
+        <Table<MembershipAndUserAndRoom>
           name='members'
           data={list}
           columns={configuration.startDates[year].virtual ? virtualColumns : columns}

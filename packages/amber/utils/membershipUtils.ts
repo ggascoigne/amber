@@ -1,3 +1,5 @@
+import { useInvalidateMembershipQueries, UserAndProfile, useTRPC } from '@amber/client'
+import { useMutation } from '@tanstack/react-query'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 import {} from 'yup'
 
@@ -9,16 +11,8 @@ import { getSlotDescription } from './slotTimes'
 import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
-import {
-  GetTransactionByUserQuery,
-  useGraphQL,
-  useGraphQLMutation,
-  CreateMembershipDocument,
-  GetHotelRoomsDocument,
-  UpdateMembershipByNodeIdDocument,
-} from '../client-graphql'
-import { useInvalidateMembershipQueries } from '../client-graphql/querySets'
-import { Perms, ProfileFormType, useAuth } from '../components'
+import { GetTransactionByUserQuery, useGraphQL, GetHotelRoomsDocument } from '../client-graphql'
+import { Perms, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
 // circular import explosions
@@ -66,9 +60,10 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
   )
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const createMembership = useGraphQLMutation(CreateMembershipDocument)
-  const updateMembership = useGraphQLMutation(UpdateMembershipByNodeIdDocument)
+  const createMembership = useMutation(trpc.memberships.createMembership.mutationOptions())
+  const updateMembership = useMutation(trpc.memberships.updateMembership.mutationOptions())
   const invalidateMembershipQueries = useInvalidateMembershipQueries()
   const createOrUpdateTransaction = useEditMembershipTransaction(onClose)
   const notify = useNotification()
@@ -82,7 +77,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   // note that we pass in profile values since they might well have just been updated
   // and are later than the cached version off the membershipValues.
   const sendMembershipConfirmation = (
-    profile: ProfileFormType,
+    profile: UserAndProfile,
     membershipValues: MembershipType,
     update: MembershipConfirmationBodyUpdateType = 'new',
   ) => {
@@ -107,8 +102,8 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           virtual: configuration.virtual,
           name: profile.fullName!,
           email: profile.email,
-          address: profile.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
-          phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
+          address: profile.profile?.[0]?.snailMailAddress ?? undefined,
+          phoneNumber: profile.profile?.[0]?.phoneNumber ?? undefined,
           update,
           url: `${window.location.origin}/membership`,
           paymentUrl: `${window.location.origin}/payment`,
@@ -124,18 +119,16 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
 
   return async (
     membershipValues: MembershipType,
-    profile: ProfileFormType,
+    profile: UserAndProfile,
     usersTransactions: GetTransactionByUserQuery | undefined,
   ) => {
-    if (membershipValues.nodeId) {
+    if (membershipValues.id) {
       await updateMembership
         .mutateAsync(
           {
-            input: {
-              nodeId: membershipValues.nodeId,
-              patch: {
-                ...fromMembershipValues(membershipValues),
-              },
+            id: membershipValues.id,
+            data: {
+              ...fromMembershipValues(membershipValues),
             },
           },
           {
@@ -143,7 +136,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           },
         )
         .then(async (res) => {
-          const membershipId = res?.updateMembershipByNodeId?.membership?.id
+          const membershipId = res?.membership?.id
           // console.log(JSON.stringify(res, null, 2))
 
           notify({ text: 'Membership updated', variant: 'success' })
@@ -160,18 +153,14 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
       await createMembership
         .mutateAsync(
           {
-            input: {
-              membership: {
-                ...fromMembershipValues(membershipValues),
-              },
-            },
+            ...fromMembershipValues(membershipValues),
           },
           {
             onSuccess: invalidateMembershipQueries,
           },
         )
         .then(async (res) => {
-          const membershipId = res?.createMembership?.membership?.id
+          const membershipId = res?.membership?.id
           if (membershipId) {
             notify({ text: 'Membership created', variant: 'success' })
             sendMembershipConfirmation(profile, membershipValues)

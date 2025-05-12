@@ -1,8 +1,9 @@
 import { isDev } from '@amber/environment'
 import { Session } from '@auth0/nextjs-auth0'
-import { getUserWithRoles, createUser } from '@prisma/client/sql'
 
 import { dbAdmin } from '../db'
+// eslint-disable-next-line import/no-relative-packages
+import { getUserWithRoles, createUser } from '../generated/prisma/client/sql'
 
 type AuthInfo = { userId: number; roles: string[] }
 

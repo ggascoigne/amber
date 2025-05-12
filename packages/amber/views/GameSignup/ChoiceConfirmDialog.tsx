@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { UserAndProfile } from '@amber/client'
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -27,7 +28,7 @@ import {
 } from '../../client-graphql'
 import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { ContactEmail } from '../../components'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'
 
 interface FormValues {
@@ -54,7 +55,7 @@ const submissionValidationSchema = Yup.object().shape({
 interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile: ProfileFormType
+  profile: UserAndProfile
   year: number
   update?: boolean
   message: string

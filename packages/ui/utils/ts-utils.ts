@@ -77,11 +77,13 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[k
 
 export type GqlType<T, V extends List<Key>> = NonNullable<O.Path<T, V>>
 
-export type ToFormValues<T extends { __typename: string; id?: number; nodeId?: string }> = Omit<
+export type ToFormValuesGql<T extends { __typename: string; id?: number; nodeId?: string }> = Omit<
   T,
   'nodeId' | 'id' | '__typename'
 > &
   Partial<Pick<T, 'nodeId' | 'id'>>
+
+export type ToFormValues<T extends { id?: number }> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>
 
 // There are a lot of places where the obvious change would be to reference Record<string,unknown> but we pass objects
 // defined by interface rather than by type in a lot of places (in generated code that's tricky to change) When you do

@@ -1,40 +1,40 @@
 import React, { MouseEventHandler, useState } from 'react'
 
+import { UserAndProfile, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
 import { Loader, notEmpty, Page, Table } from 'ui'
 
-import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client-graphql'
 import { ProfileDialog } from '../../components/Profile'
-import { UsersAndProfileType } from '../../components/Profile/profileUtils'
 import { TransportError } from '../../components/TransportError'
 
-const columns: Column<UsersAndProfileType>[] = [
+const columns: Column<UserAndProfile>[] = [
   { accessor: 'fullName' },
   { accessor: 'firstName' },
   { accessor: 'lastName' },
   { accessor: 'displayName' },
   { accessor: 'email' },
-  { id: 'snailMailAddress', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.snailMailAddress },
-  { id: 'phoneNumber', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.phoneNumber },
+  { id: 'snailMailAddress', accessor: (originalRow) => originalRow?.profile?.[0]?.snailMailAddress },
+  { id: 'phoneNumber', accessor: (originalRow) => originalRow?.profile?.[0]?.phoneNumber },
   { accessor: 'balance', filter: 'numeric' },
 ]
 
 const Users: React.FC = React.memo(() => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<UsersAndProfileType[]>([])
+  const [selection, setSelection] = useState<UserAndProfile[]>([])
 
-  const { error, data, refetch } = useGraphQL(GetAllUsersAndProfilesDocument)
+  const { error, data: users, refetch } = useQuery(trpc.users.getAllUsersAndProfiles.queryOptions())
 
   if (error) {
     return <TransportError error={error} />
   }
 
-  if (!data) {
+  if (!users) {
     return <Loader />
   }
-  const { users } = data
 
-  const list: UsersAndProfileType[] = users!.nodes.filter(notEmpty)
+  const list = users.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
@@ -42,12 +42,12 @@ const Users: React.FC = React.memo(() => {
     refetch().then()
   }
 
-  const onEdit = (instance: TableInstance<UsersAndProfileType>) => () => {
+  const onEdit = (instance: TableInstance<UserAndProfile>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<UsersAndProfileType>) => {
+  const onClick = (row: Row<UserAndProfile>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -55,7 +55,7 @@ const Users: React.FC = React.memo(() => {
   return (
     <Page title='Users'>
       {showEdit && <ProfileDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<UsersAndProfileType>
+      <Table
         name='users'
         data={list}
         columns={columns}

@@ -1,5 +1,7 @@
 import { env, isDev } from '@amber/environment'
-import { PrismaClient } from '@prisma/client'
+
+// eslint-disable-next-line import/no-relative-packages
+import { PrismaClient } from './generated/prisma/client'
 
 const createPrismaClient = (type: 'ADMIN' | 'USER') =>
   new PrismaClient({

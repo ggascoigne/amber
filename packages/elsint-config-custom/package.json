@@ -8,6 +8,6 @@
     "@babel/plugin-syntax-flow": "^7.26.0",
     "@babel/plugin-transform-react-jsx": "^7.25.9",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }

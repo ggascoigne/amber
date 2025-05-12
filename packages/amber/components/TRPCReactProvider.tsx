@@ -1,15 +1,15 @@
 'use client'
 // ^-- to make sure we can mount the Provider from a server component
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 
 import { TRPCProvider } from '@amber/client'
 import type { AppRouter } from '@amber/server/src/api/appRouter'
 import { getBaseUrl } from '@amber/server/src/utils'
 import { makeQueryClient } from '@amber/server/src/utils/query-client'
+import transformer from '@amber/server/src/utils/trpc-transformer'
 import type { QueryClient } from '@tanstack/react-query'
-import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { createTRPCClient, httpBatchLink } from '@trpc/client'
-import superjson from 'superjson'
 
 let browserQueryClient: QueryClient
 function getQueryClient() {
@@ -39,7 +39,7 @@ export function TRPCReactProvider(
     createTRPCClient<AppRouter>({
       links: [
         httpBatchLink({
-          transformer: superjson,
+          transformer,
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
@@ -51,14 +51,5 @@ export function TRPCReactProvider(
         {props.children}
       </TRPCProvider>
     </QueryClientProvider>
-  )
-}
-
-export const useInvalidateQueries = (queries: string[]) => {
-  const queryClient = useQueryClient()
-  return useCallback(
-    () =>
-      Promise.allSettled(queries.map((q) => queryClient.invalidateQueries({ queryKey: [q] }), { refetchType: 'all' })),
-    [queries, queryClient],
   )
 }

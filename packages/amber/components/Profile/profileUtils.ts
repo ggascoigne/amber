@@ -1,71 +1,43 @@
-import { GqlType, Omit, OnCloseHandler, pick, ToFormValues, useNotification } from 'ui'
+import { useTRPC, UserAndProfile, useInvalidateUserQueries } from '@amber/client'
+import { useMutation } from '@tanstack/react-query'
+import { OnCloseHandler, pickAndConvertNull, useNotification } from 'ui'
 
-import {
-  GetAllUsersAndProfilesQuery,
-  Maybe,
-  useGraphQLMutation,
-  CreateProfileDocument,
-  UpdateProfileByNodeIdDocument,
-  UpdateUserDocument,
-} from '../../client-graphql'
-import { useInvalidateUserQueries } from '../../client-graphql/querySets'
-
-export type UsersAndProfiles = GqlType<GetAllUsersAndProfilesQuery, ['users', 'nodes', number]>
-type ProfileValues = ToFormValues<GqlType<UsersAndProfiles, ['profiles', 'nodes', number]>>
-
-export type UsersAndProfileType = Omit<UsersAndProfiles, 'profiles' | 'nodeId' | '__typename'> & {
-  profiles?:
-    | {
-        nodes?: (Maybe<ProfileValues> | undefined)[] | undefined
-      }
-    | undefined
-}
-
-export const userFromProfileValues = (profileValues: UsersAndProfileType) => {
-  const values = pick(profileValues, 'firstName', 'lastName', 'fullName', 'displayName', 'email')
+export const userFromProfileValues = (profileValues: UserAndProfile) => {
+  const values = pickAndConvertNull(profileValues, 'firstName', 'lastName', 'fullName', 'displayName', 'email')
   return {
     ...values,
     displayName: values.displayName?.length ? values.displayName : values.fullName,
   }
 }
 
-export const profileFromProfileValues = (profileValues: UsersAndProfileType) => ({
-  phoneNumber: profileValues?.profiles?.nodes?.[0]?.phoneNumber ?? '',
-  snailMailAddress: profileValues?.profiles?.nodes?.[0]?.snailMailAddress ?? '',
+export const profileFromProfileValues = (profileValues: UserAndProfile) => ({
+  phoneNumber: profileValues?.profile?.[0]?.phoneNumber ?? '',
+  snailMailAddress: profileValues?.profile?.[0]?.snailMailAddress ?? '',
 })
 
 export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
-  const updateUser = useGraphQLMutation(UpdateUserDocument)
-  const createProfile = useGraphQLMutation(CreateProfileDocument)
-  const updateProfile = useGraphQLMutation(UpdateProfileByNodeIdDocument)
+  const trpc = useTRPC()
+  const updateUser = useMutation(trpc.users.updateUser.mutationOptions())
+  const createProfile = useMutation(trpc.users.createProfile.mutationOptions())
+  const updateProfile = useMutation(trpc.users.updateProfile.mutationOptions())
   const notify = useNotification()
   const invalidateUserQueries = useInvalidateUserQueries()
 
-  return async (profileValues: UsersAndProfileType) =>
+  return async (profileValues: UserAndProfile) =>
     updateUser
-      .mutateAsync(
-        {
-          input: {
-            id: profileValues.id,
-            patch: {
-              ...userFromProfileValues(profileValues),
-            },
-          },
+      .mutateAsync({
+        id: profileValues.id,
+        data: {
+          ...userFromProfileValues(profileValues),
         },
-        {
-          onSuccess: invalidateUserQueries,
-        },
-      )
+      })
       .then(async () => {
-        if (profileValues?.profiles?.nodes?.[0]?.nodeId) {
+        if (profileValues?.profile?.[0]?.id) {
           await updateProfile.mutateAsync(
             {
-              input: {
-                nodeId: profileValues.profiles.nodes[0].nodeId,
-                patch: {
-                  userId: profileValues.id,
-                  ...profileFromProfileValues(profileValues),
-                },
+              id: profileValues.profile[0].id,
+              data: {
+                ...profileFromProfileValues(profileValues),
               },
             },
             {
@@ -75,12 +47,8 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
         } else {
           await createProfile.mutateAsync(
             {
-              input: {
-                profile: {
-                  userId: profileValues.id,
-                  ...profileFromProfileValues(profileValues),
-                },
-              },
+              userId: profileValues.id,
+              ...profileFromProfileValues(profileValues),
             },
             {
               onSuccess: invalidateUserQueries,
@@ -97,7 +65,7 @@ export const useEditUserAndProfile = (onClose?: OnCloseHandler) => {
       })
 }
 
-export const fillUserAndProfileValues = (values: UsersAndProfileType): UsersAndProfileType => ({
+export const fillUserAndProfileValues = (values: UserAndProfile): UserAndProfile => ({
   id: values.id,
   email: values.email ?? '',
   firstName: values.firstName ?? '',
@@ -105,14 +73,12 @@ export const fillUserAndProfileValues = (values: UsersAndProfileType): UsersAndP
   fullName: values.fullName ?? '',
   displayName: values.displayName ?? '',
   balance: 0,
-  profiles: {
-    nodes: [
-      {
-        nodeId: values?.profiles?.nodes?.[0]?.nodeId,
-        userId: values?.profiles?.nodes?.[0]?.userId ?? -1,
-        phoneNumber: values?.profiles?.nodes?.[0]?.phoneNumber ?? '',
-        snailMailAddress: values?.profiles?.nodes?.[0]?.snailMailAddress ?? '',
-      },
-    ],
-  },
+  profile: [
+    {
+      id: values?.profile?.[0]?.id,
+      userId: values?.profile?.[0]?.userId ?? -1,
+      phoneNumber: values?.profile?.[0]?.phoneNumber ?? '',
+      snailMailAddress: values?.profile?.[0]?.snailMailAddress ?? '',
+    },
+  ],
 })

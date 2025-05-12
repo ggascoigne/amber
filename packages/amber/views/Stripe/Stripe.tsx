@@ -1,14 +1,14 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, Loader, notEmpty, Page, Table, ToFormValues } from 'ui'
+import { GqlType, Loader, notEmpty, Page, Table, ToFormValuesGql } from 'ui'
 
 import { StripeDialog } from './StripeDialog'
 
 import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 
-export type StripeValue = ToFormValues<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
+export type StripeValue = ToFormValuesGql<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
 
 const columns: Column<StripeValue>[] = [
   { id: 'id', accessor: (originalRow) => originalRow?.id, width: 1 },

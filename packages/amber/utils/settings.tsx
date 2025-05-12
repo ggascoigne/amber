@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { useGetSettingsQuery, Setting } from '@amber/client'
+import { Setting, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { notEmpty } from 'ui'
 
 import { useIsGm, useIsMember } from './membership'
@@ -21,12 +22,13 @@ const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof type
 export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Yes']
 
 export const useSettings = () => {
+  const trpc = useTRPC()
   const isGm = useIsGm()
   const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const isGameAdmin = hasPermissions(Perms.GameAdmin)
-  const { isLoading, error, data } = useGetSettingsQuery()
+  const { isLoading, error, data } = useQuery(trpc.settings.getSettings.queryOptions())
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {

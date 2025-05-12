@@ -1,6 +1,7 @@
 export * from './closeHandler'
 export * from './createEmotionCache'
 export * from './deepValue'
+export * from './formatDebugValue'
 export * from './globals'
 export * from './object'
 export * from './pick'

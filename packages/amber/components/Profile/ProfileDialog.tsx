@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react'
 
+import { UserAndProfile } from '@amber/client'
 import { FormikHelpers } from 'formik'
 import { EditDialog } from 'ui'
 
 import { ProfileFormContent } from './ProfileFormContent'
-import { fillUserAndProfileValues, useEditUserAndProfile, UsersAndProfileType } from './profileUtils'
+import { fillUserAndProfileValues, useEditUserAndProfile } from './profileUtils'
 import { profileValidationSchema } from './profileValidationSchema'
 
 interface ProfileDialogProps {
   open: boolean
-  initialValues?: UsersAndProfileType | null
+  initialValues?: UserAndProfile | null
   onClose: (event?: any) => void
 }
 
@@ -21,13 +22,13 @@ export const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose, ini
       return null
     }
     return fillUserAndProfileValues(initialValues)
-  }, [initialValues]) as UsersAndProfileType
+  }, [initialValues]) as UserAndProfile
 
   if (!initialValues) {
     return null
   }
 
-  const onSubmit = async (v: UsersAndProfileType, _actions: FormikHelpers<UsersAndProfileType>) => {
+  const onSubmit = async (v: UserAndProfile, _actions: FormikHelpers<UserAndProfile>) => {
     await updateProfile(v)
   }
 

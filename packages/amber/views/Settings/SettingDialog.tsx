@@ -1,11 +1,7 @@
 import React, { useMemo } from 'react'
 
-import {
-  Setting,
-  useInvalidateSettingsQueries,
-  useCreateSettingMutation,
-  useUpdateSettingByIdMutation,
-} from '@amber/client'
+import { Setting, useInvalidateSettingsQueries, useTRPC } from '@amber/client'
+import { useMutation } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import { EditDialog, GridContainer, GridItem, OnCloseHandler, pick, SelectField, TextField, useNotification } from 'ui'
 import { z } from 'zod'
@@ -30,8 +26,9 @@ interface SettingDialogProps {
 }
 
 export const useEditSetting = (onClose: OnCloseHandler) => {
-  const createSetting = useCreateSettingMutation()
-  const updateSetting = useUpdateSettingByIdMutation()
+  const trpc = useTRPC()
+  const createSetting = useMutation(trpc.settings.createSetting.mutationOptions())
+  const updateSetting = useMutation(trpc.settings.updateSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 

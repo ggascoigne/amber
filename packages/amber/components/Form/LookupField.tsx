@@ -1,9 +1,10 @@
 import React from 'react'
 
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import type { TextFieldProps } from 'ui'
 import { Loader, SelectField } from 'ui'
 
-import { useGraphQL, GetLookupValuesDocument } from '../../client-graphql'
 import { useRealmOptions } from '../../utils'
 import { TransportError } from '../TransportError'
 
@@ -14,13 +15,16 @@ export interface LookupFieldProps extends TextFieldProps {
 export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   const { select: _select, realm, ...rest } = props
   const options = useRealmOptions(realm)
-  const { isLoading, error, data } = useGraphQL(GetLookupValuesDocument, {
-    variables: { realm },
-    options: {
-      staleTime: 10 * 60 * 1000,
-      enabled: !options,
-    },
-  })
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(
+    trpc.lookups.getLookupValues.queryOptions(
+      { realm },
+      {
+        staleTime: 10 * 60 * 1000,
+        enabled: !options,
+      },
+    ),
+  )
   if (error) {
     return <TransportError error={error} />
   }
@@ -30,7 +34,7 @@ export const LookupField: React.ComponentType<LookupFieldProps> = (props) => {
   if (options) {
     return <SelectField {...rest} selectValues={options} />
   }
-  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({
+  const selectValues = data?.[0]?.lookupValue.map((v) => ({
     value: v!.code,
     text: v!.value,
   }))

@@ -1,21 +1,26 @@
 import React, { PropsWithChildren } from 'react'
 
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { notEmpty } from 'ui'
 
 import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
 
-import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client-graphql'
+import { useGraphQL, GetGameAssignmentsByMemberIdDocument } from '../client-graphql'
 import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()
-  const { data } = useGraphQL(GetMembershipByYearAndIdDocument, {
-    variables: { year, userId: userId! },
-    options: {
-      enabled: !!userId,
-    },
-  })
+  const trpc = useTRPC()
+  const { data } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions(
+      { year, userId: userId! },
+      {
+        enabled: !!userId,
+      },
+    ),
+  )
 
   if (!userId) {
     return null
@@ -25,7 +30,7 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
     return undefined // allows us to tell if the load is still ongoing and avoid redirects
   }
 
-  const membership = data.memberships?.nodes[0]
+  const membership = data[0]
   return membership?.year === year ? membership : null
 }
 

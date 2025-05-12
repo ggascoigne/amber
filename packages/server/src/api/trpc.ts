@@ -9,10 +9,11 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from '@trpc/server'
-import superjson from 'superjson'
 import { ZodError } from 'zod'
 
 import type { Context } from './context'
+
+import transformer from '../utils/trpc-transformer'
 
 /**
  * 2. INITIALIZATION
@@ -23,7 +24,7 @@ import type { Context } from './context'
  */
 
 const t = initTRPC.context<Context>().create({
-  transformer: superjson,
+  transformer,
   errorFormatter({ shape, error }) {
     return {
       ...shape,

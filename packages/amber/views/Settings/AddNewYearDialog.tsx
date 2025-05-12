@@ -1,13 +1,9 @@
 import React, { useMemo, useCallback } from 'react'
 
-import {
-  useGetSettingsQuery,
-  Setting,
-  useCreateSettingMutation,
-  useUpdateSettingByIdMutation,
-  useInvalidateSettingsQueries,
-} from '@amber/client'
+import { Setting, useTRPC, useInvalidateSettingsQueries } from '@amber/client'
 import { Typography } from '@mui/material'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import debug from 'debug'
 import { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
 import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from 'ui'
@@ -16,6 +12,8 @@ import { SettingValue } from './shared'
 
 import { TransportError } from '../../components/TransportError'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const log = debug('amber:client:settings:addNewYear')
 interface AddNewYearDialogProps {
   open: boolean
   onClose: OnCloseHandler
@@ -55,9 +53,10 @@ const newYearFields = ['config.year', ...dateFields]
 const getSetting = (settingList: Setting[] | undefined, key: string) => settingList?.find((f) => f.code === key)
 
 export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClose }) => {
-  const { isLoading, error, data } = useGetSettingsQuery()
-  const createSetting = useCreateSettingMutation()
-  const updateSetting = useUpdateSettingByIdMutation()
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.settings.getSettings.queryOptions())
+  const createSetting = useMutation(trpc.settings.createSetting.mutationOptions())
+  const updateSetting = useMutation(trpc.settings.updateSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
@@ -127,6 +126,8 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
             }) ?? [],
         )
         .concat(allFields?.filter((s) => flags.includes(s.code)).map((v) => ({ ...v, value: 'No' })) ?? [])
+
+      // log(newValues)
 
       const updaters = newValues.reduce((acc: Promise<any>[], v) => {
         if (v) {

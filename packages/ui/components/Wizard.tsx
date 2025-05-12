@@ -7,7 +7,7 @@ import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { DialogClose } from './Dialog'
 import { useDisableBackdropClick } from './EditDialog'
 
-import { isDev, notEmpty, SetSuperset } from '../utils'
+import { formatDebugValue, isDev, notEmpty, SetSuperset } from '../utils'
 
 export interface WizardPage {
   name: string
@@ -185,8 +185,8 @@ export const Wizard = <T extends FormikValues = FormikValues>({
               {isDev && (
                 <Button
                   onClick={() => {
-                    console.log(`values = ${JSON.stringify(values, null, 2)}`)
-                    console.log(`errors = ${JSON.stringify(errors, null, 2)}`)
+                    console.log(`values = ${formatDebugValue(values)}`)
+                    console.log(`errors = ${formatDebugValue(errors)}`)
                   }}
                   variant='outlined'
                 >

@@ -1,14 +1,16 @@
+import { useTRPC } from '@amber/client'
 import { Button, Theme } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import { useQuery } from '@tanstack/react-query'
 import Router from 'next/router'
 
-import { GetUserByIdDocument, useGraphQL } from '../client-graphql'
 import { formatAmountForDisplay, useUser } from '../utils'
 
 const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
-  const data = useGraphQL(GetUserByIdDocument, { id: userId })
-  const balance = data?.data?.user?.balance
+  const trpc = useTRPC()
+  const data = useQuery(trpc.users.getUser.queryOptions({ id: userId }))
+  const balance = data?.data?.balance
 
   if (!balance) return null
 

@@ -1,17 +1,17 @@
 import { useState } from 'react'
 
+import { UserAndProfile, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { useNotification } from 'ui'
 
-import { ProfileFormType } from './ProfileFormContent'
-
-import { useGraphQL, GetUserByEmailDocument } from '../../client-graphql'
 import { useUser } from '../../utils'
 
-export const useProfile = (): ProfileFormType | null => {
+export const useProfile = (): UserAndProfile | null => {
+  const trpc = useTRPC()
   const { email } = useUser()
   const [lastEmail, setLastEmail] = useState('')
 
-  const { error, data } = useGraphQL(GetUserByEmailDocument, { email: email ?? '' }, { enabled: !!email })
+  const { error, data } = useQuery(trpc.users.getUserByEmail.queryOptions({ email: email ?? '' }, { enabled: !!email }))
   const notify = useNotification()
 
   if (!email || !data) {
@@ -28,5 +28,5 @@ export const useProfile = (): ProfileFormType | null => {
     return null
   }
 
-  return data.userByEmail ?? null
+  return data ?? null
 }

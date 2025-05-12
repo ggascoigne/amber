@@ -3,7 +3,7 @@ import { configs } from '@ggascoigne/eslint-config'
 const globalIgnores = [
   {
     name: '@ambercon/global-ignores',
-    ignores: ['apps/*/.{next,vercel}'],
+    ignores: ['apps/*/.{next,vercel}', 'packages/server/src/generated'],
   },
 ]
 

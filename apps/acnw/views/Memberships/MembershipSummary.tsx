@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react'
 
+import { CreateMembershipType, UserAndProfile, useTRPC } from '@amber/client'
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import {
-  ProfileFormType,
   TransportError,
   RoomPref,
   getInterestLevel,
@@ -11,14 +12,10 @@ import {
   isNotPacificTime,
   useConfiguration,
   useGetCost,
-  useGraphQL,
-  GetHotelRoomsDocument,
-  GetMembershipByYearAndIdDocument,
   useProfile,
   useUser,
   useYearFilter,
 } from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
 import { fromSlotsAttending } from 'amber/utils/membershipUtils'
 import { DateTime } from 'luxon'
 import Link from 'next/link'
@@ -60,7 +57,7 @@ const useStyles = makeStyles()({
 })
 
 interface VirtualDetailsProps {
-  membership: MembershipType
+  membership: CreateMembershipType
 }
 
 const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
@@ -115,8 +112,13 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
   )
 }
 
-const formatDate = (date?: string) =>
-  date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
+const formatDate = (date?: string | Date) => {
+  if (date === undefined) {
+    return ''
+  }
+  const dateTime = date instanceof Date ? DateTime.fromJSDate(date) : DateTime.fromISO(date)
+  return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
+}
 
 const VerticalGap = () => {
   const { classes } = useStyles()
@@ -128,22 +130,19 @@ const VerticalGap = () => {
 }
 
 interface DetailsProps {
-  membership: MembershipType
-  profile: ProfileFormType
+  membership: CreateMembershipType
+  profile: UserAndProfile
 }
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
 
   const room = useMemo(
-    () =>
-      data?.hotelRooms?.edges
-        .map((v) => v.node)
-        .filter(notEmpty)
-        .find((r) => r.id === membership.hotelRoomId),
+    () => data?.filter(notEmpty).find((r) => r.id === membership.hotelRoomId),
     [data, membership.hotelRoomId],
   )
 
@@ -177,8 +176,8 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
             <Field label='Rooming with'>{membership.roomingWith}</Field>
           )}
           <VerticalGap />
-          <Field label='Postal Address'>{profile?.profiles?.nodes?.[0]?.snailMailAddress}</Field>
-          <Field label='Phone Number'>{profile?.profiles?.nodes?.[0]?.phoneNumber}</Field>
+          <Field label='Postal Address'>{profile?.profile?.[0]?.snailMailAddress}</Field>
+          <Field label='Phone Number'>{profile?.profile?.[0]?.phoneNumber}</Field>
           <VerticalGap />
           <Field label='Any other Message'>{membership.message}</Field>
         </GridContainer>
@@ -188,11 +187,14 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
 }
 
 const MembershipSummary: React.FC = () => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()
-  const { isLoading, error, data } = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId: userId ?? 0 })
+  const { isLoading, error, data } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions({ year, userId: userId ?? 0 }),
+  )
   const { classes } = useStyles()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
@@ -210,7 +212,7 @@ const MembershipSummary: React.FC = () => {
     return <Loader />
   }
   const displayNew = query.all?.[0] === 'new'
-  const membership = data.memberships?.nodes[0]
+  const membership = data?.[0]
 
   if (!membership || displayNew) {
     return (

@@ -1,6 +1,8 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
+import { useTRPC } from '@amber/client'
 import CachedIcon from '@mui/icons-material/Cached'
+import { useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
@@ -15,7 +17,6 @@ import {
   useGraphQLMutation,
   DeleteGameDocument,
   GetGamesByYearDocument,
-  GetMembershipsByYearDocument,
 } from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
@@ -139,6 +140,7 @@ const useStyles = makeStyles()({
 })
 
 const Games: React.FC = React.memo(() => {
+  const trpc = useTRPC()
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
@@ -149,14 +151,13 @@ const Games: React.FC = React.memo(() => {
     year,
   })
   const setGameGmAssignments = useUpdateGameAssignment()
-  const { data: membershipData } = useGraphQL(GetMembershipsByYearDocument, {
-    year,
-  })
-
-  const membershipList = useMemo(
-    () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
-    [membershipData?.memberships?.nodes],
+  const { data: membershipData } = useQuery(
+    trpc.memberships.getMembershipsByYear.queryOptions({
+      year,
+    }),
   )
+
+  const membershipList = useMemo(() => membershipData?.filter(notEmpty) ?? [], [membershipData])
 
   const onUpdateGmNames = useCallback(
     (instance: TableInstance<Game>) => async () => {

@@ -1,25 +1,17 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useMemo, useState } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import type { Lookup } from '@amber/client'
+import { useInvalidateLookupQueries, useTRPC } from '@amber/client'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance } from 'react-table'
-import { GqlType, Loader, notEmpty, Page, Table } from 'ui'
+import { Loader, notEmpty, Page, Table } from 'ui'
 
 import { LookupsDialog } from './LookupsDialog'
 
-import {
-  GetLookupsQuery,
-  useGraphQLMutation,
-  useGraphQL,
-  DeleteLookupDocument,
-  DeleteLookupValueDocument,
-  GetLookupsDocument,
-} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 
-export type LookupAndValues = GqlType<GetLookupsQuery, ['lookups', 'edges', number, 'node']>
-
-const columns: Column<LookupAndValues>[] = [
+const columns: Column<Lookup>[] = [
   {
     accessor: 'realm',
   },
@@ -27,54 +19,56 @@ const columns: Column<LookupAndValues>[] = [
 
 const Lookups: React.FC = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<LookupAndValues[]>([])
-  const deleteLookup = useGraphQLMutation(DeleteLookupDocument)
-  const deleteLookupValue = useGraphQLMutation(DeleteLookupValueDocument)
-  const queryClient = useQueryClient()
+  const [selection, setSelection] = useState<Lookup[]>([])
+  const trpc = useTRPC()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetLookupsDocument)
+  const deleteLookupValue = useMutation(trpc.lookups.deleteLookupValue.mutationOptions())
+  const deleteLookup = useMutation(trpc.lookups.deleteLookup.mutationOptions())
+  const invalidateQueries = useInvalidateLookupQueries()
+
+  const { isLoading, error, data, refetch } = useQuery(trpc.lookups.getLookups.queryOptions())
+  const list = useMemo(() => data?.filter(notEmpty), [data])
 
   if (error) {
     return <TransportError error={error} />
   }
-  if (isLoading || !data) {
+  if (isLoading || !list) {
     return <Loader />
   }
-
-  const list: LookupAndValues[] = data.lookups!.edges.map((v) => v.node).filter(notEmpty)
-
-  const onAdd: TableMouseEventHandler<LookupAndValues> = () => () => {
+  const onAdd: TableMouseEventHandler<Lookup> = () => () => {
     setShowEdit(true)
   }
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
     setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getLookups'] })
   }
 
-  const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
-    const updater = instance.selectedFlatRows
+  const onDelete = (instance: TableInstance<Lookup>) => () => {
+    const valuesUpdater = instance.selectedFlatRows
       .map((r) => r.original)
       .map((l) => {
-        const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
-          lv?.id && acc.push(deleteLookupValue.mutateAsync({ input: { id: lv.id } }))
+        const updaters: Promise<any>[] = l.lookupValue.reduce((acc: Promise<any>[], lv) => {
+          lv?.id && acc.push(deleteLookupValue.mutateAsync({ id: lv.id }))
           return acc
         }, [])
-        updaters.push(deleteLookup.mutateAsync({ input: { id: l.id } }))
         return updaters
       })
       .flat()
-    Promise.allSettled(updater).then(() => queryClient.invalidateQueries({ queryKey: ['getLookups'] }))
+    Promise.allSettled(valuesUpdater).then(() => {
+      const updater = instance.selectedFlatRows
+        .map((r) => r.original)
+        .map((l) => deleteLookup.mutateAsync({ id: l.id }))
+      Promise.allSettled(updater).then(() => invalidateQueries())
+    })
   }
 
-  const onEdit = (instance: TableInstance<LookupAndValues>) => () => {
+  const onEdit = (instance: TableInstance<Lookup>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<LookupAndValues>) => {
+  const onClick = (row: Row<Lookup>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -82,7 +76,7 @@ const Lookups: React.FC = React.memo(() => {
   return (
     <Page title='Lookups'>
       {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<LookupAndValues>
+      <Table<Lookup>
         name='lookups'
         data={list}
         columns={columns}

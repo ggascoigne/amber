@@ -9,10 +9,11 @@ import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferReactQueryProcedureOptions } from '@trpc/react-query'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
-import superjson from 'superjson'
+
+import { type AppRouter } from '../api/appRouter'
+import transformer from '../utils/trpc-transformer'
 
 // import { env, isDev } from '@amber/environment'
-import { type AppRouter } from '../api/appRouter'
 
 // TODO: work out how to be env from @amber/environment to load correctly in the browser
 export const getBaseUrl = () => {
@@ -42,7 +43,7 @@ export const api = createTRPCNext<AppRouter>({
            *
            * @see https://trpc.io/docs/data-transformers
            */
-          transformer: superjson,
+          transformer,
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
@@ -54,7 +55,7 @@ export const api = createTRPCNext<AppRouter>({
    * @see https://trpc.io/docs/nextjs#ssr-boolean-default-false
    */
   ssr: false,
-  transformer: superjson,
+  transformer,
 })
 
 export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>

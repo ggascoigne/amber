@@ -1,17 +1,15 @@
 import React, { useState } from 'react'
 
+import { UserAndProfile, useTRPC } from '@amber/client'
 import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import {
-  ProfileFormType,
   TransportError,
   getInterestLevel,
   getSlotDescription,
   isNotPacificTime,
   useConfiguration,
   useGetCost,
-  useGraphQL,
-  GetHotelRoomsDocument,
-  GetMembershipByYearAndIdDocument,
   useProfile,
   useUser,
   useYearFilter,
@@ -111,12 +109,13 @@ const VerticalGap = () => {
 
 interface DetailsProps {
   membership: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
 }
 
 const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
 
@@ -137,8 +136,8 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           <Field label='Attendance'>{cost}</Field>
           <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
           <VerticalGap />
-          <Field label='Postal Address'>{profile?.profiles?.nodes?.[0]?.snailMailAddress}</Field>
-          <Field label='Phone Number'>{profile?.profiles?.nodes?.[0]?.phoneNumber}</Field>
+          <Field label='Postal Address'>{profile?.profile?.[0]?.snailMailAddress}</Field>
+          <Field label='Phone Number'>{profile?.profile?.[0]?.phoneNumber}</Field>
           <VerticalGap />
           <Field label='Any other Message'>{membership.message}</Field>
         </GridContainer>
@@ -148,11 +147,14 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
 }
 
 const MembershipSummary: React.FC = () => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()
-  const { isLoading, error, data } = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId: userId ?? 0 })
+  const { isLoading, error, data } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions({ year, userId: userId ?? 0 }),
+  )
   const { classes } = useStyles()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
@@ -170,7 +172,7 @@ const MembershipSummary: React.FC = () => {
     return <Loader />
   }
   const displayNew = query.all?.[0] === 'new'
-  const membership = data.memberships?.nodes[0]
+  const membership = data?.[0]
 
   if (!membership || displayNew) {
     return (

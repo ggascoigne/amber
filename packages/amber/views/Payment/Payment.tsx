@@ -1,24 +1,26 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import { useTRPC } from '@amber/client'
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
 import { PaymentIntent } from '@stripe/stripe-js'
+import { useQuery } from '@tanstack/react-query'
 import { Loader, Page } from 'ui'
 
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
-import { useGraphQL, GetUserByIdDocument } from '../../client-graphql'
 import { ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useUser } from '../../utils'
 
 export const Payment: React.FC = () => {
+  const trpc = useTRPC()
   const [stripe] = useGetStripe()
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
   const user = useUser()
   const paymentStateRef = useRef<'empty' | 'created' | 'submitted'>('empty')
-  const userData = useGraphQL(GetUserByIdDocument, { id: user?.userId ?? -1 })
-  const balance = userData?.data?.user?.balance ?? 0
+  const userData = useQuery(trpc.users.getUser.queryOptions({ id: user?.userId ?? -1 }))
+  const balance = userData?.data?.balance ?? 0
 
   useEffect(() => {
     if (paymentStateRef.current === 'empty') {

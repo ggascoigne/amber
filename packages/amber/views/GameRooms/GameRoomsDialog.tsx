@@ -15,7 +15,7 @@ import {
   pick,
   range,
   TextField,
-  ToFormValues,
+  ToFormValuesGql,
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
@@ -46,7 +46,7 @@ const validationSchema = Yup.object().shape({
   updated: Yup.boolean().required('Required'),
 })
 
-type GameRoomType = ToFormValues<GameRoom>
+type GameRoomType = ToFormValuesGql<GameRoom>
 
 type GameRoomFormValues = GameRoomType & {
   gamesChanged: boolean

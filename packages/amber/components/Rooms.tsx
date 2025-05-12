@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { HotelRoom } from '@amber/client'
 import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
@@ -11,7 +12,6 @@ import { TransportError } from './TransportError'
 import { useGraphQL, GetHotelRoomsDocument } from '../client-graphql'
 import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
-import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'
 
 const useStyles = makeStyles<void, 'titleLine' | 'soldOut'>()((theme: Theme, _params, classes) => ({
   titleLine: {

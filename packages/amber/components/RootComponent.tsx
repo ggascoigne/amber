@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 
-import { useGetSettingsQuery } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 // see https://github.com/mui/mui-x/issues/12640
 import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
+import { useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
 import { AppProps } from 'next/app'
@@ -69,7 +70,8 @@ const RootInner = (props: RootComponentProps) => {
   )
 }
 const ConfigLoader = (props: RootComponentProps) => {
-  const { data: configData } = useGetSettingsQuery()
+  const trpc = useTRPC()
+  const { data: configData } = useQuery(trpc.settings.getSettings.queryOptions())
   const { config } = getSettingsObject(configData)
   return config ? (
     <ConfigProvider value={config}>

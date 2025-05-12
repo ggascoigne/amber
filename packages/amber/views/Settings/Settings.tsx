@@ -1,9 +1,10 @@
 import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
-import { useInvalidateSettingsQueries, useDeleteSettingMutation, useGetSettingsQuery } from '@amber/client'
+import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
 import { RouterOutputs } from '@amber/server'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
@@ -41,6 +42,7 @@ const tabs = [
 ]
 
 const Settings: React.FC = React.memo(() => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])
   const [value, setValue] = React.useState('config')
@@ -82,10 +84,10 @@ const Settings: React.FC = React.memo(() => {
     ],
     [onAddNewYear],
   )
-  const deleteSetting = useDeleteSettingMutation()
+  const deleteSetting = useMutation(trpc.settings.deleteSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = useGetSettingsQuery()
+  const { isLoading, error, data, refetch } = useQuery(trpc.settings.getSettings.queryOptions())
 
   if (error) {
     return <TransportError error={error} />

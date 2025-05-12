@@ -8,13 +8,16 @@ import { TooltipCell } from './Table/TooltipCellRenderer'
 export const DateCell = <T extends Record<string, unknown>>({
   cell: { value },
   column: { align = 'left', dateFormat = 'EEE, MMM d' },
-}: CellProps<T>) => (
-  <TooltipCell
-    text={DateTime.fromISO(value).toFormat(dateFormat)}
-    tooltip={DateTime.fromISO(value).toLocaleString(DateTime.DATE_HUGE)}
-    align={align}
-  />
-)
+}: CellProps<T>) => {
+  const dateTime = value instanceof Date ? DateTime.fromJSDate(value) : DateTime.fromISO(value)
+  return (
+    <TooltipCell
+      text={dateTime.toFormat(dateFormat)}
+      tooltip={dateTime.toLocaleString(DateTime.DATE_HUGE)}
+      align={align}
+    />
+  )
+}
 
 export const YesNoCell = <T extends Record<string, unknown>>({
   cell: { value },

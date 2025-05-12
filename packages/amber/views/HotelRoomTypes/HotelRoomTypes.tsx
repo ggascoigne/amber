@@ -1,25 +1,16 @@
 import React, { MouseEventHandler, useMemo, useState } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { HotelRoom, useTRPC } from '@amber/client'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
-import { GqlType, Loader, notEmpty, Page, Table, TooltipCell, YesBlankCell } from 'ui'
+import { Loader, notEmpty, Page, Table, TooltipCell, YesBlankCell } from 'ui'
 
 import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  GetHotelRoomsQuery,
-  DeleteHotelRoomDocument,
-  GetHotelRoomsDocument,
-  GetMembershipByYearAndRoomDocument,
-} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
 import { useAvailableHotelRooms } from '../HotelRoomDetails/HotelRoomDetails'
-
-export type HotelRoom = GqlType<GetHotelRoomsQuery, ['hotelRooms', 'edges', number, 'node']>
 
 const RequestedNames: React.FC<{ names: string[] }> = ({ names }) => (
   <>
@@ -37,21 +28,23 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
   cell: { value, row },
   column: { align = 'left' },
 }) => {
+  const trpc = useTRPC()
   const hotelRoomId = row.original.id
   const [year] = useYearFilter()
 
-  const { data } = useGraphQL(
-    GetMembershipByYearAndRoomDocument,
-    {
-      year,
-      hotelRoomId,
-    },
-    {
-      enabled: value > 0,
-    },
+  const { data } = useQuery(
+    trpc.memberships.getMembershipByYearAndRoom.queryOptions(
+      {
+        year,
+        hotelRoomId,
+      },
+      {
+        enabled: value > 0,
+      },
+    ),
   )
-  const names = data?.memberships?.nodes
-    .filter(notEmpty)
+  const names = data
+    ?.filter(notEmpty)
     .map((m) => m.user?.fullName)
     .filter(notEmpty)
   const tooltip = names?.length ? <RequestedNames names={names} /> : value
@@ -59,6 +52,7 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
 }
 
 const HotelRoomTypes: React.FC = () => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoom[]>([])
   const { getAvailableFromTotal, getAvailableFromQuantity, getTotal, getRequested } = useAvailableHotelRooms()
@@ -133,10 +127,10 @@ const HotelRoomTypes: React.FC = () => {
     [getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal],
   )
 
-  const deleteHotelRoom = useGraphQLMutation(DeleteHotelRoomDocument)
+  const deleteHotelRoom = useMutation(trpc.hotelRooms.deleteHotelRoom.mutationOptions())
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetHotelRoomsDocument)
+  const { isLoading, error, data, refetch } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
   if (error) {
     return <TransportError error={error} />
@@ -145,12 +139,11 @@ const HotelRoomTypes: React.FC = () => {
     return <Loader />
   }
 
-  const list: HotelRoom[] = data.hotelRooms!.edges.map((v) => v.node).filter(notEmpty)
+  const list = data.filter(notEmpty)
 
   const clearSelectionAndRefresh = () => {
     setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
+    queryClient.invalidateQueries({ queryKey: trpc.hotelRooms.getHotelRooms.queryKey() })
   }
 
   const onAdd: TableMouseEventHandler<HotelRoom> = () => () => {
@@ -164,7 +157,7 @@ const HotelRoomTypes: React.FC = () => {
 
   const onDelete = (instance: TableInstance<HotelRoom>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((v) => deleteHotelRoom.mutateAsync({ input: { id: v.id } }))
+    const updater = toDelete.map((v) => deleteHotelRoom.mutateAsync({ id: v.id }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()
