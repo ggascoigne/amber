@@ -48,6 +48,10 @@ export function entries<T extends Record<PropertyKey, unknown>, K extends keyof 
   return Object.entries(o) as [K, V][]
 }
 
+export function values<T extends Record<PropertyKey, unknown>, K extends keyof T, V extends T[K]>(o: T) {
+  return Object.values(o) as V[]
+}
+
 // extract the type from an array
 export type UnpackArray<T> = T extends (infer U)[] ? U : T
 

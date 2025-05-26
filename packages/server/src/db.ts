@@ -12,8 +12,7 @@ const filename = '/tmp/rds-cert.pem'
 const createPrismaClient = (type: 'ADMIN' | 'USER') => {
   if (env.DATABASE_SSL_CERT) {
     const certName = path.basename(env.DATABASE_SSL_CERT ?? '', '.pem')
-    // eslint-disable-next-line no-prototype-builtins
-    if (!certs.hasOwnProperty(certName)) {
+    if (!Object.prototype.hasOwnProperty.call(certs, certName)) {
       throw new Error(`SSL was enabled, but the named cert, '${certName}' is not installed.`)
     }
     fs.writeFileSync(filename, certs[certName]!)
