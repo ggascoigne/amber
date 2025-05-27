@@ -1,4 +1,5 @@
 import bundleAnalyzer from '@next/bundle-analyzer'
+import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
 import { headers } from 'amber/utils/next-headers.js'
 import withMdxFm from 'next-mdx-frontmatter'
 
@@ -37,6 +38,14 @@ const nextConfig = {
     },
   },
   headers,
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // eslint-disable-next-line no-param-reassign
+      config.plugins = [...config.plugins, new PrismaPlugin()]
+    }
+
+    return config
+  },
 }
 
 export default withBundleAnalyzer(mdxConfig(nextConfig))
