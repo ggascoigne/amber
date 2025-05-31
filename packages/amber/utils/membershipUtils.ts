@@ -1,5 +1,6 @@
 import { useInvalidateMembershipQueries, UserAndProfile, useTRPC } from '@amber/client'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { DateTime } from 'luxon'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 import {} from 'yup'
 
@@ -11,9 +12,8 @@ import { getSlotDescription } from './slotTimes'
 import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
-import { GetTransactionByUserQuery, useGraphQL, GetHotelRoomsDocument } from '../client-graphql'
+import { GetTransactionByUserQuery } from '../client-graphql'
 import { Perms, useAuth } from '../components'
-import { DateTime } from 'luxon'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
 // circular import explosions
@@ -79,7 +79,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail
 
-  const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
+  const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
   // note that we pass in profile values since they might well have just been updated
   // and are later than the cached version off the membershipValues.
@@ -88,10 +88,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
     membershipValues: MembershipType,
     update: MembershipConfirmationBodyUpdateType = 'new',
   ) => {
-    const room = roomData
-      ?.hotelRooms!.edges.map((v) => v.node)
-      .filter(notEmpty)
-      .find((r) => r.id === membershipValues.hotelRoomId)
+    const room = roomData?.filter(notEmpty).find((r) => r.id === membershipValues.hotelRoomId)
 
     const slotDescriptions = membershipValues.slotsAttending?.split(',').map((i: string) =>
       getSlotDescription(configuration, {
