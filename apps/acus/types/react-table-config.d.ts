@@ -1,4 +1,4 @@
-/* eslint-disable unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-object-type,  @typescript-eslint/no-unused-vars */
 import { ChangeEvent, MouseEventHandler, ReactNode } from 'react'
 
 import {
@@ -148,6 +148,6 @@ declare module 'react-table' {
   }
 }
 
-export interface TableMouseEventHandler<T extends Record<string, unknown>> {
-  (instance: TableInstance<T>): MouseEventHandler
-}
+export type TableMouseEventHandler<T extends Record<string, unknown>> = (
+  instance: TableInstance<T>,
+) => MouseEventHandler

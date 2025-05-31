@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     ALTER TABLE game_assignment
@@ -8,6 +12,3 @@ export async function up(knex) {
     ADD CONSTRAINT game_assignment_game_id_foreign FOREIGN KEY (game_id) REFERENCES game (id) MATCH SIMPLE ON DELETE CASCADE
   `)
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { UserAndProfile } from '@amber/client'
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { Form, Formik, FormikHelpers } from 'formik'
@@ -20,10 +21,14 @@ import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelec
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-import { useGraphQLMutation, CreateGameSubmissionDocument, UpdateGameSubmissionByNodeIdDocument } from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
+import {
+  useGraphQLMutation,
+  CreateGameSubmissionDocument,
+  UpdateGameSubmissionByNodeIdDocument,
+} from '../../client-graphql'
+import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { ContactEmail } from '../../components'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'
 
 interface FormValues {
@@ -50,7 +55,7 @@ const submissionValidationSchema = Yup.object().shape({
 interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile: ProfileFormType
+  profile: UserAndProfile
   year: number
   update?: boolean
   message: string
@@ -168,12 +173,12 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         ) as ChoiceType[]
 
         if (!isSlotComplete(configuration, thisSlotChoices)) {
-          if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {
-            thisSlotChoices[1] = { ...thisSlotChoices[1], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+          if (!thisSlotChoices[0]!.gameId && !thisSlotChoices[1]!.gameId) {
+            thisSlotChoices[1] = { ...thisSlotChoices[1]!, gameId: slotId, modified: true } // only update the modified property since thisSlotChoices[1] is already of type ChoiceType
           } else {
             for (let i = 2; i < 5; i++) {
-              if (!thisSlotChoices[i].gameId) {
-                thisSlotChoices[i] = { ...thisSlotChoices[i], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+              if (!thisSlotChoices[i]!.gameId) {
+                thisSlotChoices[i] = { ...thisSlotChoices[i]!, gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
                 break
               }
             }
@@ -213,9 +218,9 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>
       <DialogContent>
         <p>
-          The following is a preview of your game selections for {configuration.name} {year}. Once you're satisfied that
-          everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this
-          page.
+          The following is a preview of your game selections for {configuration.name} {year}. Once you&apos;re satisfied
+          that everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of
+          this page.
         </p>
 
         <p>

@@ -2,8 +2,11 @@ import { getConfig, getEmails, emailer, handleError, JsonError } from '@amber/ap
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
 import { membershipConfirmationSchema } from 'amber/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from 'amber/utils/selectValues'
+import debug from 'debug'
 import { DateTime } from 'luxon'
 import { NextApiRequest, NextApiResponse } from 'next'
+
+const log = debug('amber:acnw:api:send:membershipConfirmation')
 
 // /api/send/membershipConfirmation
 // auth token: required
@@ -17,8 +20,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  update?; boolean
 // }
 
-const formatDate = (date?: string) =>
-  date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
+const formatDate = (date?: string | Date) => {
+  if (date === undefined) {
+    return ''
+  }
+  const dateTime = date instanceof Date ? DateTime.fromJSDate(date) : DateTime.fromISO(date)
+  return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
+}
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -28,6 +36,8 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     if (!configuration) throw new JsonError(400, 'unable to load configuration')
     const emails = await getEmails()
     const values = membershipConfirmationSchema.parse(req.body)
+
+    log('values', values)
 
     const emailResults = values.map((v) => {
       const {

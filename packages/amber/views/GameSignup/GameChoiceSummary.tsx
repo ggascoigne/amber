@@ -1,12 +1,13 @@
 import React from 'react'
 
-import { Field, GraphQLError, Loader, MultiLine, Page } from 'ui'
+import { Field, Loader, MultiLine, Page } from 'ui'
 
 import { ChoiceSummary } from './SlotDetails'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client-graphql'
 import { ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
 const GameChoiceSummary: React.FC = () => {
@@ -38,7 +39,7 @@ const GameChoiceSummary: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

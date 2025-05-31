@@ -1,3 +1,8 @@
+/* eslint-disable no-restricted-syntax */
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     ALTER TABLE setting
@@ -44,6 +49,3 @@ export async function up(knex) {
       `)
   }
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

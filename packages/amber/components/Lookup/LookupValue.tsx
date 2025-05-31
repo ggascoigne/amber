@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { GraphQLError, Loader } from 'ui'
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
+import { Loader } from 'ui'
 
-import { useGraphQL, GetSingleLookupValueDocument } from '../../client'
 import {
   getAttendance,
   getBathroomType,
@@ -12,6 +13,7 @@ import {
   getRoomType,
   useConfiguration,
 } from '../../utils'
+import { TransportError } from '../TransportError'
 
 interface LookupValueProps {
   realm: string
@@ -19,14 +21,15 @@ interface LookupValueProps {
 }
 
 export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
-  const { isLoading, error, data } = useGraphQL(GetSingleLookupValueDocument, { realm, code })
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.lookups.getSingleLookupValue.queryOptions({ realm, code }))
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading) {
     return <Loader />
   }
-  return <>{data?.lookups?.edges[0]?.node?.lookupValues.nodes[0]?.value}</>
+  return <>{data?.[0]?.lookupValue?.[0].value}</>
 }
 
 export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {

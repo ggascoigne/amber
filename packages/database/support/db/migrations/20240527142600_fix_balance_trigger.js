@@ -1,5 +1,9 @@
 import { fixGrants } from '../utils/policyUtils.js'
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     CREATE OR REPLACE FUNCTION collect_affected_users()
@@ -65,10 +69,6 @@ export async function up(knex) {
       EXECUTE FUNCTION update_balance();
   `)
 
-  const user = process.env.DATABASE_USER
+  const user = process.env.DATABASE_USER ?? ''
   await knex.raw(fixGrants(user))
-}
-
-export async function down(knex) {
-  // no revert
 }

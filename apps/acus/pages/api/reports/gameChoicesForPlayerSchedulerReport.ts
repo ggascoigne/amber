@@ -11,7 +11,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const configuration = await getConfig()
-    const year = req.body?.year || configuration?.year
+    const year = req.body?.year ?? configuration?.year
     const query = `
       SELECT
         u.id AS "userId",

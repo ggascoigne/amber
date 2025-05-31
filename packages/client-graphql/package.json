@@ -1,0 +1,30 @@
+{
+  "name": "@amber/client-graphql",
+  "version": "0.1.0",
+  "description": "Shared generated graphql types",
+  "author": "guy@wyrdrune.com",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [],
+  "private": true,
+  "scripts": {
+    "boot": "pnpm codegen",
+    "codegen": "graphql-codegen",
+    "tsc": "tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "common-tags": "^1.8.2",
+    "graphql": "^15.10.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/add": "5.0.3",
+    "@graphql-codegen/cli": "5.0.6",
+    "@graphql-codegen/client-preset": "^4.8.1",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.8.3"
+  }
+}

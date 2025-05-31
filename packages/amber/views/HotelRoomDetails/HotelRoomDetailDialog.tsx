@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { useTRPC, HotelRoomDetailsEditorType } from '@amber/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
@@ -10,14 +11,10 @@ import {
   OnCloseHandler,
   pick,
   TextField,
-  ToFormValues,
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
 
-import { HotelRoomDetail } from './HotelRoomDetails'
-
-import { useGraphQLMutation, CreateHotelRoomDetailDocument, UpdateHotelRoomDetailByNodeIdDocument } from '../../client'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
@@ -33,48 +30,45 @@ const validationSchema = Yup.object().shape({
   reserved: Yup.boolean().required('Required'),
 })
 
-type HotelRoomDetailType = ToFormValues<HotelRoomDetail>
-
 interface HotelRoomDetailsDialogProps {
   open: boolean
   onClose: OnCloseHandler
-  initialValues?: HotelRoomDetailType
+  initialValues?: HotelRoomDetailsEditorType
 }
 
 export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
-  const createHotelRoomDetail = useGraphQLMutation(CreateHotelRoomDetailDocument)
-  const updateHotelRoomDetail = useGraphQLMutation(UpdateHotelRoomDetailByNodeIdDocument)
+  const trpc = useTRPC()
+  const createHotelRoomDetail = useMutation(trpc.hotelRoomDetails.createHotelRoomDetail.mutationOptions())
+  const updateHotelRoomDetail = useMutation(trpc.hotelRoomDetails.updateHotelRoomDetail.mutationOptions())
   const queryClient = useQueryClient()
   const notify = useNotification()
 
-  return async (values: HotelRoomDetailType) => {
-    if (values.nodeId) {
+  return async (values: HotelRoomDetailsEditorType) => {
+    if (values.id) {
       await updateHotelRoomDetail
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(
-                  values,
-                  'id',
-                  'name',
-                  'roomType',
-                  'comment',
-                  'reservedFor',
-                  'bathroomType',
-                  'gamingRoom',
-                  'enabled',
-                  'formattedRoomType',
-                  'internalRoomType',
-                  'reserved',
-                ),
-              },
+            id: values.id,
+            data: {
+              ...pick(
+                values,
+                'id',
+                'name',
+                'roomType',
+                'comment',
+                'reservedFor',
+                'bathroomType',
+                'gamingRoom',
+                'enabled',
+                'formattedRoomType',
+                'internalRoomType',
+                'reserved',
+              ),
             },
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
+              queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
             },
           },
         )
@@ -89,30 +83,23 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
       await createHotelRoomDetail
         .mutateAsync(
           {
-            input: {
-              hotelRoomDetail: {
-                ...pick(
-                  values,
-                  'nodeId',
-                  'id',
-                  'name',
-                  'roomType',
-                  'comment',
-                  'reservedFor',
-                  'bathroomType',
-                  'gamingRoom',
-                  'enabled',
-                  'formattedRoomType',
-                  'internalRoomType',
-                  'reserved',
-                ),
-                version: 1,
-              },
-            },
+            ...pick(
+              values,
+              'name',
+              'roomType',
+              'comment',
+              'reservedFor',
+              'bathroomType',
+              'gamingRoom',
+              'enabled',
+              'formattedRoomType',
+              'internalRoomType',
+              'reserved',
+            ),
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
+              queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
             },
           },
         )
@@ -130,12 +117,12 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
 export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateHotelRoomDetail = useEditHotelRoomDetail(onClose)
 
-  const onSubmit = async (values: HotelRoomDetailType, _actions: FormikHelpers<HotelRoomDetailType>) => {
+  const onSubmit = async (values: HotelRoomDetailsEditorType, _actions: FormikHelpers<HotelRoomDetailsEditorType>) => {
     await createOrUpdateHotelRoomDetail(values)
   }
 
   const values = useMemo(() => {
-    const defaultValues: HotelRoomDetailType = {
+    const defaultValues: HotelRoomDetailsEditorType = {
       name: '',
       roomType: '',
       comment: '',
@@ -158,7 +145,7 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
       onSubmit={onSubmit}
       title='Hotel Room'
       validationSchema={validationSchema}
-      isEditing={!!values?.nodeId}
+      isEditing={!!values?.id}
     >
       <GridContainer spacing={2}>
         <GridItem xs={12} md={12}>

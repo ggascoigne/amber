@@ -13,9 +13,9 @@ function camelToSnake(str: string) {
     code = str.charCodeAt(index)
     if ((!wasPrevUppercase && code >= 65 && code <= 90) || (!wasPrevNumber && code >= 48 && code <= 57)) {
       newKey += '_'
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     } else {
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90
@@ -35,7 +35,7 @@ export function toSnakeCase(object: any, exceptions: string[] = []) {
     return object
   }
 
-  return Object.keys(object).reduce((p: { [key: string]: any }, key: string) => {
+  return Object.keys(object).reduce((p: Record<string, any>, key: string) => {
     const newKey = exceptions.indexOf(key) === -1 ? camelToSnake(key) : key
     p[newKey] = toSnakeCase(object[key])
     return p
@@ -47,7 +47,7 @@ export function toCamelCase(object: any, exceptions: string[] = []) {
     return object
   }
 
-  return Object.keys(object).reduce((p: { [key: string]: any }, key: string) => {
+  return Object.keys(object).reduce((p: Record<string, any>, key: string) => {
     const newKey = exceptions.indexOf(key) === -1 ? snakeToCamel(key) : key
     p[newKey] = toCamelCase(object[key])
     return p
@@ -64,12 +64,12 @@ export function camelToWords(str: string) {
   while (index < str.length) {
     code = str.charCodeAt(index)
     if (index === 0) {
-      newKey += str[index].toUpperCase()
+      newKey += str[index]?.toUpperCase()
     } else if ((!wasPrevUppercase && code >= 65 && code <= 90) || (!wasPrevNumber && code >= 48 && code <= 57)) {
       newKey += ' '
-      newKey += str[index].toUpperCase()
+      newKey += str[index]?.toUpperCase()
     } else {
-      newKey += str[index].toLowerCase()
+      newKey += str[index]?.toLowerCase()
     }
     wasPrevNumber = code >= 48 && code <= 57
     wasPrevUppercase = code >= 65 && code <= 90

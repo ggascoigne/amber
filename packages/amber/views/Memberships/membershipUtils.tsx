@@ -1,8 +1,8 @@
+import { CreateMembershipInputType } from '@amber/client'
 import Yup from 'ui/utils/Yup'
 import {} from 'yup'
 
 import { Configuration } from '../../utils'
-import { MembershipType } from '../../utils/apiTypes'
 
 export const membershipValidationSchemaNW = Yup.object().shape({
   arrivalDate: Yup.date().required(),
@@ -29,17 +29,17 @@ export const membershipValidationSchemaUS = Yup.object().shape({
 export const getDefaultMembership = (
   configuration: Configuration,
   userId: number,
-  isVirtual: boolean,
-): MembershipType => ({
+  _isVirtual: boolean,
+): CreateMembershipInputType => ({
   userId,
   // note the difference in logic here is that NW wants to make users check their
   // dates since the dates are related to the eventual hotel room booking, and US
   // is just booking the convention itself
-  arrivalDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionStartDate.toISO()! : '',
+  arrivalDate: configuration.conventionStartDate.toJSDate(),
   attendance: configuration.useUsAttendanceOptions ? '4' : 'Thurs-Sun',
   attending: true,
   hotelRoomId: configuration.useUsAttendanceOptions ? 1 : 13,
-  departureDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionEndDate.toISO()! : '',
+  departureDate: configuration.conventionEndDate.toJSDate(),
   interestLevel: 'Full',
   message: '',
   offerSubsidy: false,

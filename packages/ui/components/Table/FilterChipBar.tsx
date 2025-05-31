@@ -35,8 +35,9 @@ const getFilterValue = (column: ColumnInstance<any>, filterValue: FilterValue) =
       const max = filterValue[1]
       return min ? (max ? `${min}-${max}` : `>=${min}`) : `<=${max}`
     }
+    default:
+      return filterValue
   }
-  return filterValue
 }
 
 export function FilterChipBar<T extends Record<string, unknown>>({

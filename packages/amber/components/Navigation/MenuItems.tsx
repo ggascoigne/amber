@@ -40,7 +40,7 @@ export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
             (getFlagBoolean ? menuItem.userCondition({ userId, isMember, getFlag: getFlagBoolean }) : false),
         )
         .map((menuItem) => {
-          const link = menuItem.link ? menuItem.link : menuItem.path
+          const link = menuItem.link ?? menuItem.path
           const item = (
             <ListItemLink
               key={link}

@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
-import { GqlType, OnCloseHandler, pick, ToFormValues, useNotification } from 'ui'
+import { CreateMembershipType } from '@amber/client'
+import { GqlType, OnCloseHandler, pick, ToFormValuesGql, useNotification } from 'ui'
 import {} from 'yup'
 
-import type { MembershipType } from './apiTypes'
 import { Configuration, useConfiguration } from './configContext'
 import { Attendance } from './selectValues'
 import { useUser } from './useUserFilterState'
@@ -15,12 +15,12 @@ import {
   useGraphQLMutation,
   CreateTransactionDocument,
   UpdateTransactionByNodeIdDocument,
-} from '../client'
-import { useInvalidatePaymentQueries } from '../client/querySets'
+} from '../client-graphql'
+import { useInvalidatePaymentQueries } from '../client-graphql/querySets'
 
-export type TransactionValue = ToFormValues<GqlType<GetTransactionQuery, ['transactions', 'nodes', number]>>
+export type TransactionValue = ToFormValuesGql<GqlType<GetTransactionQuery, ['transactions', 'nodes', number]>>
 
-export const getMembershipCost = (configuration: Configuration, values: MembershipType): number => {
+export const getMembershipCost = (configuration: Configuration, values: CreateMembershipType): number => {
   if (configuration.virtual) {
     return parseInt(configuration.virtualCost, 10) || 0
   }
@@ -40,7 +40,7 @@ export const getMembershipCost = (configuration: Configuration, values: Membersh
   }
 }
 
-export const getMembershipString = (configuration: Configuration, values: MembershipType): string => {
+export const getMembershipString = (configuration: Configuration, values: CreateMembershipType): string => {
   if (configuration.virtual) {
     return 'Virtual Membership'
   }
@@ -132,7 +132,7 @@ export const useTransactionValues = (values: TransactionValue | null | undefined
   return useMemo(
     () => ({
       timestamp: Date.now().toLocaleString(),
-      ...(values ?? {}),
+      ...values,
       userId: values?.userId ?? userId!,
       amount: values?.amount ?? 0,
       origin: values?.origin ?? userId,
@@ -153,7 +153,11 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
   const notify = useNotification()
   const { userId } = useUser()
 
-  return async (membershipValues: MembershipType, membershipId: number, transactions?: GetTransactionByUserQuery) => {
+  return async (
+    membershipValues: CreateMembershipType,
+    membershipId: number,
+    transactions?: GetTransactionByUserQuery,
+  ) => {
     const membershipTransactionNodeId = transactions?.transactions?.nodes.find(
       (t) => t?.memberId === membershipId && t?.stripe === false,
     )?.nodeId

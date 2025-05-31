@@ -82,17 +82,17 @@ const DefaultHeader = <T extends Record<string, unknown>>({ column }: HeaderProp
 
 // yes this is recursive, but the depth never exceeds three, so it seems safe enough
 const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>
-  columns[0].columns ? findFirstColumn(columns[0].columns) : columns[0]
+  columns[0]!.columns ? findFirstColumn(columns[0]!.columns) : columns[0]!
 
 function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, column, gotoPage }: FilterProps<T>) {
   const { id, filterValue, setFilter, render } = column
-  const [value, setValue] = React.useState(filterValue || '')
+  const [value, setValue] = React.useState(filterValue ?? '')
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
   }
   // ensure that reset loads the new value
   useEffect(() => {
-    setValue(filterValue || '')
+    setValue(filterValue ?? '')
   }, [filterValue])
 
   const isFirstColumn = findFirstColumn(columns) === column
@@ -149,7 +149,7 @@ const useSelectionUi = (hooks: Hooks<any>) => {
   ])
   hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
     // fix the parent group of the selection button to not be resizable
-    const selectionGroupHeader = headerGroups[0].headers[0]
+    const selectionGroupHeader = headerGroups[0]!.headers[0]!
     selectionGroupHeader.canResize = false
   })
 }
@@ -266,8 +266,8 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     [onClick],
   )
 
-  const { role: tableRole, ...tableProps } = getTableProps()
-  const { role: tableBodyRole, ...tableBodyProps } = getTableBodyProps()
+  const { role: _tableRole, ...tableProps } = getTableProps()
+  const { role: _tableBodyRole, ...tableBodyProps } = getTableBodyProps()
   return (
     <>
       {!hideSelectionUi ? (
@@ -286,17 +286,17 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
           {headerGroups.map((headerGroup) => {
             const {
               key: headerGroupKey,
-              title: headerGroupTitle,
-              role: headerGroupRole,
+              title: _headerGroupTitle,
+              role: _headerGroupRole,
               ...getHeaderGroupProps
             } = headerGroup.getHeaderGroupProps()
             return (
               <TableHeadRow key={headerGroupKey} {...getHeaderGroupProps} tableStyleOptions={tableStyleOptions}>
                 {headerGroup.headers.map((column) => {
                   const style = {
-                    textAlign: column.align ? column.align : 'left ',
+                    textAlign: column.align ?? 'left ',
                   } as CSSProperties
-                  const { key: headerKey, role: headerRole, ...getHeaderProps } = column.getHeaderProps(headerProps)
+                  const { key: headerKey, role: _headerRole, ...getHeaderProps } = column.getHeaderProps(headerProps)
                   const { title: groupTitle = '', ...columnGroupByProps } = column.getGroupByToggleProps()
                   const { title: sortTitle = '', ...columnSortByProps } = column.getSortByToggleProps()
 
@@ -342,7 +342,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
         <TableBody {...tableBodyProps} tableStyleOptions={tableStyleOptions}>
           {page.map((row) => {
             prepareRow(row)
-            const { key: rowKey, role: rowRole, ...getRowProps } = row.getRowProps()
+            const { key: rowKey, role: _rowRole, ...getRowProps } = row.getRowProps()
             return (
               <TableRow
                 key={rowKey}
@@ -351,7 +351,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                 tableStyleOptions={tableStyleOptions}
               >
                 {row.cells.map((cell) => {
-                  const { key: cellKey, role: cellRole, ...getCellProps } = cell.getCellProps(cellProps)
+                  const { key: cellKey, role: _cellRole, ...getCellProps } = cell.getCellProps(cellProps)
                   return (
                     <TableCell
                       key={cellKey}

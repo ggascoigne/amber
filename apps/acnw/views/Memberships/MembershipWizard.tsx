@@ -1,10 +1,10 @@
 import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
+import { UserAndProfile } from '@amber/client'
 import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Perms,
   ProfileFormContent,
-  ProfileFormType,
   profileValidationSchema,
   useAuth,
   useConfiguration,
@@ -39,14 +39,14 @@ interface IntroType {
 export interface MembershipWizardFormValues {
   intro: IntroType
   membership: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
   short?: boolean
 }
 

@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react'
 
+import { MembershipAndUserAndRoom, UserAndProfile, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 
 import {
   GameAssignmentFieldsFragment,
   GameFieldsFragment,
   GameGmsFragment,
-  MembershipFieldsFragment,
   Node,
   useGraphQL,
   useGraphQLMutation,
@@ -14,19 +15,18 @@ import {
   CreateGameDocument,
   DeleteGameAssignmentDocument,
   GetGameAssignmentsByYearDocument,
-  GetMembershipsByYearDocument,
   UpdateGameByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client-graphql/querySets'
 import { Perms, useAuth } from '../../components/Auth'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
 
 type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
 
 type GameAssignment = GameAssignmentFieldsFragment
 
-type Membership = MembershipFieldsFragment
+type Membership = MembershipAndUserAndRoom
 
 export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
 
@@ -152,6 +152,7 @@ export type GameDialogFormValues = Omit<
   Partial<Node>
 
 export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialogFormValues) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const createGame = useGraphQLMutation(CreateGameDocument)
   const updateGame = useGraphQLMutation(UpdateGameByNodeIdDocument)
@@ -165,18 +166,17 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
   const [year] = useYearFilter()
   const setGameGmAssignments = useUpdateGameAssignment()
-  const { data: membershipData } = useGraphQL(GetMembershipsByYearDocument, {
-    year,
-  })
-
-  const membershipList: Membership[] = useMemo(
-    () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
-    [membershipData?.memberships?.nodes],
+  const { data: membershipData } = useQuery(
+    trpc.memberships.getMembershipsByYear.queryOptions({
+      year,
+    }),
   )
+
+  const membershipList: Membership[] = useMemo(() => membershipData?.filter(notEmpty) ?? [], [membershipData])
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (p: ProfileFormType, v: GameFields, update = false) => {
+      const sendGameConfirmation = (p: UserAndProfile, v: GameFields, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: {

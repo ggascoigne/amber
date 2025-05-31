@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { GraphQLError, Loader } from 'ui'
+import { Loader } from 'ui'
 
-import { GameArray, useGraphQL, GetGamesBySlotDocument } from '../../client'
+import { GameArray, useGraphQL, GetGamesBySlotDocument } from '../../client-graphql'
+import { TransportError } from '../TransportError'
 
 export interface GameQueryChild {
   year: number
@@ -22,7 +23,7 @@ export const GameQuery: React.FC<GameQueryProps> = ({ year, slot, children }) =>
     slotId: slot,
   })
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

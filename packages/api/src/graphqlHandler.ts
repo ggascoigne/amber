@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { getPool, PoolType } from 'database/shared/config'
 import { getPostgraphileHandler } from 'database/shared/postgraphileHandler'
 import { NextApiRequest, NextApiResponse } from 'next'

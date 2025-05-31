@@ -1,53 +1,43 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { useTRPC, HotelRoomDetails as HotelRoomDetailsType, HotelRoom } from '@amber/client'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  GetHotelRoomDetailsQuery,
-  DeleteHotelRoomDetailDocument,
-  GetHotelRoomDetailsDocument,
-  GetMembershipRoomsByYearDocument,
-} from '../../client'
+import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useFlag, useYearFilter } from '../../utils'
-import { HotelRoom } from '../HotelRoomTypes/HotelRoomTypes'
-
-export type HotelRoomDetail = GqlType<GetHotelRoomDetailsQuery, ['hotelRoomDetails', 'edges', number, 'node']>
 
 export const useAvailableHotelRooms = () => {
-  const { data: roomDetails } = useGraphQL(GetHotelRoomDetailsDocument)
+  const trpc = useTRPC()
+  const { data: roomDetails } = useQuery(trpc.hotelRoomDetails.getHotelRoomDetails.queryOptions())
   const [year] = useYearFilter()
-  const { data: roomsByMember } = useGraphQL(
-    GetMembershipRoomsByYearDocument,
-    {
-      year,
-    },
-    { gcTime: 30 * 1000 },
+  const { data: roomsByMember } = useQuery(
+    trpc.memberships.getMembershipRoomsByYear.queryOptions(
+      {
+        year,
+      },
+      { gcTime: 30 * 1000 },
+    ),
   )
   const shouldUseRoomTotal = useFlag('dev_use_detail_rome_quantities', false)
 
-  const rooms: HotelRoomDetail[] | undefined = useMemo(
-    () => roomDetails?.hotelRoomDetails?.edges.map((v) => v.node).filter(notEmpty),
-    [roomDetails?.hotelRoomDetails],
-  )
+  const rooms: HotelRoomDetailsType[] | undefined = useMemo(() => roomDetails?.filter(notEmpty), [roomDetails])
   const roomsInUse = useMemo(
     () =>
-      roomsByMember?.memberships?.nodes
+      roomsByMember
         ?.filter(notEmpty)
         .map((n) => n.hotelRoom)
         .filter(notEmpty),
-    [roomsByMember?.memberships?.nodes],
+    [roomsByMember],
   )
 
   const getTotal = useCallback(
     (room: HotelRoom): number => {
-      function getAvailable(detail: HotelRoomDetail, r: HotelRoom): boolean {
+      function getAvailable(detail: HotelRoomDetailsType, r: HotelRoom): boolean {
         return (
           detail.gamingRoom === r.gamingRoom &&
           detail.bathroomType === r.bathroomType &&
@@ -84,7 +74,7 @@ export const useAvailableHotelRooms = () => {
   return { getRoomAvailable, getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal }
 }
 
-const columns: Column<HotelRoomDetail>[] = [
+const columns: Column<HotelRoomDetailsType>[] = [
   {
     accessor: 'name',
   },
@@ -124,30 +114,31 @@ const columns: Column<HotelRoomDetail>[] = [
 ]
 
 const HotelRoomDetails: React.FC = () => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<HotelRoomDetail[]>([])
+  const [selection, setSelection] = useState<HotelRoomDetailsType[]>([])
 
-  const deleteHotelRoomDetail = useGraphQLMutation(DeleteHotelRoomDetailDocument)
+  const deleteHotelRoomDetail = useMutation(trpc.hotelRoomDetails.deleteHotelRoomDetail.mutationOptions())
   const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetHotelRoomDetailsDocument)
+  const { isLoading, error, data, refetch } = useQuery(trpc.hotelRoomDetails.getHotelRoomDetails.queryOptions())
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
   }
 
-  const list: HotelRoomDetail[] = data.hotelRoomDetails!.edges.map((v) => v.node).filter(notEmpty)
+  const list = data.filter(notEmpty)
 
   const clearSelectionAndRefresh = () => {
     setSelection([])
     // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
+    queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
   }
 
-  const onAdd: TableMouseEventHandler<HotelRoomDetail> = () => () => {
+  const onAdd: TableMouseEventHandler<HotelRoomDetailsType> = () => () => {
     setShowEdit(true)
   }
 
@@ -156,9 +147,9 @@ const HotelRoomDetails: React.FC = () => {
     clearSelectionAndRefresh()
   }
 
-  const onDelete = (instance: TableInstance<HotelRoomDetail>) => () => {
+  const onDelete = (instance: TableInstance<HotelRoomDetailsType>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((v) => deleteHotelRoomDetail.mutateAsync({ input: { id: v.id } }))
+    const updater = toDelete.map((v) => deleteHotelRoomDetail.mutateAsync({ id: v.id }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()
@@ -166,12 +157,12 @@ const HotelRoomDetails: React.FC = () => {
     })
   }
 
-  const onEdit = (instance: TableInstance<HotelRoomDetail>) => () => {
+  const onEdit = (instance: TableInstance<HotelRoomDetailsType>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<HotelRoomDetail>) => {
+  const onClick = (row: Row<HotelRoomDetailsType>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -179,7 +170,7 @@ const HotelRoomDetails: React.FC = () => {
   return (
     <Page title='Hotel Rooms'>
       {showEdit && <HotelRoomDetailDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<HotelRoomDetail>
+      <Table<HotelRoomDetailsType>
         name='hotelRoomDetails'
         data={list}
         columns={columns}

@@ -1,5 +1,9 @@
 import { anyUserUpdatePolicy, enableRls, fixGrants } from '../utils/policyUtils.js'
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.schema.createTable('transactions', (table) => {
     table.bigIncrements().primary()
@@ -69,10 +73,6 @@ export async function up(knex) {
   await knex.raw(anyUserUpdatePolicy('stripe'))
   await knex.raw(enableRls('stripe'))
 
-  const user = process.env.DATABASE_USER
+  const user = process.env.DATABASE_USER ?? ''
   await knex.raw(fixGrants(user))
-}
-
-export async function down(knex) {
-  // no revert
 }

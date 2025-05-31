@@ -11,7 +11,6 @@ export const options = {
   cors: false,
   graphiql: false,
   graphqlRoute: '/api/graphql',
-  // externalUrlBase: `/${process.env.AWS_STAGE}`,
   absoluteRoutes: false,
   disableQueryLog: process.env.NODE_ENV === 'production',
   enableCors: false,

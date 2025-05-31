@@ -8,8 +8,9 @@
   "type": "module",
   "engines": {
     "node": ">=20",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   },
+  "packageManager": "pnpm@10.8.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggascoigne/amber.git"
@@ -25,24 +26,33 @@
     "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
     "format": "pnpm format:all --cache",
     "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
-    "lint": "pnpm -r --parallel lint",
+    "lint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
-    "test": "next test",
+    "test": "vitest",
+    "test:watch": "vitest watch",
     "tsc": "pnpm -r tsc"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
+    "@ggascoigne/eslint-config": "^2.2.4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@vitejs/plugin-react": "^4.5.0",
+    "dotenv": "16.5.0",
+    "dotenv-cli": "8.0.0",
+    "eslint": "^9.27.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
+    "jsdom": "^25.0.1",
+    "lint-staged": "^16.0.0",
     "next": "13.5.6",
-    "prettier": "^3.5.2",
+    "prettier": "^3.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig": "workspace:*",
-    "tsx": "^4.19.3",
-    "turbo": "^1.13.4",
-    "typescript": "^5.7.3"
+    "tsx": "^4.19.4",
+    "turbo": "^2.5.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
   },
   "prettier": {
     "printWidth": 120,

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { AfterCallback, handleCallback } from '@auth0/nextjs-auth0'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -26,7 +25,7 @@ export const authHandlers = {
         afterCallback,
       })
     } catch (error: any) {
-      res.status(error.status || 500).end(error.message)
+      res.status(error.status ?? 500).end(error.message)
     }
   },
 }

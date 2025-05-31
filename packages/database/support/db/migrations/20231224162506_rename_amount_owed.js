@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     DROP TRIGGER transactions_update_trigger ON transactions;
@@ -45,8 +49,4 @@ export async function up(knex) {
       FOR EACH ROW
       EXECUTE FUNCTION update_balance();
   `)
-}
-
-export async function down(knex) {
-  // no revert
 }

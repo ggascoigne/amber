@@ -5,7 +5,6 @@ import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
@@ -28,9 +27,10 @@ import {
   GetGameByIdDocument,
   GetGameRoomsDocument,
   GetGamesByAuthorDocument,
-} from '../../client'
+} from '../../client-graphql'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
+import { TransportError } from '../../components/TransportError'
 import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 
 type Game = GameFieldsFragment & GameGmsFragment
@@ -118,7 +118,7 @@ const validationSchema = Yup.object().shape({
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
   const configuration = useConfiguration()
-  const { select, year, ...rest } = props
+  const { select: _select, year, ...rest } = props
   const selectValues = range(configuration.numberOfSlots).reduce(
     (acc, current) => {
       acc.push({
@@ -160,7 +160,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const { error: roomError, data: roomData } = useGraphQL(GetGameRoomsDocument)
 
   if (gameError || roomError) {
-    return <GraphQLError error={gameError ?? roomError} />
+    return <TransportError error={gameError ?? roomError} />
   }
   if (!gameData || !roomData) {
     return (
@@ -182,11 +182,10 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
 
   const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
 
-  // eslint-disable-next-line no-param-reassign
   if (initialValues.slotId === null) initialValues.slotId = 0
 
   const onCopyGameChange =
-    (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
+    (values: GameDialogFormValues, setValues: (val: GameDialogFormValues, shouldValidate?: boolean) => void) =>
     (_: any, value: Game | null): void => {
       if (!value) return
       setValues({
@@ -236,7 +235,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                   id='prior-games'
                   options={priorGamesList}
                   groupBy={(game) => `${game.year}`}
-                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})` ?? 0}: ${game.name}`}
+                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})`}: ${game.name}`}
                   fullWidth
                   renderInput={(params) => (
                     <MuiTextField
@@ -411,7 +410,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 fullWidth
               />
             </GridItem>
-            {!configuration.startDates[values.year].virtual && (
+            {!configuration.startDates[values.year]!.virtual && (
               <>
                 <GridItem xs={12} md={12}>
                   <SelectField
@@ -461,7 +460,7 @@ export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
     return <GamesDialog {...props} />
   }
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />

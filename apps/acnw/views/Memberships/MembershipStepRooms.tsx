@@ -118,9 +118,9 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       </DialogContentText>
 
       <Important component='span' className={classes.important}>
-        If you are sharing a room, please only have one of you 'book' the room. For everyone else who's sharing the room
-        just select the 'sharing' option in this first list. If each of you lists who you are sharing with, we can
-        better make sure that there are no mistakes.
+        If you are sharing a room, please only have one of you &lsquo;book&rsquo; the room. For everyone else who&apos;s
+        sharing the room just select the &lsquo;sharing&rsquo; option in this first list. If each of you lists who you
+        are sharing with, we can better make sure that there are no mistakes.
       </Important>
 
       <FormControl component='fieldset' error={showError}>

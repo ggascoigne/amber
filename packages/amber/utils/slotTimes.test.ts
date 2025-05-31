@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/no-unresolved
 import { DateTime } from 'luxon'
+import { describe, test, expect } from 'vitest'
 
 import { getSlotDescription, SlotConfiguration, SlotFormat } from './slotTimes'
 

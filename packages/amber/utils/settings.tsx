@@ -1,10 +1,11 @@
 import { useCallback } from 'react'
 
+import { Setting, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { notEmpty } from 'ui'
 
 import { useIsGm, useIsMember } from './membership'
 
-import { SettingFieldsFragment, useGraphQL, GetSettingsDocument } from '../client'
 import { Perms, useAuth } from '../components/Auth'
 
 export enum SettingValue {
@@ -21,16 +22,17 @@ const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof type
 export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Yes']
 
 export const useSettings = () => {
+  const trpc = useTRPC()
   const isGm = useIsGm()
   const isMember = useIsMember()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const isGameAdmin = hasPermissions(Perms.GameAdmin)
-  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
+  const { isLoading, error, data } = useQuery(trpc.settings.getSettings.queryOptions())
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): string | null => {
+      const getSetting = (settings: Setting[] | null, setting1: string): string | null => {
         const s = settings?.find((s1) => s1.code === setting1)
         return s ? s.value : null
       }
@@ -39,7 +41,7 @@ export const useSettings = () => {
         return `${defaultValue}`
       }
 
-      const settings: SettingFieldsFragment[] | null = data.settings?.nodes.filter(notEmpty) ?? null
+      const settings: Setting[] | null = data.filter(notEmpty) ?? null
 
       return getSetting(settings, setting)
     },
@@ -48,7 +50,7 @@ export const useSettings = () => {
 
   const getSettingValue = useCallback(
     (setting: string, defaultValue = false): SettingValue | boolean | null => {
-      const getSetting = (settings: SettingFieldsFragment[] | null, setting1: string): SettingValue | null => {
+      const getSetting = (settings: Setting[] | null, setting1: string): SettingValue | null => {
         const s = settings?.find((s1) => s1.code === setting1)
         if (s && s.type !== 'perm-gate') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
@@ -58,7 +60,7 @@ export const useSettings = () => {
         return defaultValue
       }
 
-      const settings: SettingFieldsFragment[] | null = data.settings?.nodes.filter(notEmpty) ?? null
+      const settings: Setting[] | null = data.filter(notEmpty) ?? null
 
       return getSetting(settings, setting)
     },
@@ -98,9 +100,7 @@ export const useFlag = (setting: string, defaultValue = false) => {
   return getFlagBoolean?.(setting, defaultValue)
 }
 
-interface UseGetSettingValueType {
-  (setting: string, defaultValue?: boolean): string | null | undefined
-}
+type UseGetSettingValueType = (setting: string, defaultValue?: boolean) => string | null | undefined
 
 export const useGetSettingValue: UseGetSettingValueType = (setting: string, defaultValue = false) => {
   const [getSettingString] = useSettings()

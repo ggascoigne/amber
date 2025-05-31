@@ -9,7 +9,7 @@ export function useAxe(): void {
   if (isDev) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const axe = require('@axe-core/react')
       axe(React, ReactDOM, 1000, {})
     })

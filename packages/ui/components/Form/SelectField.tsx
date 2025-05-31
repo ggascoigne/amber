@@ -36,7 +36,7 @@ export const getSelectLabel = (value: SelectFieldValue): string => (typeof value
 export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
   const { classes } = useStyles()
   const [field] = useField(props.name)
-  const { select, selectValues, children, ...rest } = props
+  const { select: _select, selectValues, children, ...rest } = props
   const multiSelect = !!props.SelectProps?.multiple
   return (
     <TextField select {...rest}>
@@ -56,7 +56,7 @@ export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
           </MenuItem>
         ))}
 
-      {children && children}
+      {children}
     </TextField>
   )
 }

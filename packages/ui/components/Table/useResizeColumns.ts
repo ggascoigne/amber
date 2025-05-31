@@ -59,7 +59,7 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
     const headersToResize = getLeafHeaders(header)
     const headerIdWidths = headersToResize.map((d) => [d.id, d.totalWidth])
 
-    const clientX = isTouchEvent ? Math.round((e as TouchEvent).touches[0].clientX) : (e as MouseEvent).clientX
+    const clientX = isTouchEvent ? Math.round((e as TouchEvent)?.touches?.[0]?.clientX ?? 0) : (e as MouseEvent).clientX
 
     const dispatchMove = (clientXPos: number) => {
       dispatch({ type: actions.columnResizing, clientX: clientXPos })
@@ -84,7 +84,7 @@ const defaultGetResizerProps = <D extends Record<string, unknown>>(
             event.preventDefault()
             event.stopPropagation()
           }
-          dispatchMove(event.touches[0].clientX)
+          dispatchMove(event?.touches?.[0]?.clientX ?? 0)
           return false
         },
         upEvent: 'touchend',
@@ -219,7 +219,7 @@ const useInstanceBeforeDimensions = <D extends Record<string, unknown>>(instance
     )
 
     header.canResize = canResize
-    header.width = columnResizing.columnWidths[header.id] || header.width
+    header.width = columnResizing.columnWidths[header.id] ?? header.width
     header.isResizing = columnResizing.isResizingColumn === header.id
 
     if (canResize) {

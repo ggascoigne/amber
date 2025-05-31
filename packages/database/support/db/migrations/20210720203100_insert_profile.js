@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     INSERT INTO
@@ -15,6 +19,3 @@ export async function up(knex) {
     table.dropColumn('phone_number')
   })
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

@@ -1,9 +1,10 @@
+import { dbEnv } from '@amber/environment'
 import { DocumentNode, graphql, print } from 'graphql'
 import type { Maybe } from 'graphql/jsutils/Maybe'
 import gql from 'graphql-tag'
 import { createPostGraphileSchema, withPostGraphileContext } from 'postgraphile'
 
-import { PoolType, getPool, getSchemas, dbEnv } from './config'
+import { PoolType, getPool, getSchemas } from './config'
 import { acnwReadCache, acusReadCache, options } from './postgraphileOptions'
 
 export type QueryResult<T> = {
@@ -11,12 +12,7 @@ export type QueryResult<T> = {
   errors: readonly any[] | undefined
 }
 
-export type QueryRunner = <
-  TData,
-  TVariables = Maybe<{
-    [key: string]: any
-  }>,
->(
+export type QueryRunner = <TData, TVariables = Maybe<Record<string, any>>>(
   graphqlQuery: string | DocumentNode,
   variables?: TVariables | undefined,
   operationName?: Maybe<string>,
@@ -32,8 +28,7 @@ export const makeQueryRunner = async () => {
     readCache: dbEnv === 'acnw' ? acnwReadCache : acusReadCache,
   })
 
-  // eslint-disable-next-line etc/no-misused-generics
-  const query: QueryRunner = async <TData, TVariables = Maybe<{ [key: string]: any }>>(
+  const query: QueryRunner = async <TData, TVariables = Maybe<Record<string, any>>>(
     graphqlQuery: string | DocumentNode,
     variables?: TVariables,
     operationName: Maybe<string> = null,

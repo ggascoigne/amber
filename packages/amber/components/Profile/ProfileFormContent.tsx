@@ -4,11 +4,7 @@ import { DialogContentText } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 import { GridContainer, GridItem, Important, TextField } from 'ui'
 
-import { UsersAndProfileType } from './profileUtils'
-
 import { HasPermission, Perms, useAuth } from '../Auth'
-
-export type ProfileFormType = UsersAndProfileType
 
 const useStyles = makeStyles()(() => ({
   important: {
@@ -51,16 +47,10 @@ export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix =
           <TextField name={`${prefix}displayName`} label='Display Name' fullWidth />
         </GridItem>
         <GridItem xs={12} md={12}>
-          <TextField
-            name={`${prefix}profiles.nodes[0].snailMailAddress`}
-            label='Address'
-            fullWidth
-            required
-            multiline
-          />
+          <TextField name={`${prefix}profile[0].snailMailAddress`} label='Address' fullWidth required multiline />
         </GridItem>
         <GridItem xs={12} md={12}>
-          <TextField name={`${prefix}profiles.nodes[0].phoneNumber`} label='Phone number' fullWidth required />
+          <TextField name={`${prefix}profile[0].phoneNumber`} label='Phone number' fullWidth required />
         </GridItem>
       </GridContainer>
     </div>

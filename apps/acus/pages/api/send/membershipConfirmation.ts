@@ -17,8 +17,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  update?; boolean
 // }
 
-const formatDate = (date?: string) =>
-  date ? DateTime.fromISO(date)?.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY) : ''
+const formatDate = (date?: string | Date) => {
+  if (date === undefined) {
+    return ''
+  }
+  const dateTime = date instanceof Date ? DateTime.fromJSDate(date) : DateTime.fromISO(date)
+  return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
+}
 
 export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {

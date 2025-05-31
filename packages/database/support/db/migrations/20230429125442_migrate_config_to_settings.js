@@ -1,10 +1,29 @@
+/* eslint-disable no-restricted-syntax */
 import { DateTime } from 'luxon'
 
 import { anyUserUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
 
+/**
+ * @param {{year: number, month: number, day: number}} param
+ * @returns {DateTime}
+ */
 const pdxDate = ({ year, month, day }) => DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })
+
+/**
+ * @param {{year: number, month: number, day: number}} param
+ * @returns {DateTime}
+ */
 const dtwDate = ({ year, month, day }) => DateTime.fromObject({ year, month, day }, { zone: 'America/Detroit' })
 
+/**
+ * @param {import('knex').Knex} knex
+ * @param {Record<string,string>} strings
+ * @param {Record<string,number>} numbers
+ * @param {Record<string,DateTime>} dates
+ * @param {Record<string,boolean>} booleans
+ * @param {Record<string,{ date: DateTime, virtual: boolean, slots: number }>} startDates
+ * @returns {Promise<void>}
+ */
 const saveConfig = async (knex, strings, numbers, dates, booleans, startDates) => {
   for await (const val of Object.keys(strings)) {
     await knex.raw(`
@@ -39,27 +58,35 @@ const saveConfig = async (knex, strings, numbers, dates, booleans, startDates) =
         `)
   }
   for await (const val of Object.keys(startDates)) {
-    await knex.raw(`
+    const startDate = startDates[val]
+    // can't really be false, but also can't fix it in javascript
+    if (startDate) {
+      await knex.raw(`
         INSERT INTO
           setting (code, type, value)
         VALUES
-          ('config.startDates.${val}.date', 'date', '${startDates[val].date ?? ''}');
+          ('config.startDates.${val}.date', 'date', '${startDate.date ?? ''}');
         `)
-    await knex.raw(`
+      await knex.raw(`
         INSERT INTO
           setting (code, type, value)
         VALUES
-          ('config.startDates.${val}.virtual', 'boolean', '${startDates[val].virtual ?? ''}');
+          ('config.startDates.${val}.virtual', 'boolean', '${startDate.virtual ?? ''}');
         `)
-    await knex.raw(`
+      await knex.raw(`
         INSERT INTO
           setting (code, type, value)
         VALUES
-          ('config.startDates.${val}.slots', 'number', '${startDates[val].slots ?? ''}');
+          ('config.startDates.${val}.slots', 'number', '${startDates.slots ?? ''}');
         `)
+    }
   }
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   if (process.env.DB_ENV === 'acnw') {
     const startDates = {
@@ -218,6 +245,3 @@ export async function up(knex) {
     await knex.raw(enableRls('setting'))
   }
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

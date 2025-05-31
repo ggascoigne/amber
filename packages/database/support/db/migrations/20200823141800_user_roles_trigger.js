@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     CREATE OR REPLACE FUNCTION add_default_role()
@@ -25,6 +29,3 @@ export async function up(knex) {
     EXECUTE PROCEDURE add_default_role ();
   `)
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}

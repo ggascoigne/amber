@@ -8,10 +8,27 @@ BLUE='\033[00;34m'
 FORBIDDEN=( 'DO NOT COMMIT' 'DO-NOT-COMMIT' 'debugger' )
 FOUND=''
 
+IGNORE=( 'packages/server/src/generated' )
+
 for j in "${FORBIDDEN[@]}"
 do
   for i in `git diff --cached --name-only | grep -v $(basename $0) | grep -vE "eslint|.*lock.*|package.json"`
   do
+
+      # Skip files in ignored folders
+    SKIP=false
+    for ignore in "${IGNORE[@]}"
+    do
+      if [[ $i == $ignore* ]]; then
+        SKIP=true
+        break
+      fi
+    done
+
+    if [[ $SKIP == true ]]; then
+      continue
+    fi
+
     if [[ -f $i ]]; then
       # the trick is here...use `git show :file` to output what is staged
       # test it against each of the FORBIDDEN strings ($j)

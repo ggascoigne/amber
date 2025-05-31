@@ -1,16 +1,17 @@
 import React, { useMemo } from 'react'
 
+import { HotelRoom, useTRPC } from '@amber/client'
 import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useQuery } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty } from 'ui'
+import { Loader, notEmpty } from 'ui'
 
 import { HasPermission, Perms } from './Auth'
+import { TransportError } from './TransportError'
 
-import { useGraphQL, GetHotelRoomsDocument } from '../client'
 import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
-import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'
 
 const useStyles = makeStyles<void, 'titleLine' | 'soldOut'>()((theme: Theme, _params, classes) => ({
   titleLine: {
@@ -60,15 +61,16 @@ const getRoomTypeDescription = (type: BathroomType) => {
       return 'Rooms with en-suite bath facilities'
     case BathroomType.NoEnSuite:
       return "Rooms with bath facilities 'down the hall', bed & breakfast style"
+    default:
+      return undefined
   }
-  return undefined
 }
 
 const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.description.replaceAll(
           /\*/g,
@@ -83,7 +85,7 @@ const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.rate.replaceAll(
           /(\$\d+ \/ night T.*S??\*)/g,
@@ -172,18 +174,15 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
 }
 
 export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValue }) => {
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   const rooms: HotelRoom[] | undefined = useMemo(
-    () =>
-      data
-        ?.hotelRooms!.edges.map((v) => v.node)
-        .filter(notEmpty)
-        .filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
+    () => data?.filter(notEmpty).filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
     [data],
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -260,19 +259,16 @@ export interface RoomsTableProps {
 }
 
 export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
-
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
   }
 
-  const rooms: HotelRoom[] = data
-    .hotelRooms!.edges.map((v) => v.node)
-    .filter(notEmpty)
-    .filter((r) => r.quantity > 0)
+  const rooms: HotelRoom[] = data.filter(notEmpty).filter((r) => r.quantity > 0)
 
   return (
     <Table>

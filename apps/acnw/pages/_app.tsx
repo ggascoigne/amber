@@ -1,5 +1,4 @@
-import * as React from 'react'
-
+import { api } from '@amber/server/src/utils/api'
 import { EmotionCache } from '@emotion/react'
 import RootComponent from 'amber/components/RootComponent'
 import { AppProps } from 'next/app'
@@ -11,6 +10,9 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
   configData?: any
 }
-export default function MyApp(props: MyAppProps) {
-  return <RootComponent title='AmberCon Northwest' banner={<Banner to='/' />} rootRoutes={rootRoutes} {...props} />
-}
+
+const MyApp = (props: MyAppProps) => (
+  <RootComponent title='AmberCon Northwest' banner={<Banner to='/' />} rootRoutes={rootRoutes} {...props} />
+)
+
+export default api.withTRPC(MyApp)

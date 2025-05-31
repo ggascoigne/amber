@@ -1,8 +1,0 @@
-fragment slotFields on Slot {
-  nodeId
-  id
-  slot
-  day
-  length
-  time
-}

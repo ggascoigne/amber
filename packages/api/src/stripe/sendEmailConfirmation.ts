@@ -1,5 +1,4 @@
-import { GetUserByIdDocument, GetUserByIdQuery, GetUserByIdQueryVariables } from '@amber/client'
-import { makeQueryRunner, QueryResult } from 'database/shared/postgraphileQueryRunner'
+import { ssrHelpers } from '@amber/server/src/api/ssr'
 
 import { UserPaymentDetails } from './types'
 
@@ -15,17 +14,16 @@ type SendEmailConfirmationProps = {
 
 export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo }: SendEmailConfirmationProps) => {
   const emails = await getEmails()
-  const { query, release } = await makeQueryRunner()
 
   try {
     const paymentDetailsPromises = paymentInfo
       ? paymentInfo.map((pi) =>
-          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, {
+          ssrHelpers.users.getUser.fetch({
             id: pi.userId,
           }),
         )
       : [
-          query<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, {
+          ssrHelpers.users.getUser.fetch({
             id: userId,
           }),
         ]
@@ -33,19 +31,17 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
     let paymentDetails: { name: string; email: string; amount: string }[]
 
     await Promise.allSettled(paymentDetailsPromises).then(async (res) => {
-      const successes = res.filter((r) => r.status === 'fulfilled') as PromiseFulfilledResult<
-        QueryResult<GetUserByIdQuery>
-      >[]
+      const successes = res.filter((r) => r.status === 'fulfilled')
       const failureCount = res.length - successes.length
       if (failureCount) {
         console.warn('Reading User details failed', res)
       }
       paymentDetails = successes.map((r) => {
-        const id = r.value.data.user?.id
+        const id = r.value?.id
         const userPaymentRecord = paymentInfo.find((p) => p.userId === id)
         return {
-          name: r.value.data.user?.fullName ?? '',
-          email: r.value.data.user?.email ?? '',
+          name: r.value?.fullName ?? '',
+          email: r.value?.email ?? '',
           amount: `${userPaymentRecord?.total}`,
         }
       })
@@ -53,11 +49,11 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
       const result = await emailer.send({
         template: 'paymentConfirmation',
         message: {
-          to: paymentDetails?.[0].email,
+          to: paymentDetails?.[0]?.email,
           cc: emails.contactEmail,
         },
         locals: {
-          name: paymentDetails?.[0].name,
+          name: paymentDetails?.[0]?.name,
           year,
           amount,
           paymentDetails,
@@ -68,7 +64,5 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
     })
   } catch (err: any) {
     console.log('error sending payment email', err)
-  } finally {
-    release()
   }
 }

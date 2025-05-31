@@ -1,12 +1,13 @@
 import React, { Suspense } from 'react'
 
+import { useGetConfigQuery } from '@amber/client'
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
 import { Loader } from 'ui'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 
-import { useGetConfig, useConfiguration } from '../utils'
+import { useConfiguration } from '../utils'
 import { gitHash } from '../version'
 
 const ReactJson = React.lazy(() => import('react-json-view'))
@@ -37,11 +38,10 @@ const container = {
 export const Footer: React.FC = (_props) => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-  const [config, getConfig] = useGetConfig()
+  const config = useGetConfigQuery()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasPermissions(Perms.IsAdmin)) {
-      getConfig()
       setAnchorEl(event.currentTarget)
     }
   }

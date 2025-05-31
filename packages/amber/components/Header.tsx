@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 
+import { Config, useGetConfigQuery } from '@amber/client'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
 
@@ -7,8 +8,6 @@ import { HasPermission, Perms } from './Auth'
 import { Balance } from './Balance'
 import { UserSelector } from './UserSelector'
 import { YearSelector } from './YearSelector'
-
-import { Config, useGetConfig } from '../utils'
 
 const drawerWidth = 240
 
@@ -19,12 +18,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, title }) => {
-  const [config, getConfig] = useGetConfig()
+  const config = useGetConfigQuery()
   const [configDetails, setConfigDetails] = useState('')
-
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
 
   useEffect(() => {
     const getConfigDetails = (conf: Config | undefined, href: string | undefined) => {

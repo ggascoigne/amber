@@ -1,12 +1,13 @@
 import React from 'react'
 
 import { Button } from '@mui/material'
-import { GraphQLError, Loader } from 'ui'
+import { Loader } from 'ui'
 
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
+import { useGraphQL, GetGameChoicesDocument } from '../../client-graphql'
 import { GameMenu } from '../../components/GameList'
+import { TransportError } from '../../components/TransportError'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
 export const GameSignupMenu: React.FC = () => {
@@ -22,7 +23,7 @@ export const GameSignupMenu: React.FC = () => {
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (!data && !membership) {

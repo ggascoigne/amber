@@ -1,7 +1,7 @@
 {
   "name": "@amber/client",
   "version": "0.1.0",
-  "description": "Shared generated graphql types",
+  "description": "Shared trpc hooks",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "type": "module",
@@ -10,22 +10,30 @@
   "files": [],
   "private": true,
   "scripts": {
-    "boot": "pnpm codegen",
-    "codegen": "graphql-codegen",
-    "lint": "eslint --cache --color 'src/**/*.{js,jsx,ts,tsx}' ./.eslintrc.cjs",
     "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "@graphql-typed-document-node/core": "^3.2.0",
-    "common-tags": "^1.8.2",
-    "graphql": "^15.10.1"
+    "@amber/api": "workspace:*",
+    "@amber/client-graphql": "workspace:*",
+    "@amber/server": "workspace:*",
+    "@stripe/react-stripe-js": "^2.9.0",
+    "@stripe/stripe-js": "^3.5.0",
+    "@tanstack/react-query": "^5.77.2",
+    "@trpc/client": "^11.1.2",
+    "@trpc/server": "^11.1.2",
+    "@trpc/tanstack-react-query": "^11.1.2",
+    "debug": "4.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "superjson": "^2.2.2",
+    "ts-pattern": "^5.7.1",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
-    "@graphql-codegen/add": "5.0.3",
-    "@graphql-codegen/cli": "5.0.3",
-    "@graphql-codegen/client-preset": "^4.6.3",
-    "eslint-config-custom": "workspace:*",
+    "@types/debug": "4.1.12",
+    "@types/react": "^18.3.22",
+    "@types/react-dom": "^18.3.7",
     "tsconfig": "workspace:*",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   }
 }

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { HotelRoomEditorType, useTRPC } from '@amber/client'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
@@ -10,14 +11,10 @@ import {
   OnCloseHandler,
   pick,
   TextField,
-  ToFormValues,
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
 
-import { HotelRoom } from './HotelRoomTypes'
-
-import { useGraphQLMutation, CreateHotelRoomDocument, UpdateHotelRoomByNodeIdDocument } from '../../client'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
@@ -30,7 +27,7 @@ const validationSchema = Yup.object().shape({
   type: Yup.string().min(2).max(255).required('Required'),
 })
 
-type HotelRoomType = ToFormValues<HotelRoom>
+type HotelRoomType = HotelRoomEditorType
 
 interface HotelRoomTypeDialogProps {
   open: boolean
@@ -39,36 +36,35 @@ interface HotelRoomTypeDialogProps {
 }
 
 export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
-  const createHotelRoomType = useGraphQLMutation(CreateHotelRoomDocument)
-  const updateHotelRoomType = useGraphQLMutation(UpdateHotelRoomByNodeIdDocument)
+  const trpc = useTRPC()
+  const createHotelRoomType = useMutation(trpc.hotelRooms.createHotelRoom.mutationOptions())
+  const updateHotelRoomType = useMutation(trpc.hotelRooms.updateHotelRoom.mutationOptions())
   const queryClient = useQueryClient()
   const notify = useNotification()
 
   return async (values: HotelRoomType) => {
-    if (values.nodeId) {
+    if (values.id) {
       await updateHotelRoomType
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(
-                  values,
-                  'id',
-                  'description',
-                  'gamingRoom',
-                  'bathroomType',
-                  'occupancy',
-                  'rate',
-                  'type',
-                  'quantity',
-                ),
-              },
+            id: values.id,
+            data: {
+              ...pick(
+                values,
+                'id',
+                'description',
+                'gamingRoom',
+                'bathroomType',
+                'occupancy',
+                'rate',
+                'type',
+                'quantity',
+              ),
             },
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
+              queryClient.invalidateQueries({ queryKey: trpc.hotelRooms.getHotelRooms.queryKey() })
             },
           },
         )
@@ -83,26 +79,12 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
       await createHotelRoomType
         .mutateAsync(
           {
-            input: {
-              hotelRoom: {
-                ...pick(
-                  values,
-                  'nodeId',
-                  'id',
-                  'description',
-                  'gamingRoom',
-                  'bathroomType',
-                  'occupancy',
-                  'rate',
-                  'type',
-                ),
-                quantity: 0,
-              },
-            },
+            ...pick(values, 'id', 'description', 'gamingRoom', 'bathroomType', 'occupancy', 'rate', 'type'),
+            quantity: 0,
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
+              queryClient.invalidateQueries({ queryKey: trpc.hotelRooms.getHotelRooms.queryKey() })
             },
           },
         )
@@ -145,7 +127,7 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
       onSubmit={onSubmit}
       title='Hotel Room Type'
       validationSchema={validationSchema}
-      isEditing={!!values?.nodeId}
+      isEditing={!!values?.id}
     >
       <GridContainer spacing={2}>
         <GridItem xs={12} md={12}>

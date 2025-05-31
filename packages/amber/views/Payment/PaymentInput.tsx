@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useReducer, useEffect, useState, useCallback } from 'react'
 
+import { CreateMembershipType, User, UserMembership, useTRPC } from '@amber/client'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -10,11 +11,11 @@ import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 import { DialogClose, Loader } from 'ui'
 
-import { useGraphQL, GetMembershipByYearAndIdDocument, GetUserByIdDocument } from '../../client'
-import { MemberSelector, UserMemberType } from '../../components'
+import { MemberSelector } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
 import {
   Configuration,
@@ -25,7 +26,6 @@ import {
   useConfiguration,
   useYearFilter,
 } from '../../utils'
-import { MembershipType, UserType } from '../../utils/apiTypes'
 import { getMembershipCost, getMembershipString } from '../../utils/transactionUtils'
 
 // keep in sync with ./packages/api/src/stripe/types.ts
@@ -36,6 +36,8 @@ export type UserPaymentDetails = {
   membership: number
   donation: number
 }
+
+type ButtonState = 'deposit' | 'full' | 'other'
 
 type ReducerActionKind = 'setButtonState' | 'setDonation' | 'setCustomValue'
 
@@ -100,24 +102,22 @@ const getSafeEventFloat = (event: React.ChangeEvent<HTMLInputElement>) => {
 
 type MemberOrUserPaymentProps = {
   loggedInUserId: number
-  membership: MembershipType | undefined
+  membership: CreateMembershipType | undefined
   year: number
   balance: number
-  user: UserType
+  user: User
   onChange: (info: UserPaymentDetails) => void
   onRemoveUserPayment: (userId: number) => void
 }
 
-type ButtonState = 'deposit' | 'full' | 'other'
-
 const canDoFullMembershipPayment = (
-  membership: MembershipType | undefined,
+  membership: CreateMembershipType | undefined,
   balance: number,
   configuration: Configuration,
 ) => (membership ? balance === getMembershipCost(configuration, membership) : false)
 
 const defaultButtonState = (
-  membership: MembershipType | undefined,
+  membership: CreateMembershipType | undefined,
   balance: number,
   displayFullMembershipPayment: boolean,
 ) =>
@@ -280,10 +280,14 @@ const UserPayment: React.FC<UserPaymentProps> = ({
   loggedInUserId,
   onRemoveUserPayment,
 }) => {
-  const userData = useGraphQL(GetUserByIdDocument, { id: userId })
-  const user = userData?.data?.user
-  const membershipData = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId })
-  const membership = membershipData.data?.memberships?.nodes?.[0] ?? undefined
+  const trpc = useTRPC()
+  const { data: user } = useQuery(trpc.users.getUser.queryOptions({ id: userId }))
+  const { data: membership } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions({
+      year,
+      userId,
+    }),
+  )
 
   const balance = (user?.balance ?? 0) > 0 ? 0 - user!.balance : 0
 
@@ -292,7 +296,7 @@ const UserPayment: React.FC<UserPaymentProps> = ({
   return (
     <MemberOrUserPayment
       balance={balance}
-      membership={membership}
+      membership={membership?.[0]}
       year={year}
       user={user}
       loggedInUserId={loggedInUserId}
@@ -319,7 +323,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
     [setPayments],
   )
 
-  const onAddAnotherMember = useCallback((newValue: UserMemberType | null) => {
+  const onAddAnotherMember = useCallback((newValue: UserMembership | null) => {
     if (newValue) {
       setUserIds((ids) => Array.from(new Set(ids).add(newValue?.id)))
     }

@@ -4,7 +4,7 @@ export const headers = async () => [
     headers: [
       {
         key: 'X-Clacks-Overhead',
-        value: 'GNU Terry Pratchett',
+        value: 'GNU Terry Pratchett, Erick Wujcik, Roger Zelazny',
       },
     ],
   },

@@ -7,7 +7,6 @@ import { makeStyles } from 'tss-react/mui'
 import {
   CheckboxWithLabel,
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
@@ -16,7 +15,7 @@ import {
   pick,
   range,
   TextField,
-  ToFormValues,
+  ToFormValuesGql,
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
@@ -30,7 +29,8 @@ import {
   GetGamesByYearDocument,
   UpdateGameDocument,
   UpdateGameRoomDocument,
-} from '../../client'
+} from '../../client-graphql'
+import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
 
 const useStyles = makeStyles()({
@@ -46,7 +46,7 @@ const validationSchema = Yup.object().shape({
   updated: Yup.boolean().required('Required'),
 })
 
-type GameRoomType = ToFormValues<GameRoom>
+type GameRoomType = ToFormValuesGql<GameRoom>
 
 type GameRoomFormValues = GameRoomType & {
   gamesChanged: boolean
@@ -93,7 +93,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         .then(() => {
           if (values.gamesChanged) {
             const updaters = range(configuration.numberOfSlots).reduce((acc: Promise<any>[], slot: number) => {
-              const { original, current } = values.games[slot]
+              const { original, current } = values.games[slot]!
               if (current !== original) {
                 if (current) {
                   acc.push(
@@ -209,7 +209,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
   }, [configuration.numberOfSlots, games, initialValues])
 
   if (gameError) {
-    return <GraphQLError error={gameError} />
+    return <TransportError error={gameError} />
   }
   if (!gData) {
     return (

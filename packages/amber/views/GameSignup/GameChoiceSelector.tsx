@@ -4,7 +4,7 @@ import CheckIcon from '@mui/icons-material/Check'
 import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-import { Game, GameChoice, GameEntry, Maybe } from '../../client'
+import { Game, GameChoice, GameEntry, Maybe } from '../../client-graphql'
 import { Perms, useAuth } from '../../components/Auth'
 import { Configuration, useConfiguration } from '../../utils'
 

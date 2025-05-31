@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
     CREATE FUNCTION current_user_id () RETURNS INTEGER AS $$
@@ -10,6 +14,10 @@ export async function up(knex) {
   `)
 }
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function down(knex) {
   await knex.raw(`
     DROP FUNCTION current_user_id;

@@ -1,4 +1,4 @@
-import { GameEntry } from '../client'
+import { GameEntry } from '../client-graphql'
 
 export type GameDecoratorParams = Record<string, unknown>
 export type GameDecorator = { year: number; slot: number; game: GameEntry } & GameDecoratorParams

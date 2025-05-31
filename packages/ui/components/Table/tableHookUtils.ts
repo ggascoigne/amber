@@ -6,6 +6,7 @@ export function sum(arr: any[]) {
 }
 
 export function getFirstDefined(...args: any[]) {
+  // eslint-disable-next-line @typescript-eslint/prefer-for-of
   for (let i = 0; i < args.length; i += 1) {
     if (typeof args[i] !== 'undefined') {
       return args[i]

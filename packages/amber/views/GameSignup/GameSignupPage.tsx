@@ -4,7 +4,7 @@ import NavigationIcon from '@mui/icons-material/Navigation'
 import { Button } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
-import { ContentsOf, ExpandingFab, GraphQLError, Loader, notEmpty, Page, pick } from 'ui'
+import { ContentsOf, ExpandingFab, Loader, notEmpty, Page, pick } from 'ui'
 
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
@@ -27,11 +27,12 @@ import {
   CreateGameChoicesDocument,
   GetGameChoicesDocument,
   UpdateGameChoiceByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import {
   useConfiguration,
   useConfirmDialogOpen,
@@ -159,20 +160,19 @@ const GameSignupPage: React.FC = () => {
 
   const updateChoice = useCallback(
     (params: SelectorUpdate) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { gameChoices, gameId, rank, returningPlayer, slotId, year, oldRank } = params
+      const { gameChoices, gameId, rank, returningPlayer, slotId, year: newYear, oldRank } = params
 
       const empty = {
         memberId: membership?.id ?? 0,
         slotId,
-        year,
+        year: newYear,
         gameId: null,
         returningPlayer: false,
         modified: true,
       }
 
       const thisSlotChoices: ChoiceType[] = orderChoices(
-        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
+        gameChoices?.filter((c) => c?.year === newYear && c.slotId === slotId),
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
@@ -181,7 +181,7 @@ const GameSignupPage: React.FC = () => {
 
       if (rank === null) {
         if (oldRank) {
-          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank], ...empty }
+          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank]!, ...empty }
         } else {
           console.log(`update changed rank, but didn't pass in the old rank`)
         }
@@ -189,15 +189,15 @@ const GameSignupPage: React.FC = () => {
         if (rank !== oldRank && (rank === 0 || rank === 1)) {
           const otherRank = rank ? 0 : 1
           // if rank is GM or 1st then nuke the other one
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
-          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank], ...empty }
+          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
+          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank]!, ...empty }
         } else {
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
+          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
         }
 
         if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {
           for (let i = rank + 1; i <= 4; i++) {
-            if (thisSlotChoices[i].gameId) thisSlotChoices[i] = { ...thisSlotChoices[i], ...empty }
+            if (thisSlotChoices[i]!.gameId) thisSlotChoices[i] = { ...thisSlotChoices[i]!, ...empty }
           }
         }
       }
@@ -231,7 +231,7 @@ const GameSignupPage: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />
@@ -295,11 +295,10 @@ const GameSignupPage: React.FC = () => {
       )}
       <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>
         <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
-          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
-          {({ year, slot, games }) => (
+          {({ year: y, slot: s, games }) => (
             <GameListFull
-              year={year}
-              slot={slot}
+              year={y}
+              slot={s}
               games={games!}
               onEnterGame={setNewUrl}
               decorator={GameChoiceSelector}

@@ -5,6 +5,10 @@
 // the dropped tables are application data rather than domain data and will just
 // be handled a different way
 
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   return knex.schema
     .dropTableIfExists('async_mail_attachment')
@@ -88,9 +92,4 @@ export async function up(knex) {
       table.dropColumn('date_created')
       table.dropColumn('last_updated')
     })
-}
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {
-  // there's no rolling this back!
 }

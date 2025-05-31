@@ -1,5 +1,9 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
-  return Promise.allSettled([
+  Promise.allSettled([
     knex.schema.table('hotel_room', (table) => {
       table.string('type', 255).notNullable()
     }),
@@ -10,8 +14,4 @@ export async function up(knex) {
       table.double('amount_paid', 19, 2).notNullable()
     }),
   ])
-}
-
-export async function down(knex) {
-  // no revert
 }

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import { useTRPC } from '@amber/client'
 import { UserProvider } from '@auth0/nextjs-auth0/client'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -9,7 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 // see https://github.com/mui/mui-x/issues/12640
 import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
 import { AppProps } from 'next/app'
@@ -19,6 +20,7 @@ import { createEmotionCache, NotificationProvider, theme } from 'ui'
 import { RouteGuard } from './Auth'
 import { Layout } from './Layout'
 import { RootRoutes } from './Navigation'
+import { TRPCReactProvider } from './TRPCReactProvider'
 
 import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
 
@@ -27,7 +29,6 @@ const clientSideEmotionCache = createEmotionCache()
 
 interface RootComponentProps extends AppProps {
   emotionCache?: EmotionCache
-  configData?: any
   rootRoutes: (configuration: Configuration) => RootRoutes
   title: string
   banner: React.ReactNode
@@ -68,24 +69,23 @@ const RootInner = (props: RootComponentProps) => {
     </CacheProvider>
   )
 }
+const ConfigLoader = (props: RootComponentProps) => {
+  const trpc = useTRPC()
+  const { data: configData } = useQuery(trpc.settings.getSettings.queryOptions())
+  const { config } = getSettingsObject(configData)
+  return config ? (
+    <ConfigProvider value={config}>
+      <RootInner {...props} />
+    </ConfigProvider>
+  ) : null
+}
 
 export default function RootComponent(props: RootComponentProps) {
-  const {
-    pageProps: { dehydratedState, configData },
-  } = props
-
-  const [queryClient] = React.useState(() => new QueryClient())
-  const { config } = getSettingsObject(configData)
-
-  return config ? (
-    <QueryClientProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <ConfigProvider value={config}>
-          <JotaiProvider>
-            <RootInner {...props} />
-          </JotaiProvider>
-        </ConfigProvider>
-      </HydrationBoundary>
-    </QueryClientProvider>
-  ) : null
+  return (
+    <TRPCReactProvider>
+      <JotaiProvider>
+        <ConfigLoader {...props} />
+      </JotaiProvider>
+    </TRPCReactProvider>
+  )
 }

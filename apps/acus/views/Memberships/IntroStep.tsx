@@ -19,7 +19,7 @@ export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       <DialogContentText>
         In order to run and play games offered through the convention, the first thing you must do is register. If you
         are not already familiar with format of an AmberCon, review the {configuration.title}{' '}
-        <Link href='/about'>"what you get and what it costs" page</Link>.
+        <Link href='/about'>&ldquo;what you get and what it costs&rdquo; page</Link>.
       </DialogContentText>
 
       <DialogContentText>

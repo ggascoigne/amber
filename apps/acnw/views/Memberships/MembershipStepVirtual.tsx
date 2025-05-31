@@ -38,8 +38,8 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
       <DialogContentText>
         Note that some games offered may cover more than one slot time or purposely overrun their slot times. This will
         be specified in the game book once it is published. In addition, there may be other game times available
-        "overnight" Pacific time &mdash; that is, during the day U.K. and European time. These will be organized
-        separately from the ACNW main game book.
+        &ldquo;overnight&rdquo; Pacific time &mdash; that is, during the day U.K. and European time. These will be
+        organized separately from the ACNW main game book.
       </DialogContentText>
       <div className={classes.slotSelection}>
         {isNotPacificTime(configuration) && (

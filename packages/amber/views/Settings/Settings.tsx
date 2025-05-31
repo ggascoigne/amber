@@ -1,20 +1,23 @@
 import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
 
+import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
+import { RouterOutputs } from '@amber/server'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
-import { GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
+import { Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
 import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
-import { Setting } from './shared'
 
-import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useConfiguration } from '../../utils'
+
+export type Setting = RouterOutputs['settings']['getSettings'][0]
 
 export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
   const { baseTimeZone } = useConfiguration()
@@ -39,6 +42,7 @@ const tabs = [
 ]
 
 const Settings: React.FC = React.memo(() => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])
   const [value, setValue] = React.useState('config')
@@ -80,20 +84,19 @@ const Settings: React.FC = React.memo(() => {
     ],
     [onAddNewYear],
   )
-
-  const deleteSetting = useGraphQLMutation(DeleteSettingDocument)
+  const deleteSetting = useMutation(trpc.settings.deleteSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetSettingsDocument)
+  const { isLoading, error, data, refetch } = useQuery(trpc.settings.getSettings.queryOptions())
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
   }
 
-  const list: Setting[] = data.settings!.nodes.filter(notEmpty).filter((v) => {
+  const list: Setting[] = data.filter(notEmpty).filter((v) => {
     if (tab?.exclude) {
       return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
     }
@@ -117,7 +120,7 @@ const Settings: React.FC = React.memo(() => {
 
   const onDelete = (instance: TableInstance<Setting>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id! } }))
+    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ id: s.id! }))
     Promise.allSettled(updater).then(() => {
       console.log('deleted')
       clearSelectionAndRefresh()

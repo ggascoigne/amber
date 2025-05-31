@@ -33,7 +33,7 @@ export const getUserRoles = async (session: Session): Promise<AuthInfo | undefin
     process.env.NODE_ENV !== 'production' && console.log('User not verified')
     return undefined
   }
-  if ((session.accessTokenExpiresAt || 0) < new Date().getTime() / 1000) {
+  if ((session.accessTokenExpiresAt ?? 0) < new Date().getTime() / 1000) {
     process.env.NODE_ENV !== 'production' && console.log('Session has expired')
     return undefined
   }

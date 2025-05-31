@@ -21,15 +21,15 @@ export const setVal = (obj: any, path: string | string[], val: any) => {
     for (let i = 0; i < partsLength - 1; i++) {
       const part = parts[i]
       if (!obj.hasOwnProperty(part)) {
-        obj[part] = {}
+        obj[part!] = {}
       }
-      obj = obj[part]
+      obj = obj[part!]
     }
   }
   if (typeof val === 'undefined') {
-    delete obj[k]
+    delete obj[k!]
   } else {
-    obj[k] = val
+    obj[k!] = val
   }
 }
 /**
@@ -48,8 +48,8 @@ export const getVal = (obj: any, path: string | string[], def: any) => {
         obj = false
         break
       }
-      obj = obj[part]
+      obj = obj[part!]
     }
   }
-  return typeof obj?.[k] === 'undefined' ? def : obj[k]
+  return typeof obj?.[k!] === 'undefined' ? def : obj[k!]
 }

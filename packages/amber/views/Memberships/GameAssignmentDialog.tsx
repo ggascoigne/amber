@@ -4,7 +4,6 @@ import { dequal as deepEqual } from 'dequal'
 import { FormikHelpers } from 'formik'
 import {
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
@@ -27,8 +26,9 @@ import {
   DeleteGameAssignmentDocument,
   GetGamesByYearDocument,
   GetScheduleDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries } from '../../client/querySets'
+} from '../../client-graphql'
+import { useInvalidateGameAssignmentQueries } from '../../client-graphql/querySets'
+import { TransportError } from '../../components/TransportError'
 import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
 import { MembershipType } from '../../utils/apiTypes'
 
@@ -73,7 +73,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
 
   if (sError || gError) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    return <GraphQLError error={sError || gError} />
+    return <TransportError error={sError || gError} />
   }
   if (!sData || !gData) {
     return <Loader />

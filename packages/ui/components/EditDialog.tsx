@@ -8,7 +8,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 
 import { DialogTitle } from './Dialog'
 
-import { isDev, OnCloseHandler } from '../utils'
+import { formatDebugValue, isDev, OnCloseHandler } from '../utils'
 
 export interface EditDialogProps<T> {
   title: string
@@ -54,7 +54,8 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
                 {isDev && (
                   <Button
                     onClick={() => {
-                      console.log(`values = ${JSON.stringify({ values, errors }, null, 2)}`)
+                      console.log(`values = ${formatDebugValue(values)}`)
+                      console.log(`errors = ${formatDebugValue(errors)}`)
                     }}
                     variant='outlined'
                   >

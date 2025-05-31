@@ -12,7 +12,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
   try {
     const configuration = await getConfig()
 
-    const year = req.body?.year || configuration?.year
+    const year = req.body?.year ?? configuration?.year
     const query = `
       SELECT
         g.slot_id AS "Slot",

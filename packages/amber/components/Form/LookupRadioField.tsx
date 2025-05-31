@@ -1,8 +1,10 @@
 import React from 'react'
 
-import { GraphQLError, Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
+import { Loader, RadioGroupFieldWithLabel, RadioGroupProps } from 'ui'
 
-import { useGraphQL, GetLookupValuesDocument } from '../../client'
+import { TransportError } from '../TransportError'
 
 export interface LookupRadioFieldProps extends RadioGroupProps {
   realm: string
@@ -10,20 +12,23 @@ export interface LookupRadioFieldProps extends RadioGroupProps {
 
 export const LookupRadioField: React.ComponentType<LookupRadioFieldProps> = (props) => {
   const { realm, ...rest } = props
+  const trpc = useTRPC()
 
-  const { isLoading, error, data } = useGraphQL(GetLookupValuesDocument, {
-    variables: { realm },
-    options: {
-      staleTime: 10 * 60 * 1000,
-    },
-  })
+  const { isLoading, error, data } = useQuery(
+    trpc.lookups.getLookupValues.queryOptions(
+      { realm },
+      {
+        staleTime: 10 * 60 * 1000,
+      },
+    ),
+  )
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading) {
     return <Loader />
   }
-  const selectValues = data?.lookups?.edges[0]?.node?.lookupValues.nodes.map((v) => ({
+  const selectValues = data?.[0]?.lookupValue.map((v) => ({
     value: v!.code,
     text: v!.value,
   }))

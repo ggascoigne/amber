@@ -1,3 +1,7 @@
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
 export async function up(knex) {
   await knex.raw(`
       drop function if exists create_bare_slot_choices( member_id integer, yearNo integer );
@@ -41,6 +45,3 @@ export async function up(knex) {
     $$ LANGUAGE plpgsql;
     `)
 }
-
-// eslint-disable-next-line no-empty-function
-export async function down(knex) {}
