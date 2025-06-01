@@ -197,7 +197,7 @@ const GmBlurb = () => {
             younger players, but we appreciate those who do.
           </p>
         </li>
-        {acnw && (
+        {configuration.abbr === 'acnw' && (
           <li>
             <p>
               <strong>Room Assignments</strong>: Although we try to schedule all games into Edgefield event spaces or

@@ -85,6 +85,7 @@ export const configurationSchema = z.object({
   gameRoomCredit: z.string(),
   useUsAttendanceOptions: toBoolean(),
 
+  // not used by ACNW - but stubbed out in the database to avoid type issues here that I can't be bothered to deal with :)
   hotelBookingCode: z.string(),
   hotelBookingUrl: z.string(),
   hotelBookingLastdate: toDateTime(),
