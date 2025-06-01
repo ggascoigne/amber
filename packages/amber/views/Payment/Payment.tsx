@@ -70,7 +70,7 @@ export const Payment: React.FC = () => {
       ) : (
         <Loader />
       )}
-      {configuration.abbr === 'acnw' && balance < 0 ? (
+      {configuration.isAcnw && balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}

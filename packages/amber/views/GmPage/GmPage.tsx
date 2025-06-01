@@ -140,7 +140,7 @@ const GmBlurb = () => {
       </p>
       <ol className={classes.blurb}>
         <li>
-          {configuration.abbr === 'acnw' && (
+          {configuration.isAcnw && (
             <p>
               <strong>Non-Amber Games</strong>: We encourage GMs to be creative with diceless and system-lite
               roleplaying, whether you run Amber Diceless Role-Playing, another diceless system, an indie rpg, or
@@ -150,7 +150,7 @@ const GmBlurb = () => {
               knowledge of the system or setting.
             </p>
           )}
-          {configuration.abbr === 'acus' && (
+          {configuration.isAcus && (
             <p>
               <strong>Non-Amber or non-Diceless Games</strong>: We encourage you to be creative and run games that are
               fun for you. We welcome a wide variety of games and settings. If you like to run it, chances are,
@@ -197,7 +197,7 @@ const GmBlurb = () => {
             younger players, but we appreciate those who do.
           </p>
         </li>
-        {configuration.abbr === 'acnw' && (
+        {configuration.isAcnw && (
           <li>
             <p>
               <strong>Room Assignments</strong>: Although we try to schedule all games into Edgefield event spaces or
@@ -206,7 +206,7 @@ const GmBlurb = () => {
             </p>
           </li>
         )}
-        {configuration.abbr === 'acus' && (
+        {configuration.isAcus && (
           <li>
             <p>
               <strong>Minimum Number of Players</strong>: We no longer accept games that require more than three

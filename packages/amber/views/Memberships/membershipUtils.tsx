@@ -36,9 +36,9 @@ export const getDefaultMembership = (
   // dates since the dates are related to the eventual hotel room booking, and US
   // is just booking the convention itself
   arrivalDate: configuration.conventionStartDate.toJSDate(),
-  attendance: configuration.useUsAttendanceOptions ? '4' : 'Thurs-Sun',
+  attendance: configuration.isAcus ? '4' : 'Thurs-Sun',
   attending: true,
-  hotelRoomId: configuration.useUsAttendanceOptions ? 1 : 13,
+  hotelRoomId: configuration.isAcus ? 1 : 13,
   departureDate: configuration.conventionEndDate.toJSDate(),
   interestLevel: 'Full',
   message: '',
