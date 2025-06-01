@@ -278,7 +278,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
             </GridItem>
-            {configuration.abbr === 'acnw' && (
+            {configuration.isAcnw && (
               <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
                 <GridItem xs={12} md={6}>
                   <SelectField
@@ -298,7 +298,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
             <GridItem xs={12} md={12}>
               <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
             </GridItem>
-            {configuration.abbr === 'acnw' && (
+            {configuration.isAcnw && (
               <>
                 <GridItem xs={12} md={12}>
                   <TextField
@@ -381,7 +381,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 inputProps={{ autoCapitalize: 'none' }}
               />
             </GridItem>
-            {configuration.abbr === 'acnw' && (
+            {configuration.isAcnw && (
               <GridItem xs={12} md={12}>
                 <p>
                   You are welcome to start and end the game at any time (within reason), but if the game overlaps two
@@ -433,7 +433,7 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
                 game, and schedule players to your game, please let us know:
               </Typography>
             </GridItem>
-            {configuration.abbr === 'acnw' && (
+            {configuration.isAcnw && (
               <GridItem xs={12} md={12}>
                 <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
               </GridItem>

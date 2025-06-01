@@ -22,7 +22,7 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
     <>
       <DialogContentText>
         Per Edgefield&apos;s room policy, you must be at least 18 or older to register. If you are younger and wish to
-        attend, please contact Simone at <ContactEmail />.
+        attend, please contact the organizers at <ContactEmail />.
       </DialogContentText>
       <DialogContentText>
         I plan to attend {configuration.title}, <ConventionsDatesFull pre='from' intra='through' post=',' /> at

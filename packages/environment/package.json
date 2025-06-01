@@ -10,7 +10,8 @@
   "types": "./src/index.ts",
   "private": true,
   "scripts": {
-    "tsc": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.12.0",
@@ -26,6 +27,7 @@
     "@types/debug": "~4.1.12",
     "@types/node": "^22.15.21",
     "@types/pg": "^8.15.2",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "dotenv": "^16.5.0",
     "prisma": "^6.8.2",
     "tsconfig": "workspace:*",

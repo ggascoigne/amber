@@ -15,7 +15,8 @@
     "db:import": "DB_ENV=acnw pnpm --filter database db:import",
     "dev": "pnpm boot && next dev -p 30000",
     "start": "next start",
-    "tsc": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/api": "workspace:*",
@@ -87,6 +88,7 @@
     "@types/react-dom": "^18.3.7",
     "@types/react-is": "^18.3.1",
     "@types/react-table": "7.7.20",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "bufferutil": "4.0.8",
     "node-fetch": "^3.3.2",
     "tsconfig": "workspace:*",

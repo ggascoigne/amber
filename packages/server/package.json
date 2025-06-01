@@ -14,7 +14,8 @@
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
     "postinstall": "DB_ENV=acnw pnpm prisma:generate",
-    "tsc": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/environment": "workspace:*",
@@ -41,6 +42,7 @@
     "@types/debug": "~4.1.12",
     "@types/node": "^22.15.21",
     "@types/pg": "^8.15.2",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "dotenv": "^16.5.0",
     "prisma": "^6.8.2",
     "tsconfig": "workspace:*",

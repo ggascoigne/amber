@@ -149,9 +149,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       onSubmit={onSubmit}
       title='Game Assignments'
       // todo: what are we validating game assignments against a membership schema here in?
-      validationSchema={
-        configuration.useUsAttendanceOptions ? membershipValidationSchemaUS : membershipValidationSchemaNW
-      }
+      validationSchema={configuration.isAcus ? membershipValidationSchemaUS : membershipValidationSchemaNW}
       isEditing
     >
       <GridContainer spacing={2}>

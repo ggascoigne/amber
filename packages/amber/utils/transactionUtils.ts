@@ -24,7 +24,7 @@ export const getMembershipCost = (configuration: Configuration, values: CreateMe
   if (configuration.virtual) {
     return parseInt(configuration.virtualCost, 10) || 0
   }
-  if (configuration.useUsAttendanceOptions) {
+  if (configuration.isAcus) {
     const acusPrices: Record<string, number> = {
       '1': 25,
       '2': 40,
@@ -44,7 +44,7 @@ export const getMembershipString = (configuration: Configuration, values: Create
   if (configuration.virtual) {
     return 'Virtual Membership'
   }
-  if (configuration.useUsAttendanceOptions) {
+  if (configuration.isAcus) {
     const days: Record<string, string> = {
       '1': 'One',
       '2': 'Two',

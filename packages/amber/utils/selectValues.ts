@@ -27,7 +27,7 @@ export enum Attendance {
 }
 
 const getAttendanceOptions = (configuration: Configuration) => {
-  if (configuration.useUsAttendanceOptions) {
+  if (configuration.isAcus) {
     return [
       {
         value: '1',

@@ -50,7 +50,7 @@ const Contact = () => {
       </Card>
       <h3>Founder</h3>
       <p>
-        Simone Cooper was also the founder and organizer of AmberCon UK, the first Amber Diceless Role Playing Game
+        Simone Cooper was the founder and organizer of AmberCon UK, the first Amber Diceless Role Playing Game
         convention to take place outside of the US, and in fact outside of Detroit, the game&apos;s birthplace.
       </p>
 
