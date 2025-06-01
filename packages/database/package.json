@@ -18,7 +18,8 @@
     "db:setup": "pnpm db:clean && pnpm db:migrate:up",
     "db:start": "docker compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
     "db:startFromClean": "pnpm db:start && pnpm db:setup && pnpm db:import",
-    "tsc": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/environment": "workspace:*",
@@ -49,6 +50,7 @@
     "@types/luxon": "^3.6.2",
     "@types/node": "^22.15.21",
     "@types/pg": "^8.15.2",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "chalk": "^5.4.1",
     "common-tags": "^1.8.2",
     "dotenv": "^16.5.0",

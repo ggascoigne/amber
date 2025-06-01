@@ -31,12 +31,14 @@
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "tsc": "pnpm -r tsc"
+    "tsc": "pnpm -r tsc",
+    "tsgo": "pnpm -r tsgo"
   },
   "devDependencies": {
     "@ggascoigne/eslint-config": "^2.2.4",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "@vitejs/plugin-react": "^4.5.0",
     "dotenv": "16.5.0",
     "dotenv-cli": "8.0.0",

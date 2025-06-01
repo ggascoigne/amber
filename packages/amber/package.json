@@ -12,7 +12,8 @@
     "boot": "pnpm prepareGraphql && pnpm gitHash",
     "prepareGraphql": "../database/scripts/prepareGraphql.ts",
     "gitHash": "../../scripts/getGitHash.sh",
-    "tsc": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/api": "workspace:*",
@@ -96,6 +97,7 @@
     "@types/react-dom": "^18.3.7",
     "@types/react-table": "7.7.20",
     "@types/sha.js": "^2.4.4",
+    "@typescript/native-preview": "7.0.0-dev.20250601.1",
     "babel-loader": "^9.2.1",
     "cross-env": "^7.0.3",
     "graphql-ws": "^5.16.2",
