@@ -165,7 +165,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           {membership.offerSubsidy && (
             <Field label=''>You have offered to contribute to the ACNW assistance fund, thank you.</Field>
           )}
-          {membership.requestOldPrice && <Field label=''>You have requested the subsidized membership rate.</Field>}
+          {membership.requestOldPrice && <Field label=''>You are receiving a subsidized membership rate.</Field>}
           <Field label='Arrival Date'>{formatDate(membership.arrivalDate)}</Field>
           <Field label='Departure Date'>{formatDate(membership.departureDate)}</Field>
           <VerticalGap />

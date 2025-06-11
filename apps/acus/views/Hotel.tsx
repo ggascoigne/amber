@@ -58,17 +58,17 @@ const Hotel = () => {
 
           <p>
             This particular Embassy Suites is nice in that it has a beautiful open atrium, with waterfalls, streams, and
-            plants. There's also an indoor pool and an exercise room. With your room you also get a complimentary
+            plants. There&apos;s also an indoor pool and an exercise room. With your room you also get a complimentary
             cooked-to-order breakfast (real food, not just bagels and donuts) and two free drinks each evening at the
-            manager's reception.
+            manager&apos;s reception.
           </p>
 
           <p>
             There is a restaurant in the hotel, and Embassy Suites is within short walking distance of one or two
             mid-priced restaurants. There is no fast food within short walking distance, however, so if you want cheap
             or quick food, we encourage you to bring food you can make in your room. If you have a car (or know someone
-            who does) there is a Meijer's about one mile away, with a grocery in it, and lots of restaurants nearby.
-            There will be a map of local establishments in the welcome area.
+            who does) there is a Meijer&apos;s about one mile away, with a grocery in it, and lots of restaurants
+            nearby. There will be a map of local establishments in the welcome area.
           </p>
 
           <h3>Booking and Convention Pricing</h3>

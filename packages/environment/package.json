@@ -14,8 +14,8 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@t3-oss/env-core": "^0.12.0",
-    "@t3-oss/env-nextjs": "^0.13.4",
+    "@t3-oss/env-core": "^0.13.8",
+    "@t3-oss/env-nextjs": "^0.13.8",
     "debug": "^4.4.1",
     "next": "13.5.6",
     "pg": "^8.16.0",
@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@types/debug": "~4.1.12",
-    "@types/node": "^22.15.21",
-    "@types/pg": "^8.15.2",
-    "@typescript/native-preview": "7.0.0-dev.20250601.1",
+    "@types/node": "^22.15.31",
+    "@types/pg": "^8.15.4",
+    "@typescript/native-preview": "7.0.0-dev.20250608.1",
     "dotenv": "^16.5.0",
-    "prisma": "^6.8.2",
+    "prisma": "^6.9.0",
     "tsconfig": "workspace:*",
     "typescript": "^5.8.3",
-    "zod": "^3.25.28"
+    "zod": "^3.25.58"
   }
 }

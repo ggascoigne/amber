@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
-import { DialogClose, Loader } from 'ui'
+import { DialogClose, getSafeFloat, Loader } from 'ui'
 
 import { MemberSelector } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
@@ -95,10 +95,8 @@ const reducer = (state: ReducerState, action: ReducerAction) => {
   }
 }
 
-const getSafeEventFloat = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const value = parseFloat((event.target as HTMLInputElement).value)
-  return isNaN(value) ? 0 : value
-}
+const getSafeEventFloat = (event: React.ChangeEvent<HTMLInputElement>) =>
+  getSafeFloat((event.target as HTMLInputElement).value)
 
 type MemberOrUserPaymentProps = {
   loggedInUserId: number

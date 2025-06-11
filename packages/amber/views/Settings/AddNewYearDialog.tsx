@@ -12,7 +12,6 @@ import { SettingValue } from './shared'
 
 import { TransportError } from '../../components/TransportError'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const log = debug('amber:client:settings:addNewYear')
 interface AddNewYearDialogProps {
   open: boolean

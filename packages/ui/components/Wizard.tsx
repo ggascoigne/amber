@@ -2,12 +2,15 @@ import React, { ReactElement, ReactNode, useCallback, useMemo } from 'react'
 
 import { Button, Dialog, DialogActions, DialogContent, Step, StepButton, Stepper, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import debug from 'debug'
 import { Form, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik'
 
 import { DialogClose } from './Dialog'
 import { useDisableBackdropClick } from './EditDialog'
 
 import { formatDebugValue, isDev, notEmpty, SetSuperset } from '../utils'
+
+const log = debug('amber:ui:Wizard')
 
 export interface WizardPage {
   name: string

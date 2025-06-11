@@ -153,6 +153,7 @@ export const membershipsRouter = createTRPCRouter({
         roomingWith: z.string(),
         volunteer: z.boolean(),
         slotsAttending: z.string().nullable(),
+        cost: z.number().optional().nullable(),
       }),
     )
     .mutation(async ({ input, ctx }) =>
@@ -184,6 +185,7 @@ export const membershipsRouter = createTRPCRouter({
           volunteer: z.boolean().optional(),
           year: z.number().optional(),
           slotsAttending: z.string().nullable().optional(),
+          cost: z.number().optional().nullable(),
         }),
       }),
     )

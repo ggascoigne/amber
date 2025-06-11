@@ -17,12 +17,13 @@ import { Perms, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
 // circular import explosions
-
 export interface MembershipFormContent {
   prefix?: string
 }
 
-export type MembershipErrorType = Record<keyof MembershipType, string>
+export type MembershipFormType = MembershipType & { membership?: string; subsidizedAmount?: number }
+
+export type MembershipErrorType = Record<keyof MembershipFormType, string>
 
 export const toLegacyApiMembership = (membershipValues: MembershipType) => ({
   ...membershipValues,
@@ -64,6 +65,7 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
     'volunteer',
     'year',
     'slotsAttending',
+    'cost',
   )
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
@@ -85,7 +87,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   // and are later than the cached version off the membershipValues.
   const sendMembershipConfirmation = (
     profile: UserAndProfile,
-    membershipValues: MembershipType,
+    membershipValues: MembershipFormType,
     update: MembershipConfirmationBodyUpdateType = 'new',
   ) => {
     const room = roomData?.filter(notEmpty).find((r) => r.id === membershipValues.hotelRoomId)
@@ -122,7 +124,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   }
 
   return async (
-    membershipValues: MembershipType,
+    membershipValues: MembershipFormType,
     profile: UserAndProfile,
     usersTransactions: GetTransactionByUserQuery | undefined,
   ) => {

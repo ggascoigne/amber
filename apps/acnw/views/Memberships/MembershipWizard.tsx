@@ -13,14 +13,21 @@ import {
   GetTransactionByUserDocument,
   useUser,
   useYearFilter,
+  Configuration,
+  Attendance,
 } from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
-import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
+import {
+  toSlotsAttending,
+  fromSlotsAttending,
+  useEditMembership,
+  MembershipFormType,
+} from 'amber/utils/membershipUtils'
 import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaNW as membershipValidationSchema,
 } from 'amber/views/Memberships/membershipUtils'
+import debug from 'debug'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
 import { Wizard, WizardPage } from 'ui'
@@ -32,20 +39,22 @@ import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 
+const log = debug('amber:acnw:MembershipWizard')
+
 interface IntroType {
   acceptedPolicies: boolean
 }
 
 export interface MembershipWizardFormValues {
   intro: IntroType
-  membership: MembershipType
+  membership: MembershipFormType
   profile: UserAndProfile
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: MembershipType
+  initialValues?: MembershipFormType
   profile: UserAndProfile
   short?: boolean
 }
@@ -109,6 +118,58 @@ export const SaveButton: React.FC<{
       </LoadingButton>
     </>
   )
+}
+
+const getCostsAndAttendance = (
+  configuration: Configuration,
+  membershipValues: MembershipFormType,
+): Partial<MembershipFormType> => {
+  const { attendance, membership, subsidizedAmount } = membershipValues
+  if (membership === Attendance.Subsidized) {
+    return {
+      cost: subsidizedAmount ?? null,
+      membership,
+      attendance,
+      requestOldPrice: true,
+    }
+  } else {
+    return {
+      cost: membership === Attendance.ThursSun ? configuration.fourDayMembership : configuration.threeDayMembership,
+      membership,
+      attendance: membership,
+      requestOldPrice: false,
+      subsidizedAmount:
+        membership === Attendance.ThursSun
+          ? configuration.subsidizedMembership
+          : configuration.subsidizedMembershipShort,
+    }
+  }
+}
+
+const setCostsAndAttendance = (
+  configuration: Configuration,
+  membershipValues: MembershipFormType,
+): MembershipFormType => {
+  const { attendance, cost, requestOldPrice } = membershipValues
+  if (requestOldPrice) {
+    return {
+      ...membershipValues,
+      membership: Attendance.Subsidized,
+      subsidizedAmount:
+        (cost ?? 0) > 0
+          ? cost!
+          : attendance === Attendance.ThursSun
+            ? configuration.subsidizedMembership
+            : configuration.subsidizedMembershipShort,
+    }
+  }
+  return {
+    ...membershipValues,
+    membership: attendance,
+    attendance,
+    subsidizedAmount:
+      attendance === Attendance.ThursSun ? configuration.subsidizedMembership : configuration.subsidizedMembershipShort,
+  }
 }
 
 export const MembershipWizard: React.FC<MembershipWizardProps> = ({
@@ -228,9 +289,15 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
 
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
-    membershipValues.slotsAttending = toSlotsAttending(membershipValues)
+    const newMembershipValues = {
+      ...membershipValues,
+      slotsAttending: toSlotsAttending(membershipValues),
+      ...getCostsAndAttendance(configuration, membershipValues),
+    }
+
+    console.log('MembershipWizard:', newMembershipValues)
     await updateProfile(profileValues).then(async () => {
-      await createOrUpdateMembership(membershipValues, profileValues, usersTransactions!)
+      await createOrUpdateMembership(newMembershipValues, profileValues, usersTransactions!)
       if (!short && redirectInfo.shouldRedirect) {
         router.push('/payment')
       }
@@ -240,10 +307,10 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const values = useMemo(() => {
     // note that for ACNW Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
     // everything else is very hotel centric
-    const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
+    const defaultValues: MembershipFormType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values: MembershipWizardFormValues = {
       intro: { acceptedPolicies: !!initialValues?.id },
-      membership: initialValues ? { ...initialValues } : { ...defaultValues },
+      membership: initialValues ? { ...setCostsAndAttendance(configuration, initialValues) } : { ...defaultValues },
       profile: { ...profile },
     }
     _values.membership.slotsAttendingData = fromSlotsAttending(configuration, _values.membership)

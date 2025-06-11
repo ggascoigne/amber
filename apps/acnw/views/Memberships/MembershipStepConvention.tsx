@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { DialogContentText } from '@mui/material'
-import { ContactEmail, ConventionsDatesFull, useConfiguration, useGetAttendanceOptions } from 'amber'
+import { Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
+import {
+  Attendance,
+  ContactEmail,
+  ConventionsDatesFull,
+  useConfiguration,
+  useGetAttendanceOptions,
+  useGetSubsidizedAttendanceOptions,
+} from 'amber'
 import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
-import { FormikErrors, FormikValues } from 'formik'
-import { CheckboxWithLabel, GridContainer, GridItem, RadioGroupFieldWithLabel } from 'ui'
+import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
+import { CheckboxWithLabel, getSafeFloat, GridContainer, GridItem, RadioGroupFieldWithLabel, TextField } from 'ui'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -13,11 +20,34 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
     'attendance',
     'interestLevel',
     'offerSubsidy',
+    'subsidizedAmount',
   )
 
 export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
   const configuration = useConfiguration()
   const attendanceOptions = useGetAttendanceOptions()
+  const subsidizedAttendanceOptions = useGetSubsidizedAttendanceOptions()
+  const { setFieldValue } = useFormikContext<FormikValues>()
+  const [field] = useField(`${prefix}membership`)
+
+  const [showSubsidizedOptions, setShowSubsidizedOptions] = useState(field.value === Attendance.Subsidized)
+
+  const onChangeAttendance = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, _checked: boolean): void => {
+      const attendance = event.target.value
+      if (attendance === Attendance.ThursSun) {
+        setFieldValue(`${prefix}subsidizedAmount`, configuration.subsidizedMembership)
+      } else if (attendance === Attendance.FriSun) {
+        setFieldValue(`${prefix}subsidizedAmount`, configuration.subsidizedMembershipShort)
+      }
+    },
+    [configuration.subsidizedMembership, configuration.subsidizedMembershipShort, prefix, setFieldValue],
+  )
+
+  const onChangeMembership = useCallback((event: React.ChangeEvent<HTMLInputElement>, _checked: boolean): void => {
+    setShowSubsidizedOptions(event.target.value === Attendance.Subsidized)
+  }, [])
+
   return (
     <>
       <DialogContentText>
@@ -30,55 +60,98 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
         reserved until I have paid my membership fee in full and received confirmation from the organizers.
       </DialogContentText>
       <h3>Convention Registration</h3>
-      <DialogContentText component='div'>
-        <strong>Full Membership - ${configuration.fourDayMembership}</strong> includes
-        <ul>
-          <li>up to all {configuration.numberOfSlots} game slots, Thursday evening through Sunday evening</li>
-          <li>a ${configuration.fourDayVoucher} meal card</li>
-          <li>3 breakfasts</li>
-        </ul>
-        <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
-        <ul>
-          <li>up to 4 game slots, Friday evening through Sunday evening, for example</li>
-          <li>a ${configuration.threeDayVoucher} meal card</li>
-          <li>2 breakfasts</li>
-        </ul>
-      </DialogContentText>
+      <GridContainer spacing={2} sx={{ mb: 2 }}>
+        <GridItem xs={12} md={6}>
+          <Card elevation={3}>
+            <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
+              <strong>Full Membership - ${configuration.fourDayMembership}</strong> includes
+              <ul>
+                <li>up to all {configuration.numberOfSlots} game slots, Thursday evening through Sunday evening</li>
+                <li>a ${configuration.fourDayVoucher} meal card</li>
+                <li>3 breakfasts</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} md={6}>
+          <Card elevation={3}>
+            <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
+              <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
+              <ul>
+                <li>up to 4 game slots, Friday evening through Sunday evening, for example</li>
+                <li>a ${configuration.threeDayVoucher} meal card</li>
+                <li>2 breakfasts</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </GridItem>
+      </GridContainer>
       <GridContainer spacing={2}>
         <GridItem xs={12} md={12}>
+          <DialogContentText sx={{ pt: 1 }}>
+            Through the extraordinary generosity of our members, {configuration.title} can offer subsidized memberships.
+          </DialogContentText>
+        </GridItem>
+        <GridItem xs={12} md={12} sx={{ mb: 2 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'
-            name={`${prefix}attendance`}
-            selectValues={attendanceOptions}
+            name={`${prefix}membership`}
+            selectValues={subsidizedAttendanceOptions}
+            onChange={onChangeMembership}
           />
         </GridItem>
+        {showSubsidizedOptions && (
+          <Card sx={{ p: 2, ml: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
+            <GridItem xs={12} md={12} sx={{ mb: 2 }}>
+              <RadioGroupFieldWithLabel
+                aria-label='Select Attendance'
+                label='Select Attendance'
+                name={`${prefix}attendance`}
+                selectValues={attendanceOptions}
+                row
+                onChange={onChangeAttendance}
+              />
+            </GridItem>
+            <GridItem
+              container
+              xs={12}
+              md={12}
+              sx={{ mb: 2, mt: -1 }}
+              alignItems='flex-start'
+              flexDirection='column'
+              flexWrap='nowrap'
+            >
+              <FormLabel sx={{ pr: 2, pb: 1 }}>Amount: enter a value you are comfortable paying, minimum $20</FormLabel>
+              <TextField
+                name={`${prefix}subsidizedAmount`}
+                parse={getSafeFloat}
+                InputProps={{
+                  startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                }}
+                variant='outlined'
+              />
+            </GridItem>
+          </Card>
+        )}
+        {!showSubsidizedOptions && (
+          <Card sx={{ p: 2, mx: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
+            <h4>Support Subsidized Memberships</h4>
+            <DialogContentText>
+              If you would like to contribute to help others, please check the appropriate box below.
+            </DialogContentText>
+            <GridContainer spacing={2} sx={{ mb: 2, ml: 1 }}>
+              <GridItem xs={12} md={12}>
+                <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
+              </GridItem>
+            </GridContainer>
+            <DialogContentText>
+              While this selection will show to you on your registration page and to us for administration, it will be
+              otherwise anonymous.
+            </DialogContentText>
+          </Card>
+        )}
       </GridContainer>
-      <h4>Need Help & Give Help</h4>
-      <DialogContentText>
-        Through the extraordinary generosity of our members, {configuration.title} can offer a small number of
-        registrations at the a subsidized rate of ${configuration.subsidizedMembership} for full memberships and $
-        {configuration.subsidizedMembershipShort} for short memberships.
-      </DialogContentText>
-      <DialogContentText>
-        If you would like to take advantage of this support, or if you are one of the people who would like to
-        contribute to help others, please check the appropriate boxes below.
-      </DialogContentText>
-      <GridContainer spacing={2} sx={{ mb: 2, ml: 1 }}>
-        <GridItem xs={12} md={12}>
-          <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
-        </GridItem>
-        <GridItem xs={12} md={12} style={{ paddingTop: 0 }}>
-          <CheckboxWithLabel
-            label='To receive a subsidized membership rate, check this box'
-            name={`${prefix}requestOldPrice`}
-          />
-        </GridItem>
-      </GridContainer>
-      <DialogContentText>
-        While this selection will show to you on your registration page and to us for administration, it will be
-        otherwise anonymous.
-      </DialogContentText>
     </>
   )
 }

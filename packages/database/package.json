@@ -23,11 +23,11 @@
   },
   "dependencies": {
     "@amber/environment": "workspace:*",
-    "@auth0/nextjs-auth0": "^3.7.0",
+    "@auth0/nextjs-auth0": "^3.8.0",
     "@graphile-contrib/pg-order-by-related": "^1.0.0",
     "@graphile-contrib/pg-simplify-inflector": "^6.1.0",
-    "@t3-oss/env-core": "^0.12.0",
-    "@t3-oss/env-nextjs": "^0.13.4",
+    "@t3-oss/env-core": "^0.13.8",
+    "@t3-oss/env-nextjs": "^0.13.8",
     "common-tags": "^1.8.2",
     "debug": "^4.4.1",
     "graphile-build": "^4.14.1",
@@ -48,9 +48,9 @@
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^22.15.21",
-    "@types/pg": "^8.15.2",
-    "@typescript/native-preview": "7.0.0-dev.20250601.1",
+    "@types/node": "^22.15.31",
+    "@types/pg": "^8.15.4",
+    "@typescript/native-preview": "7.0.0-dev.20250608.1",
     "chalk": "^5.4.1",
     "common-tags": "^1.8.2",
     "dotenv": "^16.5.0",
@@ -61,7 +61,7 @@
     "tsconfig": "workspace:*",
     "typescript": "^5.8.3",
     "xlsx": "^0.18.5",
-    "zod": "^3.25.28",
-    "zx": "^8.5.4"
+    "zod": "^3.25.58",
+    "zx": "^8.5.5"
   }
 }

@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
-import { MembershipAndUserAndRoom, UserAndProfile, useTRPC } from '@amber/client'
+import { MembershipAndUserAndRoom, useInvalidateMembershipQueries, UserAndProfile, useTRPC } from '@amber/client'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -9,7 +9,6 @@ import { BlankNoCell, DateCell, Loader, notEmpty, Page, Table, useLocalStorage, 
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
-import { useInvalidateMembershipQueries } from '../../client-graphql/querySets'
 import { useProfile } from '../../components/Profile'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
@@ -146,122 +145,101 @@ const virtualColumns: Column<MembershipAndUserAndRoom>[] = [
   },
 ]
 
-const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProps> }> = React.memo(
-  ({ newMembershipDialog }) => {
-    const trpc = useTRPC()
-    const MembershipWizard = newMembershipDialog
-    const profile = useProfile()
-    const configuration = useConfiguration()
-    const [year] = useYearFilter()
-    const [, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
-    const invalidateMembershipQueries = useInvalidateMembershipQueries()
-    const sendEmail = useSendEmail()
+const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProps> }> = ({ newMembershipDialog }) => {
+  const trpc = useTRPC()
+  const MembershipWizard = newMembershipDialog
+  const profile = useProfile()
+  const configuration = useConfiguration()
+  const [year] = useYearFilter()
+  const [, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
+  const invalidateMembershipQueries = useInvalidateMembershipQueries()
+  const sendEmail = useSendEmail()
 
-    const [showEdit, setShowEdit] = useState(false)
-    const [showGameAssignment, setShowGameAssignment] = useState(false)
-    const [selection, setSelection] = useState<MembershipAndUserAndRoom[]>([])
-    const deleteMembership = useMutation(trpc.memberships.deleteMembership.mutationOptions())
-    const {
-      error,
-      data: memberships,
-      refetch,
-    } = useQuery(
-      trpc.memberships.getMembershipsByYear.queryOptions({
-        year,
-      }),
-    )
+  const [showEdit, setShowEdit] = useState(false)
+  const [showGameAssignment, setShowGameAssignment] = useState(false)
+  const [selection, setSelection] = useState<MembershipAndUserAndRoom[]>([])
+  const deleteMembership = useMutation(trpc.memberships.deleteMembership.mutationOptions())
+  const {
+    error,
+    data: memberships,
+    refetch,
+  } = useQuery(
+    trpc.memberships.getMembershipsByYear.queryOptions({
+      year,
+    }),
+  )
 
-    const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
+  const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
-    const onUpdateGameAssignments = useCallback(
-      (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
-        setShowGameAssignment(true)
-        setSelection(instance.selectedFlatRows.map((r) => r.original))
-      },
-      [],
-    )
+  const onUpdateGameAssignments = useCallback(
+    (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
+      setShowGameAssignment(true)
+      setSelection(instance.selectedFlatRows.map((r) => r.original))
+    },
+    [],
+  )
 
-    const onSendRegistrationEmail = useCallback(
-      (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
-        const selected = instance.selectedFlatRows.map((r) => r.original)
-        const payload = selected.map((m) => {
-          const room = roomData?.filter(notEmpty).find((r) => r.id === m.hotelRoomId)
+  const onSendRegistrationEmail = useCallback(
+    (instance: TableInstance<MembershipAndUserAndRoom>) => async () => {
+      const selected = instance.selectedFlatRows.map((r) => r.original)
+      const payload = selected.map((m) => {
+        const room = roomData?.filter(notEmpty).find((r) => r.id === m.hotelRoomId)
 
-          const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
-            getSlotDescription(configuration, {
-              year: configuration.year,
-              slot: parseInt(i, 10),
-              local: configuration.virtual,
-            }),
-          )
-          const owed = (m.user?.balance ?? 0) < 0 ? 0 - m.user!.balance : 0
-          return {
+        const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
+          getSlotDescription(configuration, {
             year: configuration.year,
-            virtual: configuration.virtual,
-            name: m.user?.fullName,
-            email: m.user?.email,
-            address: m.user?.profile?.[0]?.snailMailAddress ?? undefined,
-            phoneNumber: m.user?.profile?.[0]?.phoneNumber ?? undefined,
-            update: 'status',
-            url: `${window.location.origin}/membership`,
-            paymentUrl: `${window.location.origin}/payment`,
-            membership: toLegacyApiMembership(m),
-            slotDescriptions,
-            owed,
-            room,
-          } as MembershipConfirmationItem
-        })
+            slot: parseInt(i, 10),
+            local: configuration.virtual,
+          }),
+        )
+        const owed = (m.user?.balance ?? 0) < 0 ? 0 - m.user!.balance : 0
+        return {
+          year: configuration.year,
+          virtual: configuration.virtual,
+          name: m.user?.fullName,
+          email: m.user?.email,
+          address: m.user?.profile?.[0]?.snailMailAddress ?? undefined,
+          phoneNumber: m.user?.profile?.[0]?.phoneNumber ?? undefined,
+          update: 'status',
+          url: `${window.location.origin}/membership`,
+          paymentUrl: `${window.location.origin}/payment`,
+          membership: toLegacyApiMembership(m),
+          slotDescriptions,
+          owed,
+          room,
+        } as MembershipConfirmationItem
+      })
 
-        sendEmail({
-          type: 'membershipConfirmation',
-          body: payload,
-        })
+      sendEmail({
+        type: 'membershipConfirmation',
+        body: payload,
+      })
+    },
+    [configuration, roomData, sendEmail],
+  )
+
+  const commands = useMemo(
+    () => [
+      {
+        label: 'Edit Game Assignments',
+        onClick: onUpdateGameAssignments,
+        icon: <AssignmentIndIcon />,
+        enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) => Object.keys(state.selectedRowIds).length === 1,
+        type: 'button' as const,
       },
-      [configuration, roomData, sendEmail],
-    )
+      {
+        label: 'Resend Registration Email',
+        onClick: onSendRegistrationEmail,
+        icon: <MailOutlineIcon />,
+        enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) => Object.keys(state.selectedRowIds).length > 0,
+        type: 'button' as const,
+      },
+    ],
+    [onSendRegistrationEmail, onUpdateGameAssignments],
+  )
 
-    const commands = useMemo(
-      () => [
-        {
-          label: 'Edit Game Assignments',
-          onClick: onUpdateGameAssignments,
-          icon: <AssignmentIndIcon />,
-          enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) =>
-            Object.keys(state.selectedRowIds).length === 1,
-          type: 'button' as const,
-        },
-        {
-          label: 'Resend Registration Email',
-          onClick: onSendRegistrationEmail,
-          icon: <MailOutlineIcon />,
-          enabled: ({ state }: TableInstance<MembershipAndUserAndRoom>) => Object.keys(state.selectedRowIds).length > 0,
-          type: 'button' as const,
-        },
-      ],
-      [onSendRegistrationEmail, onUpdateGameAssignments],
-    )
-
-    if (error) {
-      return <TransportError error={error} />
-    }
-
-    if (!memberships) {
-      return <Loader />
-    }
-
-    const list: MembershipAndUserAndRoom[] = memberships!.filter(notEmpty)
-
-    const onAdd: TableMouseEventHandler<MembershipAndUserAndRoom> = () => () => {
-      setShowEdit(true)
-    }
-
-    const onCloseEdit: MouseEventHandler = () => {
-      setShowEdit(false)
-      setShowGameAssignment(false)
-      setSelection([])
-    }
-
-    const onDelete = (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
+  const onDelete = useCallback(
+    (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
       const toDelete = instance.selectedFlatRows.map((r) => r.original)
       const updater = toDelete.map((m) =>
         deleteMembership.mutateAsync(
@@ -279,49 +257,64 @@ const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProp
         setSelection([])
         setLastMembershipYear(0) // flush membership cache, not really correct, but it makes testing so much easier
       })
-    }
+    },
+    [deleteMembership, invalidateMembershipQueries, setLastMembershipYear],
+  )
 
-    const onEdit = (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
-      setShowEdit(true)
-      setSelection(instance.selectedFlatRows.map((r) => r.original))
-    }
+  if (error) {
+    return <TransportError error={error} />
+  }
 
-    const onClick = (row: Row<MembershipAndUserAndRoom>) => {
-      setShowEdit(true)
-      setSelection([row.original])
-    }
+  if (!memberships) {
+    return <Loader />
+  }
 
-    return (
-      <Page title='Membership'>
-        {showEdit && (
-          <MembershipWizard
-            open={showEdit}
-            onClose={onCloseEdit}
-            initialValues={selection[0]}
-            profile={profile!}
-            short
-          />
-        )}
-        {showGameAssignment && (
-          <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />
-        )}
-        <Table<MembershipAndUserAndRoom>
-          name='members'
-          data={list}
-          columns={configuration.startDates[year].virtual ? virtualColumns : columns}
-          onAdd={onAdd}
-          disableGroupBy
-          onDelete={onDelete}
-          onEdit={onEdit}
-          onClick={onClick}
-          initialState={initialState}
-          extraCommands={commands}
-          onRefresh={() => refetch()}
-          defaultColumnDisableGlobalFilter
-        />
-      </Page>
-    )
-  },
-)
+  const list: MembershipAndUserAndRoom[] = memberships!.filter(notEmpty)
+
+  const onAdd: TableMouseEventHandler<MembershipAndUserAndRoom> = () => () => {
+    setShowEdit(true)
+  }
+
+  const onCloseEdit: MouseEventHandler = () => {
+    setShowEdit(false)
+    setShowGameAssignment(false)
+    setSelection([])
+  }
+
+  const onEdit = (instance: TableInstance<MembershipAndUserAndRoom>) => () => {
+    setShowEdit(true)
+    setSelection(instance.selectedFlatRows.map((r) => r.original))
+  }
+
+  const onClick = (row: Row<MembershipAndUserAndRoom>) => {
+    setShowEdit(true)
+    setSelection([row.original])
+  }
+
+  return (
+    <Page title='Membership'>
+      {showEdit && (
+        <MembershipWizard open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} profile={profile!} short />
+      )}
+      {showGameAssignment && (
+        <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />
+      )}
+      <Table<MembershipAndUserAndRoom>
+        name='members'
+        data={list}
+        columns={configuration.startDates[year].virtual ? virtualColumns : columns}
+        onAdd={onAdd}
+        disableGroupBy
+        onDelete={onDelete}
+        onEdit={onEdit}
+        onClick={onClick}
+        initialState={initialState}
+        extraCommands={commands}
+        onRefresh={() => refetch()}
+        defaultColumnDisableGlobalFilter
+      />
+    </Page>
+  )
+}
 
 export default Memberships

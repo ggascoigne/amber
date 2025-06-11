@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { InputAdornment, Typography } from '@mui/material'
-import { GridContainer, GridItem, TextField } from 'ui'
+import { getSafeFloat, GridContainer, GridItem, TextField } from 'ui'
 
 interface TransactionFormContentProps {
   prefix?: string
@@ -20,7 +20,7 @@ export const TransactionFormContent: React.FC<TransactionFormContentProps> = ({ 
           fullWidth
           required
           autoFocus
-          parse={(value: string) => parseFloat(value)}
+          parse={getSafeFloat}
           InputProps={{
             startAdornment: <InputAdornment position='start'>$</InputAdornment>,
           }}

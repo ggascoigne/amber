@@ -2097,6 +2097,8 @@ export enum GameAssignmentsOrderBy {
   MembershipByMemberIdAttendanceDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_DESC',
   MembershipByMemberIdAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_ASC',
   MembershipByMemberIdAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_DESC',
+  MembershipByMemberIdCostAsc = 'MEMBERSHIP_BY_MEMBER_ID__COST_ASC',
+  MembershipByMemberIdCostDesc = 'MEMBERSHIP_BY_MEMBER_ID__COST_DESC',
   MembershipByMemberIdDepartureDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_ASC',
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
@@ -2308,6 +2310,8 @@ export enum GameChoicesOrderBy {
   MembershipByMemberIdAttendanceDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_DESC',
   MembershipByMemberIdAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_ASC',
   MembershipByMemberIdAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_DESC',
+  MembershipByMemberIdCostAsc = 'MEMBERSHIP_BY_MEMBER_ID__COST_ASC',
+  MembershipByMemberIdCostDesc = 'MEMBERSHIP_BY_MEMBER_ID__COST_DESC',
   MembershipByMemberIdDepartureDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_ASC',
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
@@ -2640,6 +2644,8 @@ export enum GameSubmissionsOrderBy {
   MembershipByMemberIdAttendanceDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_DESC',
   MembershipByMemberIdAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_ASC',
   MembershipByMemberIdAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_DESC',
+  MembershipByMemberIdCostAsc = 'MEMBERSHIP_BY_MEMBER_ID__COST_ASC',
+  MembershipByMemberIdCostDesc = 'MEMBERSHIP_BY_MEMBER_ID__COST_DESC',
   MembershipByMemberIdDepartureDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_ASC',
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',
@@ -3591,6 +3597,7 @@ export type Membership = Node & {
   arrivalDate: Scalars['Datetime']['output']
   attendance: Scalars['String']['output']
   attending: Scalars['Boolean']['output']
+  cost?: Maybe<Scalars['Float']['output']>
   departureDate: Scalars['Datetime']['output']
   /** Reads and enables pagination through a set of `GameAssignment`. */
   gameAssignmentsByMemberId: GameAssignmentsConnection
@@ -3676,6 +3683,8 @@ export type MembershipCondition = {
   attendance?: InputMaybe<Scalars['String']['input']>
   /** Checks for equality with the object’s `attending` field. */
   attending?: InputMaybe<Scalars['Boolean']['input']>
+  /** Checks for equality with the object’s `cost` field. */
+  cost?: InputMaybe<Scalars['Float']['input']>
   /** Checks for equality with the object’s `departureDate` field. */
   departureDate?: InputMaybe<Scalars['Datetime']['input']>
   /** Checks for equality with the object’s `hotelRoomId` field. */
@@ -3716,6 +3725,8 @@ export type MembershipFilter = {
   attendance?: InputMaybe<StringFilter>
   /** Filter by the object’s `attending` field. */
   attending?: InputMaybe<BooleanFilter>
+  /** Filter by the object’s `cost` field. */
+  cost?: InputMaybe<FloatFilter>
   /** Filter by the object’s `departureDate` field. */
   departureDate?: InputMaybe<DatetimeFilter>
   /** Filter by the object’s `hotelRoomId` field. */
@@ -3755,6 +3766,7 @@ export type MembershipInput = {
   arrivalDate: Scalars['Datetime']['input']
   attendance: Scalars['String']['input']
   attending: Scalars['Boolean']['input']
+  cost?: InputMaybe<Scalars['Float']['input']>
   departureDate: Scalars['Datetime']['input']
   hotelRoomId: Scalars['Int']['input']
   id?: InputMaybe<Scalars['Int']['input']>
@@ -3776,6 +3788,7 @@ export type MembershipPatch = {
   arrivalDate?: InputMaybe<Scalars['Datetime']['input']>
   attendance?: InputMaybe<Scalars['String']['input']>
   attending?: InputMaybe<Scalars['Boolean']['input']>
+  cost?: InputMaybe<Scalars['Float']['input']>
   departureDate?: InputMaybe<Scalars['Datetime']['input']>
   hotelRoomId?: InputMaybe<Scalars['Int']['input']>
   id?: InputMaybe<Scalars['Int']['input']>
@@ -3822,6 +3835,8 @@ export enum MembershipsOrderBy {
   AttendanceDesc = 'ATTENDANCE_DESC',
   AttendingAsc = 'ATTENDING_ASC',
   AttendingDesc = 'ATTENDING_DESC',
+  CostAsc = 'COST_ASC',
+  CostDesc = 'COST_DESC',
   DepartureDateAsc = 'DEPARTURE_DATE_ASC',
   DepartureDateDesc = 'DEPARTURE_DATE_DESC',
   GameAssignmentsByMemberIdCountAsc = 'GAME_ASSIGNMENTS_BY_MEMBER_ID__COUNT_ASC',
@@ -6476,6 +6491,8 @@ export enum TransactionsOrderBy {
   MembershipByMemberIdAttendanceDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDANCE_DESC',
   MembershipByMemberIdAttendingAsc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_ASC',
   MembershipByMemberIdAttendingDesc = 'MEMBERSHIP_BY_MEMBER_ID__ATTENDING_DESC',
+  MembershipByMemberIdCostAsc = 'MEMBERSHIP_BY_MEMBER_ID__COST_ASC',
+  MembershipByMemberIdCostDesc = 'MEMBERSHIP_BY_MEMBER_ID__COST_DESC',
   MembershipByMemberIdDepartureDateAsc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_ASC',
   MembershipByMemberIdDepartureDateDesc = 'MEMBERSHIP_BY_MEMBER_ID__DEPARTURE_DATE_DESC',
   MembershipByMemberIdHotelRoomIdAsc = 'MEMBERSHIP_BY_MEMBER_ID__HOTEL_ROOM_ID_ASC',

@@ -33,10 +33,7 @@ export const getMembershipCost = (configuration: Configuration, values: CreateMe
     }
     return acusPrices[values.attendance] ?? 0
   } else {
-    if (values.attendance === Attendance.ThursSun) {
-      return values.requestOldPrice ? configuration.subsidizedMembership : configuration.fourDayMembership
-    }
-    return values.requestOldPrice ? configuration.subsidizedMembershipShort : configuration.threeDayMembership
+    return values.cost ?? 0
   }
 }
 

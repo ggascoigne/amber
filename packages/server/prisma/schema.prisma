@@ -202,6 +202,7 @@ model Membership {
   offerSubsidy           Boolean          @map("offer_subsidy")
   requestOldPrice        Boolean          @map("request_old_price")
   slotsAttending         String?          @map("slots_attending") @db.VarChar(20)
+  cost                   Float?
   gameAssignment         GameAssignment[]
   gameChoice             GameChoice[]
   gameSubmission         GameSubmission[]

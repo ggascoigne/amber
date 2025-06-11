@@ -11,24 +11,6 @@ const useInvalidateQueries = (queries: string[]) => {
   )
 }
 
-const allMembershipQueries = [
-  'getMembershipByYearAndId',
-  'getMembershipsByYear',
-  'getMembershipsById',
-  'getMembershipByYearAndRoom',
-  'getUserById',
-]
-
-export const useInvalidateMembershipQueries = () => useInvalidateQueries(allMembershipQueries)
-
-const allProfileQueries = ['getUserByEmail', 'getAllUsersAndProfiles']
-
-export const useInvalidateProfileQueries = () => useInvalidateQueries(allProfileQueries)
-
-const allUserQueries = [...allMembershipQueries, ...allProfileQueries, 'getUserById', 'getAllUsers', 'getAllUsersBy']
-
-export const useInvalidateUserQueries = () => useInvalidateQueries(allUserQueries)
-
 const allPaymentQueries = [
   'getTransaction',
   'getTransactionByYear',
@@ -50,7 +32,3 @@ export const useInvalidateGameQueries = () => useInvalidateQueries(gameQueries)
 const allGameChoiceQueries = ['getGameChoices']
 
 export const useInvalidateGameChoiceQueries = () => useInvalidateQueries(allGameChoiceQueries)
-
-// const settingsQueries = ['getSettings']
-
-// export const useInvalidateSettingsQueries = () => useInvalidateQueries(settingsQueries)

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import { Children } from 'ui'
+import { asEnumLike, Children } from 'ui'
 
 import type { Perms } from './PermissionRules'
 import { Auth0User, useAuth } from './useAuth'
@@ -24,12 +24,10 @@ export const HasPermission: React.FC<PropsWithChildren<PermissionProps>> = ({
   return allowed ? <>{children}</> : denied()
 }
 
-enum LoginStates {
-  NOT_LOGGED_IN = 'notLoggedIn',
-  UNVERIFIED = 'unverified',
-  INCOMPLETE = 'incomplete',
-  LOGGED_IN = 'loggedIn',
-}
+export const LoginStates = asEnumLike(['NOT_LOGGED_IN', 'UNVERIFIED', 'INCOMPLETE', 'LOGGED_IN'])
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type LoginStates = keyof typeof LoginStates
 
 const getLoginState = (user?: Auth0User): LoginStates => {
   if (!user) {
