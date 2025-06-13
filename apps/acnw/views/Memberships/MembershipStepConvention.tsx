@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 
-import { Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
+import { Box, Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
 import {
   Attendance,
   ContactEmail,
@@ -132,11 +132,16 @@ export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ pref
                 variant='outlined'
               />
             </GridItem>
+            <DialogContentText>
+              A subsidized membership is the same as the equivalent full priced membership, just at a discount.
+            </DialogContentText>
           </Card>
         )}
         {!showSubsidizedOptions && (
           <Card sx={{ p: 2, mx: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
-            <h4>Support Subsidized Memberships</h4>
+            <Box component='h4' sx={{ fontWeight: 400 }}>
+              Support Subsidized Memberships
+            </Box>
             <DialogContentText>
               If you would like to contribute to help others, please check the appropriate box below.
             </DialogContentText>
