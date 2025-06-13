@@ -19,14 +19,14 @@ import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(100).required('Required'),
-  roomType: Yup.string().min(2).max(100).required('Required'),
-  comment: Yup.string().min(2).max(100).required('Required'),
-  reservedFor: Yup.string().min(2).max(100).required('Required'),
-  bathroomType: Yup.string().min(2).max(100).required('Required'),
+  roomType: Yup.string().max(100).required('Required'),
+  comment: Yup.string().max(100).required('Required'),
+  reservedFor: Yup.string().max(50).required('Required'),
+  bathroomType: Yup.string().max(100).required('Required'),
   gamingRoom: Yup.boolean().required('Required'),
   enabled: Yup.boolean().required('Required'),
-  formattedRoomType: Yup.string().min(2).max(100).required('Required'),
-  internalRoomType: Yup.string().min(2).max(100).required('Required'),
+  formattedRoomType: Yup.string().max(255).required('Required'),
+  internalRoomType: Yup.string().max(100).required('Required'),
   reserved: Yup.boolean().required('Required'),
 })
 
