@@ -27,6 +27,12 @@ import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, use
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
+const ReactQueryDevtoolsProduction = React.lazy(() =>
+  // older envs might need to import from '@tanstack/react-query-devtools/build/modern/production.js'
+  import('@tanstack/react-query-devtools/production').then((d) => ({
+    default: d.ReactQueryDevtools,
+  })),
+)
 interface RootComponentProps extends AppProps {
   emotionCache?: EmotionCache
   rootRoutes: (configuration: Configuration) => RootRoutes
@@ -40,6 +46,12 @@ const RootInner = (props: RootComponentProps) => {
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
   useInitializeStripe()
+  const [showDevtools, setShowDevtools] = React.useState(false)
+
+  React.useEffect(() => {
+    // @ts-expect-error
+    window.toggleDevtools = () => setShowDevtools((old) => !old)
+  }, [])
 
   return (
     <CacheProvider value={emotionCache}>
@@ -61,6 +73,11 @@ const RootInner = (props: RootComponentProps) => {
                   <Component {...pageProps} />
                 </RouteGuard>
                 <ReactQueryDevtools buttonPosition='bottom-left' />
+                {showDevtools && (
+                  <React.Suspense fallback={null}>
+                    <ReactQueryDevtoolsProduction buttonPosition='bottom-left' />
+                  </React.Suspense>
+                )}
               </Layout>
             </UserProvider>
           </NotificationProvider>

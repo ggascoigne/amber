@@ -108,7 +108,7 @@ const columns: Column<MembershipAndUserAndRoom>[] = [
         width: 65,
       },
       { accessor: 'hotelRoomId' },
-      { accessor: 'offerSubsidy' },
+      { accessor: 'offerSubsidy', Cell: YesBlankCell, sortType: 'basic' },
       { accessor: 'requestOldPrice', Cell: YesBlankCell, sortType: 'basic' },
       { accessor: 'roomPreferenceAndNotes' },
       { accessor: 'roomingPreferences' },
