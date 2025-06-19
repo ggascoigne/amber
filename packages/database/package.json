@@ -36,21 +36,21 @@
     "listr2": "^8.3.3",
     "luxon": "^3.6.1",
     "next": "13.5.6",
-    "pg": "^8.16.0",
+    "pg": "^8.16.1",
     "postgraphile": "^4.14.1",
     "postgraphile-plugin-connection-filter": "^2.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.19.4"
+    "tsx": "^4.20.3"
   },
   "devDependencies": {
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
     "@types/luxon": "^3.6.2",
-    "@types/node": "^22.15.31",
+    "@types/node": "^22.15.32",
     "@types/pg": "^8.15.4",
-    "@typescript/native-preview": "7.0.0-dev.20250608.1",
+    "@typescript/native-preview": "7.0.0-dev.20250619.1",
     "chalk": "^5.4.1",
     "common-tags": "^1.8.2",
     "dotenv": "^16.5.0",
@@ -61,7 +61,7 @@
     "tsconfig": "workspace:*",
     "typescript": "^5.8.3",
     "xlsx": "^0.18.5",
-    "zod": "^3.25.58",
+    "zod": "^3.25.67",
     "zx": "^8.5.5"
   }
 }

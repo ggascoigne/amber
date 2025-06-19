@@ -1,1 +1,7 @@
+# config file for the tool asdf
+# allows for managing more than just the node version (like nvm or fnm)
+# see https://asdf-vm.com/guide/#/core-managing-versions
+# for more information
+
 pnpm 10.12.1
+nodejs 22.16.0

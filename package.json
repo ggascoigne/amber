@@ -10,7 +10,7 @@
     "node": ">=22",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.8.0",
+  "packageManager": "pnpm@10.12.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggascoigne/amber.git"
@@ -38,23 +38,23 @@
     "@ggascoigne/eslint-config": "^2.3.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
-    "@typescript/native-preview": "7.0.0-dev.20250608.1",
+    "@typescript/native-preview": "7.0.0-dev.20250619.1",
     "@vitejs/plugin-react": "^4.5.2",
     "dotenv": "16.5.0",
     "dotenv-cli": "8.0.0",
-    "eslint": "^9.28.0",
+    "eslint": "^9.29.0",
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
-    "lint-staged": "^16.1.0",
+    "lint-staged": "^16.1.2",
     "next": "13.5.6",
     "prettier": "^3.5.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig": "workspace:*",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.3",
     "turbo": "^2.5.4",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.4"
   },
   "prettier": {
     "printWidth": 120,
