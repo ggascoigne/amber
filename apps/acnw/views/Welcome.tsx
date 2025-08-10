@@ -49,7 +49,7 @@ export const DynamicMemberContent = () => (
   </>
 )
 
-export const Welcome: React.FC = () => {
+export const Welcome = () => {
   const { classes } = useStyles()
 
   const titleElement = (

@@ -42,7 +42,7 @@ export const useStyles = makeStyles()((_theme: Theme) => ({
 
 interface ActionButton<T extends Record<string, unknown>> {
   instance: TableInstance<T>
-  icon?: JSX.Element
+  icon?: ReactElement
   onClick: TableMouseEventHandler<T>
   enabled?: (instance: TableInstance<T>) => boolean
   label: string
@@ -91,7 +91,7 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
 export interface Command<T extends Record<string, unknown>> {
   label: string
   onClick: TableMouseEventHandler<T>
-  icon?: JSX.Element
+  icon?: ReactElement
   enabled: (instance: TableInstance<T>) => boolean
   type?: 'icon' | 'button'
 }

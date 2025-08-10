@@ -10,11 +10,9 @@ import { MenuItems, RootRoutes } from './Navigation'
 
 const drawerWidth = 240
 
-const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes; banner: ReactNode }> = ({
-  small = false,
-  rootRoutes,
-  banner,
-}) => (
+type DrawerContentsProps = { small?: boolean; rootRoutes: RootRoutes; banner: ReactNode }
+
+const DrawerContents = ({ small = false, rootRoutes, banner }: DrawerContentsProps) => (
   <>
     {!small && (
       <>
@@ -28,7 +26,7 @@ const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes; banner
   </>
 )
 
-const RightMenu: React.FC<{ small?: boolean }> = (props) => (
+const RightMenu = (props: { small?: boolean }) => (
   <List
     sx={{
       fontSize: '14px',

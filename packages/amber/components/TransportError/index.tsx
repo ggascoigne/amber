@@ -50,7 +50,9 @@ export const TransportError = ({ error }: TransportErrorProps) => {
           {error?.TransportErrors && error?.TransportErrors.length !== 0 && (
             <pre>{JSON.stringify(error.TransportErrors, null, 2)}</pre>
           )}
-          {networkErrors?.map((e: any, i: any) => <Fragment key={i}>text={e.message}</Fragment>)}
+          {networkErrors?.map((e: any, i: any) => (
+            <Fragment key={i}>text={e.message}</Fragment>
+          ))}
         </Quote>
       </>
     )

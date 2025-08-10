@@ -15,7 +15,7 @@ interface MenuItemsProps {
   menuItems: RootRoutes
 }
 
-export const MenuItems: React.FC<MenuItemsProps> = ({ menuItems }) => {
+export const MenuItems = ({ menuItems }: MenuItemsProps) => {
   const { userId } = useUser()
   const isMember = useIsMember()
   const [, getFlagBoolean] = useSettings()

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import { useRouter } from 'next/router'
 
-export const Redirect: React.FC<{ to: string }> = ({ to }) => {
+export const Redirect = ({ to }: { to: string }) => {
   const router = useRouter()
   useEffect(() => {
     router.push(to)

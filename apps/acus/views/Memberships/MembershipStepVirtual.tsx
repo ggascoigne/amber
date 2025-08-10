@@ -18,7 +18,7 @@ const useStyles = makeStyles()({
   },
 })
 
-export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
   const { classes } = useStyles()
   const [showPT, setShowPT] = useState(false)

@@ -20,7 +20,7 @@ interface LookupValueProps {
   code: string
 }
 
-export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
+export const InternalLookupValue = ({ realm, code }: LookupValueProps) => {
   const trpc = useTRPC()
   const { isLoading, error, data } = useQuery(trpc.lookups.getSingleLookupValue.queryOptions({ realm, code }))
   if (error) {
@@ -32,7 +32,7 @@ export const InternalLookupValue: React.FC<LookupValueProps> = ({ realm, code })
   return <>{data?.[0]?.lookupValue?.[0].value}</>
 }
 
-export const LookupValue: React.FC<LookupValueProps> = ({ realm, code }) => {
+export const LookupValue = ({ realm, code }: LookupValueProps) => {
   const configuration = useConfiguration()
 
   // note that in several cases we're moving away from using the database lookup values.

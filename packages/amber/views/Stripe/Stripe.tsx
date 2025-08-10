@@ -18,7 +18,7 @@ const columns: Column<StripeValue>[] = [
   { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data), width: 2 },
 ]
 
-const Stripes: React.FC = React.memo(() => {
+const Stripes = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<StripeValue[]>([])
 

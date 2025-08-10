@@ -10,6 +10,6 @@ const mdxComponents = {
   a: ExternalLink,
 }
 
-export const MdxWithExternalLinks: React.FC<Children> = ({ children }) => (
+export const MdxWithExternalLinks = ({ children }: Children) => (
   <MDXProvider components={mdxComponents}>{children}</MDXProvider>
 )

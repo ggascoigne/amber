@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 export function formatAmountForStripe(amount: number, currency: string): number {
   const numberFormat = new Intl.NumberFormat(['en-US'], {
     style: 'currency',

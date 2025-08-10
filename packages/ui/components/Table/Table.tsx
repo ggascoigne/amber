@@ -221,7 +221,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
       maxWidth: 200, // maxWidth is only used as a limit for resizing
       // the logic for this is weird.  If you set the default column value for disableGlobalFilter to true then you pass
       // disableGlobalFilter: false on those columns that you want to be able to search upon
-      // todo: make this more intuitive
+      // TODO: make this more intuitive
       disableGlobalFilter: defaultColumnDisableGlobalFilter,
       CellEditor,
     }),

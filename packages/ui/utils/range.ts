@@ -29,7 +29,7 @@ export const lazyRange = (stop: number, start = 0, step = 1) => ({
     return {
       *[Symbol.iterator]() {
         let idx = 0
-        // eslint-disable-next-line no-restricted-syntax
+
         for (const val of self) {
           yield fn(val, idx++)
         }
@@ -42,7 +42,7 @@ export const lazyRange = (stop: number, start = 0, step = 1) => ({
     return {
       *[Symbol.iterator]() {
         let idx = 0
-        // eslint-disable-next-line no-restricted-syntax
+
         for (const val of self) {
           if (predicate(val, idx++)) yield val
         }
@@ -52,7 +52,7 @@ export const lazyRange = (stop: number, start = 0, step = 1) => ({
   reduce<U>(reducer: (acc: U, val: number, idx: number) => U, initial: U): U {
     let acc = initial
     let idx = 0
-    // eslint-disable-next-line no-restricted-syntax
+
     for (const val of this) {
       acc = reducer(acc, val, idx++)
     }

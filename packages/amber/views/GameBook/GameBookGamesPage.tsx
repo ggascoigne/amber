@@ -10,7 +10,7 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
-const GameBookGamesPage: React.FC = () => {
+const GameBookGamesPage = () => {
   const setNewUrl = useGameScroll()
   const { year } = useGameUrl()
 

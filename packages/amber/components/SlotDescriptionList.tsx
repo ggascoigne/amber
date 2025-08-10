@@ -4,7 +4,7 @@ import { range } from 'ui'
 
 import { getSlotDescription, isNotPacificTime, SlotFormat, useConfiguration } from '../utils'
 
-export const SlotDescriptionList: React.FC = () => {
+export const SlotDescriptionList = () => {
   const configuration = useConfiguration()
   const displayLocal = isNotPacificTime(configuration) && configuration.virtual
   return (

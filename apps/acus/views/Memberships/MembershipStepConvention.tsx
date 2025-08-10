@@ -15,7 +15,7 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
     'offerSubsidy',
   )
 
-export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent) => {
   const attendanceOptions = useGetAttendanceOptions()
   return (
     <>

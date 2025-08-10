@@ -19,7 +19,7 @@ const columns: Column<UserAndProfile>[] = [
   { accessor: 'balance', filter: 'numeric' },
 ]
 
-const Users: React.FC = React.memo(() => {
+const Users = React.memo(() => {
   const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<UserAndProfile[]>([])

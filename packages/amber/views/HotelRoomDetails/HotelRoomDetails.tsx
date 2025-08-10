@@ -113,7 +113,7 @@ const columns: Column<HotelRoomDetailsType>[] = [
   },
 ]
 
-const HotelRoomDetails: React.FC = () => {
+const HotelRoomDetails = () => {
   const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoomDetailsType[]>([])

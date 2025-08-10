@@ -35,7 +35,7 @@ const container = {
   },
 }
 
-export const Footer: React.FC = (_props) => {
+export const Footer = () => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
   const config = useGetConfigQuery()

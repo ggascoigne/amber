@@ -21,7 +21,7 @@ type ElementsFormProps = {
 }
 
 export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null, userId, onSubmit }) => {
-  const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // todo change me
+  const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // TODO change me
   const [input, setInput] = useState({
     total: defaultAmount,
     cardholderName: '',

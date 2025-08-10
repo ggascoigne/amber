@@ -10,7 +10,7 @@ type RouteGuardProps = Children & {
   routes: RootRoutes
 }
 
-export const RouteGuard: React.FC<RouteGuardProps> = ({ children, routes }) => {
+export const RouteGuard = ({ children, routes }: RouteGuardProps) => {
   const router = useRouter()
   const matching = routes.find((r) => r.path === router.route)
   if (matching?.permission) {

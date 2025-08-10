@@ -9,6 +9,8 @@ export type Maybe<T> = T | null
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N
 
+export type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
+
 // from https://stackoverflow.com/questions/57683303/how-can-i-see-the-full-expanded-contract-of-a-typescript-type
 // expands object types one level deep
 
