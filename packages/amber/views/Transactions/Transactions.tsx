@@ -1,20 +1,19 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 
+import { useTRPC, useInvalidatePaymentQueries, Transaction } from '@amber/client'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { Loader, notEmpty, Page, Table } from 'ui'
+import { Loader, Page, Table } from 'ui'
 import { TableMouseEventHandler } from 'ui/types/react-table-config'
 
 import { TransactionDialog } from './TransactionDialog'
 
-import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client-graphql'
-import { useInvalidatePaymentQueries } from '../../client-graphql/querySets'
 import { TransportError } from '../../components/TransportError'
 import { formatAmountForDisplay } from '../../utils'
-import { TransactionValue } from '../../utils/transactionUtils'
 
-const columns: Column<TransactionValue>[] = [
+const columns: Column<Transaction>[] = [
   { id: 'User', accessor: (originalRow) => originalRow?.user?.fullName },
-  { id: 'Membership', accessor: (originalRow) => originalRow?.member?.year },
+  { id: 'Membership', accessor: (originalRow) => originalRow?.membership?.year },
   {
     id: 'amount',
     accessor: (originalRow) => formatAmountForDisplay(originalRow.amount),
@@ -23,18 +22,19 @@ const columns: Column<TransactionValue>[] = [
     id: 'Origin',
     accessor: (originalRow) => `${originalRow?.stripe ? 'Stripe: ' : ''}${originalRow?.userByOrigin?.fullName}`,
   },
-  { accessor: 'timestamp' },
+  { id: 'timestamp', accessor: (originalRow) => new Date(originalRow?.timestamp).toISOString() },
   { accessor: 'year' },
   { accessor: 'notes' },
   { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data) },
 ]
 
-const Transactions: React.FC = React.memo(() => {
+const Transactions = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<TransactionValue[]>([])
-  const deleteTransaction = useGraphQLMutation(DeleteTransactionDocument)
+  const trpc = useTRPC()
+  const [selection, setSelection] = useState<Transaction[]>([])
+  const deleteTransaction = useMutation(trpc.transactions.deleteTransaction.mutationOptions())
 
-  const { error, data, refetch } = useGraphQL(GetTransactionDocument)
+  const { error, data, refetch } = useQuery(trpc.transactions.getTransactions.queryOptions())
 
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
 
@@ -43,7 +43,7 @@ const Transactions: React.FC = React.memo(() => {
     invalidatePaymentQueries()
   }, [invalidatePaymentQueries])
 
-  const onAdd: TableMouseEventHandler<TransactionValue> = useCallback(
+  const onAdd: TableMouseEventHandler<Transaction> = useCallback(
     () => () => {
       setShowEdit(true)
     },
@@ -51,9 +51,9 @@ const Transactions: React.FC = React.memo(() => {
   )
 
   const onDelete = useCallback(
-    (instance: TableInstance<TransactionValue>) => () => {
+    (instance: TableInstance<Transaction>) => () => {
       const toDelete = instance.selectedFlatRows.map((r) => r.original)
-      const updater = toDelete.map((v) => deleteTransaction.mutateAsync({ input: { id: v.id } }))
+      const updater = toDelete.map((v) => deleteTransaction.mutateAsync({ id: v.id }))
       Promise.allSettled(updater).then(() => {
         console.log('deleted')
         clearSelectionAndRefresh()
@@ -70,9 +70,6 @@ const Transactions: React.FC = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-  const { transactions } = data
-
-  const list: TransactionValue[] = transactions!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
@@ -80,12 +77,12 @@ const Transactions: React.FC = React.memo(() => {
     refetch().then()
   }
 
-  const onEdit = (instance: TableInstance<TransactionValue>) => () => {
+  const onEdit = (instance: TableInstance<Transaction>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<TransactionValue>) => {
+  const onClick = (row: Row<Transaction>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -99,9 +96,9 @@ const Transactions: React.FC = React.memo(() => {
   return (
     <Page title='Transactions'>
       {showEdit && <TransactionDialog open={showEdit} onClose={onCloseEdit} initialValues={getInitialValues()} />}
-      <Table<TransactionValue>
+      <Table<Transaction>
         name='users'
-        data={list}
+        data={data}
         columns={columns}
         onAdd={onAdd}
         onDelete={onDelete}

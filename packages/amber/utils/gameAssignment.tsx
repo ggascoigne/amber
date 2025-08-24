@@ -1,16 +1,12 @@
-import { GameAssignmentNode, GetScheduleQuery } from '../client-graphql'
+import { Schedule } from '@amber/client'
 
-export const getGameAssignments = (
-  data: GetScheduleQuery | undefined,
-  memberId: number,
-  gmOnly = false,
-): GameAssignmentNode[] =>
-  (data?.gameAssignments?.nodes
+export const getGameAssignments = (data: Schedule[] | undefined, memberId: number, gmOnly = false): Schedule[] =>
+  ((data ?? [])
     .concat()
     // drop games with zero players/gms
-    .filter((g) => (g?.game?.gameAssignments.nodes.length ?? 0) > 0 && g?.game?.slotId)
+    .filter((g) => (g?.game?.gameAssignment.length ?? 0) > 0 && g?.game?.slotId)
     // is showing only GMs then drop all games where the user isn't the GM
     .filter((g) =>
-      gmOnly ? g?.game?.gameAssignments.nodes.find((g1) => (g1?.gm ?? 0) > 0 && g1?.memberId === memberId) : true,
+      gmOnly ? g?.game?.gameAssignment.find((g1) => (g1?.gm ?? 0) > 0 && g1?.memberId === memberId) : true,
     )
-    .sort((a, b) => (a?.game?.slotId ?? 0) - (b?.game?.slotId ?? 0)) ?? []) as GameAssignmentNode[]
+    .sort((a, b) => (a?.game?.slotId ?? 0) - (b?.game?.slotId ?? 0)) ?? []) as Schedule[]

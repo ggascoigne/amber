@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
-import type { GameArray } from '../../client-graphql'
+import { GameArray } from '@amber/client'
+
 import { useScrollToHash, useUrlSource } from '../../utils'
 import { GameCard } from '../GameCard'
 import { GameDecorator, GameDecoratorParams } from '../types'
@@ -19,17 +20,17 @@ interface GameListFullProps {
   decoratorParams?: GameDecoratorParams
 }
 
-export const GameListFull: React.FC<GameListFullProps> = ({
+export const GameListFull = ({
   year,
   slot: slotInput,
   games,
   onEnterGame,
   decorator,
   decoratorParams,
-}) => {
+}: GameListFullProps) => {
   const [, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
-  const firstGameId = games[0]?.node?.id
+  const firstGameId = games[0]?.id
   const slot = slotInput || 0
   const firstSlug = `${year}/${slot}/${firstGameId}`
 
@@ -47,7 +48,7 @@ export const GameListFull: React.FC<GameListFullProps> = ({
 
   return (
     <React.Fragment key={`slot_${slot}`}>
-      {games.map(({ node: game }) =>
+      {games.map((game) =>
         game ? (
           <GameCard
             key={`game_${game.id}`}

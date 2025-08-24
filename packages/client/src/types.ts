@@ -26,3 +26,21 @@ export type Slot = RouterOutputs['slots']['getSlots'][0]
 
 export type User = RouterOutputs['users']['getAllUsers'][0]
 export type UserAndProfile = RouterOutputs['users']['getAllUsersAndProfiles'][0]
+
+export type Game = RouterOutputs['games']['getGamesByYear'][0]
+export type GameArray = Game[]
+
+export type GameAssignment = RouterOutputs['gameAssignments']['getGameAssignmentsByGameId'][0]
+export type Schedule = RouterOutputs['gameAssignments']['getSchedule'][0]
+export type CreateGameAssignmentInputType = RouterInputs['gameAssignments']['createGameAssignment']
+
+export type StripeEntry = RouterOutputs['stripe']['getStripe'][0]
+
+export type Transaction = RouterOutputs['transactions']['getTransactions'][0]
+
+export type GameRoom = RouterOutputs['gameRooms']['getGameRooms'][0]
+
+export type GameChoice = RouterOutputs['gameChoices']['getGameChoices']['gameChoices'][0]
+export type GameSubmission = RouterOutputs['gameChoices']['getGameChoices']['gameSubmissions'][0]
+
+export type StripeRecord = RouterOutputs['stripe']['getStripe'][0]

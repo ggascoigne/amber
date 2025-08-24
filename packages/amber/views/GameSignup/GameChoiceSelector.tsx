@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
+import { Game, GameChoice } from '@amber/client'
 import CheckIcon from '@mui/icons-material/Check'
 import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
 
-import { Game, GameChoice, GameEntry, Maybe } from '../../client-graphql'
 import { Perms, useAuth } from '../../components/Auth'
 import { Configuration, useConfiguration } from '../../utils'
 
@@ -154,10 +154,11 @@ export const rankString = (rank: number | null) => {
   }
 }
 
-export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
-  rank,
-  rankStyle = RankStyle.superscript,
-}) => {
+type RankProps = {
+  rank: number | null
+  rankStyle?: RankStyle
+}
+export const Rank = ({ rank, rankStyle = RankStyle.superscript }: RankProps) => {
   if (rankStyle === RankStyle.small) {
     if (rank === 0) {
       return <>GM</>
@@ -201,17 +202,8 @@ export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
   }
 }
 
-export type MaybeGameChoice =
-  | Maybe<
-      { __typename: 'GameChoice' } & Pick<
-        GameChoice,
-        'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
-      > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
-    >
-  | undefined
-
 export interface SelectorUpdate {
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   gameId: number
   rank: number | null
   oldRank: number | null
@@ -221,25 +213,25 @@ export interface SelectorUpdate {
 }
 
 export interface SelectorParams {
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
-  gmSlots?: MaybeGameChoice[]
+  gmSlots?: GameChoice[]
 }
 
 export type GameChoiceSelectorProps = {
   year: number
   slot: number
-  game: GameEntry
+  game: Game
 } & SelectorParams
 
-export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
+export const GameChoiceSelector = ({
   year,
   slot,
   game,
   gameChoices,
   updateChoice,
   gmSlots,
-}) => {
+}: GameChoiceSelectorProps) => {
   const { classes, cx } = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
@@ -351,7 +343,7 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   )
 }
 
-export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, slot, game, gameChoices }) => {
+export const GameChoiceDecorator = ({ year, slot, game, gameChoices }: GameChoiceSelectorProps) => {
   const { classes } = useStyles()
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
@@ -371,12 +363,12 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, s
 type SlotDecoratorCheckMarkProps = { year: number; slot: number } & SelectorParams
 
 // 144 is the magic number of the Any Game entry :(
-const isNoGameOrAnyGame = (configuration: Configuration, choice?: MaybeGameChoice) => {
+const isNoGameOrAnyGame = (configuration: Configuration, choice?: GameChoice) => {
   const id = choice?.gameId
   return id && (isNoGame(configuration, id) || isAnyGame(configuration, id))
 }
 
-export const orderChoices = (choices?: MaybeGameChoice[]) => [
+export const orderChoices = (choices?: GameChoice[]) => [
   choices?.find((c) => c?.rank === 0),
   choices?.find((c) => c?.rank === 1),
   choices?.find((c) => c?.rank === 2),
@@ -384,7 +376,7 @@ export const orderChoices = (choices?: MaybeGameChoice[]) => [
   choices?.find((c) => c?.rank === 4),
 ]
 
-export const isSlotComplete = (configuration: Configuration, choices?: MaybeGameChoice[]) => {
+export const isSlotComplete = (configuration: Configuration, choices?: GameChoice[]) => {
   if (!choices?.length) return false
 
   const ordered = orderChoices(choices)
@@ -397,7 +389,7 @@ export const isSlotComplete = (configuration: Configuration, choices?: MaybeGame
   return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(configuration, ordered[4]))
 }
 
-export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
+export const SlotDecoratorCheckMark = ({ year, slot, gameChoices }: SlotDecoratorCheckMarkProps) => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)

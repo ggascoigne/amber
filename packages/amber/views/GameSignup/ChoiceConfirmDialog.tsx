@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { UserAndProfile } from '@amber/client'
+import { UserAndProfile, useTRPC, useInvalidateGameChoiceQueries, GameChoice } from '@amber/client'
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useMutation } from '@tanstack/react-query'
 import { Form, Formik, FormikHelpers } from 'formik'
 import {
   DialogTitle,
@@ -17,16 +18,10 @@ import {
 } from 'ui'
 import Yup from 'ui/utils/Yup'
 
-import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelector'
+import { isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary, SlotSummary } from './SlotDetails'
 
-import {
-  useGraphQLMutation,
-  CreateGameSubmissionDocument,
-  UpdateGameSubmissionByNodeIdDocument,
-} from '../../client-graphql'
-import { useInvalidateGameChoiceQueries } from '../../client-graphql/querySets'
 import { ContactEmail } from '../../components'
 import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'
@@ -35,7 +30,6 @@ interface FormValues {
   year: number
   memberId: number
   message: string
-  nodeId?: string
   id?: number
 }
 
@@ -44,7 +38,7 @@ interface ChoiceConfirmDialogProps {
   onClose: OnCloseHandler
   year: number
   memberId: number
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   gameSubmission?: FormValues
 }
 
@@ -62,8 +56,9 @@ interface GameChoiceConfirmationEmail {
 }
 
 export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
-  const createGameSubmission = useGraphQLMutation(CreateGameSubmissionDocument)
-  const updateGameSubmission = useGraphQLMutation(UpdateGameSubmissionByNodeIdDocument)
+  const trpc = useTRPC()
+  const createGameSubmission = useMutation(trpc.gameChoices.createGameSubmission.mutationOptions())
+  const updateGameSubmission = useMutation(trpc.gameChoices.updateGameSubmission.mutationOptions())
   const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
 
   const notify = useNotification()
@@ -92,16 +87,12 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   }
 
   return async (values: FormValues, year: number, gameChoiceDetails: Record<number, SlotSummary>) => {
-    if (values.nodeId) {
+    if (values.id) {
       await updateGameSubmission
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(values, 'id', 'year', 'memberId', 'message'),
-              },
-            },
+            id: values.id,
+            data: pick(values, 'id', 'year', 'memberId', 'message'),
           },
           {
             onSuccess: invalidateGameChoiceQueries,
@@ -117,13 +108,8 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
     } else {
       await createGameSubmission
         .mutateAsync(
-          {
-            input: {
-              gameSubmission: {
-                ...pick(values, 'nodeId', 'id', 'year', 'memberId', 'message'),
-              },
-            },
-          },
+          pick(values, 'id', 'year', 'memberId', 'message'),
+
           {
             onSuccess: invalidateGameChoiceQueries,
           },
@@ -140,14 +126,14 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   }
 }
 
-export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
+export const ChoiceConfirmDialog = ({
   open,
   onClose,
   year,
   memberId,
   gameChoices,
   gameSubmission,
-}) => {
+}: ChoiceConfirmDialogProps) => {
   const theme = useTheme()
   const configuration = useConfiguration()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))

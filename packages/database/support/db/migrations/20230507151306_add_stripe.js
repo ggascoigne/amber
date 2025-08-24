@@ -1,3 +1,5 @@
+import { env, parsePostgresConnectionString } from '@amber/environment'
+
 import { anyUserUpdatePolicy, enableRls, fixGrants } from '../utils/policyUtils.js'
 
 /**
@@ -73,6 +75,9 @@ export async function up(knex) {
   await knex.raw(anyUserUpdatePolicy('stripe'))
   await knex.raw(enableRls('stripe'))
 
-  const user = process.env.DATABASE_USER ?? ''
+  const { user } = parsePostgresConnectionString(env.DATABASE_URL)
+  if (!user) {
+    throw new Error('No user found in connection string')
+  }
   await knex.raw(fixGrants(user))
 }

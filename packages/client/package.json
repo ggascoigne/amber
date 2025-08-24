@@ -18,10 +18,10 @@
     "@amber/server": "workspace:*",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^3.5.0",
-    "@tanstack/react-query": "^5.84.2",
-    "@trpc/client": "^11.4.4",
-    "@trpc/server": "^11.4.4",
-    "@trpc/tanstack-react-query": "^11.4.4",
+    "@tanstack/react-query": "^5.85.5",
+    "@trpc/client": "^11.5.0",
+    "@trpc/server": "^11.5.0",
+    "@trpc/tanstack-react-query": "^11.5.0",
     "debug": "4.4.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
-    "@types/react": "^18.3.23",
+    "@types/react": "^19.1.11",
     "@types/react-dom": "^18.3.7",
     "tsconfig": "workspace:*",
     "typescript": "^5.9.2"

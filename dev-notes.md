@@ -104,3 +104,10 @@ server depends on database
 cli/script tools depend on database
 
 api gets replaced by server
+
+
+---
+TODO
+
+remove references to NodeId
+rename GameArray -> Game[]

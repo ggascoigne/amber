@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { useTRPC } from '@amber/client'
+import { useInvalidatePaymentQueries, useTRPC } from '@amber/client'
 import { Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { Page } from 'ui/components'
 
-import { useInvalidatePaymentQueries } from '../../client-graphql/querySets'
 import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
 
 export const PaymentSuccess = () => {

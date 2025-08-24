@@ -42,16 +42,17 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.4"
   },
   "devDependencies": {
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^22.17.1",
+    "@types/node": "^22.17.2",
+    "@types/fs-extra": "^11.0.4",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250810.1",
-    "chalk": "^5.5.0",
+    "@typescript/native-preview": "7.0.0-dev.20250823.8",
+    "chalk": "^5.6.0",
     "commander": "^14.0.0",
     "common-tags": "^1.8.2",
     "dotenv": "^17.2.1",
@@ -63,6 +64,6 @@
     "typescript": "^5.9.2",
     "xlsx": "^0.18.5",
     "zod": "^3.25.76",
-    "zx": "^8.8.0"
+    "zx": "^8.8.1"
   }
 }

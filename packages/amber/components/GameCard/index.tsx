@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
+import { Game } from '@amber/client'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Theme } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from 'ui'
 
-import type { GameEntry } from '../../client-graphql'
 import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import { GameDecorator, GameDecoratorParams } from '../types'
@@ -48,7 +48,7 @@ interface Player {
   email: string
 }
 
-const PlayerDetails: React.FC<{ player: Player }> = ({ player }) => {
+const PlayerDetails = ({ player }: { player: Player }) => {
   const { classes } = useStyles()
   return (
     <div className={classes.playerLine}>
@@ -58,7 +58,7 @@ const PlayerDetails: React.FC<{ player: Player }> = ({ player }) => {
 }
 
 interface GameCardProps {
-  game: GameEntry
+  game: Game
   year: number
   slot: number
   onEnter?: (param?: string) => void
@@ -73,8 +73,8 @@ interface GameCardProps {
 
 type GameCardDetailsProps = GameCardProps & { header: ReactNode; gms?: Player[]; players?: Player[] }
 
-const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
-  ({ game, year, slot, tiny, header, players = [], gms = [] }) => {
+const GameCardDetails = React.memo(
+  ({ game, year, slot, tiny, header, players = [], gms = [] }: GameCardDetailsProps) => {
     const { classes, cx } = useStyles()
     const {
       id,
@@ -88,7 +88,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
       playersContactGm,
       type,
       teenFriendly,
-      gameAssignments,
+      gameAssignment,
       setting,
       lateStart,
       lateFinish,
@@ -100,7 +100,7 @@ const GameCardDetails: React.FC<GameCardDetailsProps> = React.memo(
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
             {gms.length
               ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
-              : gameAssignments.nodes.map((a) => a?.member?.user?.fullName).join(', ')}
+              : gameAssignment.map((a) => a?.membership?.user?.fullName).join(', ')}
           </Field>
           {players.length ? (
             <Field label='Players' tiny={tiny}>
@@ -182,8 +182,19 @@ export interface GameCardChild {
   gameId: number
 }
 
-export const GameCard: React.FC<GameCardProps> = React.memo(
-  ({ game, year, slot, onEnter, tiny = false, decorator, decoratorParams = {}, schedule = false, gms, players }) => {
+export const GameCard = React.memo(
+  ({
+    game,
+    year,
+    slot,
+    onEnter,
+    tiny = false,
+    decorator,
+    decoratorParams = {},
+    schedule = false,
+    gms,
+    players,
+  }: GameCardProps) => {
     const { classes, cx } = useStyles()
     const { id, name, slotId = 0, description } = game
 

@@ -1,28 +1,28 @@
 import React, { MouseEventHandler, useState } from 'react'
 
+import { StripeRecord, useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, Loader, notEmpty, Page, Table, ToFormValuesGql } from 'ui'
+import { Loader, Page, Table } from 'ui'
 
 import { StripeDialog } from './StripeDialog'
 
-import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 
-export type StripeValue = ToFormValuesGql<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
-
-const columns: Column<StripeValue>[] = [
+const columns: Column<StripeRecord>[] = [
   { id: 'id', accessor: (originalRow) => originalRow?.id, width: 1 },
-  { id: 'user', accessor: (originalRow) => originalRow?.data.metadata.userId, width: 1 },
-  { id: 'year', accessor: (originalRow) => originalRow?.data.metadata.year, width: 1 },
-  { id: 'metadata', accessor: (originalRow) => JSON.stringify(originalRow?.data.metadata) },
+  { id: 'user', accessor: (originalRow) => (originalRow?.data as any).metadata.userId, width: 1 },
+  { id: 'year', accessor: (originalRow) => (originalRow?.data as any).metadata.year, width: 1 },
+  { id: 'metadata', accessor: (originalRow) => JSON.stringify((originalRow?.data as any).metadata) },
   { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data), width: 2 },
 ]
 
 const Stripes = React.memo(() => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<StripeValue[]>([])
+  const [selection, setSelection] = useState<StripeRecord[]>([])
 
-  const { error, data, refetch } = useGraphQL(GetStripeDocument)
+  const { error, data, refetch } = useQuery(trpc.stripe.getStripe.queryOptions())
 
   if (error) {
     return <TransportError error={error} />
@@ -31,9 +31,6 @@ const Stripes = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-  const { stripes } = data
-
-  const list: StripeValue[] = stripes!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setShowEdit(false)
@@ -41,12 +38,12 @@ const Stripes = React.memo(() => {
     refetch().then()
   }
 
-  const onEdit = (instance: TableInstance<StripeValue>) => () => {
+  const onEdit = (instance: TableInstance<StripeRecord>) => () => {
     setShowEdit(true)
     setSelection(instance.selectedFlatRows.map((r) => r.original))
   }
 
-  const onClick = (row: Row<StripeValue>) => {
+  const onClick = (row: Row<StripeRecord>) => {
     setShowEdit(true)
     setSelection([row.original])
   }
@@ -60,9 +57,9 @@ const Stripes = React.memo(() => {
   return (
     <Page title='Stripes'>
       {showEdit && <StripeDialog open={showEdit} onClose={onCloseEdit} initialValues={getInitialValues()} />}
-      <Table<StripeValue>
+      <Table<StripeRecord>
         name='users'
-        data={list}
+        data={data}
         columns={columns}
         onEdit={onEdit}
         onClick={onClick}

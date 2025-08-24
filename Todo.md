@@ -121,7 +121,7 @@ the games table should:
 * [ ] investigate https://www.graphile.org/postgraphile/usage-schema/ wrt. access postgraphile in the api layer
 * [ ] Add site refresh behavior so that open browsers get a forced reload when the code changes
 * [ ] Make sure email doesn't get sent to the usual recipients from the test environment
-* [ ] Switch away from the ByNodeId functions in graphql and just standardize on the ById variants
+* [x] Switch away from the ByNodeId functions in graphql and just standardize on the ById variants
 
 ## Done
 

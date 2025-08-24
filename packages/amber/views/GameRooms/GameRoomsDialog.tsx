@@ -1,7 +1,8 @@
 import React, { useCallback, useMemo } from 'react'
 
+import { GameRoom, useInvalidateGameRoomQueries, useInvalidateGameQueries, useTRPC } from '@amber/client'
 import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
 import { makeStyles } from 'tss-react/mui'
 import {
@@ -15,21 +16,11 @@ import {
   pick,
   range,
   TextField,
-  ToFormValuesGql,
+  ToFormValues,
   useNotification,
 } from 'ui'
 import Yup from 'ui/utils/Yup'
 
-import { GameRoom } from './GameRooms'
-
-import {
-  useGraphQLMutation,
-  useGraphQL,
-  CreateGameRoomDocument,
-  GetGamesByYearDocument,
-  UpdateGameDocument,
-  UpdateGameRoomDocument,
-} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
 
@@ -46,7 +37,7 @@ const validationSchema = Yup.object().shape({
   updated: Yup.boolean().required('Required'),
 })
 
-type GameRoomType = ToFormValuesGql<GameRoom>
+type GameRoomType = ToFormValues<GameRoom>
 
 type GameRoomFormValues = GameRoomType & {
   gamesChanged: boolean
@@ -63,13 +54,15 @@ interface GameRoomDialogProps {
 }
 
 export const useEditGameRoom = (onClose: OnCloseHandler) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
 
-  const createGameRoomDetail = useGraphQLMutation(CreateGameRoomDocument)
-  const updateGameRoomDetail = useGraphQLMutation(UpdateGameRoomDocument)
-  const updateGame = useGraphQLMutation(UpdateGameDocument)
+  const createGameRoomDetail = useMutation(trpc.gameRooms.createGameRoom.mutationOptions())
+  const updateGameRoomDetail = useMutation(trpc.gameRooms.updateGameRoom.mutationOptions())
+  const updateGame = useMutation(trpc.games.updateGame.mutationOptions())
+  const invalidateGameRoomQueries = useInvalidateGameRoomQueries()
+  const invalidateGameQueries = useInvalidateGameQueries()
 
-  const queryClient = useQueryClient()
   const notify = useNotification()
 
   return async (values: GameRoomFormValues, actions: FormikHelpers<GameRoomFormValues>) => {
@@ -77,17 +70,11 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
       await updateGameRoomDetail
         .mutateAsync(
           {
-            input: {
-              id: values.id,
-              patch: {
-                ...pick(values, 'description', 'size', 'type', 'updated'),
-              },
-            },
+            id: values.id,
+            data: pick(values, 'description', 'size', 'type', 'updated'),
           },
           {
-            onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getGameRoom'] })
-            },
+            onSuccess: invalidateGameRoomQueries,
           },
         )
         .then(() => {
@@ -98,11 +85,9 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
                 if (current) {
                   acc.push(
                     updateGame.mutateAsync({
-                      input: {
-                        id: current!,
-                        patch: {
-                          roomId: values.id,
-                        },
+                      id: current!,
+                      data: {
+                        roomId: values.id,
                       },
                     }),
                   )
@@ -110,11 +95,9 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
                 if (original) {
                   acc.push(
                     updateGame.mutateAsync({
-                      input: {
-                        id: original!,
-                        patch: {
-                          roomId: null,
-                        },
+                      id: original!,
+                      data: {
+                        roomId: null,
                       },
                     }),
                   )
@@ -124,7 +107,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
             }, [])
             Promise.allSettled(updaters).then(([_result]) => {
               actions.setSubmitting(false)
-              queryClient.invalidateQueries({ queryKey: ['getGamesByYear'] })
+              invalidateGameQueries()
               notify({ text: 'Game Room updated', variant: 'success' })
               onClose()
             })
@@ -138,20 +121,9 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         })
     } else {
       await createGameRoomDetail
-        .mutateAsync(
-          {
-            input: {
-              room: {
-                ...pick(values, 'description', 'size', 'type', 'updated'),
-              },
-            },
-          },
-          {
-            onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getGameRoom'] })
-            },
-          },
-        )
+        .mutateAsync(pick(values, 'description', 'size', 'type', 'updated'), {
+          onSuccess: invalidateGameRoomQueries,
+        })
         .then((_res) => {
           notify({ text: 'Game Room created', variant: 'success' })
           onClose()
@@ -163,23 +135,24 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
   }
 }
 
-export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, initialValues }) => {
+export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialogProps) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const createOrUpdateGameRoom = useEditGameRoom(onClose)
   const [year] = useYearFilter()
-  const { error: gameError, data: gData } = useGraphQL(
-    GetGamesByYearDocument,
-    {
-      year,
-    },
-    {
-      enabled: !!initialValues?.id,
-    },
+  const { error: gameError, data: games } = useQuery(
+    trpc.games.getGamesByYear.queryOptions(
+      {
+        year,
+      },
+      {
+        enabled: !!initialValues?.id,
+      },
+    ),
   )
 
   const { classes, cx } = useStyles()
 
-  const games = useMemo(() => gData?.games?.edges.map((v) => v.node).filter(notEmpty), [gData])
   const gamesBySlot = useCallback(
     (slotId: number) => games?.filter((g) => g.slotId === slotId).filter(notEmpty) ?? [],
     [games],
@@ -211,7 +184,7 @@ export const GameRoomsDialog: React.FC<GameRoomDialogProps> = ({ open, onClose, 
   if (gameError) {
     return <TransportError error={gameError} />
   }
-  if (!gData) {
+  if (!games) {
     return (
       <Dialog fullWidth maxWidth='md' open onClose={onClose}>
         <Loader />

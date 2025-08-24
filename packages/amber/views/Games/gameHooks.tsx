@@ -1,30 +1,20 @@
 import { useCallback, useMemo } from 'react'
 
-import { MembershipAndUserAndRoom, UserAndProfile, useTRPC } from '@amber/client'
-import { useQuery } from '@tanstack/react-query'
-import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
-
 import {
-  GameAssignmentFieldsFragment,
-  GameFieldsFragment,
-  GameGmsFragment,
-  Node,
-  useGraphQL,
-  useGraphQLMutation,
-  CreateGameAssignmentDocument,
-  CreateGameDocument,
-  DeleteGameAssignmentDocument,
-  GetGameAssignmentsByYearDocument,
-  UpdateGameByNodeIdDocument,
-} from '../../client-graphql'
-import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client-graphql/querySets'
+  MembershipAndUserAndRoom,
+  UserAndProfile,
+  useTRPC,
+  useInvalidateGameAssignmentQueries,
+  useInvalidateGameQueries,
+  Game,
+  ToFormValues,
+} from '@amber/client'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { notEmpty, OnCloseHandler, pickAndConvertNull, useNotification, Expand } from 'ui'
+
 import { Perms, useAuth } from '../../components/Auth'
 import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
-
-type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
-
-type GameAssignment = GameAssignmentFieldsFragment
 
 type Membership = MembershipAndUserAndRoom
 
@@ -57,16 +47,19 @@ const getKnownNames = (gmNames: string | null | undefined, membershipList: Membe
 }
 
 export const useUpdateGameAssignment = () => {
+  const trpc = useTRPC()
   const [year] = useYearFilter()
   const notify = useNotification()
-  const createGameAssignment = useGraphQLMutation(CreateGameAssignmentDocument)
-  const deleteGameAssignment = useGraphQLMutation(DeleteGameAssignmentDocument)
+  const createGameAssignment = useMutation(trpc.gameAssignments.createGameAssignment.mutationOptions())
+  const deleteGameAssignment = useMutation(trpc.gameAssignments.deleteGameAssignment.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
 
-  const { data: gameAssignmentData } = useGraphQL(GetGameAssignmentsByYearDocument, {
-    year,
-  })
+  const { data: gameAssignmentData } = useQuery(
+    trpc.gameAssignments.getGameAssignmentsByYear.queryOptions({
+      year,
+    }),
+  )
 
   return useCallback(
     async (gameId: number, gmNames: string | null | undefined, membershipList: Membership[]) => {
@@ -78,10 +71,10 @@ export const useUpdateGameAssignment = () => {
       })
       if (gameAssignmentData) {
         // first clean up any out of date assignments
-        const oldAssignments = gameAssignmentData.gameAssignments?.nodes
+        const oldAssignments = gameAssignmentData
           .filter(notEmpty)
           .filter((ga) => ga.gameId === gameId)
-          .filter((ga) => ga.gm < 0) as GameAssignment[]
+          .filter((ga) => ga.gm < 0)
 
         const oldIds = oldAssignments.map((o) => o.memberId).sort((a, b) => a - b)
         const newIds = gmMemberships.map((m) => m.id).sort((a, b) => a - b)
@@ -94,9 +87,16 @@ export const useUpdateGameAssignment = () => {
         const updaters: Promise<any>[] = []
         oldAssignments.forEach((oldAssignment) => {
           updaters.push(
-            deleteGameAssignment.mutateAsync({ input: { nodeId: oldAssignment.nodeId } }).catch((error) => {
-              notify({ text: error.message, variant: 'error' })
-            }),
+            deleteGameAssignment
+              .mutateAsync({
+                gameId: oldAssignment.gameId,
+                memberId: oldAssignment.memberId,
+                year: oldAssignment.year,
+                gm: oldAssignment.gm,
+              })
+              .catch((error) => {
+                notify({ text: error.message, variant: 'error' })
+              }),
           )
         })
         await Promise.allSettled(updaters)
@@ -108,14 +108,10 @@ export const useUpdateGameAssignment = () => {
           createGameAssignment
             .mutateAsync(
               {
-                input: {
-                  gameAssignment: {
-                    gameId,
-                    memberId: m.id,
-                    gm: -(index + 1),
-                    year,
-                  },
-                },
+                gameId,
+                memberId: m.id,
+                gm: -(index + 1),
+                year,
               },
               {
                 onSuccess: () => {
@@ -144,18 +140,15 @@ export const useUpdateGameAssignment = () => {
   )
 }
 
-export type GameDialogFormValues = Omit<
-  GameFieldsFragment & GameGmsFragment,
-  'nodeId' | 'id' | '__typename' | 'gameAssignments'
-> &
-  Partial<{ id: number }> &
-  Partial<Node>
+export type GameDialogFormValues = Expand<
+  ToFormValues<Omit<Game, 'gameAssignment' | 'authorId' | 'room' | 'shortName'>>
+>
 
 export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialogFormValues) => {
   const trpc = useTRPC()
   const configuration = useConfiguration()
-  const createGame = useGraphQLMutation(CreateGameDocument)
-  const updateGame = useGraphQLMutation(UpdateGameByNodeIdDocument)
+  const createGame = useMutation(trpc.games.createGame.mutationOptions())
+  const updateGame = useMutation(trpc.games.updateGame.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const notify = useNotification()
   const sendEmail = useSendEmail()
@@ -176,7 +169,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (p: UserAndProfile, v: GameFields, update = false) => {
+      const sendGameConfirmation = (p: UserAndProfile, v: GameDialogFormValues, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: {
@@ -193,7 +186,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
       // eslint-disable-next-line no-param-reassign
       if (values.slotId === 0) values.slotId = null
 
-      const fields = pick(
+      const fields = pickAndConvertNull(
         values,
         'name',
         'gmNames',
@@ -220,15 +213,13 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
         'roomId',
       )
 
-      if (values.nodeId) {
+      if (values.id) {
         await updateGame
           .mutateAsync(
             {
-              input: {
-                nodeId: values.nodeId,
-                patch: {
-                  ...fields,
-                },
+              id: values.id,
+              data: {
+                ...fields,
               },
             },
             {
@@ -251,20 +242,16 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
         await createGame
           .mutateAsync(
             {
-              input: {
-                game: {
-                  ...fields,
-                  year: configuration.year,
-                  authorId: userId,
-                },
-              },
+              ...fields,
+              year: configuration.year,
+              authorId: userId,
             },
             {
               onSuccess: invalidateGameQueries,
             },
           )
           .then(async (res) => {
-            const gameId = res?.createGame?.game?.id
+            const gameId = res?.game?.id
             gameId && (await setGameGmAssignments(gameId, values.gmNames, membershipList))
             notify({ text: 'Game created', variant: 'success' })
             profile && sendGameConfirmation(profile, values)

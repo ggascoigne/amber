@@ -322,8 +322,8 @@ model Transactions {
   notes                        String      @default("") @db.VarChar(1044)
   data                         Json
   membership                   Membership? @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_member_id_foreign")
-  userTransactionsOriginTouser User?       @relation("transactions_originTouser", fields: [origin], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_origin_foreign")
-  userTransactionsUserIdTouser User        @relation("transactions_user_idTouser", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_user_id_foreign")
+  userByOrigin                 User?       @relation("transactions_originTouser", fields: [origin], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_origin_foreign")
+  user                         User        @relation("transactions_user_idTouser", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_user_id_foreign")
 
   @@index([memberId], map: "transactions_member_id_index")
   @@index([origin], map: "transactions_origin_index")
