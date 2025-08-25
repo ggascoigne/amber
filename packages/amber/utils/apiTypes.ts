@@ -1,11 +1,8 @@
-import { CreateMembershipType, UserAndProfile } from '@amber/client'
+import { CreateMembershipType, Game, UserAndProfile } from '@amber/client'
 import { ToFormValues } from 'ui/utils/ts-utils'
 import { z } from 'zod'
 
-import { GameFieldsFragment } from '../client-graphql'
 import { SlotSummary } from '../views/GameSignup/SlotDetails'
-
-// export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
 
 export type MembershipType = ToFormValues<CreateMembershipType> & {
   slotsAttendingData?: boolean[]
@@ -118,7 +115,7 @@ export interface MembershipConfirmation {
   body: MembershipConfirmationBodyInput
 }
 
-type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
+type GameFields = ToFormValues<Omit<Game, 'gameAssignment' | 'authorId' | 'room' | 'shortName'>>
 
 export interface GameConfirmationBody {
   update?: boolean

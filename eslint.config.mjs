@@ -24,12 +24,6 @@ export default [
     },
   },
   {
-    files: ['src/client/graphql/fragment-masking.ts'],
-    rules: {
-      'import/order': 'off',
-    },
-  },
-  {
     files: ['support/**/*.js'],
     rules: {
       '@typescript-eslint/no-empty-function': 'off',
