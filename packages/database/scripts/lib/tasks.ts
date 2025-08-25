@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import os from 'os'
 
 import { parsePostgresConnectionString, safeConnectionString } from '@amber/environment'
 import { type EnvType, processEnv } from '@amber/environment'
@@ -13,7 +14,7 @@ import type { TaskContext } from './taskContext'
 import { certs } from '../../shared/dbCerts'
 
 const log = debug('tasks')
-const filename = '/tmp/rds-cert.pem'
+const filename = path.join(os.tmpdir(), 'rds-cert.pem')
 
 export const writeCertsTask: ListrTask = {
   title: `Writing RDS cert`,
