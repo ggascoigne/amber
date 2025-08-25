@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { QueryRunner, makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
+import { authenticatedCaller } from '@amber/server/src/api/ssr'
 import { buffer } from 'micro'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
@@ -7,14 +7,6 @@ import Stripe from 'stripe'
 import { sendEmailConfirmation } from './sendEmailConfirmation'
 import { UserPaymentDetails } from './types'
 
-import {
-  CreateTransactionMutation,
-  CreateTransactionDocument,
-  CreateTransactionMutationVariables,
-  CreateStripeMutation,
-  CreateStripeMutationVariables,
-  CreateStripeDocument,
-} from '../../../client-graphql/src'
 import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 
 const stripe = new Stripe(stripeSecretKey!, {
@@ -79,7 +71,7 @@ const toTransaction = (
   }
 }
 
-const createErrorPaymentTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, error: string[]) => {
+const createErrorPaymentTransactionRecord = async (charge: Stripe.Charge, error: string[]) => {
   const {
     amount,
     metadata: { userId },
@@ -89,31 +81,19 @@ const createErrorPaymentTransactionRecord = async (query: QueryRunner, charge: S
     error,
     amount_adjusted: Math.round(amount / 100),
   })
-  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-    input: {
-      transaction,
-    },
-  })
+  return authenticatedCaller(userId).transactions.createTransaction(transaction)
 }
 
-const createPaymentTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, p: UserPaymentDetails) => {
+const createPaymentTransactionRecord = async (charge: Stripe.Charge, p: UserPaymentDetails) => {
   const { amount } = charge
   const transaction = toTransaction(charge, p.userId, p.total, 'Payment Received', { type: 'user payment', amount })
-  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-    input: {
-      transaction,
-    },
-  })
+  return authenticatedCaller(p.userId).transactions.createTransaction(transaction)
 }
 
-const createDonationTransactionRecord = async (query: QueryRunner, charge: Stripe.Charge, p: UserPaymentDetails) => {
+const createDonationTransactionRecord = async (charge: Stripe.Charge, p: UserPaymentDetails) => {
   const { amount } = charge
   const transaction = toTransaction(charge, p.userId, 0 - p.donation, 'Donation', { type: 'donation payment', amount })
-  return query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-    input: {
-      transaction,
-    },
-  })
+  return authenticatedCaller(p.userId).transactions.createTransaction(transaction)
 }
 
 const handleSuccess = async (charge: Stripe.Charge) => {
@@ -124,24 +104,18 @@ const handleSuccess = async (charge: Stripe.Charge) => {
 
   const paymentInfo: UserPaymentDetails[] = JSON.parse(payments!)
 
-  const { query, release } = await makeQueryRunner()
-
   const error = validateCharge(charge, paymentInfo)
 
-  await query<CreateStripeMutation, CreateStripeMutationVariables>(CreateStripeDocument, {
-    input: {
-      stripe: { data: charge },
-    },
-  })
+  await authenticatedCaller(userId).stripe.createStripe({ data: charge })
 
   if (error) {
     // something went wrong so just record the bare payment - this will need manual fixing based on some unexpected issue
-    await createErrorPaymentTransactionRecord(query, charge, error)
+    await createErrorPaymentTransactionRecord(charge, error)
   } else {
     const result = paymentInfo.flatMap((p) =>
       p.donation > 0
-        ? [createPaymentTransactionRecord(query, charge, p), createDonationTransactionRecord(query, charge, p)]
-        : [createPaymentTransactionRecord(query, charge, p)],
+        ? [createPaymentTransactionRecord(charge, p), createDonationTransactionRecord(charge, p)]
+        : [createPaymentTransactionRecord(charge, p)],
     )
     await Promise.allSettled(result).then(async (res) => {
       const failureCount = res.filter((r) => r.status !== 'fulfilled').length
@@ -156,7 +130,6 @@ const handleSuccess = async (charge: Stripe.Charge) => {
       })
     })
   }
-  release()
   return undefined
 }
 

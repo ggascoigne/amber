@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@amber/api": "workspace:*",
-    "@amber/client-graphql": "workspace:*",
     "@amber/server": "workspace:*",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^3.5.0",
@@ -31,7 +30,7 @@
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
-    "@types/react": "^19.1.11",
+    "@types/react": "^18.3.24",
     "@types/react-dom": "^18.3.7",
     "tsconfig": "workspace:*",
     "typescript": "^5.9.2"

@@ -1,10 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { type AppRouter } from '@amber/server/src/api/appRouter' // Assuming AppRouter is your TRPC router type
 import Typography from '@mui/material/Typography'
 import { TRPCClientErrorLike } from '@trpc/client'
-
-import type { QueryError } from '../../client-graphql'
 
 const Quote: React.FC<{
   children: React.ReactNode
@@ -26,37 +24,17 @@ const Quote: React.FC<{
   </Typography>
 )
 
-type ErrorTypes = QueryError | null | TRPCClientErrorLike<AppRouter>
+type ErrorTypes = null | TRPCClientErrorLike<AppRouter>
 interface TransportErrorProps {
   error: ErrorTypes
 }
-
-const isQueryError = (value: ErrorTypes): value is QueryError => !!(value && Object.hasOwn(value, 'transportError'))
 
 const isTrpcError = (value: ErrorTypes): value is TRPCClientErrorLike<AppRouter> =>
   !!(value && Object.hasOwn(value, 'shape'))
 
 export const TransportError = ({ error }: TransportErrorProps) => {
   console.log('TransportError', JSON.stringify(error, null, 2))
-  if (isQueryError(error)) {
-    const networkErrors = error?.networkError?.result?.errors
-    return (
-      <>
-        <Typography variant='h3' color='inherit'>
-          GraphQL Error
-        </Typography>
-        <Quote>
-          {error?.message}
-          {error?.TransportErrors && error?.TransportErrors.length !== 0 && (
-            <pre>{JSON.stringify(error.TransportErrors, null, 2)}</pre>
-          )}
-          {networkErrors?.map((e: any, i: any) => (
-            <Fragment key={i}>text={e.message}</Fragment>
-          ))}
-        </Quote>
-      </>
-    )
-  } else if (isTrpcError(error)) {
+  if (isTrpcError(error)) {
     // hide the stack trace, it's a bunch of webpack noise and not very useful
     const { stack: _stack, ...data } = error.shape?.data ?? {}
     const details = { code: error.shape?.code, data }
@@ -73,9 +51,14 @@ export const TransportError = ({ error }: TransportErrorProps) => {
     )
   } else {
     return (
-      <Typography variant='h3' color='inherit'>
-        Error
-      </Typography>
+      <>
+        <Typography variant='h3' color='inherit'>
+          Error
+        </Typography>
+        <Quote>
+          <pre>{JSON.stringify(error, null, 2)}</pre>
+        </Quote>
+      </>
     )
   }
 }

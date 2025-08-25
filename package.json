@@ -25,7 +25,7 @@
     "build:us": "pnpm --filter acus build",
     "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
     "format": "pnpm format:all --cache",
-    "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
+    "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
     "lint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
@@ -38,7 +38,7 @@
     "@ggascoigne/eslint-config": "^2.4.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
-    "@typescript/native-preview": "7.0.0-dev.20250824.1",
+    "@typescript/native-preview": "7.0.0-dev.20250825.1",
     "@vitejs/plugin-react": "^4.7.0",
     "dotenv": "17.2.1",
     "dotenv-cli": "10.0.0",
@@ -71,7 +71,7 @@
     "*.json": [
       "prettier --no-color --write"
     ],
-    "*.{css,scss,graphql}": [
+    "*.{css,scss}": [
       "prettier --no-color --write"
     ]
   },
