@@ -1,6 +1,6 @@
 import fs from 'fs'
-import path from 'path'
 import os from 'os'
+import path from 'path'
 
 import { parsePostgresConnectionString, safeConnectionString } from '@amber/environment'
 import { type EnvType, processEnv } from '@amber/environment'

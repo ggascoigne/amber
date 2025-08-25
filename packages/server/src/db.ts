@@ -1,6 +1,6 @@
 import fs from 'fs'
-import path from 'path'
 import os from 'os'
+import path from 'path'
 
 import { env, isDev } from '@amber/environment'
 import { certs } from 'database/shared/dbCerts'
