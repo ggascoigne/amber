@@ -38,7 +38,7 @@
     "@ggascoigne/eslint-config": "^2.4.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
-    "@typescript/native-preview": "7.0.0-dev.20250823.8",
+    "@typescript/native-preview": "7.0.0-dev.20250824.1",
     "@vitejs/plugin-react": "^4.7.0",
     "dotenv": "17.2.1",
     "dotenv-cli": "10.0.0",
@@ -51,7 +51,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tsconfig": "workspace:*",
-    "tsx": "^4.20.4",
+    "tsx": "^4.20.5",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
