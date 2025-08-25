@@ -38,7 +38,7 @@ interface GameMenuProps {
   itemDecoratorParams?: GameDecoratorParams
 }
 
-export const GameMenu: React.FC<PropsWithChildren<GameMenuProps>> = ({
+export const GameMenu = ({
   to,
   text,
   title,
@@ -49,7 +49,7 @@ export const GameMenu: React.FC<PropsWithChildren<GameMenuProps>> = ({
   navDecorator,
   navDecoratorParams,
   children,
-}) => {
+}: PropsWithChildren<GameMenuProps>) => {
   const { classes } = useStyles()
   return (
     <>

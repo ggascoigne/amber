@@ -6,7 +6,7 @@ function parseValue(filterValue: FilterValue) {
   // eslint-disable-next-line eqeqeq
   const defaultComparator = (val: any) => val == filterValue
   const tokens = regex.exec(filterValue)
-  if (!tokens) {
+  if (!tokens || tokens[1] === '') {
     return defaultComparator
   }
   switch (tokens[1]) {

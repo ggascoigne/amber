@@ -1,7 +1,8 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import React, { createContext, useContext, useMemo, useState } from 'react'
 
-import { UserAndProfile } from '@amber/client'
+import { UserAndProfile, useTRPC } from '@amber/client'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { useQuery } from '@tanstack/react-query'
 import {
   Perms,
   ProfileFormContent,
@@ -9,8 +10,6 @@ import {
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
-  useGraphQL,
-  GetTransactionByUserDocument,
   useUser,
   useYearFilter,
 } from 'amber'
@@ -66,12 +65,15 @@ export const redirectContext = createContext<
 >(undefined)
 const RedirectProvider = redirectContext.Provider
 
-export const SaveButton: React.FC<{
+export const SaveButton = ({
+  disabled,
+  validateForm,
+  submitForm,
+}: {
   disabled: boolean
   validateForm: (values?: any) => Promise<FormikErrors<any>>
   submitForm: (() => Promise<void>) & (() => Promise<any>)
-  children: ReactNode
-}> = ({ disabled, validateForm, submitForm }) => {
+}) => {
   const [isLoading, setIsLoading] = useState<'now' | 'later' | undefined>(undefined)
   const [, setShouldRedirect] = useContext(redirectContext)!
   return (
@@ -110,13 +112,8 @@ export const SaveButton: React.FC<{
   )
 }
 
-export const MembershipWizard: React.FC<MembershipWizardProps> = ({
-  open,
-  onClose,
-  profile,
-  initialValues,
-  short = false,
-}) => {
+export const MembershipWizard = ({ open, onClose, profile, initialValues, short = false }: MembershipWizardProps) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const { user, hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
@@ -130,12 +127,11 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
   const [redirectInfo] = redirectContextState
 
-  const { data: usersTransactions } = useGraphQL(
-    GetTransactionByUserDocument,
-    {
-      userId: initialValues?.userId ?? -1,
-    },
-    { enabled: !!initialValues?.userId },
+  const { data: usersTransactions } = useQuery(
+    trpc.transactions.getTransactionsByUser.queryOptions(
+      { userId: initialValues?.userId ?? -1 },
+      { enabled: !!initialValues?.userId },
+    ),
   )
 
   const pages = useMemo(() => {
@@ -216,7 +212,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
 
   if (!user) {
     throw new Error('login expired')
-  } // todo test this
+  } // TODO test this
 
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values

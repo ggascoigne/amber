@@ -17,7 +17,7 @@ const columns: Column<Lookup>[] = [
   },
 ]
 
-const Lookups: React.FC = React.memo(() => {
+const Lookups = React.memo(() => {
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Lookup[]>([])
   const trpc = useTRPC()

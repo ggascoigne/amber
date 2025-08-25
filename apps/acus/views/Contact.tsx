@@ -27,7 +27,7 @@ type PersonType = {
   children: ReactNode
 }
 
-const Person: React.FC<PersonType> = ({ name, title, children, facebook, linkedIn }) => {
+const Person = ({ name, title, children, facebook, linkedIn }: PersonType) => {
   const { classes } = useStyles()
   return (
     <Card className={classes.card}>

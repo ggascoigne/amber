@@ -60,7 +60,7 @@ interface VirtualDetailsProps {
   membership: CreateMembershipType
 }
 
-const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
+const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   const configuration = useConfiguration()
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(configuration, membership)
@@ -134,7 +134,7 @@ interface DetailsProps {
   profile: UserAndProfile
 }
 
-const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+const Details = ({ membership, profile }: DetailsProps) => {
   const trpc = useTRPC()
   const configuration = useConfiguration()
   const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
@@ -186,7 +186,7 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   )
 }
 
-const MembershipSummary: React.FC = () => {
+const MembershipSummary = () => {
   const trpc = useTRPC()
   const configuration = useConfiguration()
   const profile = useProfile()

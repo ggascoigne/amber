@@ -41,7 +41,7 @@ const tabs = [
   { name: 'url', label: 'Urls' },
 ]
 
-const Settings: React.FC = React.memo(() => {
+const Settings = React.memo(() => {
   const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Setting[]>([])

@@ -1,3 +1,5 @@
+import { env, parsePostgresConnectionString } from '@amber/environment'
+
 import { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
 
 const tables = [
@@ -26,8 +28,10 @@ const tables = [
  * @returns {Promise<void>}
  */
 export async function up(knex) {
-  const user = process.env.DATABASE_USER
-  const password = process.env.DATABASE_USER_PASSWORD ?? ''
+  const { user, password = '' } = parsePostgresConnectionString(env.DATABASE_URL)
+  if (!user) {
+    throw new Error('No user found in connection string')
+  }
 
   const res = await knex.raw(`SELECT 1 FROM pg_roles WHERE rolname='${user}'`)
   if (res?.rows?.[0]?.['?column?'] !== 1) {

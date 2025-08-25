@@ -1,15 +1,19 @@
 import React from 'react'
 
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 import { GridContainer, GridItem, Loader, Page, range } from 'ui'
 
-import { useGraphQL, GetSmallGamesByYearDocument } from '../../client-graphql'
 import { Link } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { YearTile } from '../../components/YearTile'
 import { useConfiguration } from '../../utils'
 
-const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
-  const { error, data } = useGraphQL(GetSmallGamesByYearDocument, { year })
+type GameByYearProps = { year: number; to: string }
+
+const GameByYear = ({ year, to }: GameByYearProps) => {
+  const trpc = useTRPC()
+  const { error, data } = useQuery(trpc.games.getSmallGamesByYear.queryOptions({ year }))
   if (error) {
     return <TransportError error={error} />
   }
@@ -17,7 +21,7 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
     return <Loader />
   }
 
-  const game = data.games?.edges?.[0]?.node
+  const game = data[0]
   return game ? (
     <Link href={{ pathname: to }} sx={{ textDecoration: 'none' }}>
       <YearTile year={year} game={game} />
@@ -25,7 +29,7 @@ const GameByYear: React.FC<{ year: number; to: string }> = ({ year, to }) => {
   ) : null
 }
 
-const GameBookPage: React.FC = () => {
+const GameBookPage = () => {
   const configuration = useConfiguration()
 
   const years = range(configuration.firstDataYear - 1, configuration.year - 1, -1)

@@ -3,7 +3,7 @@ import React from 'react'
 import { GameMenu } from '../../components/GameList'
 import { useConfiguration, useGameUrl } from '../../utils'
 
-export const GameBookMenu: React.FC = () => {
+export const GameBookMenu = () => {
   const { year } = useGameUrl()
   const configuration = useConfiguration()
 

@@ -1,8 +1,8 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
-import { useTRPC } from '@amber/client'
+import { Game, useTRPC } from '@amber/client'
 import CachedIcon from '@mui/icons-material/Cached'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
 import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
@@ -10,27 +10,17 @@ import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
 
-import {
-  GameFieldsFragment,
-  GameGmsFragment,
-  useGraphQL,
-  useGraphQLMutation,
-  DeleteGameDocument,
-  GetGamesByYearDocument,
-} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
 
-type Game = GameFieldsFragment & GameGmsFragment
-
 export const getGms = (row: Game) => {
-  const playersOrEmpty = row.gameAssignments.nodes
+  const playersOrEmpty = row.gameAssignment
   if (playersOrEmpty.length) {
     return playersOrEmpty
       .filter((val) => val)
       .filter((val) => val!.gm !== 0)
-      .map((val) => val?.member?.user?.fullName ?? '')
+      .map((val) => val?.membership?.user?.fullName ?? '')
       .join(', ')
   }
   return ''
@@ -113,7 +103,7 @@ const columns: Column<Game>[] = [
     accessor: 'year',
     width: 100,
     align: 'right',
-    filter: 'numeric',
+    disableFilters: true,
   },
   { accessor: 'genre' },
   { accessor: 'type' },
@@ -139,17 +129,19 @@ const useStyles = makeStyles()({
   },
 })
 
-const Games: React.FC = React.memo(() => {
+const Games = React.memo(() => {
   const trpc = useTRPC()
   const [year] = useYearFilter()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<Game[]>([])
-  const deleteGame = useGraphQLMutation(DeleteGameDocument)
+  const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const [fixBusy, setFixBusy] = useState(false)
   const { classes, cx } = useStyles()
-  const { error, data, refetch } = useGraphQL(GetGamesByYearDocument, {
-    year,
-  })
+  const { error, data, refetch } = useQuery(
+    trpc.games.getGamesByYear.queryOptions({
+      year,
+    }),
+  )
   const setGameGmAssignments = useUpdateGameAssignment()
   const { data: membershipData } = useQuery(
     trpc.memberships.getMembershipsByYear.queryOptions({
@@ -192,12 +184,7 @@ const Games: React.FC = React.memo(() => {
     return <Loader />
   }
 
-  const { games } = data
-
-  const list: Game[] = games!.edges
-    .map((v) => v.node)
-    .filter(notEmpty)
-    .filter((g) => g.year === year)
+  const list: Game[] = data.filter((g) => g.year === year)
 
   const onAdd: TableMouseEventHandler<Game> = () => () => {
     setShowEdit(true)
@@ -210,7 +197,7 @@ const Games: React.FC = React.memo(() => {
 
   const onDelete = (instance: TableInstance<Game>) => () => {
     const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((g) => deleteGame.mutateAsync({ input: { id: g.id } }))
+    const updater = toDelete.map((g) => deleteGame.mutateAsync({ id: g.id }))
     Promise.allSettled(updater).then(() => console.log('deleted'))
   }
 

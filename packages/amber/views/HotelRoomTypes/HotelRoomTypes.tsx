@@ -51,7 +51,7 @@ export const RequestedRoomCell: React.FC<CellProps<HotelRoom>> = ({
   return <TooltipCell text={value} align={align} tooltip={tooltip} />
 }
 
-const HotelRoomTypes: React.FC = () => {
+const HotelRoomTypes = () => {
   const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<HotelRoom[]>([])

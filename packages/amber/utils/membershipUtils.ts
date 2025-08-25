@@ -1,4 +1,4 @@
-import { useInvalidateMembershipQueries, UserAndProfile, useTRPC } from '@amber/client'
+import { useInvalidateMembershipQueries, UserAndProfile, useTRPC, Transaction } from '@amber/client'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
@@ -12,7 +12,6 @@ import { getSlotDescription } from './slotTimes'
 import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
-import { GetTransactionByUserQuery } from '../client-graphql'
 import { Perms, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from 'amber/utils' since that causes
@@ -126,7 +125,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   return async (
     membershipValues: MembershipFormType,
     profile: UserAndProfile,
-    usersTransactions: GetTransactionByUserQuery | undefined,
+    usersTransactions: Transaction[] | undefined,
   ) => {
     if (membershipValues.id) {
       await updateMembership

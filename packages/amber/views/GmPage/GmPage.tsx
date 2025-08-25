@@ -1,29 +1,21 @@
 import React, { MouseEventHandler, useState } from 'react'
 
+import { Game, useTRPC, useInvalidateGameQueries } from '@amber/client'
 import { Button, Theme } from '@mui/material'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { Loader, notEmpty, Page, range, Table } from 'ui'
+import { Loader, Page, range, Table } from 'ui'
 
-import {
-  GameFieldsFragment,
-  GameGmsFragment,
-  useGraphQL,
-  useGraphQLMutation,
-  DeleteGameDocument,
-  GetGamesByAuthorDocument,
-  GetGamesByYearAndAuthorDocument,
-} from '../../client-graphql'
-import { useInvalidateGameQueries } from '../../client-graphql/querySets'
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
-type Game = GameFieldsFragment & GameGmsFragment
+// type Game = GameFieldsFragment & GameGmsFragment
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   blurb: {
@@ -222,10 +214,11 @@ const GmBlurb = () => {
   )
 }
 
-const MemberGmPage: React.FC = React.memo(() => {
+const MemberGmPage = React.memo(() => {
+  const trpc = useTRPC()
   const [year] = useYearFilter()
   const [selection, setSelection] = useState<Game[]>([])
-  const deleteGame = useGraphQLMutation(DeleteGameDocument)
+  const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
@@ -235,15 +228,19 @@ const MemberGmPage: React.FC = React.memo(() => {
   const router = useRouter()
   const { query } = router
 
-  const { error, data, refetch } = useGraphQL(GetGamesByYearAndAuthorDocument, {
-    year,
-    id: userId!,
-  })
+  const { error, data, refetch } = useQuery(
+    trpc.games.getGamesByYearAndAuthor.queryOptions({
+      year,
+      id: userId!,
+    }),
+  )
 
-  // just kick this off now so that it's cached by the tie the user clicks the button
-  useGraphQL(GetGamesByAuthorDocument, {
-    id: userId!,
-  })
+  // just kick this off now so that it's cached by the time the user clicks the button
+  useQuery(
+    trpc.games.getGamesByAuthor.queryOptions({
+      id: userId!,
+    }),
+  )
 
   if (error) {
     return <TransportError error={error} />
@@ -251,10 +248,6 @@ const MemberGmPage: React.FC = React.memo(() => {
   if (!data) {
     return <Loader />
   }
-
-  const { games } = data
-
-  const list: Game[] = games!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setSelection([])
@@ -266,7 +259,7 @@ const MemberGmPage: React.FC = React.memo(() => {
     const updater = toDelete.map((g) =>
       deleteGame.mutateAsync(
         {
-          input: { id: g.id },
+          id: g.id,
         },
         {
           onSuccess: invalidateGameQueries,
@@ -293,12 +286,12 @@ const MemberGmPage: React.FC = React.memo(() => {
         Add a Game
       </Button>
 
-      {list.length ? (
+      {data.length ? (
         <Table<Game>
           name='gm_games'
           initialState={initialState}
           disableGroupBy
-          data={list}
+          data={data}
           columns={columns}
           onDelete={displayDeleteButton ? onDelete : undefined}
           onClick={onClick}

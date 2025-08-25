@@ -1,22 +1,14 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
+import { useTRPC, GameRoom, useInvalidateGameRoomQueries } from '@amber/client'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import { Loader, Page, Table, YesBlankCell } from 'ui'
 
 import { GameRoomsDialog } from './GameRoomsDialog'
 
-import {
-  GetGameRoomsQuery,
-  useGraphQLMutation,
-  useGraphQL,
-  DeleteGameRoomDocument,
-  GetGameRoomsDocument,
-} from '../../client-graphql'
 import { TransportError } from '../../components/TransportError'
 import { TableMouseEventHandler } from '../../types/react-table-config'
-
-export type GameRoom = GqlType<GetGameRoomsQuery, ['rooms', 'nodes', 0]>
 
 const columns: Column<GameRoom>[] = [
   {
@@ -35,20 +27,19 @@ const columns: Column<GameRoom>[] = [
   },
 ]
 
-const GameRooms: React.FC = () => {
+const GameRooms = () => {
+  const trpc = useTRPC()
   const [showEdit, setShowEdit] = useState(false)
   const [selection, setSelection] = useState<GameRoom[]>([])
 
-  const deleteGameRoom = useGraphQLMutation(DeleteGameRoomDocument)
-  const queryClient = useQueryClient()
-
-  const { isLoading, error, data, refetch } = useGraphQL(GetGameRoomsDocument)
+  const deleteGameRoom = useMutation(trpc.gameRooms.deleteGameRoom.mutationOptions())
+  const { isLoading, error, data, refetch } = useQuery(trpc.gameRooms.getGameRooms.queryOptions())
+  const invalidateGameRoomQueries = useInvalidateGameRoomQueries()
 
   const clearSelectionAndRefresh = useCallback(() => {
     setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getGameRooms'] })
-  }, [queryClient])
+    invalidateGameRoomQueries()
+  }, [invalidateGameRoomQueries])
 
   const onAdd: TableMouseEventHandler<GameRoom> = useCallback(
     () => () => {
@@ -65,7 +56,7 @@ const GameRooms: React.FC = () => {
   const onDelete = useCallback(
     (instance: TableInstance<GameRoom>) => () => {
       const toDelete = instance.selectedFlatRows.map((r) => r.original)
-      const updater = toDelete.map((v) => deleteGameRoom.mutateAsync({ input: { id: v.id } }))
+      const updater = toDelete.map((v) => deleteGameRoom.mutateAsync({ id: v.id }))
       Promise.allSettled(updater).then(() => {
         console.log('deleted')
         clearSelectionAndRefresh()
@@ -95,14 +86,12 @@ const GameRooms: React.FC = () => {
     return <Loader />
   }
 
-  const list: GameRoom[] = data.rooms!.nodes.filter(notEmpty)
-
   return (
     <Page title='Game Rooms'>
       {showEdit && <GameRoomsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
       <Table<GameRoom>
         name='gameRooms'
-        data={list}
+        data={data}
         columns={columns}
         onAdd={onAdd}
         onDelete={onDelete}

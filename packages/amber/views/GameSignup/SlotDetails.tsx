@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 
+import { GameChoice, useTRPC } from '@amber/client'
 import { Theme } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
 import { Loader, notEmpty, range } from 'ui'
 
-import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
+import { Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-import { useGraphQL, GetGamesBySlotForSignupDocument } from '../../client-graphql'
 import { getSlotDescription, useConfiguration } from '../../utils'
 import { getGms } from '../Games'
 
@@ -41,20 +42,19 @@ export interface SlotSummary {
 interface SlotDetailsProps {
   slotId: number
   year: number
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   storeTextResults?: (details: SlotSummary) => void
 }
 
-const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
+const rankSort = (a: GameChoice, b: GameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
 
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const { classes } = useStyles()
 
-  const { data } = useGraphQL(GetGamesBySlotForSignupDocument, { year, slotId })
+  const { data: games } = useQuery(trpc.games.getGamesBySlotForSignup.queryOptions({ year, slotId }))
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
-
-  const games = data?.games?.edges
 
   const slotDescription = getSlotDescription(configuration, {
     year,
@@ -68,7 +68,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
         ?.concat()
         ?.sort(rankSort)
         ?.map((info) => {
-          const g = games.find(({ node: game }) => game?.id === info?.gameId)?.node
+          const g = games.find((game) => game?.id === info?.gameId)
           if (!g || !info) return null
           const gms = getGms(g)
           const rank = rankString(info.rank)!
@@ -91,7 +91,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
     }
   }, [games, slotDescription, slotId, slotInfo, storeTextResults])
 
-  if (!data) return <Loader />
+  if (!games) return <Loader />
 
   return (
     <>
@@ -100,7 +100,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
         ?.concat()
         ?.sort(rankSort)
         ?.map((info) => {
-          const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
+          const g = games?.find((game) => game?.id === info?.gameId)
           if (!g || !info) return null
 
           const gms = getGms(g)
@@ -123,7 +123,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
 
 interface ChoiceSummaryProps {
   year: number
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   storeTextResults?: any
 }
 

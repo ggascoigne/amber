@@ -30,7 +30,7 @@ export const useScrollToHash = () => {
       const timer = setTimeout(
         () =>
           window.requestAnimationFrame(() => {
-            // todo: rewrite without accessing the DOM
+            // TODO: rewrite without accessing the DOM
             const el = document.getElementById(`game/${year}/${slot}/${game}`)
             if (el) {
               const y = el.getBoundingClientRect().top + window.scrollY - 105

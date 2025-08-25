@@ -13,7 +13,7 @@ import { fetchPostJSON } from './fetchUtils'
 import { ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useUser } from '../../utils'
 
-export const Payment: React.FC = () => {
+export const Payment = () => {
   const trpc = useTRPC()
   const [stripe] = useGetStripe()
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)

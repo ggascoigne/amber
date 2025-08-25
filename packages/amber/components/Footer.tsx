@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect, useRef } from 'react'
 
 import { useGetConfigQuery } from '@amber/client'
 import { Box, Popover } from '@mui/material'
@@ -10,7 +10,7 @@ import { HasPermission, Perms, useAuth } from './Auth'
 import { useConfiguration } from '../utils'
 import { gitHash } from '../version'
 
-const ReactJson = React.lazy(() => import('react-json-view'))
+const ReactJson = React.lazy(() => import('@microlink/react-json-view'))
 
 const containerFluid = {
   paddingRight: '15px',
@@ -35,21 +35,42 @@ const container = {
   },
 }
 
-export const Footer: React.FC = (_props) => {
+export const Footer = () => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+  const [reactJsonLoaded, setReactJsonLoaded] = React.useState(false)
+  const popoverRef = useRef<HTMLDivElement>(null)
   const config = useGetConfigQuery()
+
+  // Force popover to recalculate position when ReactJson loads
+  useEffect(() => {
+    if (reactJsonLoaded && popoverRef.current) {
+      // Small delay to ensure DOM has updated
+      setTimeout(() => {
+        if (popoverRef.current) {
+          const popover = popoverRef.current.querySelector('[role="tooltip"]') as HTMLElement
+          if (popover) {
+            // Trigger a reflow/repaint
+            popover.style.display = 'none'
+            // popover.offsetHeight // Force reflow
+            popover.style.display = ''
+          }
+        }
+      }, 0)
+    }
+  }, [reactJsonLoaded])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasPermissions(Perms.IsAdmin)) {
       setAnchorEl(event.currentTarget)
+      setReactJsonLoaded(false)
     }
   }
 
   const handleClose = () => {
     setAnchorEl(null)
+    setReactJsonLoaded(false)
   }
-
   const hash = gitHash.hash.length > 0 ? gitHash.hash.substring(0, 8) : 'dev'
   const open = Boolean(anchorEl)
   const commitDate = DateTime.fromISO(gitHash.date)
@@ -64,6 +85,7 @@ export const Footer: React.FC = (_props) => {
         <HasPermission permission={Perms.IsAdmin}>
           {open && (
             <Popover
+              ref={popoverRef}
               id={id}
               open={open}
               anchorEl={anchorEl}
@@ -77,8 +99,10 @@ export const Footer: React.FC = (_props) => {
                 horizontal: 'left',
               }}
             >
-              <Box sx={{ padding: '20px' }}>
-                <h3>Site configuration</h3>
+              <Box sx={{ padding: '20px', minWidth: '300px', maxHeight: '80vh', overflow: 'auto' }}>
+                <Box component='h3' sx={{ marginTop: 0 }}>
+                  Site configuration
+                </Box>
                 <Suspense fallback={<Loader />}>
                   <ReactJson
                     src={{
@@ -88,6 +112,8 @@ export const Footer: React.FC = (_props) => {
                     enableClipboard={false}
                     indentWidth={2}
                   />
+                  {/* Hidden element to trigger state change when ReactJson loads */}
+                  <div style={{ display: 'none' }} ref={() => setReactJsonLoaded(true)} />
                 </Suspense>
               </Box>
             </Popover>

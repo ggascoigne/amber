@@ -1,4 +1,5 @@
 import fs from 'fs'
+import os from 'os'
 import path from 'path'
 
 import { env, isDev } from '@amber/environment'
@@ -7,7 +8,7 @@ import { certs } from 'database/shared/dbCerts'
 // eslint-disable-next-line import/no-relative-packages
 import { PrismaClient } from './generated/prisma/client'
 
-const filename = '/tmp/rds-cert.pem'
+const filename = path.join(os.tmpdir(), 'rds-cert.pem')
 
 const createPrismaClient = (type: 'ADMIN' | 'USER') => {
   if (env.DATABASE_SSL_CERT) {

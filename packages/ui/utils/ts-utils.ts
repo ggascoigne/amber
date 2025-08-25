@@ -1,13 +1,13 @@
 import { ReactElement, ReactNode, forwardRef } from 'react'
 
-import { O, F } from 'ts-toolbelt'
-import { Key } from 'ts-toolbelt/out/Any/Key'
-import { List } from 'ts-toolbelt/out/List/List'
+import { F } from 'ts-toolbelt'
 
 export type Maybe<T> = T | null
 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N
+
+export type OptionalKeys<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>
 
 // from https://stackoverflow.com/questions/57683303/how-can-i-see-the-full-expanded-contract-of-a-typescript-type
 // expands object types one level deep
@@ -78,14 +78,6 @@ export type RequireOnlyOne<T, Keys extends keyof T = keyof T> = Pick<T, Exclude<
 
 // https://stackoverflow.com/questions/48230773/how-to-create-a-partial-like-that-requires-a-single-property-to-be-set
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> & U[keyof U]
-
-export type GqlType<T, V extends List<Key>> = NonNullable<O.Path<T, V>>
-
-export type ToFormValuesGql<T extends { __typename: string; id?: number; nodeId?: string }> = Omit<
-  T,
-  'nodeId' | 'id' | '__typename'
-> &
-  Partial<Pick<T, 'nodeId' | 'id'>>
 
 export type ToFormValues<T extends { id?: number }> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>
 

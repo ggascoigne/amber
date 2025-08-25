@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /**
  * @param {import('knex').Knex} knex
  * @returns {Promise<void>}

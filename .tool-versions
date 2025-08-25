@@ -3,5 +3,5 @@
 # see https://asdf-vm.com/guide/#/core-managing-versions
 # for more information
 
-pnpm 10.12.1
-nodejs 22.16.0
+pnpm 10.14.0
+nodejs 22.18.0

@@ -4,10 +4,10 @@
   "main": "index.cjs",
   "license": "MIT",
   "dependencies": {
-    "@babel/core": "^7.27.4",
+    "@babel/core": "^7.28.3",
     "@babel/plugin-syntax-flow": "^7.27.1",
     "@babel/plugin-transform-react-jsx": "^7.27.1",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.3"
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2"
   }
 }

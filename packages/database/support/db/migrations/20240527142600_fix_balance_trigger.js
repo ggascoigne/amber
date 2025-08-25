@@ -1,3 +1,5 @@
+import { env, parsePostgresConnectionString } from '@amber/environment'
+
 import { fixGrants } from '../utils/policyUtils.js'
 
 /**
@@ -69,6 +71,9 @@ export async function up(knex) {
       EXECUTE FUNCTION update_balance();
   `)
 
-  const user = process.env.DATABASE_USER ?? ''
+  const { user } = parsePostgresConnectionString(env.DATABASE_URL)
+  if (!user) {
+    throw new Error('No user found in connection string')
+  }
   await knex.raw(fixGrants(user))
 }

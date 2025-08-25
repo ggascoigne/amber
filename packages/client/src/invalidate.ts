@@ -69,12 +69,66 @@ const useQueryLists = () => {
 
   const allSettingsQueries = useMemo(() => [trpc.settings.getSettings.queryKey()], [trpc.settings.getSettings])
 
+  const allGameAssignmentQueries = useMemo(
+    () => [trpc.gameAssignments.getGameAssignmentsByYear.queryKey(), trpc.gameAssignments.getSchedule.queryKey()],
+    [trpc.gameAssignments.getGameAssignmentsByYear, trpc.gameAssignments.getSchedule],
+  )
+
+  const allGameQueries = useMemo(
+    () => [
+      ...allGameAssignmentQueries,
+      trpc.games.getGamesByYear.queryKey(),
+      trpc.games.getGamesByAuthor.queryKey(),
+      trpc.games.getGamesByYearAndAuthor.queryKey(),
+      trpc.games.getGameById.queryKey(),
+    ],
+    [
+      allGameAssignmentQueries,
+      trpc.games.getGameById,
+      trpc.games.getGamesByAuthor,
+      trpc.games.getGamesByYear,
+      trpc.games.getGamesByYearAndAuthor,
+    ],
+  )
+
+  const allPaymentQueries = useMemo(
+    () => [
+      trpc.transactions.getTransactions.queryKey(),
+      trpc.transactions.getTransactionsByYear.queryKey(),
+      trpc.transactions.getTransactionsByUser.queryKey(),
+      trpc.transactions.getTransactionsByYearAndUser.queryKey(),
+      trpc.users.getUser.queryKey(),
+    ],
+    [
+      trpc.transactions.getTransactions,
+      trpc.transactions.getTransactionsByYear,
+      trpc.transactions.getTransactionsByUser,
+      trpc.transactions.getTransactionsByYearAndUser,
+      trpc.users.getUser,
+    ],
+  )
+
+  const allGameChoiceQueries = useMemo(
+    () => [trpc.gameChoices.getGameChoices.queryKey()],
+    [trpc.gameChoices.getGameChoices],
+  )
+
+  const allGameRoomQueries = useMemo(
+    () => [trpc.gameRooms.getGameRooms.queryKey(), trpc.gameRooms.getGameRoomAndGames.queryKey()],
+    [trpc.gameRooms.getGameRoomAndGames, trpc.gameRooms.getGameRooms],
+  )
+
   return {
-    allMembershipQueries,
-    allProfileQueries,
-    allUserQueries,
+    allGameAssignmentQueries,
+    allGameChoiceQueries,
+    allGameQueries,
+    allGameRoomQueries,
     allLookupQueries,
+    allMembershipQueries,
+    allPaymentQueries,
+    allProfileQueries,
     allSettingsQueries,
+    allUserQueries,
   }
 }
 
@@ -103,24 +157,27 @@ export const useInvalidateSettingsQueries = () => {
   return useInvalidateQueries(allSettingsQueries, 'allSettingsQueries')
 }
 
-// const allPaymentQueries = [
-//   'getTransaction',
-//   'getTransactionByYear',
-//   'getTransactionByUser',
-//   'getTransactionByYearAndUser',
-//   'getUserById',
-// ]
+export const useInvalidatePaymentQueries = () => {
+  const { allPaymentQueries } = useQueryLists()
+  return useInvalidateQueries(allPaymentQueries)
+}
 
-// export const useInvalidatePaymentQueries = () => useInvalidateQueries(allPaymentQueries)
+export const useInvalidateGameAssignmentQueries = () => {
+  const { allGameAssignmentQueries } = useQueryLists()
+  return useInvalidateQueries(allGameAssignmentQueries, 'allGameAssignmentQueries')
+}
 
-// const allGameAssignmentQueries = ['getGameAssignmentsByYear', 'getSchedule']
+export const useInvalidateGameQueries = () => {
+  const { allGameQueries } = useQueryLists()
+  return useInvalidateQueries(allGameQueries, 'allGameQueries')
+}
 
-// export const useInvalidateGameAssignmentQueries = () => useInvalidateQueries(allGameAssignmentQueries)
+export const useInvalidateGameChoiceQueries = () => {
+  const { allGameChoiceQueries } = useQueryLists()
+  return useInvalidateQueries(allGameChoiceQueries)
+}
 
-// const gameQueries = ['getGamesByYear', 'getGamesByAuthor', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
-
-// export const useInvalidateGameQueries = () => useInvalidateQueries(gameQueries)
-
-// const allGameChoiceQueries = ['getGameChoices']
-
-// export const useInvalidateGameChoiceQueries = () => useInvalidateQueries(allGameChoiceQueries)
+export const useInvalidateGameRoomQueries = () => {
+  const { allGameRoomQueries } = useQueryLists()
+  return useInvalidateQueries(allGameRoomQueries)
+}

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { GameArray } from '@amber/client'
 import { Theme, Typography } from '@mui/material'
 import List from '@mui/material/List'
 import { makeStyles } from 'tss-react/mui'
 
-import type { GameArray } from '../../client-graphql'
 import { useUrlSource } from '../../utils'
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
@@ -26,19 +26,12 @@ interface GameListIndexProps {
   decoratorParams?: GameDecoratorParams
 }
 
-export const GameListIndex: React.FC<GameListIndexProps> = ({
-  year,
-  slot,
-  games,
-  slugPrefix,
-  decorator,
-  decoratorParams,
-}) => {
+export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decoratorParams }: GameListIndexProps) => {
   const { classes } = useStyles()
   const [urlSource] = useUrlSource()
   return (
     <List>
-      {games.map(({ node: game }) => {
+      {games.map((game) => {
         if (!game) {
           return null
         }

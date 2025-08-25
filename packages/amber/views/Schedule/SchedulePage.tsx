@@ -1,13 +1,14 @@
 import React, { createRef, PropsWithChildren, useMemo, useState } from 'react'
 
+import { Game, Schedule, useTRPC } from '@amber/client'
 import { Box, useMediaQuery } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
+import { useQuery } from '@tanstack/react-query'
 import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
-import { GqlType, Loader, notEmpty, Page } from 'ui'
+import { Loader, notEmpty, Page } from 'ui'
 
-import { GameAssignmentNode, useGraphQL, GetScheduleDocument } from '../../client-graphql'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
 import { TransportError } from '../../components/TransportError'
@@ -28,17 +29,11 @@ import {
   useUser,
 } from '../../utils'
 
-interface GameSummaryProps {
-  gas: GameAssignmentNode
-}
-
-type GameAndAssignment = GqlType<GameAssignmentNode, ['game']>
-
-const getGmsAndPlayers = (game: GameAndAssignment) => {
-  const details = game.gameAssignments.nodes.map((g) => ({
+const getGmsAndPlayers = (game: Game) => {
+  const details = game.gameAssignment.map((g) => ({
     gm: g?.gm ?? 0,
-    fullName: g?.member?.user?.fullName ?? '',
-    email: g?.member?.user?.email ?? '',
+    fullName: g?.membership?.user?.fullName ?? '',
+    email: g?.membership?.user?.email ?? '',
   }))
 
   const gms = details.filter((d) => d.gm > 0).sort((a, b) => a.gm - b.gm)
@@ -101,7 +96,7 @@ const RoomDisplay = ({ game, year }: GameDecorator) => {
   )
 }
 
-const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
+const GameSummary = ({ gas }: { gas: Schedule }) => {
   const { game } = gas
   if (!game) return null
 
@@ -121,7 +116,7 @@ const GameSummary: React.FC<GameSummaryProps> = ({ gas }) => {
   )
 }
 
-const getIcalUrl = (configuration: Configuration, schedule: GameAssignmentNode[]) =>
+const getIcalUrl = (configuration: Configuration, schedule: Schedule[]) =>
   buildUrl(
     configuration.abbr,
     schedule
@@ -186,8 +181,9 @@ export const ICalDownloadButton: React.FC<PropsWithChildren<{ url: string | null
   )
 }
 
-const SchedulePage: React.FC = () => {
+const SchedulePage = () => {
   const configuration = useConfiguration()
+  const trpc = useTRPC()
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const { userId } = useUser()
@@ -197,14 +193,15 @@ const SchedulePage: React.FC = () => {
   const [showGmPreviewOverride, setShowGmPreviewOverride] = useState(false)
   const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
 
-  const { error, data } = useGraphQL(
-    GetScheduleDocument,
-    {
-      memberId,
-    },
-    {
-      enabled: !!membership,
-    },
+  const { error, data } = useQuery(
+    trpc.gameAssignments.getSchedule.queryOptions(
+      {
+        memberId,
+      },
+      {
+        enabled: !!membership,
+      },
+    ),
   )
 
   const gamesAndAssignments = useMemo(() => getGameAssignments(data, memberId, gmOnly), [data, gmOnly, memberId])

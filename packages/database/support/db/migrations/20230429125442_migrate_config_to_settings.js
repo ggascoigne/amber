@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { DateTime } from 'luxon'
 
 import { anyUserUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'

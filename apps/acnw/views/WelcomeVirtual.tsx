@@ -36,7 +36,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
 }))
 
-export const WelcomeVirtual: React.FC = () => {
+export const WelcomeVirtual = () => {
   const { classes } = useStyles()
 
   const titleElement = (

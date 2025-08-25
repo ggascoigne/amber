@@ -35,7 +35,7 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
     'message',
   )
 
-export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
   const { classes } = useStyles()
 

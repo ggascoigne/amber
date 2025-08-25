@@ -15,11 +15,7 @@ const useStyles = makeStyles()((_theme: Theme) => ({
   },
 }))
 
-const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = ({
-  dates,
-  className,
-  virtual = false,
-}) => {
+const Logo = ({ dates, className, virtual = false }: { dates: string; className: string; virtual?: boolean }) => {
   // const background = '#ffffff'
   const purple = '#31107b' // '#39177a'
   const red = '#ce0000'
@@ -427,7 +423,7 @@ interface BannerProps {
   to?: string
 }
 
-const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
+const WrappedLogo = ({ to }: BannerProps) => {
   const { classes } = useStyles()
   const configuration = useConfiguration()
   const { conventionStartDate, conventionEndDate } = configuration
@@ -440,7 +436,7 @@ const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
   return to ? <Link href={to}>{logo}</Link> : logo
 }
 
-export const Banner: React.FC<BannerProps> = ({ to }) => (
+export const Banner = ({ to }: BannerProps) => (
   <GridContainer justifyContent='center'>
     <GridItem xs={12}>
       <WrappedLogo to={to} />

@@ -7,7 +7,7 @@ interface StripeFormContentProps {
   prefix?: string
 }
 
-const ReactJson = React.lazy(() => import('react-json-view'))
+const ReactJson = React.lazy(() => import('@microlink/react-json-view'))
 
 export const StripeFormContent: React.FC<StripeFormContentProps> = () => {
   const { values } = useFormikContext<any>()

@@ -69,7 +69,7 @@ export const useSettings = () => {
 
   const getFlagBoolean = useCallback(
     (setting: string, defaultValue = false) => {
-      // todo rework this to use configuration.flag object
+      // TODO rework this to use configuration.flag object
       const s = getSettingValue(`flag.${setting}`, defaultValue)
 
       switch (s) {

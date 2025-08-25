@@ -4,7 +4,7 @@ import { DialogContentText } from '@mui/material'
 import { ConfigDate, ContactEmail, Link, useConfiguration } from 'amber'
 import { CheckboxWithLabel, GridContainer, GridItem } from 'ui'
 
-export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
+export const IntroStep = ({ prefix = '' }: { prefix?: string }) => {
   const configuration = useConfiguration()
   return (
     <>
