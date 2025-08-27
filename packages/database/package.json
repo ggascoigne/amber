@@ -28,7 +28,7 @@
     "@t3-oss/env-nextjs": "^0.13.8",
     "common-tags": "^1.8.2",
     "debug": "^4.4.1",
-    "listr2": "^8.3.3",
+    "listr2": "^9.0.2",
     "luxon": "^3.7.1",
     "next": "13.5.6",
     "pg": "^8.16.3",
@@ -44,7 +44,7 @@
     "@types/luxon": "^3.7.1",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250825.1",
+    "@typescript/native-preview": "7.0.0-dev.20250827.1",
     "chalk": "^5.6.0",
     "commander": "^14.0.0",
     "common-tags": "^1.8.2",
@@ -56,7 +56,6 @@
     "tsconfig": "workspace:*",
     "typescript": "^5.9.2",
     "xlsx": "^0.18.5",
-    "zod": "^3.25.76",
     "zx": "^8.8.1"
   }
 }
