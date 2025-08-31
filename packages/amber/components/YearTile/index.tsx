@@ -1,6 +1,6 @@
+import { Card, CardBody, CardHeader } from '@amber/ui'
 import { Typography } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
-import { Card, CardBody, CardHeader } from 'ui'
 
 import { GameCard } from '../GameCard'
 

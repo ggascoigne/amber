@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 
+import { GridContainer, GridItem, Loader } from '@amber/ui'
 import { useFormikContext } from 'formik'
-import { GridContainer, GridItem, Loader } from 'ui'
 
 interface StripeFormContentProps {
   prefix?: string

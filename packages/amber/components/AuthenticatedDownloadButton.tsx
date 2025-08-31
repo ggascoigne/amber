@@ -1,7 +1,7 @@
 import React, { createRef, PropsWithChildren } from 'react'
 
+import { useNotification } from '@amber/ui'
 import { Button } from '@mui/material'
-import { useNotification } from 'ui'
 
 export const AuthenticatedDownloadButton: React.FC<PropsWithChildren<{ url: string; filename: string }>> = ({
   url,

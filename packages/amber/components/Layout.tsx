@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useState } from 'react'
 
+import { Children } from '@amber/ui'
 import { Box, Divider, Drawer, Hidden, List, ListItem } from '@mui/material'
-import { Children } from 'ui'
 
 import { Footer } from './Footer'
 import { Header } from './Header'

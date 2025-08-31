@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
+import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from '@amber/amber'
+import { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from '@amber/ui'
 import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from 'amber'
-import { MembershipFormContent } from 'amber/utils/membershipUtils'
 import { makeStyles } from 'tss-react/mui'
-import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from 'ui'
 
 const useStyles = makeStyles()({
   slotSelection: {

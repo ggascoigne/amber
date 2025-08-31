@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react'
 
 import { Game, useTRPC } from '@amber/client'
-import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -16,8 +13,11 @@ import {
   TextField,
   TextFieldProps,
   useDisableBackdropClick,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { FormikHelpers } from 'formik'
 
 import { GameDialogFormValues, useEditGame } from './gameHooks'
 

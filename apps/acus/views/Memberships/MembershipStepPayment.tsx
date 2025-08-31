@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { ContactEmail } from '@amber/amber'
 import { DialogContentText } from '@mui/material'
-import { ContactEmail } from 'amber'
 
 export const MembershipStepPayment = () => (
   <DialogContentText>

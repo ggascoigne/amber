@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react'
 
-import { Box, Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
 import {
   Attendance,
   ContactEmail,
@@ -8,10 +7,18 @@ import {
   useConfiguration,
   useGetAttendanceOptions,
   useGetSubsidizedAttendanceOptions,
-} from 'amber'
-import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
+} from '@amber/amber'
+import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
+import {
+  CheckboxWithLabel,
+  getSafeFloat,
+  GridContainer,
+  GridItem,
+  RadioGroupFieldWithLabel,
+  TextField,
+} from '@amber/ui'
+import { Box, Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
 import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
-import { CheckboxWithLabel, getSafeFloat, GridContainer, GridItem, RadioGroupFieldWithLabel, TextField } from 'ui'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(

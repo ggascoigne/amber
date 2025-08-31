@@ -1,8 +1,8 @@
 import * as React from 'react'
 
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import GmPage from '@amber/amber/views/GmPage/GmPage'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0'
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import GmPage from 'amber/views/GmPage/GmPage'
 import type { NextPage } from 'next'
 
 const Page: NextPage = () => <GmPage />

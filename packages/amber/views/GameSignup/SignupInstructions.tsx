@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { CardBody } from '@amber/ui'
 import { Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { CardBody } from 'ui'
 
 import { ConfigDate } from '../../components'
 import { useConfiguration } from '../../utils'

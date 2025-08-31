@@ -1,4 +1,4 @@
-import SharedMembershipsPage from 'amber/views/Memberships/Memberships'
+import SharedMembershipsPage from '@amber/amber/views/Memberships/Memberships'
 
 import { MembershipWizard } from './MembershipWizard'
 

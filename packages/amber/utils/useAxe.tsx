@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
+import { isDev } from '@amber/ui'
 import ReactDOM from 'react-dom'
-import { isDev } from 'ui'
 
 export function useAxe(): void {
   // this is a bit too noisy at this point to want to enable this all the time,

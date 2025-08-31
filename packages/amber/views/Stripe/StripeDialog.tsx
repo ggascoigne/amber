@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { StripeRecord } from '@amber/client'
-import { EditDialog } from 'ui'
+import { EditDialog } from '@amber/ui'
 
 import { StripeFormContent } from './StripeFormContent'
 

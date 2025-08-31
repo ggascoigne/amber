@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { EditDialog } from '@amber/ui'
 import { FormikHelpers } from 'formik'
-import { EditDialog } from 'ui'
 
 import { TransactionFormContent } from './TransactionFormContent'
 import { transactionValidationSchema } from './transactionValidationSchema'

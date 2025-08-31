@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 
 import { useInvalidatePaymentQueries, useTRPC } from '@amber/client'
+import { Page } from '@amber/ui/components'
 import { Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { Page } from 'ui/components'
 
 import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
 

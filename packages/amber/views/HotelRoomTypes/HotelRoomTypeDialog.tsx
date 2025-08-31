@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react'
 
 import { HotelRoomEditorType, useTRPC } from '@amber/client'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -12,8 +10,10 @@ import {
   pick,
   TextField,
   useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { FormikHelpers } from 'formik'
 
 import { LookupField } from '../../components/Form'
 

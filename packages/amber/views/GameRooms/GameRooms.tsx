@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 
 import { useTRPC, GameRoom, useInvalidateGameRoomQueries } from '@amber/client'
+import { Loader, Page, Table, YesBlankCell } from '@amber/ui'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { Loader, Page, Table, YesBlankCell } from 'ui'
 
 import { GameRoomsDialog } from './GameRoomsDialog'
 

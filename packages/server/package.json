@@ -19,6 +19,7 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
+    "@amber/database": "workspace:*",
     "@amber/environment": "workspace:*",
     "@auth0/nextjs-auth0": "^3.8.0",
     "@prisma/client": "^6.15.0",
@@ -30,7 +31,6 @@
     "@trpc/react-query": "11.5.0",
     "@trpc/server": "^11.5.0",
     "@trpc/tanstack-react-query": "^11.5.0",
-    "database": "workspace:*",
     "debug": "^4.4.1",
     "next": "13.5.6",
     "pg": "^8.16.3",
@@ -41,15 +41,15 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.12",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250827.1",
+    "@typescript/native-preview": "7.0.0-dev.20250831.1",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.0",
     "dotenv": "^17.2.1",
     "prisma": "^6.15.0",
-    "tsconfig": "workspace:*",
     "typescript": "^5.9.2"
   }
 }

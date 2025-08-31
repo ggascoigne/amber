@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { ConfigDate, ContactEmail, MDY } from '@amber/amber/components'
+import { BetaWarning } from '@amber/amber/components/BetaWarning'
+import { Link } from '@amber/amber/components/Navigation'
+import { IsMember } from '@amber/amber/utils'
+import { MdxWithExternalLinks, Page } from '@amber/ui'
 import { Button, Theme } from '@mui/material'
-import { ConfigDate, ContactEmail, MDY } from 'amber/components'
-import { BetaWarning } from 'amber/components/BetaWarning'
-import { Link } from 'amber/components/Navigation'
-import { IsMember } from 'amber/utils'
 import { makeStyles } from 'tss-react/mui'
-import { MdxWithExternalLinks, Page } from 'ui'
 
 import { BecomeAMember } from './Memberships'
 

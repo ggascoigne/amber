@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "@amber/database",
   "version": "0.1.0",
   "description": "Shared AmberCon NW database config",
   "author": "guy@wyrdrune.com",
@@ -38,13 +38,14 @@
     "tsx": "^4.20.5"
   },
   "devDependencies": {
+    "@amber/tsconfig": "workspace:*",
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
     "@types/fs-extra": "^11.0.4",
     "@types/luxon": "^3.7.1",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250827.1",
+    "@typescript/native-preview": "7.0.0-dev.20250831.1",
     "chalk": "^5.6.0",
     "commander": "^14.0.0",
     "common-tags": "^1.8.2",
@@ -53,7 +54,6 @@
     "knex-migrate": "^1.7.4",
     "tempy": "^3.1.0",
     "ts-toolbelt": "^9.6.0",
-    "tsconfig": "workspace:*",
     "typescript": "^5.9.2",
     "xlsx": "^0.18.5",
     "zx": "^8.8.1"

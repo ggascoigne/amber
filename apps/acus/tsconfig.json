@@ -1,5 +1,15 @@
 {
-  "extends": "tsconfig/tsconfig-nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "extends": "@amber/tsconfig/tsconfig-nextjs.json",
+  // add a couple of options to shut up next's tsconfig checking.
+  // they are all correctly setup in the shared config, but the checker is too simplistic to see this
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

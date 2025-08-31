@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { CheckboxWithLabel, GridContainer, GridItem, Important } from '@amber/ui'
 import { FormikErrors, FormikValues } from 'formik'
 import { makeStyles } from 'tss-react/mui'
-import { CheckboxWithLabel, GridContainer, GridItem, Important } from 'ui'
 
 import { HasPermission, Perms } from '../../components/Auth'
 import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from '../../utils/membershipUtils'

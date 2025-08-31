@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import { PaymentSuccess } from 'amber/views/PaymentSuccess'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import { PaymentSuccess } from '@amber/amber/views/PaymentSuccess'
 import type { NextPage } from 'next'
 
 export const getServerSideProps = configGetServerSideProps

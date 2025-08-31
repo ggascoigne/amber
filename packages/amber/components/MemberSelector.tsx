@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
 import { UserMembership, useTRPC } from '@amber/client'
+import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
-import { notEmpty, useNotification } from 'ui'
 
 const useStyles = makeStyles()({
   divider: {

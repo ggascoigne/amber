@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useTRPC } from '@amber/client'
+import { Field, Loader, MultiLine, Page } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
-import { Field, Loader, MultiLine, Page } from 'ui'
 
 import { ChoiceSummary } from './SlotDetails'
 

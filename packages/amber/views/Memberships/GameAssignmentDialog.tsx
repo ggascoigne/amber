@@ -1,9 +1,6 @@
 import React, { useMemo } from 'react'
 
 import { CreateGameAssignmentInputType, Schedule, useInvalidateGameAssignmentQueries, useTRPC } from '@amber/client'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { dequal as deepEqual } from 'dequal'
-import { FormikHelpers } from 'formik'
 import {
   EditDialog,
   GridContainer,
@@ -15,7 +12,10 @@ import {
   SelectField,
   TextField,
   useNotification,
-} from 'ui'
+} from '@amber/ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { dequal as deepEqual } from 'dequal'
+import { FormikHelpers } from 'formik'
 
 import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './membershipUtils'
 

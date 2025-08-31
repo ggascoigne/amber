@@ -1,9 +1,9 @@
+import { Link, useConfiguration } from '@amber/amber'
+import { ContactEmail } from '@amber/amber/components'
+import { CardBody, Page } from '@amber/ui'
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
-import { Link, useConfiguration } from 'amber'
-import { ContactEmail } from 'amber/components'
 import { makeStyles } from 'tss-react/mui'
-import { CardBody, Page } from 'ui'
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   card: {

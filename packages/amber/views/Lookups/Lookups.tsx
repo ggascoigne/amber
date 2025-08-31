@@ -2,9 +2,9 @@ import React, { MouseEventHandler, useMemo, useState } from 'react'
 
 import type { Lookup } from '@amber/client'
 import { useInvalidateLookupQueries, useTRPC } from '@amber/client'
+import { Loader, notEmpty, Page, Table } from '@amber/ui'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance } from 'react-table'
-import { Loader, notEmpty, Page, Table } from 'ui'
 
 import { LookupsDialog } from './LookupsDialog'
 

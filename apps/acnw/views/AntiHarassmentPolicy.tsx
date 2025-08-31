@@ -1,4 +1,4 @@
-import { MdxPage } from 'ui'
+import { MdxPage } from '@amber/ui'
 
 import * as content from '../content/AntiHarassmentPolicyContent.mdx'
 

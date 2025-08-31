@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { StripeRecord, useTRPC } from '@amber/client'
+import { Loader, Page, Table } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { Loader, Page, Table } from 'ui'
 
 import { StripeDialog } from './StripeDialog'
 

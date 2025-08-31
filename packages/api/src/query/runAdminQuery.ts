@@ -1,4 +1,4 @@
-import { getPool, PoolType } from 'database/shared/config'
+import { getPool, PoolType } from '@amber/database/shared/config'
 
 export const runAdminQuery = async (query: string, values?: any[]) => {
   const pool = getPool(PoolType.ADMIN)

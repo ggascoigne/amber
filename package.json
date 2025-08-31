@@ -35,10 +35,11 @@
     "tsgo": "pnpm -r tsgo"
   },
   "devDependencies": {
+    "@amber/tsconfig": "workspace:*",
     "@ggascoigne/eslint-config": "^2.4.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
-    "@typescript/native-preview": "7.0.0-dev.20250827.1",
+    "@typescript/native-preview": "7.0.0-dev.20250831.1",
     "@vitejs/plugin-react": "^5.0.1",
     "dotenv": "17.2.1",
     "dotenv-cli": "10.0.0",
@@ -50,7 +51,6 @@
     "prettier": "^3.6.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tsconfig": "workspace:*",
     "tsx": "^4.20.5",
     "turbo": "^2.5.6",
     "typescript": "^5.9.2",

@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useMemo, useState } from 'react'
 
 import { HotelRoom, useTRPC } from '@amber/client'
+import { Loader, notEmpty, Page, Table, TooltipCell, YesBlankCell } from '@amber/ui'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { CellProps, Column, Row, TableInstance } from 'react-table'
-import { Loader, notEmpty, Page, Table, TooltipCell, YesBlankCell } from 'ui'
 
 import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
+import { Card, CardHeader, range } from '@amber/ui'
 import { Tab, Tabs, Theme } from '@mui/material'
 import { useRouter } from 'next/router'
 import { makeStyles } from 'tss-react/mui'
-import { Card, CardHeader, range } from 'ui'
 
 import { getSlotDescription, SlotFormat, useConfiguration, useGameUrl } from '../../utils'
 import { SlotDecorator, SlotDecoratorParams } from '../types'

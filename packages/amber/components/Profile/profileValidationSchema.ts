@@ -1,4 +1,4 @@
-import Yup from 'ui/utils/Yup'
+import Yup from '@amber/ui/utils/Yup'
 import {} from 'yup'
 
 // note not exported as part of the rest of the folder since that seems to cause too issues

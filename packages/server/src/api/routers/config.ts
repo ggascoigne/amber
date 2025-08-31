@@ -1,5 +1,5 @@
+import { config } from '@amber/database/shared/config.ts'
 import { env, safeConnectionString, parsePostgresConnectionString } from '@amber/environment'
-import { config } from 'database/shared/config.ts'
 
 import { createTRPCRouter, publicProcedure } from '../trpc'
 

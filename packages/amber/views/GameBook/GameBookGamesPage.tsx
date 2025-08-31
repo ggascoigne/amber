@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { ExpandingFab, Page } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
-import { ExpandingFab, Page } from 'ui'
 
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { useGameScroll, useGameUrl } from '../../utils'

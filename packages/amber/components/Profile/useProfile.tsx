@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import { UserAndProfile, useTRPC } from '@amber/client'
+import { useNotification } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
-import { useNotification } from 'ui'
 
 import { useUser } from '../../utils'
 

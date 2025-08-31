@@ -1,8 +1,5 @@
 import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
 
-import { UserAndProfile, useTRPC } from '@amber/client'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { useQuery } from '@tanstack/react-query'
 import {
   Perms,
   ProfileFormContent,
@@ -14,23 +11,26 @@ import {
   useYearFilter,
   Configuration,
   Attendance,
-} from 'amber'
+} from '@amber/amber'
 import {
   toSlotsAttending,
   fromSlotsAttending,
   useEditMembership,
   MembershipFormType,
-} from 'amber/utils/membershipUtils'
-import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+} from '@amber/amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaNW as membershipValidationSchema,
-} from 'amber/views/Memberships/membershipUtils'
+} from '@amber/amber/views/Memberships/membershipUtils'
+import { UserAndProfile, useTRPC } from '@amber/client'
+import { Wizard, WizardPage } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useQuery } from '@tanstack/react-query'
 import debug from 'debug'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
-import { Wizard, WizardPage } from 'ui'
-import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
@@ -38,7 +38,7 @@ import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 
-const log = debug('amber:acnw:MembershipWizard')
+const log = debug('@amber/amber:acnw:MembershipWizard')
 
 interface IntroType {
   acceptedPolicies: boolean

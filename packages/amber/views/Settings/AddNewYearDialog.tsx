@@ -1,18 +1,18 @@
 import React, { useMemo, useCallback } from 'react'
 
 import { Setting, useTRPC, useInvalidateSettingsQueries } from '@amber/client'
+import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from '@amber/ui'
 import { Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import debug from 'debug'
 import { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
-import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from 'ui'
 
 import { SettingValue } from './shared'
 
 import { TransportError } from '../../components/TransportError'
 
-const log = debug('amber:client:settings:addNewYear')
+const log = debug('@amber/amber:client:settings:addNewYear')
 interface AddNewYearDialogProps {
   open: boolean
   onClose: OnCloseHandler

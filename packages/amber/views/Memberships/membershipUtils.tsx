@@ -1,4 +1,4 @@
-import Yup from 'ui/utils/Yup'
+import Yup from '@amber/ui/utils/Yup'
 import {} from 'yup'
 
 import { Attendance, Configuration } from '../../utils'

@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useAuth } from 'amber/components/Auth'
-import { Redirect } from 'amber/components/Navigation'
-import { useGetSettingValue, useFlag } from 'amber/utils'
-import { Loader, Page } from 'ui'
+import { useAuth } from '@amber/amber/components/Auth'
+import { Redirect } from '@amber/amber/components/Navigation'
+import { useGetSettingValue, useFlag } from '@amber/amber/utils'
+import { Loader, Page } from '@amber/ui'
 
 const VirtualDetails = () => {
   const { user, isLoading } = useAuth()

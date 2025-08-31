@@ -1,5 +1,3 @@
-import { Button, Card, Theme } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
 import {
   IsLoggedIn,
   IsNotLoggedIn,
@@ -9,11 +7,13 @@ import {
   useConfiguration,
   useProfile,
   useFlag,
-} from 'amber'
+} from '@amber/amber'
+import { CardBody } from '@amber/ui'
+import { Button, Card, Theme } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { makeStyles } from 'tss-react/mui'
-import { CardBody } from 'ui'
 
 const useStyles = makeStyles()((theme: Theme) => ({
   card: {

@@ -5,7 +5,7 @@ import { useField } from 'formik'
 
 import { SelectValues, getSelectLabel, getSelectValue } from './SelectField'
 
-const log = debug('amber:ui:RadioGroupFieldWithLabel')
+const log = debug('@amber/amber:ui:RadioGroupFieldWithLabel')
 export interface RadioGroupProps extends Omit<MuiRadioGroupProps, 'onChange' | 'value' | 'error'>, SelectValues {
   name: string
   label: string

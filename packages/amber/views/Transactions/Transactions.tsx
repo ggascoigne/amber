@@ -1,10 +1,10 @@
 import React, { MouseEventHandler, useCallback, useState } from 'react'
 
 import { useTRPC, useInvalidatePaymentQueries, Transaction } from '@amber/client'
+import { Loader, Page, Table } from '@amber/ui'
+import { TableMouseEventHandler } from '@amber/ui/types/react-table-config'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { Loader, Page, Table } from 'ui'
-import { TableMouseEventHandler } from 'ui/types/react-table-config'
 
 import { TransactionDialog } from './TransactionDialog'
 

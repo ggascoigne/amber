@@ -1,4 +1,4 @@
-import { getPool, PoolType } from 'database/shared/config'
+import { getPool, PoolType } from '@amber/database/shared/config'
 import json2xls from 'json2xls'
 import { NextApiResponse } from 'next'
 

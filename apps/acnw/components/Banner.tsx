@@ -1,9 +1,9 @@
 import React from 'react'
 
+import { Link, useConfiguration } from '@amber/amber'
+import { GridContainer, GridItem } from '@amber/ui'
 import { Theme } from '@mui/material'
-import { Link, useConfiguration } from 'amber'
 import { makeStyles } from 'tss-react/mui'
-import { GridContainer, GridItem } from 'ui'
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   banner: {

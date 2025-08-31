@@ -1,10 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import { UserAndProfile, useTRPC, useInvalidateGameChoiceQueries, GameChoice } from '@amber/client'
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { useMutation } from '@tanstack/react-query'
-import { Form, Formik, FormikHelpers } from 'formik'
 import {
   DialogTitle,
   GridContainer,
@@ -15,8 +11,12 @@ import {
   TextField,
   useDisableBackdropClick,
   useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { useMutation } from '@tanstack/react-query'
+import { Form, Formik, FormikHelpers } from 'formik'
 
 import { isSlotComplete, orderChoices } from './GameChoiceSelector'
 import { ChoiceType, useEditGameChoice } from './GameSignupPage'

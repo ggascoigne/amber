@@ -1,8 +1,5 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
-import { UserAndProfile, useTRPC } from '@amber/client'
-import LoadingButton from '@mui/lab/LoadingButton'
-import { useQuery } from '@tanstack/react-query'
 import {
   Perms,
   ProfileFormContent,
@@ -12,18 +9,21 @@ import {
   useEditUserAndProfile,
   useUser,
   useYearFilter,
-} from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
-import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
-import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+} from '@amber/amber'
+import { MembershipType } from '@amber/amber/utils/apiTypes'
+import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaUS as membershipValidationSchema,
-} from 'amber/views/Memberships/membershipUtils'
+} from '@amber/amber/views/Memberships/membershipUtils'
+import { UserAndProfile, useTRPC } from '@amber/client'
+import { Wizard, WizardPage } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useQuery } from '@tanstack/react-query'
 import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
-import { Wizard, WizardPage } from 'ui'
-import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
