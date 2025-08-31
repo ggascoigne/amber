@@ -19,7 +19,19 @@ importers:
         version: 6.8.0
       '@testing-library/react':
         specifier: ^16.3.0
-        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@19.1.11))(@types/react@19.1.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@18.3.24))(@types/react@18.3.24)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/jsdom':
+        specifier: ~21.1.7
+        version: 21.1.7
+      '@types/node':
+        specifier: ^24.3.0
+        version: 24.3.0
+      '@types/react':
+        specifier: ~18.3.24
+        version: 18.3.24
+      '@types/react-dom':
+        specifier: ~18.3.7
+        version: 18.3.7(@types/react@18.3.24)
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20250831.1
         version: 7.0.0-dev.20250831.1
@@ -143,36 +155,18 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.85.6
         version: 5.85.6(react@18.3.1)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.85.6
-        version: 5.85.6(@tanstack/react-query@5.85.6(react@18.3.1))(react@18.3.1)
-      '@trpc/client':
-        specifier: ^11.5.0
-        version: 11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2)
-      '@trpc/next':
-        specifier: ^11.5.0
-        version: 11.5.0(@tanstack/react-query@5.85.6(react@18.3.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2))(@trpc/react-query@11.5.0(@tanstack/react-query@5.85.6(react@18.3.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2))(@trpc/server@11.5.0(typescript@5.9.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.2))(@trpc/server@11.5.0(typescript@5.9.2))(next@14.2.25(@babel/core@7.28.3)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.2)
       '@trpc/server':
         specifier: ^11.5.0
         version: 11.5.0(typescript@5.9.2)
       debug:
         specifier: 4.4.1
         version: 4.4.1
-      dequal:
-        specifier: ^2.0.3
-        version: 2.0.3
       email-templates:
         specifier: ^12.0.3
         version: 12.0.3(@babel/core@7.28.3)(ejs@3.1.10)(encoding@0.1.13)(mustache@4.2.0)(pug@3.0.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(underscore@1.13.7)
       formik:
         specifier: ^2.4.6
         version: 2.4.6(react@18.3.1)
-      jotai:
-        specifier: ^2.13.1
-        version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.24)(react@18.3.1)
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       luxon:
         specifier: ^3.7.1
         version: 3.7.1
@@ -185,9 +179,6 @@ importers:
       next-mdx-frontmatter:
         specifier: ^0.0.4
         version: 0.0.4(@mdx-js/mdx@2.3.0)(next@14.2.25(@babel/core@7.28.3)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      pg:
-        specifier: ^8.16.3
-        version: 8.16.3
       pug:
         specifier: ^3.0.3
         version: 3.0.3
@@ -360,33 +351,15 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.85.6
         version: 5.85.6(react@18.3.1)
-      '@tanstack/react-query-devtools':
-        specifier: ^5.85.6
-        version: 5.85.6(@tanstack/react-query@5.85.6(react@18.3.1))(react@18.3.1)
-      '@trpc/client':
-        specifier: ^11.5.0
-        version: 11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2)
-      '@trpc/next':
-        specifier: ^11.5.0
-        version: 11.5.0(@tanstack/react-query@5.85.6(react@18.3.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2))(@trpc/react-query@11.5.0(@tanstack/react-query@5.85.6(react@18.3.1))(@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2))(@trpc/server@11.5.0(typescript@5.9.2))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.2))(@trpc/server@11.5.0(typescript@5.9.2))(next@14.2.25(@babel/core@7.28.3)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.2)
       '@trpc/server':
         specifier: ^11.5.0
         version: 11.5.0(typescript@5.9.2)
-      dequal:
-        specifier: ^2.0.3
-        version: 2.0.3
       email-templates:
         specifier: ^12.0.3
         version: 12.0.3(@babel/core@7.28.3)(ejs@3.1.10)(encoding@0.1.13)(mustache@4.2.0)(pug@3.0.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(underscore@1.13.7)
       formik:
         specifier: ^2.4.6
         version: 2.4.6(react@18.3.1)
-      jotai:
-        specifier: ^2.13.1
-        version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.24)(react@18.3.1)
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       luxon:
         specifier: ^3.7.1
         version: 3.7.1
@@ -399,9 +372,6 @@ importers:
       next-mdx-frontmatter:
         specifier: ^0.0.4
         version: 0.0.4(@mdx-js/mdx@2.3.0)(next@14.2.25(@babel/core@7.28.3)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
-      pg:
-        specifier: ^8.16.3
-        version: 8.16.3
       pug:
         specifier: ^3.0.3
         version: 3.0.3
@@ -604,9 +574,6 @@ importers:
       jotai:
         specifier: ^2.13.1
         version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.24)(react@18.3.1)
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       luxon:
         specifier: ^3.7.1
         version: 3.7.1
@@ -755,9 +722,6 @@ importers:
       nodemailer:
         specifier: ^7.0.6
         version: 7.0.6
-      pg:
-        specifier: ^8.16.3
-        version: 8.16.3
       pug:
         specifier: ^3.0.3
         version: 3.0.3
@@ -780,6 +744,9 @@ importers:
       '@types/isomorphic-fetch':
         specifier: ^0.0.39
         version: 0.0.39
+      '@types/json2xls':
+        specifier: ~0.0.0
+        version: 0.0.0
       '@types/luxon':
         specifier: ^3.7.1
         version: 3.7.1
@@ -789,9 +756,15 @@ importers:
       '@types/nodemailer':
         specifier: ^7.0.1
         version: 7.0.1
-      '@types/pg':
-        specifier: ^8.15.5
-        version: 8.15.5
+      '@types/pug':
+        specifier: ~2.0.10
+        version: 2.0.10
+      '@types/react':
+        specifier: ~18.3.24
+        version: 18.3.24
+      '@types/react-dom':
+        specifier: ~18.3.7
+        version: 18.3.7(@types/react@18.3.24)
       dotenv:
         specifier: ^17.2.1
         version: 17.2.1
@@ -892,12 +865,6 @@ importers:
       pg:
         specifier: ^8.16.3
         version: 8.16.3
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
       tsconfig-paths:
         specifier: ^4.2.0
         version: 4.2.0
@@ -974,9 +941,6 @@ importers:
       next:
         specifier: 14.2.25
         version: 14.2.25(@babel/core@7.28.3)(@opentelemetry/api@1.4.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      pg:
-        specifier: ^8.16.3
-        version: 8.16.3
       superjson:
         specifier: ^2.2.2
         version: 2.2.2
@@ -1191,9 +1155,6 @@ importers:
       jotai:
         specifier: ^2.13.1
         version: 2.13.1(@babel/core@7.28.3)(@babel/template@7.27.2)(@types/react@18.3.24)(react@18.3.1)
-      jwt-decode:
-        specifier: ^4.0.0
-        version: 4.0.0
       luxon:
         specifier: ^3.7.1
         version: 3.7.1
@@ -3013,11 +2974,17 @@ packages:
   '@types/base16@1.0.5':
     resolution: {integrity: sha512-OzOWrTluG9cwqidEzC/Q6FAmIPcnZfm8BFRlIx0+UIUqnuAmi5OS88O0RpT3Yz6qdmqObvUhasrbNsCofE4W9A==}
 
+  '@types/body-parser@1.19.6':
+    resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
+
   '@types/chai@5.2.2':
     resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
 
   '@types/common-tags@1.8.4':
     resolution: {integrity: sha512-S+1hLDJPjWNDhcGxsxEbepzaxWqURP/o+3cP4aa2w7yBXgdcmKGQtZzP8JbyfOd0m+33nh+8+kvxYE2UJtBDkg==}
+
+  '@types/connect@3.4.38':
+    resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
   '@types/cross-spawn@6.0.2':
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
@@ -3049,6 +3016,12 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
+  '@types/express-serve-static-core@5.0.7':
+    resolution: {integrity: sha512-R+33OsgWw7rOhD1emjU7dzCDHucJrgJXMA5PYCzJxVil0dsyx5iBEPHqpPfiKNJQb7lZ1vxwoLR4Z87bBUpeGQ==}
+
+  '@types/express@5.0.3':
+    resolution: {integrity: sha512-wGA0NX93b19/dZC1J18tKWVIYWyyF2ZjT9vin/NRu0qzzvfVzWjs04iq2rQ3H65vCTQYlRqs3YHfY7zjdV+9Kw==}
+
   '@types/fs-extra@11.0.4':
     resolution: {integrity: sha512-yTbItCNreRooED33qjunPthRcSjERP1r4MqCZc7wv0u2sUkzTFp45tgUfS5+r7FrZPdmCCNflLhVSP/o+SemsQ==}
 
@@ -3061,11 +3034,20 @@ packages:
   '@types/html-to-text@9.0.4':
     resolution: {integrity: sha512-pUY3cKH/Nm2yYrEmDlPR1mR7yszjGx4DrwPjQ702C4/D5CwHuZTgZdIdwPkRbcuhs7BAh2L5rg3CL5cbRiGTCQ==}
 
+  '@types/http-errors@2.0.5':
+    resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
+
   '@types/isomorphic-fetch@0.0.39':
     resolution: {integrity: sha512-I0gou/ZdA1vMG7t7gMzL7VYu2xAKU78rW9U1l10MI0nn77pEHq3tQqHQ8hMmXdMpBlkxZOorjI4sO594Z3kKJw==}
 
+  '@types/jsdom@21.1.7':
+    resolution: {integrity: sha512-yOriVnggzrnQ3a9OKOCxaVuSug3w3/SbOj5i7VwXWZEyUNl3bLF9V3MfxGbZKuwqJOQyRfqXyROBB1CoZLFWzA==}
+
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/json2xls@0.0.0':
+    resolution: {integrity: sha512-bMMYfl1nYG138kqLr49Y1ZqveJ+P3o2LX9Au47x7d/1u26+WGZXxRSpMxpa1BbinzSyZWBhEDa2P/wb5P00Ljg==}
 
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
@@ -3090,6 +3072,9 @@ packages:
 
   '@types/micro@7.3.7':
     resolution: {integrity: sha512-MFsX7eCj0Tg3TtphOQvANNvNtFpya+s/rYOCdV6o+DFjOQPFi2EVRbBALjbbgZTXUaJP1Q281MJiJOD40d0UxQ==}
+
+  '@types/mime@1.3.5':
+    resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
 
   '@types/minimatch@3.0.5':
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
@@ -3118,6 +3103,12 @@ packages:
   '@types/pug@2.0.10':
     resolution: {integrity: sha512-Sk/uYFOBAB7mb74XcpizmH0KOR2Pv3D2Hmrh1Dmy5BmK3MpdSa5kqZcg6EKBdklU0bFXX9gCfzvpnyUehrPIuA==}
 
+  '@types/qs@6.14.0':
+    resolution: {integrity: sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==}
+
+  '@types/range-parser@1.2.7':
+    resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
+
   '@types/react-dom@18.3.7':
     resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
     peerDependencies:
@@ -3132,14 +3123,20 @@ packages:
   '@types/react@18.3.24':
     resolution: {integrity: sha512-0dLEBsA1kI3OezMBF8nSsb7Nk19ZnsyE1LLhB8r27KbgU5H4pvuqZLdtE+aUkJVoXgTVuA+iLIwmZ0TuK4tx6A==}
 
-  '@types/react@19.1.11':
-    resolution: {integrity: sha512-lr3jdBw/BGj49Eps7EvqlUaoeA0xpj3pc0RoJkHpYaCHkVK7i28dKyImLQb3JVlqs3aYSXf7qYuWOW/fgZnTXQ==}
-
   '@types/retry@0.12.0':
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
 
+  '@types/send@0.17.5':
+    resolution: {integrity: sha512-z6F2D3cOStZvuk2SaP6YrwkNO65iTZcwA2ZkSABegdkAh/lf+Aa/YQndZVfmEXT5vgAp6zv06VQ3ejSVjAny4w==}
+
+  '@types/serve-static@1.15.8':
+    resolution: {integrity: sha512-roei0UY3LhpOJvjbIP6ZZFngyLKl5dskOtDhxY5THRSpO+ZI+nzJ+m5yUMzGrp89YRa7lvknKkMYjqQFGwA7Sg==}
+
   '@types/sha.js@2.4.4':
     resolution: {integrity: sha512-Qukd+D6S2Hm0wLVt2Vh+/eWBIoUt+wF8jWjBsG4F8EFQRwKtYvtXCPcNl2OEUQ1R+eTr3xuSaBYUyM3WD1x/Qw==}
+
+  '@types/tough-cookie@4.0.5':
+    resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
 
   '@types/unist@2.0.10':
     resolution: {integrity: sha512-IfYcSBWE3hLpBg8+X2SEa8LVkJdJEkT2Ese2aaLs3ptGdVtABxndrMaxuFlQ1qdFf9Q5rDvDpxI3WwgvKFAsQA==}
@@ -5286,10 +5283,6 @@ packages:
     resolution: {integrity: sha512-FLzurJrx5Iv1e7CfBSZH68dC04EEvXvvVvPYB7Vx1WAuhCp1ZPIMtqxc+WTWxVkpTIC2Ach/GAv0rQbtGf6YMA==}
     engines: {node: '>=10.0.0'}
     hasBin: true
-
-  jwt-decode@4.0.0:
-    resolution: {integrity: sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==}
-    engines: {node: '>=18'}
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
@@ -9590,15 +9583,15 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
-  '@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@19.1.11))(@types/react@19.1.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react@16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.7(@types/react@18.3.24))(@types/react@18.3.24)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.28.3
       '@testing-library/dom': 10.4.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
-      '@types/react': 19.1.11
-      '@types/react-dom': 18.3.7(@types/react@19.1.11)
+      '@types/react': 18.3.24
+      '@types/react-dom': 18.3.7(@types/react@18.3.24)
 
   '@trpc/client@11.5.0(@trpc/server@11.5.0(typescript@5.9.2))(typescript@5.9.2)':
     dependencies:
@@ -9668,11 +9661,20 @@ snapshots:
 
   '@types/base16@1.0.5': {}
 
+  '@types/body-parser@1.19.6':
+    dependencies:
+      '@types/connect': 3.4.38
+      '@types/node': 24.3.0
+
   '@types/chai@5.2.2':
     dependencies:
       '@types/deep-eql': 4.0.2
 
   '@types/common-tags@1.8.4': {}
+
+  '@types/connect@3.4.38':
+    dependencies:
+      '@types/node': 24.3.0
 
   '@types/cross-spawn@6.0.2':
     dependencies:
@@ -9715,6 +9717,19 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
+  '@types/express-serve-static-core@5.0.7':
+    dependencies:
+      '@types/node': 24.3.0
+      '@types/qs': 6.14.0
+      '@types/range-parser': 1.2.7
+      '@types/send': 0.17.5
+
+  '@types/express@5.0.3':
+    dependencies:
+      '@types/body-parser': 1.19.6
+      '@types/express-serve-static-core': 5.0.7
+      '@types/serve-static': 1.15.8
+
   '@types/fs-extra@11.0.4':
     dependencies:
       '@types/jsonfile': 6.1.4
@@ -9731,9 +9746,21 @@ snapshots:
 
   '@types/html-to-text@9.0.4': {}
 
+  '@types/http-errors@2.0.5': {}
+
   '@types/isomorphic-fetch@0.0.39': {}
 
+  '@types/jsdom@21.1.7':
+    dependencies:
+      '@types/node': 24.3.0
+      '@types/tough-cookie': 4.0.5
+      parse5: 7.3.0
+
   '@types/json-schema@7.0.15': {}
+
+  '@types/json2xls@0.0.0':
+    dependencies:
+      '@types/express': 5.0.3
 
   '@types/json5@0.0.29': {}
 
@@ -9758,6 +9785,8 @@ snapshots:
   '@types/micro@7.3.7':
     dependencies:
       '@types/node': 24.3.0
+
+  '@types/mime@1.3.5': {}
 
   '@types/minimatch@3.0.5': {}
 
@@ -9788,14 +9817,13 @@ snapshots:
 
   '@types/pug@2.0.10': {}
 
+  '@types/qs@6.14.0': {}
+
+  '@types/range-parser@1.2.7': {}
+
   '@types/react-dom@18.3.7(@types/react@18.3.24)':
     dependencies:
       '@types/react': 18.3.24
-
-  '@types/react-dom@18.3.7(@types/react@19.1.11)':
-    dependencies:
-      '@types/react': 19.1.11
-    optional: true
 
   '@types/react-table@7.7.20':
     dependencies:
@@ -9810,16 +9838,24 @@ snapshots:
       '@types/prop-types': 15.7.14
       csstype: 3.1.3
 
-  '@types/react@19.1.11':
-    dependencies:
-      csstype: 3.1.3
-    optional: true
-
   '@types/retry@0.12.0': {}
+
+  '@types/send@0.17.5':
+    dependencies:
+      '@types/mime': 1.3.5
+      '@types/node': 24.3.0
+
+  '@types/serve-static@1.15.8':
+    dependencies:
+      '@types/http-errors': 2.0.5
+      '@types/node': 24.3.0
+      '@types/send': 0.17.5
 
   '@types/sha.js@2.4.4':
     dependencies:
       '@types/node': 24.3.0
+
+  '@types/tough-cookie@4.0.5': {}
 
   '@types/unist@2.0.10': {}
 
@@ -12371,8 +12407,6 @@ snapshots:
       web-resource-inliner: 6.0.1(encoding@0.1.13)
     transitivePeerDependencies:
       - encoding
-
-  jwt-decode@4.0.0: {}
 
   keyv@4.5.4:
     dependencies:
