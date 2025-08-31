@@ -18,7 +18,7 @@
     "@amber/server": "workspace:*",
     "@stripe/react-stripe-js": "^2.9.0",
     "@stripe/stripe-js": "^3.5.0",
-    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query": "^5.85.6",
     "@trpc/client": "^11.5.0",
     "@trpc/server": "^11.5.0",
     "@trpc/tanstack-react-query": "^11.5.0",

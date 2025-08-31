@@ -25,7 +25,7 @@
     "@prisma/client": "^6.15.0",
     "@t3-oss/env-core": "^0.13.8",
     "@t3-oss/env-nextjs": "^0.13.8",
-    "@tanstack/react-query": "^5.85.5",
+    "@tanstack/react-query": "^5.85.6",
     "@trpc/client": "^11.5.0",
     "@trpc/next": "^11.5.0",
     "@trpc/react-query": "11.5.0",
