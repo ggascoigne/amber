@@ -1,5 +1,5 @@
 import { CreateMembershipType, Game, UserAndProfile } from '@amber/client'
-import { ToFormValues } from 'ui/utils/ts-utils'
+import { ToFormValues } from '@amber/ui/utils/ts-utils'
 import { z } from 'zod'
 
 import { SlotSummary } from '../views/GameSignup/SlotDetails'

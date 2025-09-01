@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
-import { asEnumLike, Children } from 'ui'
+import { asEnumLike, Children } from '@amber/ui'
 
 import type { Perms } from './PermissionRules'
 import { Auth0User, useAuth } from './useAuth'

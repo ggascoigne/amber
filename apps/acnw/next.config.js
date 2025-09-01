@@ -1,6 +1,6 @@
+import { headers } from '@amber/amber/utils/next-headers.js'
 import bundleAnalyzer from '@next/bundle-analyzer'
 import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
-import { headers } from 'amber/utils/next-headers.js'
 import withMdxFm from 'next-mdx-frontmatter'
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -19,7 +19,7 @@ const mdxConfig = withMdxFm({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['ui', 'database', 'amber', '@mui/material', '@amber/api'],
+  transpilePackages: ['@amber/ui', '@amber/database', '@amber/amber', '@mui/material', '@amber/api'],
   eslint: {
     ignoreDuringBuilds: true,
   },

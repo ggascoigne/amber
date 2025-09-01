@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 import { useTRPC } from '@amber/client'
+import { Loader, Page } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
 import { PaymentIntent } from '@stripe/stripe-js'
 import { useQuery } from '@tanstack/react-query'
-import { Loader, Page } from 'ui'
 
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'

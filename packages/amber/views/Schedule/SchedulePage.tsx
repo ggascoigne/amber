@@ -1,13 +1,13 @@
 import React, { createRef, PropsWithChildren, useMemo, useState } from 'react'
 
 import { Game, Schedule, useTRPC } from '@amber/client'
+import { Loader, notEmpty, Page } from '@amber/ui'
 import { Box, useMediaQuery } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
-import { Loader, notEmpty, Page } from 'ui'
 
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'

@@ -1,9 +1,9 @@
+import { ConfigDate, MDY } from '@amber/amber/components'
+import { useConfiguration } from '@amber/amber/utils'
+import { CardBody, Page } from '@amber/ui'
 import { Card } from '@mui/material'
 import { Theme } from '@mui/material/styles'
-import { ConfigDate, MDY } from 'amber/components'
-import { useConfiguration } from 'amber/utils'
 import { makeStyles } from 'tss-react/mui'
-import { CardBody, Page } from 'ui'
 
 const useStyles = makeStyles()((_theme: Theme) => ({
   card: {

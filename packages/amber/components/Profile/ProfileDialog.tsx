@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 
 import { UserAndProfile } from '@amber/client'
+import { EditDialog } from '@amber/ui'
 import { FormikHelpers } from 'formik'
-import { EditDialog } from 'ui'
 
 import { ProfileFormContent } from './ProfileFormContent'
 import { fillUserAndProfileValues, useEditUserAndProfile } from './profileUtils'

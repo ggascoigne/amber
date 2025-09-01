@@ -1,11 +1,11 @@
 import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
 
 import { Game, useTRPC } from '@amber/client'
+import { Loader, notEmpty, Page, Table, YesBlankCell } from '@amber/ui'
 import CachedIcon from '@mui/icons-material/Cached'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
 
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'

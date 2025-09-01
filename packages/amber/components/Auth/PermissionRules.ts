@@ -1,4 +1,4 @@
-import { asEnumLike, AtLeastOne, keys } from 'ui'
+import { asEnumLike, AtLeastOne, keys } from '@amber/ui'
 
 export const Perms = asEnumLike([
   'GraphiqlLoad',

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { GameArray, useTRPC } from '@amber/client'
+import { Loader } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
-import { Loader } from 'ui'
 
 import { TransportError } from '../TransportError'
 

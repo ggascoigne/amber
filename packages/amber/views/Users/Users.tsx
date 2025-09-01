@@ -1,9 +1,9 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { UserAndProfile, useTRPC } from '@amber/client'
+import { Loader, notEmpty, Page, Table } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 import { Column, Row, TableInstance } from 'react-table'
-import { Loader, notEmpty, Page, Table } from 'ui'
 
 import { ProfileDialog } from '../../components/Profile'
 import { TransportError } from '../../components/TransportError'

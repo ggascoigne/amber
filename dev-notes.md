@@ -73,41 +73,59 @@ Make sure that you don't have ZScaler running in "Internet Security" mode unless
 
 ## Package hierarchy
 
+ambercon (root)
+│
+├── Configuration Packages
+│   └── @amber/tsconfig ────────────────── TypeScript base configurations
+│
+├── Infrastructure Layer
+│   ├── @amber/environment ────────────── Environment config & validation
+│   ├── @amber/database ───────────────── Database setup & migrations
+│   │   └── depends on:
+│   │       └── @amber/environment
+│   └── @amber/server ─────────────────── tRPC server & Prisma client
+│       └── depends on:
+│           ├── @amber/database
+│           └── @amber/environment
+│
+├── Service Layer
+│   ├── @amber/api ────────────────────── Server-side API implementations
+│   │   └── depends on:
+│   │       ├── @amber/database
+│   │       ├── @amber/environment
+│   │       └── @amber/server
+│   └── @amber/client ─────────────────── tRPC hooks & client utilities
+│       └── depends on:
+│           ├── @amber/api
+│           └── @amber/server
+│
+├── UI Layer
+│   ├── @amber/ui ─────────────────────── Reusable UI components library
+│   └── @amber/amber ──────────────────── Main component aggregator
+│       └── depends on:
+│           ├── @amber/api
+│           ├── @amber/client
+│           ├── @amber/database
+│           ├── @amber/server
+│           └── @amber/ui
+│
+└── Applications
+    ├── acnw ──────────────────────────── AmberCon NW (Next.js :30000)
+    │   └── depends on:
+    │       ├── @amber/amber
+    │       ├── @amber/api
+    │       ├── @amber/client
+    │       ├── @amber/database
+    │       ├── @amber/environment
+    │       ├── @amber/server
+    │       └── @amber/ui
+    └── acus ──────────────────────────── AmberCon US (Next.js :30001)
+        └── depends on:
+            ├── @amber/amber
+            ├── @amber/api
+            ├── @amber/client
+            ├── @amber/database
+            ├── @amber/environment
+            ├── @amber/server
+            └── @amber/ui
 
-api -> (depends on) database
-amber -> database (via getServerSideProps, which in turn depends on client)
-acnw/pages -> api
-acus -> api
-amber -> api (though not for much)
-acnw -> amber
-acus -> amber
-amber -> ui
-amber -> client
-api -> client
-cli/script tools depend on database
-
-client doesn't directly depend on database, but is generated from the postgres database which is in turn generated from database
-
-acnw -> amber ->  database
-                  ui
-                  api
-                  client (graphql)
-        api ->    database
-                  client (graphql)
-
-Plan:
-
-client gets deleted
-
-server depends on database
-
-cli/script tools depend on database
-
-api gets replaced by server
-
-
----
-TODO
-
-remove references to NodeId
-rename GameArray -> Game[]

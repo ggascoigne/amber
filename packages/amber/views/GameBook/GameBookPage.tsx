@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { useTRPC } from '@amber/client'
+import { GridContainer, GridItem, Loader, Page, range } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
-import { GridContainer, GridItem, Loader, Page, range } from 'ui'
 
 import { Link } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'

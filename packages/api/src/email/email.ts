@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { config } from 'database/shared/config'
+import { config } from '@amber/database/shared/config'
 import Email from 'email-templates'
 
 import { transport } from './transport'

@@ -1,7 +1,7 @@
 import { useInvalidateMembershipQueries, UserAndProfile, useTRPC, Transaction } from '@amber/client'
+import { notEmpty, OnCloseHandler, pick, useNotification } from '@amber/ui'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
-import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
 import {} from 'yup'
 
 import type { MembershipConfirmationBodyUpdateType, MembershipType } from './apiTypes'
@@ -14,7 +14,7 @@ import { useSendEmail } from './useSendEmail'
 
 import { Perms, useAuth } from '../components'
 
-// NOTE that this isn't exported directly from 'amber/utils' since that causes
+// NOTE that this isn't exported directly from '@amber/amber/utils' since that causes
 // circular import explosions
 export interface MembershipFormContent {
   prefix?: string

@@ -1,7 +1,7 @@
+import { CardBody } from '@amber/ui'
 import { Card, Theme } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { makeStyles } from 'tss-react/mui'
-import { CardBody } from 'ui'
 
 import { useFlag } from '../utils'
 

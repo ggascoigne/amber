@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 
 import { GameChoice, useTRPC } from '@amber/client'
+import { Loader, notEmpty, range } from '@amber/ui'
 import { Theme } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import { makeStyles } from 'tss-react/mui'
-import { Loader, notEmpty, range } from 'ui'
 
 import { Rank, rankString, RankStyle } from './GameChoiceSelector'
 

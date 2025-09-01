@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
+import { Page } from '@amber/ui'
 import { List, ListItem } from '@mui/material'
-import { Page } from 'ui'
 
 import { AuthenticatedDownloadButton } from '../components'
 import { Perms, useAuth } from '../components/Auth'

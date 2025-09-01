@@ -14,7 +14,7 @@ import type { TaskContext } from './taskContext'
 import { certs } from '../../shared/dbCerts'
 
 const log = debug('tasks')
-const filename = path.join(os.tmpdir(), 'rds-cert.pem')
+const filename = path.join(os.platform() === 'win32' ? os.tmpdir() : '/tmp', 'rds-cert.pem')
 
 export const writeCertsTask: ListrTask = {
   title: `Writing RDS cert`,
@@ -31,6 +31,7 @@ export const writeCertsTask: ListrTask = {
         throw new Error(`SSL was enabled, but the named cert, '${certName}' is not installed.`)
       }
       fs.writeFileSync(filename, certs[certName]!)
+      log(`Wrote ${environ.DATABASE_SSL_CERT} to ${filename}`)
       return Promise.resolve(`Wrote ${environ.DATABASE_SSL_CERT} to ${filename}`)
     }
   },

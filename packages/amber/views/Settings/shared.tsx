@@ -1,8 +1,8 @@
 import { Setting } from '@amber/client'
+import { DatePickerField, SelectField, TextField } from '@amber/ui'
 import { Field } from 'formik'
 import { DateTime } from 'luxon'
 import { match } from 'ts-pattern'
-import { DatePickerField, SelectField, TextField } from 'ui'
 
 import { permissionGateValues, useConfiguration } from '../../utils'
 

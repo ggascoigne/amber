@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { Children, useNotification } from '@amber/ui'
 import StarIcon from '@mui/icons-material/Star'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import { Avatar, Badge, Button, Theme, Tooltip, Typography } from '@mui/material'
@@ -8,7 +9,6 @@ import { QueryClient } from '@tanstack/react-query'
 import fetch from 'isomorphic-fetch'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Children, useNotification } from 'ui'
 
 import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'

@@ -1,13 +1,13 @@
 import React, { MouseEventHandler, useState } from 'react'
 
 import { Game, useTRPC, useInvalidateGameQueries } from '@amber/client'
+import { Loader, Page, range, Table } from '@amber/ui'
 import { Button, Theme } from '@mui/material'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
 import { makeStyles } from 'tss-react/mui'
-import { Loader, Page, range, Table } from 'ui'
 
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'

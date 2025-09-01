@@ -1,7 +1,7 @@
+import { GameConfirmationBody } from '@amber/amber/utils/apiTypes'
+import { getPlayerPreference } from '@amber/amber/utils/selectValues'
 import { getEmails, emailer, handleError, JsonError } from '@amber/api'
 import { withApiAuthRequired } from '@auth0/nextjs-auth0'
-import { GameConfirmationBody } from 'amber/utils/apiTypes'
-import { getPlayerPreference } from 'amber/utils/selectValues'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // /api/send/gameConfirmation

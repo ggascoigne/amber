@@ -1,4 +1,4 @@
-import { config } from 'database/shared/config'
+import { config } from '@amber/database/shared/config'
 import nodemailer from 'nodemailer'
 
 export const transport = nodemailer.createTransport({

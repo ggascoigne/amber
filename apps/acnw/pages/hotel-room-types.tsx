@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import HotelRoomTypes from 'amber/views/HotelRoomTypes/HotelRoomTypes'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import HotelRoomTypes from '@amber/amber/views/HotelRoomTypes/HotelRoomTypes'
 import type { NextPage } from 'next'
 
 export const getServerSideProps = configGetServerSideProps

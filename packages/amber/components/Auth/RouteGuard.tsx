@@ -1,6 +1,6 @@
+import { Children } from '@amber/ui'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
-import { Children } from 'ui'
 
 import { HasPermission } from './HasPermission'
 

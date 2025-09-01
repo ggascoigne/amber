@@ -1,10 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 
 import { GameRoom, useInvalidateGameRoomQueries, useInvalidateGameQueries, useTRPC } from '@amber/client'
-import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
-import { makeStyles } from 'tss-react/mui'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -18,8 +14,12 @@ import {
   TextField,
   ToFormValues,
   useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { FormikHelpers } from 'formik'
+import { makeStyles } from 'tss-react/mui'
 
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'

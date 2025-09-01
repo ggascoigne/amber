@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 
-import { UserAndProfile, useTRPC } from '@amber/client'
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 import {
   TransportError,
   getInterestLevel,
@@ -13,13 +10,27 @@ import {
   useProfile,
   useUser,
   useYearFilter,
-} from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
-import { fromSlotsAttending } from 'amber/utils/membershipUtils'
+} from '@amber/amber'
+import { MembershipType } from '@amber/amber/utils/apiTypes'
+import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
+import { UserAndProfile, useTRPC } from '@amber/client'
+import {
+  Card,
+  CardBody,
+  Field,
+  GridContainer,
+  GridItem,
+  HeaderContent,
+  Loader,
+  MultiLine,
+  Page,
+  range,
+} from '@amber/ui'
+import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { makeStyles } from 'tss-react/mui'
-import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, Page, range } from 'ui'
 
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'

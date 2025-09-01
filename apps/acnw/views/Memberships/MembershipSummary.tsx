@@ -1,8 +1,5 @@
 import React, { useMemo, useState } from 'react'
 
-import { CreateMembershipType, UserAndProfile, useTRPC } from '@amber/client'
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
-import { useQuery } from '@tanstack/react-query'
 import {
   TransportError,
   RoomPref,
@@ -15,12 +12,9 @@ import {
   useProfile,
   useUser,
   useYearFilter,
-} from 'amber'
-import { fromSlotsAttending } from 'amber/utils/membershipUtils'
-import { DateTime } from 'luxon'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { makeStyles } from 'tss-react/mui'
+} from '@amber/amber'
+import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
+import { CreateMembershipType, UserAndProfile, useTRPC } from '@amber/client'
 import {
   Card,
   CardBody,
@@ -33,7 +27,13 @@ import {
   Page,
   notEmpty,
   range,
-} from 'ui'
+} from '@amber/ui'
+import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import { DateTime } from 'luxon'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { makeStyles } from 'tss-react/mui'
 
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'

@@ -1,8 +1,8 @@
 import React, { PropsWithChildren } from 'react'
 
+import { Card } from '@amber/ui'
 import { CardContent, DialogContentText } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { Card } from 'ui'
 
 import { HasPermission, Perms } from './Auth'
 

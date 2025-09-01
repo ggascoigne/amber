@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { GridContainer, GridItem, Important, TextField } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
 import { makeStyles } from 'tss-react/mui'
-import { GridContainer, GridItem, Important, TextField } from 'ui'
 
 import { HasPermission, Perms, useAuth } from '../Auth'
 

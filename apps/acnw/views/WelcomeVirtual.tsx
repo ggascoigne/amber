@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { ConfigDate, ContactEmail } from '@amber/amber/components'
+import { BetaWarning } from '@amber/amber/components/BetaWarning'
+import { MdxWithExternalLinks, Page } from '@amber/ui'
 import { Theme } from '@mui/material'
-import { ConfigDate, ContactEmail } from 'amber/components'
-import { BetaWarning } from 'amber/components/BetaWarning'
 import { makeStyles } from 'tss-react/mui'
-import { MdxWithExternalLinks, Page } from 'ui'
 
 import { DynamicMemberContent } from './Welcome'
 

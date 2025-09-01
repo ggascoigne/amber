@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
 import { Game } from '@amber/client'
+import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from '@amber/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Theme } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 import { makeStyles } from 'tss-react/mui'
-import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from 'ui'
 
 import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'

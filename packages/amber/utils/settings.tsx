@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 
 import { Setting, useTRPC } from '@amber/client'
+import { notEmpty } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
-import { notEmpty } from 'ui'
 
 import { useIsGm, useIsMember } from './membership'
 

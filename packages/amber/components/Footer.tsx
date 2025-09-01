@@ -1,9 +1,9 @@
 import React, { Suspense, useEffect, useRef } from 'react'
 
 import { useGetConfigQuery } from '@amber/client'
+import { Loader } from '@amber/ui'
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
-import { Loader } from 'ui'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 

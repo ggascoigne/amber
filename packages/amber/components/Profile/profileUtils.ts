@@ -1,6 +1,6 @@
 import { useTRPC, UserAndProfile, useInvalidateUserQueries } from '@amber/client'
+import { OnCloseHandler, pickAndConvertNull, useNotification } from '@amber/ui'
 import { useMutation } from '@tanstack/react-query'
-import { OnCloseHandler, pickAndConvertNull, useNotification } from 'ui'
 
 export const userFromProfileValues = (profileValues: UserAndProfile) => {
   const values = pickAndConvertNull(profileValues, 'firstName', 'lastName', 'fullName', 'displayName', 'email')

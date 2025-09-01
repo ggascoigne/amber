@@ -2,8 +2,8 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
+import { certs } from '@amber/database/shared/dbCerts'
 import { env, isDev } from '@amber/environment'
-import { certs } from 'database/shared/dbCerts'
 
 // eslint-disable-next-line import/no-relative-packages
 import { PrismaClient } from './generated/prisma/client'

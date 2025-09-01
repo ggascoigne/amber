@@ -17,21 +17,20 @@
     "@t3-oss/env-core": "^0.13.8",
     "@t3-oss/env-nextjs": "^0.13.8",
     "debug": "^4.4.1",
-    "next": "13.5.6",
-    "pg": "^8.16.3",
+    "next": "14.2.25",
     "superjson": "^2.2.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.5",
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.12",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250827.1",
+    "@typescript/native-preview": "7.0.0-dev.20250831.1",
     "dotenv": "^17.2.1",
     "prisma": "^6.15.0",
-    "tsconfig": "workspace:*",
     "typescript": "^5.9.2"
   }
 }

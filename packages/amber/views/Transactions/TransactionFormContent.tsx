@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { getSafeFloat, GridContainer, GridItem, TextField } from '@amber/ui'
 import { InputAdornment, Typography } from '@mui/material'
-import { getSafeFloat, GridContainer, GridItem, TextField } from 'ui'
 
 interface TransactionFormContentProps {
   prefix?: string
