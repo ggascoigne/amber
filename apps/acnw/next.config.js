@@ -32,11 +32,6 @@ const nextConfig = {
     },
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-  experimental: {
-    outputFileTracingExcludes: {
-      '*': ['node_modules/@swc/**'],
-    },
-  },
   headers,
   webpack: (config, { isServer }) => {
     if (isServer) {
