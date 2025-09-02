@@ -20,7 +20,7 @@
     "@amber/database": "workspace:*",
     "@amber/server": "workspace:*",
     "@amber/ui": "workspace:*",
-    "@auth0/nextjs-auth0": "3.8.0",
+    "@auth0/nextjs-auth0": "4.9.0",
     "@axe-core/react": "^4.10.2",
     "@date-io/luxon": "^3.2.0",
     "@emotion/cache": "^11.14.0",

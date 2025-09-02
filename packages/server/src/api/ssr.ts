@@ -18,7 +18,7 @@ export const authenticatedCaller = (userId: string | number) => {
   const id = typeof userId === 'string' ? parseInt(userId, 10) : userId
   return appRouter.createCaller({
     db,
-    session: { user: { userId: id, roles: ['ROLE_USER'] } },
+    session: null,
     userId: id,
     isAdmin: false,
   })

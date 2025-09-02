@@ -6,7 +6,7 @@ import { match, P } from 'ts-pattern'
 
 import { useTRPC } from './trpc'
 
-const log = debug('@amber/amber:client:invalidate')
+const log = debug('amber:client:invalidate')
 
 const useInvalidateQueries = (queries: QueryKey[], name?: string) => {
   const queryClient = useQueryClient()

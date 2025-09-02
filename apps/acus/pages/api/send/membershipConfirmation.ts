@@ -1,7 +1,7 @@
 import { membershipConfirmationSchema } from '@amber/amber/utils/apiTypes'
 import { getAttendance, getInterestLevel, getRoomPref } from '@amber/amber/utils/selectValues'
 import { getConfig, getEmails, emailer, handleError, JsonError } from '@amber/api'
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { auth0 } from '@amber/server/src/auth/auth0'
 import { DateTime } from 'luxon'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -25,7 +25,7 @@ const formatDate = (date?: string | Date) => {
   return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
 }
 
-export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body)
       throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')

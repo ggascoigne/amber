@@ -1,4 +1,4 @@
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -35,7 +35,7 @@ const validatePassword = async (username: string, password: string) => {
 // auth token: required
 // body: { password: string }
 
-export const validatePasswordHandler = withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export const validatePasswordHandler = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body) throw new JsonError(400, 'missing body: expecting password')
     const { password } = req.body

@@ -129,3 +129,12 @@ ambercon (root)
             ├── @amber/server
             └── @amber/ui
 
+This project is a pnpm monorepo with packages in the apps and packages folders.  The project is two next.js and react based web apps, with two separate sites, acnw and acus, both in the apps folder.  Their shared dependencies are all in the packages folder.
+
+The project uses Auth0 as an auth system using @auth0/nextjs-auth0.  Currently it is using v3 and I want to upgrade it to their v4 api with @auth0/nextjs-auth0 v4.9.0.
+
+It currently uses next.js 14 and uses the pages router.  I stopped upgrading next.js at this point since this is the only next.js version supported by both @auth0/nextjs-auth0 v3 and v4 and this will minimise other code ripples. I plan on upgrading to next.js v15 once this phase is complete.
+
+Much of the build can be tested by running `pnpm tsc` that runs tsc on every relevant package.
+
+Can you upgrade to the latest @auth0/nextjs-auth0
