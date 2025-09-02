@@ -27,7 +27,8 @@ assert.ok(stripeSecretKey, 'The "STRIPE_SECRET_KEY" environment variable is requ
 export const stripeWebhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 assert.ok(stripeWebhookSecret, 'The "STRIPE_WEBHOOK_SECRET" environment variable is required')
 
-export const authDomain = auth0IssuerBaseUrl!.slice(8)
+export const auth0Domain = process.env.AUTH0_DOMAIN
+assert.ok(auth0Domain, 'The "AUTH0_DOMAIN" environment variable is required')
 
 // export const discordClientId = process.env.DISCORD_CLIENT_ID
 // export const discordGuildId = process.env.DISCORD_GUILD_ID

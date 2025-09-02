@@ -2,12 +2,12 @@ import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { authDomain, managementClientId, managementClientSecret } from './constants'
+import { auth0Domain, managementClientId, managementClientSecret } from './constants'
 import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
 
-const oauthToken = `https://${authDomain}/oauth/token`
+const oauthToken = `${auth0Domain}/oauth/token`
 
 const validatePassword = async (username: string, password: string) => {
   const options = {
