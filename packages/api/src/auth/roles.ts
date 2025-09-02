@@ -9,8 +9,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse) {
     const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
     if (!token) return res.status(401).end('missing token')
 
-    const issuerBase =
-      process.env.AUTH0_ISSUER_BASE_URL ?? (process.env.AUTH0_DOMAIN ? `https://${process.env.AUTH0_DOMAIN}` : '')
+    const issuerBase = process.env.AUTH0_DOMAIN
     const audience = process.env.AUTH0_CLIENT_ID
     if (!issuerBase || !audience) return res.status(500).end('server misconfigured')
     const normalizedBase = issuerBase.replace(/\/$/, '')

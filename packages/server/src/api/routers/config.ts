@@ -13,7 +13,7 @@ export const configRouter = createTRPCRouter({
       local: !userDatabase.includes('aws'),
       databaseName: dbDetails.database,
       nodeVersion: process.version,
-      authDomain: env.AUTH_DOMAIN,
+      authDomain: env.AUTH0_DOMAIN,
     }
     return isAdmin ? { ...summary, url: safeConnectionString(userDatabase) } : { ...summary }
   }),
