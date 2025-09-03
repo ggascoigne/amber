@@ -4,7 +4,7 @@ import { getConfig, getEmails, emailer, handleError, JsonError } from '@amber/ap
 import { auth0 } from '@amber/server/src/auth/auth0'
 import debug from 'debug'
 import { DateTime } from 'luxon'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 const log = debug('amber:acnw:api:send:membershipConfirmation')
 
@@ -28,7 +28,7 @@ const formatDate = (date?: string | Date) => {
   return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
 }
 
-export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body)
       throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
@@ -95,3 +95,7 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
     handleError(err, res)
   }
 })
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  inner(req, res)
+}

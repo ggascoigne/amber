@@ -138,3 +138,7 @@ It currently uses next.js 14 and uses the pages router.  I stopped upgrading nex
 Much of the build can be tested by running `pnpm tsc` that runs tsc on every relevant package.
 
 Can you upgrade to the latest @auth0/nextjs-auth0
+
+---
+
+can't set a game back to slot 0

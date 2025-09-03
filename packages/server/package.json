@@ -32,7 +32,6 @@
     "@trpc/server": "^11.5.0",
     "@trpc/tanstack-react-query": "^11.5.0",
     "debug": "^4.4.1",
-    "next": "15.5.2",
     "pg": "^8.16.3",
     "prisma-case-format": "^2.2.1",
     "superjson": "^2.2.2",

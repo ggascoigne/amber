@@ -1,7 +1,7 @@
 import { GameChoiceConfirmationBody } from '@amber/amber/utils/apiTypes'
 import { getEmails, emailer, handleError, JsonError } from '@amber/api'
 import { auth0 } from '@amber/server/src/auth/auth0'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 // /api/send/gameChoiceConfirmation
 // auth token: required
@@ -14,7 +14,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  gameChoices: Game
 // }
 
-export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   const emails = await getEmails()
   try {
     if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
@@ -69,3 +69,7 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
     handleError(err, res)
   }
 })
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  inner(req, res)
+}
