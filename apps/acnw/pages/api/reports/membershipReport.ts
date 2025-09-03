@@ -1,6 +1,6 @@
 import { getConfig, queryToExcelDownload, handleError } from '@amber/api'
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { auth0 } from '@amber/server/src/auth/auth0'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 // /api/send/membershipReport
 // auth token: required
@@ -8,7 +8,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  year?: number
 // }
 
-export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const configuration = await getConfig()
     const year = req.body?.year ?? configuration?.year
@@ -94,3 +94,7 @@ export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiRespo
     handleError(err, res)
   }
 })
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  inner(req, res)
+}

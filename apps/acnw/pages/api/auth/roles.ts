@@ -1,6 +1,6 @@
-import { resetPasswordHandler } from '@amber/api'
+import { rolesHandler } from '@amber/api'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  resetPasswordHandler(req, res)
+  rolesHandler(req, res)
 }

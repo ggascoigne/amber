@@ -7,7 +7,7 @@ import { Prisma } from '../generated/prisma/client'
 
 export type TransactionClient = Prisma.TransactionClient
 
-const log = debug('server:rls')
+const log = debug('amber:server:rls')
 
 // One day Prisma might have RLS support, but today is not that day, there are a ton of awkward workarounds
 // on the Prisma issue list, but for now this seems to be the simplest.

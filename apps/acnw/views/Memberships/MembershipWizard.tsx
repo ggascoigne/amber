@@ -38,7 +38,7 @@ import { MembershipStepPayment } from './MembershipStepPayment'
 import { hasRoomsStepErrors, MembershipStepRooms } from './MembershipStepRooms'
 import { MembershipStepVirtual } from './MembershipStepVirtual'
 
-const log = debug('@amber/amber:acnw:MembershipWizard')
+const log = debug('amber:acnw:MembershipWizard')
 
 interface IntroType {
   acceptedPolicies: boolean

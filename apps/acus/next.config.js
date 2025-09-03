@@ -19,7 +19,14 @@ const mdxConfig = withMdxFm({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@amber/ui', '@amber/database', '@amber/amber', '@mui/material', '@amber/api'],
+  transpilePackages: [
+    '@amber/ui',
+    '@amber/database',
+    '@amber/amber',
+    '@mui/material',
+    '@amber/api',
+    '@auth0/nextjs-auth0',
+  ],
   eslint: {
     ignoreDuringBuilds: true,
   },

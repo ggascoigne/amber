@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { inRlsTransaction } from '../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
-const log = debug('@amber/amber:api:routers:lookups')
+const log = debug('amber:server:api:routers:lookups')
 
 const lookup_default = {
   codeMaximum: null,

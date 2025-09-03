@@ -10,7 +10,7 @@ import { useDisableBackdropClick } from './EditDialog'
 
 import { formatDebugValue, isDev, notEmpty, SetSuperset } from '../utils'
 
-const log = debug('@amber/amber:ui:Wizard')
+const log = debug('amber:ui:Wizard')
 
 export interface WizardPage {
   name: string

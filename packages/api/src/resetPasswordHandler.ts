@@ -1,8 +1,8 @@
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
+import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { authDomain, managementClientId, managementClientSecret } from './constants'
+import { auth0Domain, managementClientId, managementClientSecret } from './constants'
 import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
@@ -19,7 +19,7 @@ const requestChangePasswordEmail = async (username: string) => {
     }),
   }
 
-  return fetch(`https://${authDomain}/dbconnections/change_password`, options).then(async (r) => {
+  return fetch(`${auth0Domain}/dbconnections/change_password`, options).then(async (r) => {
     const text = await r.text()
     if (r.status !== 200) {
       throw new JsonError(r.status, text)
@@ -31,7 +31,7 @@ const requestChangePasswordEmail = async (username: string) => {
 // /api/resetPassword
 // auth token: required
 // body: {}
-export const resetPasswordHandler = withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export const resetPasswordHandler = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const profile = await getProfileHandler(req.headers.authorization!)
     // note that we are validating the password for the user identified by the access token

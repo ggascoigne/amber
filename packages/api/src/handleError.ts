@@ -3,7 +3,7 @@ import { NextApiResponse } from 'next'
 
 import { JsonError } from './JsonError'
 
-const log = debug('@amber/amber:api:handleError')
+const log = debug('amber:api:handleError')
 
 export const handleError = (err: any, res: NextApiResponse) => {
   log('handleError', err)

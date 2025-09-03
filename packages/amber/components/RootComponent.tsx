@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { useTRPC } from '@amber/client'
 import { createEmotionCache, NotificationProvider, theme } from '@amber/ui'
-import { UserProvider } from '@auth0/nextjs-auth0/client'
+import { Auth0Provider } from '@auth0/nextjs-auth0'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
@@ -67,7 +67,7 @@ const RootInner = (props: RootComponentProps) => {
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterLuxon}>
           <NotificationProvider>
-            <UserProvider user={user}>
+            <Auth0Provider user={user}>
               <Layout rootRoutes={routes} title={title} banner={banner}>
                 <RouteGuard routes={routes}>
                   <Component {...pageProps} />
@@ -79,7 +79,7 @@ const RootInner = (props: RootComponentProps) => {
                   </React.Suspense>
                 )}
               </Layout>
-            </UserProvider>
+            </Auth0Provider>
           </NotificationProvider>
         </LocalizationProvider>
       </ThemeProvider>
