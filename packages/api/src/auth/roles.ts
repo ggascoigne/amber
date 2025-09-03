@@ -9,6 +9,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse) {
     const auth = req.headers.authorization ?? ''
     const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
     if (!token) {
+      console.log('headers', JSON.stringify(req.headers))
       console.log('rolesHandler: missing token')
       return res.status(401).end('missing token')
     }
