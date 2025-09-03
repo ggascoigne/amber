@@ -35,7 +35,7 @@ export const auth0 = new Auth0Client({
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          authorization: `Bearer ${idToken}`,
+          'x-authorization-token': `Bearer ${idToken}`,
         },
       })
       if (!res.ok) return session

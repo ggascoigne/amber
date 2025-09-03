@@ -6,7 +6,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse) {
   console.log('in rolesHandler')
   try {
     if (req.method !== 'POST') return res.status(405).end('method not allowed')
-    const auth = req.headers.authorization ?? ''
+    const auth = (req.headers['x-authorization-token'] as string) ?? ''
     const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
     if (!token) {
       console.log('headers', JSON.stringify(req.headers))
