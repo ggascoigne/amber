@@ -28,3 +28,6 @@ if (process.env.NODE_ENV !== 'production') {
 // }
 
 export const env = processEnv()
+
+console.log(`Environment: ${env.NODE_ENV}, DB_ENV: ${dbEnv}, isDev: ${isDev}, isTest: ${isTest}`)
+console.log('env:', JSON.stringify(env, null, 2))
