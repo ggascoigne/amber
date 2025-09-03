@@ -52,9 +52,8 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
       return
     }
     res.status(200).json(authorization)
-    // xeslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (_error) {
-    console.log('rolesHandler caught error: ', _error)
+  } catch (error) {
+    console.log('rolesHandler caught error: ', error)
     res.status(401).end('invalid token')
   }
 }

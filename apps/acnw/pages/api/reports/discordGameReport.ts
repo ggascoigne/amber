@@ -12,6 +12,7 @@ const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApi
   try {
     const configuration = await getConfig()
     const year = req.body?.year ?? configuration?.year
+    // cspell:disable
     const query = `
       SELECT
         CONCAT(
@@ -46,6 +47,7 @@ const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApi
         "Slot",
         "Game Title"
       `
+    // cspell:enable
     await queryToExcelDownload(query, res)
   } catch (err: any) {
     handleError(err, res)

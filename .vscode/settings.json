@@ -2,8 +2,10 @@
   "cSpell.words": [
     "Ambercon",
     "autoincrement",
+    "backchannel",
     "Edgefield",
     "esbuild",
+    "gettimezone",
     "graphiql",
     "Ical",
     "Meijer",
@@ -11,8 +13,11 @@
     "microlink",
     "nextjs",
     "postgraphile",
+    "settimezone",
+    "setusingnetworktime",
     "sslmode",
     "sslrootcert",
+    "systemsetup",
     "toolbelt",
     "WMDY"
   ]
