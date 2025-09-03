@@ -3,15 +3,22 @@ import * as jose from 'jose'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export async function rolesHandler(req: NextApiRequest, res: NextApiResponse) {
+  console.log('in rolesHandler')
   try {
     if (req.method !== 'POST') return res.status(405).end('method not allowed')
     const auth = req.headers.authorization ?? ''
     const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
-    if (!token) return res.status(401).end('missing token')
+    if (!token) {
+      console.log('rolesHandler: missing token')
+      return res.status(401).end('missing token')
+    }
 
     const issuerBase = process.env.AUTH0_DOMAIN
     const audience = process.env.AUTH0_CLIENT_ID
-    if (!issuerBase || !audience) return res.status(500).end('server misconfigured')
+    if (!issuerBase || !audience) {
+      console.log('rolesHandler: server misconfigured')
+      return res.status(500).end('server misconfigured')
+    }
     const normalizedBase = issuerBase.replace(/\/$/, '')
     const issuer = `${normalizedBase}/`
     const jwksUrl = `${normalizedBase}/.well-known/jwks.json`
@@ -35,8 +42,9 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse) {
     const authorization = await getUserRoles(session)
     if (!authorization) return res.status(204).end()
     return res.status(200).json(authorization)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // xeslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (_error) {
+    console.log('rolesHandler caught error: ', _error)
     return res.status(401).end('invalid token')
   }
 }
