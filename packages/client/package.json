@@ -23,17 +23,17 @@
     "@trpc/server": "^11.5.0",
     "@trpc/tanstack-react-query": "^11.5.0",
     "debug": "4.4.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
     "superjson": "^2.2.2",
     "ts-pattern": "^5.8.0",
     "zod": "^3.25.76"
   },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "4.1.12",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
     "typescript": "^5.9.2"
   }
 }

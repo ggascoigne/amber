@@ -14,7 +14,7 @@
     "next:build": "NODE_ENV=production next build",
     "db:import": "DB_ENV=acnw pnpm --filter database db:import",
     "dev": "pnpm boot && NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30000",
-    "start": "next start",
+    "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json"
   },

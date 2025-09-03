@@ -662,12 +662,6 @@ importers:
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
-      '@types/react':
-        specifier: ^19.1.12
-        version: 19.1.12
-      '@types/react-dom':
-        specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.12)
       '@types/react-table':
         specifier: 7.7.20
         version: 7.7.20
@@ -765,21 +759,9 @@ importers:
       '@types/pug':
         specifier: ~2.0.10
         version: 2.0.10
-      '@types/react':
-        specifier: ~19.1.12
-        version: 19.1.12
-      '@types/react-dom':
-        specifier: ~19.1.9
-        version: 19.1.9(@types/react@19.1.12)
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
-      react:
-        specifier: ^19.1.1
-        version: 19.1.1
-      react-dom:
-        specifier: ^19.1.1
-        version: 19.1.1(react@19.1.1)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -835,12 +817,6 @@ importers:
       '@types/debug':
         specifier: 4.1.12
         version: 4.1.12
-      '@types/react':
-        specifier: ^19.1.12
-        version: 19.1.12
-      '@types/react-dom':
-        specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.12)
       typescript:
         specifier: ^5.9.2
         version: 5.9.2
@@ -1240,12 +1216,6 @@ importers:
       '@types/node':
         specifier: ^24.3.0
         version: 24.3.0
-      '@types/react':
-        specifier: ^19.1.12
-        version: 19.1.12
-      '@types/react-dom':
-        specifier: ^19.1.9
-        version: 19.1.9(@types/react@19.1.12)
       '@types/react-table':
         specifier: 7.7.20
         version: 7.7.20
