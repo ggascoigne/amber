@@ -3,7 +3,16 @@ import { Auth0Client } from '@auth0/nextjs-auth0/server'
 const toHttpsUrl = (base?: string) =>
   base ? (base.startsWith('http://') || base.startsWith('https://') ? base : `https://${base}`) : undefined
 
-const appBaseUrl = toHttpsUrl(process.env.AUTH0_BASE_URL ?? process.env.APP_BASE_URL ?? process.env.VERCEL_URL)
+const appBaseUrl = toHttpsUrl(
+  // only set in production
+  process.env.AUTH0_BASE_URL ??
+    // the preferred AUTH0 value - eventually replacing AUTH0_BASE_URL
+    process.env.APP_BASE_URL ??
+    // the branch specific vercel preview url
+    process.env.VERCEL_BRANCH_URL ??
+    // the random build specific URL
+    process.env.VERCEL_URL,
+)
 
 export const auth0 = new Auth0Client({
   domain: process.env.AUTH0_DOMAIN,
