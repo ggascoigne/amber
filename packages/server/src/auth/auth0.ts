@@ -20,7 +20,7 @@ export const auth0 = new Auth0Client({
   clientSecret: process.env.AUTH0_CLIENT_SECRET,
   secret: process.env.AUTH0_SECRET,
   appBaseUrl,
-  session: { cookie: { name: 'appSession-v4' } },
+  session: { cookie: { name: `${process.env.DB_ENV}-session-v4` } },
   routes: {
     login: '/api/auth/login',
     callback: '/api/auth/callback',
