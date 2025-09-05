@@ -12,7 +12,7 @@ import { SettingValue } from './shared'
 
 import { TransportError } from '../../components/TransportError'
 
-const log = debug('amber:client:settings:addNewYear')
+const log = debug('amber:amber:settings:addNewYear')
 interface AddNewYearDialogProps {
   open: boolean
   onClose: OnCloseHandler

@@ -1,5 +1,33 @@
 # Various dev notes
 
+## Logging
+
+Both the front and backends use [debug](https://github.com/debug-js/debug) for logging, I like this since it has a symmetrical api on both sides.
+
+Logging is configured based on structured names.  All of the logging in this app has a name that starts with "amber", the next.js library uses the "next" prefix.
+
+Server side logging is configured by setting the `DEBUG` variable to a string containing a comma separate list of log names.
+
+e.g.
+
+```sh
+$ DEBUG='amber:server:*,amber:db:query" pnpm dev:nw
+```
+
+Client side is set by setting 
+
+```
+localStorage.debug = 'amber:*'
+```
+
+or the like in the browser console.
+
+If you want the full firehose then you can set `DEBUG='*'.  On the UI side, that's pretty reasonable, but on the backend it's likely too noisy to be useful.  Next.js uses this same system and uses it a lot.
+
+These packages all use the "amber" prefix, followed by the package name, the exception is that the Prisma logging in sent to `"amber:db"` with the the Prisma logging types as further differentiators. `"amber:db:query"` or `"amber:db:info"` likely being the two most interesting options.
+
+
+
 ## TimeZones on Mac
 
 In Ventura this is tricky to do un the gui, but you can do it from the command line.
@@ -73,6 +101,7 @@ Make sure that you don't have ZScaler running in "Internet Security" mode unless
 
 ## Package hierarchy
 
+```
 ambercon (root)
 │
 ├── Configuration Packages
@@ -128,17 +157,11 @@ ambercon (root)
             ├── @amber/environment
             ├── @amber/server
             └── @amber/ui
+```
 
 This project is a pnpm monorepo with packages in the apps and packages folders.  The project is two next.js and react based web apps, with two separate sites, acnw and acus, both in the apps folder.  Their shared dependencies are all in the packages folder.
 
-The project uses Auth0 as an auth system using @auth0/nextjs-auth0.  Currently it is using v3 and I want to upgrade it to their v4 api with @auth0/nextjs-auth0 v4.9.0.
-
-It currently uses next.js 14 and uses the pages router.  I stopped upgrading next.js at this point since this is the only next.js version supported by both @auth0/nextjs-auth0 v3 and v4 and this will minimize other code ripples. I plan on upgrading to next.js v15 once this phase is complete.
+The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 
 Much of the build can be tested by running `pnpm tsc` that runs tsc on every relevant package.
 
-Can you upgrade to the latest @auth0/nextjs-auth0
-
----
-
-can't set a game back to slot 0

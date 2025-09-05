@@ -4,11 +4,58 @@ import path from 'path'
 
 import { certs } from '@amber/database/shared/dbCerts'
 import { env, isDev } from '@amber/environment'
+import Debug from 'debug'
 
 // eslint-disable-next-line import/no-relative-packages
 import { PrismaClient } from './generated/prisma/client'
 
 const filename = path.join(os.tmpdir(), 'rds-cert.pem')
+
+const dbLog = Debug('amber:db')
+const dbQuery = dbLog.extend('query')
+const dbInfo = dbLog.extend('info')
+const dbWarn = dbLog.extend('warn')
+const dbError = dbLog.extend('error')
+
+// Route warn/error through console while honoring DEBUG filtering
+// This keeps warnings/errors visible in common setups
+// (debug still controls whether they emit at all)
+dbWarn.log = console.warn.bind(console)
+dbError.log = console.error.bind(console)
+// Force error logger to always emit while keeping debug's formatting
+dbError.enabled = true
+
+function redactParams(params: string) {
+  try {
+    const parsed = JSON.parse(params)
+    const redacted = JSON.stringify(parsed, (_k, v) => {
+      if (typeof v === 'string' && v.length > 120) return `${v.slice(0, 120)}…`
+      return v
+    })
+    return redacted
+  } catch {
+    return params.length > 200 ? `${params.slice(0, 200)}…` : params
+  }
+}
+
+const attachLogging = (client: any, kind: 'ADMIN' | 'USER') => {
+  // Forward Prisma engine logs to debug namespaces
+  client.$on('query', (e: any) => {
+    // Be conservative with params to avoid leaking secrets
+    dbQuery('[%s] %s (%d ms) params=%s', kind, e.query, e.duration, redactParams(e.params))
+  })
+  client.$on('info', (e: any) => {
+    dbInfo('[%s] %s', kind, e.message)
+  })
+  client.$on('warn', (e: any) => {
+    dbWarn('[%s] %s', kind, e.message)
+  })
+  client.$on('error', (e: any) => {
+    dbError('[%s] %s', kind, e.message)
+  })
+
+  // Note: Prisma middleware ($use) not used due to version/runtime constraints.
+}
 
 const createPrismaClient = (type: 'ADMIN' | 'USER') => {
   if (env.DATABASE_SSL_CERT) {
@@ -18,12 +65,27 @@ const createPrismaClient = (type: 'ADMIN' | 'USER') => {
     }
     fs.writeFileSync(filename, certs[certName]!)
   }
-  return new PrismaClient({
-    log: isDev ? ['query', 'error', 'warn'] : ['error'],
+  const client = new PrismaClient({
+    // Emit logs as events so we can route them through debug
+    log: isDev
+      ? [
+          { level: 'query', emit: 'event' },
+          { level: 'warn', emit: 'event' },
+          { level: 'error', emit: 'event' },
+          // Uncomment to include engine 'info' in dev if useful
+          { level: 'info', emit: 'event' },
+        ]
+      : [
+          { level: 'error', emit: 'event' },
+          { level: 'warn', emit: 'event' },
+        ],
     datasources: {
       db: { url: type === 'ADMIN' ? env.ADMIN_DATABASE_URL : env.DATABASE_URL },
     },
   })
+
+  attachLogging(client, type)
+  return client
 }
 
 const globalForPrisma = globalThis as unknown as {
