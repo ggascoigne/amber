@@ -1,7 +1,10 @@
+import { debug } from 'debug'
 import { z } from 'zod'
 
 import { inRlsTransaction } from '../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
+
+const log = debug('amber:server:api:routers:games')
 
 // You may want to adjust includes/fragments as needed
 export const gameWithGmsAndRoom = {
@@ -301,9 +304,10 @@ export const gamesRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
+        // log('updateGame input', input)
         const updatedGame = await tx.game.update({
           where: { id: input.id },
-          data: input.data,
+          data: { ...input.data, slotId: input.data.slotId === undefined ? null : input.data.slotId },
         })
         return { game: updatedGame }
       }),
