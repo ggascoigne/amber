@@ -294,7 +294,7 @@ export const MembershipWizard = ({ open, onClose, profile, initialValues, short 
       ...getCostsAndAttendance(configuration, membershipValues),
     }
 
-    console.log('MembershipWizard:', newMembershipValues)
+    log('MembershipWizard:', newMembershipValues)
     await updateProfile(profileValues).then(async () => {
       await createOrUpdateMembership(newMembershipValues, profileValues, usersTransactions!)
       if (!short && redirectInfo.shouldRedirect) {

@@ -18,7 +18,7 @@ export const inRlsTransaction = async <T>(ctx: Context, fn: (tx: TransactionClie
     if (ctx.userId) {
       await tx.$executeRawUnsafe(`SET LOCAL "user.id" = '${ctx.userId}'`)
       await tx.$executeRawUnsafe(`SET LOCAL "user.admin" = '${ctx.isAdmin ? 'true' : 'false'}'`)
-      console.log(`prisma: userId(${ctx.userId}) is ${ctx.isAdmin ? 'admin' : 'not-admin'}`)
+      // console.log(`prisma: userId(${ctx.userId}) is ${ctx.isAdmin ? 'admin' : 'not-admin'}`)
       log('prisma2: user.admin after SET LOCAL', await tx.$queryRawUnsafe(`SHOW "user.admin"`))
       log('prisma2:current_user_is_admin', await tx.$queryRawUnsafe('select current_user_is_admin()'))
     }

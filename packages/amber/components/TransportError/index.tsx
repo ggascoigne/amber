@@ -33,7 +33,7 @@ const isTrpcError = (value: ErrorTypes): value is TRPCClientErrorLike<AppRouter>
   !!(value && Object.hasOwn(value, 'shape'))
 
 export const TransportError = ({ error }: TransportErrorProps) => {
-  console.log('TransportError', JSON.stringify(error, null, 2))
+  console.error('TransportError', JSON.stringify(error, null, 2))
   if (isTrpcError(error)) {
     // hide the stack trace, it's a bunch of webpack noise and not very useful
     const { stack: _stack, ...data } = error.shape?.data ?? {}

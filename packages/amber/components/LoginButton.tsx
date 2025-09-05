@@ -184,7 +184,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
             variant: 'success',
           })
         } catch (e: any) {
-          console.log(e)
+          console.error(e)
           notify({
             text: e,
             variant: 'error',

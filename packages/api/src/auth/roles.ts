@@ -11,7 +11,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
     const auth = (req.headers['x-authorization-token'] as string) ?? ''
     const token = auth.startsWith('Bearer ') ? auth.slice('Bearer '.length) : ''
     if (!token) {
-      console.log('rolesHandler: missing token')
+      console.error('rolesHandler: missing token')
       res.status(401).end('missing token')
       return
     }
@@ -19,7 +19,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
     const issuerBase = process.env.AUTH0_DOMAIN
     const audience = process.env.AUTH0_CLIENT_ID
     if (!issuerBase || !audience) {
-      console.log('rolesHandler: server misconfigured')
+      console.error('rolesHandler: server misconfigured')
       res.status(500).end('server misconfigured')
       return
     }
@@ -53,7 +53,7 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
     }
     res.status(200).json(authorization)
   } catch (error) {
-    console.log('rolesHandler caught error: ', error)
+    console.error('rolesHandler caught error: ', error)
     res.status(401).end('invalid token')
   }
 }

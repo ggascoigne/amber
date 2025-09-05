@@ -35,7 +35,7 @@ export const useSendEmail = (): SendEmail => {
               isDev && console.log(`result = ${JSON.stringify(result, null, 2)}`)
             }
           } catch (e: any) {
-            console.log(e)
+            console.error(e)
             notify({
               text: e,
               variant: 'error',

@@ -9,6 +9,7 @@
  * need to use are documented accordingly near the end.
  */
 import { initTRPC, TRPCError } from '@trpc/server'
+import Debug from 'debug'
 import { ZodError } from 'zod'
 
 import type { Context } from './context'
@@ -63,22 +64,37 @@ export const createTRPCRouter = t.router
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
-const timingMiddleware = t.middleware(async ({ next, path }) => {
+const trpcLog = Debug('amber:trpc')
+const trpcReq = trpcLog.extend('req')
+const trpcRes = trpcLog.extend('res')
+// const trpcWarn = trpcLog.extend('warn')
+const trpcErr = trpcLog.extend('error')
+// Route errors to stderr, but keep debug formatting and always show
+trpcErr.log = console.error.bind(console)
+trpcErr.enabled = true
+
+const timingMiddleware = t.middleware(async ({ next, path, type }) => {
   const start = Date.now()
 
-  if (t._config.isDev) {
-    // artificial delay in dev
+  // artificial delay in dev
+  if ((t as any)._config?.isDev) {
     const waitMs = Math.floor(Math.random() * 400) + 100
     // eslint-disable-next-line no-promise-executor-return
     await new Promise((resolve) => setTimeout(resolve, waitMs))
   }
 
-  const result = await next()
+  trpcReq('%s %s start', type, path)
 
-  const end = Date.now()
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`)
-
-  return result
+  try {
+    const result = await next()
+    const dur = Date.now() - start
+    trpcRes('%s %s (%d ms)', type, path, dur)
+    return result
+  } catch (err) {
+    const dur = Date.now() - start
+    trpcErr('%s %s failed (%d ms): %s', type, path, dur, (err as Error).message)
+    throw err
+  }
 })
 
 /**
