@@ -1,46 +1,17 @@
 import React, { useMemo } from 'react'
 
 import { getSelectLabel, getSelectValue, range } from '@amber/ui'
-import { FormControl, MenuItem, TextField, Theme } from '@mui/material'
+import { FormControl, MenuItem, TextField } from '@mui/material'
 import { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { alpha } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
 
 import { useConfiguration, useYearFilter } from '../utils'
 
 export type SelectProps = MuiSelectProps & {
   name: string
 }
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    '& .MuiInput-root': {
-      color: theme.palette.common.white,
-    },
-    '& .MuiSelect-icon': {
-      color: theme.palette.common.white,
-    },
-    '& .MuiInput-underline': {
-      borderBottomColor: theme.palette.common.white,
-      '&:before': {
-        borderBottomColor: alpha(theme.palette.common.white, 0.15),
-      },
-      '&:after': {
-        borderBottomColor: theme.palette.common.white,
-      },
-      '&:hover:before': {
-        borderBottomColor: alpha(theme.palette.common.white, 0.25),
-      },
-    },
-  },
-  formControl: {
-    color: theme.palette.common.white,
-    margin: theme.spacing(1),
-    minWidth: 100,
-  },
-}))
 
 export const YearSelector = () => {
-  const { classes } = useStyles()
   const [year, setYear] = useYearFilter()
   const configuration = useConfiguration()
 
@@ -58,13 +29,32 @@ export const YearSelector = () => {
   }
 
   return (
-    <FormControl className={classes.formControl}>
+    <FormControl sx={{ color: 'common.white', m: 1, minWidth: 100 }}>
       <TextField
         select
         id='year-selector-label'
         value={year}
         onChange={handleChange}
-        classes={{ root: classes.root }}
+        sx={(theme) => ({
+          '& .MuiInput-root': {
+            color: theme.palette.common.white,
+          },
+          '& .MuiSelect-icon': {
+            color: theme.palette.common.white,
+          },
+          '& .MuiInput-underline': {
+            borderBottomColor: theme.palette.common.white,
+            '&:before': {
+              borderBottomColor: alpha(theme.palette.common.white, 0.15),
+            },
+            '&:after': {
+              borderBottomColor: theme.palette.common.white,
+            },
+            '&:hover:before': {
+              borderBottomColor: alpha(theme.palette.common.white, 0.25),
+            },
+          },
+        })}
         variant='standard'
       >
         {possibleYears.map((s) => (

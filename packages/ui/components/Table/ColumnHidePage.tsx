@@ -1,28 +1,7 @@
 import { ReactElement } from 'react'
 
-import { Checkbox, FormControlLabel, Popover, Typography } from '@mui/material'
+import { Box, Checkbox, FormControlLabel, Popover, Typography } from '@mui/material'
 import type { TableInstance } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()({
-  columnsPopOver: {
-    padding: 24,
-  },
-  popoverTitle: {
-    fontWeight: 500,
-    padding: '0 24px 24px 0',
-    textTransform: 'uppercase',
-  },
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(2, 198px)',
-    '@media (max-width: 600px)': {
-      gridTemplateColumns: 'repeat(1, 160px)',
-    },
-    gridColumnGap: 6,
-    gridRowGap: 6,
-  },
-})
 
 interface ColumnHidePageProps<T extends Record<string, unknown>> {
   instance: TableInstance<T>
@@ -39,7 +18,6 @@ export function ColumnHidePage<T extends Record<string, unknown>>({
   onClose,
   show,
 }: ColumnHidePageProps<T>): ReactElement | null {
-  const { classes } = useStyles()
   const { allColumns, toggleHideColumn } = instance
   const hideableColumns = allColumns.filter((column) => !(column.id === '_selector'))
   const checkedCount = hideableColumns.reduce((acc, val) => acc + (val.isVisible ? 0 : 1), 0)
@@ -50,7 +28,7 @@ export function ColumnHidePage<T extends Record<string, unknown>>({
     <div>
       <Popover
         anchorEl={anchorEl}
-        className={classes.columnsPopOver}
+        sx={{ p: 3 }}
         id={id}
         onClose={onClose}
         open={show}
@@ -63,9 +41,23 @@ export function ColumnHidePage<T extends Record<string, unknown>>({
           horizontal: 'right',
         }}
       >
-        <div className={classes.columnsPopOver}>
-          <Typography className={classes.popoverTitle}>Visible Columns</Typography>
-          <div className={classes.grid}>
+        <Box sx={{ p: 3 }}>
+          <Typography sx={{ fontWeight: 500, p: '0 24px 24px 0', textTransform: 'uppercase' }}>
+            Visible Columns
+          </Typography>
+          <Box
+            sx={[
+              {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 198px)',
+                gridColumnGap: 6,
+                gridRowGap: 6,
+              },
+              (theme) => ({
+                [theme.breakpoints.down('sm')]: { gridTemplateColumns: 'repeat(1, 160px)' },
+              }),
+            ]}
+          >
             {hideableColumns.map((column) => (
               <FormControlLabel
                 key={column.id}
@@ -75,8 +67,8 @@ export function ColumnHidePage<T extends Record<string, unknown>>({
                 onChange={() => toggleHideColumn(column.id, column.isVisible)}
               />
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </Popover>
     </div>
   ) : null

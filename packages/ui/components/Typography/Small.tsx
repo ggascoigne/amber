@@ -1,9 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
-import { useTypographyStyles } from './typographyStyle'
+import { Box } from '@mui/material'
 
-export const Small: React.FC<PropsWithChildren<unknown>> = (props) => {
-  const { classes } = useTypographyStyles()
-  const { children } = props
-  return <div className={`${classes.defaultFontStyle} ${classes.smallText}`}>{children}</div>
-}
+export const Small: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
+  <Box sx={{ fontWeight: 400, lineHeight: '1', fontSize: '65%', color: '#777' }}>{children}</Box>
+)

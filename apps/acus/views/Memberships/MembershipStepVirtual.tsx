@@ -3,24 +3,10 @@ import React, { useState } from 'react'
 import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from '@amber/amber'
 import { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from '@amber/ui'
-import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()({
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-  },
-  slotToggleWrapper: {
-    position: 'absolute',
-    top: 16,
-    right: 50,
-  },
-})
+import { Box, DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
 
 export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
   const [showPT, setShowPT] = useState(false)
 
   return (
@@ -41,7 +27,7 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
         &ldquo;overnight&rdquo; Pacific time &mdash; that is, during the day U.K. and European time. These will be
         organized separately from the ACNW main game book.
       </DialogContentText>
-      <div className={classes.slotSelection}>
+      <Box sx={{ position: 'relative', pt: 0 }}>
         {isNotPacificTime(configuration) && (
           <div>
             <FormControlLabel
@@ -71,7 +57,7 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
             />
           ))}
         </FormGroup>
-      </div>
+      </Box>
       <GridContainer spacing={2}>
         <GridItem xs={12} md={12}>
           <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />

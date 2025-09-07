@@ -9,26 +9,12 @@ import {
   useFlag,
 } from '@amber/amber'
 import { CardBody } from '@amber/ui'
-import { Button, Card, Theme } from '@mui/material'
+import { Button, Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  card: {
-    paddingTop: 0,
-  },
-  button: {
-    marginLeft: 10,
-    [theme.breakpoints.down('md')]: {
-      marginTop: 10,
-    },
-  },
-}))
 
 export const BecomeAMember = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
   const theme = useTheme()
   const router = useRouter()
@@ -38,7 +24,7 @@ export const BecomeAMember = () => {
   return (
     <IsNotMember>
       <Card elevation={3}>
-        <CardBody className={classes.card}>
+        <CardBody sx={{ pt: 0 }}>
           {configuration.virtual ? (
             <h2>
               Attending <span style={{ color: theme.palette.error.main }}>virtual</span> {configuration.title}
@@ -105,7 +91,7 @@ export const BecomeAMember = () => {
                   variant='outlined'
                   color='primary'
                   size='large'
-                  className={classes.button}
+                  sx={{ ml: '10px', mt: { xs: '10px', md: 0 } }}
                   disabled={!profile}
                   component={Link}
                   href='/membership/new'

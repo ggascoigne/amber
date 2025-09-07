@@ -10,15 +10,19 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
+const broken = true
+
 const GameBookGamesPage = () => {
   const setNewUrl = useGameScroll()
   const { year } = useGameUrl()
 
   return (
     <Page title={`Game Book ${year}`}>
-      <ExpandingFab label='Goto Top' show onClick={gotoTop}>
-        <NavigationIcon />
-      </ExpandingFab>
+      {!broken && (
+        <ExpandingFab label='Goto Top' show onClick={gotoTop}>
+          <NavigationIcon />
+        </ExpandingFab>
+      )}
       <div>
         <GameListNavigator>
           {/* eslint-disable-next-line @typescript-eslint/no-shadow */}

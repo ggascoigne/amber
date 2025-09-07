@@ -4,22 +4,6 @@ import { Fade, Paper, Popper, PopperProps, Theme } from '@mui/material'
 import MuiTextField from '@mui/material/TextField'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { CellEditorProps, ColumnInstance } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  popper: {
-    zIndex: theme.zIndex.modal,
-  },
-  paper: {
-    ...(theme.typography.body1 as CSSProperties),
-    overflow: 'hidden',
-    padding: 4,
-  },
-  positionHack: {
-    marginTop: -8,
-    marginBottom: -8,
-  },
-}))
 
 export const CellEditor = ({ value, onChange, onBlur }: CellEditorProps): ReactNode => (
   <MuiTextField
@@ -51,7 +35,6 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
   onClose,
   anchorElement,
 }) => {
-  const { classes } = useStyles()
   const [value, setValue] = React.useState(initialValue)
   const { CellEditor: ColumnCellEditor } = column
 
@@ -78,7 +61,7 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
       id='cell-editor'
       anchorEl={anchorElement}
       open={!!anchorElement}
-      className={classes.popper}
+      sx={{ zIndex: (t: Theme) => t.zIndex.modal }}
       transition
       modifiers={[
         {
@@ -118,8 +101,15 @@ export const CellEditorWrapper: React.FC<CellEditorWrapperProps> = ({
       {({ TransitionProps }) => (
         <Fade {...TransitionProps} timeout={350}>
           {/* hack to deal with positioning issues, I can move things horizontally, but not vertically */}
-          <div className={classes.positionHack}>
-            <Paper className={classes.paper} elevation={8}>
+          <div style={{ marginTop: -8, marginBottom: -8 }}>
+            <Paper
+              sx={{
+                ...(theme) => (theme as Theme).typography.body1 as CSSProperties,
+                overflow: 'hidden',
+                p: '4px',
+              }}
+              elevation={8}
+            >
               {/* @ts-ignore */}
               <ColumnCellEditor value={value} onChange={onChange} onBlur={onBlur} />
             </Paper>

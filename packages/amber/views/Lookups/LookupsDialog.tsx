@@ -5,44 +5,9 @@ import { Card, CardBody, CardHeader, EditDialog, GridContainer, GridItem, TextFi
 import Yup from '@amber/ui/utils/Yup'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Theme, Typography } from '@mui/material'
+import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import { FieldArray, FormikHelpers } from 'formik'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing(3),
-    overflowX: 'auto',
-  },
-  table: {
-    minWidth: 700,
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 24,
-    paddingRight: 24,
-  },
-  title: {
-    color: '#fff',
-    fontWeight: 300,
-    textTransform: 'none',
-  },
-  iconButton: {
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    },
-  },
-  addIcon: {},
-  deleteIcon: {},
-  deleteButton: {
-    color: theme.palette.grey[500],
-  },
-}))
 
 type LookupFormType = ToFormValues<Lookup>
 
@@ -82,7 +47,6 @@ const defaultValues: LookupFormType = {
 }
 
 export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, initialValues = defaultValues }) => {
-  const { classes } = useStyles()
   const trpc = useTRPC()
 
   const createLookup = useMutation(trpc.lookups.createLookup.mutationOptions())
@@ -175,22 +139,25 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
               name='lookupValue'
               render={(arrayHelpers) => (
                 <Card>
-                  <CardHeader color='success' className={classes.header}>
-                    <Typography variant='h6' className={classes.title}>
+                  <CardHeader
+                    color='success'
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 3 }}
+                  >
+                    <Typography variant='h6' sx={{ color: '#fff', fontWeight: 300, textTransform: 'none' }}>
                       Lookup Values
                     </Typography>
                     <IconButton
-                      className={classes.iconButton}
+                      sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' } }}
                       onClick={() =>
                         arrayHelpers.push({ sequencer: highestSequence(formikProps.values), code: '', value: '' })
                       }
                       size='large'
                     >
-                      <AddIcon className={classes.addIcon} />
+                      <AddIcon />
                     </IconButton>
                   </CardHeader>
                   <CardBody>
-                    <Table className={classes.table}>
+                    <Table sx={{ minWidth: 700 }}>
                       <TableHead>
                         <TableRow>
                           <TableCell>Sequencer</TableCell>
@@ -213,11 +180,11 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                             </TableCell>
                             <TableCell align='right' style={{ width: '50px' }}>
                               <IconButton
-                                className={classes.deleteButton}
+                                sx={{ color: (theme) => theme.palette.grey[500] }}
                                 onClick={() => arrayHelpers.remove(index)}
                                 size='large'
                               >
-                                <DeleteIcon className={classes.deleteIcon} />
+                                <DeleteIcon />
                               </IconButton>
                             </TableCell>
                           </TableRow>

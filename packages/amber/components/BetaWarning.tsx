@@ -1,28 +1,16 @@
 import { CardBody } from '@amber/ui'
-import { Card, Theme } from '@mui/material'
+import { Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
 
 import { useFlag } from '../utils'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  card: {
-    paddingTop: 0,
-  },
-  betaCard: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-}))
 
 export const BetaWarning = () => {
   const isBeta = useFlag('is_beta')
   const theme = useTheme()
-  const { classes } = useStyles()
 
   return isBeta ? (
-    <Card className={classes.betaCard} elevation={3}>
-      <CardBody className={classes.card}>
+    <Card sx={{ mt: '20px', mb: '20px' }} elevation={3}>
+      <CardBody sx={{ pt: 0 }}>
         <h2 style={{ color: theme.palette.error.main }}>Beta</h2>
         <p>
           This version of the site is a work in progress. All changes should be considered temporary and are very likely

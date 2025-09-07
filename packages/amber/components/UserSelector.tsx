@@ -4,68 +4,10 @@ import { UserAndShortMembership, useTRPC } from '@amber/client'
 import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { makeStyles, withStyles } from 'tss-react/mui'
 
 import { useUserFilter, useYearFilter } from '../utils'
 
-const useStyles = makeStyles()({
-  divider: {
-    borderRight: '1px solid rgba(255, 255, 255, 0.4)',
-    fontSize: '35px',
-    margin: '5px 0 5px 5px',
-  },
-  selector: {
-    margin: '0 10px 0 15px',
-    maxWidth: 400,
-    width: 400,
-    '& label, & div': {
-      fontSize: '0.875rem', // 14px
-      color: 'inherit',
-    },
-    '& input': {
-      '&::placeholder, &::-webkit-input-placeholder': {
-        opacity: 0.81,
-      },
-      '&::-moz-placeholder, &:-moz-placeholder': {
-        opacity: 0.81,
-      },
-    },
-  },
-  paper: {
-    marginTop: 4,
-  },
-  selectorMobile: {
-    margin: '0 10px',
-  },
-  inheritColor: {
-    color: 'inherit',
-  },
-  holder: {
-    overflow: 'hidden',
-  },
-  text: {
-    fontSize: '0.875rem', // 14px
-    wordWrap: 'break-word',
-  },
-  notMember: {
-    opacity: '.6',
-  },
-})
-
-const CleanTextField = withStyles(TextField, {
-  root: {
-    '& input': {
-      paddingLeft: '5px !important',
-    },
-    '& label.Mui-focused': {
-      color: 'inherit',
-    },
-    '& .MuiInput-underline:after, & .MuiInput-underline:before, & .MuiInput-underline:hover:not(.Mui-disabled):before':
-      {
-        borderBottomColor: 'inherit',
-      },
-  },
-})
+// styles inlined via sx
 
 type UserType = UserAndShortMembership
 
@@ -77,7 +19,6 @@ interface UserSelectorProps {
 
 export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const trpc = useTRPC()
-  const { classes, cx } = useStyles()
   const notify = useNotification()
   const [userInfo, setUserInfo] = useUserFilter()
   const [year] = useYearFilter()
@@ -134,24 +75,43 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       loading={isLoading}
       options={dropdownOptions}
       getOptionLabel={(option: UserType) => option.fullName ?? ''}
-      className={cx(classes.selector, {
-        [classes.selectorMobile]: mobile,
-      })}
+      sx={{
+        m: mobile ? '0 10px' : '0 10px 0 15px',
+        maxWidth: 400,
+        width: 400,
+        '& label, & div': { fontSize: '0.875rem', color: 'inherit' },
+        '& input::placeholder, & input::-webkit-input-placeholder': { opacity: 0.81 },
+        '& input::-moz-placeholder, & input:-moz-placeholder': { opacity: 0.81 },
+      }}
       value={selectedUser}
-      classes={{
-        paper: classes.paper,
-        endAdornment: classes.inheritColor,
-        popupIndicator: classes.inheritColor,
-        clearIndicator: classes.inheritColor,
+      slotProps={{
+        paper: { sx: { mt: 0.5 } },
+        // endAdornment: { sx: { color: 'inherit' } },
+        popupIndicator: { sx: { color: 'inherit' } },
+        clearIndicator: { sx: { color: 'inherit' } },
       }}
       renderInput={(params) => (
-        <CleanTextField {...params} fullWidth placeholder='User Override' onChange={onInputChange} variant='standard' />
+        <TextField
+          {...params}
+          fullWidth
+          placeholder='User Override'
+          onChange={onInputChange}
+          variant='standard'
+          sx={{
+            '& input': { paddingLeft: '5px !important' },
+            '& label.Mui-focused': { color: 'inherit' },
+            '& .MuiInput-underline:after, & .MuiInput-underline:before, & .MuiInput-underline:hover:not(.Mui-disabled):before':
+              { borderBottomColor: 'inherit' },
+          }}
+        />
       )}
       renderOption={(props, params: UserType) => {
         const isMember = !!params.membership.find((m) => m?.year === year)
         return (
-          <li {...props} key={params.id} className={cx(props.className, classes.holder)}>
-            <span className={cx(classes.text, { [classes.notMember]: !isMember })}>{params.fullName}</span>
+          <li {...props} key={params.id} style={{ overflow: 'hidden' }}>
+            <span style={{ fontSize: '0.875rem', wordWrap: 'break-word', opacity: isMember ? 1 : 0.6 }}>
+              {params.fullName}
+            </span>
           </li>
         )
       }}

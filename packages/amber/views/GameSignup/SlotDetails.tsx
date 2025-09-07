@@ -2,33 +2,12 @@ import React, { useEffect } from 'react'
 
 import { GameChoice, useTRPC } from '@amber/client'
 import { Loader, notEmpty, range } from '@amber/ui'
-import { Theme } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { makeStyles } from 'tss-react/mui'
 
 import { Rank, rankString, RankStyle } from './GameChoiceSelector'
 
 import { getSlotDescription, useConfiguration } from '../../utils'
 import { getGms } from '../Games'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  line: {
-    display: 'flex',
-    flex: 1,
-  },
-  rank: {
-    width: 40,
-    textAlign: 'right',
-    '& sup': {
-      lineHeight: 0,
-      display: 'inline-block',
-      // paddingBottom: 3,
-    },
-  },
-  name: {
-    paddingLeft: 20,
-  },
-}))
 
 export interface SlotSummary {
   slotId: number
@@ -51,7 +30,6 @@ const rankSort = (a: GameChoice, b: GameChoice) => (a?.rank ?? 0) - (b?.rank ?? 
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
   const trpc = useTRPC()
   const configuration = useConfiguration()
-  const { classes } = useStyles()
 
   const { data: games } = useQuery(trpc.games.getGamesBySlotForSignup.queryOptions({ year, slotId }))
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
@@ -105,11 +83,11 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
 
           const gms = getGms(g)
           return (
-            <div className={classes.line} key={info.gameId}>
-              <div className={classes.rank}>
+            <div style={{ display: 'flex', flex: 1 }} key={info.gameId}>
+              <div style={{ width: 40, textAlign: 'right' }}>
                 <Rank rankStyle={RankStyle.superscript} rank={info.rank} />
               </div>
-              <div className={classes.name}>
+              <div style={{ paddingLeft: 20 }}>
                 {g.name}
                 {info.returningPlayer ? ' (returning player)' : ''}
                 {gms && ` - ${gms}`}

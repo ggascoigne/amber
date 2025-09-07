@@ -1,9 +1,7 @@
 import React, { PropsWithChildren } from 'react'
 
-import { useTypographyStyles } from './typographyStyle'
+import { Box } from '@mui/material'
 
-export const Muted: React.FC<PropsWithChildren<unknown>> = (props) => {
-  const { classes } = useTypographyStyles()
-  const { children } = props
-  return <div className={`${classes.defaultFontStyle} ${classes.mutedText}`}>{children}</div>
-}
+export const Muted: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
+  <Box sx={{ fontWeight: 300, lineHeight: '1.5em', fontSize: '14px', color: '#777' }}>{children}</Box>
+)

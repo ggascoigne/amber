@@ -3,27 +3,11 @@ import React, { useCallback } from 'react'
 import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from '@amber/amber'
 import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
-import { DialogContentText, FormControl, RadioGroup, Theme } from '@mui/material'
+import { DialogContentText, FormControl, RadioGroup } from '@mui/material'
 import { Field, FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
-import { makeStyles } from 'tss-react/mui'
 
 import { MembershipWizardFormValues } from './MembershipWizard'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  important: {
-    marginBottom: 12,
-  },
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-  },
-  slotToggleWrapper: {
-    position: 'absolute',
-    top: 16,
-    right: 50,
-  },
-}))
 
 export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -37,7 +21,6 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
 
 export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
 
   const [hotelRoomField, meta, { setValue }] = useField(`${prefix}hotelRoomId`)
   const { touched, error: fieldError } = meta
@@ -117,7 +100,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
         charges for hotel nights reserved but not used.
       </DialogContentText>
 
-      <Important component='span' className={classes.important}>
+      <Important component='span' sx={{ mb: '12px' }}>
         If you are sharing a room, please only have one of you &lsquo;book&rsquo; the room. For everyone else who&apos;s
         sharing the room just select the &lsquo;sharing&rsquo; option in this first list. If each of you lists who you
         are sharing with, we can better make sure that there are no mistakes.
@@ -129,7 +112,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
         </RadioGroup>
       </FormControl>
 
-      <Important className={classes.important}>
+      <Important sx={{ mb: '12px' }}>
         <br />* Game Rooms: These are suites reserved for game play. Members who choose to have a Game room, will
         receive a {configuration.gameRoomCredit} credit towards the room cost. Be advised that while we will do our best
         to make sure that the rooms are used for games you are actually in, in exchange for the credit the game space

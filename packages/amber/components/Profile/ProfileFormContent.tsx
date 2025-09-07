@@ -2,15 +2,8 @@ import React from 'react'
 
 import { GridContainer, GridItem, Important, TextField } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
 
 import { HasPermission, Perms, useAuth } from '../Auth'
-
-const useStyles = makeStyles()(() => ({
-  important: {
-    marginBottom: 12,
-  },
-}))
 
 interface ProfileFormContentProps {
   prefix?: string
@@ -19,14 +12,13 @@ interface ProfileFormContentProps {
 export const ProfileFormContent: React.FC<ProfileFormContentProps> = ({ prefix = '' }) => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const { classes } = useStyles()
   return (
     <div>
       <DialogContentText>
         Please ensure that this information is up to date. We promise we wont spam you.
       </DialogContentText>
       <HasPermission permission={Perms.IsAdmin}>
-        <Important className={classes.important}>Admin Mode</Important>
+        <Important sx={{ mb: '12px' }}>Admin Mode</Important>
       </HasPermission>
       <GridContainer spacing={2} direction='column'>
         <GridItem xs={12} md={12}>

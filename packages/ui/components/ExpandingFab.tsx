@@ -1,22 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react'
 
-import { Fab, Theme, Zoom } from '@mui/material'
+import { Fab, Zoom } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  fab: {
-    position: 'fixed',
-    zIndex: 100,
-    top: 64 + theme.spacing(2),
-    right: theme.spacing(2),
-    '&&.MuiFab-extended': {
-      height: 48,
-      borderRadius: 24,
-      paddingRight: 13.5,
-    },
-  },
-}))
 
 export const ExpandingFab: React.FC<PropsWithChildren<{ label: string; show: boolean; onClick: () => void }>> = ({
   label,
@@ -24,8 +9,6 @@ export const ExpandingFab: React.FC<PropsWithChildren<{ label: string; show: boo
   children,
   onClick,
 }) => {
-  const { classes } = useStyles()
-
   const [inHover, setHover] = useState(false)
   const theme = useTheme()
 
@@ -41,7 +24,19 @@ export const ExpandingFab: React.FC<PropsWithChildren<{ label: string; show: boo
         aria-label='top'
         size='medium'
         variant={inHover ? 'extended' : undefined}
-        className={classes.fab}
+        sx={[
+          (t) => ({
+            position: 'fixed',
+            zIndex: 100,
+            top: `calc(64px + ${t.spacing(2)})`,
+            right: t.spacing(2),
+            '&.MuiFab-extended': {
+              height: 48,
+              borderRadius: 24,
+              paddingRight: 13.5,
+            },
+          }),
+        ]}
         onClick={onClick}
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}

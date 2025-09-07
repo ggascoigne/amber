@@ -1,10 +1,9 @@
 import React, { Suspense } from 'react'
 
 import BugReportTwoToneIcon from '@mui/icons-material/BugReportTwoTone'
-import { IconButton, Theme, Tooltip } from '@mui/material'
+import { IconButton, Tooltip } from '@mui/material'
 import { useAtom } from 'jotai/react'
 import { atom } from 'jotai/vanilla'
-import { makeStyles } from 'tss-react/mui'
 
 import { Loader } from '../Loader'
 
@@ -13,27 +12,13 @@ const ReactJson = React.lazy(() => import('@microlink/react-json-view'))
 const debugIsOpen = atom<boolean>(false)
 export const useDebugIsOpen = () => useAtom(debugIsOpen)
 
-const useStyles = makeStyles()((_theme: Theme) => ({
-  button: {
-    marginLeft: -2,
-    '& svg': {
-      width: '1.5rem',
-      height: '1.5rem',
-    },
-  },
-}))
-
 export const TableDebugButton: React.FC<{ enabled: boolean; instance: any }> = ({ enabled, instance }) => {
-  const { classes, cx } = useStyles()
   const [, setOpen] = useDebugIsOpen()
+  const buttonSx = instance?.rows?.length ? { ml: -0.25, '& svg': { width: '1.5rem', height: '1.5rem' } } : undefined
   return enabled ? (
     <Tooltip title='Debug'>
       <div style={{ position: 'relative' }}>
-        <IconButton
-          className={cx({ [classes.button]: instance?.rows?.length })}
-          onClick={() => setOpen((old) => !old)}
-          size='large'
-        >
+        <IconButton onClick={() => setOpen((old) => !old)} size='large' sx={buttonSx}>
           <BugReportTwoToneIcon />
         </IconButton>
       </div>

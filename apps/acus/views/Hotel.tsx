@@ -2,29 +2,13 @@ import { ConfigDate, MDY } from '@amber/amber/components'
 import { useConfiguration } from '@amber/amber/utils'
 import { CardBody, Page } from '@amber/ui'
 import { Card } from '@mui/material'
-import { Theme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  card: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  cardBody: {
-    paddingTop: 0,
-  },
-  address: {
-    paddingLeft: 20,
-  },
-}))
 
 const Hotel = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
   return (
     <Page title='Embassy Suites Detroit-Livonia/Novi'>
-      <Card className={classes.card} elevation={3}>
-        <CardBody className={classes.cardBody}>
+      <Card sx={{ mt: '20px', mb: '20px' }} elevation={3}>
+        <CardBody sx={{ pt: 0 }}>
           <h3>Deadline dates this year</h3>
           <p>
             If you are trying to book your hotel room after{' '}

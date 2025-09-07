@@ -2,29 +2,13 @@ import { Link, useConfiguration } from '@amber/amber'
 import { ContactEmail } from '@amber/amber/components'
 import { CardBody, Page } from '@amber/ui'
 import { Card } from '@mui/material'
-import { Theme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  card: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  cardBody: {
-    paddingTop: 0,
-  },
-  address: {
-    paddingLeft: 20,
-  },
-}))
 
 const Contact = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
   return (
     <Page title='Contact'>
-      <Card className={classes.card} elevation={3}>
-        <CardBody className={classes.cardBody}>
+      <Card sx={{ mt: '20px', mb: '20px' }} elevation={3}>
+        <CardBody sx={{ pt: 0 }}>
           <h3>Payments</h3>
           <p>
             Ideally, payments should be made by visiting our <Link href='/payment'>payment page</Link> and paying
@@ -32,11 +16,11 @@ const Contact = () => {
           </p>
           <p>Alternatively, if you&apos;d prefer to pay by cheque, then payments should be made out to:</p>
 
-          <h5 className={classes.address}>AmberCon NorthWest Inc</h5>
+          <h5 style={{ paddingLeft: 20 }}>AmberCon NorthWest Inc</h5>
 
           <p>and sent to:</p>
 
-          <h5 className={classes.address}>
+          <h5 style={{ paddingLeft: 20 }}>
             AmberCon NorthWest Inc
             <br />
             1914 SE 24th Ave

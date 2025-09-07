@@ -4,18 +4,10 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
-import { TablePagination as MuiTablePagination } from '@mui/material'
+import { Box, TablePagination as MuiTablePagination } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
-import { Theme, useTheme } from '@mui/material/styles'
+import { Theme, useTheme, SxProps } from '@mui/material/styles'
 import type { TableInstance } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-  },
-}))
 
 interface TablePaginationActionsProps {
   count: number
@@ -25,7 +17,6 @@ interface TablePaginationActionsProps {
 }
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
-  const { classes } = useStyles()
   const theme = useTheme()
   const { count, page, rowsPerPage, onPageChange } = props
 
@@ -45,8 +36,9 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1))
   }
 
+  const rootSx: SxProps<Theme> = { flexShrink: 0, ml: (t: Theme) => t.spacing(2.5) }
   return (
-    <div className={classes.root}>
+    <Box sx={rootSx}>
       <IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label='first page' size='large'>
         {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
@@ -69,7 +61,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
       >
         {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
-    </div>
+    </Box>
   )
 }
 

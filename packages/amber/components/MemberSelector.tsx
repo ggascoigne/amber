@@ -4,50 +4,6 @@ import { UserMembership, useTRPC } from '@amber/client'
 import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()({
-  divider: {
-    borderRight: '1px solid rgba(255, 255, 255, 0.4)',
-    fontSize: '35px',
-    margin: '5px 0 5px 5px',
-  },
-  selector: {
-    maxWidth: 400,
-    width: 400,
-    '& label, & div': {
-      fontSize: '0.875rem', // 14px
-      color: 'inherit',
-    },
-    '& input': {
-      '&::placeholder, &::-webkit-input-placeholder': {
-        opacity: 1,
-      },
-      '&::-moz-placeholder, &:-moz-placeholder': {
-        opacity: 1,
-      },
-    },
-  },
-  paper: {
-    marginTop: 4,
-  },
-  selectorMobile: {
-    margin: '0 10px',
-  },
-  inheritColor: {
-    color: 'inherit',
-  },
-  holder: {
-    overflow: 'hidden',
-  },
-  text: {
-    fontSize: '0.875rem', // 14px
-    wordWrap: 'break-word',
-  },
-  notMember: {
-    opacity: '.6',
-  },
-})
 
 const getOptionSelected = (option: UserMembership, value: UserMembership) => option.id === value.id
 
@@ -67,7 +23,6 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
   onlyDisplayMembersWithBalances,
 }) => {
   const trpc = useTRPC()
-  const { classes, cx } = useStyles()
   const notify = useNotification()
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserMembership[]>([])
@@ -128,13 +83,25 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
       loading={isLoading}
       options={dropdownOptions}
       getOptionLabel={(option: UserMembership) => option.fullName ?? ''}
-      className={classes.selector}
+      sx={{
+        maxWidth: 400,
+        width: 400,
+        '& label, & div': {
+          fontSize: '0.875rem',
+          color: 'inherit',
+        },
+        '& input::placeholder, & input::-webkit-input-placeholder': { opacity: 1 },
+        '& input::-moz-placeholder, & input:-moz-placeholder': { opacity: 1 },
+        backgroundColor: 'primary.main',
+        color: 'primary.contrastText',
+        borderRadius: '4px',
+      }}
       value={null}
-      classes={{
-        paper: classes.paper,
-        endAdornment: classes.inheritColor,
-        popupIndicator: classes.inheritColor,
-        clearIndicator: classes.inheritColor,
+      slotProps={{
+        paper: { sx: { mt: 0.5 } },
+        // endAdornment: { sx: { color: 'inherit' } },
+        popupIndicator: { sx: { color: 'inherit' } },
+        clearIndicator: { sx: { color: 'inherit' } },
       }}
       renderInput={(params) => (
         <TextField
@@ -149,19 +116,14 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
         />
       )}
       renderOption={(props, params: UserMembership) => (
-        <li {...props} key={params.id} className={cx(props.className, classes.holder)}>
-          <span className={classes.text}>{params.fullName}</span>
+        <li {...props} key={params.id} style={{ overflow: 'hidden' }}>
+          <span style={{ fontSize: '0.875rem', wordWrap: 'break-word' }}>{params.fullName}</span>
         </li>
       )}
       isOptionEqualToValue={getOptionSelected}
       onChange={onValueChange}
       onBlur={onBlur}
       data-test='customer-select-dropdown'
-      sx={{
-        backgroundColor: 'primary.main',
-        color: 'primary.contrastText',
-        borderRadius: '4px',
-      }}
     />
   )
 }

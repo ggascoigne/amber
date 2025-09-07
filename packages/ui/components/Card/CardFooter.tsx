@@ -1,27 +1,23 @@
 import React, { PropsWithChildren } from 'react'
 
-import { makeStyles } from 'tss-react/mui'
+import { Box, SxProps, Theme } from '@mui/material'
 
-const useStyles = makeStyles()({
-  cardFooter: {
+interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string
+  sx?: SxProps<Theme>
+}
+
+export const CardFooter: React.FC<PropsWithChildren<CardFooterProps>> = (props) => {
+  const { className, children, sx, ...rest } = props
+  const defaultSx: SxProps<Theme> = {
     display: 'flex',
     alignItems: 'center',
     backgroundColor: 'transparent',
     padding: '0.9375rem 1.875rem',
-  },
-})
-
-interface CardFooterProps {
-  className?: string
-}
-
-export const CardFooter: React.FC<PropsWithChildren<CardFooterProps>> = (props) => {
-  const { classes, cx } = useStyles()
-  const { className, children, ...rest } = props
-  const cardFooterClasses = cx(classes.cardFooter, className)
+  }
   return (
-    <div className={cardFooterClasses} {...rest}>
+    <Box className={className} sx={[defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]} {...rest}>
       {children}
-    </div>
+    </Box>
   )
 }

@@ -5,7 +5,6 @@ import { Loader, notEmpty, Page, Table, YesBlankCell } from '@amber/ui'
 import CachedIcon from '@mui/icons-material/Cached'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
 
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
@@ -123,12 +122,6 @@ const columns: Column<Game>[] = [
   { accessor: 'roomId' },
 ]
 
-const useStyles = makeStyles()({
-  fixBusy: {
-    color: 'red',
-  },
-})
-
 const Games = React.memo(() => {
   const trpc = useTRPC()
   const [year] = useYearFilter()
@@ -136,7 +129,6 @@ const Games = React.memo(() => {
   const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const [fixBusy, setFixBusy] = useState(false)
-  const { classes, cx } = useStyles()
   const { error, data, refetch } = useQuery(
     trpc.games.getGamesByYear.queryOptions({
       year,
@@ -170,11 +162,11 @@ const Games = React.memo(() => {
       {
         label: 'Fix GM Names',
         onClick: onUpdateGmNames,
-        icon: <CachedIcon className={cx({ [classes.fixBusy]: fixBusy })} />,
+        icon: <CachedIcon sx={fixBusy ? { color: 'red' } : undefined} />,
         enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
       },
     ],
-    [classes.fixBusy, cx, fixBusy, onUpdateGmNames],
+    [fixBusy, onUpdateGmNames],
   )
 
   if (error) {

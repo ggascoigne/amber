@@ -57,7 +57,6 @@ import {
   TableRow,
   TableStyleOptions,
   TableTable,
-  useStyles,
 } from './TableStyles'
 import { Command, TableToolbar } from './TableToolbar'
 import { TooltipCellRenderer } from './TooltipCellRenderer'
@@ -190,7 +189,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
     [updateData],
   )
 
-  const { classes, cx } = useStyles(tableStyleOptions)
+  // styles now handled via sx in components; keep className flags for row state
 
   const hooks = [
     useColumnOrder,
@@ -309,7 +308,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                             direction={column.isGrouped ? 'desc' : 'asc'}
                             IconComponent={KeyboardArrowRight}
                             {...columnGroupByProps}
-                            className={classes.headerIcon}
+                            sx={{ '& svg': { width: 16, height: 16, mt: 0.5, mr: 0 } }}
                           />
                         </Tooltip>
                       )}
@@ -319,7 +318,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                             active={column.isSorted}
                             direction={column.isSortedDesc ? 'desc' : 'asc'}
                             {...columnSortByProps}
-                            className={classes.tableSortLabel}
+                            sx={{ '& svg': { width: 16, height: 16, mt: 0, ml: 0.25 } }}
                             style={style}
                           >
                             {column.render('Header')}
@@ -331,7 +330,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                         </TableLabel>
                       )}
                       {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
-                      {column.canResize && <ResizeHandle column={column} tableStyleOptions={tableStyleOptions} />}
+                      {column.canResize && <ResizeHandle column={column} />}
                     </TableHeadCell>
                   )
                 })}
@@ -347,7 +346,7 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
               <TableRow
                 key={rowKey}
                 {...getRowProps}
-                className={cx({ rowSelected: row.isSelected, clickable: !!onClick })}
+                className={`${row.isSelected ? 'rowSelected' : ''} ${onClick ? 'clickable' : ''}`}
                 tableStyleOptions={tableStyleOptions}
               >
                 {row.cells.map((cell) => {
@@ -362,15 +361,15 @@ export function Table<T extends Record<string, unknown>>(props: PropsWithChildre
                       {cell.isGrouped ? (
                         <>
                           <TableSortLabel
-                            classes={{
-                              iconDirectionAsc: classes.iconDirectionAsc,
-                              iconDirectionDesc: classes.iconDirectionDesc,
-                            }}
                             active
                             direction={row.isExpanded ? 'desc' : 'asc'}
                             IconComponent={KeyboardArrowUp}
                             {...row.getToggleRowExpandedProps()}
-                            className={classes.cellIcon}
+                            sx={{
+                              '& .MuiTableSortLabel-iconDirectionAsc': { transform: 'rotate(90deg)' },
+                              '& .MuiTableSortLabel-iconDirectionDesc': { transform: 'rotate(180deg)' },
+                              '& svg': { width: 16, height: 16, mt: 0.375 },
+                            }}
                           />
                           {cell.render('Cell', { editable: false })} ({row.subRows.length})
                         </>

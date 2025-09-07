@@ -1,20 +1,12 @@
 import React from 'react'
 
 import { GameArray } from '@amber/client'
-import { Theme, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import List from '@mui/material/List'
-import { makeStyles } from 'tss-react/mui'
 
 import { useUrlSource } from '../../utils'
 import { ListItemLink } from '../Navigation'
 import { GameDecorator, GameDecoratorParams } from '../types'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  listItem: {
-    paddingTop: 5,
-    paddingBottom: 5,
-  },
-}))
 
 interface GameListIndexProps {
   year: number
@@ -27,7 +19,6 @@ interface GameListIndexProps {
 }
 
 export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decoratorParams }: GameListIndexProps) => {
-  const { classes } = useStyles()
   const [urlSource] = useUrlSource()
   return (
     <List>
@@ -40,7 +31,7 @@ export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decora
         return (
           <ListItemLink
             key={game.id}
-            className={classes.listItem}
+            style={{ paddingTop: 5, paddingBottom: 5 }}
             selected={selectionKey === urlSource.url}
             href={{ pathname: slug, hash: `#${game.id}` }}
           >

@@ -5,38 +5,37 @@ import { BetaWarning } from '@amber/amber/components/BetaWarning'
 import { Link } from '@amber/amber/components/Navigation'
 import { IsMember } from '@amber/amber/utils'
 import { MdxWithExternalLinks, Page } from '@amber/ui'
-import { Button, Theme } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
+import { Box, Button } from '@mui/material'
 
 import { BecomeAMember } from './Memberships'
 
 import { Banner } from '../components/Banner'
 import WelcomeContent from '../content/WelcomeContent.mdx'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  banner: {
-    textAlign: 'center',
-  },
-  deadline: {},
-  deadlineExpired: {
-    color: theme.palette.error.main,
-    '&:after': {
-      content: '" - date passed"',
-    },
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 24,
-    paddingRight: 24,
-  },
-  title: {
-    color: '#fff',
-    fontWeight: 300,
-    textTransform: 'none',
-  },
-}))
+// const useStyles = makeStyles()((theme: Theme) => ({
+//   banner: {
+//     textAlign: 'center',
+//   },
+//   deadline: {},
+//   deadlineExpired: {
+//     color: theme.palette.error.main,
+//     '&:after': {
+//       content: '" - date passed"',
+//     },
+//   },
+//   header: {
+//     display: 'flex',
+//     alignItems: 'center',
+//     justifyContent: 'space-between',
+//     paddingLeft: 24,
+//     paddingRight: 24,
+//   },
+//   title: {
+//     color: '#fff',
+//     fontWeight: 300,
+//     textTransform: 'none',
+//   },
+// }))
 
 export const DynamicMemberContent = () => (
   <>
@@ -50,13 +49,11 @@ export const DynamicMemberContent = () => (
 )
 
 export const Welcome = () => {
-  const { classes } = useStyles()
-
   const titleElement = (
     <>
-      <div className={classes.banner}>
+      <Box sx={{ textAlign: 'center' }}>
         <Banner />
-      </div>
+      </Box>
       <BetaWarning />
       <h1>Welcome!</h1>
     </>
@@ -80,7 +77,7 @@ export const Welcome = () => {
 
       <ul>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Registration Open: <ConfigDate name='registrationOpen' format={MDY} />
           </span>
         </li>
@@ -92,28 +89,28 @@ export const Welcome = () => {
         </li>
 */}
         <li>
-          <span className={classes.deadline}>
+          <span>
             Membership payment in full: <ConfigDate name='paymentDeadline' format={MDY} />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' format={MDY} />
           </span>
         </li>
         {/* and on home/gameBookClosed.gsp */}
         <li>
-          <span className={classes.deadline}>
+          <span>
             Game Book preview to GMs: <ConfigDate name='gameGmPreview' format={MDY} />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Game Books open for selections: <ConfigDate name='gameBookOpen' format={MDY} />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Game Selections due: <ConfigDate name='gameChoicesDue' format={MDY} />
           </span>
         </li>
@@ -123,12 +120,12 @@ export const Welcome = () => {
         {/*  </span> */}
         {/* </li> */}
         <li>
-          <span className={classes.deadline}>
+          <span>
             Schedule previews to GMs: <ConfigDate name='gmPreview' format={MDY} />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Schedules SENT to all players: <ConfigDate name='schedulesSent' format={MDY} />
           </span>
         </li>
@@ -144,7 +141,7 @@ export const Welcome = () => {
           </span>
         </li> */}
         <li>
-          <span className={classes.deadline}>
+          <span>
             Last date for cancellation with partial refund:{' '}
             <ConfigDate name='lastCancellationFullRefund' format={MDY} />
           </span>

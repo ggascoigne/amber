@@ -3,21 +3,6 @@ import { ReactNode } from 'react'
 import { useConfiguration } from '@amber/amber/utils'
 import { CardBody, Page } from '@amber/ui'
 import { Box, Card } from '@mui/material'
-import { Theme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  card: {
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  cardBody: {
-    paddingTop: 0,
-  },
-  address: {
-    paddingLeft: 20,
-  },
-}))
 
 type PersonType = {
   name: string
@@ -27,30 +12,26 @@ type PersonType = {
   children: ReactNode
 }
 
-const Person = ({ name, title, children, facebook, linkedIn }: PersonType) => {
-  const { classes } = useStyles()
-  return (
-    <Card className={classes.card}>
-      <CardBody>
-        <h4>
-          {name}: ({title})
-        </h4>
-        <Box>{children}</Box>
-        <Box sx={{ pt: 2 }}>
-          Public Profile: <a href={linkedIn}>LinkedIn</a> | <a href={facebook}>FaceBook</a>
-        </Box>
-      </CardBody>
-    </Card>
-  )
-}
+const Person = ({ name, title, children, facebook, linkedIn }: PersonType) => (
+  <Card sx={{ mt: '20px', mb: '20px' }}>
+    <CardBody>
+      <h4>
+        {name}: ({title})
+      </h4>
+      <Box>{children}</Box>
+      <Box sx={{ pt: 2 }}>
+        Public Profile: <a href={linkedIn}>LinkedIn</a> | <a href={facebook}>FaceBook</a>
+      </Box>
+    </CardBody>
+  </Card>
+)
 
 const Contact = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
   return (
     <Page title='Contact'>
-      <Card className={classes.card} elevation={3}>
-        <CardBody className={classes.cardBody}>
+      <Card sx={{ mt: '20px', mb: '20px' }} elevation={3}>
+        <CardBody sx={{ pt: 0 }}>
           <h3>Payments</h3>
           <p>Payments should be made out to:</p>
 

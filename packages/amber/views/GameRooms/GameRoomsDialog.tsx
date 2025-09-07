@@ -19,16 +19,9 @@ import Yup from '@amber/ui/utils/Yup'
 import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { FormikHelpers } from 'formik'
-import { makeStyles } from 'tss-react/mui'
 
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
-
-const useStyles = makeStyles()({
-  hasRoom: {
-    opacity: '.6',
-  },
-})
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().min(2).max(100).required('Required'),
@@ -151,8 +144,6 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
     ),
   )
 
-  const { classes, cx } = useStyles()
-
   const gamesBySlot = useCallback(
     (slotId: number) => games?.filter((g) => g.slotId === slotId).filter(notEmpty) ?? [],
     [games],
@@ -240,7 +231,7 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
                           hasRoom ? ` (${game.room?.description})` : ''
                         }`
                         return (
-                          <li {...props} className={cx({ [classes.hasRoom]: hasRoom })}>
+                          <li {...props} style={hasRoom ? { opacity: 0.6 } : undefined}>
                             {line}
                           </li>
                         )

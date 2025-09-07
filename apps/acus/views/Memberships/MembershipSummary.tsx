@@ -26,32 +26,13 @@ import {
   Page,
   range,
 } from '@amber/ui'
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { makeStyles } from 'tss-react/mui'
 
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
-
-const useStyles = makeStyles()({
-  card: {
-    marginBottom: 50,
-  },
-  gridItem: {
-    paddingBottom: 10,
-  },
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  vspace: {
-    height: 8,
-  },
-})
 
 interface VirtualDetailsProps {
   membership: MembershipType
@@ -61,13 +42,12 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   const configuration = useConfiguration()
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(configuration, membership)
-  const { classes } = useStyles()
   return (
     <GridContainer direction='column'>
       <h1>Your Membership for {configuration.year}</h1>
       <GridContainer item>
         <Field label='Slots you intend to play'>
-          <div className={classes.slotSelection}>
+          <Box sx={{ position: 'relative', pt: 0, display: 'flex', flexDirection: 'column' }}>
             {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
@@ -97,7 +77,7 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
                 }}
               />
             ))}
-          </div>
+          </Box>
         </Field>
         {membership.message && (
           <Field label='Message'>
@@ -109,14 +89,11 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   )
 }
 
-const VerticalGap = () => {
-  const { classes } = useStyles()
-  return (
-    <GridItem xs={12}>
-      <br className={classes.vspace} />
-    </GridItem>
-  )
-}
+const VerticalGap = () => (
+  <GridItem xs={12}>
+    <Box sx={{ height: 8 }} />
+  </GridItem>
+)
 
 interface DetailsProps {
   membership: MembershipType
@@ -166,7 +143,6 @@ const MembershipSummary = () => {
   const { isLoading, error, data } = useQuery(
     trpc.memberships.getMembershipByYearAndId.queryOptions({ year, userId: userId ?? 0 }),
   )
-  const { classes } = useStyles()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
   const { query } = router
@@ -205,7 +181,7 @@ const MembershipSummary = () => {
       <br />
       {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
       <GridContainer>
-        <GridItem xs={12} sm={5} className={classes.gridItem}>
+        <GridItem xs={12} sm={5} sx={{ pb: '10px' }}>
           <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
             Edit
           </Button>

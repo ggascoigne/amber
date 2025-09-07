@@ -3,44 +3,12 @@ import React, { ReactNode } from 'react'
 import { Game } from '@amber/client'
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from '@amber/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Accordion, AccordionDetails, AccordionSummary, Theme } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import { InView } from 'react-intersection-observer'
-import { makeStyles } from 'tss-react/mui'
 
 import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import { GameDecorator, GameDecoratorParams } from '../types'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  card: {
-    marginBottom: 50,
-  },
-  cardBody: {
-    [theme.breakpoints.down('md')]: {
-      padding: 0,
-    },
-    [theme.breakpoints.up('sm')]: {
-      padding: '0.9375rem 1.875rem',
-    },
-  },
-  header: {
-    display: 'flex',
-    flex: 1,
-  },
-  tinyCard: {
-    height: 279,
-    width: 295,
-    zIndex: 10,
-    transform: 'rotateZ(-3deg)',
-  },
-  cardTiny: {
-    overflow: 'hidden',
-    height: 200,
-  },
-  playerLine: {
-    lineHeight: '1.5em',
-  },
-}))
 
 interface Player {
   gm: number
@@ -48,14 +16,11 @@ interface Player {
   email: string
 }
 
-const PlayerDetails = ({ player }: { player: Player }) => {
-  const { classes } = useStyles()
-  return (
-    <div className={classes.playerLine}>
-      <span>{player.fullName}</span> (<span>{player.email}</span>)
-    </div>
-  )
-}
+const PlayerDetails = ({ player }: { player: Player }) => (
+  <div style={{ lineHeight: '1.5em' }}>
+    <span>{player.fullName}</span> (<span>{player.email}</span>)
+  </div>
+)
 
 interface GameCardProps {
   game: Game
@@ -75,7 +40,6 @@ type GameCardDetailsProps = GameCardProps & { header: ReactNode; gms?: Player[];
 
 const GameCardDetails = React.memo(
   ({ game, year, slot, tiny, header, players = [], gms = [] }: GameCardDetailsProps) => {
-    const { classes, cx } = useStyles()
     const {
       id,
       description,
@@ -95,8 +59,8 @@ const GameCardDetails = React.memo(
     } = game
 
     const content = (
-      <CardBody className={classes.cardBody}>
-        <GridContainer className={cx({ [classes.cardTiny]: tiny })}>
+      <CardBody sx={{ p: { xs: 0, sm: '0.9375rem 1.875rem' } }}>
+        <GridContainer sx={tiny ? { overflow: 'hidden', height: 200 } : undefined}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
             {gms.length
               ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
@@ -155,7 +119,7 @@ const GameCardDetails = React.memo(
     return (
       <Card
         key={`game_${id}`}
-        className={cx(classes.card, { [classes.tinyCard]: tiny })}
+        sx={[{ mb: '50px' }, tiny ? { height: 279, width: 295, zIndex: 10, transform: 'rotateZ(-3deg)' } : {}]}
         id={`game/${year}/${slot}/${id}`}
       >
         {tiny ? (
@@ -195,7 +159,6 @@ export const GameCard = React.memo(
     gms,
     players,
   }: GameCardProps) => {
-    const { classes, cx } = useStyles()
     const { id, name, slotId = 0, description } = game
 
     const headerText = schedule ? `${game.slotId!}: ${name}` : name
@@ -215,7 +178,7 @@ export const GameCard = React.memo(
     const header = onEnter ? (
       <InView
         as='div'
-        className={classes.header}
+        style={{ display: 'flex', flex: 1 }}
         rootMargin='-100px 0px -80% 0px'
         onChange={(inView) => inView && onEnter(`${year}/${slot}/${game.id}`)}
       >
@@ -228,7 +191,16 @@ export const GameCard = React.memo(
     if (game.year === 0) {
       const content = (
         <CardBody>
-          <GridContainer className={cx({ [classes.cardTiny]: tiny })}>
+          <GridContainer
+            sx={[
+              tiny && {
+                height: 279,
+                width: 295,
+                zIndex: 10,
+                transform: 'rotateZ(-3deg)',
+              },
+            ]}
+          >
             <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
               <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
             </Field>
@@ -238,7 +210,7 @@ export const GameCard = React.memo(
       return tiny ? (
         <Card
           key={`game_${id}`}
-          className={cx(classes.card, { [classes.tinyCard]: tiny })}
+          sx={[{ mb: '50px' }, tiny ? { height: 279, width: 295, zIndex: 10, transform: 'rotateZ(-3deg)' } : {}]}
           id={`game/${year}/${slot}/${id}`}
         >
           {header}

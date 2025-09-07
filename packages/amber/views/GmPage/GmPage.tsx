@@ -2,12 +2,11 @@ import React, { MouseEventHandler, useState } from 'react'
 
 import { Game, useTRPC, useInvalidateGameQueries } from '@amber/client'
 import { Loader, Page, range, Table } from '@amber/ui'
-import { Button, Theme } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
 
 import { ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
@@ -16,15 +15,6 @@ import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUse
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 // type Game = GameFieldsFragment & GameGmsFragment
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  blurb: {
-    '& li': {
-      paddingBottom: 10,
-      paddingRight: 40,
-    },
-  },
-}))
 
 const columns: Column<Game>[] = [
   {
@@ -70,12 +60,11 @@ const initialState: Partial<TableState<Game>> = {
 
 const VirtualGmBlurb = () => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
   return (
     <>
       <p>Thank you for considering offering games for virtual{configuration.name}!</p>
       <p>While most things we need are similar to our usual years, there are a few key differences:</p>
-      <ol className={classes.blurb}>
+      <Box component='ol' sx={{ '& li': { pb: '10px', pr: '40px' } }}>
         <li>
           <p>
             <strong>Slot times and durations</strong>: Rather than our usual mix of short slots and long slots, all
@@ -113,13 +102,12 @@ const VirtualGmBlurb = () => {
             server for you to list your games.
           </p>
         </li>
-      </ol>
+      </Box>
     </>
   )
 }
 
 const GmBlurb = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
   return (
     <>
@@ -130,7 +118,7 @@ const GmBlurb = () => {
           <ConfigDate name='gameSubmissionDeadline' format={MDY} />
         </strong>
       </p>
-      <ol className={classes.blurb}>
+      <Box component='ol' sx={{ '& li': { pb: '10px', pr: '40px' } }}>
         <li>
           {configuration.isAcnw && (
             <p>
@@ -209,7 +197,7 @@ const GmBlurb = () => {
             </p>
           </li>
         )}
-      </ol>
+      </Box>
     </>
   )
 }

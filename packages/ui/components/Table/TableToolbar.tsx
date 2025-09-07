@@ -7,9 +7,9 @@ import DeleteIcon from '@mui/icons-material/DeleteOutline'
 import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import ViewColumnsIcon from '@mui/icons-material/ViewColumn'
-import { Button, IconButton, Theme, Toolbar, Tooltip } from '@mui/material'
+import { Box, Button, IconButton, Toolbar, Tooltip } from '@mui/material'
+import { SxProps, Theme } from '@mui/material/styles'
 import type { TableInstance } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
 
 import { ColumnHidePage } from './ColumnHidePage'
 import { FilterPage } from './FilterPage'
@@ -17,28 +17,20 @@ import { FilterPage } from './FilterPage'
 import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { camelToWords } from '../../utils'
 
-export const useStyles = makeStyles()((_theme: Theme) => ({
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
+const rightIconSx: SxProps<Theme> = {
+  p: 1.5,
+  mt: '-6px',
+  width: 48,
+  height: 48,
+  '&:last-of-type': {
+    mr: -1.5,
   },
-  leftButtons: {},
-  rightButtons: {},
-  leftIcons: {
-    '&:first-of-type': {
-      marginLeft: -12,
-    },
+}
+const leftIconSx: SxProps<Theme> = {
+  '&:first-of-type': {
+    ml: -1.5,
   },
-  rightIcons: {
-    padding: 12,
-    marginTop: '-6px',
-    width: 48,
-    height: 48,
-    '&:last-of-type': {
-      marginRight: -12,
-    },
-  },
-}))
+}
 
 interface ActionButton<T extends Record<string, unknown>> {
   instance: TableInstance<T>
@@ -70,23 +62,20 @@ export const SmallIconActionButton = <T extends Record<string, unknown>>({
   label,
   enabled = () => true,
   variant,
-}: ActionButton<T>) => {
-  const { classes, cx } = useStyles()
-  return (
-    <Tooltip title={label} aria-label={label}>
-      <span>
-        <IconButton
-          className={cx({ [classes.rightIcons]: variant === 'right', [classes.leftIcons]: variant === 'left' })}
-          onClick={onClick(instance)}
-          disabled={!enabled(instance)}
-          size='large'
-        >
-          {icon}
-        </IconButton>
-      </span>
-    </Tooltip>
-  )
-}
+}: ActionButton<T>) => (
+  <Tooltip title={label} aria-label={label}>
+    <span>
+      <IconButton
+        sx={variant === 'right' ? rightIconSx : leftIconSx}
+        onClick={onClick(instance)}
+        disabled={!enabled(instance)}
+        size='large'
+      >
+        {icon}
+      </IconButton>
+    </span>
+  </Tooltip>
+)
 
 export interface Command<T extends Record<string, unknown>> {
   label: string
@@ -114,7 +103,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
   onRefresh,
 }: PropsWithChildren<TableToolbarProps<T>>): ReactElement | null {
   const { columns } = instance
-  const { classes } = useStyles()
+  const toolbarSx: SxProps<Theme> = { display: 'flex', justifyContent: 'space-between' }
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)
   const [columnsOpen, setColumnsOpen] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)
@@ -185,8 +174,8 @@ export function TableToolbar<T extends Record<string, unknown>>({
 
   // toolbar with add, edit, delete, filter/search column select.
   return (
-    <Toolbar className={classes.toolbar}>
-      <div className={classes.leftButtons}>
+    <Toolbar sx={toolbarSx}>
+      <Box>
         {onAdd && (
           <SmallIconActionButton<T>
             instance={instance}
@@ -240,8 +229,8 @@ export function TableToolbar<T extends Record<string, unknown>>({
             />
           )
         })}
-      </div>
-      <div className={classes.rightButtons}>
+      </Box>
+      <Box>
         <ColumnHidePage<T> instance={instance} onClose={handleClose} show={columnsOpen} anchorEl={anchorEl} />
         <FilterPage<T> instance={instance} onClose={handleClose} show={filterOpen} anchorEl={anchorEl} />
         {onRefresh && (
@@ -276,7 +265,7 @@ export function TableToolbar<T extends Record<string, unknown>>({
           label='Download as CSV'
           variant='right'
         />
-      </div>
+      </Box>
     </Toolbar>
   )
 }

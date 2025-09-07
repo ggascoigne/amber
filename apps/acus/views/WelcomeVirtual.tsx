@@ -3,47 +3,19 @@ import React from 'react'
 import { ConfigDate, ContactEmail } from '@amber/amber/components'
 import { BetaWarning } from '@amber/amber/components/BetaWarning'
 import { MdxWithExternalLinks, Page } from '@amber/ui'
-import { Theme } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
+import { Box } from '@mui/material'
 
 import { DynamicMemberContent } from './Welcome'
 
 import { Banner } from '../components'
 import WelcomeContentVirtual from '../content/WelcomeContentVirtual.mdx'
 
-const useStyles = makeStyles()((theme: Theme) => ({
-  banner: {
-    textAlign: 'center',
-  },
-  deadline: {},
-  deadlineExpired: {
-    color: theme.palette.error.main,
-    '&:after': {
-      content: '" - date passed"',
-    },
-  },
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 24,
-    paddingRight: 24,
-  },
-  title: {
-    color: '#fff',
-    fontWeight: 300,
-    textTransform: 'none',
-  },
-}))
-
 export const WelcomeVirtual = () => {
-  const { classes } = useStyles()
-
   const titleElement = (
     <>
-      <div className={classes.banner}>
+      <Box sx={{ textAlign: 'center' }}>
         <Banner />
-      </div>
+      </Box>
       <BetaWarning />
       <h1>Welcome!</h1>
     </>
@@ -67,42 +39,54 @@ export const WelcomeVirtual = () => {
       <p>NOTE: all dates are tentative due to potential technological restrictions.</p>
       <ul>
         <li>
-          <span className={classes.deadlineExpired}>
+          <Box
+            component='span'
+            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+          >
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
-          </span>
+          </Box>
         </li>
         <li>
-          <span className={classes.deadlineExpired}>
+          <Box
+            component='span'
+            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+          >
             All attendee registrations due: <ConfigDate name='registrationDeadline' />
-          </span>
+          </Box>
         </li>
         <li>
-          <span className={classes.deadlineExpired}>
+          <Box
+            component='span'
+            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+          >
             Game Book preview to GMs: <ConfigDate name='gameGmPreview' />
-          </span>
+          </Box>
         </li>
         <li>
-          <span className={classes.deadlineExpired}>
+          <Box
+            component='span'
+            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+          >
             GM Feedback on Game Book: <ConfigDate name='gameGmFeedbackDeadline' />
-          </span>
+          </Box>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Game Books open for selections: <ConfigDate name='gameBookOpen' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Game Selections due: <ConfigDate name='gameChoicesDue' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Schedule previews to GMs: <ConfigDate name='gmPreview' />
           </span>
         </li>
         <li>
-          <span className={classes.deadline}>
+          <span>
             Schedules SENT to all players: <ConfigDate name='schedulesSent' />
           </span>
         </li>
