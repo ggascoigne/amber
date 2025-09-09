@@ -10,31 +10,6 @@ import { DynamicMemberContent } from './Welcome'
 import { Banner } from '../components/Banner'
 import WelcomeContentVirtual from '../content/WelcomeContentVirtual.mdx'
 
-// const useStyles = makeStyles()((theme: Theme) => ({
-//   banner: {
-//     textAlign: 'center',
-//   },
-//   deadline: {},
-//   deadlineExpired: {
-//     color: theme.palette.error.main,
-//     '&:after': {
-//       content: '" - date passed"',
-//     },
-//   },
-//   header: {
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'space-between',
-//     paddingLeft: 24,
-//     paddingRight: 24,
-//   },
-//   title: {
-//     color: '#fff',
-//     fontWeight: 300,
-//     textTransform: 'none',
-//   },
-// }))
-
 export const WelcomeVirtual = () => {
   const titleElement = (
     <>

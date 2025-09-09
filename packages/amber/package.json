@@ -54,7 +54,6 @@
     "luxon": "^3.7.2",
     "match-sorter": "^8.1.0",
     "next": "15.5.2",
-    "next-mdx-frontmatter": "^0.0.4",
     "notistack": "^3.0.2",
     "react-intersection-observer": "^9.16.0",
     "react-spinners": "^0.17.0",

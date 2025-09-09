@@ -1,9 +1,7 @@
 import { MdxPage } from '@amber/ui'
 
-import * as content from '../content/AntiHarassmentPolicyContent.mdx'
+import AntiHarassmentPolicyContent, { metadata } from '../content/AntiHarassmentPolicyContent.mdx'
 
-const { default: AntiHarassmentPolicyContent, ...frontMatter } = content
-
-const AntiHarassmentPolicy = () => <MdxPage frontMatter={frontMatter} component={<AntiHarassmentPolicyContent />} />
+const AntiHarassmentPolicy = () => <MdxPage frontMatter={metadata} component={<AntiHarassmentPolicyContent />} />
 
 export default AntiHarassmentPolicy
