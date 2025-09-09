@@ -25,6 +25,11 @@ const GameChoiceSummary = () => {
       },
       {
         enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
       },
     ),
   )

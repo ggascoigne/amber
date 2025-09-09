@@ -19,7 +19,17 @@ export const GameSignupMenu = () => {
   const [, setShowConfirmDialog] = useConfirmDialogOpen()
 
   const { error, data } = useQuery(
-    trpc.gameChoices.getGameChoices.queryOptions({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership }),
+    trpc.gameChoices.getGameChoices.queryOptions(
+      { year, memberId: membership?.id ?? 0 },
+      {
+        enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   )
 
   if (error) {

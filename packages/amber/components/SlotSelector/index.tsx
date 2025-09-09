@@ -21,14 +21,14 @@ interface SlotSelectorProps {
 export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, decorator, decoratorParams = {} }) => {
   const configuration = useConfiguration()
   const router = useRouter()
-  const { base, year, slot } = useGameUrl()
+  const { year, slot } = useGameUrl()
 
   const handleChange = useCallback(
     (event: ChangeEvent<unknown>, value: any) => {
       const slotId = value + 1
-      router.replace(`${base}/${year}/${slotId}`)
+      router.replace(`${year}/${slotId}`)
     },
-    [base, router, year],
+    [router, year],
   )
 
   const slots = range(configuration.numberOfSlots)

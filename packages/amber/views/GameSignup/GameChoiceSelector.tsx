@@ -106,6 +106,19 @@ export type GameChoiceSelectorProps = {
   game: Game
 } & SelectorParams
 
+const toggleButtonSx = {
+  textTransform: 'inherit',
+  color: 'white',
+  p: '5px 7px',
+  borderColor: 'white',
+  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
+  '&.Mui-selected': {
+    color: 'white',
+    backgroundColor: 'rgba(102, 8, 22, 1)',
+    borderLeftColor: 'white',
+    '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
+  },
+}
 export const GameChoiceSelector = ({
   year,
   slot,
@@ -180,123 +193,31 @@ export const GameChoiceSelector = ({
           <div style={{ width: 60, textAlign: 'inherit', textTransform: 'inherit' }}>Choice</div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
             {isAdmin && !isNoOrAnyGame && (
-              <ToggleButton
-                sx={{
-                  textTransform: 'inherit',
-                  color: 'white',
-                  p: '5px 7px',
-                  borderColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                  '&.Mui-selected': {
-                    color: 'white',
-                    backgroundColor: 'rgba(102, 8, 22, 1)',
-                    borderLeftColor: 'white',
-                    '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                  },
-                }}
-                value={0}
-                aria-label='GM'
-              >
+              <ToggleButton sx={toggleButtonSx} value={0} aria-label='GM'>
                 <Rank rank={0} />
               </ToggleButton>
             )}
             {isAdmin ? (
-              <ToggleButton
-                sx={{
-                  textTransform: 'inherit',
-                  color: 'white',
-                  p: '5px 7px',
-                  borderColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                  '&.Mui-selected': {
-                    color: 'white',
-                    backgroundColor: 'rgba(102, 8, 22, 1)',
-                    borderLeftColor: 'white',
-                    '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                  },
-                }}
-                value={1}
-                aria-label='first'
-              >
+              <ToggleButton sx={toggleButtonSx} value={1} aria-label='first'>
                 <Rank rank={1} />
               </ToggleButton>
             ) : (
               <ToggleButton
                 disabled={isGmThisSlot && !isAdmin}
-                sx={{
-                  textTransform: 'inherit',
-                  color: 'white',
-                  p: '5px 7px',
-                  borderColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                  '&.Mui-selected': {
-                    color: 'white',
-                    backgroundColor: 'rgba(102, 8, 22, 1)',
-                    borderLeftColor: 'white',
-                    '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                  },
-                }}
+                sx={toggleButtonSx}
                 value={rank === 0 ? 0 : 1}
                 aria-label='first'
               >
                 {rank === 0 ? <Rank rank={0} /> : <Rank rank={1} />}
               </ToggleButton>
             )}
-            <ToggleButton
-              sx={{
-                textTransform: 'inherit',
-                color: 'white',
-                p: '5px 7px',
-                borderColor: 'white',
-                '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                '&.Mui-selected': {
-                  color: 'white',
-                  backgroundColor: 'rgba(102, 8, 22, 1)',
-                  borderLeftColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                },
-              }}
-              value={2}
-              aria-label='second'
-            >
+            <ToggleButton sx={toggleButtonSx} value={2} aria-label='second'>
               <Rank rank={2} />
             </ToggleButton>
-            <ToggleButton
-              sx={{
-                textTransform: 'inherit',
-                color: 'white',
-                p: '5px 7px',
-                borderColor: 'white',
-                '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                '&.Mui-selected': {
-                  color: 'white',
-                  backgroundColor: 'rgba(102, 8, 22, 1)',
-                  borderLeftColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                },
-              }}
-              value={3}
-              aria-label='third'
-            >
+            <ToggleButton sx={toggleButtonSx} value={3} aria-label='third'>
               <Rank rank={3} />
             </ToggleButton>
-            <ToggleButton
-              sx={{
-                textTransform: 'inherit',
-                color: 'white',
-                p: '5px 7px',
-                borderColor: 'white',
-                '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                '&.Mui-selected': {
-                  color: 'white',
-                  backgroundColor: 'rgba(102, 8, 22, 1)',
-                  borderLeftColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                },
-              }}
-              value={4}
-              aria-label='fourth'
-            >
+            <ToggleButton sx={toggleButtonSx} value={4} aria-label='fourth'>
               <Rank rank={4} />
             </ToggleButton>
           </ToggleButtonGroup>
@@ -315,20 +236,7 @@ export const GameChoiceSelector = ({
               value={returning}
               selected={returning}
               onChange={handleReturning}
-              sx={{
-                textAlign: 'end',
-                textTransform: 'inherit',
-                color: 'white',
-                p: '5px 7px',
-                borderColor: 'white',
-                '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
-                '&.Mui-selected': {
-                  color: 'white',
-                  backgroundColor: 'rgba(102, 8, 22, 1)',
-                  borderLeftColor: 'white',
-                  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
-                },
-              }}
+              sx={[{ textAlign: 'end' }, toggleButtonSx]}
             >
               Returning Player
             </ToggleButton>

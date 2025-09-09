@@ -64,14 +64,14 @@ export const createTRPCRouter = t.router
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
-const trpcLog = Debug('amber:trpc')
-const trpcReq = trpcLog.extend('req')
-const trpcRes = trpcLog.extend('res')
-// const trpcWarn = trpcLog.extend('warn')
-const trpcErr = trpcLog.extend('error')
+const logTrpc = Debug('amber:trpc')
+const logTrpcReq = logTrpc.extend('req')
+const logTrpcRes = logTrpc.extend('res')
+// const logTrpcWarn = logTrpc.extend('warn')
+const logTrpcErr = logTrpc.extend('error')
 // Route errors to stderr, but keep debug formatting and always show
-trpcErr.log = console.error.bind(console)
-trpcErr.enabled = true
+logTrpcErr.log = console.error.bind(console)
+logTrpcErr.enabled = true
 
 const timingMiddleware = t.middleware(async ({ next, path, type }) => {
   const start = Date.now()
@@ -83,16 +83,16 @@ const timingMiddleware = t.middleware(async ({ next, path, type }) => {
     await new Promise((resolve) => setTimeout(resolve, waitMs))
   }
 
-  trpcReq('%s %s start', type, path)
+  logTrpcReq('%s %s start', type, path)
 
   try {
     const result = await next()
     const dur = Date.now() - start
-    trpcRes('%s %s (%d ms)', type, path, dur)
+    logTrpcRes('%s %s (%d ms)', type, path, dur)
     return result
   } catch (err) {
     const dur = Date.now() - start
-    trpcErr('%s %s failed (%d ms): %s', type, path, dur, (err as Error).message)
+    logTrpcErr('%s %s failed (%d ms): %s', type, path, dur, (err as Error).message)
     throw err
   }
 })

@@ -31,6 +31,14 @@ import {
   useUser,
 } from '../../utils'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const debugGameChoices = (gameChoices: ChoiceType[] | undefined) => {
+  const g = gameChoices
+    ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))
+    ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
+    ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
+  console.table(g)
+}
 export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
 
 export const useEditGameChoice = () => {
@@ -55,6 +63,7 @@ export const useEditGameChoice = () => {
             ...input.data,
             id: input.id,
           }
+          // console.log('onMutate, updating cache for', queryKey, 'at index', choiceIndex, previousData)
           queryClient.setQueryData(queryKey, () => previousData)
         }
         return { previousData }
@@ -78,6 +87,7 @@ export const useEditGameChoice = () => {
   }
 
   const createOrUpdate = async (values: ChoiceType, refetch = false) => {
+    // console.log('GameSignupPage:', values)
     if (values.id) {
       return updateGameChoice
         .mutateAsync(
@@ -120,7 +130,7 @@ const GameSignupPage = () => {
   const setNewUrl = useGameScroll()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
+  const [createOrEditGameChoice, createAllGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
   const configuration = useConfiguration()
@@ -129,8 +139,18 @@ const GameSignupPage = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { error, data } = useQuery(
-    trpc.gameChoices.getGameChoices.queryOptions({ year, memberId: membership?.id ?? 0 }, { enabled: !!membership }),
+  const { error, data, isLoading } = useQuery(
+    trpc.gameChoices.getGameChoices.queryOptions(
+      { year, memberId: membership?.id ?? 0 },
+      {
+        enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   )
 
   const onCloseConfirm: MouseEventHandler = () => {
@@ -158,8 +178,11 @@ const GameSignupPage = () => {
         // unset any other references to the same game
         .map((c) => (c.gameId === gameId && c.rank !== rank ? { ...c, ...empty } : c)) as ChoiceType[]
 
+      // debugGameChoices(gameChoices)
+      // debugGameChoices(thisSlotChoices)
+
       if (rank === null) {
-        if (oldRank) {
+        if (oldRank || oldRank === 0) {
           thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank]!, ...empty }
         } else {
           console.log(`update changed rank, but didn't pass in the old rank`)
@@ -181,12 +204,12 @@ const GameSignupPage = () => {
         }
       }
 
-      // console.log(thisSlotChoices)
+      // console.log(`slotId ${slotId} thisSlotChoices:`, thisSlotChoices)
 
       const updaters = thisSlotChoices
         .filter((c) => c.modified)
         .reduce((acc: Promise<any>[], c, idx, arr) => {
-          acc.push(createOrEditGameChoice(c, idx + 1 === arr.length))
+          if (c.id) acc.push(createOrEditGameChoice(c, idx + 1 === arr.length))
           return acc
         }, [])
 
@@ -212,25 +235,18 @@ const GameSignupPage = () => {
   if (error) {
     return <TransportError error={error} />
   }
-  if (!data) {
+  if (!data || isLoading) {
     return <Loader />
   }
 
   if (gameChoices !== undefined && gameChoices.length === 0 && !created) {
     setCreated(true)
-    createGameChoices(membership.id, year).then()
+    createAllGameChoices(membership.id, year).then()
   }
 
   if (gameChoices !== undefined && gameChoices.length === 0) {
     return <Loader />
   }
-
-  // debug a smaller subset fo the data, sorted
-  // const g = gameChoices
-  //   ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))
-  //   ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
-  //   ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
-  // console.table(g)
 
   const gmSlots = gameChoices?.filter((c) => c?.rank === 0 && c.gameId).filter(notEmpty)
   const selectorParams = {
