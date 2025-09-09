@@ -44,7 +44,7 @@
     "@types/debug": "~4.1.12",
     "@types/node": "^24.3.1",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250908.1",
+    "@typescript/native-preview": "7.0.0-dev.20250909.1",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.0",
     "dotenv": "^17.2.2",

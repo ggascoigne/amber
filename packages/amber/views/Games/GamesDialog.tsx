@@ -220,7 +220,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
       {({ values, setValues, setFieldValue }) => (
         <GridContainer spacing={2}>
           {!!priorGamesList.length && (
-            <GridItem xs={12} md={12}>
+            <GridItem size={{ xs: 12, md: 12 }}>
               <Autocomplete
                 id='prior-games'
                 options={priorGamesList}
@@ -238,11 +238,11 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               />
             </GridItem>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
           </GridItem>
           <AdminCard permission={Perms.GameAdmin}>
-            <GridItem xs={12} md={12}>
+            <GridItem size={{ xs: 12, md: 12 }}>
               <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
             </GridItem>
             <CheckboxWithLabel label='Game Full?' name='full' />
@@ -260,7 +260,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               onChange={(e, value) => setFieldValue('roomId', value?.id)}
             />
           </AdminCard>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField
               name='gmNames'
               label='Game Master(s), one per line'
@@ -270,12 +270,12 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               required
             />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
           </GridItem>
           {configuration.isAcnw && (
-            <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-              <GridItem xs={12} md={6}>
+            <GridItem container spacing={2} size={{ xs: 12, md: 12 }} style={{ paddingRight: 0 }}>
+              <GridItem size={{ xs: 12, md: 6 }}>
                 <SelectField
                   required
                   name='genre'
@@ -285,17 +285,17 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                   selectValues={genreOptions}
                 />
               </GridItem>
-              <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
+              <GridItem size={{ xs: 12, md: 6 }} style={{ paddingRight: 0 }}>
                 <SelectField required name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
               </GridItem>
             </GridItem>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
           </GridItem>
           {configuration.isAcnw && (
             <>
-              <GridItem xs={12} md={12}>
+              <GridItem size={{ xs: 12, md: 12 }}>
                 <TextField
                   name='setting'
                   label='Setting - Where/When in the Multiverse'
@@ -304,7 +304,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                   multiline
                 />
               </GridItem>
-              <GridItem xs={12} md={12}>
+              <GridItem size={{ xs: 12, md: 12 }}>
                 <TextField
                   name='charInstructions'
                   label='Character/Player Instructions & Restrictions'
@@ -315,11 +315,11 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               </GridItem>
             </>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
           </GridItem>
-          <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-            <GridItem xs={12} md={6}>
+          <GridItem container spacing={2} size={{ xs: 12, md: 12 }} style={{ paddingRight: 0 }}>
+            <GridItem size={{ xs: 12, md: 6 }}>
               <TextField
                 name='playerMin'
                 label='Min'
@@ -332,7 +332,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                 }}
               />
             </GridItem>
-            <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
+            <GridItem size={{ xs: 12, md: 6 }} style={{ paddingRight: 0 }}>
               <TextField
                 name='playerMax'
                 label='Max'
@@ -346,7 +346,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               />
             </GridItem>
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <SelectField
               name='playerPreference'
               label='Player Preference'
@@ -355,7 +355,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               selectValues={playerPreferenceOptions}
             />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField
               name='returningPlayers'
               label='If you have Returning Players, please list them here'
@@ -364,10 +364,10 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               multiline
             />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Should your players contact you before the con?' name='playersContactGm' />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField
               name='gameContactEmail'
               label='Game Contact email'
@@ -377,7 +377,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
             />
           </GridItem>
           {configuration.isAcnw && (
-            <GridItem xs={12} md={12}>
+            <GridItem size={{ xs: 12, md: 12 }}>
               <p>
                 You are welcome to start and end the game at any time (within reason), but if the game overlaps two
                 slots, please enter two games and mark them as parts one and two.
@@ -394,7 +394,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
               />
             </GridItem>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <SlotOptionsSelect
               name='slotPreference'
               label='Slot Preference'
@@ -406,7 +406,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
           </GridItem>
           {!configuration.startDates[values.year]!.virtual && (
             <>
-              <GridItem xs={12} md={12}>
+              <GridItem size={{ xs: 12, md: 12 }}>
                 <SelectField
                   name='lateStart'
                   label='Morning Games'
@@ -415,12 +415,12 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                   selectValues={morningGamesOptions}
                 />
               </GridItem>
-              <GridItem xs={12} md={12}>
+              <GridItem size={{ xs: 12, md: 12 }}>
                 <CheckboxWithLabel name='lateFinish' label='Evening Game: Game may run late into the evening' />
               </GridItem>
             </>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
               To schedule, or in the event we have to change your requested slot, list any and all known slot conflicts
               (other games you are running, returning or ongoing games, and any slots you are taking off). If you have
@@ -429,11 +429,11 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
             </Typography>
           </GridItem>
           {configuration.isAcnw && (
-            <GridItem xs={12} md={12}>
+            <GridItem size={{ xs: 12, md: 12 }}>
               <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
             </GridItem>
           )}
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='message' label='Messages for the Organizers' margin='normal' fullWidth multiline />
           </GridItem>
         </GridContainer>

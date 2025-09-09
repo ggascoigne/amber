@@ -1,6 +1,6 @@
 import { CSSProperties } from '@mui/material'
 
-declare module '@mui/material/styles/createMixins' {
+declare module '@mui/material/styles' {
   interface BoxShadows {
     primary: CSSProperties['boxShadow']
     secondary: CSSProperties['boxShadow']

@@ -32,6 +32,7 @@ export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decora
           <ListItemLink
             key={game.id}
             style={{ paddingTop: 5, paddingBottom: 5 }}
+            sx={{ color: 'primary.main' }}
             selected={selectionKey === urlSource.url}
             href={{ pathname: slug, hash: `#${game.id}` }}
           >

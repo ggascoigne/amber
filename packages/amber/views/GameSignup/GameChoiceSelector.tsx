@@ -183,7 +183,7 @@ export const GameChoiceSelector = ({
 
   return (
     <>
-      <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} />
+      {/* <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} /> */}
       <div
         style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', margin: '-3px 0' }}
         onClick={(event) => event.stopPropagation()}

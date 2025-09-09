@@ -199,19 +199,19 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
     >
       {({ values, setFieldValue }) => (
         <GridContainer spacing={2}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='description' label='Description' margin='normal' fullWidth required autoFocus />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='size' label='Size' margin='normal' fullWidth type='number' />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='type' label='Type' margin='normal' fullWidth />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Updated?' name='updated' />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <Divider orientation='horizontal' />
           </GridItem>
           {values?.id
@@ -219,7 +219,7 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
                 const options = gamesBySlot(slotId)
                 const value = options.find((game) => game.id === values.games?.[slotId - 1]?.current) ?? null
                 return (
-                  <GridItem xs={12} md={12} key={`item${slotId}`}>
+                  <GridItem size={{ xs: 12, md: 12 }} key={`item${slotId}`}>
                     <Autocomplete
                       id={`slot-game-${slotId}`}
                       options={options}

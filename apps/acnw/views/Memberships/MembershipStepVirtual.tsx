@@ -59,14 +59,14 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
         </FormGroup>
       </Box>
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />
         </GridItem>
         <AdminCard permission={Perms.IsAdmin}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Attending' name='attending' />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Volunteer' name='volunteer' />
           </GridItem>
         </AdminCard>

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import InputAdornment from '@mui/material/InputAdornment/InputAdornment'
+import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { PaymentElement, useElements } from '@stripe/react-stripe-js'
 import { PaymentIntent } from '@stripe/stripe-js'

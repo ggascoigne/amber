@@ -30,7 +30,7 @@ export const IntroStep = ({ prefix = '' }: { prefix?: string }) => {
       </DialogContentText>
       {!configuration.virtual && (
         <GridContainer spacing={2}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel
               label='Click here to indicate acceptance of these policies'
               name={`${prefix}acceptedPolicies`}

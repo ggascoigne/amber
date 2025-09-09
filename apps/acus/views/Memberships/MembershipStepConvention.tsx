@@ -21,7 +21,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
     <>
       <h3>Convention Registration</h3>
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'

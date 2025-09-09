@@ -441,7 +441,7 @@ const WrappedLogo = ({ to }: BannerProps) => {
 
 export const Banner = ({ to }: BannerProps) => (
   <GridContainer justifyContent='center'>
-    <GridItem xs={12}>
+    <GridItem size={{ xs: 12 }}>
       <WrappedLogo to={to} />
     </GridItem>
   </GridContainer>

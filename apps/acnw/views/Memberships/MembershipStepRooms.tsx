@@ -69,7 +69,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
 */}
 
       <GridContainer spacing={2} direction='row'>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
@@ -81,7 +81,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             maxDate={configuration.conventionEndDate}
           />
         </GridItem>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
@@ -122,7 +122,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
       </Important>
 
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField
             name={`${prefix}roomPreferenceAndNotes`}
             label='Room Preference And Notes'
@@ -135,7 +135,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
 
       <h3>Roommates</h3>
       <GridContainer spacing={2} direction='row'>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <RadioGroupFieldWithLabel
             aria-label='Rooming Preferences'
             label='Rooming Preferences'
@@ -143,7 +143,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             selectValues={roomPrefOptions}
           />
         </GridItem>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <TextField
             name={`${prefix}roomingWith`}
             label='Rooming with'
@@ -156,7 +156,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
       </GridContainer>
 
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Any other Message' margin='normal' fullWidth multiline />
         </GridItem>
       </GridContainer>

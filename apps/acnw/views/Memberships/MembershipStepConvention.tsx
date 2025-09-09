@@ -68,7 +68,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
       </DialogContentText>
       <h3>Convention Registration</h3>
       <GridContainer spacing={2} sx={{ mb: 2 }}>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Card elevation={3}>
             <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
               <strong>Full Membership - ${configuration.fourDayMembership}</strong> includes
@@ -80,7 +80,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
             </CardContent>
           </Card>
         </GridItem>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Card elevation={3}>
             <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
               <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
@@ -94,12 +94,12 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
         </GridItem>
       </GridContainer>
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <DialogContentText sx={{ pt: 1 }}>
             Through the extraordinary generosity of our members, {configuration.title} can offer subsidized memberships.
           </DialogContentText>
         </GridItem>
-        <GridItem xs={12} md={12} sx={{ mb: 2 }}>
+        <GridItem size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'
@@ -110,7 +110,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
         </GridItem>
         {showSubsidizedOptions && (
           <Card sx={{ p: 2, ml: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
-            <GridItem xs={12} md={12} sx={{ mb: 2 }}>
+            <GridItem size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
               <RadioGroupFieldWithLabel
                 aria-label='Select Attendance'
                 label='Select Attendance'
@@ -122,8 +122,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
             </GridItem>
             <GridItem
               container
-              xs={12}
-              md={12}
+              size={{ xs: 12, md: 12 }}
               sx={{ mb: 2, mt: -1 }}
               alignItems='flex-start'
               flexDirection='column'
@@ -153,7 +152,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
               If you would like to contribute to help others, please check the appropriate box below.
             </DialogContentText>
             <GridContainer spacing={2} sx={{ mb: 2, ml: 1 }}>
-              <GridItem xs={12} md={12}>
+              <GridItem size={{ xs: 12, md: 12 }}>
                 <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
               </GridItem>
             </GridContainer>

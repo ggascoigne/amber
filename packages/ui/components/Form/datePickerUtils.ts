@@ -1,7 +1,6 @@
 import { ReactNode } from 'react'
 
 import { useField, useFormikContext } from 'formik'
-import { DateTime } from 'luxon'
 
 import { DatePickerProps } from './DatePicker'
 
@@ -13,7 +12,7 @@ const createErrorHandler =
     }
   }
 
-export const useDatePickerProps = <T extends DatePickerProps<DateTime>>(props: T) => {
+export const useDatePickerProps = <T extends DatePickerProps>(props: T) => {
   const { disabled, onError, ...rest } = props
   const [field, meta] = useField(rest.name)
   const { isSubmitting, setFieldValue, setFieldError } = useFormikContext()

@@ -226,7 +226,7 @@ export const ChoiceConfirmDialog = ({
           <Form>
             <DialogContent>
               <GridContainer spacing={2}>
-                <GridItem xs={12} md={12}>
+                <GridItem size={{ xs: 12, md: 12 }}>
                   <TextField name='message' label='Message for the organizers' margin='normal' fullWidth autoFocus />
                 </GridItem>
               </GridContainer>

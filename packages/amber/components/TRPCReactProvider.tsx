@@ -9,7 +9,7 @@ import { makeQueryClient } from '@amber/server/src/utils/query-client'
 import transformer from '@amber/server/src/utils/trpc-transformer'
 import type { QueryClient } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { createTRPCClient, httpBatchLink } from '@trpc/client'
+import { createTRPCClient, httpBatchLink, httpLink, splitLink } from '@trpc/client'
 
 let browserQueryClient: QueryClient
 function getQueryClient() {
@@ -35,16 +35,29 @@ export function TRPCReactProvider(
   //       suspend because React will throw away the client on the initial
   //       render if it suspends and there is no boundary
   const queryClient = getQueryClient()
-  const [trpcClient] = useState(() =>
-    createTRPCClient<AppRouter>({
+  const [trpcClient] = useState(() => {
+    const url = `${getBaseUrl()}/api/trpc`
+    return createTRPCClient<AppRouter>({
       links: [
-        httpBatchLink({
-          transformer,
-          url: `${getBaseUrl()}/api/trpc`,
+        splitLink({
+          condition(op) {
+            // check for context property `skipBatch`
+            return Boolean(op.context.skipBatch)
+          },
+          // when condition is true, use normal request
+          true: httpLink({
+            transformer,
+            url,
+          }),
+          // when condition is false, use batching
+          false: httpBatchLink({
+            transformer,
+            url,
+          }),
         }),
       ],
-    }),
-  )
+    })
+  })
   return (
     <QueryClientProvider client={queryClient}>
       <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>

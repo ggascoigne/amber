@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useState } from 'react'
 
 import { Children } from '@amber/ui'
-import { Box, Divider, Drawer, Hidden, List, ListItem } from '@mui/material'
+import { Box, Divider, Drawer, List, ListItem } from '@mui/material'
 
 import { Footer } from './Footer'
 import { Header } from './Header'
@@ -75,7 +75,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
           },
         })}
       >
-        <Hidden mdUp>
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
           <Drawer
             variant='temporary'
             anchor='left'
@@ -95,8 +95,8 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
             <Divider />
             <DrawerContents small rootRoutes={rootRoutes} banner={banner} />
           </Drawer>
-        </Hidden>
-        <Hidden mdDown>
+        </Box>
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <Drawer
             PaperProps={{
               sx: {
@@ -109,7 +109,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
           >
             <DrawerContents rootRoutes={rootRoutes} banner={banner} />
           </Drawer>
-        </Hidden>
+        </Box>
       </Box>
       <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
         <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
