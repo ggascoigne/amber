@@ -12,9 +12,7 @@ const AboutAmberconNw = () => {
   const isVirtual = configuration.startDates[year]?.virtual
 
   console.log({ acnwFm, virtualFm })
-  return !isVirtual ? (
-    <MdxPage frontMatter={acnwFm} component={<AboutAmberconNwContent />} />
-  ) : (
+  return isVirtual ? (
     <Page
       title={(virtualFm as FrontMatter).title}
       titleElement={
@@ -25,6 +23,8 @@ const AboutAmberconNw = () => {
     >
       <AboutAmberconNwContentVirtual />
     </Page>
+  ) : (
+    <MdxPage frontMatter={acnwFm} component={<AboutAmberconNwContent />} />
   )
 }
 

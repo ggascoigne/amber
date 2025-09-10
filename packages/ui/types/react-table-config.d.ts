@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-empty-object-type,  @typescript-eslint/no-unused-vars */
 import { ChangeEvent, MouseEventHandler, ReactNode } from 'react'
 
 import {
@@ -128,7 +128,6 @@ declare module 'react-table' {
     CellEditor?: (CellEditorProps) => ReactNode
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
   export interface Cell<D extends Record<string, unknown> = unknown> extends UseGroupByCellProps<D> {}
 
   export interface Row<D extends Record<string, unknown> = unknown>

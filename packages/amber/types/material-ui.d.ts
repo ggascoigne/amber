@@ -1,4 +1,4 @@
-import { CSSProperties } from '@mui/material'
+import type { CSSProperties } from '@mui/material'
 
 declare module '@mui/material/styles' {
   interface BoxShadows {

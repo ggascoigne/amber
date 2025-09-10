@@ -66,6 +66,7 @@ declare module 'react-table' {
       UseResizeColumnsOptions<D>,
       UseRowSelectOptions<D>,
       UseSortByOptions<D> {
+    name?: string
     hideSelectionUi?: boolean
     defaultColumnDisableGlobalFilter?: boolean
     updateData?: (rowIndex: number, columnId: string, value: any) => void
