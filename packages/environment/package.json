@@ -17,7 +17,7 @@
     "@t3-oss/env-core": "^0.13.8",
     "@t3-oss/env-nextjs": "^0.13.8",
     "debug": "^4.4.1",
-    "next": "15.5.2",
+    "next": "15.5.3",
     "superjson": "^2.2.2",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.5",
