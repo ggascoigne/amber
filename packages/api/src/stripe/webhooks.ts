@@ -10,13 +10,22 @@ import { UserPaymentDetails } from './types'
 import { stripeSecretKey, stripeWebhookSecret } from '../constants'
 
 const stripe = new Stripe(stripeSecretKey!, {
-  apiVersion: '2024-04-10',
+  apiVersion: '2025-08-27.basil',
 })
 
 const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]) => {
-  const { amount, amount_captured, currency, outcome } = charge
+  const { amount, amount_captured, currency, outcome, metadata } = charge
   const errors = []
 
+  if (!metadata.userId) {
+    errors.push('missing metadata.userId')
+  }
+  if (!metadata.year) {
+    errors.push('missing metadata.year')
+  }
+  if (!metadata.payments) {
+    errors.push('missing metadata.payments')
+  }
   if (amount !== amount_captured) {
     errors.push(`amount !== amount_captured, ${amount} !== ${amount_captured}`)
   }

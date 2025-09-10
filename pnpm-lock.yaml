@@ -151,11 +151,11 @@ importers:
         specifier: ^6.16.0
         version: 6.16.0
       '@stripe/react-stripe-js':
-        specifier: ^2.9.0
-        version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^4.0.2
+        version: 4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@stripe/stripe-js':
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^7.9.0
+        version: 7.9.0
       '@tanstack/react-query':
         specifier: ^5.87.1
         version: 5.87.1(react@19.1.1)
@@ -199,8 +199,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       stripe:
-        specifier: ^15.12.0
-        version: 15.12.0
+        specifier: ^18.5.0
+        version: 18.5.0(@types/node@24.3.1)
       yup:
         specifier: ^1.7.0
         version: 1.7.0
@@ -347,11 +347,11 @@ importers:
         specifier: ^6.16.0
         version: 6.16.0
       '@stripe/react-stripe-js':
-        specifier: ^2.9.0
-        version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^4.0.2
+        version: 4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@stripe/stripe-js':
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^7.9.0
+        version: 7.9.0
       '@tanstack/react-query':
         specifier: ^5.87.1
         version: 5.87.1(react@19.1.1)
@@ -395,8 +395,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       stripe:
-        specifier: ^15.12.0
-        version: 15.12.0
+        specifier: ^18.5.0
+        version: 18.5.0(@types/node@24.3.1)
       yup:
         specifier: ^1.7.0
         version: 1.7.0
@@ -540,11 +540,11 @@ importers:
         specifier: ^15.5.2
         version: 15.5.2(@mdx-js/loader@3.1.1(supports-color@10.2.2)(webpack@5.101.3))(@mdx-js/react@3.1.1(@types/react@19.1.12)(react@19.1.1))
       '@stripe/react-stripe-js':
-        specifier: ^2.9.0
-        version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^4.0.2
+        version: 4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@stripe/stripe-js':
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^7.9.0
+        version: 7.9.0
       '@tanstack/react-query':
         specifier: ^5.87.1
         version: 5.87.1(react@19.1.1)
@@ -730,8 +730,8 @@ importers:
         specifier: ^3.0.3
         version: 3.0.3
       stripe:
-        specifier: ^15.12.0
-        version: 15.12.0
+        specifier: ^18.5.0
+        version: 18.5.0(@types/node@24.3.1)
       zod:
         specifier: ^3.25.76
         version: 3.25.76
@@ -779,11 +779,11 @@ importers:
         specifier: workspace:*
         version: link:../server
       '@stripe/react-stripe-js':
-        specifier: ^2.9.0
-        version: 2.9.0(@stripe/stripe-js@3.5.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: ^4.0.2
+        version: 4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@stripe/stripe-js':
-        specifier: ^3.5.0
-        version: 3.5.0
+        specifier: ^7.9.0
+        version: 7.9.0
       '@tanstack/react-query':
         specifier: ^5.87.1
         version: 5.87.1(react@19.1.1)
@@ -2780,15 +2780,15 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@stripe/react-stripe-js@2.9.0':
-    resolution: {integrity: sha512-+/j2g6qKAKuWSurhgRMfdlIdKM+nVVJCy/wl0US2Ccodlqx0WqfIIBhUkeONkCG+V/b+bZzcj4QVa3E/rXtT4Q==}
+  '@stripe/react-stripe-js@4.0.2':
+    resolution: {integrity: sha512-l2wau+8/LOlHl+Sz8wQ1oDuLJvyw51nQCsu6/ljT6smqzTszcMHifjAJoXlnMfcou3+jK/kQyVe04u/ufyTXgg==}
     peerDependencies:
-      '@stripe/stripe-js': ^1.44.1 || ^2.0.0 || ^3.0.0 || ^4.0.0
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      '@stripe/stripe-js': '>=1.44.1 <8.0.0'
+      react: '>=16.8.0 <20.0.0'
+      react-dom: '>=16.8.0 <20.0.0'
 
-  '@stripe/stripe-js@3.5.0':
-    resolution: {integrity: sha512-pKS3wZnJoL1iTyGBXAvCwduNNeghJHY6QSRSNNvpYnrrQrLZ6Owsazjyynu0e0ObRgks0i7Rv+pe2M7/MBTZpQ==}
+  '@stripe/stripe-js@7.9.0':
+    resolution: {integrity: sha512-ggs5k+/0FUJcIgNY08aZTqpBTtbExkJMYMLSMwyucrhtWexVOEY1KJmhBsxf+E/Q15f5rbwBpj+t0t2AW2oCsQ==}
     engines: {node: '>=12.16'}
 
   '@swc/core-darwin-arm64@1.13.5':
@@ -6703,9 +6703,14 @@ packages:
   strip-literal@3.0.0:
     resolution: {integrity: sha512-TcccoMhJOM3OebGhSBEmp3UZ2SfDMZUEBdRA/9ynfLi8yYajyWX3JiXArcJt4Umh4vISpspkQIY8ZZoCqjbviA==}
 
-  stripe@15.12.0:
-    resolution: {integrity: sha512-slTbYS1WhRJXVB8YXU8fgHizkUrM9KJyrw4Dd8pLEwzKHYyQTIE46EePC2MVbSDZdE24o1GdNtzmJV4PrPpmJA==}
+  stripe@18.5.0:
+    resolution: {integrity: sha512-Hp+wFiEQtCB0LlNgcFh5uVyKznpDjzyUZ+CNVEf+I3fhlYvh7rZruIg+jOwzJRCpy0ZTPMjlzm7J2/M2N6d+DA==}
     engines: {node: '>=12.*'}
+    peerDependencies:
+      '@types/node': '>=12.x.x'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   strnum@2.1.1:
     resolution: {integrity: sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw==}
@@ -9246,14 +9251,14 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@stripe/react-stripe-js@2.9.0(@stripe/stripe-js@3.5.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@stripe/react-stripe-js@4.0.2(@stripe/stripe-js@7.9.0)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
-      '@stripe/stripe-js': 3.5.0
+      '@stripe/stripe-js': 7.9.0
       prop-types: 15.8.1
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
 
-  '@stripe/stripe-js@3.5.0': {}
+  '@stripe/stripe-js@7.9.0': {}
 
   '@swc/core-darwin-arm64@1.13.5':
     optional: true
@@ -13974,10 +13979,11 @@ snapshots:
     dependencies:
       js-tokens: 9.0.1
 
-  stripe@15.12.0:
+  stripe@18.5.0(@types/node@24.3.1):
     dependencies:
-      '@types/node': 24.3.1
       qs: 6.14.0
+    optionalDependencies:
+      '@types/node': 24.3.1
 
   strnum@2.1.1: {}
 

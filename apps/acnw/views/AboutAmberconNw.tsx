@@ -11,7 +11,6 @@ const AboutAmberconNw = () => {
   const configuration = useConfiguration()
   const isVirtual = configuration.startDates[year]?.virtual
 
-  console.log({ acnwFm, virtualFm })
   return isVirtual ? (
     <Page
       title={(virtualFm as FrontMatter).title}

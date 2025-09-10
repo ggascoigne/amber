@@ -10,7 +10,7 @@ import { stripeSecretKey } from '../constants'
 import { formatAmountForStripe } from '../utils'
 
 const stripe = new Stripe(stripeSecretKey!, {
-  apiVersion: '2024-04-10',
+  apiVersion: '2025-08-27.basil',
 })
 
 type OrderInfoCreate = {
