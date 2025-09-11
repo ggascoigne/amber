@@ -98,13 +98,13 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
     >
       {({ values }) => (
         <GridContainer spacing={2}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <SettingValue name='value' value={values} />
           </GridItem>
         </GridContainer>

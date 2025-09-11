@@ -6,7 +6,7 @@ import { DateTime } from 'luxon'
 
 interface DatePickerFieldProps
   extends FieldProps,
-    Omit<DatePickerProps<DateTime>, 'onChange' | 'value' | 'error' | 'renderInput'> {
+    Omit<DatePickerProps, 'onChange' | 'value' | 'error' | 'renderInput'> {
   required?: boolean
   getShouldDisableDateError: (date: Date) => string
   // Force the creation timeZone for dates, this allows values to be created that differ from local time

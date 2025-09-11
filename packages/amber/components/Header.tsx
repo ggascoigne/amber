@@ -2,7 +2,8 @@ import React, { ReactNode, useEffect, useState } from 'react'
 
 import { Config, useGetConfigQuery } from '@amber/client'
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
+import { AppBar, IconButton, Theme, Toolbar, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 
 import { HasPermission, Perms } from './Auth'
 import { Balance } from './Balance'
@@ -79,9 +80,7 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
       <HasPermission permission={Perms.IsLoggedIn}>
         <Balance />
       </HasPermission>
-      <Hidden mdDown implementation='css'>
-        {rightMenu()}
-      </Hidden>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>{rightMenu()}</Box>
     </AppBar>
   )
 }

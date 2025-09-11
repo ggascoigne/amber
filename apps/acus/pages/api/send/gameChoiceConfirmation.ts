@@ -14,7 +14,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 //  gameChoices: Game
 // }
 
-const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   const emails = await getEmails()
   try {
     if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')
@@ -69,7 +69,3 @@ const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApi
     handleError(err, res)
   }
 })
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  inner(req, res)
-}

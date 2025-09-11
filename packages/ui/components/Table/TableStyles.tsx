@@ -1,17 +1,13 @@
 import React, { CSSProperties, PropsWithChildren } from 'react'
 
 import { Box, Checkbox, SxProps, Theme } from '@mui/material'
+import type { TableTypeMap, TableBodyTypeMap, TableCellProps, TableHeadTypeMap, TableRowTypeMap } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import MuiTableTable from '@mui/material/Table'
-import { TableTypeMap } from '@mui/material/Table/Table'
 import MuiTableBody from '@mui/material/TableBody'
-import { TableBodyTypeMap } from '@mui/material/TableBody/TableBody'
 import MuiTableCell from '@mui/material/TableCell'
-import { TableCellProps } from '@mui/material/TableCell/TableCell'
 import MuiTableHead from '@mui/material/TableHead'
-import { TableHeadTypeMap } from '@mui/material/TableHead/TableHead'
 import MuiTableRow from '@mui/material/TableRow'
-import { TableRowTypeMap } from '@mui/material/TableRow/TableRow'
 import {} from '@mui/system'
 
 export interface TableStyleOptions {

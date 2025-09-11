@@ -148,19 +148,19 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
       isEditing={!!values?.id}
     >
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='name' label='Name' margin='normal' fullWidth required autoFocus />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <LookupField realm='roomType' name='roomType' label='Room Type' margin='normal' fullWidth required />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='comment' label='Comment' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='reservedFor' label='Reserved For' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <LookupField
             realm='bathroomType'
             name='bathroomType'
@@ -170,19 +170,19 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
             required
           />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Gaming Room?' name='gamingRoom' />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Enabled?' name='enabled' />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='formattedRoomType' label='Formatted Room Type' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='internalRoomType' label='Internal Room Type' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Reserved?' name='reserved' />
         </GridItem>
       </GridContainer>

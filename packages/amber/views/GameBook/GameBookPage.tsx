@@ -37,7 +37,7 @@ const GameBookPage = () => {
     <Page title='Game Book' hideTitle>
       <GridContainer spacing={2} justifyContent='center'>
         {years.map((year) => (
-          <GridItem key={year} xl={3} lg={4} md={4} sm={6}>
+          <GridItem key={year} size={{ xl: 3, lg: 4, md: 4, sm: 6 }}>
             <GameByYear year={year} to={`/game-book/${year}/1`} />
           </GridItem>
         ))}

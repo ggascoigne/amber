@@ -61,8 +61,8 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
       }),
     ]}
   >
-    <GridItem container spacing={2} xs={12} md={12} sx={{ pr: 0 }}>
-      <GridItem xs={12} sm={children ? 7 : 12}>
+    <GridItem container spacing={2} size={12} sx={{ pr: 0 }}>
+      <GridItem container size={{ xs: 12, sm: children ? 7 : 12 }}>
         <h4
           style={
             tiny ? { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', margin: 0 } : { margin: 0 }
@@ -72,7 +72,7 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
         </h4>
       </GridItem>
       {children && (
-        <GridItem xs={12} sm={5}>
+        <GridItem container size={{ xs: 12, sm: 5 }}>
           {children}
         </GridItem>
       )}
@@ -87,10 +87,10 @@ export const Field: React.FC<PropsWithChildren<{ label: string; small?: boolean;
   tiny = false,
 }) => (
   <>
-    <GridItem xs={12} sm={2} sx={{ pb: '10px', fontWeight: 500, minWidth: 80 }}>
+    <GridItem size={{ xs: 12, sm: 2 }} sx={{ pb: '10px', fontWeight: 500, minWidth: 80 }}>
       {label}
     </GridItem>
-    <GridItem xs={12} sm={small ? 4 : tiny ? 8 : 10} sx={{ pb: '10px' }}>
+    <GridItem size={{ xs: 12, sm: small ? 4 : tiny ? 8 : 10 }} sx={{ pb: '10px' }}>
       {children}
     </GridItem>
   </>

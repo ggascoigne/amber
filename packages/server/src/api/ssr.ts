@@ -15,6 +15,7 @@ export const ssrHelpers = createServerSideHelpers({
 // Create an authenticated caller for a specific user
 // use for any case where you need auth or mutations
 export const authenticatedCaller = (userId: string | number) => {
+  // console.log(`authenticatedCaller for userId ${userId}`)
   const id = typeof userId === 'string' ? parseInt(userId, 10) : userId
   return appRouter.createCaller({
     db,

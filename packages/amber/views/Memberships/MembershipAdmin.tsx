@@ -13,10 +13,10 @@ export const MembershipStepAdmin: React.FC<MembershipFormContent> = ({ prefix = 
   <HasPermission permission={Perms.IsAdmin}>
     <Important sx={{ mb: '12px' }}>Admin Mode</Important>
     <GridContainer spacing={2}>
-      <GridItem xs={12} md={12}>
+      <GridItem size={{ xs: 12, md: 12 }}>
         <CheckboxWithLabel label='Attending' name={`${prefix}attending`} />
       </GridItem>
-      <GridItem xs={12} md={12}>
+      <GridItem size={{ xs: 12, md: 12 }}>
         <CheckboxWithLabel label='Volunteer' name={`${prefix}volunteer`} />
       </GridItem>
     </GridContainer>

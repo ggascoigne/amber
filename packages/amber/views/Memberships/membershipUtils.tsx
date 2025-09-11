@@ -39,10 +39,12 @@ export const getDefaultMembership = (
 ): MembershipFormType =>
   ({
     userId,
+
     // note the difference in logic here is that NW wants to make users check their
     // dates since the dates are related to the eventual hotel room booking, and US
     // is just booking the convention itself
     arrivalDate: configuration.conventionStartDate.toJSDate(),
+
     attendance: configuration.isAcus ? '4' : Attendance.ThursSun,
     membership: Attendance.ThursSun,
     subsidizedAmount: configuration.subsidizedMembership,

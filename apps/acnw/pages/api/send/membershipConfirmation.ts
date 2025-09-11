@@ -28,7 +28,7 @@ const formatDate = (date?: string | Date) => {
   return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
 }
 
-const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (!req.body)
       throw new JsonError(400, 'missing body: expecting year, name, email, url, membership, slotDescriptions')
@@ -95,7 +95,3 @@ const inner = auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApi
     handleError(err, res)
   }
 })
-
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  inner(req, res)
-}

@@ -1,9 +1,7 @@
 import { MdxPage } from '@amber/ui'
 
-import * as content from '../content/FaqContent.mdx'
+import FaqContent, { metadata } from '../content/FaqContent.mdx'
 
-const { default: FaqContent, ...frontMatter } = content
-
-const Faq = () => <MdxPage frontMatter={frontMatter} component={<FaqContent />} />
+const Faq = () => <MdxPage frontMatter={metadata} component={<FaqContent />} />
 
 export default Faq

@@ -16,7 +16,7 @@ export const GridItem: React.FC<GridItemProps> = ({ children, className = '', sx
     flexBasis: 'auto',
   }
   return (
-    <Grid item {...rest} className={className} sx={[defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]}>
+    <Grid {...rest} className={className} sx={[defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]}>
       {children}
     </Grid>
   )

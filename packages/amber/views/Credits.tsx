@@ -1,9 +1,7 @@
 import { MdxPage } from '@amber/ui'
 
-import * as content from '../content/CreditsContent.mdx'
+import CreditsContent, { metadata } from '../content/CreditsContent.mdx'
 
-const { default: CreditsContent, ...frontMatter } = content
-
-const Credits = () => <MdxPage frontMatter={frontMatter} component={<CreditsContent />} />
+const Credits = () => <MdxPage frontMatter={metadata} component={<CreditsContent />} />
 
 export default Credits

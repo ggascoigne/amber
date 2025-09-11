@@ -48,7 +48,7 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   return (
     <GridContainer direction='column'>
       <h1>Your Membership for {configuration.year}</h1>
-      <GridContainer item>
+      <GridContainer>
         <Field label='Slots you intend to play'>
           <Box sx={{ position: 'relative', pt: 0, display: 'flex', flexDirection: 'column' }}>
             {isNotPacificTime(configuration) && (
@@ -101,7 +101,7 @@ const formatDate = (date?: string | Date) => {
 }
 
 const VerticalGap = () => (
-  <GridItem xs={12}>
+  <GridItem size={{ xs: 12 }}>
     <Box sx={{ height: 8 }} />
   </GridItem>
 )
@@ -210,7 +210,7 @@ const MembershipSummary = () => {
       <br />
       {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
       <GridContainer>
-        <GridItem xs={12} sm={5} sx={{ pb: '10px' }}>
+        <GridItem size={{ xs: 12, sm: 5 }} sx={{ pb: '10px' }}>
           <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
             Edit
           </Button>

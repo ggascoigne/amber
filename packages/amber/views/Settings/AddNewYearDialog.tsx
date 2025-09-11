@@ -22,7 +22,7 @@ type FormValues = Setting[]
 
 const SettingInput: React.FC<{ value: Setting; index: number }> = ({ value, index }) => (
   <GridContainer spacing={2} sx={{ width: '100%' }}>
-    <GridItem xs={6} md={6}>
+    <GridItem size={{ xs: 6, md: 6 }}>
       <SettingValue label={value.code} name={`[${index}].value`} value={value} />
     </GridItem>
   </GridContainer>

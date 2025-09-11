@@ -149,7 +149,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       <GridContainer spacing={2}>
         {gamesAndAssignments.map((g, index) => (
           <React.Fragment key={index}>
-            <GridItem xs={12} md={8} style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <GridItem size={{ xs: 12, md: 8 }} style={{ paddingTop: 0, paddingBottom: 0 }}>
               <SelectField
                 name={`[${index}].gameId`}
                 label={`Slot ${index + 1}`}
@@ -158,7 +158,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
                 selectValues={gameOptions[index]}
               />
             </GridItem>
-            <GridItem xs={12} md={4} style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <GridItem size={{ xs: 12, md: 4 }} style={{ paddingTop: 0, paddingBottom: 0 }}>
               <TextField
                 name={`[${index}].gm`}
                 label='GM'

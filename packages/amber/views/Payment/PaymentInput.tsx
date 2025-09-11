@@ -4,10 +4,10 @@ import { useReducer, useEffect, useState, useCallback } from 'react'
 import { CreateMembershipType, User, UserMembership, useTRPC } from '@amber/client'
 import { DialogClose, getSafeFloat, Loader } from '@amber/ui'
 import Box from '@mui/material/Box'
-import FormControl from '@mui/material/FormControl/FormControl'
+import FormControl from '@mui/material/FormControl'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
-import InputAdornment from '@mui/material/InputAdornment/InputAdornment'
+import InputAdornment from '@mui/material/InputAdornment'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
 import TextField from '@mui/material/TextField'
@@ -190,13 +190,13 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       <DialogClose onClose={onClose} />
       <FormControl>
         <Grid container spacing={2} sx={{ py: 1 }} flexDirection='column'>
-          <Grid item>
+          <Grid>
             <Typography sx={{ pt: 1 }}>
               {user.fullName} has a balance of {user.balance < 0 ? formatAmountForDisplay(0 - user.balance) : 0}
             </Typography>
           </Grid>
-          <Grid item container flexDirection='row'>
-            <Grid item>
+          <Grid container flexDirection='row'>
+            <Grid>
               <RadioGroup
                 row
                 aria-labelledby='membership-group-label'
@@ -229,7 +229,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                 />
               </RadioGroup>
             </Grid>
-            <Grid item>
+            <Grid>
               <TextField
                 label={displayFullMembershipPayment ? 'Partial Payment' : 'Payment'}
                 value={state.customValue}
@@ -346,7 +346,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
       </Typography>
       <Grid container spacing={2} alignItems='flex-start' flexDirection='column'>
         {userIds.map((id) => (
-          <Grid item xs sx={{ width: '100%' }} key={id}>
+          <Grid sx={{ width: '100%' }} key={id} size='grow'>
             <UserPayment
               loggedInUserId={userId}
               userId={id}
@@ -356,7 +356,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
             />
           </Grid>
         ))}
-        <Grid item xs sx={{ width: '100%' }}>
+        <Grid sx={{ width: '100%' }} size='grow'>
           <MemberSelector
             year={year}
             label='Add Payment for another Registered Member'

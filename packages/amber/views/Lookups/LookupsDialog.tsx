@@ -131,7 +131,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
     >
       {(formikProps) => (
         <GridContainer spacing={5}>
-          <GridItem xs={12} md={6}>
+          <GridItem size={{ xs: 12, md: 6 }}>
             <TextField name='realm' label='Realm' margin='normal' />
           </GridItem>
           <GridItem>

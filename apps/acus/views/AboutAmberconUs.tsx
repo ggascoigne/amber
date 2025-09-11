@@ -2,11 +2,8 @@ import { useConfiguration, useYearFilter } from '@amber/amber/utils'
 import { FrontMatter, MdxPage, Page } from '@amber/ui'
 import { useTheme } from '@mui/material/styles'
 
-import * as aboutAmberconUsContent from '../content/AboutAmberconUsContent.mdx'
-import * as aboutAmberconUsContentVirtual from '../content/AboutAmberconUsContentVirtual.mdx'
-
-const { default: AboutAmberconNwContent, ...acnwFm } = aboutAmberconUsContent
-const { default: AboutAmberconNwContentVirtual, ...virtualFm } = aboutAmberconUsContentVirtual
+import AboutAmberconNwContent, { metadata as acusFm } from '../content/AboutAmberconUsContent.mdx'
+import AboutAmberconNwContentVirtual, { metadata as virtualFm } from '../content/AboutAmberconUsContentVirtual.mdx'
 
 const AboutAmberconUs = () => {
   const theme = useTheme()
@@ -15,9 +12,7 @@ const AboutAmberconUs = () => {
 
   const isVirtual = configuration.startDates[year].virtual
 
-  return !isVirtual ? (
-    <MdxPage frontMatter={acnwFm} component={<AboutAmberconNwContent />} />
-  ) : (
+  return isVirtual ? (
     <Page
       title={(virtualFm as FrontMatter).title}
       titleElement={
@@ -28,6 +23,8 @@ const AboutAmberconUs = () => {
     >
       <AboutAmberconNwContentVirtual />
     </Page>
+  ) : (
+    <MdxPage frontMatter={acusFm} component={<AboutAmberconNwContent />} />
   )
 }
 
