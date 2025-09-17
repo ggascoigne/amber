@@ -26,6 +26,7 @@ export type MembershipErrorType = Record<keyof MembershipFormType, string>
 
 export const toLegacyApiMembership = (membershipValues: MembershipType) => ({
   ...membershipValues,
+  id: membershipValues.id ?? undefined,
   arrivalDate: DateTime.fromJSDate(membershipValues.arrivalDate).toISO()!,
   departureDate: DateTime.fromJSDate(membershipValues.departureDate).toISO()!,
 })

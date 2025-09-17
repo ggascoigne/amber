@@ -120,7 +120,7 @@ export const transactionRouter = createTRPCRouter({
           timestamp: z.date().optional(),
           year: z.number().optional(),
           notes: z.string().optional(),
-          data: z.any(),
+          data: z.any().optional(),
         }),
       }),
     )

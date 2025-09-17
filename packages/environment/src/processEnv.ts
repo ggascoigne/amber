@@ -10,15 +10,15 @@ export const processEnv = (src = process.env) =>
      * isn't built with invalid env vars.
      */
     server: {
-      DATABASE_URL: z.string().url(),
-      ADMIN_DATABASE_URL: z.string().url(),
-      NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
+      DATABASE_URL: z.url(),
+      ADMIN_DATABASE_URL: z.url(),
+      NODE_ENV: z.enum(['development', 'test', 'production']).prefault('development'),
 
       MANAGEMENT_CLIENT_ID: z.string(),
       MANAGEMENT_CLIENT_SECRET: z.string(),
       AUTH0_SECRET: z.string(),
       AUTH0_BASE_URL: z.string().optional(),
-      AUTH0_DOMAIN: z.string().url(),
+      AUTH0_DOMAIN: z.url(),
       AUTH0_CLIENT_ID: z.string(),
       AUTH0_CLIENT_SECRET: z.string(),
       AUTH0_AUDIENCE: z.string(),

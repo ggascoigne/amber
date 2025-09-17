@@ -8,7 +8,7 @@ export const usersRouter = createTRPCRouter({
   getUserByEmail: publicProcedure
     .input(
       z.object({
-        email: z.string().email(),
+        email: z.email(),
       }),
     )
     .query(async ({ input, ctx }) =>
@@ -89,7 +89,7 @@ export const usersRouter = createTRPCRouter({
       z.object({
         id: z.number(),
         data: z.object({
-          email: z.string().email().optional(),
+          email: z.email().optional(),
           fullName: z.string().optional(),
           firstName: z.string().optional(),
           lastName: z.string().optional(),

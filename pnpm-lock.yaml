@@ -49,8 +49,8 @@ importers:
         specifier: ~19.1.9
         version: 19.1.9(@types/react@19.1.13)
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       '@vitejs/plugin-react':
         specifier: ^5.0.3
         version: 5.0.3(supports-color@10.2.2)(vite@6.3.5(@types/node@24.5.1)(jiti@2.5.1)(terser@5.39.0)(tsx@4.20.5)(yaml@2.8.1))
@@ -112,8 +112,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@auth0/nextjs-auth0':
-        specifier: 4.9.0
-        version: 4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 4.10.0
+        version: 4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.13)(react@19.1.1)(supports-color@10.2.2)
@@ -208,11 +208,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
-      zod-formik-adapter:
-        specifier: ^1.3.0
-        version: 1.3.0(formik@2.4.6(react@19.1.1))(zod@3.25.76)
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -266,8 +263,8 @@ importers:
         specifier: 7.7.20
         version: 7.7.20
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       bufferutil:
         specifier: 4.0.9
         version: 4.0.9
@@ -308,8 +305,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@auth0/nextjs-auth0':
-        specifier: 4.9.0
-        version: 4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 4.10.0
+        version: 4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.13)(react@19.1.1)(supports-color@10.2.2)
@@ -404,11 +401,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
-      zod-formik-adapter:
-        specifier: ^1.3.0
-        version: 1.3.0(formik@2.4.6(react@19.1.1))(zod@3.25.76)
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -462,8 +456,8 @@ importers:
         specifier: 7.7.20
         version: 7.7.20
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       bufferutil:
         specifier: 4.0.9
         version: 4.0.9
@@ -498,8 +492,8 @@ importers:
         specifier: workspace:*
         version: link:../ui
       '@auth0/nextjs-auth0':
-        specifier: 4.9.0
-        version: 4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 4.10.0
+        version: 4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@axe-core/react':
         specifier: ^4.10.2
         version: 4.10.2
@@ -639,11 +633,11 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.9
+        version: 4.1.9
       zod-formik-adapter:
-        specifier: ^1.3.0
-        version: 1.3.0(formik@2.4.6(react@19.1.1))(zod@3.25.76)
+        specifier: ^2.0.0
+        version: 2.0.0(formik@2.4.6(react@19.1.1))(zod@4.1.9)
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -673,8 +667,8 @@ importers:
         specifier: ^2.4.4
         version: 2.4.4
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       babel-loader:
         specifier: ^10.0.0
         version: 10.0.0(@babel/core@7.28.4(supports-color@10.2.2))(webpack@5.101.3)
@@ -700,8 +694,8 @@ importers:
         specifier: workspace:*
         version: link:../server
       '@auth0/nextjs-auth0':
-        specifier: 4.9.0
-        version: 4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 4.10.0
+        version: 4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       debug:
         specifier: 4.4.3
         version: 4.4.3(supports-color@10.2.2)
@@ -736,8 +730,8 @@ importers:
         specifier: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
         version: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -812,8 +806,8 @@ importers:
         specifier: ^5.8.0
         version: 5.8.0
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -832,10 +826,10 @@ importers:
         version: link:../environment
       '@t3-oss/env-core':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       common-tags:
         specifier: ^1.8.2
         version: 1.8.2
@@ -880,8 +874,8 @@ importers:
         specifier: ^8.15.5
         version: 8.15.5
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       chalk:
         specifier: ^5.6.2
         version: 5.6.2
@@ -914,10 +908,10 @@ importers:
     dependencies:
       '@t3-oss/env-core':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       debug:
         specifier: ^4.4.3
         version: 4.4.3(supports-color@10.2.2)
@@ -934,8 +928,8 @@ importers:
         specifier: ^4.20.5
         version: 4.20.5
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -950,8 +944,8 @@ importers:
         specifier: ^8.15.5
         version: 8.15.5
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       dotenv:
         specifier: ^17.2.2
         version: 17.2.2
@@ -971,17 +965,17 @@ importers:
         specifier: workspace:*
         version: link:../environment
       '@auth0/nextjs-auth0':
-        specifier: 4.9.0
-        version: 4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+        specifier: 4.10.0
+        version: 4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       '@prisma/client':
         specifier: ^6.16.2
         version: 6.16.2(prisma@6.16.2(typescript@5.9.2))(typescript@5.9.2)
       '@t3-oss/env-core':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       '@t3-oss/env-nextjs':
         specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+        version: 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
       '@tanstack/react-query':
         specifier: ^5.89.0
         version: 5.89.0(react@19.1.1)
@@ -1019,8 +1013,8 @@ importers:
         specifier: ^4.20.5
         version: 4.20.5
       zod:
-        specifier: ^3.25.76
-        version: 3.25.76
+        specifier: ^4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -1035,8 +1029,8 @@ importers:
         specifier: ^8.15.5
         version: 8.15.5
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       cli-table3:
         specifier: ^0.6.5
         version: 0.6.5
@@ -1184,11 +1178,8 @@ importers:
         specifier: ^1.7.0
         version: 1.7.0
       zod:
-        specifier: 3.25.76
-        version: 3.25.76
-      zod-formik-adapter:
-        specifier: ^1.3.0
-        version: 1.3.0(formik@2.4.6(react@19.1.1))(zod@3.25.76)
+        specifier: 4.1.9
+        version: 4.1.9
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -1218,8 +1209,8 @@ importers:
         specifier: ^2.4.4
         version: 2.4.4
       '@typescript/native-preview':
-        specifier: 7.0.0-dev.20250914.1
-        version: 7.0.0-dev.20250914.1
+        specifier: 7.0.0-dev.20250917.1
+        version: 7.0.0-dev.20250917.1
       babel-loader:
         specifier: ^10.0.0
         version: 10.0.0(@babel/core@7.28.4(supports-color@10.2.2))(webpack@5.101.3)
@@ -1261,8 +1252,8 @@ packages:
   '@asamuzakjp/nwsapi@2.3.9':
     resolution: {integrity: sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==}
 
-  '@auth0/nextjs-auth0@4.9.0':
-    resolution: {integrity: sha512-z53aI+5h7CYRDYXe/iiPzEFg32PWRiKzdSemjyHLnmeQQgiZ3Va7ZYrUWggNCgtzm314sHsipzyyafiNgSNUrQ==}
+  '@auth0/nextjs-auth0@4.10.0':
+    resolution: {integrity: sha512-4CBuMlPJ4boxrB5IYisqMh9VBn74PGsspMfZpLG5JvrgDklw2CZsThW+UeAi1YMhE4/3VHyeht2yzN1Fs95bug==}
     peerDependencies:
       next: ^14.2.25 || ^15.2.3
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
@@ -3222,43 +3213,43 @@ packages:
     resolution: {integrity: sha512-qHV7pW7E85A0x6qyrFn+O+q1k1p3tQCsqIZ1KZ5ESLXY57aTvUd3/a4rdPTeXisvhXn2VQG0VSKUqs8KHF2zcA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-0Rvj+08RqtQKFBDJ2vu1ejIZccdvZYFwAg5j3b8Yffcyp8nIKKSd4iEr8Bf0sHw4n+76bJRf7MbgEcayZGEFvg==}
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-A12AsDzGThktoWb6gdFSU1dRiFNzjgo32ZdVUn8fz5B7njLkjn4vDonhgOMaAIqZHqhMmMdBmjnLJkEkGlp4uw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@typescript/native-preview-darwin-x64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-jZFqxney4PfLvODL6ywTrlbUggNoC/rN/mdSC1Tevlc3W3itvqlyMKEbUZ7LLzonc8phDWkL4qnwnsQcfu7mMg==}
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-OLy8yCnWYR8yhnDYJ0mdJA0SkE1uZKNOfbPZ2YQNdHcqmVjEP5XYEuchK++LHfT65pQONSubIl/VGuKLAAtKLw==}
     cpu: [x64]
     os: [darwin]
 
-  '@typescript/native-preview-linux-arm64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-MjicZpmJetOwaf1Hld/GMCtjFNk9GNxxyB4XcVXedq+q5E67ipCAJcu8Hz/p7MdhUiOzqM31mpMNxP0Kl1qtEA==}
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-KzNYuAf1Q9nBw44Gf/jzADEh+jWxtuSHvhKsUggjkYvO4zZGCDZKRYMYcJ71/1vk3HOSz+wkplC+IZCaovMSfA==}
     cpu: [arm64]
     os: [linux]
 
-  '@typescript/native-preview-linux-arm@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-Lk0UrqLDzfbzUa5qiKeNTnOpuy08pZvnR2fqy+akuMCpsbI9YOUJxeG5e0NZ95Ca1lkCwJG5HZPyr7Ddgubz5w==}
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-YXDkSh+zRRowU+ZFLYRNo1Wv/gEbn5bzW5Iy4wvoz0weBbbNjqU0oGldLlp6eNF2CxSshjtG+LnmzNWppdOrCg==}
     cpu: [arm]
     os: [linux]
 
-  '@typescript/native-preview-linux-x64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-R0mXfWBZpU+xs/X3Sqcpsb8Y3TcqlYOzmwczFz+K0yBIMXkEGklsYgnFho3ZmAXW7274sNq4xGA1D4+39oiryg==}
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-8t48rWMY3Z9lHJ6+pl4DOMxb7KLWgSozsAo7RTekLUF+VwpBoOH3/4OtqTpLM3YzRh25odvEnbyJjvgpKc029Q==}
     cpu: [x64]
     os: [linux]
 
-  '@typescript/native-preview-win32-arm64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-4c2c2jV5PNbjAmZSbrMMRqcInGJUYSIVOJRVmHJJNZdjYR414whyiAcb8khZc/TbqhgznXYZHz9D8OvRBddpLA==}
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-f32sqTNywcUhV93OHDc+5c7jCCL9KwSbzQlmD5PQU6X/Saz7z0wNQWORu5UXXkG6XppirEueEFigX2XoKLSJfg==}
     cpu: [arm64]
     os: [win32]
 
-  '@typescript/native-preview-win32-x64@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-9+wfG73UAMtXkw6RxI5FZDD1PocTsnudmK2DMbYufE64sWDmIvIULL+NyttESK4/Kf8kVPebQJOd7Ue7ilFXJg==}
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-KWLt1u2N/MPS7fAENxbJOCiDgAx2CYUCL8QGumts+6ux1gVkAYPeJRCORnbJrLyh8ZxAf9CMXSONqIpqjuaqTQ==}
     cpu: [x64]
     os: [win32]
 
-  '@typescript/native-preview@7.0.0-dev.20250914.1':
-    resolution: {integrity: sha512-dcgUc4J7hGeXxKTMrDjxnBNShOKRKYmc+Lw6dSCkOML9LjeeTo+JnqQwcXhft60oC7YRyRyA/mnArYX+UrS/jA==}
+  '@typescript/native-preview@7.0.0-dev.20250917.1':
+    resolution: {integrity: sha512-7on2ol2JN6PZpLaIYu6SRlnakkrmzzq32qTa+2gLpwDRxAubXTMd5637rRvA4JkTJHu/KtDwWaTDtpdqNB83FA==}
     hasBin: true
 
   '@ungap/structured-clone@1.3.0':
@@ -5791,6 +5782,9 @@ packages:
     resolution: {integrity: sha512-ur5UIdyw5Y7yEj9wLzhqXiy6GZ3Mwx0yGI+5sMn2r0N0v3cKJvUmFH5yPP+WXh9e0xfyzyJX95D8l088DNFj7A==}
     hasBin: true
 
+  openid-client@6.8.0:
+    resolution: {integrity: sha512-oG1d1nAVhIIE+JSjLS+7E9wY1QOJpZltkzlJdbZ7kEn7Hp3hqur2TEeQ8gLOHoHkhbRAGZJKoOnEQcLOQJuIyg==}
+
   optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -7392,14 +7386,14 @@ packages:
     resolution: {integrity: sha512-9qv4rlDiopXg4E69k+vMHjNN63YFMe9sZMrdlvKnCjlCRWeCBswPPMPUfx+ipsAWq1LXHe70RcbaHdJJpS6hyQ==}
     engines: {node: '>= 10'}
 
-  zod-formik-adapter@1.3.0:
-    resolution: {integrity: sha512-qWsVwRYqpRod5BL35pRXHD6UOugiyaEyLPO04rCN/uKTCFCR+VElPEG26+3wNrxGP7y5XmJM+4/0MrABnRYZrw==}
+  zod-formik-adapter@2.0.0:
+    resolution: {integrity: sha512-cLykLmQgmCmhx8C/mwR+rUNKRw6kEukejGRrByB+56zV1XtHF+xmOiQ2Lp2w5R0BdN3z42QKFekOI0Vy39vR8Q==}
     peerDependencies:
       formik: ^2.2.9
-      zod: ^3.22.4
+      zod: 4.x
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+  zod@4.1.9:
+    resolution: {integrity: sha512-HI32jTq0AUAC125z30E8bQNz0RQ+9Uc+4J7V97gLYjZVKRjeydPgGt6dvQzFrav7MYOUGFqqOGiHpA/fdbd0cQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -7442,13 +7436,14 @@ snapshots:
 
   '@asamuzakjp/nwsapi@2.3.9': {}
 
-  '@auth0/nextjs-auth0@4.9.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
+  '@auth0/nextjs-auth0@4.10.0(next@15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1))(react-dom@19.1.1(react@19.1.1))(react@19.1.1)':
     dependencies:
       '@edge-runtime/cookies': 5.0.2
       '@panva/hkdf': 1.2.1
       jose: 6.1.0
       next: 15.5.3(@babel/core@7.28.4(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
       oauth4webapi: 3.8.1
+      openid-client: 6.8.0
       react: 19.1.1
       react-dom: 19.1.1(react@19.1.1)
       swr: 2.3.6(react@19.1.1)
@@ -9290,19 +9285,19 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@t3-oss/env-core@0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)':
+  '@t3-oss/env-core@0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)':
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.9.2
-      zod: 3.25.76
+      zod: 4.1.9
 
-  '@t3-oss/env-nextjs@0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)':
+  '@t3-oss/env-nextjs@0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)':
     dependencies:
-      '@t3-oss/env-core': 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@3.25.76)
+      '@t3-oss/env-core': 0.13.8(arktype@2.1.20)(typescript@5.9.2)(zod@4.1.9)
     optionalDependencies:
       arktype: 2.1.20
       typescript: 5.9.2
-      zod: 3.25.76
+      zod: 4.1.9
 
   '@tanstack/query-core@5.89.0': {}
 
@@ -9661,36 +9656,36 @@ snapshots:
       '@typescript-eslint/types': 8.34.0
       eslint-visitor-keys: 4.2.1
 
-  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-darwin-arm64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-darwin-x64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-darwin-x64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-linux-arm64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-linux-arm64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-linux-arm@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-linux-arm@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-linux-x64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-linux-x64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-win32-arm64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-win32-arm64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview-win32-x64@7.0.0-dev.20250914.1':
+  '@typescript/native-preview-win32-x64@7.0.0-dev.20250917.1':
     optional: true
 
-  '@typescript/native-preview@7.0.0-dev.20250914.1':
+  '@typescript/native-preview@7.0.0-dev.20250917.1':
     optionalDependencies:
-      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-linux-arm': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-linux-x64': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20250914.1
-      '@typescript/native-preview-win32-x64': 7.0.0-dev.20250914.1
+      '@typescript/native-preview-darwin-arm64': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-darwin-x64': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-linux-arm': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-linux-arm64': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-linux-x64': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-win32-arm64': 7.0.0-dev.20250917.1
+      '@typescript/native-preview-win32-x64': 7.0.0-dev.20250917.1
 
   '@ungap/structured-clone@1.3.0': {}
 
@@ -12831,6 +12826,11 @@ snapshots:
 
   opener@1.5.2: {}
 
+  openid-client@6.8.0:
+    dependencies:
+      jose: 6.1.0
+      oauth4webapi: 3.8.1
+
   optionator@0.9.3:
     dependencies:
       '@aashutoshrathi/word-wrap': 1.2.6
@@ -14693,12 +14693,12 @@ snapshots:
       compress-commons: 4.1.2
       readable-stream: 3.6.2
 
-  zod-formik-adapter@1.3.0(formik@2.4.6(react@19.1.1))(zod@3.25.76):
+  zod-formik-adapter@2.0.0(formik@2.4.6(react@19.1.1))(zod@4.1.9):
     dependencies:
       formik: 2.4.6(react@19.1.1)
-      zod: 3.25.76
+      zod: 4.1.9
 
-  zod@3.25.76: {}
+  zod@4.1.9: {}
 
   zwitch@2.0.4: {}
 

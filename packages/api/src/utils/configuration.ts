@@ -21,8 +21,7 @@ const toNumber = () => z.string().transform((val) => (val ? parseInt(val, 10) : 
 const toBoolean = () => z.string().transform((val) => (val ? val === 'true' : false))
 
 const toDateTime = () =>
-  z
-    .string()
+  z.iso
     .datetime({ offset: true })
     .transform((val) => (baseTimeZone ? DateTime.fromISO(val).setZone(baseTimeZone) : DateTime.fromISO(val)))
 
