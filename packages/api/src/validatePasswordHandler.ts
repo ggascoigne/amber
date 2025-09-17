@@ -1,13 +1,13 @@
+import { env } from '@amber/environment'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { auth0Domain, managementClientId, managementClientSecret } from './constants'
 import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
 
-const oauthToken = `${auth0Domain}/oauth/token`
+const oauthToken = `${env.AUTH0_DOMAIN}/oauth/token`
 
 const validatePassword = async (username: string, password: string) => {
   const options = {
@@ -17,8 +17,8 @@ const validatePassword = async (username: string, password: string) => {
       grant_type: 'password',
       username,
       password,
-      client_id: managementClientId,
-      client_secret: managementClientSecret,
+      client_id: env.MANAGEMENT_CLIENT_ID,
+      client_secret: env.MANAGEMENT_CLIENT_SECRET,
     }),
   }
 

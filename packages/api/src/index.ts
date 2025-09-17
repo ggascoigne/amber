@@ -1,5 +1,4 @@
 export * from './JsonError'
-export * from './constants'
 export * from './email'
 export * from './getConfig'
 export * from './getManagementApiAccessToken'

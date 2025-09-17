@@ -10,18 +10,20 @@ export const processEnv = (src = process.env) =>
      * isn't built with invalid env vars.
      */
     server: {
+      DB_ENV: z.enum(['acnw', 'acus']),
       DATABASE_URL: z.url(),
       ADMIN_DATABASE_URL: z.url(),
       NODE_ENV: z.enum(['development', 'test', 'production']).prefault('development'),
 
-      MANAGEMENT_CLIENT_ID: z.string(),
-      MANAGEMENT_CLIENT_SECRET: z.string(),
-      AUTH0_SECRET: z.string(),
-      AUTH0_BASE_URL: z.string().optional(),
       AUTH0_DOMAIN: z.url(),
       AUTH0_CLIENT_ID: z.string(),
       AUTH0_CLIENT_SECRET: z.string(),
-      AUTH0_AUDIENCE: z.string(),
+      AUTH0_SECRET: z.string(),
+      APP_BASE_URL: z.string().optional(),
+
+      MANAGEMENT_CLIENT_ID: z.string(),
+      MANAGEMENT_CLIENT_SECRET: z.string(),
+
       DATABASE_SCHEMAS: z.string().optional(),
 
       DATABASE_SSL_CERT: z.string().optional(),
@@ -51,18 +53,20 @@ export const processEnv = (src = process.env) =>
      * middlewares) or client-side so we need to destruct manually.
      */
     runtimeEnv: {
+      DB_ENV: src.DB_ENV,
       DATABASE_URL: src.DATABASE_URL,
       ADMIN_DATABASE_URL: src.ADMIN_DATABASE_URL,
       NODE_ENV: src.NODE_ENV,
 
-      MANAGEMENT_CLIENT_ID: src.MANAGEMENT_CLIENT_ID,
-      MANAGEMENT_CLIENT_SECRET: src.MANAGEMENT_CLIENT_SECRET,
-      AUTH0_SECRET: src.AUTH0_SECRET,
-      AUTH0_BASE_URL: src.AUTH0_BASE_URL,
       AUTH0_DOMAIN: src.AUTH0_DOMAIN,
       AUTH0_CLIENT_ID: src.AUTH0_CLIENT_ID,
       AUTH0_CLIENT_SECRET: src.AUTH0_CLIENT_SECRET,
-      AUTH0_AUDIENCE: src.AUTH0_AUDIENCE,
+      AUTH0_SECRET: src.AUTH0_SECRET,
+      APP_BASE_URL: src.APP_BASE_URL,
+
+      MANAGEMENT_CLIENT_ID: src.MANAGEMENT_CLIENT_ID,
+      MANAGEMENT_CLIENT_SECRET: src.MANAGEMENT_CLIENT_SECRET,
+
       DATABASE_SCHEMAS: src.DATABASE_SCHEMAS,
 
       DATABASE_SSL_CERT: src.DATABASE_SSL_CERT,

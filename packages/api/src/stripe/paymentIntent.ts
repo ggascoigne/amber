@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 // based in large part on https://github.com/vercel/next.js/blob/canary/examples/with-stripe-typescript/pages/api/payment_intents/index.ts
 
+import { env } from '@amber/environment'
 import { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from './constants'
 
-import { stripeSecretKey } from '../constants'
 import { formatAmountForStripe } from '../utils'
 
-const stripe = new Stripe(stripeSecretKey!, {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',
 })
 

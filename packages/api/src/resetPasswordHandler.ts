@@ -1,8 +1,8 @@
+import { env } from '@amber/environment'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { auth0Domain, managementClientId, managementClientSecret } from './constants'
 import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'
 import { JsonError } from './JsonError'
@@ -13,13 +13,13 @@ const requestChangePasswordEmail = async (username: string) => {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       email: username,
-      client_id: managementClientId,
+      client_id: env.MANAGEMENT_CLIENT_ID,
       connection: 'Username-Password-Authentication',
-      client_secret: managementClientSecret,
+      client_secret: env.MANAGEMENT_CLIENT_SECRET,
     }),
   }
 
-  return fetch(`${auth0Domain}/dbconnections/change_password`, options).then(async (r) => {
+  return fetch(`${env.AUTH0_DOMAIN}/dbconnections/change_password`, options).then(async (r) => {
     const text = await r.text()
     if (r.status !== 200) {
       throw new JsonError(r.status, text)
