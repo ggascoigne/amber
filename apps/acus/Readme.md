@@ -23,10 +23,8 @@ use whatever postgres tool you like to create an empty database on that server c
 I use:
 
 ```
-DATABASE_ADMIN=ggp
-DATABASE_ADMIN_PASSWORD=
-DATABASE_USER=acnw_user
-DATABASE_USER_PASSWORD=123456
+ADMIN_DATABASE_URL="postgres://ggp:@127.0.0.1:54320/acus"
+DATABASE_URL="postgres://acnw_user:123456@127.0.0.1:54320/acus"
 ```
 
 You don't have to use these, but you do need 2 accounts, and they need to match the ones in the env files.

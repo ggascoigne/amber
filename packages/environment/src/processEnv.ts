@@ -25,7 +25,6 @@ export const processEnv = (src = process.env) =>
       MANAGEMENT_CLIENT_SECRET: z.string(),
 
       DATABASE_SCHEMAS: z.string().optional(),
-
       DATABASE_SSL_CERT: z.string().optional(),
 
       SMTP_USERNAME: z.string(),
@@ -68,7 +67,6 @@ export const processEnv = (src = process.env) =>
       MANAGEMENT_CLIENT_SECRET: src.MANAGEMENT_CLIENT_SECRET,
 
       DATABASE_SCHEMAS: src.DATABASE_SCHEMAS,
-
       DATABASE_SSL_CERT: src.DATABASE_SSL_CERT,
 
       SMTP_USERNAME: src.SMTP_USERNAME,

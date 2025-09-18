@@ -87,7 +87,7 @@ Push your branch to git, a branch like ggp/stripe-payments will be deployed with
 
 Create new environment variables that are applied to the Preview environment, and most importantly, only applied to this new branch.
 
-set AUTH0_BASE_URL=https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/ or whatever the branch deployment url is. Without this you can't login.
+set APP_BASE_URL=https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/ or whatever the branch deployment url is. Without this you can't login.
 
 set STRIPE_WEBHOOK_SECRET= the secret you get when you reveal it for the new webhook that you add at https://dashboard.stripe.com/test/webhooks. Note that for the above url, the webhook address is
 https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/api/stripe/webhooks
