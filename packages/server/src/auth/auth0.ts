@@ -1,3 +1,4 @@
+import { env } from '@amber/environment'
 import { Auth0Client } from '@auth0/nextjs-auth0/server'
 
 const toHttpsUrl = (base?: string) =>
@@ -5,22 +6,20 @@ const toHttpsUrl = (base?: string) =>
 
 const appBaseUrl = toHttpsUrl(
   // only set in production
-  process.env.AUTH0_BASE_URL ??
-    // the preferred AUTH0 value - eventually replacing AUTH0_BASE_URL
-    process.env.APP_BASE_URL ??
+  env.APP_BASE_URL ??
     // the branch specific vercel preview url
-    process.env.VERCEL_BRANCH_URL ??
+    env.VERCEL_BRANCH_URL ??
     // the random build specific URL
-    process.env.VERCEL_URL,
+    env.VERCEL_URL,
 )
 
 export const auth0 = new Auth0Client({
-  domain: process.env.AUTH0_DOMAIN,
-  clientId: process.env.AUTH0_CLIENT_ID,
-  clientSecret: process.env.AUTH0_CLIENT_SECRET,
-  secret: process.env.AUTH0_SECRET,
+  domain: env.AUTH0_DOMAIN,
+  clientId: env.AUTH0_CLIENT_ID,
+  clientSecret: env.AUTH0_CLIENT_SECRET,
+  secret: env.AUTH0_SECRET,
   appBaseUrl,
-  session: { cookie: { name: `${process.env.DB_ENV}-session-v4` } },
+  session: { cookie: { name: `${env.DB_ENV}-session-v4` } },
   routes: {
     login: '/api/auth/login',
     callback: '/api/auth/callback',

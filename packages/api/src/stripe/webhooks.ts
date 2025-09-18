@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { env } from '@amber/environment'
 import { authenticatedCaller } from '@amber/server/src/api/ssr'
 import { buffer } from 'micro'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -7,9 +8,7 @@ import Stripe from 'stripe'
 import { sendEmailConfirmation } from './sendEmailConfirmation'
 import { UserPaymentDetails } from './types'
 
-import { stripeSecretKey, stripeWebhookSecret } from '../constants'
-
-const stripe = new Stripe(stripeSecretKey!, {
+const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',
 })
 
@@ -150,7 +149,7 @@ export const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) 
     let event: Stripe.Event
 
     try {
-      event = stripe.webhooks.constructEvent(buf.toString(), sig, stripeWebhookSecret!)
+      event = stripe.webhooks.constructEvent(buf.toString(), sig, env.STRIPE_WEBHOOK_SECRET!)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
       // On error, log and return the error message.

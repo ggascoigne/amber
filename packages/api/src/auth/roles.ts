@@ -1,3 +1,4 @@
+import { env } from '@amber/environment'
 import { getUserRoles } from '@amber/server/src/auth/apiAuthUtils'
 import * as jose from 'jose'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -16,8 +17,8 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
       return
     }
 
-    const issuerBase = process.env.AUTH0_DOMAIN
-    const audience = process.env.AUTH0_CLIENT_ID
+    const issuerBase = env.AUTH0_DOMAIN
+    const audience = env.AUTH0_CLIENT_ID
     if (!issuerBase || !audience) {
       console.error('rolesHandler: server misconfigured')
       res.status(500).end('server misconfigured')

@@ -56,7 +56,7 @@ const attachLogging = (client: any, kind: 'ADMIN' | 'USER') => {
 
   // Note: Prisma middleware ($use) not used due to version/runtime constraints.
 }
-
+// DATABASE_SSL_CERT=../shared/rds-combined-ca-bundle.pem or is unset at this point
 const createPrismaClient = (type: 'ADMIN' | 'USER') => {
   if (env.DATABASE_SSL_CERT) {
     const certName = path.basename(env.DATABASE_SSL_CERT ?? '', '.pem')
