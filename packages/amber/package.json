@@ -82,7 +82,7 @@
     "@types/node": "^24.5.1",
     "@types/react-table": "7.7.20",
     "@types/sha.js": "^2.4.4",
-    "@typescript/native-preview": "7.0.0-dev.20250917.1",
+    "@typescript/native-preview": "7.0.0-dev.20250922.1",
     "babel-loader": "^10.0.0",
     "cross-env": "^10.0.0",
     "typescript": "^5.9.2",

@@ -78,7 +78,7 @@
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@types/react-table": "7.7.20",
-    "@typescript/native-preview": "7.0.0-dev.20250917.1",
+    "@typescript/native-preview": "7.0.0-dev.20250922.1",
     "bufferutil": "4.0.9",
     "node-fetch": "^3.3.2",
     "typescript": "^5.9.2",
