@@ -103,10 +103,16 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const toCreate: GameAssignmentEditNode[] = []
 
     range(configuration.numberOfSlots).forEach((slot) => {
-      if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
-        toDelete.push(gamesAndAssignments[slot])
-        toCreate.push(values[slot])
-      } else {
+      if (gamesAndAssignments[slot]) {
+        if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
+          toDelete.push(gamesAndAssignments[slot])
+          if (values[slot]) {
+            toCreate.push(values[slot])
+          }
+        } else {
+          // do nothing
+        }
+      } else if (values[slot]) {
         toCreate.push(values[slot])
       }
     })

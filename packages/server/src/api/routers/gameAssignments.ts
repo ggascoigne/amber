@@ -107,11 +107,12 @@ export const gameAssignmentsRouter = createTRPCRouter({
         // const deleted =
         await tx.gameAssignment.delete({
           where: {
-            memberId_gameId_gm_year: undefined,
-            gameId: input.gameId,
-            gm: input.gm,
-            memberId: input.memberId,
-            year: input.year,
+            memberId_gameId_gm_year: {
+              memberId: input.memberId,
+              gameId: input.gameId,
+              gm: input.gm,
+              year: input.year,
+            },
           },
         })
         return {
