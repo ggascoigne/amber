@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { Grid } from '@mui/material'
 import type { GridProps } from '@mui/material/Grid'

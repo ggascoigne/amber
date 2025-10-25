@@ -1,6 +1,7 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React from 'react'
 
-import { Game } from '@amber/client'
+import type { Game } from '@amber/client'
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from '@amber/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
@@ -8,7 +9,7 @@ import { InView } from 'react-intersection-observer'
 
 import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
-import { GameDecorator, GameDecoratorParams } from '../types'
+import type { GameDecorator, GameDecoratorParams } from '../types'
 
 interface Player {
   gm: number
@@ -36,7 +37,11 @@ interface GameCardProps {
   decoratorParams?: GameDecoratorParams
 }
 
-type GameCardDetailsProps = GameCardProps & { header: ReactNode; gms?: Player[]; players?: Player[] }
+type GameCardDetailsProps = GameCardProps & {
+  header: ReactNode
+  gms?: Player[]
+  players?: Player[]
+}
 
 const GameCardDetails = React.memo(
   ({ game, year, slot, tiny, header, players = [], gms = [] }: GameCardDetailsProps) => {
@@ -119,7 +124,17 @@ const GameCardDetails = React.memo(
     return (
       <Card
         key={`game_${id}`}
-        sx={[{ mb: '50px' }, tiny ? { height: 279, width: 295, zIndex: 10, transform: 'rotateZ(-3deg)' } : {}]}
+        sx={[
+          { mb: '50px' },
+          tiny
+            ? {
+                height: 279,
+                width: 295,
+                zIndex: 10,
+                transform: 'rotateZ(-3deg)',
+              }
+            : {},
+        ]}
         id={`game/${year}/${slot}/${id}`}
       >
         {tiny ? (
@@ -210,7 +225,17 @@ export const GameCard = React.memo(
       return tiny ? (
         <Card
           key={`game_${id}`}
-          sx={[{ mb: '50px' }, tiny ? { height: 279, width: 295, zIndex: 10, transform: 'rotateZ(-3deg)' } : {}]}
+          sx={[
+            { mb: '50px' },
+            tiny
+              ? {
+                  height: 279,
+                  width: 295,
+                  zIndex: 10,
+                  transform: 'rotateZ(-3deg)',
+                }
+              : {},
+          ]}
           id={`game/${year}/${slot}/${id}`}
         >
           {header}

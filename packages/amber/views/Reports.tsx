@@ -1,10 +1,11 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { Page } from '@amber/ui'
 import { List, ListItem } from '@mui/material'
 
-import { AuthenticatedDownloadButton } from '../components'
-import { Perms, useAuth } from '../components/Auth'
+import { Page, AuthenticatedDownloadButton } from '../components'
+import type { Perms } from '../components/Auth'
+import { useAuth } from '../components/Auth'
 import { useConfiguration } from '../utils'
 
 export type ReportRecord = {

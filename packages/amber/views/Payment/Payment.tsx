@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
 import { useTRPC } from '@amber/client'
-import { Loader, Page } from '@amber/ui'
+import { Loader } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
-import { PaymentIntent } from '@stripe/stripe-js'
+import type { PaymentIntent } from '@stripe/stripe-js'
 import { useQuery } from '@tanstack/react-query'
 
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
-import { ContactEmail } from '../../components'
+import { Page, ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useUser } from '../../utils'
 
 export const Payment = () => {

@@ -1,6 +1,6 @@
 import { ssrHelpers } from '@amber/server/src/api/ssr'
 
-import { UserPaymentDetails } from './types'
+import type { UserPaymentDetails } from './types'
 
 import { emailer } from '../email/email'
 import { getEmails } from '../getConfig'

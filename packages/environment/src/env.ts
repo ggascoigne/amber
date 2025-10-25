@@ -21,7 +21,7 @@ if (isNodeRuntime && process.env.NODE_ENV !== 'production') {
     throw new Error('DB_ENV must be set to either "acnw" or "acus"')
   }
   const envPath = path.join(dirname, `../../../apps/${dbEnv}/${envFilename}`)
-  dotenv.config({ path: envPath })
+  dotenv.config({ path: envPath, quiet: true })
 }
 
 // if (isDev && typeof window === 'undefined') {

@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { UserMembership, useTRPC } from '@amber/client'
+import type { UserMembership } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
@@ -90,7 +92,9 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
           fontSize: '0.875rem',
           color: 'inherit',
         },
-        '& input::placeholder, & input::-webkit-input-placeholder': { opacity: 1 },
+        '& input::placeholder, & input::-webkit-input-placeholder': {
+          opacity: 1,
+        },
         '& input::-moz-placeholder, & input:-moz-placeholder': { opacity: 1 },
         backgroundColor: 'primary.main',
         color: 'primary.contrastText',
@@ -116,6 +120,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
         />
       )}
       renderOption={(props, params: UserMembership) => (
+        // oxlint-disable-next-line jsx-key
         <li {...props} key={params.id} style={{ overflow: 'hidden' }}>
           <span style={{ fontSize: '0.875rem', wordWrap: 'break-word' }}>{params.fullName}</span>
         </li>

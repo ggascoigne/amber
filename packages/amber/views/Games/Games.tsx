@@ -1,17 +1,21 @@
-import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import { Game, useTRPC } from '@amber/client'
-import { Loader, notEmpty, Page, Table, YesBlankCell } from '@amber/ui'
+import type { Game } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { notEmpty } from '@amber/ui'
+import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
+import { Table, someSelected, getSelectedRows } from '@amber/ui/components/Table'
 import CachedIcon from '@mui/icons-material/Cached'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import type { Column, Row, TableInstance, TableState } from 'react-table'
+import type { ColumnDef, TableState } from '@tanstack/react-table'
 
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
 
+import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import type { TableMouseEventHandler } from '../../types/react-table-config'
 import { useYearFilter } from '../../utils'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
 export const getGms = (row: Game) => {
   const playersOrEmpty = row.gameAssignment
@@ -25,111 +29,135 @@ export const getGms = (row: Game) => {
   return ''
 }
 
-const initialState: Partial<TableState<Game>> = {
-  sortBy: [
+const initialState: Partial<TableState> = {
+  sorting: [
     {
       id: 'slotId',
       desc: false,
     },
   ],
-  hiddenColumns: [
-    'genre',
-    'type',
-    'setting',
-    'charInstructions',
-    'playerPreference',
-    'returningPlayers',
-    'playersContactGm',
-    'gameContactEmail',
-    'slotPreference',
-    'lateStart',
-    'lateFinish',
-    'slotConflicts',
-    'message',
-    'teenFriendly',
-    'year',
-    'full',
-  ],
+  columnVisibility: {
+    genre: false,
+    type: false,
+    setting: false,
+    charInstructions: false,
+    playerPreference: false,
+    returningPlayers: false,
+    playersContactGm: false,
+    gameContactEmail: false,
+    slotPreference: false,
+    lateStart: false,
+    lateFinish: false,
+    slotConflicts: false,
+    message: false,
+    teenFriendly: false,
+    year: false,
+    full: false,
+  },
 }
 
-const columns: Column<Game>[] = [
+const columns: ColumnDef<Game>[] = [
   {
-    accessor: 'id',
-    width: 100,
-    filter: 'numeric',
+    accessorKey: 'id',
+    header: 'ID',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'slotId',
-    Header: 'Slot',
-    width: 100,
-    filter: 'numeric',
+    accessorKey: 'slotId',
+    header: 'Slot',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'name',
-    disableGlobalFilter: false,
+    accessorKey: 'name',
+    enableGlobalFilter: true,
   },
   {
-    Header: 'GM Names',
-    accessor: 'gmNames',
-    disableGlobalFilter: false,
+    accessorKey: 'gmNames',
+    header: 'GM Names',
+    enableGlobalFilter: true,
   },
   {
-    id: 'GM',
-    accessor: getGms,
+    id: 'gm',
+    header: 'GM',
+    accessorFn: (row) => getGms(row),
   },
   {
-    accessor: 'description',
-    disableGlobalFilter: false,
+    accessorKey: 'description',
+    enableGlobalFilter: true,
   },
   {
-    accessor: 'estimatedLength',
-    width: 100,
-    filter: 'numeric',
+    accessorKey: 'estimatedLength',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'playerMax',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
+    accessorKey: 'playerMax',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'playerMin',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
+    accessorKey: 'playerMin',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'year',
-    width: 100,
-    align: 'right',
-    disableFilters: true,
+    accessorKey: 'year',
+    size: 100,
+    enableColumnFilter: false,
+    meta: {
+      align: 'right',
+    },
   },
-  { accessor: 'genre' },
-  { accessor: 'type' },
-  { accessor: 'setting' },
-  { accessor: 'charInstructions', disableGlobalFilter: false },
-  { accessor: 'playerPreference', disableGlobalFilter: false },
-  { accessor: 'returningPlayers' },
-  { accessor: 'playersContactGm' },
-  { accessor: 'gameContactEmail' },
-  { accessor: 'slotPreference' },
-  { accessor: 'lateStart' },
-  { accessor: 'lateFinish', Cell: YesBlankCell, sortType: 'basic' },
-  { accessor: 'slotConflicts' },
-  { accessor: 'message', disableGlobalFilter: false },
-  { accessor: 'teenFriendly', Cell: YesBlankCell, sortType: 'basic' },
-  { accessor: 'full', Cell: YesBlankCell, sortType: 'basic' },
-  { accessor: 'roomId' },
+  { accessorKey: 'genre' },
+  { accessorKey: 'type' },
+  { accessorKey: 'setting' },
+  { accessorKey: 'charInstructions', enableGlobalFilter: true },
+  { accessorKey: 'playerPreference', enableGlobalFilter: true },
+  { accessorKey: 'returningPlayers' },
+  { accessorKey: 'playersContactGm' },
+  { accessorKey: 'gameContactEmail' },
+  { accessorKey: 'slotPreference' },
+  { accessorKey: 'lateStart' },
+  {
+    accessorKey: 'lateFinish',
+    cell: ({ getValue }) => (getValue() ? 'Yes' : ''),
+  },
+  { accessorKey: 'slotConflicts' },
+  { accessorKey: 'message', enableGlobalFilter: true },
+  {
+    accessorKey: 'teenFriendly',
+    cell: ({ getValue }) => (getValue() ? 'Yes' : ''),
+  },
+  {
+    accessorKey: 'full',
+    cell: ({ getValue }) => (getValue() ? 'Yes' : ''),
+  },
+  { accessorKey: 'roomId' },
 ]
 
 const Games = React.memo(() => {
   const trpc = useTRPC()
   const [year] = useYearFilter()
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<Game[]>([])
   const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const [fixBusy, setFixBusy] = useState(false)
-  const { error, data, refetch } = useQuery(
+  const { error, data, refetch, isLoading, isFetching } = useQuery(
     trpc.games.getGamesByYear.queryOptions({
       year,
     }),
@@ -141,88 +169,69 @@ const Games = React.memo(() => {
     }),
   )
 
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } = useStandardHandlers<Game>({
+    deleteHandler: (selectedRows) => selectedRows.map((row) => deleteGame.mutateAsync({ id: row.id })),
+  })
+
   const membershipList = useMemo(() => membershipData?.filter(notEmpty) ?? [], [membershipData])
 
-  const onUpdateGmNames = useCallback(
-    (instance: TableInstance<Game>) => async () => {
+  const fixGmNames = useCallback<TableSelectionMouseEventHandler<Game>>(
+    async (table, selectedKeys) => {
+      const selectedRows = getSelectedRows(table, selectedKeys)
+      if (!selectedRows.length) return Promise.resolve()
       setFixBusy(true)
-      const selected = instance.selectedFlatRows.map((r) => r.original)
-      const queue: Promise<any>[] = []
-      selected.forEach((game) => {
-        queue.push(setGameGmAssignments(game.id, game.gmNames, membershipList))
-      })
-      await Promise.allSettled(queue)
-      setFixBusy(false)
+      const queue = selectedRows.map((row) => setGameGmAssignments(row.id, row.gmNames, membershipList))
+      try {
+        await Promise.allSettled(queue)
+        return undefined
+      } finally {
+        setFixBusy(false)
+      }
     },
     [membershipList, setGameGmAssignments],
   )
 
-  const commands = useMemo(
+  const toolbarActions = useMemo<Action<Game>[]>(
     () => [
       {
         label: 'Fix GM Names',
-        onClick: onUpdateGmNames,
+        type: 'icon',
         icon: <CachedIcon sx={fixBusy ? { color: 'red' } : undefined} />,
-        enabled: ({ state }: TableInstance<Game>) => Object.keys(state.selectedRowIds).length > 0,
+        onClick: (table, selectedKeys) => {
+          if (!selectedKeys.length) return
+          fixGmNames(table, selectedKeys)
+        },
+        enabled: someSelected,
       },
     ],
-    [fixBusy, onUpdateGmNames],
+    [fixBusy, fixGmNames],
   )
+
+  const list = useMemo(() => (data ?? []).filter((g) => g.year === year), [data, year])
 
   if (error) {
     return <TransportError error={error} />
   }
-  if (!data) {
-    return <Loader />
-  }
-
-  const list: Game[] = data.filter((g) => g.year === year)
-
-  const onAdd: TableMouseEventHandler<Game> = () => () => {
-    setShowEdit(true)
-  }
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-  }
-
-  const onDelete = (instance: TableInstance<Game>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((g) => deleteGame.mutateAsync({ id: g.id }))
-    Promise.allSettled(updater).then(() => console.log('deleted'))
-  }
-
-  const onEdit = (instance: TableInstance<Game>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<Game>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
-
-  // const updateData = (rowIndex: number, columnId: string, value: any): void => {
-  //   console.log(`{rowIndex, columnId, value} = ${JSON.stringify({ rowIndex, columnId, value }, null, 2)}`)
-  // }
 
   return (
-    <Page title='Games'>
-      {showEdit && <GamesDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+    <Page title='Games' variant='fill' hideTitle>
+      {showEdit && <GamesDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
       <Table<Game>
+        title='Games'
         name='games'
         data={list}
         columns={columns}
-        onAdd={onAdd}
-        onDelete={onDelete}
-        onEdit={onEdit}
-        onClick={onClick}
         initialState={initialState}
-        extraCommands={commands}
-        onRefresh={() => refetch()}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
+        onAdd={onAdd}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        refetch={refetch}
+        additionalToolbarActions={toolbarActions}
         defaultColumnDisableGlobalFilter
-        // updateData={updateData}
+        enableGrouping={false}
       />
     </Page>
   )

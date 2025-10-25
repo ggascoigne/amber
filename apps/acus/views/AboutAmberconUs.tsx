@@ -1,5 +1,6 @@
+import type { FrontMatter } from '@amber/amber'
+import { MdxPage, Page } from '@amber/amber'
 import { useConfiguration, useYearFilter } from '@amber/amber/utils'
-import { FrontMatter, MdxPage, Page } from '@amber/ui'
 import { useTheme } from '@mui/material/styles'
 
 import AboutAmberconNwContent, { metadata as acusFm } from '../content/AboutAmberconUsContent.mdx'

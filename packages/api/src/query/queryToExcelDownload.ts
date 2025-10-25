@@ -1,5 +1,5 @@
 import { getPool, PoolType } from '@amber/database/shared/config'
-import { NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 import * as XLSX from 'xlsx/dist/xlsx.mini.min'
 
 export const queryToExcelDownload = async (query: string, res: NextApiResponse) => {

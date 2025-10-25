@@ -1,14 +1,18 @@
-import React, { MouseEventHandler, useState } from 'react'
+import type { MouseEventHandler } from 'react'
+import React, { useState } from 'react'
 
-import { Game, useTRPC, useInvalidateGameQueries } from '@amber/client'
-import { Loader, Page, range, Table } from '@amber/ui'
+import type { Game } from '@amber/client'
+import { useTRPC, useInvalidateGameQueries } from '@amber/client'
+import { Loader, range } from '@amber/ui'
+import type { TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
+import { Table, getSelectedRows } from '@amber/ui/components/Table'
 import { Box, Button } from '@mui/material'
 import { useQuery, useMutation } from '@tanstack/react-query'
+import type { ColumnDef, Row, TableState } from '@tanstack/react-table'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { Column, Row, TableInstance, TableState } from 'react-table'
 
-import { ConfigDate, MDY } from '../../components'
+import { Page, ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
@@ -16,41 +20,48 @@ import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 // type Game = GameFieldsFragment & GameGmsFragment
 
-const columns: Column<Game>[] = [
+const columns: ColumnDef<Game>[] = [
   {
-    accessor: 'name',
+    accessorKey: 'name',
   },
   {
-    Header: 'GM',
-    accessor: 'gmNames',
+    header: 'GM',
+    accessorKey: 'gmNames',
   },
   {
-    accessor: 'slotPreference',
+    accessorKey: 'slotPreference',
   },
   {
-    accessor: 'description',
+    accessorKey: 'description',
   },
   {
-    accessor: 'estimatedLength',
-    width: 140,
-    filter: 'numeric',
+    accessorKey: 'estimatedLength',
+    size: 140,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'playerMin',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
+    accessorKey: 'playerMin',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'playerMax',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
+    accessorKey: 'playerMax',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
 ]
 
-const initialState: Partial<TableState<Game>> = {
-  sortBy: [
+const initialState: Partial<TableState> = {
+  sorting: [
     {
       id: 'slotPreference',
       desc: false,
@@ -68,9 +79,9 @@ const VirtualGmBlurb = () => {
         <li>
           <p>
             <strong>Slot times and durations</strong>: Rather than our usual mix of short slots and long slots, all
-            slots for virtual{configuration.name} are four hours long. If you plan to run, say, a 6-hour game, simply
-            choose 2 slots in the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part
-            1 and part 2.
+            slots for virtual
+            {configuration.name} are four hours long. If you plan to run, say, a 6-hour game, simply choose 2 slots in
+            the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part 1 and part 2.
           </p>
 
           <p>
@@ -216,7 +227,7 @@ const MemberGmPage = React.memo(() => {
   const router = useRouter()
   const { query } = router
 
-  const { error, data, refetch } = useQuery(
+  const { error, data, refetch, isLoading, isFetching } = useQuery(
     trpc.games.getGamesByYearAndAuthor.queryOptions({
       year,
       id: userId!,
@@ -242,22 +253,17 @@ const MemberGmPage = React.memo(() => {
     router.push('/gm')
   }
 
-  const onDelete = (instance: TableInstance<Game>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((g) =>
-      deleteGame.mutateAsync(
-        {
-          id: g.id,
-        },
-        {
-          onSuccess: invalidateGameQueries,
-        },
-      ),
-    )
-    Promise.allSettled(updater).then(() => console.log('deleted'))
+  const handleDelete: TableSelectionMouseEventHandler<Game> = (table, selectedKeys) => {
+    const selectedRows = getSelectedRows(table, selectedKeys)
+    if (!selectedRows.length) return
+    const operations = selectedRows.map((row) => deleteGame.mutateAsync({ id: row.id }))
+    Promise.allSettled(operations).then(() => {
+      invalidateGameQueries()
+      table.resetRowSelection()
+    })
   }
 
-  const onClick = (row: Row<Game>) => {
+  const onRowClick = (row: Row<Game>) => {
     router.push(`/gm/edit/${row.original.id}`)
     setSelection([row.original])
   }
@@ -277,14 +283,21 @@ const MemberGmPage = React.memo(() => {
       {data.length ? (
         <Table<Game>
           name='gm_games'
-          initialState={initialState}
-          disableGroupBy
           data={data}
           columns={columns}
-          onDelete={displayDeleteButton ? onDelete : undefined}
-          onClick={onClick}
-          onRefresh={() => refetch()}
-          hideSelectionUi={!displayDeleteButton}
+          initialState={initialState}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          onRowClick={onRowClick}
+          onDelete={displayDeleteButton ? handleDelete : undefined}
+          enableRowSelection={displayDeleteButton}
+          refetch={refetch}
+          scrollBehavior='none'
+          enableGrouping={false}
+          enableGlobalFilter={false}
+          enableColumnFilters={false}
+          systemActions={[]}
+          displayPagination='never'
         />
       ) : null}
     </Page>

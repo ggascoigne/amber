@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-import { Configuration, ConventionInfo } from './configContext'
+import type { Configuration, ConventionInfo } from './configContext'
 
 export type SlotConfiguration = Pick<Configuration, 'startDates' | 'virtual' | 'year' | 'numberOfSlots'>
 

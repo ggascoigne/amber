@@ -1,5 +1,6 @@
-import { Page } from '@amber/ui'
 import { Alert, Typography } from '@mui/material'
+
+import { Page } from '../components'
 
 export const NotFound = () => (
   <Page title='Not Found'>

@@ -1,16 +1,22 @@
-import React, { ReactNode, useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { Children } from '@amber/ui'
+import type { Children } from '@amber/ui'
 import { Box, Divider, Drawer, List, ListItem } from '@mui/material'
 
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { LoginButton } from './LoginButton'
-import { MenuItems, RootRoutes } from './Navigation'
+import type { RootRoutes } from './Navigation'
+import { MenuItems } from './Navigation'
 
 const drawerWidth = 240
 
-type DrawerContentsProps = { small?: boolean; rootRoutes: RootRoutes; banner: ReactNode }
+type DrawerContentsProps = {
+  small?: boolean
+  rootRoutes: RootRoutes
+  banner: ReactNode
+}
 
 const DrawerContents = ({ small = false, rootRoutes, banner }: DrawerContentsProps) => (
   <>
@@ -54,7 +60,11 @@ const RightMenu = (props: { small?: boolean }) => (
   </List>
 )
 
-export type LayoutProps = Children & { rootRoutes: RootRoutes; title: string; banner: ReactNode }
+export type LayoutProps = Children & {
+  rootRoutes: RootRoutes
+  title: string
+  banner: ReactNode
+}
 
 export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes, title, banner }) => {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -111,7 +121,16 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
           </Drawer>
         </Box>
       </Box>
-      <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
+      <Box
+        component='main'
+        sx={{
+          minHeight: '100vh',
+          width: 'calc(100% - 240px)',
+          flexGrow: 1,
+          paddingTop: 3,
+          paddingBottom: 3,
+        }}
+      >
         <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
         {children}
       </Box>

@@ -1,10 +1,10 @@
-import { Children } from '@amber/ui'
+import type { Children } from '@amber/ui'
 import Error from 'next/error'
 import { useRouter } from 'next/router'
 
 import { HasPermission } from './HasPermission'
 
-import { RootRoutes } from '../Navigation'
+import type { RootRoutes } from '../Navigation'
 
 type RouteGuardProps = Children & {
   routes: RootRoutes

@@ -27,11 +27,11 @@
     "@t3-oss/env-nextjs": "^0.13.8",
     "common-tags": "^1.8.2",
     "debug": "^4.4.3",
-    "listr2": "^9.0.4",
+    "listr2": "^9.0.5",
     "luxon": "^3.7.2",
     "pg": "^8.16.3",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.20.5"
+    "tsx": "^4.20.6"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
@@ -39,18 +39,18 @@
     "@types/debug": "~4.1.12",
     "@types/fs-extra": "^11.0.4",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^24.5.1",
+    "@types/node": "^24.9.1",
     "@types/pg": "^8.15.5",
-    "@typescript/native-preview": "7.0.0-dev.20250922.1",
+    "@typescript/native-preview": "7.0.0-dev.20251022.1",
     "chalk": "^5.6.2",
     "commander": "^14.0.1",
     "common-tags": "^1.8.2",
-    "dotenv": "^17.2.2",
+    "dotenv": "^17.2.3",
     "knex": "^3.1.0",
     "knex-migrate": "^1.7.4",
     "tempy": "^3.1.0",
     "ts-toolbelt": "^9.6.0",
-    "typescript": "^5.9.2",
-    "zx": "^8.8.1"
+    "typescript": "^5.9.3",
+    "zx": "^8.8.5"
   }
 }

@@ -4,7 +4,8 @@ import { useUser } from '@auth0/nextjs-auth0'
 import type { User as Auth0LibUser } from '@auth0/nextjs-auth0/types'
 
 import { checkMany } from './authUtils'
-import rules, { Perms } from './PermissionRules'
+import type { Perms } from './PermissionRules'
+import rules from './PermissionRules'
 import { useRoleOverride } from './useRoleOverride'
 
 interface AuthInfo {
@@ -27,7 +28,9 @@ export type UseAuth = UserContext & {
 
 export const useAuth = (): UseAuth => {
   const [roleOverride] = useRoleOverride()
-  const userContext = useUser() as unknown as UserContext & { invalidate: () => Promise<Auth0LibUser | undefined> }
+  const userContext = useUser() as unknown as UserContext & {
+    invalidate: () => Promise<Auth0LibUser | undefined>
+  }
   const { user } = userContext
   const hasPermissions = useCallback(
     (perm: Perms, d?: any) => !!user && checkMany(rules, user.roles, perm, roleOverride, d),

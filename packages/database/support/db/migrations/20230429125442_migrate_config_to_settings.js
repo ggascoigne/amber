@@ -89,17 +89,61 @@ const saveConfig = async (knex, strings, numbers, dates, booleans, startDates) =
 export async function up(knex) {
   if (process.env.DB_ENV === 'acnw') {
     const startDates = {
-      2012: { date: pdxDate({ year: 2012, month: 11, day: 8 }), virtual: false, slots: 7 },
-      2013: { date: pdxDate({ year: 2013, month: 11, day: 7 }), virtual: false, slots: 7 },
-      2014: { date: pdxDate({ year: 2014, month: 11, day: 6 }), virtual: false, slots: 7 },
-      2015: { date: pdxDate({ year: 2015, month: 11, day: 12 }), virtual: false, slots: 7 },
-      2016: { date: pdxDate({ year: 2016, month: 11, day: 3 }), virtual: false, slots: 7 },
-      2017: { date: pdxDate({ year: 2017, month: 11, day: 2 }), virtual: false, slots: 7 },
-      2018: { date: pdxDate({ year: 2018, month: 11, day: 1 }), virtual: false, slots: 7 },
-      2019: { date: pdxDate({ year: 2019, month: 10, day: 31 }), virtual: false, slots: 7 },
-      2020: { date: pdxDate({ year: 2020, month: 11, day: 5 }), virtual: true, slots: 7 },
-      2021: { date: pdxDate({ year: 2021, month: 11, day: 4 }), virtual: true, slots: 7 },
-      2022: { date: pdxDate({ year: 2022, month: 11, day: 3 }), virtual: false, slots: 7 },
+      2012: {
+        date: pdxDate({ year: 2012, month: 11, day: 8 }),
+        virtual: false,
+        slots: 7,
+      },
+      2013: {
+        date: pdxDate({ year: 2013, month: 11, day: 7 }),
+        virtual: false,
+        slots: 7,
+      },
+      2014: {
+        date: pdxDate({ year: 2014, month: 11, day: 6 }),
+        virtual: false,
+        slots: 7,
+      },
+      2015: {
+        date: pdxDate({ year: 2015, month: 11, day: 12 }),
+        virtual: false,
+        slots: 7,
+      },
+      2016: {
+        date: pdxDate({ year: 2016, month: 11, day: 3 }),
+        virtual: false,
+        slots: 7,
+      },
+      2017: {
+        date: pdxDate({ year: 2017, month: 11, day: 2 }),
+        virtual: false,
+        slots: 7,
+      },
+      2018: {
+        date: pdxDate({ year: 2018, month: 11, day: 1 }),
+        virtual: false,
+        slots: 7,
+      },
+      2019: {
+        date: pdxDate({ year: 2019, month: 10, day: 31 }),
+        virtual: false,
+        slots: 7,
+      },
+      2020: {
+        date: pdxDate({ year: 2020, month: 11, day: 5 }),
+        virtual: true,
+        slots: 7,
+      },
+      2021: {
+        date: pdxDate({ year: 2021, month: 11, day: 4 }),
+        virtual: true,
+        slots: 7,
+      },
+      2022: {
+        date: pdxDate({ year: 2022, month: 11, day: 3 }),
+        virtual: false,
+        slots: 7,
+      },
     }
 
     const THIS_YEAR = 2022
@@ -150,7 +194,11 @@ export async function up(knex) {
       gameChoicesDue: pdxDate({ year: THIS_YEAR, month: 9, day: 25 }),
       gmPreview: pdxDate({ year: THIS_YEAR, month: 9, day: 28 }),
       schedulesSent: pdxDate({ year: THIS_YEAR, month: 9, day: 30 }),
-      lastCancellationFullRefund: pdxDate({ year: THIS_YEAR, month: 10, day: 19 }),
+      lastCancellationFullRefund: pdxDate({
+        year: THIS_YEAR,
+        month: 10,
+        day: 19,
+      }),
       travelCoordination: pdxDate({ year: THIS_YEAR, month: 10, day: 19 }),
     }
 
@@ -168,13 +216,41 @@ export async function up(knex) {
 
   if (process.env.DB_ENV === 'acus') {
     const startDates = {
-      2017: { date: dtwDate({ year: 2017, month: 4, day: 6 }), virtual: false, slots: 8 },
-      2018: { date: dtwDate({ year: 2018, month: 3, day: 22 }), virtual: false, slots: 8 },
-      2019: { date: dtwDate({ year: 2019, month: 4, day: 11 }), virtual: false, slots: 8 },
-      2020: { date: dtwDate({ year: 2020, month: 4, day: 2 }), virtual: true, slots: 8 },
-      2021: { date: dtwDate({ year: 2021, month: 3, day: 25 }), virtual: true, slots: 8 },
-      2022: { date: dtwDate({ year: 2022, month: 4, day: 7 }), virtual: true, slots: 8 },
-      2023: { date: dtwDate({ year: 2023, month: 3, day: 16 }), virtual: false, slots: 8 },
+      2017: {
+        date: dtwDate({ year: 2017, month: 4, day: 6 }),
+        virtual: false,
+        slots: 8,
+      },
+      2018: {
+        date: dtwDate({ year: 2018, month: 3, day: 22 }),
+        virtual: false,
+        slots: 8,
+      },
+      2019: {
+        date: dtwDate({ year: 2019, month: 4, day: 11 }),
+        virtual: false,
+        slots: 8,
+      },
+      2020: {
+        date: dtwDate({ year: 2020, month: 4, day: 2 }),
+        virtual: true,
+        slots: 8,
+      },
+      2021: {
+        date: dtwDate({ year: 2021, month: 3, day: 25 }),
+        virtual: true,
+        slots: 8,
+      },
+      2022: {
+        date: dtwDate({ year: 2022, month: 4, day: 7 }),
+        virtual: true,
+        slots: 8,
+      },
+      2023: {
+        date: dtwDate({ year: 2023, month: 3, day: 16 }),
+        virtual: false,
+        slots: 8,
+      },
     }
 
     const THIS_YEAR = 2023
@@ -225,7 +301,11 @@ export async function up(knex) {
       gameChoicesDue: dtwDate({ year: THIS_YEAR, month: 2, day: 20 }),
       gmPreview: dtwDate({ year: THIS_YEAR, month: 2, day: 24 }),
       schedulesSent: dtwDate({ year: THIS_YEAR, month: 2, day: 26 }),
-      lastCancellationFullRefund: dtwDate({ year: THIS_YEAR, month: 2, day: 28 }),
+      lastCancellationFullRefund: dtwDate({
+        year: THIS_YEAR,
+        month: 2,
+        day: 28,
+      }),
       travelCoordination: dtwDate({ year: THIS_YEAR, month: 10, day: 19 }),
     }
 

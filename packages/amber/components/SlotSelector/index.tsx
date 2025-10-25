@@ -1,11 +1,13 @@
-import React, { ChangeEvent, useCallback } from 'react'
+import type { ChangeEvent } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { Card, CardHeader, range } from '@amber/ui'
 import { Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 
 import { getSlotDescription, SlotFormat, useConfiguration, useGameUrl } from '../../utils'
-import { SlotDecorator, SlotDecoratorParams } from '../types'
+import type { SlotDecorator, SlotDecoratorParams } from '../types'
 
 // styles inlined via sx
 
@@ -35,7 +37,19 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
 
   if (year === 0) return null
   return (
-    <div style={small ? { marginTop: 35, marginRight: 5, marginLeft: 5, marginBottom: 10, width: '95%' } : undefined}>
+    <div
+      style={
+        small
+          ? {
+              marginTop: 35,
+              marginRight: 5,
+              marginLeft: 5,
+              marginBottom: 10,
+              width: '95%',
+            }
+          : undefined
+      }
+    >
       <Card>
         <CardHeader color='success' plain sx={[{ display: 'flex', alignItems: 'center' }, small && { p: 0 }]}>
           {!small && <span style={{ fontSize: '1.125rem', paddingRight: 20 }}>Slot</span>}
@@ -91,11 +105,21 @@ export const SlotSelector: React.FC<SlotSelectorProps> = ({ small, children, dec
       <h4
         style={
           small
-            ? { marginBottom: 10, marginTop: -16, fontSize: '1em', lineHeight: '1.2em', paddingLeft: '16px' }
+            ? {
+                marginBottom: 10,
+                marginTop: -16,
+                fontSize: '1em',
+                lineHeight: '1.2em',
+                paddingLeft: '16px',
+              }
             : { marginBottom: 55 }
         }
       >
-        {getSlotDescription(configuration, { slot, year, altFormat: SlotFormat.SHORT })}
+        {getSlotDescription(configuration, {
+          slot,
+          year,
+          altFormat: SlotFormat.SHORT,
+        })}
       </h4>
       {children({ slot, year })}
     </div>

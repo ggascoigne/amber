@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { Box } from '@mui/material'
 
@@ -23,7 +23,15 @@ export const Quote: React.FC<QuoteProps> = ({ text, author }) => (
     <Box component='p' sx={{ m: 0, mb: '10px', fontStyle: 'italic' }}>
       {text}
     </Box>
-    <Box component='small' sx={{ display: 'block', fontSize: '80%', lineHeight: '1.42857143', color: '#777' }}>
+    <Box
+      component='small'
+      sx={{
+        display: 'block',
+        fontSize: '80%',
+        lineHeight: '1.42857143',
+        color: '#777',
+      }}
+    >
       {author}
     </Box>
   </Box>

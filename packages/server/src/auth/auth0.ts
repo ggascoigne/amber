@@ -40,7 +40,10 @@ export const auth0 = new Auth0Client({
       if (!res.ok) return session
       const json = (await res.json()) as { userId?: number; roles?: string[] }
       if (json?.userId && json?.roles) {
-        return { ...session, user: { ...session.user, userId: json.userId, roles: json.roles } }
+        return {
+          ...session,
+          user: { ...session.user, userId: json.userId, roles: json.roles },
+        }
       }
       return session
     } catch {

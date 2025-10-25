@@ -1,11 +1,14 @@
-import { useInvalidateMembershipQueries, UserAndProfile, useTRPC, Transaction } from '@amber/client'
-import { notEmpty, OnCloseHandler, pick, useNotification } from '@amber/ui'
+import type { UserAndProfile, Transaction } from '@amber/client'
+import { useInvalidateMembershipQueries, useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { notEmpty, pick, useNotification } from '@amber/ui'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { DateTime } from 'luxon'
 import {} from 'yup'
 
 import type { MembershipConfirmationBodyUpdateType, MembershipType } from './apiTypes'
-import { Configuration, useConfiguration } from './configContext'
+import type { Configuration } from './configContext'
+import { useConfiguration } from './configContext'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
@@ -20,7 +23,10 @@ export interface MembershipFormContent {
   prefix?: string
 }
 
-export type MembershipFormType = MembershipType & { membership?: string; subsidizedAmount?: number }
+export type MembershipFormType = MembershipType & {
+  membership?: string
+  subsidizedAmount?: number
+}
 
 export type MembershipErrorType = Record<keyof MembershipFormType, string>
 

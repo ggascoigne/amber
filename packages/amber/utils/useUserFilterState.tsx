@@ -17,14 +17,14 @@ export const useUserFilter = () => useAtom(userFilterAtom)
 // Note that the main purpose of this method is to allow for overriding the logged in user by an admin
 // if you aren't an admin then userInfo.userId will always === 0
 export const useUser = (): Partial<UserInfo> => {
-  const { user } = useAuth()
+  const { user: auth0User } = useAuth()
   const [userInfo] = useUserFilter()
   return useMemo(() => {
     if (userInfo.userId) {
       return { ...userInfo }
     }
-    const userId = user?.userId
-    const email = user?.email ?? undefined
+    const userId = auth0User?.userId
+    const email = auth0User?.email ?? undefined
     return { userId, email }
-  }, [user?.email, user?.userId, userInfo])
+  }, [auth0User?.email, auth0User?.userId, userInfo])
 }

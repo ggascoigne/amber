@@ -1,8 +1,8 @@
-import { CreateMembershipType, Game, UserAndProfile } from '@amber/client'
-import { ToFormValues } from '@amber/ui/utils/ts-utils'
+import type { CreateMembershipType, Game, UserAndProfile } from '@amber/client'
+import type { ToFormValues } from '@amber/ui/utils/ts-utils'
 import { z } from 'zod'
 
-import { SlotSummary } from '../views/GameSignup/SlotDetails'
+import type { SlotSummary } from '../views/GameSignup/SlotDetails'
 
 export type MembershipType = ToFormValues<CreateMembershipType> & {
   slotsAttendingData?: boolean[]

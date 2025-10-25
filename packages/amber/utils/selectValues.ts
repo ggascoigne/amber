@@ -2,7 +2,8 @@ import { useMemo } from 'react'
 
 import { DateTime } from 'luxon'
 
-import { Configuration, useConfiguration } from './configContext'
+import type { Configuration } from './configContext'
+import { useConfiguration } from './configContext'
 
 export const getPref = (values: { value: string; text: string }[], value: string) =>
   values.find((v) => v.value === value)?.text
@@ -16,7 +17,10 @@ export const PlayerPreference = {
 export const playerPreferenceOptions = [
   { value: PlayerPreference.Any, text: 'Any' },
   { value: PlayerPreference.RetOnly, text: 'Returning players only' },
-  { value: PlayerPreference.RetPref, text: 'Returning players have preference, new players welcome.' },
+  {
+    value: PlayerPreference.RetPref,
+    text: 'Returning players have preference, new players welcome.',
+  },
 ]
 
 export const getPlayerPreference = (value: string) => getPref(playerPreferenceOptions, value)
@@ -90,7 +94,11 @@ export const useGetSubsidizedAttendanceOptions = () => {
 
 const getCost = (
   configuration: Configuration,
-  membership: { requestOldPrice: boolean; attendance: string; cost: number | null },
+  membership: {
+    requestOldPrice: boolean
+    attendance: string
+    cost: number | null
+  },
 ) =>
   configuration.isAcus
     ? getAttendance(configuration, membership.attendance)

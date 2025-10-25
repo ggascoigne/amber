@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react'
 
 import {
-  TransportError,
+  Page,
   RoomPref,
+  TransportError,
   getInterestLevel,
   getRoomPref,
   getSlotDescription,
@@ -14,7 +15,8 @@ import {
   useYearFilter,
 } from '@amber/amber'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
-import { CreateMembershipType, UserAndProfile, useTRPC } from '@amber/client'
+import type { CreateMembershipType, UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import {
   Card,
   CardBody,
@@ -24,7 +26,6 @@ import {
   HeaderContent,
   Loader,
   MultiLine,
-  Page,
   notEmpty,
   range,
 } from '@amber/ui'
@@ -50,7 +51,14 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
       <h1>Your Membership for {configuration.year}</h1>
       <GridContainer>
         <Field label='Slots you intend to play'>
-          <Box sx={{ position: 'relative', pt: 0, display: 'flex', flexDirection: 'column' }}>
+          <Box
+            sx={{
+              position: 'relative',
+              pt: 0,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
@@ -170,7 +178,10 @@ const MembershipSummary = () => {
   const { userId } = useUser()
   const [year] = useYearFilter()
   const { isLoading, error, data } = useQuery(
-    trpc.memberships.getMembershipByYearAndId.queryOptions({ year, userId: userId ?? 0 }),
+    trpc.memberships.getMembershipByYearAndId.queryOptions({
+      year,
+      userId: userId ?? 0,
+    }),
   )
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()

@@ -1,69 +1,78 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useCallback } from 'react'
 
-import { StripeRecord, useTRPC } from '@amber/client'
-import { Loader, Page, Table } from '@amber/ui'
+import type { StripeRecord } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Table } from '@amber/ui/components/Table'
 import { useQuery } from '@tanstack/react-query'
-import { Column, Row, TableInstance } from 'react-table'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { StripeDialog } from './StripeDialog'
 
+import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-const columns: Column<StripeRecord>[] = [
-  { id: 'id', accessor: (originalRow) => originalRow?.id, width: 1 },
-  { id: 'user', accessor: (originalRow) => (originalRow?.data as any).metadata.userId, width: 1 },
-  { id: 'year', accessor: (originalRow) => (originalRow?.data as any).metadata.year, width: 1 },
-  { id: 'metadata', accessor: (originalRow) => JSON.stringify((originalRow?.data as any).metadata) },
-  { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data), width: 2 },
+const columns: ColumnDef<StripeRecord>[] = [
+  { id: 'id', header: 'ID', accessorFn: (row) => row?.id, size: 5 },
+  {
+    id: 'user',
+    header: 'User',
+    accessorFn: (row) => (row?.data as any)?.metadata?.userId,
+    size: 5,
+  },
+  {
+    id: 'year',
+    header: 'Year',
+    accessorFn: (row) => (row?.data as any)?.metadata?.year,
+    size: 5,
+  },
+  {
+    id: 'metadata',
+    header: 'Metadata',
+    accessorFn: (row) => JSON.stringify((row?.data as any)?.metadata),
+    size: 40,
+  },
+  {
+    id: 'data',
+    header: 'Data',
+    accessorFn: (row) => JSON.stringify(row?.data),
+    size: 40,
+  },
 ]
 
 const Stripes = React.memo(() => {
   const trpc = useTRPC()
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<StripeRecord[]>([])
 
-  const { error, data, refetch } = useQuery(trpc.stripe.getStripe.queryOptions())
+  const { error, data = [], refetch, isLoading, isFetching } = useQuery(trpc.stripe.getStripe.queryOptions())
+
+  const { showEdit, selection, handleCloseEdit, onEdit, onRowClick } = useStandardHandlers<StripeRecord>({
+    deleteHandler: undefined,
+  })
+
+  const getInitialValues = useCallback(() => {
+    const val = { ...selection[0], stringData: '' }
+    val.stringData = JSON.stringify(val.data, null, 2)
+    return val
+  }, [selection])
 
   if (error) {
     return <TransportError error={error} />
   }
 
-  if (!data) {
-    return <Loader />
-  }
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-    refetch().then()
-  }
-
-  const onEdit = (instance: TableInstance<StripeRecord>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<StripeRecord>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
-
-  const getInitialValues = () => {
-    const val = { ...selection[0], stringData: '' }
-    val.stringData = JSON.stringify(val.data, null, 2)
-    return val
-  }
-
   return (
-    <Page title='Stripes'>
-      {showEdit && <StripeDialog open={showEdit} onClose={onCloseEdit} initialValues={getInitialValues()} />}
+    <Page title='Stripe Log' variant='fill' hideTitle>
+      {showEdit && <StripeDialog open={showEdit} onClose={handleCloseEdit} initialValues={getInitialValues()} />}
       <Table<StripeRecord>
-        name='users'
+        title='Stripe Log'
+        name='stripe'
         data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onRowClick={onRowClick}
+        refetch={refetch}
+        enableGrouping={false}
       />
     </Page>
   )

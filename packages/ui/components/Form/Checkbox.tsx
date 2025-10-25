@@ -1,6 +1,7 @@
-import React from 'react'
+import type React from 'react'
 
-import MuiCheckbox, { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox'
+import type { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox'
+import MuiCheckbox from '@mui/material/Checkbox'
 import { useField, useFormikContext } from 'formik'
 
 export interface CheckboxProps

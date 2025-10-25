@@ -307,7 +307,10 @@ export const gamesRouter = createTRPCRouter({
         // log('updateGame input', input)
         const updatedGame = await tx.game.update({
           where: { id: input.id },
-          data: { ...input.data, slotId: input.data.slotId === undefined ? null : input.data.slotId },
+          data: {
+            ...input.data,
+            slotId: input.data.slotId === undefined ? null : input.data.slotId,
+          },
         })
         return { game: updatedGame }
       }),

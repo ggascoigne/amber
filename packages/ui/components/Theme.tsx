@@ -23,6 +23,9 @@ const buildGradientShadow = (color: string) => {
 }
 
 export const theme = createTheme({
+  // colorSchemes: {
+  //   dark: true,
+  // },
   typography: {
     fontFamily,
     fontSize: 12.5, // 14 looks too chunky
@@ -58,14 +61,14 @@ export const theme = createTheme({
           fontWeight: 700,
         },
         body: {
-          color: 'rgba(0, 0, 0, 0.87)',
+          // color: 'rgba(0, 0, 0, 0.87)',
           margin: 0,
           fontSize: '0.78125rem',
           fontFamily,
           fontWeight: 400,
           lineHeight: 1.43,
           letterSpacing: '0.01071em',
-          backgroundColor: '#fafafa',
+          // backgroundColor: '#fafafa',
           textAlign: 'left',
         },
         '@media print': {

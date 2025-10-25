@@ -1,5 +1,5 @@
-import { useConfiguration, useYearFilter } from '@amber/amber/utils'
-import { FrontMatter, MdxPage, Page } from '@amber/ui'
+import type { FrontMatter } from '@amber/amber'
+import { MdxPage, useConfiguration, useYearFilter, Page } from '@amber/amber'
 import { useTheme } from '@mui/material/styles'
 
 import AboutAmberconNwContent, { metadata as acnwFm } from '../content/AboutAmberconNwContent.mdx'

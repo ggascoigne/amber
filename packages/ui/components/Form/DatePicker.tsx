@@ -1,4 +1,5 @@
-import { DatePicker as MuiDatePicker, DatePickerProps as MuiDatePickerProps } from '@mui/x-date-pickers'
+import type { DatePickerProps as MuiDatePickerProps } from '@mui/x-date-pickers'
+import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers'
 
 import { useDatePickerProps } from './datePickerUtils'
 

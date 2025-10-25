@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { useGetAttendanceOptions } from '@amber/amber'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { GridContainer, GridItem, RadioGroupFieldWithLabel } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
-import { FormikErrors, FormikValues } from 'formik'
+import type { FormikErrors, FormikValues } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(

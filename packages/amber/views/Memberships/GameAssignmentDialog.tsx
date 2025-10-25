@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
 
-import { CreateGameAssignmentInputType, Schedule, useInvalidateGameAssignmentQueries, useTRPC } from '@amber/client'
+import type { CreateGameAssignmentInputType, Schedule } from '@amber/client'
+import { useInvalidateGameAssignmentQueries, useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
 import {
   EditDialog,
   GridContainer,
   GridItem,
   Loader,
-  OnCloseHandler,
   pick,
   range,
   SelectField,
@@ -15,13 +16,13 @@ import {
 } from '@amber/ui'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { dequal as deepEqual } from 'dequal'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 
 import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './membershipUtils'
 
 import { TransportError } from '../../components/TransportError'
 import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
-import { MembershipType } from '../../utils/apiTypes'
+import type { MembershipType } from '../../utils/apiTypes'
 
 type GameAssignmentEditNode = CreateGameAssignmentInputType
 

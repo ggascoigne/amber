@@ -5,4 +5,6 @@ export async function up(knex: Knex): Promise<void> {
     table.double('cost').defaultTo(null)
   })
 }
-export async function down(_knex: Knex): Promise<void> {}
+export async function down(_knex: Knex): Promise<void> {
+  // No down migration
+}

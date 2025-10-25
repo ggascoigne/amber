@@ -1,7 +1,10 @@
-import React, { createRef, PropsWithChildren, useMemo, useState } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
+import { createRef, useMemo, useState } from 'react'
 
-import { Game, Schedule, useTRPC } from '@amber/client'
-import { Loader, notEmpty, Page } from '@amber/ui'
+import type { Game, Schedule } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Loader, notEmpty } from '@amber/ui'
 import { Box, useMediaQuery } from '@mui/material'
 import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
@@ -9,17 +12,17 @@ import { useQuery } from '@tanstack/react-query'
 import { stripIndents } from 'common-tags'
 import SHA from 'sha.js'
 
+import { Page } from '../../components'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
 import { TransportError } from '../../components/TransportError'
-import { GameDecorator } from '../../components/types'
+import type { GameDecorator } from '../../components/types'
+import type { Configuration, ICalEvent } from '../../utils'
 import {
   buildUrl,
-  Configuration,
   getGameAssignments,
   getSlotDescription,
   getSlotTimes,
-  ICalEvent,
   isMorningSlot,
   SettingValue,
   SlotFormat,

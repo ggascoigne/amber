@@ -1,7 +1,8 @@
 import React from 'react'
 
-import { DatePicker, DatePickerProps } from '@mui/x-date-pickers'
-import { FieldProps } from 'formik'
+import type { DatePickerProps } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers'
+import type { FieldProps } from 'formik'
 import { DateTime } from 'luxon'
 
 interface DatePickerFieldProps

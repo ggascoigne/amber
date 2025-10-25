@@ -1,8 +1,8 @@
 import React from 'react'
 
+import { MdxWithExternalLinks, Page } from '@amber/amber'
 import { ConfigDate, ContactEmail } from '@amber/amber/components'
 import { BetaWarning } from '@amber/amber/components/BetaWarning'
-import { MdxWithExternalLinks, Page } from '@amber/ui'
 import { Box } from '@mui/material'
 
 import { DynamicMemberContent } from './Welcome'
@@ -41,7 +41,10 @@ export const WelcomeVirtual = () => {
         <li>
           <Box
             component='span'
-            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+            sx={{
+              color: (theme) => theme.palette.error.main,
+              '&:after': { content: '" - date passed"' },
+            }}
           >
             Games and Events due: <ConfigDate name='gameSubmissionDeadline' />
           </Box>
@@ -49,7 +52,10 @@ export const WelcomeVirtual = () => {
         <li>
           <Box
             component='span'
-            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+            sx={{
+              color: (theme) => theme.palette.error.main,
+              '&:after': { content: '" - date passed"' },
+            }}
           >
             All attendee registrations due: <ConfigDate name='registrationDeadline' />
           </Box>
@@ -57,7 +63,10 @@ export const WelcomeVirtual = () => {
         <li>
           <Box
             component='span'
-            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+            sx={{
+              color: (theme) => theme.palette.error.main,
+              '&:after': { content: '" - date passed"' },
+            }}
           >
             Game Book preview to GMs: <ConfigDate name='gameGmPreview' />
           </Box>
@@ -65,7 +74,10 @@ export const WelcomeVirtual = () => {
         <li>
           <Box
             component='span'
-            sx={{ color: (theme) => theme.palette.error.main, '&:after': { content: '" - date passed"' } }}
+            sx={{
+              color: (theme) => theme.palette.error.main,
+              '&:after': { content: '" - date passed"' },
+            }}
           >
             GM Feedback on Game Book: <ConfigDate name='gameGmFeedbackDeadline' />
           </Box>

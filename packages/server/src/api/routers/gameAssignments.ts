@@ -55,6 +55,29 @@ export const gameAssignmentsRouter = createTRPCRouter({
       ),
     ),
 
+  isGameMaster: publicProcedure
+    .input(
+      z.object({
+        userId: z.number(),
+        year: z.number(),
+      }),
+    )
+    .query(async ({ input, ctx }) =>
+      inRlsTransaction(ctx, async (tx) => {
+        const gameAssignments = await tx.gameAssignment.findMany({
+          where: {
+            gm: { not: 0 },
+            membership: {
+              userId: input.userId,
+              year: input.year,
+            },
+          },
+        })
+
+        return gameAssignments.length > 0
+      }),
+    ),
+
   // updateGameAssignmentById: protectedProcedure
   //   .input(
   //     z.object({

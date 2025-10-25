@@ -1,9 +1,10 @@
 import React from 'react'
 
+import { Page } from '@amber/amber'
 import { useAuth } from '@amber/amber/components/Auth'
 import { Redirect } from '@amber/amber/components/Navigation'
 import { useGetSettingValue, useFlag } from '@amber/amber/utils'
-import { Loader, Page } from '@amber/ui'
+import { Loader } from '@amber/ui'
 
 const VirtualDetails = () => {
   const { user, isLoading } = useAuth()

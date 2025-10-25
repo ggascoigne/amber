@@ -1,7 +1,8 @@
 import * as React from 'react'
 
 import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
-import { Reports, ReportRecord } from '@amber/amber/views/Reports'
+import type { ReportRecord } from '@amber/amber/views/Reports'
+import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [

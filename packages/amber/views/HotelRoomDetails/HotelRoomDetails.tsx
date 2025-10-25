@@ -1,15 +1,20 @@
-import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { useTRPC, HotelRoomDetails as HotelRoomDetailsType, HotelRoom } from '@amber/client'
-import { Loader, notEmpty, Page, Table, YesBlankCell } from '@amber/ui'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Column, Row, TableInstance } from 'react-table'
+import type { HotelRoomDetails as HotelRoomDetailsType, HotelRoom } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { notEmpty } from '@amber/ui'
+import { YesBlankCell } from '@amber/ui/components/CellFormatters'
+import { Table } from '@amber/ui/components/Table'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 
+import { useInvalidateHotelRoomDetailsQueries } from '../../../client/src/invalidate'
+import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { TableMouseEventHandler } from '../../types/react-table-config'
 import { useFlag, useYearFilter } from '../../utils'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
 export const useAvailableHotelRooms = () => {
   const trpc = useTRPC()
@@ -71,114 +76,93 @@ export const useAvailableHotelRooms = () => {
   )
 
   const getRoomAvailable = shouldUseRoomTotal ? getAvailableFromTotal : getAvailableFromQuantity
-  return { getRoomAvailable, getAvailableFromTotal, getAvailableFromQuantity, getRequested, getTotal }
+  return {
+    getRoomAvailable,
+    getAvailableFromTotal,
+    getAvailableFromQuantity,
+    getRequested,
+    getTotal,
+  }
 }
 
-const columns: Column<HotelRoomDetailsType>[] = [
+const columns: ColumnDef<HotelRoomDetailsType>[] = [
   {
-    accessor: 'name',
+    accessorKey: 'name',
+    enableGrouping: false,
   },
   {
-    accessor: 'roomType',
+    accessorKey: 'roomType',
   },
   {
-    accessor: 'comment',
+    accessorKey: 'comment',
+    enableGrouping: false,
   },
   {
-    accessor: 'reservedFor',
+    accessorKey: 'reservedFor',
+    enableGrouping: false,
   },
   {
-    accessor: 'bathroomType',
+    accessorKey: 'bathroomType',
   },
   {
-    accessor: 'gamingRoom',
-    Cell: YesBlankCell,
-    sortType: 'basic',
+    accessorKey: 'gamingRoom',
+    cell: YesBlankCell,
   },
   {
-    accessor: 'enabled',
-    Cell: YesBlankCell,
-    sortType: 'basic',
+    accessorKey: 'enabled',
+    cell: YesBlankCell,
   },
   {
-    accessor: 'formattedRoomType',
+    accessorKey: 'formattedRoomType',
+    enableGrouping: false,
   },
   {
-    accessor: 'internalRoomType',
+    accessorKey: 'internalRoomType',
   },
   {
-    accessor: 'reserved',
-    Cell: YesBlankCell,
-    sortType: 'basic',
+    accessorKey: 'reserved',
+    cell: YesBlankCell,
+    enableGrouping: false,
   },
 ]
 
 const HotelRoomDetails = () => {
   const trpc = useTRPC()
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<HotelRoomDetailsType[]>([])
-
   const deleteHotelRoomDetail = useMutation(trpc.hotelRoomDetails.deleteHotelRoomDetail.mutationOptions())
-  const queryClient = useQueryClient()
 
-  const { isLoading, error, data, refetch } = useQuery(trpc.hotelRoomDetails.getHotelRoomDetails.queryOptions())
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data = [],
+    refetch,
+  } = useQuery(trpc.hotelRoomDetails.getHotelRoomDetails.queryOptions())
+
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } =
+    useStandardHandlers<HotelRoomDetailsType>({
+      deleteHandler: (selectedRows) => selectedRows.map((row) => deleteHotelRoomDetail.mutateAsync({ id: row.id })),
+      invalidateQueries: useInvalidateHotelRoomDetailsQueries,
+    })
 
   if (error) {
     return <TransportError error={error} />
   }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  const list = data.filter(notEmpty)
-
-  const clearSelectionAndRefresh = () => {
-    setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
-  }
-
-  const onAdd: TableMouseEventHandler<HotelRoomDetailsType> = () => () => {
-    setShowEdit(true)
-  }
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    clearSelectionAndRefresh()
-  }
-
-  const onDelete = (instance: TableInstance<HotelRoomDetailsType>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((v) => deleteHotelRoomDetail.mutateAsync({ id: v.id }))
-    Promise.allSettled(updater).then(() => {
-      console.log('deleted')
-      clearSelectionAndRefresh()
-      instance.toggleAllRowsSelected(false)
-    })
-  }
-
-  const onEdit = (instance: TableInstance<HotelRoomDetailsType>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<HotelRoomDetailsType>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
 
   return (
-    <Page title='Hotel Rooms'>
-      {showEdit && <HotelRoomDetailDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+    <Page title='Hotel Rooms' variant='fill' hideTitle>
+      {showEdit && <HotelRoomDetailDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
       <Table<HotelRoomDetailsType>
+        title='Hotel Rooms'
         name='hotelRoomDetails'
-        data={list}
+        data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
         onAdd={onAdd}
-        onDelete={onDelete}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onDelete={onDelete}
+        refetch={refetch}
       />
     </Page>
   )

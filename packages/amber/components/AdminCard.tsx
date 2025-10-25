@@ -1,10 +1,12 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
 import { Card } from '@amber/ui'
 import { CardContent, DialogContentText } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import { HasPermission, Perms } from './Auth'
+import type { Perms } from './Auth'
+import { HasPermission } from './Auth'
 
 export const AdminCard: React.FC<PropsWithChildren<{ permission: Perms }>> = ({ permission, children }) => {
   const theme = useTheme()

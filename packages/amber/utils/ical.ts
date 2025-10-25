@@ -1,5 +1,5 @@
 import * as ics from 'ics'
-import { DateTime } from 'luxon'
+import type { DateTime } from 'luxon'
 
 // import { configuration } from './configuration'
 

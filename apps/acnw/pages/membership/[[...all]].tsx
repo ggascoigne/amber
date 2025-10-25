@@ -10,4 +10,6 @@ const Page: NextPage = () => <MembershipSummary />
 
 export default Page
 
-export const getServerSideProps = auth0.withPageAuthRequired({ getServerSideProps: configGetServerSideProps })
+export const getServerSideProps = auth0.withPageAuthRequired({
+  getServerSideProps: configGetServerSideProps,
+})

@@ -1,6 +1,7 @@
-import React from 'react'
+import type React from 'react'
 
-import { SxProps, Theme, Typography, TypographyProps } from '@mui/material'
+import type { SxProps, Theme, TypographyProps } from '@mui/material'
+import { Typography } from '@mui/material'
 
 export const Important = <C extends React.ElementType>(props: TypographyProps<C, { component?: C }>) => {
   const { children, className, sx, variant, ...rest } = props as TypographyProps<any, any> & {

@@ -1,0 +1,3 @@
+test-results/
+playwright/.auth
+playwright-report/

@@ -12,7 +12,7 @@ IGNORE=( 'packages/server/src/generated' )
 
 for j in "${FORBIDDEN[@]}"
 do
-  for i in `git diff --cached --name-only | grep -v $(basename $0) | grep -vE "eslint|.*lock.*|package.json"`
+  for i in `git diff --cached --name-only | grep -v $(basename $0) | grep -vE "oxlint|eslint|.*lock.*|package.json"`
   do
 
       # Skip files in ignored folders

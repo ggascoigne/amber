@@ -1,19 +1,13 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { useTRPC, HotelRoomDetailsEditorType } from '@amber/client'
-import {
-  CheckboxWithLabel,
-  EditDialog,
-  GridContainer,
-  GridItem,
-  OnCloseHandler,
-  pick,
-  TextField,
-  useNotification,
-} from '@amber/ui'
+import type { HotelRoomDetailsEditorType } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { CheckboxWithLabel, EditDialog, GridContainer, GridItem, pick, TextField, useNotification } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 
 import { LookupField } from '../../components/Form'
 
@@ -68,7 +62,9 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey(),
+              })
             },
           },
         )
@@ -99,7 +95,9 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey() })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey(),
+              })
             },
           },
         )

@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
 import { getSelectLabel, getSelectValue, range } from '@amber/ui'
 import { FormControl, MenuItem, TextField } from '@mui/material'
-import { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import type { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { alpha } from '@mui/material/styles'
 
 import { useConfiguration, useYearFilter } from '../utils'

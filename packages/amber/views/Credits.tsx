@@ -1,5 +1,4 @@
-import { MdxPage } from '@amber/ui'
-
+import { MdxPage } from '../components/Mdx'
 import CreditsContent, { metadata } from '../content/CreditsContent.mdx'
 
 const Credits = () => <MdxPage frontMatter={metadata} component={<CreditsContent />} />

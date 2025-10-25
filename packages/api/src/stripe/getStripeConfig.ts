@@ -1,5 +1,5 @@
 import { env } from '@amber/environment'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { handleError } from '../handleError'
 

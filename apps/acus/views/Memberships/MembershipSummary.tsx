@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import {
+  Page,
   TransportError,
   getInterestLevel,
   getSlotDescription,
@@ -11,21 +12,11 @@ import {
   useUser,
   useYearFilter,
 } from '@amber/amber'
-import { MembershipType } from '@amber/amber/utils/apiTypes'
+import type { MembershipType } from '@amber/amber/utils/apiTypes'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
-import { UserAndProfile, useTRPC } from '@amber/client'
-import {
-  Card,
-  CardBody,
-  Field,
-  GridContainer,
-  GridItem,
-  HeaderContent,
-  Loader,
-  MultiLine,
-  Page,
-  range,
-} from '@amber/ui'
+import type { UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
 import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
@@ -47,7 +38,14 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
       <h1>Your Membership for {configuration.year}</h1>
       <GridContainer>
         <Field label='Slots you intend to play'>
-          <Box sx={{ position: 'relative', pt: 0, display: 'flex', flexDirection: 'column' }}>
+          <Box
+            sx={{
+              position: 'relative',
+              pt: 0,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
@@ -141,7 +139,10 @@ const MembershipSummary = () => {
   const { userId } = useUser()
   const [year] = useYearFilter()
   const { isLoading, error, data } = useQuery(
-    trpc.memberships.getMembershipByYearAndId.queryOptions({ year, userId: userId ?? 0 }),
+    trpc.memberships.getMembershipByYearAndId.queryOptions({
+      year,
+      userId: userId ?? 0,
+    }),
   )
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()

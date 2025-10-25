@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
+import type React from 'react'
+import { useEffect } from 'react'
 
-import { GameChoice, useTRPC } from '@amber/client'
+import type { GameChoice } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { Loader, notEmpty, range } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 

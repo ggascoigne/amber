@@ -1,8 +1,12 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
-import { Config, useGetConfigQuery } from '@amber/client'
+import type { Config } from '@amber/client'
+import { useGetConfigQuery } from '@amber/client'
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar, IconButton, Theme, Toolbar, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 
 import { HasPermission, Perms } from './Auth'

@@ -1,10 +1,11 @@
-import React from 'react'
+import type React from 'react'
 
 import { CheckboxWithLabel, GridContainer, GridItem, Important } from '@amber/ui'
-import { FormikErrors, FormikValues } from 'formik'
+import type { FormikErrors, FormikValues } from 'formik'
 
 import { HasPermission, Perms } from '../../components/Auth'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from '../../utils/membershipUtils'
+import type { MembershipErrorType, MembershipFormContent } from '../../utils/membershipUtils'
+import { hasMembershipStepErrors } from '../../utils/membershipUtils'
 
 export const hasAdminStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors('admin', errors?.membership as MembershipErrorType, 'attending', 'volunteer')

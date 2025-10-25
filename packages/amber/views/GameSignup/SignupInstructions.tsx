@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { CardBody } from '@amber/ui'
 import { Card } from '@mui/material'

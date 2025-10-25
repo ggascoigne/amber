@@ -1,7 +1,9 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { ConfigurationNonDates, ConfigurationDates } from '@amber/api'
-import { DateTime, DateTimeFormatOptions } from 'luxon'
+import type { ConfigurationNonDates, ConfigurationDates } from '@amber/api'
+import type { DateTimeFormatOptions } from 'luxon'
+import { DateTime } from 'luxon'
 
 import { getOrdinalWord, useConfiguration } from '../utils'
 
@@ -36,11 +38,11 @@ export const ConfigDate = ({ name, format, skipSpace = 'neither' }: ConfigDatePr
   return <Spacing skipSpace={skipSpace}>{configDate}</Spacing>
 }
 
-export const ConventionsDatesFull: React.FC<{ pre?: string; intra?: string; post?: string }> = ({
-  pre,
-  intra,
-  post,
-}) => (
+export const ConventionsDatesFull: React.FC<{
+  pre?: string
+  intra?: string
+  post?: string
+}> = ({ pre, intra, post }) => (
   <>
     {' '}
     {pre ?? null}

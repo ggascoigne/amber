@@ -1,9 +1,10 @@
-import * as React from 'react'
+import type * as React from 'react'
 
 import { Checkbox, ListItemText, MenuItem } from '@mui/material'
 import { useField } from 'formik'
 
-import { TextField, TextFieldProps } from './TextField'
+import type { TextFieldProps } from './TextField'
+import { TextField } from './TextField'
 
 export interface SelectFieldValueObject {
   value: any

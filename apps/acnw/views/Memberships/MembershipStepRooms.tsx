@@ -1,13 +1,16 @@
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
 import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from '@amber/amber'
-import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
+import type { MembershipFormContent, MembershipErrorType } from '@amber/amber/utils/membershipUtils'
+import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
 import { DialogContentText, FormControl, RadioGroup } from '@mui/material'
-import { Field, FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
+import type { FormikErrors, FormikValues } from 'formik'
+import { Field, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
 
-import { MembershipWizardFormValues } from './MembershipWizard'
+import type { MembershipWizardFormValues } from './MembershipWizard'
 
 export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -76,7 +79,9 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             autofocus
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
-            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
+            defaultCalendarMonth={configuration.conventionStartDate.set({
+              month: 11,
+            })}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
           />
@@ -87,7 +92,9 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             required
             label='Departure Date'
             name={`${prefix}departureDate`}
-            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
+            defaultCalendarMonth={configuration.conventionStartDate.set({
+              month: 11,
+            })}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
           />

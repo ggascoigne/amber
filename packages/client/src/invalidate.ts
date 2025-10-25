@@ -19,7 +19,10 @@ const useInvalidateQueries = (queries: QueryKey[], name?: string) => {
             .with([P._, { type: 'query' }], ([key]) => log(`invalidating query: ${key}`))
             .with([P._, { type: 'mutation' }], ([key]) => log(`invalidating mutation: ${key}`))
             .otherwise(() => log('invalidating queryKey', q))
-          return queryClient.invalidateQueries({ queryKey: q, refetchType: 'all' })
+          return queryClient.invalidateQueries({
+            queryKey: q,
+            refetchType: 'all',
+          })
         },
         { refetchType: 'all' },
       ),
@@ -118,6 +121,16 @@ const useQueryLists = () => {
     [trpc.gameRooms.getGameRoomAndGames, trpc.gameRooms.getGameRooms],
   )
 
+  const allHotelRoomDetailsQueries = useMemo(
+    () => [trpc.hotelRoomDetails.getHotelRoomDetails.queryKey()],
+    [trpc.hotelRoomDetails.getHotelRoomDetails],
+  )
+
+  const allHotelRoomsQueries = useMemo(
+    () => [trpc.hotelRooms.getHotelRooms.queryKey()],
+    [trpc.hotelRooms.getHotelRooms],
+  )
+
   return {
     allGameAssignmentQueries,
     allGameChoiceQueries,
@@ -129,6 +142,8 @@ const useQueryLists = () => {
     allProfileQueries,
     allSettingsQueries,
     allUserQueries,
+    allHotelRoomDetailsQueries,
+    allHotelRoomsQueries,
   }
 }
 
@@ -180,4 +195,13 @@ export const useInvalidateGameChoiceQueries = () => {
 export const useInvalidateGameRoomQueries = () => {
   const { allGameRoomQueries } = useQueryLists()
   return useInvalidateQueries(allGameRoomQueries)
+}
+
+export const useInvalidateHotelRoomDetailsQueries = () => {
+  const { allHotelRoomDetailsQueries } = useQueryLists()
+  return useInvalidateQueries(allHotelRoomDetailsQueries)
+}
+export const useInvalidateHotelRoomsQueries = () => {
+  const { allHotelRoomsQueries } = useQueryLists()
+  return useInvalidateQueries(allHotelRoomsQueries)
 }

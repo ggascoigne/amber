@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
 import { useTRPC } from '@amber/client'
 import { useQuery } from '@tanstack/react-query'
@@ -59,18 +60,19 @@ export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) 
 export const useIsGm = () => {
   const trpc = useTRPC()
   const { user } = useAuth()
+  const [year] = useYearFilter()
   const userId = user?.userId
-  const membership = useGetMemberShip(userId)
-  const { data: gameAssignmentData } = useQuery(
-    trpc.gameAssignments.getGameAssignmentsByMemberId.queryOptions(
+  const { data: isGmData } = useQuery(
+    trpc.gameAssignments.isGameMaster.queryOptions(
       {
-        memberId: membership?.id ?? 0,
+        userId: userId!,
+        year,
       },
-      { enabled: !!membership },
+      { enabled: !!userId },
     ),
   )
 
-  if (!user || !membership || !gameAssignmentData) return false
+  if (!user) return false
 
-  return gameAssignmentData.filter((ga) => ga.memberId === membership.id).filter((ga) => ga.gm !== 0).length !== 0
+  return isGmData ?? false
 }

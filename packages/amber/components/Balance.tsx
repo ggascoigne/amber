@@ -1,16 +1,16 @@
-import { useTRPC } from '@amber/client'
-import { Button, Theme } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import { useQuery } from '@tanstack/react-query'
 import Router from 'next/router'
 
-import { formatAmountForDisplay, useUser } from '../utils'
+import { useProfile } from './Profile'
 
-const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
-  const trpc = useTRPC()
-  const data = useQuery(trpc.users.getUser.queryOptions({ id: userId }))
-  const balance = data?.data?.balance
+import { formatAmountForDisplay } from '../utils'
+
+const BalanceInner = () => {
+  const data = useProfile()
+  const balance = data?.balance
 
   if (!balance) return null
 
@@ -43,7 +43,14 @@ const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
       })}
       onClick={() => Router.push('/payment')}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: 180, alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: 180,
+          alignItems: 'center',
+        }}
+      >
         <Typography>Your Balance</Typography>
         <Typography
           variant='h6'
@@ -61,6 +68,6 @@ const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
 }
 
 export const Balance = () => {
-  const user = useUser()
-  return user?.userId ? <BalanceInner userId={user.userId} /> : null
+  const user = useProfile()
+  return user?.id ? <BalanceInner /> : null
 }

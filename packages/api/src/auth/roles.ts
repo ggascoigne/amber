@@ -44,7 +44,10 @@ export async function rolesHandler(req: NextApiRequest, res: NextApiResponse): P
     const session: any = {
       user: { email, email_verified, sub },
       tokenSet: { expiresAt: exp, accessToken: '' },
-      internal: { sid: (payload as any).sid, createdAt: Math.floor(Date.now() / 1000) },
+      internal: {
+        sid: (payload as any).sid,
+        createdAt: Math.floor(Date.now() / 1000),
+      },
     }
 
     const authorization = await getUserRoles(session)

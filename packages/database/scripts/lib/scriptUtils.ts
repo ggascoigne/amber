@@ -1,4 +1,5 @@
-import { spawnSync, SpawnSyncReturns } from 'child_process'
+import type { SpawnSyncReturns } from 'child_process'
+import { spawnSync } from 'child_process'
 import fs from 'fs'
 
 import { parsePostgresConnectionString, recreatePostgresConnectionString } from '@amber/environment'
@@ -58,7 +59,12 @@ export async function psql(dbconfig: DbConfig, script: string, verbose: boolean)
   args.push('-X', '-v', 'ON_ERROR_STOP=1', '-f', name)
   const cmd = `psql ${args.join(' ')}`
   log(`running ${cmd}`)
-  await runOrExit(spawnSync('/usr/local/bin/psql', args, { stdio: verbose ? 'inherit' : 'ignore' }), cmd)
+  await runOrExit(
+    spawnSync('/usr/local/bin/psql', args, {
+      stdio: verbose ? 'inherit' : 'ignore',
+    }),
+    cmd,
+  )
 }
 
 export function info(s: string) {
@@ -113,7 +119,10 @@ export async function createCleanDb(
     DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist;
   `
   // @formatter:on
-  const newUrl = recreatePostgresConnectionString({ ...config, database: 'postgres' })
+  const newUrl = recreatePostgresConnectionString({
+    ...config,
+    database: 'postgres',
+  })
   log(newUrl)
   await psql(newUrl, script, verbose)
 

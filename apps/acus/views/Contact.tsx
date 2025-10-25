@@ -1,7 +1,8 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
+import { Page } from '@amber/amber'
 import { useConfiguration } from '@amber/amber/utils'
-import { CardBody, Page } from '@amber/ui'
+import { CardBody } from '@amber/ui'
 import { Box, Card } from '@mui/material'
 
 type PersonType = {

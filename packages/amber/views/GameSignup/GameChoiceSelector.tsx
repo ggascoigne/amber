@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 
-import { Game, GameChoice } from '@amber/client'
+import type { Game, GameChoice } from '@amber/client'
 import CheckIcon from '@mui/icons-material/Check'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 
 import { Perms, useAuth } from '../../components/Auth'
-import { Configuration, useConfiguration } from '../../utils'
+import type { Configuration } from '../../utils'
+import { useConfiguration } from '../../utils'
 
 // first N game ids are the No Game in Slot N entries ... :(
 export const isNoGame = (configuration: Configuration, id: number) => id <= configuration.numberOfSlots
@@ -172,8 +173,22 @@ export const GameChoiceSelector = ({
     return (
       <>
         <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} />
-        <div style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', margin: '-3px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: 52 }}>
+        <div
+          style={{
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            margin: '-3px 0',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              height: 52,
+            }}
+          >
             This game is full, no more spaces available.
           </div>
         </div>
@@ -185,12 +200,32 @@ export const GameChoiceSelector = ({
     <>
       {/* <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} /> */}
       <div
-        style={{ flex: '1 1 auto', display: 'flex', flexDirection: 'column', margin: '-3px 0' }}
+        style={{
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '-3px 0',
+        }}
         onClick={(event) => event.stopPropagation()}
         onFocus={(event) => event.stopPropagation()}
       >
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
-          <div style={{ width: 60, textAlign: 'inherit', textTransform: 'inherit' }}>Choice</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 60,
+              textAlign: 'inherit',
+              textTransform: 'inherit',
+            }}
+          >
+            Choice
+          </div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
             {isAdmin && !isNoOrAnyGame && (
               <ToggleButton sx={toggleButtonSx} value={0} aria-label='GM'>
@@ -307,7 +342,10 @@ export const GameChoiceDecorator = ({ year, slot, game, gameChoices }: GameChoic
   )
 }
 
-type SlotDecoratorCheckMarkProps = { year: number; slot: number } & SelectorParams
+type SlotDecoratorCheckMarkProps = {
+  year: number
+  slot: number
+} & SelectorParams
 
 // 144 is the magic number of the Any Game entry :(
 const isNoGameOrAnyGame = (configuration: Configuration, choice?: GameChoice) => {

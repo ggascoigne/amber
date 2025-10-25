@@ -1,6 +1,6 @@
-import React from 'react'
+import type React from 'react'
 
-import { StripeRecord } from '@amber/client'
+import type { StripeRecord } from '@amber/client'
 import { EditDialog } from '@amber/ui'
 
 import { StripeFormContent } from './StripeFormContent'

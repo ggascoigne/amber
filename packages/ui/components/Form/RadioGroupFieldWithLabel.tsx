@@ -1,9 +1,11 @@
 import { FormControl, FormControlLabel, FormLabel, MenuItem, Radio } from '@mui/material'
-import MuiRadioGroup, { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
+import type { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
+import MuiRadioGroup from '@mui/material/RadioGroup'
 import debug from 'debug'
 import { useField } from 'formik'
 
-import { SelectValues, getSelectLabel, getSelectValue } from './SelectField'
+import type { SelectValues } from './SelectField'
+import { getSelectLabel, getSelectValue } from './SelectField'
 
 const log = debug('amber:ui:RadioGroupFieldWithLabel')
 export interface RadioGroupProps extends Omit<MuiRadioGroupProps, 'onChange' | 'value' | 'error'>, SelectValues {

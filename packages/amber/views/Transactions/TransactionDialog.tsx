@@ -1,12 +1,13 @@
-import React from 'react'
+import type React from 'react'
 
 import { EditDialog } from '@amber/ui'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 
 import { TransactionFormContent } from './TransactionFormContent'
 import { transactionValidationSchema } from './transactionValidationSchema'
 
-import { useEditTransaction, useTransactionValues, TransactionFormValue } from '../../utils/transactionUtils'
+import type { TransactionFormValue } from '../../utils/transactionUtils'
+import { useEditTransaction, useTransactionValues } from '../../utils/transactionUtils'
 
 interface TransactionDialogProps {
   open: boolean

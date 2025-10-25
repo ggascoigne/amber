@@ -2,7 +2,8 @@ import React from 'react'
 
 import { Link, useConfiguration } from '@amber/amber'
 import { GridContainer, GridItem } from '@amber/ui'
-import { Box, SxProps, Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
 const Logo = ({ dates, sx, virtual = false }: { dates: string; sx?: SxProps<Theme>; virtual?: boolean }) => {
   // const background = '#ffffff'

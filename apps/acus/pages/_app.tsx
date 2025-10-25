@@ -1,7 +1,6 @@
 import RootComponent from '@amber/amber/components/RootComponent'
-import { api } from '@amber/server/src/utils/api'
-import { EmotionCache } from '@emotion/react'
-import { AppProps } from 'next/app'
+import type { EmotionCache } from '@emotion/react'
+import type { AppProps } from 'next/app'
 
 import { Banner } from '../components'
 import { rootRoutes } from '../views/Routes'
@@ -15,4 +14,4 @@ const MyApp = (props: MyAppProps) => (
   <RootComponent title='Ambercon US' banner={<Banner to='/' />} rootRoutes={rootRoutes} {...props} />
 )
 
-export default api.withTRPC(MyApp)
+export default MyApp

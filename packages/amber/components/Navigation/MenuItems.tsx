@@ -37,7 +37,13 @@ export const MenuItems = ({ menuItems }: MenuItemsProps) => {
         .filter(
           (menuItem) =>
             menuItem.userCondition === undefined ||
-            (getFlagBoolean ? menuItem.userCondition({ userId, isMember, getFlag: getFlagBoolean }) : false),
+            (getFlagBoolean
+              ? menuItem.userCondition({
+                  userId,
+                  isMember,
+                  getFlag: getFlagBoolean,
+                })
+              : false),
         )
         .map((menuItem) => {
           const link = menuItem.link ?? menuItem.path
