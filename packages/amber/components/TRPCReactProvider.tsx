@@ -89,12 +89,16 @@ export function TRPCReactProvider(
   })
 
   const decodedState = useMemo(() => {
+    const serializedState = props.pageProps?.trpcState
+    if (!serializedState) {
+      return undefined
+    }
     // there's a mismatch between the TRPC dehydrate type and SuperJSON types, the hydration state is
     // serialized with superjson, that's good, but it's done at the level of the whole query cache,
     // however the deserialization inside the Hydration component tries to deserialize things at the
     // query level and fails. So we disable the deserialization in the queryClient and explicitly
     // deserialize it here.
-    const state = SuperJSON.deserialize(props.pageProps?.trpcState) as DehydratedState | undefined
+    const state = SuperJSON.deserialize(serializedState) as DehydratedState | undefined
     if (state) {
       log('Decoded hydration state:', {
         queriesCount: state.queries?.length ?? 0,
