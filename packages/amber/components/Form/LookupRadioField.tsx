@@ -1,7 +1,8 @@
-import React from 'react'
+import type React from 'react'
 
 import { useTRPC } from '@amber/client'
-import { Loader, RadioGroupFieldWithLabel, RadioGroupProps } from '@amber/ui'
+import type { RadioGroupProps } from '@amber/ui'
+import { Loader, RadioGroupFieldWithLabel } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { TransportError } from '../TransportError'

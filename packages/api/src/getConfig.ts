@@ -1,7 +1,8 @@
 import { ssrHelpers } from '@amber/server/src/api/ssr'
 
 import { JsonError } from './JsonError'
-import { Configuration, getSettingsObject } from './utils'
+import type { Configuration } from './utils'
+import { getSettingsObject } from './utils'
 
 let _conf: Configuration | undefined
 export const getConfig = async () => {

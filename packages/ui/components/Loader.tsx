@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { Box } from '@mui/material'
 import DotLoader from 'react-spinners/DotLoader'

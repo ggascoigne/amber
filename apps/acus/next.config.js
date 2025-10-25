@@ -19,6 +19,8 @@ const withMDX = createMDX({
       [remarkMdxFrontmatter, { name: 'metadata' }],
     ],
     rehypePlugins: [],
+    // Add compile-time components
+    providerImportSource: '@mdx-js/react',
   },
 })
 

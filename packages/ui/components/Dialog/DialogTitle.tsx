@@ -1,6 +1,7 @@
-import React, { MouseEventHandler, PropsWithChildren } from 'react'
+import type { MouseEventHandler, PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { SxProps, Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
 import MuiDialogTitle from '@mui/material/DialogTitle'
 
 import { DialogClose } from './DialogClose'

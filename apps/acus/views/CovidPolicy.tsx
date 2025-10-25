@@ -1,4 +1,4 @@
-import { MdxPage } from '@amber/ui'
+import { MdxPage } from '@amber/amber'
 
 import CovidPolicyContent, { metadata } from '../content/CovidPolicyContent.mdx'
 

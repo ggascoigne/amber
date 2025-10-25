@@ -2,7 +2,8 @@
 import chalk from 'chalk'
 import { Listr } from 'listr2'
 
-import { loadEnv, TaskContext, copyDatabaseTaskFactory } from './lib'
+import type { TaskContext } from './lib'
+import { loadEnv, copyDatabaseTaskFactory } from './lib'
 
 const awsEnv = loadEnv(`./apps/${process.env.DB_ENV}/.env.aws-prod`)
 const localEnv = loadEnv(`./apps/${process.env.DB_ENV}/.env`)

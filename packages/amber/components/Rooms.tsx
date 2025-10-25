@@ -1,6 +1,8 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { HotelRoom, useTRPC } from '@amber/client'
+import type { HotelRoom } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { Loader, notEmpty } from '@amber/ui'
 import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useTheme } from '@mui/material/styles'

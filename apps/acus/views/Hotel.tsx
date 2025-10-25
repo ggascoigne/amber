@@ -1,6 +1,7 @@
+import { Page } from '@amber/amber'
 import { ConfigDate, MDY } from '@amber/amber/components'
 import { useConfiguration } from '@amber/amber/utils'
-import { CardBody, Page } from '@amber/ui'
+import { CardBody } from '@amber/ui'
 import { Card } from '@mui/material'
 
 const Hotel = () => {

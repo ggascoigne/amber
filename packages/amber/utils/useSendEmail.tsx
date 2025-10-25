@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { isDev, useNotification } from '@amber/ui'
 import fetch from 'isomorphic-fetch'
 
-import { EmailConfirmation } from './apiTypes'
+import type { EmailConfirmation } from './apiTypes'
 
 type SendEmail = (p: EmailConfirmation) => void
 

@@ -8,9 +8,10 @@ onlyBuiltDependencies:
   - '@swc/core'
   - bufferutil
   - esbuild
+  - msw
   - prisma
   - sharp
   - utf-8-validate
 
 overrides:
-  '@prisma/generator-helper@4.16.2>cross-spawn': '7.0.6'
+  '@prisma/generator-helper@4.16.2>cross-spawn': 7.0.6

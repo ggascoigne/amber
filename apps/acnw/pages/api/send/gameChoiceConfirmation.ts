@@ -1,4 +1,4 @@
-import { GameChoiceConfirmationBody } from '@amber/amber/utils/apiTypes'
+import type { GameChoiceConfirmationBody } from '@amber/amber/utils/apiTypes'
 import { getEmails, emailer, handleError, JsonError } from '@amber/api'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import type { NextApiRequest, NextApiResponse } from 'next'

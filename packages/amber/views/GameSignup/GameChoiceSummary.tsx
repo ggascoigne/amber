@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { useTRPC } from '@amber/client'
-import { Field, Loader, MultiLine, Page } from '@amber/ui'
+import { Field, Loader, MultiLine } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChoiceSummary } from './SlotDetails'
 
-import { ContactEmail } from '../../components'
+import { Page, ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { useGameUrl, useGetMemberShip, useUser } from '../../utils'

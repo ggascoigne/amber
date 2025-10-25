@@ -1,7 +1,7 @@
 import { env } from '@amber/environment'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import fetch from 'isomorphic-fetch'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { getProfileHandler } from './getProfileHandler'
 import { handleError } from './handleError'

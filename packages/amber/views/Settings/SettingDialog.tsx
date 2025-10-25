@@ -1,18 +1,12 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { Setting, useInvalidateSettingsQueries, useTRPC } from '@amber/client'
-import {
-  EditDialog,
-  GridContainer,
-  GridItem,
-  OnCloseHandler,
-  pick,
-  SelectField,
-  TextField,
-  useNotification,
-} from '@amber/ui'
+import type { Setting } from '@amber/client'
+import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { EditDialog, GridContainer, GridItem, pick, SelectField, TextField, useNotification } from '@amber/ui'
 import { useMutation } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 import { z } from 'zod'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
 

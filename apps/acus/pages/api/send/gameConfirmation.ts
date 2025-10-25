@@ -1,4 +1,4 @@
-import { GameConfirmationBody } from '@amber/amber/utils/apiTypes'
+import type { GameConfirmationBody } from '@amber/amber/utils/apiTypes'
 import { getPlayerPreference } from '@amber/amber/utils/selectValues'
 import { getEmails, emailer, handleError, JsonError } from '@amber/api'
 import { auth0 } from '@amber/server/src/auth/auth0'

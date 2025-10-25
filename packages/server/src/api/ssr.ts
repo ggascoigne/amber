@@ -12,6 +12,13 @@ export const ssrHelpers = createServerSideHelpers({
   transformer,
 })
 
+export const ssrAuthenticatedHelpers = (id: number) =>
+  createServerSideHelpers({
+    router: appRouter,
+    ctx: { db, session: undefined, userId: id, isAdmin: false },
+    transformer,
+  })
+
 // Create an authenticated caller for a specific user
 // use for any case where you need auth or mutations
 export const authenticatedCaller = (userId: string | number) => {

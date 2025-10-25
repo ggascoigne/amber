@@ -2,7 +2,7 @@
 // based in large part on https://github.com/vercel/next.js/blob/canary/examples/with-stripe-typescript/pages/api/payment_intents/index.ts
 
 import { env } from '@amber/environment'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 import { CURRENCY, MIN_AMOUNT, MAX_AMOUNT } from './constants'
@@ -113,7 +113,11 @@ export const paymentIntentHandler = async (req: NextApiRequest, res: NextApiResp
               cancellation_reason: 'abandoned',
             })
           }
-          res.status(200).json(result ?? { reason: `cannot cancel, status is ${currentIntent.status}` })
+          res.status(200).json(
+            result ?? {
+              reason: `cannot cancel, status is ${currentIntent.status}`,
+            },
+          )
         }
       } catch (e) {
         if ((e as any).code !== 'resource_missing') {

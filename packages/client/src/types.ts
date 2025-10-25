@@ -1,4 +1,4 @@
-import { RouterInputs, RouterOutputs } from '@amber/server'
+import type { RouterInputs, RouterOutputs } from '@amber/server'
 
 export type ToFormValues<T extends { id?: number | bigint }> = Omit<T, 'id'> & Partial<Pick<T, 'id'>>
 

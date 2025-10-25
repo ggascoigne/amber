@@ -1,8 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { parsePostgresConnectionString } from '@amber/environment'
-import { type EnvType, processEnv } from '@amber/environment'
+import { type EnvType, processEnv, parsePostgresConnectionString } from '@amber/environment'
 import debug from 'debug'
 import { config as dotenvConfig } from 'dotenv'
 import type { ListrTaskWrapper, ListrTask } from 'listr2'
@@ -33,6 +32,7 @@ export const loadEnv = (fileName: string): EnvType => {
   dotenvConfig({
     path: pathName,
     processEnv: obj,
+    quiet: true,
   })
   log('loaded env from', pathName)
   log('env', obj)
@@ -79,10 +79,12 @@ export const restoreDatabaseTask: ListrTask = {
         ...environ,
         ...process.env,
         NODE_ENV: 'production', // ensure that the script doesn't load dotenv and prefers the environment
+        // cspell:disable
         PGHOST: host,
         PGPORT: `${port}`,
         PGUSER: user,
         PGPASSWORD: password,
+        // cspell:enable
       },
     })
 

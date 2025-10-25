@@ -1,6 +1,8 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { Box, SxProps, Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   id?: string

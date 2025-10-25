@@ -1,4 +1,4 @@
-import { RouterOutputs } from '@amber/server'
+import type { RouterOutputs } from '@amber/server'
 import { useQuery } from '@tanstack/react-query'
 
 import { useTRPC } from './trpc'

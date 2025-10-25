@@ -1,4 +1,4 @@
-import { Schedule } from '@amber/client'
+import type { Schedule } from '@amber/client'
 
 export const getGameAssignments = (data: Schedule[] | undefined, memberId: number, gmOnly = false): Schedule[] =>
   ((data ?? [])

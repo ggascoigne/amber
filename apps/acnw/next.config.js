@@ -19,6 +19,8 @@ const withMDX = createMDX({
       [remarkMdxFrontmatter, { name: 'metadata' }],
     ],
     rehypePlugins: [],
+    // Add compile-time components
+    providerImportSource: '@mdx-js/react',
   },
 })
 
@@ -46,10 +48,24 @@ const nextConfig = {
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   headers,
-  webpack: (config, { isServer }) => {
+  // Add experimental features for better HMR stability
+  experimental: {
+    optimizePackageImports: ['@mui/material', '@mui/icons-material'],
+  },
+  webpack: (config, { isServer, dev }) => {
     if (isServer) {
       // eslint-disable-next-line no-param-reassign
       config.plugins = [...config.plugins, new PrismaPlugin()]
+    }
+
+    // Improve HMR stability in development
+    if (dev) {
+      // eslint-disable-next-line no-param-reassign
+      config.watchOptions = {
+        ...config.watchOptions,
+        poll: 1000,
+        aggregateTimeout: 300,
+      }
     }
 
     return config

@@ -5,11 +5,12 @@ import Button from '@mui/material/Button'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { PaymentElement, useElements } from '@stripe/react-stripe-js'
-import { PaymentIntent } from '@stripe/stripe-js'
+import type { PaymentIntent } from '@stripe/stripe-js'
 import Router from 'next/router'
 
 import { fetchPostJSON } from './fetchUtils'
-import { PaymentInput, UserPaymentDetails } from './PaymentInput'
+import type { UserPaymentDetails } from './PaymentInput'
+import { PaymentInput } from './PaymentInput'
 
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe, useYearFilter } from '../../utils'
 

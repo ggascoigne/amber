@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 
 import {
   Attendance,
@@ -8,7 +9,8 @@ import {
   useGetAttendanceOptions,
   useGetSubsidizedAttendanceOptions,
 } from '@amber/amber'
-import { MembershipErrorType, MembershipFormContent, hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
+import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import {
   CheckboxWithLabel,
   getSafeFloat,
@@ -18,7 +20,8 @@ import {
   TextField,
 } from '@amber/ui'
 import { Box, Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
-import { FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
+import type { FormikErrors, FormikValues } from 'formik'
+import { useField, useFormikContext } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -109,7 +112,17 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
           />
         </GridItem>
         {showSubsidizedOptions && (
-          <Card sx={{ p: 2, ml: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
+          <Card
+            sx={{
+              p: 2,
+              ml: 4,
+              mb: 2,
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            elevation={3}
+          >
             <GridItem size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
               <RadioGroupFieldWithLabel
                 aria-label='Select Attendance'
@@ -144,7 +157,17 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
           </Card>
         )}
         {!showSubsidizedOptions && (
-          <Card sx={{ p: 2, mx: 4, mb: 2, width: '100%', display: 'flex', flexDirection: 'column' }} elevation={3}>
+          <Card
+            sx={{
+              p: 2,
+              mx: 4,
+              mb: 2,
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            elevation={3}
+          >
             <Box component='h4' sx={{ fontWeight: 400 }}>
               Support Subsidized Memberships
             </Box>

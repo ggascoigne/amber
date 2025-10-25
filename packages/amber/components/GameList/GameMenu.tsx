@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Divider from '@mui/material/Divider'
@@ -11,7 +12,7 @@ import { GameListIndex } from './GameListIndex'
 import { GameListNavigator } from './GameListNavigator'
 
 import { ListItemLink } from '../Navigation'
-import { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
+import type { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
 
 interface GameMenuProps {
   to: string

@@ -2,8 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { parsePostgresConnectionString, safeConnectionString } from '@amber/environment'
-import { type EnvType, processEnv } from '@amber/environment'
+import { parsePostgresConnectionString, safeConnectionString, type EnvType, processEnv } from '@amber/environment'
 import debug from 'debug'
 import type { Listr, ListrTask, ListrTaskWrapper } from 'listr2'
 

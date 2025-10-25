@@ -1,6 +1,6 @@
 import { webhookHandler } from '@amber/api'
 import Cors from 'micro-cors'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 // Stripe requires the raw body to construct the event.
 export const config = {

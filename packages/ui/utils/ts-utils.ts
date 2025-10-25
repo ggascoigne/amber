@@ -1,6 +1,7 @@
-import { ReactElement, ReactNode, forwardRef } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import { forwardRef } from 'react'
 
-import { F } from 'ts-toolbelt'
+import type { F } from 'ts-toolbelt'
 
 export type Maybe<T> = T | null
 

@@ -1,11 +1,14 @@
-import React, { useMemo, useCallback } from 'react'
+import type React from 'react'
+import { useMemo, useCallback } from 'react'
 
-import { Setting, useTRPC, useInvalidateSettingsQueries } from '@amber/client'
-import { EditDialog, GridContainer, GridItem, Loader, notEmpty, OnCloseHandler, useNotification } from '@amber/ui'
+import type { Setting } from '@amber/client'
+import { useTRPC, useInvalidateSettingsQueries } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { EditDialog, GridContainer, GridItem, Loader, notEmpty, useNotification } from '@amber/ui'
 import { Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import debug from 'debug'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
 
 import { SettingValue } from './shared'
@@ -53,7 +56,13 @@ const getSetting = (settingList: Setting[] | undefined, key: string) => settingL
 
 export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClose }) => {
   const trpc = useTRPC()
-  const { isLoading, error, data } = useQuery(trpc.settings.getSettings.queryOptions())
+  const { isLoading, error, data } = useQuery(
+    trpc.settings.getSettings.queryOptions(undefined, {
+      staleTime: 60 * 60 * 1000, // 1 hour - settings rarely change
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }),
+  )
   const createSetting = useMutation(trpc.settings.createSetting.mutationOptions())
   const updateSetting = useMutation(trpc.settings.updateSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()

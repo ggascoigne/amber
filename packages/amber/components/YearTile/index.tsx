@@ -12,7 +12,16 @@ const FakeTile = ({ index }: FakeTileProps) => {
     index === 2 ? 'linear-gradient(60deg, #23b7cb, #019eb3)' : 'linear-gradient(60deg, #22afc2, #0197ab )'
   const cardSx = index === 2 ? { zIndex: 9, transform: 'rotateZ(1deg)' } : { zIndex: 8, transform: 'rotateZ(5deg)' }
   return (
-    <Card sx={{ position: 'absolute', top: 20, left: 0, height: 279, width: 295, ...cardSx }}>
+    <Card
+      sx={{
+        position: 'absolute',
+        top: 20,
+        left: 0,
+        height: 279,
+        width: 295,
+        ...cardSx,
+      }}
+    >
       <CardHeader sx={{ background: headerGradient }} />
       <CardBody />
     </Card>

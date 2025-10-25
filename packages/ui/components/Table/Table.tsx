@@ -1,399 +1,313 @@
-import React, {
-  CSSProperties,
-  MouseEventHandler,
-  PropsWithChildren,
-  ReactElement,
-  useCallback,
-  useEffect,
-  useMemo,
-} from 'react'
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp'
-import { TableSortLabel, TextField, Tooltip } from '@mui/material'
-import {
-  Cell,
-  CellProps,
-  Column,
-  ColumnInstance,
-  FilterProps,
-  HeaderGroup,
-  HeaderProps,
-  Hooks,
-  Meta,
-  Row,
-  TableInstance,
-  TableOptions,
-  TableState,
-  useColumnOrder,
-  useExpanded,
-  useFilters,
-  useFlexLayout,
-  useGlobalFilter,
-  useGroupBy,
-  usePagination,
-  useResizeColumns,
-  useRowSelect,
-  useSortBy,
-  useTable,
-} from 'react-table'
+import AddIcon from '@mui/icons-material/Add'
+import CreateIcon from '@mui/icons-material/CreateOutlined'
+import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import type { AccessorKeyColumnDefBase, ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
 
-import { CellEditor } from './CellEditor'
-import { FilterChipBar } from './FilterChipBar'
-import { fuzzyTextFilter, numericTextFilter } from './filters'
-import { ResizeHandle } from './ResizeHandle'
-import { TableDebug, TableDebugButton } from './TableDebug'
-import { TablePagination } from './TablePagination'
-import { TableSearch } from './TableSearch'
-import {
-  HeaderCheckbox,
-  RowCheckbox,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeadCell,
-  TableHeadRow,
-  TableLabel,
-  TableRow,
-  TableStyleOptions,
-  TableTable,
-} from './TableStyles'
-import { Command, TableToolbar } from './TableToolbar'
-import { TooltipCellRenderer } from './TooltipCellRenderer'
-import { useInitialTableState } from './useInitialTableState'
+import type { Action, TableSelectionMouseEventHandler } from './actions'
+import { Empty } from './components/Empty'
+import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
+import type { DataTableProps } from './DataTable'
+import { DataTable } from './DataTable'
+import type { UseTableProps } from './useTable'
+import { useTable } from './useTable'
+import { useTableState } from './useTableState'
+import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
 
-import { camelToWords, isDev, notEmpty, useDebounce } from '../../utils'
+import { notEmpty } from '../../utils'
 
-export interface TableProps<T extends Record<string, unknown>> extends TableOptions<T> {
-  name: string
-  onAdd?: (instance: TableInstance<T>) => MouseEventHandler
-  onDelete?: (instance: TableInstance<T>) => MouseEventHandler
-  onEdit?: (instance: TableInstance<T>) => MouseEventHandler
-  onClick?: (row: Row<T>) => void
-  extraCommands?: Command<T>[]
-  onRefresh?: MouseEventHandler
-  initialState?: Partial<TableState<T>>
+/**
+Simple, Table wrapper, you just pass it the data and it'll do the rest
+
+Note that it's setup for client side sorting, filtering etc, if you want to manage that
+on the server then you need access to the table state for query params etc.  You can 
+do that with something like this:
+
+```ts
+  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
+  const handleStateChange = useCallback((newState: TableState) => {
+    setState({
+      pagination: newState?.pagination,
+      sorting: newState?.sorting ?? [],
+      globalFilter: newState?.globalFilter,
+      columnFilters: newState?.columnFilters,
+    })
+  }, [])
+
+  const { data, isLoading, isFetching, refetch } = useUsersQuery(
+    {
+      pageIndex: state?.pagination?.pageIndex ?? 0,
+      pageSize: state?.pagination?.pageSize ?? 10,
+      sorting: state?.sorting ?? [],
+      globalFilter: state?.globalFilter ?? '',
+      filters: state?.columnFilters,
+    },
+    { enabled: !!state },
+  )
+```
+  */
+
+type TableProps<T> = Omit<UseTableProps<T>, 'keyField'> &
+  Omit<DataTableProps<T>, 'tableInstance'> & {
+    name: string
+    data: T[]
+    keyField?: keyof T
+    columns: ColumnDef<T, any>[]
+    initialState?: Partial<TableState>
+    isLoading?: boolean
+    isFetching?: boolean
+    rowCount?: number
+    onRowClick?: (row: Row<T>) => void
+    handleStateChange?: (newState: TableState) => void
+    onAdd?: TableSelectionMouseEventHandler<T>
+    onDelete?: TableSelectionMouseEventHandler<T>
+    onEdit?: TableSelectionMouseEventHandler<T>
+    refetch?: () => void
+    title?: string
+    additionalToolbarActions?: Action<T>[]
+    additionalRowActions?: Action<T>[]
+    additionalSystemActions?: Action<T>[]
+    defaultColumnDisableGlobalFilter?: boolean
+    enableRowSelection?: boolean
+    scrollBehavior?: 'none' | 'bounded'
+    systemActions?: Action<T>[]
+    toolbarActions?: Action<T>[]
+  }
+
+const shouldTriggerPageChange = (oldState: TableState, newState: TableState) => {
+  if (oldState.columnFilters !== newState.columnFilters) return true
+  if (oldState.globalFilter !== newState.globalFilter) return true
+  // if (oldState.sorting !== newState.sorting) return true
+  return false
 }
 
-const DefaultHeader = <T extends Record<string, unknown>>({ column }: HeaderProps<T>) => (
-  <>{column.id.startsWith('_') ? null : camelToWords(column.id)}</>
-)
+export const Table = <T,>({
+  name,
+  data,
+  columns,
+  initialState = {},
+  isLoading,
+  isFetching,
+  rowCount,
+  onRowClick,
+  onAdd,
+  onDelete,
+  onEdit,
+  refetch,
+  handleStateChange,
+  title,
+  additionalToolbarActions,
+  additionalRowActions,
+  additionalSystemActions,
+  defaultColumnDisableGlobalFilter = false,
+  enableRowSelection = true,
+  enableGrouping = true,
+  scrollBehavior = 'bounded',
+  systemActions: userSystemActions,
+  toolbarActions: userToolbarActions,
+  enableGlobalFilter = true,
+  enableColumnFilters = true,
+  displayGutter,
+  // @ts-ignore
+  keyField = 'id',
+  ...rest
+}: TableProps<T>) => {
+  const [stateLoaded, setStateLoaded] = useState(false)
 
-// yes this is recursive, but the depth never exceeds three, so it seems safe enough
-const findFirstColumn = <T extends Record<string, unknown>>(columns: Array<ColumnInstance<T>>): ColumnInstance<T> =>
-  columns[0]!.columns ? findFirstColumn(columns[0]!.columns) : columns[0]!
+  const initial = { ...initialState }
+  initial.sorting ??= [
+    {
+      id: columns[0].id ?? ((columns[0] as AccessorKeyColumnDefBase<T>).accessorKey as string),
+      desc: false,
+    },
+  ]
+  const [persistedTableState, setPersistedTableState] = useTableState(name, columns, initial)
 
-function DefaultColumnFilter<T extends Record<string, unknown>>({ columns, column, gotoPage }: FilterProps<T>) {
-  const { id, filterValue, setFilter, render } = column
-  const [value, setValue] = React.useState(filterValue ?? '')
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+  const stateRef = useRef<TableState>({
+    sorting: [],
+    columnFilters: [],
+    globalFilter: '',
+    columnOrder: [],
+    columnPinning: {},
+    rowPinning: {},
+    columnVisibility: {},
+    columnSizing: {},
+    columnSizingInfo: {
+      columnSizingStart: [],
+      deltaOffset: null,
+      deltaPercentage: null,
+      isResizingColumn: false,
+      startOffset: null,
+      startSize: null,
+    },
+    grouping: [],
+    pagination: { pageIndex: 0, pageSize: DEFAULT_TABLE_PAGE_SIZE },
+    rowSelection: {},
+    expanded: {},
+  })
+
+  useLayoutEffect(() => {
+    if (!persistedTableState) return
+    stateRef.current = {
+      ...stateRef.current,
+      ...persistedTableState,
+    }
+  }, [persistedTableState])
+
+  const debounceRef = useRef<number | null>(null)
+
+  const emit = useCallback(
+    (s: TableState) => {
+      // console.log('Persisting table state', s)
+      setPersistedTableState(s)
+      handleStateChange?.(s)
+      setStateLoaded(true)
+    },
+    [setPersistedTableState, handleStateChange],
+  )
+
+  const queueStateChangeResponse = useCallback(
+    (s: TableState) => {
+      if (debounceRef.current) window.clearTimeout(debounceRef.current)
+      debounceRef.current = window.setTimeout(() => {
+        emit(s)
+      }, 250)
+    },
+    [emit],
+  )
+
+  const table = useTable<T>({
+    name,
+    columns,
+    keyField,
+    data: data ?? [],
+    state: stateRef.current,
+    onStateChange: (updater: Updater<TableState>) => {
+      const next = typeof updater === 'function' ? updater(stateRef.current) : updater
+      if (shouldTriggerPageChange(stateRef.current, next)) {
+        next.pagination.pageIndex = 0
+      }
+      stateRef.current = next
+      queueStateChangeResponse(next)
+    },
+    autoResetExpanded: false,
+    enableColumnResizing: true,
+    enableSortingRemoval: false,
+    columnResizeMode: 'onChange',
+    manualSorting: false,
+    enableSorting: true,
+    enablePagination: true,
+    manualPagination: typeof rowCount === 'number',
+    enableRowSelection,
+    enableGlobalFilter,
+    enableColumnFilters,
+    enableGrouping,
+    sortDescFirst: false,
+    autoResetPageIndex: false,
+    defaultColumnDisableGlobalFilter,
+    rowCount: rowCount ?? data.length,
+    displayGutter,
+    ...rest,
+  })
+
+  // kick initial fetch of table state to parent
+  useLayoutEffect(() => {
+    emit(stateRef.current)
+  }, [emit])
+
+  const [toolbarActions, rowActions] = useMemo(() => {
+    const defined = <U,>(value: U | undefined): value is U => value !== undefined
+
+    const addAction = onAdd
+      ? {
+          label: 'Add',
+          type: 'icon' as const,
+          icon: <AddIcon />,
+          onClick: onAdd,
+          enabled: zeroSelected,
+        }
+      : undefined
+
+    const editAction = onEdit
+      ? {
+          label: 'Edit',
+          type: 'icon' as const,
+          icon: <CreateIcon />,
+          onClick: onEdit,
+          enabled: oneSelected,
+        }
+      : undefined
+
+    const deleteAction = onDelete
+      ? {
+          label: 'Delete',
+          type: 'icon' as const,
+          icon: <DeleteIcon />,
+          onClick: onDelete,
+          enabled: someSelected,
+        }
+      : undefined
+
+    const baseToolbarActions = [addAction, editAction, deleteAction].filter(defined)
+    const baseRowActions = [editAction].filter(defined)
+
+    const toolbarA: Action<T>[] = additionalToolbarActions?.length
+      ? [...baseToolbarActions, ...additionalToolbarActions]
+      : baseToolbarActions
+
+    const rowsA: Action<T>[] = additionalRowActions?.length
+      ? [...baseRowActions, ...additionalRowActions]
+      : baseRowActions
+
+    return [toolbarA, rowsA]
+  }, [additionalRowActions, additionalToolbarActions, onAdd, onDelete, onEdit])
+
+  const systemActions: Action<T>[] = useMemo(
+    () =>
+      (
+        [
+          refetch
+            ? {
+                action: 'refresh' as const,
+                onClick: () => refetch?.(),
+              }
+            : null,
+          {
+            action: 'columnSelect',
+          },
+          {
+            action: 'export',
+          },
+          ...(additionalSystemActions ?? []),
+        ] as const
+      ).filter(notEmpty),
+    [additionalSystemActions, refetch],
+  )
+
+  if (!stateLoaded) {
+    return null
   }
-  // ensure that reset loads the new value
-  useEffect(() => {
-    setValue(filterValue ?? '')
-  }, [filterValue])
 
-  const isFirstColumn = findFirstColumn(columns) === column
+  const empty = <Empty hasSearch={stateRef.current?.globalFilter} />
+
   return (
-    <TextField
-      name={id}
-      label={render('Header')}
-      InputLabelProps={{ htmlFor: id }}
-      value={value}
-      autoFocus={isFirstColumn}
-      variant='standard'
-      onChange={handleChange}
-      onBlur={(e) => {
-        const v = e.target.value || undefined
-        setFilter(v)
-        if (v !== filterValue) gotoPage(0)
-      }}
+    <DataTable
+      isLoading={isLoading}
+      isFetching={isFetching}
+      tableInstance={table}
+      scrollBehavior={scrollBehavior}
+      toolbarActions={userToolbarActions ?? toolbarActions}
+      rowActions={rowActions}
+      systemActions={userSystemActions ?? systemActions}
+      onRowClick={onRowClick}
+      emptyDataComponent={empty}
+      title={title}
+      elevation={1}
+      rowCount={rowCount ?? data?.length ?? 0}
+      compact
+      displayGutter={displayGutter}
+      {...rest}
     />
   )
 }
-
-const getStyles = (props: any, _disableResizing = false, align = 'left') => [
-  props,
-  {
-    style: {
-      justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
-      alignItems: 'flex-start',
-      display: 'flex',
-    },
-  },
-]
-
-const useSelectionUi = (hooks: Hooks<any>) => {
-  hooks.allColumns.push((columns, { instance: _instance }) => [
-    // Let's make a column for selection
-    {
-      id: '_selector',
-      disableResizing: true,
-      disableGroupBy: true,
-      minWidth: 45,
-      width: 45,
-      maxWidth: 45,
-      Aggregated: undefined,
-      // The header can use the table's getToggleAllRowsSelectedProps method
-      // to render a checkbox
-      Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<any>) => (
-        <HeaderCheckbox {...getToggleAllRowsSelectedProps()} />
-      ),
-      // The cell can use the individual row's getToggleRowSelectedProps method
-      // to the render a checkbox
-      Cell: ({ row }: CellProps<any>) => <RowCheckbox {...row.getToggleRowSelectedProps()} />,
-    },
-    ...columns,
-  ])
-  hooks.useInstanceBeforeDimensions.push(({ headerGroups }) => {
-    // fix the parent group of the selection button to not be resizable
-    const selectionGroupHeader = headerGroups[0]!.headers[0]!
-    selectionGroupHeader.canResize = false
-  })
-}
-
-const headerProps = <T extends Record<string, unknown>>(props: any, { column }: Meta<T, { column: HeaderGroup<T> }>) =>
-  getStyles(props, column.disableResizing, column.align)
-
-const cellProps = <T extends Record<string, unknown>>(props: any, { cell }: Meta<T, { cell: Cell<T> }>) =>
-  getStyles(props, cell.column.disableResizing, cell.column.align)
-
-const DEFAULT_PAGE_SIZE = 25
-
-const filterTypes = {
-  fuzzyText: fuzzyTextFilter,
-  numeric: numericTextFilter,
-}
-
-export function Table<T extends Record<string, unknown>>(props: PropsWithChildren<TableProps<T>>): ReactElement {
-  const {
-    name,
-    columns,
-    onAdd,
-    onDelete,
-    onEdit,
-    onClick,
-    extraCommands,
-    onRefresh,
-    initialState: userInitialState = {},
-    hideSelectionUi = false,
-    defaultColumnDisableGlobalFilter = false,
-    updateData,
-  } = props
-
-  const tableStyleOptions: TableStyleOptions = useMemo(
-    () => ({
-      selectionStyle: updateData ? 'cell' : 'row',
-    }),
-    [updateData],
-  )
-
-  // styles now handled via sx in components; keep className flags for row state
-
-  const hooks = [
-    useColumnOrder,
-    useGlobalFilter,
-    useFilters,
-    useGroupBy,
-    useSortBy,
-    useExpanded,
-    useFlexLayout,
-    usePagination,
-    useResizeColumns,
-    useRowSelect,
-    hideSelectionUi ? undefined : useSelectionUi,
-  ].filter(notEmpty)
-
-  const defaultColumn = useMemo<Partial<Column<T>>>(
-    () => ({
-      // disableFilter: true,
-      // disableGroupBy: true,
-      Filter: DefaultColumnFilter,
-      Cell: TooltipCellRenderer,
-      Header: DefaultHeader,
-      aggregate: 'uniqueCount',
-      Aggregated: ({ cell: { value } }: CellProps<T>) => <>{value} Unique Values</>,
-      // When using the useFlexLayout:
-      minWidth: 30, // minWidth is only used as a limit for resizing
-      width: 150, // width is used for both the flex-basis and flex-grow
-      maxWidth: 200, // maxWidth is only used as a limit for resizing
-      // the logic for this is weird.  If you set the default column value for disableGlobalFilter to true then you pass
-      // disableGlobalFilter: false on those columns that you want to be able to search upon
-      // TODO: make this more intuitive
-      disableGlobalFilter: defaultColumnDisableGlobalFilter,
-      CellEditor,
-    }),
-    [defaultColumnDisableGlobalFilter],
-  )
-
-  const [initialState, setInitialState] = useInitialTableState(`tableState:${name}`, columns, {
-    pageSize: DEFAULT_PAGE_SIZE,
-    ...userInitialState,
-  })
-
-  const instance = useTable<T>(
-    {
-      ...props,
-      columns,
-      filterTypes,
-      defaultColumn,
-      initialState,
-      updateData,
-      autoResetPage: false,
-      autoResetExpanded: false,
-      autoResetGroupBy: false,
-      autoResetSelectedRows: false,
-      autoResetSortBy: false,
-      autoResetFilters: false,
-      disableSortRemove: true,
-    },
-    ...hooks,
-  )
-
-  const { getTableProps, headerGroups, getTableBodyProps, page, prepareRow, state } = instance
-  const debouncedState = useDebounce(state, 500)
-
-  useEffect(() => {
-    setInitialState(debouncedState)
-  }, [setInitialState, debouncedState])
-
-  const cellClickHandler = useCallback(
-    (cell: Cell<T>) => () => {
-      onClick && !cell.column.isGrouped && !cell.row.isGrouped && cell.column.id !== '_selector' && onClick(cell.row)
-    },
-    [onClick],
-  )
-
-  const { role: _tableRole, ...tableProps } = getTableProps()
-  const { role: _tableBodyRole, ...tableBodyProps } = getTableBodyProps()
-  return (
-    <>
-      {!hideSelectionUi ? (
-        <>
-          <TableSearch instance={instance} />
-          <TableToolbar instance={instance} {...{ onAdd, onDelete, onEdit, extraCommands, onRefresh }} />
-          <FilterChipBar<T> instance={instance} />
-        </>
-      ) : (
-        <div>
-          <br />
-        </div>
-      )}
-      <TableTable {...tableProps} tableStyleOptions={tableStyleOptions}>
-        <TableHead tableStyleOptions={tableStyleOptions}>
-          {headerGroups.map((headerGroup) => {
-            const {
-              key: headerGroupKey,
-              title: _headerGroupTitle,
-              role: _headerGroupRole,
-              ...getHeaderGroupProps
-            } = headerGroup.getHeaderGroupProps()
-            return (
-              <TableHeadRow key={headerGroupKey} {...getHeaderGroupProps} tableStyleOptions={tableStyleOptions}>
-                {headerGroup.headers.map((column) => {
-                  const style = {
-                    textAlign: column.align ?? 'left ',
-                  } as CSSProperties
-                  const { key: headerKey, role: _headerRole, ...getHeaderProps } = column.getHeaderProps(headerProps)
-                  const { title: groupTitle = '', ...columnGroupByProps } = column.getGroupByToggleProps()
-                  const { title: sortTitle = '', ...columnSortByProps } = column.getSortByToggleProps()
-
-                  return (
-                    <TableHeadCell key={headerKey} {...getHeaderProps} tableStyleOptions={tableStyleOptions}>
-                      {column.canGroupBy && (
-                        <Tooltip title={groupTitle}>
-                          <TableSortLabel
-                            active
-                            direction={column.isGrouped ? 'desc' : 'asc'}
-                            IconComponent={KeyboardArrowRight}
-                            {...columnGroupByProps}
-                            sx={{ '& svg': { width: 16, height: 16, mt: 0.5, mr: 0 } }}
-                          />
-                        </Tooltip>
-                      )}
-                      {column.canSort ? (
-                        <Tooltip title={sortTitle}>
-                          <TableSortLabel
-                            active={column.isSorted}
-                            direction={column.isSortedDesc ? 'desc' : 'asc'}
-                            {...columnSortByProps}
-                            sx={{ '& svg': { width: 16, height: 16, mt: 0, ml: 0.25 } }}
-                            style={style}
-                          >
-                            {column.render('Header')}
-                          </TableSortLabel>
-                        </Tooltip>
-                      ) : (
-                        <TableLabel style={style} tableStyleOptions={tableStyleOptions}>
-                          {column.render('Header')}
-                        </TableLabel>
-                      )}
-                      {/* <div>{column.canFilter ? column.render('Filter') : null}</div> */}
-                      {column.canResize && <ResizeHandle column={column} />}
-                    </TableHeadCell>
-                  )
-                })}
-              </TableHeadRow>
-            )
-          })}
-        </TableHead>
-        <TableBody {...tableBodyProps} tableStyleOptions={tableStyleOptions}>
-          {page.map((row) => {
-            prepareRow(row)
-            const { key: rowKey, role: _rowRole, ...getRowProps } = row.getRowProps()
-            return (
-              <TableRow
-                key={rowKey}
-                {...getRowProps}
-                className={`${row.isSelected ? 'rowSelected' : ''} ${onClick ? 'clickable' : ''}`}
-                tableStyleOptions={tableStyleOptions}
-              >
-                {row.cells.map((cell) => {
-                  const { key: cellKey, role: _cellRole, ...getCellProps } = cell.getCellProps(cellProps)
-                  return (
-                    <TableCell
-                      key={cellKey}
-                      {...getCellProps}
-                      onClick={cellClickHandler(cell)}
-                      tableStyleOptions={tableStyleOptions}
-                    >
-                      {cell.isGrouped ? (
-                        <>
-                          <TableSortLabel
-                            active
-                            direction={row.isExpanded ? 'desc' : 'asc'}
-                            IconComponent={KeyboardArrowUp}
-                            {...row.getToggleRowExpandedProps()}
-                            sx={{
-                              '& .MuiTableSortLabel-iconDirectionAsc': { transform: 'rotate(90deg)' },
-                              '& .MuiTableSortLabel-iconDirectionDesc': { transform: 'rotate(180deg)' },
-                              '& svg': { width: 16, height: 16, mt: 0.375 },
-                            }}
-                          />
-                          {cell.render('Cell', { editable: false })} ({row.subRows.length})
-                        </>
-                      ) : cell.isAggregated ? (
-                        cell.render('Aggregated')
-                      ) : cell.isPlaceholder ? null : (
-                        cell.render('Cell')
-                      )}
-                    </TableCell>
-                  )
-                })}
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </TableTable>
-      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TableDebugButton enabled={isDev} instance={instance} />
-        <div />
-        <TablePagination<T> instance={instance} />
-      </div>
-      <TableDebug enabled={isDev} instance={instance} />
-    </>
-  )
-}
-
-// Table.whyDidYouRender = true

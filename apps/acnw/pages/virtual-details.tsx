@@ -10,4 +10,6 @@ const Page: NextPage = () => <VirtualDetails />
 
 export default Page
 
-export const getServerSideProps = auth0.withPageAuthRequired({ getServerSideProps: configGetServerSideProps })
+export const getServerSideProps = auth0.withPageAuthRequired({
+  getServerSideProps: configGetServerSideProps,
+})

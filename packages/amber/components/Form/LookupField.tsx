@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { useTRPC } from '@amber/client'
 import type { TextFieldProps } from '@amber/ui'

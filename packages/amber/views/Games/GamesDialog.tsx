@@ -1,6 +1,9 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { Game, useTRPC } from '@amber/client'
+import type { Game } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { TextFieldProps } from '@amber/ui'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -11,20 +14,21 @@ import {
   range,
   SelectField,
   TextField,
-  TextFieldProps,
   useDisableBackdropClick,
 } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
 
-import { GameDialogFormValues, useEditGame } from './gameHooks'
+import type { GameDialogFormValues } from './gameHooks'
+import { useEditGame } from './gameHooks'
 
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { TransportError } from '../../components/TransportError'
-import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
+import type { Configuration } from '../../utils'
+import { getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 
 interface GamesDialogProps {
   open: boolean
@@ -116,7 +120,11 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
     (acc, current) => {
       acc.push({
         value: current + 1,
-        text: getSlotDescription(configuration, { year, slot: current + 1, local: configuration.virtual }),
+        text: getSlotDescription(configuration, {
+          year,
+          slot: current + 1,
+          local: configuration.virtual,
+        }),
       })
       return acc
     },
@@ -328,7 +336,10 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                 type='number'
                 required
                 InputProps={{
-                  inputProps: { min: configuration.minPlayersFloor, max: configuration.minPlayersCeiling },
+                  inputProps: {
+                    min: configuration.minPlayersFloor,
+                    max: configuration.minPlayersCeiling,
+                  },
                 }}
               />
             </GridItem>
@@ -341,7 +352,10 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
                 type='number'
                 required
                 InputProps={{
-                  inputProps: { min: configuration.maxPlayersFloor, max: configuration.maxPlayersCeiling },
+                  inputProps: {
+                    min: configuration.maxPlayersFloor,
+                    max: configuration.maxPlayersCeiling,
+                  },
                 }}
               />
             </GridItem>

@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { getSafeFloat, GridContainer, GridItem, TextField } from '@amber/ui'
 import { InputAdornment, Typography } from '@mui/material'

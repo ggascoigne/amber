@@ -1,23 +1,20 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react'
+import type { MouseEventHandler } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
-import { pick, ContentsOf, ExpandingFab, Loader, notEmpty, Page, pickAndConvertNull } from '@amber/ui'
+import type { ContentsOf } from '@amber/ui'
+import { pick, ExpandingFab, Loader, notEmpty, pickAndConvertNull } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
 import { Button } from '@mui/material'
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
 
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
-import {
-  GameChoiceSelector,
-  isAnyGame,
-  isNoGame,
-  orderChoices,
-  SelectorUpdate,
-  SlotDecoratorCheckMark,
-} from './GameChoiceSelector'
+import type { SelectorUpdate } from './GameChoiceSelector'
+import { GameChoiceSelector, isAnyGame, isNoGame, orderChoices, SlotDecoratorCheckMark } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
+import { Page } from '../../components'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
@@ -39,7 +36,9 @@ const debugGameChoices = (gameChoices: ChoiceType[] | undefined) => {
     ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
   console.table(g)
 }
-export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
+export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & {
+  modified?: boolean
+}
 
 export const useEditGameChoice = () => {
   const trpc = useTRPC()
@@ -191,10 +190,23 @@ const GameSignupPage = () => {
         if (rank !== oldRank && (rank === 0 || rank === 1)) {
           const otherRank = rank ? 0 : 1
           // if rank is GM or 1st then nuke the other one
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
-          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank]!, ...empty }
+          thisSlotChoices[rank] = {
+            ...thisSlotChoices[rank]!,
+            ...empty,
+            gameId,
+            returningPlayer,
+          }
+          thisSlotChoices[otherRank] = {
+            ...thisSlotChoices[otherRank]!,
+            ...empty,
+          }
         } else {
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank]!, ...empty, gameId, returningPlayer }
+          thisSlotChoices[rank] = {
+            ...thisSlotChoices[rank]!,
+            ...empty,
+            gameId,
+            returningPlayer,
+          }
         }
 
         if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {

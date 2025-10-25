@@ -25,7 +25,10 @@ export async function up(knex) {
     { from: 'display.schedule', to: 'flag.display_schedule' },
     { from: 'display.test.warning', to: 'flag.is_beta' },
     { from: 'display.virtual.details', to: 'flag.display_virtual_details' },
-    { from: 'use.detail.room.quantities', to: 'flag.dev_use_detail_room_quantities' },
+    {
+      from: 'use.detail.room.quantities',
+      to: 'flag.dev_use_detail_room_quantities',
+    },
   ]
 
   for await (const val of renames) {

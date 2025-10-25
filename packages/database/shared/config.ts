@@ -28,7 +28,11 @@ export type EmailConfig = {
   fromAddress: string
 }
 
-export type ConfigType = { rootDatabase: DbConfig; userDatabase: DbConfig; email: EmailConfig }
+export type ConfigType = {
+  rootDatabase: DbConfig
+  userDatabase: DbConfig
+  email: EmailConfig
+}
 
 export const config: ConfigType = {
   rootDatabase: env.ADMIN_DATABASE_URL,

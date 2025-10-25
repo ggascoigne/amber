@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { GameArray, useTRPC } from '@amber/client'
+import type { GameArray } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { Loader } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 

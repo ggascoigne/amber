@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { GridContainer, GridItem, Important, TextField } from '@amber/ui'
 import { DialogContentText } from '@mui/material'

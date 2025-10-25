@@ -1,7 +1,8 @@
-import * as React from 'react'
+import type * as React from 'react'
 import { useReducer, useEffect, useState, useCallback } from 'react'
 
-import { CreateMembershipType, User, UserMembership, useTRPC } from '@amber/client'
+import type { CreateMembershipType, User, UserMembership } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { DialogClose, getSafeFloat, Loader } from '@amber/ui'
 import Box from '@mui/material/Box'
 import FormControl from '@mui/material/FormControl'
@@ -17,8 +18,8 @@ import { match } from 'ts-pattern'
 
 import { MemberSelector } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
+import type { Configuration } from '../../utils'
 import {
-  Configuration,
   deleteArrayEntry,
   formatAmountForDisplay,
   InterestLevel,
@@ -170,7 +171,10 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
   }, [membership?.id, onChange, state, user.id])
 
   const handleMembershipPaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'setButtonState', value: (event.target as HTMLInputElement).value as ButtonState })
+    dispatch({
+      type: 'setButtonState',
+      value: (event.target as HTMLInputElement).value as ButtonState,
+    })
   }
 
   const handleDonationChange = (event: React.ChangeEvent<HTMLInputElement>) => {

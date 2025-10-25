@@ -1,4 +1,4 @@
-import { RouterOutputs } from '@amber/server'
+import type { RouterOutputs } from '@amber/server'
 import { DateTime } from 'luxon'
 import { z } from 'zod'
 
@@ -104,7 +104,9 @@ export type ConventionInfo = z.infer<typeof conventionInfoSchema>
 export type Configuration = z.infer<typeof configurationSchema>
 
 export type ConfigurationType = Configuration
-type DateFields<T> = { [K in keyof T]: T[K] extends DateTime ? K : never }[keyof T]
+type DateFields<T> = {
+  [K in keyof T]: T[K] extends DateTime ? K : never
+}[keyof T]
 export type ConfigurationDates = Pick<ConfigurationType, DateFields<ConfigurationType>>
 export type ConfigurationNonDates = Omit<ConfigurationType, DateFields<ConfigurationType> | 'startDates'>
 

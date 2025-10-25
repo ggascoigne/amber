@@ -1,6 +1,8 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { Box, SxProps, Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
 type ColorTypes = 'warning' | 'success' | 'error' | 'info' | 'primary'
 

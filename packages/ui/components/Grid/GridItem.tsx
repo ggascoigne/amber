@@ -1,6 +1,7 @@
-import React from 'react'
+import type React from 'react'
 
-import { Grid, SxProps, Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
+import { Grid } from '@mui/material'
 import type { GridProps } from '@mui/material/Grid'
 
 interface GridItemProps extends GridProps {

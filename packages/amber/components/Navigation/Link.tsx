@@ -1,9 +1,11 @@
 import * as React from 'react'
 
-import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link'
+import type { LinkProps as MuiLinkProps } from '@mui/material/Link'
+import MuiLink from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import clsx from 'clsx'
-import NextLink, { LinkProps as NextLinkProps } from 'next/link'
+import type { LinkProps as NextLinkProps } from 'next/link'
+import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 
 // Add support for the sx prop for consistency with the other branches.
@@ -80,7 +82,15 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) 
   }
 
   const linkAs = linkAsProp ?? as
-  const nextjsProps = { to: href, linkAs, replace, scroll, shallow, prefetch, locale }
+  const nextjsProps = {
+    to: href,
+    linkAs,
+    replace,
+    scroll,
+    shallow,
+    prefetch,
+    locale,
+  }
 
   if (noLinkStyle) {
     return <NextLinkComposed className={className} ref={ref} {...nextjsProps} {...other} />

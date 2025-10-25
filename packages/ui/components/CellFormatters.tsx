@@ -1,44 +1,41 @@
 import React from 'react'
 
+import type { CellContext, RowData } from '@tanstack/react-table'
 import { DateTime } from 'luxon'
-import { CellProps } from 'react-table'
 
-import { TooltipCell } from './Table/TooltipCellRenderer'
+import { TooltipCell, getCellSx } from './Table'
 
-export const DateCell = <T extends Record<string, unknown>>({
-  cell: { value },
-  column: { align = 'left', dateFormat = 'EEE, MMM d' },
-}: CellProps<T>) => {
-  const dateTime = value instanceof Date ? DateTime.fromJSDate(value) : DateTime.fromISO(value)
+const getDateFormat = <T extends RowData>({ column }: CellContext<T, unknown>): string =>
+  column.columnDef.meta?.dateFormat ?? 'EEE, MMM d'
+
+export const DateCell = <T extends RowData>(props: CellContext<T, unknown>) => {
+  const value = props.getValue() as string | Date | null | undefined
+  if (!value) {
+    return <TooltipCell text='' sx={getCellSx(props)} />
+  }
+
+  const dateTime = value instanceof Date ? DateTime.fromJSDate(value) : DateTime.fromISO(String(value))
+
   return (
     <TooltipCell
-      text={dateTime.toFormat(dateFormat)}
+      text={dateTime.toFormat(getDateFormat(props))}
       tooltip={dateTime.toLocaleString(DateTime.DATE_HUGE)}
-      align={align}
+      sx={getCellSx(props)}
     />
   )
 }
 
-export const YesNoCell = <T extends Record<string, unknown>>({
-  cell: { value },
-  column: { align = 'left' },
-}: CellProps<T>) => {
-  const val = value ? 'Yes' : 'No'
-  return <TooltipCell text={val} align={align} />
+export const YesNoCell = <T extends RowData>(props: CellContext<T, unknown>) => {
+  const val = props.getValue() ? 'Yes' : 'No'
+  return <TooltipCell text={val} sx={getCellSx(props)} />
 }
 
-export const YesBlankCell = <T extends Record<string, unknown>>({
-  cell: { value },
-  column: { align = 'left' },
-}: CellProps<T>) => {
-  const val = value ? 'Yes' : ''
-  return <TooltipCell text={val} align={align} />
+export const YesBlankCell = <T extends RowData>(props: CellContext<T, unknown>) => {
+  const val = props.getValue() ? 'Yes' : ''
+  return <TooltipCell text={val} sx={getCellSx(props)} />
 }
 
-export const BlankNoCell = <T extends Record<string, unknown>>({
-  cell: { value },
-  column: { align = 'left' },
-}: CellProps<T>) => {
-  const val = value ? '' : 'No'
-  return <TooltipCell text={val} align={align} />
+export const BlankNoCell = <T extends RowData>(props: CellContext<T, unknown>) => {
+  const val = props.getValue() ? '' : 'No'
+  return <TooltipCell text={val} sx={getCellSx(props)} />
 }

@@ -1,0 +1,21 @@
+/*Hide the react query button we use in development*/
+div.tsqd-open-btn-container {
+  visibility: hidden !important;
+}
+
+/* disable sub-pixel rendering in an attempt to get consistent results across devices */
+* {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* 
+button[data-testid='color-scheme-toggle'] {
+  visibility: hidden !important;
+  display: none;
+} */
+
+* {
+  animation: none !important;
+  transition: none !important;
+}

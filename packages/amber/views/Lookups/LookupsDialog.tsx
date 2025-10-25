@@ -1,13 +1,15 @@
-import React from 'react'
+import type React from 'react'
 
 import { useInvalidateLookupQueries, useTRPC, type Lookup } from '@amber/client'
-import { Card, CardBody, CardHeader, EditDialog, GridContainer, GridItem, TextField, ToFormValues } from '@amber/ui'
+import type { ToFormValues } from '@amber/ui'
+import { Card, CardBody, CardHeader, EditDialog, GridContainer, GridItem, TextField } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
-import { FieldArray, FormikHelpers } from 'formik'
+import type { FormikHelpers } from 'formik'
+import { FieldArray } from 'formik'
 
 type LookupFormType = ToFormValues<Lookup>
 
@@ -141,15 +143,36 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                 <Card>
                   <CardHeader
                     color='success'
-                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 3 }}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      px: 3,
+                    }}
                   >
-                    <Typography variant='h6' sx={{ color: '#fff', fontWeight: 300, textTransform: 'none' }}>
+                    <Typography
+                      variant='h6'
+                      sx={{
+                        color: '#fff',
+                        fontWeight: 300,
+                        textTransform: 'none',
+                      }}
+                    >
                       Lookup Values
                     </Typography>
                     <IconButton
-                      sx={{ color: '#fff', '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.08)' } }}
+                      sx={{
+                        color: '#fff',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                        },
+                      }}
                       onClick={() =>
-                        arrayHelpers.push({ sequencer: highestSequence(formikProps.values), code: '', value: '' })
+                        arrayHelpers.push({
+                          sequencer: highestSequence(formikProps.values),
+                          code: '',
+                          value: '',
+                        })
                       }
                       size='large'
                     >
@@ -180,7 +203,9 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                             </TableCell>
                             <TableCell align='right' style={{ width: '50px' }}>
                               <IconButton
-                                sx={{ color: (theme) => theme.palette.grey[500] }}
+                                sx={{
+                                  color: (theme) => theme.palette.grey[500],
+                                }}
                                 onClick={() => arrayHelpers.remove(index)}
                                 size='large'
                               >

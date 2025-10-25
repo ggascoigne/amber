@@ -1,6 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { UserAndShortMembership, useTRPC } from '@amber/client'
+import type { UserAndShortMembership } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
@@ -24,12 +26,14 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
   const [year] = useYearFilter()
   const [searchTerm, setSearchTerm] = useState('')
   const [dropdownOptions, setDropdownOptions] = useState<UserType[]>([])
+  const [hasInteracted, setHasInteracted] = useState(false)
 
-  const { isLoading, error, data } = useQuery(
-    trpc.users.getAllUsersBy.queryOptions({
+  const { isLoading, error, data } = useQuery({
+    ...trpc.users.getAllUsersBy.queryOptions({
       query: searchTerm,
     }),
-  )
+    enabled: hasInteracted,
+  })
 
   useEffect(() => {
     if (data) {
@@ -38,16 +42,25 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
     }
   }, [data])
 
-  const onInputChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(ev.target.value ?? '')
-  }, [])
+  const onInputChange = useCallback(
+    (ev: React.ChangeEvent<HTMLInputElement>) => {
+      if (!hasInteracted) {
+        setHasInteracted(true)
+      }
+      setSearchTerm(ev.target.value ?? '')
+    },
+    [hasInteracted],
+  )
 
   const onChange = useCallback(
     (_: React.SyntheticEvent, value: UserType | null) => {
+      if (!hasInteracted) {
+        setHasInteracted(true)
+      }
       setUserInfo(value ? { userId: value.id, email: value.email } : { userId: 0, email: '' })
       setSearchTerm(value?.fullName ?? '')
     },
-    [setUserInfo],
+    [setUserInfo, hasInteracted],
   )
 
   const onBlur = useCallback(() => {
@@ -55,6 +68,18 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       setSearchTerm('')
     }
   }, [userInfo.userId])
+
+  const onFocus = useCallback(() => {
+    if (!hasInteracted) {
+      setHasInteracted(true)
+    }
+  }, [hasInteracted])
+
+  const onOpen = useCallback(() => {
+    if (!hasInteracted) {
+      setHasInteracted(true)
+    }
+  }, [hasInteracted])
 
   if (error) {
     notify({
@@ -80,8 +105,12 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
         maxWidth: 400,
         width: 400,
         '& label, & div': { fontSize: '0.875rem', color: 'inherit' },
-        '& input::placeholder, & input::-webkit-input-placeholder': { opacity: 0.81 },
-        '& input::-moz-placeholder, & input:-moz-placeholder': { opacity: 0.81 },
+        '& input::placeholder, & input::-webkit-input-placeholder': {
+          opacity: 0.81,
+        },
+        '& input::-moz-placeholder, & input:-moz-placeholder': {
+          opacity: 0.81,
+        },
       }}
       value={selectedUser}
       slotProps={{
@@ -96,6 +125,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
           fullWidth
           placeholder='User Override'
           onChange={onInputChange}
+          onFocus={onFocus}
           variant='standard'
           sx={{
             '& input': { paddingLeft: '5px !important' },
@@ -108,8 +138,15 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       renderOption={(props, params: UserType) => {
         const isMember = !!params.membership.find((m) => m?.year === year)
         return (
+          // oxlint-disable-next-line jsx-key
           <li {...props} key={params.id} style={{ overflow: 'hidden' }}>
-            <span style={{ fontSize: '0.875rem', wordWrap: 'break-word', opacity: isMember ? 1 : 0.6 }}>
+            <span
+              style={{
+                fontSize: '0.875rem',
+                wordWrap: 'break-word',
+                opacity: isMember ? 1 : 0.6,
+              }}
+            >
               {params.fullName}
             </span>
           </li>
@@ -118,6 +155,7 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       isOptionEqualToValue={getOptionSelected}
       onChange={onChange}
       onBlur={onBlur}
+      onOpen={onOpen}
       data-test='customer-select-dropdown'
     />
   )

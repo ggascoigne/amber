@@ -79,7 +79,13 @@ export const Footer = () => {
   return (
     <Box
       component='footer'
-      sx={{ padding: '0.9375rem 0', textAlign: 'center', display: 'flex', zIndex: 2, position: 'relative' }}
+      sx={{
+        padding: '0.9375rem 0',
+        textAlign: 'center',
+        display: 'flex',
+        zIndex: 2,
+        position: 'relative',
+      }}
     >
       <Box sx={{ ...container, fontSize: '0.75rem' }}>
         <HasPermission permission={Perms.IsAdmin}>
@@ -99,7 +105,14 @@ export const Footer = () => {
                 horizontal: 'left',
               }}
             >
-              <Box sx={{ padding: '20px', minWidth: '300px', maxHeight: '80vh', overflow: 'auto' }}>
+              <Box
+                sx={{
+                  padding: '20px',
+                  minWidth: '300px',
+                  maxHeight: '80vh',
+                  overflow: 'auto',
+                }}
+              >
                 <Box component='h3' sx={{ marginTop: 0 }}>
                   Site configuration
                 </Box>

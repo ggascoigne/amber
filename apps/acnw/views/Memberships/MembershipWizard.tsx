@@ -1,5 +1,8 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
+import type { Configuration } from '@amber/amber'
 import {
   Perms,
   ProfileFormContent,
@@ -9,27 +12,24 @@ import {
   useEditUserAndProfile,
   useUser,
   useYearFilter,
-  Configuration,
   Attendance,
 } from '@amber/amber'
-import {
-  toSlotsAttending,
-  fromSlotsAttending,
-  useEditMembership,
-  MembershipFormType,
-} from '@amber/amber/utils/membershipUtils'
+import type { MembershipFormType } from '@amber/amber/utils/membershipUtils'
+import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
 import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaNW as membershipValidationSchema,
 } from '@amber/amber/views/Memberships/membershipUtils'
-import { UserAndProfile, useTRPC } from '@amber/client'
-import { Wizard, WizardPage } from '@amber/ui'
+import type { UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { WizardPage } from '@amber/ui'
+import { Wizard } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { useQuery } from '@tanstack/react-query'
 import debug from 'debug'
-import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
+import type { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
 
 import { IntroStep } from './IntroStep'
@@ -187,7 +187,9 @@ export const MembershipWizard = ({ open, onClose, profile, initialValues, short 
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
-  const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
+  const redirectContextState = useState<RedirectInfo>({
+    shouldRedirect: false,
+  })
   const [redirectInfo] = redirectContextState
 
   const { data: usersTransactions } = useQuery(

@@ -4,25 +4,28 @@ import { useMemo } from 'react'
 import { useTRPC } from '@amber/client'
 import { createEmotionCache, NotificationProvider, theme } from '@amber/ui'
 import { Auth0Provider } from '@auth0/nextjs-auth0'
-import { CacheProvider, EmotionCache } from '@emotion/react'
+import type { EmotionCache } from '@emotion/react'
+import { CacheProvider } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 // see https://github.com/mui/mui-x/issues/12640
+// oxlint-disable-next-line no-duplicates
 import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { useQuery } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
 import { RouteGuard } from './Auth'
 import { Layout } from './Layout'
-import { RootRoutes } from './Navigation'
+import type { RootRoutes } from './Navigation'
 import { TRPCReactProvider } from './TRPCReactProvider'
 
-import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
+import type { Configuration } from '../utils'
+import { ConfigProvider, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -99,7 +102,7 @@ const ConfigLoader = (props: RootComponentProps) => {
 
 export default function RootComponent(props: RootComponentProps) {
   return (
-    <TRPCReactProvider>
+    <TRPCReactProvider pageProps={props.pageProps}>
       <JotaiProvider>
         <ConfigLoader {...props} />
       </JotaiProvider>

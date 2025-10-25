@@ -1,12 +1,12 @@
-import React from 'react'
+import type React from 'react'
 
-import { GameArray } from '@amber/client'
+import type { GameArray } from '@amber/client'
 import { Typography } from '@mui/material'
 import List from '@mui/material/List'
 
 import { useUrlSource } from '../../utils'
 import { ListItemLink } from '../Navigation'
-import { GameDecorator, GameDecoratorParams } from '../types'
+import type { GameDecorator, GameDecoratorParams } from '../types'
 
 interface GameListIndexProps {
   year: number

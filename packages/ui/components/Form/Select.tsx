@@ -1,6 +1,7 @@
-import React from 'react'
+import type React from 'react'
 
-import MuiSelect, { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import type { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import MuiSelect from '@mui/material/Select'
 import { useField, useFormikContext } from 'formik'
 
 export type SelectProps = MuiSelectProps & {

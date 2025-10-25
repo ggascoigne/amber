@@ -2,11 +2,11 @@
 import { env } from '@amber/environment'
 import { authenticatedCaller } from '@amber/server/src/api/ssr'
 import { buffer } from 'micro'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 import { sendEmailConfirmation } from './sendEmailConfirmation'
-import { UserPaymentDetails } from './types'
+import type { UserPaymentDetails } from './types'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
   apiVersion: '2025-08-27.basil',

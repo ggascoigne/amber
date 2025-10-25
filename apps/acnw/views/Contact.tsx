@@ -1,6 +1,6 @@
-import { Link, useConfiguration } from '@amber/amber'
+import { Link, useConfiguration, Page } from '@amber/amber'
 import { ContactEmail } from '@amber/amber/components'
-import { CardBody, Page } from '@amber/ui'
+import { CardBody } from '@amber/ui'
 import { Card } from '@mui/material'
 
 const Contact = () => {

@@ -1,10 +1,9 @@
 import React from 'react'
 
-import { ConfigDate, ContactEmail, MDY } from '@amber/amber/components'
+import { MdxWithExternalLinks, ConfigDate, ContactEmail, MDY, Page } from '@amber/amber'
 import { BetaWarning } from '@amber/amber/components/BetaWarning'
 import { Link } from '@amber/amber/components/Navigation'
 import { IsMember } from '@amber/amber/utils'
-import { MdxWithExternalLinks, Page } from '@amber/ui'
 import { Box, Button } from '@mui/material'
 
 import { BecomeAMember } from './Memberships'

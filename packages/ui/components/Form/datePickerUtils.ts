@@ -1,8 +1,8 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 import { useField, useFormikContext } from 'formik'
 
-import { DatePickerProps } from './DatePicker'
+import type { DatePickerProps } from './DatePicker'
 
 const createErrorHandler =
   (fieldError: unknown, fieldName: string, setFieldError: (field: string, message: string | undefined) => void) =>

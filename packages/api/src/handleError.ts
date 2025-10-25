@@ -1,5 +1,5 @@
 import debug from 'debug'
-import { NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 
 import { JsonError } from './JsonError'
 

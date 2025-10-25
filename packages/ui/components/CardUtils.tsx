@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import React from 'react'
 
 import { CardHeader } from './Card'
 import { GridItem } from './Grid'
@@ -65,7 +66,14 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
       <GridItem container size={{ xs: 12, sm: children ? 7 : 12 }}>
         <h4
           style={
-            tiny ? { overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis', margin: 0 } : { margin: 0 }
+            tiny
+              ? {
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  margin: 0,
+                }
+              : { margin: 0 }
           }
         >
           {name}

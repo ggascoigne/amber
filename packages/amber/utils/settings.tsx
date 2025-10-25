@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 
-import { Setting, useTRPC } from '@amber/client'
+import type { Setting } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { notEmpty } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
@@ -28,7 +29,13 @@ export const useSettings = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
   const isGameAdmin = hasPermissions(Perms.GameAdmin)
-  const { isLoading, error, data } = useQuery(trpc.settings.getSettings.queryOptions())
+  const { isLoading, error, data } = useQuery(
+    trpc.settings.getSettings.queryOptions(undefined, {
+      staleTime: 60 * 60 * 1000, // 1 hour - settings rarely change
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }),
+  )
 
   const getSettingString = useCallback(
     (setting: string, defaultValue = false): string | null => {
