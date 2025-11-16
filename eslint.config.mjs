@@ -1,4 +1,5 @@
 import { configs } from '@ggascoigne/eslint-config'
+// import oxlint from 'eslint-plugin-oxlint'
 
 const globalIgnores = [
   {
@@ -39,4 +40,14 @@ export default [
     files: ['**/*.test.ts'],
     rules: { 'import/no-extraneous-dependencies': 'off' },
   },
+  // oxlint is very cool, but doesn't have a good replacement for the import/order rule
+  // when it does I think that we can swap over to it.
+  // this chunk allows us to disable all rules provided by oxlint and see what's left
+  // ...oxlint.buildFromOxlintConfigFile('./.oxlintrc.json'),
+  // {
+  //   name: 'disable-unused-directives-warnings',
+  //   linterOptions: {
+  //     reportUnusedDisableDirectives: false
+  //   }
+  // }
 ]

@@ -25,9 +25,6 @@
     "WMDY",
     "Zelazny's"
   ],
-  // Disable ESLint and Prettier for this workspace
-  "eslint.enable": false,
-  "prettier.enable": false,
-  // Enable format on save (oxc will be used when extension is installed)
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "oxc.enable": false
 }

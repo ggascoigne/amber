@@ -24,12 +24,14 @@
     "dev:us": "pnpm --filter acus dev",
     "build:us": "pnpm --filter acus build",
     "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
-    "format": "oxfmt && prettier --write '{apps,packages}/**/*.{css,scss,json}'",
+    "format": "pnpm format:all --cache",
+    "format:ox": "oxfmt && prettier --write '{apps,packages}/**/*.{css,scss,json}'",
     "format:all": "prettier --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json}'",
-    "lint": "oxlint --type-aware --fix",
+    "lint": "pnpm run eslint",
+    "oxlint": "oxlint --type-aware --fix",
     "eslint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
-    "pre-commit": "oxfmt && oxlint && pnpm tsc",
+    "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "vitest",
     "test:watch": "vitest watch",
     "tsc": "pnpm -r tsc",
@@ -54,6 +56,7 @@
     "@vitejs/plugin-react": "^5.0.4",
     "dotenv-cli": "10.0.0",
     "eslint": "^9.38.0",
+    "eslint-plugin-oxlint": "^1.28.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.1",
     "lint-staged": "^16.2.6",
@@ -76,8 +79,8 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
-      "pnpm oxfmt",
-      "pnpm oxlint --fix"
+      "prettier --no-color --write",
+      "eslint"
     ],
     "*.json": [
       "prettier --no-color --write"
