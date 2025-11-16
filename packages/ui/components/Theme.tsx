@@ -70,6 +70,7 @@ export const theme = createTheme({
           letterSpacing: '0.01071em',
           // backgroundColor: '#fafafa',
           textAlign: 'left',
+          colorScheme: 'light', // change this if we ever support more than one theme
         },
         '@media print': {
           body: {

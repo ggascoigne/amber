@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect, useRef } from 'react'
+import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 
 import { useGetConfigQuery } from '@amber/client'
-import { Loader } from '@amber/ui'
+import { Loader, ObjectView } from '@amber/ui'
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
 
@@ -9,8 +9,6 @@ import { HasPermission, Perms, useAuth } from './Auth'
 
 import { useConfiguration } from '../utils'
 import { gitHash } from '../version'
-
-const ReactJson = React.lazy(() => import('@microlink/react-json-view'))
 
 const containerFluid = {
   paddingRight: '15px',
@@ -76,6 +74,13 @@ export const Footer = () => {
   const commitDate = DateTime.fromISO(gitHash.date)
   const id = open ? 'simple-popover' : undefined
   const configuration = useConfiguration()
+  const obj = useMemo(
+    () => ({
+      commitDate: commitDate.toLocaleString(DateTime.DATETIME_FULL),
+      config,
+    }),
+    [config, commitDate],
+  )
   return (
     <Box
       component='footer'
@@ -117,16 +122,11 @@ export const Footer = () => {
                   Site configuration
                 </Box>
                 <Suspense fallback={<Loader />}>
-                  <ReactJson
-                    src={{
-                      commitDate: commitDate.toLocaleString(DateTime.DATETIME_FULL),
-                      config,
-                    }}
-                    enableClipboard={false}
-                    indentWidth={2}
-                  />
-                  {/* Hidden element to trigger state change when ReactJson loads */}
-                  <div style={{ display: 'none' }} ref={() => setReactJsonLoaded(true)} />
+                  <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                    <ObjectView valueGetter={() => obj} name='root' expandLevel={3} />
+                    {/* Hidden element to trigger state change when ReactJson loads */}
+                    <div style={{ display: 'none' }} ref={() => setReactJsonLoaded(true)} />
+                  </Box>
                 </Suspense>
               </Box>
             </Popover>

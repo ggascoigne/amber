@@ -1,12 +1,13 @@
-import React, { Suspense, useMemo } from 'react'
+import type React from 'react'
+import { Suspense, useMemo } from 'react'
 
 import { BugReportTwoTone as BugReportTwoToneIcon } from '@mui/icons-material'
-import { Box, CircularProgress, IconButton, Tooltip, useColorScheme, useTheme } from '@mui/material'
+import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material'
 import superjson from 'superjson'
 
 import { useTableContext } from './TableContext'
 
-const ReactJsonView = React.lazy(() => import('@microlink/react-json-view'))
+import { ObjectView } from '../../ObjectView'
 
 interface LoaderProps {
   error?: boolean
@@ -60,51 +61,6 @@ export const TableDebugButton = ({ enabled }: { enabled: boolean }) => {
   ) : null
 }
 
-export const useJsonTheme = () => {
-  const theme = useTheme()
-  const { colorScheme } = useColorScheme()
-
-  const dark = {
-    base00: theme.palette.background.paper,
-    base01: '#2E3C43',
-    base02: '#314549',
-    base03: '#546E7A',
-    base04: '#B2CCD6',
-    base05: '#EEFFFF',
-    base06: '#EEFFFF',
-    base07: '#fff',
-    base08: '#F07178',
-    base09: '#C3E88D',
-    base0A: '#FFCB6B',
-    base0B: '#F78C6C',
-    base0C: '#89DDFF',
-    base0D: '#82AAFF',
-    base0E: '#C792EA',
-    base0F: '#F78C6C',
-  }
-
-  const light = {
-    base00: theme.palette.background.paper,
-    base01: '#E7EAEC',
-    base02: '#CCEAE7',
-    base03: '#CCD7DA',
-    base04: '#8796B0',
-    base05: '#80CBC4',
-    base06: '#80CBC4',
-    base07: '#222',
-    base08: '#FF5370',
-    base09: '#F76D47',
-    base0A: '#FFB62C',
-    base0B: '#91B859',
-    base0C: '#39ADB5',
-    base0D: '#6182B8',
-    base0E: '#7C4DFF',
-    base0F: '#E53935',
-  }
-
-  return colorScheme === 'dark' ? dark : light
-}
-
 type TableDebugProps = {
   enabled: boolean
   instance: any
@@ -112,7 +68,6 @@ type TableDebugProps = {
 
 export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
   const [{ tableIndex, debugIsOpen }] = useTableContext()
-  const jsonTheme = useJsonTheme()
   const { rows } = instance.getRowModel()
   const originalRows = useMemo(() => rows.map((row: any) => row.original), [rows])
 
@@ -126,6 +81,16 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
     return filtered
   }, [instance.options])
 
+  const obj = {
+    tableIndex,
+    state: instance.getState(),
+    headerGroups: instance.getHeaderGroups(),
+    columns: instance.getAllLeafColumns(),
+    rows: instance.getRowModel().rows,
+    originalRows,
+    options: filteredOptions,
+  }
+
   return enabled && debugIsOpen ? (
     <Box>
       <hr />
@@ -135,33 +100,9 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
             sx={{
               maxHeight: '400px',
               overflow: 'auto',
-              '& .react-json-view': {
-                '& span': {
-                  fontSize: '0.75rem !important',
-                },
-              },
             }}
           >
-            <ReactJsonView
-              src={
-                JSON.parse(
-                  superjson.stringify({
-                    tableIndex,
-                    state: instance.getState(),
-                    headerGroups: instance.getHeaderGroups(),
-                    columns: instance.getAllLeafColumns(),
-                    rows: instance.getRowModel().rows,
-                    originalRows,
-                    options: filteredOptions,
-                  }),
-                ).json
-              }
-              collapsed={1}
-              indentWidth={2}
-              enableClipboard={false}
-              sortKeys
-              theme={jsonTheme}
-            />
+            <ObjectView valueGetter={() => JSON.parse(superjson.stringify(obj)).json} name='root' expandLevel={1} />
           </Box>
         </Suspense>
       </Box>

@@ -19,6 +19,8 @@ import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
 
+import { isDev } from '../../utils'
+
 export type DataTableProps<T extends RowData> = {
   tableInstance: TableInstance<T>
   title?: string
@@ -76,7 +78,7 @@ export const DataTable = <T extends RowData>({
   compact = false,
   displayGutter = true,
   rowStyle = 'flex',
-  debug = false,
+  debug = isDev,
   debugLogging = false,
   dataTestid,
   useVirtualRows = true,
