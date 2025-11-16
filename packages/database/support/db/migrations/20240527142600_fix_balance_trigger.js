@@ -1,4 +1,4 @@
-import { env, parsePostgresConnectionString } from '@amber/environment'
+import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { fixGrants } from '../utils/policyUtils.js'
 

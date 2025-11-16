@@ -2,8 +2,6 @@ import { headers } from '@amber/amber/utils/next-headers.js'
 import bundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
 import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -14,9 +12,9 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: [
       // parse YAML (and TOML if you want)
-      [remarkFrontmatter, ['yaml']],
+      ['remark-frontmatter', ['yaml']],
       // turn the parsed front matter into: export const metadata = { ... }
-      [remarkMdxFrontmatter, { name: 'metadata' }],
+      ['remark-mdx-frontmatter', { name: 'metadata' }],
     ],
     rehypePlugins: [],
     // Add compile-time components
@@ -35,13 +33,7 @@ const nextConfig = {
     '@amber/api',
     '@auth0/nextjs-auth0',
   ],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   modularizeImports: {
-    '@mui/material': {
-      transform: '@mui/material/{{member}}',
-    },
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
     },

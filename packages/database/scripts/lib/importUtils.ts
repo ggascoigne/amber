@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { type EnvType, processEnv, parsePostgresConnectionString } from '@amber/environment'
+import { type EnvType, processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 import debug from 'debug'
 import { config as dotenvConfig } from 'dotenv'
 import type { ListrTaskWrapper, ListrTask } from 'listr2'

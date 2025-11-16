@@ -1,4 +1,4 @@
-import { env, safeConnectionString } from '@amber/environment'
+import { env, safeConnectionString } from '@amber/environment/dotenv'
 import pg from 'pg'
 
 const { Pool } = pg

@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { parsePostgresConnectionString, safeConnectionString, type EnvType, processEnv } from '@amber/environment'
+import { env, parsePostgresConnectionString, safeConnectionString, type EnvType } from '@amber/environment/dotenv'
 import debug from 'debug'
 import type { Listr, ListrTask, ListrTaskWrapper } from 'listr2'
 
@@ -18,7 +18,7 @@ const filename = path.join(os.platform() === 'win32' ? os.tmpdir() : '/tmp', 'rd
 export const writeCertsTask: ListrTask = {
   title: `Writing RDS cert`,
   task: (ctx: TaskContext, task: ListrTaskWrapper<TaskContext, any, any>) => {
-    const environ = ctx?.env ?? processEnv(process.env)
+    const environ = ctx?.env ?? env
     if (!environ.DATABASE_SSL_CERT) {
       // eslint-disable-next-line no-template-curly-in-string
       return task.skip('Skipping as ${DATABASE_SSL_CERT} is undefined')
@@ -39,7 +39,7 @@ export const writeCertsTask: ListrTask = {
 export const createCleanDbTask: ListrTask = {
   title: `Cleaning database`,
   task: async (ctx: TaskContext) => {
-    const environ = ctx?.env ?? processEnv(process.env)
+    const environ = ctx?.env ?? env
     const { user: targetUser, password: targetUserPassword } = parsePostgresConnectionString(environ.DATABASE_URL)
     await createCleanDb(environ.ADMIN_DATABASE_URL, targetUser!, targetUserPassword!, false)
     return Promise.resolve(`Recreating database ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)
@@ -49,7 +49,7 @@ export const createCleanDbTask: ListrTask = {
 export const resetOwnerTask = {
   title: `Resetting database owner`,
   task: async (ctx: TaskContext) => {
-    const environ = ctx?.env ?? processEnv(process.env)
+    const environ = ctx?.env ?? env
     const { user: targetUser } = parsePostgresConnectionString(environ.DATABASE_URL)
     await resetOwner(environ.ADMIN_DATABASE_URL, targetUser!, false)
     return Promise.resolve(`Reset owner on ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)

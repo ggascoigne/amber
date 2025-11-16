@@ -17,7 +17,7 @@
     "@t3-oss/env-core": "^0.13.8",
     "@t3-oss/env-nextjs": "^0.13.8",
     "debug": "^4.4.3",
-    "next": "15.5.6",
+    "next": "16.0.3",
     "superjson": "^2.2.5",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.20.6",
@@ -32,5 +32,28 @@
     "dotenv": "^17.2.3",
     "prisma": "^6.19.0",
     "typescript": "^5.9.3"
+  },
+  "exports": {
+    "./dotenv": {
+      "import": {
+        "types": "./src/dotenv.ts",
+        "default": "./src/dotenv.ts"
+      },
+      "require": {
+        "types": "./src/dotenv.ts",
+        "default": "./src/dotenv.ts"
+      }
+    },
+    ".": {
+      "import": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      },
+      "require": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      }
+    },
+    "./package.json": "./package.json"
   }
 }
