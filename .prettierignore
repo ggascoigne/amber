@@ -1,1 +1,3 @@
 packages/server/src/generated
+apps/acnw/next-env.d.ts
+apps/acus/next-env.d.ts

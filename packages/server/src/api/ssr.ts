@@ -5,19 +5,15 @@ import { appRouter } from './appRouter'
 import { db } from '../db'
 import transformer from '../utils/trpc-transformer'
 
-// use for standard ssr calls
-export const ssrHelpers = createServerSideHelpers({
-  router: appRouter,
-  ctx: { db, session: undefined, userId: undefined, isAdmin: false },
-  transformer,
-})
-
-export const ssrAuthenticatedHelpers = (id: number) =>
+export const ssrAuthenticatedHelpers = (id: number | undefined) =>
   createServerSideHelpers({
     router: appRouter,
     ctx: { db, session: undefined, userId: id, isAdmin: false },
     transformer,
   })
+
+// use for standard ssr calls
+export const ssrHelpers = ssrAuthenticatedHelpers(undefined)
 
 // Create an authenticated caller for a specific user
 // use for any case where you need auth or mutations

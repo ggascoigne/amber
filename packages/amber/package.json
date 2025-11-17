@@ -17,6 +17,7 @@
   "dependencies": {
     "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
+    "@amber/environment": "workspace:*",
     "@amber/database": "workspace:*",
     "@amber/server": "workspace:*",
     "@amber/ui": "workspace:*",

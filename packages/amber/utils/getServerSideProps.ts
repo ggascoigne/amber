@@ -1,9 +1,8 @@
-import { ssrHelpers } from '@amber/server/src/api/ssr'
+import { ssrAuthenticatedHelpers } from '@amber/server/src/api/ssr'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import debug from 'debug'
 import type { GetServerSidePropsContext } from 'next'
 
-import { ssrAuthenticatedHelpers } from '../../server/src/api/ssr'
 import transformer from '../../server/src/utils/trpc-transformer'
 
 const log = debug('amber:amber:getServerSideProps')
@@ -17,52 +16,80 @@ export async function configGetServerSideProps(context: GetServerSidePropsContex
 
   // Get session from the request
   const session = await auth0.getSession(context.req)
-  const userId = parseInt(session?.user?.userId, 10) || 0
-
-  const helper = userId ? ssrAuthenticatedHelpers(userId) : ssrHelpers
+  const userId = parseInt(session?.user?.userId, 10) || undefined
+  const helper = ssrAuthenticatedHelpers(userId)
 
   const thisYear = new Date().getFullYear()
 
-  const queryPromises = []
+  const queryTasks: Array<{ label: string; promise: Promise<unknown> }> = []
 
-  queryPromises.push(helper.settings.getSettings.prefetch(undefined, { staleTime: oneHour }))
-  queryPromises.push(helper.config.getConfig.prefetch(undefined, { staleTime: oneHour }))
+  queryTasks.push({
+    label: 'settings.getSettings',
+    promise: helper.settings.getSettings.prefetch(undefined, { staleTime: oneHour }),
+  })
+  queryTasks.push({
+    label: 'config.getConfig',
+    promise: helper.config.getConfig.prefetch(undefined, { staleTime: oneHour }),
+  })
 
   // If user is authenticated, prefetch user-specific data
   if (userId) {
-    queryPromises.push(helper.users.getUserAndProfile.prefetch({ id: userId }, { staleTime: tenMinutes }))
-    queryPromises.push(
-      helper.memberships.getMembershipByYearAndId.prefetch({ year: thisYear, userId }, { staleTime: tenMinutes }),
+    queryTasks.push({
+      label: 'users.getUserAndProfile',
+      promise: helper.users.getUserAndProfile.prefetch({ id: userId }, { staleTime: tenMinutes }),
+    })
+    queryTasks.push({
+      label: 'memberships.getMembershipByYearAndId',
+      promise: helper.memberships.getMembershipByYearAndId.prefetch(
+        { year: thisYear, userId },
+        { staleTime: tenMinutes },
+      ),
+    })
+    queryTasks.push({
+      label: 'gameAssignments.isGameMaster',
+      promise: helper.gameAssignments.isGameMaster.prefetch({ userId, year: thisYear }, { staleTime: tenMinutes }),
+    })
+  }
+
+  const settledResults = await Promise.allSettled(queryTasks.map((task) => task.promise))
+  const failedPrefetches = settledResults
+    .map((result, index) => ({ result, label: queryTasks[index]?.label ?? 'unknown' }))
+    .filter(
+      (settled): settled is { result: PromiseRejectedResult; label: string } => settled.result.status === 'rejected',
     )
-    queryPromises.push(
-      helper.gameAssignments.isGameMaster.prefetch({ userId, year: thisYear }, { staleTime: tenMinutes }),
+
+  if (failedPrefetches.length > 0) {
+    failedPrefetches.forEach(({ label, result }) => {
+      console.error(`SSR prefetch "${label}" failed`, result.reason)
+    })
+    throw new AggregateError(
+      failedPrefetches.map(({ result }) => result.reason),
+      'configGetServerSideProps failed while prefetching queries',
     )
   }
 
-  return Promise.all(queryPromises).then(() => {
-    const trpcState = helper.dehydrate()
+  const trpcState = helper.dehydrate()
 
-    if (log.enabled) {
-      const decoded: any = transformer.deserialize(trpcState as any)
+  if (log.enabled) {
+    const decoded: any = transformer.deserialize(trpcState as any)
 
-      log('getServerSideProps queries:', decoded?.queries?.length ?? 0)
-      decoded?.queries?.forEach((q: any, index: number) => {
-        log(`SSR Query ${index}:`, {
-          queryKey: q.queryKey,
-          status: q.state.status,
-          dataUpdatedAt: new Date(q.state.dataUpdatedAt),
-          hasData: !!q.state.data,
-        })
+    log('getServerSideProps queries:', decoded?.queries?.length ?? 0)
+    decoded?.queries?.forEach((q: any, index: number) => {
+      log(`SSR Query ${index}:`, {
+        queryKey: q.queryKey,
+        status: q.state.status,
+        dataUpdatedAt: new Date(q.state.dataUpdatedAt),
+        hasData: !!q.state.data,
       })
-    }
-    const endTime = Date.now()
-    const duration = endTime - startTime
-    console.log('configGetServerSideProps completed in %dms', duration)
+    })
+  }
+  const endTime = Date.now()
+  const duration = endTime - startTime
+  log('configGetServerSideProps completed in %dms', duration)
 
-    return {
-      props: {
-        trpcState,
-      },
-    }
-  })
+  return {
+    props: {
+      trpcState,
+    },
+  }
 }

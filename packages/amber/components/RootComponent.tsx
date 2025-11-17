@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useMemo } from 'react'
 
 import { useTRPC } from '@amber/client'
+import { isDev } from '@amber/environment'
 import { createEmotionCache, NotificationProvider, theme } from '@amber/ui'
 import { Auth0Provider } from '@auth0/nextjs-auth0'
 import type { EmotionCache } from '@emotion/react'
@@ -14,9 +15,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { useQuery } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Provider as JotaiProvider } from 'jotai'
 import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
 import { RouteGuard } from './Auth'
@@ -30,12 +31,11 @@ import { ConfigProvider, getSettingsObject, useConfiguration, useInitializeStrip
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
-const ReactQueryDevtoolsProduction = React.lazy(() =>
-  // older envs might need to import from '@tanstack/react-query-devtools/build/modern/production.js'
-  import('@tanstack/react-query-devtools/production').then((d) => ({
-    default: d.ReactQueryDevtools,
-  })),
+const ReactQueryDevtoolsProduction = dynamic(
+  () => import('@tanstack/react-query-devtools/production').then((mod) => mod.ReactQueryDevtools),
+  { ssr: false },
 )
+
 interface RootComponentProps extends AppProps {
   emotionCache?: EmotionCache
   rootRoutes: (configuration: Configuration) => RootRoutes
@@ -44,12 +44,13 @@ interface RootComponentProps extends AppProps {
 }
 
 const RootInner = (props: RootComponentProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, rootRoutes, banner, title } = props
+  const { Component, pageProps, rootRoutes, banner, title } = props
+  const cache = React.useMemo(() => props.emotionCache ?? clientSideEmotionCache, [props.emotionCache])
   const { user } = pageProps
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
   useInitializeStripe()
-  const [showDevtools, setShowDevtools] = React.useState(false)
+  const [showDevtools, setShowDevtools] = React.useState(isDev)
 
   React.useEffect(() => {
     // @ts-expect-error
@@ -57,7 +58,7 @@ const RootInner = (props: RootComponentProps) => {
   }, [])
 
   return (
-    <CacheProvider value={emotionCache}>
+    <CacheProvider value={cache}>
       <Head>
         <title>{title}</title>
         <meta
@@ -75,7 +76,6 @@ const RootInner = (props: RootComponentProps) => {
                 <RouteGuard routes={routes}>
                   <Component {...pageProps} />
                 </RouteGuard>
-                <ReactQueryDevtools buttonPosition='bottom-left' />
                 {showDevtools && (
                   <React.Suspense fallback={null}>
                     <ReactQueryDevtoolsProduction buttonPosition='bottom-left' />

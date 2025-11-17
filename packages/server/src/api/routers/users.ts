@@ -198,17 +198,16 @@ export const usersRouter = createTRPCRouter({
         id: z.number(),
       }),
     )
-    .query(async ({ input, ctx }) => {
-      console.log('in getUserAndProfile with id:', input.id)
-      return inRlsTransaction(ctx, async (tx) =>
+    .query(async ({ input, ctx }) =>
+      inRlsTransaction(ctx, async (tx) =>
         tx.user.findUnique({
           where: { id: input.id },
           include: {
             profile: true,
           },
         }),
-      )
-    }),
+      ),
+    ),
 
   getUser: protectedProcedure
     .input(

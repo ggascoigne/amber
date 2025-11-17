@@ -1,7 +1,6 @@
 import { headers } from '@amber/amber/utils/next-headers.js'
 import bundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
-import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin'
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -40,23 +39,10 @@ const nextConfig = {
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   headers,
-  webpack: (config, { isServer, dev }) => {
-    if (isServer) {
-      // eslint-disable-next-line no-param-reassign
-      config.plugins = [...config.plugins, new PrismaPlugin()]
-    }
-
-    // Improve HMR stability in development
-    if (dev) {
-      // eslint-disable-next-line no-param-reassign
-      config.watchOptions = {
-        ...config.watchOptions,
-        poll: 1000,
-        aggregateTimeout: 300,
-      }
-    }
-
-    return config
+  compiler: {
+    emotion: {
+      sourceMap: true,
+    },
   },
 }
 

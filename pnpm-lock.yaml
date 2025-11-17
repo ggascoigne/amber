@@ -678,6 +678,9 @@ importers:
       '@amber/database':
         specifier: workspace:*
         version: link:../database
+      '@amber/environment':
+        specifier: workspace:*
+        version: link:../environment
       '@amber/server':
         specifier: workspace:*
         version: link:../server
