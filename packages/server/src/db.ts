@@ -4,6 +4,7 @@ import path from 'path'
 
 import { certs } from '@amber/database/shared/dbCerts'
 import { env, isDev } from '@amber/environment'
+import { PrismaPg } from '@prisma/adapter-pg'
 import Debug from 'debug'
 
 // eslint-disable-next-line import/no-relative-packages
@@ -65,6 +66,8 @@ const createPrismaClient = (type: 'ADMIN' | 'USER') => {
     }
     fs.writeFileSync(filename, certs[certName]!)
   }
+  const connectionString = type === 'ADMIN' ? env.ADMIN_DATABASE_URL : env.DATABASE_URL
+  const adapter = new PrismaPg({ connectionString })
   const client = new PrismaClient({
     // Emit logs as events so we can route them through debug
     log: isDev
@@ -79,9 +82,7 @@ const createPrismaClient = (type: 'ADMIN' | 'USER') => {
           { level: 'error', emit: 'event' },
           { level: 'warn', emit: 'event' },
         ],
-    datasources: {
-      db: { url: type === 'ADMIN' ? env.ADMIN_DATABASE_URL : env.DATABASE_URL },
-    },
+    adapter,
   })
 
   attachLogging(client, type)
