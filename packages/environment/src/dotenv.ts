@@ -21,5 +21,4 @@ if (isNodeRuntime && process.env.NEXT_RUNTIME !== 'edge' && process.env.NODE_ENV
   dotenv.config({ path: envPath, quiet: true })
 }
 
-console.log('dbEnv Environment Variables:', dbEnv)
 export const env = processEnv()
