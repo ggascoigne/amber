@@ -7,7 +7,7 @@ import 'react-obj-view/dist/react-obj-view.css'
 export const ObjectView = React.lazy(() =>
   import('react-obj-view').then((module) => ({
     default: ({ valueGetter, name, expandLevel, ...props }: any) => {
-      const { ObjectView: OriginalObjectView } = module
+      const { ObjectView: OriginalObjectView, themeGitHubLight } = module
       return (
         <Box
           sx={{
@@ -18,7 +18,7 @@ export const ObjectView = React.lazy(() =>
             },
             '&&& .node-default': {
               letterSpacing: '0.5px',
-              '> span:first-child': {
+              '> span.tree-indents': {
                 transform: 'scaleY(2.0)',
                 transformOrigin: 'center',
               },
@@ -30,7 +30,7 @@ export const ObjectView = React.lazy(() =>
             name={name}
             expandLevel={expandLevel}
             style={{
-              '--bigobjview-bg-color': 'transparent',
+              ...themeGitHubLight,
             }}
             lineHeight={17}
             {...props}

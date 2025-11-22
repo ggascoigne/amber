@@ -1,8 +1,11 @@
 import { useEffect } from 'react'
+import * as React from 'react'
 
-import { theme } from '@amber/ui'
+import { theme, createEmotionCache } from '@amber/ui'
+import type { EmotionCache } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
+import { AppCacheProvider } from '@mui/material-nextjs/v16-pagesRouter'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import debug from 'debug'
@@ -13,8 +16,17 @@ import '@/index.css'
 
 const log = debug('app')
 const queryClient = new QueryClient()
+const clientSideEmotionCache = createEmotionCache()
 
-const App = ({ Component, pageProps }: AppProps) => {
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
+  configData?: any
+}
+
+const App = (props: MyAppProps) => {
+  const { Component, pageProps } = props
+  const emotionCache = React.useMemo(() => props.emotionCache ?? clientSideEmotionCache, [props.emotionCache])
+
   useEffect(() => {
     const initMSW = async () => {
       const { worker } = await import('@/mocks/browser')
@@ -38,15 +50,17 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, [])
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools buttonPosition='bottom-left' />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </QueryClientProvider>
-    </ThemeProvider>
+    <AppCacheProvider emotionCache={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools buttonPosition='bottom-left' />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </QueryClientProvider>
+      </ThemeProvider>
+    </AppCacheProvider>
   )
 }
 
