@@ -18,3 +18,11 @@ export async function up(knex) {
     table.dateTime('last_used')
   })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

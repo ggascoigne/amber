@@ -8,3 +8,11 @@ export async function up(_knex) {
   //   comment on table knex_migrations_lock is E'@omit';
   // `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

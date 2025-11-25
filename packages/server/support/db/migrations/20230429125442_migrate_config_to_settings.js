@@ -324,3 +324,11 @@ export async function up(knex) {
     await knex.raw(enableRls('setting'))
   }
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

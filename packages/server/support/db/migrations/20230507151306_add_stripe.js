@@ -81,3 +81,11 @@ export async function up(knex) {
   }
   await knex.raw(fixGrants(user))
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

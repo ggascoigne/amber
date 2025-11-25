@@ -19,3 +19,11 @@ export async function up(knex) {
     table.dropColumn('phone_number')
   })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

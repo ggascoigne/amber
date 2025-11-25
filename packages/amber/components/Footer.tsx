@@ -4,6 +4,7 @@ import { useGetConfigQuery } from '@amber/client'
 import { Loader, ObjectView } from '@amber/ui'
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
+import { isTest } from '@amber/environment'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 
@@ -40,7 +41,7 @@ export const Footer = () => {
   const config = useGetConfigQuery()
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (hasPermissions(Perms.IsAdmin)) {
+    if (isTest || hasPermissions(Perms.IsAdmin)) {
       setAnchorEl(event.currentTarget)
     }
   }

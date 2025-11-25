@@ -10,3 +10,11 @@ export async function up(knex) {
     table.string('phone_number', 32).defaultTo(null)
   })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

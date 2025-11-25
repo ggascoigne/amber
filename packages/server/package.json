@@ -25,6 +25,7 @@
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
     "postinstall": "DB_ENV=acnw pnpm prisma:generate",
     "prisma-repl": "DB_ENV=acnw dotenv -e ../../apps/${DB_ENV}/.env -- node --import=tsx ./src/utils/prisma-repl.ts",
+    "prisma:seed:test": "dotenv -e ../../apps/${DB_ENV}/.env.test -- node --import=tsx ./src/utils/seed.test.ts",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json"
   },

@@ -45,3 +45,11 @@ export async function up(knex) {
     $$ LANGUAGE plpgsql;
     `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

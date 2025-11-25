@@ -60,3 +60,11 @@ export async function up(knex) {
 
   await knex.raw(tables.map((table) => enableRls(table.name)).join('\n'))
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

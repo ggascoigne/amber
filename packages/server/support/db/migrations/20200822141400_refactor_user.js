@@ -36,3 +36,11 @@ export async function up(knex) {
       .dropTableIfExists('profile'),
   ])
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

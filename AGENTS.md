@@ -3,7 +3,7 @@
 This project is a pnpm monorepo with packages in the apps and packages folders.
 The project is two next.js and react based web apps, with two separate sites,
 acnw and acus, both in the apps folder. Their shared dependencies are all in the
-packages folder (see below).
+packages folder (see below). There us a ui-test app that is only used locally.
 
 This is a React, TypeScript, Next.js project, using @mui and trpc.
 
@@ -47,6 +47,9 @@ ambercon (root)
 │           └── @amber/ui
 │
 └── Applications
+    ├── test-ui ──────────────────────────── UI Test App (Next.js :30003)
+    │   └── depends on:
+    │       └── @amber/ui
     ├── acnw ──────────────────────────── AmberCon NW (Next.js :30000)
     │   └── depends on:
     │       ├── @amber/amber

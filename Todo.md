@@ -2,14 +2,33 @@
 
 ##2025
 
+- [ ] \*\* Hotel room registrations regularly got reset to default arrival/departure dates - need to find out why.
+
+- [ ] Editing on the room game room page doesn't always load games by slot correctly. This might be associated with the slot for games being set incorrectly.
+
+- [ ] Note that when editing games, if the focus is on the slot number, scrolling can change it. Maybe change this to a non-numeric field so that scroll actions don't change the number. It's very easy to inadvertently change the slot number. Maybe also add a save button to the admin section.
+
+- [ ] There was one payment confirmed attributed to unknown, I think that it was jedwards - how did this happen?
+
+- [ ] room assignment on the game page tends to reset back to the original room before you can save a change.
+
+   some of the loading issues might be related to slow internet, test with low bandwidth.
+
+- [ ] Mobile: Fix member selection dropdown
+- [ ] Mobile: Make menu auto close on selection
+
+- [x] re-enable turbopack on the build - it causes issues with ssr failing to find the queryContext
+
 - [ ] is there's something that we can do to better track returning players
 - [ ] change convention rate to letting folks enter how much they want to pay, that way we can track who said they'd pay and forgot.
 - [ ] Review donation text on the payment page with Andi
 - [ ] talk to Malcolm & Andi re legal name and use name
 
+- [ ] add option to registration about people needing accessible game rooms.  "Some of the rooms we run in are only accessible by stairs, click here and we'll avoid scheduling your games in those rooms."
+
 ## 2022
 
-* Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)
+- Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)
 
 ## Stripe
 
@@ -18,7 +37,6 @@ track completed & refunds, track fees
 report, # memberships by type, fees, refunds, gifts
 
 track transactions to payments to us - is this by time?
-
 
 ## User merging
 
@@ -33,9 +51,8 @@ drop trigger if exists memb_check_room_avail_trigger on membership;
 update membership set user_id = 3514 where membership.user_id = 160;
 update game set author_id = 3514 where game.author_id = 160;
 CREATE TRIGGER memb_check_room_avail_trigger
-	BEFORE INSERT OR UPDATE ON membership
-	FOR EACH ROW EXECUTE PROCEDURE memb_check_room_avail();
-
+BEFORE INSERT OR UPDATE ON membership
+FOR EACH ROW EXECUTE PROCEDURE memb_check_room_avail();
 
 ## 2021
 
@@ -51,7 +68,7 @@ add "send me an email of my choices" button
 - [ ] add option to assign games to rooms
 - [ ] Change scrolling for table pages so that the content scrolls - see the hotel room page for a good example
 - [ ] Update convention prices
-- [ ] Url-based new and edit everywhere 
+- [ ] Url-based new and edit everywhere
 - [x] Fix registration email for non-virtual
 - [x] switch off virtual flag
 - [x] get new dates
@@ -73,24 +90,21 @@ add "send me an email of my choices" button
 
 * [ ] Game book only shows in PST
 
-* [ ]  Try to address folks signing up to ret-only games when they are not a returning player. 
-    Let's put
-    Returning players only
-    Returning players 1st, then new players
-    Accepting all players
-    
-    In the big blue title bar,  and/or we can emphasize it in the game description by making it the very first line, before the GM name.
+* [ ] Try to address folks signing up to ret-only games when they are not a returning player.
+      Let's put
+      Returning players only
+      Returning players 1st, then new players
+      Accepting all players
+
+  In the big blue title bar, and/or we can emphasize it in the game description by making it the very first line, before the GM name.
 
 * [ ] Generalize the forceLogin behavior - maybe push it up into SelectedContent
-  
 * [ ] Make menu/nav hierarchical
 * [ ] upgrade from classnames to https://github.com/lukeed/clsx - it's smaller and faster
 * [ ] investigate material-ui v5
-  
 * [ ] apparently hitting "Shift+Enter" in the "Game Choice Notes" box [in Google Chrome] does not start a new line, but instead submits the form. Maybe add a confirmation screen?)
 
 * [ ] Add link to the Online verison of the AHP
-  
 * [*] add http://amberconnw.wikidot.com/ to links page
 * [*] Add a members only Discord server link page
 * [ ] Add T-Shirt art and sales link
@@ -105,23 +119,24 @@ add "send me an email of my choices" button
 * [ ] Look at tagging other members in various fields, maybe use https://github.com/yairEO/tagify
 
 the games table should:
-* [ ] allow for bulk edit perhaps?
-* [ ] split slots attending out into separate columns
 
-* [ ] Make the year selector on the past cons page a bit smaller on mobile.
-* [ ] get real auth keys for facebook and google-oauth link.
-* [ ] Remove the lookups stuff - these should just be UI constants, they don't change, and it's too slow to retrieve them.
-* [ ] In the past cons list, indicate which games the logged in user played.
-* [ ] Convert the MaterialKitReact code to typescript - at least starting with the styles.  Remove all the bits that aren't being used.
-* [ ] Extract dates from code and put them in the db.  The current behavior was inherited from v1 and was intended as a short term hack. 10 years later...
-* [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
-* [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
-* [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place.  Either way it looks messy and should bet sanitized.
-* [ ] Implement csv import so that we can do bulk operations such as assigning slots to games or players to games etc.  See the in-work code on the import_work branch.
-* [ ] investigate https://www.graphile.org/postgraphile/usage-schema/ wrt. access postgraphile in the api layer
-* [ ] Add site refresh behavior so that open browsers get a forced reload when the code changes
-* [ ] Make sure email doesn't get sent to the usual recipients from the test environment
-* [x] Switch away from the ByNodeId functions in graphql and just standardize on the ById variants
+- [ ] allow for bulk edit perhaps?
+- [ ] split slots attending out into separate columns
+
+- [ ] Make the year selector on the past cons page a bit smaller on mobile.
+- [ ] get real auth keys for facebook and google-oauth link.
+- [ ] Remove the lookups stuff - these should just be UI constants, they don't change, and it's too slow to retrieve them.
+- [ ] In the past cons list, indicate which games the logged in user played.
+- [ ] Convert the MaterialKitReact code to typescript - at least starting with the styles. Remove all the bits that aren't being used.
+- [ ] Extract dates from code and put them in the db. The current behavior was inherited from v1 and was intended as a short term hack. 10 years later...
+- [ ] rename hotel_room table to hotel_room_preference, and hotel_room_details to hotel_room, along with various related fields.
+- [ ] refactor menu links based upon the composition examples at https://material-ui.com/guides/composition/#button
+- [ ] A whole batch of weird quote characters got mangled transferring the data from mysql to postgres, probably caused by folks pasting in data from Word on the old site, and it not getting cleaned up correctly in the first place. Either way it looks messy and should bet sanitized.
+- [ ] Implement csv import so that we can do bulk operations such as assigning slots to games or players to games etc. See the in-work code on the import_work branch.
+- [ ] investigate https://www.graphile.org/postgraphile/usage-schema/ wrt. access postgraphile in the api layer
+- [ ] Add site refresh behavior so that open browsers get a forced reload when the code changes
+- [ ] Make sure email doesn't get sent to the usual recipients from the test environment
+- [x] Switch away from the ByNodeId functions in graphql and just standardize on the ById variants
 
 ## Done
 
@@ -131,27 +146,28 @@ See [changelog.md](changelog.md)
 
 Allow for changing the email address. There is an api from auth0 for this, but it does no real validation. To be less error prone we should have a workflow like this:
 
-   * user tries to change the email address
-   * we send email to the new address with a validation code/link
-   * user clicks on link
-   * in response to that validation we update auth0 with the new email address, and update the database record.
+- user tries to change the email address
+- we send email to the new address with a validation code/link
+- user clicks on link
+- in response to that validation we update auth0 with the new email address, and update the database record.
 
-see https://community.auth0.com/t/how-to-let-users-change-their-email-safely/41748 for a reference    
+see https://community.auth0.com/t/how-to-let-users-change-their-email-safely/41748 for a reference
 
 This is dependent upon:
-  * [x] being able to send email (AWS SES account is verified)
-  * [ ] Generate and track unique codes
-  * [ ] Associate some action with the code, for now that might be change email, but I can foresee more things fitting this pattern.
+
+- [x] being able to send email (AWS SES account is verified)
+- [ ] Generate and track unique codes
+- [ ] Associate some action with the code, for now that might be change email, but I can foresee more things fitting this pattern.
 
 ### Deadlines
 
-* Initial registration: Sep 28, 2020
-* Games and Events due: Sep 28, 2020
-* Game Book preview to GMs: Oct 4, 2020
-* Game Books open for selections: Oct 6, 2020
-* Game Selections due: Oct 11, 2020
-* Schedule previews to GMs: Oct 14, 2020
-* Schedules SENT to all players: Oct 16, 2020
+- Initial registration: Sep 28, 2020
+- Games and Events due: Sep 28, 2020
+- Game Book preview to GMs: Oct 4, 2020
+- Game Books open for selections: Oct 6, 2020
+- Game Selections due: Oct 11, 2020
+- Schedule previews to GMs: Oct 14, 2020
+- Schedules SENT to all players: Oct 16, 2020
 
 ```
    September 2020

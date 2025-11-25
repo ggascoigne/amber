@@ -43,3 +43,11 @@ export async function up(knex) {
     EXECUTE PROCEDURE memb_check_room_avail ()
     `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

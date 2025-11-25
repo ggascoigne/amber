@@ -8,3 +8,11 @@ export async function up(knex) {
     table.string('last_name', 40).defaultTo(null)
   })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}
