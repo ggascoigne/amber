@@ -1,1 +1,5 @@
+echo $SHELL
+echo $*
+echo $PATH| gsed -e 's/:/\n/g'
+
 pnpm lint-staged
