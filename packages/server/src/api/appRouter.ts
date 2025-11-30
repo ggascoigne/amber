@@ -1,3 +1,4 @@
+import { authRouter } from './routers/auth'
 import { configRouter } from './routers/config'
 import { gameAssignmentsRouter } from './routers/gameAssignments'
 import { gameChoicesRouter } from './routers/gameChoices'
@@ -20,6 +21,7 @@ import { createTRPCRouter } from './trpc'
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  auth: authRouter,
   config: configRouter,
   gameAssignments: gameAssignmentsRouter,
   gameChoices: gameChoicesRouter,

@@ -1,6 +1,8 @@
 import { env } from '@amber/environment'
 import { Auth0Client } from '@auth0/nextjs-auth0/server'
 
+import { ssrHelpers } from '../api/ssr'
+
 const toHttpsUrl = (base?: string) =>
   base ? (base.startsWith('http://') || base.startsWith('https://') ? base : `https://${base}`) : undefined
 
@@ -29,20 +31,11 @@ export const auth0 = new Auth0Client({
   beforeSessionSaved: async (session, idToken) => {
     try {
       if (!idToken) return session
-      const url = new URL('/api/auth/roles', appBaseUrl ?? 'http://localhost')
-      const res = await fetch(url.toString(), {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'x-authorization-token': `Bearer ${idToken}`,
-        },
-      })
-      if (!res.ok) return session
-      const json = (await res.json()) as { userId?: number; roles?: string[] }
-      if (json?.userId && json?.roles) {
+      const authorization = await ssrHelpers.auth.getRoles.fetch({ token: idToken })
+      if (authorization?.userId && authorization?.roles) {
         return {
           ...session,
-          user: { ...session.user, userId: json.userId, roles: json.roles },
+          user: { ...session.user, userId: authorization.userId, roles: authorization.roles },
         }
       }
       return session
