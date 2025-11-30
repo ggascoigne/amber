@@ -23,7 +23,7 @@
     "@trpc/server": "^11.7.2",
     "@trpc/tanstack-react-query": "^11.7.2",
     "debug": "4.4.3",
-    "superjson": "^2.2.5",
+    "superjson": "^2.2.6",
     "ts-pattern": "^5.9.0",
     "zod": "^4.1.13"
   },

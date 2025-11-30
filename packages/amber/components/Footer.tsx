@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useRef } from 'react'
+import React, { Suspense, useMemo, useRef } from 'react'
 
 import { useGetConfigQuery } from '@amber/client'
 import { Loader, ObjectView } from '@amber/ui'
@@ -36,38 +36,17 @@ const container = {
 export const Footer = () => {
   const { hasPermissions } = useAuth()
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
-  const [reactJsonLoaded, setReactJsonLoaded] = React.useState(false)
   const popoverRef = useRef<HTMLDivElement>(null)
   const config = useGetConfigQuery()
-
-  // Force popover to recalculate position when ReactJson loads
-  useEffect(() => {
-    if (reactJsonLoaded && popoverRef.current) {
-      // Small delay to ensure DOM has updated
-      setTimeout(() => {
-        if (popoverRef.current) {
-          const popover = popoverRef.current.querySelector('[role="tooltip"]') as HTMLElement
-          if (popover) {
-            // Trigger a reflow/repaint
-            popover.style.display = 'none'
-            // popover.offsetHeight // Force reflow
-            popover.style.display = ''
-          }
-        }
-      }, 0)
-    }
-  }, [reactJsonLoaded])
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (hasPermissions(Perms.IsAdmin)) {
       setAnchorEl(event.currentTarget)
-      setReactJsonLoaded(false)
     }
   }
 
   const handleClose = () => {
     setAnchorEl(null)
-    setReactJsonLoaded(false)
   }
   const hash = gitHash.hash.length > 0 ? gitHash.hash.substring(0, 8) : 'dev'
   const open = Boolean(anchorEl)
@@ -114,7 +93,7 @@ export const Footer = () => {
                 sx={{
                   padding: '20px',
                   minWidth: '300px',
-                  maxHeight: '80vh',
+                  height: '240px',
                   overflow: 'auto',
                 }}
               >
@@ -124,8 +103,6 @@ export const Footer = () => {
                 <Suspense fallback={<Loader />}>
                   <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
                     <ObjectView valueGetter={() => obj} name='root' expandLevel={3} />
-                    {/* Hidden element to trigger state change when ReactJson loads */}
-                    <div style={{ display: 'none' }} ref={() => setReactJsonLoaded(true)} />
                   </Box>
                 </Suspense>
               </Box>
