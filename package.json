@@ -35,10 +35,7 @@
     "test": "vitest",
     "test:watch": "vitest watch",
     "tsc": "pnpm -r tsc",
-    "tsgo": "pnpm -r tsgo",
-    "db:test:setup": "DB_ENV=acnw dotenv -e apps/acnw/.env.test -- pnpm --filter @amber/database db:setup",
-    "db:test:seed": "DB_ENV=acnw dotenv -e apps/acnw/.env.test -- pnpm --filter @amber/server prisma:seed:test",
-    "db:test:reset": "pnpm db:test:setup && pnpm db:test:seed"
+    "tsgo": "pnpm -r tsgo"
   },
   "dependencies": {
     "dotenv": "17.2.3",

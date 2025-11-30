@@ -14,9 +14,13 @@
     "next:build": "NODE_ENV=production next build",
     "db:import": "DB_ENV=acnw pnpm --filter server db:import",
     "dev": "pnpm boot && NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30000",
+    "dev:test": "pnpm db:test:reset && NODE_ENV=test NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30000",
     "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json"
+    "tsgo": "tsgo -p ./tsconfig.json",
+    "db:test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm --filter @amber/database db:setup",
+    "db:test:seed": "DB_ENV=acnw dotenv -e .env.test -- pnpm --filter @amber/server prisma:seed:test",
+    "db:test:reset": "pnpm db:test:setup && pnpm db:test:seed"
   },
   "dependencies": {
     "@amber/amber": "workspace:*",

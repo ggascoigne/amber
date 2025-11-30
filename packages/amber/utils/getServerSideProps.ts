@@ -15,7 +15,7 @@ export async function configGetServerSideProps(context: GetServerSidePropsContex
   log('configGetServerSideProps started')
 
   // Get session from the request
-  const session = await auth0.getSession(context.req)
+  const session = await auth0.getSession(context.req as any)
   const userId = parseInt(session?.user?.userId, 10) || undefined
   const helper = ssrAuthenticatedHelpers(userId)
 

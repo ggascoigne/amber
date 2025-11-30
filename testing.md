@@ -14,6 +14,13 @@ ADMIN_DATABASE_URL=postgres://ggp:@127.0.0.1:54320/acnw
 
 Use the admin URL that can drop/create `acnw_test`; adjust host/user/password as needed. The seed refuses to run unless `DATABASE_URL` contains `acnw_test`.
 
+### Optional fake auth for local tests
+
+Auth0 can be bypassed completely by either setting `NODE_ENV=test` or by setting `USE_FAKE_AUTH=true`. This means that both the test and the development UI can be run bypassing auth0.
+
+- Visit `/api/auth/login` to pick an email from the DB (any password is accepted). This sets the same session cookie shape the app expects.
+- `/api/auth/logout` clears the test session cookie.
+
 ## Commands
 
 - `pnpm db:test:setup` – drop/create and migrate `acnw_test` using the test env.
