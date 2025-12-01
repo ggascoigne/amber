@@ -14,7 +14,6 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/database": "workspace:*",
     "@amber/environment": "workspace:*",
     "@amber/server": "workspace:*",
     "@auth0/nextjs-auth0": "4.13.1",

@@ -1,7 +1,7 @@
 {
   "name": "@amber/server",
   "version": "0.1.0",
-  "description": "Shared AmberCon NW trpc server",
+  "description": "Shared AmberCon NW trpc server & db access",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "type": "module",
@@ -10,6 +10,16 @@
   "types": "./src/index.ts",
   "private": true,
   "scripts": {
+    "db:clean": "./scripts/createCleanDb.ts",
+    "db:writeDbCert": "./scripts/writeDbCert.ts",
+    "db:docker:down": "docker compose down",
+    "db:docker:up": "docker compose up -d",
+    "db:import": "./scripts/toLocal.ts",
+    "db:migrate:generate": "tsx node_modules/knex/bin/cli.js migrate:make --knexfile ./support/knexfile.ts generate",
+    "db:migrate:up": "pnpm db:writeDbCert && tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up",
+    "db:setup": "pnpm db:clean && pnpm db:migrate:up",
+    "db:start": "docker compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
+    "db:startFromClean": "pnpm db:start && pnpm db:setup && pnpm db:import",
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma generate --no-hints --schema ./prisma/schema.prisma --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
@@ -19,7 +29,6 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/database": "workspace:*",
     "@amber/environment": "workspace:*",
     "@auth0/nextjs-auth0": "4.13.1",
     "@prisma/adapter-pg": "^7.0.1",
@@ -32,8 +41,11 @@
     "@trpc/react-query": "11.7.2",
     "@trpc/server": "^11.7.2",
     "@trpc/tanstack-react-query": "^11.7.2",
+    "common-tags": "^1.8.2",
     "debug": "^4.4.3",
     "jose": "^6.1.2",
+    "listr2": "^9.0.5",
+    "luxon": "^3.7.2",
     "pg": "^8.16.3",
     "prisma-case-format": "^2.2.1",
     "superjson": "^2.2.6",
@@ -43,14 +55,24 @@
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
+    "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
+    "@types/fs-extra": "^11.0.4",
+    "@types/luxon": "^3.7.1",
     "@types/node": "^24.10.1",
     "@types/pg": "^8.15.6",
     "@typescript/native-preview": "7.0.0-dev.20251129.1",
+    "chalk": "^5.6.2",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.2",
+    "common-tags": "^1.8.2",
     "dotenv": "^17.2.3",
+    "knex": "^3.1.0",
+    "knex-migrate": "^1.7.4",
     "prisma": "^7.0.1",
-    "typescript": "^5.9.3"
+    "tempy": "^3.1.0",
+    "ts-toolbelt": "^9.6.0",
+    "typescript": "^5.9.3",
+    "zx": "^8.8.5"
   }
 }

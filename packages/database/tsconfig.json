@@ -1,8 +1,0 @@
-{
-  "extends": "@amber/tsconfig/tsconfig-base.json",
-  "compilerOptions": {
-    "checkJs": false
-  },
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
-}

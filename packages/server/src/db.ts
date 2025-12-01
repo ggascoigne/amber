@@ -2,13 +2,13 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { certs } from '@amber/database/shared/dbCerts'
 import { env, isDev } from '@amber/environment'
 import { PrismaPg } from '@prisma/adapter-pg'
 import Debug from 'debug'
 
-// eslint-disable-next-line import/no-relative-packages
 import { PrismaClient } from './generated/prisma/client'
+
+import { certs } from '../shared/dbCerts'
 
 const filename = path.join(os.tmpdir(), 'rds-cert.pem')
 

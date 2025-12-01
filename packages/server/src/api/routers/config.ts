@@ -1,6 +1,6 @@
-import { config } from '@amber/database/shared/config.ts'
 import { env, safeConnectionString, parsePostgresConnectionString } from '@amber/environment'
 
+import { config } from '../../../shared/config'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
 type EnvRecord = Record<string, string | undefined>

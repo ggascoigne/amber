@@ -8,7 +8,7 @@ import { stripIndent } from 'common-tags'
 import debug from 'debug'
 import { temporaryFile } from 'tempy'
 
-import type { DbConfig } from '../../shared/config.ts'
+import type { DbConfig } from '../../shared/config'
 
 const log = debug('script')
 

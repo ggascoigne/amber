@@ -8,10 +8,9 @@ import type { ListrTaskWrapper, ListrTask } from 'listr2'
 import { temporaryFile } from 'tempy'
 import { $ } from 'zx'
 
+import { getPaths } from './filePaths'
 import { getPostgresArgs } from './scriptUtils'
 import type { TaskContext } from './taskContext'
-
-import { getPaths } from '../../shared/filePaths'
 
 const tracing = !!process.env.DEBUG
 

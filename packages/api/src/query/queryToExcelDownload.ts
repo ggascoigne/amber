@@ -1,4 +1,4 @@
-import { getPool, PoolType } from '@amber/database/shared/config'
+import { getPool, PoolType } from '@amber/server/shared/config'
 import type { NextApiResponse } from 'next'
 import * as XLSX from 'xlsx/dist/xlsx.mini.min'
 

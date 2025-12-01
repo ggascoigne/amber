@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url'
  * @returns {Paths} An object containing filename and dirname
  */
 
-export const getPaths = (metaUrl) => {
+export const getPaths = (metaUrl: string) => {
   const filename = fileURLToPath(metaUrl)
   const dirname = path.dirname(filename)
   return { filename, dirname }

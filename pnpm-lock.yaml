@@ -113,9 +113,6 @@ importers:
       '@amber/client':
         specifier: workspace:*
         version: link:../../packages/client
-      '@amber/database':
-        specifier: workspace:*
-        version: link:../../packages/database
       '@amber/environment':
         specifier: workspace:*
         version: link:../../packages/environment
@@ -315,9 +312,6 @@ importers:
       '@amber/client':
         specifier: workspace:*
         version: link:../../packages/client
-      '@amber/database':
-        specifier: workspace:*
-        version: link:../../packages/database
       '@amber/environment':
         specifier: workspace:*
         version: link:../../packages/environment
@@ -689,9 +683,6 @@ importers:
       '@amber/client':
         specifier: workspace:*
         version: link:../client
-      '@amber/database':
-        specifier: workspace:*
-        version: link:../database
       '@amber/environment':
         specifier: workspace:*
         version: link:../environment
@@ -891,9 +882,6 @@ importers:
 
   packages/api:
     dependencies:
-      '@amber/database':
-        specifier: workspace:*
-        version: link:../database
       '@amber/environment':
         specifier: workspace:*
         version: link:../environment
@@ -1026,91 +1014,6 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/database:
-    dependencies:
-      '@amber/environment':
-        specifier: workspace:*
-        version: link:../environment
-      '@t3-oss/env-core':
-        specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.3)(valibot@1.2.0(typescript@5.9.3))(zod@4.1.13)
-      '@t3-oss/env-nextjs':
-        specifier: ^0.13.8
-        version: 0.13.8(arktype@2.1.20)(typescript@5.9.3)(valibot@1.2.0(typescript@5.9.3))(zod@4.1.13)
-      common-tags:
-        specifier: ^1.8.2
-        version: 1.8.2
-      debug:
-        specifier: ^4.4.3
-        version: 4.4.3(supports-color@10.2.2)
-      listr2:
-        specifier: ^9.0.5
-        version: 9.0.5
-      luxon:
-        specifier: ^3.7.2
-        version: 3.7.2
-      pg:
-        specifier: ^8.16.3
-        version: 8.16.3
-      tsconfig-paths:
-        specifier: ^4.2.0
-        version: 4.2.0
-      tsx:
-        specifier: ^4.20.6
-        version: 4.20.6
-    devDependencies:
-      '@amber/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/common-tags':
-        specifier: ^1.8.4
-        version: 1.8.4
-      '@types/debug':
-        specifier: ~4.1.12
-        version: 4.1.12
-      '@types/fs-extra':
-        specifier: ^11.0.4
-        version: 11.0.4
-      '@types/luxon':
-        specifier: ^3.7.1
-        version: 3.7.1
-      '@types/node':
-        specifier: ^24.10.1
-        version: 24.10.1
-      '@types/pg':
-        specifier: ^8.15.6
-        version: 8.15.6
-      '@typescript/native-preview':
-        specifier: 7.0.0-dev.20251129.1
-        version: 7.0.0-dev.20251129.1
-      chalk:
-        specifier: ^5.6.2
-        version: 5.6.2
-      commander:
-        specifier: ^14.0.2
-        version: 14.0.2
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
-      knex:
-        specifier: ^3.1.0
-        version: 3.1.0(pg@8.16.3)(supports-color@10.2.2)
-      knex-migrate:
-        specifier: ^1.7.4
-        version: 1.7.4(knex@3.1.0(pg@8.16.3)(supports-color@10.2.2))
-      tempy:
-        specifier: ^3.1.0
-        version: 3.1.0
-      ts-toolbelt:
-        specifier: ^9.6.0
-        version: 9.6.0
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-      zx:
-        specifier: ^8.8.5
-        version: 8.8.5
-
   packages/environment:
     dependencies:
       '@t3-oss/env-core':
@@ -1165,9 +1068,6 @@ importers:
 
   packages/server:
     dependencies:
-      '@amber/database':
-        specifier: workspace:*
-        version: link:../database
       '@amber/environment':
         specifier: workspace:*
         version: link:../environment
@@ -1204,12 +1104,21 @@ importers:
       '@trpc/tanstack-react-query':
         specifier: ^11.7.2
         version: 11.7.2(@tanstack/react-query@5.90.11(react@19.2.0))(@trpc/client@11.7.2(@trpc/server@11.7.2(typescript@5.9.3))(typescript@5.9.3))(@trpc/server@11.7.2(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
+      common-tags:
+        specifier: ^1.8.2
+        version: 1.8.2
       debug:
         specifier: ^4.4.3
         version: 4.4.3(supports-color@10.2.2)
       jose:
         specifier: ^6.1.2
         version: 6.1.2
+      listr2:
+        specifier: ^9.0.5
+        version: 9.0.5
+      luxon:
+        specifier: ^3.7.2
+        version: 3.7.2
       pg:
         specifier: ^8.16.3
         version: 8.16.3
@@ -1232,9 +1141,18 @@ importers:
       '@amber/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/common-tags':
+        specifier: ^1.8.4
+        version: 1.8.4
       '@types/debug':
         specifier: ~4.1.12
         version: 4.1.12
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      '@types/luxon':
+        specifier: ^3.7.1
+        version: 3.7.1
       '@types/node':
         specifier: ^24.10.1
         version: 24.10.1
@@ -1244,6 +1162,9 @@ importers:
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20251129.1
         version: 7.0.0-dev.20251129.1
+      chalk:
+        specifier: ^5.6.2
+        version: 5.6.2
       cli-table3:
         specifier: ^0.6.5
         version: 0.6.5
@@ -1253,12 +1174,27 @@ importers:
       dotenv:
         specifier: ^17.2.3
         version: 17.2.3
+      knex:
+        specifier: ^3.1.0
+        version: 3.1.0(pg@8.16.3)(supports-color@10.2.2)
+      knex-migrate:
+        specifier: ^1.7.4
+        version: 1.7.4(knex@3.1.0(pg@8.16.3)(supports-color@10.2.2))
       prisma:
         specifier: ^7.0.1
         version: 7.0.1(@types/react@19.2.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
+      tempy:
+        specifier: ^3.1.0
+        version: 3.1.0
+      ts-toolbelt:
+        specifier: ^9.6.0
+        version: 9.6.0
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      zx:
+        specifier: ^8.8.5
+        version: 8.8.5
 
   packages/tsconfig: {}
 

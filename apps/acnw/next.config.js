@@ -26,7 +26,7 @@ const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
     '@amber/ui',
-    '@amber/database',
+    // '@amber/database',
     '@amber/amber',
     '@mui/material',
     '@amber/api',
