@@ -25,8 +25,11 @@ export const configRouter = createTRPCRouter({
     const { isAdmin } = ctx
     const { userDatabase } = config
     const isLocal = !userDatabase.includes('aws')
+    const isTestDb = dbDetails.database.includes('test')
     const summary = {
       local: isLocal,
+      isTestDb,
+      isFakeAuth: env.USE_FAKE_AUTH === 'true',
       databaseName: dbDetails.database,
       nodeVersion: process.version,
       appBaseUrl: env.APP_BASE_URL,

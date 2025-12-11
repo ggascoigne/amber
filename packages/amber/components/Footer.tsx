@@ -1,10 +1,10 @@
 import React, { Suspense, useMemo, useRef } from 'react'
 
 import { useGetConfigQuery } from '@amber/client'
+import { isTest } from '@amber/environment'
 import { Loader, ObjectView } from '@amber/ui'
 import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
-import { isTest } from '@amber/environment'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 

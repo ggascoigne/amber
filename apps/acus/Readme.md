@@ -13,7 +13,7 @@ $ pn i
 Run docker
 
 ```bash
-$ pn --filter server db:docker:up
+$ pn -F server db:docker:up
 ```
 
 This runs a postgres server on port 54320.

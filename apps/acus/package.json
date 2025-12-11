@@ -9,10 +9,10 @@
   "files": [],
   "scripts": {
     "analyze": "ANALYZE=true pnpm build",
-    "boot": "DB_ENV=acus pnpm --filter server db:migrate:up && DB_ENV=acus pnpm --filter amber boot",
+    "boot": "DB_ENV=acus pnpm -F server db:migrate:up && DB_ENV=acus pnpm -F amber boot",
     "build": "pnpm boot && pnpm next:build",
     "next:build": "NODE_ENV=production next build",
-    "db:import": "DB_ENV=acus pnpm --filter server db:import",
+    "db:import": "DB_ENV=acus pnpm -F server db:import",
     "dev": "pnpm boot && NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30001",
     "start": "next start",
     "tsc": "tsc -p ./tsconfig.json",

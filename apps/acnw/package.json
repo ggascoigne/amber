@@ -9,17 +9,18 @@
   "files": [],
   "scripts": {
     "analyze": "ANALYZE=true pnpm build",
-    "boot": "DB_ENV=acnw pnpm --filter server db:migrate:up && DB_ENV=acnw pnpm --filter amber boot ",
+    "boot": "DB_ENV=acnw pnpm -F server db:migrate:up && DB_ENV=acnw pnpm -F amber boot ",
     "build": "pnpm boot && pnpm next:build",
     "next:build": "NODE_ENV=production next build",
-    "db:import": "DB_ENV=acnw pnpm --filter server db:import",
+    "db:import": "DB_ENV=acnw pnpm -F server db:import",
     "dev": "pnpm boot && NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30000",
     "dev:test": "pnpm db:test:reset && NODE_ENV=test NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30000",
     "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json",
-    "db:test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm --filter @amber/database db:setup",
-    "db:test:seed": "DB_ENV=acnw dotenv -e .env.test -- pnpm --filter @amber/server prisma:seed:test",
+    "db:test:new": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:new",
+    "db:test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:setup",
+    "db:test:seed": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server prisma:seed:test",
     "db:test:reset": "pnpm db:test:setup && pnpm db:test:seed"
   },
   "dependencies": {
