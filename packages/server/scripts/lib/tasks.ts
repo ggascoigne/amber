@@ -5,6 +5,7 @@ import path from 'path'
 import { env, parsePostgresConnectionString, safeConnectionString, type EnvType } from '@amber/environment/dotenv'
 import debug from 'debug'
 import type { Listr, ListrTask, ListrTaskWrapper } from 'listr2'
+import { $ } from 'zx'
 
 import { dumpDatabaseTask, restoreDatabaseTask } from './importUtils'
 import { createCleanDb, resetOwner } from './scriptUtils'
@@ -13,6 +14,11 @@ import type { TaskContext } from './taskContext'
 import { certs } from '../../shared/dbCerts'
 
 const log = debug('tasks')
+
+const $$ = $({
+  verbose: true,
+})
+
 const filename = path.join(os.platform() === 'win32' ? os.tmpdir() : '/tmp', 'rds-cert.pem')
 
 export const writeCertsTask: ListrTask = {
@@ -38,12 +44,15 @@ export const writeCertsTask: ListrTask = {
 
 export const createCleanDbTask: ListrTask = {
   title: `Cleaning database`,
-  task: async (ctx: TaskContext) => {
+  task: async (ctx: TaskContext, task: ListrTaskWrapper<TaskContext, any, any>) => {
     const environ = ctx?.env ?? env
     const { user: targetUser, password: targetUserPassword } = parsePostgresConnectionString(environ.DATABASE_URL)
+    // eslint-disable-next-line no-param-reassign
+    task.output = `Creating clean database: ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`
     await createCleanDb(environ.ADMIN_DATABASE_URL, targetUser!, targetUserPassword!, false)
     return Promise.resolve(`Recreating database ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)
   },
+  rendererOptions: { persistentOutput: true },
 }
 
 export const resetOwnerTask = {
@@ -93,3 +102,29 @@ export const copyDatabaseTaskFactory =
         concurrent: false,
       },
     )
+
+export const migrateDbTask: ListrTask = {
+  title: `Database Migration`,
+  task: async (ctx: TaskContext, task: ListrTaskWrapper<TaskContext, any, any>) => {
+    const environ = ctx?.env ?? env
+
+    const $source = $$({
+      verbose: false,
+      env: {
+        ...environ,
+        ...process.env,
+        // NODE_ENV: 'production',
+      },
+    })
+    // eslint-disable-next-line no-param-reassign
+    task.output = `Migrating database: ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`
+    await $source`node --import=tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up`
+    return Promise.resolve(`Migrated ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)
+  },
+  rendererOptions: {
+    // collapse: false, // Prevents collapsing of completed tasks
+    // showErrorMessage: true, // Ensures that errors aren't masked
+    // showSubtasks: true, // Show all subtasks if you have nested tasks
+    persistentOutput: true,
+  },
+}
