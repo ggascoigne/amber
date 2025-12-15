@@ -23,6 +23,18 @@ export default [
   ...configs.react,
   ...configs.recommendedTs,
   {
+    name: 'allow-default-project-for-config-files',
+    files: ['scripts/*.ts', 'scripts/*.mts', 'scripts/*.cts'],
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ['scripts/*.ts', 'scripts/*.mts', 'scripts/*.cts'],
+        },
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
     name: 'local overrides',
     rules: {
       'no-console': ['off'],

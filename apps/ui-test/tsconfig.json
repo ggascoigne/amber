@@ -11,6 +11,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "scripts", "playwright"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/dev/types/**/*.ts", "scripts", "playwright"],
   "exclude": ["node_modules"]
 }

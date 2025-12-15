@@ -1,5 +1,5 @@
 {
   "extends": "@amber/tsconfig/tsconfig-react-library.json",
-  "include": ["."],
+  "include": [".", "scripts/**/*", "*.ts"],
   "exclude": ["dist", "build", "node_modules"]
 }
