@@ -12,7 +12,8 @@ import { useRouter } from 'next/router'
 const Anchor = styled('a')({})
 
 interface NextLinkComposedProps
-  extends Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
+  extends
+    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>,
     Omit<NextLinkProps, 'href' | 'as' | 'onClick' | 'onMouseEnter'> {
   to: NextLinkProps['href']
   linkAs?: NextLinkProps['as']

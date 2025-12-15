@@ -2,7 +2,6 @@ import debug from 'debug'
 
 import type { Context } from './context'
 
-// eslint-disable-next-line import/no-relative-packages
 import type { Prisma } from '../generated/prisma/client'
 
 export type TransactionClient = Prisma.TransactionClient
