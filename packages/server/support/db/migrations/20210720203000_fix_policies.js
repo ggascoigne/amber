@@ -1,6 +1,8 @@
-import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
+
+const env = processEnv()
 
 const tables = [
   { name: 'game', admin: false },

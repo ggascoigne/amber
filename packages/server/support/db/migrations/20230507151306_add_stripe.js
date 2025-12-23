@@ -1,6 +1,8 @@
-import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { anyUserUpdatePolicy, enableRls, fixGrants } from '../utils/policyUtils.js'
+
+const env = processEnv()
 
 /**
  * @param {import('knex').Knex} knex

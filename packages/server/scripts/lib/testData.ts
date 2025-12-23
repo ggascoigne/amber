@@ -1139,33 +1139,29 @@ const resetTables = async () => {
   await prisma.setting.deleteMany()
 }
 
-const seed = async () => {
+export const seed = async () => {
   assertTestDatabase()
-  await resetTables()
+  try {
+    await resetTables()
 
-  await prisma.setting.createMany({ data: settingsData })
-  await prisma.lookup.createMany({ data: lookups })
-  await prisma.lookupValue.createMany({ data: lookupValues })
-  await prisma.slot.createMany({ data: slots })
-  await prisma.room.createMany({ data: rooms })
-  await prisma.hotelRoomDetails.createMany({ data: hotelRoomDetails })
-  await prisma.hotelRoom.createMany({ data: hotelRooms })
-  await prisma.role.createMany({ data: roles })
-  await prisma.user.createMany({ data: users })
-  await prisma.userRole.createMany({ data: userRoles })
-  await prisma.membership.createMany({ data: memberships })
-  await prisma.game.createMany({ data: games })
-  await prisma.gameChoice.createMany({ data: gameChoices })
-  await prisma.gameAssignment.createMany({ data: gameAssignments })
+    await prisma.setting.createMany({ data: settingsData })
+    await prisma.lookup.createMany({ data: lookups })
+    await prisma.lookupValue.createMany({ data: lookupValues })
+    await prisma.slot.createMany({ data: slots })
+    await prisma.room.createMany({ data: rooms })
+    await prisma.hotelRoomDetails.createMany({ data: hotelRoomDetails })
+    await prisma.hotelRoom.createMany({ data: hotelRooms })
+    await prisma.role.createMany({ data: roles })
+    await prisma.user.createMany({ data: users })
+    await prisma.userRole.createMany({ data: userRoles })
+    await prisma.membership.createMany({ data: memberships })
+    await prisma.game.createMany({ data: games })
+    await prisma.gameChoice.createMany({ data: gameChoices })
+    await prisma.gameAssignment.createMany({ data: gameAssignments })
+  } catch (error) {
+    console.error('Error seeding test database:', error)
+    throw error
+  } finally {
+    await prisma.$disconnect()
+  }
 }
-
-seed()
-  .then(async () => {
-    console.log('Seeded test database successfully.')
-    await prisma.$disconnect()
-  })
-  .catch(async (error) => {
-    console.error(error)
-    await prisma.$disconnect()
-    process.exit(1)
-  })

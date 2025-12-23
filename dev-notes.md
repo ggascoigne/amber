@@ -112,10 +112,7 @@ ambercon (root)
 │
 ├── Infrastructure Layer
 │   ├── @amber/environment ────────────── Environment config & validation
-│   ├── @amber/database ───────────────── Database setup & migrations
-│   │   └── depends on:
-│   │       └── @amber/environment
-│   └── @amber/server ─────────────────── tRPC server & Prisma client
+│   └── @amber/server ─────────────────── Database setup & migrations, tRPC server & Prisma client
 │       └── depends on:
 │           ├── @amber/database
 │           └── @amber/environment
