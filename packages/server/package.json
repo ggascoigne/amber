@@ -21,6 +21,8 @@
     "db:run": "./scripts/taskRunner.ts",
     "db:start": "docker compose up -d && ./scripts/wait-for-postgres.sh -c amber-postgres",
     "db:startFromClean": "pnpm db:start && ./scripts/taskRunner.ts newDb toLocal",
+    "testCleanSetup": "pnpm db:start && dotenv -e ../../apps/${DB_ENV}/.env.test -- pnpm db:cleanTestSeed",
+    "db:cleanTestSeed": "./scripts/taskRunner.ts newDb testSeed",
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma generate --no-hints --schema ./prisma/schema.prisma --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
