@@ -17,18 +17,13 @@ ambercon (root)
 │
 ├── Infrastructure Layer
 │   ├── @amber/environment ────────────── Environment config & validation
-│   ├── @amber/database ───────────────── Database setup & migrations
-│   │   └── depends on:
-│   │       └── @amber/environment
-│   └── @amber/server ─────────────────── tRPC server & Prisma client
+│   └── @amber/server ─────────────────── Database setup & migrations, and tRPC server & Prisma client
 │       └── depends on:
-│           ├── @amber/database
 │           └── @amber/environment
 │
 ├── Service Layer
 │   ├── @amber/api ────────────────────── Server-side API implementations
 │   │   └── depends on:
-│   │       ├── @amber/database
 │   │       ├── @amber/environment
 │   │       └── @amber/server
 │   └── @amber/client ─────────────────── tRPC hooks & client utilities
@@ -42,7 +37,6 @@ ambercon (root)
 │       └── depends on:
 │           ├── @amber/api
 │           ├── @amber/client
-│           ├── @amber/database
 │           ├── @amber/server
 │           └── @amber/ui
 │
@@ -55,7 +49,6 @@ ambercon (root)
     │       ├── @amber/amber
     │       ├── @amber/api
     │       ├── @amber/client
-    │       ├── @amber/database
     │       ├── @amber/environment
     │       ├── @amber/server
     │       └── @amber/ui
@@ -64,7 +57,6 @@ ambercon (root)
             ├── @amber/amber
             ├── @amber/api
             ├── @amber/client
-            ├── @amber/database
             ├── @amber/environment
             ├── @amber/server
             └── @amber/ui

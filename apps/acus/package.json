@@ -14,9 +14,11 @@
     "next:build": "NODE_ENV=production next build",
     "db:import": "DB_ENV=acus pnpm -F server db:import",
     "dev": "pnpm boot && NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30001",
+    "dev:test": "pnpm test:setup && NODE_ENV=test NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30001",
     "start": "next start",
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json"
+    "tsgo": "tsgo -p ./tsconfig.json",
+    "test:setup": "DB_ENV=acus dotenv -e .env.test -- pnpm -F server db:cleanTestSeed"
   },
   "dependencies": {
     "@amber/amber": "workspace:*",

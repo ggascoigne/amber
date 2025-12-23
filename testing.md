@@ -23,11 +23,11 @@ Auth0 can be bypassed completely by either setting `NODE_ENV=test` or by setting
 
 ## Commands
 
-- `pnpm db:test:setup` – drop/create and migrate `acnw_test` using the test env.
-- `pnpm db:test:seed` – run the Prisma seed (`packages/server/prisma/seed.test.ts`).
-- `pnpm db:test:reset` – convenience wrapper to run both setup and seed.
+- `pnpm -F acnw test:setup` – drop/create and migrate `acnw_test` using the test env, then run the Prisma seed (`packages/server/scripts/lib/testData.ts`).
 
-All commands expect `apps/acnw/.env.test` to exist. They keep production/dev DBs untouched.
+A similar command exists for acus.
+
+All commands expect `apps/${DB_ENV}/.env.test` to exist. They keep production/dev DBs untouched.
 
 ## Seed contents (high level)
 
@@ -44,5 +44,5 @@ All commands expect `apps/acnw/.env.test` to exist. They keep production/dev DBs
 
 ## Next steps
 
-- Point Vitest/Playwright helpers at `acnw_test`, calling `pnpm db:test:reset` before suites or restoring a dump from it when we add fixtures.
-- Extend seeds as new features need coverage (e.g., payment flows when ready).***
+- Point Vitest/Playwright helpers at `acnw_test`, calling `pnpm -F acnw test:setup` before suites or restoring a dump from it when we add fixtures.
+- Extend seeds as new features need coverage (e.g., payment flows when ready).\*\*\*
