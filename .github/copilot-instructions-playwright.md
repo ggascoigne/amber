@@ -265,6 +265,16 @@ test.describe('Game registration form', () => {
 
 ## Project-Specific Considerations
 
+### Local Playwright Setup
+
+- Shared helpers live in `playwright/shared`. Use `loginAsUser` for fake-auth flows and `test` from `playwright/shared/test` when you want optional coverage output (enable with `PLAYWRIGHT_COVERAGE=1`).
+- App configs live at `apps/{acnw,acus}/playwright.config.ts` and point to `pnpm -F {app} dev:test`. Use `PLAYWRIGHT_REUSE_SERVER=1` when you want to reuse an already running server.
+- Fake-auth login uses a `<select>` without label association; use `page.getByRole('combobox')` to select the email and then click the `Login` button.
+- ACNW membership tests should use `frankie.fable@example.com` for new registrations and should avoid users already seeded with a membership.
+- Membership wizard date pickers expose MUI spinbuttons inside a `role="group"` named by the field label (e.g. `Hotel Check-in`, `Departure Date`). Set values via the Month/Day/Year spinbuttons instead of the hidden input.
+- Room availability can change as tests create memberships, so select the room dynamically (try `Summit Queen` first, then fall back to `Cascade Double Queen`).
+- The UI contains multiple login/edit links; prefer `exact: true` or precise names (`Login / Sign Up`, `Edit`) to avoid strict-mode collisions.
+
 ### Material-UI Components
 
 Since this project uses @mui, be aware that MUI components generally have good accessibility built-in. Test that:

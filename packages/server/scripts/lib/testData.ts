@@ -2,8 +2,12 @@ import { dbAdmin as prisma } from '../../src/db'
 
 const assertTestDatabase = () => {
   const url = process.env.DATABASE_URL ?? ''
-  if (!url.includes('acnw_test')) {
-    throw new Error(`Refusing to seed non-test database. Expected DATABASE_URL to contain 'acnw_test', got '${url}'.`)
+  const allowedTestDatabases: Array<string> = ['acnw_test', 'acus_test']
+  const isAllowed = allowedTestDatabases.some((databaseName) => url.includes(databaseName))
+  if (!isAllowed) {
+    throw new Error(
+      `Refusing to seed non-test database. Expected DATABASE_URL to contain one of '${allowedTestDatabases.join(', ')}', got '${url}'.`,
+    )
   }
 }
 
@@ -1139,6 +1143,12 @@ const resetTables = async () => {
   await prisma.setting.deleteMany()
 }
 
+const resetMembershipSequence = async () => {
+  await prisma.$executeRawUnsafe(
+    "SELECT setval(pg_get_serial_sequence('membership', 'id'), (SELECT COALESCE(MAX(id), 1) FROM membership), true)",
+  )
+}
+
 export const seed = async () => {
   assertTestDatabase()
   try {
@@ -1155,6 +1165,7 @@ export const seed = async () => {
     await prisma.user.createMany({ data: users })
     await prisma.userRole.createMany({ data: userRoles })
     await prisma.membership.createMany({ data: memberships })
+    await resetMembershipSequence()
     await prisma.game.createMany({ data: games })
     await prisma.gameChoice.createMany({ data: gameChoices })
     await prisma.gameAssignment.createMany({ data: gameAssignments })

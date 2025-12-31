@@ -34,7 +34,12 @@ const parseSession = (value?: string): StoredSession | undefined => {
 
 const readCookie = (req?: NextApiRequest | NextRequest): StoredSession | undefined => {
   if (!req) return undefined
-  const cookieHeader: string | undefined = (req as any)?.headers?.cookie ?? (req as NextRequest)?.headers?.get('cookie')
+  const headers = req.headers
+  const rawCookieHeader =
+    headers && typeof (headers as Headers).get === 'function'
+      ? (headers as Headers).get('cookie')
+      : (headers as NextApiRequest['headers'] | undefined)?.cookie
+  const cookieHeader = Array.isArray(rawCookieHeader) ? rawCookieHeader.join(';') : rawCookieHeader
   if (!cookieHeader) return undefined
   const cookies = cookieHeader.split(';').map((p) => p.trim())
   const match = cookies.find((c) => c.startsWith(`${fakeSessionCookieName}=`))

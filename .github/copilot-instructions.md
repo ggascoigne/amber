@@ -113,6 +113,7 @@ const { data: games } = useQuery(trpc.games.getByYear.queryOptions({ year: 2024 
 
 - **Environment files**: Each app has `.env` for dev, `.env.test` for testing
 - **DB_ENV variable**: Switches between acnw/acus databases (`DB_ENV=acnw` or `DB_ENV=acus`)
+- **USE_FAKE_AUTH=true**: Bypasses Auth0 for local testing (also set when NODE_ENV=test).
 - **Runtime config**: Loaded via tRPC `settings.getSettings` query, provided through `ConfigProvider`
 - **Logging**: Uses `debug` library, configure with `DEBUG='amber:*'` (server) or `localStorage.debug = 'amber:*'` (client)
 

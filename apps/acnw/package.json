@@ -18,7 +18,9 @@
     "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json",
-    "test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:cleanTestSeed"
+    "test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:cleanTestSeed",
+    "test:e2e": "playwright test",
+    "test:e2e:coverage": "PLAYWRIGHT_COVERAGE=1 playwright test"
   },
   "dependencies": {
     "@amber/amber": "workspace:*",
@@ -72,7 +74,7 @@
     "@babel/plugin-transform-react-jsx": "^7.27.1",
     "@babel/preset-react": "^7.28.5",
     "@next/bundle-analyzer": "^16.0.10",
-    "@swc/core": "^1.15.5",
+    "@playwright/test": "^1.57.0",
     "@types/debug": "4.1.12",
     "@types/luxon": "^3.7.1",
     "@types/mdx": "^2.0.13",

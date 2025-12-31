@@ -85,3 +85,13 @@ The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
   typescript.
 - run `pnpm test` to run the sadly small set of tests
 - run `pnpm lint` to run the lint rules.
+
+# ExecPlans
+ 
+When writing complex features or significant refactors, use an ExecPlan (as
+described in .agent/PLANS.md) from design to implementation.
+
+
+## Important Files to Reference
+
+- [copilot-instructions.md](.github/copilot-instructions.md) - Further AI instructions
