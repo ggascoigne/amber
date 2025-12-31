@@ -18,7 +18,6 @@
     "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json",
-    "db:test:new": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:new",
     "db:test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:setup",
     "db:test:seed": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server prisma:seed:test",
     "db:test:reset": "pnpm db:test:setup && pnpm db:test:seed"

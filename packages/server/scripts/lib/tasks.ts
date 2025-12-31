@@ -15,10 +15,6 @@ import { certs } from '../../shared/dbCerts'
 
 const log = debug('tasks')
 
-const $$ = $({
-  verbose: true,
-})
-
 const filename = path.join(os.platform() === 'win32' ? os.tmpdir() : '/tmp', 'rds-cert.pem')
 
 export const writeCertsTask: ListrTask = {
@@ -108,7 +104,7 @@ export const migrateDbTask: ListrTask = {
   task: async (ctx: TaskContext, task: ListrTaskWrapper<TaskContext, any, any>) => {
     const environ = ctx?.env ?? env
 
-    const $source = $$({
+    const $$ = $({
       verbose: false,
       env: {
         ...environ,
@@ -118,7 +114,7 @@ export const migrateDbTask: ListrTask = {
     })
     // eslint-disable-next-line no-param-reassign
     task.output = `Migrating database: ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`
-    await $source`node --import=tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up`
+    await $$`node --import=tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up`
     return Promise.resolve(`Migrated ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)
   },
   rendererOptions: {
