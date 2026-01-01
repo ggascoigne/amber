@@ -10,7 +10,7 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@10.27.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggascoigne/amber.git"
@@ -55,6 +55,7 @@
     "@typescript/native-preview": "7.0.0-dev.20251215.1",
     "@vitejs/plugin-react": "^5.1.2",
     "@playwright/test": "^1.57.0",
+    "@vitejs/plugin-react": "^5.1.2",
     "dotenv-cli": "11.0.0",
     "eslint": "^9.39.2",
     "eslint-plugin-oxlint": "^1.33.0",

@@ -46,7 +46,7 @@ export const useStandardHandlers = <T extends RowData>({
       if (deleteHandler) {
         const selectedRows = getSelectedRows(table, selectedKeys)
         if (!selectedRows.length) return Promise.resolve()
-        const operations = selectedRows.map((row) => deleteHandler([row]))
+        const operations = deleteHandler(selectedRows)
         Promise.allSettled(operations).then(() => {
           invalidateQueries?.()
           table.resetRowSelection()

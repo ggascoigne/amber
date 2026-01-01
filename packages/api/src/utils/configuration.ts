@@ -89,6 +89,8 @@ export const configurationSchema = z
     hotelBookingUrl: z.string(),
     hotelBookingLastdate: toDateTime(),
 
+    useUsAttendanceOptions: toBoolean(),
+
     startDates: z.record(toNumber(), conventionInfoSchema),
   })
   .transform((data) => ({

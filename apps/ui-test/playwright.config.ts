@@ -37,4 +37,11 @@ export default defineConfig({
     ['dot'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }], // Customize the HTML report output
   ],
+  webServer: {
+    command: 'pnpm -F ui-test dev',
+    url: 'http://localhost:30003',
+    reuseExistingServer: true,
+    cwd: process.cwd(),
+    timeout: 120_000,
+  },
 })

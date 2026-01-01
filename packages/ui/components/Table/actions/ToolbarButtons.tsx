@@ -21,14 +21,16 @@ type TableIconButtonProps = {
 export const TableIconButton = (props: TableIconButtonProps) => {
   const { icon, onClick, label, enabled = true, compact = false } = props
   return (
-    <Tooltip title={label} aria-label={label} disableInteractive>
+    <Tooltip title={label} disableInteractive>
       <span>
         <IconButton
           onClick={onClick}
           disabled={!enabled}
           size={compact ? 'small' : 'medium'}
           data-testid={props['data-testid']}
+          aria-label={label}
           sx={{ margin: 'auto' }}
+          name={label}
         >
           {icon}
         </IconButton>
@@ -59,6 +61,7 @@ export const ActionButton = <T extends RowData>(props: ActionButtonProps<T>) => 
       size={compact ? 'small' : 'medium'}
       data-testid={props['data-testid']}
       sx={{ margin: 'auto' }}
+      name={label}
     >
       {label}
     </Button>

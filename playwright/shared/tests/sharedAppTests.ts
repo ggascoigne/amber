@@ -1,3 +1,4 @@
+import type { test as playwrightTest } from '@playwright/test'
 import { expect } from '@playwright/test'
 
 import { loginAsUser } from '../auth'
@@ -5,7 +6,7 @@ import type { SeededTestUsers } from '../users'
 
 export type SharedAppTestOptions = {
   appName: string
-  test: typeof import('@playwright/test').test
+  test: typeof playwrightTest
   users: SeededTestUsers
 }
 

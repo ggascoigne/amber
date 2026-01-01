@@ -8,6 +8,9 @@ export type AppPlaywrightConfigOptions = {
   workspaceRoot: string
 }
 
+const isUiMode = process.argv.some((arg) => arg === '--ui' || arg.startsWith('--ui-'))
+const reuseServerFromEnv = process.env.PLAYWRIGHT_REUSE_SERVER === '1' || process.env.PLAYWRIGHT_REUSE_SERVER === 'true'
+
 export const createAppConfig = (options: AppPlaywrightConfigOptions) =>
   defineConfig({
     testDir: options.testDir,
@@ -18,10 +21,7 @@ export const createAppConfig = (options: AppPlaywrightConfigOptions) =>
     },
     retries: process.env.CI ? 2 : 0,
     outputDir: 'test-results',
-    reporter: [
-      ['dot'],
-      ['html', { outputFolder: 'playwright-report', open: 'never' }],
-    ],
+    reporter: [['dot'], ['html', { outputFolder: 'playwright-report', open: 'never' }]],
     use: {
       baseURL: options.baseURL,
       screenshot: 'only-on-failure',
@@ -40,7 +40,7 @@ export const createAppConfig = (options: AppPlaywrightConfigOptions) =>
     webServer: {
       command: options.devServerCommand,
       url: options.baseURL,
-      reuseExistingServer: options.reuseExistingServer ?? process.env.PLAYWRIGHT_REUSE_SERVER === '1',
+      reuseExistingServer: options.reuseExistingServer ?? (reuseServerFromEnv || isUiMode),
       cwd: options.workspaceRoot,
       timeout: 120_000,
     },

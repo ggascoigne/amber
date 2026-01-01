@@ -1,5 +1,5 @@
-import path from 'node:path'
 import { mkdir, writeFile } from 'node:fs/promises'
+import path from 'node:path'
 
 import { expect, test as base } from '@playwright/test'
 import type { Page, TestInfo } from '@playwright/test'
@@ -41,13 +41,15 @@ const stopCoverageSafely = async <CoverageEntriesType extends Array<unknown>>(
   try {
     return await stopper()
   } catch {
-    return [] as CoverageEntriesType
+    return [] as unknown as CoverageEntriesType
   }
 }
 
 export const test = base.extend({
   page: async ({ page }, use, testInfo) => {
     if (!coverageEnabled) {
+      // this isn't the react hook 'use'
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       await use(page)
       return
     }
@@ -56,6 +58,8 @@ export const test = base.extend({
     await page.coverage.startCSSCoverage({ resetOnNavigation: false })
 
     try {
+      // this isn't the react hook 'use'
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       await use(page)
     } finally {
       const jsCoverage = await stopCoverageSafely(() => page.coverage.stopJSCoverage())

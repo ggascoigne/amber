@@ -9,6 +9,7 @@ const globalIgnores = [
       'packages/server/src/generated',
       'apps/*/next-env.d.ts',
       'apps/ui-test/src/shims/side-channel.cjs',
+      'apps/**/playwright-report',
     ],
   },
 ]

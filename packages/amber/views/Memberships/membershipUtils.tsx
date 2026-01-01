@@ -36,7 +36,7 @@ export const membershipValidationSchemaUS = Yup.object().shape({
 export const getDefaultMembership = (
   configuration: Configuration,
   userId: number,
-  _isVirtual: boolean,
+  isVirtual: boolean,
 ): MembershipFormType =>
   ({
     userId,
@@ -44,14 +44,13 @@ export const getDefaultMembership = (
     // note the difference in logic here is that NW wants to make users check their
     // dates since the dates are related to the eventual hotel room booking, and US
     // is just booking the convention itself
-    arrivalDate: configuration.conventionStartDate.toJSDate(),
-
+    arrivalDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionStartDate.toJSDate()! : '',
     attendance: configuration.isAcus ? '4' : Attendance.ThursSun,
     membership: Attendance.ThursSun,
     subsidizedAmount: configuration.subsidizedMembership,
     attending: true,
     hotelRoomId: configuration.isAcus ? 1 : 13,
-    departureDate: configuration.conventionEndDate.toJSDate(),
+    departureDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionEndDate.toJSDate()! : '',
     interestLevel: 'Full',
     message: '',
     offerSubsidy: false,

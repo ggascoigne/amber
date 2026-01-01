@@ -37,6 +37,10 @@ const initializeDatabase = async (): Promise<PGliteInterface> => {
       console.log('handlers:', error)
     }
     console.timeEnd(`Initializing database`)
+    // Signal that database is ready for Playwright tests
+    if (typeof document !== 'undefined') {
+      document.body.setAttribute('data-db-ready', 'true')
+    }
     return db
   })()
   return dbInitPromise

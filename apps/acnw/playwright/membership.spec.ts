@@ -12,6 +12,9 @@ type MembershipDateInput = {
 }
 
 const registrationUserEmail = 'frankie.fable@example.com'
+const adminUserEmail = 'alex.admin@example.com'
+const registrationUserName = 'Frankie Fable'
+const registrationUserLastName = 'Fable'
 
 const membershipDates: { checkIn: MembershipDateInput; departure: MembershipDateInput } = {
   checkIn: {
@@ -88,7 +91,9 @@ test.describe.serial('Membership registration', () => {
     const selectedRoom = await completeMembershipWizard(page)
 
     await expect(page.getByRole('heading', { name: 'Membership Summary', level: 1 })).toBeVisible()
-    await expect(page.getByRole('heading', { name: '2025 Membership for Frankie Fable', level: 4 })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: `2025 Membership for ${registrationUserName}`, level: 4 }),
+    ).toBeVisible()
     await expect(page.getByText(membershipDates.checkIn.display)).toBeVisible()
     await expect(page.getByText(membershipDates.departure.display)).toBeVisible()
     await expect(page.getByText(selectedRoom)).toBeVisible()
@@ -107,5 +112,42 @@ test.describe.serial('Membership registration', () => {
     await expect(page.getByRole('heading', { name: 'Membership Summary', level: 1 })).toBeVisible()
     await expect(page.getByRole('link', { name: 'Register' })).toHaveCount(0)
     await expect(page.getByRole('link', { name: 'Edit', exact: true })).toBeVisible()
+  })
+
+  test('admin can delete membership transaction', async ({ page }) => {
+    await loginAsUser(page, adminUserEmail, { returnTo: '/transactions' })
+
+    await expect(page.getByRole('heading', { name: 'Transactions', level: 1 })).toBeVisible()
+
+    const searchInput = page.getByPlaceholder('Search')
+    await searchInput.fill(registrationUserName)
+
+    const transactionRow = page.getByRole('row', { name: new RegExp(registrationUserName) })
+    await expect(transactionRow).toBeVisible()
+    await expect(transactionRow).toContainText('2025')
+
+    await transactionRow.getByRole('checkbox').check()
+    await page.getByRole('button', { name: 'Delete' }).click()
+
+    await expect(transactionRow).toHaveCount(0)
+    await expect(page.getByText('No matching records')).toBeVisible()
+  })
+
+  test('admin can delete membership after transactions removed', async ({ page }) => {
+    await loginAsUser(page, adminUserEmail, { returnTo: '/member-admin' })
+
+    await expect(page.getByRole('heading', { name: 'Membership', level: 1 })).toBeVisible()
+
+    const searchInput = page.getByPlaceholder('Search')
+    await searchInput.fill(registrationUserLastName)
+
+    const membershipRow = page.getByRole('row', { name: new RegExp(registrationUserLastName) })
+    await expect(membershipRow).toBeVisible()
+
+    await membershipRow.getByRole('checkbox').check()
+    await page.getByRole('button', { name: 'Delete' }).click()
+
+    await expect(membershipRow).toHaveCount(0)
+    await expect(page.getByText('No matching records')).toBeVisible()
   })
 })

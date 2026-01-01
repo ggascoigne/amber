@@ -1,5 +1,6 @@
-import { test, expect } from '@playwright/test'
 import type { Page } from '@playwright/test'
+
+import { test, expect } from './fixtures'
 
 export function keys<O extends Record<string, unknown>>(obj: O): Array<keyof O> {
   return Object.keys(obj) as Array<keyof O>

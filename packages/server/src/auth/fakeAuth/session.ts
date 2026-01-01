@@ -34,7 +34,7 @@ const parseSession = (value?: string): StoredSession | undefined => {
 
 const readCookie = (req?: NextApiRequest | NextRequest): StoredSession | undefined => {
   if (!req) return undefined
-  const headers = req.headers
+  const { headers } = req
   const rawCookieHeader =
     headers && typeof (headers as Headers).get === 'function'
       ? (headers as Headers).get('cookie')

@@ -12,8 +12,7 @@
     "start": "next start -p 30003",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json",
-    "test:e2e": "start-server-and-test dev http://localhost:30003 test:snapshots",
-    "test:snapshots": "NODE_OPTIONS='--disable-warning=ExperimentalWarning' playwright test",
+    "test:e2e": "playwright test",
     "createData": "tsx ./scripts/createData.ts"
   },
   "dependencies": {
