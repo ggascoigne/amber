@@ -1,6 +1,6 @@
-import { test } from '../../../playwright/shared/test'
-import { registerSharedAppTests } from '../../../playwright/shared/tests/sharedAppTests'
-import { seededTestUsers } from '../../../playwright/shared/users'
+import { test } from '@amber/playwright/test'
+import { registerSharedAppTests } from '@amber/playwright/tests/sharedAppTests'
+import { seededTestUsers } from '@amber/playwright/users'
 
 registerSharedAppTests({
   appName: 'ACNW',

@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { createAppConfig } from '../../playwright/config'
+import { createAppConfig } from '@amber/playwright/config'
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const workspaceRoot = path.resolve(currentDir, '../..')

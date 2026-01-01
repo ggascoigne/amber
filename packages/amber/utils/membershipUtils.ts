@@ -50,7 +50,10 @@ export const toLegacyApiMembership = (membershipValues: MembershipType) => ({
   departureDate: toDateTime(membershipValues.departureDate)?.toISO() ?? '',
 })
 
-export const fromSlotsAttending = (configuration: Configuration, membershipValues: MembershipType) => {
+export const fromSlotsAttending = (
+  configuration: Configuration,
+  membershipValues: MembershipFormType | MembershipType,
+) => {
   const slotsAttendingData = Array(configuration.numberOfSlots).fill(false)
   // @ts-ignore
   // eslint-disable-next-line no-return-assign
@@ -58,7 +61,7 @@ export const fromSlotsAttending = (configuration: Configuration, membershipValue
   return slotsAttendingData
 }
 
-export const toSlotsAttending = (membershipValues: MembershipType) =>
+export const toSlotsAttending = (membershipValues: MembershipFormType | MembershipType) =>
   // convert an array of booleans to a comma separate list of slot numbers
   membershipValues.slotsAttendingData
     ?.map((v: boolean, i: number) => (v ? i + 1 : 0))

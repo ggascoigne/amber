@@ -1,7 +1,6 @@
+import { loginAsUser } from '@amber/playwright/auth'
+import { expect, test } from '@amber/playwright/test'
 import type { Page } from '@playwright/test'
-
-import { loginAsUser } from '../../../playwright/shared/auth'
-import { expect, test } from '../../../playwright/shared/test'
 
 type MembershipDateInput = {
   label: string

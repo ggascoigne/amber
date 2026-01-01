@@ -40,6 +40,11 @@ ambercon (root)
 │           ├── @amber/server
 │           └── @amber/ui
 │
+├── Testing Layer
+│   └── @amber/playwright ─────────────── Shared Playwright test utilities
+│       └── depends on:
+│           └── @playwright/test
+│
 └── Applications
     ├── test-ui ──────────────────────────── UI Test App (Next.js :30003)
     │   └── depends on:
@@ -50,6 +55,7 @@ ambercon (root)
     │       ├── @amber/api
     │       ├── @amber/client
     │       ├── @amber/environment
+    │       ├── @amber/playwright
     │       ├── @amber/server
     │       └── @amber/ui
     └── acus ──────────────────────────── AmberCon US (Next.js :30001)
@@ -58,6 +64,7 @@ ambercon (root)
             ├── @amber/api
             ├── @amber/client
             ├── @amber/environment
+            ├── @amber/playwright
             ├── @amber/server
             └── @amber/ui
 ```
@@ -87,10 +94,9 @@ The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 - run `pnpm lint` to run the lint rules.
 
 # ExecPlans
- 
+
 When writing complex features or significant refactors, use an ExecPlan (as
 described in .agent/PLANS.md) from design to implementation.
-
 
 ## Important Files to Reference
 
