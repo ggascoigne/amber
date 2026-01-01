@@ -12,7 +12,7 @@
 
 - [ ] room assignment on the game page tends to reset back to the original room before you can save a change.
 
-   some of the loading issues might be related to slow internet, test with low bandwidth.
+  some of the loading issues might be related to slow internet, test with low bandwidth.
 
 - [ ] Mobile: Fix member selection dropdown
 - [ ] Mobile: Make menu auto close on selection
@@ -24,7 +24,7 @@
 - [ ] Review donation text on the payment page with Andi
 - [ ] talk to Malcolm & Andi re legal name and use name
 
-- [ ] add option to registration about people needing accessible game rooms.  "Some of the rooms we run in are only accessible by stairs, click here and we'll avoid scheduling your games in those rooms."
+- [ ] add option to registration about people needing accessible game rooms. "Some of the rooms we run in are only accessible by stairs, click here and we'll avoid scheduling your games in those rooms."
 
 ## 2022
 

@@ -155,7 +155,7 @@ overall goal of the execution plan.
   plan to record both the decision and the thinking behind it. Record all
   decisions in the `Decision Log` section.
 - ExecPlans must contain and maintain a `Progress` section, a `Surprises &
-  Discoveries` section, a `Decision Log`, and an `Outcomes & Retrospective`
+Discoveries` section, a `Decision Log`, and an `Outcomes & Retrospective`
   section. These are not optional.
 - When you discover optimizer behavior, performance tradeoffs, unexpected bugs,
   or inverse/unapply semantics that shaped your approach, capture those
@@ -165,7 +165,7 @@ overall goal of the execution plan.
   and reflect the implications in `Progress`. Plans are guides for the next
   contributor as much as checklists for you.
 - At completion of a major task or the full plan, write an `Outcomes &
-  Retrospective` entry summarizing what was achieved, what remains, and lessons
+Retrospective` entry summarizing what was achieved, what remains, and lessons
   learned.
 
 # Prototyping milestones and parallel implementations

@@ -17,7 +17,7 @@ This change introduces a Playwright test harness for the ACNW site so that we ca
 - [x] (2025-12-23 06:04Z) Cleaned test artifacts and added coverage support helpers.
 - [x] (2025-12-24 23:06Z) Mirrored Playwright config and scripts for ACUS.
 - [x] (2025-12-24 23:16Z) Added ACUS test env file and allowed acus_test seed validation.
-- [x] (2025-12-24 23:19Z) Ensured ACNW/ACUS test envs use _test databases and seed guards accept acus_test.
+- [x] (2025-12-24 23:19Z) Ensured ACNW/ACUS test envs use \_test databases and seed guards accept acus_test.
 - [x] (2025-12-24 23:57Z) Added ACNW membership registration Playwright coverage and fixed test seed sequences.
 - [x] (2025-12-25 02:01Z) Stabilized membership tests with login wait fix and dynamic room choice.
 - [x] (2025-12-27 23:14Z) Adjusted membership date input parsing to accept empty strings.
@@ -277,7 +277,7 @@ Use `@playwright/test` to define test cases and configuration, and `@axe-core/pl
 2025-12-23 06:04Z: Added coverage support helper and script, plus noted artifact cleanup.
 2025-12-24 23:06Z: Added ACUS Playwright config and scripts to match ACNW.
 2025-12-24 23:16Z: Added ACUS test env and seed guard updates to allow acus_test.
-2025-12-24 23:19Z: Confirmed ACNW/ACUS test env DB URLs use _test databases and documented the decision.
+2025-12-24 23:19Z: Confirmed ACNW/ACUS test env DB URLs use \_test databases and documented the decision.
 2025-12-24 23:57Z: Added membership registration Playwright tests and documented the membership sequence fix.
 2025-12-25 02:01Z: Stabilized membership login waits and room selection logic for the new tests.
 2025-12-27 23:14Z: Added membership date input normalization in the memberships router.

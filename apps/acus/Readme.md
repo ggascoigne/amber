@@ -29,8 +29,7 @@ DATABASE_URL="postgres://acnw_user:123456@127.0.0.1:54320/acus"
 
 You don't have to use these, but you do need 2 accounts, and they need to match the ones in the env files.
 
-Note that .env.local.back is the important one, and should by default match .env.  The scripts that copy data between database instances depend on these file names, and also at some points replace the .env file and then put it back.
-
+Note that .env.local.back is the important one, and should by default match .env. The scripts that copy data between database instances depend on these file names, and also at some points replace the .env file and then put it back.
 
 Once you've created a database:
 
