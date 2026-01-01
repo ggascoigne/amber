@@ -3,6 +3,8 @@
 echo "Node: $(node --version)" 
 echo "pnpm: $(pnpm --version)"
 
+rm -rf apps/*/.next
+
 pnpm i
 
 if ! pnpm tsgo ; then 

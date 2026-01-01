@@ -74,3 +74,4 @@ tsconfig.tsbuildinfo
 name_cleanup.js
 packages/database/scripts/cliCommands/import.ts
 scripts/backup_private.sh
+**/test-results

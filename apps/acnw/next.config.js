@@ -21,6 +21,8 @@ const withMDX = createMDX({
   },
 })
 
+const isPlaywright = process.env.PLAYWRIGHT === '1' || process.env.NODE_ENV === 'test'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -37,6 +39,11 @@ const nextConfig = {
       sourceMap: true,
     },
   },
+  ...(isPlaywright
+    ? {
+        devIndicators: false,
+      }
+    : {}),
 }
 
 export default withBundleAnalyzer(withMDX(nextConfig))

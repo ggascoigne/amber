@@ -47,6 +47,20 @@ const stopCoverageSafely = async <CoverageEntriesType extends Array<unknown>>(
 
 export const test = base.extend({
   page: async ({ page }, use, testInfo) => {
+    // Hide Next.js development overlay
+    await page.addInitScript(() => {
+      // Hide Next.js compilation overlay
+      const style = document.createElement('style')
+      style.textContent = `
+        #__next-build-watcher,
+        [data-nextjs-dialog-overlay],
+        nextjs-portal {
+          display: none !important;
+        }
+      `
+      document.head.appendChild(style)
+    })
+
     if (!coverageEnabled) {
       // this isn't the react hook 'use'
       // eslint-disable-next-line react-hooks/rules-of-hooks

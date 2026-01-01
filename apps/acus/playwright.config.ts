@@ -9,7 +9,7 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:30001'
 
 export default createAppConfig({
   baseURL,
-  devServerCommand: 'pnpm -F acus dev:test',
+  devServerCommand: 'PLAYWRIGHT=1 pnpm -F acus dev:test',
   testDir: './playwright',
   workspaceRoot,
 })
