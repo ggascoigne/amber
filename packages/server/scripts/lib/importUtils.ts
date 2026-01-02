@@ -21,6 +21,7 @@ const $$ = $({
 })
 
 export const loadEnv = (fileName: string): EnvType => {
+  log('loadEnv %s - start %o', fileName, process.env)
   const { dirname } = getPaths(import.meta.url)
   const pathName = path.resolve(dirname, '../../../..', fileName)
 
@@ -35,9 +36,11 @@ export const loadEnv = (fileName: string): EnvType => {
   })
   log('loaded env from', pathName)
   log('env', obj)
+  log('loadEnv %s - end %o', fileName, process.env)
   return processEnv(obj as any)
 }
 
+// TODO: move this to t6he task context
 let outputFileName
 
 export const dumpDatabaseTask: ListrTask = {

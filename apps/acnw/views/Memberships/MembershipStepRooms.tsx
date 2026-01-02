@@ -58,6 +58,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
         The listed price below does not include {configuration.oregonHotelTax} Oregon Lodging tax. Also, each person
         over two in a room will incur an additional {configuration.moreThanDoubleOccupancySurcharge} charge per night.
       </DialogContentText>
+      <br />
       {/*
       <Important component='span' className={classes.important}>
         These rates are subject to change. The latest room rates can be found at{' '}

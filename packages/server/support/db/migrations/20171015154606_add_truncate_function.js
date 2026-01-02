@@ -21,3 +21,11 @@ export async function up(knex) {
     $func$ LANGUAGE plpgsql;
     `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

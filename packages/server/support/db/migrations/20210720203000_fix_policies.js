@@ -1,6 +1,8 @@
-import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { anyUserUpdatePolicy, adminUpdatePolicy, dropPolicies, enableRls } from '../utils/policyUtils.js'
+
+const env = processEnv()
 
 const tables = [
   { name: 'game', admin: false },
@@ -59,4 +61,12 @@ export async function up(knex) {
     `)
 
   await knex.raw(tables.map((table) => enableRls(table.name)).join('\n'))
+}
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
 }

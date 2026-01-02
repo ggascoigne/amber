@@ -1,10 +1,10 @@
 import { dbEnv } from './constants.ts'
-import { processEnv } from './processEnv.ts'
 
 export * from './constants'
 export * from './connectionStringUtils.ts'
 export * from './processEnv.ts'
 
+// Used in scripts, not used in runtime code
 const isNodeRuntime = typeof process !== 'undefined' && !!process.versions?.node
 
 if (isNodeRuntime && process.env.NEXT_RUNTIME !== 'edge' && process.env.NODE_ENV !== 'production') {
@@ -20,5 +20,3 @@ if (isNodeRuntime && process.env.NEXT_RUNTIME !== 'edge' && process.env.NODE_ENV
   const envPath = path.join(dirname, `../../../apps/${dbEnv}/${envFilename}`)
   dotenv.config({ path: envPath, quiet: true })
 }
-
-export const env = processEnv()

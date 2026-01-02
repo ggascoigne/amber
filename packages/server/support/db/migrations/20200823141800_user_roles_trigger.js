@@ -29,3 +29,11 @@ export async function up(knex) {
     EXECUTE PROCEDURE add_default_role ();
   `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

@@ -6,6 +6,16 @@ import { getUserWithRoles, createUser } from '../generated/prisma/sql'
 
 type AuthInfo = { userId: number; roles: string[] }
 
+export const queryUserRoles = async (email: string): Promise<AuthInfo | undefined> => {
+  const selectRows = await dbAdmin.$queryRawTyped(getUserWithRoles(email))
+  return selectRows.length > 0
+    ? {
+        userId: selectRows[0]!.user_id,
+        roles: selectRows.map((r) => r.authority),
+      }
+    : undefined
+}
+
 export const getUserRoles = async (session: SessionData): Promise<AuthInfo | undefined> => {
   // Roles should only be set to verified users.
   // Likewise, user records should only be created for verified users
@@ -29,12 +39,9 @@ export const getUserRoles = async (session: SessionData): Promise<AuthInfo | und
   }
 
   const { email } = session.user
-  const selectRows = await dbAdmin.$queryRawTyped(getUserWithRoles(email))
-  if (selectRows.length > 0) {
-    return {
-      userId: selectRows[0]!.user_id,
-      roles: selectRows.map((r) => r.authority),
-    }
+  const userRoles = await queryUserRoles(email)
+  if (userRoles) {
+    return userRoles
   } else {
     // roles are handled by a trigger
     const insertRows = await dbAdmin.$queryRawTyped(createUser(email))

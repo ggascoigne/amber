@@ -12,6 +12,11 @@ const membershipWithUserAndRoom = {
   hotelRoom: true,
 }
 
+const normalizeMembershipDateInput = (value: unknown) =>
+  value === '' || value === null || value === undefined ? undefined : value
+const membershipDateInput = z.preprocess(normalizeMembershipDateInput, z.coerce.date())
+const membershipDateInputOptional = z.preprocess(normalizeMembershipDateInput, z.coerce.date().optional())
+
 const membershipWithUser = {
   user: {
     include: {
@@ -139,8 +144,8 @@ export const membershipsRouter = createTRPCRouter({
       z.object({
         userId: z.number(),
         year: z.number(),
-        arrivalDate: z.date(),
-        departureDate: z.date(),
+        arrivalDate: membershipDateInput,
+        departureDate: membershipDateInput,
         attendance: z.string(),
         attending: z.boolean(),
         hotelRoomId: z.number(),
@@ -170,8 +175,8 @@ export const membershipsRouter = createTRPCRouter({
       z.object({
         id: z.number(),
         data: z.object({
-          arrivalDate: z.date().optional(),
-          departureDate: z.date().optional(),
+          arrivalDate: membershipDateInputOptional,
+          departureDate: membershipDateInputOptional,
           attendance: z.string().optional(),
           attending: z.boolean().optional(),
           hotelRoomId: z.number().optional(),

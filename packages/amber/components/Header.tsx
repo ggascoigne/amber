@@ -33,9 +33,22 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
         href?.startsWith('https://ambercon.com') ||
         href?.startsWith('https://www.ambercon.com') ||
         href?.startsWith('https://acnw.org')
-      )
+      ) {
         return ''
-      return !conf ? '' : conf.local ? '(local)' : ['acnw', 'acus'].includes(conf.databaseName) ? '(prod)' : '(test)'
+      }
+      const prefix = conf?.isFakeAuth ? '[FAKE AUTH] ' : ''
+      return (
+        prefix +
+        (!conf
+          ? ''
+          : conf.local && conf.isTestDb
+            ? '(local:test)'
+            : conf.local
+              ? '(local)'
+              : ['acnw', 'acus'].includes(conf.databaseName)
+                ? '(prod)'
+                : '(aws:test)')
+      )
     }
 
     setConfigDetails(getConfigDetails(config, window.location.href))

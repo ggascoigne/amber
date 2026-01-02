@@ -8,3 +8,11 @@ export async function up(knex) {
     .dropTableIfExists('registration_code')
     .dropTableIfExists('token')
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

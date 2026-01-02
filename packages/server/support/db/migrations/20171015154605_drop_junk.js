@@ -93,3 +93,11 @@ export async function up(knex) {
       table.dropColumn('last_updated')
     })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

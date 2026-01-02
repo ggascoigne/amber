@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-relative-packages
 import { toFix } from '../../../../../name_cleanup.js'
 
 /**
@@ -50,4 +51,12 @@ export async function up(knex) {
           `)
     }),
   )
+}
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
 }

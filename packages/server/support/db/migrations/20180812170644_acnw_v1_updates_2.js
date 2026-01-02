@@ -7,3 +7,11 @@ export async function up(knex) {
     table.renameColumn('type', 'bathroom_type')
   })
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

@@ -31,10 +31,17 @@ export default defineConfig({
     },
   },
 
-  // Opt out of parallel tests on CI, otherwise limit workers to 2 for stability
+  // Opt out of parallel tests on CI, otherwise limit workers to 4 for stability
   workers: process.env.CI ? 1 : 4,
   reporter: [
     ['dot'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }], // Customize the HTML report output
   ],
+  webServer: {
+    command: 'PLAYWRIGHT=1 pnpm -F ui-test dev',
+    url: 'http://localhost:30003',
+    reuseExistingServer: true,
+    cwd: process.cwd(),
+    timeout: 120_000,
+  },
 })

@@ -1,7 +1,9 @@
-import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 import type { Knex } from 'knex'
 
 import { fixGrants } from '../utils/policyUtils'
+
+const env = processEnv()
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`

@@ -112,18 +112,13 @@ ambercon (root)
 │
 ├── Infrastructure Layer
 │   ├── @amber/environment ────────────── Environment config & validation
-│   ├── @amber/database ───────────────── Database setup & migrations
-│   │   └── depends on:
-│   │       └── @amber/environment
-│   └── @amber/server ─────────────────── tRPC server & Prisma client
+│   └── @amber/server ─────────────────── Database setup & migrations, tRPC server & Prisma client
 │       └── depends on:
-│           ├── @amber/database
 │           └── @amber/environment
 │
 ├── Service Layer
 │   ├── @amber/api ────────────────────── Server-side API implementations
 │   │   └── depends on:
-│   │       ├── @amber/database
 │   │       ├── @amber/environment
 │   │       └── @amber/server
 │   └── @amber/client ─────────────────── tRPC hooks & client utilities
@@ -137,9 +132,13 @@ ambercon (root)
 │       └── depends on:
 │           ├── @amber/api
 │           ├── @amber/client
-│           ├── @amber/database
 │           ├── @amber/server
 │           └── @amber/ui
+│
+├── Testing Layer
+│   └── @amber/playwright ─────────────── Shared Playwright test utilities
+│       └── depends on:
+│           └── @playwright/test
 │
 └── Applications
     ├── acnw ──────────────────────────── AmberCon NW (Next.js :30000)
@@ -147,8 +146,8 @@ ambercon (root)
     │       ├── @amber/amber
     │       ├── @amber/api
     │       ├── @amber/client
-    │       ├── @amber/database
     │       ├── @amber/environment
+    │       ├── @amber/playwright
     │       ├── @amber/server
     │       └── @amber/ui
     └── acus ──────────────────────────── AmberCon US (Next.js :30001)
@@ -156,8 +155,8 @@ ambercon (root)
             ├── @amber/amber
             ├── @amber/api
             ├── @amber/client
-            ├── @amber/database
             ├── @amber/environment
+            ├── @amber/playwright
             ├── @amber/server
             └── @amber/ui
 ```
@@ -166,4 +165,4 @@ This project is a pnpm monorepo with packages in the apps and packages folders. 
 
 The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 
-Much of the build can be tested by running `pnpm tsc` that runs tsc on every relevant package.
+Much of the build can be tested by running `pnpm tsgo` that runs tsgo on every relevant package.

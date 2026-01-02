@@ -1,5 +1,6 @@
 export * from './array'
 export * from './configContext'
+export * from './dateUtils'
 export * from './extractErrors'
 export * from './gameAssignment'
 export * from './ical'

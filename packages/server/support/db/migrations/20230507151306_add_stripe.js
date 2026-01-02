@@ -1,6 +1,8 @@
-import { env, parsePostgresConnectionString } from '@amber/environment/dotenv'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { anyUserUpdatePolicy, enableRls, fixGrants } from '../utils/policyUtils.js'
+
+const env = processEnv()
 
 /**
  * @param {import('knex').Knex} knex
@@ -80,4 +82,12 @@ export async function up(knex) {
     throw new Error('No user found in connection string')
   }
   await knex.raw(fixGrants(user))
+}
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
 }

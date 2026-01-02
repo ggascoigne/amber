@@ -21,17 +21,12 @@ const withMDX = createMDX({
   },
 })
 
+const isPlaywright = process.env.PLAYWRIGHT === '1' || process.env.NODE_ENV === 'test'
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: [
-    '@amber/ui',
-    // '@amber/database',
-    '@amber/amber',
-    '@mui/material',
-    '@amber/api',
-    '@auth0/nextjs-auth0',
-  ],
+  transpilePackages: ['@amber/ui', '@amber/amber', '@mui/material', '@amber/api', '@auth0/nextjs-auth0'],
   modularizeImports: {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',
@@ -44,6 +39,11 @@ const nextConfig = {
       sourceMap: true,
     },
   },
+  ...(isPlaywright
+    ? {
+        devIndicators: false,
+      }
+    : {}),
 }
 
 export default withBundleAnalyzer(withMDX(nextConfig))

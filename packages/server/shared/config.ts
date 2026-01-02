@@ -1,5 +1,7 @@
-import { env, safeConnectionString } from '@amber/environment/dotenv'
+import { processEnv, safeConnectionString } from '@amber/environment/dotenv'
 import pg from 'pg'
+
+const env = processEnv()
 
 const { Pool } = pg
 

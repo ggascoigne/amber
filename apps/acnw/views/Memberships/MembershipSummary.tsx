@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
 import {
+  formatDate,
   Page,
   RoomPref,
   TransportError,
@@ -31,7 +32,6 @@ import {
 } from '@amber/ui'
 import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import { DateTime } from 'luxon'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -98,14 +98,6 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
       </GridContainer>
     </GridContainer>
   )
-}
-
-const formatDate = (date?: string | Date) => {
-  if (date === undefined) {
-    return ''
-  }
-  const dateTime = date instanceof Date ? DateTime.fromJSDate(date) : DateTime.fromISO(date)
-  return dateTime.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)
 }
 
 const VerticalGap = () => (

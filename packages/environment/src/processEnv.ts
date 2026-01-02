@@ -14,6 +14,11 @@ export const processEnv = (src = process.env) =>
       DATABASE_URL: z.url(),
       ADMIN_DATABASE_URL: z.url(),
       NODE_ENV: z.enum(['development', 'test', 'production']).prefault('development'),
+      USE_FAKE_AUTH: z
+        .string()
+        .optional()
+        .default(src.NODE_ENV === 'test' ? 'true' : 'false')
+        .transform((val) => (['true', '1', 'yes'].includes(val) ? 'true' : 'false')),
 
       AUTH0_DOMAIN: z.url(),
       AUTH0_CLIENT_ID: z.string(),
@@ -56,6 +61,7 @@ export const processEnv = (src = process.env) =>
       DATABASE_URL: src.DATABASE_URL,
       ADMIN_DATABASE_URL: src.ADMIN_DATABASE_URL,
       NODE_ENV: src.NODE_ENV,
+      USE_FAKE_AUTH: src.USE_FAKE_AUTH,
 
       AUTH0_DOMAIN: src.AUTH0_DOMAIN,
       AUTH0_CLIENT_ID: src.AUTH0_CLIENT_ID,

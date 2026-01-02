@@ -50,3 +50,11 @@ export async function up(knex) {
       EXECUTE FUNCTION update_balance();
   `)
 }
+
+/**
+ * @param {import('knex').Knex} knex
+ * @returns {Promise<void>}
+ */
+export async function down(knex) {
+  // No down migration
+}

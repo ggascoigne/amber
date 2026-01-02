@@ -11,7 +11,7 @@ import {
   useUser,
   useYearFilter,
 } from '@amber/amber'
-import type { MembershipType } from '@amber/amber/utils/apiTypes'
+import type { MembershipFormType } from '@amber/amber/utils/membershipUtils'
 import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
 import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
@@ -39,14 +39,14 @@ interface IntroType {
 
 export interface MembershipWizardFormValues {
   intro: IntroType
-  membership: MembershipType
+  membership: MembershipFormType
   profile: UserAndProfile
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: MembershipType
+  initialValues?: MembershipFormType
   profile: UserAndProfile
   short?: boolean
 }
@@ -232,7 +232,7 @@ export const MembershipWizard = ({ open, onClose, profile, initialValues, short 
 
   const values = useMemo(() => {
     // note that for ACUS Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
-    const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
+    const defaultValues: MembershipFormType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values: MembershipWizardFormValues = {
       intro: { acceptedPolicies: !!initialValues?.id },
       membership: initialValues ? { ...initialValues } : { ...defaultValues },
