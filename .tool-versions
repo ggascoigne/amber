@@ -2,6 +2,5 @@
 # allows for managing more than just the node version (like nvm or fnm)
 # see https://asdf-vm.com/guide/#/core-managing-versions
 # for more information
-
-pnpm 10.14.0
-nodejs 22.18.0
+pnpm 10.17.0
+nodejs 22.19.0
