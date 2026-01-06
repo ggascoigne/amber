@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { Paper, Typography, useTheme } from '@mui/material'
+import { Button, Paper, Stack, Typography, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
@@ -14,6 +14,9 @@ import { TableContentSkeleton } from './components/TableContentSkeleton'
 import { TableContextProvider } from './components/TableContext'
 import { TableTable, tableDecorationZIndex } from './components/TableStyles'
 import { TableToolbar } from './components/TableToolbar'
+import type { DataTableEditingConfig } from './editing/types'
+import type { TableEditingState } from './editing/useTableEditing'
+import { useTableEditing } from './editing/useTableEditing'
 import { TableFilterBar } from './filter/TableFilterBar'
 import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
@@ -49,6 +52,7 @@ export type DataTableProps<T extends RowData> = {
   paginationStyle?: 'compact' | 'default'
   paginationPageSizes?: Array<number>
   variant?: 'elevation' | 'outlined'
+  cellEditing?: DataTableEditingConfig<T>
 }
 
 const defaultHighlightRow = () => false
@@ -58,6 +62,42 @@ const defaultSystemActions: Action<any>[] = [
     action: 'columnSelect',
   },
 ]
+
+type TableEditingFooterProps<T extends RowData> = {
+  editing: TableEditingState<T>
+}
+
+const TableEditingFooter = <T extends RowData>({ editing }: TableEditingFooterProps<T>) => {
+  const { hasChanges, hasErrors, isEditing, editedRowCount, isSaving, saveChanges, discardChanges, cancelActiveCell } =
+    editing
+  const rowLabel = editedRowCount === 1 ? '1 row' : `${editedRowCount} rows`
+  const message = hasChanges ? `You have unsaved changes (${rowLabel})` : 'Finish editing to continue paging.'
+
+  return (
+    <Stack direction='row' alignItems='center' spacing={2} sx={{ py: 1, pr: 1 }}>
+      <Typography variant='body2'>{message}</Typography>
+      {hasErrors ? (
+        <Typography variant='body2' color='error'>
+          Fix validation errors before saving.
+        </Typography>
+      ) : null}
+      {hasChanges ? (
+        <>
+          <Button variant='contained' size='small' onClick={saveChanges} disabled={hasErrors || isSaving}>
+            Save
+          </Button>
+          <Button variant='text' size='small' onClick={discardChanges} disabled={isSaving}>
+            Discard
+          </Button>
+        </>
+      ) : isEditing ? (
+        <Button variant='text' size='small' onClick={cancelActiveCell}>
+          Stop editing
+        </Button>
+      ) : null}
+    </Stack>
+  )
+}
 
 export const DataTable = <T extends RowData>({
   tableInstance,
@@ -86,11 +126,13 @@ export const DataTable = <T extends RowData>({
   paginationStyle = 'default',
   paginationPageSizes,
   variant: userVariant = 'elevation',
+  cellEditing,
 }: DataTableProps<T>) => {
   const theme = useTheme()
   const [headingHeight, setHeadingHeight] = useState(0)
   const headingRef = useRef<HTMLDivElement>(null)
   const { pageIndex } = tableInstance.getState().pagination
+  const editing = useTableEditing({ table: tableInstance, config: cellEditing })
 
   // The virtualizer needs to know the scrollable container element
   const tableContainerRef = useRef<HTMLDivElement>(null)
@@ -112,6 +154,9 @@ export const DataTable = <T extends RowData>({
     .exhaustive()
 
   const displayToolbar = !!toolbarActions?.length || !!systemActions?.length
+  const paginationBlocked = editing.enabled && (editing.isEditing || editing.hasChanges)
+  const footerContent =
+    editing.enabled && (editing.isEditing || editing.hasChanges) ? <TableEditingFooter editing={editing} /> : null
 
   useResizeObserver(headingRef, () => {
     const element = headingRef.current
@@ -137,7 +182,7 @@ export const DataTable = <T extends RowData>({
   ) : (
     <TableContent
       table={tableInstance}
-      onRowClick={onRowClick}
+      onRowClick={editing.enabled ? undefined : onRowClick}
       rowActions={rowActions}
       tableContainerRef={tableContainerRef}
       highlightRow={highlightRow}
@@ -147,6 +192,7 @@ export const DataTable = <T extends RowData>({
       pageElevation={elevation}
       useVirtualRows={useVirtualRows}
       scrollBehavior={scrollBehavior}
+      editing={editing}
     />
   )
 
@@ -252,10 +298,11 @@ export const DataTable = <T extends RowData>({
               borderRadius: '0 0 4px 4px',
             }}
             debug={debug}
-            displayPagination={shouldDisplayPagination}
+            displayPagination={shouldDisplayPagination && !paginationBlocked}
             pagination={paginationStyle}
             paginationPageSizes={paginationPageSizes}
             compact={compact}
+            footerContent={footerContent}
           />
         </TableContainer>
       </TableContextProvider>

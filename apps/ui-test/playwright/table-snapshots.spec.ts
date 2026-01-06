@@ -11,6 +11,8 @@ const describeTest = (config: Record<string, boolean>) =>
     .map((f) => `${f}-${config[f] ? 't' : 'f'}`)
     .join(', ')}`
 
+const getMain = (page: Page) => page.locator('main')
+
 const applyFlagSettings = async (config: Record<string, boolean>, page: Page) => {
   for (const flag of keys(config)) {
     // note that disabling the eslint rule here is quite intentional,
@@ -36,13 +38,13 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
     test('Table: client-side', async ({ page }) => {
       await page.goto('/table-client')
       await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
-      await expect(page).toHaveScreenshot()
+      await expect(getMain(page)).toHaveScreenshot()
     })
 
     test('Table: server-side', async ({ page }) => {
       await page.goto('/table-server')
       await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
-      await expect(page).toHaveScreenshot()
+      await expect(getMain(page)).toHaveScreenshot()
     })
 
     test.describe('Table Playground', () => {
@@ -52,7 +54,7 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       })
 
       test('main', async ({ page }) => {
-        await expect(page).toHaveScreenshot()
+        await expect(getMain(page)).toHaveScreenshot()
       })
       ;(
         [
@@ -68,9 +70,43 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       ).forEach((config) => {
         test(describeTest(config), async ({ page }) => {
           await applyFlagSettings(config, page)
-          await expect(page).toHaveScreenshot()
+          await expect(getMain(page)).toHaveScreenshot()
         })
       })
+    })
+
+    test('Table: editable cells', async ({ page }) => {
+      await page.goto('/table-editing')
+      await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+
+      const nameCell = page.getByTestId('cell-1_name')
+      await expect(nameCell).toHaveText('Leticia Botsford-Waters')
+      await nameCell.click()
+
+      const nameInput = page.getByLabel('Edit Name')
+      await nameInput.fill('Leticia Prime')
+      await nameInput.press('Enter')
+
+      const footer = page.getByTestId('TableFooter')
+      await expect(footer.getByText('You have unsaved changes')).toBeVisible()
+      await expect(page.getByText('Rows per page:')).not.toBeVisible()
+      await expect(nameCell).toHaveText('Leticia Prime')
+
+      await footer.locator('button', { hasText: 'Save' }).click()
+      await expect(footer.getByText('You have unsaved changes')).not.toBeVisible()
+      await expect(page.getByText('Rows per page:')).toBeVisible()
+
+      await nameCell.click()
+      await nameInput.fill('')
+      await nameInput.press('Enter')
+
+      await expect(footer.getByText('Fix validation errors before saving.')).toBeVisible()
+      await expect(footer.locator('button', { hasText: 'Save' })).toBeDisabled()
+
+      await footer.locator('button', { hasText: 'Discard' }).click()
+      await expect(footer.getByText('You have unsaved changes')).not.toBeVisible()
+      await expect(page.getByText('Rows per page:')).toBeVisible()
+      await expect(nameCell).toHaveText('Leticia Prime')
     })
 
     test.describe('Layouts', () => {
@@ -80,7 +116,7 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       })
 
       test('main', async ({ page }) => {
-        await expect(page).toHaveScreenshot()
+        await expect(getMain(page)).toHaveScreenshot()
       })
       ;(
         [
@@ -96,7 +132,7 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       ).forEach((config) => {
         test(describeTest(config), async ({ page }) => {
           await applyFlagSettings(config, page)
-          await expect(page).toHaveScreenshot()
+          await expect(getMain(page)).toHaveScreenshot()
         })
       })
     })

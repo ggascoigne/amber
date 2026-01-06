@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { Box } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
 import type { RowData, Table as TableInstance } from '@tanstack/react-table'
@@ -15,6 +17,7 @@ type TableFooterInternalProps<T extends RowData> = {
   debug: boolean
   displayPagination?: boolean
   paginationPageSizes?: Array<number>
+  footerContent?: ReactNode
 }
 
 export const TableFooter = <T extends RowData>({
@@ -26,8 +29,9 @@ export const TableFooter = <T extends RowData>({
   displayPagination = false,
   paginationPageSizes,
   compact,
+  footerContent,
 }: TableFooterInternalProps<T>) =>
-  displayPagination || debug ? (
+  displayPagination || debug || footerContent ? (
     <Box
       sx={[
         {
@@ -58,15 +62,16 @@ export const TableFooter = <T extends RowData>({
       >
         <TableDebugButton enabled={debug} />
         <Box sx={{ flexGrow: 1 }} />
-        {displayPagination && (
-          <TablePagination
-            table={table}
-            rowCount={rowCount}
-            displayRowsPerPage={pagination === 'default'}
-            paginationPageSizes={paginationPageSizes}
-            compact={compact}
-          />
-        )}
+        {footerContent ??
+          (displayPagination ? (
+            <TablePagination
+              table={table}
+              rowCount={rowCount}
+              displayRowsPerPage={pagination === 'default'}
+              paginationPageSizes={paginationPageSizes}
+              compact={compact}
+            />
+          ) : null)}
       </Box>
       <TableDebug enabled={debug} instance={table} />
     </Box>

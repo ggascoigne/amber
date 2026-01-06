@@ -132,4 +132,40 @@ export const handlers = [
       return handleError(error)
     }
   }),
+
+  http.put(publicUrl('/api/users/:id'), async ({ request, params }) => {
+    try {
+      const db = await initializeDatabase()
+      const payload = (await request.json()) as Record<string, unknown>
+      const id = Number(params.id ?? payload.id)
+      const updatableColumns = [
+        'firstName',
+        'lastName',
+        'fullName',
+        'email',
+        'address',
+        'city',
+        'state',
+        'zipCode',
+        'phone',
+        'gender',
+        'subscriptionTier',
+      ]
+      const updates = Object.fromEntries(
+        Object.entries(payload).filter(([key]) => updatableColumns.includes(key)),
+      ) as Record<string, unknown>
+      const columns = Object.keys(updates)
+
+      if (columns.length > 0) {
+        const assignments = columns.map((column, index) => `"${column}" = $${index + 1}`).join(', ')
+        const values = columns.map((column) => updates[column])
+        await db.query(`UPDATE users SET ${assignments} WHERE id = $${columns.length + 1}`, [...values, id])
+      }
+
+      const data = await fetchSingleItem(db, `SELECT * FROM users WHERE id = '${id}'`)
+      return HttpResponse.json(data, { status: 200 })
+    } catch (error: any) {
+      return handleError(error)
+    }
+  }),
 ]

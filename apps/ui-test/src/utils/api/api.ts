@@ -78,15 +78,18 @@ const handleSearchParams = (url: string, params: any) => {
   // only desired for the searchParams
   const { keys } = pathToRegexp(path)
   const newParams = { ...params }
+  const pathParams = { ...params }
   keys.forEach((key) => {
     if (!Object.prototype.hasOwnProperty.call(params, key.name)) {
       throw new Error(`url ${url} requires a '${key.name}' parameter`)
     }
     delete newParams[key.name]
+    const value = params[key.name]
+    pathParams[key.name] = value === null || value === undefined ? value : String(value)
   })
 
   const toPath = compile(path)
-  const withPlaceholders = toPath(params)
+  const withPlaceholders = toPath(pathParams)
   const searchParams = qs.stringify(newParams, {
     // arrayFormat: 'repeat',
   })
@@ -103,8 +106,17 @@ const handleSearchParams = (url: string, params: any) => {
 
 const handlePositionalParams = (url: string, params: any) => {
   const [strippedSection, path] = splitUrl(url)
+  const { keys } = pathToRegexp(path)
+  const pathParams = { ...params }
+  keys.forEach((key) => {
+    if (!Object.prototype.hasOwnProperty.call(params, key.name)) {
+      throw new Error(`url ${url} requires a '${key.name}' parameter`)
+    }
+    const value = params[key.name]
+    pathParams[key.name] = value === null || value === undefined ? value : String(value)
+  })
   const toPath = compile(path)
-  const withPlaceholders = toPath(params)
+  const withPlaceholders = toPath(pathParams)
   const result = strippedSection + withPlaceholders
   log('%o', {
     url: result,

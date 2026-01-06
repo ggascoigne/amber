@@ -18,6 +18,10 @@ export const routes: MenuEntry[] = [
     path: '/table-layouts',
   },
   {
+    name: 'Table - Editable',
+    path: '/table-editing',
+  },
+  {
     name: 'Menu',
     children: [
       {
