@@ -11,7 +11,7 @@ import { Box, Typography } from '@mui/material'
 import { createColumnHelper } from '@tanstack/react-table'
 import type { TableState } from '@tanstack/react-table'
 
-import { Page } from '@/Components'
+import { Page, Toggle } from '@/Components'
 import type { UserType } from '@/utils/queries'
 import { useUpdateUserMutation, useUsersQuery } from '@/utils/queries'
 
@@ -76,6 +76,10 @@ const columns = [
 ]
 
 export const TableEditing = () => {
+  const [compact, setCompact] = useState(true)
+  const [debug, setDebug] = useState(false)
+  const [virtual, setVirtual] = useState(true)
+
   const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
   const handleStateChange = useCallback((newState: TableState) => {
     setState({
@@ -147,37 +151,37 @@ export const TableEditing = () => {
     <Page title='Table - Editable Cells'>
       <Box
         sx={{
-          p: 2,
           display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          minHeight: 0,
-          height: '680px',
+          maxWidth: '100%',
+          flexWrap: 'wrap',
+          flexDirection: 'row-reverse',
         }}
       >
-        <Typography variant='body2' color='text.secondary'>
-          Click a cell to edit. Changes show a left-hand marker and must be saved or discarded before paging.
-        </Typography>
-        <Table
-          title='Table - Editable Cells'
-          name='table-editing-demo'
-          columns={columns}
-          data={data?.rows ?? []}
-          keyField='id'
-          initialState={{
-            sorting: [{ id: 'id', desc: false }],
-            pagination: { pageIndex: 0, pageSize: 10 },
-          }}
-          isLoading={isLoading}
-          isFetching={isFetching}
-          scrollBehavior='bounded'
-          cellEditing={editingConfig}
-          displayGutter={false}
-          handleStateChange={handleStateChange}
-          rowCount={data?.rowCount ?? 0}
-          refetch={refetch}
-        />
+        <Toggle label='Compact' value={compact} setter={setCompact} />
+        <Toggle label='Debug' value={debug} setter={setDebug} />
+        <Toggle label='Virtualize Rows' value={virtual} setter={setVirtual} />
       </Box>
+      <Typography variant='body2' color='text.secondary'>
+        Click a cell to edit. Changes show a left-hand marker and must be saved or discarded before paging.
+      </Typography>
+      <Table
+        title='Table - Editable Cells'
+        name='table-editing-demo'
+        columns={columns}
+        data={data?.rows ?? []}
+        keyField='id'
+        isLoading={isLoading}
+        isFetching={isFetching}
+        scrollBehavior='bounded'
+        cellEditing={editingConfig}
+        displayGutter={false}
+        handleStateChange={handleStateChange}
+        rowCount={data?.rowCount ?? 0}
+        refetch={refetch}
+        debug={debug}
+        useVirtualRows={virtual}
+        compact={compact}
+      />
     </Page>
   )
 }
