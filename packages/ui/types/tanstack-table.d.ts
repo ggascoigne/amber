@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import type { TableEditColumnConfig } from '@amber/ui/components/Table/editing/types'
 import type {
   Column,
   OnChangeFn,
@@ -52,6 +53,7 @@ declare module '@tanstack/table-core' {
     alwaysShowTooltip?: boolean
     filterFlags?: FilterFlags<T>
     dateFormat?: string
+    edit?: TableEditColumnConfig<TData>
   }
 
   interface FilterFns<TData extends RowData> {

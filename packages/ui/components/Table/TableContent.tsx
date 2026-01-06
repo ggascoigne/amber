@@ -1,8 +1,10 @@
 import type { ReactElement, RefObject } from 'react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import Box from '@mui/material/Box'
 import type { Theme, SxProps } from '@mui/material/styles'
-import type { Cell, Row, RowData, Table as TableInstance } from '@tanstack/react-table'
+import { alpha } from '@mui/material/styles'
+import type { Cell, CellContext, Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
 import { useVirtualizer } from '@tanstack/react-virtual'
@@ -15,6 +17,8 @@ import { GroupExpansionButton } from './components/GroupExpansionButton'
 import { RowHoverButtons } from './components/RowHoverButtons'
 import { TableBody, TableCell, TableRow } from './components/TableStyles'
 import { SELECTION_COLUMN_ID } from './constants'
+import { TableCellEditor } from './editing/TableCellEditor'
+import type { TableCellEditState, TableEditingState } from './editing/useTableEditing'
 import type { RowStyleType } from './utils/tableUtils'
 
 const log = debug('amber:ui:table:TableContent')
@@ -24,11 +28,27 @@ type TableCellContentProps<T extends RowData> = {
   cellClickHandler: (cell: Cell<T, unknown>) => () => void
   rowStyle: RowStyleType
   row: Row<T>
+  editing: TableEditingState<T>
+  cellState: TableCellEditState
+  isActiveCell: boolean
+  isEditable: boolean
 }
 
-const TableCellContent = <T extends RowData>({ cell, cellClickHandler, rowStyle, row }: TableCellContentProps<T>) => {
+const TableCellContent = <T extends RowData>({
+  cell,
+  cellClickHandler,
+  rowStyle,
+  row,
+  editing,
+  cellState,
+  isActiveCell,
+  isEditable,
+}: TableCellContentProps<T>) => {
   const align = cell.getIsGrouped() ? 'left' : cell.column.columnDef?.meta?.align === 'right' ? 'right' : 'left'
   const width = cell.column.getSize()
+  const { errorMessages } = cellState
+  const hasErrors = cellState.hasError
+  const { isEdited } = cellState
   const sx = useMemo(
     () =>
       [
@@ -38,6 +58,8 @@ const TableCellContent = <T extends RowData>({ cell, cellClickHandler, rowStyle,
           textAlign: align,
           display: 'flex',
           justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
+          position: 'relative',
+          cursor: isEditable ? 'text' : 'default',
         },
         rowStyle === 'flex' &&
           cell.column.id !== SELECTION_COLUMN_ID && {
@@ -48,23 +70,91 @@ const TableCellContent = <T extends RowData>({ cell, cellClickHandler, rowStyle,
             flex: '1 1 auto',
           },
         },
+        (hasErrors || isEdited) &&
+          ((theme: Theme) => ({
+            boxShadow: [
+              isEdited ? `inset 3px 0 0 ${theme.palette.info.main}` : null,
+              hasErrors ? `inset 0 0 0 2px ${theme.palette.error.main}` : null,
+            ]
+              .filter(Boolean)
+              .join(', '),
+            backgroundColor: hasErrors ? alpha(theme.palette.error.main, 0.08) : undefined,
+          })),
       ] as const,
-    [align, cell.column, rowStyle, width],
+    [align, cell.column, hasErrors, isEditable, isEdited, rowStyle, width],
+  )
+
+  const shouldRenderEditor = editing.enabled && isActiveCell
+  const displayValue = editing.getCellDisplayValue(cell)
+  const cellContext = cell.getContext()
+  const renderContext = editing.enabled
+    ? ({
+        ...cellContext,
+        getValue: () => displayValue,
+        cell: {
+          ...cell,
+          getValue: () => displayValue,
+          renderValue: () => displayValue,
+        },
+      } as CellContext<T, unknown>)
+    : cellContext
+
+  const regularCellContent = cell.getIsGrouped() ? (
+    <>
+      <GroupExpansionButton row={row} />
+      {flexRender(cell.column.columnDef.cell, renderContext)}
+      <span>({row.subRows.length})</span>
+    </>
+  ) : cell.getIsAggregated() ? (
+    flexRender(cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell, renderContext)
+  ) : cell.getIsPlaceholder() ? null : (
+    <>{flexRender(cell.column.columnDef.cell, renderContext)}</>
+  )
+
+  const editingCellContent = (
+    <>
+      <Box sx={{ visibility: 'hidden', width: '100%' }}>{regularCellContent}</Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'inherit',
+          paddingLeft: 'inherit',
+          paddingRight: 'inherit',
+          width: '100%',
+        }}
+      >
+        <TableCellEditor
+          cell={cell}
+          value={editing.activeValue}
+          onChange={editing.updateActiveValue}
+          onCommit={() => {
+            editing.commitActiveCell()
+            editing.cancelActiveCell()
+          }}
+          onCancel={() => {
+            editing.cancelActiveCell()
+          }}
+          hasError={hasErrors}
+        />
+      </Box>
+    </>
   )
 
   return (
-    <TableCell key={cell.id} data-testid={`cell-${cell.id}`} onClick={cellClickHandler(cell)} sx={sx}>
-      {cell.getIsGrouped() ? (
-        <>
-          <GroupExpansionButton row={row} />
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          <span>({row.subRows.length})</span>
-        </>
-      ) : cell.getIsAggregated() ? (
-        flexRender(cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell, cell.getContext())
-      ) : cell.getIsPlaceholder() ? null : (
-        <>{flexRender(cell.column.columnDef.cell, cell.getContext())}</>
-      )}
+    <TableCell
+      key={cell.id}
+      data-testid={`cell-${cell.id}`}
+      data-cell-id={cell.id}
+      data-edited={isEdited ? 'true' : 'false'}
+      data-invalid={hasErrors ? 'true' : 'false'}
+      title={hasErrors ? errorMessages.join(', ') : undefined}
+      onClick={cellClickHandler(cell)}
+      sx={sx}
+    >
+      {shouldRenderEditor ? editingCellContent : regularCellContent}
     </TableCell>
   )
 }
@@ -114,6 +204,7 @@ const RenderRow = <T extends RowData>({
   pageElevation,
   useVirtualRows,
   scrollBehavior,
+  editing,
 }: {
   table: TableInstance<T>
   rows: Row<T>[]
@@ -133,17 +224,66 @@ const RenderRow = <T extends RowData>({
   pageElevation?: number
   useVirtualRows?: boolean
   scrollBehavior?: 'none' | 'bounded'
+  editing: TableEditingState<T>
 }) => {
+  const row = (useVirtualRows ? rows[rowOrVirtualRow.index] : rowOrVirtualRow) as Row<T>
+  const cellClickHandler = useCallback(
+    (cell: Cell<T, unknown>) => () => {
+      const isEditable = editing.enabled && editing.isCellEditable(cell)
+      if (
+        editing.enabled &&
+        isEditable &&
+        !cell.column.getIsGrouped() &&
+        !cell.row.getIsGrouped() &&
+        cell.column.id !== SELECTION_COLUMN_ID
+      ) {
+        editing.startEditing(cell)
+        return
+      }
+
+      if (
+        onRowClick &&
+        !editing.enabled &&
+        !cell.column.getIsGrouped() &&
+        !cell.row.getIsGrouped() &&
+        cell.column.id !== SELECTION_COLUMN_ID
+      )
+        onRowClick(cell.row)
+    },
+    [editing, onRowClick],
+  )
+  const onKeyDownHandler = useCallback(
+    (event: any) => {
+      if (event.key === 'Enter' && onRowClick && !editing.enabled) {
+        onRowClick(row)
+      }
+    },
+    [editing, onRowClick, row],
+  )
+  const isSelected = row.getIsSelected()
+  const isHighlighted = highlightRow(row)
+  const rowState = editing.getRowState(row)
+  const rowClasses = useMemo(
+    () =>
+      clsx({
+        rowSelected: isSelected,
+        rowHighlighted: isHighlighted,
+        clickable: !!onRowClick && !editing.enabled,
+      }),
+    [editing.enabled, onRowClick, isHighlighted, isSelected],
+  )
+
+  const cells = row.getVisibleCells()
   const tableSx = useMemo(
     () =>
       ({
         tableRow: [
           displayGutter
             ? {
-                '& >div:first-of-type': {
+                "& > [role='cell']:first-of-type": {
                   pl: 3,
                 },
-                '& >div:last-of-type': {
+                "& > [role='cell']:last-of-type": {
                   pr: 3,
                 },
               }
@@ -156,6 +296,11 @@ const RenderRow = <T extends RowData>({
               borderBottom: 'none',
             },
           },
+          rowState?.hasError
+            ? (theme: Theme) => ({
+                backgroundColor: alpha(theme.palette.error.main, 0.04),
+              })
+            : undefined,
         ] as const,
         svg: {
           '& svg': {
@@ -164,42 +309,8 @@ const RenderRow = <T extends RowData>({
           },
         },
       }) as const,
-    [displayGutter, emptyRows, rowStyle, scrollBehavior],
+    [displayGutter, emptyRows, rowState?.hasError, rowStyle, scrollBehavior],
   )
-  const row = (useVirtualRows ? rows[rowOrVirtualRow.index] : rowOrVirtualRow) as Row<T>
-  const cellClickHandler = useCallback(
-    (cell: Cell<T, unknown>) => () => {
-      if (
-        onRowClick &&
-        !cell.column.getIsGrouped() &&
-        !cell.row.getIsGrouped() &&
-        cell.column.id !== SELECTION_COLUMN_ID
-      )
-        onRowClick(cell.row)
-    },
-    [onRowClick],
-  )
-  const onKeyDownHandler = useCallback(
-    (event: any) => {
-      if (event.key === 'Enter' && onRowClick) {
-        onRowClick(row)
-      }
-    },
-    [onRowClick, row],
-  )
-  const isSelected = row.getIsSelected()
-  const isHighlighted = highlightRow(row)
-  const rowClasses = useMemo(
-    () =>
-      clsx({
-        rowSelected: isSelected,
-        rowHighlighted: isHighlighted,
-        clickable: !!onRowClick,
-      }),
-    [onRowClick, isHighlighted, isSelected],
-  )
-
-  const cells = row.getVisibleCells()
 
   return (
     <TableRow
@@ -221,7 +332,23 @@ const RenderRow = <T extends RowData>({
       className={rowClasses}
     >
       {cells.map((cell) => (
-        <TableCellContent key={cell.id} cell={cell} row={row} cellClickHandler={cellClickHandler} rowStyle={rowStyle} />
+        <TableCellContent
+          key={cell.id}
+          cell={cell}
+          row={row}
+          cellClickHandler={cellClickHandler}
+          rowStyle={rowStyle}
+          editing={editing}
+          cellState={editing.getCellState(cell)}
+          isActiveCell={editing.activeCell?.rowId === row.id && editing.activeCell?.columnId === cell.column.id}
+          isEditable={
+            editing.enabled &&
+            editing.isCellEditable(cell) &&
+            !cell.column.getIsGrouped() &&
+            !cell.row.getIsGrouped() &&
+            cell.column.id !== SELECTION_COLUMN_ID
+          }
+        />
       ))}
 
       {rowActions && !row.getIsGrouped() && (
@@ -257,6 +384,7 @@ export const TableContent = <T extends RowData>({
   pageElevation,
   useVirtualRows,
   scrollBehavior,
+  editing,
 }: {
   table: TableInstance<T>
   onRowClick?: (row: Row<T>) => void
@@ -270,6 +398,7 @@ export const TableContent = <T extends RowData>({
   pageElevation?: number
   useVirtualRows?: boolean
   scrollBehavior?: 'none' | 'bounded'
+  editing: TableEditingState<T>
 }): ReactElement => {
   const { rows } = table.getRowModel()
   const [warnOnRows, setWarnOnRows] = useState(true)
@@ -328,10 +457,10 @@ export const TableContent = <T extends RowData>({
         tableRow: [
           displayGutter
             ? {
-                '& >div:first-of-type': {
+                "& > [role='cell']:first-of-type": {
                   pl: 3,
                 },
-                '& >div:last-of-type': {
+                "& > [role='cell']:last-of-type": {
                   pr: 3,
                 },
               }
@@ -354,6 +483,15 @@ export const TableContent = <T extends RowData>({
       }) as const,
     [displayGutter, emptyRows, rowStyle, scrollBehavior, sx, tableHeight, enableVirtualRows],
   )
+  useEffect(() => {
+    if (!editing.enabled || !editing.activeCell) return
+    const rowExists = rows.some((row) => row.id === editing.activeCell?.rowId)
+    if (!rowExists) {
+      editing.commitActiveCell()
+      editing.cancelActiveCell()
+    }
+  }, [editing, rows])
+
   return (
     <TableBody sx={tableSx.tableBody}>
       {rowList.map((rowOrVirtualRow) => {
@@ -379,6 +517,7 @@ export const TableContent = <T extends RowData>({
             handleRowHover={handleRowHover}
             handleMenuClose={handleMenuClose}
             showButtons={showButtons === row.id}
+            editing={editing}
           />
         )
       })}

@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query'
+import { useMutation, useQuery, keepPreviousData } from '@tanstack/react-query'
 import { z } from 'zod'
 
 import { createApiHandler } from '@/utils/api'
@@ -104,3 +104,15 @@ export const useUserQuery = (queryOptions: z.infer<typeof userRequestSchema>, op
     enabled,
   })
 }
+
+export const updateUser = createApiHandler({
+  method: 'PUT',
+  path: '/api/users/:id',
+  requestSchema: userSchema,
+  responseSchema: userSchema,
+})
+
+export const useUpdateUserMutation = () =>
+  useMutation({
+    mutationFn: (data: z.infer<typeof userSchema>) => updateUser(data),
+  })
