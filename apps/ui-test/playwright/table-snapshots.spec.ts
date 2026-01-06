@@ -80,10 +80,16 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
 
       const nameCell = page.getByTestId('cell-1_name')
+      const nameRow = nameCell.locator('xpath=ancestor::*[@role="row"]')
+      const rowHeightBefore = await nameRow.evaluate((node) => node.getBoundingClientRect().height)
       await expect(nameCell).toHaveText('Leticia Botsford-Waters')
       await nameCell.click()
 
       const nameInput = page.getByLabel('Edit Name')
+      await expect(nameInput).toBeVisible()
+      const rowHeightAfter = await nameRow.evaluate((node) => node.getBoundingClientRect().height)
+      expect(Math.abs(rowHeightAfter - rowHeightBefore)).toBeLessThanOrEqual(0.5)
+
       await nameInput.fill('Leticia Prime')
       await nameInput.press('Enter')
 

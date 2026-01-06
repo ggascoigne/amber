@@ -1,6 +1,7 @@
 import type { ReactElement, RefObject } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import Box from '@mui/material/Box'
 import type { Theme, SxProps } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
 import type { Cell, CellContext, Row, RowData, Table as TableInstance } from '@tanstack/react-table'
@@ -98,18 +99,33 @@ const TableCellContent = <T extends RowData>({
       } as CellContext<T, unknown>)
     : cellContext
 
-  return (
-    <TableCell
-      key={cell.id}
-      data-testid={`cell-${cell.id}`}
-      data-cell-id={cell.id}
-      data-edited={isEdited ? 'true' : 'false'}
-      data-invalid={hasErrors ? 'true' : 'false'}
-      title={hasErrors ? errorMessages.join(', ') : undefined}
-      onClick={cellClickHandler(cell)}
-      sx={sx}
-    >
-      {shouldRenderEditor ? (
+  const regularCellContent = cell.getIsGrouped() ? (
+    <>
+      <GroupExpansionButton row={row} />
+      {flexRender(cell.column.columnDef.cell, renderContext)}
+      <span>({row.subRows.length})</span>
+    </>
+  ) : cell.getIsAggregated() ? (
+    flexRender(cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell, renderContext)
+  ) : cell.getIsPlaceholder() ? null : (
+    <>{flexRender(cell.column.columnDef.cell, renderContext)}</>
+  )
+
+  const editingCellContent = (
+    <>
+      <Box sx={{ visibility: 'hidden', width: '100%' }}>{regularCellContent}</Box>
+      <Box
+        sx={{
+          position: 'absolute',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'inherit',
+          paddingLeft: 'inherit',
+          paddingRight: 'inherit',
+          width: '100%',
+        }}
+      >
         <TableCellEditor
           cell={cell}
           value={editing.activeValue}
@@ -123,17 +139,22 @@ const TableCellContent = <T extends RowData>({
           }}
           hasError={hasErrors}
         />
-      ) : cell.getIsGrouped() ? (
-        <>
-          <GroupExpansionButton row={row} />
-          {flexRender(cell.column.columnDef.cell, renderContext)}
-          <span>({row.subRows.length})</span>
-        </>
-      ) : cell.getIsAggregated() ? (
-        flexRender(cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell, renderContext)
-      ) : cell.getIsPlaceholder() ? null : (
-        <>{flexRender(cell.column.columnDef.cell, renderContext)}</>
-      )}
+      </Box>
+    </>
+  )
+
+  return (
+    <TableCell
+      key={cell.id}
+      data-testid={`cell-${cell.id}`}
+      data-cell-id={cell.id}
+      data-edited={isEdited ? 'true' : 'false'}
+      data-invalid={hasErrors ? 'true' : 'false'}
+      title={hasErrors ? errorMessages.join(', ') : undefined}
+      onClick={cellClickHandler(cell)}
+      sx={sx}
+    >
+      {shouldRenderEditor ? editingCellContent : regularCellContent}
     </TableCell>
   )
 }

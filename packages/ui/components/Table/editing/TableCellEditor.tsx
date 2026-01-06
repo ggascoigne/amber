@@ -60,7 +60,7 @@ export const TableCellEditor = <TData extends RowData>({
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center' }}>
       <TextField
         fullWidth
         autoFocus
@@ -87,10 +87,22 @@ export const TableCellEditor = <TData extends RowData>({
             fontFamily: 'inherit',
             lineHeight: 'inherit',
             padding: 0,
+            minHeight: 0,
+            height: '100%',
+            alignItems: 'center',
           },
           '& .MuiInputBase-input': {
             textAlign: align,
             padding: 0,
+            lineHeight: 'inherit',
+            boxSizing: 'border-box',
+          },
+          '& .MuiSelect-select': {
+            padding: 0,
+            minHeight: 0,
+            display: 'flex',
+            alignItems: 'center',
+            paddingRight: '24px',
           },
         }}
         onClick={(event) => event.stopPropagation()}
