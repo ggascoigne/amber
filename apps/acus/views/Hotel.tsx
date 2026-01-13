@@ -67,8 +67,16 @@ const Hotel = () => {
               <a href={configuration.hotelBookingUrl}>Direct Booking Link</a>
             </strong>
             , or make your reservations by app, phone, etcetera, if you prefer. If you book after{' '}
-            {configuration.hotelBookingLastdate.setZone(configuration.baseTimeZone).toFormat('string')} please contact
-            us by e-mail to <a href={configuration.contactEmail}>{configuration.contactEmail}</a>.
+            {configuration.hotelBookingLastdate.setZone(configuration.baseTimeZone).toFormat('MMMM d, yyyy')} please
+            contact us by e-mail to <a href={configuration.contactEmail}>{configuration.contactEmail}</a>.
+          </p>
+
+          <p>
+            The <strong>Direct Booking Link</strong> fills in all the details. If you want to change the default dates
+            it fills in, you need to click &apos;Edit stay&apos; (near the top right of the page), then choose the dates
+            you need (click on the dates), optionally the number of rooms and/or number of guests, and click
+            &apos;Update&apos;. The website will neither update nor accept the new dates unless you click
+            &apos;Update&apos;.
           </p>
 
           <p>
