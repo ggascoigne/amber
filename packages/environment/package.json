@@ -21,14 +21,14 @@
     "superjson": "^2.2.6",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0",
-    "zod": "^4.3.4"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.12",
-    "@types/node": "^25.0.3",
+    "@types/node": "^25.0.8",
     "@types/pg": "^8.16.0",
-    "@typescript/native-preview": "7.0.0-dev.20260101.1",
+    "@typescript/native-preview": "7.0.0-dev.20260113.1",
     "dotenv": "^17.2.3",
     "prisma": "^7.2.0",
     "typescript": "^5.9.3"
