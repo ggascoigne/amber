@@ -9,7 +9,7 @@ import { sendEmailConfirmation } from './sendEmailConfirmation'
 import type { UserPaymentDetails } from './types'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-08-27.basil',
+  apiVersion: '2025-12-15.clover',
 })
 
 const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]) => {
@@ -130,6 +130,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
       if (failureCount) {
         console.warn('Creation of some transactions failed', res)
       }
+      // console.log({ charge, paymentInfo, result, failureCount, userId, year, amount })
       await sendEmailConfirmation({
         userId: parseInt(userId!, 10),
         year: parseInt(year!, 10),

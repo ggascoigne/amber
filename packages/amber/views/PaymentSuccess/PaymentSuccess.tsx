@@ -21,6 +21,7 @@ export const PaymentSuccess = () => {
     trpc.users.getUser.queryOptions(
       { id: user.userId! },
       {
+        enabled: !!user.userId,
         refetchInterval: 10_000,
       },
     ),
@@ -31,7 +32,6 @@ export const PaymentSuccess = () => {
     if (stripe) {
       Promise.allSettled([stripe!.retrievePaymentIntent(paymentIntentSecret!)]).then((res) => {
         if (res[0].status === 'fulfilled') {
-          // console.log(res[0].value)
           setAmount(formatAmountFromStripe(res[0].value?.paymentIntent?.amount ?? 0))
           refresh()
         }
