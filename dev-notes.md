@@ -94,9 +94,13 @@ https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/api/stripe/webhoo
 
 ## Testing Stripe locally
 
-Update the stripe cli tools, on mac that's `brew upgrade stripe`
+Update the stripe cli tools, on mac that's `brew upgrade stripe`, or download from https://github.com/stripe/stripe-cli/releases/latest
 
 login - `stripe login`, make sure that the webhook signing secret matches what's in your .env file
+
+If you are testing with a Stripe Sandbox, then you need to
+
+export STRIPE_API_KEY=<the value of STRIPE_SECRET_KEY from the .env file>
 
 run `stripe listen --forward-to http://localhost:30000/api/stripe/webhooks` or port 30001 for acus
 

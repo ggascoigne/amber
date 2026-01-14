@@ -130,6 +130,7 @@ const handleSuccess = async (charge: Stripe.Charge) => {
       if (failureCount) {
         console.warn('Creation of some transactions failed', res)
       }
+      // console.log({ charge, paymentInfo, result, failureCount, userId, year, amount })
       await sendEmailConfirmation({
         userId: parseInt(userId!, 10),
         year: parseInt(year!, 10),

@@ -1,4 +1,4 @@
-import { ssrHelpers } from '@amber/server/src/api/ssr'
+import { ssrAuthenticatedHelpers } from '@amber/server/src/api/ssr'
 
 import type { UserPaymentDetails } from './types'
 
@@ -14,23 +14,25 @@ type SendEmailConfirmationProps = {
 
 export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo }: SendEmailConfirmationProps) => {
   const emails = await getEmails()
-
+  const ssrHelpers = ssrAuthenticatedHelpers(userId)
+  // console.log('preparing to send payment confirmation email', { userId, year, amount, paymentInfo })
   try {
     const paymentDetailsPromises = paymentInfo
       ? paymentInfo.map((pi) =>
-          ssrHelpers.users.getUser.fetch({
-            id: pi.userId,
-          }),
-        )
+        ssrHelpers.users.getUser.fetch({
+          id: pi.userId,
+        }),
+      )
       : [
-          ssrHelpers.users.getUser.fetch({
-            id: userId,
-          }),
-        ]
+        ssrHelpers.users.getUser.fetch({
+          id: userId,
+        }),
+      ]
 
     let paymentDetails: { name: string; email: string; amount: string }[]
 
     await Promise.allSettled(paymentDetailsPromises).then(async (res) => {
+      // console.log('paymentDetails fetch results', res)
       const successes = res.filter((r) => r.status === 'fulfilled')
       const failureCount = res.length - successes.length
       if (failureCount) {
@@ -46,7 +48,7 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
         }
       })
 
-      const result = await emailer.send({
+      const emailDetails = {
         template: 'paymentConfirmation',
         message: {
           to: paymentDetails?.[0]?.email,
@@ -59,8 +61,10 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
           paymentDetails,
           ...emails,
         },
-      })
-      console.log({ result })
+      }
+      // console.log('sending payment confirmation email', emailDetails)
+      const result = await emailer.send(emailDetails)
+      // console.log({ result })
     })
   } catch (err: any) {
     console.log('error sending payment email', err)
