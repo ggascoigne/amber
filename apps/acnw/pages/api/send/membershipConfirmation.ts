@@ -26,11 +26,7 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
     const configuration = await getConfig()
     if (!configuration) throw new JsonError(400, 'unable to load configuration')
     const emails = await getEmails()
-    const { body } = req
-    console.log('values', body)
-    const values = membershipConfirmationSchema.parse(body)
-
-    console.log('values', values)
+    const values = membershipConfirmationSchema.parse(req.body)
 
     const emailResults = values.map((v) => {
       const {
