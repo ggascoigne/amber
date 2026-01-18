@@ -19,15 +19,15 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
   try {
     const paymentDetailsPromises = paymentInfo
       ? paymentInfo.map((pi) =>
-        ssrHelpers.users.getUser.fetch({
-          id: pi.userId,
-        }),
-      )
+          ssrHelpers.users.getUser.fetch({
+            id: pi.userId,
+          }),
+        )
       : [
-        ssrHelpers.users.getUser.fetch({
-          id: userId,
-        }),
-      ]
+          ssrHelpers.users.getUser.fetch({
+            id: userId,
+          }),
+        ]
 
     let paymentDetails: { name: string; email: string; amount: string }[]
 
@@ -64,7 +64,7 @@ export const sendEmailConfirmation = async ({ userId, year, amount, paymentInfo 
       }
       // console.log('sending payment confirmation email', emailDetails)
       const result = await emailer.send(emailDetails)
-      // console.log({ result })
+      console.log({ result })
     })
   } catch (err: any) {
     console.log('error sending payment email', err)
