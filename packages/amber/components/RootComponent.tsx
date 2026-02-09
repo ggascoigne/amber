@@ -36,7 +36,8 @@ const ReactQueryDevtoolsProduction = dynamic(
   { ssr: false },
 )
 
-interface RootComponentProps extends AppProps {
+type RootComponentProps = Omit<AppProps, 'router'> & {
+  router?: unknown
   emotionCache?: EmotionCache
   rootRoutes: (configuration: Configuration) => RootRoutes
   title: string

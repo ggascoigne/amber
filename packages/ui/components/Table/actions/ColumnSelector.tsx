@@ -15,8 +15,7 @@ import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import { TableIconButton } from './ToolbarButtons'
 
-import { SELECTION_COLUMN_ID } from '../constants'
-import { columnName } from '../utils/tableUtils'
+import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 type ColumnSelectorPopupProps<T extends RowData> = {
   table: TableInstance<T>
@@ -35,7 +34,7 @@ export function ColumnSelectorPopup<T extends RowData>({
   show,
   anchorDirection,
 }: ColumnSelectorPopupProps<T>): ReactElement | null {
-  const relevantColumns = table.getAllLeafColumns().filter((column) => column.id !== SELECTION_COLUMN_ID)
+  const relevantColumns = table.getAllLeafColumns().filter((column) => isUserColumnId(column.id))
   const checkedCount = relevantColumns.reduce((acc, val) => acc + (val.getIsVisible() ? 0 : 1), 0)
   const onlyOneOptionLeft = checkedCount + 1 >= relevantColumns.length
 
@@ -124,7 +123,7 @@ type ColumnSelectorProps<T extends RowData> = {
 export const ColumnSelector = <T extends RowData>({ table, anchorDirection }: ColumnSelectorProps<T>) => {
   const [anchorEl, setAnchorEl] = useState<Element | undefined>(undefined)
   const [columnsOpen, setColumnsOpen] = useState(false)
-  const relevantColumns = table.getAllLeafColumns().filter((column) => column.id !== SELECTION_COLUMN_ID)
+  const relevantColumns = table.getAllLeafColumns().filter((column) => isUserColumnId(column.id))
 
   const handleButtonClick = useCallback(
     (event: MouseEvent) => {

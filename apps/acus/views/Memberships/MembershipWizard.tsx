@@ -23,7 +23,7 @@ import { useTRPC } from '@amber/client'
 import type { WizardPage } from '@amber/ui'
 import { Wizard } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
-import LoadingButton from '@mui/lab/LoadingButton'
+import Button from '@mui/material/Button'
 import { useQuery } from '@tanstack/react-query'
 import type { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
@@ -81,7 +81,7 @@ export const SaveButton = ({
   const [, setShouldRedirect] = useContext(redirectContext)!
   return (
     <>
-      <LoadingButton
+      <Button
         onClick={() =>
           validateForm().then(() => {
             submitForm()
@@ -95,8 +95,8 @@ export const SaveButton = ({
         disabled={disabled || isLoading !== undefined}
       >
         Confirm
-      </LoadingButton>
-      <LoadingButton
+      </Button>
+      <Button
         onClick={() =>
           validateForm().then(() => {
             submitForm()
@@ -110,7 +110,7 @@ export const SaveButton = ({
         disabled={disabled || isLoading !== undefined}
       >
         Confirm & Pay
-      </LoadingButton>
+      </Button>
     </>
   )
 }

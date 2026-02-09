@@ -4,7 +4,7 @@ import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { TableIconButton } from './ToolbarButtons'
 
 import { camelToWords } from '../../../utils'
-import { SELECTION_COLUMN_ID } from '../constants'
+import { isUserColumnId } from '../utils/tableUtils'
 
 type ExportProps<T extends RowData> = {
   table: TableInstance<T>
@@ -19,7 +19,7 @@ export const Export = <T extends RowData>({ table }: ExportProps<T>) => {
   function handleFileDownloadClick() {
     const visibleColumns = table
       .getAllLeafColumns()
-      .filter((column) => column.id !== SELECTION_COLUMN_ID && column.getIsVisible())
+      .filter((column) => isUserColumnId(column.id) && column.getIsVisible())
     const { rows } = table.getPrePaginationRowModel()
     const columnSeparator = ','
     const rowSeparator = '\n'
@@ -33,7 +33,7 @@ export const Export = <T extends RowData>({ table }: ExportProps<T>) => {
       .map((r) =>
         r
           .getVisibleCells()
-          .filter((fc) => fc.column.id !== SELECTION_COLUMN_ID)
+          .filter((fc) => isUserColumnId(fc.column.id))
           .map((c) => formatColumnValue(c.getValue()))
           .join(columnSeparator),
       )

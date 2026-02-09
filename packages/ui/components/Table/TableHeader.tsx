@@ -10,7 +10,7 @@ import { flexRender } from '@tanstack/react-table'
 
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
-import { SELECTION_COLUMN_ID } from './constants'
+import { isUserColumnId } from './utils/tableUtils'
 import type { RowStyleType } from './utils/tableUtils'
 
 const tableSortClasses = {
@@ -61,6 +61,7 @@ export const TableHeader = <T extends RowData>({
                 ? {
                     '& >div:first-of-type': {
                       pl: 3,
+                      pr: 1,
                     },
                     '& >div:last-of-type': {
                       pr: 3,
@@ -82,8 +83,8 @@ export const TableHeader = <T extends RowData>({
               const columnCanResize =
                 rowStyle === 'fixed' ? header.column.getCanResize() && !isLastHeader : header.column.getCanResize()
 
-              const isSelectColumn =
-                header.id === SELECTION_COLUMN_ID || header.subHeaders?.some((sub) => sub.id === SELECTION_COLUMN_ID)
+              const isSystemColumn =
+                !isUserColumnId(header.id) || header.subHeaders?.some((sub) => !isUserColumnId(sub.id))
 
               return (
                 <TableHeadCell
@@ -99,7 +100,7 @@ export const TableHeader = <T extends RowData>({
                       justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
                     },
                     rowStyle === 'flex' &&
-                      !isSelectColumn && {
+                      !isSystemColumn && {
                         flex: `${header.getSize()} 0 auto`,
                       },
                     rowStyle === 'fixed' && {

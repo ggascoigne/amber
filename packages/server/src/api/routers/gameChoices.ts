@@ -21,23 +21,76 @@ const gameChoiceFields = {
   year: true,
 }
 
+const dashboardGameSubmissionFields = {
+  ...gameSubmissionFields,
+  membership: {
+    select: {
+      id: true,
+      user: {
+        select: {
+          fullName: true,
+        },
+      },
+    },
+  },
+}
+
+const dashboardGameChoiceFields = {
+  ...gameChoiceFields,
+  membership: {
+    select: {
+      id: true,
+      user: {
+        select: {
+          fullName: true,
+        },
+      },
+    },
+  },
+  game: {
+    select: {
+      id: true,
+      name: true,
+      slotId: true,
+    },
+  },
+}
+
 export const gameChoicesRouter = createTRPCRouter({
   // add createGameChoices - have it call the typed query
   getGameChoices: publicProcedure
     .input(z.object({ year: z.number(), memberId: z.number() }))
     .query(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
-        const gameSubmissions = await tx.gameSubmission.findMany({
-          where: { memberId: input.memberId, year: input.year },
-          select: gameSubmissionFields,
-        })
-        const gameChoices = await tx.gameChoice.findMany({
-          where: { memberId: input.memberId, year: input.year },
-          select: gameChoiceFields,
-        })
+        const [gameSubmissions, gameChoices] = await Promise.all([
+          tx.gameSubmission.findMany({
+            where: { memberId: input.memberId, year: input.year },
+            select: gameSubmissionFields,
+          }),
+          tx.gameChoice.findMany({
+            where: { memberId: input.memberId, year: input.year },
+            select: gameChoiceFields,
+          }),
+        ])
         return { gameSubmissions, gameChoices }
       }),
     ),
+
+  getGameChoicesByYear: protectedProcedure.input(z.object({ year: z.number() })).query(async ({ input, ctx }) =>
+    inRlsTransaction(ctx, async (tx) => {
+      const [gameSubmissions, gameChoices] = await Promise.all([
+        tx.gameSubmission.findMany({
+          where: { year: input.year },
+          select: dashboardGameSubmissionFields,
+        }),
+        tx.gameChoice.findMany({
+          where: { year: input.year },
+          select: dashboardGameChoiceFields,
+        }),
+      ])
+      return { gameSubmissions, gameChoices }
+    }),
+  ),
 
   readGameChoice: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input, ctx }) =>
     inRlsTransaction(ctx, async (tx) =>
@@ -143,6 +196,59 @@ export const gameChoicesRouter = createTRPCRouter({
         const gameChoice = await tx.gameChoice.update({
           where: { id: input.id },
           data: input.data,
+          select: gameChoiceFields,
+        })
+        return { gameChoice }
+      }),
+    ),
+
+  upsertGameChoiceBySlot: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.number(),
+        year: z.number(),
+        slotId: z.number(),
+        rank: z.number(),
+        gameId: z.number().nullable(),
+        returningPlayer: z.boolean(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) =>
+      inRlsTransaction(ctx, async (tx) => {
+        const existing = await tx.gameChoice.findFirst({
+          where: {
+            memberId: input.memberId,
+            year: input.year,
+            slotId: input.slotId,
+            rank: input.rank,
+          },
+        })
+
+        if (existing) {
+          const gameChoice = await tx.gameChoice.update({
+            where: { id: existing.id },
+            data: {
+              gameId: input.gameId,
+              memberId: input.memberId,
+              rank: input.rank,
+              returningPlayer: input.returningPlayer,
+              slotId: input.slotId,
+              year: input.year,
+            },
+            select: gameChoiceFields,
+          })
+          return { gameChoice }
+        }
+
+        const gameChoice = await tx.gameChoice.create({
+          data: {
+            gameId: input.gameId,
+            memberId: input.memberId,
+            rank: input.rank,
+            returningPlayer: input.returningPlayer,
+            slotId: input.slotId,
+            year: input.year,
+          },
           select: gameChoiceFields,
         })
         return { gameChoice }

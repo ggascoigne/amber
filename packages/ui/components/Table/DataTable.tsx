@@ -1,12 +1,14 @@
 import type { ReactNode } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+import AddIcon from '@mui/icons-material/Add'
 import { Button, Paper, Stack, Typography, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import useResizeObserver from '@react-hook/resize-observer'
 import type { Row, RowData, Table as TableInstance } from '@tanstack/react-table'
+import { dequal as deepEqual } from 'dequal'
 import { match } from 'ts-pattern'
 
 import type { Action } from './actions'
@@ -53,6 +55,12 @@ export type DataTableProps<T extends RowData> = {
   paginationPageSizes?: Array<number>
   variant?: 'elevation' | 'outlined'
   cellEditing?: DataTableEditingConfig<T>
+  renderExpandedContent?: (row: Row<T>) => ReactNode
+  getRowCanExpand?: (row: Row<T>) => boolean
+  addRowAction?: {
+    onAddRow: () => void
+  }
+  expandedContentSx?: SxProps<Theme>
 }
 
 const defaultHighlightRow = () => false
@@ -65,17 +73,28 @@ const defaultSystemActions: Action<any>[] = [
 
 type TableEditingFooterProps<T extends RowData> = {
   editing: TableEditingState<T>
+  addRowAction?: DataTableProps<T>['addRowAction']
 }
 
-const TableEditingFooter = <T extends RowData>({ editing }: TableEditingFooterProps<T>) => {
-  const { hasChanges, hasErrors, isEditing, editedRowCount, isSaving, saveChanges, discardChanges, cancelActiveCell } =
-    editing
+const TableEditingFooter = <T extends RowData>({ editing, addRowAction }: TableEditingFooterProps<T>) => {
+  const { hasChanges, hasErrors, editedRowCount, isSaving, saveChanges, discardChanges } = editing
   const rowLabel = editedRowCount === 1 ? '1 row' : `${editedRowCount} rows`
-  const message = hasChanges ? `You have unsaved changes (${rowLabel})` : 'Finish editing to continue paging.'
+  const message = hasChanges ? `You have unsaved changes (${rowLabel})` : null
 
   return (
     <Stack direction='row' alignItems='center' spacing={2} sx={{ py: 1, pr: 1 }}>
-      <Typography variant='body2'>{message}</Typography>
+      {addRowAction ? (
+        <Button
+          variant='text'
+          size='small'
+          startIcon={<AddIcon fontSize='small' />}
+          onClick={addRowAction.onAddRow}
+          disabled={isSaving}
+        >
+          Add Row
+        </Button>
+      ) : null}
+      {message ? <Typography variant='body2'>{message}</Typography> : null}
       {hasErrors ? (
         <Typography variant='body2' color='error'>
           Fix validation errors before saving.
@@ -90,10 +109,6 @@ const TableEditingFooter = <T extends RowData>({ editing }: TableEditingFooterPr
             Discard
           </Button>
         </>
-      ) : isEditing ? (
-        <Button variant='text' size='small' onClick={cancelActiveCell}>
-          Stop editing
-        </Button>
       ) : null}
     </Stack>
   )
@@ -127,15 +142,52 @@ export const DataTable = <T extends RowData>({
   paginationPageSizes,
   variant: userVariant = 'elevation',
   cellEditing,
+  renderExpandedContent,
+  addRowAction,
+  expandedContentSx,
 }: DataTableProps<T>) => {
   const theme = useTheme()
   const [headingHeight, setHeadingHeight] = useState(0)
   const headingRef = useRef<HTMLDivElement>(null)
+  const scrollPositionRef = useRef({ top: 0, left: 0 })
+  const expandedState = tableInstance.getState().expanded
+  const previousExpandedRef = useRef(expandedState)
   const { pageIndex } = tableInstance.getState().pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
+  const hasExpandedContent = !!renderExpandedContent
 
   // The virtualizer needs to know the scrollable container element
   const tableContainerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const element = tableContainerRef.current
+    if (!element) {
+      return () => {}
+    }
+    const handleScroll = () => {
+      scrollPositionRef.current = { top: element.scrollTop, left: element.scrollLeft }
+    }
+    handleScroll()
+    element.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      element.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  useLayoutEffect(() => {
+    if (!hasExpandedContent) {
+      previousExpandedRef.current = expandedState
+      return
+    }
+    if (deepEqual(previousExpandedRef.current, expandedState)) return
+    const element = tableContainerRef.current
+    if (element) {
+      const { top, left } = scrollPositionRef.current
+      element.scrollTop = top
+      element.scrollLeft = left
+    }
+    previousExpandedRef.current = expandedState
+  }, [expandedState, hasExpandedContent])
 
   useEffect(() => {
     if (pageIndex === 0) {
@@ -155,8 +207,10 @@ export const DataTable = <T extends RowData>({
 
   const displayToolbar = !!toolbarActions?.length || !!systemActions?.length
   const paginationBlocked = editing.enabled && (editing.isEditing || editing.hasChanges)
-  const footerContent =
-    editing.enabled && (editing.isEditing || editing.hasChanges) ? <TableEditingFooter editing={editing} /> : null
+  const shouldShowEditingFooter = editing.enabled && (editing.hasChanges || !!addRowAction)
+  const footerContent = shouldShowEditingFooter ? (
+    <TableEditingFooter editing={editing} addRowAction={addRowAction} />
+  ) : null
 
   useResizeObserver(headingRef, () => {
     const element = headingRef.current
@@ -193,6 +247,8 @@ export const DataTable = <T extends RowData>({
       useVirtualRows={useVirtualRows}
       scrollBehavior={scrollBehavior}
       editing={editing}
+      renderExpandedContent={renderExpandedContent}
+      expandedContentSx={expandedContentSx}
     />
   )
 
@@ -230,6 +286,7 @@ export const DataTable = <T extends RowData>({
             flexDirection: 'column',
             flexGrow: 1,
             minHeight: 0,
+            overflow: scrollBehavior === 'bounded' ? 'auto' : undefined,
           }}
           data-testid={dataTestid}
         >

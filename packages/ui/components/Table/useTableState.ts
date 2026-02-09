@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import type { ColumnDef, TableState, RowData } from '@tanstack/react-table'
 
-import { SELECTION_COLUMN_ID } from './constants'
+import { isUserColumnId } from './utils/tableUtils'
 
 import { useLocalStorage } from '../../utils/useLocalStorage'
 
@@ -20,7 +20,7 @@ export type PersistedTableState = Pick<
 
 export const getColumnsNames = <T extends RowData>(columns: ColumnDef<T>[]) =>
   columns
-    .filter((c) => c.id !== SELECTION_COLUMN_ID)
+    .filter((c) => isUserColumnId(c.id))
     .map((c) => c.id ?? (c as any).accessorKey ?? c.header)
     .join(',')
 
@@ -53,6 +53,7 @@ export const useTableState = <T extends RowData>(
   name: string,
   columns: ColumnDef<T>[],
   initialState?: Partial<TableState>,
+  enabled = true,
 ) => {
   const createdFor = useMemo(
     () => ({
@@ -61,10 +62,14 @@ export const useTableState = <T extends RowData>(
     }),
     [columns],
   )
-  const [persistedTableState, setPersistedTableState] = useLocalStorage<Partial<PersistedState>>(`tableState:${name}`, {
-    createdFor,
-    value: initialState,
-  })
+  const [persistedTableState, setPersistedTableState] = useLocalStorage<Partial<PersistedState>>(
+    `tableState:${name}`,
+    {
+      createdFor,
+      value: initialState,
+    },
+    enabled,
+  )
 
   const updateState = useCallback(
     (s: TableState) => {

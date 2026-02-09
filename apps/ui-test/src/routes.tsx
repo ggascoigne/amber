@@ -22,6 +22,10 @@ export const routes: MenuEntry[] = [
     path: '/table-editing',
   },
   {
+    name: 'Table - Nested',
+    path: '/table-nested',
+  },
+  {
     name: 'Menu',
     children: [
       {
