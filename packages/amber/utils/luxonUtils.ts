@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import LuxonUtils from '@date-io/luxon'
-import { DateTime } from 'luxon'
+import type { DateTime } from 'luxon'
 
 interface DayDefault {
   index: number
@@ -55,8 +55,8 @@ class DataWrapper {
 
   constructor(dayName: string) {
     const x = this.default.filter((day) => dayName === day.name)
-    // eslint-disable-next-line prefer-destructuring
-    this.startDay = x[0]
+
+    this.startDay = x[0]!
   }
 
   processWeekDayOrder() {
@@ -77,9 +77,9 @@ export class CustomLuxonUtils extends LuxonUtils {
     this.wrapper = new DataWrapper('Sun')
   }
 
-  public getWeekdays = () => this.wrapper.processWeekDayOrder()
+  public override getWeekdays = () => this.wrapper.processWeekDayOrder()
 
-  public getWeekArray = (date: DateTime) => {
+  public override getWeekArray = (date: DateTime) => {
     const { index } = this.wrapper.startDay
     const endDate = date
       .endOf('month')
@@ -98,7 +98,7 @@ export class CustomLuxonUtils extends LuxonUtils {
     const { days } = endDate.diff(startDate, 'days').toObject()
 
     const weeks: DateTime[][] = []
-    new Array<number>(Math.round(days!))
+    Array.from({ length: Math.round(days!) })
       .fill(0)
       .map((_, i) => i)
       .map((day) => startDate.plus({ days: day }))
@@ -108,7 +108,7 @@ export class CustomLuxonUtils extends LuxonUtils {
           return
         }
 
-        weeks[weeks.length - 1].push(v)
+        weeks[weeks.length - 1]!.push(v)
       })
     // console.log('weeks', weeks)
     // a consequence of all this shifting back/forth 1 day is that you might end up with a week

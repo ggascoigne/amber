@@ -1,26 +1,23 @@
-import React from 'react'
+import type React from 'react'
 
+import type { SxProps, Theme } from '@mui/material'
 import { Grid } from '@mui/material'
 import type { GridProps } from '@mui/material/Grid'
-import { makeStyles } from 'tss-react/mui'
 
-const useStyles = makeStyles()(() => ({
-  grid: {
+interface GridItemProps extends GridProps {
+  className?: string
+  sx?: SxProps<Theme>
+}
+
+export const GridItem: React.FC<GridItemProps> = ({ children, className = '', sx, ...rest }) => {
+  const defaultSx: SxProps<Theme> = {
     position: 'relative',
     width: '100%',
     minHeight: '1px',
     flexBasis: 'auto',
-  },
-}))
-
-interface GridItemProps extends GridProps {
-  className?: string
-}
-
-export const GridItem: React.FC<GridItemProps> = ({ children, className = '', ...rest }) => {
-  const { classes } = useStyles()
+  }
   return (
-    <Grid item {...rest} className={`${classes.grid} ${className}`}>
+    <Grid {...rest} className={className} sx={[defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]}>
       {children}
     </Grid>
   )

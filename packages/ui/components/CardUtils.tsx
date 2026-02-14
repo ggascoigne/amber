@@ -1,34 +1,8 @@
-import React, { PropsWithChildren } from 'react'
-
-import { Theme } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
+import type { PropsWithChildren } from 'react'
+import React from 'react'
 
 import { CardHeader } from './Card'
 import { GridItem } from './Grid'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  gridItem: {
-    paddingBottom: 10,
-  },
-  label: {
-    fontWeight: 500,
-    minWidth: 80,
-  },
-  tinyHeaderText: {
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
-  header: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'space-between',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 0,
-      marginRight: 0,
-    },
-  },
-}))
 
 export const linkRenderer = (string: string) => {
   const linkExp = /^https?:\/\/[a-z0-9_./-]*$/i
@@ -68,39 +42,64 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
   name,
   tiny = false,
   children,
-}) => {
-  const { classes, cx } = useStyles()
-  return (
-    <CardHeader color='info' className={classes.header}>
-      <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-        <GridItem xs={12} sm={children ? 7 : 12}>
-          <h4 className={cx({ [classes.tinyHeaderText]: tiny })}>{name}</h4>
-        </GridItem>
-        {children && (
-          <GridItem xs={12} sm={5}>
-            {children}
-          </GridItem>
-        )}
+}) => (
+  <CardHeader
+    color='info'
+    sx={[
+      {
+        display: 'flex',
+        flex: 1,
+        justifyContent: 'space-between',
+        ml: '15px',
+        mr: '15px',
+      },
+      // mimic previous behavior of removing side margins on small screens
+      (theme) => ({
+        [theme.breakpoints.down('md')]: {
+          ml: 0,
+          mr: 0,
+        },
+      }),
+    ]}
+  >
+    <GridItem container spacing={2} size={12} sx={{ pr: 0 }}>
+      <GridItem container size={{ xs: 12, sm: children ? 7 : 12 }}>
+        <h4
+          style={
+            tiny
+              ? {
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  margin: 0,
+                }
+              : { margin: 0 }
+          }
+        >
+          {name}
+        </h4>
       </GridItem>
-    </CardHeader>
-  )
-}
+      {children && (
+        <GridItem container size={{ xs: 12, sm: 5 }}>
+          {children}
+        </GridItem>
+      )}
+    </GridItem>
+  </CardHeader>
+)
 
 export const Field: React.FC<PropsWithChildren<{ label: string; small?: boolean; tiny?: boolean }>> = ({
   label,
   children,
   small,
   tiny = false,
-}) => {
-  const { classes, cx } = useStyles()
-  return (
-    <>
-      <GridItem xs={12} sm={2} className={cx(classes.gridItem, classes.label)}>
-        {label}
-      </GridItem>
-      <GridItem xs={12} sm={small ? 4 : tiny ? 8 : 10} className={classes.gridItem}>
-        {children}
-      </GridItem>
-    </>
-  )
-}
+}) => (
+  <>
+    <GridItem size={{ xs: 12, sm: 2 }} sx={{ pb: '10px', fontWeight: 500, minWidth: 80 }}>
+      {label}
+    </GridItem>
+    <GridItem size={{ xs: 12, sm: small ? 4 : tiny ? 8 : 10 }} sx={{ pb: '10px' }}>
+      {children}
+    </GridItem>
+  </>
+)

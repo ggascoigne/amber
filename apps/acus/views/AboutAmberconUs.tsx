@@ -1,12 +1,10 @@
+import type { FrontMatter } from '@amber/amber'
+import { MdxPage, Page } from '@amber/amber'
+import { useConfiguration, useYearFilter } from '@amber/amber/utils'
 import { useTheme } from '@mui/material/styles'
-import { useConfiguration, useYearFilter } from 'amber/utils'
-import { FrontMatter, MdxPage, Page } from 'ui'
 
-import * as aboutAmberconUsContent from '../content/AboutAmberconUsContent.mdx'
-import * as aboutAmberconUsContentVirtual from '../content/AboutAmberconUsContentVirtual.mdx'
-
-const { default: AboutAmberconNwContent, ...acnwFm } = aboutAmberconUsContent
-const { default: AboutAmberconNwContentVirtual, ...virtualFm } = aboutAmberconUsContentVirtual
+import AboutAmberconNwContent, { metadata as acusFm } from '../content/AboutAmberconUsContent.mdx'
+import AboutAmberconNwContentVirtual, { metadata as virtualFm } from '../content/AboutAmberconUsContentVirtual.mdx'
 
 const AboutAmberconUs = () => {
   const theme = useTheme()
@@ -15,9 +13,7 @@ const AboutAmberconUs = () => {
 
   const isVirtual = configuration.startDates[year].virtual
 
-  return !isVirtual ? (
-    <MdxPage frontMatter={acnwFm} component={<AboutAmberconNwContent />} />
-  ) : (
+  return isVirtual ? (
     <Page
       title={(virtualFm as FrontMatter).title}
       titleElement={
@@ -28,6 +24,8 @@ const AboutAmberconUs = () => {
     >
       <AboutAmberconNwContentVirtual />
     </Page>
+  ) : (
+    <MdxPage frontMatter={acusFm} component={<AboutAmberconNwContent />} />
   )
 }
 

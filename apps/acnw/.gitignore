@@ -1,0 +1,5 @@
+.next
+.vercel
+playwright/.auth
+playwright-report
+test-results

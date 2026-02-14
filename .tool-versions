@@ -1,0 +1,3 @@
+# config file for the tool asdf
+pnpm 10.27.0
+nodejs 24.12.0

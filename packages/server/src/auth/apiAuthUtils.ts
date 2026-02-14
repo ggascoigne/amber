@@ -1,0 +1,55 @@
+import { isDev } from '@amber/environment'
+import type { SessionData } from '@auth0/nextjs-auth0/types'
+
+import { dbAdmin } from '../db'
+import { getUserWithRoles, createUser } from '../generated/prisma/sql'
+
+type AuthInfo = { userId: number; roles: string[] }
+
+export const queryUserRoles = async (email: string): Promise<AuthInfo | undefined> => {
+  const selectRows = await dbAdmin.$queryRawTyped(getUserWithRoles(email))
+  return selectRows.length > 0
+    ? {
+        userId: selectRows[0]!.user_id,
+        roles: selectRows.map((r) => r.authority),
+      }
+    : undefined
+}
+
+export const getUserRoles = async (session: SessionData): Promise<AuthInfo | undefined> => {
+  // Roles should only be set to verified users.
+  // Likewise, user records should only be created for verified users
+  if (!session) {
+    // really shouldn't be possible
+    console.error('No session!')
+    return undefined
+  }
+  if (!session?.user?.email) {
+    // really shouldn't be possible
+    console.error('User with no email!')
+    return undefined
+  }
+  if (!session?.user?.email_verified) {
+    isDev && console.log('User not verified')
+    return undefined
+  }
+  if ((session.tokenSet?.expiresAt ?? 0) < new Date().getTime() / 1000) {
+    isDev && console.log('Session has expired')
+    return undefined
+  }
+
+  const { email } = session.user
+  const userRoles = await queryUserRoles(email)
+  if (userRoles) {
+    return userRoles
+  } else {
+    // roles are handled by a trigger
+    const insertRows = await dbAdmin.$queryRawTyped(createUser(email))
+    return insertRows.length > 0
+      ? {
+          userId: insertRows[0]!.user_id,
+          roles: ['ROLE_USER'],
+        }
+      : undefined
+  }
+}

@@ -1,16 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { Children } from '@amber/ui'
+import { useNotification } from '@amber/ui'
 import StarIcon from '@mui/icons-material/Star'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
-import { Avatar, Badge, Button, Theme, Tooltip, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Avatar, Badge, Button, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import { QueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import fetch from 'isomorphic-fetch'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Children, useNotification } from 'ui'
 
-import { Auth0User, Perms, Roles, useAuth, useRoleOverride } from './Auth'
+import type { Auth0User } from './Auth'
+import { Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { ProfileDialog, useProfile } from './Profile'
 
@@ -112,7 +116,14 @@ interface MenuButtonProps {
 const MenuButton: React.FC<MenuButtonProps> = ({ small, user }) => {
   const unverified = user.email_verified ? '' : ' (unverified)'
   return small ? (
-    <Box sx={{ display: 'flex', flexDirection: 'row', ml: 1, alignItems: 'center' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        ml: 1,
+        alignItems: 'center',
+      }}
+    >
       <ProfileImage user={user} />
       <Typography component='span' sx={{ textTransform: 'none', padding: 2 }}>
         {user.email}
@@ -139,7 +150,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const notify = useNotification()
   const [authInitialized, setAuthInitialized] = useState(false)
   const [roleOverride, setRoleOverride] = useRoleOverride()
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
   const router = useRouter()
   const [profileOpen, setProfileOpen] = useState(false)
   const profile = useProfile()
@@ -184,7 +195,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
             variant: 'success',
           })
         } catch (e: any) {
-          console.log(e)
+          console.error(e)
           notify({
             text: e,
             variant: 'error',
@@ -255,6 +266,8 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
               queryClient.clear()
               router.push('/api/auth/logout')
               break
+            default:
+              throw new Error(`Unknown menu item: ${prop}`)
           }
         }}
       />

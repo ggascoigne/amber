@@ -1,13 +1,24 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import {} from 'tss-react'
-import { makeStyles } from 'tss-react/mui'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
-export const useStyles = makeStyles()({
-  card: {
-    border: '0',
-    marginBottom: '30px',
-    marginTop: '30px',
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  id?: string
+  className?: string
+  plain?: boolean
+  carousel?: boolean
+  onClick?: () => void
+  sx?: SxProps<Theme>
+}
+
+export const Card: React.FC<PropsWithChildren<CardProps>> = (props) => {
+  const { className, children, plain, carousel, sx, ...rest } = props
+  const defaultSx: SxProps<Theme> = {
+    border: 0,
+    mb: '30px',
+    mt: '30px',
     borderRadius: '6px',
     color: 'rgba(0, 0, 0, 0.87)',
     background: '#fff',
@@ -16,42 +27,17 @@ export const useStyles = makeStyles()({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    minWidth: '0',
+    minWidth: 0,
     wordWrap: 'break-word',
     fontSize: '.875rem',
     transition: 'all 300ms linear',
-  },
-  cardPlain: {
-    background: 'transparent',
-    boxShadow: 'none',
-  },
-  cardCarousel: {
-    overflow: 'hidden',
-  },
-})
-
-interface CardProps {
-  id?: string
-  className?: string
-  plain?: boolean
-  carousel?: boolean
-  onClick?: () => void
-}
-
-export const Card: React.FC<PropsWithChildren<CardProps>> = (props) => {
-  const { classes, cx } = useStyles()
-  const { className, children, plain, carousel, ...rest } = props
-  const cardClasses = cx(
-    classes.card,
-    {
-      [classes.cardPlain]: plain,
-      [classes.cardCarousel]: carousel,
-    },
-    className,
-  )
+    ...(plain ? { background: 'transparent', boxShadow: 'none' } : {}),
+    ...(carousel ? { overflow: 'hidden' } : {}),
+  }
+  const mergedSx = [defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]
   return (
-    <div className={cardClasses} {...rest}>
+    <Box className={className} sx={mergedSx} {...rest}>
       {children}
-    </div>
+    </Box>
   )
 }

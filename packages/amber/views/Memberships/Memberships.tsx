@@ -1,326 +1,347 @@
-import React, { MouseEventHandler, useCallback, useMemo, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 
+import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
+import { useInvalidateMembershipQueries, useTRPC } from '@amber/client'
+import { notEmpty } from '@amber/ui'
+import { BlankNoCell, DateCell, YesBlankCell } from '@amber/ui/components/CellFormatters'
+import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
+import { Table, getSelectedRows } from '@amber/ui/components/Table'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import { Column, Row, TableInstance, TableState } from 'react-table'
-import { BlankNoCell, DateCell, GraphQLError, Loader, notEmpty, Page, Table, useLocalStorage, YesBlankCell } from 'ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { ColumnDef, TableState } from '@tanstack/react-table'
 
 import { GameAssignmentDialog } from './GameAssignmentDialog'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  DeleteMembershipDocument,
-  GetHotelRoomsDocument,
-  GetMembershipsByYearDocument,
-} from '../../client'
-import { useInvalidateMembershipQueries } from '../../client/querySets'
-import { ProfileFormType, useProfile } from '../../components/Profile'
-import type { TableMouseEventHandler } from '../../types/react-table-config'
+import { Page } from '../../components'
+import { useProfile } from '../../components/Profile'
+import { TransportError } from '../../components/TransportError'
 import { getSlotDescription, useConfiguration, useSendEmail, useYearFilter } from '../../utils'
-import { Membership, MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
+import type { MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
+import { toLegacyApiMembership } from '../../utils/membershipUtils'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
 export interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
   initialValues?: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
   short?: boolean
 }
 
-const initialState: Partial<TableState<Membership>> = {
-  sortBy: [
+const initialState: Partial<TableState> = {
+  sorting: [
     {
       id: 'lastName',
       desc: false,
     },
   ],
-  hiddenColumns: [
-    'hotelRoomId',
-    'interestLevel',
-    'message',
-    'offerSubsidy',
-    'requestOldPrice',
-    'roomPreferenceAndNotes',
-    'roomingPreferences',
-    'roomingWith',
-  ],
+  columnVisibility: {
+    hotelRoomId: false,
+    interestLevel: false,
+    message: false,
+    offerSubsidy: false,
+    requestOldPrice: false,
+    roomPreferenceAndNotes: false,
+    roomingPreferences: false,
+    roomingWith: false,
+  },
 }
 
-const memberColumns: Column<Membership>[] = [
+const memberColumns: ColumnDef<MembershipAndUserAndRoom>[] = [
   {
-    accessor: 'id',
-    Header: 'Member ID',
-    width: 70,
+    accessorKey: 'id',
+    header: 'Member ID',
+    size: 70,
+    meta: { align: 'right' as const },
+    enableGlobalFilter: false,
   },
   {
     id: 'userId',
-    accessor: (r: Membership) => r.user?.id,
-    Header: 'User ID',
-    width: 60,
+    header: 'User ID',
+    accessorFn: (row) => row.user?.id,
+    size: 60,
+    meta: { align: 'right' as const },
+    enableGlobalFilter: false,
   },
   {
     id: 'firstName',
-    accessor: (r: Membership) => r.user?.firstName,
-    width: 70,
-    disableGlobalFilter: false,
+    header: 'First Name',
+    accessorFn: (row) => row.user?.firstName,
+    size: 70,
+    enableGlobalFilter: true,
   },
   {
     id: 'lastName',
-    accessor: (r: Membership) => r.user?.lastName,
-    width: 100,
-    disableGlobalFilter: false,
+    header: 'Last Name',
+    accessorFn: (row) => row.user?.lastName,
+    size: 100,
+    enableGlobalFilter: true,
   },
 ]
 
-const columns: Column<Membership>[] = [
+const columns: ColumnDef<MembershipAndUserAndRoom>[] = [
   {
-    Header: 'Member',
+    header: 'Member',
     columns: memberColumns,
   },
   {
-    Header: 'Attendance',
+    header: 'Attendance',
     columns: [
       {
-        accessor: 'attendance',
-        width: 60,
+        accessorKey: 'attendance',
+        header: 'Attendance',
+        size: 60,
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'arrivalDate',
-        Cell: DateCell,
+        accessorKey: 'arrivalDate',
+        header: 'Arrival Date',
+        cell: DateCell,
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'departureDate',
-        Cell: DateCell,
+        accessorKey: 'departureDate',
+        header: 'Departure Date',
+        cell: DateCell,
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'interestLevel',
+        accessorKey: 'interestLevel',
+        header: 'Interest Level',
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'message',
+        accessorKey: 'message',
+        header: 'Message',
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'volunteer',
-        Cell: YesBlankCell,
-        sortType: 'basic',
-        width: 65,
+        accessorKey: 'volunteer',
+        header: 'Volunteer',
+        cell: YesBlankCell,
+        size: 65,
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'attending',
-        Cell: BlankNoCell,
-        sortType: 'basic',
-        width: 65,
+        accessorKey: 'attending',
+        header: 'Attending',
+        cell: BlankNoCell,
+        size: 65,
+        enableGlobalFilter: false,
       },
-      { accessor: 'hotelRoomId' },
-      { accessor: 'offerSubsidy' },
-      { accessor: 'requestOldPrice', Cell: YesBlankCell, sortType: 'basic' },
-      { accessor: 'roomPreferenceAndNotes' },
-      { accessor: 'roomingPreferences' },
-      { accessor: 'roomingWith' },
+      {
+        accessorKey: 'hotelRoomId',
+        header: 'Hotel Room ID',
+        meta: { align: 'right' as const },
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: 'offerSubsidy',
+        header: 'Offer Subsidy',
+        cell: YesBlankCell,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: 'requestOldPrice',
+        header: 'Request Old Price',
+        cell: YesBlankCell,
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: 'roomPreferenceAndNotes',
+        header: 'Room Preference & Notes',
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: 'roomingPreferences',
+        header: 'Rooming Preferences',
+        enableGlobalFilter: false,
+      },
+      {
+        accessorKey: 'roomingWith',
+        header: 'Rooming With',
+        enableGlobalFilter: false,
+      },
     ],
   },
 ]
 
-const virtualColumns: Column<Membership>[] = [
+const virtualColumns: ColumnDef<MembershipAndUserAndRoom>[] = [
   {
-    Header: 'Member',
+    header: 'Member',
     columns: memberColumns,
   },
   {
-    Header: 'Attendance',
+    header: 'Attendance',
     columns: [
       {
-        accessor: 'slotsAttending',
+        accessorKey: 'slotsAttending',
+        header: 'Slots Attending',
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'message',
+        accessorKey: 'message',
+        header: 'Message',
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'volunteer',
-        Cell: YesBlankCell,
-        width: 65,
+        accessorKey: 'volunteer',
+        header: 'Volunteer',
+        cell: YesBlankCell,
+        size: 65,
+        enableGlobalFilter: false,
       },
       {
-        accessor: 'attending',
-        Cell: BlankNoCell,
-        width: 65,
+        accessorKey: 'attending',
+        header: 'Attending',
+        cell: BlankNoCell,
+        size: 65,
+        enableGlobalFilter: false,
       },
     ],
   },
 ]
 
-const Memberships: React.FC<{ newMembershipDialog: React.FC<MembershipWizardProps> }> = React.memo(
-  ({ newMembershipDialog }) => {
-    const MembershipWizard = newMembershipDialog
-    const profile = useProfile()
-    const configuration = useConfiguration()
-    const [year] = useYearFilter()
-    const [, setLastMembershipYear] = useLocalStorage<number>('lastMembershipYear', 0)
-    const invalidateMembershipQueries = useInvalidateMembershipQueries()
-    const sendEmail = useSendEmail()
+const Memberships: React.FC<{
+  newMembershipDialog: React.FC<MembershipWizardProps>
+}> = ({ newMembershipDialog }) => {
+  const trpc = useTRPC()
+  const MembershipWizard = newMembershipDialog
+  const profile = useProfile()
+  const configuration = useConfiguration()
+  const [year] = useYearFilter()
+  const invalidateMembershipQueries = useInvalidateMembershipQueries()
+  const sendEmail = useSendEmail()
 
-    const [showEdit, setShowEdit] = useState(false)
-    const [showGameAssignment, setShowGameAssignment] = useState(false)
-    const [selection, setSelection] = useState<Membership[]>([])
-    const deleteMembership = useGraphQLMutation(DeleteMembershipDocument)
-    const { error, data, refetch } = useGraphQL(GetMembershipsByYearDocument, {
+  const [showGameAssignment, setShowGameAssignment] = useState(false)
+  const deleteMembership = useMutation(trpc.memberships.deleteMembership.mutationOptions())
+  const {
+    error,
+    data: memberships = [],
+    refetch,
+    isLoading,
+    isFetching,
+  } = useQuery(
+    trpc.memberships.getMembershipsByYear.queryOptions({
       year,
+    }),
+  )
+
+  const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
+
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete, updateSelection } =
+    useStandardHandlers<MembershipAndUserAndRoom>({
+      deleteHandler: (selectedRows) => selectedRows.map((row) => deleteMembership.mutateAsync({ id: row.id })),
+      invalidateQueries: invalidateMembershipQueries,
+      onCloseCallback: () => {
+        setShowGameAssignment(false)
+      },
     })
 
-    const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
+  const handleUpdateGameAssignments: TableSelectionMouseEventHandler<MembershipAndUserAndRoom> = useCallback(
+    (table, selectedKeys) => {
+      const selected = updateSelection(table, selectedKeys)
+      if (!selected.length) return
+      setShowGameAssignment(true)
+    },
+    [updateSelection],
+  )
 
-    const onUpdateGameAssignments = useCallback(
-      (instance: TableInstance<Membership>) => async () => {
-        setShowGameAssignment(true)
-        setSelection(instance.selectedFlatRows.map((r) => r.original))
-      },
-      [],
-    )
+  const handleSendRegistrationEmail: TableSelectionMouseEventHandler<MembershipAndUserAndRoom> = useCallback(
+    (table, selectedKeys) => {
+      const selected = getSelectedRows(table, selectedKeys)
+      if (!selected.length) return
+      const payload = selected.map((m) => {
+        const room = roomData?.filter(notEmpty).find((r) => r.id === m.hotelRoomId)
 
-    const onSendRegistrationEmail = useCallback(
-      (instance: TableInstance<Membership>) => async () => {
-        const selected = instance.selectedFlatRows.map((r) => r.original)
-        const payload = selected.map((m) => {
-          const room = roomData
-            ?.hotelRooms!.edges.map((v) => v.node)
-            .filter(notEmpty)
-            .find((r) => r.id === m.hotelRoomId)
-
-          const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
-            getSlotDescription(configuration, {
-              year: configuration.year,
-              slot: parseInt(i, 10),
-              local: configuration.virtual,
-            }),
-          )
-          const owed = (m.user?.balance || 0) < 0 ? 0 - m.user!.balance : 0
-          return {
+        const slotDescriptions = m.slotsAttending?.split(',').map((i: string) =>
+          getSlotDescription(configuration, {
             year: configuration.year,
-            virtual: configuration.virtual,
-            name: m.user?.fullName,
-            email: m.user?.email,
-            address: m.user?.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
-            phoneNumber: m.user?.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
-            update: 'status',
-            url: `${window.location.origin}/membership`,
-            paymentUrl: `${window.location.origin}/payment`,
-            membership: m,
-            slotDescriptions,
-            owed,
-            room,
-          } as MembershipConfirmationItem
-        })
-
-        sendEmail({
-          type: 'membershipConfirmation',
-          body: payload,
-        })
-      },
-      [configuration, roomData?.hotelRooms, sendEmail],
-    )
-
-    const commands = useMemo(
-      () => [
-        {
-          label: 'Edit Game Assignments',
-          onClick: onUpdateGameAssignments,
-          icon: <AssignmentIndIcon />,
-          enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length === 1,
-          type: 'button' as const,
-        },
-        {
-          label: 'Resend Registration Email',
-          onClick: onSendRegistrationEmail,
-          icon: <MailOutlineIcon />,
-          enabled: ({ state }: TableInstance<Membership>) => Object.keys(state.selectedRowIds).length > 0,
-          type: 'button' as const,
-        },
-      ],
-      [onSendRegistrationEmail, onUpdateGameAssignments],
-    )
-
-    if (error) {
-      return <GraphQLError error={error} />
-    }
-
-    if (!data) {
-      return <Loader />
-    }
-    const { memberships } = data
-
-    const list: Membership[] = memberships!.nodes.filter(notEmpty)
-
-    const onAdd: TableMouseEventHandler<Membership> = () => () => {
-      setShowEdit(true)
-    }
-
-    const onCloseEdit: MouseEventHandler = () => {
-      setShowEdit(false)
-      setShowGameAssignment(false)
-      setSelection([])
-    }
-
-    const onDelete = (instance: TableInstance<Membership>) => () => {
-      const toDelete = instance.selectedFlatRows.map((r) => r.original)
-      const updater = toDelete.map((m) =>
-        deleteMembership.mutateAsync(
-          {
-            input: { id: m.id },
-          },
-          {
-            onSuccess: invalidateMembershipQueries,
-          },
-        ),
-      )
-      Promise.allSettled(updater).then(() => {
-        console.log('deleted')
-        instance.toggleAllRowsSelected(false)
-        setSelection([])
-        setLastMembershipYear(0) // flush membership cache, not really correct, but it makes testing so much easier
+            slot: parseInt(i, 10),
+            local: configuration.virtual,
+          }),
+        )
+        const owed = (m.user?.balance ?? 0) < 0 ? 0 - m.user!.balance : 0
+        return {
+          year: configuration.year,
+          virtual: configuration.virtual,
+          name: m.user?.fullName,
+          email: m.user?.email,
+          address: m.user?.profile?.[0]?.snailMailAddress ?? undefined,
+          phoneNumber: m.user?.profile?.[0]?.phoneNumber ?? undefined,
+          update: 'status',
+          url: `${window.location.origin}/membership`,
+          paymentUrl: `${window.location.origin}/payment`,
+          membership: toLegacyApiMembership(m),
+          slotDescriptions,
+          owed,
+          room,
+        } as MembershipConfirmationItem
       })
-    }
 
-    const onEdit = (instance: TableInstance<Membership>) => () => {
-      setShowEdit(true)
-      setSelection(instance.selectedFlatRows.map((r) => r.original))
-    }
+      sendEmail({
+        type: 'membershipConfirmation',
+        body: payload,
+      })
+    },
+    [roomData, configuration, sendEmail],
+  )
 
-    const onClick = (row: Row<Membership>) => {
-      setShowEdit(true)
-      setSelection([row.original])
-    }
+  const toolbarActions: Action<MembershipAndUserAndRoom>[] = [
+    {
+      label: 'Edit Game Assignments',
+      onClick: handleUpdateGameAssignments,
+      icon: <AssignmentIndIcon />,
+      enabled: (_table, selectedKeys) => selectedKeys.length === 1,
+    },
+    {
+      label: 'Resend Registration Email',
+      onClick: handleSendRegistrationEmail,
+      icon: <MailOutlineIcon />,
+      enabled: (_table, selectedKeys) => selectedKeys.length > 0,
+    },
+  ]
 
-    return (
-      <Page title='Membership'>
-        {showEdit && (
-          <MembershipWizard
-            open={showEdit}
-            onClose={onCloseEdit}
-            initialValues={selection[0]}
-            profile={profile!}
-            short
-          />
-        )}
-        {showGameAssignment && (
-          <GameAssignmentDialog open={showGameAssignment} onClose={onCloseEdit} membership={selection[0]} />
-        )}
-        <Table<Membership>
-          name='members'
-          data={list}
-          columns={configuration.startDates[year].virtual ? virtualColumns : columns}
-          onAdd={onAdd}
-          disableGroupBy
-          onDelete={onDelete}
-          onEdit={onEdit}
-          onClick={onClick}
-          initialState={initialState}
-          extraCommands={commands}
-          onRefresh={() => refetch()}
-          defaultColumnDisableGlobalFilter
+  if (error) {
+    return <TransportError error={error} />
+  }
+
+  const tableColumns = configuration.startDates[year].virtual ? virtualColumns : columns
+
+  return (
+    <Page title='Membership' variant='fill' hideTitle>
+      {showEdit && (
+        <MembershipWizard
+          open={showEdit}
+          onClose={handleCloseEdit}
+          initialValues={selection[0]}
+          profile={profile!}
+          short
         />
-      </Page>
-    )
-  },
-)
+      )}
+      {showGameAssignment && (
+        <GameAssignmentDialog open={showGameAssignment} onClose={handleCloseEdit} membership={selection[0]} />
+      )}
+      <Table<MembershipAndUserAndRoom>
+        title='Membership'
+        name='members'
+        data={memberships}
+        columns={tableColumns}
+        initialState={initialState}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
+        onAdd={onAdd}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        refetch={refetch}
+        additionalToolbarActions={toolbarActions}
+        enableGrouping={false}
+      />
+    </Page>
+  )
+}
 
 export default Memberships

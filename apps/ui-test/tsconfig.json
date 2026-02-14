@@ -1,0 +1,16 @@
+{
+  "extends": "@amber/tsconfig/tsconfig-nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/dev/types/**/*.ts", "scripts", "playwright"],
+  "exclude": ["node_modules"]
+}

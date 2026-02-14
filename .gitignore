@@ -69,9 +69,9 @@ packages/amber/version.ts
 .wireit
 .next
 tsconfig.tsbuildinfo
-packages/database/shared/graphql-schema.graphql
 
 # excluded since it contain PII
 name_cleanup.js
 packages/database/scripts/cliCommands/import.ts
 scripts/backup_private.sh
+**/test-results

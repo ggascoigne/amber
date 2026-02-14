@@ -1,80 +1,70 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
-import {
-  CheckboxWithLabel,
-  EditDialog,
-  GridContainer,
-  GridItem,
-  OnCloseHandler,
-  pick,
-  TextField,
-  ToFormValues,
-  useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+import type { HotelRoomDetailsEditorType } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { CheckboxWithLabel, EditDialog, GridContainer, GridItem, pick, TextField, useNotification } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { FormikHelpers } from 'formik'
 
-import { HotelRoomDetail } from './HotelRoomDetails'
-
-import { useGraphQLMutation, CreateHotelRoomDetailDocument, UpdateHotelRoomDetailByNodeIdDocument } from '../../client'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().min(2).max(100).required('Required'),
-  roomType: Yup.string().min(2).max(100).required('Required'),
-  comment: Yup.string().min(2).max(100).required('Required'),
-  reservedFor: Yup.string().min(2).max(100).required('Required'),
-  bathroomType: Yup.string().min(2).max(100).required('Required'),
+  roomType: Yup.string().max(100).required('Required'),
+  comment: Yup.string().max(100).required('Required'),
+  reservedFor: Yup.string().max(50).required('Required'),
+  bathroomType: Yup.string().max(100).required('Required'),
   gamingRoom: Yup.boolean().required('Required'),
   enabled: Yup.boolean().required('Required'),
-  formattedRoomType: Yup.string().min(2).max(100).required('Required'),
-  internalRoomType: Yup.string().min(2).max(100).required('Required'),
+  formattedRoomType: Yup.string().max(255).required('Required'),
+  internalRoomType: Yup.string().max(100).required('Required'),
   reserved: Yup.boolean().required('Required'),
 })
-
-type HotelRoomDetailType = ToFormValues<HotelRoomDetail>
 
 interface HotelRoomDetailsDialogProps {
   open: boolean
   onClose: OnCloseHandler
-  initialValues?: HotelRoomDetailType
+  initialValues?: HotelRoomDetailsEditorType
 }
 
 export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
-  const createHotelRoomDetail = useGraphQLMutation(CreateHotelRoomDetailDocument)
-  const updateHotelRoomDetail = useGraphQLMutation(UpdateHotelRoomDetailByNodeIdDocument)
+  const trpc = useTRPC()
+  const createHotelRoomDetail = useMutation(trpc.hotelRoomDetails.createHotelRoomDetail.mutationOptions())
+  const updateHotelRoomDetail = useMutation(trpc.hotelRoomDetails.updateHotelRoomDetail.mutationOptions())
   const queryClient = useQueryClient()
   const notify = useNotification()
 
-  return async (values: HotelRoomDetailType) => {
-    if (values.nodeId) {
+  return async (values: HotelRoomDetailsEditorType) => {
+    if (values.id) {
       await updateHotelRoomDetail
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(
-                  values,
-                  'id',
-                  'name',
-                  'roomType',
-                  'comment',
-                  'reservedFor',
-                  'bathroomType',
-                  'gamingRoom',
-                  'enabled',
-                  'formattedRoomType',
-                  'internalRoomType',
-                  'reserved',
-                ),
-              },
+            id: values.id,
+            data: {
+              ...pick(
+                values,
+                'id',
+                'name',
+                'roomType',
+                'comment',
+                'reservedFor',
+                'bathroomType',
+                'gamingRoom',
+                'enabled',
+                'formattedRoomType',
+                'internalRoomType',
+                'reserved',
+              ),
             },
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey(),
+              })
             },
           },
         )
@@ -89,30 +79,25 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
       await createHotelRoomDetail
         .mutateAsync(
           {
-            input: {
-              hotelRoomDetail: {
-                ...pick(
-                  values,
-                  'nodeId',
-                  'id',
-                  'name',
-                  'roomType',
-                  'comment',
-                  'reservedFor',
-                  'bathroomType',
-                  'gamingRoom',
-                  'enabled',
-                  'formattedRoomType',
-                  'internalRoomType',
-                  'reserved',
-                ),
-                version: 1,
-              },
-            },
+            ...pick(
+              values,
+              'name',
+              'roomType',
+              'comment',
+              'reservedFor',
+              'bathroomType',
+              'gamingRoom',
+              'enabled',
+              'formattedRoomType',
+              'internalRoomType',
+              'reserved',
+            ),
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRoomDetails'] })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRoomDetails.getHotelRoomDetails.queryKey(),
+              })
             },
           },
         )
@@ -130,12 +115,12 @@ export const useEditHotelRoomDetail = (onClose: OnCloseHandler) => {
 export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ open, onClose, initialValues }) => {
   const createOrUpdateHotelRoomDetail = useEditHotelRoomDetail(onClose)
 
-  const onSubmit = async (values: HotelRoomDetailType, _actions: FormikHelpers<HotelRoomDetailType>) => {
+  const onSubmit = async (values: HotelRoomDetailsEditorType, _actions: FormikHelpers<HotelRoomDetailsEditorType>) => {
     await createOrUpdateHotelRoomDetail(values)
   }
 
   const values = useMemo(() => {
-    const defaultValues: HotelRoomDetailType = {
+    const defaultValues: HotelRoomDetailsEditorType = {
       name: '',
       roomType: '',
       comment: '',
@@ -158,22 +143,22 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
       onSubmit={onSubmit}
       title='Hotel Room'
       validationSchema={validationSchema}
-      isEditing={!!values?.nodeId}
+      isEditing={!!values?.id}
     >
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='name' label='Name' margin='normal' fullWidth required autoFocus />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <LookupField realm='roomType' name='roomType' label='Room Type' margin='normal' fullWidth required />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='comment' label='Comment' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='reservedFor' label='Reserved For' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <LookupField
             realm='bathroomType'
             name='bathroomType'
@@ -183,19 +168,19 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
             required
           />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Gaming Room?' name='gamingRoom' />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Enabled?' name='enabled' />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='formattedRoomType' label='Formatted Room Type' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='internalRoomType' label='Internal Room Type' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Reserved?' name='reserved' />
         </GridItem>
       </GridContainer>

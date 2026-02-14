@@ -1,30 +1,21 @@
-import React, { useMemo, useCallback } from 'react'
+import type React from 'react'
+import { useMemo, useCallback } from 'react'
 
+import type { Setting } from '@amber/client'
+import { useTRPC, useInvalidateSettingsQueries } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { EditDialog, GridContainer, GridItem, Loader, notEmpty, useNotification } from '@amber/ui'
 import { Typography } from '@mui/material'
-import { FormikHelpers } from 'formik'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import debug from 'debug'
+import type { FormikHelpers } from 'formik'
 import { DateTime } from 'luxon'
-import {
-  EditDialog,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  Loader,
-  notEmpty,
-  OnCloseHandler,
-  useNotification,
-} from 'ui'
 
-import { Setting, SettingValue } from './shared'
+import { SettingValue } from './shared'
 
-import {
-  useGraphQL,
-  useGraphQLMutation,
-  GetSettingsDocument,
-  CreateSettingDocument,
-  UpdateSettingByNodeIdDocument,
-} from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 
+const log = debug('amber:amber:settings:addNewYear')
 interface AddNewYearDialogProps {
   open: boolean
   onClose: OnCloseHandler
@@ -34,7 +25,7 @@ type FormValues = Setting[]
 
 const SettingInput: React.FC<{ value: Setting; index: number }> = ({ value, index }) => (
   <GridContainer spacing={2} sx={{ width: '100%' }}>
-    <GridItem xs={6} md={6}>
+    <GridItem size={{ xs: 6, md: 6 }}>
       <SettingValue label={value.code} name={`[${index}].value`} value={value} />
     </GridItem>
   </GridContainer>
@@ -64,13 +55,20 @@ const newYearFields = ['config.year', ...dateFields]
 const getSetting = (settingList: Setting[] | undefined, key: string) => settingList?.find((f) => f.code === key)
 
 export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClose }) => {
-  const { isLoading, error, data } = useGraphQL(GetSettingsDocument)
-  const createSetting = useGraphQLMutation(CreateSettingDocument)
-  const updateSetting = useGraphQLMutation(UpdateSettingByNodeIdDocument)
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(
+    trpc.settings.getSettings.queryOptions(undefined, {
+      staleTime: 60 * 60 * 1000, // 1 hour - settings rarely change
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }),
+  )
+  const createSetting = useMutation(trpc.settings.createSetting.mutationOptions())
+  const updateSetting = useMutation(trpc.settings.updateSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
-  const allFields: Setting[] | undefined = data?.settings!.nodes.filter(notEmpty)
+  const allFields: Setting[] | undefined = data?.filter(notEmpty)
   const oldYear = parseInt(getSetting(allFields, 'config.year')?.value ?? '0', 10)
   const newYear = oldYear + 1
   const timeZone = getSetting(allFields, 'config.baseTimeZone')?.value ?? ''
@@ -99,16 +97,19 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
       const newValues = [...values]
         .concat([
           {
+            id: 0,
             code: `config.startDates.${newYear}.slots`,
             type: 'number',
             value: getSetting(allFields, 'config.numberOfSlots')?.value ?? '',
           },
           {
+            id: 0,
             code: `config.startDates.${newYear}.virtual`,
             type: 'boolean',
             value: 'false',
           },
           {
+            id: 0,
             code: `config.startDates.${newYear}.date`,
             type: 'date',
             value: getSetting(values, 'config.conventionStartDate')!.value,
@@ -134,31 +135,25 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         )
         .concat(allFields?.filter((s) => flags.includes(s.code)).map((v) => ({ ...v, value: 'No' })) ?? [])
 
+      // log(newValues)
+
       const updaters = newValues.reduce((acc: Promise<any>[], v) => {
         if (v) {
-          if (v.nodeId) {
+          if (v.id) {
             acc.push(
               updateSetting.mutateAsync({
-                input: {
-                  nodeId: v.nodeId,
-                  patch: {
-                    code: v.code,
-                    value: v.value,
-                    type: v.type,
-                  },
-                },
+                id: v.id,
+                code: v.code,
+                value: v.value,
+                type: v.type,
               }),
             )
           } else {
             acc.push(
               createSetting.mutateAsync({
-                input: {
-                  setting: {
-                    code: v.code,
-                    value: v.value,
-                    type: v.type,
-                  },
-                },
+                code: v.code,
+                value: v.value,
+                type: v.type,
               }),
             )
           }
@@ -181,7 +176,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data || !newList) {
     return <Loader />
@@ -195,9 +190,9 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         than once.
       </Typography>
       <Typography variant='body1' gutterBottom>
-        That said, you don't actually need to edit too much on this page, it lists every field that's added or changed
-        by adding a new year, and guarantees that all the required settings are created, after this point the items can
-        be safely edited individually.
+        That said, you don&apos;t actually need to edit too much on this page, it lists every field that&apos;s added or
+        changed by adding a new year, and guarantees that all the required settings are created, after this point the
+        items can be safely edited individually.
       </Typography>
       <GridContainer spacing={2} sx={{ pt: 2 }}>
         {newList.map((s, index) => (

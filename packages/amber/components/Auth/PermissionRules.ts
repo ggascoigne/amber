@@ -1,11 +1,5 @@
-import { asEnumLike, AtLeastOne, keys } from 'ui'
-
-export type PermissionDeclaration = AtLeastOne<{
-  dynamic?: Record<string, (data: any) => boolean>
-  static?: Perms[]
-}>
-
-export type Rules = Record<string, PermissionDeclaration>
+import type { AtLeastOne } from '@amber/ui'
+import { asEnumLike, keys } from '@amber/ui'
 
 export const Perms = asEnumLike([
   'GraphiqlLoad',
@@ -16,6 +10,13 @@ export const Perms = asEnumLike([
   'PlayerAdmin',
   'Reports',
 ])
+
+export type PermissionDeclaration = AtLeastOne<{
+  dynamic?: Record<string, (data: any) => boolean>
+  static?: Perms[]
+}>
+
+export type Rules = Record<string, PermissionDeclaration>
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Perms = keyof typeof Perms

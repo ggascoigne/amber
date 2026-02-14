@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 
+import { useInvalidatePaymentQueries, useTRPC } from '@amber/client'
 import { Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { Page } from 'ui/components'
 
-import { useGraphQL, GetUserByIdDocument } from '../../client'
-import { useInvalidatePaymentQueries } from '../../client/querySets'
+import { Page } from '../../components'
 import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
 
 export const PaymentSuccess = () => {
+  const trpc = useTRPC()
   useInitializeStripe()
   const [stripe] = useGetStripe()
   const [amount, setAmount] = useState(0)
@@ -16,20 +17,21 @@ export const PaymentSuccess = () => {
   const paymentIntentSecret = router.query.paymentIntentSecret as string
   const refresh = useInvalidatePaymentQueries()
   const user = useUser()
-  const data = useGraphQL(
-    GetUserByIdDocument,
-    { id: user.userId! },
-    {
-      refetchInterval: 10_000,
-    },
+  const data = useQuery(
+    trpc.users.getUser.queryOptions(
+      { id: user.userId! },
+      {
+        enabled: !!user.userId,
+        refetchInterval: 10_000,
+      },
+    ),
   )
-  const balance = data?.data?.user?.balance
+  const balance = data?.data?.balance
 
   useEffect(() => {
     if (stripe) {
       Promise.allSettled([stripe!.retrievePaymentIntent(paymentIntentSecret!)]).then((res) => {
         if (res[0].status === 'fulfilled') {
-          // console.log(res[0].value)
           setAmount(formatAmountFromStripe(res[0].value?.paymentIntent?.amount ?? 0))
           refresh()
         }

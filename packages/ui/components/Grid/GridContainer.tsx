@@ -1,4 +1,4 @@
-import React from 'react'
+import type React from 'react'
 
 import { Grid } from '@mui/material'
 import type { GridProps } from '@mui/material/Grid'
@@ -13,7 +13,7 @@ export const GridContainer: React.FC<GridContainerProps> = ({ children, sx, clas
     {...rest}
     sx={[
       {
-        ...{ width: 'auto' },
+        width: 'auto',
       },
       // You cannot spread `sx` directly because `SxProps` (typeof sx) can be an array.
       ...(Array.isArray(sx) ? sx : [sx]),

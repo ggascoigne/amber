@@ -1,9 +1,10 @@
-import React from 'react'
+import type React from 'react'
 
-import { GameQuery, GameQueryChild } from '../GameQuery'
+import type { GameQueryChild } from '../GameQuery'
+import { GameQuery } from '../GameQuery'
 import { GameSelectionQuery } from '../GameSelectionQuery'
 import { SlotSelector } from '../SlotSelector'
-import { SlotDecorator, SlotDecoratorParams } from '../types'
+import type { SlotDecorator, SlotDecoratorParams } from '../types'
 
 interface GameListNavigatorProps {
   small?: boolean
@@ -14,14 +15,14 @@ interface GameListNavigatorProps {
   decoratorParams?: SlotDecoratorParams
 }
 
-export const GameListNavigator: React.FC<GameListNavigatorProps> = ({
+export const GameListNavigator = ({
   small = false,
   children,
   name,
   selectQuery = false,
   decorator,
   decoratorParams,
-}) => {
+}: GameListNavigatorProps) => {
   const QueryComponent = selectQuery ? GameSelectionQuery : GameQuery
   return (
     <SlotSelector small={small} name={name} decorator={decorator} decoratorParams={decoratorParams}>

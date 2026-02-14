@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import GameBookPage from 'amber/views/GameBook/GameBookPage'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import GameBookPage from '@amber/amber/views/GameBook/GameBookPage'
 import type { NextPage } from 'next'
 
 export const getServerSideProps = configGetServerSideProps

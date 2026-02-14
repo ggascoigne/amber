@@ -1,113 +1,66 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react'
-
-import { useQueryClient } from '@tanstack/react-query'
-import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, YesBlankCell } from 'ui'
+import type { GameRoom } from '@amber/client'
+import { useTRPC, useInvalidateGameRoomQueries } from '@amber/client'
+import { YesBlankCell } from '@amber/ui/components/CellFormatters'
+import { Table } from '@amber/ui/components/Table'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { GameRoomsDialog } from './GameRoomsDialog'
 
-import {
-  GetGameRoomsQuery,
-  useGraphQLMutation,
-  useGraphQL,
-  DeleteGameRoomDocument,
-  GetGameRoomsDocument,
-} from '../../client'
-import { TableMouseEventHandler } from '../../types/react-table-config'
+import { Page } from '../../components'
+import { TransportError } from '../../components/TransportError'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-export type GameRoom = GqlType<GetGameRoomsQuery, ['rooms', 'nodes', 0]>
-
-const columns: Column<GameRoom>[] = [
+const columns: ColumnDef<GameRoom>[] = [
   {
-    accessor: 'description',
+    accessorKey: 'description',
   },
   {
-    accessor: 'size',
+    accessorKey: 'size',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    accessor: 'type',
+    accessorKey: 'type',
   },
   {
-    accessor: 'updated',
-    Cell: YesBlankCell,
-    sortType: 'basic',
+    accessorKey: 'updated',
+    cell: YesBlankCell,
   },
 ]
 
-const GameRooms: React.FC = () => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<GameRoom[]>([])
+const GameRooms = () => {
+  const trpc = useTRPC()
+  const deleteGameRoom = useMutation(trpc.gameRooms.deleteGameRoom.mutationOptions())
+  const { isLoading, isFetching, error, data = [], refetch } = useQuery(trpc.gameRooms.getGameRooms.queryOptions())
+  const invalidateGameRoomQueries = useInvalidateGameRoomQueries()
 
-  const deleteGameRoom = useGraphQLMutation(DeleteGameRoomDocument)
-  const queryClient = useQueryClient()
-
-  const { isLoading, error, data, refetch } = useGraphQL(GetGameRoomsDocument)
-
-  const clearSelectionAndRefresh = useCallback(() => {
-    setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getGameRooms'] })
-  }, [queryClient])
-
-  const onAdd: TableMouseEventHandler<GameRoom> = useCallback(
-    () => () => {
-      setShowEdit(true)
-    },
-    [],
-  )
-
-  const onCloseEdit: MouseEventHandler = useCallback(() => {
-    setShowEdit(false)
-    clearSelectionAndRefresh()
-  }, [clearSelectionAndRefresh])
-
-  const onDelete = useCallback(
-    (instance: TableInstance<GameRoom>) => () => {
-      const toDelete = instance.selectedFlatRows.map((r) => r.original)
-      const updater = toDelete.map((v) => deleteGameRoom.mutateAsync({ input: { id: v.id } }))
-      Promise.allSettled(updater).then(() => {
-        console.log('deleted')
-        clearSelectionAndRefresh()
-        instance.toggleAllRowsSelected(false)
-      })
-    },
-    [clearSelectionAndRefresh, deleteGameRoom],
-  )
-
-  const onEdit = useCallback(
-    (instance: TableInstance<GameRoom>) => () => {
-      setShowEdit(true)
-      setSelection(instance.selectedFlatRows.map((r) => r.original))
-    },
-    [],
-  )
-
-  const onClick = useCallback((row: Row<GameRoom>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }, [])
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } = useStandardHandlers<GameRoom>({
+    deleteHandler: (selectedRows) => selectedRows.map((row) => deleteGameRoom.mutateAsync({ id: row.id })),
+    invalidateQueries: invalidateGameRoomQueries,
+  })
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  const list: GameRoom[] = data.rooms!.nodes.filter(notEmpty)
 
   return (
-    <Page title='Game Rooms'>
-      {showEdit && <GameRoomsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
+    <Page title='Game Rooms' variant='fill' hideTitle>
+      {showEdit && <GameRoomsDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
       <Table<GameRoom>
+        title='Game Rooms'
         name='gameRooms'
-        data={list}
+        data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
         onAdd={onAdd}
-        onDelete={onDelete}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onDelete={onDelete}
+        refetch={refetch}
+        enableGrouping={false}
       />
     </Page>
   )

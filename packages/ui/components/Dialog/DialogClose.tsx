@@ -1,27 +1,23 @@
-import React, { MouseEventHandler } from 'react'
+import type { MouseEventHandler } from 'react'
+import type React from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
-import { Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
-import { makeStyles } from 'tss-react/mui'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-}))
 
 interface DialogCloseProps {
   onClose: MouseEventHandler
 }
 
 export const DialogClose: React.FC<DialogCloseProps> = ({ onClose }) => {
-  const { classes } = useStyles()
+  const defaultSx: SxProps<Theme> = (theme) => ({
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    color: theme.palette.grey[500],
+  })
   return (
-    <IconButton aria-label='Close' className={classes.closeButton} onClick={onClose} size='large'>
+    <IconButton aria-label='Close' onClick={onClose} size='large' sx={defaultSx}>
       <CloseIcon />
     </IconButton>
   )

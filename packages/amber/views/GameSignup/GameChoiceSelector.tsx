@@ -1,148 +1,18 @@
 import React, { useEffect } from 'react'
 
+import type { Game, GameChoice } from '@amber/client'
 import CheckIcon from '@mui/icons-material/Check'
-import { Theme, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
+import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 
-import { Game, GameChoice, GameEntry, Maybe } from '../../client'
 import { Perms, useAuth } from '../../components/Auth'
-import { Configuration, useConfiguration } from '../../utils'
+import type { Configuration } from '../../utils'
+import { useConfiguration } from '../../utils'
 
-export const isNoGame = (configuration: Configuration, id: number) => {
-  const acus = configuration.numberOfSlots === 8
-  if (acus) {
-    return id >= 596 && id <= 603
-  } else {
-    return id <= 7
-  }
-}
+// first N game ids are the No Game in Slot N entries ... :(
+export const isNoGame = (configuration: Configuration, id: number) => id <= configuration.numberOfSlots
 
 // 144 is the magic number of the Any Game entry :(
-export const isAnyGame = (configuration: Configuration, id: number) => {
-  const acus = configuration.numberOfSlots === 8
-  if (acus) {
-    return id === 604
-  } else {
-    return id === 144
-  }
-}
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  spacer: {
-    flex: '1 0 auto',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-  container: {
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '-3px 0',
-  },
-  row: {
-    flex: '1 1 auto',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    '&:last-of-type': {
-      paddingTop: 3,
-    },
-  },
-  full: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    height: 52,
-  },
-  label: {
-    width: 60,
-    textAlign: 'inherit',
-    textTransform: 'inherit',
-    // flex: 1,
-  },
-  returning: {
-    textAlign: 'end',
-    textTransform: 'inherit',
-    // flex: 1,
-  },
-  button: {
-    textTransform: 'inherit',
-    color: 'white',
-    padding: '5px 7px',
-    borderColor: 'white',
-    '& sup': {
-      lineHeight: 0,
-      display: 'inline-block',
-      paddingBottom: 3,
-    },
-    '&:hover': {
-      backgroundColor: 'rgba(102, 8, 22, .3)',
-    },
-    '&.Mui-selected': {
-      color: 'white',
-      backgroundColor: 'rgba(102, 8, 22, 1)',
-      borderLeftColor: 'white',
-      '&:hover': {
-        backgroundColor: 'rgba(102, 8, 22, .6)',
-      },
-    },
-  },
-  rankDecorator: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    textTransform: 'inherit',
-    width: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    fontSize: '0.72rem',
-    flexGrow: 0,
-    flexShrink: 0,
-    color: 'rgba(102, 8, 22, 1)',
-    backgroundColor: 'white',
-    padding: '5px',
-    borderColor: 'rgba(102, 8, 22, 1)',
-    lineHeight: '18px',
-    borderStyle: 'solid',
-    margin: -6,
-    '& sup': {
-      lineHeight: 0,
-      display: 'inline-block',
-      paddingBottom: 3,
-    },
-  },
-  fullDecorator: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    textTransform: 'inherit',
-    width: 30,
-    borderRadius: 15,
-    borderWidth: 1,
-    fontSize: '0.72rem',
-    flexGrow: 0,
-    flexShrink: 0,
-    color: 'rgb(8,80,102)',
-    backgroundColor: 'white',
-    padding: '5px',
-    borderColor: 'rgb(8,80,102)',
-    lineHeight: '18px',
-    borderStyle: 'solid',
-    margin: -6,
-    '& sup': {
-      lineHeight: 0,
-      display: 'inline-block',
-      paddingBottom: 3,
-    },
-  },
-  check: {
-    color: '#ffe100',
-    position: 'absolute',
-    left: -6,
-    bottom: -8,
-  },
-}))
+export const isAnyGame = (configuration: Configuration, id: number) => id === 144
 
 export enum RankStyle {
   small,
@@ -167,10 +37,11 @@ export const rankString = (rank: number | null) => {
   }
 }
 
-export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
-  rank,
-  rankStyle = RankStyle.superscript,
-}) => {
+type RankProps = {
+  rank: number | null
+  rankStyle?: RankStyle
+}
+export const Rank = ({ rank, rankStyle = RankStyle.superscript }: RankProps) => {
   if (rankStyle === RankStyle.small) {
     if (rank === 0) {
       return <>GM</>
@@ -214,17 +85,8 @@ export const Rank: React.FC<{ rank: number | null; rankStyle?: RankStyle }> = ({
   }
 }
 
-export type MaybeGameChoice =
-  | Maybe<
-      { __typename: 'GameChoice' } & Pick<
-        GameChoice,
-        'gameId' | 'id' | 'memberId' | 'nodeId' | 'rank' | 'returningPlayer' | 'slotId' | 'year'
-      > & { game?: Maybe<{ __typename: 'Game' } & Pick<Game, 'year' | 'name'>> }
-    >
-  | undefined
-
 export interface SelectorUpdate {
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   gameId: number
   rank: number | null
   oldRank: number | null
@@ -234,26 +96,38 @@ export interface SelectorUpdate {
 }
 
 export interface SelectorParams {
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
-  gmSlots?: MaybeGameChoice[]
+  gmSlots?: GameChoice[]
 }
 
 export type GameChoiceSelectorProps = {
   year: number
   slot: number
-  game: GameEntry
+  game: Game
 } & SelectorParams
 
-export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
+const toggleButtonSx = {
+  textTransform: 'inherit',
+  color: 'white',
+  p: '5px 7px',
+  borderColor: 'white',
+  '&:hover': { backgroundColor: 'rgba(102, 8, 22, .3)' },
+  '&.Mui-selected': {
+    color: 'white',
+    backgroundColor: 'rgba(102, 8, 22, 1)',
+    borderLeftColor: 'white',
+    '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
+  },
+}
+export const GameChoiceSelector = ({
   year,
   slot,
   game,
   gameChoices,
   updateChoice,
   gmSlots,
-}) => {
-  const { classes, cx } = useStyles()
+}: GameChoiceSelectorProps) => {
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
@@ -298,9 +172,25 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   if (game.full && !isAdmin) {
     return (
       <>
-        <div className={classes.spacer} />
-        <div className={classes.container}>
-          <div className={classes.full}>This game is full, no more spaces available.</div>
+        <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} />
+        <div
+          style={{
+            flex: '1 1 auto',
+            display: 'flex',
+            flexDirection: 'column',
+            margin: '-3px 0',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              height: 52,
+            }}
+          >
+            This game is full, no more spaces available.
+          </div>
         </div>
       </>
     )
@@ -308,52 +198,80 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
 
   return (
     <>
-      <div className={classes.spacer} />
+      {/* <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} /> */}
       <div
-        className={classes.container}
+        style={{
+          flex: '1 1 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '-3px 0',
+        }}
         onClick={(event) => event.stopPropagation()}
         onFocus={(event) => event.stopPropagation()}
       >
-        <div className={classes.row}>
-          <div className={classes.label}>Choice</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              width: 60,
+              textAlign: 'inherit',
+              textTransform: 'inherit',
+            }}
+          >
+            Choice
+          </div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
             {isAdmin && !isNoOrAnyGame && (
-              <ToggleButton className={classes.button} value={0} aria-label='GM'>
+              <ToggleButton sx={toggleButtonSx} value={0} aria-label='GM'>
                 <Rank rank={0} />
               </ToggleButton>
             )}
             {isAdmin ? (
-              <ToggleButton className={classes.button} value={1} aria-label='first'>
+              <ToggleButton sx={toggleButtonSx} value={1} aria-label='first'>
                 <Rank rank={1} />
               </ToggleButton>
             ) : (
               <ToggleButton
                 disabled={isGmThisSlot && !isAdmin}
-                className={classes.button}
+                sx={toggleButtonSx}
                 value={rank === 0 ? 0 : 1}
                 aria-label='first'
               >
                 {rank === 0 ? <Rank rank={0} /> : <Rank rank={1} />}
               </ToggleButton>
             )}
-            <ToggleButton className={classes.button} value={2} aria-label='second'>
+            <ToggleButton sx={toggleButtonSx} value={2} aria-label='second'>
               <Rank rank={2} />
             </ToggleButton>
-            <ToggleButton className={classes.button} value={3} aria-label='third'>
+            <ToggleButton sx={toggleButtonSx} value={3} aria-label='third'>
               <Rank rank={3} />
             </ToggleButton>
-            <ToggleButton className={classes.button} value={4} aria-label='fourth'>
+            <ToggleButton sx={toggleButtonSx} value={4} aria-label='fourth'>
               <Rank rank={4} />
             </ToggleButton>
           </ToggleButtonGroup>
         </div>
         {!isNoOrAnyGame && (
-          <div className={classes.row}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              paddingTop: 3,
+            }}
+          >
             <ToggleButton
               value={returning}
               selected={returning}
               onChange={handleReturning}
-              className={cx(classes.returning, classes.button)}
+              sx={[{ textAlign: 'end' }, toggleButtonSx]}
             >
               Returning Player
             </ToggleButton>
@@ -364,16 +282,59 @@ export const GameChoiceSelector: React.FC<GameChoiceSelectorProps> = ({
   )
 }
 
-export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, slot, game, gameChoices }) => {
-  const { classes } = useStyles()
+export const GameChoiceDecorator = ({ year, slot, game, gameChoices }: GameChoiceSelectorProps) => {
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const rank = thisOne?.rank ?? null // rank is numeric and zero is a valid value!
 
   return (
     <>
-      {game.full && <div className={classes.fullDecorator}>full</div>}
+      {game.full && (
+        <div
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            textTransform: 'inherit',
+            width: 30,
+            borderRadius: 15,
+            borderWidth: 1,
+            fontSize: '0.72rem',
+            flexGrow: 0,
+            flexShrink: 0,
+            color: 'rgb(8,80,102)',
+            backgroundColor: 'white',
+            padding: '5px',
+            borderColor: 'rgb(8,80,102)',
+            lineHeight: '18px',
+            borderStyle: 'solid',
+            margin: -6,
+          }}
+        >
+          full
+        </div>
+      )}
       {rank !== null && (
-        <div className={classes.rankDecorator}>
+        <div
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            textTransform: 'inherit',
+            width: 30,
+            borderRadius: 15,
+            borderWidth: 1,
+            fontSize: '0.72rem',
+            flexGrow: 0,
+            flexShrink: 0,
+            color: 'rgba(102, 8, 22, 1)',
+            backgroundColor: 'white',
+            padding: '5px',
+            borderColor: 'rgba(102, 8, 22, 1)',
+            lineHeight: '18px',
+            borderStyle: 'solid',
+            margin: -6,
+          }}
+        >
           <Rank rank={rank} rankStyle={RankStyle.small} />
         </div>
       )}
@@ -381,15 +342,18 @@ export const GameChoiceDecorator: React.FC<GameChoiceSelectorProps> = ({ year, s
   )
 }
 
-type SlotDecoratorCheckMarkProps = { year: number; slot: number } & SelectorParams
+type SlotDecoratorCheckMarkProps = {
+  year: number
+  slot: number
+} & SelectorParams
 
 // 144 is the magic number of the Any Game entry :(
-const isNoGameOrAnyGame = (configuration: Configuration, choice?: MaybeGameChoice) => {
+const isNoGameOrAnyGame = (configuration: Configuration, choice?: GameChoice) => {
   const id = choice?.gameId
   return id && (isNoGame(configuration, id) || isAnyGame(configuration, id))
 }
 
-export const orderChoices = (choices?: MaybeGameChoice[]) => [
+export const orderChoices = (choices?: GameChoice[]) => [
   choices?.find((c) => c?.rank === 0),
   choices?.find((c) => c?.rank === 1),
   choices?.find((c) => c?.rank === 2),
@@ -397,7 +361,7 @@ export const orderChoices = (choices?: MaybeGameChoice[]) => [
   choices?.find((c) => c?.rank === 4),
 ]
 
-export const isSlotComplete = (configuration: Configuration, choices?: MaybeGameChoice[]) => {
+export const isSlotComplete = (configuration: Configuration, choices?: GameChoice[]) => {
   if (!choices?.length) return false
 
   const ordered = orderChoices(choices)
@@ -410,10 +374,9 @@ export const isSlotComplete = (configuration: Configuration, choices?: MaybeGame
   return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(configuration, ordered[4]))
 }
 
-export const SlotDecoratorCheckMark: React.FC<SlotDecoratorCheckMarkProps> = ({ year, slot, gameChoices }) => {
-  const { classes } = useStyles()
+export const SlotDecoratorCheckMark = ({ year, slot, gameChoices }: SlotDecoratorCheckMarkProps) => {
   const configuration = useConfiguration()
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)
   const isComplete = isSlotComplete(configuration, thisSlotChoices)
-  return isComplete ? <CheckIcon className={classes.check} /> : null
+  return isComplete ? <CheckIcon sx={{ color: '#ffe100', position: 'absolute', left: -6, bottom: -8 }} /> : null
 }

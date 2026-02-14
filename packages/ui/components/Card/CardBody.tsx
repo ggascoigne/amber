@@ -1,25 +1,24 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { makeStyles } from 'tss-react/mui'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
-const useStyles = makeStyles()({
-  cardBody: {
-    padding: '0.9375rem 1.875rem',
-    flex: '1 1 auto',
-  },
-})
-
-interface CardBodyProps {
+interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
+  sx?: SxProps<Theme>
 }
 
 export const CardBody: React.FC<PropsWithChildren<CardBodyProps>> = (props) => {
-  const { classes, cx } = useStyles()
-  const { className, children, ...rest } = props
-  const cardBodyClasses = cx(classes.cardBody, className)
+  const { className, children, sx, ...rest } = props
+  const defaultSx: SxProps<Theme> = {
+    padding: '0.9375rem 1.875rem',
+    flex: '1 1 auto',
+  }
+  const mergedSx = [defaultSx, ...(Array.isArray(sx) ? sx : sx ? [sx] : [])]
   return (
-    <div className={cardBodyClasses} {...rest}>
+    <Box className={className} sx={mergedSx} {...rest}>
       {children}
-    </div>
+    </Box>
   )
 }

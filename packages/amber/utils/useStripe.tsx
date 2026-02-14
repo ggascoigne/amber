@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import { loadStripe, Stripe } from '@stripe/stripe-js'
+import type { Stripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { atom, useAtom } from 'jotai'
 
 const stripePromiseAtom = atom<Promise<Stripe | null> | null>(null)
@@ -43,6 +44,7 @@ export function formatAmountFromStripe(amount: number, currency = 'usd'): number
   })
   const parts = numberFormat.formatToParts(amount)
   let zeroDecimalCurrency = true
+
   for (const part of parts) {
     if (part.type === 'decimal') {
       zeroDecimalCurrency = false

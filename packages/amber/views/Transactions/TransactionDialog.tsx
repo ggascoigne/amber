@@ -1,16 +1,17 @@
-import React from 'react'
+import type React from 'react'
 
-import { FormikHelpers } from 'formik'
-import { EditDialog } from 'ui'
+import { EditDialog } from '@amber/ui'
+import type { FormikHelpers } from 'formik'
 
 import { TransactionFormContent } from './TransactionFormContent'
 import { transactionValidationSchema } from './transactionValidationSchema'
 
-import { useEditTransaction, useTransactionValues, TransactionValue } from '../../utils/transactionUtils'
+import type { TransactionFormValue } from '../../utils/transactionUtils'
+import { useEditTransaction, useTransactionValues } from '../../utils/transactionUtils'
 
 interface TransactionDialogProps {
   open: boolean
-  initialValues?: TransactionValue | null
+  initialValues?: TransactionFormValue | null
   onClose: (event?: any) => void
 }
 
@@ -18,7 +19,7 @@ export const TransactionDialog: React.FC<TransactionDialogProps> = ({ open, onCl
   const updateTransaction = useEditTransaction(onClose)
   const values = useTransactionValues(initialValues)
 
-  const onSubmit = async (v: TransactionValue, _actions: FormikHelpers<TransactionValue>) => {
+  const onSubmit = async (v: TransactionFormValue, _actions: FormikHelpers<TransactionFormValue>) => {
     await updateTransaction(v)
   }
 

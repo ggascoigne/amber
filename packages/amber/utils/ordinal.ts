@@ -1,4 +1,4 @@
-const ordinals: { [k: number]: string } = {
+const ordinals: Record<number, string> = {
   1: 'first',
   2: 'second',
   3: 'third',
@@ -28,7 +28,7 @@ const ordinals: { [k: number]: string } = {
   90: 'ninetieth',
 }
 
-const prefixes: { [k: number]: string } = {
+const prefixes: Record<number, string> = {
   2: 'twenty',
   3: 'thirty',
   4: 'forty',
@@ -44,5 +44,5 @@ export const getOrdinalWord = (value: number): string =>
   value < 1 || value > 99
     ? `${value}`
     : value <= 20 || value % 10 === 0
-      ? ordinals[value]
+      ? ordinals[value]!
       : `${prefixes[Math.floor(value / 10)]}-${ordinals[value % 10]}`

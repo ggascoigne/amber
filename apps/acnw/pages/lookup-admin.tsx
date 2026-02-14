@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import Lookups from 'amber/views/Lookups/Lookups'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import Lookups from '@amber/amber/views/Lookups/Lookups'
 import type { NextPage } from 'next'
 
 export const getServerSideProps = configGetServerSideProps

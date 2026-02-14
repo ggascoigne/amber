@@ -1,37 +1,37 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {
-  CreateTransactionMutation,
-  CreateTransactionDocument,
-  CreateTransactionMutationVariables,
-  CreateStripeMutation,
-  CreateStripeMutationVariables,
-  CreateStripeDocument,
-} from '@amber/client'
-import { makeQueryRunner } from 'database/shared/postgraphileQueryRunner'
+import { env } from '@amber/environment'
+import { authenticatedCaller } from '@amber/server/src/api/ssr'
 import { buffer } from 'micro'
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
 import { sendEmailConfirmation } from './sendEmailConfirmation'
-import { UserPaymentDetails } from './types'
+import type { UserPaymentDetails } from './types'
 
-import { stripeSecretKey, stripeWebhookSecret } from '../constants'
-
-const stripe = new Stripe(stripeSecretKey!, {
-  apiVersion: '2023-10-16',
+const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-12-15.clover',
 })
 
 const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]) => {
-  const { amount, amount_captured, currency, outcome } = charge
+  const { amount, amount_captured, currency, outcome, metadata } = charge
   const errors = []
 
+  if (!metadata.userId) {
+    errors.push('missing metadata.userId')
+  }
+  if (!metadata.year) {
+    errors.push('missing metadata.year')
+  }
+  if (!metadata.payments) {
+    errors.push('missing metadata.payments')
+  }
   if (amount !== amount_captured) {
     errors.push(`amount !== amount_captured, ${amount} !== ${amount_captured}`)
   }
   if (currency !== 'usd') {
     errors.push(`unexpected currency, ${currency} !== usd`)
   }
-  const total = 100 * paymentInfo.reduce((prev, curr) => prev + curr.amount, 0)
+  const total = 100 * paymentInfo.reduce((prev, curr) => prev + curr.total, 0)
 
   if (total !== amount) {
     errors.push(`amount !== calculated total, ${amount} !== ${total}`)
@@ -46,91 +46,99 @@ const validateCharge = (charge: Stripe.Charge, paymentInfo: UserPaymentDetails[]
   return errors.length > 0 ? errors : null
 }
 
-const handleSuccess = async (charge: Stripe.Charge) => {
+const toTransaction = (
+  charge: Stripe.Charge,
+  targetUserId: number,
+  itemAmount: number,
+  notes: string,
+  extra: Record<string, any>,
+) => {
   const {
     id,
-    amount,
     amount_captured,
     currency,
-    metadata: { userId, year, payments },
+    metadata: { userId, year },
     outcome,
     payment_intent,
   } = charge
+  return {
+    amount: itemAmount,
+    notes,
+    origin: parseInt(userId!, 10),
+    stripe: true,
+    userId: targetUserId,
+    year: parseInt(year!, 10),
+    data: {
+      ...extra,
+      chargeId: id,
+      amount_captured,
+      currency,
+      outcome,
+      payment_intent,
+    },
+  }
+}
 
-  const paymentInfo: UserPaymentDetails[] = JSON.parse(payments)
+const createErrorPaymentTransactionRecord = async (charge: Stripe.Charge, error: string[]) => {
+  const {
+    amount,
+    metadata: { userId },
+  } = charge
 
-  const { query, release } = await makeQueryRunner()
+  const transaction = toTransaction(charge, parseInt(userId!, 10), amount, 'Payment Received with Stripe Error', {
+    error,
+    amount_adjusted: Math.round(amount / 100),
+  })
+  return authenticatedCaller(userId).transactions.createTransaction(transaction)
+}
+
+const createPaymentTransactionRecord = async (charge: Stripe.Charge, p: UserPaymentDetails) => {
+  const { amount } = charge
+  const transaction = toTransaction(charge, p.userId, p.total, 'Payment Received', { type: 'user payment', amount })
+  return authenticatedCaller(p.userId).transactions.createTransaction(transaction)
+}
+
+const createDonationTransactionRecord = async (charge: Stripe.Charge, p: UserPaymentDetails) => {
+  const { amount } = charge
+  const transaction = toTransaction(charge, p.userId, 0 - p.donation, 'Donation', { type: 'donation payment', amount })
+  return authenticatedCaller(p.userId).transactions.createTransaction(transaction)
+}
+
+const handleSuccess = async (charge: Stripe.Charge) => {
+  const {
+    amount,
+    metadata: { userId, year, payments },
+  } = charge
+
+  const paymentInfo: UserPaymentDetails[] = JSON.parse(payments!)
 
   const error = validateCharge(charge, paymentInfo)
 
-  await query<CreateStripeMutation, CreateStripeMutationVariables>(CreateStripeDocument, {
-    input: {
-      stripe: { data: charge },
-    },
-  })
+  await authenticatedCaller(userId).stripe.createStripe({ data: charge })
 
   if (error) {
     // something went wrong so just record the bare payment - this will need manual fixing based on some unexpected issue
-    await query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-      input: {
-        transaction: {
-          amount,
-          notes: 'Payment Received',
-          origin: parseInt(userId, 10),
-          stripe: true,
-          userId: parseInt(userId, 10),
-          year: parseInt(year, 10),
-          data: {
-            error,
-            charge_id: id,
-            amount_adjusted: Math.round(amount / 100),
-            amount_captured,
-            currency,
-            outcome,
-            payment_intent,
-          },
-        },
-      },
-    })
+    await createErrorPaymentTransactionRecord(charge, error)
   } else {
-    const result = paymentInfo.map((p) =>
-      query<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, {
-        input: {
-          transaction: {
-            amount: p.amount,
-            // memberId: p.memberId,
-            notes: 'Payment Received',
-            origin: parseInt(userId, 10),
-            stripe: true,
-            userId: p.userId,
-            year: parseInt(year, 10),
-            data: {
-              type: 'user payment',
-              chargeId: id,
-              amount,
-              amount_captured,
-              currency,
-              outcome,
-              payment_intent,
-            },
-          },
-        },
-      }),
+    const result = paymentInfo.flatMap((p) =>
+      p.donation > 0
+        ? [createPaymentTransactionRecord(charge, p), createDonationTransactionRecord(charge, p)]
+        : [createPaymentTransactionRecord(charge, p)],
     )
     await Promise.allSettled(result).then(async (res) => {
       const failureCount = res.filter((r) => r.status !== 'fulfilled').length
       if (failureCount) {
         console.warn('Creation of some transactions failed', res)
       }
+      // console.log({ charge, paymentInfo, result, failureCount, userId, year, amount })
       await sendEmailConfirmation({
-        userId: parseInt(userId, 10),
-        year: parseInt(year, 10),
+        userId: parseInt(userId!, 10),
+        year: parseInt(year!, 10),
         amount,
         paymentInfo,
       })
     })
   }
-  release()
   return undefined
 }
 
@@ -142,11 +150,11 @@ export const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) 
     let event: Stripe.Event
 
     try {
-      event = stripe.webhooks.constructEvent(buf.toString(), sig, stripeWebhookSecret!)
+      event = stripe.webhooks.constructEvent(buf.toString(), sig, env.STRIPE_WEBHOOK_SECRET!)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
       // On error, log and return the error message.
-      if (err! instanceof Error) console.log(err)
+      if (err instanceof Error) console.log(err)
       console.log(`❌ Error message: ${errorMessage}`)
       res.status(400).send(`Webhook Error: ${errorMessage}`)
       return

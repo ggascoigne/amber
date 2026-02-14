@@ -1,29 +1,16 @@
-import React, { useCallback } from 'react'
+import type React from 'react'
+import { useCallback } from 'react'
 
-import { DialogContentText, FormControl, RadioGroup, Theme } from '@mui/material'
-import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from 'amber'
-import { MembershipFormContent, MembershipErrorType, hasMembershipStepErrors } from 'amber/utils/membershipUtils'
-import { Field, FormikErrors, FormikValues, useField, useFormikContext } from 'formik'
+import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from '@amber/amber'
+import type { MembershipFormContent, MembershipErrorType } from '@amber/amber/utils/membershipUtils'
+import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
+import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
+import { DialogContentText, FormControl, RadioGroup } from '@mui/material'
+import type { FormikErrors, FormikValues } from 'formik'
+import { Field, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
-import { makeStyles } from 'tss-react/mui'
-import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from 'ui'
 
-import { MembershipWizardFormValues } from './MembershipWizard'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  important: {
-    marginBottom: 12,
-  },
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-  },
-  slotToggleWrapper: {
-    position: 'absolute',
-    top: 16,
-    right: 50,
-  },
-}))
+import type { MembershipWizardFormValues } from './MembershipWizard'
 
 export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -35,9 +22,8 @@ export const hasRoomsStepErrors = (errors: FormikErrors<FormikValues>) =>
     'message',
   )
 
-export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
 
   const [hotelRoomField, meta, { setValue }] = useField(`${prefix}hotelRoomId`)
   const { touched, error: fieldError } = meta
@@ -72,6 +58,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
         The listed price below does not include {configuration.oregonHotelTax} Oregon Lodging tax. Also, each person
         over two in a room will incur an additional {configuration.moreThanDoubleOccupancySurcharge} charge per night.
       </DialogContentText>
+      <br />
       {/*
       <Important component='span' className={classes.important}>
         These rates are subject to change. The latest room rates can be found at{' '}
@@ -86,25 +73,29 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
 */}
 
       <GridContainer spacing={2} direction='row'>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
             autofocus
             label='Hotel Check-in'
             name={`${prefix}arrivalDate`}
-            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
+            defaultCalendarMonth={configuration.conventionStartDate.set({
+              month: 11,
+            })}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
           />
         </GridItem>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
             label='Departure Date'
             name={`${prefix}departureDate`}
-            defaultCalendarMonth={configuration.conventionStartDate.set({ month: 11 })}
+            defaultCalendarMonth={configuration.conventionStartDate.set({
+              month: 11,
+            })}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
           />
@@ -117,10 +108,10 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
         charges for hotel nights reserved but not used.
       </DialogContentText>
 
-      <Important component='span' className={classes.important}>
-        If you are sharing a room, please only have one of you 'book' the room. For everyone else who's sharing the room
-        just select the 'sharing' option in this first list. If each of you lists who you are sharing with, we can
-        better make sure that there are no mistakes.
+      <Important component='span' sx={{ mb: '12px' }}>
+        If you are sharing a room, please only have one of you &lsquo;book&rsquo; the room. For everyone else who&apos;s
+        sharing the room just select the &lsquo;sharing&rsquo; option in this first list. If each of you lists who you
+        are sharing with, we can better make sure that there are no mistakes.
       </Important>
 
       <FormControl component='fieldset' error={showError}>
@@ -129,7 +120,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
         </RadioGroup>
       </FormControl>
 
-      <Important className={classes.important}>
+      <Important sx={{ mb: '12px' }}>
         <br />* Game Rooms: These are suites reserved for game play. Members who choose to have a Game room, will
         receive a {configuration.gameRoomCredit} credit towards the room cost. Be advised that while we will do our best
         to make sure that the rooms are used for games you are actually in, in exchange for the credit the game space
@@ -139,7 +130,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       </Important>
 
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField
             name={`${prefix}roomPreferenceAndNotes`}
             label='Room Preference And Notes'
@@ -152,7 +143,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
 
       <h3>Roommates</h3>
       <GridContainer spacing={2} direction='row'>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <RadioGroupFieldWithLabel
             aria-label='Rooming Preferences'
             label='Rooming Preferences'
@@ -160,7 +151,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
             selectValues={roomPrefOptions}
           />
         </GridItem>
-        <GridItem xs={12} md={6}>
+        <GridItem size={{ xs: 12, md: 6 }}>
           <TextField
             name={`${prefix}roomingWith`}
             label='Rooming with'
@@ -173,7 +164,7 @@ export const MembershipStepRooms: React.FC<MembershipFormContent> = ({ prefix = 
       </GridContainer>
 
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Any other Message' margin='normal' fullWidth multiline />
         </GridItem>
       </GridContainer>

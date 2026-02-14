@@ -1,38 +1,30 @@
 import React, { useMemo } from 'react'
 
-import { dequal as deepEqual } from 'dequal'
-import { FormikHelpers } from 'formik'
+import type { CreateGameAssignmentInputType, Schedule } from '@amber/client'
+import { useInvalidateGameAssignmentQueries, useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
 import {
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
-  notEmpty,
-  OnCloseHandler,
   pick,
   range,
   SelectField,
   TextField,
   useNotification,
-} from 'ui'
+} from '@amber/ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { dequal as deepEqual } from 'dequal'
+import type { FormikHelpers } from 'formik'
 
 import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './membershipUtils'
 
-import {
-  GameAssignmentNode,
-  useGraphQL,
-  useGraphQLMutation,
-  CreateGameAssignmentDocument,
-  DeleteGameAssignmentDocument,
-  GetGamesByYearDocument,
-  GetScheduleDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries } from '../../client/querySets'
+import { TransportError } from '../../components/TransportError'
 import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
-import { MembershipType } from '../../utils/apiTypes'
+import type { MembershipType } from '../../utils/apiTypes'
 
-type GameAssignmentEditNode = GameAssignmentNode
+type GameAssignmentEditNode = CreateGameAssignmentInputType
 
 type FormValues = GameAssignmentEditNode[]
 
@@ -43,37 +35,49 @@ interface GameAssignmentDialogProps {
 }
 
 export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open, onClose, membership }) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const [year] = useYearFilter()
-  const createGameAssignment = useGraphQLMutation(CreateGameAssignmentDocument)
-  const deleteGameAssignment = useGraphQLMutation(DeleteGameAssignmentDocument)
+  const createGameAssignment = useMutation(trpc.gameAssignments.createGameAssignment.mutationOptions())
+  const deleteGameAssignment = useMutation(trpc.gameAssignments.deleteGameAssignment.mutationOptions())
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
   const notify = useNotification()
 
   const memberId = membership.id ?? 0
 
-  const { error: sError, data: sData } = useGraphQL(
-    GetScheduleDocument,
-    { memberId },
-    {
-      enabled: !!memberId,
-    },
+  const { error: sError, data: sData } = useQuery(
+    trpc.gameAssignments.getSchedule.queryOptions(
+      {
+        memberId,
+      },
+      {
+        enabled: !!membership,
+      },
+    ),
   )
 
-  const { error: gError, data: gData } = useGraphQL(GetGamesByYearDocument, {
-    year,
-  })
+  const { error: gError, data: gData } = useQuery(
+    trpc.games.getGamesByYear.queryOptions(
+      {
+        year,
+      },
+      {
+        enabled: !!year,
+      },
+    ),
+  )
 
-  const gameOptions = useMemo(() => {
-    const games = gData?.games?.edges.map((v) => v.node).filter(notEmpty)
-    return range(configuration.numberOfSlots).map(
-      (slot) => games?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
-    )
-  }, [configuration.numberOfSlots, gData?.games?.edges])
+  const gameOptions = useMemo(
+    () =>
+      range(configuration.numberOfSlots).map((slot) =>
+        gData?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
+      ),
+    [configuration.numberOfSlots, gData],
+  )
 
   if (sError || gError) {
     // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    return <GraphQLError error={sError || gError} />
+    return <TransportError error={sError || gError} />
   }
   if (!sData || !gData) {
     return <Loader />
@@ -86,13 +90,13 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     year,
   })
 
-  const fillAssignments = (assignments?: GameAssignmentEditNode[]) =>
+  const fillAssignments = (assignments?: Schedule[]) =>
     range(configuration.numberOfSlots + 1, 1).map(
       (slot) => assignments?.find((a) => a.game?.slotId === slot) ?? empty(slot),
     )
 
   const gamesAndAssignments = fillAssignments(getGameAssignments(sData, memberId)).map((ga) =>
-    pick(ga, 'gameId', 'gm', 'memberId', 'year', 'nodeId'),
+    pick(ga, 'gameId', 'gm', 'memberId', 'year'),
   )
 
   const onSubmit = async (values: FormValues, _actions: FormikHelpers<FormValues>) => {
@@ -100,12 +104,16 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const toCreate: GameAssignmentEditNode[] = []
 
     range(configuration.numberOfSlots).forEach((slot) => {
-      if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
-        if (gamesAndAssignments[slot]?.nodeId) {
+      if (gamesAndAssignments[slot]) {
+        if (!deepEqual(gamesAndAssignments[slot], values[slot])) {
           toDelete.push(gamesAndAssignments[slot])
+          if (values[slot]) {
+            toCreate.push(values[slot])
+          }
+        } else {
+          // do nothing
         }
-        toCreate.push(values[slot])
-      } else if (!values[slot]?.nodeId) {
+      } else if (values[slot]) {
         toCreate.push(values[slot])
       }
     })
@@ -113,7 +121,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     const updaters: Promise<any>[] = []
     toDelete.forEach((assignment) => {
       updaters.push(
-        deleteGameAssignment.mutateAsync({ input: { nodeId: assignment.nodeId! } }).catch((error) => {
+        deleteGameAssignment.mutateAsync(pick(assignment, 'gameId', 'gm', 'memberId', 'year')).catch((error) => {
           notify({ text: error.message, variant: 'error' })
         }),
       )
@@ -121,16 +129,9 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     toCreate.forEach((assignment) => {
       updaters.push(
         createGameAssignment
-          .mutateAsync(
-            {
-              input: {
-                gameAssignment: pick(assignment, 'gameId', 'gm', 'memberId', 'year'),
-              },
-            },
-            {
-              onSuccess: invalidateGameAssignmentQueries,
-            },
-          )
+          .mutateAsync(pick(assignment, 'gameId', 'gm', 'memberId', 'year'), {
+            onSuccess: invalidateGameAssignmentQueries,
+          })
           .catch((error) => {
             console.log(`error = ${JSON.stringify(error, null, 2)}`)
             if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
@@ -148,16 +149,14 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       open={open}
       onSubmit={onSubmit}
       title='Game Assignments'
-      // todo: what are we validating game assignments against a membership schema here in?
-      validationSchema={
-        configuration.useUsAttendanceOptions ? membershipValidationSchemaUS : membershipValidationSchemaNW
-      }
+      // TODO: why are we validating game assignments against a membership schema here in?
+      validationSchema={configuration.isAcus ? membershipValidationSchemaUS : membershipValidationSchemaNW}
       isEditing
     >
       <GridContainer spacing={2}>
         {gamesAndAssignments.map((g, index) => (
           <React.Fragment key={index}>
-            <GridItem xs={12} md={8} style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <GridItem size={{ xs: 12, md: 8 }} style={{ paddingTop: 0, paddingBottom: 0 }}>
               <SelectField
                 name={`[${index}].gameId`}
                 label={`Slot ${index + 1}`}
@@ -166,7 +165,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
                 selectValues={gameOptions[index]}
               />
             </GridItem>
-            <GridItem xs={12} md={4} style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <GridItem size={{ xs: 12, md: 4 }} style={{ paddingTop: 0, paddingBottom: 0 }}>
               <TextField
                 name={`[${index}].gm`}
                 label='GM'

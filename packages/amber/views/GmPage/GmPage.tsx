@@ -1,73 +1,67 @@
-import React, { MouseEventHandler, useState } from 'react'
+import type { MouseEventHandler } from 'react'
+import React, { useState } from 'react'
 
-import { Button, Theme } from '@mui/material'
+import type { Game } from '@amber/client'
+import { useTRPC, useInvalidateGameQueries } from '@amber/client'
+import { Loader, range } from '@amber/ui'
+import type { TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
+import { Table, getSelectedRows } from '@amber/ui/components/Table'
+import { Box, Button } from '@mui/material'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { ColumnDef, Row, TableState } from '@tanstack/react-table'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import type { Column, Row, TableInstance, TableState } from 'react-table'
-import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty, Page, range, Table } from 'ui'
 
-import {
-  GameFieldsFragment,
-  GameGmsFragment,
-  useGraphQL,
-  useGraphQLMutation,
-  DeleteGameDocument,
-  GetGamesByAuthorDocument,
-  GetGamesByYearAndAuthorDocument,
-} from '../../client'
-import { useInvalidateGameQueries } from '../../client/querySets'
-import { ConfigDate, MDY } from '../../components'
+import { Page, ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
-type Game = GameFieldsFragment & GameGmsFragment
+// type Game = GameFieldsFragment & GameGmsFragment
 
-const useStyles = makeStyles()((_theme: Theme) => ({
-  blurb: {
-    '& li': {
-      paddingBottom: 10,
-      paddingRight: 40,
+const columns: ColumnDef<Game>[] = [
+  {
+    accessorKey: 'name',
+  },
+  {
+    header: 'GM',
+    accessorKey: 'gmNames',
+  },
+  {
+    accessorKey: 'slotPreference',
+  },
+  {
+    accessorKey: 'description',
+  },
+  {
+    accessorKey: 'estimatedLength',
+    size: 140,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
     },
   },
-}))
-
-const columns: Column<Game>[] = [
   {
-    accessor: 'name',
+    accessorKey: 'playerMin',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
   {
-    Header: 'GM',
-    accessor: 'gmNames',
-  },
-  {
-    accessor: 'slotPreference',
-  },
-  {
-    accessor: 'description',
-  },
-  {
-    accessor: 'estimatedLength',
-    width: 140,
-    filter: 'numeric',
-  },
-  {
-    accessor: 'playerMin',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
-  },
-  {
-    accessor: 'playerMax',
-    width: 100,
-    align: 'right',
-    filter: 'numeric',
+    accessorKey: 'playerMax',
+    size: 100,
+    filterFn: 'numericText',
+    meta: {
+      align: 'right',
+    },
   },
 ]
 
-const initialState: Partial<TableState<Game>> = {
-  sortBy: [
+const initialState: Partial<TableState> = {
+  sorting: [
     {
       id: 'slotPreference',
       desc: false,
@@ -77,39 +71,38 @@ const initialState: Partial<TableState<Game>> = {
 
 const VirtualGmBlurb = () => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
   return (
     <>
       <p>Thank you for considering offering games for virtual{configuration.name}!</p>
       <p>While most things we need are similar to our usual years, there are a few key differences:</p>
-      <ol className={classes.blurb}>
+      <Box component='ol' sx={{ '& li': { pb: '10px', pr: '40px' } }}>
         <li>
           <p>
             <strong>Slot times and durations</strong>: Rather than our usual mix of short slots and long slots, all
-            slots for virtual{configuration.name} are four hours long. If you plan to run, say, a 6-hour game, simply
-            choose 2 slots in the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part
-            1 and part 2.
+            slots for virtual
+            {configuration.name} are four hours long. If you plan to run, say, a 6-hour game, simply choose 2 slots in
+            the same day (so, Slots 2&3, 4&5, or 6&7), and enter your game twice, marking them as part 1 and part 2.
           </p>
 
           <p>
-            Just like at a regular {configuration.title}, when your game's scheduled time is over, another group may
-            need to use your room, and your players may need to go off to their next events.
+            Just like at a regular {configuration.title}, when your game&apos;s scheduled time is over, another group
+            may need to use your room, and your players may need to go off to their next events.
           </p>
         </li>
 
         <li>
           <p>
             <strong>Returning games</strong>: Unless you have made other arrangements with your returning players, we
-            request that at least one slot of any returning game cover that game's original convention slot. For
-            example, if you have a returning game from Slot 3, and you want it to "run long," you might choose Slots 2&3
-            for your game. Then you would have the option of starting at any time during the Slot 2 time block, and
-            ending any time during Slot 3.
+            request that at least one slot of any returning game cover that game&apos;s original convention slot. For
+            example, if you have a returning game from Slot 3, and you want it to &ldquo;run long,&rdquo; you might
+            choose Slots 2&3 for your game. Then you would have the option of starting at any time during the Slot 2
+            time block, and ending any time during Slot 3.
           </p>
           <p>
             If you have already made other time arrangements with your players, please enter your game covering however
             many slots it will take, even if you are only covering a part of that slot. For example, if you have
             arranged to play your returning game from 10 am Pacific time to 5 pm Pacific time on Sunday, you would
-            "block out" Slots 6 and 7 with your game.
+            &ldquo;block out&rdquo; Slots 6 and 7 with your game.
           </p>
         </li>
 
@@ -120,16 +113,13 @@ const VirtualGmBlurb = () => {
             server for you to list your games.
           </p>
         </li>
-      </ol>
+      </Box>
     </>
   )
 }
 
 const GmBlurb = () => {
-  const { classes } = useStyles()
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
   return (
     <>
       <p>
@@ -139,26 +129,26 @@ const GmBlurb = () => {
           <ConfigDate name='gameSubmissionDeadline' format={MDY} />
         </strong>
       </p>
-      <ol className={classes.blurb}>
+      <Box component='ol' sx={{ '& li': { pb: '10px', pr: '40px' } }}>
         <li>
-          {acnw && (
+          {configuration.isAcnw && (
             <p>
-              <strong>Non-Amber Games</strong>: We encourage people to be creative with the diceless format. If you have
-              a game that uses a form of the basic Amber DRPG rules but is not set in Amber, you are welcome to post the
-              game. Remember, however, that most people attending the convention want at least a majority of their games
-              to be set in the Amber multiverse. Unlike a regular Amber game, if a non-Amber game does not completely
-              fill we cannot freely assign people to it to complete the schedule since we cannot assume a basic
-              familiarity and interest in the setting.
+              <strong>Non-Amber Games</strong>: We encourage GMs to be creative with diceless and system-lite
+              roleplaying, whether you run Amber Diceless Role-Playing, another diceless system, an indie rpg, or
+              something entirely of your own design. Please include the setting, game system, and mechanics in your
+              description, so attendees can make informed choices. Unless you note otherwise in your description, we
+              will assume that any non-Amber game is accessible enough that attendees can participate without prior
+              knowledge of the system or setting.
             </p>
           )}
-          {acus && (
+          {configuration.isAcus && (
             <p>
               <strong>Non-Amber or non-Diceless Games</strong>: We encourage you to be creative and run games that are
-              fun for you. We welcome a wide variety of games and settings. If you like to run it, chances are, we'll
-              have people that want to play in it! We have had games from classic Amber, to other diceless games using
-              the same or GM-created systems, narrative and GM-less games, to games using dice and other mechanics.
-              Please include the setting, game system, and mechanics in your description, so attendees can make informed
-              choices.
+              fun for you. We welcome a wide variety of games and settings. If you like to run it, chances are,
+              we&apos;ll have people that want to play in it! We have had games from classic Amber, to other diceless
+              games using the same or GM-created systems, narrative and GM-less games, to games using dice and other
+              mechanics. Please include the setting, game system, and mechanics in your description, so attendees can
+              make informed choices.
             </p>
           )}
         </li>
@@ -166,7 +156,7 @@ const GmBlurb = () => {
           <p>
             <strong>Continuing Campaigns/Ongoing Games</strong>: Please run the game in the same slot that it ran in
             last year. This way people participating in more than one continuing game do not have to drop out of one to
-            fit schedule changes of another. As a word of advice, don't build your game around a specific player
+            fit schedule changes of another. As a word of advice, don&apos;t build your game around a specific player
             playing. Please consider ways in which new players can be brought into your game.
           </p>
         </li>
@@ -192,13 +182,22 @@ const GmBlurb = () => {
         <li>
           <p>
             <strong>Teen Friendly</strong>: Because of teens attending the con, usually with their parents, we have a
-            field asking if the game is "Teen Friendly." By saying "Yes" you assert that (a) you don't mind having a
-            younger player in your group and (b) the game is unlikely to have content that would earn it the equivalent
-            of an "R" rating. We realize that not everyone wants to GM for younger players, but we appreciate those who
-            do.
+            field asking if the game is &ldquo;Teen Friendly.&rdquo; By saying &ldquo;Yes&rdquo; you assert that (a) you
+            don&apos;t mind having a younger player in your group and (b) the game is unlikely to have content that
+            would earn it the equivalent of an &ldquo;R&rdquo; rating. We realize that not everyone wants to GM for
+            younger players, but we appreciate those who do.
           </p>
         </li>
-        {acus && (
+        {configuration.isAcnw && (
+          <li>
+            <p>
+              <strong>Room Assignments</strong>: Although we try to schedule all games into Edgefield event spaces or
+              AmberCon subsidized game rooms, games with 5 or fewer players may be scheduled to run in the GM&apos;s
+              room, in some slots.
+            </p>
+          </li>
+        )}
+        {configuration.isAcus && (
           <li>
             <p>
               <strong>Minimum Number of Players</strong>: We no longer accept games that require more than three
@@ -209,15 +208,16 @@ const GmBlurb = () => {
             </p>
           </li>
         )}
-      </ol>
+      </Box>
     </>
   )
 }
 
-const MemberGmPage: React.FC = React.memo(() => {
+const MemberGmPage = React.memo(() => {
+  const trpc = useTRPC()
   const [year] = useYearFilter()
   const [selection, setSelection] = useState<Game[]>([])
-  const deleteGame = useGraphQLMutation(DeleteGameDocument)
+  const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
@@ -227,48 +227,43 @@ const MemberGmPage: React.FC = React.memo(() => {
   const router = useRouter()
   const { query } = router
 
-  const { error, data, refetch } = useGraphQL(GetGamesByYearAndAuthorDocument, {
-    year,
-    id: userId!,
-  })
+  const { error, data, refetch, isLoading, isFetching } = useQuery(
+    trpc.games.getGamesByYearAndAuthor.queryOptions({
+      year,
+      id: userId!,
+    }),
+  )
 
-  // just kick this off now so that it's cached by the tie the user clicks the button
-  useGraphQL(GetGamesByAuthorDocument, {
-    id: userId!,
-  })
+  // just kick this off now so that it's cached by the time the user clicks the button
+  useQuery(
+    trpc.games.getGamesByAuthor.queryOptions({
+      id: userId!,
+    }),
+  )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />
   }
-
-  const { games } = data
-
-  const list: Game[] = games!.nodes.filter(notEmpty)
 
   const onCloseEdit: MouseEventHandler = () => {
     setSelection([])
     router.push('/gm')
   }
 
-  const onDelete = (instance: TableInstance<Game>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((g) =>
-      deleteGame.mutateAsync(
-        {
-          input: { id: g.id },
-        },
-        {
-          onSuccess: invalidateGameQueries,
-        },
-      ),
-    )
-    Promise.allSettled(updater).then(() => console.log('deleted'))
+  const handleDelete: TableSelectionMouseEventHandler<Game> = (table, selectedKeys) => {
+    const selectedRows = getSelectedRows(table, selectedKeys)
+    if (!selectedRows.length) return
+    const operations = selectedRows.map((row) => deleteGame.mutateAsync({ id: row.id }))
+    Promise.allSettled(operations).then(() => {
+      invalidateGameQueries()
+      table.resetRowSelection()
+    })
   }
 
-  const onClick = (row: Row<Game>) => {
+  const onRowClick = (row: Row<Game>) => {
     router.push(`/gm/edit/${row.original.id}`)
     setSelection([row.original])
   }
@@ -285,17 +280,24 @@ const MemberGmPage: React.FC = React.memo(() => {
         Add a Game
       </Button>
 
-      {list.length ? (
+      {data.length ? (
         <Table<Game>
           name='gm_games'
-          initialState={initialState}
-          disableGroupBy
-          data={list}
+          data={data}
           columns={columns}
-          onDelete={displayDeleteButton ? onDelete : undefined}
-          onClick={onClick}
-          onRefresh={() => refetch()}
-          hideSelectionUi={!displayDeleteButton}
+          initialState={initialState}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          onRowClick={onRowClick}
+          onDelete={displayDeleteButton ? handleDelete : undefined}
+          enableRowSelection={displayDeleteButton}
+          refetch={refetch}
+          scrollBehavior='none'
+          enableGrouping={false}
+          enableGlobalFilter={false}
+          enableColumnFilters={false}
+          systemActions={[]}
+          displayPagination='never'
         />
       ) : null}
     </Page>

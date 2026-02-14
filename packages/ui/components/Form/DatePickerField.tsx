@@ -1,12 +1,12 @@
 import React from 'react'
 
-import { DatePicker, DatePickerProps } from '@mui/x-date-pickers'
-import { FieldProps } from 'formik'
+import type { DatePickerProps } from '@mui/x-date-pickers'
+import { DatePicker } from '@mui/x-date-pickers'
+import type { FieldProps } from 'formik'
 import { DateTime } from 'luxon'
 
 interface DatePickerFieldProps
-  extends FieldProps,
-    Omit<DatePickerProps<DateTime>, 'onChange' | 'value' | 'error' | 'renderInput'> {
+  extends FieldProps, Omit<DatePickerProps, 'onChange' | 'value' | 'error' | 'renderInput'> {
   required?: boolean
   getShouldDisableDateError: (date: Date) => string
   // Force the creation timeZone for dates, this allows values to be created that differ from local time
@@ -14,15 +14,28 @@ interface DatePickerFieldProps
 }
 
 export function DatePickerField(props: DatePickerFieldProps) {
-  const { field, form, getShouldDisableDateError, maxDate, minDate, required, timeZone, ...other } = props
+  const {
+    field,
+    form,
+    getShouldDisableDateError: _getShouldDisableDateError,
+    maxDate,
+    minDate,
+    required: _required,
+    timeZone,
+    ...other
+  } = props
+  const isDate = typeof field.value === 'object' && field.value instanceof Date
+  const dateValue = isDate ? DateTime.fromJSDate(field.value) : DateTime.fromISO(field.value)
+
   return (
     <DatePicker
       minDate={minDate}
       maxDate={maxDate}
-      value={timeZone ? DateTime.fromISO(field.value).setZone(timeZone) : DateTime.fromISO(field.value)}
+      value={timeZone ? dateValue.setZone(timeZone) : dateValue}
       // Make sure that your 3d param is set to `true` in order to run validation
       onChange={(newValue: DateTime | null) => {
-        const newDate = timeZone ? newValue?.setZone(timeZone)?.toISO() : newValue?.toISO()
+        const updatedValue = timeZone ? newValue?.setZone(timeZone) : newValue
+        const newDate = isDate ? updatedValue?.toJSDate() : updatedValue?.toISO()
         return form.setFieldValue(field.name, newDate, true)
       }}
       {...other}

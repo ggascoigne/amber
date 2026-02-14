@@ -1,0 +1,59 @@
+{
+  "name": "@amber/environment",
+  "version": "0.1.0",
+  "description": "Shared AmberCon NW environment config",
+  "author": "guy@wyrdrune.com",
+  "license": "MIT",
+  "type": "module",
+  "files": [],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "private": true,
+  "scripts": {
+    "tsc": "tsc -p ./tsconfig.json",
+    "tsgo": "tsgo -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "@t3-oss/env-core": "^0.13.10",
+    "@t3-oss/env-nextjs": "^0.13.10",
+    "debug": "^4.4.3",
+    "next": "16.1.1",
+    "superjson": "^2.2.6",
+    "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.21.0",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@amber/tsconfig": "workspace:*",
+    "@types/debug": "~4.1.12",
+    "@types/node": "^25.0.9",
+    "@types/pg": "^8.16.0",
+    "@typescript/native-preview": "7.0.0-dev.20260117.1",
+    "dotenv": "^17.2.3",
+    "prisma": "^7.2.0",
+    "typescript": "^5.9.3"
+  },
+  "exports": {
+    "./dotenv": {
+      "import": {
+        "types": "./src/dotenv.ts",
+        "default": "./src/dotenv.ts"
+      },
+      "require": {
+        "types": "./src/dotenv.ts",
+        "default": "./src/dotenv.ts"
+      }
+    },
+    ".": {
+      "import": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      },
+      "require": {
+        "types": "./src/index.ts",
+        "default": "./src/index.ts"
+      }
+    },
+    "./package.json": "./package.json"
+  }
+}

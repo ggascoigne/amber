@@ -2,32 +2,37 @@ import { useMemo } from 'react'
 
 import { DateTime } from 'luxon'
 
-import { Configuration, useConfiguration } from './configContext'
+import type { Configuration } from './configContext'
+import { useConfiguration } from './configContext'
 
 export const getPref = (values: { value: string; text: string }[], value: string) =>
   values.find((v) => v.value === value)?.text
 
-enum PlayerPreference {
-  Any = 'any',
-  RetOnly = 'ret-only',
-  RetPref = 'ret-pref',
-}
+export const PlayerPreference = {
+  Any: 'any',
+  RetOnly: 'ret-only',
+  RetPref: 'ret-pref',
+} as const
 
 export const playerPreferenceOptions = [
   { value: PlayerPreference.Any, text: 'Any' },
   { value: PlayerPreference.RetOnly, text: 'Returning players only' },
-  { value: PlayerPreference.RetPref, text: 'Returning players have preference, new players welcome.' },
+  {
+    value: PlayerPreference.RetPref,
+    text: 'Returning players have preference, new players welcome.',
+  },
 ]
 
 export const getPlayerPreference = (value: string) => getPref(playerPreferenceOptions, value)
 
-export enum Attendance {
-  ThursSun = 'Thurs-Sun',
-  FriSun = 'Fri-Sun',
-}
+export const Attendance = {
+  ThursSun: 'Thurs-Sun',
+  FriSun: 'Fri-Sun',
+  Subsidized: 'subsidized',
+} as const
 
 const getAttendanceOptions = (configuration: Configuration) => {
-  if (configuration.useUsAttendanceOptions) {
+  if (configuration.isAcus) {
     return [
       {
         value: '1',
@@ -50,11 +55,11 @@ const getAttendanceOptions = (configuration: Configuration) => {
     return [
       {
         value: Attendance.ThursSun,
-        text: `Full: $${configuration.fourDayMembership}.00.`,
+        text: 'Full, Thursday - Sunday',
       },
       {
         value: Attendance.FriSun,
-        text: `Short: $${configuration.threeDayMembership}.00.`,
+        text: 'Short, Friday - Sunday',
       },
     ]
 }
@@ -67,34 +72,47 @@ export const useGetAttendanceOptions = () => {
   return useMemo(() => getAttendanceOptions(configuration), [configuration])
 }
 
-const getSubsidizedAttendanceOptions = (configuration: Configuration) => [
+const getSubsidizedAttendanceOptions = (_configuration: Configuration) => [
   {
     value: Attendance.ThursSun,
-    text: `Full: $${configuration.subsidizedMembership}.00.`,
+    text: 'Full, Thursday - Sunday',
   },
   {
     value: Attendance.FriSun,
-    text: `Short: $${configuration.subsidizedMembershipShort}.00.`,
+    text: 'Short, Friday - Sunday',
+  },
+  {
+    value: Attendance.Subsidized,
+    text: `Subsidized`,
   },
 ]
 
-const getSubsidizedAttendance = (configuration: Configuration, value: string) =>
-  getPref(getSubsidizedAttendanceOptions(configuration), value)
+export const useGetSubsidizedAttendanceOptions = () => {
+  const configuration = useConfiguration()
+  return useMemo(() => getSubsidizedAttendanceOptions(configuration), [configuration])
+}
 
-const getCost = (configuration: Configuration, membership: { requestOldPrice: boolean; attendance: string }) =>
-  membership.requestOldPrice
-    ? getSubsidizedAttendance(configuration, membership.attendance)
-    : getAttendance(configuration, membership.attendance)
+const getCost = (
+  configuration: Configuration,
+  membership: {
+    requestOldPrice: boolean
+    attendance: string
+    cost: number | null
+  },
+) =>
+  configuration.isAcus
+    ? getAttendance(configuration, membership.attendance)
+    : `${getAttendance(configuration, membership.attendance)}: $${membership.cost}`
 
-export const useGetCost = (membership: { requestOldPrice: boolean; attendance: string }) => {
+export const useGetCost = (membership: { requestOldPrice: boolean; attendance: string; cost: number | null }) => {
   const configuration = useConfiguration()
   return useMemo(() => getCost(configuration, membership), [configuration, membership])
 }
 
-export enum InterestLevel {
-  Full = 'Full',
-  Deposit = 'Deposit',
-}
+export const InterestLevel = {
+  Full: 'Full',
+  Deposit: 'Deposit',
+} as const
 
 const getInterestOptions = (configuration: Configuration) => [
   {

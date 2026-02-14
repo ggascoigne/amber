@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { env } from '@amber/environment'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { stripePublishableKey } from '../constants'
 import { handleError } from '../handleError'
 
 // /api/getStripeConfig
@@ -8,13 +8,11 @@ import { handleError } from '../handleError'
 // body: {}
 
 export const getStripeConfigHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const baseUrl = process.env.VERCEL_URL?.startsWith('http')
-    ? process.env.VERCEL_URL
-    : `https://${process.env.VERCEL_URL}`
+  const baseUrl = env.VERCEL_URL?.startsWith('http') ? env.VERCEL_URL : `https://${env.VERCEL_URL}`
 
   try {
     res.send({
-      publishableKey: stripePublishableKey,
+      publishableKey: env.STRIPE_PUBLISHABLE_KEY,
       baseUrl,
     })
   } catch (err) {

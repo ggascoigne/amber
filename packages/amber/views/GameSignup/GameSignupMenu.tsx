@@ -1,35 +1,46 @@
 import React from 'react'
 
+import { useTRPC } from '@amber/client'
+import { Loader } from '@amber/ui'
 import { Button } from '@mui/material'
-import { GraphQLError, Loader } from 'ui'
+import { useQuery } from '@tanstack/react-query'
 
 import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
 import { GameMenu } from '../../components/GameList'
+import { TransportError } from '../../components/TransportError'
 import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
-export const GameSignupMenu: React.FC = () => {
+export const GameSignupMenu = () => {
+  const trpc = useTRPC()
   const { year } = useGameUrl()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   const [, setShowConfirmDialog] = useConfirmDialogOpen()
 
-  const { error, data } = useGraphQL(
-    GetGameChoicesDocument,
-    { year, memberId: membership?.id ?? 0, foo: 0 },
-    { enabled: !!membership },
+  const { error, data } = useQuery(
+    trpc.gameChoices.getGameChoices.queryOptions(
+      { year, memberId: membership?.id ?? 0 },
+      {
+        enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (!data && !membership) {
     return <Loader />
   }
 
-  const gameChoices = data?.gameChoices?.nodes?.filter((c) => c?.gameId)
+  const gameChoices = data?.gameChoices?.filter((c) => c?.gameId)
 
   const decoratorParams = {
     gameChoices,

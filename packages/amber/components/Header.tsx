@@ -1,14 +1,18 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
+import type { Config } from '@amber/client'
+import { useGetConfigQuery } from '@amber/client'
 import MenuIcon from '@mui/icons-material/Menu'
-import { AppBar, Hidden, IconButton, Theme, Toolbar, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
+import { Box } from '@mui/system'
 
 import { HasPermission, Perms } from './Auth'
 import { Balance } from './Balance'
 import { UserSelector } from './UserSelector'
 import { YearSelector } from './YearSelector'
-
-import { Config, useGetConfig } from '../utils'
 
 const drawerWidth = 240
 
@@ -19,12 +23,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, title }) => {
-  const [config, getConfig] = useGetConfig()
+  const config = useGetConfigQuery()
   const [configDetails, setConfigDetails] = useState('')
-
-  useEffect(() => {
-    getConfig()
-  }, [getConfig])
 
   useEffect(() => {
     const getConfigDetails = (conf: Config | undefined, href: string | undefined) => {
@@ -33,9 +33,22 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
         href?.startsWith('https://ambercon.com') ||
         href?.startsWith('https://www.ambercon.com') ||
         href?.startsWith('https://acnw.org')
-      )
+      ) {
         return ''
-      return !conf ? '' : conf.local ? '(local)' : ['acnw', 'acus'].includes(conf.databaseName) ? '(prod)' : '(test)'
+      }
+      const prefix = conf?.isFakeAuth ? '[FAKE AUTH] ' : ''
+      return (
+        prefix +
+        (!conf
+          ? ''
+          : conf.local && conf.isTestDb
+            ? '(local:test)'
+            : conf.local
+              ? '(local)'
+              : ['acnw', 'acus'].includes(conf.databaseName)
+                ? '(prod)'
+                : '(aws:test)')
+      )
     }
 
     setConfigDetails(getConfigDetails(config, window.location.href))
@@ -84,9 +97,7 @@ export const Header: React.FC<HeaderProps> = ({ handleDrawerToggle, rightMenu, t
       <HasPermission permission={Perms.IsLoggedIn}>
         <Balance />
       </HasPermission>
-      <Hidden mdDown implementation='css'>
-        {rightMenu()}
-      </Hidden>
+      <Box sx={{ display: { xs: 'none', md: 'block' } }}>{rightMenu()}</Box>
     </AppBar>
   )
 }

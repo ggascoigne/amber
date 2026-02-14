@@ -1,46 +1,49 @@
-/** @type {import('next').NextConfig} */
+import { headers } from '@amber/amber/utils/next-headers.js'
+import bundleAnalyzer from '@next/bundle-analyzer'
+import createMDX from '@next/mdx'
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
-const { headers } = require('amber/utils/next-headers')
-const withMdxFm = require('next-mdx-frontmatter')({
-  extension: /\.mdx?$/,
-  MDXOptions: {
-    // If you use remark-gfm, you'll need to use next.config.mjs
-    // as the package is ESM only
-    // https://github.com/remarkjs/remark-gfm#install
-    remarkPlugins: [],
+
+const withMDX = createMDX({
+  extension: /\.(md|mdx)$/,
+  options: {
+    remarkPlugins: [
+      // parse YAML (and TOML if you want)
+      ['remark-frontmatter', ['yaml']],
+      // turn the parsed front matter into: export const metadata = { ... }
+      ['remark-mdx-frontmatter', { name: 'metadata' }],
+    ],
     rehypePlugins: [],
-    // If you use `MDXProvider`, uncomment the following line.
+    // Add compile-time components
     providerImportSource: '@mdx-js/react',
   },
 })
 
-module.exports = withBundleAnalyzer(
-  withMdxFm({
-    reactStrictMode: true,
-    transpilePackages: ['ui', 'database', 'amber', '@mui/material', '@amber/api'],
-    eslint: {
-      // Warning: This allows production builds to successfully complete even if
-      // your project has ESLint errors.
-      ignoreDuringBuilds: true,
+const isPlaywright = process.env.PLAYWRIGHT === '1' || process.env.NODE_ENV === 'test'
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  transpilePackages: ['@amber/ui', '@amber/amber', '@mui/material', '@amber/api', '@auth0/nextjs-auth0'],
+  modularizeImports: {
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
     },
-    modularizeImports: {
-      '@mui/material': {
-        transform: '@mui/material/{{member}}',
-      },
-      '@mui/icons-material': {
-        transform: '@mui/icons-material/{{member}}',
-      },
+  },
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  headers,
+  compiler: {
+    emotion: {
+      sourceMap: true,
     },
-    // Append the default value with md extensions
-    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
-    experimental: {
-      outputFileTracingExcludes: {
-        '*': ['node_modules/@swc/**'],
-      },
-    },
-    headers,
-  }),
-)
+  },
+  ...(isPlaywright
+    ? {
+        devIndicators: false,
+      }
+    : {}),
+}
+
+export default withBundleAnalyzer(withMDX(nextConfig))

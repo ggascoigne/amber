@@ -1,23 +1,14 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
-import { FormikHelpers } from 'formik'
-import {
-  CheckboxWithLabel,
-  EditDialog,
-  GridContainer,
-  GridItem,
-  OnCloseHandler,
-  pick,
-  TextField,
-  ToFormValues,
-  useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+import type { HotelRoomEditorType } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { CheckboxWithLabel, EditDialog, GridContainer, GridItem, pick, TextField, useNotification } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import type { FormikHelpers } from 'formik'
 
-import { HotelRoom } from './HotelRoomTypes'
-
-import { useGraphQLMutation, CreateHotelRoomDocument, UpdateHotelRoomByNodeIdDocument } from '../../client'
 import { LookupField } from '../../components/Form'
 
 const validationSchema = Yup.object().shape({
@@ -30,7 +21,7 @@ const validationSchema = Yup.object().shape({
   type: Yup.string().min(2).max(255).required('Required'),
 })
 
-type HotelRoomType = ToFormValues<HotelRoom>
+type HotelRoomType = HotelRoomEditorType
 
 interface HotelRoomTypeDialogProps {
   open: boolean
@@ -39,36 +30,37 @@ interface HotelRoomTypeDialogProps {
 }
 
 export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
-  const createHotelRoomType = useGraphQLMutation(CreateHotelRoomDocument)
-  const updateHotelRoomType = useGraphQLMutation(UpdateHotelRoomByNodeIdDocument)
+  const trpc = useTRPC()
+  const createHotelRoomType = useMutation(trpc.hotelRooms.createHotelRoom.mutationOptions())
+  const updateHotelRoomType = useMutation(trpc.hotelRooms.updateHotelRoom.mutationOptions())
   const queryClient = useQueryClient()
   const notify = useNotification()
 
   return async (values: HotelRoomType) => {
-    if (values.nodeId) {
+    if (values.id) {
       await updateHotelRoomType
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(
-                  values,
-                  'id',
-                  'description',
-                  'gamingRoom',
-                  'bathroomType',
-                  'occupancy',
-                  'rate',
-                  'type',
-                  'quantity',
-                ),
-              },
+            id: values.id,
+            data: {
+              ...pick(
+                values,
+                'id',
+                'description',
+                'gamingRoom',
+                'bathroomType',
+                'occupancy',
+                'rate',
+                'type',
+                'quantity',
+              ),
             },
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRooms.getHotelRooms.queryKey(),
+              })
             },
           },
         )
@@ -83,26 +75,14 @@ export const useEditHotelRoomType = (onClose: OnCloseHandler) => {
       await createHotelRoomType
         .mutateAsync(
           {
-            input: {
-              hotelRoom: {
-                ...pick(
-                  values,
-                  'nodeId',
-                  'id',
-                  'description',
-                  'gamingRoom',
-                  'bathroomType',
-                  'occupancy',
-                  'rate',
-                  'type',
-                ),
-                quantity: 0,
-              },
-            },
+            ...pick(values, 'id', 'description', 'gamingRoom', 'bathroomType', 'occupancy', 'rate', 'type'),
+            quantity: 0,
           },
           {
             onSuccess: () => {
-              queryClient.invalidateQueries({ queryKey: ['getHotelRooms'] })
+              queryClient.invalidateQueries({
+                queryKey: trpc.hotelRooms.getHotelRooms.queryKey(),
+              })
             },
           },
         )
@@ -145,17 +125,17 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
       onSubmit={onSubmit}
       title='Hotel Room Type'
       validationSchema={validationSchema}
-      isEditing={!!values?.nodeId}
+      isEditing={!!values?.id}
     >
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='description' label='Description' margin='normal' fullWidth required autoFocus />
         </GridItem>
-        <GridItem container spacing={2} xs={12} md={12} direction='row' style={{ paddingRight: 0 }}>
-          <GridItem xs={6} md={6}>
+        <GridItem container spacing={2} size={{ xs: 12, md: 12 }} direction='row' style={{ paddingRight: 0 }}>
+          <GridItem size={{ xs: 6, md: 6 }}>
             <CheckboxWithLabel label='Gaming Room?' name='gamingRoom' />
           </GridItem>
-          <GridItem xs={6} md={6} style={{ paddingRight: 0 }}>
+          <GridItem size={{ xs: 6, md: 6 }} style={{ paddingRight: 0 }}>
             <LookupField
               realm='bathroomType'
               name='bathroomType'
@@ -166,16 +146,16 @@ export const HotelRoomTypeDialog: React.FC<HotelRoomTypeDialogProps> = ({ open, 
             />
           </GridItem>
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='occupancy' label='Occupancy' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='rate' label='Rate' margin='normal' fullWidth />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <LookupField realm='roomType' name='type' label='Type' margin='normal' fullWidth required />
         </GridItem>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name='quantity' label='Quantity' margin='normal' fullWidth type='number' />
         </GridItem>
       </GridContainer>

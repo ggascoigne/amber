@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 
-import { Configuration } from './configContext'
+import type { Configuration, ConventionInfo } from './configContext'
 
 export type SlotConfiguration = Pick<Configuration, 'startDates' | 'virtual' | 'year' | 'numberOfSlots'>
 
@@ -23,7 +23,17 @@ export type SlotConfiguration = Pick<Configuration, 'startDates' | 'virtual' | '
 // 7 : Sun 11-5
 // 8 : Sun 7-12
 
+const assertEntryIsValid: (
+  entry: ConventionInfo | undefined,
+  year: number,
+) => asserts entry is ConventionInfo & { date: DateTime } = (entry, year) => {
+  if (!entry || !(entry.date instanceof DateTime)) {
+    throw new Error(`Dates for Year ${year} are not in the configuration`)
+  }
+}
+
 const getRegularSlotTimes = ({ startDates, numberOfSlots }: SlotConfiguration, year: number) => {
+  assertEntryIsValid(startDates[year], year)
   const start = startDates[year].date
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
@@ -76,6 +86,7 @@ const getRegularSlotTimes = ({ startDates, numberOfSlots }: SlotConfiguration, y
 // 8 : Sun 7-11
 
 const getVirtualSlotTimes = ({ startDates, numberOfSlots }: SlotConfiguration, year: number) => {
+  assertEntryIsValid(startDates[year], year)
   const start = startDates[year].date
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
@@ -125,7 +136,7 @@ const mapping = { AM: 'am', PM: 'pm' }
 
 const replaceAll = (str: string, mapObj: Record<string, string>) => {
   const re = new RegExp(Object.keys(mapObj).join('|'), 'g')
-  return str.replace(re, (matched) => mapObj[matched])
+  return str.replace(re, (matched) => mapObj[matched] ?? '')
 }
 
 const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) => {
@@ -152,10 +163,12 @@ const formatSlot = (slot: number, s: DateTime, e: DateTime, altFormat: SlotForma
 const formatSlotLocal = (slot: number, s: DateTime, e: DateTime, altFormat: SlotFormat) =>
   formatSlot(slot, s.setZone('local'), e.setZone('local'), altFormat)
 
-export const getSlotTimes = (configuration: SlotConfiguration, year: number) =>
-  configuration.startDates[year].virtual
+export const getSlotTimes = (configuration: SlotConfiguration, year: number) => {
+  assertEntryIsValid(configuration.startDates[year], year)
+  return configuration.startDates[year].virtual
     ? getVirtualSlotTimes(configuration, year)
     : getRegularSlotTimes(configuration, year)
+}
 
 export const getSlotDescription = (
   configuration: SlotConfiguration,
@@ -174,7 +187,11 @@ export const getSlotDescription = (
   },
 ) => {
   if (!slot) return 'unscheduled'
-  const [start, end] = getSlotTimes(configuration, year)[slot - 1]
+  const slotTime = getSlotTimes(configuration, year)[slot - 1]
+  if (!slotTime) {
+    throw new Error(`Slot ${slot} is not defined for year ${year}`)
+  }
+  const [start, end] = slotTime
   const realStart = lateStart ?? start
   // console.log({ slot, start, end })
   return local ? formatSlotLocal(slot, realStart, end, altFormat) : formatSlot(slot, realStart, end, altFormat)

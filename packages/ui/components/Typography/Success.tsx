@@ -1,9 +1,17 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { useTypographyStyles } from './typographyStyle'
+import { Box } from '@mui/material'
 
-export const Success: React.FC<PropsWithChildren<unknown>> = (props) => {
-  const { classes } = useTypographyStyles()
-  const { children } = props
-  return <div className={`${classes.defaultFontStyle} ${classes.successText}`}>{children}</div>
-}
+export const Success: React.FC<PropsWithChildren<unknown>> = ({ children }) => (
+  <Box
+    sx={(theme) => ({
+      fontWeight: 300,
+      lineHeight: '1.5em',
+      fontSize: '14px',
+      color: theme.palette.success.main,
+    })}
+  >
+    {children}
+  </Box>
+)

@@ -1,6 +1,6 @@
-import { Perms } from 'amber/components/Auth'
-import { RootRoutes } from 'amber/components/Navigation'
-import { Configuration } from 'amber/utils'
+import { Perms } from '@amber/amber/components/Auth'
+import type { RootRoutes } from '@amber/amber/components/Navigation'
+import type { Configuration } from '@amber/amber/utils'
 
 export const rootRoutes = (configuration: Configuration): RootRoutes => [
   {
@@ -152,13 +152,6 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     label: 'Reports',
     exact: true,
     permission: Perms.Reports,
-  },
-  {
-    path: '/graphiql',
-    label: 'GraphiQL',
-    subText: 'Dynamically query the ACNW database',
-    exact: false,
-    permission: Perms.GraphiqlLoad,
   },
   {
     path: '/covid-policy',

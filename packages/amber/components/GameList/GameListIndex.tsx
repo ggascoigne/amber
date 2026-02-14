@@ -1,20 +1,12 @@
-import React from 'react'
+import type React from 'react'
 
-import { Theme, Typography } from '@mui/material'
+import type { GameArray } from '@amber/client'
+import { Typography } from '@mui/material'
 import List from '@mui/material/List'
-import { makeStyles } from 'tss-react/mui'
 
-import type { GameArray } from '../../client'
 import { useUrlSource } from '../../utils'
 import { ListItemLink } from '../Navigation'
-import { GameDecorator, GameDecoratorParams } from '../types'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  listItem: {
-    paddingTop: 5,
-    paddingBottom: 5,
-  },
-}))
+import type { GameDecorator, GameDecoratorParams } from '../types'
 
 interface GameListIndexProps {
   year: number
@@ -26,19 +18,11 @@ interface GameListIndexProps {
   decoratorParams?: GameDecoratorParams
 }
 
-export const GameListIndex: React.FC<GameListIndexProps> = ({
-  year,
-  slot,
-  games,
-  slugPrefix,
-  decorator,
-  decoratorParams,
-}) => {
-  const { classes } = useStyles()
+export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decoratorParams }: GameListIndexProps) => {
   const [urlSource] = useUrlSource()
   return (
     <List>
-      {games.map(({ node: game }) => {
+      {games.map((game) => {
         if (!game) {
           return null
         }
@@ -47,7 +31,8 @@ export const GameListIndex: React.FC<GameListIndexProps> = ({
         return (
           <ListItemLink
             key={game.id}
-            className={classes.listItem}
+            style={{ paddingTop: 5, paddingBottom: 5 }}
+            sx={{ color: 'primary.main' }}
             selected={selectionKey === urlSource.url}
             href={{ pathname: slug, hash: `#${game.id}` }}
           >

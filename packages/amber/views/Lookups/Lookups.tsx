@@ -1,95 +1,69 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React from 'react'
 
-import { useQueryClient } from '@tanstack/react-query'
-import type { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
+import type { Lookup } from '@amber/client'
+import { useInvalidateLookupQueries, useTRPC } from '@amber/client'
+import { Table } from '@amber/ui/components/Table'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { LookupsDialog } from './LookupsDialog'
 
-import {
-  GetLookupsQuery,
-  useGraphQLMutation,
-  useGraphQL,
-  DeleteLookupDocument,
-  DeleteLookupValueDocument,
-  GetLookupsDocument,
-} from '../../client'
-import type { TableMouseEventHandler } from '../../types/react-table-config'
+import { Page } from '../../components'
+import { TransportError } from '../../components/TransportError'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-export type LookupAndValues = GqlType<GetLookupsQuery, ['lookups', 'edges', number, 'node']>
-
-const columns: Column<LookupAndValues>[] = [
+const columns: ColumnDef<Lookup>[] = [
   {
-    accessor: 'realm',
+    accessorKey: 'realm',
   },
 ]
 
-const Lookups: React.FC = React.memo(() => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<LookupAndValues[]>([])
-  const deleteLookup = useGraphQLMutation(DeleteLookupDocument)
-  const deleteLookupValue = useGraphQLMutation(DeleteLookupValueDocument)
-  const queryClient = useQueryClient()
+const Lookups = React.memo(() => {
+  const trpc = useTRPC()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetLookupsDocument)
+  const deleteLookupValue = useMutation(trpc.lookups.deleteLookupValue.mutationOptions())
+  const deleteLookup = useMutation(trpc.lookups.deleteLookup.mutationOptions())
+  const invalidateLookupQueries = useInvalidateLookupQueries()
+
+  const { isLoading, isFetching, error, data = [], refetch } = useQuery(trpc.lookups.getLookups.queryOptions())
+
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } = useStandardHandlers<Lookup>({
+    deleteHandler: (selectedRows) =>
+      selectedRows
+        .map((lookup) =>
+          lookup.lookupValue.reduce<Promise<unknown>[]>((acc, current) => {
+            if (current?.id) {
+              acc.push(deleteLookupValue.mutateAsync({ id: current.id }))
+            }
+            return acc
+          }, []),
+        )
+        .flat()
+        .concat(selectedRows.map((r) => deleteLookup.mutateAsync({ id: r.id }))),
+    invalidateQueries: invalidateLookupQueries,
+  })
 
   if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  const list: LookupAndValues[] = data.lookups!.edges.map((v) => v.node).filter(notEmpty)
-
-  const onAdd: TableMouseEventHandler<LookupAndValues> = () => () => {
-    setShowEdit(true)
-  }
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-    // noinspection JSIgnoredPromiseFromCall
-    queryClient.invalidateQueries({ queryKey: ['getLookups'] })
-  }
-
-  const onDelete = (instance: TableInstance<LookupAndValues>) => () => {
-    const updater = instance.selectedFlatRows
-      .map((r) => r.original)
-      .map((l) => {
-        const updaters: Promise<any>[] = l.lookupValues.nodes.reduce((acc: Promise<any>[], lv) => {
-          lv?.id && acc.push(deleteLookupValue.mutateAsync({ input: { id: lv.id } }))
-          return acc
-        }, [])
-        updaters.push(deleteLookup.mutateAsync({ input: { id: l.id } }))
-        return updaters
-      })
-      .flat()
-    Promise.allSettled(updater).then(() => queryClient.invalidateQueries({ queryKey: ['getLookups'] }))
-  }
-
-  const onEdit = (instance: TableInstance<LookupAndValues>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<LookupAndValues>) => {
-    setShowEdit(true)
-    setSelection([row.original])
+    return <TransportError error={error} />
   }
 
   return (
-    <Page title='Lookups'>
-      {showEdit && <LookupsDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<LookupAndValues>
+    <Page title='Lookups' variant='fill' hideTitle>
+      {showEdit && <LookupsDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
+      <Table<Lookup>
+        title='Lookups'
         name='lookups'
-        data={list}
+        data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
         onAdd={onAdd}
-        onDelete={onDelete}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onDelete={onDelete}
+        refetch={refetch}
+        enableColumnFilters={false}
+        enableGrouping={false}
       />
     </Page>
   )

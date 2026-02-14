@@ -1,20 +1,24 @@
-import React, { ReactNode, useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useCallback, useState } from 'react'
 
-import { Box, Divider, Drawer, Hidden, List, ListItem } from '@mui/material'
-import { Children } from 'ui'
+import type { Children } from '@amber/ui'
+import { Box, Divider, Drawer, List, ListItem } from '@mui/material'
 
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { LoginButton } from './LoginButton'
-import { MenuItems, RootRoutes } from './Navigation'
+import type { RootRoutes } from './Navigation'
+import { MenuItems } from './Navigation'
 
 const drawerWidth = 240
 
-const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes; banner: ReactNode }> = ({
-  small = false,
-  rootRoutes,
-  banner,
-}) => (
+type DrawerContentsProps = {
+  small?: boolean
+  rootRoutes: RootRoutes
+  banner: ReactNode
+}
+
+const DrawerContents = ({ small = false, rootRoutes, banner }: DrawerContentsProps) => (
   <>
     {!small && (
       <>
@@ -28,7 +32,7 @@ const DrawerContents: React.FC<{ small?: boolean; rootRoutes: RootRoutes; banner
   </>
 )
 
-const RightMenu: React.FC<{ small?: boolean }> = (props) => (
+const RightMenu = (props: { small?: boolean }) => (
   <List
     sx={{
       fontSize: '14px',
@@ -56,7 +60,11 @@ const RightMenu: React.FC<{ small?: boolean }> = (props) => (
   </List>
 )
 
-export type LayoutProps = Children & { rootRoutes: RootRoutes; title: string; banner: ReactNode }
+export type LayoutProps = Children & {
+  rootRoutes: RootRoutes
+  title: string
+  banner: ReactNode
+}
 
 export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes, title, banner }) => {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -77,7 +85,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
           },
         })}
       >
-        <Hidden mdUp>
+        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
           <Drawer
             variant='temporary'
             anchor='left'
@@ -97,8 +105,8 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
             <Divider />
             <DrawerContents small rootRoutes={rootRoutes} banner={banner} />
           </Drawer>
-        </Hidden>
-        <Hidden mdDown>
+        </Box>
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <Drawer
             PaperProps={{
               sx: {
@@ -111,9 +119,18 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
           >
             <DrawerContents rootRoutes={rootRoutes} banner={banner} />
           </Drawer>
-        </Hidden>
+        </Box>
       </Box>
-      <Box component='main' sx={{ minHeight: '100vh', width: '100%', flexGrow: 1, paddingTop: 3, paddingBottom: 3 }}>
+      <Box
+        component='main'
+        sx={{
+          minHeight: '100vh',
+          width: 'calc(100% - 240px)',
+          flexGrow: 1,
+          paddingTop: 3,
+          paddingBottom: 3,
+        }}
+      >
         <Box sx={(theme) => ({ ...theme.mixins.toolbar })} />
         {children}
       </Box>

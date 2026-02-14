@@ -1,8 +1,9 @@
 import * as React from 'react'
 
-import { Perms } from 'amber/components/Auth'
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import { Reports, ReportRecord } from 'amber/views/Reports'
+import { Perms } from '@amber/amber/components/Auth'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import type { ReportRecord } from '@amber/amber/views/Reports'
+import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [

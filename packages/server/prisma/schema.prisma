@@ -1,0 +1,366 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  engineType      = "client" // enable Prisma ORM without Rust
+  previewFeatures = ["typedSql"]
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Game {
+  id               Int              @id @default(autoincrement())
+  description      String
+  lateFinish       Boolean?         @map("late_finish")
+  lateStart        String?          @map("late_start") @db.VarChar(50)
+  name             String           @db.VarChar(100)
+  playerMax        Int              @map("player_max")
+  playerMin        Int              @map("player_min")
+  roomId           Int?             @map("room_id")
+  shortName        String?          @map("short_name") @db.VarChar(60)
+  slotId           Int?             @map("slot_id")
+  charInstructions String           @map("char_instructions")
+  estimatedLength  String           @map("estimated_length") @db.VarChar(3)
+  gameContactEmail String           @map("game_contact_email") @db.VarChar(64)
+  genre            String           @db.VarChar(19)
+  gmNames          String?          @map("gm_names") @db.VarChar(255)
+  message          String
+  playerPreference String           @map("player_preference") @db.VarChar(8)
+  playersContactGm Boolean          @map("players_contact_gm")
+  returningPlayers String           @map("returning_players")
+  setting          String
+  slotConflicts    String           @map("slot_conflicts")
+  slotPreference   Int              @map("slot_preference")
+  teenFriendly     Boolean          @map("teen_friendly")
+  type             String           @db.VarChar(18)
+  year             Int
+  authorId         Int?             @map("author_id")
+  full             Boolean?         @default(false)
+  user             User?            @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_author_id_foreign")
+  room             Room?            @relation(fields: [roomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_room_id_foreign")
+  slot             Slot?            @relation(fields: [slotId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_slot_id_foreign")
+  gameAssignment   GameAssignment[]
+  gameChoice       GameChoice[]
+
+  @@index([authorId], map: "game_author_id_index")
+  @@index([roomId], map: "game_room_id_index")
+  @@index([slotId], map: "game_slot_id_index")
+  @@map("game")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GameAssignment {
+  memberId   Int        @map("member_id")
+  gameId     Int        @map("game_id")
+  gm         Int
+  year       Int
+  game       Game       @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "game_assignment_game_id_foreign")
+  membership Membership @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_assignment_member_id_foreign")
+
+  @@id([memberId, gameId, gm, year])
+  @@index([gameId], map: "game_assignment_game_id_index")
+  @@index([memberId], map: "game_assignment_member_id_index")
+  @@map("game_assignment")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GameChoice {
+  id              Int        @id @default(autoincrement())
+  gameId          Int?       @map("game_id")
+  memberId        Int        @map("member_id")
+  rank            Int
+  slotId          Int        @map("slot_id")
+  year            Int
+  returningPlayer Boolean    @map("returning_player")
+  game            Game?      @relation(fields: [gameId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_choice_game_id_foreign")
+  membership      Membership @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_choice_member_id_foreign")
+  slot            Slot       @relation(fields: [slotId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_choice_slot_id_foreign")
+
+  @@index([gameId], map: "game_choice_game_id_index")
+  @@index([memberId], map: "game_choice_member_id_index")
+  @@index([slotId], map: "game_choice_slot_id_index")
+  @@map("game_choice")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GameSubmission {
+  id         Int        @id @default(autoincrement())
+  memberId   Int        @map("member_id")
+  message    String     @db.VarChar(1024)
+  year       Int
+  membership Membership @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_submission_member_id_foreign")
+
+  @@index([memberId], map: "game_submission_member_id_index")
+  @@map("game_submission")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model HotelRoom {
+  id           Int          @id @default(autoincrement())
+  description  String       @db.VarChar(150)
+  gamingRoom   Boolean      @map("gaming_room")
+  occupancy    String       @db.VarChar(255)
+  quantity     Int
+  rate         String       @db.VarChar(255)
+  bathroomType String       @map("bathroom_type") @db.VarChar(255)
+  type         String       @db.VarChar(255)
+  membership   Membership[]
+
+  @@map("hotel_room")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model HotelRoomDetails {
+  id                BigInt  @id @default(autoincrement())
+  version           BigInt
+  bathroomType      String  @map("bathroom_type") @db.VarChar(255)
+  comment           String  @db.VarChar(100)
+  enabled           Boolean
+  gamingRoom        Boolean @map("gaming_room")
+  internalRoomType  String  @map("internal_room_type") @db.VarChar(100)
+  name              String  @db.VarChar(50)
+  reserved          Boolean
+  reservedFor       String  @map("reserved_for") @db.VarChar(50)
+  roomType          String  @map("room_type") @db.VarChar(255)
+  formattedRoomType String  @map("formatted_room_type") @db.VarChar(255)
+
+  @@map("hotel_room_details")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model KnexMigrations {
+  id            Int       @id @default(autoincrement())
+  name          String?   @db.VarChar(255)
+  batch         Int?
+  migrationTime DateTime? @map("migration_time") @db.Timestamptz(6)
+
+  @@map("knex_migrations")
+}
+
+model KnexMigrationsLock {
+  index    Int  @id @default(autoincrement())
+  isLocked Int? @map("is_locked")
+
+  @@map("knex_migrations_lock")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Lookup {
+  id               Int           @id @default(autoincrement())
+  codeMaximum      String?       @map("code_maximum") @db.VarChar(255)
+  codeMinimum      String?       @map("code_minimum") @db.VarChar(255)
+  codeScale        Int?          @map("code_scale")
+  codeType         String        @map("code_type") @db.VarChar(7)
+  internationalize Boolean
+  ordering         String        @db.VarChar(9)
+  realm            String        @unique(map: "lookup_realm_unique") @db.VarChar(100)
+  valueMaximum     String?       @map("value_maximum") @db.VarChar(255)
+  valueMinimum     String?       @map("value_minimum") @db.VarChar(255)
+  valueScale       Int?          @map("value_scale")
+  valueType        String        @map("value_type") @db.VarChar(7)
+  lookupValue      LookupValue[]
+
+  @@index([realm], map: "lookup_realm_index")
+  @@map("lookup")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model LookupValue {
+  id               Int    @id @default(autoincrement())
+  code             String @db.VarChar(255)
+  lookupId         Int    @map("lookup_id")
+  numericSequencer Float  @map("numeric_sequencer")
+  sequencer        Int
+  stringSequencer  String @map("string_sequencer") @db.VarChar(255)
+  value            String @db.VarChar(255)
+  lookup           Lookup @relation(fields: [lookupId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lookup_value_lookup_id_foreign")
+
+  @@unique([lookupId, code], map: "lookup_value_lookup_id_code_unique")
+  @@index([code], map: "lookup_value_code_index")
+  @@index([lookupId], map: "lookup_value_lookup_id_index")
+  @@map("lookup_value")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Membership {
+  id                     Int              @id @default(autoincrement())
+  arrivalDate            DateTime         @map("arrival_date") @db.Timestamptz(6)
+  attendance             String           @db.VarChar(255)
+  attending              Boolean
+  departureDate          DateTime         @map("departure_date") @db.Timestamptz(6)
+  hotelRoomId            Int              @map("hotel_room_id")
+  interestLevel          String           @map("interest_level") @db.VarChar(255)
+  message                String           @db.VarChar(1024)
+  roomPreferenceAndNotes String           @map("room_preference_and_notes") @db.VarChar(1024)
+  roomingPreferences     String           @map("rooming_preferences") @db.VarChar(255)
+  roomingWith            String           @map("rooming_with") @db.VarChar(250)
+  userId                 Int              @map("user_id")
+  volunteer              Boolean
+  year                   Int
+  offerSubsidy           Boolean          @map("offer_subsidy")
+  requestOldPrice        Boolean          @map("request_old_price")
+  slotsAttending         String?          @map("slots_attending") @db.VarChar(20)
+  cost                   Float?
+  gameAssignment         GameAssignment[]
+  gameChoice             GameChoice[]
+  gameSubmission         GameSubmission[]
+  hotelRoom              HotelRoom        @relation(fields: [hotelRoomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "membership_hotel_room_id_foreign")
+  user                   User             @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "membership_user_id_foreign")
+  transactions           Transactions[]
+
+  @@index([hotelRoomId], map: "membership_hotel_room_id_index")
+  @@index([userId], map: "membership_user_id_index")
+  @@map("membership")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Profile {
+  id               Int     @id @default(autoincrement())
+  userId           Int     @map("user_id")
+  snailMailAddress String? @map("snail_mail_address") @db.VarChar(250)
+  phoneNumber      String? @map("phone_number") @db.VarChar(32)
+  user             User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_user_id_foreign")
+
+  @@index([userId], map: "profile_user_id_index")
+  @@map("profile")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Role {
+  id        Int        @id @default(autoincrement())
+  authority String     @unique(map: "role_authority_unique") @db.VarChar(40)
+  userRole  UserRole[]
+
+  @@map("role")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Room {
+  id          Int     @id @default(autoincrement())
+  description String  @db.VarChar(50)
+  size        Int
+  type        String  @db.VarChar(50)
+  updated     Boolean
+  game        Game[]
+
+  @@map("room")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Setting {
+  id    Int    @id @default(autoincrement())
+  code  String @db.VarChar(100)
+  type  String @db.VarChar(15)
+  value String @db.VarChar(100)
+
+  @@index([code], map: "setting_code_index")
+  @@map("setting")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ShirtOrder {
+  id             Int              @id @default(autoincrement())
+  deliveryMethod String           @map("delivery_method") @db.VarChar(255)
+  message        String           @db.VarChar(255)
+  userId         Int              @map("user_id")
+  year           Int
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "shirt_order_user_id_foreign")
+  shirtOrderItem ShirtOrderItem[]
+
+  @@index([userId], map: "shirt_order_user_id_index")
+  @@map("shirt_order")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model ShirtOrderItem {
+  id         Int        @id @default(autoincrement())
+  orderId    Int        @map("order_id")
+  quantity   Int
+  size       String     @db.VarChar(255)
+  style      String     @db.VarChar(255)
+  itemsIdx   Int?       @map("items_idx")
+  shirtOrder ShirtOrder @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "shirt_order_item_order_id_foreign")
+
+  @@index([orderId], map: "shirt_order_item_order_id_index")
+  @@map("shirt_order_item")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Slot {
+  id            Int          @id @default(autoincrement())
+  slot          Int
+  day           String       @db.VarChar(20)
+  formattedDate String       @map("formatted_date") @db.VarChar(30)
+  length        String       @db.VarChar(20)
+  time          String       @db.VarChar(30)
+  game          Game[]
+  gameChoice    GameChoice[]
+
+  @@map("slot")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Stripe {
+  id   Int  @id @default(autoincrement())
+  data Json
+
+  @@map("stripe")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model Transactions {
+  id                           BigInt      @id @default(autoincrement())
+  userId                       Int         @map("user_id")
+  memberId                     Int?        @map("member_id")
+  year                         Int
+  timestamp                    DateTime    @default(now()) @db.Timestamptz(6)
+  amount                       Float
+  origin                       Int?
+  stripe                       Boolean     @default(false)
+  notes                        String      @default("") @db.VarChar(1044)
+  data                         Json
+  membership                   Membership? @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_member_id_foreign")
+  userByOrigin                 User?       @relation("transactions_originTouser", fields: [origin], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_origin_foreign")
+  user                         User        @relation("transactions_user_idTouser", fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "transactions_user_id_foreign")
+
+  @@index([memberId], map: "transactions_member_id_index")
+  @@index([origin], map: "transactions_origin_index")
+  @@index([userId], map: "transactions_user_id_index")
+  @@map("transactions")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model User {
+  id                                   Int            @id @default(autoincrement())
+  email                                String         @unique(map: "user_email_unique") @db.VarChar(64)
+  fullName                             String?        @map("full_name") @db.VarChar(64)
+  firstName                            String?        @map("first_name") @db.VarChar(20)
+  lastName                             String?        @map("last_name") @db.VarChar(40)
+  displayName                          String?        @map("display_name") @db.VarChar(40)
+  balance                              Float          @default(0)
+  game                                 Game[]
+  membership                           Membership[]
+  profile                              Profile[]
+  shirtOrder                           ShirtOrder[]
+  transactionsTransactionsOriginTouser Transactions[] @relation("transactions_originTouser")
+  transactionsTransactionsUserIdTouser Transactions[] @relation("transactions_user_idTouser")
+  userRole                             UserRole[]
+
+  @@map("user")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model UserRole {
+  roleId Int  @map("role_id")
+  userId Int  @map("user_id")
+  role   Role @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_role_role_id_foreign")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "user_role_user_id_foreign")
+
+  @@id([roleId, userId])
+  @@index([roleId], map: "user_role_role_id_index")
+  @@index([userId], map: "user_role_user_id_index")
+  @@map("user_role")
+}

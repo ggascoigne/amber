@@ -1,32 +1,41 @@
 import React from 'react'
 
-import { Field, GraphQLError, Loader, MultiLine, Page } from 'ui'
+import { useTRPC } from '@amber/client'
+import { Field, Loader, MultiLine } from '@amber/ui'
+import { useQuery } from '@tanstack/react-query'
 
 import { ChoiceSummary } from './SlotDetails'
 
-import { useGraphQL, GetGameChoicesDocument } from '../../client'
-import { ContactEmail } from '../../components'
+import { Page, ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
-const GameChoiceSummary: React.FC = () => {
+const GameChoiceSummary = () => {
+  const trpc = useTRPC()
   const { year } = useGameUrl()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
 
-  const { error, data } = useGraphQL(
-    GetGameChoicesDocument,
-    {
-      year,
-      memberId: membership?.id ?? 0,
-    },
-    {
-      enabled: !!membership,
-    },
+  const { error, data } = useQuery(
+    trpc.gameChoices.getGameChoices.queryOptions(
+      {
+        year,
+        memberId: membership?.id ?? 0,
+      },
+      {
+        enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   )
 
-  const gameChoices = data?.gameChoices?.nodes
-  const gameSubmission = data?.gameSubmissions?.nodes
+  const gameChoices = data?.gameChoices
+  const gameSubmission = data?.gameSubmissions
 
   if (membership === undefined) {
     // still loading
@@ -38,7 +47,7 @@ const GameChoiceSummary: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />

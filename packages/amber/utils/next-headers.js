@@ -1,13 +1,11 @@
-const headers = async () => [
+export const headers = async () => [
   {
     source: '/:path*',
     headers: [
       {
         key: 'X-Clacks-Overhead',
-        value: 'GNU Terry Pratchett',
+        value: 'GNU Terry Pratchett, Erick Wujcik, Roger Zelazny',
       },
     ],
   },
 ]
-
-exports.headers = headers

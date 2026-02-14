@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from 'amber/utils/getServerSideProps'
-import Settings from 'amber/views/Settings/Settings'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import Settings from '@amber/amber/views/Settings/Settings'
 import type { NextPage } from 'next'
 
 const Page: NextPage = () => <Settings />

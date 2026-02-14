@@ -2,8 +2,15 @@
 title: What is Ambercon US?
 ---
 
-import { ConfigurationValue, ConventionYear, ConventionsDatesFull, ContactEmail } from 'amber/components'
-import { SlotDescriptionList } from 'amber/components/SlotDescriptionList'
+import { DateTime } from 'luxon'
+import {
+  ConfigurationValue,
+  ConventionYear,
+  ConventionsDatesFull,
+  ConfigDate,
+  ContactEmail,
+} from '@amber/amber/components'
+import { SlotDescriptionList } from '@amber/amber/components/SlotDescriptionList'
 
 Ambercon US is a fully scheduled role-playing game convention devoted diceless / story-focused / character driven
 RPGs. While a large portion of the games use Erick Wujcik's **Amber Diceless RPG** as their base ruleset, or are set in
@@ -21,6 +28,7 @@ the organizers at <ContactEmail />.
 ## Summary
 
 You buy a membership.
+
 1. GMs submit games until we have enough.
 1. We assemble the games into the game book.
 1. We notify you when the game book is published.
@@ -32,14 +40,13 @@ You buy a membership.
 
 If you are a Game Master, **please consider running one or more games at Ambercon**.
 
-## What do we get?
+## What do we get Where and When?
 
-Ambercon offers a **long weekend** of scheduled gaming events,
-**Thursday evening through Sunday evening**. All members choose the game events they wish to play
-and receive their schedule in advance of the convention. Likewise, GMs receive their player lists in advance, so everyone
-can prepare.
+Ambercon offers a **four-day weekend** of an opening reception and scheduled gaming events **Thursday evening through Sunday evening**.
 
-The convention is divided into <ConfigurationValue field='numberOfSlots'/> event slots:
+The convention starts with a **welcome reception <ConfigDate name='conventionStartDate' format={DateTime.DATE_HUGE}/> at 5:30pm EDT** in the atrium of the hotel, beside the breakfast area, before the restaurant.
+
+The convention then continues with the **<ConfigurationValue field='numberOfSlots'/> game slots**:
 
 <SlotDescriptionList />
 
@@ -48,21 +55,26 @@ The one-day and two-day registration allows you to play in games on the day (or 
 ## What Does This Cost?
 
 Ambercon membership for this year costs:
-* $70 to attend all four days (Thursday through Sunday)
-* $55 to attend three days (Friday through Sunday)
-* $40 to attend two days
-* and $25 to attend one day
+
+- $70 to attend all four days (Thursday through Sunday)
+- $55 to attend three days (Friday through Sunday)
+- $40 to attend two days
+- and $25 to attend one day
 
 ## How Does This Work?
 
 ### Game Selection
+
 After you've registered, we'll notify you when the games for the Con are available on our website, and you get to pick those you'd most like to play in each slot. You do not have to pay a per game fee - your registration lets you play in as many slots as you'd like on the day or days covered by your registration type. Once the game book is available, we ask you to send us your list of possible games (we very strongly suggest picking more than one in each slot, in case your first choice is full).
 
 ### Game Scheduling
+
 After the game selection deadline is past, we will assign your games. Once we have everyone scheduled, we send you the list of your games, and we send the GMs the lists of their players, so any prep for the game can be done before the con, giving everyone more playing time.
 
 ## Underage Attendees
+
 If you are interested in bringing someone under 18 to Ambercon, please contact us. We have allowed attendees who are under 18, but with conditions and permission of the event GMs, and we are not currently prepared to accommodate attendees under 13. Have your parent or legal guardian e-mail <ContactEmail />. Thanks.
 
 ## Game Masters
-We always need more games! If you are a Game Master, please consider running one or more games at Ambercon. The players at Ambercon are, generally speaking, experienced diceless role players who are looking to have fun with others in games.  They, and we, are always looking for new games, new game masters, new ideas, new approaches.  So, if you GM, give it a try, run a game.  Please submit a game via our online game submission form.
+
+We always need more games! If you are a Game Master, please consider running one or more games at Ambercon. The players at Ambercon are, generally speaking, experienced diceless role players who are looking to have fun with others in games. They, and we, are always looking for new games, new game masters, new ideas, new approaches. So, if you GM, give it a try, run a game. Please submit a game via our online game submission form.

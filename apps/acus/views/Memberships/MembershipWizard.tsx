@@ -1,30 +1,32 @@
-import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import type React from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
-import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Perms,
   ProfileFormContent,
-  ProfileFormType,
   profileValidationSchema,
   useAuth,
   useConfiguration,
   useEditUserAndProfile,
-  useGraphQL,
-  GetTransactionByUserDocument,
   useUser,
   useYearFilter,
-} from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
-import { toSlotsAttending, fromSlotsAttending, useEditMembership } from 'amber/utils/membershipUtils'
-import { hasAdminStepErrors, MembershipStepAdmin } from 'amber/views/Memberships/MembershipAdmin'
+} from '@amber/amber'
+import type { MembershipFormType } from '@amber/amber/utils/membershipUtils'
+import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
+import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaUS as membershipValidationSchema,
-} from 'amber/views/Memberships/membershipUtils'
-import { FormikErrors, FormikHelpers, FormikValues } from 'formik'
+} from '@amber/amber/views/Memberships/membershipUtils'
+import type { UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { WizardPage } from '@amber/ui'
+import { Wizard } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { useQuery } from '@tanstack/react-query'
+import type { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
-import { Wizard, WizardPage } from 'ui'
-import Yup from 'ui/utils/Yup'
 
 import { IntroStep } from './IntroStep'
 import { hasConventionStepErrors, MembershipStepConvention } from './MembershipStepConvention'
@@ -37,15 +39,15 @@ interface IntroType {
 
 export interface MembershipWizardFormValues {
   intro: IntroType
-  membership: MembershipType
-  profile: ProfileFormType
+  membership: MembershipFormType
+  profile: UserAndProfile
 }
 
 interface MembershipWizardProps {
   open: boolean
   onClose: (event?: any) => void
-  initialValues?: MembershipType
-  profile: ProfileFormType
+  initialValues?: MembershipFormType
+  profile: UserAndProfile
   short?: boolean
 }
 
@@ -66,12 +68,15 @@ export const redirectContext = createContext<
 >(undefined)
 const RedirectProvider = redirectContext.Provider
 
-export const SaveButton: React.FC<{
+export const SaveButton = ({
+  disabled,
+  validateForm,
+  submitForm,
+}: {
   disabled: boolean
   validateForm: (values?: any) => Promise<FormikErrors<any>>
   submitForm: (() => Promise<void>) & (() => Promise<any>)
-  children: ReactNode
-}> = ({ disabled, validateForm, submitForm }) => {
+}) => {
   const [isLoading, setIsLoading] = useState<'now' | 'later' | undefined>(undefined)
   const [, setShouldRedirect] = useContext(redirectContext)!
   return (
@@ -89,7 +94,7 @@ export const SaveButton: React.FC<{
         loading={isLoading === 'later'}
         disabled={disabled || isLoading !== undefined}
       >
-        Pay Later
+        Confirm
       </LoadingButton>
       <LoadingButton
         onClick={() =>
@@ -104,19 +109,14 @@ export const SaveButton: React.FC<{
         loading={isLoading === 'now'}
         disabled={disabled || isLoading !== undefined}
       >
-        Pay Now
+        Confirm & Pay
       </LoadingButton>
     </>
   )
 }
 
-export const MembershipWizard: React.FC<MembershipWizardProps> = ({
-  open,
-  onClose,
-  profile,
-  initialValues,
-  short = false,
-}) => {
+export const MembershipWizard = ({ open, onClose, profile, initialValues, short = false }: MembershipWizardProps) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const { user, hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
@@ -127,15 +127,16 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
   const [year] = useYearFilter()
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
-  const redirectContextState = useState<RedirectInfo>({ shouldRedirect: false })
+  const redirectContextState = useState<RedirectInfo>({
+    shouldRedirect: false,
+  })
   const [redirectInfo] = redirectContextState
 
-  const { data: usersTransactions } = useGraphQL(
-    GetTransactionByUserDocument,
-    {
-      userId: initialValues?.userId ?? -1,
-    },
-    { enabled: !!initialValues?.userId },
+  const { data: usersTransactions } = useQuery(
+    trpc.transactions.getTransactionsByUser.queryOptions(
+      { userId: initialValues?.userId ?? -1 },
+      { enabled: !!initialValues?.userId },
+    ),
   )
 
   const pages = useMemo(() => {
@@ -216,7 +217,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
 
   if (!user) {
     throw new Error('login expired')
-  } // todo test this
+  } // TODO test this
 
   const onSubmit = async (values: MembershipWizardFormValues, _actions: FormikHelpers<MembershipWizardFormValues>) => {
     const { membership: membershipValues, profile: profileValues } = values
@@ -231,7 +232,7 @@ export const MembershipWizard: React.FC<MembershipWizardProps> = ({
 
   const values = useMemo(() => {
     // note that for ACUS Virtual, we only really care about acceptance and the list of possible slots that they know that they won't attend.
-    const defaultValues: MembershipType = getDefaultMembership(configuration, userId!, isVirtual)
+    const defaultValues: MembershipFormType = getDefaultMembership(configuration, userId!, isVirtual)
     const _values: MembershipWizardFormValues = {
       intro: { acceptedPolicies: !!initialValues?.id },
       membership: initialValues ? { ...initialValues } : { ...defaultValues },

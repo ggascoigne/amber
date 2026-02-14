@@ -1,13 +1,13 @@
-import React from 'react'
+import type React from 'react'
 
-import { EditDialog } from 'ui'
+import type { StripeRecord } from '@amber/client'
+import { EditDialog } from '@amber/ui'
 
-import { StripeValue } from './Stripe'
 import { StripeFormContent } from './StripeFormContent'
 
 interface StripeDialogProps {
   open: boolean
-  initialValues?: StripeValue
+  initialValues?: StripeRecord
   onClose: (event?: any) => void
 }
 

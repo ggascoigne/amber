@@ -1,39 +1,34 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
-import { FormikHelpers } from 'formik'
+import type { Game } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import type { TextFieldProps } from '@amber/ui'
 import {
   CheckboxWithLabel,
   EditDialog,
-  GraphQLError,
   GridContainer,
   GridItem,
   Loader,
-  notEmpty,
   pick,
   range,
   SelectField,
   TextField,
-  TextFieldProps,
   useDisableBackdropClick,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { Autocomplete, Dialog, TextField as MuiTextField, Typography } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
+import type { FormikHelpers } from 'formik'
 
-import { GameDialogFormValues, useEditGame } from './gameHooks'
+import type { GameDialogFormValues } from './gameHooks'
+import { useEditGame } from './gameHooks'
 
-import {
-  GameFieldsFragment,
-  GameGmsFragment,
-  useGraphQL,
-  GetGameByIdDocument,
-  GetGameRoomsDocument,
-  GetGamesByAuthorDocument,
-} from '../../client'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
-import { Configuration, getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
-
-type Game = GameFieldsFragment & GameGmsFragment
+import { TransportError } from '../../components/TransportError'
+import type { Configuration } from '../../utils'
+import { getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 
 interface GamesDialogProps {
   open: boolean
@@ -88,8 +83,8 @@ const getDefaultValues = (configuration: Configuration): GameDialogFormValues =>
   type: '',
   setting: '',
   charInstructions: '',
-  playerMin: configuration.virtual ? 2 : configuration.numberOfSlots === 8 ? 3 : 4,
-  playerMax: configuration.virtual ? 7 : configuration.numberOfSlots === 8 ? 6 : 10,
+  playerMin: configuration.playerMin,
+  playerMax: configuration.playerMax,
   playerPreference: '',
   returningPlayers: '',
   playersContactGm: false,
@@ -102,6 +97,8 @@ const getDefaultValues = (configuration: Configuration): GameDialogFormValues =>
   message: '',
   teenFriendly: false,
   year: configuration.year,
+  full: false,
+  roomId: null,
 })
 
 const validationSchema = Yup.object().shape({
@@ -118,12 +115,16 @@ const validationSchema = Yup.object().shape({
 
 export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: number }> = (props) => {
   const configuration = useConfiguration()
-  const { select, year, ...rest } = props
+  const { select: _select, year, ...rest } = props
   const selectValues = range(configuration.numberOfSlots).reduce(
     (acc, current) => {
       acc.push({
         value: current + 1,
-        text: getSlotDescription(configuration, { year, slot: current + 1, local: configuration.virtual }),
+        text: getSlotDescription(configuration, {
+          year,
+          slot: current + 1,
+          local: configuration.virtual,
+        }),
       })
       return acc
     },
@@ -133,8 +134,9 @@ export const SlotOptionsSelect: React.ComponentType<TextFieldProps & { year: num
   return <SelectField {...rest} selectValues={selectValues} />
 }
 
-export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initialValues: userInitialValues }) => {
+export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }: GamesDialogProps) => {
   const configuration = useConfiguration()
+  const trpc = useTRPC()
   const defaultValues = useMemo(() => getDefaultValues(configuration), [configuration])
   const initialValues = userInitialValues ?? defaultValues
   const editing = initialValues !== defaultValues
@@ -143,24 +145,20 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
   const handleClose = useDisableBackdropClick(onClose)
   const estimatedLengthOptions = useMemo(() => getEstimatedLengthOptions(configuration), [configuration])
 
-  const slim = configuration.numberOfSlots === 8
-  const minPlayersFloor = slim ? 1 : 1
-  const minPlayersCeiling = slim ? 3 : 10
-  const maxPlayersFloor = slim ? 4 : 1
-  const maxPlayersCeiling = slim ? 20 : 150
-
   const onSubmit = async (values: GameDialogFormValues, _actions: FormikHelpers<GameDialogFormValues>) => {
     await createOrUpdateGame(values)
   }
 
-  const { error: gameError, data: gameData } = useGraphQL(GetGamesByAuthorDocument, {
-    id: userId!,
-  })
+  const { error: gameError, data: gameData } = useQuery(
+    trpc.games.getGamesByAuthor.queryOptions({
+      id: userId!,
+    }),
+  )
 
-  const { error: roomError, data: roomData } = useGraphQL(GetGameRoomsDocument)
+  const { error: roomError, data: roomData } = useQuery(trpc.gameRooms.getGameRooms.queryOptions())
 
   if (gameError || roomError) {
-    return <GraphQLError error={gameError ?? roomError} />
+    return <TransportError error={gameError ?? roomError} />
   }
   if (!gameData || !roomData) {
     return (
@@ -170,8 +168,8 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
     )
   }
 
-  const unsorted: Game[] = gameData.user?.authoredGames.nodes.filter(notEmpty) as Game[]
-  const priorGamesList = unsorted
+  // const unsorted: Game[] = gameData.user?.authoredGames.nodes.filter(notEmpty) as Game[]
+  const priorGamesList = gameData
     .concat()
     .sort(
       (a, b) =>
@@ -180,13 +178,13 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
         -b.name.localeCompare(a.name),
     )
 
-  const rooms = roomData?.rooms?.nodes.filter(notEmpty) ?? []
+  const rooms = roomData ?? []
 
-  // eslint-disable-next-line no-param-reassign
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   if (initialValues.slotId === null) initialValues.slotId = 0
 
   const onCopyGameChange =
-    (values: GameDialogFormValues, setValues: (values: GameDialogFormValues, shouldValidate?: boolean) => void) =>
+    (values: GameDialogFormValues, setValues: (val: GameDialogFormValues, shouldValidate?: boolean) => void) =>
     (_: any, value: Game | null): void => {
       if (!value) return
       setValues({
@@ -228,244 +226,250 @@ export const GamesDialog: React.FC<GamesDialogProps> = ({ open, onClose, initial
       isEditing={editing}
     >
       {({ values, setValues, setFieldValue }) => (
-        <>
-          <GridContainer spacing={2}>
-            {!!priorGamesList.length && (
-              <GridItem xs={12} md={12}>
-                <Autocomplete
-                  id='prior-games'
-                  options={priorGamesList}
-                  groupBy={(game) => `${game.year}`}
-                  getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})` ?? 0}: ${game.name}`}
-                  fullWidth
-                  renderInput={(params) => (
-                    <MuiTextField
-                      {...params}
-                      label="Copy game definition from a previous year's game"
-                      variant='outlined'
-                    />
-                  )}
-                  onChange={onCopyGameChange(values, setValues)}
-                />
-              </GridItem>
-            )}
-            <GridItem xs={12} md={12}>
-              <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
-            </GridItem>
-            <AdminCard permission={Perms.GameAdmin}>
-              <GridItem xs={12} md={12}>
-                <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
-              </GridItem>
-              <CheckboxWithLabel label='Game Full?' name='full' />
+        <GridContainer spacing={2}>
+          {!!priorGamesList.length && (
+            <GridItem size={{ xs: 12, md: 12 }}>
               <Autocomplete
-                id='room'
-                options={rooms}
-                getOptionLabel={(room) =>
-                  `${room.description} (size ${room.size})${
-                    room.type && room.type !== room.description ? `, ${room.type}` : ''
-                  }`
-                }
+                id='prior-games'
+                options={priorGamesList}
+                groupBy={(game) => `${game.year}`}
+                getOptionLabel={(game) => `${game.slotId ?? `(${game.slotPreference})`}: ${game.name}`}
                 fullWidth
-                value={rooms.find((r) => r.id === initialValues?.roomId)}
-                renderInput={(params) => <MuiTextField {...params} label='Room' variant='outlined' />}
-                onChange={(e, value) => setFieldValue('roomId', value?.id)}
-              />
-            </AdminCard>
-            <GridItem xs={12} md={12}>
-              <TextField
-                name='gmNames'
-                label='Game Master(s), one per line'
-                margin='normal'
-                fullWidth
-                multiline
-                required
-              />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
-            </GridItem>
-            {!slim && (
-              <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-                <GridItem xs={12} md={6}>
-                  <SelectField
-                    required
-                    name='genre'
-                    label='Genre'
-                    margin='normal'
-                    fullWidth
-                    selectValues={genreOptions}
+                renderInput={(params) => (
+                  <MuiTextField
+                    {...params}
+                    label="Copy game definition from a previous year's game"
+                    variant='outlined'
                   />
-                </GridItem>
-                <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
-                  <SelectField required name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
-                </GridItem>
-              </GridItem>
-            )}
-            <GridItem xs={12} md={12}>
-              <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
-            </GridItem>
-            {!slim && (
-              <>
-                <GridItem xs={12} md={12}>
-                  <TextField
-                    name='setting'
-                    label='Setting - Where/When in the Multiverse'
-                    margin='normal'
-                    fullWidth
-                    multiline
-                  />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  <TextField
-                    name='charInstructions'
-                    label='Character/Player Instructions & Restrictions'
-                    margin='normal'
-                    fullWidth
-                    multiline
-                  />
-                </GridItem>
-              </>
-            )}
-            <GridItem xs={12} md={12}>
-              <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
-            </GridItem>
-            <GridItem container spacing={2} xs={12} md={12} style={{ paddingRight: 0 }}>
-              <GridItem xs={12} md={6}>
-                <TextField
-                  name='playerMin'
-                  label='Min'
-                  margin='normal'
-                  fullWidth
-                  type='number'
-                  required
-                  InputProps={{ inputProps: { min: minPlayersFloor, max: minPlayersCeiling } }}
-                />
-              </GridItem>
-              <GridItem xs={12} md={6} style={{ paddingRight: 0 }}>
-                <TextField
-                  name='playerMax'
-                  label='Max'
-                  margin='normal'
-                  fullWidth
-                  type='number'
-                  required
-                  InputProps={{ inputProps: { min: maxPlayersFloor, max: maxPlayersCeiling } }}
-                />
-              </GridItem>
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <SelectField
-                name='playerPreference'
-                label='Player Preference'
-                margin='normal'
-                fullWidth
-                selectValues={playerPreferenceOptions}
-              />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField
-                name='returningPlayers'
-                label='If you have Returning Players, please list them here'
-                margin='normal'
-                fullWidth
-                multiline
-              />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <CheckboxWithLabel label='Should your players contact you before the con?' name='playersContactGm' />
-            </GridItem>
-            <GridItem xs={12} md={12}>
-              <TextField
-                name='gameContactEmail'
-                label='Game Contact email'
-                margin='normal'
-                fullWidth
-                inputProps={{ autoCapitalize: 'none' }}
-              />
-            </GridItem>
-            {!slim && (
-              <GridItem xs={12} md={12}>
-                <p>
-                  You are welcome to start and end the game at any time (within reason), but if the game overlaps two
-                  slots, please enter two games and mark them as parts one and two.
-                </p>
-                {configuration.virtual && (
-                  <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
                 )}
-                <SelectField
-                  name='estimatedLength'
-                  label='Estimated Length'
-                  margin='normal'
-                  fullWidth
-                  selectValues={estimatedLengthOptions}
-                />
-              </GridItem>
-            )}
-            <GridItem xs={12} md={12}>
-              <SlotOptionsSelect
-                name='slotPreference'
-                label='Slot Preference'
-                year={values.year}
-                margin='normal'
-                required
-                fullWidth
+                onChange={onCopyGameChange(values, setValues)}
               />
             </GridItem>
-            {!configuration.startDates[values.year].virtual && (
-              <>
-                <GridItem xs={12} md={12}>
-                  <SelectField
-                    name='lateStart'
-                    label='Morning Games'
-                    margin='normal'
-                    fullWidth
-                    selectValues={morningGamesOptions}
-                  />
-                </GridItem>
-                <GridItem xs={12} md={12}>
-                  <CheckboxWithLabel name='lateFinish' label='Evening Game: Game may run late into the evening' />
-                </GridItem>
-              </>
-            )}
-            <GridItem xs={12} md={12}>
-              <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
-                To schedule, or in the event we have to change your requested slot, list any and all known slot
-                conflicts (other games you are running, returning or ongoing games, and any slots you are taking off).
-                If you have any constraints or if there is anything else the organizers need to know to schedule your
-                game, and schedule players to your game, please let us know:
-              </Typography>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField name='name' label='Game Title' margin='normal' fullWidth required autoFocus />
+          </GridItem>
+          <AdminCard permission={Perms.GameAdmin}>
+            <GridItem size={{ xs: 12, md: 12 }}>
+              <TextField name='slotId' label='Slot' margin='normal' fullWidth type='number' />
             </GridItem>
-            {!slim && (
-              <GridItem xs={12} md={12}>
-                <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
+            <CheckboxWithLabel label='Game Full?' name='full' />
+            <Autocomplete
+              id='room'
+              options={rooms}
+              getOptionLabel={(room) =>
+                `${room.description} (size ${room.size})${
+                  room.type && room.type !== room.description ? `, ${room.type}` : ''
+                }`
+              }
+              fullWidth
+              value={rooms.find((r) => r.id === initialValues?.roomId)}
+              renderInput={(params) => <MuiTextField {...params} label='Room' variant='outlined' />}
+              onChange={(e, value) => setFieldValue('roomId', value?.id)}
+            />
+          </AdminCard>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField
+              name='gmNames'
+              label='Game Master(s), one per line'
+              margin='normal'
+              fullWidth
+              multiline
+              required
+            />
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField name='description' label='Game Description' margin='normal' fullWidth multiline required />
+          </GridItem>
+          {configuration.isAcnw && (
+            <GridItem container spacing={2} size={{ xs: 12, md: 12 }} style={{ paddingRight: 0 }}>
+              <GridItem size={{ xs: 12, md: 6 }}>
+                <SelectField
+                  required
+                  name='genre'
+                  label='Genre'
+                  margin='normal'
+                  fullWidth
+                  selectValues={genreOptions}
+                />
               </GridItem>
-            )}
-            <GridItem xs={12} md={12}>
-              <TextField name='message' label='Messages for the Organizers' margin='normal' fullWidth multiline />
+              <GridItem size={{ xs: 12, md: 6 }} style={{ paddingRight: 0 }}>
+                <SelectField required name='type' label='Type' margin='normal' fullWidth selectValues={typeOptions} />
+              </GridItem>
             </GridItem>
-          </GridContainer>
-        </>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <CheckboxWithLabel label='Is the game Teen Friendly?' name='teenFriendly' />
+          </GridItem>
+          {configuration.isAcnw && (
+            <>
+              <GridItem size={{ xs: 12, md: 12 }}>
+                <TextField
+                  name='setting'
+                  label='Setting - Where/When in the Multiverse'
+                  margin='normal'
+                  fullWidth
+                  multiline
+                />
+              </GridItem>
+              <GridItem size={{ xs: 12, md: 12 }}>
+                <TextField
+                  name='charInstructions'
+                  label='Character/Player Instructions & Restrictions'
+                  margin='normal'
+                  fullWidth
+                  multiline
+                />
+              </GridItem>
+            </>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>Number of Players</Typography>
+          </GridItem>
+          <GridItem container spacing={2} size={{ xs: 12, md: 12 }} style={{ paddingRight: 0 }}>
+            <GridItem size={{ xs: 12, md: 6 }}>
+              <TextField
+                name='playerMin'
+                label='Min'
+                margin='normal'
+                fullWidth
+                type='number'
+                required
+                InputProps={{
+                  inputProps: {
+                    min: configuration.minPlayersFloor,
+                    max: configuration.minPlayersCeiling,
+                  },
+                }}
+              />
+            </GridItem>
+            <GridItem size={{ xs: 12, md: 6 }} style={{ paddingRight: 0 }}>
+              <TextField
+                name='playerMax'
+                label='Max'
+                margin='normal'
+                fullWidth
+                type='number'
+                required
+                InputProps={{
+                  inputProps: {
+                    min: configuration.maxPlayersFloor,
+                    max: configuration.maxPlayersCeiling,
+                  },
+                }}
+              />
+            </GridItem>
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <SelectField
+              name='playerPreference'
+              label='Player Preference'
+              margin='normal'
+              fullWidth
+              selectValues={playerPreferenceOptions}
+            />
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField
+              name='returningPlayers'
+              label='If you have Returning Players, please list them here'
+              margin='normal'
+              fullWidth
+              multiline
+            />
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <CheckboxWithLabel label='Should your players contact you before the con?' name='playersContactGm' />
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField
+              name='gameContactEmail'
+              label='Game Contact email'
+              margin='normal'
+              fullWidth
+              inputProps={{ autoCapitalize: 'none' }}
+            />
+          </GridItem>
+          {configuration.isAcnw && (
+            <GridItem size={{ xs: 12, md: 12 }}>
+              <p>
+                You are welcome to start and end the game at any time (within reason), but if the game overlaps two
+                slots, please enter two games and mark them as parts one and two.
+              </p>
+              {configuration.virtual && (
+                <p>Please keep in mind that you might have players from multiple time zones in your game.</p>
+              )}
+              <SelectField
+                name='estimatedLength'
+                label='Estimated Length'
+                margin='normal'
+                fullWidth
+                selectValues={estimatedLengthOptions}
+              />
+            </GridItem>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <SlotOptionsSelect
+              name='slotPreference'
+              label='Slot Preference'
+              year={values.year}
+              margin='normal'
+              required
+              fullWidth
+            />
+          </GridItem>
+          {!configuration.startDates[values.year]!.virtual && (
+            <>
+              <GridItem size={{ xs: 12, md: 12 }}>
+                <SelectField
+                  name='lateStart'
+                  label='Morning Games'
+                  margin='normal'
+                  fullWidth
+                  selectValues={morningGamesOptions}
+                />
+              </GridItem>
+              <GridItem size={{ xs: 12, md: 12 }}>
+                <CheckboxWithLabel name='lateFinish' label='Evening Game: Game may run late into the evening' />
+              </GridItem>
+            </>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <Typography className='MuiFormControlLabel-label MuiFormLabel-root'>
+              To schedule, or in the event we have to change your requested slot, list any and all known slot conflicts
+              (other games you are running, returning or ongoing games, and any slots you are taking off). If you have
+              any constraints or if there is anything else the organizers need to know to schedule your game, and
+              schedule players to your game, please let us know:
+            </Typography>
+          </GridItem>
+          {configuration.isAcnw && (
+            <GridItem size={{ xs: 12, md: 12 }}>
+              <TextField name='slotConflicts' label='Slot Conflicts' margin='normal' fullWidth multiline />
+            </GridItem>
+          )}
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField name='message' label='Messages for the Organizers' margin='normal' fullWidth multiline />
+          </GridItem>
+        </GridContainer>
       )}
     </EditDialog>
   )
 }
 
-export const GamesDialogEdit: React.FC<GamesDialogProps> = (props) => {
+export const GamesDialogEdit = (props: GamesDialogProps) => {
   const { id, initialValues } = props
-  const { isLoading, error, data } = useGraphQL(
-    GetGameByIdDocument,
-    { id: id ?? 0 },
-    { enabled: !initialValues && !!id },
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(
+    trpc.games.getGameById.queryOptions({ id: id ?? 0 }, { enabled: !initialValues && !!id }),
   )
   if (initialValues) {
     return <GamesDialog {...props} />
   }
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
   }
-  const values = data.game
-  return values ? <GamesDialog {...props} initialValues={values} /> : null
+  return data ? <GamesDialog {...props} initialValues={data} /> : null
 }

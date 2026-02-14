@@ -1,9 +1,6 @@
-import { MdxPage } from 'ui'
+import { MdxPage } from '../components/Mdx'
+import CreditsContent, { metadata } from '../content/CreditsContent.mdx'
 
-import * as content from '../content/CreditsContent.mdx'
-
-const { default: CreditsContent, ...frontMatter } = content
-
-const Credits = () => <MdxPage frontMatter={frontMatter} component={<CreditsContent />} />
+const Credits = () => <MdxPage frontMatter={metadata} component={<CreditsContent />} />
 
 export default Credits

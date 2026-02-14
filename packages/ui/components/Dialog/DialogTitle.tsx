@@ -1,27 +1,23 @@
-import React, { MouseEventHandler, PropsWithChildren } from 'react'
+import type { MouseEventHandler, PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { Theme } from '@mui/material'
+import type { SxProps, Theme } from '@mui/material'
 import MuiDialogTitle from '@mui/material/DialogTitle'
-import { makeStyles } from 'tss-react/mui'
 
 import { DialogClose } from './DialogClose'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  root: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-}))
 
 interface DialogTitleProps {
   onClose?: MouseEventHandler
 }
 
 export const DialogTitle: React.FC<PropsWithChildren<DialogTitleProps>> = ({ children, onClose }) => {
-  const { classes } = useStyles()
+  const defaultSx: SxProps<Theme> = (theme) => ({
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    margin: 0,
+    padding: theme.spacing(2),
+  })
   return (
-    <MuiDialogTitle className={classes.root} component='h6'>
+    <MuiDialogTitle component='h6' sx={defaultSx}>
       {children}
       {onClose && <DialogClose onClose={onClose} />}
     </MuiDialogTitle>

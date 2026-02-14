@@ -1,36 +1,39 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import { Form, Formik, FormikHelpers } from 'formik'
+import type { UserAndProfile, GameChoice } from '@amber/client'
+import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
 import {
   DialogTitle,
   GridContainer,
   GridItem,
-  OnCloseHandler,
   pick,
   range,
   TextField,
   useDisableBackdropClick,
   useNotification,
-} from 'ui'
-import Yup from 'ui/utils/Yup'
+} from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
+import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import { useMutation } from '@tanstack/react-query'
+import type { FormikHelpers } from 'formik'
+import { Form, Formik } from 'formik'
 
-import { isSlotComplete, MaybeGameChoice, orderChoices } from './GameChoiceSelector'
-import { ChoiceType, useEditGameChoice } from './GameSignupPage'
-import { ChoiceSummary, SlotSummary } from './SlotDetails'
+import { isSlotComplete, orderChoices } from './GameChoiceSelector'
+import type { ChoiceType } from './GameSignupPage'
+import { useEditGameChoice } from './GameSignupPage'
+import type { SlotSummary } from './SlotDetails'
+import { ChoiceSummary } from './SlotDetails'
 
-import { useGraphQLMutation, CreateGameSubmissionDocument, UpdateGameSubmissionByNodeIdDocument } from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
 import { ContactEmail } from '../../components'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail } from '../../utils'
 
 interface FormValues {
   year: number
   memberId: number
   message: string
-  nodeId?: string
   id?: number
 }
 
@@ -39,7 +42,7 @@ interface ChoiceConfirmDialogProps {
   onClose: OnCloseHandler
   year: number
   memberId: number
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   gameSubmission?: FormValues
 }
 
@@ -50,15 +53,16 @@ const submissionValidationSchema = Yup.object().shape({
 interface GameChoiceConfirmationEmail {
   gameChoiceDetails: Record<number, SlotSummary>
   gameSubmission?: FormValues
-  profile: ProfileFormType
+  profile: UserAndProfile
   year: number
   update?: boolean
   message: string
 }
 
 export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
-  const createGameSubmission = useGraphQLMutation(CreateGameSubmissionDocument)
-  const updateGameSubmission = useGraphQLMutation(UpdateGameSubmissionByNodeIdDocument)
+  const trpc = useTRPC()
+  const createGameSubmission = useMutation(trpc.gameChoices.createGameSubmission.mutationOptions())
+  const updateGameSubmission = useMutation(trpc.gameChoices.updateGameSubmission.mutationOptions())
   const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
 
   const notify = useNotification()
@@ -87,16 +91,12 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   }
 
   return async (values: FormValues, year: number, gameChoiceDetails: Record<number, SlotSummary>) => {
-    if (values.nodeId) {
+    if (values.id) {
       await updateGameSubmission
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: {
-                ...pick(values, 'id', 'year', 'memberId', 'message'),
-              },
-            },
+            id: values.id,
+            data: pick(values, 'id', 'year', 'memberId', 'message'),
           },
           {
             onSuccess: invalidateGameChoiceQueries,
@@ -112,20 +112,20 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
     } else {
       await createGameSubmission
         .mutateAsync(
-          {
-            input: {
-              gameSubmission: {
-                ...pick(values, 'nodeId', 'id', 'year', 'memberId', 'message'),
-              },
-            },
-          },
+          pick(values, 'id', 'year', 'memberId', 'message'),
+
           {
             onSuccess: invalidateGameChoiceQueries,
           },
         )
         .then(() => {
           notify({ text: 'Game Choices Submitted', variant: 'success' })
-          sendGameChoiceConfirmation({ gameChoiceDetails, year, profile: profile!, message: values.message })
+          sendGameChoiceConfirmation({
+            gameChoiceDetails,
+            year,
+            profile: profile!,
+            message: values.message,
+          })
           onClose()
         })
         .catch((error) => {
@@ -135,14 +135,14 @@ export const useEditChoiceConfirmation = (onClose: OnCloseHandler) => {
   }
 }
 
-export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
+export const ChoiceConfirmDialog = ({
   open,
   onClose,
   year,
   memberId,
   gameChoices,
   gameSubmission,
-}) => {
+}: ChoiceConfirmDialogProps) => {
   const theme = useTheme()
   const configuration = useConfiguration()
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -168,12 +168,20 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
         ) as ChoiceType[]
 
         if (!isSlotComplete(configuration, thisSlotChoices)) {
-          if (!thisSlotChoices[0].gameId && !thisSlotChoices[1].gameId) {
-            thisSlotChoices[1] = { ...thisSlotChoices[1], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+          if (!thisSlotChoices[0]!.gameId && !thisSlotChoices[1]!.gameId) {
+            thisSlotChoices[1] = {
+              ...thisSlotChoices[1]!,
+              gameId: slotId,
+              modified: true,
+            } // only update the modified property since thisSlotChoices[1] is already of type ChoiceType
           } else {
             for (let i = 2; i < 5; i++) {
-              if (!thisSlotChoices[i].gameId) {
-                thisSlotChoices[i] = { ...thisSlotChoices[i], gameId: slotId, modified: true } // yes the no game games have a gameId that matches the slotId
+              if (!thisSlotChoices[i]!.gameId) {
+                thisSlotChoices[i] = {
+                  ...thisSlotChoices[i]!,
+                  gameId: slotId,
+                  modified: true,
+                } // yes the no game games have a gameId that matches the slotId
                 break
               }
             }
@@ -213,9 +221,9 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
       <DialogTitle onClose={onClose}>Summary of your Game Selections</DialogTitle>
       <DialogContent>
         <p>
-          The following is a preview of your game selections for {configuration.name} {year}. Once you're satisfied that
-          everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of this
-          page.
+          The following is a preview of your game selections for {configuration.name} {year}. Once you&apos;re satisfied
+          that everything is in order, select the <strong>Confirm Game Choices</strong> button located at the bottom of
+          this page.
         </p>
 
         <p>
@@ -235,7 +243,7 @@ export const ChoiceConfirmDialog: React.FC<ChoiceConfirmDialogProps> = ({
           <Form>
             <DialogContent>
               <GridContainer spacing={2}>
-                <GridItem xs={12} md={12}>
+                <GridItem size={{ xs: 12, md: 12 }}>
                   <TextField name='message' label='Message for the organizers' margin='normal' fullWidth autoFocus />
                 </GridItem>
               </GridContainer>

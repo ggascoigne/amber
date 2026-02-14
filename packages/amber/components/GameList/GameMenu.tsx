@@ -1,30 +1,18 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import { Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import { makeStyles } from 'tss-react/mui'
 
 import { GameListIndex } from './GameListIndex'
 import { GameListNavigator } from './GameListNavigator'
 
 import { ListItemLink } from '../Navigation'
-import { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  title: {
-    fontSize: '1.125rem',
-    paddingTop: 6,
-    paddingLeft: 5,
-    [theme.breakpoints.up('sm')]: {
-      paddingRight: 20,
-    },
-  },
-}))
+import type { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
 
 interface GameMenuProps {
   to: string
@@ -38,7 +26,7 @@ interface GameMenuProps {
   itemDecoratorParams?: GameDecoratorParams
 }
 
-export const GameMenu: React.FC<PropsWithChildren<GameMenuProps>> = ({
+export const GameMenu = ({
   to,
   text,
   title,
@@ -49,35 +37,32 @@ export const GameMenu: React.FC<PropsWithChildren<GameMenuProps>> = ({
   navDecorator,
   navDecoratorParams,
   children,
-}) => {
-  const { classes } = useStyles()
-  return (
-    <>
-      <List>
-        <ListItemLink href={to}>
-          <ListItemIcon>
-            <ArrowBackIcon />
-          </ListItemIcon>
-          <ListItemText primary={text} />
-        </ListItemLink>
-      </List>
-      <Divider />
-      <Typography variant='h4' className={classes.title}>
-        {title}
-      </Typography>
-      {children}
-      <GameListNavigator small selectQuery={selectQuery} decorator={navDecorator} decoratorParams={navDecoratorParams}>
-        {({ year, slot, games }) => (
-          <GameListIndex
-            year={year}
-            slot={slot}
-            games={games!}
-            slugPrefix={slugPrefix}
-            decorator={itemDecorator}
-            decoratorParams={itemDecoratorParams}
-          />
-        )}
-      </GameListNavigator>
-    </>
-  )
-}
+}: PropsWithChildren<GameMenuProps>) => (
+  <>
+    <List>
+      <ListItemLink href={to}>
+        <ListItemIcon>
+          <ArrowBackIcon />
+        </ListItemIcon>
+        <ListItemText primary={text} />
+      </ListItemLink>
+    </List>
+    <Divider />
+    <Typography variant='h4' sx={{ fontSize: '1.125rem', pt: '6px', pl: '5px', pr: { sm: '20px' } }}>
+      {title}
+    </Typography>
+    {children}
+    <GameListNavigator small selectQuery={selectQuery} decorator={navDecorator} decoratorParams={navDecoratorParams}>
+      {({ year, slot, games }) => (
+        <GameListIndex
+          year={year}
+          slot={slot}
+          games={games!}
+          slugPrefix={slugPrefix}
+          decorator={itemDecorator}
+          decoratorParams={itemDecoratorParams}
+        />
+      )}
+    </GameListNavigator>
+  </>
+)

@@ -1,6 +1,9 @@
-import React, { ChangeEvent, useState } from 'react'
+import type { ChangeEvent } from 'react'
+import type React from 'react'
+import { useState } from 'react'
 
-import MuiTextField, { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
+import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
+import MuiTextField from '@mui/material/TextField'
 import { useField, useFormikContext } from 'formik'
 
 export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> {

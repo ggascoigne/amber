@@ -4,16 +4,10 @@ import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton } from '@mui/material'
 import { amber, green } from '@mui/material/colors'
 import { useTheme } from '@mui/material/styles'
-import {
-  CustomContentProps,
-  OptionsObject,
-  SnackbarContent,
-  SnackbarProvider,
-  useSnackbar,
-  VariantType,
-} from 'notistack'
+import type { CustomContentProps, OptionsObject, VariantType } from 'notistack'
+import { SnackbarContent, SnackbarProvider, useSnackbar } from 'notistack'
 
-import { Children } from '../utils'
+import type { Children } from '../utils'
 
 const MySnackbar = React.forwardRef<HTMLDivElement, CustomContentProps>((props, forwardedRef) => {
   const { id, message, action: componentOrFunctionAction, iconVariant, variant, hideIconVariant, style } = props
@@ -34,18 +28,16 @@ const MySnackbar = React.forwardRef<HTMLDivElement, CustomContentProps>((props, 
   }[variant]
 
   const styles = {
-    ...{
-      backgroundColor: bgColor,
-      fontSize: '0.875rem',
-      lineHeight: 1.43,
-      letterSpacing: '0.01071em',
-      color: '#fff',
-      alignItems: 'center',
-      padding: '6px 16px',
-      borderRadius: '4px',
-      boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
-      paddingLeft: !hideIconVariant && icon ? `${8 * 2.5}px` : undefined,
-    },
+    backgroundColor: bgColor,
+    fontSize: '0.875rem',
+    lineHeight: 1.43,
+    letterSpacing: '0.01071em',
+    color: '#fff',
+    alignItems: 'center',
+    padding: '6px 16px',
+    borderRadius: '4px',
+    boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)',
+    paddingLeft: !hideIconVariant && icon ? `${8 * 2.5}px` : undefined,
     ...style,
   }
 
@@ -57,7 +49,13 @@ const MySnackbar = React.forwardRef<HTMLDivElement, CustomContentProps>((props, 
       </Box>
       {action && (
         <Box
-          sx={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', paddingLeft: '16px', marginRight: '-8px' }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            marginLeft: 'auto',
+            paddingLeft: '16px',
+            marginRight: '-8px',
+          }}
         >
           {action}
         </Box>

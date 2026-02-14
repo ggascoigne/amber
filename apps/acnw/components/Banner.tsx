@@ -1,38 +1,25 @@
 import React from 'react'
 
-import { Theme } from '@mui/material'
-import { Link, useConfiguration } from 'amber'
-import { makeStyles } from 'tss-react/mui'
-import { GridContainer, GridItem } from 'ui'
+import { Link, useConfiguration } from '@amber/amber'
+import { GridContainer, GridItem } from '@amber/ui'
+import type { SxProps, Theme } from '@mui/material'
+import { Box } from '@mui/material'
 
-const useStyles = makeStyles()((_theme: Theme) => ({
-  banner: {
-    maxWidth: '100%',
-    width: 'auto',
-    height: 'auto',
-    padding: '5px 5px 0px 12px',
-    marginBottom: '-12px',
-  },
-}))
-
-const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = ({
-  dates,
-  className,
-  virtual = false,
-}) => {
+const Logo = ({ dates, sx, virtual = false }: { dates: string; sx?: SxProps<Theme>; virtual?: boolean }) => {
   // const background = '#ffffff'
   const purple = '#31107b' // '#39177a'
   const red = '#ce0000'
   const yellow = '#ffce00'
   const virtualColor = '#ec0202'
   return (
-    <svg
+    <Box
+      component='svg'
       width='550px'
       height='139px'
       viewBox='0 0 550 139'
       xmlns='http://www.w3.org/2000/svg'
       version='1.1'
-      className={className}
+      sx={sx}
     >
       <g id='group-NW'>
         <path
@@ -419,7 +406,7 @@ const Logo: React.FC<{ dates: string; className: string; virtual?: boolean }> = 
           </tspan>
         </text>
       )}
-    </svg>
+    </Box>
   )
 }
 
@@ -427,8 +414,7 @@ interface BannerProps {
   to?: string
 }
 
-const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
-  const { classes } = useStyles()
+const WrappedLogo = ({ to }: BannerProps) => {
   const configuration = useConfiguration()
   const { conventionStartDate, conventionEndDate } = configuration
   const startDay = conventionStartDate.day
@@ -436,13 +422,27 @@ const WrappedLogo: React.FC<BannerProps> = ({ to }) => {
 
   const dateRange = `${conventionStartDate.toFormat('MMMM')} ${startDay}-${endDay}, ${configuration.year}`
 
-  const logo = <Logo dates={dateRange} className={classes.banner} virtual={configuration.virtual} />
+  const logo = (
+    <Logo
+      dates={dateRange}
+      virtual={configuration.virtual}
+      sx={{
+        maxWidth: '550px',
+        maxHeight: '139px',
+        width: 'auto',
+        height: 'auto',
+        padding: '5px 5px 0px 12px',
+        marginBottom: '-12px',
+        boxSizing: 'content-box',
+      }}
+    />
+  )
   return to ? <Link href={to}>{logo}</Link> : logo
 }
 
-export const Banner: React.FC<BannerProps> = ({ to }) => (
+export const Banner = ({ to }: BannerProps) => (
   <GridContainer justifyContent='center'>
-    <GridItem xs={12}>
+    <GridItem size={{ xs: 12 }}>
       <WrappedLogo to={to} />
     </GridItem>
   </GridContainer>

@@ -1,8 +1,11 @@
 import React from 'react'
 
-import { GraphQLError, Loader } from 'ui'
+import type { GameArray } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Loader } from '@amber/ui'
+import { useQuery } from '@tanstack/react-query'
 
-import { GameArray, useGraphQL, GetGamesBySlotForSignupDocument } from '../../client'
+import { TransportError } from '../TransportError'
 
 interface GameQueryChild {
   year: number
@@ -16,20 +19,19 @@ interface GameQueryProps {
   children: (props: GameQueryChild) => React.ReactNode
 }
 
-export const GameSelectionQuery: React.FC<GameQueryProps> = ({ year, slot, children }) => {
-  const { error, data } = useGraphQL(GetGamesBySlotForSignupDocument, {
-    year,
-    slotId: slot,
-  })
+export const GameSelectionQuery = ({ year, slot, children }: GameQueryProps) => {
+  const trpc = useTRPC()
+  const { error, data } = useQuery(
+    trpc.games.getGamesBySlotForSignup.queryOptions({
+      year,
+      slotId: slot,
+    }),
+  )
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (!data) {
     return <Loader />
   }
-  return (
-    <React.Fragment key={`slot_${slot}`}>
-      {children({ year, slot, games: data.games?.edges ?? undefined })}
-    </React.Fragment>
-  )
+  return <React.Fragment key={`slot_${slot}`}>{children({ year, slot, games: data })}</React.Fragment>
 }

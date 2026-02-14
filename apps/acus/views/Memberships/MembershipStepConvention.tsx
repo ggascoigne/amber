@@ -1,10 +1,11 @@
 import React from 'react'
 
+import { useGetAttendanceOptions } from '@amber/amber'
+import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
+import { GridContainer, GridItem, RadioGroupFieldWithLabel } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
-import { useGetAttendanceOptions } from 'amber'
-import { hasMembershipStepErrors, MembershipErrorType, MembershipFormContent } from 'amber/utils/membershipUtils'
-import { FormikErrors, FormikValues } from 'formik'
-import { GridContainer, GridItem, RadioGroupFieldWithLabel } from 'ui'
+import type { FormikErrors, FormikValues } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
   hasMembershipStepErrors(
@@ -15,13 +16,13 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
     'offerSubsidy',
   )
 
-export const MembershipStepConvention: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent) => {
   const attendanceOptions = useGetAttendanceOptions()
   return (
     <>
       <h3>Convention Registration</h3>
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'

@@ -1,71 +1,78 @@
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useCallback } from 'react'
 
-import { Column, Row, TableInstance } from 'react-table'
-import { GqlType, GraphQLError, Loader, notEmpty, Page, Table, ToFormValues } from 'ui'
+import type { StripeRecord } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Table } from '@amber/ui/components/Table'
+import { useQuery } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { StripeDialog } from './StripeDialog'
 
-import { GetStripeQuery, useGraphQL, GetStripeDocument } from '../../client'
+import { Page } from '../../components'
+import { TransportError } from '../../components/TransportError'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-export type StripeValue = ToFormValues<GqlType<GetStripeQuery, ['stripes', 'nodes', number]>>
-
-const columns: Column<StripeValue>[] = [
-  { id: 'id', accessor: (originalRow) => originalRow?.id, width: 1 },
-  { id: 'user', accessor: (originalRow) => originalRow?.data.metadata.userId, width: 1 },
-  { id: 'year', accessor: (originalRow) => originalRow?.data.metadata.year, width: 1 },
-  { id: 'metadata', accessor: (originalRow) => JSON.stringify(originalRow?.data.metadata) },
-  { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data), width: 2 },
+const columns: ColumnDef<StripeRecord>[] = [
+  { id: 'id', header: 'ID', accessorFn: (row) => row?.id, size: 5 },
+  {
+    id: 'user',
+    header: 'User',
+    accessorFn: (row) => (row?.data as any)?.metadata?.userId,
+    size: 5,
+  },
+  {
+    id: 'year',
+    header: 'Year',
+    accessorFn: (row) => (row?.data as any)?.metadata?.year,
+    size: 5,
+  },
+  {
+    id: 'metadata',
+    header: 'Metadata',
+    accessorFn: (row) => JSON.stringify((row?.data as any)?.metadata),
+    size: 40,
+  },
+  {
+    id: 'data',
+    header: 'Data',
+    accessorFn: (row) => JSON.stringify(row?.data),
+    size: 40,
+  },
 ]
 
-const Stripes: React.FC = React.memo(() => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<StripeValue[]>([])
+const Stripes = React.memo(() => {
+  const trpc = useTRPC()
 
-  const { error, data, refetch } = useGraphQL(GetStripeDocument)
+  const { error, data = [], refetch, isLoading, isFetching } = useQuery(trpc.stripe.getStripe.queryOptions())
 
-  if (error) {
-    return <GraphQLError error={error} />
-  }
+  const { showEdit, selection, handleCloseEdit, onEdit, onRowClick } = useStandardHandlers<StripeRecord>({
+    deleteHandler: undefined,
+  })
 
-  if (!data) {
-    return <Loader />
-  }
-  const { stripes } = data
-
-  const list: StripeValue[] = stripes!.nodes.filter(notEmpty)
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-    refetch().then()
-  }
-
-  const onEdit = (instance: TableInstance<StripeValue>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<StripeValue>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
-
-  const getInitialValues = () => {
+  const getInitialValues = useCallback(() => {
     const val = { ...selection[0], stringData: '' }
     val.stringData = JSON.stringify(val.data, null, 2)
     return val
+  }, [selection])
+
+  if (error) {
+    return <TransportError error={error} />
   }
 
   return (
-    <Page title='Stripes'>
-      {showEdit && <StripeDialog open={showEdit} onClose={onCloseEdit} initialValues={getInitialValues()} />}
-      <Table<StripeValue>
-        name='users'
-        data={list}
+    <Page title='Stripe Log' variant='fill' hideTitle>
+      {showEdit && <StripeDialog open={showEdit} onClose={handleCloseEdit} initialValues={getInitialValues()} />}
+      <Table<StripeRecord>
+        title='Stripe Log'
+        name='stripe'
+        data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onRowClick={onRowClick}
+        refetch={refetch}
+        enableGrouping={false}
       />
     </Page>
   )

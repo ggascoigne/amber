@@ -1,14 +1,17 @@
-import { ReactElement, ReactNode, useCallback } from 'react'
+import type { ReactElement, ReactNode } from 'react'
+import { useCallback } from 'react'
 
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { Form, Formik, FormikHelpers, FormikValues } from 'formik'
-import { FormikProps } from 'formik/dist/types'
+import type { FormikHelpers, FormikValues } from 'formik'
+import { Form, Formik } from 'formik'
+import type { FormikProps } from 'formik/dist/types'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 import { DialogTitle } from './Dialog'
 
-import { isDev, OnCloseHandler } from '../utils'
+import type { OnCloseHandler } from '../utils'
+import { formatDebugValue, isDev } from '../utils'
 
 export interface EditDialogProps<T> {
   title: string
@@ -54,7 +57,8 @@ export function EditDialog<T extends FormikValues>(props: EditDialogProps<T>): R
                 {isDev && (
                   <Button
                     onClick={() => {
-                      console.log(`values = ${JSON.stringify({ values, errors }, null, 2)}`)
+                      console.log(`values = ${formatDebugValue(values)}`)
+                      console.log(`errors = ${formatDebugValue(errors)}`)
                     }}
                     variant='outlined'
                   >

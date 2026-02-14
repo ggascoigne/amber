@@ -1,19 +1,16 @@
-import { GqlType, ToFormValues } from 'ui/utils/ts-utils'
+import type { CreateMembershipType, Game, UserAndProfile } from '@amber/client'
+import type { ToFormValues } from '@amber/ui/utils/ts-utils'
 import { z } from 'zod'
 
-import { GameFieldsFragment, GetMembershipsByYearQuery, GetUserByIdQuery } from '../client'
-import { SlotSummary } from '../views/GameSignup/SlotDetails'
+import type { SlotSummary } from '../views/GameSignup/SlotDetails'
 
-export type Membership = GqlType<GetMembershipsByYearQuery, ['memberships', 'nodes', number]>
-
-export type MembershipType = ToFormValues<Membership> & {
+export type MembershipType = ToFormValues<CreateMembershipType> & {
   slotsAttendingData?: boolean[]
 }
 
 const userSchema = z
   .union([
     z.object({
-      nodeId: z.string(),
       id: z.number(),
       email: z.string(),
       fullName: z.union([z.string(), z.undefined()]).optional().nullable(),
@@ -29,7 +26,6 @@ const userSchema = z
 
 const hotelRoomSchema = z.object({
   id: z.number(),
-  nodeId: z.string(),
   description: z.string(),
   gamingRoom: z.boolean(),
   bathroomType: z.string(),
@@ -40,7 +36,6 @@ const hotelRoomSchema = z.object({
 })
 
 const membershipTypeSchema = z.object({
-  nodeId: z.union([z.string(), z.undefined()]),
   id: z.union([z.number(), z.undefined()]),
   arrivalDate: z.string(),
   attendance: z.string(),
@@ -68,9 +63,10 @@ const membershipTypeSchema = z.object({
     ])
     .optional()
     .nullable(),
+  cost: z.number().optional().nullable(),
 })
 
-export type UserType = GqlType<GetUserByIdQuery, ['user']>
+export type UserType = UserAndProfile
 
 export type MembershipConfirmationBodyUpdateType = 'new' | 'update' | 'status'
 
@@ -90,11 +86,12 @@ export const membershipConfirmationItemSchema = z.object({
   room: hotelRoomSchema.optional(),
 })
 
-export type MembershipConfirmationItem = z.infer<typeof membershipConfirmationItemSchema>
+export type MembershipConfirmationItem = z.input<typeof membershipConfirmationItemSchema>
 
 export const membershipConfirmationSchema = z.array(membershipConfirmationItemSchema)
 
-export type MembershipConfirmationBody = z.infer<typeof membershipConfirmationSchema>
+export type MembershipConfirmationBodyInput = z.input<typeof membershipConfirmationSchema>
+export type MembershipConfirmationBody = z.output<typeof membershipConfirmationSchema>
 
 // export interface MembershipConfirmationBody {
 //   update?: MembershipConfirmationBodyUpdateType
@@ -115,10 +112,10 @@ export type MembershipConfirmationBody = z.infer<typeof membershipConfirmationSc
 
 export interface MembershipConfirmation {
   type: 'membershipConfirmation'
-  body: MembershipConfirmationBody
+  body: MembershipConfirmationBodyInput
 }
 
-type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
+type GameFields = ToFormValues<Omit<Game, 'gameAssignment' | 'authorId' | 'room' | 'shortName'>>
 
 export interface GameConfirmationBody {
   update?: boolean

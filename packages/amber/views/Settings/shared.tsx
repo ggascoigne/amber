@@ -1,19 +1,18 @@
+import type { Setting } from '@amber/client'
+import { DatePickerField, SelectField, TextField } from '@amber/ui'
 import { Field } from 'formik'
 import { DateTime } from 'luxon'
 import { match } from 'ts-pattern'
-import { GqlType, ToFormValues, DatePickerField, SelectField, TextField } from 'ui'
 
-import { GetSettingsQuery } from '../../client'
 import { permissionGateValues, useConfiguration } from '../../utils'
 
-export type Setting = ToFormValues<GqlType<GetSettingsQuery, ['settings', 'nodes', number]>>
 export const typeValues = ['perm-gate', 'string', 'date', 'number', 'boolean']
 
-export const SettingValue: React.FC<{ value: Setting; label?: string; name: string }> = ({
-  value,
-  name,
-  label = 'Value',
-}) => {
+export const SettingValue: React.FC<{
+  value: Setting
+  label?: string
+  name: string
+}> = ({ value, name, label = 'Value' }) => {
   const configuration = useConfiguration()
   return match(value)
     .with({ type: 'perm-gate' }, () => (

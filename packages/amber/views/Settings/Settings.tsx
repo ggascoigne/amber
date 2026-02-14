@@ -1,27 +1,35 @@
-import React, { MouseEventHandler, useState, useMemo, useCallback } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
+import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
+import type { RouterOutputs } from '@amber/server'
+import { notEmpty } from '@amber/ui'
+import type { TableSelectionMouseEventHandler, Action } from '@amber/ui/components/Table'
+import { Table, TooltipCell, getCellSx } from '@amber/ui/components/Table'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import type { CellContext, ColumnDef } from '@tanstack/react-table'
 import { DateTime } from 'luxon'
-import { CellProps, Column, Row, TableInstance } from 'react-table'
 import { match } from 'ts-pattern'
-import { GraphQLError, Loader, notEmpty, Page, Table, TooltipCell } from 'ui'
 
 import { AddNewYearDialog } from './AddNewYearDialog'
 import { SettingDialog } from './SettingDialog'
-import { Setting } from './shared'
 
-import { useGraphQL, useGraphQLMutation, DeleteSettingDocument, GetSettingsDocument } from '../../client'
-import { useInvalidateSettingsQueries } from '../../client/querySets'
-import { TableMouseEventHandler } from '../../types/react-table-config'
+import { Page } from '../../components'
+import { TransportError } from '../../components/TransportError'
 import { useConfiguration } from '../../utils'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-export const ValueCell: React.FC<CellProps<Setting>> = ({ cell: { value, row } }) => {
+export type Setting = RouterOutputs['settings']['getSettings'][0]
+
+export const ValueCell = (props: CellContext<Setting, unknown>) => {
   const { baseTimeZone } = useConfiguration()
-  const s = match(row.original)
+  const value = String(props.getValue<string | number | boolean | null | undefined>() ?? '')
+  const s = match(props.row.original)
     .with({ type: 'date' }, () => DateTime.fromISO(value).setZone(baseTimeZone).toLocaleString())
     .otherwise(() => value)
-  return <TooltipCell text={s} align='left' tooltip={s} />
+  const sx = getCellSx(props)
+  return <TooltipCell text={s} sx={sx} tooltip={s} />
 }
 
 const tabs = [
@@ -38,101 +46,84 @@ const tabs = [
   { name: 'url', label: 'Urls' },
 ]
 
-const Settings: React.FC = React.memo(() => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<Setting[]>([])
+const Settings = React.memo(() => {
+  const trpc = useTRPC()
   const [value, setValue] = React.useState('config')
   const [showAddNewYear, setShowAddNewYear] = useState(false)
 
   const tab = tabs.find((t) => t.name === value)
 
-  const columns: Column<Setting>[] = useMemo(
+  const columns: ColumnDef<Setting>[] = useMemo(
     () => [
       {
-        accessor: (originalRow: Setting) => originalRow.code.substring(tab?.name ? tab.name.length + 1 : 0),
         id: 'code',
+        header: 'Code',
+        accessorFn: (originalRow: Setting) => originalRow.code.substring(tab?.name ? tab.name.length + 1 : 0),
       },
       {
-        accessor: 'value',
-        Cell: ValueCell,
+        accessorKey: 'value',
+        header: 'Value',
+        cell: ValueCell,
       },
       {
-        accessor: 'type',
+        accessorKey: 'type',
+        header: 'Type',
       },
     ],
     [tab?.name],
   )
 
-  const onAddNewYear = useCallback(
-    () => () => {
-      setShowAddNewYear(true)
-    },
-    [],
-  )
-  const commands = useMemo(
-    () => [
-      {
-        label: 'Add New Year',
-        onClick: onAddNewYear,
-        enabled: () => true,
-        type: 'button' as const,
-      },
-    ],
-    [onAddNewYear],
-  )
+  const handleAddNewYear: TableSelectionMouseEventHandler<Setting> = () => {
+    setShowAddNewYear(true)
+  }
 
-  const deleteSetting = useGraphQLMutation(DeleteSettingDocument)
+  const toolbarActions: Action<Setting>[] = [
+    {
+      label: 'Add New Year',
+      onClick: handleAddNewYear,
+      enabled: () => true,
+    },
+  ]
+  const deleteSetting = useMutation(trpc.settings.deleteSetting.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
 
-  const { isLoading, error, data, refetch } = useGraphQL(GetSettingsDocument)
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data = [],
+    refetch,
+  } = useQuery(
+    trpc.settings.getSettings.queryOptions(undefined, {
+      staleTime: 60 * 60 * 1000, // 1 hour - settings rarely change
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }),
+  )
 
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-  if (isLoading || !data) {
-    return <Loader />
-  }
-
-  const list: Setting[] = data.settings!.nodes.filter(notEmpty).filter((v) => {
-    if (tab?.exclude) {
-      return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
-    }
-    return v.code.startsWith(`${value}.`)
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } = useStandardHandlers<Setting>({
+    deleteHandler: (selectedRows) => selectedRows.map((row) => deleteSetting.mutateAsync({ id: row.id })),
+    invalidateQueries: invalidateSettingsQueries,
+    onCloseCallback: () => setShowAddNewYear(false),
   })
 
-  const clearSelectionAndRefresh = () => {
-    setSelection([])
-    invalidateSettingsQueries()
-  }
+  const list: Setting[] = useMemo(
+    () =>
+      data.filter(notEmpty).filter((v) => {
+        if (tab?.exclude) {
+          return v.code.startsWith(`${value}.`) && !v.code.startsWith(`${tab.exclude}.`)
+        }
+        return v.code.startsWith(`${value}.`)
+      }),
+    [data, value, tab?.exclude],
+  )
 
-  const onAdd: TableMouseEventHandler<Setting> = () => () => {
-    setShowEdit(true)
-  }
+  const handleTabChange = useCallback((_event: React.SyntheticEvent, newValue: string) => {
+    setValue(newValue)
+  }, [])
 
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setShowAddNewYear(false)
-    clearSelectionAndRefresh()
-  }
-
-  const onDelete = (instance: TableInstance<Setting>) => () => {
-    const toDelete = instance.selectedFlatRows.map((r) => r.original)
-    const updater = toDelete.map((s) => deleteSetting.mutateAsync({ input: { id: s.id! } }))
-    Promise.allSettled(updater).then(() => {
-      console.log('deleted')
-      clearSelectionAndRefresh()
-      instance.toggleAllRowsSelected(false)
-    })
-  }
-
-  const onEdit = (instance: TableInstance<Setting>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<Setting>) => {
-    setShowEdit(true)
-    setSelection([row.original])
+  if (error) {
+    return <TransportError error={error} />
   }
 
   const a11yProps = (t: string) => ({
@@ -140,31 +131,31 @@ const Settings: React.FC = React.memo(() => {
     'aria-controls': `simple-tabpanel-${t}`,
   })
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
-  }
-
   return (
-    <Page title='Settings'>
-      {showEdit && <SettingDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Tabs value={value} onChange={handleTabChange} aria-label='settings tabs'>
+    <Page title='Settings' variant='fill'>
+      {showEdit && <SettingDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
+      <Tabs value={value} onChange={handleTabChange} aria-label='settings tabs' sx={{ pl: 3 }}>
         {tabs.map((t) => (
           <Tab key={t.name} label={t.label} {...a11yProps(t.name)} value={t.name} />
         ))}
       </Tabs>
-      {showAddNewYear && <AddNewYearDialog open={showAddNewYear} onClose={onCloseEdit} />}
+      {showAddNewYear && <AddNewYearDialog open={showAddNewYear} onClose={handleCloseEdit} />}
 
       <Table<Setting>
+        // title='Settings'
         name='settings'
         data={list}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
         onAdd={onAdd}
-        disableGroupBy
-        onDelete={onDelete}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
-        extraCommands={commands}
+        onDelete={onDelete}
+        refetch={refetch}
+        additionalToolbarActions={toolbarActions}
+        enableGrouping={false}
+        sx={{ pt: 2 }}
       />
     </Page>
   )

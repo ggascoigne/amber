@@ -1,3 +1,18 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@prisma/engines'
+  - '@swc/core'
+  - bufferutil
+  - esbuild
+  - msw
+  - prisma
+  - sharp
+  - utf-8-validate
+
+overrides:
+  '@prisma/generator-helper@4.16.2>cross-spawn': 7.0.6
+  hono: '>=4.10.3'
+  valibot: '>=1.2.0'

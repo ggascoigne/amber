@@ -1,56 +1,18 @@
-import React, { useMemo } from 'react'
+import type React from 'react'
+import { useMemo } from 'react'
 
-import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow, Theme } from '@mui/material'
+import type { HotelRoom } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Loader, notEmpty } from '@amber/ui'
+import { FormControlLabel, Radio, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import { makeStyles } from 'tss-react/mui'
-import { GraphQLError, Loader, notEmpty } from 'ui'
+import { useQuery } from '@tanstack/react-query'
 
 import { HasPermission, Perms } from './Auth'
+import { TransportError } from './TransportError'
 
-import { useGraphQL, GetHotelRoomsDocument } from '../client'
 import { BathroomType } from '../utils'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
-import { HotelRoom } from '../views/HotelRoomTypes/HotelRoomTypes'
-
-const useStyles = makeStyles<void, 'titleLine' | 'soldOut'>()((theme: Theme, _params, classes) => ({
-  titleLine: {
-    // see tableCell
-  },
-  disabled: {
-    color: 'rgba(0,0,0,0.38)',
-  },
-  soldOut: {},
-  tableRow: {
-    color: 'inherit',
-    outline: 0,
-    verticalAlign: 'middle',
-    '&:hover': {
-      backgroundColor: 'rgba(0, 0, 0, 0.07)',
-    },
-  },
-  tableLabel: {},
-  tableCell: {
-    padding: '8px 16px',
-    fontSize: '0.875rem',
-    textAlign: 'left',
-    fontWeight: 300,
-    lineHeight: 1.3,
-    verticalAlign: 'inherit',
-    // color: theme.palette.text.primary,
-    [`&.${classes.titleLine}`]: {
-      fontWeight: 500,
-    },
-    [`&.${classes.soldOut}`]: {
-      '&:after': {
-        color: 'black',
-        content: '" SOLD OUT"',
-        fontSize: '14px',
-        lineHeight: 1.42857,
-        verticalAlign: 'middle',
-      },
-    },
-  },
-}))
 
 const getRoomTypeDescription = (type: BathroomType) => {
   switch (type) {
@@ -60,15 +22,16 @@ const getRoomTypeDescription = (type: BathroomType) => {
       return 'Rooms with en-suite bath facilities'
     case BathroomType.NoEnSuite:
       return "Rooms with bath facilities 'down the hall', bed & breakfast style"
+    default:
+      return undefined
   }
-  return undefined
 }
 
 const FancyDescription: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.description.replaceAll(
           /\*/g,
@@ -83,7 +46,7 @@ const FancyRate: React.FC<{ room: HotelRoom }> = ({ room }) => {
   const theme = useTheme()
   return (
     <span
-      /* eslint-disable-next-line risxss/catch-potential-xss-react */
+      /* eslint-disable-next-line risxss/catch-potential-xss-react, react/no-danger */
       dangerouslySetInnerHTML={{
         __html: room.rate.replaceAll(
           /(\$\d+ \/ night T.*S??\*)/g,
@@ -111,7 +74,6 @@ const useGetAvailableRoomsOfType = (type: BathroomType, rooms?: HotelRoom[]) =>
   )
 
 const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) => {
-  const { classes, cx } = useStyles()
   const { getRoomAvailable } = useAvailableHotelRooms()
   const description = getRoomTypeDescription(type)
   const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
@@ -120,8 +82,26 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
     return (
       <>
         {description ? (
-          <TableRow key={`${type}_0`} className={classes.tableRow}>
-            <TableCell className={cx(classes.tableCell, classes.titleLine)} colSpan={3}>
+          <TableRow
+            key={`${type}_0`}
+            sx={{
+              color: 'inherit',
+              outline: 0,
+              verticalAlign: 'middle',
+              '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.07)' },
+            }}
+          >
+            <TableCell
+              sx={{
+                p: '8px 16px',
+                fontSize: '0.875rem',
+                textAlign: 'left',
+                fontWeight: 500,
+                lineHeight: 1.3,
+                verticalAlign: 'inherit',
+              }}
+              colSpan={3}
+            >
               {description}
             </TableCell>
           </TableRow>
@@ -136,29 +116,81 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
           return (
             <TableRow
               key={`${type}_${index}`}
-              className={cx(classes.tableRow, {
-                [classes.disabled]: disabled,
-                [classes.soldOut]: soldOut,
-              })}
+              sx={{
+                color: 'inherit',
+                outline: 0,
+                verticalAlign: 'middle',
+                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.07)' },
+              }}
             >
               <TableCell
-                className={cx(classes.tableCell, { [classes.disabled]: disabled, [classes.soldOut]: soldOut })}
+                sx={{
+                  p: '8px 16px',
+                  fontSize: '0.875rem',
+                  textAlign: 'left',
+                  fontWeight: 300,
+                  lineHeight: 1.3,
+                  verticalAlign: 'inherit',
+                  color: disabled || soldOut ? 'rgba(0,0,0,0.38)' : 'inherit',
+                  '&:after': soldOut
+                    ? {
+                        color: 'black',
+                        content: '" SOLD OUT"',
+                        fontSize: '14px',
+                        lineHeight: 1.42857,
+                        verticalAlign: 'middle',
+                      }
+                    : undefined,
+                }}
                 scope='row'
               >
                 <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={soldOut} />
               </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
+              <TableCell
+                sx={{
+                  p: '8px 16px',
+                  fontSize: '0.875rem',
+                  textAlign: 'left',
+                  fontWeight: 300,
+                  lineHeight: 1.3,
+                  verticalAlign: 'inherit',
+                  color: disabled || soldOut ? 'rgba(0,0,0,0.38)' : 'inherit',
+                }}
+                scope='row'
+              >
                 <FancyRate room={room} />
               </TableCell>
               <HasPermission
                 permission={Perms.IsAdmin}
                 denied={() => (
-                  <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
+                  <TableCell
+                    sx={{
+                      p: '8px 16px',
+                      fontSize: '0.875rem',
+                      textAlign: 'left',
+                      fontWeight: 300,
+                      lineHeight: 1.3,
+                      verticalAlign: 'inherit',
+                      color: disabled || soldOut ? 'rgba(0,0,0,0.38)' : 'inherit',
+                    }}
+                    scope='row'
+                  >
                     {room.occupancy}
                   </TableCell>
                 )}
               >
-                <TableCell className={cx(classes.tableCell, { [classes.disabled]: disabled || soldOut })} scope='row'>
+                <TableCell
+                  sx={{
+                    p: '8px 16px',
+                    fontSize: '0.875rem',
+                    textAlign: 'left',
+                    fontWeight: 300,
+                    lineHeight: 1.3,
+                    verticalAlign: 'inherit',
+                    color: disabled || soldOut ? 'rgba(0,0,0,0.38)' : 'inherit',
+                  }}
+                  scope='row'
+                >
                   {available}
                 </TableCell>
               </HasPermission>
@@ -172,18 +204,15 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
 }
 
 export const RoomFieldTable: React.FC<{ currentValue: number }> = ({ currentValue }) => {
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   const rooms: HotelRoom[] | undefined = useMemo(
-    () =>
-      data
-        ?.hotelRooms!.edges.map((v) => v.node)
-        .filter(notEmpty)
-        .filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
+    () => data?.filter(notEmpty).filter((r) => r.quantity > 0), // filter out rooms that we're not allowing this year
     [data],
   )
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -215,7 +244,6 @@ interface RoomsProps {
 }
 
 const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
-  const { classes, cx } = useStyles()
   const { getRoomAvailable } = useAvailableHotelRooms()
   const roomsOfType = useGetAvailableRoomsOfType(type, rooms)
 
@@ -228,14 +256,79 @@ const RoomsRow: React.FC<RoomsProps> = ({ rooms, type }) => {
           const disabled = available <= roomCountThreshold
           const label = <FancyDescription room={room} />
           return (
-            <TableRow key={`${type}_${index}`} className={cx(classes.tableRow, { [classes.soldOut]: disabled })}>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+            <TableRow
+              key={`${type}_${index}`}
+              sx={{
+                color: 'inherit',
+                outline: 0,
+                verticalAlign: 'middle',
+                '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.07)' },
+              }}
+            >
+              <TableCell
+                sx={{
+                  p: '8px 16px',
+                  fontSize: '0.875rem',
+                  textAlign: 'left',
+                  fontWeight: 300,
+                  lineHeight: 1.3,
+                  verticalAlign: 'inherit',
+                  '&:after': disabled
+                    ? {
+                        color: 'black',
+                        content: '" SOLD OUT"',
+                        fontSize: '14px',
+                        lineHeight: 1.42857,
+                        verticalAlign: 'middle',
+                      }
+                    : undefined,
+                }}
+                scope='row'
+              >
                 {label}
               </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell
+                sx={{
+                  p: '8px 16px',
+                  fontSize: '0.875rem',
+                  textAlign: 'left',
+                  fontWeight: 300,
+                  lineHeight: 1.3,
+                  verticalAlign: 'inherit',
+                  '&:after': disabled
+                    ? {
+                        color: 'black',
+                        content: '" SOLD OUT"',
+                        fontSize: '14px',
+                        lineHeight: 1.42857,
+                        verticalAlign: 'middle',
+                      }
+                    : undefined,
+                }}
+                scope='row'
+              >
                 <FancyRate room={room} />
               </TableCell>
-              <TableCell className={cx(classes.tableCell, { [classes.soldOut]: disabled })} scope='row'>
+              <TableCell
+                sx={{
+                  p: '8px 16px',
+                  fontSize: '0.875rem',
+                  textAlign: 'left',
+                  fontWeight: 300,
+                  lineHeight: 1.3,
+                  verticalAlign: 'inherit',
+                  '&:after': disabled
+                    ? {
+                        color: 'black',
+                        content: '" SOLD OUT"',
+                        fontSize: '14px',
+                        lineHeight: 1.42857,
+                        verticalAlign: 'middle',
+                      }
+                    : undefined,
+                }}
+                scope='row'
+              >
                 {room.occupancy}
               </TableCell>
               {/*
@@ -260,19 +353,16 @@ export interface RoomsTableProps {
 }
 
 export const RoomsTable: React.FC<RoomsTableProps> = ({ type }) => {
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
-
+  const trpc = useTRPC()
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
   }
 
-  const rooms: HotelRoom[] = data
-    .hotelRooms!.edges.map((v) => v.node)
-    .filter(notEmpty)
-    .filter((r) => r.quantity > 0)
+  const rooms: HotelRoom[] = data.filter(notEmpty).filter((r) => r.quantity > 0)
 
   return (
     <Table>

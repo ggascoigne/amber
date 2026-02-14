@@ -1,13 +1,30 @@
 {
   "cSpell.words": [
     "Ambercon",
+    "autoincrement",
+    "backchannel",
     "Edgefield",
+    "esbuild",
+    "frontmatter",
+    "gettimezone",
     "graphiql",
+    "Ical",
+    "Meijer",
     "Menamins",
+    "microlink",
     "nextjs",
+    "oxfmt",
     "postgraphile",
+    "settimezone",
+    "setusingnetworktime",
     "sslmode",
     "sslrootcert",
-    "WMDY"
-  ]
+    "systemsetup",
+    "toolbelt",
+    "tsgolint",
+    "WMDY",
+    "Zelazny's"
+  ],
+  "editor.formatOnSave": true,
+  "oxc.enable": false
 }

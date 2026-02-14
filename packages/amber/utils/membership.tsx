@@ -1,20 +1,25 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { notEmpty } from 'ui'
+import { useTRPC } from '@amber/client'
+import { useQuery } from '@tanstack/react-query'
 
+import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
 
-import { useGraphQL, GetGameAssignmentsByMemberIdDocument, GetMembershipByYearAndIdDocument } from '../client'
 import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {
   const [year] = useYearFilter()
-  const { data } = useGraphQL(GetMembershipByYearAndIdDocument, {
-    variables: { year, userId: userId! },
-    options: {
-      enabled: !!userId,
-    },
-  })
+  const trpc = useTRPC()
+  const { data } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions(
+      { year, userId: userId! },
+      {
+        enabled: !!userId,
+      },
+    ),
+  )
 
   if (!userId) {
     return null
@@ -24,13 +29,12 @@ export const useGetMemberShip = (userId: number | undefined | null) => {
     return undefined // allows us to tell if the load is still ongoing and avoid redirects
   }
 
-  const membership = data.memberships?.nodes[0]
+  const membership = data[0]
   return membership?.year === year ? membership : null
 }
 
 export const useIsMember = () => {
-  const { user } = useAuth()
-  const userId = user?.userId
+  const { userId } = useUser()
   const membership = useGetMemberShip(userId)
   return !!membership?.attending
 }
@@ -54,22 +58,21 @@ export const IsNotMember: React.FC<PropsWithChildren<unknown>> = ({ children }) 
 }
 
 export const useIsGm = () => {
+  const trpc = useTRPC()
   const { user } = useAuth()
+  const [year] = useYearFilter()
   const userId = user?.userId
-  const membership = useGetMemberShip(userId)
-  const { data: gameAssignmentData } = useGraphQL(GetGameAssignmentsByMemberIdDocument, {
-    variables: {
-      memberId: membership?.id ?? 0,
-    },
-    options: { enabled: !!membership },
-  })
-
-  if (!user || !membership || !gameAssignmentData) return false
-
-  return (
-    gameAssignmentData.gameAssignments?.nodes
-      .filter(notEmpty)
-      .filter((ga) => ga.memberId === membership.id)
-      .filter((ga) => ga.gm !== 0).length !== 0
+  const { data: isGmData } = useQuery(
+    trpc.gameAssignments.isGameMaster.queryOptions(
+      {
+        userId: userId!,
+        year,
+      },
+      { enabled: !!userId },
+    ),
   )
+
+  if (!user) return false
+
+  return isGmData ?? false
 }

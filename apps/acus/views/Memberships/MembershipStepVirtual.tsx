@@ -1,26 +1,12 @@
 import React, { useState } from 'react'
 
-import { DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
-import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from 'amber'
-import { MembershipFormContent } from 'amber/utils/membershipUtils'
-import { makeStyles } from 'tss-react/mui'
-import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from 'ui'
+import { AdminCard, ConfigDate, Perms, getSlotDescription, isNotPacificTime, useConfiguration } from '@amber/amber'
+import type { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from '@amber/ui'
+import { Box, DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
 
-const useStyles = makeStyles()({
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-  },
-  slotToggleWrapper: {
-    position: 'absolute',
-    top: 16,
-    right: 50,
-  },
-})
-
-export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix = '' }) => {
+export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
-  const { classes } = useStyles()
   const [showPT, setShowPT] = useState(false)
 
   return (
@@ -38,10 +24,10 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
       <DialogContentText>
         Note that some games offered may cover more than one slot time or purposely overrun their slot times. This will
         be specified in the game book once it is published. In addition, there may be other game times available
-        "overnight" Pacific time &mdash; that is, during the day U.K. and European time. These will be organized
-        separately from the ACNW main game book.
+        &ldquo;overnight&rdquo; Pacific time &mdash; that is, during the day U.K. and European time. These will be
+        organized separately from the ACNW main game book.
       </DialogContentText>
-      <div className={classes.slotSelection}>
+      <Box sx={{ position: 'relative', pt: 0 }}>
         {isNotPacificTime(configuration) && (
           <div>
             <FormControlLabel
@@ -71,16 +57,16 @@ export const MembershipStepVirtual: React.FC<MembershipFormContent> = ({ prefix 
             />
           ))}
         </FormGroup>
-      </div>
+      </Box>
       <GridContainer spacing={2}>
-        <GridItem xs={12} md={12}>
+        <GridItem size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />
         </GridItem>
         <AdminCard permission={Perms.IsAdmin}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Attending' name='attending' />
           </GridItem>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Volunteer' name='volunteer' />
           </GridItem>
         </AdminCard>

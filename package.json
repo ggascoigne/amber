@@ -1,60 +1,75 @@
 {
-  "name": "acnw2",
+  "name": "ambercon",
   "version": "0.1.0",
   "description": "AmberCon NW v2 site",
   "author": "guy@wyrdrune.com",
   "license": "MIT",
   "private": true,
+  "type": "module",
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=8"
+    "node": ">=24",
+    "pnpm": ">=10"
   },
+  "packageManager": "pnpm@10.27.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ggascoigne/acnw2.git"
+    "url": "https://github.com/ggascoigne/amber.git"
   },
   "files": [],
-  "oclif": {
-    "additionalHelpFlags": [
-      "-h"
-    ],
-    "additionalVersionFlags": [
-      "-v"
-    ],
-    "commands": "./scripts/cliCommands",
-    "bin": "run",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
-  },
   "scripts": {
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
-    "boot": "pnpm --filter acnw boot && pnpm --filter acus boot",
-    "dev:nw": "pnpm --filter acnw dev",
-    "build:nw": "pnpm --filter acnw build",
-    "dev:us": "pnpm --filter acus dev",
-    "build:us": "pnpm --filter acus build",
-    "db:generate": "DB_ENV=acnw pnpm --filter database db:migrate:generate",
+    "boot": "pnpm -F acnw boot && pnpm -F acus boot",
+    "dev:nw": "pnpm -F acnw dev",
+    "build:nw": "pnpm -F acnw build",
+    "dev:us": "pnpm -F acus dev",
+    "build:us": "pnpm -F acus build",
+    "db:generate": "DB_ENV=acnw pnpm -F server db:migrate:generate",
     "format": "pnpm format:all --cache",
-    "format:all": "prettier --loglevel warn --write '{apps,packages}/**/*.{js,jsx,ts,tsx,css,scss,json,graphql}'",
-    "lint": "pnpm -r --parallel lint",
+    "format:ox": "oxfmt && prettier --write '{apps,packages}/**/*.{css,scss,json}'",
+    "format:all": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,md}' --log-level warn",
+    "lint": "pnpm run eslint",
+    "oxlint": "oxlint --type-aware --fix",
+    "eslint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
-    "test": "next test",
-    "tsc": "pnpm -r tsc"
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "tsc": "pnpm -r tsc",
+    "tsgo": "pnpm -r tsgo"
+  },
+  "dependencies": {
+    "dotenv": "17.2.3",
+    "next": "16.1.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
-    "eslint-config-custom": "workspace:*",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "next": "14.0.4",
-    "prettier": "^3.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tsconfig": "workspace:*",
-    "turbo": "^1.11.2",
-    "typescript": "^5.3.3"
+    "@amber/tsconfig": "workspace:*",
+    "@ggascoigne/eslint-config": "^2.5.0",
+    "@playwright/test": "^1.57.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@types/jsdom": "~27.0.0",
+    "@types/node": "^25.0.9",
+    "@types/react": "~19.2.8",
+    "@types/react-dom": "~19.2.3",
+    "@typescript/native-preview": "7.0.0-dev.20260117.1",
+    "@vitejs/plugin-react": "^5.1.2",
+    "dotenv-cli": "11.0.0",
+    "eslint": "^9.39.2",
+    "eslint-plugin-oxlint": "^1.39.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.39.0",
+    "oxlint-tsgolint": "^0.11.1",
+    "prettier": "^3.8.0",
+    "supports-color": "10.2.2",
+    "tsx": "^4.21.0",
+    "turbo": "^2.7.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
   },
   "prettier": {
     "printWidth": 120,
@@ -68,7 +83,10 @@
       "prettier --no-color --write",
       "eslint"
     ],
-    "*.{css,scss,graphql}": [
+    "*.json": [
+      "prettier --no-color --write"
+    ],
+    "*.{css,scss}": [
       "prettier --no-color --write"
     ]
   },
@@ -77,10 +95,5 @@
     "not dead",
     "not ie 11",
     "not op_mini all"
-  ],
-  "pnpm": {
-    "patchedDependencies": {
-      "ts-node@11.0.0-beta.1": "patches/ts-node@11.0.0-beta.1.patch"
-    }
-  }
+  ]
 }

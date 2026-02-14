@@ -1,37 +1,24 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react'
+import type { MouseEventHandler } from 'react'
+import React, { useCallback, useState } from 'react'
 
+import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
+import type { ContentsOf } from '@amber/ui'
+import { pick, ExpandingFab, Loader, notEmpty, pickAndConvertNull } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
 import { Button } from '@mui/material'
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
-import { ContentsOf, ExpandingFab, GraphQLError, Loader, notEmpty, Page, pick } from 'ui'
 
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
-import {
-  GameChoiceSelector,
-  isAnyGame,
-  isNoGame,
-  orderChoices,
-  SelectorUpdate,
-  SlotDecoratorCheckMark,
-} from './GameChoiceSelector'
+import type { SelectorUpdate } from './GameChoiceSelector'
+import { GameChoiceSelector, isAnyGame, isNoGame, orderChoices, SlotDecoratorCheckMark } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
-import {
-  GameChoiceFieldsFragment,
-  GetGameChoicesQuery,
-  useGraphQL,
-  useGraphQLMutation,
-  UpdateGameChoiceByNodeIdMutationVariables,
-  CreateGameChoiceDocument,
-  CreateGameChoicesDocument,
-  GetGameChoicesDocument,
-  UpdateGameChoiceByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameChoiceQueries } from '../../client/querySets'
+import { Page } from '../../components'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
+import { TransportError } from '../../components/TransportError'
 import {
   useConfiguration,
   useConfirmDialogOpen,
@@ -41,59 +28,71 @@ import {
   useUser,
 } from '../../utils'
 
-export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & { modified?: boolean }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const debugGameChoices = (gameChoices: ChoiceType[] | undefined) => {
+  const g = gameChoices
+    ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))
+    ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
+    ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
+  console.table(g)
+}
+export type ChoiceType = ContentsOf<SelectorUpdate, 'gameChoices'> & {
+  modified?: boolean
+}
 
 export const useEditGameChoice = () => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const createGameChoice = useGraphQLMutation(CreateGameChoiceDocument)
+  const createGameChoice = useMutation(trpc.gameChoices.createGameChoice.mutationOptions())
   const invalidateGameChoiceQueries = useInvalidateGameChoiceQueries()
   const queryClient = useQueryClient()
-  const updateGameChoice = useGraphQLMutation(UpdateGameChoiceByNodeIdDocument, {
-    onMutate: async (input: UpdateGameChoiceByNodeIdMutationVariables) => {
-      const queryKey = ['getGameChoices', { memberId: input.input.patch.memberId, year: input.input.patch.year }]
-      await invalidateGameChoiceQueries()
-      const previousData = queryClient.getQueryData<GetGameChoicesQuery>(queryKey)
-      // note that this isn't doing a deep copy, but since we're replacing the data that seems like a reasonably shortcut
-      if (previousData?.gameChoices?.nodes && input?.input?.patch) {
-        const choiceIndex = (input.input.patch.slotId! - 1) * 5 + input.input.patch.rank!
-        previousData.gameChoices.nodes[choiceIndex] = {
-          ...input.input.patch,
-          nodeId: input.input.nodeId,
-        } as GameChoiceFieldsFragment
-        queryClient.setQueryData(queryKey, () => previousData)
-      }
-      return { previousData }
-    },
-  })
+  const updateGameChoice = useMutation(
+    trpc.gameChoices.updateGameChoice.mutationOptions({
+      onMutate: async (input) => {
+        const queryKey = trpc.gameChoices.getGameChoices.queryKey({
+          memberId: input.data.memberId,
+          year: input.data.year,
+        })
+        const previousData = queryClient.getQueryData(queryKey)
+        await invalidateGameChoiceQueries()
+        // note that this isn't doing a deep copy, but since we're replacing the data that seems like a reasonably shortcut
+        if (previousData?.gameChoices && input?.data) {
+          const choiceIndex = (input.data.slotId! - 1) * 5 + input.data.rank!
+          previousData.gameChoices[choiceIndex] = {
+            ...input.data,
+            id: input.id,
+          }
+          // console.log('onMutate, updating cache for', queryKey, 'at index', choiceIndex, previousData)
+          queryClient.setQueryData(queryKey, () => previousData)
+        }
+        return { previousData }
+      },
+    }),
+  )
 
-  const createGameChoices = useGraphQLMutation(CreateGameChoicesDocument)
+  const createGameChoices = useMutation(trpc.gameChoices.createGameChoices.mutationOptions())
 
   const createAllGameChoices = async (memberId: number, year: number) => {
-    createGameChoices
-      .mutateAsync(
-        {
-          memberId,
-          slots: configuration.numberOfSlots,
-          year,
-        },
-        {
-          onSuccess: invalidateGameChoiceQueries,
-        },
-      )
-      .then(() => {
-        // console.log('choices created')
-      })
+    createGameChoices.mutateAsync(
+      {
+        memberId,
+        noSlots: configuration.numberOfSlots,
+        year,
+      },
+      {
+        onSuccess: invalidateGameChoiceQueries,
+      },
+    )
   }
 
   const createOrUpdate = async (values: ChoiceType, refetch = false) => {
-    if (values.nodeId) {
+    // console.log('GameSignupPage:', values)
+    if (values.id) {
       return updateGameChoice
         .mutateAsync(
           {
-            input: {
-              nodeId: values.nodeId,
-              patch: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-            },
+            id: values.id,
+            data: pick(values, 'id', 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
           },
           {
             onSettled: () => {
@@ -106,18 +105,9 @@ export const useEditGameChoice = () => {
         })
     }
     return createGameChoice
-      .mutateAsync(
-        {
-          input: {
-            gameChoice: {
-              ...pick(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'),
-            },
-          },
-        },
-        {
-          onSettled: invalidateGameChoiceQueries,
-        },
-      )
+      .mutateAsync(pickAndConvertNull(values, 'memberId', 'gameId', 'returningPlayer', 'slotId', 'year', 'rank'), {
+        onSettled: invalidateGameChoiceQueries,
+      })
       .then(() => {
         // console.log({ text: 'GameChoice created', variant: 'success' })
       })
@@ -133,12 +123,13 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
-const GameSignupPage: React.FC = () => {
+const GameSignupPage = () => {
+  const trpc = useTRPC()
   const { slot, year } = useGameUrl()
   const setNewUrl = useGameScroll()
   const { userId } = useUser()
   const membership = useGetMemberShip(userId)
-  const [createOrEditGameChoice, createGameChoices] = useEditGameChoice()
+  const [createOrEditGameChoice, createAllGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
   const configuration = useConfiguration()
@@ -147,10 +138,18 @@ const GameSignupPage: React.FC = () => {
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const { error, data } = useGraphQL(
-    GetGameChoicesDocument,
-    { year, memberId: membership?.id ?? 0 },
-    { enabled: !!membership },
+  const { error, data, isLoading } = useQuery(
+    trpc.gameChoices.getGameChoices.queryOptions(
+      { year, memberId: membership?.id ?? 0 },
+      {
+        enabled: !!membership,
+        trpc: {
+          context: {
+            skipBatch: true,
+          },
+        },
+      },
+    ),
   )
 
   const onCloseConfirm: MouseEventHandler = () => {
@@ -159,29 +158,31 @@ const GameSignupPage: React.FC = () => {
 
   const updateChoice = useCallback(
     (params: SelectorUpdate) => {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const { gameChoices, gameId, rank, returningPlayer, slotId, year, oldRank } = params
+      const { gameChoices, gameId, rank, returningPlayer, slotId, year: newYear, oldRank } = params
 
       const empty = {
         memberId: membership?.id ?? 0,
         slotId,
-        year,
+        year: newYear,
         gameId: null,
         returningPlayer: false,
         modified: true,
       }
 
       const thisSlotChoices: ChoiceType[] = orderChoices(
-        gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
+        gameChoices?.filter((c) => c?.year === newYear && c.slotId === slotId),
       )
         // fill out array
         .map((c, index) => (c ? { ...c, modified: false } : { ...empty, rank: index }))
         // unset any other references to the same game
         .map((c) => (c.gameId === gameId && c.rank !== rank ? { ...c, ...empty } : c)) as ChoiceType[]
 
+      // debugGameChoices(gameChoices)
+      // debugGameChoices(thisSlotChoices)
+
       if (rank === null) {
-        if (oldRank) {
-          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank], ...empty }
+        if (oldRank || oldRank === 0) {
+          thisSlotChoices[oldRank] = { ...thisSlotChoices[oldRank]!, ...empty }
         } else {
           console.log(`update changed rank, but didn't pass in the old rank`)
         }
@@ -189,25 +190,38 @@ const GameSignupPage: React.FC = () => {
         if (rank !== oldRank && (rank === 0 || rank === 1)) {
           const otherRank = rank ? 0 : 1
           // if rank is GM or 1st then nuke the other one
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
-          thisSlotChoices[otherRank] = { ...thisSlotChoices[otherRank], ...empty }
+          thisSlotChoices[rank] = {
+            ...thisSlotChoices[rank]!,
+            ...empty,
+            gameId,
+            returningPlayer,
+          }
+          thisSlotChoices[otherRank] = {
+            ...thisSlotChoices[otherRank]!,
+            ...empty,
+          }
         } else {
-          thisSlotChoices[rank] = { ...thisSlotChoices[rank], ...empty, gameId, returningPlayer }
+          thisSlotChoices[rank] = {
+            ...thisSlotChoices[rank]!,
+            ...empty,
+            gameId,
+            returningPlayer,
+          }
         }
 
         if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {
           for (let i = rank + 1; i <= 4; i++) {
-            if (thisSlotChoices[i].gameId) thisSlotChoices[i] = { ...thisSlotChoices[i], ...empty }
+            if (thisSlotChoices[i]!.gameId) thisSlotChoices[i] = { ...thisSlotChoices[i]!, ...empty }
           }
         }
       }
 
-      // console.log(thisSlotChoices)
+      // console.log(`slotId ${slotId} thisSlotChoices:`, thisSlotChoices)
 
       const updaters = thisSlotChoices
         .filter((c) => c.modified)
         .reduce((acc: Promise<any>[], c, idx, arr) => {
-          acc.push(createOrEditGameChoice(c, idx + 1 === arr.length))
+          if (c.id) acc.push(createOrEditGameChoice(c, idx + 1 === arr.length))
           return acc
         }, [])
 
@@ -218,8 +232,8 @@ const GameSignupPage: React.FC = () => {
     [configuration, createOrEditGameChoice, membership?.id],
   )
 
-  const gameChoices = data?.gameChoices?.nodes
-  const gameSubmission = data?.gameSubmissions?.nodes
+  const gameChoices = data?.gameChoices
+  const gameSubmission = data?.gameSubmissions
 
   if (membership === undefined) {
     // still loading
@@ -231,27 +245,20 @@ const GameSignupPage: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
-  if (!data) {
+  if (!data || isLoading) {
     return <Loader />
   }
 
   if (gameChoices !== undefined && gameChoices.length === 0 && !created) {
     setCreated(true)
-    createGameChoices(membership.id, year).then()
+    createAllGameChoices(membership.id, year).then()
   }
 
   if (gameChoices !== undefined && gameChoices.length === 0) {
     return <Loader />
   }
-
-  // debug a smaller subset fo the data, sorted
-  // const g = gameChoices
-  //   ?.map((c) => pick(c!, 'slotId', 'rank', 'gameId', 'id'))
-  //   ?.sort((a, b) => (a?.rank ?? 0) - (b?.rank ?? 0))
-  //   ?.sort((a, b) => (a?.slotId ?? 0) - (b?.slotId ?? 0))
-  // console.table(g)
 
   const gmSlots = gameChoices?.filter((c) => c?.rank === 0 && c.gameId).filter(notEmpty)
   const selectorParams = {
@@ -295,11 +302,10 @@ const GameSignupPage: React.FC = () => {
       )}
       <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>
         <GameListNavigator name='page' selectQuery decorator={SlotDecoratorCheckMark} decoratorParams={selectorParams}>
-          {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
-          {({ year, slot, games }) => (
+          {({ year: y, slot: s, games }) => (
             <GameListFull
-              year={year}
-              slot={slot}
+              year={y}
+              slot={s}
               games={games!}
               onEnterGame={setNewUrl}
               decorator={GameChoiceSelector}

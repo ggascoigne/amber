@@ -1,6 +1,6 @@
+import { env } from '@amber/environment'
 import fetch from 'isomorphic-fetch'
 
-import { auth0IssuerBaseUrl, managementClientId, managementClientSecret } from './constants'
 import { JsonError } from './JsonError'
 
 export const getManagementApiAccessToken = async () => {
@@ -9,13 +9,13 @@ export const getManagementApiAccessToken = async () => {
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       grant_type: 'client_credentials',
-      audience: `${auth0IssuerBaseUrl}/api/v2/`,
-      client_id: managementClientId,
-      client_secret: managementClientSecret,
+      audience: `${env.AUTH0_DOMAIN}/api/v2/`,
+      client_id: env.MANAGEMENT_CLIENT_ID,
+      client_secret: env.MANAGEMENT_CLIENT_SECRET,
     }),
   }
 
-  return fetch(`${auth0IssuerBaseUrl}/oauth/token`, options).then(async (r) => {
+  return fetch(`${env.AUTH0_DOMAIN}/oauth/token`, options).then(async (r) => {
     const json = await r.json()
     if (r.status !== 200) {
       throw new JsonError(r.status, json.error_description)

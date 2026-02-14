@@ -1,40 +1,15 @@
-import React, { useEffect } from 'react'
+import type React from 'react'
+import { useEffect } from 'react'
 
-import { Theme } from '@mui/material'
-import { makeStyles } from 'tss-react/mui'
-import { Loader, notEmpty, range } from 'ui'
+import type { GameChoice } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Loader, notEmpty, range } from '@amber/ui'
+import { useQuery } from '@tanstack/react-query'
 
-import { MaybeGameChoice, Rank, rankString, RankStyle } from './GameChoiceSelector'
+import { Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-import { useGraphQL, GetGamesBySlotForSignupDocument } from '../../client'
 import { getSlotDescription, useConfiguration } from '../../utils'
 import { getGms } from '../Games'
-
-const useStyles = makeStyles()((_theme: Theme) => ({
-  line: {
-    display: 'flex',
-    flex: 1,
-  },
-  rank: {
-    width: 40,
-    textAlign: 'right',
-    '& sup': {
-      lineHeight: 0,
-      display: 'inline-block',
-      // paddingBottom: 3,
-    },
-  },
-  name: {
-    paddingLeft: 20,
-  },
-}))
-
-interface SlotDetailsProps {
-  slotId: number
-  year: number
-  gameChoices?: MaybeGameChoice[]
-  storeTextResults?: (details: SlotSummary) => void
-}
 
 export interface SlotSummary {
   slotId: number
@@ -45,16 +20,21 @@ export interface SlotSummary {
   }[]
 }
 
-const rankSort = (a: MaybeGameChoice, b: MaybeGameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
+interface SlotDetailsProps {
+  slotId: number
+  year: number
+  gameChoices?: GameChoice[]
+  storeTextResults?: (details: SlotSummary) => void
+}
+
+const rankSort = (a: GameChoice, b: GameChoice) => (a?.rank ?? 0) - (b?.rank ?? 0)
 
 export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoices, storeTextResults }) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const { classes } = useStyles()
 
-  const { data } = useGraphQL(GetGamesBySlotForSignupDocument, { year, slotId })
+  const { data: games } = useQuery(trpc.games.getGamesBySlotForSignup.queryOptions({ year, slotId }))
   const slotInfo = gameChoices?.filter((c) => c?.year === year && c.slotId === slotId)
-
-  const games = data?.games?.edges
 
   const slotDescription = getSlotDescription(configuration, {
     year,
@@ -68,7 +48,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
         ?.concat()
         ?.sort(rankSort)
         ?.map((info) => {
-          const g = games.find(({ node: game }) => game?.id === info?.gameId)?.node
+          const g = games.find((game) => game?.id === info?.gameId)
           if (!g || !info) return null
           const gms = getGms(g)
           const rank = rankString(info.rank)!
@@ -91,7 +71,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
     }
   }, [games, slotDescription, slotId, slotInfo, storeTextResults])
 
-  if (!data) return <Loader />
+  if (!games) return <Loader />
 
   return (
     <>
@@ -100,16 +80,16 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
         ?.concat()
         ?.sort(rankSort)
         ?.map((info) => {
-          const g = games?.find(({ node: game }) => game?.id === info?.gameId)?.node
+          const g = games?.find((game) => game?.id === info?.gameId)
           if (!g || !info) return null
 
           const gms = getGms(g)
           return (
-            <div className={classes.line} key={info.gameId}>
-              <div className={classes.rank}>
+            <div style={{ display: 'flex', flex: 1 }} key={info.gameId}>
+              <div style={{ width: 40, textAlign: 'right' }}>
                 <Rank rankStyle={RankStyle.superscript} rank={info.rank} />
               </div>
-              <div className={classes.name}>
+              <div style={{ paddingLeft: 20 }}>
                 {g.name}
                 {info.returningPlayer ? ' (returning player)' : ''}
                 {gms && ` - ${gms}`}
@@ -123,7 +103,7 @@ export const SlotDetails: React.FC<SlotDetailsProps> = ({ year, slotId, gameChoi
 
 interface ChoiceSummaryProps {
   year: number
-  gameChoices?: MaybeGameChoice[]
+  gameChoices?: GameChoice[]
   storeTextResults?: any
 }
 

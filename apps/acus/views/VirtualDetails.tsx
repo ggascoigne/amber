@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { useAuth } from 'amber/components/Auth'
-import { Redirect } from 'amber/components/Navigation'
-import { useGetSettingValue, useFlag } from 'amber/utils'
-import { Loader, Page } from 'ui'
+import { Page } from '@amber/amber'
+import { useAuth } from '@amber/amber/components/Auth'
+import { Redirect } from '@amber/amber/components/Navigation'
+import { useGetSettingValue, useFlag } from '@amber/amber/utils'
+import { Loader } from '@amber/ui'
 
 const VirtualDetails = () => {
   const { user, isLoading } = useAuth()
@@ -24,7 +25,7 @@ const VirtualDetails = () => {
     <Page title='Amber Virtual'>
       <h1>Accessing the Virtual Convention</h1>
 
-      <h3>AmberCon NW's Discord server</h3>
+      <h3>AmberCon NW&apos;s Discord server</h3>
 
       <p>
         Our virtual McMenamins Edgefield, is open. We would love all of the GMs and players to have signed in and gotten
@@ -39,8 +40,9 @@ const VirtualDetails = () => {
       </p>
 
       <p>
-        Here is your link. You will land on the server's Welcome Page, where you will have to click to agree to ACNW and
-        Discord's anti-harassment and use policies. Then you will put yourself "in line" for a volunteer.
+        Here is your link. You will land on the server&apos;s Welcome Page, where you will have to click to agree to
+        ACNW and Discord&apos;s anti-harassment and use policies. Then you will put yourself &ldquo;in line&rdquo; for a
+        volunteer.
       </p>
 
       <p>
@@ -48,8 +50,8 @@ const VirtualDetails = () => {
       </p>
 
       <p>
-        If you’re new to Discord or would like a preview of how the Con’s server will look and work, please check out
-        our wiki, which has a step by step guide to checking in for the Con and your games: &nbsp;
+        If you&apos;re new to Discord or would like a preview of how the Con&apos;s server will look and work, please
+        check out our wiki, which has a step by step guide to checking in for the Con and your games: &nbsp;
         {wikiUrl ? <a href={wikiUrl}>{wikiUrl}</a> : <Loader tiny />}
       </p>
     </Page>

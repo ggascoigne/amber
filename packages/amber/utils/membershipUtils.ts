@@ -1,35 +1,59 @@
-import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
+import type { UserAndProfile, Transaction } from '@amber/client'
+import { useInvalidateMembershipQueries, useTRPC } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
+import { notEmpty, pick, useNotification } from '@amber/ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import {} from 'yup'
 
 import type { MembershipConfirmationBodyUpdateType, MembershipType } from './apiTypes'
-import { Configuration, useConfiguration } from './configContext'
+import type { Configuration } from './configContext'
+import { useConfiguration } from './configContext'
+import { toDateTime } from './dateUtils'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
 import { getSlotDescription } from './slotTimes'
 import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
-import {
-  GetTransactionByUserQuery,
-  useGraphQL,
-  useGraphQLMutation,
-  CreateMembershipDocument,
-  GetHotelRoomsDocument,
-  UpdateMembershipByNodeIdDocument,
-} from '../client'
-import { useInvalidateMembershipQueries } from '../client/querySets'
-import { Perms, ProfileFormType, useAuth } from '../components'
+import { Perms, useAuth } from '../components'
 
-// NOTE that this isn't exported directly from 'amber/utils' since that causes
+// NOTE that this isn't exported directly from '@amber/amber/utils' since that causes
 // circular import explosions
-
 export interface MembershipFormContent {
   prefix?: string
 }
 
-export type MembershipErrorType = Record<keyof MembershipType, string>
+type MembershipFormDates = {
+  arrivalDate: MembershipType['arrivalDate'] | ''
+  departureDate: MembershipType['departureDate'] | ''
+}
 
-export const fromSlotsAttending = (configuration: Configuration, membershipValues: MembershipType) => {
+export type MembershipFormType = Omit<MembershipType, keyof MembershipFormDates> &
+  MembershipFormDates & {
+    membership?: string
+    subsidizedAmount?: number
+  }
+
+export type MembershipErrorType = Record<keyof MembershipFormType, string>
+
+const ensureMembershipDates = (membershipValues: MembershipFormType): MembershipType => {
+  if (membershipValues.arrivalDate === '' || membershipValues.departureDate === '') {
+    throw new Error('Arrival and departure dates are required')
+  }
+  return membershipValues as MembershipType
+}
+
+export const toLegacyApiMembership = (membershipValues: MembershipType) => ({
+  ...membershipValues,
+  id: membershipValues.id ?? undefined,
+  arrivalDate: toDateTime(membershipValues.arrivalDate)?.toISO() ?? '',
+  departureDate: toDateTime(membershipValues.departureDate)?.toISO() ?? '',
+})
+
+export const fromSlotsAttending = (
+  configuration: Configuration,
+  membershipValues: MembershipFormType | MembershipType,
+) => {
   const slotsAttendingData = Array(configuration.numberOfSlots).fill(false)
   // @ts-ignore
   // eslint-disable-next-line no-return-assign
@@ -37,7 +61,7 @@ export const fromSlotsAttending = (configuration: Configuration, membershipValue
   return slotsAttendingData
 }
 
-export const toSlotsAttending = (membershipValues: MembershipType) =>
+export const toSlotsAttending = (membershipValues: MembershipFormType | MembershipType) =>
   // convert an array of booleans to a comma separate list of slot numbers
   membershipValues.slotsAttendingData
     ?.map((v: boolean, i: number) => (v ? i + 1 : 0))
@@ -63,12 +87,14 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
     'volunteer',
     'year',
     'slotsAttending',
+    'cost',
   )
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const createMembership = useGraphQLMutation(CreateMembershipDocument)
-  const updateMembership = useGraphQLMutation(UpdateMembershipByNodeIdDocument)
+  const createMembership = useMutation(trpc.memberships.createMembership.mutationOptions())
+  const updateMembership = useMutation(trpc.memberships.updateMembership.mutationOptions())
   const invalidateMembershipQueries = useInvalidateMembershipQueries()
   const createOrUpdateTransaction = useEditMembershipTransaction(onClose)
   const notify = useNotification()
@@ -77,19 +103,17 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   const { hasPermissions } = useAuth()
   const shouldSendEmail = !hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail
 
-  const { data: roomData } = useGraphQL(GetHotelRoomsDocument)
+  const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
   // note that we pass in profile values since they might well have just been updated
   // and are later than the cached version off the membershipValues.
   const sendMembershipConfirmation = (
-    profile: ProfileFormType,
-    membershipValues: MembershipType,
+    profile: UserAndProfile,
+    membershipValues: MembershipFormType,
     update: MembershipConfirmationBodyUpdateType = 'new',
   ) => {
-    const room = roomData
-      ?.hotelRooms!.edges.map((v) => v.node)
-      .filter(notEmpty)
-      .find((r) => r.id === membershipValues.hotelRoomId)
+    const membershipForPersistence = ensureMembershipDates(membershipValues)
+    const room = roomData?.filter(notEmpty).find((r) => r.id === membershipValues.hotelRoomId)
 
     const slotDescriptions = membershipValues.slotsAttending?.split(',').map((i: string) =>
       getSlotDescription(configuration, {
@@ -107,15 +131,15 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           virtual: configuration.virtual,
           name: profile.fullName!,
           email: profile.email,
-          address: profile.profiles?.nodes?.[0]?.snailMailAddress ?? undefined,
-          phoneNumber: profile.profiles?.nodes?.[0]?.phoneNumber ?? undefined,
+          address: profile.profile?.[0]?.snailMailAddress ?? undefined,
+          phoneNumber: profile.profile?.[0]?.phoneNumber ?? undefined,
           update,
           url: `${window.location.origin}/membership`,
           paymentUrl: `${window.location.origin}/payment`,
-          membership: membershipValues,
+          membership: toLegacyApiMembership(membershipForPersistence),
           slotDescriptions,
           // for new registrations don't rely on the profile value, it's out of date
-          owed: update === 'new' ? getMembershipCost(configuration, membershipValues) : profile.balance,
+          owed: update === 'new' ? getMembershipCost(configuration, membershipForPersistence) : profile.balance,
           room,
         },
       ],
@@ -123,19 +147,18 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
   }
 
   return async (
-    membershipValues: MembershipType,
-    profile: ProfileFormType,
-    usersTransactions: GetTransactionByUserQuery | undefined,
+    membershipValues: MembershipFormType,
+    profile: UserAndProfile,
+    usersTransactions: Transaction[] | undefined,
   ) => {
-    if (membershipValues.nodeId) {
+    const membershipForPersistence = ensureMembershipDates(membershipValues)
+    if (membershipValues.id) {
       await updateMembership
         .mutateAsync(
           {
-            input: {
-              nodeId: membershipValues.nodeId,
-              patch: {
-                ...fromMembershipValues(membershipValues),
-              },
+            id: membershipValues.id,
+            data: {
+              ...fromMembershipValues(membershipForPersistence),
             },
           },
           {
@@ -143,7 +166,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           },
         )
         .then(async (res) => {
-          const membershipId = res?.updateMembershipByNodeId?.membership?.id
+          const membershipId = res?.membership?.id
           // console.log(JSON.stringify(res, null, 2))
 
           notify({ text: 'Membership updated', variant: 'success' })
@@ -151,7 +174,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           if (shouldSendEmail) {
             sendMembershipConfirmation(profile, membershipValues, 'update')
           }
-          await createOrUpdateTransaction(membershipValues, membershipId!, usersTransactions)
+          await createOrUpdateTransaction(membershipForPersistence, membershipId!, usersTransactions)
         })
         .catch((error: any) => {
           notify({ text: error.message, variant: 'error' })
@@ -160,22 +183,18 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
       await createMembership
         .mutateAsync(
           {
-            input: {
-              membership: {
-                ...fromMembershipValues(membershipValues),
-              },
-            },
+            ...fromMembershipValues(membershipForPersistence),
           },
           {
             onSuccess: invalidateMembershipQueries,
           },
         )
         .then(async (res) => {
-          const membershipId = res?.createMembership?.membership?.id
+          const membershipId = res?.membership?.id
           if (membershipId) {
             notify({ text: 'Membership created', variant: 'success' })
             sendMembershipConfirmation(profile, membershipValues)
-            await createOrUpdateTransaction(membershipValues, membershipId, usersTransactions)
+            await createOrUpdateTransaction(membershipForPersistence, membershipId, usersTransactions)
           } else {
             notify({ text: 'Membership creation failed', variant: 'error' })
           }

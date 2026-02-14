@@ -1,8 +1,9 @@
 import React from 'react'
 
+import { ExpandingFab } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
-import { ExpandingFab, Page } from 'ui'
 
+import { Page } from '../../components'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { useGameScroll, useGameUrl } from '../../utils'
 
@@ -10,15 +11,19 @@ const gotoTop = () => {
   window.scrollTo(0, 0)
 }
 
-const GameBookGamesPage: React.FC = () => {
+const broken = true
+
+const GameBookGamesPage = () => {
   const setNewUrl = useGameScroll()
   const { year } = useGameUrl()
 
   return (
     <Page title={`Game Book ${year}`}>
-      <ExpandingFab label='Goto Top' show onClick={gotoTop}>
-        <NavigationIcon />
-      </ExpandingFab>
+      {!broken && (
+        <ExpandingFab label='Goto Top' show onClick={gotoTop}>
+          <NavigationIcon />
+        </ExpandingFab>
+      )}
       <div>
         <GameListNavigator>
           {/* eslint-disable-next-line @typescript-eslint/no-shadow */}

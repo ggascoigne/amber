@@ -1,75 +1,51 @@
 import React, { useState } from 'react'
 
-import { Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import {
-  ProfileFormType,
+  Page,
+  TransportError,
   getInterestLevel,
   getSlotDescription,
   isNotPacificTime,
   useConfiguration,
   useGetCost,
-  useGraphQL,
-  GetHotelRoomsDocument,
-  GetMembershipByYearAndIdDocument,
   useProfile,
   useUser,
   useYearFilter,
-} from 'amber'
-import { MembershipType } from 'amber/utils/apiTypes'
-import { fromSlotsAttending } from 'amber/utils/membershipUtils'
+} from '@amber/amber'
+import type { MembershipType } from '@amber/amber/utils/apiTypes'
+import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
+import type { UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
+import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { makeStyles } from 'tss-react/mui'
-import {
-  Card,
-  CardBody,
-  Field,
-  GraphQLError,
-  GridContainer,
-  GridItem,
-  HeaderContent,
-  Loader,
-  MultiLine,
-  Page,
-  range,
-} from 'ui'
 
 import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
-
-const useStyles = makeStyles()({
-  card: {
-    marginBottom: 50,
-  },
-  gridItem: {
-    paddingBottom: 10,
-  },
-  slotSelection: {
-    position: 'relative',
-    paddingTop: 0,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  vspace: {
-    height: 8,
-  },
-})
 
 interface VirtualDetailsProps {
   membership: MembershipType
 }
 
-const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
+const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   const configuration = useConfiguration()
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(configuration, membership)
-  const { classes } = useStyles()
   return (
     <GridContainer direction='column'>
       <h1>Your Membership for {configuration.year}</h1>
-      <GridContainer item>
+      <GridContainer>
         <Field label='Slots you intend to play'>
-          <div className={classes.slotSelection}>
+          <Box
+            sx={{
+              position: 'relative',
+              pt: 0,
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
             {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
@@ -99,7 +75,7 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
                 }}
               />
             ))}
-          </div>
+          </Box>
         </Field>
         {membership.message && (
           <Field label='Message'>
@@ -111,28 +87,26 @@ const VirtualDetails: React.FC<VirtualDetailsProps> = ({ membership }) => {
   )
 }
 
-const VerticalGap = () => {
-  const { classes } = useStyles()
-  return (
-    <GridItem xs={12}>
-      <br className={classes.vspace} />
-    </GridItem>
-  )
-}
+const VerticalGap = () => (
+  <GridItem size={{ xs: 12 }}>
+    <Box sx={{ height: 8 }} />
+  </GridItem>
+)
 
 interface DetailsProps {
   membership: MembershipType
-  profile: ProfileFormType
+  profile: UserAndProfile
 }
 
-const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
+const Details = ({ membership, profile }: DetailsProps) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const { isLoading, error, data } = useGraphQL(GetHotelRoomsDocument)
+  const { isLoading, error, data } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
   const [year] = useYearFilter()
   const cost = useGetCost(membership)
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
   if (isLoading || !data) {
     return <Loader />
@@ -148,8 +122,8 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
           <Field label='Attendance'>{cost}</Field>
           <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
           <VerticalGap />
-          <Field label='Postal Address'>{profile?.profiles?.nodes?.[0]?.snailMailAddress}</Field>
-          <Field label='Phone Number'>{profile?.profiles?.nodes?.[0]?.phoneNumber}</Field>
+          <Field label='Postal Address'>{profile?.profile?.[0]?.snailMailAddress}</Field>
+          <Field label='Phone Number'>{profile?.profile?.[0]?.phoneNumber}</Field>
           <VerticalGap />
           <Field label='Any other Message'>{membership.message}</Field>
         </GridContainer>
@@ -158,13 +132,18 @@ const Details: React.FC<DetailsProps> = ({ membership, profile }) => {
   )
 }
 
-const MembershipSummary: React.FC = () => {
+const MembershipSummary = () => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
   const profile = useProfile()
   const { userId } = useUser()
   const [year] = useYearFilter()
-  const { isLoading, error, data } = useGraphQL(GetMembershipByYearAndIdDocument, { year, userId: userId ?? 0 })
-  const { classes } = useStyles()
+  const { isLoading, error, data } = useQuery(
+    trpc.memberships.getMembershipByYearAndId.queryOptions({
+      year,
+      userId: userId ?? 0,
+    }),
+  )
   const isVirtual = configuration.startDates[year].virtual
   const router = useRouter()
   const { query } = router
@@ -174,14 +153,14 @@ const MembershipSummary: React.FC = () => {
   }
 
   if (error) {
-    return <GraphQLError error={error} />
+    return <TransportError error={error} />
   }
 
   if (isLoading || !data) {
     return <Loader />
   }
   const displayNew = query.all?.[0] === 'new'
-  const membership = data.memberships?.nodes[0]
+  const membership = data?.[0]
 
   if (!membership || displayNew) {
     return (
@@ -203,7 +182,7 @@ const MembershipSummary: React.FC = () => {
       <br />
       {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
       <GridContainer>
-        <GridItem xs={12} sm={5} className={classes.gridItem}>
+        <GridItem size={{ xs: 12, sm: 5 }} sx={{ pb: '10px' }}>
           <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
             Edit
           </Button>

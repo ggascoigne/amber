@@ -1,45 +1,64 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 
-import { UserProvider } from '@auth0/nextjs-auth0/client'
-import { CacheProvider, EmotionCache } from '@emotion/react'
+import { useTRPC } from '@amber/client'
+import { isDev } from '@amber/environment'
+import { createEmotionCache, NotificationProvider, theme } from '@amber/ui'
+import { Auth0Provider } from '@auth0/nextjs-auth0'
+import type { EmotionCache } from '@emotion/react'
+import { CacheProvider } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
+// see https://github.com/mui/mui-x/issues/12640
+// oxlint-disable-next-line no-duplicates
+import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { HydrationBoundary, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { useQuery } from '@tanstack/react-query'
 import { Provider as JotaiProvider } from 'jotai'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import { createEmotionCache, NotificationProvider, theme } from 'ui'
 
 import { RouteGuard } from './Auth'
 import { Layout } from './Layout'
-import { RootRoutes } from './Navigation'
+import type { RootRoutes } from './Navigation'
+import { TRPCReactProvider } from './TRPCReactProvider'
 
-import { ConfigProvider, Configuration, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
+import type { Configuration } from '../utils'
+import { ConfigProvider, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
 
+const ReactQueryDevtoolsProduction = dynamic(
+  () => import('@tanstack/react-query-devtools/production').then((mod) => mod.ReactQueryDevtools),
+  { ssr: false },
+)
+
 interface RootComponentProps extends AppProps {
   emotionCache?: EmotionCache
-  configData?: any
   rootRoutes: (configuration: Configuration) => RootRoutes
   title: string
   banner: React.ReactNode
 }
 
 const RootInner = (props: RootComponentProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, rootRoutes, banner, title } = props
+  const { Component, pageProps, rootRoutes, banner, title } = props
+  const cache = React.useMemo(() => props.emotionCache ?? clientSideEmotionCache, [props.emotionCache])
   const { user } = pageProps
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
   useInitializeStripe()
+  const [showDevtools, setShowDevtools] = React.useState(isDev)
+
+  React.useEffect(() => {
+    // @ts-expect-error
+    window.toggleDevtools = () => setShowDevtools((old) => !old)
+  }, [])
 
   return (
-    <CacheProvider value={emotionCache}>
+    <CacheProvider value={cache}>
       <Head>
         <title>{title}</title>
         <meta
@@ -52,38 +71,41 @@ const RootInner = (props: RootComponentProps) => {
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterLuxon}>
           <NotificationProvider>
-            <UserProvider user={user}>
+            <Auth0Provider user={user}>
               <Layout rootRoutes={routes} title={title} banner={banner}>
                 <RouteGuard routes={routes}>
                   <Component {...pageProps} />
                 </RouteGuard>
-                <ReactQueryDevtools buttonPosition='bottom-left' />
+                {showDevtools && (
+                  <React.Suspense fallback={null}>
+                    <ReactQueryDevtoolsProduction buttonPosition='bottom-left' />
+                  </React.Suspense>
+                )}
               </Layout>
-            </UserProvider>
+            </Auth0Provider>
           </NotificationProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </CacheProvider>
   )
 }
+const ConfigLoader = (props: RootComponentProps) => {
+  const trpc = useTRPC()
+  const { data: configData } = useQuery(trpc.settings.getSettings.queryOptions())
+  const { config } = getSettingsObject(configData)
+  return config ? (
+    <ConfigProvider value={config}>
+      <RootInner {...props} />
+    </ConfigProvider>
+  ) : null
+}
 
 export default function RootComponent(props: RootComponentProps) {
-  const {
-    pageProps: { dehydratedState, configData },
-  } = props
-
-  const [queryClient] = React.useState(() => new QueryClient())
-  const { config } = getSettingsObject(configData)
-
-  return config ? (
-    <QueryClientProvider client={queryClient}>
-      <HydrationBoundary state={dehydratedState}>
-        <ConfigProvider value={config}>
-          <JotaiProvider>
-            <RootInner {...props} />
-          </JotaiProvider>
-        </ConfigProvider>
-      </HydrationBoundary>
-    </QueryClientProvider>
-  ) : null
+  return (
+    <TRPCReactProvider pageProps={props.pageProps}>
+      <JotaiProvider>
+        <ConfigLoader {...props} />
+      </JotaiProvider>
+    </TRPCReactProvider>
+  )
 }

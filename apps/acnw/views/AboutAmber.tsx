@@ -1,9 +1,7 @@
-import { MdxPage } from 'ui'
+import { MdxPage } from '@amber/amber'
 
-import * as content from '../content/AboutAmberContent.mdx'
+import AboutAmberContent, { metadata } from '../content/AboutAmberContent.mdx'
 
-const { default: AboutAmberContent, ...frontMatter } = content
-
-const AboutAmber = () => <MdxPage frontMatter={frontMatter} component={<AboutAmberContent />} />
+const AboutAmber = () => <MdxPage frontMatter={metadata} component={<AboutAmberContent />} />
 
 export default AboutAmber

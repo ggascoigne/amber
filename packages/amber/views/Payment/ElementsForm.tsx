@@ -2,14 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import InputAdornment from '@mui/material/InputAdornment/InputAdornment'
+import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { PaymentElement, useElements } from '@stripe/react-stripe-js'
-import { PaymentIntent } from '@stripe/stripe-js'
+import type { PaymentIntent } from '@stripe/stripe-js'
 import Router from 'next/router'
 
 import { fetchPostJSON } from './fetchUtils'
-import { PaymentInput, UserPaymentDetails } from './PaymentInput'
+import type { UserPaymentDetails } from './PaymentInput'
+import { PaymentInput } from './PaymentInput'
 
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe, useYearFilter } from '../../utils'
 
@@ -17,10 +18,11 @@ import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetSt
 type ElementsFormProps = {
   paymentIntent?: PaymentIntent | null
   userId: number
+  onSubmit: () => void
 }
 
-export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null, userId }) => {
-  const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // todo change me
+export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null, userId, onSubmit }) => {
+  const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // TODO change me
   const [input, setInput] = useState({
     total: defaultAmount,
     cardholderName: '',
@@ -66,7 +68,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
   }
 
   const setTotal = useCallback((value: UserPaymentDetails[]) => {
-    const total = value.reduce((prev, curr) => prev + curr.amount ?? 0, 0)
+    const total = value.reduce((prev, curr) => prev + curr.total, 0)
     setInput((inp) => ({
       ...inp,
       total,
@@ -91,6 +93,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
 
   const handleSubmit = useCallback(
     async (e: React.ChangeEvent<HTMLFormElement>) => {
+      onSubmit()
       e.preventDefault()
       // Abort if form isn't valid
       if (!e.currentTarget.reportValidity()) return
@@ -99,12 +102,13 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
 
       // Create a PaymentIntent with the specified amount.
       const response = await fetchPostJSON('/api/stripe/paymentIntents', {
+        action: 'update',
         amount: input.total,
         payment_intent_id: paymentIntent?.id,
         metadata: {
           userId,
           year,
-          payments: JSON.stringify(payments.filter((p) => p.amount > 0)),
+          payments: JSON.stringify(payments.filter((p) => p.total > 0)),
         },
       })
       setPaymentStatus(response)
@@ -137,7 +141,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
         setPaymentStatus(confirmResult.paymentIntent)
       }
     },
-    [baseUrl, elements, input.cardholderName, input.total, paymentIntent, payments, stripe, userId, year],
+    [baseUrl, elements, input.cardholderName, input.total, onSubmit, paymentIntent, payments, stripe, userId, year],
   )
 
   return (

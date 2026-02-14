@@ -1,13 +1,11 @@
 import { useCallback } from 'react'
 
+import { isDev, useNotification } from '@amber/ui'
 import fetch from 'isomorphic-fetch'
-import { isDev, useNotification } from 'ui'
 
-import { EmailConfirmation } from './apiTypes'
+import type { EmailConfirmation } from './apiTypes'
 
-interface SendEmail {
-  (p: EmailConfirmation): void
-}
+type SendEmail = (p: EmailConfirmation) => void
 
 export const useSendEmail = (): SendEmail => {
   const notify = useNotification()
@@ -37,7 +35,7 @@ export const useSendEmail = (): SendEmail => {
               isDev && console.log(`result = ${JSON.stringify(result, null, 2)}`)
             }
           } catch (e: any) {
-            console.log(e)
+            console.error(e)
             notify({
               text: e,
               variant: 'error',

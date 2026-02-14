@@ -1,16 +1,10 @@
-import * as React from 'react'
+import type * as React from 'react'
 
-import { Checkbox, ListItemText, MenuItem, Theme } from '@mui/material'
+import { Checkbox, ListItemText, MenuItem } from '@mui/material'
 import { useField } from 'formik'
-import { makeStyles } from 'tss-react/mui'
 
-import { TextField, TextFieldProps } from './TextField'
-
-const useStyles = makeStyles()((theme: Theme) => ({
-  multiSelectCheckBox: {
-    paddingLeft: theme.spacing(1),
-  },
-}))
+import type { TextFieldProps } from './TextField'
+import { TextField } from './TextField'
 
 export interface SelectFieldValueObject {
   value: any
@@ -34,9 +28,8 @@ export const getSelectValue = (value: SelectFieldValue): any => (typeof value ==
 export const getSelectLabel = (value: SelectFieldValue): string => (typeof value === 'string' ? value : value.text)
 
 export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
-  const { classes } = useStyles()
   const [field] = useField(props.name)
-  const { select, selectValues, children, ...rest } = props
+  const { select: _select, selectValues, children, ...rest } = props
   const multiSelect = !!props.SelectProps?.multiple
   return (
     <TextField select {...rest}>
@@ -50,13 +43,13 @@ export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
       {selectValues &&
         multiSelect &&
         selectValues.map((s) => (
-          <MenuItem key={getSelectValue(s)} value={getSelectValue(s)} className={classes.multiSelectCheckBox}>
+          <MenuItem key={getSelectValue(s)} value={getSelectValue(s)} sx={{ pl: 1 }}>
             <Checkbox checked={!!field.value.find((i: any) => i === getSelectValue(s))} />
             <ListItemText primary={getSelectLabel(s)} />
           </MenuItem>
         ))}
 
-      {children && children}
+      {children}
     </TextField>
   )
 }

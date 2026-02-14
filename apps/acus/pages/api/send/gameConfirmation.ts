@@ -1,8 +1,8 @@
+import type { GameConfirmationBody } from '@amber/amber/utils/apiTypes'
+import { getPlayerPreference } from '@amber/amber/utils/selectValues'
 import { getEmails, emailer, handleError, JsonError } from '@amber/api'
-import { withApiAuthRequired } from '@auth0/nextjs-auth0'
-import { GameConfirmationBody } from 'amber/utils/apiTypes'
-import { getPlayerPreference } from 'amber/utils/selectValues'
-import { NextApiRequest, NextApiResponse } from 'next'
+import { auth0 } from '@amber/server/src/auth/auth0'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 // /api/send/gameConfirmation
 // auth token: required
@@ -15,7 +15,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 //  game: Game
 // }
 
-export default withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
+export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextApiResponse) => {
   const emails = await getEmails()
   try {
     if (!req.body) throw new JsonError(400, 'missing body: expecting year, name, email, url, game')

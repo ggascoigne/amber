@@ -1,5 +1,0 @@
-fragment lookupFields on Lookup {
-  nodeId
-  id
-  realm
-}

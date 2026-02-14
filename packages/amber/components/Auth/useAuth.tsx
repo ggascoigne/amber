@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
 
-import { UserProfile, useUser } from '@auth0/nextjs-auth0/client'
+import { useUser } from '@auth0/nextjs-auth0'
+import type { User as Auth0LibUser } from '@auth0/nextjs-auth0/types'
 
 import { checkMany } from './authUtils'
-import rules, { Perms } from './PermissionRules'
+import type { Perms } from './PermissionRules'
+import rules from './PermissionRules'
 import { useRoleOverride } from './useRoleOverride'
 
 interface AuthInfo {
@@ -11,7 +13,7 @@ interface AuthInfo {
   userId?: number
 }
 
-export interface Auth0User extends AuthInfo, UserProfile {}
+export interface Auth0User extends AuthInfo, Auth0LibUser {}
 
 export type UserContext = {
   user?: Auth0User
@@ -26,7 +28,9 @@ export type UseAuth = UserContext & {
 
 export const useAuth = (): UseAuth => {
   const [roleOverride] = useRoleOverride()
-  const userContext = useUser() as UserContext
+  const userContext = useUser() as unknown as UserContext & {
+    invalidate: () => Promise<Auth0LibUser | undefined>
+  }
   const { user } = userContext
   const hasPermissions = useCallback(
     (perm: Perms, d?: any) => !!user && checkMany(rules, user.roles, perm, roleOverride, d),
@@ -34,6 +38,9 @@ export const useAuth = (): UseAuth => {
   )
   return {
     ...userContext,
+    checkSession: async () => {
+      await userContext.invalidate()
+    },
     hasPermissions,
   }
 }

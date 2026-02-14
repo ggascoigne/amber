@@ -1,12 +1,14 @@
-import Yup from 'ui/utils/Yup'
+import Yup from '@amber/ui/utils/Yup'
 import {} from 'yup'
 
-import { Configuration } from '../../utils'
-import { MembershipType } from '../../utils/apiTypes'
+import type { Configuration } from '../../utils'
+import { Attendance } from '../../utils'
+import type { MembershipFormType } from '../../utils/membershipUtils'
 
 export const membershipValidationSchemaNW = Yup.object().shape({
   arrivalDate: Yup.date().required(),
   attendance: Yup.string().max(255).required(),
+  membership: Yup.string().max(255).required(),
   departureDate: Yup.date().required(),
   interestLevel: Yup.string().max(255).required(),
   message: Yup.string().max(1024),
@@ -14,6 +16,11 @@ export const membershipValidationSchemaNW = Yup.object().shape({
   roomingPreferences: Yup.string().max(255),
   roomingWith: Yup.string().max(250), // yeah, really - schema is super inconsistent here
   skipSlots: Yup.string().max(20),
+  subsidizedAmount: Yup.number().when('membership', {
+    is: Attendance.Subsidized,
+    then: (schema) => schema.required('Required for subsidized membership').min(20, 'Must be at least $20'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 })
 
 export const membershipValidationSchemaUS = Yup.object().shape({
@@ -30,24 +37,29 @@ export const getDefaultMembership = (
   configuration: Configuration,
   userId: number,
   isVirtual: boolean,
-): MembershipType => ({
-  userId,
-  // note the difference in logic here is that NW wants to make users check their
-  // dates since the dates are related to the eventual hotel room booking, and US
-  // is just booking the convention itself
-  arrivalDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionStartDate.toISO()! : '',
-  attendance: configuration.useUsAttendanceOptions ? '4' : 'Thurs-Sun',
-  attending: true,
-  hotelRoomId: configuration.useUsAttendanceOptions ? 1 : 13,
-  departureDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionEndDate.toISO()! : '',
-  interestLevel: 'Full',
-  message: '',
-  offerSubsidy: false,
-  requestOldPrice: false,
-  roomPreferenceAndNotes: '',
-  roomingPreferences: 'other',
-  roomingWith: '',
-  volunteer: false,
-  year: configuration.year,
-  slotsAttending: '',
-})
+): MembershipFormType =>
+  ({
+    userId,
+
+    // note the difference in logic here is that NW wants to make users check their
+    // dates since the dates are related to the eventual hotel room booking, and US
+    // is just booking the convention itself
+    arrivalDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionStartDate.toJSDate()! : '',
+    attendance: configuration.isAcus ? '4' : Attendance.ThursSun,
+    membership: Attendance.ThursSun,
+    subsidizedAmount: configuration.subsidizedMembership,
+    attending: true,
+    hotelRoomId: configuration.isAcus ? 1 : 13,
+    departureDate: isVirtual || configuration.useUsAttendanceOptions ? configuration.conventionEndDate.toJSDate()! : '',
+    interestLevel: 'Full',
+    message: '',
+    offerSubsidy: false,
+    requestOldPrice: false,
+    roomPreferenceAndNotes: '',
+    roomingPreferences: 'other',
+    roomingWith: '',
+    volunteer: false,
+    year: configuration.year,
+    slotsAttending: '',
+    cost: 0,
+  }) as const

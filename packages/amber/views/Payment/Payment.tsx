@@ -1,41 +1,54 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
+import { useTRPC } from '@amber/client'
+import { Loader } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
-import { PaymentIntent } from '@stripe/stripe-js'
-import { Loader, Page } from 'ui'
+import type { PaymentIntent } from '@stripe/stripe-js'
+import { useQuery } from '@tanstack/react-query'
 
 import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
-import { useGraphQL, GetUserByIdDocument } from '../../client'
-import { ContactEmail } from '../../components'
+import { Page, ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useUser } from '../../utils'
 
-export const Payment: React.FC = () => {
+export const Payment = () => {
+  const trpc = useTRPC()
   const [stripe] = useGetStripe()
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
   const user = useUser()
-  const isCalledRef = useRef(false)
-  const userData = useGraphQL(GetUserByIdDocument, { id: user?.userId ?? -1 })
-  const balance = userData?.data?.user?.balance ?? 0
+  const paymentStateRef = useRef<'empty' | 'created' | 'submitted'>('empty')
+  const userData = useQuery(trpc.users.getUser.queryOptions({ id: user?.userId ?? -1 }))
+  const balance = userData?.data?.balance ?? 0
 
   useEffect(() => {
-    if (!isCalledRef.current) {
-      isCalledRef.current = true
+    if (paymentStateRef.current === 'empty') {
+      paymentStateRef.current = 'created'
       fetchPostJSON('/api/stripe/paymentIntents', {
+        action: 'create',
         amount: 10,
       }).then((data: PaymentIntent | null) => {
         setPaymentIntent(data)
       })
     }
-  }, [setPaymentIntent])
+    return () => {
+      if (paymentStateRef.current === 'created' && paymentIntent) {
+        fetchPostJSON('/api/stripe/paymentIntents', {
+          action: 'cancel',
+          payment_intent_id: paymentIntent?.id,
+        })
+      }
+    }
+  }, [paymentIntent, setPaymentIntent])
 
   // console.log('Payment', { paymentIntent })
 
   const configuration = useConfiguration()
-  const acus = configuration.numberOfSlots === 8
-  const acnw = !acus
+
+  const onSubmit = useCallback(() => {
+    paymentStateRef.current = 'submitted'
+  }, [])
 
   return (
     <Page title='Make Payment'>
@@ -52,12 +65,12 @@ export const Payment: React.FC = () => {
             clientSecret: paymentIntent.client_secret,
           }}
         >
-          <ElementsForm paymentIntent={paymentIntent} userId={user.userId} />
+          <ElementsForm paymentIntent={paymentIntent} userId={user.userId} onSubmit={onSubmit} />
         </Elements>
       ) : (
         <Loader />
       )}
-      {acnw && balance < 0 ? (
+      {configuration.isAcnw && balance < 0 ? (
         <>
           <DialogContentText sx={{ pt: 2 }}>
             Alternatively, write a check for <strong>${Math.max(0 - balance, 0)}</strong> made out to{' '}

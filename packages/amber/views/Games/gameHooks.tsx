@@ -1,67 +1,59 @@
 import { useCallback, useMemo } from 'react'
 
-import { notEmpty, OnCloseHandler, pick, useNotification } from 'ui'
+import type { MembershipAndUserAndRoom, UserAndProfile, Game, ToFormValues } from '@amber/client'
+import { useTRPC, useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '@amber/client'
+import type { OnCloseHandler, Expand } from '@amber/ui'
+import { notEmpty, pickAndConvertNull, useNotification } from '@amber/ui'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import {
-  GameAssignmentFieldsFragment,
-  GameFieldsFragment,
-  GameGmsFragment,
-  MembershipFieldsFragment,
-  Node,
-  useGraphQL,
-  useGraphQLMutation,
-  CreateGameAssignmentDocument,
-  CreateGameDocument,
-  DeleteGameAssignmentDocument,
-  GetGameAssignmentsByYearDocument,
-  GetMembershipsByYearDocument,
-  UpdateGameByNodeIdDocument,
-} from '../../client'
-import { useInvalidateGameAssignmentQueries, useInvalidateGameQueries } from '../../client/querySets'
 import { Perms, useAuth } from '../../components/Auth'
-import { ProfileFormType, useProfile } from '../../components/Profile'
+import { useProfile } from '../../components/Profile'
 import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
 
-type GameFields = Omit<GameFieldsFragment, 'nodeId' | 'id' | '__typename' | 'gameAssignments'>
-
-type GameAssignment = GameAssignmentFieldsFragment
-
-type Membership = MembershipFieldsFragment
+type Membership = MembershipAndUserAndRoom
 
 export const gameQueries = ['getGamesByYear', 'getGamesByYearAndAuthor', 'getGameAssignmentsByGameId']
 
 const getKnownNames = (gmNames: string | null | undefined, membershipList: Membership[]) => {
-  const includes = (long: string, short: string) => long.toLocaleLowerCase().includes(short.toLocaleLowerCase())
-
   if (!gmNames) return []
-  return membershipList
-    .map((m) => {
-      const fullName = m.user?.fullName
-      const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
-      const displayName = m.user?.displayName
-      const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w+\\s+${m.user?.lastName}`, 'i')
 
-      return (
-        (fullName && includes(gmNames, fullName) ? fullName : undefined) ??
-        (firstAndLast && includes(gmNames, firstAndLast) ? fullName : undefined) ??
-        (displayName && includes(gmNames, displayName) ? fullName : undefined) ??
-        (pat.exec(gmNames) ? fullName : undefined)
-      )
+  return gmNames
+    .toLocaleLowerCase()
+    .split('\n')
+    .map((name) => {
+      const cleanedName = name.trim()
+      const member = membershipList.find((m) => {
+        const fullName = m.user?.fullName ?? ''
+        const firstAndLast = `${m.user?.firstName} ${m.user?.lastName}`
+        const displayName = m.user?.displayName ?? ''
+        const pat = new RegExp(`${m.user?.firstName?.slice(0, 3)}\\w?\\s+${m.user?.lastName}`, 'i')
+        const patMatch = pat.exec(cleanedName)
+        return (
+          cleanedName === fullName.toLocaleLowerCase() ||
+          cleanedName === firstAndLast.toLocaleLowerCase() ||
+          !!patMatch ||
+          cleanedName === displayName.toLocaleLowerCase()
+        )
+      })
+      return member?.user?.fullName
     })
     .filter(notEmpty)
 }
 
 export const useUpdateGameAssignment = () => {
+  const trpc = useTRPC()
   const [year] = useYearFilter()
   const notify = useNotification()
-  const createGameAssignment = useGraphQLMutation(CreateGameAssignmentDocument)
-  const deleteGameAssignment = useGraphQLMutation(DeleteGameAssignmentDocument)
+  const createGameAssignment = useMutation(trpc.gameAssignments.createGameAssignment.mutationOptions())
+  const deleteGameAssignment = useMutation(trpc.gameAssignments.deleteGameAssignment.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
 
-  const { data: gameAssignmentData } = useGraphQL(GetGameAssignmentsByYearDocument, {
-    year,
-  })
+  const { data: gameAssignmentData } = useQuery(
+    trpc.gameAssignments.getGameAssignmentsByYear.queryOptions({
+      year,
+    }),
+  )
 
   return useCallback(
     async (gameId: number, gmNames: string | null | undefined, membershipList: Membership[]) => {
@@ -73,10 +65,10 @@ export const useUpdateGameAssignment = () => {
       })
       if (gameAssignmentData) {
         // first clean up any out of date assignments
-        const oldAssignments = gameAssignmentData.gameAssignments?.nodes
+        const oldAssignments = gameAssignmentData
           .filter(notEmpty)
           .filter((ga) => ga.gameId === gameId)
-          .filter((ga) => ga.gm < 0) as GameAssignment[]
+          .filter((ga) => ga.gm < 0)
 
         const oldIds = oldAssignments.map((o) => o.memberId).sort((a, b) => a - b)
         const newIds = gmMemberships.map((m) => m.id).sort((a, b) => a - b)
@@ -89,9 +81,16 @@ export const useUpdateGameAssignment = () => {
         const updaters: Promise<any>[] = []
         oldAssignments.forEach((oldAssignment) => {
           updaters.push(
-            deleteGameAssignment.mutateAsync({ input: { nodeId: oldAssignment.nodeId } }).catch((error) => {
-              notify({ text: error.message, variant: 'error' })
-            }),
+            deleteGameAssignment
+              .mutateAsync({
+                gameId: oldAssignment.gameId,
+                memberId: oldAssignment.memberId,
+                year: oldAssignment.year,
+                gm: oldAssignment.gm,
+              })
+              .catch((error) => {
+                notify({ text: error.message, variant: 'error' })
+              }),
           )
         })
         await Promise.allSettled(updaters)
@@ -103,14 +102,10 @@ export const useUpdateGameAssignment = () => {
           createGameAssignment
             .mutateAsync(
               {
-                input: {
-                  gameAssignment: {
-                    gameId,
-                    memberId: m.id,
-                    gm: -(index + 1),
-                    year,
-                  },
-                },
+                gameId,
+                memberId: m.id,
+                gm: -(index + 1),
+                year,
               },
               {
                 onSuccess: () => {
@@ -139,17 +134,15 @@ export const useUpdateGameAssignment = () => {
   )
 }
 
-export type GameDialogFormValues = Omit<
-  GameFieldsFragment & GameGmsFragment,
-  'nodeId' | 'id' | '__typename' | 'gameAssignments'
-> &
-  Partial<{ id: number }> &
-  Partial<Node>
+export type GameDialogFormValues = Expand<
+  ToFormValues<Omit<Game, 'gameAssignment' | 'authorId' | 'room' | 'shortName'>>
+>
 
 export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialogFormValues) => {
+  const trpc = useTRPC()
   const configuration = useConfiguration()
-  const createGame = useGraphQLMutation(CreateGameDocument)
-  const updateGame = useGraphQLMutation(UpdateGameByNodeIdDocument)
+  const createGame = useMutation(trpc.games.createGame.mutationOptions())
+  const updateGame = useMutation(trpc.games.updateGame.mutationOptions())
   const invalidateGameQueries = useInvalidateGameQueries()
   const notify = useNotification()
   const sendEmail = useSendEmail()
@@ -160,18 +153,17 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
   const shouldSendEmail = !(hasPermissions(Perms.IsAdmin, { ignoreOverride: true }) || sendAdminEmail)
   const [year] = useYearFilter()
   const setGameGmAssignments = useUpdateGameAssignment()
-  const { data: membershipData } = useGraphQL(GetMembershipsByYearDocument, {
-    year,
-  })
-
-  const membershipList: Membership[] = useMemo(
-    () => membershipData?.memberships?.nodes.filter(notEmpty) ?? [],
-    [membershipData?.memberships?.nodes],
+  const { data: membershipData } = useQuery(
+    trpc.memberships.getMembershipsByYear.queryOptions({
+      year,
+    }),
   )
+
+  const membershipList: Membership[] = useMemo(() => membershipData?.filter(notEmpty) ?? [], [membershipData])
 
   return useCallback(
     async (values: GameDialogFormValues) => {
-      const sendGameConfirmation = (p: ProfileFormType, v: GameFields, update = false) => {
+      const sendGameConfirmation = (p: UserAndProfile, v: GameDialogFormValues, update = false) => {
         sendEmail({
           type: 'gameConfirmation',
           body: {
@@ -188,7 +180,7 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
       // eslint-disable-next-line no-param-reassign
       if (values.slotId === 0) values.slotId = null
 
-      const fields = pick(
+      const fields = pickAndConvertNull(
         values,
         'name',
         'gmNames',
@@ -215,15 +207,13 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
         'roomId',
       )
 
-      if (values.nodeId) {
+      if (values.id) {
         await updateGame
           .mutateAsync(
             {
-              input: {
-                nodeId: values.nodeId,
-                patch: {
-                  ...fields,
-                },
+              id: values.id,
+              data: {
+                ...fields,
               },
             },
             {
@@ -246,20 +236,16 @@ export const useEditGame = (onClose: OnCloseHandler, _initialValues?: GameDialog
         await createGame
           .mutateAsync(
             {
-              input: {
-                game: {
-                  ...fields,
-                  year: configuration.year,
-                  authorId: userId,
-                },
-              },
+              ...fields,
+              year: configuration.year,
+              authorId: userId,
             },
             {
               onSuccess: invalidateGameQueries,
             },
           )
           .then(async (res) => {
-            const gameId = res?.createGame?.game?.id
+            const gameId = res?.game?.id
             gameId && (await setGameGmAssignments(gameId, values.gmNames, membershipList))
             notify({ text: 'Game created', variant: 'success' })
             profile && sendGameConfirmation(profile, values)

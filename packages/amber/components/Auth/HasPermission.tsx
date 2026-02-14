@@ -1,9 +1,12 @@
-import React, { PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
+import type React from 'react'
 
-import { Children } from 'ui'
+import type { Children } from '@amber/ui'
+import { asEnumLike } from '@amber/ui'
 
 import type { Perms } from './PermissionRules'
-import { Auth0User, useAuth } from './useAuth'
+import type { Auth0User } from './useAuth'
+import { useAuth } from './useAuth'
 
 interface PermissionProps {
   permission: Perms
@@ -13,23 +16,21 @@ interface PermissionProps {
 
 const nullOp = (): null => null
 
-export const HasPermission: React.FC<PropsWithChildren<PermissionProps>> = ({
+export const HasPermission = ({
   permission,
   data,
   children = null,
   denied = nullOp,
-}) => {
+}: PropsWithChildren<PermissionProps>) => {
   const { hasPermissions } = useAuth()
   const allowed = hasPermissions(permission, data)
   return allowed ? <>{children}</> : denied()
 }
 
-enum LoginStates {
-  NOT_LOGGED_IN = 'notLoggedIn',
-  UNVERIFIED = 'unverified',
-  INCOMPLETE = 'incomplete',
-  LOGGED_IN = 'loggedIn',
-}
+export const LoginStates = asEnumLike(['NOT_LOGGED_IN', 'UNVERIFIED', 'INCOMPLETE', 'LOGGED_IN'])
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type LoginStates = keyof typeof LoginStates
 
 const getLoginState = (user?: Auth0User): LoginStates => {
   if (!user) {
@@ -44,22 +45,22 @@ const getLoginState = (user?: Auth0User): LoginStates => {
   return LoginStates.LOGGED_IN
 }
 
-export const IsNotLoggedIn: React.FC<Children> = ({ children }) => {
+export const IsNotLoggedIn = ({ children }: Children) => {
   const { user } = useAuth()
   return getLoginState(user) === LoginStates.NOT_LOGGED_IN ? <>{children}</> : null
 }
 
-export const IsUnverified: React.FC<Children> = ({ children }) => {
+export const IsUnverified = ({ children }: Children) => {
   const { user } = useAuth()
   return getLoginState(user) === LoginStates.UNVERIFIED ? <>{children}</> : null
 }
 
-export const IsVerifiedIncomplete: React.FC<Children> = ({ children }) => {
+export const IsVerifiedIncomplete = ({ children }: Children) => {
   const { user } = useAuth()
   return getLoginState(user) === LoginStates.INCOMPLETE ? <>{children}</> : null
 }
 
-export const IsLoggedIn: React.FC<Children> = ({ children }) => {
+export const IsLoggedIn = ({ children }: Children) => {
   const { user } = useAuth()
   return getLoginState(user) === LoginStates.LOGGED_IN ? <>{children}</> : null
 }

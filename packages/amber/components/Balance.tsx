@@ -1,14 +1,16 @@
-import { Button, Theme } from '@mui/material'
+import type { Theme } from '@mui/material'
+import { Button } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Router from 'next/router'
 
-import { GetUserByIdDocument, useGraphQL } from '../client'
-import { formatAmountForDisplay, useUser } from '../utils'
+import { useProfile } from './Profile'
 
-const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
-  const data = useGraphQL(GetUserByIdDocument, { id: userId })
-  const balance = data?.data?.user?.balance
+import { formatAmountForDisplay } from '../utils'
+
+const BalanceInner = () => {
+  const data = useProfile()
+  const balance = data?.balance
 
   if (!balance) return null
 
@@ -41,7 +43,14 @@ const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
       })}
       onClick={() => Router.push('/payment')}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: 180, alignItems: 'center' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: 180,
+          alignItems: 'center',
+        }}
+      >
         <Typography>Your Balance</Typography>
         <Typography
           variant='h6'
@@ -59,6 +68,6 @@ const BalanceInner: React.FC<{ userId: number }> = ({ userId }) => {
 }
 
 export const Balance = () => {
-  const user = useUser()
-  return user?.userId ? <BalanceInner userId={user.userId} /> : null
+  const user = useProfile()
+  return user?.id ? <BalanceInner /> : null
 }

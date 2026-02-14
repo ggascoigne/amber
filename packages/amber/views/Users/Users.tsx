@@ -1,70 +1,59 @@
-import React, { MouseEventHandler, useState } from 'react'
+import type { UserAndProfile } from '@amber/client'
+import { useTRPC } from '@amber/client'
+import { Table } from '@amber/ui/components/Table'
+import { useQuery } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
-import { Column, Row, TableInstance } from 'react-table'
-import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
-
-import { useGraphQL, GetAllUsersAndProfilesDocument } from '../../client'
+import { Page } from '../../components'
 import { ProfileDialog } from '../../components/Profile'
-import { UsersAndProfileType } from '../../components/Profile/profileUtils'
+import { TransportError } from '../../components/TransportError'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-const columns: Column<UsersAndProfileType>[] = [
-  { accessor: 'fullName' },
-  { accessor: 'firstName' },
-  { accessor: 'lastName' },
-  { accessor: 'displayName' },
-  { accessor: 'email' },
-  { id: 'snailMailAddress', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.snailMailAddress },
-  { id: 'phoneNumber', accessor: (originalRow) => originalRow?.profiles?.nodes?.[0]?.phoneNumber },
-  { accessor: 'balance', filter: 'numeric' },
+const columns: ColumnDef<UserAndProfile>[] = [
+  { accessorKey: 'fullName' },
+  { accessorKey: 'firstName' },
+  { accessorKey: 'lastName' },
+  { accessorKey: 'displayName' },
+  { accessorKey: 'email' },
+  {
+    id: 'snailMailAddress',
+    accessorFn: (originalRow) => originalRow?.profile?.[0]?.snailMailAddress,
+  },
+  {
+    id: 'phoneNumber',
+    accessorFn: (originalRow) => originalRow?.profile?.[0]?.phoneNumber,
+  },
+  { accessorKey: 'balance' },
 ]
 
-const Users: React.FC = React.memo(() => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<UsersAndProfileType[]>([])
-
-  const { error, data, refetch } = useGraphQL(GetAllUsersAndProfilesDocument)
+const Users = () => {
+  const trpc = useTRPC()
+  const { error, data, refetch, isFetching, isLoading } = useQuery(trpc.users.getAllUsersAndProfiles.queryOptions())
+  const { showEdit, selection, handleCloseEdit, onEdit, onRowClick } = useStandardHandlers<UserAndProfile>({
+    invalidateQueries: refetch,
+  })
 
   if (error) {
-    return <GraphQLError error={error} />
-  }
-
-  if (!data) {
-    return <Loader />
-  }
-  const { users } = data
-
-  const list: UsersAndProfileType[] = users!.nodes.filter(notEmpty)
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-    refetch().then()
-  }
-
-  const onEdit = (instance: TableInstance<UsersAndProfileType>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<UsersAndProfileType>) => {
-    setShowEdit(true)
-    setSelection([row.original])
+    return <TransportError error={error} />
   }
 
   return (
-    <Page title='Users'>
-      {showEdit && <ProfileDialog open={showEdit} onClose={onCloseEdit} initialValues={selection[0]} />}
-      <Table<UsersAndProfileType>
+    <Page variant='fill' title='Users 2' hideTitle>
+      {showEdit && <ProfileDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
+      <Table
+        title='Users'
         name='users'
-        data={list}
+        data={data ?? []}
+        enableGrouping={false}
         columns={columns}
-        disableGroupBy
+        isLoading={isLoading}
+        isFetching={isFetching}
+        onRowClick={onRowClick}
+        refetch={refetch}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
       />
     </Page>
   )
-})
+}
 
 export default Users

@@ -1,112 +1,103 @@
-import React, { MouseEventHandler, useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 
-import { Column, Row, TableInstance } from 'react-table'
-import { GraphQLError, Loader, notEmpty, Page, Table } from 'ui'
-import { TableMouseEventHandler } from 'ui/types/react-table-config'
+import type { Transaction } from '@amber/client'
+import { useTRPC, useInvalidatePaymentQueries } from '@amber/client'
+import { Table } from '@amber/ui/components/Table'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import type { ColumnDef } from '@tanstack/react-table'
 
 import { TransactionDialog } from './TransactionDialog'
 
-import { useGraphQLMutation, useGraphQL, DeleteTransactionDocument, GetTransactionDocument } from '../../client'
-import { useInvalidatePaymentQueries } from '../../client/querySets'
+import { Page } from '../../components'
+import { TransportError } from '../../components/TransportError'
 import { formatAmountForDisplay } from '../../utils'
-import { TransactionValue } from '../../utils/transactionUtils'
+import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
-const columns: Column<TransactionValue>[] = [
-  { id: 'User', accessor: (originalRow) => originalRow?.user?.fullName },
-  { id: 'Membership', accessor: (originalRow) => originalRow?.member?.year },
+const columns: ColumnDef<Transaction>[] = [
+  { id: 'user', header: 'User', accessorFn: (row) => row?.user?.fullName },
+  {
+    id: 'membership',
+    header: 'Membership',
+    filterFn: 'numericText',
+    accessorFn: (row) => row?.membership?.year,
+  },
   {
     id: 'amount',
-    accessor: (originalRow) => formatAmountForDisplay(originalRow.amount),
+    header: 'Amount',
+    accessorFn: (row) => formatAmountForDisplay(row.amount),
+    filterFn: 'numericText',
+    meta: { align: 'right' as const },
   },
   {
-    id: 'Origin',
-    accessor: (originalRow) => `${originalRow?.stripe ? 'Stripe: ' : ''}${originalRow?.userByOrigin?.fullName}`,
+    id: 'origin',
+    header: 'Origin',
+    accessorFn: (row) => `${row?.stripe ? 'Stripe: ' : ''}${row?.userByOrigin?.fullName ?? ''}`,
   },
-  { accessor: 'timestamp' },
-  { accessor: 'year' },
-  { accessor: 'notes' },
-  { id: 'data', accessor: (originalRow) => JSON.stringify(originalRow?.data) },
+  {
+    id: 'timestamp',
+    header: 'Timestamp',
+    accessorFn: (row) => new Date(row?.timestamp).toISOString(),
+  },
+  {
+    accessorKey: 'year',
+    header: 'Year',
+    filterFn: 'numericText',
+    meta: { align: 'right' as const },
+  },
+  { accessorKey: 'notes', header: 'Notes' },
+  {
+    id: 'data',
+    header: 'Data',
+    accessorFn: (row) => JSON.stringify(row?.data),
+  },
 ]
 
-const Transactions: React.FC = React.memo(() => {
-  const [showEdit, setShowEdit] = useState(false)
-  const [selection, setSelection] = useState<TransactionValue[]>([])
-  const deleteTransaction = useGraphQLMutation(DeleteTransactionDocument)
+const Transactions = React.memo(() => {
+  const trpc = useTRPC()
+  const deleteTransaction = useMutation(trpc.transactions.deleteTransaction.mutationOptions())
 
-  const { error, data, refetch } = useGraphQL(GetTransactionDocument)
+  const {
+    error,
+    data = [],
+    refetch,
+    isLoading,
+    isFetching,
+  } = useQuery(trpc.transactions.getTransactions.queryOptions())
 
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
 
-  const clearSelectionAndRefresh = useCallback(() => {
-    setSelection([])
-    invalidatePaymentQueries()
-  }, [invalidatePaymentQueries])
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } =
+    useStandardHandlers<Transaction>({
+      deleteHandler: (selectedRows) => selectedRows.map((row) => deleteTransaction.mutateAsync({ id: row.id })),
+      invalidateQueries: invalidatePaymentQueries,
+    })
 
-  const onAdd: TableMouseEventHandler<TransactionValue> = useCallback(
-    () => () => {
-      setShowEdit(true)
-    },
-    [],
-  )
-
-  const onDelete = useCallback(
-    (instance: TableInstance<TransactionValue>) => () => {
-      const toDelete = instance.selectedFlatRows.map((r) => r.original)
-      const updater = toDelete.map((v) => deleteTransaction.mutateAsync({ input: { id: v.id } }))
-      Promise.allSettled(updater).then(() => {
-        console.log('deleted')
-        clearSelectionAndRefresh()
-        instance.toggleAllRowsSelected(false)
-      })
-    },
-    [clearSelectionAndRefresh, deleteTransaction],
-  )
-
-  if (error) {
-    return <GraphQLError error={error} />
-  }
-
-  if (!data) {
-    return <Loader />
-  }
-  const { transactions } = data
-
-  const list: TransactionValue[] = transactions!.nodes.filter(notEmpty)
-
-  const onCloseEdit: MouseEventHandler = () => {
-    setShowEdit(false)
-    setSelection([])
-    refetch().then()
-  }
-
-  const onEdit = (instance: TableInstance<TransactionValue>) => () => {
-    setShowEdit(true)
-    setSelection(instance.selectedFlatRows.map((r) => r.original))
-  }
-
-  const onClick = (row: Row<TransactionValue>) => {
-    setShowEdit(true)
-    setSelection([row.original])
-  }
-
-  const getInitialValues = () => {
+  const getInitialValues = useCallback(() => {
     const val = { ...selection[0], stringData: '' }
     val.stringData = JSON.stringify(val.data, null, 2)
     return val
+  }, [selection])
+
+  if (error) {
+    return <TransportError error={error} />
   }
 
   return (
-    <Page title='Transactions'>
-      {showEdit && <TransactionDialog open={showEdit} onClose={onCloseEdit} initialValues={getInitialValues()} />}
-      <Table<TransactionValue>
+    <Page title='Transactions' variant='fill' hideTitle>
+      {showEdit && <TransactionDialog open={showEdit} onClose={handleCloseEdit} initialValues={getInitialValues()} />}
+      <Table<Transaction>
+        title='Transactions'
         name='users'
-        data={list}
+        data={data}
         columns={columns}
+        isLoading={isLoading}
+        isFetching={isFetching}
         onAdd={onAdd}
         onDelete={onDelete}
         onEdit={onEdit}
-        onClick={onClick}
-        onRefresh={() => refetch()}
+        onRowClick={onRowClick}
+        refetch={refetch}
+        enableGrouping={false}
       />
     </Page>
   )

@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { ConfigDate, ContactEmail, Link, useConfiguration } from '@amber/amber'
+import { CheckboxWithLabel, GridContainer, GridItem } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
-import { ConfigDate, ContactEmail, Link, useConfiguration } from 'amber'
-import { CheckboxWithLabel, GridContainer, GridItem } from 'ui'
 
-export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
+export const IntroStep = ({ prefix = '' }: { prefix?: string }) => {
   const configuration = useConfiguration()
   return (
     <>
@@ -19,7 +19,7 @@ export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       <DialogContentText>
         In order to run and play games offered through the convention, the first thing you must do is register. If you
         are not already familiar with format of an AmberCon, review the {configuration.title}{' '}
-        <Link href='/about'>"what you get and what it costs" page</Link>.
+        <Link href='/about'>&ldquo;what you get and what it costs&rdquo; page</Link>.
       </DialogContentText>
 
       <DialogContentText>
@@ -30,7 +30,7 @@ export const IntroStep: React.FC<{ prefix?: string }> = ({ prefix = '' }) => {
       </DialogContentText>
       {!configuration.virtual && (
         <GridContainer spacing={2}>
-          <GridItem xs={12} md={12}>
+          <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel
               label='Click here to indicate acceptance of these policies'
               name={`${prefix}acceptedPolicies`}

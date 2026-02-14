@@ -1,11 +1,13 @@
 import { createContext, useContext } from 'react'
 
-import {
+import type {
   Configuration as _Configuration,
-  getSettingsObject as _getSettingsObject,
+  ConventionInfo as _ConventionInfo,
 } from '@amber/api/src/utils/configuration'
+import { getSettingsObject as _getSettingsObject } from '@amber/api/src/utils/configuration'
 
 export type Configuration = _Configuration
+export type ConventionInfo = _ConventionInfo
 export const getSettingsObject = _getSettingsObject
 
 export const configContext = createContext<Configuration | undefined>(undefined)
