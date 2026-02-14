@@ -85,9 +85,12 @@ export const useTableEditing = <TData extends RowData>({
   const enabled = config?.enabled ?? false
   const [activeCell, setActiveCell] = useState<TableEditingCell | null>(null)
   const [activeValue, setActiveValue] = useState<unknown>('')
+  const [activeCellTouched, setActiveCellTouched] = useState(false)
   const [edits, setEdits] = useState<Record<string, TableEditingRowState<TData>>>({})
   const [isSaving, setIsSaving] = useState(false)
   const activeCellRef = useRef<{ row: Row<TData>; column: Cell<TData, unknown>['column'] } | null>(null)
+  const activeValueRef = useRef<unknown>('')
+  const activeCellTouchedRef = useRef(false)
   const editsRef = useRef(edits)
 
   editsRef.current = edits
@@ -286,16 +289,18 @@ export const useTableEditing = <TData extends RowData>({
       if (!enabled || !isCellEditable(cell)) return
       if (activeCell?.rowId === cell.row.id && activeCell.columnId === cell.column.id) return
 
-      if (activeCellRef.current) {
+      if (activeCellRef.current && activeCellTouchedRef.current) {
         const nextEdits = buildNextEdits(
           editsRef.current,
           activeCellRef.current.row,
           activeCellRef.current.column,
-          activeValue,
+          activeValueRef.current,
         )
         editsRef.current = nextEdits
         setEdits(nextEdits)
       }
+      activeCellTouchedRef.current = false
+      setActiveCellTouched(false)
 
       activeCellRef.current = { row: cell.row, column: cell.column }
       setActiveCell({ rowId: cell.row.id, columnId: cell.column.id })
@@ -307,28 +312,45 @@ export const useTableEditing = <TData extends RowData>({
         ? editsRef.current[cell.row.id]?.changes[cell.column.id]
         : cell.getValue()
 
-      setActiveValue(normalizeValueForInput(existingValue))
+      const normalizedValue = normalizeValueForInput(existingValue)
+      activeValueRef.current = normalizedValue
+      setActiveValue(normalizedValue)
     },
-    [activeCell, activeValue, buildNextEdits, enabled, isCellEditable],
+    [activeCell, buildNextEdits, enabled, isCellEditable],
   )
+
+  const updateActiveValue = useCallback((value: unknown) => {
+    if (!Object.is(activeValueRef.current, value)) {
+      activeCellTouchedRef.current = true
+      setActiveCellTouched(true)
+    }
+    activeValueRef.current = value
+    setActiveValue(value)
+  }, [])
 
   const commitActiveCell = useCallback(() => {
     if (!enabled || !activeCellRef.current) return editsRef.current
+    if (!activeCellTouchedRef.current) return editsRef.current
     const nextEdits = buildNextEdits(
       editsRef.current,
       activeCellRef.current.row,
       activeCellRef.current.column,
-      activeValue,
+      activeValueRef.current,
     )
+    activeCellTouchedRef.current = false
+    setActiveCellTouched(false)
     editsRef.current = nextEdits
     setEdits(nextEdits)
     return nextEdits
-  }, [activeValue, buildNextEdits, enabled])
+  }, [buildNextEdits, enabled])
 
   const cancelActiveCell = useCallback(() => {
     activeCellRef.current = null
+    activeValueRef.current = ''
+    activeCellTouchedRef.current = false
     setActiveCell(null)
     setActiveValue('')
+    setActiveCellTouched(false)
   }, [])
 
   const getCellDisplayValue = useCallback(
@@ -370,7 +392,7 @@ export const useTableEditing = <TData extends RowData>({
     [edits],
   )
 
-  const hasChanges = useMemo(() => Object.keys(edits).length > 0, [edits])
+  const hasChanges = useMemo(() => Object.keys(edits).length > 0 || activeCellTouched, [activeCellTouched, edits])
 
   const hasErrors = useMemo(
     () =>
@@ -381,7 +403,13 @@ export const useTableEditing = <TData extends RowData>({
     [edits],
   )
 
-  const editedRowCount = useMemo(() => Object.keys(edits).length, [edits])
+  const editedRowCount = useMemo(() => {
+    const rowIds = new Set(Object.keys(edits))
+    if (activeCellTouched && activeCell?.rowId) {
+      rowIds.add(activeCell.rowId)
+    }
+    return rowIds.size
+  }, [activeCell?.rowId, activeCellTouched, edits])
 
   const saveChanges = useCallback(async () => {
     if (!enabled || !config?.onSave) return
@@ -404,7 +432,20 @@ export const useTableEditing = <TData extends RowData>({
 
     try {
       setIsSaving(true)
-      await config.onSave(updates)
+      if (config.addRow?.enabled) {
+        const newRowUpdates = updates.filter((update) => config.addRow?.isNewRow(update.updated))
+        const existingUpdates = updates.filter((update) => !config.addRow?.isNewRow(update.updated))
+
+        if (existingUpdates.length > 0 || newRowUpdates.length === 0) {
+          await config.onSave(existingUpdates)
+        }
+
+        if (newRowUpdates.length > 0 && config.addRow?.onAddRow) {
+          await Promise.all(newRowUpdates.map((update) => config.addRow?.onAddRow(update.updated)))
+        }
+      } else {
+        await config.onSave(updates)
+      }
       editsRef.current = {}
       setEdits({})
     } finally {
@@ -433,7 +474,7 @@ export const useTableEditing = <TData extends RowData>({
     getCellState,
     getRowState,
     startEditing,
-    updateActiveValue: setActiveValue,
+    updateActiveValue,
     commitActiveCell,
     cancelActiveCell,
     saveChanges,

@@ -43,7 +43,7 @@ const defaultColumnMeta: ColumnMeta<any, any> = {
 
 export type UseTableProps<T extends RowData> = Partial<TableOptions<T>> &
   Pick<TableOptions<T>, 'columns' | 'data'> & {
-    name: string
+    name?: string
     keyField: keyof T
     initialState?: Partial<TableState>
     enablePagination?: boolean

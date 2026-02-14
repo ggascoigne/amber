@@ -4,11 +4,11 @@ import { useCallback, useState } from 'react'
 
 import { dequal as deepEqual } from 'dequal'
 
-export function useLocalStorage<T = any>(key: string, initialValue: T): [T, (value: T) => void] {
+export function useLocalStorage<T = any>(key: string, initialValue: T, enabled = true): [T, (value: T) => void] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window === 'undefined') {
+    if (!enabled || typeof window === 'undefined') {
       return initialValue
     }
     try {
@@ -31,15 +31,17 @@ export function useLocalStorage<T = any>(key: string, initialValue: T): [T, (val
         if (!deepEqual(storedValue, value)) {
           // Save state
           setStoredValue(value)
-          // Save to local storage
-          window.localStorage.setItem(key, JSON.stringify(value))
+          if (enabled) {
+            // Save to local storage
+            window.localStorage.setItem(key, JSON.stringify(value))
+          }
         }
       } catch (error) {
         // A more advanced implementation would handle the error case
         console.log(error)
       }
     },
-    [key, storedValue],
+    [enabled, key, storedValue],
   )
 
   return [storedValue, setValue]

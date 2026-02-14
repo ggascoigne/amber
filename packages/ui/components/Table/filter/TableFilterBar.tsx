@@ -12,8 +12,7 @@ import { CLEAR_FILTERS_MESSAGE, clearSearch, emitter } from './filterEmitter'
 import { SearchInput } from './SearchInput'
 
 import { notEmpty } from '../../../utils/ts-utils'
-import { SELECTION_COLUMN_ID } from '../constants'
-import { columnName } from '../utils/tableUtils'
+import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 export type Filter<T extends RowData> = {
   name: string
@@ -123,7 +122,7 @@ export const useFilterValues = <T extends RowData>(
 
   const allFilters: GenericFilter<T>[] = useMemo(() => {
     const allColumns = getAllLeafColumns()
-      .filter((column) => column.id !== SELECTION_COLUMN_ID)
+      .filter((column) => isUserColumnId(column.id))
       .filter((column) => column.getCanFilter())
 
     const tableFilters = allColumns.map(columnToGenericFilter(table)).filter(notEmpty)

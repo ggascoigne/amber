@@ -26,6 +26,8 @@
 
 - [ ] add option to registration about people needing accessible game rooms. "Some of the rooms we run in are only accessible by stairs, click here and we'll avoid scheduling your games in those rooms."
 
+- [ ] use mdbtools to pull in old game data from the pre-mysql era access databases in '/Users/ggp/Documents/Ambercon NW'
+
 ## 2022
 
 - Check out [Contentlayer](https://www.contentlayer.dev/) and [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote) as alternatives to [next-mdx-frontmatter](https://github.com/IanChen83/next-mdx-frontmatter)

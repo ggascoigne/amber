@@ -1,13 +1,17 @@
+import type { ReactNode } from 'react'
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import { Box } from '@mui/material'
 import type { AccessorKeyColumnDefBase, ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
+import { dequal as deepEqual } from 'dequal'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
 import { Empty } from './components/Empty'
-import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
+import { RowExpansionButton } from './components/RowExpansionButton'
+import { DEFAULT_TABLE_PAGE_SIZE, EXPAND_COLUMN_ID, EXPAND_COLUMN_SIZE } from './constants'
 import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import type { UseTableProps } from './useTable'
@@ -48,9 +52,8 @@ do that with something like this:
 ```
   */
 
-type TableProps<T> = Omit<UseTableProps<T>, 'keyField'> &
+type TablePropsBase<T> = Omit<UseTableProps<T>, 'keyField' | 'name'> &
   Omit<DataTableProps<T>, 'tableInstance'> & {
-    name: string
     data: T[]
     keyField?: keyof T
     columns: ColumnDef<T, any>[]
@@ -73,11 +76,18 @@ type TableProps<T> = Omit<UseTableProps<T>, 'keyField'> &
     scrollBehavior?: 'none' | 'bounded'
     systemActions?: Action<T>[]
     toolbarActions?: Action<T>[]
+    renderExpandedContent?: (row: Row<T>) => ReactNode
+    getRowCanExpand?: (row: Row<T>) => boolean
+    expandedContentSx?: DataTableProps<T>['expandedContentSx']
   }
 
+type TableProps<T> =
+  | (TablePropsBase<T> & { disableStatePersistence: true; name?: string })
+  | (TablePropsBase<T> & { disableStatePersistence?: false; name: string })
+
 const shouldTriggerPageChange = (oldState: TableState, newState: TableState) => {
-  if (oldState.columnFilters !== newState.columnFilters) return true
-  if (oldState.globalFilter !== newState.globalFilter) return true
+  if (!deepEqual(oldState.columnFilters, newState.columnFilters)) return true
+  if (!deepEqual(oldState.globalFilter, newState.globalFilter)) return true
   // if (oldState.sorting !== newState.sorting) return true
   return false
 }
@@ -104,16 +114,33 @@ export const Table = <T,>({
   enableRowSelection = true,
   enableGrouping = true,
   scrollBehavior = 'bounded',
+  renderExpandedContent,
+  getRowCanExpand,
+  expandedContentSx,
+  cellEditing,
   systemActions: userSystemActions,
   toolbarActions: userToolbarActions,
   enableGlobalFilter = true,
   enableColumnFilters = true,
   displayGutter,
+  disableStatePersistence = false,
   // @ts-ignore
   keyField = 'id',
+  useVirtualRows,
   ...rest
 }: TableProps<T>) => {
   const [stateLoaded, setStateLoaded] = useState(false)
+  const [pendingNewRow, setPendingNewRow] = useState<T | null>(null)
+  const hasExpandedContent = !!renderExpandedContent
+  const resolvedUseVirtualRows = hasExpandedContent ? (useVirtualRows ?? false) : useVirtualRows
+
+  const addRowConfig = cellEditing?.addRow
+  const canAddRow = !!cellEditing?.enabled && !!addRowConfig?.enabled && !pendingNewRow
+
+  const handleAddRow = useCallback(() => {
+    if (!cellEditing?.enabled || !addRowConfig?.enabled || pendingNewRow) return
+    setPendingNewRow(addRowConfig.createRow())
+  }, [addRowConfig, cellEditing?.enabled, pendingNewRow])
 
   const initial = { ...initialState }
   initial.sorting ??= [
@@ -122,7 +149,13 @@ export const Table = <T,>({
       desc: false,
     },
   ]
-  const [persistedTableState, setPersistedTableState] = useTableState(name, columns, initial)
+  const resolvedTableName = name ?? 'table'
+  const [persistedTableState, setPersistedTableState] = useTableState(
+    resolvedTableName,
+    columns,
+    initial,
+    !disableStatePersistence,
+  )
 
   const stateRef = useRef<TableState>({
     sorting: [],
@@ -177,11 +210,68 @@ export const Table = <T,>({
     [emit],
   )
 
+  const expansionColumn = useMemo<ColumnDef<T> | null>(
+    () =>
+      hasExpandedContent
+        ? {
+            id: EXPAND_COLUMN_ID,
+            header: '',
+            enableResizing: false,
+            enableGrouping: false,
+            enableSorting: false,
+            enableGlobalFilter: false,
+            enableColumnFilter: false,
+            size: EXPAND_COLUMN_SIZE,
+            minSize: EXPAND_COLUMN_SIZE,
+            maxSize: EXPAND_COLUMN_SIZE,
+            cell: ({ row }) => (
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <RowExpansionButton row={row} />
+              </Box>
+            ),
+          }
+        : null,
+    [hasExpandedContent],
+  )
+
+  const resolvedColumns = useMemo(
+    () => (expansionColumn ? [expansionColumn, ...columns] : columns),
+    [columns, expansionColumn],
+  )
+
+  const resolvedData = useMemo(() => (pendingNewRow ? [...data, pendingNewRow] : data), [data, pendingNewRow])
+
+  const resolvedEditingConfig = useMemo(() => {
+    if (!cellEditing) return undefined
+    if (!cellEditing.addRow?.enabled) return cellEditing
+    return {
+      ...cellEditing,
+      addRow: {
+        ...cellEditing.addRow,
+        onAddRow: async (row: T) => {
+          await cellEditing.addRow?.onAddRow(row)
+          setPendingNewRow(null)
+        },
+      },
+      onDiscard: () => {
+        cellEditing.onDiscard?.()
+        setPendingNewRow(null)
+      },
+    }
+  }, [cellEditing, setPendingNewRow])
+
   const table = useTable<T>({
     name,
-    columns,
+    columns: resolvedColumns,
     keyField,
-    data: data ?? [],
+    data: resolvedData ?? [],
     state: stateRef.current,
     onStateChange: (updater: Updater<TableState>) => {
       const next = typeof updater === 'function' ? updater(stateRef.current) : updater
@@ -206,8 +296,9 @@ export const Table = <T,>({
     sortDescFirst: false,
     autoResetPageIndex: false,
     defaultColumnDisableGlobalFilter,
-    rowCount: rowCount ?? data.length,
+    rowCount: rowCount ?? resolvedData.length,
     displayGutter,
+    getRowCanExpand: hasExpandedContent ? (getRowCanExpand ?? (() => true)) : undefined,
     ...rest,
   })
 
@@ -304,9 +395,15 @@ export const Table = <T,>({
       emptyDataComponent={empty}
       title={title}
       elevation={1}
-      rowCount={rowCount ?? data?.length ?? 0}
+      rowCount={rowCount ?? resolvedData?.length ?? 0}
       compact
       displayGutter={displayGutter}
+      cellEditing={resolvedEditingConfig}
+      useVirtualRows={resolvedUseVirtualRows}
+      renderExpandedContent={renderExpandedContent}
+      getRowCanExpand={getRowCanExpand}
+      addRowAction={canAddRow ? { onAddRow: handleAddRow } : undefined}
+      expandedContentSx={expandedContentSx}
       {...rest}
     />
   )

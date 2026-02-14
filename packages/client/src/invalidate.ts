@@ -73,8 +73,21 @@ const useQueryLists = () => {
   const allSettingsQueries = useMemo(() => [trpc.settings.getSettings.queryKey()], [trpc.settings.getSettings])
 
   const allGameAssignmentQueries = useMemo(
-    () => [trpc.gameAssignments.getGameAssignmentsByYear.queryKey(), trpc.gameAssignments.getSchedule.queryKey()],
-    [trpc.gameAssignments.getGameAssignmentsByYear, trpc.gameAssignments.getSchedule],
+    () => [
+      trpc.gameAssignments.getGameAssignmentsByYear.queryKey(),
+      trpc.gameAssignments.getSchedule.queryKey(),
+      trpc.gameAssignments.getAssignmentDashboardData.queryKey(),
+    ],
+    [
+      trpc.gameAssignments.getAssignmentDashboardData,
+      trpc.gameAssignments.getGameAssignmentsByYear,
+      trpc.gameAssignments.getSchedule,
+    ],
+  )
+
+  const allGameAssignmentDashboardQueries = useMemo(
+    () => [trpc.gameAssignments.getAssignmentDashboardData.queryKey()],
+    [trpc.gameAssignments.getAssignmentDashboardData],
   )
 
   const allGameQueries = useMemo(
@@ -133,6 +146,7 @@ const useQueryLists = () => {
 
   return {
     allGameAssignmentQueries,
+    allGameAssignmentDashboardQueries,
     allGameChoiceQueries,
     allGameQueries,
     allGameRoomQueries,
@@ -180,6 +194,11 @@ export const useInvalidatePaymentQueries = () => {
 export const useInvalidateGameAssignmentQueries = () => {
   const { allGameAssignmentQueries } = useQueryLists()
   return useInvalidateQueries(allGameAssignmentQueries, 'allGameAssignmentQueries')
+}
+
+export const useInvalidateGameAssignmentDashboardQueries = () => {
+  const { allGameAssignmentDashboardQueries } = useQueryLists()
+  return useInvalidateQueries(allGameAssignmentDashboardQueries, 'allGameAssignmentDashboardQueries')
 }
 
 export const useInvalidateGameQueries = () => {

@@ -103,6 +103,12 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.FullGameBook,
   },
   {
+    path: '/game-assignments',
+    label: 'Game Assignments',
+    exact: true,
+    permission: Perms.GameAdmin,
+  },
+  {
     path: '/member-admin',
     label: 'Members',
     exact: true,

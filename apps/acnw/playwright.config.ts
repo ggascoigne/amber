@@ -5,7 +5,7 @@ import { createAppConfig } from '@amber/playwright/config'
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url))
 const workspaceRoot = path.resolve(currentDir, '../..')
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:30000'
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:30002'
 
 export default createAppConfig({
   baseURL,

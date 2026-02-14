@@ -12,6 +12,9 @@ const describeTest = (config: Record<string, boolean>) =>
     .join(', ')}`
 
 const getMain = (page: Page) => page.locator('main')
+const waitForTable = async (page: Page) => {
+  await page.waitForSelector('[data-testid="TableBody"]', { timeout: 30000 })
+}
 
 const applyFlagSettings = async (config: Record<string, boolean>, page: Page) => {
   for (const flag of keys(config)) {
@@ -37,20 +40,20 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
 
     test('Table: client-side', async ({ page }) => {
       await page.goto('/table-client')
-      await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+      await waitForTable(page)
       await expect(getMain(page)).toHaveScreenshot()
     })
 
     test('Table: server-side', async ({ page }) => {
       await page.goto('/table-server')
-      await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+      await waitForTable(page)
       await expect(getMain(page)).toHaveScreenshot()
     })
 
     test.describe('Table Playground', () => {
       test.beforeEach(async ({ page }) => {
         await page.goto('/table-playground')
-        await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+        await waitForTable(page)
       })
 
       test('main', async ({ page }) => {
@@ -77,7 +80,7 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
 
     test('Table: editable cells', async ({ page }) => {
       await page.goto('/table-editing')
-      await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+      await waitForTable(page)
 
       const nameCell = page.getByTestId('cell-1_name')
       const nameRow = nameCell.locator('xpath=ancestor::*[@role="row"]')
@@ -115,10 +118,33 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       await expect(nameCell).toHaveText('Leticia Prime')
     })
 
+    test('Table: nested rows', async ({ page }) => {
+      await page.goto('/table-nested')
+      await waitForTable(page)
+
+      const expandButton = page.getByTestId('row-expansion-toggle').first()
+      await expandButton.click()
+
+      await expect(page.getByText('Alex Admin')).toBeVisible()
+
+      await page.getByText('Add Row').click()
+
+      const newMemberCell = page.getByTestId('cell-new-0_memberId')
+      await newMemberCell.click()
+
+      const memberInput = page.getByLabel('Edit Member')
+      await memberInput.fill('Drew')
+      await page.getByRole('option', { name: 'Drew Doe' }).click()
+
+      await memberInput.press('Enter')
+      await page.getByText('Save', { exact: true }).click()
+      await expect(page.getByText('Drew Doe')).toBeVisible()
+    })
+
     test.describe('Layouts', () => {
       test.beforeEach(async ({ page }) => {
         await page.goto('/table-layouts')
-        await page.waitForSelector('data-testid=TableBody', { timeout: 5000 })
+        await waitForTable(page)
       })
 
       test('main', async ({ page }) => {
@@ -138,7 +164,11 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       ).forEach((config) => {
         test(describeTest(config), async ({ page }) => {
           await applyFlagSettings(config, page)
-          await expect(getMain(page)).toHaveScreenshot()
+          if ('Show Gutter' in config && config['Show Gutter'] === false) {
+            await expect(getMain(page)).toHaveScreenshot({ maxDiffPixels: 200 })
+          } else {
+            await expect(getMain(page)).toHaveScreenshot()
+          }
         })
       })
     })

@@ -292,7 +292,7 @@ export const TableRowHoverArea = ({ children, visible }: { children?: ReactNode;
 }
 
 const cellShared = {
-  fontSize: '0.875rem',
+  fontSize: 'var(--amber-table-font-size, 0.875rem)',
   textAlign: 'left',
   verticalAlign: 'inherit',
   lineHeight: 1.3,

@@ -20,7 +20,7 @@ export default defineConfig({
     launchOptions: {
       args: ['--disable-gpu', '--disable-font-subpixel-positioning'],
     },
-    baseURL: 'http://localhost:30003',
+    baseURL: 'http://localhost:30005',
     viewport: { width: 1920, height: 1080 },
     headless: true,
   },
@@ -39,7 +39,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'PLAYWRIGHT=1 pnpm -F ui-test dev',
-    url: 'http://localhost:30003',
+    url: 'http://localhost:30005',
     reuseExistingServer: true,
     cwd: process.cwd(),
     timeout: 120_000,

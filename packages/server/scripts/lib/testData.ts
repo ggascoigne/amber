@@ -1062,6 +1062,64 @@ const games = [
     lateStart: null,
     full: false,
   },
+  {
+    id: 14,
+    name: 'Crossroads of Sable',
+    shortName: 'Sable',
+    description: 'Negotiations at a shadow crossroads where alliances shift.',
+    message: 'Emphasis on social play.',
+    charInstructions: 'Bring a secret your character guards.',
+    estimatedLength: '4h',
+    gameContactEmail: 'jordan.jade@example.com',
+    genre: 'Intrigue',
+    gmNames: 'Jordan Jade',
+    playerPreference: 'any',
+    playersContactGm: false,
+    returningPlayers: 'Standalone',
+    setting: 'Sable Crossroads',
+    slotConflicts: '',
+    slotPreference: 5,
+    teenFriendly: true,
+    type: 'Tabletop',
+    year: 2025,
+    playerMax: 6,
+    playerMin: 3,
+    roomId: 2,
+    slotId: 5,
+    authorId: 9,
+    lateFinish: false,
+    lateStart: null,
+    full: false,
+  },
+  {
+    id: 15,
+    name: 'Midnight Signals',
+    shortName: 'Signals',
+    description: 'Investigate a shadow broadcast cutting through the Pattern.',
+    message: 'Mystery with optional puzzles.',
+    charInstructions: 'Bring a question your PC wants answered.',
+    estimatedLength: '5h',
+    gameContactEmail: 'bailey.builder@example.com',
+    genre: 'Mystery',
+    gmNames: 'Bailey Builder',
+    playerPreference: 'any',
+    playersContactGm: false,
+    returningPlayers: 'New story',
+    setting: 'Signal Station',
+    slotConflicts: '',
+    slotPreference: 6,
+    teenFriendly: true,
+    type: 'Tabletop',
+    year: 2025,
+    playerMax: 7,
+    playerMin: 4,
+    roomId: 1,
+    slotId: 6,
+    authorId: 3,
+    lateFinish: false,
+    lateStart: null,
+    full: false,
+  },
 ]
 
 const gameChoices = [
@@ -1101,6 +1159,7 @@ const gameChoices = [
   { id: 34, gameId: 10, memberId: 12, rank: 1, slotId: 3, year: 2025, returningPlayer: false },
   { id: 35, gameId: 11, memberId: 12, rank: 2, slotId: 4, year: 2025, returningPlayer: false },
   { id: 36, gameId: 12, memberId: 12, rank: 3, slotId: 6, year: 2025, returningPlayer: false },
+  { id: 37, gameId: 12, memberId: 10, rank: 0, slotId: 6, year: 2025, returningPlayer: true },
 ]
 
 const gameAssignments = [
@@ -1118,6 +1177,27 @@ const gameAssignments = [
   { memberId: 10, gameId: 13, gm: 1, year: 2025 },
   { memberId: 11, gameId: 11, gm: 0, year: 2025 },
   { memberId: 12, gameId: 10, gm: 0, year: 2025 },
+  { memberId: 7, gameId: 12, gm: 1, year: 2025 },
+  { memberId: 8, gameId: 12, gm: 0, year: 2025 },
+  { memberId: 9, gameId: 12, gm: 0, year: 2025 },
+  { memberId: 10, gameId: 12, gm: 0, year: 2025 },
+  { memberId: 11, gameId: 12, gm: 0, year: 2025 },
+  { memberId: 12, gameId: 12, gm: 0, year: 2025 },
+]
+
+const gameSubmissions = [
+  {
+    id: 1,
+    memberId: 8,
+    year: 2025,
+    message: 'Please avoid late-night horror; early slots preferred.',
+  },
+  {
+    id: 2,
+    memberId: 10,
+    year: 2025,
+    message: 'Happy to GM but prefer smaller tables.',
+  },
 ]
 
 const resetTables = async () => {
@@ -1168,6 +1248,7 @@ export const seed = async () => {
     await resetMembershipSequence()
     await prisma.game.createMany({ data: games })
     await prisma.gameChoice.createMany({ data: gameChoices })
+    await prisma.gameSubmission.createMany({ data: gameSubmissions })
     await prisma.gameAssignment.createMany({ data: gameAssignments })
   } catch (error) {
     console.error('Error seeding test database:', error)

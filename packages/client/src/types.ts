@@ -33,6 +33,9 @@ export type GameArray = Game[]
 export type GameAssignment = RouterOutputs['gameAssignments']['getGameAssignmentsByGameId'][0]
 export type Schedule = RouterOutputs['gameAssignments']['getSchedule'][0]
 export type CreateGameAssignmentInputType = RouterInputs['gameAssignments']['createGameAssignment']
+export type GameAssignmentDashboardData = RouterOutputs['gameAssignments']['getAssignmentDashboardData']
+export type GameAssignmentDashboardInput = RouterInputs['gameAssignments']['getAssignmentDashboardData']
+export type UpdateGameAssignmentsInput = RouterInputs['gameAssignments']['updateGameAssignments']
 
 export type StripeEntry = RouterOutputs['stripe']['getStripe'][0]
 
@@ -42,5 +45,8 @@ export type GameRoom = RouterOutputs['gameRooms']['getGameRooms'][0]
 
 export type GameChoice = RouterOutputs['gameChoices']['getGameChoices']['gameChoices'][0]
 export type GameSubmission = RouterOutputs['gameChoices']['getGameChoices']['gameSubmissions'][0]
+export type GameChoicesByYear = RouterOutputs['gameChoices']['getGameChoicesByYear']['gameChoices'][0]
+export type GameSubmissionsByYear = RouterOutputs['gameChoices']['getGameChoicesByYear']['gameSubmissions'][0]
+export type UpsertGameChoiceBySlotInput = RouterInputs['gameChoices']['upsertGameChoiceBySlot']
 
 export type StripeRecord = RouterOutputs['stripe']['getStripe'][0]

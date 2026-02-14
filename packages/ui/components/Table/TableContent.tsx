@@ -1,5 +1,5 @@
-import type { ReactElement, RefObject } from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { ReactElement, ReactNode, RefObject } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
 import Box from '@mui/material/Box'
 import type { Theme, SxProps } from '@mui/material/styles'
@@ -16,10 +16,11 @@ import type { Action } from './actions'
 import { GroupExpansionButton } from './components/GroupExpansionButton'
 import { RowHoverButtons } from './components/RowHoverButtons'
 import { TableBody, TableCell, TableRow } from './components/TableStyles'
-import { SELECTION_COLUMN_ID } from './constants'
+import { EXPAND_COLUMN_SIZE } from './constants'
 import { TableCellEditor } from './editing/TableCellEditor'
 import type { TableCellEditState, TableEditingState } from './editing/useTableEditing'
 import type { RowStyleType } from './utils/tableUtils'
+import { isUserColumnId } from './utils/tableUtils'
 
 const log = debug('amber:ui:table:TableContent')
 
@@ -29,6 +30,7 @@ type TableCellContentProps<T extends RowData> = {
   rowStyle: RowStyleType
   row: Row<T>
   editing: TableEditingState<T>
+  navigateCell?: (cell: Cell<T, unknown>, direction: 'next' | 'previous') => boolean
   cellState: TableCellEditState
   isActiveCell: boolean
   isEditable: boolean
@@ -40,6 +42,7 @@ const TableCellContent = <T extends RowData>({
   rowStyle,
   row,
   editing,
+  navigateCell,
   cellState,
   isActiveCell,
   isEditable,
@@ -62,7 +65,7 @@ const TableCellContent = <T extends RowData>({
           cursor: isEditable ? 'text' : 'default',
         },
         rowStyle === 'flex' &&
-          cell.column.id !== SELECTION_COLUMN_ID && {
+          isUserColumnId(cell.column.id) && {
             flex: `${width} 0 auto`,
           },
         rowStyle === 'fixed' && {
@@ -137,6 +140,7 @@ const TableCellContent = <T extends RowData>({
           onCancel={() => {
             editing.cancelActiveCell()
           }}
+          onNavigate={(direction) => (navigateCell ? navigateCell(cell, direction) : false)}
           hasError={hasErrors}
         />
       </Box>
@@ -197,6 +201,7 @@ const RenderRow = <T extends RowData>({
   rowActions,
   handleRowHover,
   handleMenuClose,
+  navigateCell,
   highlightRow,
   displayGutter,
   rowStyle,
@@ -225,6 +230,7 @@ const RenderRow = <T extends RowData>({
   useVirtualRows?: boolean
   scrollBehavior?: 'none' | 'bounded'
   editing: TableEditingState<T>
+  navigateCell: (cell: Cell<T, unknown>, direction: 'next' | 'previous') => boolean
 }) => {
   const row = (useVirtualRows ? rows[rowOrVirtualRow.index] : rowOrVirtualRow) as Row<T>
   const cellClickHandler = useCallback(
@@ -235,7 +241,7 @@ const RenderRow = <T extends RowData>({
         isEditable &&
         !cell.column.getIsGrouped() &&
         !cell.row.getIsGrouped() &&
-        cell.column.id !== SELECTION_COLUMN_ID
+        isUserColumnId(cell.column.id)
       ) {
         editing.startEditing(cell)
         return
@@ -246,7 +252,7 @@ const RenderRow = <T extends RowData>({
         !editing.enabled &&
         !cell.column.getIsGrouped() &&
         !cell.row.getIsGrouped() &&
-        cell.column.id !== SELECTION_COLUMN_ID
+        isUserColumnId(cell.column.id)
       )
         onRowClick(cell.row)
     },
@@ -282,6 +288,7 @@ const RenderRow = <T extends RowData>({
             ? {
                 "& > [role='cell']:first-of-type": {
                   pl: 3,
+                  pr: 1,
                 },
                 "& > [role='cell']:last-of-type": {
                   pr: 3,
@@ -339,6 +346,7 @@ const RenderRow = <T extends RowData>({
           cellClickHandler={cellClickHandler}
           rowStyle={rowStyle}
           editing={editing}
+          navigateCell={navigateCell}
           cellState={editing.getCellState(cell)}
           isActiveCell={editing.activeCell?.rowId === row.id && editing.activeCell?.columnId === cell.column.id}
           isEditable={
@@ -346,7 +354,7 @@ const RenderRow = <T extends RowData>({
             editing.isCellEditable(cell) &&
             !cell.column.getIsGrouped() &&
             !cell.row.getIsGrouped() &&
-            cell.column.id !== SELECTION_COLUMN_ID
+            isUserColumnId(cell.column.id)
           }
         />
       ))}
@@ -385,6 +393,8 @@ export const TableContent = <T extends RowData>({
   useVirtualRows,
   scrollBehavior,
   editing,
+  renderExpandedContent,
+  expandedContentSx,
 }: {
   table: TableInstance<T>
   onRowClick?: (row: Row<T>) => void
@@ -399,11 +409,14 @@ export const TableContent = <T extends RowData>({
   useVirtualRows?: boolean
   scrollBehavior?: 'none' | 'bounded'
   editing: TableEditingState<T>
+  renderExpandedContent?: (row: Row<T>) => ReactNode
+  expandedContentSx?: SxProps<Theme>
 }): ReactElement => {
   const { rows } = table.getRowModel()
   const [warnOnRows, setWarnOnRows] = useState(true)
 
-  const enableVirtualRows = rows.length > 20 && useVirtualRows
+  const hasExpandedContent = !!renderExpandedContent
+  const enableVirtualRows = rows.length > 20 && useVirtualRows && !hasExpandedContent
 
   const estimateRowHeight = compact ? 34.2 : 50.2
   const getVirtualRowKey = useCallback((virtualIndex: number) => rows[virtualIndex]?.id ?? virtualIndex, [rows])
@@ -439,6 +452,32 @@ export const TableContent = <T extends RowData>({
     }, 300)
   }, [])
 
+  const navigateCell = useCallback(
+    (cell: Cell<T, unknown>, direction: 'next' | 'previous') => {
+      if (!editing.enabled) return false
+      const { rows: tableRows } = table.getRowModel()
+      const editableCells: Array<Cell<T, unknown>> = []
+
+      tableRows.forEach((row) => {
+        if (row.getIsGrouped()) return
+        row.getVisibleCells().forEach((candidate) => {
+          const isSelectable = isUserColumnId(candidate.column.id) && !candidate.column.getIsGrouped()
+          if (!isSelectable) return
+          if (!editing.isCellEditable(candidate)) return
+          editableCells.push(candidate)
+        })
+      })
+
+      const currentIndex = editableCells.findIndex((candidate) => candidate.id === cell.id)
+      if (currentIndex < 0) return false
+      const nextIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1
+      if (nextIndex < 0 || nextIndex >= editableCells.length) return false
+      editing.startEditing(editableCells[nextIndex])
+      return true
+    },
+    [editing, table],
+  )
+
   const { pagination } = table.getState()
   const emptyRows = table.options.enablePagination ? Math.max(0, pagination.pageSize - rows.length) : 0
   const rowList = enableVirtualRows ? rowVirtualizer.getVirtualItems() : rows
@@ -459,6 +498,7 @@ export const TableContent = <T extends RowData>({
             ? {
                 "& > [role='cell']:first-of-type": {
                   pl: 3,
+                  pr: 1,
                 },
                 "& > [role='cell']:last-of-type": {
                   pr: 3,
@@ -496,29 +536,58 @@ export const TableContent = <T extends RowData>({
     <TableBody sx={tableSx.tableBody}>
       {rowList.map((rowOrVirtualRow) => {
         const row = (enableVirtualRows ? rows[rowOrVirtualRow.index] : rowOrVirtualRow) as Row<T>
+        const expandedContent = renderExpandedContent && row.getIsExpanded() ? renderExpandedContent(row) : null
+
         return (
-          <RenderRow<T>
-            key={row.id}
-            table={table}
-            rowOrVirtualRow={rowOrVirtualRow}
-            rows={rows}
-            onRowClick={onRowClick}
-            rowActions={rowActions}
-            tableContainerRef={tableContainerRef}
-            highlightRow={highlightRow}
-            displayGutter={displayGutter}
-            rowStyle={rowStyle}
-            compact={compact}
-            pageElevation={pageElevation}
-            useVirtualRows={enableVirtualRows}
-            scrollBehavior={scrollBehavior}
-            rowVirtualizer={rowVirtualizer}
-            emptyRows={emptyRows}
-            handleRowHover={handleRowHover}
-            handleMenuClose={handleMenuClose}
-            showButtons={showButtons === row.id}
-            editing={editing}
-          />
+          <Fragment key={row.id}>
+            <RenderRow<T>
+              table={table}
+              rowOrVirtualRow={rowOrVirtualRow}
+              rows={rows}
+              onRowClick={onRowClick}
+              rowActions={rowActions}
+              tableContainerRef={tableContainerRef}
+              highlightRow={highlightRow}
+              displayGutter={displayGutter}
+              rowStyle={rowStyle}
+              compact={compact}
+              pageElevation={pageElevation}
+              useVirtualRows={enableVirtualRows}
+              scrollBehavior={scrollBehavior}
+              rowVirtualizer={rowVirtualizer}
+              emptyRows={emptyRows}
+              handleRowHover={handleRowHover}
+              handleMenuClose={handleMenuClose}
+              navigateCell={navigateCell}
+              showButtons={showButtons === row.id}
+              editing={editing}
+            />
+            {expandedContent ? (
+              <TableRow
+                key={`${row.id}-expanded`}
+                pageElevation={pageElevation}
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                }}
+              >
+                <TableCell
+                  sx={[
+                    {
+                      flex: '1 1 auto',
+                      width: '100%',
+                      borderRight: 'none',
+                      backgroundColor: (theme: Theme) => theme.palette.action.hover,
+                      px: displayGutter ? 3 : 2,
+                    },
+                    ...(Array.isArray(expandedContentSx) ? expandedContentSx : [expandedContentSx]),
+                  ]}
+                >
+                  <Box sx={{ pl: `${EXPAND_COLUMN_SIZE}px` }}>{expandedContent}</Box>
+                </TableCell>
+              </TableRow>
+            ) : null}
+          </Fragment>
         )
       })}
     </TableBody>

@@ -92,11 +92,23 @@ The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
   typescript.
 - run `pnpm test` to run the sadly small set of tests
 - run `pnpm lint` to run the lint rules.
+- run `pnpm test:e2e` to run the separate Playwright test suites
 
 # ExecPlans
 
 When writing complex features or significant refactors, use an ExecPlan (as
 described in .agent/PLANS.md) from design to implementation.
+
+## Browser Automation
+
+Use `agent-browser` for web automation. Run `agent-browser --help` for all commands.
+
+Core workflow:
+
+1. `agent-browser open <url>` - Navigate to page
+2. `agent-browser snapshot -i` - Get interactive elements with refs (@e1, @e2)
+3. `agent-browser click @e1` / `fill @e2 "text"` - Interact using refs
+4. Re-snapshot after page changes
 
 ## Important Files to Reference
 

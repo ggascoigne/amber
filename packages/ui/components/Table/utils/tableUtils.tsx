@@ -1,11 +1,16 @@
 import type { AccessorKeyColumnDef, Column, ColumnDefBase } from '@tanstack/react-table'
 
 import { camelToWords } from '../../../utils'
+import { EXPAND_COLUMN_ID, SELECTION_COLUMN_ID } from '../constants'
 
 export const columnName = <T,>(column: Column<T>) =>
   typeof column.columnDef.header === 'function'
     ? (column?.columnDef?.meta?.name ?? camelToWords(column.id))
     : (column.columnDef.header as string)
+
+export const isUserColumnId = (columnId?: string) => columnId !== SELECTION_COLUMN_ID && columnId !== EXPAND_COLUMN_ID
+
+export const isUserColumn = (column: { id?: string }) => isUserColumnId(column.id)
 
 export type RowStyleType = 'flex' | 'fixed'
 

@@ -1,16 +1,41 @@
 import type { Column, Row, RowData, Table } from '@tanstack/react-table'
 
-export type TableEditColumnType = 'text' | 'number' | 'select'
+export type TableEditColumnType = 'text' | 'number' | 'select' | 'autocomplete'
+
+export type TableOptionColumn = {
+  value: string
+  align?: 'left' | 'center' | 'right'
+  width?: number | string
+}
 
 export type TableEditOption = {
   label: string
   value: string | number
+  columns?: Array<TableOptionColumn>
+  disabled?: boolean
+  isHeader?: boolean
+}
+
+export type TableAutocompleteOption = {
+  label: string
+  value: string | number
+  columns?: Array<TableOptionColumn>
+  disabled?: boolean
+  isHeader?: boolean
+}
+
+export type TableEditAutocompleteConfig<TData extends RowData> = {
+  options?: Array<TableAutocompleteOption>
+  getOptions?: (row: Row<TData>) => Array<TableAutocompleteOption>
+  getOptionLabel?: (option: TableAutocompleteOption) => string
+  isOptionEqual?: (option: TableAutocompleteOption, value: TableAutocompleteOption) => boolean
 }
 
 export type TableEditColumnConfig<TData extends RowData> = {
   type: TableEditColumnType
   options?: Array<TableEditOption>
   getOptions?: (row: Row<TData>) => Array<TableEditOption>
+  autocomplete?: TableEditAutocompleteConfig<TData>
   isEditable?: (row: Row<TData>) => boolean
   parseValue?: (value: string, row: Row<TData>) => unknown
   formatValue?: (value: unknown, row: Row<TData>) => string
@@ -51,10 +76,18 @@ export type TableEditRowUpdate<TData extends RowData> = {
   changes: Record<string, unknown>
 }
 
+export type DataTableAddRowConfig<TData extends RowData> = {
+  enabled: boolean
+  createRow: () => TData
+  onAddRow: (row: TData) => Promise<void> | void
+  isNewRow: (row: TData) => boolean
+}
+
 export type DataTableEditingConfig<TData extends RowData> = {
   enabled: boolean
   onSave: (updates: Array<TableEditRowUpdate<TData>>) => Promise<void> | void
   onDiscard?: () => void
   validateCell?: TableCellValidationFn<TData>
   validateRow?: TableRowValidationFn<TData>
+  addRow?: DataTableAddRowConfig<TData>
 }
