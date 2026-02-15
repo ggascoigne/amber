@@ -162,7 +162,7 @@ export const DataTable = <T extends RowData>({
   useEffect(() => {
     const element = tableContainerRef.current
     if (!element) {
-      return () => {}
+      return undefined
     }
     const handleScroll = () => {
       scrollPositionRef.current = { top: element.scrollTop, left: element.scrollLeft }

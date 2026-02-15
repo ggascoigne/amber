@@ -1,11 +1,8 @@
 {
   "name": "ui-test",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
-  "engines": {
-    "node": ">=22.11.0"
-  },
+  "type": "module",
   "scripts": {
     "dev": "next dev -p 30005",
     "dev:webpack": "next dev -p 30005 --webpack",
@@ -23,13 +20,13 @@
     "@emotion/react": "^11.14.0",
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^7.3.7",
-    "@mui/material": "^7.3.7",
-    "@mui/material-nextjs": "^7.3.7",
-    "@mui/system": "^7.3.7",
-    "@mui/utils": "^7.3.7",
+    "@mui/icons-material": "^7.3.8",
+    "@mui/material": "^7.3.8",
+    "@mui/material-nextjs": "^7.3.8",
+    "@mui/system": "^7.3.8",
+    "@mui/utils": "^7.3.8",
     "@tanstack/match-sorter-utils": "^8.19.4",
-    "@tanstack/react-query": "^5.90.20",
+    "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/table-core": "^8.21.3",
@@ -38,10 +35,10 @@
     "debug": "^4.4.3",
     "dequal": "^2.0.3",
     "jotai": "^2.17.1",
-    "msw": "^2.12.9",
+    "msw": "^2.12.10",
     "next": "16.1.6",
     "path-to-regexp": "^8.3.0",
-    "qs": "6.14.1",
+    "qs": "6.14.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-hotkeys-hook": "^5.2.4",
@@ -61,13 +58,13 @@
     "@types/debug": "^4.1.12",
     "@types/eslint": "^9.6.1",
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^25.2.2",
+    "@types/node": "^25.2.3",
     "@types/pngjs": "^6.0.5",
     "@types/qs": "6.14.0",
-    "@types/react": "^19.2.13",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/sql.js": "^1.4.9",
-    "@typescript/native-preview": "7.0.0-dev.20260208.1",
+    "@typescript/native-preview": "7.0.0-dev.20260214.1",
     "eslint": "^9.39.2",
     "fs-extra": "^11.3.3",
     "pixelmatch": "^7.1.0",
@@ -87,6 +84,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": ">=22.11.0"
   },
   "msw": {
     "workerDirectory": [

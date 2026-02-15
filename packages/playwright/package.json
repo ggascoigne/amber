@@ -1,12 +1,12 @@
 {
   "name": "@amber/playwright",
   "version": "0.1.0",
-  "description": "Shared Playwright testing utilities",
-  "author": "guy@wyrdrune.com",
-  "license": "MIT",
-  "type": "module",
   "private": true,
+  "description": "Shared Playwright testing utilities",
+  "license": "MIT",
+  "author": "guy@wyrdrune.com",
   "files": [],
+  "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.12",
-    "@types/node": "^25.2.2",
+    "@types/node": "^25.2.3",
     "typescript": "~5.9.3"
   }
 }

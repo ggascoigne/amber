@@ -1,21 +1,16 @@
 {
   "name": "ambercon",
   "version": "0.1.0",
-  "description": "AmberCon NW v2 site",
-  "author": "guy@wyrdrune.com",
-  "license": "MIT",
   "private": true,
-  "type": "module",
-  "engines": {
-    "node": ">=24",
-    "pnpm": ">=10"
-  },
-  "packageManager": "pnpm@10.27.0",
+  "description": "AmberCon NW v2 site",
+  "license": "MIT",
+  "author": "guy@wyrdrune.com",
   "repository": {
     "type": "git",
     "url": "https://github.com/ggascoigne/amber.git"
   },
   "files": [],
+  "type": "module",
   "scripts": {
     "clean": "rm -rf node_modules apps/*/node_modules packages/*/node_modules",
     "boot": "pnpm -F acnw boot && pnpm -F acus boot",
@@ -39,7 +34,7 @@
     "tsgo": "pnpm -r tsgo"
   },
   "dependencies": {
-    "dotenv": "17.2.4",
+    "dotenv": "17.3.1",
     "next": "16.1.6",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
@@ -51,33 +46,27 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/jsdom": "~27.0.0",
-    "@types/node": "^25.2.2",
-    "@types/react": "~19.2.13",
+    "@types/node": "^25.2.3",
+    "@types/react": "~19.2.14",
     "@types/react-dom": "~19.2.3",
-    "@typescript/native-preview": "7.0.0-dev.20260208.1",
-    "@vitejs/plugin-react": "^5.1.3",
+    "@typescript/native-preview": "7.0.0-dev.20260214.1",
+    "@vitejs/plugin-react": "^5.1.4",
     "dotenv-cli": "11.0.0",
     "eslint": "^9.39.2",
-    "eslint-plugin-oxlint": "^1.43.0",
+    "eslint-plugin-oxlint": "^1.46.0",
     "husky": "^9.1.7",
     "jsdom": "^28.0.0",
     "lint-staged": "^16.2.7",
-    "oxfmt": "^0.28.0",
-    "oxlint": "^1.43.0",
-    "oxlint-tsgolint": "^0.11.5",
+    "oxfmt": "^0.32.0",
+    "oxlint": "^1.47.0",
+    "oxlint-tsgolint": "^0.12.2",
     "playwright": "^1.58.2",
     "prettier": "^3.8.1",
     "supports-color": "10.2.2",
     "tsx": "^4.21.0",
-    "turbo": "^2.8.3",
+    "turbo": "^2.8.9",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": true,
-    "semi": false,
-    "jsxSingleQuote": true
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -97,5 +86,16 @@
     "not dead",
     "not ie 11",
     "not op_mini all"
-  ]
+  ],
+  "prettier": {
+    "jsxSingleQuote": true,
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  },
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.27.0"
 }

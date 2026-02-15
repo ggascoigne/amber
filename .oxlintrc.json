@@ -98,7 +98,6 @@
       "error",
       {
         "allowImplicit": true,
-        "allowVoid": false,
         "checkForEach": false
       }
     ],
