@@ -11,6 +11,7 @@ import type { ColumnDef, Row } from '@tanstack/react-table'
 import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberAssignmentSummaryRow } from './utils'
 import {
+  buildAssignedSlotCountsByMemberId,
   buildAssignmentCountsByGameId,
   buildAssignmentsByMemberId,
   buildChoicesByMemberSlot,
@@ -84,6 +85,10 @@ export const GameAssignmentsByMemberPanel = ({
     [data.assignments, slotGameIdSet],
   )
   const assignmentsByMemberId = useMemo(() => buildAssignmentsByMemberId(scheduledAssignments), [scheduledAssignments])
+  const assignedSlotCountsByMemberId = useMemo(
+    () => buildAssignedSlotCountsByMemberId(scheduledAssignments),
+    [scheduledAssignments],
+  )
   const assignmentCountsByGameId = useMemo(
     () => buildAssignmentCountsByGameId(filteredSlotGames, scheduledAssignments),
     [filteredSlotGames, scheduledAssignments],
@@ -99,6 +104,9 @@ export const GameAssignmentsByMemberPanel = ({
         .filter((membership) => membership.attending)
         .map((membership) => {
           const submission = submissionsByMemberId.get(membership.id)
+          const hasSubmissionEntry = Boolean(submission)
+          const slotIdsWithChoices = choicesByMemberSlot.get(membership.id)
+          const hasChoicesForAllSlots = (slotIdsWithChoices?.size ?? 0) >= configuration.numberOfSlots
           const hasNotes = Boolean(submission?.message?.trim())
           const assignments = assignmentsByMemberId.get(membership.id) ?? []
           const counts = {
@@ -132,10 +140,19 @@ export const GameAssignmentsByMemberPanel = ({
           return {
             memberId: membership.id,
             memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
+            assignments: assignedSlotCountsByMemberId.get(membership.id) ?? 0,
+            requiresAttention: !hasChoicesForAllSlots || !hasSubmissionEntry,
             counts,
           }
         }),
-    [assignmentsByMemberId, choicesByMemberSlot, data.memberships, submissionsByMemberId],
+    [
+      assignedSlotCountsByMemberId,
+      assignmentsByMemberId,
+      choicesByMemberSlot,
+      configuration.numberOfSlots,
+      data.memberships,
+      submissionsByMemberId,
+    ],
   )
 
   const memberColumns = useMemo<Array<ColumnDef<MemberAssignmentSummaryRow>>>(
@@ -144,6 +161,24 @@ export const GameAssignmentsByMemberPanel = ({
         accessorKey: 'memberName',
         header: 'Member',
         size: 220,
+        cell: ({ row }) => (
+          <Box
+            component='span'
+            sx={{
+              color: row.original.requiresAttention ? 'error.main' : 'text.primary',
+            }}
+          >
+            {row.original.memberName}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: 'assignments',
+        header: 'Assignments',
+        size: 110,
+        meta: {
+          align: 'right',
+        },
       },
       {
         accessorKey: 'counts.gmOrFirst',
@@ -220,6 +255,8 @@ export const GameAssignmentsByMemberPanel = ({
                 columns: [
                   { value: 'Game' },
                   { value: 'Priority', width: 90, align: 'right' as const },
+                  { value: 'Overrun', width: 85, align: 'right' as const },
+                  { value: 'Shortfall', width: 90, align: 'right' as const },
                   { value: 'Spaces', width: 90, align: 'right' as const },
                 ],
               }
@@ -229,7 +266,13 @@ export const GameAssignmentsByMemberPanel = ({
                 {
                   value: '',
                   label: 'No Game',
-                  columns: [{ value: 'No Game' }, { value: '', width: 90 }, { value: '', width: 90 }],
+                  columns: [
+                    { value: 'No Game' },
+                    { value: '', width: 90 },
+                    { value: '', width: 85 },
+                    { value: '', width: 90 },
+                    { value: '', width: 90 },
+                  ],
                 },
                 ...options.map((option) => ({
                   value: option.gameId,
@@ -237,6 +280,8 @@ export const GameAssignmentsByMemberPanel = ({
                   columns: [
                     { value: option.name },
                     { value: option.priorityLabel, width: 90 },
+                    { value: option.overrunLabel, width: 85, align: 'right' as const },
+                    { value: option.shortfallLabel, width: 90, align: 'right' as const },
                     { value: option.spacesLabel, width: 90, align: 'right' as const },
                   ],
                 })),

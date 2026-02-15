@@ -32,6 +32,8 @@ export type GameAssignmentSummaryRow = {
 export type MemberAssignmentSummaryRow = {
   memberId: number
   memberName: string
+  assignments: number
+  requiresAttention: boolean
   counts: {
     gmOrFirst: number
     second: number
@@ -45,6 +47,8 @@ export type MoveOption = {
   gameId: number
   name: string
   priorityLabel: string
+  overrunLabel: string
+  shortfallLabel: string
   spacesLabel: string
   spaces: number
 }
@@ -116,6 +120,26 @@ export const buildAssignmentsByMemberId = (assignments: Array<DashboardAssignmen
     assignmentsByMemberId.set(assignment.memberId, list)
   })
   return assignmentsByMemberId
+}
+
+export const buildAssignedSlotCountsByMemberId = (assignments: Array<DashboardAssignment>) => {
+  const slotIdsByMemberId = new Map<number, Set<number>>()
+
+  assignments.forEach((assignment) => {
+    if (!isScheduledAssignment(assignment)) return
+    const slotId = assignment.game?.slotId
+    if (!slotId || slotId <= 0) return
+    const slotIds = slotIdsByMemberId.get(assignment.memberId) ?? new Set<number>()
+    slotIds.add(slotId)
+    slotIdsByMemberId.set(assignment.memberId, slotIds)
+  })
+
+  const countsByMemberId = new Map<number, number>()
+  slotIdsByMemberId.forEach((slotIds, memberId) => {
+    countsByMemberId.set(memberId, slotIds.size)
+  })
+
+  return countsByMemberId
 }
 
 export const buildChoicesByMemberSlot = (choices: Array<DashboardChoice>): ChoicesByMemberSlot => {
@@ -207,13 +231,19 @@ export const buildMoveOptions = ({
     const priorityLabel = rank === null || rank === undefined ? '' : getPriorityLabel(rank, returningPlayer)
     const prioritySortValue = getPrioritySortValue(rank, returningPlayer)
     const counts = assignmentCountsByGameId.get(game.id)
+    const overrun = counts ? counts.overrun : 0
+    const shortfall = counts ? counts.shortfall : game.playerMin
     const spaces = counts ? counts.spaces : Math.max(0, game.playerMax)
+    const overrunLabel = String(overrun)
+    const shortfallLabel = String(shortfall)
     const spacesLabel = String(spaces)
 
     return {
       gameId: game.id,
       name: formatGameName(game),
       priorityLabel,
+      overrunLabel,
+      shortfallLabel,
       prioritySortValue,
       spacesLabel,
       spaces,

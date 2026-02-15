@@ -67,6 +67,7 @@ type LayoutMode = 'grid' | 'columns'
 
 const GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY = 'amber.gameAssignments.layoutMode'
 const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlotFilters'
+const GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY = 'amber.gameAssignments.expandedPaneId'
 
 const buildDefaultPaneSlotFilters = (): Record<GameAssignmentsPaneId, number | null> => ({
   byGame: null,
@@ -76,6 +77,11 @@ const buildDefaultPaneSlotFilters = (): Record<GameAssignmentsPaneId, number | n
 })
 
 const isLayoutMode = (value: unknown): value is LayoutMode => value === 'grid' || value === 'columns'
+const isGameAssignmentsPaneId = (value: unknown): value is GameAssignmentsPaneId =>
+  value === 'byGame' || value === 'byMember' || value === 'choices' || value === 'interest'
+
+const sanitizeExpandedPaneId = (value: unknown): GameAssignmentsPaneId | null =>
+  isGameAssignmentsPaneId(value) ? value : null
 
 const sanitizeSlotFilterId = (value: unknown, slotFilterOptions: Array<number>): number | null => {
   if (value === null) return null
@@ -114,6 +120,7 @@ const doesStoredPaneSlotFiltersMatch = (
 
 const legendItems = [
   'Members with a * by their name have Signup notes',
+  'Member names in red have incomplete Game Signups.',
   'Priorities with a * by them are returning players.',
   'Game names with a * by them are returning players only.',
 ]
@@ -538,7 +545,14 @@ const GameAssignmentsPage = () => {
     () => (isLayoutMode(storedLayoutMode) ? storedLayoutMode : 'grid'),
     [storedLayoutMode],
   )
-  const [expandedPaneId, setExpandedPaneId] = useState<GameAssignmentsPaneId | null>(null)
+  const [storedExpandedPaneId, setStoredExpandedPaneId] = useLocalStorage<unknown>(
+    GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY,
+    null,
+  )
+  const expandedPaneId = useMemo<GameAssignmentsPaneId | null>(
+    () => sanitizeExpandedPaneId(storedExpandedPaneId),
+    [storedExpandedPaneId],
+  )
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
 
@@ -574,6 +588,12 @@ const GameAssignmentsPage = () => {
     if (doesStoredPaneSlotFiltersMatch(storedPaneSlotFilters, paneSlotFilters)) return
     setStoredPaneSlotFilters(paneSlotFilters)
   }, [paneSlotFilters, setStoredPaneSlotFilters, storedPaneSlotFilters])
+
+  useEffect(() => {
+    if (storedExpandedPaneId !== null && !isGameAssignmentsPaneId(storedExpandedPaneId)) {
+      setStoredExpandedPaneId(null)
+    }
+  }, [setStoredExpandedPaneId, storedExpandedPaneId])
 
   const handleUpdateAssignments = useCallback(
     async (payload: AssignmentUpdatePayload) => {
@@ -737,9 +757,12 @@ const GameAssignmentsPage = () => {
     [setStoredLayoutMode],
   )
 
-  const handleToggleExpand = useCallback((paneId: GameAssignmentsPaneId) => {
-    setExpandedPaneId((previous) => (previous === paneId ? null : paneId))
-  }, [])
+  const handleToggleExpand = useCallback(
+    (paneId: GameAssignmentsPaneId) => {
+      setStoredExpandedPaneId(expandedPaneId === paneId ? null : paneId)
+    },
+    [expandedPaneId, setStoredExpandedPaneId],
+  )
   const handlePaneSlotFilterChange = useCallback(
     (paneId: GameAssignmentsPaneId, slotFilterId: number | null) => {
       setStoredPaneSlotFilters({

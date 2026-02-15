@@ -19,6 +19,7 @@ import {
   formatGameName,
   filterGamesWithSlots,
   getChoiceForGame,
+  getChoiceRankForGame,
   getPriorityLabel,
   getPrioritySortValue,
   isScheduledAssignment,
@@ -33,6 +34,22 @@ type AssignmentUpdatePayload = {
   removes: Array<AssignmentUpdate>
 }
 
+type MemberAssignmentCounts = {
+  gmOrFirst: number
+  second: number
+  third: number
+  fourth: number
+  other: number
+}
+
+const buildEmptyMemberAssignmentCounts = (): MemberAssignmentCounts => ({
+  gmOrFirst: 0,
+  second: 0,
+  third: 0,
+  fourth: 0,
+  other: 0,
+})
+
 type GameAssignmentRow = {
   rowId: string
   memberId: number | null
@@ -42,6 +59,7 @@ type GameAssignmentRow = {
   moveToGameId: number
   priorityLabel: string
   prioritySortValue: number
+  counts: MemberAssignmentCounts
 }
 
 type GameAssignmentsByGamePanelProps = {
@@ -115,6 +133,31 @@ export const GameAssignmentsByGamePanel = ({
     [slotGamesWithNoGame, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
+  const memberAssignmentCountsByMemberId = useMemo(() => {
+    const countsByMemberId = new Map<number, MemberAssignmentCounts>()
+    scheduledAssignments.forEach((assignment) => {
+      const counts = countsByMemberId.get(assignment.memberId) ?? buildEmptyMemberAssignmentCounts()
+      const rank = getChoiceRankForGame(
+        choicesByMemberSlot,
+        assignment.memberId,
+        assignment.game?.slotId ?? 0,
+        assignment.gameId,
+      )
+      if (rank === 0 || rank === 1) {
+        counts.gmOrFirst += 1
+      } else if (rank === 2) {
+        counts.second += 1
+      } else if (rank === 3) {
+        counts.third += 1
+      } else if (rank === 4) {
+        counts.fourth += 1
+      } else {
+        counts.other += 1
+      }
+      countsByMemberId.set(assignment.memberId, counts)
+    })
+    return countsByMemberId
+  }, [choicesByMemberSlot, scheduledAssignments])
 
   const memberOptions = useMemo<Array<TableAutocompleteOption>>(
     () =>
@@ -222,8 +265,43 @@ export const GameAssignmentsByGamePanel = ({
           align: 'right',
         },
       },
+      {
+        accessorKey: 'playerMin',
+        header: 'Min',
+        size: 70,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'playerMax',
+        header: 'Max',
+        size: 70,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'assignedCount',
+        header: 'Current',
+        size: 85,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        id: 'returning',
+        header: 'Returning',
+        size: 100,
+        accessorFn: (row) => {
+          const game = slotGamesWithNoGame.find((gameEntry) => gameEntry.id === row.gameId)
+          if (game?.playerPreference === PlayerPreference.RetOnly) return 'Only'
+          if (game?.playerPreference === PlayerPreference.RetPref) return 'Preferred'
+          return ''
+        },
+      },
     ],
-    [],
+    [slotGamesWithNoGame],
   )
 
   const assignmentColumns = useMemo<Array<ColumnDef<GameAssignmentRow>>>(
@@ -256,6 +334,9 @@ export const GameAssignmentsByGamePanel = ({
                 memberId: nextMemberId,
                 priorityLabel: getPriorityLabel(rank, returningPlayer),
                 prioritySortValue: getPrioritySortValue(rank, returningPlayer),
+                counts: nextMemberId
+                  ? (memberAssignmentCountsByMemberId.get(nextMemberId) ?? buildEmptyMemberAssignmentCounts())
+                  : buildEmptyMemberAssignmentCounts(),
               }
             },
           },
@@ -294,6 +375,8 @@ export const GameAssignmentsByGamePanel = ({
                 columns: [
                   { value: 'Game' },
                   { value: 'Priority', width: 90, align: 'right' as const },
+                  { value: 'Overrun', width: 85, align: 'right' as const },
+                  { value: 'Shortfall', width: 90, align: 'right' as const },
                   { value: 'Spaces', width: 90, align: 'right' as const },
                 ],
               }
@@ -303,6 +386,8 @@ export const GameAssignmentsByGamePanel = ({
                 columns: [
                   { value: option.name },
                   { value: option.priorityLabel, width: 90 },
+                  { value: option.overrunLabel, width: 85, align: 'right' as const },
+                  { value: option.shortfallLabel, width: 90, align: 'right' as const },
                   { value: option.spacesLabel, width: 90, align: 'right' as const },
                 ],
               }))
@@ -312,8 +397,56 @@ export const GameAssignmentsByGamePanel = ({
           },
         },
       },
+      {
+        accessorKey: 'counts.gmOrFirst',
+        header: '1st/GM',
+        size: 80,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'counts.second',
+        header: '2nd',
+        size: 70,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'counts.third',
+        header: '3rd',
+        size: 70,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'counts.fourth',
+        header: '4th',
+        size: 70,
+        meta: {
+          align: 'right',
+        },
+      },
+      {
+        accessorKey: 'counts.other',
+        header: 'Other',
+        size: 80,
+        meta: {
+          align: 'right',
+        },
+      },
     ],
-    [assignmentCountsByGameId, choicesByMemberSlot, gameNameById, memberNameById, memberOptions, slotGamesWithNoGame],
+    [
+      assignmentCountsByGameId,
+      choicesByMemberSlot,
+      gameNameById,
+      memberAssignmentCountsByMemberId,
+      memberNameById,
+      memberOptions,
+      slotGamesWithNoGame,
+    ],
   )
 
   const validateAssignmentRow = useCallback(({ updatedRow }: TableRowValidationParams<GameAssignmentRow>) => {
@@ -328,16 +461,10 @@ export const GameAssignmentsByGamePanel = ({
 
   const renderExpandedContent = useCallback(
     (row: Row<GameAssignmentSummaryRow>) => {
-      const { gameId, slotId, playerMin, playerMax, assignedCount } = row.original
+      const { gameId, slotId } = row.original
       const assignments = assignmentsByGameId.get(gameId) ?? []
       const expandedGame = gameById.get(gameId)
       const organizerMessage = expandedGame?.message?.trim()
-      const playerPreferenceStatus =
-        expandedGame?.playerPreference === PlayerPreference.RetOnly
-          ? 'Returning players only'
-          : expandedGame?.playerPreference === PlayerPreference.RetPref
-            ? 'Returning players have preference'
-            : null
       const assignmentRows = assignments.map((assignment) => {
         const { memberId, gameId: assignedGameId, gm, game } = assignment
         const choice = getChoiceForGame(choicesByMemberSlot, memberId, game?.slotId ?? slotId, assignedGameId)
@@ -353,6 +480,7 @@ export const GameAssignmentsByGamePanel = ({
           moveToGameId: assignedGameId,
           priorityLabel: getPriorityLabel(rank, returningPlayer),
           prioritySortValue: getPrioritySortValue(rank, returningPlayer),
+          counts: memberAssignmentCountsByMemberId.get(memberId) ?? buildEmptyMemberAssignmentCounts(),
         }
       })
 
@@ -420,6 +548,7 @@ export const GameAssignmentsByGamePanel = ({
             moveToGameId: gameId,
             priorityLabel: 'Other',
             prioritySortValue: Number.POSITIVE_INFINITY,
+            counts: buildEmptyMemberAssignmentCounts(),
           }),
           onAddRow: handleAddRow,
           isNewRow: (assignment: GameAssignmentRow) => assignment.rowId.startsWith('new-'),
@@ -428,18 +557,6 @@ export const GameAssignmentsByGamePanel = ({
 
       return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-          <Box
-            sx={{
-              px: 2,
-              py: 0.5,
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
-              fontSize: '0.75rem',
-              color: 'text.secondary',
-            }}
-          >
-            Min: {playerMin} | Max: {playerMax} | Current: {assignedCount}
-            {playerPreferenceStatus ? ` | ${playerPreferenceStatus}` : ''}
-          </Box>
           {organizerMessage ? (
             <CollapsibleInfoPanel
               defaultCollapsed
@@ -507,6 +624,7 @@ export const GameAssignmentsByGamePanel = ({
       assignmentsByGameId,
       choicesByMemberSlot,
       gameById,
+      memberAssignmentCountsByMemberId,
       onUpdateAssignments,
       validateAssignmentRow,
       year,
