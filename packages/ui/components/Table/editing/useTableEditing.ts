@@ -95,14 +95,28 @@ export const useTableEditing = <TData extends RowData>({
 
   editsRef.current = edits
 
+  const getPendingCellValue = useCallback((row: Row<TData>, columnId: string) => {
+    const rowState = editsRef.current[row.id]
+    if (!rowState) return row.getValue(columnId)
+    if (Object.prototype.hasOwnProperty.call(rowState.changes, columnId)) {
+      return rowState.changes[columnId]
+    }
+    return row.getValue(columnId)
+  }, [])
+
   const isCellEditable = useCallback(
     (cell: Cell<TData, unknown>) => {
       if (!enabled) return false
       const configValue = cell.column.columnDef.meta?.edit as TableEditColumnConfig<TData> | undefined
       if (!configValue) return false
-      return configValue.isEditable ? configValue.isEditable(cell.row) : true
+      return configValue.isEditable
+        ? configValue.isEditable(cell.row, {
+            table,
+            getValue: getPendingCellValue,
+          })
+        : true
     },
-    [enabled],
+    [enabled, getPendingCellValue, table],
   )
 
   const applyRowChanges = useCallback(

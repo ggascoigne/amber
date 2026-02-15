@@ -14,6 +14,7 @@ export type TableEditOption = {
   columns?: Array<TableOptionColumn>
   disabled?: boolean
   isHeader?: boolean
+  fontWeight?: number
 }
 
 export type TableAutocompleteOption = {
@@ -22,6 +23,7 @@ export type TableAutocompleteOption = {
   columns?: Array<TableOptionColumn>
   disabled?: boolean
   isHeader?: boolean
+  fontWeight?: number
 }
 
 export type TableEditAutocompleteConfig<TData extends RowData> = {
@@ -31,12 +33,17 @@ export type TableEditAutocompleteConfig<TData extends RowData> = {
   isOptionEqual?: (option: TableAutocompleteOption, value: TableAutocompleteOption) => boolean
 }
 
+export type TableEditCellContext<TData extends RowData> = {
+  table: Table<TData>
+  getValue: (row: Row<TData>, columnId: string) => unknown
+}
+
 export type TableEditColumnConfig<TData extends RowData> = {
   type: TableEditColumnType
   options?: Array<TableEditOption>
   getOptions?: (row: Row<TData>) => Array<TableEditOption>
   autocomplete?: TableEditAutocompleteConfig<TData>
-  isEditable?: (row: Row<TData>) => boolean
+  isEditable?: (row: Row<TData>, context: TableEditCellContext<TData>) => boolean
   parseValue?: (value: string, row: Row<TData>) => unknown
   formatValue?: (value: unknown, row: Row<TData>) => string
   placeholder?: string

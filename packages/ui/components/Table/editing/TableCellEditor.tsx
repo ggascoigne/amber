@@ -63,10 +63,13 @@ type TableOptionContent = {
   label: string
   columns?: Array<TableOptionColumn>
   isHeader?: boolean
+  fontWeight?: number
 }
 
 const renderOptionContent = (option: TableOptionContent) => {
-  if (!option.columns?.length) return option.label
+  if (!option.columns?.length) {
+    return <Box sx={{ fontWeight: option.isHeader ? 600 : option.fontWeight }}>{option.label}</Box>
+  }
 
   return (
     <Box
@@ -83,7 +86,7 @@ const renderOptionContent = (option: TableOptionContent) => {
         <Box
           key={`${index}-${column.value}`}
           sx={{
-            fontWeight: option.isHeader ? 600 : undefined,
+            fontWeight: option.isHeader ? 600 : option.fontWeight,
             color: option.isHeader ? 'text.secondary' : undefined,
             textAlign: column.align ?? (index === 0 ? 'left' : 'right'),
             overflow: 'hidden',
