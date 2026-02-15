@@ -5,7 +5,7 @@ import type { TableAutocompleteOption, TableEditRowUpdate, TableRowValidationPar
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, FormControl, IconButton, MenuItem, TextField, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
@@ -46,6 +46,9 @@ type GameAssignmentRow = {
 type GameAssignmentsByGamePanelProps = {
   data: GameAssignmentDashboardData
   year: number
+  slotFilterOptions: Array<number>
+  slotFilterId: number | null
+  onSlotFilterChange: (slotFilterId: number | null) => void
   onUpdateAssignments: (payload: AssignmentUpdatePayload) => Promise<void>
   isExpanded?: boolean
   onToggleExpand?: () => void
@@ -55,6 +58,9 @@ type GameAssignmentsByGamePanelProps = {
 export const GameAssignmentsByGamePanel = ({
   data,
   year,
+  slotFilterOptions,
+  slotFilterId,
+  onSlotFilterChange,
   onUpdateAssignments,
   isExpanded = false,
   onToggleExpand,
@@ -62,7 +68,39 @@ export const GameAssignmentsByGamePanel = ({
 }: GameAssignmentsByGamePanelProps) => {
   const draftIdRef = useRef(0)
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
-  const slotGameIdSet = useMemo(() => new Set(slotGames.map((game) => game.id)), [slotGames])
+  const filteredSlotGames = useMemo(
+    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    [slotFilterId, slotGames],
+  )
+  const slotGamesWithNoGame = useMemo(() => {
+    const gamesById = new Map(filteredSlotGames.map((game) => [game.id, game]))
+    const slotIds = Array.from(
+      new Set(filteredSlotGames.map((game) => game.slotId).filter((slotId): slotId is number => (slotId ?? 0) > 0)),
+    )
+
+    slotIds.forEach((slotId) => {
+      if (gamesById.has(slotId)) return
+      gamesById.set(slotId, {
+        id: slotId,
+        name: 'No Game',
+        slotId,
+        playerMin: 0,
+        playerMax: 999,
+        playerPreference: PlayerPreference.Any,
+        message: '',
+        returningPlayers: '',
+        year,
+      })
+    })
+
+    return Array.from(gamesById.values()).sort((left, right) => {
+      const leftSlot = left.slotId ?? 0
+      const rightSlot = right.slotId ?? 0
+      if (leftSlot !== rightSlot) return leftSlot - rightSlot
+      return left.name.localeCompare(right.name)
+    })
+  }, [filteredSlotGames, year])
+  const slotGameIdSet = useMemo(() => new Set(slotGamesWithNoGame.map((game) => game.id)), [slotGamesWithNoGame])
   const scheduledAssignments = useMemo(
     () =>
       data.assignments.filter(
@@ -72,8 +110,8 @@ export const GameAssignmentsByGamePanel = ({
   )
   const assignmentsByGameId = useMemo(() => buildAssignmentsByGameId(scheduledAssignments), [scheduledAssignments])
   const assignmentCountsByGameId = useMemo(
-    () => buildAssignmentCountsByGameId(slotGames, scheduledAssignments),
-    [slotGames, scheduledAssignments],
+    () => buildAssignmentCountsByGameId(slotGamesWithNoGame, scheduledAssignments),
+    [slotGamesWithNoGame, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
 
@@ -95,11 +133,14 @@ export const GameAssignmentsByGamePanel = ({
 
   const gameById = useMemo(() => new Map(data.games.map((game) => [game.id, game])), [data.games])
 
-  const gameNameById = useMemo(() => new Map(slotGames.map((game) => [game.id, formatGameName(game)])), [slotGames])
+  const gameNameById = useMemo(
+    () => new Map(slotGamesWithNoGame.map((game) => [game.id, formatGameName(game)])),
+    [slotGamesWithNoGame],
+  )
 
   const gameRows = useMemo<Array<GameAssignmentSummaryRow>>(
     () =>
-      slotGames.map((game) => {
+      slotGamesWithNoGame.map((game) => {
         const counts = assignmentCountsByGameId.get(game.id)
         return {
           gameId: game.id,
@@ -109,11 +150,11 @@ export const GameAssignmentsByGamePanel = ({
           playerMax: game.playerMax,
           assignedCount: counts?.assignedCount ?? 0,
           overrun: counts?.overrun ?? 0,
-          shortfall: counts?.shortfall ?? Math.max(0, game.playerMin),
+          shortfall: counts?.shortfall ?? game.playerMin,
           spaces: counts?.spaces ?? Math.max(0, game.playerMax),
         }
       }),
-    [assignmentCountsByGameId, slotGames],
+    [assignmentCountsByGameId, slotGamesWithNoGame],
   )
 
   const gameColumns = useMemo<Array<ColumnDef<GameAssignmentSummaryRow>>>(
@@ -198,6 +239,7 @@ export const GameAssignmentsByGamePanel = ({
           edit: {
             type: 'autocomplete',
             placeholder: 'Member',
+            isEditable: (row) => row.original.rowId.startsWith('new-'),
             autocomplete: {
               options: memberOptions,
             },
@@ -238,7 +280,7 @@ export const GameAssignmentsByGamePanel = ({
             type: 'select',
             getOptions: (row) => {
               const options = buildMoveOptions({
-                games: slotGames,
+                games: slotGamesWithNoGame,
                 assignmentCountsByGameId,
                 choicesByMemberSlot,
                 memberId: row.original.memberId,
@@ -270,7 +312,7 @@ export const GameAssignmentsByGamePanel = ({
         },
       },
     ],
-    [assignmentCountsByGameId, choicesByMemberSlot, gameNameById, memberNameById, memberOptions, slotGames],
+    [assignmentCountsByGameId, choicesByMemberSlot, gameNameById, memberNameById, memberOptions, slotGamesWithNoGame],
   )
 
   const validateAssignmentRow = useCallback(({ updatedRow }: TableRowValidationParams<GameAssignmentRow>) => {
@@ -486,11 +528,37 @@ export const GameAssignmentsByGamePanel = ({
         <Typography id='game-assignments-by-game-title' variant='h6' component='h2'>
           Assignments by Game
         </Typography>
-        {onToggleExpand ? (
-          <IconButton aria-label={isExpanded ? 'Exit full view' : 'Expand panel'} onClick={onToggleExpand} size='small'>
-            {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-          </IconButton>
-        ) : null}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <FormControl sx={{ minWidth: 110 }}>
+            <TextField
+              select
+              size='small'
+              variant='standard'
+              value={slotFilterId === null ? 'all' : `${slotFilterId}`}
+              onChange={(event) => {
+                const nextValue = event.target.value
+                onSlotFilterChange(nextValue === 'all' ? null : Number(nextValue))
+              }}
+              aria-label='Slot filter'
+            >
+              <MenuItem value='all'>All Slots</MenuItem>
+              {slotFilterOptions.map((slotValue) => (
+                <MenuItem key={slotValue} value={`${slotValue}`}>
+                  {`Slot ${slotValue}`}
+                </MenuItem>
+              ))}
+            </TextField>
+          </FormControl>
+          {onToggleExpand ? (
+            <IconButton
+              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
+              onClick={onToggleExpand}
+              size='small'
+            >
+              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
+            </IconButton>
+          ) : null}
+        </Box>
       </Box>
       <Table<GameAssignmentSummaryRow>
         name='game-assignments-by-game'

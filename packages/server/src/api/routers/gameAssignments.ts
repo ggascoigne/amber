@@ -14,6 +14,9 @@ const yearInput = z.object({
   year: z.number(),
 })
 
+// keep in sync with GameChoiceSelector.tsx
+const ANY_GAME_CHOICE_ID = 144
+
 const dashboardGameSelect = {
   id: true,
   name: true,
@@ -374,7 +377,10 @@ export const gameAssignmentsRouter = createTRPCRouter({
       )
 
       const gmAdds = assignments
-        .filter((assignment) => assignment.gm < 0 && slotGameIdSet.has(assignment.gameId))
+        .filter(
+          (assignment) =>
+            assignment.gm < 0 && assignment.gameId !== ANY_GAME_CHOICE_ID && slotGameIdSet.has(assignment.gameId),
+        )
         .filter((assignment) => !scheduledAssignmentKeys.has(`${assignment.memberId}-${assignment.gameId}`))
         .map((assignment) => ({
           memberId: assignment.memberId,
@@ -384,7 +390,10 @@ export const gameAssignmentsRouter = createTRPCRouter({
         }))
 
       const firstChoiceAdds = choices
-        .filter((choice) => choice.gameId && slotGameIdSet.has(choice.gameId))
+        .filter(
+          (choice) =>
+            choice.gameId !== null && choice.gameId !== ANY_GAME_CHOICE_ID && slotGameIdSet.has(choice.gameId),
+        )
         .filter((choice) => !scheduledAssignmentKeys.has(`${choice.memberId}-${choice.gameId}`))
         .filter((choice) => !gmOfferKeys.has(`${choice.memberId}-${choice.gameId}`))
         .map((choice) => ({
