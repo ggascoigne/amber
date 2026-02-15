@@ -90,7 +90,7 @@ export const buildAssignmentCountsByGameId = (
     const assignedCount = assignmentTotals.get(game.id) ?? 0
     const seatedPlayers = playerSeatTotals.get(game.id) ?? 0
     const overrun = Math.max(0, seatedPlayers - game.playerMax)
-    const shortfall = Math.max(0, game.playerMin - seatedPlayers)
+    const shortfall = game.playerMin - seatedPlayers
     const spaces = Math.max(0, game.playerMax - seatedPlayers)
     counts.set(game.id, { assignedCount, overrun, shortfall, spaces })
   })

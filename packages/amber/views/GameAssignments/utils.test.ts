@@ -36,7 +36,7 @@ describe('buildAssignmentCountsByGameId', () => {
     expect(countsByGameId.get(1)).toEqual({
       assignedCount: 5,
       overrun: 1,
-      shortfall: 0,
+      shortfall: -1,
       spaces: 0,
     })
     expect(countsByGameId.get(2)).toEqual({

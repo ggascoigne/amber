@@ -1,11 +1,12 @@
 {
   "name": "@amber/amber",
   "version": "0.1.0",
-  "description": "Shared AmberCon NW components",
-  "author": "guy@wyrdrune.com",
-  "license": "MIT",
-  "type": "module",
   "private": true,
+  "description": "Shared AmberCon NW components",
+  "license": "MIT",
+  "author": "guy@wyrdrune.com",
+  "type": "module",
+  "sideEffects": false,
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
@@ -20,7 +21,7 @@
     "@amber/environment": "workspace:*",
     "@amber/server": "workspace:*",
     "@amber/ui": "workspace:*",
-    "@auth0/nextjs-auth0": "4.14.1",
+    "@auth0/nextjs-auth0": "4.15.0",
     "@axe-core/react": "^4.11.1",
     "@date-io/luxon": "^3.2.0",
     "@emotion/cache": "^11.14.0",
@@ -29,19 +30,19 @@
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/mdx": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@mui/icons-material": "^7.3.7",
-    "@mui/material": "^7.3.7",
-    "@mui/system": "^7.3.7",
+    "@mui/icons-material": "^7.3.8",
+    "@mui/material": "^7.3.8",
+    "@mui/system": "^7.3.8",
     "@mui/x-date-pickers": "^8.27.0",
     "@next/mdx": "^16.1.6",
-    "@stripe/react-stripe-js": "^5.4.1",
-    "@stripe/stripe-js": "^8.6.3",
-    "@tanstack/react-query": "^5.90.20",
+    "@stripe/react-stripe-js": "^5.6.0",
+    "@stripe/stripe-js": "^8.7.0",
+    "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/table-core": "^8.21.3",
-    "@trpc/client": "^11.9.0",
-    "@trpc/server": "^11.9.0",
+    "@trpc/client": "^11.10.0",
+    "@trpc/server": "^11.10.0",
     "clsx": "^2.1.1",
     "common-tags": "^1.8.2",
     "csstype": "^3.2.3",
@@ -57,7 +58,7 @@
     "next": "16.1.6",
     "notistack": "^3.0.2",
     "react-intersection-observer": "^10.0.2",
-    "react-resizable-panels": "^4.6.2",
+    "react-resizable-panels": "^4.6.4",
     "react-spinners": "^0.17.0",
     "sha.js": "^2.4.12",
     "superjson": "^2.2.6",
@@ -69,10 +70,6 @@
     "zod": "^4.3.6",
     "zod-formik-adapter": "^2.0.0"
   },
-  "peerDependencies": {
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
-  },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@babel/core": "^7.29.0",
@@ -80,19 +77,22 @@
     "@types/debug": "^4.1.12",
     "@types/isomorphic-fetch": "^0.0.39",
     "@types/luxon": "^3.7.1",
-    "@types/node": "^25.2.2",
+    "@types/node": "^25.2.3",
     "@types/sha.js": "^2.4.4",
-    "@typescript/native-preview": "7.0.0-dev.20260208.1",
+    "@typescript/native-preview": "7.0.0-dev.20260214.1",
     "babel-loader": "^10.0.0",
     "cross-env": "^10.1.0",
     "typescript": "^5.9.3",
-    "webpack": "^5.105.0"
+    "webpack": "^5.105.2"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "browserslist": [
     ">0.5%",
     "not dead",
     "not ie 11",
     "not op_mini all"
-  ],
-  "sideEffects": false
+  ]
 }

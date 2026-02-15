@@ -8,6 +8,7 @@ import { Box, IconButton, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { SlotFilterSelect } from './SlotFilterSelect'
 import type { DashboardChoice, GameAssignmentSummaryRow } from './utils'
 import {
   buildAssignmentCountsByGameId,
@@ -35,6 +36,9 @@ type GameInterestSummaryRow = GameAssignmentSummaryRow & {
 
 type GameInterestPanelProps = {
   data: GameAssignmentDashboardData
+  slotFilterOptions: Array<number>
+  slotFilterId: number | null
+  onSlotFilterChange: (slotFilterId: number | null) => void
   isExpanded?: boolean
   onToggleExpand?: () => void
   scrollBehavior?: 'none' | 'bounded'
@@ -42,6 +46,9 @@ type GameInterestPanelProps = {
 
 export const GameInterestPanel = ({
   data,
+  slotFilterOptions,
+  slotFilterId,
+  onSlotFilterChange,
   isExpanded = false,
   onToggleExpand,
   scrollBehavior = 'bounded',
@@ -52,7 +59,11 @@ export const GameInterestPanel = ({
     [data.memberships],
   )
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
-  const slotGameIdSet = useMemo(() => new Set(slotGames.map((game) => game.id)), [slotGames])
+  const filteredSlotGames = useMemo(
+    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    [slotFilterId, slotGames],
+  )
+  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
   const scheduledAssignments = useMemo(
     () =>
       data.assignments.filter(
@@ -61,19 +72,19 @@ export const GameInterestPanel = ({
     [data.assignments, slotGameIdSet],
   )
   const assignmentCountsByGameId = useMemo(
-    () => buildAssignmentCountsByGameId(slotGames, scheduledAssignments),
-    [slotGames, scheduledAssignments],
+    () => buildAssignmentCountsByGameId(filteredSlotGames, scheduledAssignments),
+    [filteredSlotGames, scheduledAssignments],
   )
   const slotGameIdsBySlotId = useMemo(() => {
     const gameIdsBySlotId = new Map<number, Array<number>>()
-    slotGames.forEach((game) => {
+    filteredSlotGames.forEach((game) => {
       if (!game.slotId) return
       const gameIds = gameIdsBySlotId.get(game.slotId) ?? []
       gameIds.push(game.id)
       gameIdsBySlotId.set(game.slotId, gameIds)
     })
     return gameIdsBySlotId
-  }, [slotGames])
+  }, [filteredSlotGames])
 
   const choicesByGameId = useMemo(() => {
     const map = new Map<number, Array<DashboardChoice>>()
@@ -115,7 +126,7 @@ export const GameInterestPanel = ({
 
   const gameRows = useMemo<Array<GameInterestSummaryRow>>(
     () =>
-      slotGames.map((game) => {
+      filteredSlotGames.map((game) => {
         const counts = assignmentCountsByGameId.get(game.id)
         return {
           gameId: game.id,
@@ -125,12 +136,12 @@ export const GameInterestPanel = ({
           playerMax: game.playerMax,
           assignedCount: counts?.assignedCount ?? 0,
           overrun: counts?.overrun ?? 0,
-          shortfall: counts?.shortfall ?? Math.max(0, game.playerMin),
+          shortfall: counts?.shortfall ?? game.playerMin,
           spaces: counts?.spaces ?? Math.max(0, game.playerMax),
           overallInterest: interestCountsByGameId.get(game.id) ?? 0,
         }
       }),
-    [assignmentCountsByGameId, interestCountsByGameId, slotGames],
+    [assignmentCountsByGameId, filteredSlotGames, interestCountsByGameId],
   )
 
   const gameColumns = useMemo<Array<ColumnDef<GameInterestSummaryRow>>>(
@@ -241,11 +252,14 @@ export const GameInterestPanel = ({
         const existingRow = interestRowsByMemberId.get(memberId)
         const prioritySortValue = getPrioritySortValue(rank, returningPlayer)
         if (existingRow && existingRow.prioritySortValue <= prioritySortValue) return
+        const priorityLabel = isAnyGame(configuration, choice.gameId ?? 0)
+          ? `${getPriorityLabel(rank, returningPlayer)} (Any Game)`
+          : getPriorityLabel(rank, returningPlayer)
 
         interestRowsByMemberId.set(memberId, {
           rowId: `choice-${gameId}-${memberId}`,
           memberName: membership.user.fullName ?? 'Unknown member',
-          priorityLabel: getPriorityLabel(rank, returningPlayer),
+          priorityLabel,
           prioritySortValue,
           rank,
         })
@@ -284,7 +298,7 @@ export const GameInterestPanel = ({
         />
       )
     },
-    [choicesByGameId, interestColumns],
+    [choicesByGameId, configuration, interestColumns],
   )
 
   return (
@@ -303,11 +317,22 @@ export const GameInterestPanel = ({
         <Typography id='game-interest-panel-title' variant='h6' component='h2'>
           Game Interest Reference
         </Typography>
-        {onToggleExpand ? (
-          <IconButton aria-label={isExpanded ? 'Exit full view' : 'Expand panel'} onClick={onToggleExpand} size='small'>
-            {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-          </IconButton>
-        ) : null}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <SlotFilterSelect
+            slotFilterOptions={slotFilterOptions}
+            slotFilterId={slotFilterId}
+            onSlotFilterChange={onSlotFilterChange}
+          />
+          {onToggleExpand ? (
+            <IconButton
+              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
+              onClick={onToggleExpand}
+              size='small'
+            >
+              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
+            </IconButton>
+          ) : null}
+        </Box>
       </Box>
       <Table<GameInterestSummaryRow>
         name='game-interest-reference'

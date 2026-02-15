@@ -15,6 +15,7 @@ import SHA from 'sha.js'
 import { Page } from '../../components'
 import { HasPermission, Perms, useAuth } from '../../components/Auth'
 import { GameCard } from '../../components/GameCard'
+import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import type { GameDecorator } from '../../components/types'
 import type { Configuration, ICalEvent } from '../../utils'
@@ -211,6 +212,12 @@ const SchedulePage = () => {
 
   const exportUrl = useMemo(() => getIcalUrl(configuration, gamesAndAssignments), [configuration, gamesAndAssignments])
 
+  if (membership === undefined) {
+    return <Loader />
+  }
+  if (membership == null || !membership.attending) {
+    return <Redirect to='/membership' />
+  }
   if (error) {
     return <TransportError error={error} />
   }

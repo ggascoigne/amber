@@ -3,10 +3,51 @@ import { expect, test } from '@amber/playwright/test'
 import type { Page } from '@playwright/test'
 
 const adminUserEmail = 'alex.admin@example.com'
+const anyGameChoiceId = 144
+
+type DashboardAssignment = {
+  gameId: number
+  gm: number
+}
+
+type DashboardDataResponse = {
+  assignments: Array<DashboardAssignment>
+}
 
 const openDashboard = async (page: Page) => {
   await loginAsUser(page, adminUserEmail, { returnTo: '/game-assignments' })
   await expect(page.getByRole('heading', { name: 'Game Assignments', level: 1 })).toBeVisible()
+}
+
+const extractDashboardDataFromTrpcPayload = (payload: unknown): DashboardDataResponse => {
+  const firstResult = Array.isArray(payload) ? payload[0] : payload
+  if (!firstResult || typeof firstResult !== 'object') {
+    throw new Error('Dashboard payload was not an object')
+  }
+
+  const trpcResult = firstResult as {
+    result?: {
+      data?: {
+        json?: DashboardDataResponse
+      }
+    }
+  }
+  const dashboardData = trpcResult.result?.data?.json
+  if (!dashboardData || !Array.isArray(dashboardData.assignments)) {
+    throw new Error('Dashboard payload did not include assignments')
+  }
+
+  return dashboardData
+}
+
+const waitForDashboardDataRefresh = async (page: Page) => {
+  const response = await page.waitForResponse(
+    (candidateResponse) =>
+      candidateResponse.request().method() === 'GET' &&
+      candidateResponse.url().includes('/api/trpc/gameAssignments.getAssignmentDashboardData'),
+  )
+  const payload = await response.json()
+  return extractDashboardDataFromTrpcPayload(payload)
 }
 
 test.describe.serial('Game assignments dashboard', () => {
@@ -216,5 +257,24 @@ test.describe.serial('Game assignments dashboard', () => {
 
     await expect(memberChoicesTable).toBeVisible()
     await expect(memberChoicesTable.getByRole('cell', { name: 'Indigo Ivy *' })).toBeVisible()
+  })
+
+  test('set initial assignments does not create scheduled Any Game assignments', async ({ page }) => {
+    await openDashboard(page)
+
+    page.once('dialog', (dialog) => dialog.accept())
+    const resetRefreshPromise = waitForDashboardDataRefresh(page)
+    await page.getByRole('button', { name: 'Reset Assignments' }).click()
+    await resetRefreshPromise
+
+    page.once('dialog', (dialog) => dialog.accept())
+    const setInitialRefreshPromise = waitForDashboardDataRefresh(page)
+    await page.getByRole('button', { name: 'Set Initial Assignments' }).click()
+    const dashboardData = await setInitialRefreshPromise
+
+    const scheduledAnyGameAssignments = dashboardData.assignments.filter(
+      (assignment) => assignment.gm >= 0 && assignment.gameId === anyGameChoiceId,
+    )
+    expect(scheduledAnyGameAssignments).toHaveLength(0)
   })
 })

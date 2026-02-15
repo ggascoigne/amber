@@ -8,6 +8,7 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberChoiceRow } from './utils'
 import {
   buildChoiceRowsForMember,
@@ -26,7 +27,9 @@ type GameChoicesPanelProps = {
   data: GameAssignmentDashboardData
   year: number
   onUpsertChoice: (input: UpsertGameChoiceBySlotInput) => Promise<void>
-  slotFilterId?: number | null
+  slotFilterOptions: Array<number>
+  slotFilterId: number | null
+  onSlotFilterChange: (slotFilterId: number | null) => void
   isExpanded?: boolean
   onToggleExpand?: () => void
   scrollBehavior?: 'none' | 'bounded'
@@ -41,17 +44,23 @@ export const GameChoicesPanel = ({
   data,
   year,
   onUpsertChoice,
-  slotFilterId = null,
+  slotFilterOptions,
+  slotFilterId,
+  onSlotFilterChange,
   isExpanded = false,
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameChoicesPanelProps) => {
   const configuration = useConfiguration()
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
-  const slotGameIdSet = useMemo(() => new Set(slotGames.map((game) => game.id)), [slotGames])
+  const filteredSlotGames = useMemo(
+    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    [slotFilterId, slotGames],
+  )
+  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
   const choicesByMemberId = useMemo(() => buildChoicesByMemberId(data.choices), [data.choices])
   const submissionsByMemberId = useMemo(() => buildSubmissionsByMemberId(data.submissions), [data.submissions])
-  const gameById = useMemo(() => new Map(slotGames.map((game) => [game.id, game])), [slotGames])
+  const gameById = useMemo(() => new Map(filteredSlotGames.map((game) => [game.id, game])), [filteredSlotGames])
 
   const memberRows = useMemo<Array<MemberChoiceSummaryRow>>(
     () =>
@@ -240,11 +249,22 @@ export const GameChoicesPanel = ({
         <Typography id='game-choices-panel-title' variant='h6' component='h2'>
           Member Choices
         </Typography>
-        {onToggleExpand ? (
-          <IconButton aria-label={isExpanded ? 'Exit full view' : 'Expand panel'} onClick={onToggleExpand} size='small'>
-            {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-          </IconButton>
-        ) : null}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <SlotFilterSelect
+            slotFilterOptions={slotFilterOptions}
+            slotFilterId={slotFilterId}
+            onSlotFilterChange={onSlotFilterChange}
+          />
+          {onToggleExpand ? (
+            <IconButton
+              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
+              onClick={onToggleExpand}
+              size='small'
+            >
+              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
+            </IconButton>
+          ) : null}
+        </Box>
       </Box>
       <Table<MemberChoiceSummaryRow>
         name='game-choices-by-member'

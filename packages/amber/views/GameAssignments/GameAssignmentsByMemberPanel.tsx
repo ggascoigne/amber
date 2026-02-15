@@ -8,6 +8,7 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberAssignmentSummaryRow } from './utils'
 import {
   buildAssignmentCountsByGameId,
@@ -48,8 +49,10 @@ type MemberSlotRow = {
 type GameAssignmentsByMemberPanelProps = {
   data: GameAssignmentDashboardData
   year: number
+  slotFilterOptions: Array<number>
+  slotFilterId: number | null
+  onSlotFilterChange: (slotFilterId: number | null) => void
   onUpdateAssignments: (payload: AssignmentUpdatePayload) => Promise<void>
-  slotFilterId?: number | null
   isExpanded?: boolean
   onToggleExpand?: () => void
   scrollBehavior?: 'none' | 'bounded'
@@ -58,15 +61,21 @@ type GameAssignmentsByMemberPanelProps = {
 export const GameAssignmentsByMemberPanel = ({
   data,
   year,
+  slotFilterOptions,
+  slotFilterId,
+  onSlotFilterChange,
   onUpdateAssignments,
-  slotFilterId = null,
   isExpanded = false,
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByMemberPanelProps) => {
   const configuration = useConfiguration()
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
-  const slotGameIdSet = useMemo(() => new Set(slotGames.map((game) => game.id)), [slotGames])
+  const filteredSlotGames = useMemo(
+    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    [slotFilterId, slotGames],
+  )
+  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
   const scheduledAssignments = useMemo(
     () =>
       data.assignments.filter(
@@ -76,13 +85,13 @@ export const GameAssignmentsByMemberPanel = ({
   )
   const assignmentsByMemberId = useMemo(() => buildAssignmentsByMemberId(scheduledAssignments), [scheduledAssignments])
   const assignmentCountsByGameId = useMemo(
-    () => buildAssignmentCountsByGameId(slotGames, scheduledAssignments),
-    [slotGames, scheduledAssignments],
+    () => buildAssignmentCountsByGameId(filteredSlotGames, scheduledAssignments),
+    [filteredSlotGames, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
   const submissionsByMemberId = useMemo(() => buildSubmissionsByMemberId(data.submissions), [data.submissions])
 
-  const gameById = useMemo(() => new Map(slotGames.map((game) => [game.id, game])), [slotGames])
+  const gameById = useMemo(() => new Map(filteredSlotGames.map((game) => [game.id, game])), [filteredSlotGames])
 
   const memberRows = useMemo<Array<MemberAssignmentSummaryRow>>(
     () =>
@@ -197,7 +206,7 @@ export const GameAssignmentsByMemberPanel = ({
             type: 'select',
             getOptions: (row) => {
               const options = buildMoveOptions({
-                games: slotGames,
+                games: filteredSlotGames,
                 assignmentCountsByGameId,
                 choicesByMemberSlot,
                 memberId: row.original.memberId,
@@ -258,7 +267,7 @@ export const GameAssignmentsByMemberPanel = ({
         sortingFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
       },
     ],
-    [assignmentCountsByGameId, choicesByMemberSlot, gameById, slotGames],
+    [assignmentCountsByGameId, choicesByMemberSlot, filteredSlotGames, gameById],
   )
 
   const handleSummaryRowClick = useCallback((row: Row<MemberAssignmentSummaryRow>) => {
@@ -432,11 +441,22 @@ export const GameAssignmentsByMemberPanel = ({
         <Typography id='game-assignments-by-member-title' variant='h6' component='h2'>
           Assignments by Member
         </Typography>
-        {onToggleExpand ? (
-          <IconButton aria-label={isExpanded ? 'Exit full view' : 'Expand panel'} onClick={onToggleExpand} size='small'>
-            {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-          </IconButton>
-        ) : null}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <SlotFilterSelect
+            slotFilterOptions={slotFilterOptions}
+            slotFilterId={slotFilterId}
+            onSlotFilterChange={onSlotFilterChange}
+          />
+          {onToggleExpand ? (
+            <IconButton
+              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
+              onClick={onToggleExpand}
+              size='small'
+            >
+              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
+            </IconButton>
+          ) : null}
+        </Box>
       </Box>
       <Table<MemberAssignmentSummaryRow>
         name='game-assignments-by-member'
