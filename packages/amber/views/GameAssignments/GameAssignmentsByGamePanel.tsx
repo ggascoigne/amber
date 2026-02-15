@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpdateGameAssignmentsInput } from '@amber/client'
 import type { TableAutocompleteOption, TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, FormControlLabel, IconButton, Switch, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
@@ -86,6 +86,7 @@ export const GameAssignmentsByGamePanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByGamePanelProps) => {
+  const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const draftIdRef = useRef(0)
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
   const filteredSlotGames = useMemo(
@@ -630,6 +631,17 @@ export const GameAssignmentsByGamePanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
+          <FormControlLabel
+            control={
+              <Switch
+                size='small'
+                checked={showExpandedOnly}
+                onChange={(_event, checked) => setShowExpandedOnly(checked)}
+              />
+            }
+            label='showExpanded'
+            sx={{ m: 0 }}
+          />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
@@ -663,6 +675,8 @@ export const GameAssignmentsByGamePanel = ({
           py: 0,
         }}
         getRowCanExpand={() => true}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
         scrollBehavior={scrollBehavior}
         debug={false}
         systemActions={[]}

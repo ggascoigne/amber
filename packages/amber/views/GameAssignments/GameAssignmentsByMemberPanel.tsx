@@ -1,11 +1,11 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpdateGameAssignmentsInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, FormControlLabel, IconButton, Switch, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { SlotFilterSelect } from './SlotFilterSelect'
@@ -70,6 +70,7 @@ export const GameAssignmentsByMemberPanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByMemberPanelProps) => {
+  const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
   const filteredSlotGames = useMemo(
@@ -481,6 +482,17 @@ export const GameAssignmentsByMemberPanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
+          <FormControlLabel
+            control={
+              <Switch
+                size='small'
+                checked={showExpandedOnly}
+                onChange={(_event, checked) => setShowExpandedOnly(checked)}
+              />
+            }
+            label='showExpanded'
+            sx={{ m: 0 }}
+          />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
@@ -514,6 +526,8 @@ export const GameAssignmentsByMemberPanel = ({
           py: 0,
         }}
         getRowCanExpand={() => true}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
         scrollBehavior={scrollBehavior}
         debug={false}
         systemActions={[]}

@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, FormControlLabel, IconButton, Switch, Typography } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
@@ -52,6 +52,7 @@ export const GameInterestPanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameInterestPanelProps) => {
+  const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const attendingMemberIdSet = useMemo(
     () => new Set(data.memberships.filter((membership) => membership.attending).map((membership) => membership.id)),
     [data.memberships],
@@ -327,6 +328,17 @@ export const GameInterestPanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
+          <FormControlLabel
+            control={
+              <Switch
+                size='small'
+                checked={showExpandedOnly}
+                onChange={(_event, checked) => setShowExpandedOnly(checked)}
+              />
+            }
+            label='showExpanded'
+            sx={{ m: 0 }}
+          />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
@@ -361,6 +373,8 @@ export const GameInterestPanel = ({
           py: 0,
         }}
         getRowCanExpand={() => true}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
         scrollBehavior={scrollBehavior}
         debug={false}
         systemActions={[]}

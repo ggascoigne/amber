@@ -395,6 +395,7 @@ export const TableContent = <T extends RowData>({
   editing,
   renderExpandedContent,
   expandedContentSx,
+  showExpandedOnly = false,
 }: {
   table: TableInstance<T>
   onRowClick?: (row: Row<T>) => void
@@ -411,8 +412,13 @@ export const TableContent = <T extends RowData>({
   editing: TableEditingState<T>
   renderExpandedContent?: (row: Row<T>) => ReactNode
   expandedContentSx?: SxProps<Theme>
+  showExpandedOnly?: boolean
 }): ReactElement => {
-  const { rows } = table.getRowModel()
+  const allRows = table.getRowModel().rows
+  const rows = useMemo(
+    () => (showExpandedOnly ? allRows.filter((row) => row.getIsExpanded()) : allRows),
+    [allRows, showExpandedOnly],
+  )
   const [warnOnRows, setWarnOnRows] = useState(true)
 
   const hasExpandedContent = !!renderExpandedContent
@@ -458,7 +464,9 @@ export const TableContent = <T extends RowData>({
       const { rows: tableRows } = table.getRowModel()
       const editableCells: Array<Cell<T, unknown>> = []
 
-      tableRows.forEach((row) => {
+      const candidateRows = showExpandedOnly ? tableRows.filter((row) => row.getIsExpanded()) : tableRows
+
+      candidateRows.forEach((row) => {
         if (row.getIsGrouped()) return
         row.getVisibleCells().forEach((candidate) => {
           const isSelectable = isUserColumnId(candidate.column.id) && !candidate.column.getIsGrouped()
@@ -475,7 +483,7 @@ export const TableContent = <T extends RowData>({
       editing.startEditing(editableCells[nextIndex])
       return true
     },
-    [editing, table],
+    [editing, showExpandedOnly, table],
   )
 
   const { pagination } = table.getState()
