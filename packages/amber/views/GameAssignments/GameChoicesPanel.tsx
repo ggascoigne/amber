@@ -11,6 +11,7 @@ import type { ColumnDef, Row } from '@tanstack/react-table'
 import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberChoiceRow } from './utils'
 import {
+  buildAssignedSlotCountsByMemberId,
   buildChoiceRowsForMember,
   buildChoicesByMemberId,
   buildGameChoiceOptions,
@@ -18,6 +19,7 @@ import {
   filterGamesWithSlots,
   getGameLabel,
   getPrioritySortValue,
+  isScheduledAssignment,
 } from './utils'
 
 import { useConfiguration } from '../../utils'
@@ -38,6 +40,8 @@ type GameChoicesPanelProps = {
 type MemberChoiceSummaryRow = {
   memberId: number
   memberName: string
+  assignments: number
+  requiresAttention: boolean
 }
 
 export const GameChoicesPanel = ({
@@ -58,6 +62,17 @@ export const GameChoicesPanel = ({
     [slotFilterId, slotGames],
   )
   const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
+  const scheduledAssignments = useMemo(
+    () =>
+      data.assignments.filter(
+        (assignment) => isScheduledAssignment(assignment) && slotGameIdSet.has(assignment.gameId),
+      ),
+    [data.assignments, slotGameIdSet],
+  )
+  const assignedSlotCountsByMemberId = useMemo(
+    () => buildAssignedSlotCountsByMemberId(scheduledAssignments),
+    [scheduledAssignments],
+  )
   const choicesByMemberId = useMemo(() => buildChoicesByMemberId(data.choices), [data.choices])
   const submissionsByMemberId = useMemo(() => buildSubmissionsByMemberId(data.submissions), [data.submissions])
   const gameById = useMemo(() => new Map(filteredSlotGames.map((game) => [game.id, game])), [filteredSlotGames])
@@ -67,14 +82,26 @@ export const GameChoicesPanel = ({
       data.memberships
         .filter((membership) => membership.attending)
         .map((membership) => {
+          const memberChoices = choicesByMemberId.get(membership.id) ?? []
+          const slotIdsWithChoices = new Set(memberChoices.map((choice) => choice.slotId))
+          const hasChoicesForAllSlots = slotIdsWithChoices.size >= configuration.numberOfSlots
           const submission = submissionsByMemberId.get(membership.id)
+          const hasSubmissionEntry = Boolean(submission)
           const hasNotes = Boolean(submission?.message?.trim())
           return {
             memberId: membership.id,
             memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
+            assignments: assignedSlotCountsByMemberId.get(membership.id) ?? 0,
+            requiresAttention: !hasChoicesForAllSlots || !hasSubmissionEntry,
           }
         }),
-    [data.memberships, submissionsByMemberId],
+    [
+      assignedSlotCountsByMemberId,
+      choicesByMemberId,
+      configuration.numberOfSlots,
+      data.memberships,
+      submissionsByMemberId,
+    ],
   )
 
   const memberColumns = useMemo<Array<ColumnDef<MemberChoiceSummaryRow>>>(
@@ -83,6 +110,24 @@ export const GameChoicesPanel = ({
         accessorKey: 'memberName',
         header: 'Member',
         size: 220,
+        cell: ({ row }) => (
+          <Box
+            component='span'
+            sx={{
+              color: row.original.requiresAttention ? 'error.main' : 'text.primary',
+            }}
+          >
+            {row.original.memberName}
+          </Box>
+        ),
+      },
+      {
+        accessorKey: 'assignments',
+        header: 'Assignments',
+        size: 110,
+        meta: {
+          align: 'right',
+        },
       },
     ],
     [],

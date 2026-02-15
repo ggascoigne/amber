@@ -60,11 +60,11 @@ test.describe.serial('Game assignments dashboard', () => {
 
     await expect(nightWatchRow).toBeVisible()
 
-    const overrunCell = nightWatchRow.getByRole('cell').nth(3)
-    const spacesCell = nightWatchRow.getByRole('cell').nth(5)
+    const overrunCell = nightWatchRow.locator('[data-cell-id$="_overrun"]')
+    const spacesCell = nightWatchRow.locator('[data-cell-id$="_spaces"]')
 
-    const parseCount = async (locator: ReturnType<typeof nightWatchRow.getByRole>) => {
-      const value = (await locator.textContent())?.trim() ?? '0'
+    const parseCount = async (cellLocator: typeof overrunCell) => {
+      const value = (await cellLocator.textContent())?.trim() ?? '0'
       return Number(value)
     }
 
