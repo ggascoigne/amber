@@ -3,7 +3,7 @@ import type { GameAssignmentDashboardData } from '@amber/client'
 import type { Configuration } from '../../utils'
 import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../utils'
 import { PlayerPreference } from '../../utils/selectValues'
-import { orderChoices, rankString } from '../GameSignup/GameChoiceSelector'
+import { rankString } from '../GameSignup/GameChoiceSelector'
 
 export type DashboardAssignment = GameAssignmentDashboardData['assignments'][number]
 export type DashboardChoice = GameAssignmentDashboardData['choices'][number]
@@ -304,17 +304,67 @@ export const buildGameChoiceOptions = (games: Array<DashboardGame>, slotId: numb
   return [...specialOptions, ...options]
 }
 
+const isFirstChoiceRank = (rank: number) => rank === 0 || rank === 1
+
+export const buildGameChoiceOptionsForRow = ({
+  games,
+  slotId,
+  rank,
+  gmGameId,
+}: {
+  games: Array<DashboardGame>
+  slotId: number
+  rank: number
+  gmGameId?: number | null
+}) => {
+  const slotGames = games.filter(
+    (game) =>
+      hasValidSlotId(game) &&
+      game.slotId === slotId &&
+      isUserGameCategory(game.category) &&
+      (isFirstChoiceRank(rank) || !gmGameId || game.id !== gmGameId),
+  )
+  const noGameOption = games.find((game) => game.slotId === slotId && isNoGameCategory(game.category))
+  const anyGameOption = games.find((game) => isAnyGameCategory(game.category))
+
+  const userOptions = slotGames
+    .slice()
+    .sort((leftGame, rightGame) => {
+      const leftIsGmGame = gmGameId === leftGame.id
+      const rightIsGmGame = gmGameId === rightGame.id
+      if (leftIsGmGame !== rightIsGmGame) {
+        return leftIsGmGame ? -1 : 1
+      }
+      return formatGameName(leftGame).localeCompare(formatGameName(rightGame))
+    })
+    .map((game) => {
+      const isGmGame = gmGameId === game.id
+      return {
+        value: game.id,
+        label: formatGameName(game),
+        fontWeight: isGmGame ? 700 : undefined,
+      }
+    })
+
+  const specialOptions = [
+    noGameOption ? { value: noGameOption.id, label: 'No Game' } : null,
+    anyGameOption ? { value: anyGameOption.id, label: 'Any Game' } : null,
+  ].filter((option): option is { value: number; label: string } => !!option)
+
+  return [...userOptions, ...specialOptions]
+}
+
 export const buildChoiceRowsForMember = ({
   memberId,
   choices,
   configuration,
-  gameCategoryByGameId,
+  gmGameIdBySlotId,
   slotIds,
 }: {
   memberId: number
   choices: Array<DashboardChoice>
   configuration: Configuration
-  gameCategoryByGameId: Map<number, DashboardGame['category']>
+  gmGameIdBySlotId?: Map<number, number>
   slotIds?: Array<number>
 }): Array<MemberChoiceRow> => {
   const rows: Array<MemberChoiceRow> = []
@@ -324,16 +374,24 @@ export const buildChoiceRowsForMember = ({
 
   slotsToShow.forEach((slotId) => {
     const slotChoices = choices.filter((choice) => choice.slotId === slotId)
-    const ordered = orderChoices(slotChoices)
-    const gmChoice = ordered[0]
-    const hasGmChoice =
-      !!gmChoice?.gameId &&
-      !isNoGameCategory(gameCategoryByGameId.get(gmChoice.gameId)) &&
-      !isAnyGameCategory(gameCategoryByGameId.get(gmChoice.gameId))
-    const ranks = hasGmChoice ? [0, 2, 3, 4] : [1, 2, 3, 4]
+    const gmGameId = gmGameIdBySlotId?.get(slotId) ?? null
+    const rankOneChoice = slotChoices.find((choice) => choice.rank === 1)
+    const rankZeroChoice = slotChoices.find((choice) => choice.rank === 0)
+    const firstChoice =
+      [rankOneChoice, rankZeroChoice].find((choice) => (choice?.gameId ?? null) !== null) ??
+      rankOneChoice ??
+      rankZeroChoice
+    const firstChoiceGameId = firstChoice?.gameId ?? null
+    const isGmFirstChoice = firstChoiceGameId !== null && gmGameId !== null && firstChoiceGameId === gmGameId
+    const firstRank = isGmFirstChoice ? 0 : 1
+    const ranks = [firstRank, 2, 3, 4]
 
     ranks.forEach((rank) => {
-      const choice = slotChoices.find((entry) => entry.rank === rank)
+      const choice =
+        rank === firstRank
+          ? (firstChoice ?? slotChoices.find((entry) => entry.rank === rank))
+          : slotChoices.find((entry) => entry.rank === rank)
+      const fallbackGameId = rank === 0 && firstRank === 0 ? gmGameId : null
       rows.push({
         rowId: `member-${memberId}-slot-${slotId}-rank-${rank}`,
         memberId,
@@ -341,7 +399,7 @@ export const buildChoiceRowsForMember = ({
         slotLabel: `Slot ${slotId}`,
         rank,
         rankLabel: getPriorityLabel(rank, choice?.returningPlayer ?? false),
-        gameId: choice?.gameId ?? null,
+        gameId: choice?.gameId ?? fallbackGameId,
         returningPlayer: choice?.returningPlayer ?? false,
       })
     })

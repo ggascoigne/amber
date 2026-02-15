@@ -14,15 +14,22 @@ import {
   buildAssignedSlotCountsByMemberId,
   buildChoiceRowsForMember,
   buildChoicesByMemberId,
-  buildGameChoiceOptions,
+  buildGameChoiceOptionsForRow,
   buildSubmissionsByMemberId,
   filterGamesWithSlots,
   getGameLabel,
+  getPriorityLabel,
   getPrioritySortValue,
   isScheduledAssignment,
 } from './utils'
 
-import { buildGameCategoryByGameId, isAnyGameCategory, isNoGameCategory, useConfiguration } from '../../utils'
+import {
+  buildGameCategoryByGameId,
+  isAnyGameCategory,
+  isNoGameCategory,
+  isUserGameCategory,
+  useConfiguration,
+} from '../../utils'
 
 type GameChoicesPanelProps = {
   data: GameAssignmentDashboardData
@@ -133,41 +140,6 @@ export const GameChoicesPanel = ({
     [],
   )
 
-  const choiceColumns = useMemo<Array<ColumnDef<MemberChoiceRow>>>(
-    () => [
-      {
-        accessorKey: 'slotLabel',
-        header: 'Slot',
-        size: 90,
-      },
-      {
-        accessorKey: 'rankLabel',
-        header: 'Priority',
-        size: 110,
-        sortingFn: (rowA, rowB) =>
-          getPrioritySortValue(rowA.original.rank, rowA.original.returningPlayer) -
-          getPrioritySortValue(rowB.original.rank, rowB.original.returningPlayer),
-      },
-      {
-        accessorKey: 'gameId',
-        header: 'Game',
-        size: 260,
-        cell: ({ row }) => getGameLabel(row.original.gameId, gameById),
-        meta: {
-          edit: {
-            type: 'select',
-            getOptions: (row) => {
-              const options = buildGameChoiceOptions(data.games, row.original.slotId)
-              return [{ value: '', label: 'No Selection' }, ...options]
-            },
-            parseValue: (value) => (value === '' ? null : Number(value)),
-          },
-        },
-      },
-    ],
-    [data.games, gameById],
-  )
-
   const handleSummaryRowClick = useCallback((row: Row<MemberChoiceSummaryRow>) => {
     if (!row.getCanExpand()) return
     row.toggleExpanded()
@@ -177,6 +149,15 @@ export const GameChoicesPanel = ({
     (row: Row<MemberChoiceSummaryRow>) => {
       const { memberId } = row.original
       const choices = choicesByMemberId.get(memberId) ?? []
+      const gmGameIdBySlotId = new Map<number, number>()
+      data.assignments.forEach((assignment) => {
+        if (assignment.memberId !== memberId || assignment.gm === 0) return
+        const assignmentGame = assignment.game
+        const assignmentGameSlotId = assignmentGame?.slotId ?? 0
+        if (!assignmentGame || assignmentGameSlotId <= 0 || !isUserGameCategory(assignmentGame.category)) return
+        if (gmGameIdBySlotId.has(assignmentGameSlotId)) return
+        gmGameIdBySlotId.set(assignmentGameSlotId, assignment.gameId)
+      })
       const filteredChoices = choices.filter((choice) => {
         if (!choice.gameId) return true
         const category = gameCategoryByGameId.get(choice.gameId)
@@ -188,22 +169,119 @@ export const GameChoicesPanel = ({
         memberId,
         choices: filteredChoices,
         configuration,
-        gameCategoryByGameId,
+        gmGameIdBySlotId,
         slotIds: slotFilterId ? [slotFilterId] : undefined,
       })
+      const slotRowsBySlotId = choiceRows.reduce((rowsBySlotId: Map<number, Array<MemberChoiceRow>>, choiceRow) => {
+        const slotRows = rowsBySlotId.get(choiceRow.slotId) ?? []
+        slotRows.push(choiceRow)
+        rowsBySlotId.set(choiceRow.slotId, slotRows)
+        return rowsBySlotId
+      }, new Map<number, Array<MemberChoiceRow>>())
+      const previousRowIdByRowId = Array.from(slotRowsBySlotId.values()).reduce(
+        (result: Map<string, string>, slotRows) => {
+          slotRows.forEach((slotRow, rowIndex) => {
+            if (rowIndex <= 0) return
+            const previousRow = slotRows[rowIndex - 1]
+            result.set(slotRow.rowId, previousRow.rowId)
+          })
+          return result
+        },
+        new Map<string, string>(),
+      )
+      const choiceColumns: Array<ColumnDef<MemberChoiceRow>> = [
+        {
+          accessorKey: 'slotLabel',
+          header: 'Slot',
+          size: 90,
+        },
+        {
+          accessorKey: 'rankLabel',
+          header: 'Priority',
+          size: 110,
+          sortingFn: (rowA, rowB) =>
+            getPrioritySortValue(rowA.original.rank, rowA.original.returningPlayer) -
+            getPrioritySortValue(rowB.original.rank, rowB.original.returningPlayer),
+        },
+        {
+          accessorKey: 'gameId',
+          header: 'Game',
+          size: 260,
+          cell: ({ getValue }) => getGameLabel(getValue<number | null>(), gameById),
+          meta: {
+            edit: {
+              type: 'select',
+              isEditable: (choiceRow, context) => {
+                const previousRowId = previousRowIdByRowId.get(choiceRow.id)
+                if (!previousRowId) return true
+                const previousRow = context.table.getRowModel().rowsById[previousRowId]
+                if (!previousRow) return false
+                const previousGameId = context.getValue(previousRow, 'gameId')
+                if (previousGameId === null) return false
+                const previousGameCategory = gameCategoryByGameId.get(Number(previousGameId))
+                if (isNoGameCategory(previousGameCategory) || isAnyGameCategory(previousGameCategory)) return false
+                return true
+              },
+              getOptions: (choiceRow) => {
+                const options = buildGameChoiceOptionsForRow({
+                  games: data.games,
+                  slotId: choiceRow.original.slotId,
+                  rank: choiceRow.original.rank,
+                  gmGameId: gmGameIdBySlotId.get(choiceRow.original.slotId),
+                })
+                return [...options, { value: '', label: 'No Selection' }]
+              },
+              parseValue: (value) => (value === '' ? null : Number(value)),
+              setValue: (choiceRow, value) => {
+                const gameId = value === null || value === undefined || value === '' ? null : Number(value)
+                const isFirstChoice = choiceRow.rank === 0 || choiceRow.rank === 1
+                if (!isFirstChoice) {
+                  return {
+                    ...choiceRow,
+                    gameId,
+                  }
+                }
+                const gmGameId = gmGameIdBySlotId.get(choiceRow.slotId) ?? null
+                const nextRank = gameId !== null && gmGameId !== null && gameId === gmGameId ? 0 : 1
+                return {
+                  ...choiceRow,
+                  gameId,
+                  rank: nextRank,
+                  rankLabel: getPriorityLabel(nextRank, choiceRow.returningPlayer),
+                }
+              },
+            },
+          },
+        },
+      ]
 
       const handleSave = async (updates: Array<TableEditRowUpdate<MemberChoiceRow>>) => {
         await Promise.all(
-          updates.map((update) => {
+          updates.flatMap((update) => {
             const { memberId: updatedMemberId, slotId, rank, gameId, returningPlayer } = update.updated
-            return onUpsertChoice({
-              memberId: updatedMemberId,
-              year,
-              slotId,
-              rank,
-              gameId,
-              returningPlayer,
-            })
+            const upserts: Array<Promise<void>> = [
+              onUpsertChoice({
+                memberId: updatedMemberId,
+                year,
+                slotId,
+                rank,
+                gameId,
+                returningPlayer,
+              }),
+            ]
+            if (update.original.rank !== rank) {
+              upserts.push(
+                onUpsertChoice({
+                  memberId: updatedMemberId,
+                  year,
+                  slotId,
+                  rank: update.original.rank,
+                  gameId: null,
+                  returningPlayer: update.original.returningPlayer,
+                }),
+              )
+            }
+            return upserts
           }),
         )
       }
@@ -270,9 +348,11 @@ export const GameChoicesPanel = ({
     },
     [
       choicesByMemberId,
-      choiceColumns,
       configuration,
+      data.assignments,
+      data.games,
       gameCategoryByGameId,
+      gameById,
       onUpsertChoice,
       slotFilterId,
       slotGameIdSet,
