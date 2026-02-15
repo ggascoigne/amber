@@ -5,9 +5,10 @@ import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, FormControl, IconButton, MenuItem, TextField, Typography } from '@mui/material'
+import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberAssignmentSummaryRow } from './utils'
 import {
   buildAssignmentCountsByGameId,
@@ -441,26 +442,11 @@ export const GameAssignmentsByMemberPanel = ({
           Assignments by Member
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <FormControl sx={{ minWidth: 110 }}>
-            <TextField
-              select
-              size='small'
-              variant='standard'
-              value={slotFilterId === null ? 'all' : `${slotFilterId}`}
-              onChange={(event) => {
-                const nextValue = event.target.value
-                onSlotFilterChange(nextValue === 'all' ? null : Number(nextValue))
-              }}
-              aria-label='Slot filter'
-            >
-              <MenuItem value='all'>All Slots</MenuItem>
-              {slotFilterOptions.map((slotValue) => (
-                <MenuItem key={slotValue} value={`${slotValue}`}>
-                  {`Slot ${slotValue}`}
-                </MenuItem>
-              ))}
-            </TextField>
-          </FormControl>
+          <SlotFilterSelect
+            slotFilterOptions={slotFilterOptions}
+            slotFilterId={slotFilterId}
+            onSlotFilterChange={onSlotFilterChange}
+          />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}

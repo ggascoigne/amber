@@ -8,17 +8,7 @@ import type {
 } from '@amber/client'
 import { useInvalidateGameAssignmentDashboardQueries, useTRPC } from '@amber/client'
 import { Loader, useLocalStorage } from '@amber/ui'
-import {
-  Box,
-  Button,
-  FormControl,
-  GlobalStyles,
-  MenuItem,
-  Stack,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-} from '@mui/material'
+import { Box, Button, GlobalStyles, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -30,6 +20,7 @@ import { GameAssignmentsByGamePanel } from './GameAssignmentsByGamePanel'
 import { GameAssignmentsByMemberPanel } from './GameAssignmentsByMemberPanel'
 import { GameChoicesPanel } from './GameChoicesPanel'
 import { GameInterestPanel } from './GameInterestPanel'
+import { SlotFilterSelect } from './SlotFilterSelect'
 import { buildAssignmentKeyFromInput, buildAssignmentKeyFromRecord, buildChoiceKey } from './utils'
 
 import { Page } from '../../components'
@@ -181,30 +172,12 @@ const GameAssignmentsTitleBar = ({
         justifyContent: 'flex-end',
       }}
     >
-      <FormControl sx={{ minWidth: 110 }}>
-        <TextField
-          select
-          size='small'
-          variant='standard'
-          value={slotFilterId === 'mixed' ? '' : slotFilterId === null ? 'all' : `${slotFilterId}`}
-          onChange={(event) => {
-            const nextValue = event.target.value
-            if (nextValue === '') return
-            onSlotFilterChange(nextValue === 'all' ? null : Number(nextValue))
-          }}
-          aria-label='Slot filter'
-        >
-          <MenuItem value='' disabled>
-            &nbsp;
-          </MenuItem>
-          <MenuItem value='all'>All Slots</MenuItem>
-          {slotFilterOptions.map((slotValue) => (
-            <MenuItem key={slotValue} value={`${slotValue}`}>
-              {`Slot ${slotValue}`}
-            </MenuItem>
-          ))}
-        </TextField>
-      </FormControl>
+      <SlotFilterSelect
+        slotFilterOptions={slotFilterOptions}
+        slotFilterId={slotFilterId}
+        onSlotFilterChange={onSlotFilterChange}
+        allowMixedState
+      />
       <ToggleButtonGroup
         value={layoutMode}
         exclusive
