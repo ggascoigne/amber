@@ -12,6 +12,23 @@ A user-visible proof is that game signup and game assignment keep behaving the s
 
 ## Progress
 
+- [x] (2026-02-15 23:08Z) Added backend summary query `gameAssignments.getAssignmentSummary` that computes assignment integrity checks for missing slots, Any Game assignments, No Game GM/player mismatches, below-minimum games, and over-cap games.
+- [x] (2026-02-15 23:08Z) Added a Game Assignments “Show Summary” button and dialog that runs the summary query on open and renders each check as a titled section with either an empty-state message or a details table.
+- [x] (2026-02-15 23:08Z) Ran validation (`pnpm tsgo`, `pnpm lint`) for summary query/dialog integration.
+- [x] (2026-02-15 22:42Z) Updated Member Choices first-choice edits so selected GM game sets priority to `GM` (rank 0) and non-GM first choices set priority to `1st` (rank 1).
+- [x] (2026-02-15 22:42Z) Added save-time cleanup upsert when first-choice rank flips between 0/1, ensuring the old rank record is cleared.
+- [x] (2026-02-15 22:42Z) Ran validation (`pnpm -F amber tsgo`, `pnpm lint`) for first-choice GM/1st rank mapping updates.
+- [x] (2026-02-15 22:38Z) Updated sequential choice edit rules so if the previous choice is `No Game` or `Any Game`, subsequent rows remain locked for that slot.
+- [x] (2026-02-15 22:38Z) Ran validation (`pnpm -F amber tsgo`, `pnpm lint`) for the no/any sequential-lock rule.
+- [x] (2026-02-15 22:37Z) Updated Member Choices edit gating to consider pending (unsaved) cell edits, so selecting one choice immediately unlocks the next row for editing.
+- [x] (2026-02-15 22:37Z) Extended shared table editability context to expose pending cell values to `isEditable` callbacks.
+- [x] (2026-02-15 22:37Z) Ran validation (`pnpm tsgo`, `pnpm lint`) after pending-edit unlock behavior update.
+- [x] (2026-02-15 22:26Z) Updated Member Choices dropdown ordering so regular games appear first, special options (`No Game`, `Any Game`) are near bottom, and `No Selection` is always last.
+- [x] (2026-02-15 22:26Z) Added dropdown emphasis for GM-owned games using bold option text and GM-first sorting in slot game options.
+- [x] (2026-02-15 22:26Z) Ran validation (`pnpm tsgo`, `pnpm lint`) after dropdown ordering/emphasis updates.
+- [x] (2026-02-15 22:19Z) Updated Member Choices editing rules: later priorities are now read-only until the previous priority has a selected game within the same slot.
+- [x] (2026-02-15 22:19Z) Updated Member Choices option lists so non-first priorities hide the member's GM game for that slot, while the first priority still allows Any Game.
+- [x] (2026-02-15 22:19Z) Ran follow-up validation (`pnpm -F amber tsgo`, `pnpm lint`) for the Member Choices editing change.
 - [x] (2026-02-15 21:32Z) Investigated the New Year kickoff path and confirmed `AddNewYearDialog` only mutates settings, so special-game bootstrap was not part of that process.
 - [x] (2026-02-15 21:32Z) Added a new server mutation `games.ensureSpecialGamesForYear` to idempotently create year-scoped special records (`no_game` per slot, one `any_game` per year).
 - [x] (2026-02-15 21:32Z) Wired `AddNewYearDialog` to call `ensureSpecialGamesForYear` after settings are written so kickoff creates special records for the target year.
@@ -24,6 +41,24 @@ A user-visible proof is that game signup and game assignment keep behaving the s
 - [x] (2026-02-15 04:32Z) Finalized outcomes, artifacts, and revision notes.
 
 ## Surprises & Discoveries
+
+- Observation: The new summary view needed fresh server state when opened, not only cached dashboard state, to reflect edits made elsewhere before returning to Game Assignments.
+  Evidence: Existing dashboard data is locally cached/optimistically updated in `GameAssignmentsPage`, while summary checks are cross-cutting integrity validations.
+
+- Observation: Persisting first-choice GM/1st transitions requires clearing the old rank row in addition to upserting the new rank, otherwise stale rank-0 or rank-1 rows can remain.
+  Evidence: `upsertGameChoiceBySlot` targets one `(member, year, slot, rank)` at a time and does not automatically move/delete another rank record.
+
+- Observation: Treating `No Game`/`Any Game` like normal non-null values in sequential gating incorrectly unlocked later priorities.
+  Evidence: Prior gating only checked `previousGameId !== null`; category checks were needed to preserve terminal-choice semantics.
+
+- Observation: Sequential edit locking based only on original row data prevented unlocking the next choice until Save, because pending edits live in table editing state rather than row originals.
+  Evidence: `isEditable` callbacks previously only received `row` and read `row.original`, which excludes unsaved `edits` in `useTableEditing`.
+
+- Observation: The shared table option type did not include display emphasis metadata, so option-level bold styling needed a small UI-table type/rendering extension.
+  Evidence: `TableEditOption` and `TableAutocompleteOption` lacked style fields; `TableCellEditor` only bolded headers.
+
+- Observation: Member Choices row construction originally inferred GM state only from rank-0 choice rows, not from assignment data, so GM labeling/filter behavior could miss cases where GM assignment existed but rank-0 choice row was absent.
+  Evidence: `buildChoiceRowsForMember` previously only looked at `ordered[0]` choice category and did not receive GM assignment context.
 
 - Observation: The “kick off new year” UI did not call any game API and only persisted setting rows, so it could not create `no_game`/`any_game` rows for new years.
   Evidence: `packages/amber/views/Settings/AddNewYearDialog.tsx` only used `settings.createSetting` and `settings.updateSetting` mutations before this follow-up.
@@ -41,6 +76,30 @@ A user-visible proof is that game signup and game assignment keep behaving the s
   Evidence: Playwright web-server startup failed with `type "public.GameCategory" does not exist`; resolved by adding `@@map("game_category")` in `packages/server/prisma/schema.prisma`.
 
 ## Decision Log
+
+- Decision: Implement summary checks as a dedicated protected backend query and trigger it on-demand from a modal, rather than deriving summary rows purely from dashboard client state.
+  Rationale: Keeps checks authoritative and aligned with current persisted DB data, while allowing a simple UI trigger (`Show Summary`).
+  Date/Author: 2026-02-15 / Codex
+
+- Decision: Handle first-choice rank changes in the client save flow with a second upsert that nulls out the old rank when rank changes.
+  Rationale: Avoids server API changes while guaranteeing consistent data when switching between GM and 1st.
+  Date/Author: 2026-02-15 / Codex
+
+- Decision: Make `No Game` and `Any Game` terminal choices for sequential editing in Member Choices (later rows stay read-only when either is selected).
+  Rationale: Matches signup intent and prevents contradictory lower-priority picks after a slot opt-out/any-choice terminal selection.
+  Date/Author: 2026-02-15 / Codex
+
+- Decision: Extend table editability callback context with a pending-aware `getValue(row, columnId)` helper and use it in Member Choices gating.
+  Rationale: Keeps sequential-lock behavior correct during inline editing without forcing immediate saves or custom table forks.
+  Date/Author: 2026-02-15 / Codex
+
+- Decision: Extend generic table edit options with optional `fontWeight` and use it for GM game emphasis in Member Choices dropdowns.
+  Rationale: Keeps the dropdown rendering reusable and avoids bespoke menu rendering logic in one panel.
+  Date/Author: 2026-02-15 / Codex
+
+- Decision: Derive GM game IDs per slot from assignment data in the Member Choices pane and use that data both for priority-row shaping (GM vs 1st) and option filtering for lower priorities.
+  Rationale: Assignment data is the authoritative source for “member is GM in this slot,” while choice rows can be incomplete or stale.
+  Date/Author: 2026-02-15 / Codex
 
 - Decision: Add a dedicated mutation (`games.ensureSpecialGamesForYear`) and call it from New Year kickoff instead of relying on migration-time backfill only.
   Rationale: Migrations backfill existing years at migration execution time but do not run when admins create a future year in-app; kickoff needs a runtime creator.
@@ -67,6 +126,18 @@ A user-visible proof is that game signup and game assignment keep behaving the s
   Date/Author: 2026-02-15 / Codex
 
 ## Outcomes & Retrospective
+
+Game Assignments now includes an on-demand integrity summary dialog that surfaces key scheduling/data issues in one place, with sectioned tables and empty-state messaging for each validation rule.
+
+First-choice priority now follows the selected game’s GM status as requested (`GM` for the member’s own game, otherwise `1st`), and rank transitions persist cleanly without orphaned old-rank choices.
+
+Sequential inline editing now respects terminal special selections: choosing `No Game` or `Any Game` in a row keeps all following rows locked for that slot.
+
+Member Choices inline editing now matches expected workflow: after setting a pending value in one priority row, the next row unlocks immediately without requiring Save.
+
+Member Choices dropdown ergonomics improved: GMed games are now visually emphasized and pinned to the top (when selectable), while special options are consistently de-emphasized at the bottom with `No Selection` last, reducing accidental picks and improving scanning.
+
+Member Choices editing now better enforces intended signup sequencing and GM constraints directly in the assignment dashboard: lower priorities remain read-only until prior priority is populated, GM slots render the first priority as GM, and non-first dropdowns hide the GM’d game.
 
 Follow-up implementation now includes runtime special-game creation during New Year kickoff. This closes the gap where migrations created historical special rows but a newly created year in Settings could still start without `no_game`/`any_game` entries.
 
