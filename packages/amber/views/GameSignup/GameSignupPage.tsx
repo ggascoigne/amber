@@ -1,5 +1,5 @@
 import type { MouseEventHandler } from 'react'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import type { ContentsOf } from '@amber/ui'
@@ -20,6 +20,7 @@ import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import {
+  buildGameCategoryByGameId,
   useConfiguration,
   useConfirmDialogOpen,
   useGameScroll,
@@ -132,7 +133,6 @@ const GameSignupPage = () => {
   const [createOrEditGameChoice, createAllGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
-  const configuration = useConfiguration()
 
   const [showFab, setShowFab] = useState(false)
   const { hasPermissions } = useAuth()
@@ -150,6 +150,24 @@ const GameSignupPage = () => {
         },
       },
     ),
+  )
+  const { data: gamesByYear } = useQuery(
+    trpc.games.getGamesByYear.queryOptions(
+      { year },
+      {
+        enabled: !!membership,
+      },
+    ),
+  )
+  const gameCategoryByGameId = useMemo(() => buildGameCategoryByGameId(gamesByYear ?? []), [gamesByYear])
+  const noGameIdBySlotId = useMemo(
+    () =>
+      new Map(
+        (gamesByYear ?? [])
+          .filter((game) => game.category === 'no_game' && (game.slotId ?? 0) > 0)
+          .map((game) => [game.slotId as number, game.id]),
+      ),
+    [gamesByYear],
   )
 
   const onCloseConfirm: MouseEventHandler = () => {
@@ -209,7 +227,7 @@ const GameSignupPage = () => {
           }
         }
 
-        if ((isNoGame(configuration, gameId) || isAnyGame(configuration, gameId)) && rank < 4) {
+        if ((isNoGame(gameCategoryByGameId, gameId) || isAnyGame(gameCategoryByGameId, gameId)) && rank < 4) {
           for (let i = rank + 1; i <= 4; i++) {
             if (thisSlotChoices[i]!.gameId) thisSlotChoices[i] = { ...thisSlotChoices[i]!, ...empty }
           }
@@ -229,7 +247,7 @@ const GameSignupPage = () => {
         // console.log('all updaters complete')
       })
     },
-    [configuration, createOrEditGameChoice, membership?.id],
+    [createOrEditGameChoice, gameCategoryByGameId, membership?.id],
   )
 
   const gameChoices = data?.gameChoices
@@ -247,7 +265,7 @@ const GameSignupPage = () => {
   if (error) {
     return <TransportError error={error} />
   }
-  if (!data || isLoading) {
+  if (!data || isLoading || !gamesByYear) {
     return <Loader />
   }
 
@@ -265,6 +283,7 @@ const GameSignupPage = () => {
     gameChoices,
     updateChoice,
     gmSlots,
+    gameCategoryByGameId,
   }
 
   if (gameSubmission?.[0] && !isAdmin) {
@@ -298,6 +317,8 @@ const GameSignupPage = () => {
           onClose={onCloseConfirm}
           gameChoices={gameChoices}
           gameSubmission={gameSubmission?.[0] ?? undefined}
+          gameCategoryByGameId={gameCategoryByGameId}
+          noGameIdBySlotId={noGameIdBySlotId}
         />
       )}
       <InView as='div' rootMargin='-100px 0px -80% 0px' onChange={(inView) => setShowFab(inView)}>

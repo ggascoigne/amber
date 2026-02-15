@@ -10,6 +10,14 @@ datasource db {
   // url      = env("DATABASE_URL")
 }
 
+enum GameCategory {
+  user
+  no_game
+  any_game
+
+  @@map("game_category")
+}
+
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Game {
   id               Int              @id @default(autoincrement())
@@ -37,6 +45,7 @@ model Game {
   teenFriendly     Boolean          @map("teen_friendly")
   type             String           @db.VarChar(18)
   year             Int
+  category         GameCategory     @default(user)
   authorId         Int?             @map("author_id")
   full             Boolean?         @default(false)
   user             User?            @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_author_id_foreign")

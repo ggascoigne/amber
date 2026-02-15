@@ -14,13 +14,11 @@ const yearInput = z.object({
   year: z.number(),
 })
 
-// keep in sync with GameChoiceSelector.tsx
-const ANY_GAME_CHOICE_ID = 144
-
 const dashboardGameSelect = {
   id: true,
   name: true,
   slotId: true,
+  category: true,
   playerMin: true,
   playerMax: true,
   playerPreference: true,
@@ -49,6 +47,7 @@ const dashboardAssignmentSelect = {
       id: true,
       name: true,
       slotId: true,
+      category: true,
     },
   },
 }
@@ -76,6 +75,7 @@ const dashboardChoiceSelect = {
       id: true,
       name: true,
       slotId: true,
+      category: true,
     },
   },
 }
@@ -352,7 +352,7 @@ export const gameAssignmentsRouter = createTRPCRouter({
       const [games, assignments, choices] = await Promise.all([
         tx.game.findMany({
           where: { year: input.year },
-          select: { id: true, slotId: true },
+          select: { id: true, slotId: true, category: true },
         }),
         tx.gameAssignment.findMany({
           where: { year: input.year },
@@ -360,11 +360,19 @@ export const gameAssignmentsRouter = createTRPCRouter({
         }),
         tx.gameChoice.findMany({
           where: { year: input.year, rank: 1, gameId: { not: null } },
-          select: { memberId: true, gameId: true },
+          select: { memberId: true, gameId: true, slotId: true },
         }),
       ])
 
-      const slotGameIdSet = new Set(games.filter((game) => (game.slotId ?? 0) > 0).map((game) => game.id))
+      const gameById = new Map(games.map((game) => [game.id, game]))
+      const slotGameIdSet = new Set(
+        games.filter((game) => game.category === 'user' && (game.slotId ?? 0) > 0).map((game) => game.id),
+      )
+      const noGameIdBySlotId = new Map(
+        games
+          .filter((game) => game.category === 'no_game' && (game.slotId ?? 0) > 0)
+          .map((game) => [game.slotId as number, game.id]),
+      )
       const scheduledAssignmentKeys = new Set(
         assignments
           .filter((assignment) => assignment.gm >= 0)
@@ -377,10 +385,12 @@ export const gameAssignmentsRouter = createTRPCRouter({
       )
 
       const gmAdds = assignments
-        .filter(
-          (assignment) =>
-            assignment.gm < 0 && assignment.gameId !== ANY_GAME_CHOICE_ID && slotGameIdSet.has(assignment.gameId),
-        )
+        .filter((assignment) => {
+          if (assignment.gm >= 0) return false
+          const assignmentGame = gameById.get(assignment.gameId)
+          if (!assignmentGame) return false
+          return assignmentGame.category === 'user' && slotGameIdSet.has(assignment.gameId)
+        })
         .filter((assignment) => !scheduledAssignmentKeys.has(`${assignment.memberId}-${assignment.gameId}`))
         .map((assignment) => ({
           memberId: assignment.memberId,
@@ -390,15 +400,36 @@ export const gameAssignmentsRouter = createTRPCRouter({
         }))
 
       const firstChoiceAdds = choices
+        .map((choice) => {
+          if (choice.gameId === null) return null
+          const selectedGame = gameById.get(choice.gameId)
+          if (!selectedGame) return null
+
+          if (selectedGame.category === 'any_game') return null
+
+          if (selectedGame.category === 'no_game') {
+            const noGameId = noGameIdBySlotId.get(choice.slotId)
+            if (!noGameId) return null
+            return {
+              memberId: choice.memberId,
+              gameId: noGameId,
+            }
+          }
+
+          if (!slotGameIdSet.has(selectedGame.id)) return null
+          return {
+            memberId: choice.memberId,
+            gameId: selectedGame.id,
+          }
+        })
         .filter(
-          (choice) =>
-            choice.gameId !== null && choice.gameId !== ANY_GAME_CHOICE_ID && slotGameIdSet.has(choice.gameId),
+          (choice): choice is { memberId: number; gameId: number } =>
+            !!choice && !scheduledAssignmentKeys.has(`${choice.memberId}-${choice.gameId}`),
         )
-        .filter((choice) => !scheduledAssignmentKeys.has(`${choice.memberId}-${choice.gameId}`))
         .filter((choice) => !gmOfferKeys.has(`${choice.memberId}-${choice.gameId}`))
         .map((choice) => ({
           memberId: choice.memberId,
-          gameId: choice.gameId ?? 0,
+          gameId: choice.gameId,
           gm: 0,
           year: input.year,
         }))

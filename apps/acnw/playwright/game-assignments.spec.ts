@@ -1,13 +1,16 @@
+import type { Game } from '@amber/client'
 import { loginAsUser } from '@amber/playwright/auth'
 import { expect, test } from '@amber/playwright/test'
 import type { Page } from '@playwright/test'
 
 const adminUserEmail = 'alex.admin@example.com'
-const anyGameChoiceId = 144
 
 type DashboardAssignment = {
   gameId: number
   gm: number
+  game?: {
+    category: Game['category']
+  }
 }
 
 type DashboardDataResponse = {
@@ -273,7 +276,7 @@ test.describe.serial('Game assignments dashboard', () => {
     const dashboardData = await setInitialRefreshPromise
 
     const scheduledAnyGameAssignments = dashboardData.assignments.filter(
-      (assignment) => assignment.gm >= 0 && assignment.gameId === anyGameChoiceId,
+      (assignment) => assignment.gm >= 0 && assignment.game?.category === 'any_game',
     )
     expect(scheduledAnyGameAssignments).toHaveLength(0)
   })

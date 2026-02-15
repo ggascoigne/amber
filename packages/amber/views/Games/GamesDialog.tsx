@@ -97,6 +97,7 @@ const getDefaultValues = (configuration: Configuration): GameDialogFormValues =>
   message: '',
   teenFriendly: false,
   year: configuration.year,
+  category: 'user',
   full: false,
   roomId: null,
 })

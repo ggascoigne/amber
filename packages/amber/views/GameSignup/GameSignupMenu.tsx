@@ -9,7 +9,7 @@ import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelecto
 
 import { GameMenu } from '../../components/GameList'
 import { TransportError } from '../../components/TransportError'
-import { useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
+import { buildGameCategoryByGameId, useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
 
 export const GameSignupMenu = () => {
   const trpc = useTRPC()
@@ -31,6 +31,14 @@ export const GameSignupMenu = () => {
       },
     ),
   )
+  const { data: gamesByYear } = useQuery(
+    trpc.games.getGamesByYear.queryOptions(
+      { year },
+      {
+        enabled: !!membership,
+      },
+    ),
+  )
 
   if (error) {
     return <TransportError error={error} />
@@ -39,11 +47,16 @@ export const GameSignupMenu = () => {
   if (!data && !membership) {
     return <Loader />
   }
+  if (!gamesByYear) {
+    return <Loader />
+  }
 
   const gameChoices = data?.gameChoices?.filter((c) => c?.gameId)
+  const gameCategoryByGameId = buildGameCategoryByGameId(gamesByYear)
 
   const decoratorParams = {
     gameChoices,
+    gameCategoryByGameId,
   }
 
   return (

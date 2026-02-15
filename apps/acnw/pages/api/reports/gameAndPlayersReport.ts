@@ -29,7 +29,7 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
         JOIN "user" u ON m.user_id = u.id
       WHERE
         m.year = ${year}
-        AND g.name != 'No Game'
+        AND g.category = 'user'
         AND ga.gm >= 0
       ORDER BY
         "Slot",

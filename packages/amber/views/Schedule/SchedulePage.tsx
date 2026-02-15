@@ -25,6 +25,7 @@ import {
   getSlotDescription,
   getSlotTimes,
   isMorningSlot,
+  isUserGameCategory,
   SettingValue,
   SlotFormat,
   useConfiguration,
@@ -126,8 +127,7 @@ const getIcalUrl = (configuration: Configuration, schedule: Schedule[]) =>
     schedule
       .map((gas) => {
         const { game } = gas
-        // skip "no game" games
-        if (!game || game.year === 0) return null
+        if (!game || !isUserGameCategory(game.category)) return null
 
         const slotId = game.slotId!
         const [start, end] = getSlotTimes(configuration, game.year)[slotId - 1]

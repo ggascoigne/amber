@@ -1,8 +1,9 @@
 import type { GameAssignmentDashboardData } from '@amber/client'
 
 import type { Configuration } from '../../utils'
+import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../utils'
 import { PlayerPreference } from '../../utils/selectValues'
-import { isAnyGame, isNoGame, orderChoices, rankString } from '../GameSignup/GameChoiceSelector'
+import { orderChoices, rankString } from '../GameSignup/GameChoiceSelector'
 
 export type DashboardAssignment = GameAssignmentDashboardData['assignments'][number]
 export type DashboardChoice = GameAssignmentDashboardData['choices'][number]
@@ -222,7 +223,12 @@ export const buildMoveOptions = ({
   memberId: number | null
   slotId: number
 }): Array<MoveOption> => {
-  const slotGames = games.filter((game) => hasValidSlotId(game) && game.slotId === slotId)
+  const slotGames = games.filter(
+    (game) =>
+      hasValidSlotId(game) &&
+      game.slotId === slotId &&
+      (isUserGameCategory(game.category) || isNoGameCategory(game.category)),
+  )
 
   const options = slotGames.map((game) => {
     const choice = getChoiceForGame(choicesByMemberSlot, memberId, slotId, game.id)
@@ -241,6 +247,7 @@ export const buildMoveOptions = ({
     return {
       gameId: game.id,
       name: formatGameName(game),
+      category: game.category,
       priorityLabel,
       overrunLabel,
       shortfallLabel,
@@ -256,43 +263,58 @@ export const buildMoveOptions = ({
       if (left.prioritySortValue !== right.prioritySortValue) {
         return left.prioritySortValue - right.prioritySortValue
       }
+      if (left.category !== right.category) {
+        if (left.category === 'no_game') return 1
+        if (right.category === 'no_game') return -1
+      }
       return left.name.localeCompare(right.name)
     })
-    .map(({ rank: _rank, prioritySortValue: _prioritySortValue, ...option }) => option)
+    .map(({ category: _category, rank: _rank, prioritySortValue: _prioritySortValue, ...option }) => option)
 }
 
 export const getGameLabel = (
-  configuration: Configuration,
   gameId: number | null | undefined,
   gameById: Map<number, DashboardGame>,
   fallbackLabel = 'Unknown game',
 ) => {
   if (gameId === null || gameId === undefined) return 'No Selection'
-  if (isNoGame(configuration, gameId)) return 'No Game'
-  if (isAnyGame(configuration, gameId)) return 'Any Game'
-  return formatGameName(gameById.get(gameId), fallbackLabel)
+  const game = gameById.get(gameId)
+  if (isNoGameCategory(game?.category)) return 'No Game'
+  if (isAnyGameCategory(game?.category)) return 'Any Game'
+  return formatGameName(game, fallbackLabel)
 }
 
-export const buildGameChoiceOptions = (configuration: Configuration, games: Array<DashboardGame>, slotId: number) => {
-  const slotGames = games.filter((game) => hasValidSlotId(game) && game.slotId === slotId)
+export const buildGameChoiceOptions = (games: Array<DashboardGame>, slotId: number) => {
+  const slotGames = games.filter(
+    (game) => hasValidSlotId(game) && game.slotId === slotId && isUserGameCategory(game.category),
+  )
+  const noGameOption = games.find((game) => game.slotId === slotId && isNoGameCategory(game.category))
+  const anyGameOption = games.find((game) => isAnyGameCategory(game.category))
 
   const options = slotGames.map((game) => ({
     value: game.id,
     label: formatGameName(game),
   }))
 
-  return [{ value: slotId, label: 'No Game' }, { value: 144, label: 'Any Game' }, ...options]
+  const specialOptions = [
+    noGameOption ? { value: noGameOption.id, label: 'No Game' } : null,
+    anyGameOption ? { value: anyGameOption.id, label: 'Any Game' } : null,
+  ].filter((option): option is { value: number; label: string } => !!option)
+
+  return [...specialOptions, ...options]
 }
 
 export const buildChoiceRowsForMember = ({
   memberId,
   choices,
   configuration,
+  gameCategoryByGameId,
   slotIds,
 }: {
   memberId: number
   choices: Array<DashboardChoice>
   configuration: Configuration
+  gameCategoryByGameId: Map<number, DashboardGame['category']>
   slotIds?: Array<number>
 }): Array<MemberChoiceRow> => {
   const rows: Array<MemberChoiceRow> = []
@@ -305,7 +327,9 @@ export const buildChoiceRowsForMember = ({
     const ordered = orderChoices(slotChoices)
     const gmChoice = ordered[0]
     const hasGmChoice =
-      !!gmChoice?.gameId && !isNoGame(configuration, gmChoice.gameId) && !isAnyGame(configuration, gmChoice.gameId)
+      !!gmChoice?.gameId &&
+      !isNoGameCategory(gameCategoryByGameId.get(gmChoice.gameId)) &&
+      !isAnyGameCategory(gameCategoryByGameId.get(gmChoice.gameId))
     const ranks = hasGmChoice ? [0, 2, 3, 4] : [1, 2, 3, 4]
 
     ranks.forEach((rank) => {

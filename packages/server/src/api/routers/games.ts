@@ -1,10 +1,91 @@
 import { debug } from 'debug'
 import { z } from 'zod'
 
+import type { Prisma } from '../../generated/prisma/client'
 import { inRlsTransaction } from '../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
 const log = debug('amber:server:api:routers:games')
+
+type SpecialGameTemplate = Omit<Prisma.GameCreateManyInput, 'slotId' | 'year' | 'category'>
+
+const specialGameTemplateSelect = {
+  description: true,
+  lateFinish: true,
+  lateStart: true,
+  name: true,
+  playerMax: true,
+  playerMin: true,
+  roomId: true,
+  shortName: true,
+  charInstructions: true,
+  estimatedLength: true,
+  gameContactEmail: true,
+  genre: true,
+  gmNames: true,
+  message: true,
+  playerPreference: true,
+  playersContactGm: true,
+  returningPlayers: true,
+  setting: true,
+  slotConflicts: true,
+  slotPreference: true,
+  teenFriendly: true,
+  type: true,
+  authorId: true,
+  full: true,
+} satisfies Prisma.GameSelect
+
+const defaultNoGameTemplate: SpecialGameTemplate = {
+  description: 'I am taking this slot off.',
+  lateFinish: false,
+  lateStart: null,
+  name: 'No Game',
+  playerMax: 999,
+  playerMin: 0,
+  roomId: null,
+  shortName: null,
+  charInstructions: '',
+  estimatedLength: 'n/a',
+  gameContactEmail: '',
+  genre: 'other',
+  gmNames: null,
+  message: '',
+  playerPreference: 'Any',
+  playersContactGm: false,
+  returningPlayers: '',
+  setting: '',
+  slotConflicts: '',
+  slotPreference: 0,
+  teenFriendly: true,
+  type: 'Other',
+  authorId: null,
+  full: false,
+}
+
+const defaultAnyGameTemplate: SpecialGameTemplate = {
+  ...defaultNoGameTemplate,
+  description: 'Assign me to any game in this slot.',
+  name: 'Any Game',
+}
+
+const buildNoGameCreateInput = (
+  template: SpecialGameTemplate,
+  slotId: number,
+  year: number,
+): Prisma.GameCreateManyInput => ({
+  ...template,
+  slotId,
+  year,
+  category: 'no_game',
+})
+
+const buildAnyGameCreateInput = (template: SpecialGameTemplate, year: number): Prisma.GameUncheckedCreateInput => ({
+  ...template,
+  slotId: null,
+  year,
+  category: 'any_game',
+})
 
 // You may want to adjust includes/fragments as needed
 export const gameWithGmsAndRoom = {
@@ -72,16 +153,10 @@ export const gamesRouter = createTRPCRouter({
       inRlsTransaction(ctx, async (tx) =>
         tx.game.findMany({
           where: {
-            OR: [
-              {
-                AND: [{ OR: [{ year: input.year }, { year: 0 }] }, { slotId: input.slotId }],
-              },
-              {
-                AND: [{ year: 0 }, { slotId: null }],
-              },
-            ],
+            year: input.year,
+            OR: [{ slotId: input.slotId }, { category: 'any_game' }],
           },
-          orderBy: [{ year: 'desc' }, { slotId: 'asc' }, { name: 'asc' }],
+          orderBy: [{ category: 'asc' }, { name: 'asc' }],
           include: gameWithGmsAndRoom,
         }),
       ),
@@ -100,6 +175,7 @@ export const gamesRouter = createTRPCRouter({
           where: {
             year: input.year,
             slotId: input.slotId,
+            category: 'user',
           },
           orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
           include: gameWithGmsAndRoom,
@@ -117,12 +193,96 @@ export const gamesRouter = createTRPCRouter({
       inRlsTransaction(ctx, async (tx) =>
         tx.game.findMany({
           where: {
-            OR: [{ OR: [{ year: input.year }, { year: 0 }] }, { year: 0 }],
+            year: input.year,
           },
-          orderBy: [{ year: 'desc' }, { slotId: 'asc' }, { name: 'asc' }],
+          orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
           include: gameWithGmsAndRoom,
         }),
       ),
+    ),
+
+  ensureSpecialGamesForYear: protectedProcedure
+    .input(
+      z.object({
+        year: z.number(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) =>
+      inRlsTransaction(ctx, async (tx) => {
+        const [slots, existingSpecialGames, noGameTemplates, anyGameTemplate] = await Promise.all([
+          tx.slot.findMany({
+            select: { id: true },
+            orderBy: [{ id: 'asc' }],
+          }),
+          tx.game.findMany({
+            where: {
+              year: input.year,
+              category: {
+                in: ['no_game', 'any_game'],
+              },
+            },
+            select: {
+              slotId: true,
+              category: true,
+            },
+          }),
+          tx.game.findMany({
+            where: {
+              category: 'no_game',
+              slotId: { not: null },
+            },
+            select: {
+              ...specialGameTemplateSelect,
+              slotId: true,
+            },
+            orderBy: [{ year: 'desc' }, { id: 'desc' }],
+          }),
+          tx.game.findFirst({
+            where: { category: 'any_game' },
+            select: specialGameTemplateSelect,
+            orderBy: [{ year: 'desc' }, { id: 'desc' }],
+          }),
+        ])
+
+        const existingNoGameSlotIds = new Set(
+          existingSpecialGames
+            .filter((game) => game.category === 'no_game' && (game.slotId ?? 0) > 0)
+            .map((game) => game.slotId as number),
+        )
+        const hasAnyGame = existingSpecialGames.some((game) => game.category === 'any_game')
+
+        const noGameTemplateBySlotId = new Map<number, SpecialGameTemplate>()
+        noGameTemplates.forEach((game) => {
+          if ((game.slotId ?? 0) <= 0 || noGameTemplateBySlotId.has(game.slotId as number)) return
+          const { slotId: _slotId, ...template } = game
+          noGameTemplateBySlotId.set(game.slotId as number, template)
+        })
+
+        const noGameCreates = slots
+          .filter((slot) => !existingNoGameSlotIds.has(slot.id))
+          .map((slot) =>
+            buildNoGameCreateInput(noGameTemplateBySlotId.get(slot.id) ?? defaultNoGameTemplate, slot.id, input.year),
+          )
+
+        if (noGameCreates.length) {
+          await tx.game.createMany({
+            data: noGameCreates,
+          })
+        }
+
+        let createdAnyGameCount = 0
+        if (!hasAnyGame) {
+          await tx.game.create({
+            data: buildAnyGameCreateInput(anyGameTemplate ?? defaultAnyGameTemplate, input.year),
+          })
+          createdAnyGameCount = 1
+        }
+
+        return {
+          createdNoGameCount: noGameCreates.length,
+          createdAnyGameCount,
+        }
+      }),
     ),
 
   getSmallGamesByYear: publicProcedure
@@ -134,7 +294,7 @@ export const gamesRouter = createTRPCRouter({
     .query(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) =>
         tx.game.findMany({
-          where: { year: input.year },
+          where: { year: input.year, category: 'user' },
           orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
           take: 1,
           include: gameWithGmsAndRoom,
@@ -154,6 +314,7 @@ export const gamesRouter = createTRPCRouter({
           where: {
             slotId: 1,
             year: input.year,
+            category: 'user',
           },
           orderBy: [{ name: 'asc' }],
           take: 1,

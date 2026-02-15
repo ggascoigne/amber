@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 
-import { isEveningSlot, isMorningSlot, maskEmail } from '../../utils'
+import { isEveningSlot, isMorningSlot, isNoGameCategory, isUserGameCategory, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import type { GameDecorator, GameDecoratorParams } from '../types'
 
@@ -203,7 +203,7 @@ export const GameCard = React.memo(
       <>{headerContent}</>
     )
 
-    if (game.year === 0) {
+    if (!isUserGameCategory(game.category)) {
       const content = (
         <CardBody>
           <GridContainer
@@ -217,7 +217,7 @@ export const GameCard = React.memo(
             ]}
           >
             <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
-              <MultiLine text={name === 'No Game' ? "I'm taking this slot off" : description} />
+              <MultiLine text={isNoGameCategory(game.category) ? "I'm taking this slot off" : description} />
             </Field>
           </GridContainer>
         </CardBody>

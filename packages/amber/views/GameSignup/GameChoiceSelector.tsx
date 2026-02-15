@@ -5,14 +5,16 @@ import CheckIcon from '@mui/icons-material/Check'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 
 import { Perms, useAuth } from '../../components/Auth'
-import type { Configuration } from '../../utils'
-import { useConfiguration } from '../../utils'
+import type { GameCategoryByGameId } from '../../utils'
+import { isAnyGameCategory, isAnyGameId, isNoGameCategory, isNoGameId } from '../../utils'
 
-// first N game ids are the No Game in Slot N entries ... :(
-export const isNoGame = (configuration: Configuration, id: number) => id <= configuration.numberOfSlots
+export const isNoGame = (gameCategoryByGameId: GameCategoryByGameId, id: number | null | undefined) =>
+  isNoGameId(gameCategoryByGameId, id)
 
-// 144 is the magic number of the Any Game entry :(
-export const isAnyGame = (configuration: Configuration, id: number) => id === 144
+export const isAnyGame = (gameCategoryByGameId: GameCategoryByGameId, id: number | null | undefined) =>
+  isAnyGameId(gameCategoryByGameId, id)
+
+const EMPTY_GAME_CATEGORY_BY_GAME_ID: GameCategoryByGameId = new Map()
 
 export enum RankStyle {
   small,
@@ -99,6 +101,7 @@ export interface SelectorParams {
   gameChoices?: GameChoice[]
   updateChoice?: (params: SelectorUpdate) => void
   gmSlots?: GameChoice[]
+  gameCategoryByGameId?: GameCategoryByGameId
 }
 
 export type GameChoiceSelectorProps = {
@@ -127,13 +130,13 @@ export const GameChoiceSelector = ({
   gameChoices,
   updateChoice,
   gmSlots,
+  gameCategoryByGameId: _gameCategoryByGameId,
 }: GameChoiceSelectorProps) => {
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
-  const configuration = useConfiguration()
 
   const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length
 
@@ -167,7 +170,7 @@ export const GameChoiceSelector = ({
     })
   }
 
-  const isNoOrAnyGame = isNoGame(configuration, game.id) || isAnyGame(configuration, game.id)
+  const isNoOrAnyGame = isNoGameCategory(game.category) || isAnyGameCategory(game.category)
 
   if (game.full && !isAdmin) {
     return (
@@ -347,10 +350,9 @@ type SlotDecoratorCheckMarkProps = {
   slot: number
 } & SelectorParams
 
-// 144 is the magic number of the Any Game entry :(
-const isNoGameOrAnyGame = (configuration: Configuration, choice?: GameChoice) => {
+const isNoGameOrAnyGame = (gameCategoryByGameId: GameCategoryByGameId, choice?: GameChoice) => {
   const id = choice?.gameId
-  return id && (isNoGame(configuration, id) || isAnyGame(configuration, id))
+  return id && (isNoGame(gameCategoryByGameId, id) || isAnyGame(gameCategoryByGameId, id))
 }
 
 export const orderChoices = (choices?: GameChoice[]) => [
@@ -361,22 +363,31 @@ export const orderChoices = (choices?: GameChoice[]) => [
   choices?.find((c) => c?.rank === 4),
 ]
 
-export const isSlotComplete = (configuration: Configuration, choices?: GameChoice[]) => {
+export const isSlotComplete = (gameCategoryByGameId: GameCategoryByGameId, choices?: GameChoice[]) => {
   if (!choices?.length) return false
 
   const ordered = orderChoices(choices)
 
   const firstOrRunning = ordered[1]?.gameId ?? ordered[0]?.gameId
   if (firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && ordered[4]?.gameId) return true
-  if (isNoGameOrAnyGame(configuration, ordered[1])) return true
-  if (firstOrRunning && isNoGameOrAnyGame(configuration, ordered[2])) return true
-  if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(configuration, ordered[3])) return true
-  return !!(firstOrRunning && ordered[2]?.gameId && ordered[3]?.gameId && isNoGameOrAnyGame(configuration, ordered[4]))
+  if (isNoGameOrAnyGame(gameCategoryByGameId, ordered[1])) return true
+  if (firstOrRunning && isNoGameOrAnyGame(gameCategoryByGameId, ordered[2])) return true
+  if (firstOrRunning && ordered[2]?.gameId && isNoGameOrAnyGame(gameCategoryByGameId, ordered[3])) return true
+  return !!(
+    firstOrRunning &&
+    ordered[2]?.gameId &&
+    ordered[3]?.gameId &&
+    isNoGameOrAnyGame(gameCategoryByGameId, ordered[4])
+  )
 }
 
-export const SlotDecoratorCheckMark = ({ year, slot, gameChoices }: SlotDecoratorCheckMarkProps) => {
-  const configuration = useConfiguration()
+export const SlotDecoratorCheckMark = ({
+  year,
+  slot,
+  gameChoices,
+  gameCategoryByGameId = EMPTY_GAME_CATEGORY_BY_GAME_ID,
+}: SlotDecoratorCheckMarkProps) => {
   const thisSlotChoices = gameChoices?.filter((c) => c?.year === year && c.slotId === slot + 1)
-  const isComplete = isSlotComplete(configuration, thisSlotChoices)
+  const isComplete = isSlotComplete(gameCategoryByGameId, thisSlotChoices)
   return isComplete ? <CheckIcon sx={{ color: '#ffe100', position: 'absolute', left: -6, bottom: -8 }} /> : null
 }
