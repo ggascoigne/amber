@@ -21,7 +21,7 @@ import type { FormikHelpers } from 'formik'
 import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './membershipUtils'
 
 import { TransportError } from '../../components/TransportError'
-import { getGameAssignments, useConfiguration, useYearFilter } from '../../utils'
+import { getGameAssignments, isAnyGameCategory, isNoGameCategory, useConfiguration, useYearFilter } from '../../utils'
 import type { MembershipType } from '../../utils/apiTypes'
 
 type GameAssignmentEditNode = CreateGameAssignmentInputType
@@ -67,12 +67,33 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     ),
   )
 
-  const gameOptions = useMemo(
+  const gameOptions = useMemo(() => {
+    const optionsBySlotId = new Map<number, Array<{ value: number; text: string }>>()
+
+    range(configuration.numberOfSlots + 1, 1).forEach((slotId) => {
+      const options = (gData ?? [])
+        .filter((game) => game.slotId === slotId && !isAnyGameCategory(game.category))
+        .sort((left, right) => {
+          const leftNoGame = isNoGameCategory(left.category)
+          const rightNoGame = isNoGameCategory(right.category)
+          if (leftNoGame !== rightNoGame) return leftNoGame ? -1 : 1
+          return left.name.localeCompare(right.name)
+        })
+        .map((game) => ({ value: game.id, text: game.name }))
+
+      optionsBySlotId.set(slotId, options)
+    })
+
+    return range(configuration.numberOfSlots).map((slot) => optionsBySlotId.get(slot + 1) ?? [])
+  }, [configuration.numberOfSlots, gData])
+  const noGameIdBySlotId = useMemo(
     () =>
-      range(configuration.numberOfSlots).map((slot) =>
-        gData?.filter((g) => g.slotId === slot + 1).map((g) => ({ value: g.id, text: g.name })),
+      new Map(
+        (gData ?? [])
+          .filter((game) => isNoGameCategory(game.category) && (game.slotId ?? 0) > 0)
+          .map((game) => [game.slotId as number, game.id]),
       ),
-    [configuration.numberOfSlots, gData],
+    [gData],
   )
 
   if (sError || gError) {
@@ -83,8 +104,10 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
     return <Loader />
   }
 
+  const getDefaultGameIdForSlot = (slot: number) => noGameIdBySlotId.get(slot) ?? gameOptions[slot - 1]?.[0]?.value ?? 0
+
   const empty = (slot: number): GameAssignmentEditNode => ({
-    gameId: slot,
+    gameId: getDefaultGameIdForSlot(slot),
     gm: 0,
     memberId,
     year,

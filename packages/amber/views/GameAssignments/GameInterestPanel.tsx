@@ -19,8 +19,7 @@ import {
   isScheduledAssignment,
 } from './utils'
 
-import { useConfiguration } from '../../utils'
-import { isAnyGame, isNoGame } from '../GameSignup/GameChoiceSelector'
+import { buildGameCategoryByGameId, isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../utils'
 
 type GameInterestRow = {
   rowId: string
@@ -53,12 +52,15 @@ export const GameInterestPanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameInterestPanelProps) => {
-  const configuration = useConfiguration()
   const attendingMemberIdSet = useMemo(
     () => new Set(data.memberships.filter((membership) => membership.attending).map((membership) => membership.id)),
     [data.memberships],
   )
-  const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
+  const gameCategoryByGameId = useMemo(() => buildGameCategoryByGameId(data.games), [data.games])
+  const slotGames = useMemo(
+    () => filterGamesWithSlots(data.games).filter((game) => isUserGameCategory(game.category)),
+    [data.games],
+  )
   const filteredSlotGames = useMemo(
     () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
     [slotFilterId, slotGames],
@@ -79,6 +81,7 @@ export const GameInterestPanel = ({
     const gameIdsBySlotId = new Map<number, Array<number>>()
     filteredSlotGames.forEach((game) => {
       if (!game.slotId) return
+      if (!isUserGameCategory(game.category)) return
       const gameIds = gameIdsBySlotId.get(game.slotId) ?? []
       gameIds.push(game.id)
       gameIdsBySlotId.set(game.slotId, gameIds)
@@ -91,9 +94,10 @@ export const GameInterestPanel = ({
     data.choices.forEach((choice) => {
       if (!attendingMemberIdSet.has(choice.memberId)) return
       if (!choice.gameId) return
-      if (isNoGame(configuration, choice.gameId)) return
+      const choiceCategory = gameCategoryByGameId.get(choice.gameId)
+      if (isNoGameCategory(choiceCategory)) return
 
-      if (isAnyGame(configuration, choice.gameId)) {
+      if (isAnyGameCategory(choiceCategory)) {
         const gameIds = slotGameIdsBySlotId.get(choice.slotId) ?? []
         gameIds.forEach((gameId) => {
           const list = map.get(gameId) ?? []
@@ -109,7 +113,7 @@ export const GameInterestPanel = ({
       map.set(choice.gameId, list)
     })
     return map
-  }, [attendingMemberIdSet, configuration, data.choices, slotGameIdSet, slotGameIdsBySlotId])
+  }, [attendingMemberIdSet, data.choices, gameCategoryByGameId, slotGameIdSet, slotGameIdsBySlotId])
 
   const interestCountsByGameId = useMemo(() => {
     const counts = new Map<number, number>()
@@ -252,7 +256,7 @@ export const GameInterestPanel = ({
         const existingRow = interestRowsByMemberId.get(memberId)
         const prioritySortValue = getPrioritySortValue(rank, returningPlayer)
         if (existingRow && existingRow.prioritySortValue <= prioritySortValue) return
-        const priorityLabel = isAnyGame(configuration, choice.gameId ?? 0)
+        const priorityLabel = isAnyGameCategory(gameCategoryByGameId.get(choice.gameId ?? 0))
           ? `${getPriorityLabel(rank, returningPlayer)} (Any Game)`
           : getPriorityLabel(rank, returningPlayer)
 
@@ -298,7 +302,7 @@ export const GameInterestPanel = ({
         />
       )
     },
-    [choicesByGameId, configuration, interestColumns],
+    [choicesByGameId, gameCategoryByGameId, interestColumns],
   )
 
   return (

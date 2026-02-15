@@ -65,6 +65,7 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
   )
   const createSetting = useMutation(trpc.settings.createSetting.mutationOptions())
   const updateSetting = useMutation(trpc.settings.updateSetting.mutationOptions())
+  const ensureSpecialGamesForYear = useMutation(trpc.games.ensureSpecialGamesForYear.mutationOptions())
   const invalidateSettingsQueries = useInvalidateSettingsQueries()
   const notify = useNotification()
 
@@ -161,18 +162,42 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         return acc
       }, [])
 
-      Promise.allSettled(updaters).then((res) => {
-        const failureCount = res.filter((r) => r.status !== 'fulfilled').length
-        if (failureCount) {
-          console.warn('Some updates failed', res)
-        }
-        actions.setSubmitting(false)
+      const settingResults = await Promise.allSettled(updaters)
+      const failedSettings = settingResults.filter((result) => result.status !== 'fulfilled').length
+      if (failedSettings) {
+        console.warn('Some updates failed', settingResults)
+      }
+
+      let failedSpecialGameBootstrap = false
+      try {
+        await ensureSpecialGamesForYear.mutateAsync({ year: newYear })
+      } catch (specialGameError) {
+        failedSpecialGameBootstrap = true
+        log('failed to ensure special games for new year', specialGameError)
+      }
+
+      actions.setSubmitting(false)
+
+      if (failedSpecialGameBootstrap) {
+        notify({ text: 'Settings created, but No/Any Game setup failed', variant: 'error' })
+      } else {
         notify({ text: 'Settings created', variant: 'success' })
-        invalidateSettingsQueries()
-        onClose(null)
-      })
+      }
+
+      invalidateSettingsQueries()
+      onClose(null)
     },
-    [allFields, createSetting, invalidateSettingsQueries, newYear, notify, onClose, timeZone, updateSetting],
+    [
+      allFields,
+      createSetting,
+      ensureSpecialGamesForYear,
+      invalidateSettingsQueries,
+      newYear,
+      notify,
+      onClose,
+      timeZone,
+      updateSetting,
+    ],
   )
 
   if (error) {

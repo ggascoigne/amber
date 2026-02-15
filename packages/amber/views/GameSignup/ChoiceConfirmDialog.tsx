@@ -28,6 +28,7 @@ import { ChoiceSummary } from './SlotDetails'
 
 import { ContactEmail } from '../../components'
 import { useProfile } from '../../components/Profile'
+import type { GameCategoryByGameId } from '../../utils'
 import { useConfiguration, useSendEmail } from '../../utils'
 
 interface FormValues {
@@ -44,6 +45,8 @@ interface ChoiceConfirmDialogProps {
   memberId: number
   gameChoices?: GameChoice[]
   gameSubmission?: FormValues
+  gameCategoryByGameId: GameCategoryByGameId
+  noGameIdBySlotId: Map<number, number>
 }
 
 const submissionValidationSchema = Yup.object().shape({
@@ -142,6 +145,8 @@ export const ChoiceConfirmDialog = ({
   memberId,
   gameChoices,
   gameSubmission,
+  gameCategoryByGameId,
+  noGameIdBySlotId,
 }: ChoiceConfirmDialogProps) => {
   const theme = useTheme()
   const configuration = useConfiguration()
@@ -167,21 +172,24 @@ export const ChoiceConfirmDialog = ({
           gameChoices?.filter((c) => c?.year === year && c.slotId === slotId),
         ) as ChoiceType[]
 
-        if (!isSlotComplete(configuration, thisSlotChoices)) {
+        if (!isSlotComplete(gameCategoryByGameId, thisSlotChoices)) {
+          const noGameId = noGameIdBySlotId.get(slotId)
+          if (!noGameId) return thisSlotChoices
+
           if (!thisSlotChoices[0]!.gameId && !thisSlotChoices[1]!.gameId) {
             thisSlotChoices[1] = {
               ...thisSlotChoices[1]!,
-              gameId: slotId,
+              gameId: noGameId,
               modified: true,
-            } // only update the modified property since thisSlotChoices[1] is already of type ChoiceType
+            }
           } else {
             for (let i = 2; i < 5; i++) {
               if (!thisSlotChoices[i]!.gameId) {
                 thisSlotChoices[i] = {
                   ...thisSlotChoices[i]!,
-                  gameId: slotId,
+                  gameId: noGameId,
                   modified: true,
-                } // yes the no game games have a gameId that matches the slotId
+                }
                 break
               }
             }
@@ -189,7 +197,7 @@ export const ChoiceConfirmDialog = ({
         }
         return thisSlotChoices
       }),
-    [configuration, gameChoices, year],
+    [configuration, gameCategoryByGameId, gameChoices, noGameIdBySlotId, year],
   )
 
   const updateChoices = useCallback(() => {

@@ -52,6 +52,7 @@ const dashboardGameChoiceFields = {
       id: true,
       name: true,
       slotId: true,
+      category: true,
     },
   },
 }

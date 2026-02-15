@@ -22,8 +22,7 @@ import {
   isScheduledAssignment,
 } from './utils'
 
-import { useConfiguration } from '../../utils'
-import { isAnyGame, isNoGame } from '../GameSignup/GameChoiceSelector'
+import { buildGameCategoryByGameId, isAnyGameCategory, isNoGameCategory, useConfiguration } from '../../utils'
 
 type GameChoicesPanelProps = {
   data: GameAssignmentDashboardData
@@ -75,7 +74,8 @@ export const GameChoicesPanel = ({
   )
   const choicesByMemberId = useMemo(() => buildChoicesByMemberId(data.choices), [data.choices])
   const submissionsByMemberId = useMemo(() => buildSubmissionsByMemberId(data.submissions), [data.submissions])
-  const gameById = useMemo(() => new Map(filteredSlotGames.map((game) => [game.id, game])), [filteredSlotGames])
+  const gameById = useMemo(() => new Map(data.games.map((game) => [game.id, game])), [data.games])
+  const gameCategoryByGameId = useMemo(() => buildGameCategoryByGameId(data.games), [data.games])
 
   const memberRows = useMemo<Array<MemberChoiceSummaryRow>>(
     () =>
@@ -152,12 +152,12 @@ export const GameChoicesPanel = ({
         accessorKey: 'gameId',
         header: 'Game',
         size: 260,
-        cell: ({ row }) => getGameLabel(configuration, row.original.gameId, gameById),
+        cell: ({ row }) => getGameLabel(row.original.gameId, gameById),
         meta: {
           edit: {
             type: 'select',
             getOptions: (row) => {
-              const options = buildGameChoiceOptions(configuration, slotGames, row.original.slotId)
+              const options = buildGameChoiceOptions(data.games, row.original.slotId)
               return [{ value: '', label: 'No Selection' }, ...options]
             },
             parseValue: (value) => (value === '' ? null : Number(value)),
@@ -165,7 +165,7 @@ export const GameChoicesPanel = ({
         },
       },
     ],
-    [configuration, gameById, slotGames],
+    [data.games, gameById],
   )
 
   const handleSummaryRowClick = useCallback((row: Row<MemberChoiceSummaryRow>) => {
@@ -179,7 +179,8 @@ export const GameChoicesPanel = ({
       const choices = choicesByMemberId.get(memberId) ?? []
       const filteredChoices = choices.filter((choice) => {
         if (!choice.gameId) return true
-        if (isNoGame(configuration, choice.gameId) || isAnyGame(configuration, choice.gameId)) return true
+        const category = gameCategoryByGameId.get(choice.gameId)
+        if (isNoGameCategory(category) || isAnyGameCategory(category)) return true
         return slotGameIdSet.has(choice.gameId)
       })
       const submission = submissionsByMemberId.get(memberId)
@@ -187,6 +188,7 @@ export const GameChoicesPanel = ({
         memberId,
         choices: filteredChoices,
         configuration,
+        gameCategoryByGameId,
         slotIds: slotFilterId ? [slotFilterId] : undefined,
       })
 
@@ -270,6 +272,7 @@ export const GameChoicesPanel = ({
       choicesByMemberId,
       choiceColumns,
       configuration,
+      gameCategoryByGameId,
       onUpsertChoice,
       slotFilterId,
       slotGameIdSet,

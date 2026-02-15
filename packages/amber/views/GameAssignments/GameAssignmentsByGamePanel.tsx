@@ -25,6 +25,7 @@ import {
   isScheduledAssignment,
 } from './utils'
 
+import { isAnyGameCategory } from '../../utils'
 import { PlayerPreference } from '../../utils/selectValues'
 
 type AssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
@@ -91,34 +92,10 @@ export const GameAssignmentsByGamePanel = ({
     () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
     [slotFilterId, slotGames],
   )
-  const slotGamesWithNoGame = useMemo(() => {
-    const gamesById = new Map(filteredSlotGames.map((game) => [game.id, game]))
-    const slotIds = Array.from(
-      new Set(filteredSlotGames.map((game) => game.slotId).filter((slotId): slotId is number => (slotId ?? 0) > 0)),
-    )
-
-    slotIds.forEach((slotId) => {
-      if (gamesById.has(slotId)) return
-      gamesById.set(slotId, {
-        id: slotId,
-        name: 'No Game',
-        slotId,
-        playerMin: 0,
-        playerMax: 999,
-        playerPreference: PlayerPreference.Any,
-        message: '',
-        returningPlayers: '',
-        year,
-      })
-    })
-
-    return Array.from(gamesById.values()).sort((left, right) => {
-      const leftSlot = left.slotId ?? 0
-      const rightSlot = right.slotId ?? 0
-      if (leftSlot !== rightSlot) return leftSlot - rightSlot
-      return left.name.localeCompare(right.name)
-    })
-  }, [filteredSlotGames, year])
+  const slotGamesWithNoGame = useMemo(
+    () => filteredSlotGames.filter((game) => !isAnyGameCategory(game.category)),
+    [filteredSlotGames],
+  )
   const slotGameIdSet = useMemo(() => new Set(slotGamesWithNoGame.map((game) => game.id)), [slotGamesWithNoGame])
   const scheduledAssignments = useMemo(
     () =>

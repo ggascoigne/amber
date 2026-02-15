@@ -556,7 +556,14 @@ const GameAssignmentsPage = () => {
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
 
-  const { data, isLoading, error } = useQuery(trpc.gameAssignments.getAssignmentDashboardData.queryOptions({ year }))
+  const { data, isLoading, error } = useQuery(
+    trpc.gameAssignments.getAssignmentDashboardData.queryOptions(
+      { year },
+      {
+        refetchOnMount: 'always',
+      },
+    ),
+  )
   const updateAssignmentsMutation = useMutation(trpc.gameAssignments.updateGameAssignments.mutationOptions())
   const resetAssignmentsMutation = useMutation(trpc.gameAssignments.resetAssignments.mutationOptions())
   const setInitialAssignmentsMutation = useMutation(trpc.gameAssignments.setInitialAssignments.mutationOptions())
@@ -626,15 +633,7 @@ const GameAssignmentsPage = () => {
           const game = previous.games.find((entry) => entry.id === assignment.gameId)
           const membership = previous.memberships.find((entry) => entry.id === assignment.memberId)
           if (!membership) return
-          const resolvedGame =
-            game ??
-            (assignment.gameId > 0 && assignment.gameId <= configuration.numberOfSlots
-              ? {
-                  id: assignment.gameId,
-                  name: 'No Game',
-                  slotId: assignment.gameId,
-                }
-              : null)
+          const resolvedGame = game ?? null
           if (!resolvedGame) return
 
           assignmentMap.set(buildAssignmentKeyFromInput(assignment), {
@@ -649,6 +648,7 @@ const GameAssignmentsPage = () => {
               },
             },
             game: {
+              category: resolvedGame.category,
               id: resolvedGame.id,
               name: resolvedGame.name,
               slotId: resolvedGame.slotId,
@@ -662,7 +662,7 @@ const GameAssignmentsPage = () => {
         }
       })
     },
-    [configuration.numberOfSlots, invalidateDashboardQueries, updateAssignmentsMutation, year],
+    [invalidateDashboardQueries, updateAssignmentsMutation, year],
   )
 
   const handleUpsertChoice = useCallback(
@@ -695,6 +695,7 @@ const GameAssignmentsPage = () => {
           },
           game: game
             ? {
+                category: game.category,
                 id: game.id,
                 name: game.name,
                 slotId: game.slotId,

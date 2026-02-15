@@ -263,17 +263,6 @@ export const GameAssignmentsByMemberPanel = ({
 
               return [
                 headerOption,
-                {
-                  value: '',
-                  label: 'No Game',
-                  columns: [
-                    { value: 'No Game' },
-                    { value: '', width: 90 },
-                    { value: '', width: 85 },
-                    { value: '', width: 90 },
-                    { value: '', width: 90 },
-                  ],
-                },
                 ...options.map((option) => ({
                   value: option.gameId,
                   label: option.name,
@@ -295,7 +284,7 @@ export const GameAssignmentsByMemberPanel = ({
               return {
                 ...row,
                 gameId,
-                gameName: game ? formatGameName(game) : 'No Game',
+                gameName: game ? formatGameName(game) : '',
                 priorityLabel: gameId ? getPriorityLabel(choice?.rank ?? null, choice?.returningPlayer ?? false) : '',
                 prioritySortValue: gameId
                   ? getPrioritySortValue(choice?.rank ?? null, choice?.returningPlayer ?? false)
@@ -344,7 +333,7 @@ export const GameAssignmentsByMemberPanel = ({
       slotsToShow.forEach((slotId) => {
         const assignment = assignmentBySlot.get(slotId)
         const gameId = assignment?.gameId ?? null
-        const gameName = assignment?.gameId ? formatGameName(gameById.get(assignment.gameId)) : 'No Game'
+        const gameName = assignment?.gameId ? formatGameName(gameById.get(assignment.gameId)) : ''
         const gm = assignment?.gm ?? 0
         const choice = assignment ? getChoiceForGame(choicesByMemberSlot, memberId, slotId, assignment.gameId) : null
 
