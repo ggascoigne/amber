@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
-import { Button, Paper, Stack, Typography, useTheme } from '@mui/material'
+import { Button, FormControlLabel, Paper, Stack, Switch, Typography, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
@@ -61,6 +61,9 @@ export type DataTableProps<T extends RowData> = {
     onAddRow: () => void
   }
   expandedContentSx?: SxProps<Theme>
+  showExpandedSwitch?: boolean
+  showExpandedOnly?: boolean
+  onToggleShowExpandedOnly?: (nextValue: boolean) => void
 }
 
 const defaultHighlightRow = () => false
@@ -145,6 +148,9 @@ export const DataTable = <T extends RowData>({
   renderExpandedContent,
   addRowAction,
   expandedContentSx,
+  showExpandedSwitch = false,
+  showExpandedOnly = false,
+  onToggleShowExpandedOnly,
 }: DataTableProps<T>) => {
   const theme = useTheme()
   const [headingHeight, setHeadingHeight] = useState(0)
@@ -155,6 +161,13 @@ export const DataTable = <T extends RowData>({
   const { pageIndex } = tableInstance.getState().pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
   const hasExpandedContent = !!renderExpandedContent
+  const displayedRows = useMemo(
+    () =>
+      showExpandedOnly
+        ? tableInstance.getRowModel().rows.filter((row) => row.getIsExpanded())
+        : tableInstance.getRowModel().rows,
+    [showExpandedOnly, tableInstance],
+  )
 
   // The virtualizer needs to know the scrollable container element
   const tableContainerRef = useRef<HTMLDivElement>(null)
@@ -231,7 +244,7 @@ export const DataTable = <T extends RowData>({
       compact={compact}
       useVirtualRows={useVirtualRows}
     />
-  ) : tableInstance.getRowModel().flatRows.length === 0 && emptyDataComponent ? (
+  ) : displayedRows.length === 0 && emptyDataComponent ? (
     emptyDataComponent
   ) : (
     <TableContent
@@ -249,6 +262,7 @@ export const DataTable = <T extends RowData>({
       editing={editing}
       renderExpandedContent={renderExpandedContent}
       expandedContentSx={expandedContentSx}
+      showExpandedOnly={showExpandedOnly}
     />
   )
 
@@ -328,6 +342,28 @@ export const DataTable = <T extends RowData>({
                   borderRadius: 0,
                 }}
               />
+            ) : null}
+            {hasExpandedContent && showExpandedSwitch && onToggleShowExpandedOnly ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  px: displayGutter ? 3 : 2,
+                  pb: 0.5,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      size='small'
+                      checked={showExpandedOnly}
+                      onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
+                    />
+                  }
+                  label='showExpanded'
+                  sx={{ m: 0 }}
+                />
+              </Box>
             ) : null}
           </Box>
           {hideHeader ? null : (

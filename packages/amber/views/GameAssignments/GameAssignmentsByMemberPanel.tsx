@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpdateGameAssignmentsInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
@@ -8,6 +8,7 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { ShowExpandedToggle } from './ShowExpandedToggle'
 import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberAssignmentSummaryRow } from './utils'
 import {
@@ -70,6 +71,7 @@ export const GameAssignmentsByMemberPanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByMemberPanelProps) => {
+  const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
   const filteredSlotGames = useMemo(
@@ -481,6 +483,7 @@ export const GameAssignmentsByMemberPanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
+          <ShowExpandedToggle checked={showExpandedOnly} onChange={setShowExpandedOnly} />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
@@ -514,6 +517,8 @@ export const GameAssignmentsByMemberPanel = ({
           py: 0,
         }}
         getRowCanExpand={() => true}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
         scrollBehavior={scrollBehavior}
         debug={false}
         systemActions={[]}

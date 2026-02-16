@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
@@ -8,6 +8,7 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { ShowExpandedToggle } from './ShowExpandedToggle'
 import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberChoiceRow } from './utils'
 import {
@@ -61,6 +62,7 @@ export const GameChoicesPanel = ({
   onToggleExpand,
   scrollBehavior = 'bounded',
 }: GameChoicesPanelProps) => {
+  const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
   const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
   const filteredSlotGames = useMemo(
@@ -383,6 +385,7 @@ export const GameChoicesPanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
+          <ShowExpandedToggle checked={showExpandedOnly} onChange={setShowExpandedOnly} />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
@@ -416,6 +419,8 @@ export const GameChoicesPanel = ({
           py: 0,
         }}
         getRowCanExpand={() => true}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
         scrollBehavior={scrollBehavior}
         debug={false}
         systemActions={[]}

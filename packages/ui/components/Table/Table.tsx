@@ -79,6 +79,9 @@ type TablePropsBase<T> = Omit<UseTableProps<T>, 'keyField' | 'name'> &
     renderExpandedContent?: (row: Row<T>) => ReactNode
     getRowCanExpand?: (row: Row<T>) => boolean
     expandedContentSx?: DataTableProps<T>['expandedContentSx']
+    showExpandedSwitch?: boolean
+    showExpandedOnly?: boolean
+    onShowExpandedOnlyChange?: (nextValue: boolean) => void
   }
 
 type TableProps<T> =
@@ -117,6 +120,9 @@ export const Table = <T,>({
   renderExpandedContent,
   getRowCanExpand,
   expandedContentSx,
+  showExpandedSwitch = false,
+  showExpandedOnly: controlledShowExpandedOnly,
+  onShowExpandedOnlyChange,
   cellEditing,
   systemActions: userSystemActions,
   toolbarActions: userToolbarActions,
@@ -131,7 +137,13 @@ export const Table = <T,>({
 }: TableProps<T>) => {
   const [stateLoaded, setStateLoaded] = useState(false)
   const [pendingNewRow, setPendingNewRow] = useState<T | null>(null)
+  const [uncontrolledShowExpandedOnly, setUncontrolledShowExpandedOnly] = useState(false)
   const hasExpandedContent = !!renderExpandedContent
+  const isShowExpandedOnlyControlled = typeof controlledShowExpandedOnly === 'boolean'
+  const resolvedShowExpandedOnly = isShowExpandedOnlyControlled
+    ? controlledShowExpandedOnly
+    : uncontrolledShowExpandedOnly
+  const resolvedShowExpandedOnlyChange = onShowExpandedOnlyChange ?? setUncontrolledShowExpandedOnly
   const resolvedUseVirtualRows = hasExpandedContent ? (useVirtualRows ?? false) : useVirtualRows
 
   const addRowConfig = cellEditing?.addRow
@@ -404,6 +416,9 @@ export const Table = <T,>({
       getRowCanExpand={getRowCanExpand}
       addRowAction={canAddRow ? { onAddRow: handleAddRow } : undefined}
       expandedContentSx={expandedContentSx}
+      showExpandedSwitch={showExpandedSwitch && hasExpandedContent}
+      showExpandedOnly={hasExpandedContent ? resolvedShowExpandedOnly : false}
+      onToggleShowExpandedOnly={hasExpandedContent ? resolvedShowExpandedOnlyChange : undefined}
       {...rest}
     />
   )
