@@ -237,7 +237,11 @@ export const GameAssignmentsByMemberPanel = ({
         accessorKey: 'gameId',
         header: 'Move To',
         size: 260,
-        cell: ({ row }) => row.original.gameName,
+        cell: ({ getValue }) => {
+          const gameId = getValue<number | null>()
+          if (gameId === null) return ''
+          return formatGameName(gameById.get(gameId))
+        },
         meta: {
           edit: {
             type: 'select',
