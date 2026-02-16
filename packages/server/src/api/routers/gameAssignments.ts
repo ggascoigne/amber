@@ -109,6 +109,26 @@ const dashboardMembershipSelect = {
   },
 }
 
+const assignmentSummaryGameSelect = {
+  id: true,
+  name: true,
+  slotId: true,
+  category: true,
+  playerMin: true,
+  playerMax: true,
+}
+
+const assignmentSummaryMembershipSelect = {
+  id: true,
+  user: {
+    select: {
+      fullName: true,
+      firstName: true,
+      lastName: true,
+    },
+  },
+}
+
 // // Adjust this include as needed for your Prisma schema
 // const gameAssignmentWithGame = {
 //   game: true,
@@ -237,6 +257,171 @@ export const gameAssignmentsRouter = createTRPCRouter({
         }
       }),
     ),
+
+  getAssignmentSummary: protectedProcedure.input(yearInput).query(async ({ input, ctx }) =>
+    inRlsTransaction(ctx, async (tx) => {
+      const [slots, memberships, games, assignments] = await Promise.all([
+        tx.slot.findMany({
+          select: { id: true },
+          orderBy: [{ id: 'asc' }],
+        }),
+        tx.membership.findMany({
+          where: { year: input.year, attending: true },
+          select: assignmentSummaryMembershipSelect,
+          orderBy: [
+            {
+              user: {
+                lastName: 'asc',
+              },
+            },
+            {
+              user: {
+                firstName: 'asc',
+              },
+            },
+          ],
+        }),
+        tx.game.findMany({
+          where: { year: input.year },
+          select: assignmentSummaryGameSelect,
+          orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
+        }),
+        tx.gameAssignment.findMany({
+          where: { year: input.year, gm: { gte: 0 } },
+          select: {
+            memberId: true,
+            gameId: true,
+            gm: true,
+            membership: {
+              select: {
+                user: {
+                  select: {
+                    fullName: true,
+                  },
+                },
+              },
+            },
+            game: {
+              select: assignmentSummaryGameSelect,
+            },
+          },
+        }),
+      ])
+
+      const slotIds = slots.map((slot) => slot.id)
+      const assignedSlotIdsByMemberId = new Map<number, Set<number>>()
+      const scheduledCountsByGameId = new Map<number, { gmCount: number; playerCount: number }>()
+
+      assignments.forEach((assignment) => {
+        const slotId = assignment.game.slotId ?? 0
+        if (slotId > 0) {
+          const assignedSlotIds = assignedSlotIdsByMemberId.get(assignment.memberId) ?? new Set<number>()
+          assignedSlotIds.add(slotId)
+          assignedSlotIdsByMemberId.set(assignment.memberId, assignedSlotIds)
+        }
+
+        const scheduledCounts = scheduledCountsByGameId.get(assignment.gameId) ?? { gmCount: 0, playerCount: 0 }
+        if (assignment.gm === 0) {
+          scheduledCounts.playerCount += 1
+        } else {
+          scheduledCounts.gmCount += 1
+        }
+        scheduledCountsByGameId.set(assignment.gameId, scheduledCounts)
+      })
+
+      const missingAssignments = memberships
+        .map((membership) => {
+          const assignedSlotIds = assignedSlotIdsByMemberId.get(membership.id) ?? new Set<number>()
+          const missingSlots = slotIds.filter((slotId) => !assignedSlotIds.has(slotId))
+          return {
+            memberId: membership.id,
+            memberName: membership.user.fullName ?? 'Unknown member',
+            missingSlots,
+          }
+        })
+        .filter((entry) => entry.missingSlots.length > 0)
+
+      const anyGameAssignments = assignments
+        .filter((assignment) => assignment.game.category === 'any_game')
+        .map((assignment) => ({
+          memberId: assignment.memberId,
+          memberName: assignment.membership.user.fullName ?? 'Unknown member',
+          gameName: assignment.game.name,
+          assignmentRole: assignment.gm === 0 ? 'Player' : 'GM',
+        }))
+        .sort((left, right) => left.memberName.localeCompare(right.memberName))
+
+      const noGameRoleMismatches = games
+        .filter(
+          (game) =>
+            game.category === 'no_game' && (game.slotId ?? 0) > 0 && game.name.trim().toLowerCase() !== 'no game',
+        )
+        .map((game) => {
+          const scheduledCounts = scheduledCountsByGameId.get(game.id) ?? { gmCount: 0, playerCount: 0 }
+          return {
+            gameId: game.id,
+            gameName: game.name,
+            slotId: game.slotId as number,
+            gmCount: scheduledCounts.gmCount,
+            playerCount: scheduledCounts.playerCount,
+          }
+        })
+        .filter(
+          (entry) => (entry.gmCount === 0 && entry.playerCount > 0) || (entry.gmCount > 0 && entry.playerCount === 0),
+        )
+        .sort((left, right) => left.slotId - right.slotId)
+
+      const belowMinimumGames = games
+        .filter((game) => game.category === 'user')
+        .map((game) => {
+          const scheduledCounts = scheduledCountsByGameId.get(game.id) ?? { gmCount: 0, playerCount: 0 }
+          return {
+            gameId: game.id,
+            gameName: game.name,
+            slotId: game.slotId,
+            playerCount: scheduledCounts.playerCount,
+            playerMin: game.playerMin,
+            playerMax: game.playerMax,
+          }
+        })
+        .filter((entry) => entry.playerCount < entry.playerMin)
+        .sort((left, right) => {
+          const leftSlotId = left.slotId ?? Number.MAX_SAFE_INTEGER
+          const rightSlotId = right.slotId ?? Number.MAX_SAFE_INTEGER
+          if (leftSlotId !== rightSlotId) return leftSlotId - rightSlotId
+          return left.gameName.localeCompare(right.gameName)
+        })
+
+      const overCapGames = games
+        .filter((game) => game.category === 'user')
+        .map((game) => {
+          const scheduledCounts = scheduledCountsByGameId.get(game.id) ?? { gmCount: 0, playerCount: 0 }
+          return {
+            gameId: game.id,
+            gameName: game.name,
+            slotId: game.slotId,
+            playerCount: scheduledCounts.playerCount,
+            playerMin: game.playerMin,
+            playerMax: game.playerMax,
+          }
+        })
+        .filter((entry) => entry.playerCount > entry.playerMax)
+        .sort((left, right) => {
+          const leftSlotId = left.slotId ?? Number.MAX_SAFE_INTEGER
+          const rightSlotId = right.slotId ?? Number.MAX_SAFE_INTEGER
+          if (leftSlotId !== rightSlotId) return leftSlotId - rightSlotId
+          return left.gameName.localeCompare(right.gameName)
+        })
+
+      return {
+        missingAssignments,
+        anyGameAssignments,
+        noGameRoleMismatches,
+        belowMinimumGames,
+        overCapGames,
+      }
+    }),
+  ),
 
   // updateGameAssignmentById: protectedProcedure
   //   .input(

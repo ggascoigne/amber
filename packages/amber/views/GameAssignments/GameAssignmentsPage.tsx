@@ -8,7 +8,25 @@ import type {
 } from '@amber/client'
 import { useInvalidateGameAssignmentDashboardQueries, useTRPC } from '@amber/client'
 import { Loader, useLocalStorage } from '@amber/ui'
-import { Box, Button, GlobalStyles, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  GlobalStyles,
+  Stack,
+  Table as MuiTable,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -125,6 +143,228 @@ const legendItems = [
   'Game names with a * by them are returning players only.',
 ]
 
+type AssignmentSummaryData = {
+  missingAssignments: Array<{
+    memberId: number
+    memberName: string
+    missingSlots: Array<number>
+  }>
+  anyGameAssignments: Array<{
+    memberId: number
+    memberName: string
+    gameName: string
+    assignmentRole: string
+  }>
+  noGameRoleMismatches: Array<{
+    gameId: number
+    gameName: string
+    slotId: number
+    gmCount: number
+    playerCount: number
+  }>
+  belowMinimumGames: Array<{
+    gameId: number
+    gameName: string
+    slotId: number | null
+    playerCount: number
+    playerMin: number
+    playerMax: number
+  }>
+  overCapGames: Array<{
+    gameId: number
+    gameName: string
+    slotId: number | null
+    playerCount: number
+    playerMin: number
+    playerMax: number
+  }>
+}
+
+type AssignmentSummarySectionProps = {
+  title: string
+  emptyMessage: string
+  hasRows: boolean
+  children: React.ReactNode
+}
+
+const AssignmentSummarySection = ({ title, emptyMessage, hasRows, children }: AssignmentSummarySectionProps) => (
+  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
+    <Typography variant='subtitle1' component='h3'>
+      {title}
+    </Typography>
+    {hasRows ? children : <Typography color='text.secondary'>{emptyMessage}</Typography>}
+  </Box>
+)
+
+type AssignmentSummaryDialogProps = {
+  open: boolean
+  onClose: () => void
+  isLoading: boolean
+  data: AssignmentSummaryData | undefined
+  errorMessage: string | null
+}
+
+const AssignmentSummaryDialog = ({ open, onClose, isLoading, data, errorMessage }: AssignmentSummaryDialogProps) => (
+  <Dialog open={open} onClose={onClose} maxWidth='lg' fullWidth>
+    <DialogTitle>Game Assignment Summary</DialogTitle>
+    <DialogContent dividers>
+      <Stack spacing={3}>
+        {isLoading ? (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
+            <Loader />
+          </Box>
+        ) : null}
+        {!isLoading && errorMessage ? <Typography color='error.main'>{errorMessage}</Typography> : null}
+        {!isLoading && !errorMessage && data ? (
+          <>
+            <AssignmentSummarySection
+              title='Players Missing Assignments'
+              emptyMessage='No members are missing assignments.'
+              hasRows={data.missingAssignments.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Member</TableCell>
+                      <TableCell>Missing Slots</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.missingAssignments.map((entry) => (
+                      <TableRow key={entry.memberId}>
+                        <TableCell>{entry.memberName}</TableCell>
+                        <TableCell>{entry.missingSlots.map((slotId) => `Slot ${slotId}`).join(', ')}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Members Assigned To Any Game'
+              emptyMessage='No members are assigned to Any Game.'
+              hasRows={data.anyGameAssignments.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Member</TableCell>
+                      <TableCell>Role</TableCell>
+                      <TableCell>Game</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.anyGameAssignments.map((entry, index) => (
+                      <TableRow key={`${entry.memberId}-${entry.assignmentRole}-${index}`}>
+                        <TableCell>{entry.memberName}</TableCell>
+                        <TableCell>{entry.assignmentRole}</TableCell>
+                        <TableCell>{entry.gameName}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='No Game GM/Player Mismatches'
+              emptyMessage='No No Game GM/player mismatches found.'
+              hasRows={data.noGameRoleMismatches.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Game</TableCell>
+                      <TableCell>Slot</TableCell>
+                      <TableCell align='right'>GM Count</TableCell>
+                      <TableCell align='right'>Player Count</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.noGameRoleMismatches.map((entry) => (
+                      <TableRow key={entry.gameId}>
+                        <TableCell>{entry.gameName}</TableCell>
+                        <TableCell>{`Slot ${entry.slotId}`}</TableCell>
+                        <TableCell align='right'>{entry.gmCount}</TableCell>
+                        <TableCell align='right'>{entry.playerCount}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Games Below Minimum Players'
+              emptyMessage='No games are below their player minimum.'
+              hasRows={data.belowMinimumGames.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Game</TableCell>
+                      <TableCell>Slot</TableCell>
+                      <TableCell align='right'>Players</TableCell>
+                      <TableCell align='right'>Min</TableCell>
+                      <TableCell align='right'>Max</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.belowMinimumGames.map((entry) => (
+                      <TableRow key={entry.gameId}>
+                        <TableCell>{entry.gameName}</TableCell>
+                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
+                        <TableCell align='right'>{entry.playerCount}</TableCell>
+                        <TableCell align='right'>{entry.playerMin}</TableCell>
+                        <TableCell align='right'>{entry.playerMax}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Games Over Player Cap'
+              emptyMessage='No games are above their player cap.'
+              hasRows={data.overCapGames.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Game</TableCell>
+                      <TableCell>Slot</TableCell>
+                      <TableCell align='right'>Players</TableCell>
+                      <TableCell align='right'>Min</TableCell>
+                      <TableCell align='right'>Max</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.overCapGames.map((entry) => (
+                      <TableRow key={entry.gameId}>
+                        <TableCell>{entry.gameName}</TableCell>
+                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
+                        <TableCell align='right'>{entry.playerCount}</TableCell>
+                        <TableCell align='right'>{entry.playerMin}</TableCell>
+                        <TableCell align='right'>{entry.playerMax}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+          </>
+        ) : null}
+      </Stack>
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={onClose}>Close</Button>
+    </DialogActions>
+  </Dialog>
+)
+
 type GameAssignmentsTitleBarProps = {
   slotFilterOptions: Array<number>
   slotFilterId: number | null | 'mixed'
@@ -133,7 +373,9 @@ type GameAssignmentsTitleBarProps = {
   onLayoutChange: (event: MouseEvent<HTMLElement>, nextLayout: LayoutMode | null) => void
   onResetAssignments: () => void
   onSetInitialAssignments: () => void
+  onShowSummary: () => void
   isBusy: boolean
+  isSummaryBusy: boolean
 }
 
 const GameAssignmentsTitleBar = ({
@@ -144,7 +386,9 @@ const GameAssignmentsTitleBar = ({
   onLayoutChange,
   onResetAssignments,
   onSetInitialAssignments,
+  onShowSummary,
   isBusy,
+  isSummaryBusy,
 }: GameAssignmentsTitleBarProps) => (
   <Box
     sx={{
@@ -209,6 +453,9 @@ const GameAssignmentsTitleBar = ({
         </ToggleButton>
       </ToggleButtonGroup>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
+        <Button variant='outlined' size='small' onClick={onShowSummary} disabled={isSummaryBusy}>
+          Show Summary
+        </Button>
         <Button variant='outlined' size='small' onClick={onResetAssignments} disabled={isBusy}>
           Reset Assignments
         </Button>
@@ -515,6 +762,7 @@ const GameAssignmentsPage = () => {
   const trpc = useTRPC()
   const configuration = useConfiguration()
   const [year] = useYearFilter()
+  const [isSummaryDialogOpen, setIsSummaryDialogOpen] = useState(false)
   const invalidateDashboardQueries = useInvalidateGameAssignmentDashboardQueries()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -564,6 +812,20 @@ const GameAssignmentsPage = () => {
       },
     ),
   )
+  const {
+    data: assignmentSummaryData,
+    isFetching: isSummaryLoading,
+    error: assignmentSummaryError,
+    refetch: refetchAssignmentSummary,
+  } = useQuery(
+    trpc.gameAssignments.getAssignmentSummary.queryOptions(
+      { year },
+      {
+        enabled: false,
+        staleTime: 0,
+      },
+    ),
+  )
   const updateAssignmentsMutation = useMutation(trpc.gameAssignments.updateGameAssignments.mutationOptions())
   const resetAssignmentsMutation = useMutation(trpc.gameAssignments.resetAssignments.mutationOptions())
   const setInitialAssignmentsMutation = useMutation(trpc.gameAssignments.setInitialAssignments.mutationOptions())
@@ -601,6 +863,11 @@ const GameAssignmentsPage = () => {
       setStoredExpandedPaneId(null)
     }
   }, [setStoredExpandedPaneId, storedExpandedPaneId])
+
+  useEffect(() => {
+    if (!isSummaryDialogOpen) return
+    refetchAssignmentSummary()
+  }, [isSummaryDialogOpen, refetchAssignmentSummary, year])
 
   const handleUpdateAssignments = useCallback(
     async (payload: AssignmentUpdatePayload) => {
@@ -784,6 +1051,13 @@ const GameAssignmentsPage = () => {
     },
     [setStoredPaneSlotFilters],
   )
+  const handleShowSummary = useCallback(() => {
+    setIsSummaryDialogOpen(true)
+  }, [])
+  const handleCloseSummary = useCallback(() => {
+    setIsSummaryDialogOpen(false)
+  }, [])
+  const summaryErrorMessage = assignmentSummaryError ? assignmentSummaryError.message : null
 
   if (error) {
     return <TransportError error={error} />
@@ -810,6 +1084,7 @@ const GameAssignmentsPage = () => {
           onSlotFilterChange={handleTopSlotFilterChange}
           layoutMode={layoutMode}
           onLayoutChange={handleLayoutChange}
+          onShowSummary={handleShowSummary}
           onResetAssignments={handleResetAssignments}
           onSetInitialAssignments={handleSetInitialAssignments}
           isBusy={
@@ -817,6 +1092,7 @@ const GameAssignmentsPage = () => {
             resetAssignmentsMutation.isPending ||
             setInitialAssignmentsMutation.isPending
           }
+          isSummaryBusy={isSummaryLoading}
         />
       }
     >
@@ -855,6 +1131,13 @@ const GameAssignmentsPage = () => {
           onToggleExpand={handleToggleExpand}
         />
       </Box>
+      <AssignmentSummaryDialog
+        open={isSummaryDialogOpen}
+        onClose={handleCloseSummary}
+        isLoading={isSummaryLoading}
+        data={assignmentSummaryData}
+        errorMessage={summaryErrorMessage}
+      />
     </Page>
   )
 }
