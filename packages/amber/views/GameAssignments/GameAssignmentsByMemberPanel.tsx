@@ -99,6 +99,7 @@ export const GameAssignmentsByMemberPanel = ({
   const submissionsByMemberId = useMemo(() => buildSubmissionsByMemberId(data.submissions), [data.submissions])
 
   const gameById = useMemo(() => new Map(filteredSlotGames.map((game) => [game.id, game])), [filteredSlotGames])
+  const expectedAssignmentCount = slotFilterId === null ? configuration.numberOfSlots : 1
 
   const memberRows = useMemo<Array<MemberAssignmentSummaryRow>>(
     () =>
@@ -106,11 +107,9 @@ export const GameAssignmentsByMemberPanel = ({
         .filter((membership) => membership.attending)
         .map((membership) => {
           const submission = submissionsByMemberId.get(membership.id)
-          const hasSubmissionEntry = Boolean(submission)
-          const slotIdsWithChoices = choicesByMemberSlot.get(membership.id)
-          const hasChoicesForAllSlots = (slotIdsWithChoices?.size ?? 0) >= configuration.numberOfSlots
           const hasNotes = Boolean(submission?.message?.trim())
           const assignments = assignmentsByMemberId.get(membership.id) ?? []
+          const assignmentCount = assignedSlotCountsByMemberId.get(membership.id) ?? 0
           const counts = {
             gmOrFirst: 0,
             second: 0,
@@ -142,8 +141,8 @@ export const GameAssignmentsByMemberPanel = ({
           return {
             memberId: membership.id,
             memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
-            assignments: assignedSlotCountsByMemberId.get(membership.id) ?? 0,
-            requiresAttention: !hasChoicesForAllSlots || !hasSubmissionEntry,
+            assignments: assignmentCount,
+            requiresAttention: assignmentCount !== expectedAssignmentCount,
             counts,
           }
         }),
@@ -151,8 +150,8 @@ export const GameAssignmentsByMemberPanel = ({
       assignedSlotCountsByMemberId,
       assignmentsByMemberId,
       choicesByMemberSlot,
-      configuration.numberOfSlots,
       data.memberships,
+      expectedAssignmentCount,
       submissionsByMemberId,
     ],
   )
