@@ -5,9 +5,10 @@ import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, FormControlLabel, IconButton, Switch, Typography } from '@mui/material'
+import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { ShowExpandedToggle } from './ShowExpandedToggle'
 import { SlotFilterSelect } from './SlotFilterSelect'
 import type { MemberAssignmentSummaryRow } from './utils'
 import {
@@ -482,17 +483,7 @@ export const GameAssignmentsByMemberPanel = ({
             slotFilterId={slotFilterId}
             onSlotFilterChange={onSlotFilterChange}
           />
-          <FormControlLabel
-            control={
-              <Switch
-                size='small'
-                checked={showExpandedOnly}
-                onChange={(_event, checked) => setShowExpandedOnly(checked)}
-              />
-            }
-            label='showExpanded'
-            sx={{ m: 0 }}
-          />
+          <ShowExpandedToggle checked={showExpandedOnly} onChange={setShowExpandedOnly} />
           {onToggleExpand ? (
             <IconButton
               aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
