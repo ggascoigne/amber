@@ -138,7 +138,7 @@ const doesStoredPaneSlotFiltersMatch = (
 
 const legendItems = [
   'Members with a * by their name have Signup notes',
-  'Member names in red have incomplete Game Signups.',
+  'Red names have incomplete Signups or Assignments.',
   'Priorities with a * by them are returning players.',
   'Game names with a * by them are returning players only.',
 ]
