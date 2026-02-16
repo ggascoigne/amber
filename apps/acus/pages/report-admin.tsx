@@ -16,6 +16,7 @@ const reports: ReportRecord[] = [
   { name: 'Games for Player Scheduler', perm: Perms.PlayerAdmin },
   { name: 'Game Choices for Player Scheduler', perm: Perms.PlayerAdmin },
   { name: 'Game And Players' },
+  { name: 'Game Assignments' },
 ]
 
 export const getServerSideProps = configGetServerSideProps
