@@ -106,7 +106,7 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     path: '/game-assignments',
     label: 'Game Assignments',
     exact: true,
-    permission: Perms.GameAdmin,
+    permission: Perms.IsAdmin,
   },
   {
     path: '/member-admin',
