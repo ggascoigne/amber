@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import { Button, FormControlLabel, Paper, Stack, Switch, Typography, useTheme } from '@mui/material'
@@ -8,6 +8,7 @@ import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import useResizeObserver from '@react-hook/resize-observer'
 import type { Row, RowData, Table as TableInstance } from '@tanstack/react-table'
+import debug from 'debug'
 import { dequal as deepEqual } from 'dequal'
 import { match } from 'ts-pattern'
 
@@ -25,6 +26,8 @@ import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
 
 import { isDev } from '../../utils'
+
+const log = debug('amber:ui:table:DTable')
 
 export type DataTableProps<T extends RowData> = {
   tableInstance: TableInstance<T>
@@ -136,7 +139,7 @@ export const DataTable = <T extends RowData>({
   compact = false,
   displayGutter = true,
   rowStyle = 'flex',
-  debug = isDev,
+  debug: tableDebug = isDev,
   debugLogging = false,
   dataTestid,
   useVirtualRows = true,
@@ -161,12 +164,10 @@ export const DataTable = <T extends RowData>({
   const { pageIndex } = tableInstance.getState().pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
   const hasExpandedContent = !!renderExpandedContent
+  const allRows = tableInstance.getRowModel().rows
   const displayedRows = useMemo(
-    () =>
-      showExpandedOnly
-        ? tableInstance.getRowModel().rows.filter((row) => row.getIsExpanded())
-        : tableInstance.getRowModel().rows,
-    [showExpandedOnly, tableInstance],
+    () => (showExpandedOnly ? allRows.filter((row) => row.getIsExpanded()) : allRows),
+    [allRows, showExpandedOnly],
   )
 
   // The virtualizer needs to know the scrollable container element
@@ -390,7 +391,7 @@ export const DataTable = <T extends RowData>({
               bottom: 0,
               borderRadius: '0 0 4px 4px',
             }}
-            debug={debug}
+            debug={tableDebug}
             displayPagination={shouldDisplayPagination && !paginationBlocked}
             pagination={paginationStyle}
             paginationPageSizes={paginationPageSizes}
