@@ -12,6 +12,9 @@ import { getPaths } from './filePaths'
 import { getPostgresArgs } from './scriptUtils'
 import type { TaskContext } from './taskContext'
 
+const { dirname } = getPaths(import.meta.url)
+const repoRoot = path.resolve(dirname, '../../../..')
+
 const tracing = !!process.env.DEBUG
 
 const log = debug('importUtils')
@@ -22,8 +25,8 @@ const $$ = $({
 
 export const loadEnv = (fileName: string): EnvType => {
   log('loadEnv %s - start %o', fileName, process.env)
-  const { dirname } = getPaths(import.meta.url)
-  const pathName = path.resolve(dirname, '../../../..', fileName)
+  const { dirname: dir } = getPaths(import.meta.url)
+  const pathName = path.resolve(dir, '../../../..', fileName)
 
   if (!fs.existsSync(pathName)) {
     throw new Error(`File not found: ${fileName} (${pathName})`)
@@ -40,8 +43,11 @@ export const loadEnv = (fileName: string): EnvType => {
   return processEnv(obj as any)
 }
 
-// TODO: move this to t6he task context
-let outputFileName
+const formatTimestamp = (): string => {
+  const now = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}-${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`
+}
 
 export const dumpDatabaseTask: ListrTask = {
   title: `Dumping database`,
@@ -58,13 +64,25 @@ export const dumpDatabaseTask: ListrTask = {
       },
     })
 
-    const name = temporaryFile()
     const { database } = parsePostgresConnectionString(environ.ADMIN_DATABASE_URL)
+    const timestamp = formatTimestamp()
+    const dumpName = `${database}-${timestamp}.dump`
+    const dumpPath = path.join(repoRoot, dumpName)
+
     // eslint-disable-next-line no-param-reassign
-    task.title = `dumping database ${database}`
-    logger(`dumping database ${database} to ${name}`)
-    await $source`/usr/local/bin/pg_dump ${getPostgresArgs(environ.ADMIN_DATABASE_URL)} -Fc --schema=public > ${name}`
-    outputFileName = name
+    task.title = `Dumping database ${database} to ${dumpName}`
+    logger(`dumping database ${database} to ${dumpPath}`)
+    await $source`/usr/local/bin/pg_dump ${getPostgresArgs(environ.ADMIN_DATABASE_URL)} -Fc --schema=public > ${dumpPath}`
+
+    const gzPath = `${dumpPath}.gz`
+    // eslint-disable-next-line no-param-reassign
+    task.title = `Compressing ${dumpName}`
+    await $source`gzip ${dumpPath}`
+
+    ctx.dumpFile = gzPath // eslint-disable-line no-param-reassign
+    // eslint-disable-next-line no-param-reassign
+    task.title = `Dumped ${path.basename(gzPath)}`
+    logger(`dump saved to ${gzPath}`)
   },
 }
 
@@ -90,17 +108,40 @@ export const restoreDatabaseTask: ListrTask = {
       },
     })
 
-    // eslint-disable-next-line no-param-reassign
-    task.title = `Restoring database ${database}`
-    logger(`Restoring database ${database} from ${outputFileName!}`)
+    const { dumpFile } = ctx
+    if (!dumpFile) {
+      throw new Error('No dump file specified. Use --file <path> to specify a dump file.')
+    }
 
-    await $dest`/usr/local/bin/pg_restore \
-      -j4 \
-      -d ${database} \
-      --no-privileges \
-      --no-owner \
-      --clean \
-      --if-exists \
-      ${outputFileName!}`
+    let restoreFile = dumpFile
+    let tempFile: string | undefined
+
+    if (dumpFile.endsWith('.gz')) {
+      tempFile = temporaryFile()
+      // eslint-disable-next-line no-param-reassign
+      task.title = `Decompressing ${path.basename(dumpFile)}`
+      logger(`decompressing ${dumpFile} to ${tempFile}`)
+      await $dest`gunzip -c ${dumpFile} > ${tempFile}`
+      restoreFile = tempFile
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    task.title = `Restoring database ${database} from ${path.basename(dumpFile)}`
+    logger(`Restoring database ${database} from ${restoreFile}`)
+
+    try {
+      await $dest`/usr/local/bin/pg_restore \
+        -j4 \
+        -d ${database} \
+        --no-privileges \
+        --no-owner \
+        --clean \
+        --if-exists \
+        ${restoreFile}`
+    } finally {
+      if (tempFile) {
+        fs.unlinkSync(tempFile)
+      }
+    }
   },
 }
