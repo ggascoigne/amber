@@ -70,6 +70,8 @@ export type ChoicesByMemberSlot = Map<number, Map<number, Array<DashboardChoice>
 export const hasValidSlotId = (game: DashboardGame) => (game.slotId ?? 0) > 0
 
 export const filterGamesWithSlots = (games: Array<DashboardGame>) => games.filter(hasValidSlotId)
+export const filterGamesWithSlotsOrAny = (games: Array<DashboardGame>) =>
+  games.filter((game) => hasValidSlotId(game) || isAnyGameCategory(game.category))
 
 const buildAssignmentKey = (assignment: { memberId: number; gameId: number; gm: number; year: number }) =>
   `${assignment.memberId}-${assignment.gameId}-${assignment.gm}-${assignment.year}`
@@ -229,8 +231,10 @@ export const buildMoveOptions = ({
       game.slotId === slotId &&
       (isUserGameCategory(game.category) || isNoGameCategory(game.category)),
   )
+  const anyGameOption = games.find((game) => isAnyGameCategory(game.category))
+  const moveToGames = anyGameOption ? [...slotGames, anyGameOption] : slotGames
 
-  const options = slotGames.map((game) => {
+  const options = moveToGames.map((game) => {
     const choice = getChoiceForGame(choicesByMemberSlot, memberId, slotId, game.id)
     const rank = choice?.rank ?? null
     const returningPlayer = choice?.returningPlayer ?? false
@@ -266,6 +270,8 @@ export const buildMoveOptions = ({
       if (left.category !== right.category) {
         if (left.category === 'no_game') return 1
         if (right.category === 'no_game') return -1
+        if (left.category === 'any_game') return 1
+        if (right.category === 'any_game') return -1
       }
       return left.name.localeCompare(right.name)
     })

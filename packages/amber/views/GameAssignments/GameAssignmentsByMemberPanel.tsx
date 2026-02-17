@@ -18,8 +18,8 @@ import {
   buildChoicesByMemberSlot,
   buildMoveOptions,
   buildSubmissionsByMemberId,
+  filterGamesWithSlotsOrAny,
   formatGameName,
-  filterGamesWithSlots,
   getChoiceForGame,
   getChoiceRankForGame,
   getPriorityLabel,
@@ -73,9 +73,12 @@ export const GameAssignmentsByMemberPanel = ({
 }: GameAssignmentsByMemberPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
-  const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
+  const slotGames = useMemo(() => filterGamesWithSlotsOrAny(data.games), [data.games])
   const filteredSlotGames = useMemo(
-    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    () =>
+      slotFilterId === null
+        ? slotGames
+        : slotGames.filter((game) => game.slotId === slotFilterId || game.category === 'any_game'),
     [slotFilterId, slotGames],
   )
   const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
