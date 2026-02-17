@@ -17,8 +17,8 @@ import {
   buildAssignmentsByGameId,
   buildChoicesByMemberSlot,
   buildMoveOptions,
+  filterGamesWithSlotsOrAny,
   formatGameName,
-  filterGamesWithSlots,
   getChoiceForGame,
   getChoiceRankForGame,
   getPriorityLabel,
@@ -26,7 +26,6 @@ import {
   isScheduledAssignment,
 } from './utils'
 
-import { isAnyGameCategory } from '../../utils'
 import { PlayerPreference } from '../../utils/selectValues'
 
 type AssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
@@ -89,16 +88,15 @@ export const GameAssignmentsByGamePanel = ({
 }: GameAssignmentsByGamePanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const draftIdRef = useRef(0)
-  const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
+  const slotGames = useMemo(() => filterGamesWithSlotsOrAny(data.games), [data.games])
   const filteredSlotGames = useMemo(
-    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
+    () =>
+      slotFilterId === null
+        ? slotGames
+        : slotGames.filter((game) => game.slotId === slotFilterId || game.category === 'any_game'),
     [slotFilterId, slotGames],
   )
-  const slotGamesWithNoGame = useMemo(
-    () => filteredSlotGames.filter((game) => !isAnyGameCategory(game.category)),
-    [filteredSlotGames],
-  )
-  const slotGameIdSet = useMemo(() => new Set(slotGamesWithNoGame.map((game) => game.id)), [slotGamesWithNoGame])
+  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
   const scheduledAssignments = useMemo(
     () =>
       data.assignments.filter(
@@ -108,8 +106,8 @@ export const GameAssignmentsByGamePanel = ({
   )
   const assignmentsByGameId = useMemo(() => buildAssignmentsByGameId(scheduledAssignments), [scheduledAssignments])
   const assignmentCountsByGameId = useMemo(
-    () => buildAssignmentCountsByGameId(slotGamesWithNoGame, scheduledAssignments),
-    [slotGamesWithNoGame, scheduledAssignments],
+    () => buildAssignmentCountsByGameId(filteredSlotGames, scheduledAssignments),
+    [filteredSlotGames, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
   const memberAssignmentCountsByMemberId = useMemo(() => {
@@ -157,13 +155,13 @@ export const GameAssignmentsByGamePanel = ({
   const gameById = useMemo(() => new Map(data.games.map((game) => [game.id, game])), [data.games])
 
   const gameNameById = useMemo(
-    () => new Map(slotGamesWithNoGame.map((game) => [game.id, formatGameName(game)])),
-    [slotGamesWithNoGame],
+    () => new Map(filteredSlotGames.map((game) => [game.id, formatGameName(game)])),
+    [filteredSlotGames],
   )
 
   const gameRows = useMemo<Array<GameAssignmentSummaryRow>>(
     () =>
-      slotGamesWithNoGame.map((game) => {
+      filteredSlotGames.map((game) => {
         const counts = assignmentCountsByGameId.get(game.id)
         return {
           gameId: game.id,
@@ -177,7 +175,7 @@ export const GameAssignmentsByGamePanel = ({
           spaces: counts?.spaces ?? Math.max(0, game.playerMax),
         }
       }),
-    [assignmentCountsByGameId, slotGamesWithNoGame],
+    [assignmentCountsByGameId, filteredSlotGames],
   )
 
   const gameColumns = useMemo<Array<ColumnDef<GameAssignmentSummaryRow>>>(
@@ -273,14 +271,14 @@ export const GameAssignmentsByGamePanel = ({
         header: 'Returning',
         size: 100,
         accessorFn: (row) => {
-          const game = slotGamesWithNoGame.find((gameEntry) => gameEntry.id === row.gameId)
+          const game = filteredSlotGames.find((gameEntry) => gameEntry.id === row.gameId)
           if (game?.playerPreference === PlayerPreference.RetOnly) return 'Only'
           if (game?.playerPreference === PlayerPreference.RetPref) return 'Preferred'
           return ''
         },
       },
     ],
-    [slotGamesWithNoGame],
+    [filteredSlotGames],
   )
 
   const assignmentColumns = useMemo<Array<ColumnDef<GameAssignmentRow>>>(
@@ -341,7 +339,7 @@ export const GameAssignmentsByGamePanel = ({
             type: 'select',
             getOptions: (row) => {
               const options = buildMoveOptions({
-                games: slotGamesWithNoGame,
+                games: filteredSlotGames,
                 assignmentCountsByGameId,
                 choicesByMemberSlot,
                 memberId: row.original.memberId,
@@ -424,7 +422,7 @@ export const GameAssignmentsByGamePanel = ({
       memberAssignmentCountsByMemberId,
       memberNameById,
       memberOptions,
-      slotGamesWithNoGame,
+      filteredSlotGames,
     ],
   )
 
