@@ -9,14 +9,16 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
     if (!configuration) throw new Error('Unable to load configuration')
     const year = req.body?.year ?? configuration.year
     const slotTimes = getSlotTimes(configuration, year)
-    const slotStartMap = new Map(slotTimes.map(([start], index) => [index + 1, start.toJSDate()]))
-    const slotEndMap = new Map(slotTimes.map(([, end], index) => [index + 1, end.toJSDate()]))
+    const toWallClockDate = (dt: { year: number; month: number; day: number; hour: number; minute: number }) =>
+      new Date(dt.year, dt.month - 1, dt.day, dt.hour, dt.minute)
+    const slotStartMap = new Map(slotTimes.map(([start], index) => [index + 1, toWallClockDate(start)]))
+    const slotEndMap = new Map(slotTimes.map(([, end], index) => [index + 1, toWallClockDate(end)]))
 
     const query = `
       SELECT
         g.year AS "Year",
         g.slot_id AS "Slot",
-        g.late_start AS "Late Start",
+        CASE WHEN g.late_start = 'Starts on time' THEN '' ELSE g.late_start END AS "Late Start",
         CASE WHEN g.late_finish THEN 'Yes' ELSE '' END AS "Late Finish",
         g.name AS "Game Name",
         g.gm_names AS "GM Name",
