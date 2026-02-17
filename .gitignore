@@ -60,6 +60,7 @@ postgres-data
 .now
 build/
 *.dump
+*.dump.gz
 .eslintcache
 
 # generated at build time
