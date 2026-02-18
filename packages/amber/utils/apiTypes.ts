@@ -148,4 +148,19 @@ export interface GameChoiceConfirmation {
   body: GameChoiceConfirmationBody
 }
 
-export type EmailConfirmation = MembershipConfirmation | GameConfirmation | GameChoiceConfirmation
+export interface GameAssignmentChangeBody {
+  year: number
+  adds: Array<{ memberId: number; gameId: number }>
+  removes: Array<{ memberId: number; gameId: number }>
+}
+
+export interface GameAssignmentChangeConfirmation {
+  type: 'gameAssignmentChange'
+  body: GameAssignmentChangeBody
+}
+
+export type EmailConfirmation =
+  | MembershipConfirmation
+  | GameConfirmation
+  | GameChoiceConfirmation
+  | GameAssignmentChangeConfirmation

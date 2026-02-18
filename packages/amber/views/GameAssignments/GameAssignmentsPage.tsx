@@ -44,6 +44,7 @@ import { buildAssignmentKeyFromInput, buildAssignmentKeyFromRecord, buildChoiceK
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
+import { useSendEmail } from '../../utils/useSendEmail'
 
 type AssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
 
@@ -826,6 +827,7 @@ const GameAssignmentsPage = () => {
       },
     ),
   )
+  const sendEmail = useSendEmail()
   const updateAssignmentsMutation = useMutation(trpc.gameAssignments.updateGameAssignments.mutationOptions())
   const resetAssignmentsMutation = useMutation(trpc.gameAssignments.resetAssignments.mutationOptions())
   const setInitialAssignmentsMutation = useMutation(trpc.gameAssignments.setInitialAssignments.mutationOptions())
@@ -884,6 +886,16 @@ const GameAssignmentsPage = () => {
         throw err
       }
 
+      // Fire-and-forget: notify affected players and GMs via email
+      sendEmail({
+        type: 'gameAssignmentChange',
+        body: {
+          year,
+          adds: payload.adds.map(({ memberId, gameId }) => ({ memberId, gameId })),
+          removes: payload.removes.map(({ memberId, gameId }) => ({ memberId, gameId })),
+        },
+      })
+
       setDashboardData((previous) => {
         if (!previous) return previous
 
@@ -929,7 +941,7 @@ const GameAssignmentsPage = () => {
         }
       })
     },
-    [invalidateDashboardQueries, updateAssignmentsMutation, year],
+    [invalidateDashboardQueries, sendEmail, updateAssignmentsMutation, year],
   )
 
   const handleUpsertChoice = useCallback(

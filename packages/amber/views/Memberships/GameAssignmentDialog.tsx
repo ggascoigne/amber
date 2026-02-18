@@ -23,6 +23,7 @@ import { membershipValidationSchemaNW, membershipValidationSchemaUS } from './me
 import { TransportError } from '../../components/TransportError'
 import { getGameAssignments, isAnyGameCategory, isNoGameCategory, useConfiguration, useYearFilter } from '../../utils'
 import type { MembershipType } from '../../utils/apiTypes'
+import { useSendEmail } from '../../utils/useSendEmail'
 
 type GameAssignmentEditNode = CreateGameAssignmentInputType
 
@@ -38,6 +39,7 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
   const trpc = useTRPC()
   const configuration = useConfiguration()
   const [year] = useYearFilter()
+  const sendEmail = useSendEmail()
   const createGameAssignment = useMutation(trpc.gameAssignments.createGameAssignment.mutationOptions())
   const deleteGameAssignment = useMutation(trpc.gameAssignments.deleteGameAssignment.mutationOptions())
   const invalidateGameAssignmentQueries = useInvalidateGameAssignmentQueries()
@@ -141,12 +143,19 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       }
     })
     console.log({ toDelete, toCreate })
+    const successfulDeletes: GameAssignmentEditNode[] = []
+    const successfulCreates: GameAssignmentEditNode[] = []
     const updaters: Promise<any>[] = []
     toDelete.forEach((assignment) => {
       updaters.push(
-        deleteGameAssignment.mutateAsync(pick(assignment, 'gameId', 'gm', 'memberId', 'year')).catch((error) => {
-          notify({ text: error.message, variant: 'error' })
-        }),
+        deleteGameAssignment
+          .mutateAsync(pick(assignment, 'gameId', 'gm', 'memberId', 'year'))
+          .then(() => {
+            successfulDeletes.push(assignment)
+          })
+          .catch((error) => {
+            notify({ text: error.message, variant: 'error' })
+          }),
       )
     })
     toCreate.forEach((assignment) => {
@@ -155,6 +164,9 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
           .mutateAsync(pick(assignment, 'gameId', 'gm', 'memberId', 'year'), {
             onSuccess: invalidateGameAssignmentQueries,
           })
+          .then(() => {
+            successfulCreates.push(assignment)
+          })
           .catch((error) => {
             console.log(`error = ${JSON.stringify(error, null, 2)}`)
             if (!error?.message?.include('duplicate key')) notify({ text: error.message, variant: 'error' })
@@ -162,6 +174,19 @@ export const GameAssignmentDialog: React.FC<GameAssignmentDialogProps> = ({ open
       )
     })
     await Promise.allSettled(updaters)
+
+    // Fire-and-forget: notify affected players and GMs via email
+    if (successfulDeletes.length > 0 || successfulCreates.length > 0) {
+      sendEmail({
+        type: 'gameAssignmentChange',
+        body: {
+          year,
+          adds: successfulCreates.map((a) => ({ memberId: a.memberId, gameId: a.gameId })),
+          removes: successfulDeletes.map((a) => ({ memberId: a.memberId, gameId: a.gameId })),
+        },
+      })
+    }
+
     onClose()
   }
 
