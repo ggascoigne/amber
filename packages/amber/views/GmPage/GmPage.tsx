@@ -221,6 +221,8 @@ const MemberGmPage = React.memo(() => {
   const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
+  const allowSubmission = useFlag('allow_game_submission')
+  const allowEditing = useFlag('allow_game_editing')
   const displayGameBook = useFlag('display_gamebook')
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
@@ -276,9 +278,11 @@ const MemberGmPage = React.memo(() => {
       <br />
       {configuration.virtual ? <VirtualGmBlurb /> : <GmBlurb />}
 
-      <Button component={Link} href='/gm/new' variant='outlined' color='primary' size='large'>
-        Add a Game
-      </Button>
+      {allowSubmission && (
+        <Button component={Link} href='/gm/new' variant='outlined' color='primary' size='large'>
+          Add a Game
+        </Button>
+      )}
 
       {data.length ? (
         <Table<Game>
@@ -288,7 +292,7 @@ const MemberGmPage = React.memo(() => {
           initialState={initialState}
           isLoading={isLoading}
           isFetching={isFetching}
-          onRowClick={onRowClick}
+          onRowClick={allowEditing ? onRowClick : undefined}
           onDelete={displayDeleteButton ? handleDelete : undefined}
           enableRowSelection={displayDeleteButton}
           refetch={refetch}

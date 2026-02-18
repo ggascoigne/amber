@@ -14,7 +14,7 @@ import { GamesDialog } from './GamesDialog'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useYearFilter } from '../../utils'
+import { useFlag, useYearFilter } from '../../utils'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
 export const getGms = (row: Game) => {
@@ -155,6 +155,8 @@ const columns: ColumnDef<Game>[] = [
 const Games = React.memo(() => {
   const trpc = useTRPC()
   const [year] = useYearFilter()
+  const allowSubmission = useFlag('allow_game_submission')
+  const allowEditing = useFlag('allow_game_editing')
   const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
   const [fixBusy, setFixBusy] = useState(false)
   const { error, data, refetch, isLoading, isFetching } = useQuery(
@@ -224,10 +226,10 @@ const Games = React.memo(() => {
         initialState={initialState}
         isLoading={isLoading}
         isFetching={isFetching}
-        onRowClick={onRowClick}
-        onAdd={onAdd}
-        onEdit={onEdit}
-        onDelete={onDelete}
+        onRowClick={allowEditing ? onRowClick : undefined}
+        onAdd={allowSubmission ? onAdd : undefined}
+        onEdit={allowEditing ? onEdit : undefined}
+        onDelete={allowEditing ? onDelete : undefined}
         refetch={refetch}
         additionalToolbarActions={toolbarActions}
         defaultColumnDisableGlobalFilter
