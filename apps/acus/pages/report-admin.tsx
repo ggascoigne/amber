@@ -19,6 +19,7 @@ const reports: ReportRecord[] = [
   { name: 'Rooms By Room' },
   { name: 'Rooms By Game' },
   { name: 'Game Assignments' },
+  { name: 'Voucher' },
 ]
 
 export const getServerSideProps = configGetServerSideProps
