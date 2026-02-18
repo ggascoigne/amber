@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
 import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import { useInvalidateMembershipQueries, useTRPC } from '@amber/client'
@@ -7,12 +7,9 @@ import { notEmpty } from '@amber/ui'
 import { BlankNoCell, DateCell, YesBlankCell } from '@amber/ui/components/CellFormatters'
 import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
 import { Table, getSelectedRows } from '@amber/ui/components/Table'
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { ColumnDef, TableState } from '@tanstack/react-table'
-
-import { GameAssignmentDialog } from './GameAssignmentDialog'
 
 import { Page } from '../../components'
 import { useProfile } from '../../components/Profile'
@@ -215,7 +212,6 @@ const Memberships: React.FC<{
   const invalidateMembershipQueries = useInvalidateMembershipQueries()
   const sendEmail = useSendEmail()
 
-  const [showGameAssignment, setShowGameAssignment] = useState(false)
   const deleteMembership = useMutation(trpc.memberships.deleteMembership.mutationOptions())
   const {
     error,
@@ -231,23 +227,11 @@ const Memberships: React.FC<{
 
   const { data: roomData } = useQuery(trpc.hotelRooms.getHotelRooms.queryOptions())
 
-  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete, updateSelection } =
+  const { showEdit, selection, handleCloseEdit, onAdd, onEdit, onRowClick, onDelete } =
     useStandardHandlers<MembershipAndUserAndRoom>({
       deleteHandler: (selectedRows) => selectedRows.map((row) => deleteMembership.mutateAsync({ id: row.id })),
       invalidateQueries: invalidateMembershipQueries,
-      onCloseCallback: () => {
-        setShowGameAssignment(false)
-      },
     })
-
-  const handleUpdateGameAssignments: TableSelectionMouseEventHandler<MembershipAndUserAndRoom> = useCallback(
-    (table, selectedKeys) => {
-      const selected = updateSelection(table, selectedKeys)
-      if (!selected.length) return
-      setShowGameAssignment(true)
-    },
-    [updateSelection],
-  )
 
   const handleSendRegistrationEmail: TableSelectionMouseEventHandler<MembershipAndUserAndRoom> = useCallback(
     (table, selectedKeys) => {
@@ -291,12 +275,6 @@ const Memberships: React.FC<{
 
   const toolbarActions: Action<MembershipAndUserAndRoom>[] = [
     {
-      label: 'Edit Game Assignments',
-      onClick: handleUpdateGameAssignments,
-      icon: <AssignmentIndIcon />,
-      enabled: (_table, selectedKeys) => selectedKeys.length === 1,
-    },
-    {
       label: 'Resend Registration Email',
       onClick: handleSendRegistrationEmail,
       icon: <MailOutlineIcon />,
@@ -320,9 +298,6 @@ const Memberships: React.FC<{
           profile={profile!}
           short
         />
-      )}
-      {showGameAssignment && (
-        <GameAssignmentDialog open={showGameAssignment} onClose={handleCloseEdit} membership={selection[0]} />
       )}
       <Table<MembershipAndUserAndRoom>
         title='Membership'
