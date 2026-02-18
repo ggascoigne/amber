@@ -48,7 +48,14 @@ const deadlines = [
   'config.lastCancellationFullRefund',
   'config.travelCoordination',
 ]
-const flags = ['flag.allow_game_signup', 'flag.allow_registration', 'flag.display_gamebook', 'flag.display_schedule']
+const flags = [
+  'flag.allow_game_signup',
+  'flag.allow_game_submission',
+  'flag.allow_game_editing',
+  'flag.allow_registration',
+  'flag.display_gamebook',
+  'flag.display_schedule',
+]
 
 const newYearFields = ['config.year', ...dateFields]
 
