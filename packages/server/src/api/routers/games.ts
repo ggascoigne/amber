@@ -534,6 +534,11 @@ export const gamesRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
+        const userRoles: string[] = ctx.session?.user?.roles ?? []
+        const allowed = await checkPermGate(tx, 'flag.allow_game_editing', userRoles, ctx.userId)
+        if (!allowed) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Game editing is not currently allowed' })
+        }
         const deletedGame = await tx.game.delete({
           where: { id: input.id },
         })

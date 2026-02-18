@@ -35,13 +35,8 @@ export async function up(knex: Knex): Promise<void> {
   `)
 }
 
-export async function down(knex: Knex): Promise<void> {
-  // Revert flag.allow_game_editing back to boolean if it was converted
-  await knex.raw(`
-    UPDATE setting
-    SET type = 'boolean',
-        value = CASE WHEN value = 'Yes' THEN 'true' ELSE 'false' END
-    WHERE code = 'flag.allow_game_editing'
-      AND type = 'perm-gate';
-  `)
+export async function down(_knex: Knex): Promise<void> {
+  // Forward-only migration: the deleted legacy row and newly inserted rows
+  // cannot be reliably reversed without knowing the prior state of each environment.
+  // These flags were not checked by any code before this change, so not reverting them is safe.
 }

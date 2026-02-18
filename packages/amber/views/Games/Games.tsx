@@ -155,6 +155,8 @@ const columns: ColumnDef<Game>[] = [
 const Games = React.memo(() => {
   const trpc = useTRPC()
   const [year] = useYearFilter()
+  // useFlag returns undefined while settings are loading — falsy means buttons stay hidden until
+  // the flags are resolved, which is the safe default (no accidental access during load).
   const allowSubmission = useFlag('allow_game_submission')
   const allowEditing = useFlag('allow_game_editing')
   const deleteGame = useMutation(trpc.games.deleteGame.mutationOptions())
