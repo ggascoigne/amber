@@ -272,8 +272,12 @@ const MemberGmPage = React.memo(() => {
 
   return (
     <Page title='Become a GM'>
-      {query.all?.[0] === 'new' && <GamesDialog open onClose={onCloseEdit} initialValues={selection[0]} />}
-      {query.all?.[0] === 'edit' && <GamesDialogEdit open onClose={onCloseEdit} initialValues={selection[0]} />}
+      {allowSubmission && query.all?.[0] === 'new' && (
+        <GamesDialog open onClose={onCloseEdit} initialValues={selection[0]} />
+      )}
+      {allowEditing && query.all?.[0] === 'edit' && (
+        <GamesDialogEdit open onClose={onCloseEdit} initialValues={selection[0]} />
+      )}
 
       <br />
       {configuration.virtual ? <VirtualGmBlurb /> : <GmBlurb />}
@@ -293,7 +297,7 @@ const MemberGmPage = React.memo(() => {
           isLoading={isLoading}
           isFetching={isFetching}
           onRowClick={allowEditing ? onRowClick : undefined}
-          onDelete={displayDeleteButton ? handleDelete : undefined}
+          onDelete={displayDeleteButton && allowEditing ? handleDelete : undefined}
           enableRowSelection={displayDeleteButton}
           refetch={refetch}
           scrollBehavior='none'

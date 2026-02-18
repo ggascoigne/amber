@@ -27,6 +27,9 @@ const checkPermGate = async (
     case 'GameAdmin':
       return isAdmin || isGameAdmin
     case 'GM': {
+      // Intentionally not scoped to a specific year — mirrors the frontend useIsGm which checks
+      // current year only. Here we check any year so that GMs retain access even if their
+      // assignment hasn't been created for the new year yet (e.g. during game submission phase).
       if (isAdmin || isGameAdmin) return true
       if (!userId) return false
       const gmAssignments = await tx.gameAssignment.findFirst({
