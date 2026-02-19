@@ -1,0 +1,35 @@
+h1 Game Assignment Change
+
+if recipientRole === 'player'
+  if action === 'moved'
+    p Hi #{playerName}, your game assignment for Ambercon #{year} Slot #{slotId} has been changed.
+    ul
+      li Previous game: #{oldGameName}
+      li New game: #{newGameName}
+  else if action === 'added'
+    p Hi #{playerName}, you have been assigned to a game for Ambercon #{year} Slot #{slotId}.
+    ul
+      li Game: #{newGameName}
+  else if action === 'removed'
+    p Hi #{playerName}, you have been removed from a game for Ambercon #{year} Slot #{slotId}.
+    ul
+      li Game: #{oldGameName}
+else
+  if action === 'moved'
+    p Hi #{gmName}, a player assignment has changed for your game in Ambercon #{year} Slot #{slotId}.
+    ul
+      li Player: #{playerName}
+    if direction === 'from'
+      p #{playerName} has been moved from your game "#{oldGameName}" to another game.
+    else
+      p #{playerName} has been moved to your game "#{newGameName}" from another game.
+  else if action === 'added'
+    p Hi #{gmName}, a player has been added to your game for Ambercon #{year} Slot #{slotId}.
+    ul
+      li Player: #{playerName}
+      li Game: #{newGameName}
+  else if action === 'removed'
+    p Hi #{gmName}, a player has been removed from your game for Ambercon #{year} Slot #{slotId}.
+    ul
+      li Player: #{playerName}
+      li Game: #{oldGameName}
