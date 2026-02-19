@@ -115,6 +115,8 @@ const settingsData = [
   { id: 101, code: 'flag.send_admin_email', type: 'perm-gate', value: 'No' },
   { id: 102, code: 'url.discord', type: 'string', value: 'https://discord.gg/jcFSNhW' },
   { id: 103, code: 'url.wiki', type: 'string', value: 'http://amberconnw.wikidot.com/' },
+  { id: 104, code: 'flag.allow_game_submission', type: 'perm-gate', value: 'Yes' },
+  { id: 105, code: 'flag.allow_game_editing', type: 'perm-gate', value: 'Yes' },
 ]
 
 const lookups = [
