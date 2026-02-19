@@ -39,6 +39,9 @@ const nextConfig = {
       sourceMap: true,
     },
   },
+  outputFileTracingIncludes: {
+    '/api/send/*': ['./pages/api/send/templates/**/*'],
+  },
   ...(isPlaywright
     ? {
         devIndicators: false,
