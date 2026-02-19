@@ -163,14 +163,16 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
         action: change.action,
       }
 
-      // Email the player
-      emailPromises.push(
-        emailer.send({
-          template: 'gameAssignmentChange',
-          message: { to: player.email },
-          locals: { ...baseLocals, recipientRole: 'player' },
-        }),
-      )
+      // Only email the player when the schedule is visible to them (Member or Yes)
+      if (displaySchedule === 'Member' || displaySchedule === 'Yes') {
+        emailPromises.push(
+          emailer.send({
+            template: 'gameAssignmentChange',
+            message: { to: player.email },
+            locals: { ...baseLocals, recipientRole: 'player' },
+          }),
+        )
+      }
 
       // Email GM(s) of the old game (removed/moved from)
       if (change.oldGameId) {
