@@ -221,6 +221,8 @@ const MemberGmPage = React.memo(() => {
   const invalidateGameQueries = useInvalidateGameQueries()
   const { userId } = useUser()
   const configuration = useConfiguration()
+  const allowSubmission = useFlag('allow_game_submission')
+  const allowEditing = useFlag('allow_game_editing')
   const displayGameBook = useFlag('display_gamebook')
   // you can only delete games for the current year, and only if they haven't been published.
   const displayDeleteButton = year === configuration.year && !displayGameBook
@@ -270,15 +272,21 @@ const MemberGmPage = React.memo(() => {
 
   return (
     <Page title='Become a GM'>
-      {query.all?.[0] === 'new' && <GamesDialog open onClose={onCloseEdit} initialValues={selection[0]} />}
-      {query.all?.[0] === 'edit' && <GamesDialogEdit open onClose={onCloseEdit} initialValues={selection[0]} />}
+      {allowSubmission && query.all?.[0] === 'new' && (
+        <GamesDialog open onClose={onCloseEdit} initialValues={selection[0]} />
+      )}
+      {allowEditing && query.all?.[0] === 'edit' && (
+        <GamesDialogEdit open onClose={onCloseEdit} initialValues={selection[0]} />
+      )}
 
       <br />
       {configuration.virtual ? <VirtualGmBlurb /> : <GmBlurb />}
 
-      <Button component={Link} href='/gm/new' variant='outlined' color='primary' size='large'>
-        Add a Game
-      </Button>
+      {allowSubmission && (
+        <Button component={Link} href='/gm/new' variant='outlined' color='primary' size='large'>
+          Add a Game
+        </Button>
+      )}
 
       {data.length ? (
         <Table<Game>
@@ -288,8 +296,8 @@ const MemberGmPage = React.memo(() => {
           initialState={initialState}
           isLoading={isLoading}
           isFetching={isFetching}
-          onRowClick={onRowClick}
-          onDelete={displayDeleteButton ? handleDelete : undefined}
+          onRowClick={allowEditing ? onRowClick : undefined}
+          onDelete={displayDeleteButton && allowEditing ? handleDelete : undefined}
           enableRowSelection={displayDeleteButton}
           refetch={refetch}
           scrollBehavior='none'

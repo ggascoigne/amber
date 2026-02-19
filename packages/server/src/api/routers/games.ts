@@ -1,11 +1,54 @@
 import { debug } from 'debug'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 import type { Prisma } from '../../generated/prisma/client'
+import type { TransactionClient } from '../inRlsTransaction'
 import { inRlsTransaction } from '../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../trpc'
 
 const log = debug('amber:server:api:routers:games')
+
+const checkPermGate = async (
+  tx: TransactionClient,
+  flagCode: string,
+  userRoles: string[],
+  userId: number | undefined,
+) => {
+  const setting = await tx.setting.findFirst({ where: { code: flagCode } })
+  const value = setting?.value ?? 'No'
+
+  const isAdmin = userRoles.includes('ROLE_ADMIN')
+  const isGameAdmin = userRoles.includes('ROLE_GAME_ADMIN')
+
+  switch (value) {
+    case 'Admin':
+      return isAdmin
+    case 'GameAdmin':
+      return isAdmin || isGameAdmin
+    case 'GM': {
+      // Intentionally not scoped to a specific year — mirrors the frontend useIsGm which checks
+      // current year only. Here we check any year so that GMs retain access even if their
+      // assignment hasn't been created for the new year yet (e.g. during game submission phase).
+      if (isAdmin || isGameAdmin) return true
+      if (!userId) return false
+      const gmAssignments = await tx.gameAssignment.findFirst({
+        where: {
+          gm: { not: 0 },
+          membership: { userId },
+        },
+      })
+      return gmAssignments !== null
+    }
+    case 'Member':
+      return true
+    case 'Yes':
+      return true
+    case 'No':
+    default:
+      return false
+  }
+}
 
 type SpecialGameTemplate = Omit<Prisma.GameCreateManyInput, 'slotId' | 'year' | 'category'>
 
@@ -422,6 +465,11 @@ export const gamesRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
+        const userRoles: string[] = ctx.session?.user?.roles ?? []
+        const allowed = await checkPermGate(tx, 'flag.allow_game_submission', userRoles, ctx.userId)
+        if (!allowed) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Game submission is not currently allowed' })
+        }
         const game = await tx.game.create({
           data: input,
         })
@@ -465,7 +513,11 @@ export const gamesRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
-        // log('updateGame input', input)
+        const userRoles: string[] = ctx.session?.user?.roles ?? []
+        const allowed = await checkPermGate(tx, 'flag.allow_game_editing', userRoles, ctx.userId)
+        if (!allowed) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Game editing is not currently allowed' })
+        }
         const updatedGame = await tx.game.update({
           where: { id: input.id },
           data: {
@@ -485,6 +537,11 @@ export const gamesRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) =>
       inRlsTransaction(ctx, async (tx) => {
+        const userRoles: string[] = ctx.session?.user?.roles ?? []
+        const allowed = await checkPermGate(tx, 'flag.allow_game_editing', userRoles, ctx.userId)
+        if (!allowed) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Game editing is not currently allowed' })
+        }
         const deletedGame = await tx.game.delete({
           where: { id: input.id },
         })
