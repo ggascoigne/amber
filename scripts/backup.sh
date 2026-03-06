@@ -14,7 +14,7 @@ OUTPUT=${DATABASE_NAME}.${DATE}.dump
 
 echo backup run at ${DATE}
 
-/usr/local/bin/pg_dump ${PG_ARGS} -Fc --schema=public > ${BACKUP_DIR}/${OUTPUT}
+pg_dump ${PG_ARGS} -Fc --schema=public > ${BACKUP_DIR}/${OUTPUT}
 
 cmp ${BACKUP_DIR}/${OUTPUT} ${BACKUP_DIR}/latest
 if [ $? -ne 0 ] ; then
