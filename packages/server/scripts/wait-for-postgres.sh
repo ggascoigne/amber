@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 cmdname=${0##*/}
+CONTAINER_CLI="${AMBER_CONTAINER_CLI:-docker}"
 
 echoerr() { if [[ ${QUIET} -ne 1 ]]; then echo "$@" 1>&2; fi }
 
@@ -15,7 +16,7 @@ Usage:
     -p PORT | --port=PORT                TCP port under test
                                          Alternatively, you specify the host and port as host:port
     or:
-    -c CONTAINER | --container=CONTAINER docker container to use for pg_isready (optional)
+    -c CONTAINER | --container=CONTAINER container name to use for pg_isready (optional)
 
     if you use -c then host and port are ignored since the test is performed locally within the container
 
@@ -83,7 +84,7 @@ if [[ ${CONTAINER} == "" ]] ; then
     CMD="pg_isready -q -h ${HOST} -p ${PORT}"
     echo -n "Verifying postgres on ${HOST}:${PORT} is accepting connections ..."
 else
-    CMD="docker exec -i ${CONTAINER} pg_isready -q -h localhost -p 5432"
+    CMD="${CONTAINER_CLI} exec -i ${CONTAINER} pg_isready -q -h localhost -p 5432"
     echo -n "Verifying postgres on ${CONTAINER} is accepting connections ..."
 fi
 

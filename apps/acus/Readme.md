@@ -10,7 +10,11 @@ Ensure that you have all node modules installed:
 $ pn i
 ```
 
-Run docker
+Run the container runtime
+
+Docker remains the default. On a machine where you want to use Podman instead,
+set `AMBER_CONTAINER_CLI=podman` in your shell startup or directory-local env
+before running these commands.
 
 ```bash
 $ pn -F server db:docker:up
