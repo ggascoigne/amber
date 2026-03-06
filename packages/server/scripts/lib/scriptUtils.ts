@@ -43,10 +43,12 @@ export const ensurePostgresToolVersion = (toolName: PostgresToolName) => {
   }
 
   const output = `${processStatus.stdout ?? ''}${processStatus.stderr ?? ''}`.trim()
-  const majorVersion = (/(\d+)(?:\.\d+)?/.exec(output))?.[1]
+  const majorVersion = /(\d+)(?:\.\d+)?/.exec(output)?.[1]
 
   if (processStatus.status !== 0 || !majorVersion) {
-    throw new Error(`Unable to determine ${toolName} version at ${resolvedToolPath} from output: ${output || '<empty>'}`)
+    throw new Error(
+      `Unable to determine ${toolName} version at ${resolvedToolPath} from output: ${output || '<empty>'}`,
+    )
   }
 
   if (Number(majorVersion) !== supportedPostgresMajorVersion) {
