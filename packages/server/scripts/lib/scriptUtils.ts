@@ -14,7 +14,9 @@ const log = debug('script')
 const supportedPostgresMajorVersion = 14
 const checkedPostgresTools = new Set<string>()
 
-const getResolvedToolPath = (toolName: 'pg_dump' | 'pg_restore' | 'psql') => {
+type PostgresToolName = 'pg_dump' | 'pg_isready' | 'pg_restore' | 'psql'
+
+const getResolvedToolPath = (toolName: PostgresToolName) => {
   const processStatus = spawnSync('which', [toolName], {
     encoding: 'utf8',
   })
@@ -26,7 +28,7 @@ const getResolvedToolPath = (toolName: 'pg_dump' | 'pg_restore' | 'psql') => {
   return processStatus.stdout.trim() || toolName
 }
 
-export const ensurePostgresToolVersion = (toolName: 'pg_dump' | 'pg_restore' | 'psql') => {
+export const ensurePostgresToolVersion = (toolName: PostgresToolName) => {
   if (checkedPostgresTools.has(toolName)) {
     return
   }

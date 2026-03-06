@@ -23,6 +23,7 @@ type TaskName =
   | 'toAwsDev'
   | 'dumpProd'
   | 'restoreLocal'
+  | 'waitForPostgres'
   | 'newDb'
 
 type TaskRegistry = Record<TaskName, ListrTask<TaskContext> | ListrTask<TaskContext>[]>
@@ -43,6 +44,7 @@ const availableTaskNames = [
   'toAwsDev',
   'dumpProd',
   'restoreLocal',
+  'waitForPostgres',
   'newDb',
 ] as const satisfies ReadonlyArray<TaskName>
 
@@ -61,6 +63,7 @@ const taskLoaders: TaskLoaderRegistry = {
   toAwsDev: async () => (await import('./lib/tasks/importTasks')).toAwsDevTask,
   dumpProd: async () => (await import('./lib/tasks/importTasks')).dumpProdTask,
   restoreLocal: async () => (await import('./lib/tasks/importTasks')).restoreLocalTask,
+  waitForPostgres: async () => (await import('./lib/tasks/waitForPostgres')).waitForPostgresTask,
   newDb: async () => {
     const [{ createCleanDbTask }, { migrateDbTask }] = await Promise.all([
       import('./lib/tasks/createCleanDb'),
