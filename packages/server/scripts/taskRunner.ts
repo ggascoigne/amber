@@ -6,21 +6,7 @@ import chalk from 'chalk'
 import type { ListrTask } from 'listr2'
 import { Listr } from 'listr2'
 
-import {
-  createCleanDbTask,
-  dumpDatabaseTask,
-  dumpProdTask,
-  migrateDbTask,
-  resetOwnerTask,
-  restoreDatabaseTask,
-  restoreLocalTask,
-  testSeedTask,
-  toAwsDevTask,
-  toAwsTask,
-  toLocalTask,
-  type TaskContext,
-  writeCertsTask,
-} from './lib'
+import type { TaskContext } from './lib/taskContext'
 
 const defaultEnv = processEnv()
 
@@ -37,29 +23,61 @@ type TaskName =
   | 'toAwsDev'
   | 'dumpProd'
   | 'restoreLocal'
+  | 'waitForPostgres'
   | 'newDb'
 
 type TaskRegistry = Record<TaskName, ListrTask<TaskContext> | ListrTask<TaskContext>[]>
-
-const taskRegistry: TaskRegistry = {
-  writeCerts: writeCertsTask,
-  createCleanDb: createCleanDbTask,
-  resetOwner: resetOwnerTask,
-  dumpDatabase: dumpDatabaseTask,
-  restoreDatabase: restoreDatabaseTask,
-  migrateDb: migrateDbTask,
-  testSeed: testSeedTask,
-  toAws: toAwsTask,
-  toLocal: toLocalTask,
-  toAwsDev: toAwsDevTask,
-  dumpProd: dumpProdTask,
-  restoreLocal: restoreLocalTask,
-  newDb: [createCleanDbTask, migrateDbTask],
-}
+type TaskLoaderRegistry = Record<TaskName, () => Promise<ListrTask<TaskContext> | ListrTask<TaskContext>[]>>
 
 const toList = (items: Array<string>) => items.join(', ')
 
-const isTaskName = (value: string): value is TaskName => value in taskRegistry
+const availableTaskNames = [
+  'writeCerts',
+  'createCleanDb',
+  'resetOwner',
+  'dumpDatabase',
+  'restoreDatabase',
+  'migrateDb',
+  'testSeed',
+  'toAws',
+  'toLocal',
+  'toAwsDev',
+  'dumpProd',
+  'restoreLocal',
+  'waitForPostgres',
+  'newDb',
+] as const satisfies ReadonlyArray<TaskName>
+
+const isTaskName = (value: string): value is TaskName => availableTaskNames.includes(value as TaskName)
+
+const taskLoaders: TaskLoaderRegistry = {
+  writeCerts: async () => (await import('./lib/tasks/writeCerts')).writeCertsTask,
+  createCleanDb: async () => (await import('./lib/tasks/createCleanDb')).createCleanDbTask,
+  resetOwner: async () => (await import('./lib/tasks/resetOwner')).resetOwnerTask,
+  dumpDatabase: async () => (await import('./lib/importUtils')).dumpDatabaseTask,
+  restoreDatabase: async () => (await import('./lib/importUtils')).restoreDatabaseTask,
+  migrateDb: async () => (await import('./lib/tasks/migrate')).migrateDbTask,
+  testSeed: async () => (await import('./lib/tasks/testSeed')).testSeedTask,
+  toAws: async () => (await import('./lib/tasks/importTasks')).toAwsTask,
+  toLocal: async () => (await import('./lib/tasks/importTasks')).toLocalTask,
+  toAwsDev: async () => (await import('./lib/tasks/importTasks')).toAwsDevTask,
+  dumpProd: async () => (await import('./lib/tasks/importTasks')).dumpProdTask,
+  restoreLocal: async () => (await import('./lib/tasks/importTasks')).restoreLocalTask,
+  waitForPostgres: async () => (await import('./lib/tasks/waitForPostgres')).waitForPostgresTask,
+  newDb: async () => {
+    const [{ createCleanDbTask }, { migrateDbTask }] = await Promise.all([
+      import('./lib/tasks/createCleanDb'),
+      import('./lib/tasks/migrate'),
+    ])
+
+    return [createCleanDbTask, migrateDbTask]
+  },
+}
+
+const loadTaskRegistry = async (selectedNames: Array<TaskName>): Promise<TaskRegistry> => {
+  const loadedEntries = await Promise.all(selectedNames.map(async (name) => [name, await taskLoaders[name]()] as const))
+  return Object.fromEntries(loadedEntries) as TaskRegistry
+}
 
 const [, , ...rawArgs] = process.argv
 
@@ -78,30 +96,40 @@ for (let i = 0; i < rawArgs.length; i++) {
   }
 }
 
-const taskNames = filteredArgs.filter((name) => !name.startsWith('-'))
+const requestedTaskNames = filteredArgs.filter((name) => !name.startsWith('-'))
 
-if (taskNames.length === 0) {
-  console.error(chalk.yellow(`No tasks specified. Available tasks: ${toList(Object.keys(taskRegistry))}`))
+if (requestedTaskNames.length === 0) {
+  console.error(chalk.yellow(`No tasks specified. Available tasks: ${toList(Array.from(availableTaskNames))}`))
   process.exit(1)
 }
 
-const selectedTaskNames = taskNames.filter(isTaskName)
-const unknownTasks = taskNames.filter((name) => !isTaskName(name))
+const selectedTaskNames = requestedTaskNames.filter(isTaskName)
+const unknownTasks = requestedTaskNames.filter((name) => !isTaskName(name))
 
 if (unknownTasks.length > 0) {
   console.error(chalk.bold.red(`Unknown task(s): ${toList(unknownTasks)}`))
-  console.error(`Available tasks: ${toList(Object.keys(taskRegistry))}`)
+  console.error(`Available tasks: ${toList(Array.from(availableTaskNames))}`)
   process.exit(1)
 }
 
-const tasksToRun = selectedTaskNames.flatMap((name) => taskRegistry[name])
+const run = async () => {
+  const taskNamesToLoad =
+    selectedTaskNames.length === 1 && selectedTaskNames[0] === 'writeCerts'
+      ? selectedTaskNames
+      : (['writeCerts', ...selectedTaskNames.filter((name) => name !== 'writeCerts')] as Array<TaskName>)
 
-const runner = new Listr<TaskContext, 'verbose' | 'default'>(tasksToRun, {
-  ctx: { env: defaultEnv, dumpFile },
-  renderer: process.env.DEBUG ? 'verbose' : 'default',
-})
+  const taskRegistry = await loadTaskRegistry(taskNamesToLoad)
+  const tasksToRun = taskNamesToLoad.flatMap((name) => taskRegistry[name])
 
-runner.run().catch((reason: any) => {
+  const runner = new Listr<TaskContext, 'verbose' | 'default'>(tasksToRun, {
+    ctx: { env: defaultEnv, dumpFile },
+    renderer: process.env.DEBUG ? 'verbose' : 'default',
+  })
+
+  await runner.run()
+}
+
+run().catch((reason: any) => {
   console.error(chalk.bold.red('error detected'))
   console.error(reason)
   process.exit(-1)

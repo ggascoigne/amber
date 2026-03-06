@@ -9,7 +9,7 @@ import { temporaryFile } from 'tempy'
 import { $ } from 'zx'
 
 import { getPaths } from './filePaths'
-import { getPostgresArgs } from './scriptUtils'
+import { ensurePostgresToolVersion, getPostgresArgs } from './scriptUtils'
 import type { TaskContext } from './taskContext'
 
 const { dirname } = getPaths(import.meta.url)
@@ -69,17 +69,19 @@ export const dumpDatabaseTask: ListrTask = {
     const dumpName = `${database}-${timestamp}.dump`
     const dumpPath = path.join(repoRoot, dumpName)
 
+    ensurePostgresToolVersion('pg_dump')
+
     // eslint-disable-next-line no-param-reassign
     task.title = `Dumping database ${database} to ${dumpName}`
     logger(`dumping database ${database} to ${dumpPath}`)
-    await $source`/usr/local/bin/pg_dump ${getPostgresArgs(environ.ADMIN_DATABASE_URL)} -Fc --schema=public > ${dumpPath}`
+    await $source`pg_dump ${getPostgresArgs(environ.ADMIN_DATABASE_URL)} -Fc --schema=public > ${dumpPath}`
 
     const gzPath = `${dumpPath}.gz`
     // eslint-disable-next-line no-param-reassign
     task.title = `Compressing ${dumpName}`
     await $source`gzip ${dumpPath}`
 
-    ctx.dumpFile = gzPath // eslint-disable-line no-param-reassign
+    ctx.dumpFile = gzPath  
     // eslint-disable-next-line no-param-reassign
     task.title = `Dumped ${path.basename(gzPath)}`
     logger(`dump saved to ${gzPath}`)
@@ -130,7 +132,8 @@ export const restoreDatabaseTask: ListrTask = {
     logger(`Restoring database ${database} from ${restoreFile}`)
 
     try {
-      await $dest`/usr/local/bin/pg_restore \
+      ensurePostgresToolVersion('pg_restore')
+      await $dest`pg_restore \
         -j4 \
         -d ${database} \
         --no-privileges \

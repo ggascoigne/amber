@@ -20,8 +20,7 @@ export const writeCertsTask: ListrTask = {
   task: (ctx: TaskContext, task: ListrTaskWrapper<TaskContext, any, any>) => {
     const environ = ctx?.env ?? env
     if (!environ.DATABASE_SSL_CERT) {
-      // eslint-disable-next-line no-template-curly-in-string
-      return task.skip('Skipping as ${DATABASE_SSL_CERT} is undefined')
+      return task.skip('Persisting cert: skipped')
     } else {
       const certName = path.basename(environ.DATABASE_SSL_CERT ?? '', '.pem')
       log('certName', certName)
@@ -31,7 +30,7 @@ export const writeCertsTask: ListrTask = {
       }
       fs.writeFileSync(filename, certs[certName]!)
       log(`Wrote ${environ.DATABASE_SSL_CERT} to ${filename}`)
-      return Promise.resolve(`Wrote ${environ.DATABASE_SSL_CERT} to ${filename}`)
+      return Promise.resolve(`Persisting cert: ${filename}`)
     }
   },
 }

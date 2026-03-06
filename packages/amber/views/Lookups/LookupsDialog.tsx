@@ -106,7 +106,7 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
 
     initialValues.lookupValue.map((ilv) => {
       if (ilv?.id) {
-        currentLookupValueIds.includes(ilv.id) || updaters.push(deleteLookupValue.mutateAsync({ id: ilv.id }))
+        currentLookupValueIds.includes(ilv.id) ?? updaters.push(deleteLookupValue.mutateAsync({ id: ilv.id }))
       }
       return null
     })

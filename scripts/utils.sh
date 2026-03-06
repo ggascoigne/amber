@@ -6,7 +6,7 @@ function cleanDb () {
 # use this since dropdb barfs is there's an open connection
 # and I tend to leave postico or intellij connected, and this drops those connections
 # note that this might seem more complex than necessary, but it works on RDS too
-/usr/local/bin/psql ${connectionString} > /dev/null << EOF
+psql ${connectionString} > /dev/null << EOF
 DROP DATABASE IF EXISTS temporary_db_that_shouldnt_exist;
 CREATE DATABASE temporary_db_that_shouldnt_exist with OWNER ${user};
 \\connect temporary_db_that_shouldnt_exist
