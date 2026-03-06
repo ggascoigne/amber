@@ -181,8 +181,7 @@ export const GamesDialog = ({ open, onClose, initialValues: userInitialValues }:
 
   const rooms = roomData ?? []
 
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-  if (initialValues.slotId === null) initialValues.slotId = 0
+  initialValues.slotId ??= 0
 
   const onCopyGameChange =
     (values: GameDialogFormValues, setValues: (val: GameDialogFormValues, shouldValidate?: boolean) => void) =>

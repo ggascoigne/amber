@@ -1,5 +1,5 @@
-import { debug } from 'debug'
 import { TRPCError } from '@trpc/server'
+import { debug } from 'debug'
 import { z } from 'zod'
 
 import type { Prisma } from '../../generated/prisma/client'
