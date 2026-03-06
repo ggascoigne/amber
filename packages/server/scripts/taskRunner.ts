@@ -113,8 +113,13 @@ if (unknownTasks.length > 0) {
 }
 
 const run = async () => {
-  const taskRegistry = await loadTaskRegistry(selectedTaskNames)
-  const tasksToRun = selectedTaskNames.flatMap((name) => taskRegistry[name])
+  const taskNamesToLoad =
+    selectedTaskNames.length === 1 && selectedTaskNames[0] === 'writeCerts'
+      ? selectedTaskNames
+      : (['writeCerts', ...selectedTaskNames.filter((name) => name !== 'writeCerts')] as Array<TaskName>)
+
+  const taskRegistry = await loadTaskRegistry(taskNamesToLoad)
+  const tasksToRun = taskNamesToLoad.flatMap((name) => taskRegistry[name])
 
   const runner = new Listr<TaskContext, 'verbose' | 'default'>(tasksToRun, {
     ctx: { env: defaultEnv, dumpFile },
