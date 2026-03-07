@@ -81,7 +81,7 @@ export const dumpDatabaseTask: ListrTask = {
     task.title = `Compressing ${dumpName}`
     await $source`gzip ${dumpPath}`
 
-    ctx.dumpFile = gzPath  
+    ctx.dumpFile = gzPath
     // eslint-disable-next-line no-param-reassign
     task.title = `Dumped ${path.basename(gzPath)}`
     logger(`dump saved to ${gzPath}`)
