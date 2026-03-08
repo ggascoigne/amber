@@ -38,19 +38,19 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
     // set theme for all tests in this block
     test.use({ colorScheme: theme as any })
 
-    test('Table: client-side', async ({ page }) => {
+    test('Table: client-side @visual', async ({ page }) => {
       await page.goto('/table-client')
       await waitForTable(page)
       await expect(getMain(page)).toHaveScreenshot()
     })
 
-    test('Table: server-side', async ({ page }) => {
+    test('Table: server-side @visual', async ({ page }) => {
       await page.goto('/table-server')
       await waitForTable(page)
       await expect(getMain(page)).toHaveScreenshot()
     })
 
-    test.describe('Table Playground', () => {
+    test.describe('Table Playground @visual', () => {
       test.beforeEach(async ({ page }) => {
         await page.goto('/table-playground')
         await waitForTable(page)
@@ -141,7 +141,7 @@ const applyFlagSettings = async (config: Record<string, boolean>, page: Page) =>
       await expect(page.getByText('Drew Doe')).toBeVisible()
     })
 
-    test.describe('Layouts', () => {
+    test.describe('Layouts @visual', () => {
       test.beforeEach(async ({ page }) => {
         await page.goto('/table-layouts')
         await waitForTable(page)

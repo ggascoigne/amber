@@ -1,5 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
+const isLinux = process.platform === 'linux'
+
 export default defineConfig({
   testDir: './playwright',
   fullyParallel: true, // run each test in parallel, instead of each file
@@ -12,6 +14,7 @@ export default defineConfig({
         viewport: { width: 1920, height: 1080 },
         deviceScaleFactor: 1,
       },
+      grepInvert: isLinux ? /@visual/ : undefined,
       dependencies: ['setup'],
       // retries: 5,
     },
@@ -32,7 +35,7 @@ export default defineConfig({
   },
 
   // Opt out of parallel tests on CI, otherwise limit workers to 4 for stability
-  workers: process.env.CI ? 1 : 4,
+  workers: process.env.CI || isLinux ? 1 : 4,
   reporter: [
     ['dot'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }], // Customize the HTML report output
