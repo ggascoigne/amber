@@ -1,4 +1,5 @@
 import fs from 'fs'
+import { mkdir } from 'node:fs/promises'
 import path from 'path'
 
 import { type EnvType, processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
@@ -14,10 +15,11 @@ import type { TaskContext } from './taskContext'
 
 const { dirname } = getPaths(import.meta.url)
 const repoRoot = path.resolve(dirname, '../../../..')
+const backupFolder = 'backup'
 
 const tracing = !!process.env.DEBUG
 
-const log = debug('importUtils')
+const log = debug('script:importUtils')
 
 const $$ = $({
   verbose: true,
@@ -38,8 +40,6 @@ export const loadEnv = (fileName: string): EnvType => {
     quiet: true,
   })
   log('loaded env from', pathName)
-  log('env', obj)
-  log('loadEnv %s - end %o', fileName, process.env)
   return processEnv(obj as any)
 }
 
@@ -66,7 +66,8 @@ export const dumpDatabaseTask: ListrTask = {
 
     const { database } = parsePostgresConnectionString(environ.ADMIN_DATABASE_URL)
     const timestamp = formatTimestamp()
-    const dumpName = `${database}-${timestamp}.dump`
+    const dumpName = path.join(backupFolder, `${database}-${timestamp}.dump` )
+    await mkdir(path.join(repoRoot, backupFolder), { recursive: true })
     const dumpPath = path.join(repoRoot, dumpName)
 
     ensurePostgresToolVersion('pg_dump')

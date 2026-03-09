@@ -3,7 +3,7 @@ import { env, safeConnectionString, parsePostgresConnectionString, isProd } from
 import { config } from '../../../shared/config'
 import { createTRPCRouter, publicProcedure } from '../trpc'
 
-type EnvRecord = Record<string, string | undefined>
+type EnvRecord = Record<string, any | undefined>
 
 function filterVercelVars(input: EnvRecord): EnvRecord {
   const includedEnvName = /^(?:VERCEL.*|NODE_ENV)$/
@@ -23,18 +23,22 @@ export const configRouter = createTRPCRouter({
     const connectionString = safeConnectionString(config.userDatabase)
     const dbDetails = parsePostgresConnectionString(connectionString)
     const { isAdmin } = ctx
+    const databaseVersionResult = isAdmin
+      ? await ctx.db.$queryRaw<Array<{ version: string }>>`select version();`
+      : undefined
+    const databaseVersion = databaseVersionResult?.[0]?.version.match(/^PostgreSQL\s+\S+/)?.[0] ?? undefined
     const { userDatabase } = config
-    const isLocal = !userDatabase.includes('aws')
-    const isTestDb = dbDetails.database.includes('test')
-    const summary = {
-      local: isLocal,
-      isTestDb,
+
+    return filterUndefinedVars({
+      local: !userDatabase.includes('aws'),
+      isTestDb: dbDetails.database.includes('test'),
       isFakeAuth: env.USE_FAKE_AUTH === 'true',
       databaseName: dbDetails.database,
+      databaseVersion,
       nodeVersion: process.version,
       appBaseUrl: env.APP_BASE_URL,
+      url: isAdmin ? safeConnectionString(userDatabase) : undefined,
       env: isProd ? filterVercelVars(env) : filterUndefinedVars(env),
-    }
-    return isAdmin ? { ...summary, url: safeConnectionString(userDatabase) } : { ...summary }
+    })
   }),
 })

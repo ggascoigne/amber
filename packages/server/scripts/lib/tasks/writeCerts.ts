@@ -11,7 +11,7 @@ import type { TaskContext } from '../taskContext'
 
 const env = processEnv()
 
-const log = debug('tasks')
+const log = debug('script:tasks')
 
 const filename = path.join(os.platform() === 'win32' ? os.tmpdir() : '/tmp', 'rds-cert.pem')
 

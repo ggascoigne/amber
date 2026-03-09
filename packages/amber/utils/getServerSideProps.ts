@@ -17,7 +17,7 @@ export async function configGetServerSideProps(context: GetServerSidePropsContex
   // Get session from the request
   const session = await auth0.getSession(context.req as any)
   const userId = parseInt(session?.user?.userId, 10) || undefined
-  const helper = ssrAuthenticatedHelpers(userId)
+  const helper = ssrAuthenticatedHelpers(session ?? undefined)
 
   const thisYear = new Date().getFullYear()
 
