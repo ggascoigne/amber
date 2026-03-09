@@ -22,6 +22,8 @@ export const configRouter = createTRPCRouter({
   getConfig: publicProcedure.query(async ({ ctx }) => {
     const connectionString = safeConnectionString(config.userDatabase)
     const dbDetails = parsePostgresConnectionString(connectionString)
+    const databaseVersionResult = await ctx.db.$queryRaw<Array<{ version: string }>>`select version();`
+    const databaseVersion = databaseVersionResult[0]?.version ?? 'unknown'
     const { isAdmin } = ctx
     const { userDatabase } = config
     const isLocal = !userDatabase.includes('aws')
@@ -31,6 +33,7 @@ export const configRouter = createTRPCRouter({
       isTestDb,
       isFakeAuth: env.USE_FAKE_AUTH === 'true',
       databaseName: dbDetails.database,
+      databaseVersion,
       nodeVersion: process.version,
       appBaseUrl: env.APP_BASE_URL,
       env: isProd ? filterVercelVars(env) : filterUndefinedVars(env),

@@ -64,7 +64,6 @@
     "@amber/tsconfig": "workspace:*",
     "@types/common-tags": "^1.8.4",
     "@types/debug": "~4.1.12",
-    "@types/fs-extra": "^11.0.4",
     "@types/luxon": "^3.7.1",
     "@types/node": "^25.3.5",
     "@types/pg": "^8.18.0",

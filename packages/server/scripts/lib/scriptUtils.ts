@@ -10,8 +10,8 @@ import { temporaryFile } from 'tempy'
 
 import type { DbConfig } from '../../shared/config'
 
-const log = debug('script')
-const supportedPostgresMajorVersion = 14
+const log = debug('script:utils')
+const supportedPostgresMajorVersion = 18
 const checkedPostgresTools = new Set<string>()
 
 type PostgresToolName = 'pg_dump' | 'pg_isready' | 'pg_restore' | 'psql'
