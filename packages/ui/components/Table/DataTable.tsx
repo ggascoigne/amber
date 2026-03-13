@@ -324,7 +324,16 @@ export const DataTable = <T extends RowData>({
                 variant='h4'
                 component='h1'
                 color='textPrimary'
-                sx={{ px: displayGutter ? 3 : 2, pt: 2 }}
+                sx={{
+                  px: displayGutter ? 3 : 2,
+                  pt: 2,
+                  pb:
+                    displayToolbar ||
+                    tableInstance.options.enableColumnFilters ||
+                    tableInstance.options.enableGlobalFilter
+                      ? 0
+                      : 2,
+                }}
                 data-testid={`TableHeading-Title:${title}`}
               >
                 {title}

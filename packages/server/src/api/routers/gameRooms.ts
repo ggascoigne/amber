@@ -28,7 +28,9 @@ export const gameRoomsRouter = createTRPCRouter({
           description: true,
           size: true,
           type: true,
+          enabled: true,
           updated: true,
+          accessibility: true,
         },
       }),
     ),
@@ -63,7 +65,9 @@ export const gameRoomsRouter = createTRPCRouter({
           description: z.string().optional(),
           size: z.number().optional(),
           type: z.string().optional(),
+          enabled: z.boolean().optional(),
           updated: z.boolean().optional(),
+          accessibility: z.enum(['accessible', 'some_stairs', 'many_stairs']).optional(),
         }),
       }),
     )
@@ -77,7 +81,9 @@ export const gameRoomsRouter = createTRPCRouter({
             description: true,
             size: true,
             type: true,
+            enabled: true,
             updated: true,
+            accessibility: true,
           },
         })
         return { room }
@@ -90,7 +96,9 @@ export const gameRoomsRouter = createTRPCRouter({
         description: z.string(),
         size: z.number(),
         type: z.string(),
+        enabled: z.boolean().optional(),
         updated: z.boolean().optional(),
+        accessibility: z.enum(['accessible', 'some_stairs', 'many_stairs']).optional(),
       }),
     )
     .mutation(async ({ input, ctx }) =>
@@ -100,7 +108,9 @@ export const gameRoomsRouter = createTRPCRouter({
             description: input.description,
             size: input.size,
             type: input.type,
+            enabled: input.enabled ?? true,
             updated: input.updated ?? false,
+            accessibility: input.accessibility ?? 'accessible',
           },
         })
         return { room }

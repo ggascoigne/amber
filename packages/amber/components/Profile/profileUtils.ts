@@ -81,6 +81,7 @@ export const fillUserAndProfileValues = (values: UserAndProfile): UserAndProfile
       userId: values?.profile?.[0]?.userId ?? -1,
       phoneNumber: values?.profile?.[0]?.phoneNumber ?? '',
       snailMailAddress: values?.profile?.[0]?.snailMailAddress ?? '',
+      roomAccessibilityPreference: values?.profile?.[0]?.roomAccessibilityPreference ?? 'many_stairs',
     },
   ],
 })

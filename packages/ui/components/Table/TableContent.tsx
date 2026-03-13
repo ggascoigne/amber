@@ -4,6 +4,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import Box from '@mui/material/Box'
 import type { Theme, SxProps } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
+import useResizeObserver from '@react-hook/resize-observer'
 import type { Cell, CellContext, Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
@@ -445,6 +446,19 @@ export const TableContent = <T extends RowData>({
     measureElement,
     overscan: 5,
   })
+
+  const recalculateVirtualRows = useCallback(() => {
+    if (!enableVirtualRows) return
+    requestAnimationFrame(() => {
+      rowVirtualizer.measure()
+    })
+  }, [enableVirtualRows, rowVirtualizer])
+
+  useResizeObserver(tableContainerRef, recalculateVirtualRows)
+
+  useEffect(() => {
+    recalculateVirtualRows()
+  }, [recalculateVirtualRows, rows.length])
 
   const [showButtons, setShowButtons] = useState<string | undefined>(undefined)
 

@@ -4,7 +4,6 @@ import { useMemo } from 'react'
 import { getSelectLabel, getSelectValue, range } from '@amber/ui'
 import { FormControl, MenuItem, TextField } from '@mui/material'
 import type { SelectProps as MuiSelectProps } from '@mui/material/Select'
-import { alpha } from '@mui/material/styles'
 
 import { useConfiguration, useYearFilter } from '../utils'
 
@@ -43,18 +42,8 @@ export const YearSelector = () => {
           '& .MuiSelect-icon': {
             color: theme.palette.common.white,
           },
-          '& .MuiInput-underline': {
-            borderBottomColor: theme.palette.common.white,
-            '&:before': {
-              borderBottomColor: alpha(theme.palette.common.white, 0.15),
-            },
-            '&:after': {
-              borderBottomColor: theme.palette.common.white,
-            },
-            '&:hover:before': {
-              borderBottomColor: alpha(theme.palette.common.white, 0.25),
-            },
-          },
+          '& .MuiInput-underline:after, & .MuiInput-underline:before, & .MuiInput-underline:hover:not(.Mui-disabled):before':
+            { borderBottomColor: 'inherit' },
         })}
         variant='standard'
       >

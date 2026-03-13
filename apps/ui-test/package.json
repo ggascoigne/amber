@@ -11,6 +11,7 @@
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json",
     "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "createData": "tsx ./scripts/createData.ts"
   },
   "dependencies": {

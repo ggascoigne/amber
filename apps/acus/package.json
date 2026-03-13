@@ -22,6 +22,7 @@
     "tsgo": "tsgo -p ./tsconfig.json",
     "test:setup": "DB_ENV=acus dotenv -e .env.test -- pnpm -F server db:cleanTestSeed",
     "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "test:e2e:coverage": "PLAYWRIGHT_COVERAGE=1 playwright test"
   },
   "dependencies": {

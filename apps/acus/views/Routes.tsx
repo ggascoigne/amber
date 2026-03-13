@@ -109,6 +109,12 @@ export const rootRoutes = (configuration: Configuration): RootRoutes => [
     permission: Perms.IsAdmin,
   },
   {
+    path: '/room-assignments',
+    label: 'Room Assignments',
+    exact: true,
+    permission: Perms.IsAdmin,
+  },
+  {
     path: '/member-admin',
     label: 'Members',
     exact: true,
