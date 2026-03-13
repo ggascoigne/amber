@@ -115,7 +115,6 @@ export const UserSelector: React.FC<UserSelectorProps> = ({ mobile }) => {
       value={selectedUser}
       slotProps={{
         paper: { sx: { mt: 0.5 } },
-        // endAdornment: { sx: { color: 'inherit' } },
         popupIndicator: { sx: { color: 'inherit' } },
         clearIndicator: { sx: { color: 'inherit' } },
       }}

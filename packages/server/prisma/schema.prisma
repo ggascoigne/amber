@@ -18,6 +18,14 @@ enum GameCategory {
   @@map("game_category")
 }
 
+enum RoomAccessibility {
+  accessible
+  some_stairs
+  many_stairs
+
+  @@map("room_accessibility")
+}
+
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Game {
   id               Int              @id @default(autoincrement())
@@ -52,6 +60,7 @@ model Game {
   room             Room?            @relation(fields: [roomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_room_id_foreign")
   slot             Slot?            @relation(fields: [slotId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_slot_id_foreign")
   gameAssignment   GameAssignment[]
+  gameRoomAssignment GameRoomAssignment[]
   gameChoice       GameChoice[]
 
   @@index([authorId], map: "game_author_id_index")
@@ -73,6 +82,30 @@ model GameAssignment {
   @@index([gameId], map: "game_assignment_game_id_index")
   @@index([memberId], map: "game_assignment_member_id_index")
   @@map("game_assignment")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model GameRoomAssignment {
+  id               BigInt   @id @default(autoincrement())
+  gameId           Int      @map("game_id")
+  roomId           Int      @map("room_id")
+  slotId           Int      @map("slot_id")
+  year             Int
+  isOverride       Boolean  @default(false) @map("is_override")
+  source           String   @default("manual") @db.VarChar(10)
+  assignedByUserId Int?     @map("assigned_by_user_id")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  game             Game     @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "game_room_assignment_game_id_foreign")
+  room             Room     @relation(fields: [roomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_room_assignment_room_id_foreign")
+  slot             Slot     @relation(fields: [slotId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_room_assignment_slot_id_foreign")
+  assignedByUser   User?    @relation("game_room_assignment_assigned_by_user", fields: [assignedByUserId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "game_room_assignment_assigned_by_user_id_foreign")
+
+  @@unique([gameId, roomId, slotId, year, isOverride], map: "game_room_assignment_unique_row")
+  @@index([roomId], map: "game_room_assignment_room_id_index")
+  @@index([slotId], map: "game_room_assignment_slot_id_index")
+  @@index([year, slotId], map: "game_room_assignment_year_slot_id_index")
+  @@map("game_room_assignment")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -216,6 +249,7 @@ model Membership {
   gameAssignment         GameAssignment[]
   gameChoice             GameChoice[]
   gameSubmission         GameSubmission[]
+  memberRoomAssignment   MemberRoomAssignment[]
   hotelRoom              HotelRoom        @relation(fields: [hotelRoomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "membership_hotel_room_id_foreign")
   user                   User             @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "membership_user_id_foreign")
   transactions           Transactions[]
@@ -227,11 +261,12 @@ model Membership {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Profile {
-  id               Int     @id @default(autoincrement())
-  userId           Int     @map("user_id")
-  snailMailAddress String? @map("snail_mail_address") @db.VarChar(250)
-  phoneNumber      String? @map("phone_number") @db.VarChar(32)
-  user             User    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_user_id_foreign")
+  id                           Int               @id @default(autoincrement())
+  userId                       Int               @map("user_id")
+  snailMailAddress             String?           @map("snail_mail_address") @db.VarChar(250)
+  phoneNumber                  String?           @map("phone_number") @db.VarChar(32)
+  roomAccessibilityPreference  RoomAccessibility @default(many_stairs) @map("room_accessibility_preference")
+  user                         User              @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "profile_user_id_foreign")
 
   @@index([userId], map: "profile_user_id_index")
   @@map("profile")
@@ -248,14 +283,51 @@ model Role {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Room {
-  id          Int     @id @default(autoincrement())
-  description String  @db.VarChar(50)
-  size        Int
-  type        String  @db.VarChar(50)
-  updated     Boolean
-  game        Game[]
+  id                   Int                  @id @default(autoincrement())
+  description          String               @db.VarChar(50)
+  size                 Int
+  type                 String               @db.VarChar(50)
+  enabled              Boolean              @default(true)
+  updated              Boolean
+  accessibility        RoomAccessibility    @default(accessible)
+  game                 Game[]
+  gameRoomAssignment   GameRoomAssignment[]
+  memberRoomAssignment MemberRoomAssignment[]
+  roomSlotAvailability RoomSlotAvailability[]
 
   @@map("room")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model RoomSlotAvailability {
+  roomId      Int      @map("room_id")
+  slotId      Int      @map("slot_id")
+  year        Int
+  isAvailable Boolean  @default(true) @map("is_available")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  room        Room     @relation(fields: [roomId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "room_slot_availability_room_id_foreign")
+  slot        Slot     @relation(fields: [slotId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "room_slot_availability_slot_id_foreign")
+
+  @@id([roomId, slotId, year])
+  @@index([year, slotId], map: "room_slot_availability_year_slot_id_index")
+  @@map("room_slot_availability")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model MemberRoomAssignment {
+  memberId    Int        @map("member_id")
+  roomId      Int        @map("room_id")
+  year        Int
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  membership  Membership @relation(fields: [memberId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "member_room_assignment_member_id_foreign")
+  room        Room       @relation(fields: [roomId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "member_room_assignment_room_id_foreign")
+
+  @@id([memberId, year])
+  @@index([roomId], map: "member_room_assignment_room_id_index")
+  @@index([year], map: "member_room_assignment_year_index")
+  @@map("member_room_assignment")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -299,14 +371,16 @@ model ShirtOrderItem {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Slot {
-  id            Int          @id @default(autoincrement())
-  slot          Int
-  day           String       @db.VarChar(20)
-  formattedDate String       @map("formatted_date") @db.VarChar(30)
-  length        String       @db.VarChar(20)
-  time          String       @db.VarChar(30)
-  game          Game[]
-  gameChoice    GameChoice[]
+  id                   Int                  @id @default(autoincrement())
+  slot                 Int
+  day                  String               @db.VarChar(20)
+  formattedDate        String               @map("formatted_date") @db.VarChar(30)
+  length               String               @db.VarChar(20)
+  time                 String               @db.VarChar(30)
+  game                 Game[]
+  gameChoice           GameChoice[]
+  gameRoomAssignment   GameRoomAssignment[]
+  roomSlotAvailability RoomSlotAvailability[]
 
   @@map("slot")
 }
@@ -351,6 +425,7 @@ model User {
   displayName                          String?        @map("display_name") @db.VarChar(40)
   balance                              Float          @default(0)
   game                                 Game[]
+  gameRoomAssignmentsAssignedByUser    GameRoomAssignment[] @relation("game_room_assignment_assigned_by_user")
   membership                           Membership[]
   profile                              Profile[]
   shirtOrder                           ShirtOrder[]

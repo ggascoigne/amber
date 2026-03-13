@@ -25,6 +25,13 @@ const columns: ColumnDef<GameRoom>[] = [
     accessorKey: 'type',
   },
   {
+    accessorKey: 'enabled',
+    cell: YesBlankCell,
+  },
+  {
+    accessorKey: 'accessibility',
+  },
+  {
     accessorKey: 'updated',
     cell: YesBlankCell,
   },

@@ -16,7 +16,7 @@ import {
   useNotification,
 } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
-import { Autocomplete, Dialog, Divider, TextField as MuiTextField } from '@mui/material'
+import { Autocomplete, Dialog, Divider, MenuItem, TextField as MuiTextField } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 
@@ -27,10 +27,17 @@ const validationSchema = Yup.object().shape({
   description: Yup.string().min(2).max(100).required('Required'),
   size: Yup.number().min(2).max(100).required('Required'),
   type: Yup.string().min(2).max(100).required('Required'),
+  enabled: Yup.boolean().required('Required'),
   updated: Yup.boolean().required('Required'),
+  accessibility: Yup.mixed<'accessible' | 'some_stairs' | 'many_stairs'>()
+    .oneOf(['accessible', 'some_stairs', 'many_stairs'])
+    .required('Required'),
 })
 
-type GameRoomType = ToFormValues<GameRoom>
+type GameRoomType = Omit<ToFormValues<GameRoom>, 'enabled' | 'accessibility'> & {
+  enabled: boolean
+  accessibility: 'accessible' | 'some_stairs' | 'many_stairs'
+}
 
 type GameRoomFormValues = GameRoomType & {
   gamesChanged: boolean
@@ -64,7 +71,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         .mutateAsync(
           {
             id: values.id,
-            data: pick(values, 'description', 'size', 'type', 'updated'),
+            data: pick(values, 'description', 'size', 'type', 'enabled', 'updated', 'accessibility'),
           },
           {
             onSuccess: invalidateGameRoomQueries,
@@ -114,7 +121,7 @@ export const useEditGameRoom = (onClose: OnCloseHandler) => {
         })
     } else {
       await createGameRoomDetail
-        .mutateAsync(pick(values, 'description', 'size', 'type', 'updated'), {
+        .mutateAsync(pick(values, 'description', 'size', 'type', 'enabled', 'updated', 'accessibility'), {
           onSuccess: invalidateGameRoomQueries,
         })
         .then((_res) => {
@@ -166,7 +173,9 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
       description: '',
       size: 0,
       type: '',
+      enabled: true,
       updated: false,
+      accessibility: 'accessible',
       ...defaultGames,
     }
     return initialValues ? { ...initialValues, ...defaultGames } : { ...defaultValues }
@@ -207,6 +216,16 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
           </GridItem>
           <GridItem size={{ xs: 12, md: 12 }}>
             <TextField name='type' label='Type' margin='normal' fullWidth />
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <TextField name='accessibility' label='Accessibility' margin='normal' fullWidth select>
+              <MenuItem value='accessible'>Accessible</MenuItem>
+              <MenuItem value='some_stairs'>Some Stairs</MenuItem>
+              <MenuItem value='many_stairs'>Many Stairs</MenuItem>
+            </TextField>
+          </GridItem>
+          <GridItem size={{ xs: 12, md: 12 }}>
+            <CheckboxWithLabel label='Enabled?' name='enabled' />
           </GridItem>
           <GridItem size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Updated?' name='updated' />

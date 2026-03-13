@@ -10,6 +10,7 @@ import Button from '@mui/material/Button'
 import { useTheme } from '@mui/material/styles'
 import { useQuery } from '@tanstack/react-query'
 import { stripIndents } from 'common-tags'
+import Link from 'next/link'
 import SHA from 'sha.js'
 
 import { Page } from '../../components'
@@ -227,15 +228,21 @@ const SchedulePage = () => {
 
   return (
     <Page title='Schedule'>
-      <HasPermission permission={Perms.IsAdmin}>
-        <Button variant='contained' onClick={() => setShowGmPreviewOverride((old) => !old)}>
-          {showGmPreviewOverride ? 'Show Full Schedule' : 'Show GM Preview'}
-        </Button>
-        <br />
-      </HasPermission>
-      <ICalDownloadButton url={exportUrl} filename={`${configuration.name.toLowerCase()}-schedule.ics`}>
-        Export Schedule
-      </ICalDownloadButton>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
+        <HasPermission permission={Perms.IsAdmin}>
+          <Button variant='contained' onClick={() => setShowGmPreviewOverride((old) => !old)}>
+            {showGmPreviewOverride ? 'Show Full Schedule' : 'Show GM Preview'}
+          </Button>
+        </HasPermission>
+        <ICalDownloadButton url={exportUrl} filename={`${configuration.name.toLowerCase()}-schedule.ics`}>
+          Export Schedule
+        </ICalDownloadButton>
+        {configuration.isAcus ? (
+          <Button component={Link} href='/schedule-room-assignments' color='primary' variant='outlined'>
+            Assign Rooms
+          </Button>
+        ) : null}
+      </Box>
       {gmOnly ? <h3>GM Preview</h3> : null}
       {gamesAndAssignments.map((g) => (
         <GameSummary key={g.gameId} gas={g} />
