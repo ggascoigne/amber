@@ -22,6 +22,8 @@ const asSettingValue = (s: string): SettingValue => SettingValue[s as keyof type
 
 export const permissionGateValues = ['No', 'Admin', 'GameAdmin', 'GM', 'Member', 'Yes']
 
+export const booleanValues = ['true', 'false']
+
 export const useSettings = () => {
   const trpc = useTRPC()
   const isGm = useIsGm()
@@ -59,6 +61,9 @@ export const useSettings = () => {
     (setting: string, defaultValue = false): SettingValue | boolean | null => {
       const getSetting = (settings: Setting[] | null, setting1: string): SettingValue | null => {
         const s = settings?.find((s1) => s1.code === setting1)
+        if (s && s.type === 'boolean') {
+          return s.value.toLocaleLowerCase() === 'true' ? SettingValue.Yes : SettingValue.No
+        }
         if (s && s.type !== 'perm-gate') throw new Error("can't call getSettingValue on a non-enum type")
         return s ? asSettingValue(s.value) : null
       }

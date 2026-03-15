@@ -4,7 +4,7 @@ import { Field } from 'formik'
 import { DateTime } from 'luxon'
 import { match } from 'ts-pattern'
 
-import { permissionGateValues, useConfiguration } from '../../utils'
+import { permissionGateValues, booleanValues, useConfiguration } from '../../utils'
 
 export const typeValues = ['perm-gate', 'string', 'date', 'number', 'boolean']
 
@@ -17,6 +17,9 @@ export const SettingValue: React.FC<{
   return match(value)
     .with({ type: 'perm-gate' }, () => (
       <SelectField name={name} label={label} margin='normal' fullWidth selectValues={permissionGateValues} />
+    ))
+    .with({ type: 'boolean' }, () => (
+      <SelectField name={name} label={label} margin='normal' fullWidth selectValues={booleanValues} />
     ))
     .with({ type: 'date' }, () => (
       <Field

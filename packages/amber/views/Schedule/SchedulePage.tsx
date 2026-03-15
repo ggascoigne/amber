@@ -34,6 +34,7 @@ import {
   useGetSettingValue,
   useUser,
 } from '../../utils'
+import { useFlag } from '../../utils/settings'
 
 const getGmsAndPlayers = (game: Game) => {
   const details = game.gameAssignment.map((g) => ({
@@ -197,6 +198,7 @@ const SchedulePage = () => {
   const displayScheduleValue = useGetSettingValue('display_schedule')
   const [showGmPreviewOverride, setShowGmPreviewOverride] = useState(false)
   const gmOnly = isAdmin ? showGmPreviewOverride : displayScheduleValue === SettingValue.GM
+  const showRoomAssignmentButton = useFlag('allow_member_game_room_assignment')
 
   const { error, data } = useQuery(
     trpc.gameAssignments.getSchedule.queryOptions(
@@ -237,7 +239,7 @@ const SchedulePage = () => {
         <ICalDownloadButton url={exportUrl} filename={`${configuration.name.toLowerCase()}-schedule.ics`}>
           Export Schedule
         </ICalDownloadButton>
-        {configuration.isAcus ? (
+        {configuration.isAcus && showRoomAssignmentButton ? (
           <Button component={Link} href='/schedule-room-assignments' color='primary' variant='outlined'>
             Assign Rooms
           </Button>
