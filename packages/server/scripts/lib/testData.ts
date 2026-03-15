@@ -119,6 +119,37 @@ const settingsData = [
   { id: 105, code: 'flag.allow_game_editing', type: 'perm-gate', value: 'Yes' },
 ]
 
+const getSettingsDataForConvention = () => {
+  const conventionCode = process.env.DB_ENV === 'acus' ? 'acus' : 'acnw'
+  const overridesByCode = new Map<string, string>(
+    conventionCode === 'acus'
+      ? [
+          ['config.abbr', 'acus'],
+          ['config.name', 'ACUS'],
+          ['config.title', 'Ambercon US'],
+          ['config.contactEmail', 'acus@wyrdrune.com'],
+        ]
+      : [
+          ['config.abbr', 'acnw'],
+          ['config.name', 'ACNW'],
+          ['config.title', 'Ambercon NW'],
+          ['config.contactEmail', 'acnw@wyrdrune.com'],
+        ],
+  )
+
+  return settingsData.map((setting) => {
+    const valueOverride = overridesByCode.get(setting.code)
+    if (!valueOverride) {
+      return setting
+    }
+
+    return {
+      ...setting,
+      value: valueOverride,
+    }
+  })
+}
+
 const lookups = [
   { id: 1, realm: 'interest', internationalize: false, ordering: 'sequencer', codeType: 'string', valueType: 'string' },
   {
@@ -263,9 +294,10 @@ const slots = [
 ]
 
 const rooms = [
-  { id: 1, description: 'Cascade Ballroom', size: 16, type: 'tabletop', updated: false },
-  { id: 2, description: 'Summit Room', size: 10, type: 'tabletop', updated: false },
-  { id: 3, description: 'Studio A', size: 8, type: 'tabletop', updated: false },
+  { id: 1, description: 'Cascade Ballroom', size: 16, type: 'Ballroom', updated: false },
+  { id: 2, description: 'Summit Guest Suite', size: 10, type: 'Guest Room', updated: false },
+  { id: 3, description: 'Studio A', size: 8, type: 'Shared Space', updated: false },
+  { id: 4, description: 'Black Rabbit Bar', size: 12, type: 'Shared Space', updated: false },
 ]
 
 const hotelRoomDetails = [
@@ -683,6 +715,26 @@ const memberships = [
     requestOldPrice: false,
     slotsAttending: '2,3,4,5',
     cost: 180,
+  },
+  {
+    id: 13,
+    userId: 1,
+    year: 2025,
+    arrivalDate: new Date('2025-11-06T09:30:00.000-08:00'),
+    departureDate: new Date('2025-11-09T16:30:00.000-08:00'),
+    attendance: 'Thurs-Sun',
+    attending: true,
+    hotelRoomId: 1,
+    interestLevel: 'Full',
+    message: 'Admin onsite for room-assignment workflows.',
+    roomPreferenceAndNotes: 'No preference.',
+    roomingPreferences: 'assign-me',
+    roomingWith: '',
+    volunteer: true,
+    offerSubsidy: false,
+    requestOldPrice: false,
+    slotsAttending: '1,2,3,4,5,6,7',
+    cost: 240,
   },
 ]
 
@@ -1185,6 +1237,7 @@ const gameAssignments = [
   { memberId: 10, gameId: 12, gm: 0, year: 2025 },
   { memberId: 11, gameId: 12, gm: 0, year: 2025 },
   { memberId: 12, gameId: 12, gm: 0, year: 2025 },
+  { memberId: 13, gameId: 11, gm: 0, year: 2025 },
 ]
 
 const gameSubmissions = [
@@ -1236,7 +1289,7 @@ export const seed = async () => {
   try {
     await resetTables()
 
-    await prisma.setting.createMany({ data: settingsData })
+    await prisma.setting.createMany({ data: getSettingsDataForConvention() })
     await prisma.lookup.createMany({ data: lookups })
     await prisma.lookupValue.createMany({ data: lookupValues })
     await prisma.slot.createMany({ data: slots })

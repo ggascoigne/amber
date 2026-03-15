@@ -66,7 +66,7 @@ export const dumpDatabaseTask: ListrTask = {
 
     const { database } = parsePostgresConnectionString(environ.ADMIN_DATABASE_URL)
     const timestamp = formatTimestamp()
-    const dumpName = path.join(backupFolder, `${database}-${timestamp}.dump` )
+    const dumpName = path.join(backupFolder, `${database}-${timestamp}.dump`)
     await mkdir(path.join(repoRoot, backupFolder), { recursive: true })
     const dumpPath = path.join(repoRoot, dumpName)
 

@@ -90,6 +90,14 @@ const useQueryLists = () => {
     [trpc.gameAssignments.getAssignmentDashboardData],
   )
 
+  const allRoomAssignmentQueries = useMemo(
+    () => [
+      trpc.roomAssignments.getRoomAssignmentDashboardData.queryKey(),
+      trpc.roomAssignments.getScheduleRoomAssignmentData.queryKey(),
+    ],
+    [trpc.roomAssignments.getRoomAssignmentDashboardData, trpc.roomAssignments.getScheduleRoomAssignmentData],
+  )
+
   const allGameQueries = useMemo(
     () => [
       ...allGameAssignmentQueries,
@@ -150,6 +158,7 @@ const useQueryLists = () => {
     allGameChoiceQueries,
     allGameQueries,
     allGameRoomQueries,
+    allRoomAssignmentQueries,
     allLookupQueries,
     allMembershipQueries,
     allPaymentQueries,
@@ -204,6 +213,11 @@ export const useInvalidateGameAssignmentDashboardQueries = () => {
 export const useInvalidateGameQueries = () => {
   const { allGameQueries } = useQueryLists()
   return useInvalidateQueries(allGameQueries, 'allGameQueries')
+}
+
+export const useInvalidateRoomAssignmentQueries = () => {
+  const { allRoomAssignmentQueries } = useQueryLists()
+  return useInvalidateQueries(allRoomAssignmentQueries, 'allRoomAssignmentQueries')
 }
 
 export const useInvalidateGameChoiceQueries = () => {

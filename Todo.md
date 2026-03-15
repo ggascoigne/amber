@@ -2,6 +2,8 @@
 
 ##2025
 
+- [ ] add creation/edit dates to game choices
+
 - [ ] \*\* Hotel room registrations regularly got reset to default arrival/departure dates - need to find out why.
 
 - [ ] Editing on the room game room page doesn't always load games by slot correctly. This might be associated with the slot for games being set incorrectly.
