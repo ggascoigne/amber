@@ -60,7 +60,6 @@ const CurrentSlotRoomAvailabilityPane = ({
       enableGlobalFilter={false}
       enableColumnFilters={false}
       enableFilters={false}
-      disableStatePersistence
       displayPagination='never'
       compact
       debug={false}

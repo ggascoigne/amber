@@ -45,6 +45,7 @@ const setMembershipDate = async (page: Page, input: MembershipDateInput) => {
   await group.getByRole('spinbutton', { name: 'Month' }).fill(input.month)
   await group.getByRole('spinbutton', { name: 'Day' }).fill(input.day)
   await group.getByRole('spinbutton', { name: 'Year' }).fill(input.year)
+  await group.getByRole('spinbutton', { name: 'Year' }).blur()
 }
 
 const chooseRoom = async (page: Page) => {

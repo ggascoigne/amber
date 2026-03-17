@@ -1,11 +1,13 @@
 import { useMemo } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
-import { Box, Typography } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
+import { Box, IconButton, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import RoomAssignmentSelect from './RoomAssignmentSelect'
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
+import RoomNameWithMembersCell from './RoomNameWithMembersCell'
 
 import type { ManualGameRoomAssignmentRow, ManualRoomSelectOption } from '../types'
 
@@ -19,6 +21,8 @@ type ManualGameRoomAssignmentPaneProps = {
   isMutationPending: boolean
   roomOptions: Array<ManualRoomSelectOption>
   onGameRoomChange: (args: { gameId: number; slotId: number; roomId: number | null }) => Promise<void>
+  onAddOverrideRoom: (args: { gameId: number; slotId: number; roomId: number | null }) => Promise<void>
+  onRemoveRoomAssignment: (id: bigint) => Promise<void>
 }
 
 type GameNameWithGmsCellProps = {
@@ -43,6 +47,82 @@ type ManualGameMemberRow = {
   roleLabel: string
 }
 
+type ManualOverrideAssignmentsCellProps = {
+  row: ManualGameRoomAssignmentRow
+  roomOptions: Array<ManualRoomSelectOption>
+  isMutationPending: boolean
+  onAddOverrideRoom: (args: { gameId: number; slotId: number; roomId: number | null }) => Promise<void>
+  onRemoveRoomAssignment: (id: bigint) => Promise<void>
+}
+
+const ManualOverrideAssignmentsCell = ({
+  row,
+  roomOptions,
+  isMutationPending,
+  onAddOverrideRoom,
+  onRemoveRoomAssignment,
+}: ManualOverrideAssignmentsCellProps) => {
+  const assignedRoomIds = useMemo(
+    () =>
+      new Set([
+        ...(row.currentRoomId ? [row.currentRoomId] : []),
+        ...row.overrideAssignments.map((overrideAssignment) => overrideAssignment.roomId),
+      ]),
+    [row.currentRoomId, row.overrideAssignments],
+  )
+  const availableOverrideOptions = useMemo(
+    () => roomOptions.filter((roomOption) => !assignedRoomIds.has(roomOption.id)),
+    [assignedRoomIds, roomOptions],
+  )
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.75, width: '100%', minWidth: 0, overflow: 'hidden' }}>
+      {row.overrideAssignments.map((overrideAssignment) => (
+        <Box
+          key={`${row.gameId}-${overrideAssignment.id.toString()}`}
+          sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}
+        >
+          <Box sx={{ minWidth: 0, flex: '1 1 auto' }}>
+            <RoomNameWithMembersCell
+              roomDescription={overrideAssignment.roomDescription}
+              assignedMemberNames={overrideAssignment.assignedMemberNames}
+            />
+          </Box>
+          <IconButton
+            size='small'
+            aria-label={`Remove override room ${overrideAssignment.roomDescription} for game ${row.gameId}`}
+            disabled={isMutationPending}
+            onClick={() => {
+              onRemoveRoomAssignment(overrideAssignment.id).catch(() => undefined)
+            }}
+          >
+            <CloseIcon fontSize='small' />
+          </IconButton>
+        </Box>
+      ))}
+      <RoomAssignmentSelect
+        value={null}
+        disabled={isMutationPending || availableOverrideOptions.length === 0}
+        ariaLabel={`Add override room for game ${row.gameId}`}
+        options={availableOverrideOptions}
+        selectedValueMode='description'
+        showSizeColumn
+        greyAssignedOptions
+        emptyDisplayLabel={availableOverrideOptions.length === 0 ? 'No override rooms available' : ''}
+        includeEmptyOption={false}
+        minWidth={220}
+        onChange={(roomId) =>
+          onAddOverrideRoom({
+            gameId: row.gameId,
+            slotId: row.slotId,
+            roomId,
+          })
+        }
+      />
+    </Box>
+  )
+}
+
 const ManualGameRoomAssignmentPane = ({
   isExpanded,
   onToggleExpand,
@@ -53,6 +133,8 @@ const ManualGameRoomAssignmentPane = ({
   isMutationPending,
   roomOptions,
   onGameRoomChange,
+  onAddOverrideRoom,
+  onRemoveRoomAssignment,
 }: ManualGameRoomAssignmentPaneProps) => {
   const expandedColumns = useMemo<Array<ColumnDef<ManualGameMemberRow>>>(
     () => [
@@ -77,8 +159,8 @@ const ManualGameRoomAssignmentPane = ({
         meta: {
           align: 'right',
         },
-        size: 40,
-        minSize: 40,
+        size: 50,
+        minSize: 50,
       },
       {
         accessorKey: 'gameName',
@@ -94,8 +176,27 @@ const ManualGameRoomAssignmentPane = ({
         size: 60,
       },
       {
+        accessorKey: 'currentRoomSize',
+        header: 'Room Size',
+        meta: {
+          align: 'right',
+        },
+        size: 80,
+        cell: ({ row }) => row.original.currentRoomSize ?? '',
+      },
+      {
+        accessorKey: 'roomSpace',
+        header: 'Room Space',
+        meta: {
+          align: 'right',
+        },
+        size: 90,
+        cell: ({ row }) => row.original.roomSpace ?? '',
+      },
+      {
         id: 'assignRoom',
         header: 'Assign Room',
+        size: 260,
         cell: ({ row }) => (
           <RoomAssignmentSelect
             value={row.original.currentRoomId}
@@ -103,8 +204,10 @@ const ManualGameRoomAssignmentPane = ({
             ariaLabel={`Manual room assignment for game ${row.original.gameId}`}
             options={roomOptions}
             selectedValueMode='roomWithMembers'
+            selectedValueSecondaryText={row.original.currentRoomAssignmentReason}
             showSizeColumn
             greyAssignedOptions
+            minWidth={220}
             onChange={(roomId) =>
               onGameRoomChange({
                 gameId: row.original.gameId,
@@ -115,8 +218,22 @@ const ManualGameRoomAssignmentPane = ({
           />
         ),
       },
+      {
+        id: 'overrideRooms',
+        header: 'Override Rooms',
+        size: 320,
+        cell: ({ row }) => (
+          <ManualOverrideAssignmentsCell
+            row={row.original}
+            roomOptions={roomOptions}
+            isMutationPending={isMutationPending}
+            onAddOverrideRoom={onAddOverrideRoom}
+            onRemoveRoomAssignment={onRemoveRoomAssignment}
+          />
+        ),
+      },
     ],
-    [isMutationPending, roomOptions, onGameRoomChange],
+    [isMutationPending, onAddOverrideRoom, onGameRoomChange, onRemoveRoomAssignment, roomOptions],
   )
 
   const renderExpandedContent = (row: Row<ManualGameRoomAssignmentRow>) => {
@@ -159,8 +276,8 @@ const ManualGameRoomAssignmentPane = ({
 
   return (
     <RoomAssignmentsPaneShell
-      title='Manual Game Room Assignment'
-      subtitle={`Default room assignments for Slot ${slotId}.`}
+      title='Room Assignment'
+      subtitle={`Default and override room assignments for Slot ${slotId}.`}
       isExpanded={isExpanded}
       onToggleExpand={onToggleExpand}
     >
@@ -175,7 +292,6 @@ const ManualGameRoomAssignmentPane = ({
         enableGlobalFilter={false}
         enableColumnFilters={false}
         enableFilters={false}
-        disableStatePersistence
         displayPagination='never'
         compact
         debug={false}

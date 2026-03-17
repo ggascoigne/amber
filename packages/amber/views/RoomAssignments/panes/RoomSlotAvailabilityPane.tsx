@@ -190,7 +190,6 @@ const RoomSlotAvailabilityPane = ({
         enableGlobalFilter
         enableColumnFilters
         enableFilters
-        disableStatePersistence
         displayPagination='never'
         compact
         debug={false}

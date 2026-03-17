@@ -1,4 +1,5 @@
 import { Table } from '@amber/ui/components/Table'
+import { FormControlLabel, Switch } from '@mui/material'
 import type { ColumnDef } from '@tanstack/react-table'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
@@ -39,6 +40,8 @@ type RoomUsageSummaryPaneProps = {
   rows: Array<RoomUsageSummaryRow>
   isLoading: boolean
   isFetching: boolean
+  showMemberRooms: boolean
+  onShowMemberRoomsChange: (nextValue: boolean) => void
 }
 
 const RoomUsageSummaryPane = ({
@@ -47,12 +50,27 @@ const RoomUsageSummaryPane = ({
   rows,
   isLoading,
   isFetching,
+  showMemberRooms,
+  onShowMemberRoomsChange,
 }: RoomUsageSummaryPaneProps) => (
   <RoomAssignmentsPaneShell
     title='Room Usage Summary'
     subtitle='Total room assignment count across the convention year.'
     isExpanded={isExpanded}
     onToggleExpand={onToggleExpand}
+    controls={
+      <FormControlLabel
+        control={
+          <Switch
+            size='small'
+            checked={showMemberRooms}
+            onChange={(_event, checked) => onShowMemberRoomsChange(checked)}
+          />
+        }
+        label='Show member rooms'
+        sx={{ m: 0 }}
+      />
+    }
   >
     <Table<RoomUsageSummaryRow>
       name='room-assignment-room-usage-summary'
@@ -65,7 +83,6 @@ const RoomUsageSummaryPane = ({
       enableGlobalFilter={false}
       enableColumnFilters={false}
       enableFilters={false}
-      disableStatePersistence
       displayPagination='never'
       compact
       debug={false}

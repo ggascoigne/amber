@@ -1,6 +1,8 @@
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
+import { planInitialRoomAssignments, type InitialPlannerInput } from './roomAssignments/initialPlanner'
+
 import { inRlsTransaction, type TransactionClient } from '../inRlsTransaction'
 import { createTRPCRouter, protectedProcedure } from '../trpc'
 
@@ -24,6 +26,7 @@ const roomAssignmentSelect = {
   year: true,
   isOverride: true,
   source: true,
+  assignmentReason: true,
   assignedByUserId: true,
   game: {
     select: {
@@ -83,11 +86,20 @@ const dashboardGameAssignmentSelect = {
       user: {
         select: {
           fullName: true,
+          profile: {
+            select: {
+              roomAccessibilityPreference: true,
+            },
+          },
         },
       },
     },
   },
 }
+
+const yearInput = z.object({
+  year: z.number(),
+})
 
 const getIsRoomAvailable = async ({
   tx,
@@ -140,6 +152,33 @@ const getIsRoomAvailable = async ({
 }
 
 const syncLegacyGameRoomId = async ({ tx, gameId, year }: { tx: TransactionClient; gameId: number; year: number }) => {
+  const overrideAssignment = await tx.gameRoomAssignment.findFirst({
+    where: {
+      gameId,
+      year,
+      isOverride: true,
+    },
+    select: {
+      roomId: true,
+    },
+    orderBy: {
+      id: 'asc',
+    },
+  })
+
+  if (overrideAssignment?.roomId) {
+    await tx.game.updateMany({
+      where: {
+        id: gameId,
+        year,
+      },
+      data: {
+        roomId: overrideAssignment.roomId,
+      },
+    })
+    return
+  }
+
   const defaultAssignments = await tx.gameRoomAssignment.findMany({
     where: {
       gameId,
@@ -189,112 +228,226 @@ const syncLegacyGameRoomIdsForYear = async ({ tx, year }: { tx: TransactionClien
   )
 }
 
+const getRoomAssignmentDashboardSnapshot = async ({ tx, year }: { tx: TransactionClient; year: number }) => {
+  const [games, rooms, roomAssignments, roomSlotAvailability, memberRoomAssignments, memberships, gameAssignments] =
+    await Promise.all([
+      tx.game.findMany({
+        where: {
+          year,
+        },
+        select: dashboardGameSelect,
+        orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
+      }),
+      tx.room.findMany({
+        select: roomSelect,
+        orderBy: [{ description: 'asc' }],
+      }),
+      tx.gameRoomAssignment.findMany({
+        where: {
+          year,
+        },
+        select: roomAssignmentSelect,
+        orderBy: [{ slotId: 'asc' }, { id: 'asc' }],
+      }),
+      tx.roomSlotAvailability.findMany({
+        where: {
+          year,
+        },
+        select: {
+          roomId: true,
+          slotId: true,
+          year: true,
+          isAvailable: true,
+        },
+        orderBy: [{ slotId: 'asc' }, { roomId: 'asc' }],
+      }),
+      tx.memberRoomAssignment.findMany({
+        where: {
+          year,
+        },
+        select: {
+          memberId: true,
+          roomId: true,
+          year: true,
+          membership: {
+            select: {
+              id: true,
+              user: {
+                select: {
+                  fullName: true,
+                },
+              },
+            },
+          },
+          room: {
+            select: roomSelect,
+          },
+        },
+        orderBy: [{ roomId: 'asc' }, { memberId: 'asc' }],
+      }),
+      tx.membership.findMany({
+        where: {
+          year,
+        },
+        select: dashboardMembershipSelect,
+        orderBy: [
+          {
+            user: {
+              fullName: 'asc',
+            },
+          },
+        ],
+      }),
+      tx.gameAssignment.findMany({
+        where: {
+          year,
+          gm: {
+            gte: 0,
+          },
+        },
+        select: dashboardGameAssignmentSelect,
+      }),
+    ])
+
+  return {
+    games,
+    rooms,
+    roomAssignments,
+    roomSlotAvailability,
+    memberRoomAssignments,
+    memberships,
+    gameAssignments,
+  }
+}
+
+const buildPlannerInputFromDashboard = ({
+  dashboardData,
+  year,
+  slotId,
+}: {
+  dashboardData: Awaited<ReturnType<typeof getRoomAssignmentDashboardSnapshot>>
+  year: number
+  slotId?: number
+}): InitialPlannerInput => ({
+  year,
+  games: dashboardData.games
+    .filter((game) => game.slotId !== null)
+    .filter((game) => (slotId ? game.slotId === slotId : true))
+    .map((game) => ({
+      id: game.id,
+      name: game.name,
+      slotId: game.slotId ?? 0,
+      year: game.year,
+      category: game.category,
+    })),
+  rooms: dashboardData.rooms.map((room) => ({
+    id: room.id,
+    description: room.description,
+    size: room.size,
+    type: room.type,
+    enabled: room.enabled,
+    accessibility: room.accessibility,
+  })),
+  participants: dashboardData.gameAssignments.map((assignment) => ({
+    memberId: assignment.memberId,
+    gameId: assignment.gameId,
+    isGm: assignment.gm !== 0,
+    fullName: assignment.membership.user.fullName ?? 'Unknown member',
+    roomAccessibilityPreference: assignment.membership.user.profile[0]?.roomAccessibilityPreference ?? null,
+  })),
+  roomSlotAvailability: dashboardData.roomSlotAvailability.map((availability) => ({
+    roomId: availability.roomId,
+    slotId: availability.slotId,
+    year: availability.year,
+    isAvailable: availability.isAvailable,
+  })),
+  memberRoomAssignments: dashboardData.memberRoomAssignments.map((assignment) => ({
+    memberId: assignment.memberId,
+    roomId: assignment.roomId,
+    memberName: assignment.membership.user.fullName ?? 'Unknown member',
+  })),
+  existingAssignments: dashboardData.roomAssignments.map((assignment) => ({
+    gameId: assignment.gameId,
+    roomId: assignment.roomId,
+    slotId: assignment.slotId,
+    year: assignment.year,
+    isOverride: assignment.isOverride,
+    source: assignment.source === 'auto' ? ('auto' as const) : ('manual' as const),
+  })),
+})
+
+const applyRoomAssignmentPlanner = async ({
+  tx,
+  year,
+  assignedByUserId,
+  slotId,
+  deleteWhere,
+}: {
+  tx: TransactionClient
+  year: number
+  assignedByUserId: number | null
+  slotId?: number
+  deleteWhere: {
+    year: number
+    source?: 'auto'
+    slotId?: number
+    isOverride?: boolean
+  }
+}) => {
+  const deletedAssignments = await tx.gameRoomAssignment.deleteMany({
+    where: deleteWhere,
+  })
+
+  const dashboardData = await getRoomAssignmentDashboardSnapshot({
+    tx,
+    year,
+  })
+
+  const plannerResult = planInitialRoomAssignments(
+    buildPlannerInputFromDashboard({
+      dashboardData,
+      year,
+      slotId,
+    }),
+  )
+
+  if (plannerResult.assignments.length > 0) {
+    await tx.gameRoomAssignment.createMany({
+      data: plannerResult.assignments.map((assignment) => ({
+        gameId: assignment.gameId,
+        roomId: assignment.roomId,
+        slotId: assignment.slotId,
+        year: assignment.year,
+        isOverride: false,
+        source: 'auto',
+        assignmentReason: assignment.reason,
+        assignedByUserId,
+      })),
+      skipDuplicates: true,
+    })
+  }
+
+  await syncLegacyGameRoomIdsForYear({
+    tx,
+    year,
+  })
+
+  return {
+    deletedAssignments: deletedAssignments.count,
+    createdAssignments: plannerResult.assignments.length,
+    assignments: plannerResult.assignments,
+    skippedGames: plannerResult.skippedGames,
+    unmetConstraints: plannerResult.unmetConstraints,
+    scope: slotId ? 'slot' : 'year',
+    slotId: slotId ?? null,
+  }
+}
+
 export const roomAssignmentsRouter = createTRPCRouter({
   getRoomAssignmentDashboardData: protectedProcedure
-    .input(
-      z.object({
-        year: z.number(),
-      }),
-    )
+    .input(yearInput)
     .query(async ({ input, ctx }) =>
-      inRlsTransaction(ctx, async (tx) => {
-        const [
-          games,
-          rooms,
-          roomAssignments,
-          roomSlotAvailability,
-          memberRoomAssignments,
-          memberships,
-          gameAssignments,
-        ] = await Promise.all([
-          tx.game.findMany({
-            where: {
-              year: input.year,
-            },
-            select: dashboardGameSelect,
-            orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
-          }),
-          tx.room.findMany({
-            select: roomSelect,
-            orderBy: [{ description: 'asc' }],
-          }),
-          tx.gameRoomAssignment.findMany({
-            where: {
-              year: input.year,
-            },
-            select: roomAssignmentSelect,
-            orderBy: [{ slotId: 'asc' }, { id: 'asc' }],
-          }),
-          tx.roomSlotAvailability.findMany({
-            where: {
-              year: input.year,
-            },
-            select: {
-              roomId: true,
-              slotId: true,
-              year: true,
-              isAvailable: true,
-            },
-            orderBy: [{ slotId: 'asc' }, { roomId: 'asc' }],
-          }),
-          tx.memberRoomAssignment.findMany({
-            where: {
-              year: input.year,
-            },
-            select: {
-              memberId: true,
-              roomId: true,
-              year: true,
-              membership: {
-                select: {
-                  id: true,
-                  user: {
-                    select: {
-                      fullName: true,
-                    },
-                  },
-                },
-              },
-              room: {
-                select: roomSelect,
-              },
-            },
-            orderBy: [{ roomId: 'asc' }, { memberId: 'asc' }],
-          }),
-          tx.membership.findMany({
-            where: {
-              year: input.year,
-            },
-            select: dashboardMembershipSelect,
-            orderBy: [
-              {
-                user: {
-                  fullName: 'asc',
-                },
-              },
-            ],
-          }),
-          tx.gameAssignment.findMany({
-            where: {
-              year: input.year,
-              gm: {
-                gte: 0,
-              },
-            },
-            select: dashboardGameAssignmentSelect,
-          }),
-        ])
-
-        return {
-          games,
-          rooms,
-          roomAssignments,
-          roomSlotAvailability,
-          memberRoomAssignments,
-          memberships,
-          gameAssignments,
-        }
-      }),
+      inRlsTransaction(ctx, async (tx) => getRoomAssignmentDashboardSnapshot({ tx, year: input.year })),
     ),
 
   getScheduleRoomAssignmentData: protectedProcedure
@@ -385,6 +538,7 @@ export const roomAssignmentsRouter = createTRPCRouter({
         year: z.number(),
         isOverride: z.boolean().optional(),
         source: z.enum(['manual', 'auto']).optional(),
+        assignmentReason: z.string().nullable().optional(),
       }),
     )
     .mutation(async ({ input, ctx }) =>
@@ -486,6 +640,7 @@ export const roomAssignmentsRouter = createTRPCRouter({
           },
           update: {
             source,
+            assignmentReason: input.assignmentReason ?? null,
             assignedByUserId: ctx.userId ?? null,
           },
           create: {
@@ -495,6 +650,7 @@ export const roomAssignmentsRouter = createTRPCRouter({
             year: input.year,
             isOverride: wantsOverride,
             source,
+            assignmentReason: input.assignmentReason ?? null,
             assignedByUserId: ctx.userId ?? null,
           },
         })
@@ -688,5 +844,42 @@ export const roomAssignmentsRouter = createTRPCRouter({
           deleted: deletedRoomAssignments.count,
         }
       }),
+    ),
+
+  makeInitialRoomAssignments: protectedProcedure.input(yearInput).mutation(async ({ input, ctx }) =>
+    inRlsTransaction(ctx, async (tx) =>
+      applyRoomAssignmentPlanner({
+        tx,
+        year: input.year,
+        assignedByUserId: ctx.userId ?? null,
+        deleteWhere: {
+          year: input.year,
+          source: 'auto',
+        },
+      }),
+    ),
+  ),
+
+  recalculateRoomAssignments: protectedProcedure
+    .input(
+      z.object({
+        year: z.number(),
+        slotId: z.number().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) =>
+      inRlsTransaction(ctx, async (tx) =>
+        applyRoomAssignmentPlanner({
+          tx,
+          year: input.year,
+          slotId: input.slotId,
+          assignedByUserId: ctx.userId ?? null,
+          deleteWhere: {
+            year: input.year,
+            slotId: input.slotId,
+            isOverride: false,
+          },
+        }),
+      ),
     ),
 })
