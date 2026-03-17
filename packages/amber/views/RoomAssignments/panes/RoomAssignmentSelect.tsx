@@ -13,9 +13,12 @@ type RoomAssignmentSelectProps = {
   options: Array<RoomSelectOption | ManualRoomSelectOption>
   onChange: (roomId: number | null) => Promise<void>
   selectedValueMode?: 'description' | 'roomWithMembers'
+  selectedValueSecondaryText?: string | null
   showSizeColumn?: boolean
   greyAssignedOptions?: boolean
   minWidth?: number
+  emptyDisplayLabel?: string
+  includeEmptyOption?: boolean
 }
 
 const RoomAssignmentSelect = ({
@@ -25,9 +28,12 @@ const RoomAssignmentSelect = ({
   options,
   onChange,
   selectedValueMode = 'description',
+  selectedValueSecondaryText = null,
   showSizeColumn = false,
   greyAssignedOptions = false,
   minWidth = 300,
+  emptyDisplayLabel = 'Unassigned',
+  includeEmptyOption = true,
 }: RoomAssignmentSelectProps) => {
   const roomOptionById = useMemo(
     () => new Map(options.map((roomOption) => [String(roomOption.id), roomOption])),
@@ -36,20 +42,31 @@ const RoomAssignmentSelect = ({
 
   const renderSelectedValue = (selectedValue: unknown) => {
     if (typeof selectedValue !== 'string' || !selectedValue) {
-      return 'Unassigned'
+      return emptyDisplayLabel
     }
 
     const selectedRoom = roomOptionById.get(selectedValue)
     if (!selectedRoom) {
-      return 'Unassigned'
+      return emptyDisplayLabel
     }
 
     if (selectedValueMode === 'roomWithMembers') {
       return (
-        <RoomNameWithMembersCell
-          roomDescription={selectedRoom.description}
-          assignedMemberNames={selectedRoom.assignedMemberNames}
-        />
+        <Box sx={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <RoomNameWithMembersCell
+            roomDescription={selectedRoom.description}
+            assignedMemberNames={selectedRoom.assignedMemberNames}
+          />
+          {selectedValueSecondaryText ? (
+            <Typography
+              variant='caption'
+              color='text.secondary'
+              sx={{ display: 'block', lineHeight: 1.2, mt: 0.25, whiteSpace: 'normal' }}
+            >
+              {selectedValueSecondaryText}
+            </Typography>
+          ) : null}
+        </Box>
       )
     }
 
@@ -57,7 +74,7 @@ const RoomAssignmentSelect = ({
   }
 
   return (
-    <Box sx={{ minWidth }}>
+    <Box sx={{ width: '100%', minWidth, maxWidth: '100%' }}>
       <TextField
         fullWidth
         select
@@ -105,7 +122,7 @@ const RoomAssignmentSelect = ({
         }}
         onClick={(event) => event.stopPropagation()}
       >
-        <MenuItem value=''>Unassigned</MenuItem>
+        {includeEmptyOption ? <MenuItem value=''>{emptyDisplayLabel}</MenuItem> : null}
         {showSizeColumn ? (
           <MenuItem disabled sx={{ opacity: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2 }}>
@@ -123,7 +140,8 @@ const RoomAssignmentSelect = ({
         ) : null}
         {options.map((roomOption) => {
           const slotAssignmentCount = 'slotAssignmentCount' in roomOption ? roomOption.slotAssignmentCount : 0
-          const isMuted = greyAssignedOptions && slotAssignmentCount > 0
+          const slotIsAvailable = 'slotIsAvailable' in roomOption ? roomOption.slotIsAvailable : true
+          const isMuted = greyAssignedOptions && (slotAssignmentCount > 0 || !slotIsAvailable)
           const size = 'size' in roomOption ? roomOption.size : null
 
           return (
@@ -137,6 +155,11 @@ const RoomAssignmentSelect = ({
                   <Typography variant='body2' color={isMuted ? 'text.disabled' : 'text.primary'}>
                     {roomOption.description}
                   </Typography>
+                  {!slotIsAvailable ? (
+                    <Typography variant='caption' color={isMuted ? 'text.disabled' : 'text.secondary'}>
+                      Unavailable in this slot
+                    </Typography>
+                  ) : null}
                   {roomOption.assignedMemberNames.length > 0 ? (
                     <Box component='ul' sx={{ m: 0, pl: 2 }}>
                       {roomOption.assignedMemberNames.map((memberName) => (

@@ -10,6 +10,15 @@ export type SizedRoomSelectOption = RoomSelectOption & {
 
 export type ManualRoomSelectOption = SizedRoomSelectOption & {
   slotAssignmentCount: number
+  slotIsAvailable: boolean
+}
+
+export type ManualGameRoomOverrideAssignment = {
+  id: bigint
+  roomId: number
+  roomDescription: string
+  roomSize: number
+  assignedMemberNames: Array<string>
 }
 
 export type ManualGameMember = {
@@ -27,7 +36,11 @@ export type ManualGameRoomAssignmentRow = {
   gameName: string
   gmNames: Array<string>
   assignedCount: number
+  currentRoomSize: number | null
+  roomSpace: number | null
   currentRoomId: number | null
+  currentRoomAssignmentReason: string | null
+  overrideAssignments: Array<ManualGameRoomOverrideAssignment>
   members: Array<ManualGameMember>
 }
 
@@ -72,4 +85,17 @@ export type RoomUsageSummaryRow = {
   assignedMemberNames: Array<string>
   size: number
   usageCount: number
+}
+
+export type RoomAssignmentConflictRow = {
+  id: string
+  slotId: number
+  gameId: number | null
+  gameName: string
+  gmNames: Array<string>
+  roomDescription: string
+  assignedMemberNames: Array<string>
+  severity: 'error' | 'warning'
+  issueType: string
+  detail: string
 }

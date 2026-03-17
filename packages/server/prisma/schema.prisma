@@ -93,6 +93,7 @@ model GameRoomAssignment {
   year             Int
   isOverride       Boolean  @default(false) @map("is_override")
   source           String   @default("manual") @db.VarChar(10)
+  assignmentReason String?  @map("assignment_reason")
   assignedByUserId Int?     @map("assigned_by_user_id")
   createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)

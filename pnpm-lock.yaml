@@ -838,6 +838,9 @@ importers:
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
+      xlsx:
+        specifier: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
+        version: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
       yup:
         specifier: ^1.7.1
         version: 1.7.1

@@ -45,6 +45,10 @@ export type RemoveGameRoomAssignmentInput = RouterInputs['roomAssignments']['rem
 export type UpsertRoomSlotAvailabilityInput = RouterInputs['roomAssignments']['upsertRoomSlotAvailability']
 export type UpsertMemberRoomAssignmentInput = RouterInputs['roomAssignments']['upsertMemberRoomAssignment']
 export type ResetRoomAssignmentsInput = RouterInputs['roomAssignments']['resetRoomAssignments']
+export type MakeInitialRoomAssignmentsInput = RouterInputs['roomAssignments']['makeInitialRoomAssignments']
+export type MakeInitialRoomAssignmentsResult = RouterOutputs['roomAssignments']['makeInitialRoomAssignments']
+export type RecalculateRoomAssignmentsInput = RouterInputs['roomAssignments']['recalculateRoomAssignments']
+export type RecalculateRoomAssignmentsResult = RouterOutputs['roomAssignments']['recalculateRoomAssignments']
 
 export type StripeEntry = RouterOutputs['stripe']['getStripe'][0]
 

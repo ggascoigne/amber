@@ -370,7 +370,7 @@ export const DataTable = <T extends RowData>({
                       onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
                     />
                   }
-                  label='showExpanded'
+                  label='Show Expanded'
                   sx={{ m: 0 }}
                 />
               </Box>

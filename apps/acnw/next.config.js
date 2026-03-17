@@ -46,7 +46,11 @@ const nextConfig = {
     ? {
         devIndicators: false,
       }
-    : {}),
+    : {
+        devIndicators: {
+          position: 'bottom-right',
+        },
+      }),
 }
 
 export default withBundleAnalyzer(withMDX(nextConfig))
