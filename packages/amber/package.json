@@ -19,6 +19,7 @@
     "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
     "@amber/environment": "workspace:*",
+    "@amber/shared": "workspace:*",
     "@amber/server": "workspace:*",
     "@amber/ui": "workspace:*",
     "@auth0/nextjs-auth0": "4.16.1",

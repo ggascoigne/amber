@@ -1,5 +1,6 @@
 import { authRouter } from './routers/auth'
 import { configRouter } from './routers/config'
+import { emailRouter } from './routers/email'
 import { gameAssignmentsRouter } from './routers/gameAssignments'
 import { gameChoicesRouter } from './routers/gameChoices'
 import { gameRoomsRouter } from './routers/gameRooms'
@@ -8,6 +9,7 @@ import { hotelRoomDetailsRouter } from './routers/hotelRoomDetails'
 import { hotelRoomsRouter } from './routers/hotelRooms'
 import { lookupsRouter } from './routers/lookups'
 import { membershipsRouter } from './routers/memberships'
+import { reportsRouter } from './routers/reports'
 import { roomAssignmentsRouter } from './routers/roomAssignments'
 import { settingsRouter } from './routers/settings'
 import { slotsRouter } from './routers/slots'
@@ -24,6 +26,7 @@ import { createTRPCRouter } from './trpc'
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   config: configRouter,
+  email: emailRouter,
   gameAssignments: gameAssignmentsRouter,
   gameChoices: gameChoicesRouter,
   gameRooms: gameRoomsRouter,
@@ -32,6 +35,7 @@ export const appRouter = createTRPCRouter({
   hotelRooms: hotelRoomsRouter,
   lookups: lookupsRouter,
   memberships: membershipsRouter,
+  reports: reportsRouter,
   roomAssignments: roomAssignmentsRouter,
   settings: settingsRouter,
   slots: slotsRouter,

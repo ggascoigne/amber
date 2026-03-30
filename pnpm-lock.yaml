@@ -127,6 +127,9 @@ importers:
       '@amber/server':
         specifier: workspace:*
         version: link:../../packages/server
+      '@amber/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@amber/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -326,6 +329,9 @@ importers:
       '@amber/server':
         specifier: workspace:*
         version: link:../../packages/server
+      '@amber/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       '@amber/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -691,6 +697,9 @@ importers:
       '@amber/server':
         specifier: workspace:*
         version: link:../server
+      '@amber/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@amber/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1101,9 +1110,12 @@ importers:
       '@amber/environment':
         specifier: workspace:*
         version: link:../environment
+      '@amber/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@auth0/nextjs-auth0':
         specifier: 4.16.1
-        version: 4.16.1(next@16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 4.16.1(next@16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@prisma/adapter-pg':
         specifier: ^7.6.0
         version: 7.6.0
@@ -1124,7 +1136,7 @@ importers:
         version: 11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2)
       '@trpc/next':
         specifier: ^11.16.0
-        version: 11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/react-query@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(react@19.2.4)(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(next@16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@6.0.2)
+        version: 11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/react-query@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(react@19.2.4)(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(next@16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@6.0.2)
       '@trpc/react-query':
         specifier: 11.16.0
         version: 11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(react@19.2.4)(typescript@6.0.2)
@@ -1140,6 +1152,9 @@ importers:
       debug:
         specifier: ^4.4.3
         version: 4.4.3(supports-color@10.2.2)
+      email-templates:
+        specifier: ^13.0.1
+        version: 13.0.1(@babel/core@7.29.0(supports-color@10.2.2))(ejs@3.1.10)(mustache@4.2.0)(pug@3.0.4)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(supports-color@10.2.2)(underscore@1.13.7)
       jose:
         specifier: ^6.2.2
         version: 6.2.2
@@ -1151,13 +1166,19 @@ importers:
         version: 3.7.2
       next:
         specifier: 16.2.2
-        version: 16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        version: 16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      nodemailer:
+        specifier: '>=8.0.2'
+        version: 8.0.4
       pg:
         specifier: ^8.20.0
         version: 8.20.0
       prisma-case-format:
         specifier: ^2.2.1
         version: 2.2.1(encoding@0.1.13)(supports-color@10.2.2)
+      pug:
+        specifier: ^3.0.4
+        version: 3.0.4
       superjson:
         specifier: ^2.2.6
         version: 2.2.6
@@ -1180,15 +1201,24 @@ importers:
       '@types/debug':
         specifier: ~4.1.13
         version: 4.1.13
+      '@types/email-templates':
+        specifier: ^10.0.4
+        version: 10.0.4(encoding@0.1.13)
       '@types/luxon':
         specifier: ^3.7.1
         version: 3.7.1
       '@types/node':
         specifier: ^25.5.2
         version: 25.5.2
+      '@types/nodemailer':
+        specifier: ^7.0.11
+        version: 7.0.11
       '@types/pg':
         specifier: ^8.20.0
         version: 8.20.0
+      '@types/pug':
+        specifier: ~2.0.10
+        version: 2.0.10
       '@typescript/native-preview':
         specifier: 7.0.0-dev.20260403.1
         version: 7.0.0-dev.20260403.1
@@ -1225,6 +1255,25 @@ importers:
       zx:
         specifier: ^8.8.5
         version: 8.8.5
+
+  packages/shared:
+    dependencies:
+      luxon:
+        specifier: ^3.7.2
+        version: 3.7.2
+    devDependencies:
+      '@amber/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/luxon':
+        specifier: ^3.7.1
+        version: 3.7.1
+      '@types/node':
+        specifier: ^25.5.0
+        version: 25.5.2
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
 
   packages/tsconfig: {}
 
@@ -7809,6 +7858,11 @@ packages:
       eslint: ^8.57.0 || ^9.0.0
       typescript: '>=4.8.4 <6.0.0'
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@6.0.2:
     resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
     engines: {node: '>=14.17'}
@@ -8301,18 +8355,6 @@ snapshots:
       '@panva/hkdf': 1.2.1
       jose: 6.2.2
       next: 16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      oauth4webapi: 3.8.5
-      openid-client: 6.8.2
-      react: 19.2.4
-      react-dom: 19.2.4(react@19.2.4)
-      swr: 2.4.1(react@19.2.4)
-
-  '@auth0/nextjs-auth0@4.16.1(next@16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
-    dependencies:
-      '@edge-runtime/cookies': 5.0.2
-      '@panva/hkdf': 1.2.1
-      jose: 6.2.2
-      next: 16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       oauth4webapi: 3.8.5
       openid-client: 6.8.2
       react: 19.2.4
@@ -10000,11 +10042,11 @@ snapshots:
       '@trpc/server': 11.16.0(typescript@6.0.2)
       typescript: 6.0.2
 
-  '@trpc/next@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/react-query@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(react@19.2.4)(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(next@16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@6.0.2)':
+  '@trpc/next@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/react-query@11.16.0(@tanstack/react-query@5.96.2(react@19.2.4))(@trpc/client@11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(react@19.2.4)(typescript@6.0.2))(@trpc/server@11.16.0(typescript@6.0.2))(next@16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@6.0.2)':
     dependencies:
       '@trpc/client': 11.16.0(@trpc/server@11.16.0(typescript@6.0.2))(typescript@6.0.2)
       '@trpc/server': 11.16.0(typescript@6.0.2)
-      next: 16.2.2(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      next: 16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
       typescript: 6.0.2
@@ -15211,6 +15253,8 @@ snapshots:
       typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
+
+  typescript@5.9.3: {}
 
   typescript@6.0.2: {}
 

@@ -1,8 +1,9 @@
 import React from 'react'
 
+import { getSlotDescription, isNotPacificTime, SlotFormat } from '@amber/shared'
 import { range } from '@amber/ui'
 
-import { getSlotDescription, isNotPacificTime, SlotFormat, useConfiguration } from '../utils'
+import { useConfiguration } from '../utils'
 
 export const SlotDescriptionList = () => {
   const configuration = useConfiguration()

@@ -7,19 +7,23 @@ import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [
-  { name: 'Membership' },
-  { name: 'Members Without Game Choices' },
-  { name: 'Game' },
-  { name: 'GM' },
-  { name: 'Games Scheduler' },
-  { name: 'Members for Player Scheduler', perm: Perms.PlayerAdmin },
-  { name: 'Games for Player Scheduler', perm: Perms.PlayerAdmin },
-  { name: 'Game Choices for Player Scheduler', perm: Perms.PlayerAdmin },
-  { name: 'Game And Players' },
-  { name: 'Rooms By Room' },
-  { name: 'Rooms By Game' },
-  { name: 'Game Assignments' },
-  { name: 'Voucher' },
+  { name: 'Membership', reportId: 'membershipReport' },
+  { name: 'Members Without Game Choices', reportId: 'membersWithoutGameChoicesReport' },
+  { name: 'Game', reportId: 'gameReport' },
+  { name: 'GM', reportId: 'gmReport' },
+  { name: 'Games Scheduler', reportId: 'gamesSchedulerReport' },
+  { name: 'Members for Player Scheduler', perm: Perms.PlayerAdmin, reportId: 'membersForPlayerSchedulerReport' },
+  { name: 'Games for Player Scheduler', perm: Perms.PlayerAdmin, reportId: 'gamesForPlayerSchedulerReport' },
+  {
+    name: 'Game Choices for Player Scheduler',
+    perm: Perms.PlayerAdmin,
+    reportId: 'gameChoicesForPlayerSchedulerReport',
+  },
+  { name: 'Game And Players', reportId: 'gameAndPlayersReport' },
+  { name: 'Rooms By Room', reportId: 'roomsByRoomReport' },
+  { name: 'Rooms By Game', reportId: 'roomsByGameReport' },
+  { name: 'Game Assignments', reportId: 'gameAssignmentsReport' },
+  { name: 'Voucher', reportId: 'voucherReport' },
 ]
 
 export const getServerSideProps = configGetServerSideProps

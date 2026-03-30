@@ -6,12 +6,12 @@ import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [
-  { name: 'Membership' },
-  { name: 'Game' },
-  { name: 'Discord Game', virtual: true },
-  { name: 'GM' },
-  { name: 'Game And Players' },
-  { name: 'Room Usage', fileLabel: 'room' },
+  { name: 'Membership', reportId: 'membershipReport' },
+  { name: 'Game', reportId: 'gameReport' },
+  { name: 'Discord Game', reportId: 'discordGameReport', virtual: true },
+  { name: 'GM', reportId: 'gmReport' },
+  { name: 'Game And Players', reportId: 'gameAndPlayersReport' },
+  { fileLabel: 'room', name: 'Room Usage', reportId: 'roomReport' },
 ]
 
 export const getServerSideProps = configGetServerSideProps

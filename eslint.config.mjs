@@ -53,6 +53,23 @@ export default [
     files: ['**/*.test.ts'],
     rules: { 'import/no-extraneous-dependencies': 'off' },
   },
+  {
+    name: 'browser-safe-shared-boundary',
+    files: ['packages/amber/**/*.{ts,tsx}', 'apps/acnw/**/*.{ts,tsx}', 'apps/acus/**/*.{ts,tsx}'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@amber/server/src/utils/slotHelpers',
+              message: 'Import slot helpers from @amber/shared instead of @amber/server.',
+            },
+          ],
+        },
+      ],
+    },
+  },
   // oxlint is very cool, but doesn't have a good replacement for the import/order rule
   // when it does I think that we can swap over to it.
   // this chunk allows us to disable all rules provided by oxlint and see what's left

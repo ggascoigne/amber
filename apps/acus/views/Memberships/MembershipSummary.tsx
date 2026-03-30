@@ -4,8 +4,6 @@ import {
   Page,
   TransportError,
   getInterestLevel,
-  getSlotDescription,
-  isNotPacificTime,
   useConfiguration,
   useGetCost,
   useProfile,
@@ -16,6 +14,7 @@ import type { MembershipType } from '@amber/amber/utils/apiTypes'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
 import type { UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
+import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
 import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'

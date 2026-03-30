@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 import type { Game } from '@amber/client'
 import { useTRPC, useInvalidateGameQueries } from '@amber/client'
+import { getSlotDescription } from '@amber/shared'
 import { Loader, range } from '@amber/ui'
 import type { TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
 import { Table, getSelectedRows } from '@amber/ui/components/Table'
@@ -15,7 +16,7 @@ import { useRouter } from 'next/router'
 import { Page, ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
-import { getSlotDescription, useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
+import { useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 // type Game = GameFieldsFragment & GameGmsFragment

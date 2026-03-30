@@ -3,12 +3,13 @@ import { useEffect } from 'react'
 
 import type { GameChoice } from '@amber/client'
 import { useTRPC } from '@amber/client'
+import { getSlotDescription } from '@amber/shared'
 import { Loader, notEmpty, range } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { Rank, rankString, RankStyle } from './GameChoiceSelector'
 
-import { getSlotDescription, useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils'
 import { getGms } from '../Games'
 
 export interface SlotSummary {

@@ -1,36 +1,36 @@
-import type React from 'react'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { List, ListItem } from '@mui/material'
+import { useTRPC } from '@amber/client'
+import type { ReportId } from '@amber/server/src/api/contracts/reports'
+import { useNotification } from '@amber/ui'
+import { Button, List, ListItem } from '@mui/material'
+import { useQueryClient } from '@tanstack/react-query'
 
-import { Page, AuthenticatedDownloadButton } from '../components'
+import { downloadReportWorkbook } from './Reports/downloadReportWorkbook'
+
+import { Page } from '../components'
 import type { Perms } from '../components/Auth'
 import { useAuth } from '../components/Auth'
 import { useConfiguration } from '../utils'
 
 export type ReportRecord = {
-  name: string
-  url?: string
   fileLabel?: string
-  virtual?: boolean
+  name: string
   perm?: Perms
-}
-
-const toCamelCase = (words: string) => {
-  const parts = words.split(' ')
-  return parts.reduce((p, c) => p + c.charAt(0).toUpperCase() + c.slice(1), parts.shift()!.toLowerCase())
+  reportId: ReportId
+  virtual?: boolean
 }
 
 type ReportsProps = {
   reports: ReportRecord[]
 }
 
-export const Reports: React.FC<ReportsProps> = ({ reports }) => {
+const Reports = ({ reports }: ReportsProps) => {
+  const trpc = useTRPC()
+  const queryClient = useQueryClient()
   const configuration = useConfiguration()
-  // name is used in title case in the button as "Download Label Report"
-  // if fileLabel is not set, it uses camelCased name
-  // if url is not set, it uses fileLabel as api/reports/fileLabelReport
-  // if virtual is not set it is always generated, if set, only if matching configuration.virtual
+  const notify = useNotification()
+  const [activeReportId, setActiveReportId] = useState<ReportId | null>(null)
   const abbr = configuration.abbr.toUpperCase()
   const timestamp = new Date().toISOString().replaceAll(/[-.]/g, '_')
 
@@ -45,20 +45,49 @@ export const Reports: React.FC<ReportsProps> = ({ reports }) => {
     [configuration.virtual, hasPermissions, reports],
   )
 
+  const handleDownload = useCallback(
+    async ({ fileLabel, reportId }: { fileLabel: string; reportId: ReportId }) => {
+      setActiveReportId(reportId)
+
+      try {
+        const workbookData = await queryClient.fetchQuery(
+          trpc.reports.getWorkbookData.queryOptions({
+            reportId,
+            year: configuration.year,
+          }),
+        )
+
+        downloadReportWorkbook({
+          filename: `${abbr}${configuration.year}-${fileLabel}-${timestamp}.xlsx`,
+          workbookData,
+        })
+      } catch (error: any) {
+        notify({
+          text: error?.message ?? 'Unable to download report',
+          variant: 'error',
+        })
+      } finally {
+        setActiveReportId(null)
+      }
+    },
+    [abbr, configuration.year, notify, queryClient, timestamp, trpc.reports.getWorkbookData],
+  )
+
   return (
     <Page title='Reports'>
       <List>
         {filteredReports.map((r) => {
-          const fileLabel = r?.fileLabel ?? toCamelCase(r.name)
-          const url = r?.url ?? `${fileLabel}Report`
+          const fileLabel = r.fileLabel ?? r.reportId.replace(/Report$/, '')
           return (
-            <ListItem key={url}>
-              <AuthenticatedDownloadButton
-                url={`/api/reports/${url}`}
-                filename={`${abbr}${configuration.year}-${fileLabel}-${timestamp}.xlsx`}
+            <ListItem key={r.reportId}>
+              <Button
+                color='primary'
+                disabled={activeReportId === r.reportId}
+                onClick={() => handleDownload({ fileLabel, reportId: r.reportId })}
+                variant='outlined'
               >
                 Download {r.name} Report
-              </AuthenticatedDownloadButton>
+              </Button>
             </ListItem>
           )
         })}
@@ -66,3 +95,5 @@ export const Reports: React.FC<ReportsProps> = ({ reports }) => {
     </Page>
   )
 }
+
+export { Reports }

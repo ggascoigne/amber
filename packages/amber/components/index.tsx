@@ -1,6 +1,5 @@
 export * from './AdminCard'
 export * from './Auth'
-export * from './AuthenticatedDownloadButton'
 export * from './BetaWarning'
 export * from './ConfigurationValues'
 export * from './Footer'

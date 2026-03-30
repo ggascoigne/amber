@@ -1,8 +1,7 @@
+import type { SlotConfiguration } from '@amber/shared'
+import { getSlotDescription, SlotFormat } from '@amber/shared'
 import { DateTime } from 'luxon'
 import { describe, test, expect } from 'vitest'
-
-import type { SlotConfiguration } from './slotTimes'
-import { getSlotDescription, SlotFormat } from './slotTimes'
 
 const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>
   DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })

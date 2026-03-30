@@ -32,6 +32,7 @@
     "@amber/environment": "workspace:*",
     "@amber/playwright": "workspace:*",
     "@amber/server": "workspace:*",
+    "@amber/shared": "workspace:*",
     "@amber/ui": "workspace:*",
     "@auth0/nextjs-auth0": "4.16.1",
     "@emotion/react": "^11.14.0",
