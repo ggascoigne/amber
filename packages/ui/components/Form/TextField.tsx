@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react'
 import type React from 'react'
-import { useState } from 'react'
 
 import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
 import MuiTextField from '@mui/material/TextField'
@@ -17,18 +16,18 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const [field, meta, helpers] = useField(rest.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
-  const [oldValue, setOldValue] = useState(field.value)
+  const multiSelect = !!rest.SelectProps?.multiple
 
   const showError = touched && !!error
 
   // work around an issue where the select component used by the underlying material-ui
   // library barfs if you have an undefined value here instead of an empty array
-  if (rest.SelectProps?.multiple && field.value === undefined) {
+  if (multiSelect && field.value === undefined) {
     field.value = []
   }
-
-  if (oldValue === undefined) {
-    console.log(`field${field.name} is uncontrolled`)
+  const normalizedField = {
+    ...field,
+    value: multiSelect ? field.value : (field.value ?? ''),
   }
 
   const parseValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -42,12 +41,12 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   // this is particularly useful when you want to override the built in onBlur
   const newProps = overrideFormik
     ? {
-        ...field,
+        ...normalizedField,
         ...rest,
       }
     : {
         ...rest,
-        ...field,
+        ...normalizedField,
       }
 
   const fullProps = {
@@ -60,14 +59,6 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const originalOnChange = fullProps.onChange
 
   const onChangeField = (event: ChangeEvent<HTMLInputElement>, ...rest1: any[]) => {
-    const { value } = event.target
-    setOldValue((prevState: unknown) => {
-      if (prevState !== value)
-        if (value === undefined) {
-          console.log(`field${field.name} is switching to uncontrolled`)
-        }
-      return value
-    })
     // @ts-ignore
     originalOnChange?.(event, ...rest1!)
     parseValue(event)

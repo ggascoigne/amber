@@ -106,21 +106,25 @@ const RoomMemberMultiSelectCell = ({
           onClick={(event) => event.stopPropagation()}
         />
       )}
-      renderOption={(props, option, { selected }) => (
-        <Box
-          component='li'
-          {...props}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
-            minWidth: 0,
-          }}
-        >
-          <Checkbox checked={selected} size='small' sx={{ mr: 1 }} />
-          {option.fullName}
-        </Box>
-      )}
+      renderOption={(props, option, { selected }) => {
+        const { key, ...rest } = props
+        return (
+          <Box
+            component='li'
+            key={key}
+            {...rest}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              minWidth: 0,
+            }}
+          >
+            <Checkbox checked={selected} size='small' sx={{ mr: 1 }} />
+            {option.fullName}
+          </Box>
+        )
+      }}
       sx={{
         minWidth: 360,
         '& .MuiAutocomplete-inputRoot': {

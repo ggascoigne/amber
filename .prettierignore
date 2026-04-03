@@ -1,2 +1,3 @@
 packages/server/src/generated
 apps/*/next-env.d.ts
+apps/ui-test/playwright-report

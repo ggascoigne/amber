@@ -7,6 +7,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 const log = debug('amber:acnw:api:send:membershipConfirmation')
 
+const isAbortedRequestError = (error: unknown) => {
+  const errorWithCode = error as { code?: unknown } | null
+
+  return error instanceof Error && (error.message === 'aborted' || errorWithCode?.code === 'ECONNRESET')
+}
+
 // /api/send/membershipConfirmation
 // auth token: required
 // body: {
@@ -81,6 +87,14 @@ export default auth0.withApiAuthRequired(async (req: NextApiRequest, res: NextAp
     const promiseResults = await Promise.allSettled(emailResults)
     res.send({ promiseResults })
   } catch (err: any) {
+    if (req.aborted || isAbortedRequestError(err)) {
+      log('request aborted')
+      if (!res.headersSent && !res.writableEnded) {
+        res.status(204).end()
+      }
+      return
+    }
+
     handleError(err, res)
   }
 })
