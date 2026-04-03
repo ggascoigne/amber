@@ -7,6 +7,15 @@ import type { EmailConfirmation } from './apiTypes'
 
 type SendEmail = (p: EmailConfirmation) => void
 
+const isAbortLikeError = (error: unknown) => {
+  const errorWithCode = error as { code?: unknown } | null
+
+  return (
+    error instanceof Error &&
+    (error.name === 'AbortError' || error.message === 'aborted' || errorWithCode?.code === 'ECONNRESET')
+  )
+}
+
 export const useSendEmail = (): SendEmail => {
   const notify = useNotification()
 
@@ -14,6 +23,7 @@ export const useSendEmail = (): SendEmail => {
     ({ type, body }: EmailConfirmation) => {
       fetch(`${window.location.origin}/api/send/${type}`, {
         method: 'post',
+        keepalive: true,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -42,6 +52,18 @@ export const useSendEmail = (): SendEmail => {
             })
             return responseBody
           }
+          return undefined
+        })
+        .catch((error: unknown) => {
+          if (isAbortLikeError(error)) {
+            return undefined
+          }
+
+          console.error(error)
+          notify({
+            text: error instanceof Error ? error.message : String(error),
+            variant: 'error',
+          })
           return undefined
         })
     },

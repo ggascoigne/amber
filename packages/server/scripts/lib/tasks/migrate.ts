@@ -21,7 +21,7 @@ export const migrateDbTask: ListrTask = {
     })
     // eslint-disable-next-line no-param-reassign
     task.output = `Migrating database: ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`
-    await $$`node --import=tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up`
+    await $$`node --no-deprecation --import=tsx node_modules/knex/bin/cli.js migrate:latest --knexfile ./support/knexfile.ts up`
     return Promise.resolve(`Migrated ${safeConnectionString(environ.ADMIN_DATABASE_URL)}`)
   },
   rendererOptions: {

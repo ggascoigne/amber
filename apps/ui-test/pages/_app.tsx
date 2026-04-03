@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import * as React from 'react'
 
 import { theme, createEmotionCache } from '@amber/ui'
@@ -18,7 +18,7 @@ const log = debug('app')
 const queryClient = new QueryClient()
 const clientSideEmotionCache = createEmotionCache()
 
-interface MyAppProps extends AppProps {
+type MyAppProps = AppProps & {
   emotionCache?: EmotionCache
   configData?: any
 }
@@ -26,8 +26,11 @@ interface MyAppProps extends AppProps {
 const App = (props: MyAppProps) => {
   const { Component, pageProps } = props
   const emotionCache = React.useMemo(() => props.emotionCache ?? clientSideEmotionCache, [props.emotionCache])
+  const [isMswReady, setIsMswReady] = useState(false)
 
   useEffect(() => {
+    let isMounted = true
+
     const initMSW = async () => {
       const { worker } = await import('@/mocks/browser')
       log('environment', process.env)
@@ -41,12 +44,19 @@ const App = (props: MyAppProps) => {
         onUnhandledRequest: 'bypass',
       })
 
+      if (isMounted) {
+        setIsMswReady(true)
+      }
       log('MSW initialized successfully')
     }
 
     initMSW().catch((error) => {
       console.error('Failed to initialize MSW:', error)
     })
+
+    return () => {
+      isMounted = false
+    }
   }, [])
 
   return (
@@ -55,9 +65,11 @@ const App = (props: MyAppProps) => {
         <CssBaseline />
         <QueryClientProvider client={queryClient}>
           <ReactQueryDevtools buttonPosition='bottom-left' />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          {isMswReady ? (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          ) : null}
         </QueryClientProvider>
       </ThemeProvider>
     </AppCacheProvider>

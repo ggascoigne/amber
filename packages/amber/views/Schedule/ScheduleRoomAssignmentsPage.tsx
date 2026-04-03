@@ -50,15 +50,23 @@ const ScheduleRoomAssignmentCell = ({
     }),
   )
 
+  const [visibleRoomOptions, selectedRoomId] = useMemo(() => {
+    const roomOptions = isAdmin
+      ? (roomAssignmentData?.rooms ?? [])
+      : (roomAssignmentData?.rooms ?? []).filter((room) => room.type === 'Guest Room')
+    const roomId = roomAssignmentData?.currentAssignment?.roomId ?? null
+    const selectedRoom = roomAssignmentData?.rooms.find((room) => room.id === roomId) ?? null
+    const vro =
+      selectedRoom && !roomOptions.some((room) => room.id === selectedRoom.id)
+        ? [selectedRoom, ...roomOptions]
+        : roomOptions
+
+    return [vro, roomId]
+  }, [isAdmin, roomAssignmentData?.currentAssignment?.roomId, roomAssignmentData?.rooms])
+
   if (!roomAssignmentData || isLoading) {
     return <Loader tiny />
   }
-
-  const roomOptions = isAdmin
-    ? roomAssignmentData.rooms
-    : roomAssignmentData.rooms.filter((room) => room.type === 'Guest Room')
-
-  const selectedRoomId = roomAssignmentData.currentAssignment?.roomId ?? null
 
   return (
     <FormControl size='small' sx={{ minWidth: 280 }}>
@@ -99,10 +107,11 @@ const ScheduleRoomAssignmentCell = ({
         <MenuItem value='' disabled>
           Select room
         </MenuItem>
-        {roomOptions.map((room) => {
+        {visibleRoomOptions.map((room) => {
           const occupiedByOtherGame = room.occupiedByGameId !== null && room.occupiedByGameId !== gameId
           const roomUnavailable = !room.isAvailable || occupiedByOtherGame
-          const disabled = !isAdmin && roomUnavailable
+          const isCurrentSelection = room.id === selectedRoomId
+          const disabled = !isAdmin && roomUnavailable && !isCurrentSelection
 
           return (
             <MenuItem key={room.id} value={String(room.id)} disabled={disabled}>

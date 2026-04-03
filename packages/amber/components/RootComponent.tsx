@@ -26,7 +26,7 @@ import type { RootRoutes } from './Navigation'
 import { TRPCReactProvider } from './TRPCReactProvider'
 
 import type { Configuration } from '../utils'
-import { ConfigProvider, getSettingsObject, useConfiguration, useInitializeStripe } from '../utils'
+import { ConfigProvider, getSettingsObject, useConfiguration } from '../utils'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -50,7 +50,6 @@ const RootInner = (props: RootComponentProps) => {
   const { user } = pageProps
   const configuration = useConfiguration()
   const routes = useMemo(() => rootRoutes(configuration), [configuration, rootRoutes])
-  useInitializeStripe()
   const [showDevtools, setShowDevtools] = React.useState(isDev)
 
   React.useEffect(() => {

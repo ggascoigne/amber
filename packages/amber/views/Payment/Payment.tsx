@@ -11,10 +11,11 @@ import { ElementsForm } from './ElementsForm'
 import { fetchPostJSON } from './fetchUtils'
 
 import { Page, ContactEmail } from '../../components'
-import { useGetStripe, useConfiguration, useUser } from '../../utils'
+import { useGetStripe, useConfiguration, useInitializeStripe, useUser } from '../../utils'
 
 export const Payment = () => {
   const trpc = useTRPC()
+  useInitializeStripe()
   const [stripe] = useGetStripe()
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
   const user = useUser()

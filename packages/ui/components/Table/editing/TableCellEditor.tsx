@@ -152,20 +152,24 @@ export const TableCellEditor = <TData extends RowData>({
           onChange={(_event, option) => {
             onChange(option?.value ?? null)
           }}
-          renderOption={(props, option) => (
-            <Box
-              component='li'
-              {...props}
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                minWidth: 0,
-              }}
-            >
-              {renderOptionContent(option)}
-            </Box>
-          )}
+          renderOption={(props, option) => {
+            const { key, ...rest } = props
+            return (
+              <Box
+                component='li'
+                key={key}
+                {...rest}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  minWidth: 0,
+                }}
+              >
+                {renderOptionContent(option)}
+              </Box>
+            )
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
