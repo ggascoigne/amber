@@ -145,12 +145,17 @@ const handleSuccess = async (charge: Stripe.Charge) => {
 export const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const buf = await buffer(req)
-    const sig = req.headers['stripe-signature']!
+    const signatureHeader = req.headers['stripe-signature']
+
+    if (typeof signatureHeader !== 'string') {
+      res.status(400).send('Webhook Error: Missing Stripe signature header')
+      return
+    }
 
     let event: Stripe.Event
 
     try {
-      event = stripe.webhooks.constructEvent(buf.toString(), sig, env.STRIPE_WEBHOOK_SECRET!)
+      event = stripe.webhooks.constructEvent(buf.toString(), signatureHeader, env.STRIPE_WEBHOOK_SECRET!)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error'
       // On error, log and return the error message.
