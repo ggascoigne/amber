@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useTRPC } from '@amber/client'
 import type { Children } from '@amber/ui'
 import { useNotification } from '@amber/ui'
 import StarIcon from '@mui/icons-material/Star'
@@ -8,8 +9,7 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import type { Theme } from '@mui/material'
 import { Avatar, Badge, Button, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import { useQueryClient } from '@tanstack/react-query'
-import fetch from 'isomorphic-fetch'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
@@ -147,6 +147,7 @@ interface LoginButtonProps {
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const { isLoading = true, user, hasPermissions } = useAuth()
+  const trpc = useTRPC()
   const notify = useNotification()
   const [authInitialized, setAuthInitialized] = useState(false)
   const [roleOverride, setRoleOverride] = useRoleOverride()
@@ -154,6 +155,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   const router = useRouter()
   const [profileOpen, setProfileOpen] = useState(false)
   const profile = useProfile()
+  const requestPasswordResetMutation = useMutation(trpc.auth.requestPasswordReset.mutationOptions())
 
   useEffect(() => setAuthInitialized(!isLoading), [isLoading])
 
@@ -180,31 +182,21 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
   }, [])
 
   const resetPassword = useCallback(() => {
-    fetch(`${window.location.origin}/api/resetPassword`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
+    requestPasswordResetMutation.mutate(undefined, {
+      onError: (error) => {
+        notify({
+          text: error.message,
+          variant: 'error',
+        })
+      },
+      onSuccess: (result) => {
+        notify({
+          text: result.message,
+          variant: 'success',
+        })
       },
     })
-      .then((response) => response.text())
-      .then((responseBody) => {
-        try {
-          const result = JSON.parse(responseBody)
-          notify({
-            text: result.message,
-            variant: 'success',
-          })
-        } catch (e: any) {
-          console.error(e)
-          notify({
-            text: e,
-            variant: 'error',
-          })
-          return responseBody
-        }
-        return undefined
-      })
-  }, [notify])
+  }, [notify, requestPasswordResetMutation])
 
   const viewAsUser = () => {
     if (!roleOverride) {

@@ -22,13 +22,15 @@ Code in `@amber/shared` should be:
 Examples of good fits:
 
 - date and time formatting helpers
+- configuration parsing and shared schemas
 - slot and scheduling utilities
 - small domain constants and enums
 - pure data transformation helpers
 - validation schemas that do not depend on server-only code
 
-The first utility moved here is
-[`slotHelpers.ts`](./src/slotHelpers.ts).
+Current examples in this package are
+[`slotHelpers.ts`](./src/slotHelpers.ts) and
+[`configuration.ts`](./src/configuration.ts).
 
 ## What does not belong here
 
@@ -69,5 +71,7 @@ here. In particular, browser-facing code should not import shared utilities from
 ## Current structure
 
 - `src/index.ts`: public exports for the package
+- `src/configuration.ts`: shared settings/config parsing and types
+- `src/dot2val.ts`: helper used by the configuration parser
 - `src/slotHelpers.ts`: browser-safe slot utilities
 - `src/slotHelpers.test.ts`: canonical tests for the slot utility behavior

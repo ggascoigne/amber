@@ -5,7 +5,8 @@ import * as jose from 'jose'
 import { z } from 'zod'
 
 import { getUserRoles } from '../../auth/apiAuthUtils'
-import { createTRPCRouter, publicProcedure } from '../trpc'
+import { requestChangePasswordEmail } from '../../auth/password'
+import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 
 const normalizeIssuerBase = (issuerBase: string) => issuerBase.replace(/\/$/, '')
 
@@ -70,5 +71,15 @@ export const authRouter = createTRPCRouter({
       console.error('auth.getRoles error', error)
       return null
     }
+  }),
+  requestPasswordReset: protectedProcedure.mutation(async ({ ctx }) => {
+    const email = ctx.session?.user?.email
+
+    if (!email) {
+      throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Authenticated user has no email address' })
+    }
+
+    const message = await requestChangePasswordEmail(email)
+    return { message }
   }),
 })

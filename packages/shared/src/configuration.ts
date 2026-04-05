@@ -1,20 +1,16 @@
-import type { RouterOutputs } from '@amber/server'
 import { DateTime } from 'luxon'
 import { z } from 'zod'
 
 import { setVal } from './dot2val'
 
-type SettingsQueryResult = RouterOutputs['settings']['getSettings']
+type SettingsQueryResult = { code: string; id: number; type: string; value: string }[]
 
 let baseTimeZone: string | undefined
 
-export function notEmpty<T>(value: T): value is NonNullable<T> {
-  return value !== null && value !== undefined
-}
+const notEmpty = <T>(value: T): value is NonNullable<T> => value !== null && value !== undefined
 
-export function pick<T, D extends keyof T = keyof T>(o: T, ...props: D[]): Pick<T, D> {
-  return Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })))
-}
+const pick = <T, D extends keyof T = keyof T>(o: T, ...props: D[]): Pick<T, D> =>
+  Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })))
 
 const toNumber = () => z.string().transform((val) => (val ? parseInt(val, 10) : 0))
 

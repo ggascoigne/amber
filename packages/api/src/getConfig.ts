@@ -1,8 +1,8 @@
 import { ssrHelpers } from '@amber/server/src/api/ssr'
+import type { Configuration } from '@amber/shared'
+import { getSettingsObject } from '@amber/shared'
 
 import { JsonError } from './JsonError'
-import type { Configuration } from './utils'
-import { getSettingsObject } from './utils'
 
 let _conf: Configuration | undefined
 let _flags: Record<string, string> | undefined
@@ -20,7 +20,7 @@ const loadSettings = async () => {
   }
 }
 
-export const getConfig = async () => {
+const getConfig = async () => {
   await loadSettings()
   return _conf!
 }
@@ -31,9 +31,4 @@ export const getEmails = async () => {
     contactEmail: configuration?.contactEmail,
     gameEmail: configuration?.gameEmail,
   }
-}
-
-export const getDisplayScheduleFlag = async (): Promise<string> => {
-  await loadSettings()
-  return _flags?.display_schedule ?? 'No'
 }

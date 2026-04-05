@@ -9,6 +9,7 @@ import { hotelRoomDetailsRouter } from './routers/hotelRoomDetails'
 import { hotelRoomsRouter } from './routers/hotelRooms'
 import { lookupsRouter } from './routers/lookups'
 import { membershipsRouter } from './routers/memberships'
+import { paymentsRouter } from './routers/payments'
 import { reportsRouter } from './routers/reports'
 import { roomAssignmentsRouter } from './routers/roomAssignments'
 import { settingsRouter } from './routers/settings'
@@ -35,6 +36,7 @@ export const appRouter = createTRPCRouter({
   hotelRooms: hotelRoomsRouter,
   lookups: lookupsRouter,
   memberships: membershipsRouter,
+  payments: paymentsRouter,
   reports: reportsRouter,
   roomAssignments: roomAssignmentsRouter,
   settings: settingsRouter,

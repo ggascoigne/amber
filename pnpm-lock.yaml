@@ -905,6 +905,9 @@ importers:
       '@amber/server':
         specifier: workspace:*
         version: link:../server
+      '@amber/shared':
+        specifier: workspace:*
+        version: link:../shared
       '@auth0/nextjs-auth0':
         specifier: 4.16.1
         version: 4.16.1(next@16.2.2(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.59.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -1179,6 +1182,9 @@ importers:
       pug:
         specifier: ^3.0.4
         version: 3.0.4
+      stripe:
+        specifier: ^20.4.1
+        version: 20.4.1(@types/node@25.5.2)
       superjson:
         specifier: ^2.2.6
         version: 2.2.6
@@ -1261,6 +1267,9 @@ importers:
       luxon:
         specifier: ^3.7.2
         version: 3.7.2
+      zod:
+        specifier: ^4.3.6
+        version: 4.3.6
     devDependencies:
       '@amber/tsconfig':
         specifier: workspace:*
@@ -7533,6 +7542,15 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  stripe@20.4.1:
+    resolution: {integrity: sha512-axCguHItc8Sxt0HC6aSkdVRPffjYPV7EQqZRb2GkIa8FzWDycE7nHJM19C6xAIynH1Qp1/BHiopSi96jGBxT0w==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@types/node': '>=16'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   stripe@22.0.0:
     resolution: {integrity: sha512-q1UgXXpSfZCmkyzZEh3vFEWT7+ajuaFGqaP9Tsi2NMtwlkigIWNr+KBIUQqtNeNEsreDKgdn+BP5HRW9JDj22Q==}
@@ -14951,6 +14969,10 @@ snapshots:
     optional: true
 
   strip-json-comments@3.1.1: {}
+
+  stripe@20.4.1(@types/node@25.5.2):
+    optionalDependencies:
+      '@types/node': 25.5.2
 
   stripe@22.0.0(@types/node@25.5.2):
     optionalDependencies:

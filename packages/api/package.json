@@ -16,6 +16,7 @@
   "dependencies": {
     "@amber/environment": "workspace:*",
     "@amber/server": "workspace:*",
+    "@amber/shared": "workspace:*",
     "@auth0/nextjs-auth0": "4.16.1",
     "debug": "4.4.3",
     "email-templates": "^13.0.1",

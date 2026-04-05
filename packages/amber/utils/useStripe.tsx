@@ -1,27 +1,34 @@
 import { useEffect, useRef } from 'react'
 
+import { useTRPC } from '@amber/client'
 import type { Stripe } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
+import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom } from 'jotai'
 
 const stripePromiseAtom = atom<Promise<Stripe | null> | null>(null)
 const baseUrlAtom = atom<string | null>(null)
 
 export const useInitializeStripe = () => {
+  const trpc = useTRPC()
   const [, setStripePromise] = useAtom(stripePromiseAtom)
   const [, setBaseUrl] = useAtom(baseUrlAtom)
   const isCalledRef = useRef(false)
+  const { data } = useQuery(
+    trpc.payments.getConfig.queryOptions(undefined, {
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: 60 * 60 * 1000,
+    }),
+  )
 
   useEffect(() => {
-    if (!isCalledRef.current) {
+    if (!isCalledRef.current && data) {
       isCalledRef.current = true
-      fetch('/api/stripe/getConfig').then(async (r) => {
-        const { publishableKey, baseUrl } = await r.json()
-        setStripePromise(loadStripe(publishableKey!)!)
-        setBaseUrl(baseUrl)
-      })
+      setStripePromise(loadStripe(data.publishableKey)!)
+      setBaseUrl(data.baseUrl)
     }
-  }, [setBaseUrl, setStripePromise])
+  }, [data, setBaseUrl, setStripePromise])
 }
 
 export const useGetStripe = () => useAtom(stripePromiseAtom)

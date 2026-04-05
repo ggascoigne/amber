@@ -32,6 +32,7 @@ export const setVal = (obj: any, path: string | string[], val: any) => {
     obj[k!] = val
   }
 }
+
 /**
  * retrieves a value from a deeply nested object using "dot" notation
  */

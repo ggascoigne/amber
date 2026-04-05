@@ -37,7 +37,7 @@ export const getEmailer = () => {
       },
       transport,
       views: {
-        root: path.resolve(process.cwd(), 'pages', 'api', 'send', 'templates'),
+        root: path.resolve(process.cwd(), 'content', 'email'),
       },
     })
   })()
