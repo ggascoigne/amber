@@ -2,12 +2,13 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import type { Game } from '@amber/client'
+import { isEveningSlot, isMorningSlot } from '@amber/shared'
 import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from '@amber/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 
-import { isEveningSlot, isMorningSlot, isNoGameCategory, isUserGameCategory, maskEmail } from '../../utils'
+import { isNoGameCategory, isUserGameCategory, maskEmail } from '../../utils'
 import { LookupValue } from '../Lookup'
 import type { GameDecorator, GameDecoratorParams } from '../types'
 

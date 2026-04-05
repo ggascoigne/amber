@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 
 import type { Game } from '@amber/client'
 import { useTRPC } from '@amber/client'
+import { getSlotDescription } from '@amber/shared'
 import type { TextFieldProps } from '@amber/ui'
 import {
   CheckboxWithLabel,
@@ -28,7 +29,7 @@ import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { TransportError } from '../../components/TransportError'
 import type { Configuration } from '../../utils'
-import { getSlotDescription, playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
+import { playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
 
 interface GamesDialogProps {
   open: boolean

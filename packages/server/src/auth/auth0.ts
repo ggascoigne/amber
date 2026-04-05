@@ -4,8 +4,6 @@ import { Auth0Client } from '@auth0/nextjs-auth0/server'
 import { fakeAuth } from './fakeAuth'
 import type { AuthLike } from './types'
 
-import { ssrHelpers } from '../api/ssr'
-
 const toHttpsUrl = (base?: string) =>
   base ? (base.startsWith('http://') || base.startsWith('https://') ? base : `https://${base}`) : undefined
 
@@ -39,8 +37,9 @@ const createAuthClient = (): AuthLike => {
     },
     beforeSessionSaved: async (session, idToken) => {
       try {
-        if (!idToken) return session
-        const authorization = await ssrHelpers.auth.getRoles.fetch({ token: idToken })
+        if (!idToken || !session?.user?.email) return session
+        const { getUserRoles } = await import('./apiAuthUtils')
+        const authorization = await getUserRoles(session)
         if (authorization?.userId && authorization?.roles) {
           return {
             ...session,

@@ -2,11 +2,12 @@ import type { ChangeEvent } from 'react'
 import type React from 'react'
 import { useCallback } from 'react'
 
+import { getSlotDescription, SlotFormat } from '@amber/shared'
 import { Card, CardHeader, range } from '@amber/ui'
 import { Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 
-import { getSlotDescription, SlotFormat, useConfiguration, useGameUrl } from '../../utils'
+import { useConfiguration, useGameUrl } from '../../utils'
 import type { SlotDecorator, SlotDecoratorParams } from '../types'
 
 // styles inlined via sx

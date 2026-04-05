@@ -29,7 +29,6 @@ import {
 } from '../../utils'
 import { getMembershipCost, getMembershipString } from '../../utils/transactionUtils'
 
-// keep in sync with ./packages/api/src/stripe/types.ts
 export type UserPaymentDetails = {
   userId: number
   memberId: number | null

@@ -1,72 +1,34 @@
 import { useCallback } from 'react'
 
+import { useTRPC } from '@amber/client'
+import type { SendEmailInput } from '@amber/server/src/api/contracts/email'
 import { isDev, useNotification } from '@amber/ui'
-import fetch from 'isomorphic-fetch'
+import { useMutation } from '@tanstack/react-query'
 
-import type { EmailConfirmation } from './apiTypes'
-
-type SendEmail = (p: EmailConfirmation) => void
-
-const isAbortLikeError = (error: unknown) => {
-  const errorWithCode = error as { code?: unknown } | null
-
-  return (
-    error instanceof Error &&
-    (error.name === 'AbortError' || error.message === 'aborted' || errorWithCode?.code === 'ECONNRESET')
-  )
-}
+type SendEmail = (input: SendEmailInput) => void
 
 export const useSendEmail = (): SendEmail => {
+  const trpc = useTRPC()
   const notify = useNotification()
+  const sendEmailMutation = useMutation(trpc.email.send.mutationOptions())
 
   return useCallback(
-    ({ type, body }: EmailConfirmation) => {
-      fetch(`${window.location.origin}/api/send/${type}`, {
-        method: 'post',
-        keepalive: true,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      })
-        .then((response) => response.text())
-        .then((responseBody) => {
-          try {
-            const result = JSON.parse(responseBody)
-            if (result.messageId) {
-              return undefined
-            }
-            if (result.status && result.status !== 200) {
-              notify({
-                text: `${result.status}: ${result.error}`,
-                variant: 'error',
-              })
-            } else {
-              isDev && console.log(`result = ${JSON.stringify(result, null, 2)}`)
-            }
-          } catch (e: any) {
-            console.error(e)
-            notify({
-              text: e,
-              variant: 'error',
-            })
-            return responseBody
-          }
-          return undefined
-        })
-        .catch((error: unknown) => {
-          if (isAbortLikeError(error)) {
-            return undefined
-          }
-
-          console.error(error)
+    (input: SendEmailInput) => {
+      sendEmailMutation.mutate(input, {
+        onError: (error) => {
+          console.log(error)
           notify({
-            text: error instanceof Error ? error.message : String(error),
+            text: error.message,
             variant: 'error',
           })
-          return undefined
-        })
+        },
+        onSuccess: (result) => {
+          if (isDev) {
+            console.log(`result = ${JSON.stringify(result, null, 2)}`)
+          }
+        },
+      })
     },
-    [notify],
+    [notify, sendEmailMutation],
   )
 }

@@ -4,6 +4,7 @@ import { createRef, useMemo, useState } from 'react'
 
 import type { Game, Schedule } from '@amber/client'
 import { useTRPC } from '@amber/client'
+import { getSlotDescription, getSlotTimes, isMorningSlot, SlotFormat } from '@amber/shared'
 import { Loader, notEmpty } from '@amber/ui'
 import { Box, useMediaQuery } from '@mui/material'
 import Button from '@mui/material/Button'
@@ -23,12 +24,8 @@ import type { Configuration, ICalEvent } from '../../utils'
 import {
   buildUrl,
   getGameAssignments,
-  getSlotDescription,
-  getSlotTimes,
-  isMorningSlot,
   isUserGameCategory,
   SettingValue,
-  SlotFormat,
   useConfiguration,
   useGetMemberShip,
   useGetSettingValue,

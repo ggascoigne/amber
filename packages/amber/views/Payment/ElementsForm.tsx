@@ -1,27 +1,28 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import type { PaymentIntentRecord } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import InputAdornment from '@mui/material/InputAdornment'
 import TextField from '@mui/material/TextField'
 import { PaymentElement, useElements } from '@stripe/react-stripe-js'
-import type { PaymentIntent } from '@stripe/stripe-js'
+import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 
-import { fetchPostJSON } from './fetchUtils'
 import type { UserPaymentDetails } from './PaymentInput'
 import { PaymentInput } from './PaymentInput'
 
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe, useYearFilter } from '../../utils'
 
-// keep in sync with packages/api/src/stripe/types.ts
 type ElementsFormProps = {
-  paymentIntent?: PaymentIntent | null
+  paymentIntent?: PaymentIntentRecord | null
   userId: number
   onSubmit: () => void
 }
 
 export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null, userId, onSubmit }) => {
+  const trpc = useTRPC()
   const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // TODO change me
   const [input, setInput] = useState({
     total: defaultAmount,
@@ -34,6 +35,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
   const [baseUrl] = useGetBaseUrl()
   const [year] = useYearFilter()
 
+  const updatePaymentIntentMutation = useMutation(trpc.payments.updatePaymentIntent.mutationOptions())
   const [stripe] = useGetStripe()
   const elements = useElements()
 
@@ -101,21 +103,19 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
       setPaymentStatus({ status: 'processing' })
 
       // Create a PaymentIntent with the specified amount.
-      const response = await fetchPostJSON('/api/stripe/paymentIntents', {
-        action: 'update',
-        amount: input.total,
-        payment_intent_id: paymentIntent?.id,
-        metadata: {
-          userId,
-          year,
-          payments: JSON.stringify(payments.filter((p) => p.total > 0)),
-        },
-      })
-      setPaymentStatus(response)
-
-      if (response.statusCode === 500) {
+      try {
+        await updatePaymentIntentMutation.mutateAsync({
+          amount: input.total,
+          metadata: {
+            payments: JSON.stringify(payments.filter((payment) => payment.total > 0)),
+            userId,
+            year,
+          },
+          paymentIntentId: paymentIntent?.id ?? '',
+        })
+      } catch (error) {
         setPaymentStatus({ status: 'error' })
-        setErrorMessage(response.message)
+        setErrorMessage(error instanceof Error ? error.message : 'An unknown error occurred')
         return
       }
 
@@ -141,7 +141,19 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
         setPaymentStatus(confirmResult.paymentIntent)
       }
     },
-    [baseUrl, elements, input.cardholderName, input.total, onSubmit, paymentIntent, payments, stripe, userId, year],
+    [
+      baseUrl,
+      elements,
+      input.cardholderName,
+      input.total,
+      onSubmit,
+      paymentIntent,
+      payments,
+      stripe,
+      updatePaymentIntentMutation,
+      userId,
+      year,
+    ],
   )
 
   return (
@@ -197,7 +209,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
           Pay {formatAmountForDisplay(input.total)}
         </Button>
       </form>
-      <PaymentStatus status={paymentStatus.status} paymentIntentSecret={paymentIntent?.client_secret} />
+      <PaymentStatus status={paymentStatus.status} paymentIntentSecret={paymentIntent?.clientSecret} />
     </>
   )
 }

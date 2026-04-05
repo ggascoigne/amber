@@ -1,14 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
+import type { PaymentIntentRecord } from '@amber/client'
 import { useTRPC } from '@amber/client'
-import { Loader } from '@amber/ui'
+import { Loader, useNotification } from '@amber/ui'
 import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
-import type { PaymentIntent } from '@stripe/stripe-js'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ElementsForm } from './ElementsForm'
-import { fetchPostJSON } from './fetchUtils'
 
 import { Page, ContactEmail } from '../../components'
 import { useGetStripe, useConfiguration, useInitializeStripe, useUser } from '../../utils'
@@ -16,32 +15,72 @@ import { useGetStripe, useConfiguration, useInitializeStripe, useUser } from '..
 export const Payment = () => {
   const trpc = useTRPC()
   useInitializeStripe()
+  const notify = useNotification()
   const [stripe] = useGetStripe()
-  const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null)
+  const [paymentIntent, setPaymentIntent] = useState<PaymentIntentRecord | null>(null)
   const user = useUser()
+  const paymentIntentRef = useRef<PaymentIntentRecord | null>(null)
   const paymentStateRef = useRef<'empty' | 'created' | 'submitted'>('empty')
+  const createPaymentIntentMutation = useMutation(trpc.payments.createPaymentIntent.mutationOptions())
+  const cancelPaymentIntentMutation = useMutation(trpc.payments.cancelPaymentIntent.mutationOptions())
+  const createPaymentIntentMutationRef = useRef(createPaymentIntentMutation)
+  const cancelPaymentIntentMutationRef = useRef(cancelPaymentIntentMutation)
+  const notifyRef = useRef(notify)
   const userData = useQuery(trpc.users.getUser.queryOptions({ id: user?.userId ?? -1 }))
   const balance = userData?.data?.balance ?? 0
 
   useEffect(() => {
+    createPaymentIntentMutationRef.current = createPaymentIntentMutation
+  }, [createPaymentIntentMutation])
+
+  useEffect(() => {
+    cancelPaymentIntentMutationRef.current = cancelPaymentIntentMutation
+  }, [cancelPaymentIntentMutation])
+
+  useEffect(() => {
+    notifyRef.current = notify
+  }, [notify])
+
+  useEffect(() => {
     if (paymentStateRef.current === 'empty') {
+      let isCancelled = false
       paymentStateRef.current = 'created'
-      fetchPostJSON('/api/stripe/paymentIntents', {
-        action: 'create',
-        amount: 10,
-      }).then((data: PaymentIntent | null) => {
-        setPaymentIntent(data)
-      })
-    }
-    return () => {
-      if (paymentStateRef.current === 'created' && paymentIntent) {
-        fetchPostJSON('/api/stripe/paymentIntents', {
-          action: 'cancel',
-          payment_intent_id: paymentIntent?.id,
+      createPaymentIntentMutationRef.current
+        .mutateAsync({
+          amount: 10,
         })
+        .then((result) => {
+          if (isCancelled) {
+            cancelPaymentIntentMutationRef.current.mutate({
+              paymentIntentId: result.id,
+            })
+            return
+          }
+
+          paymentIntentRef.current = result
+          setPaymentIntent(result)
+        })
+        .catch((error) => {
+          paymentStateRef.current = 'empty'
+          notifyRef.current({
+            text: error.message,
+            variant: 'error',
+          })
+        })
+
+      return () => {
+        isCancelled = true
+        if (paymentStateRef.current === 'created' && paymentIntentRef.current) {
+          cancelPaymentIntentMutationRef.current.mutate({
+            paymentIntentId: paymentIntentRef.current.id,
+          })
+        } else {
+          paymentStateRef.current = 'empty'
+        }
       }
     }
-  }, [paymentIntent, setPaymentIntent])
+    return undefined
+  }, [])
 
   // console.log('Payment', { paymentIntent })
 
@@ -53,7 +92,7 @@ export const Payment = () => {
 
   return (
     <Page title='Make Payment'>
-      {stripe && paymentIntent?.client_secret && user.userId ? (
+      {stripe && paymentIntent?.clientSecret && user.userId ? (
         <Elements
           stripe={stripe}
           options={{
@@ -63,7 +102,7 @@ export const Payment = () => {
                 fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
               },
             },
-            clientSecret: paymentIntent.client_secret,
+            clientSecret: paymentIntent.clientSecret,
           }}
         >
           <ElementsForm paymentIntent={paymentIntent} userId={user.userId} onSubmit={onSubmit} />

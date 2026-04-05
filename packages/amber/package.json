@@ -16,10 +16,10 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
     "@amber/environment": "workspace:*",
     "@amber/server": "workspace:*",
+    "@amber/shared": "workspace:*",
     "@amber/ui": "workspace:*",
     "@auth0/nextjs-auth0": "4.16.1",
     "@axe-core/react": "^4.11.1",
@@ -80,7 +80,7 @@
     "@types/luxon": "^3.7.1",
     "@types/node": "^25.5.2",
     "@types/sha.js": "^2.4.4",
-    "@typescript/native-preview": "7.0.0-dev.20260403.1",
+    "@typescript/native-preview": "7.0.0-dev.20260405.1",
     "babel-loader": "^10.1.1",
     "cross-env": "^10.1.0",
     "typescript": "^6.0.2",

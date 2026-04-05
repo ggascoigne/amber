@@ -15,6 +15,9 @@ ambercon (root)
 ├── Configuration Packages
 │   └── @amber/tsconfig ────────────────── TypeScript base configurations
 │
+├── Shared Layer
+│   └── @amber/shared ─────────────────── Browser-safe pure shared utilities
+│
 ├── Infrastructure Layer
 │   ├── @amber/environment ────────────── Environment config & validation
 │   └── @amber/server ─────────────────── Database setup & migrations, and tRPC server & Prisma client
@@ -22,21 +25,16 @@ ambercon (root)
 │           └── @amber/environment
 │
 ├── Service Layer
-│   ├── @amber/api ────────────────────── Server-side API implementations
-│   │   └── depends on:
-│   │       ├── @amber/environment
-│   │       └── @amber/server
 │   └── @amber/client ─────────────────── tRPC hooks & client utilities
 │       └── depends on:
-│           ├── @amber/api
 │           └── @amber/server
 │
 ├── UI Layer
 │   ├── @amber/ui ─────────────────────── Reusable UI components library
 │   └── @amber/amber ──────────────────── Main component aggregator
 │       └── depends on:
-│           ├── @amber/api
 │           ├── @amber/client
+│           ├── @amber/shared
 │           ├── @amber/server
 │           └── @amber/ui
 │
@@ -52,22 +50,27 @@ ambercon (root)
     ├── acnw ──────────────────────────── AmberCon NW (Next.js :30000)
     │   └── depends on:
     │       ├── @amber/amber
-    │       ├── @amber/api
     │       ├── @amber/client
     │       ├── @amber/environment
     │       ├── @amber/playwright
+    │       ├── @amber/shared
     │       ├── @amber/server
     │       └── @amber/ui
     └── acus ──────────────────────────── AmberCon US (Next.js :30001)
         └── depends on:
             ├── @amber/amber
-            ├── @amber/api
             ├── @amber/client
             ├── @amber/environment
             ├── @amber/playwright
+            ├── @amber/shared
             ├── @amber/server
             └── @amber/ui
 ```
+
+`@amber/shared` is the home for code that is safe to import from either browser
+or server code with no side effects. Put pure shared utilities there. Do not
+put database access, Auth0 integration, Next.js server APIs, filesystem access,
+env loading, or other server-only concerns there.
 
 The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 

@@ -7,8 +7,6 @@ import {
   TransportError,
   getInterestLevel,
   getRoomPref,
-  getSlotDescription,
-  isNotPacificTime,
   useConfiguration,
   useGetCost,
   useProfile,
@@ -18,6 +16,7 @@ import {
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
 import type { CreateMembershipType, UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
+import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import {
   Card,
   CardBody,

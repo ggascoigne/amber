@@ -40,7 +40,7 @@ const nextConfig = {
     },
   },
   outputFileTracingIncludes: {
-    '/api/send/*': ['./pages/api/send/templates/**/*'],
+    '/api/trpc/[trpc]': ['./pages/api/send/templates/**/*'],
   },
   ...(isPlaywright
     ? {

@@ -59,7 +59,7 @@
     "@types/common-tags": "^1.8.4",
     "@types/debug": "^4.1.13",
     "@types/luxon": "^3.7.1",
-    "@typescript/native-preview": "7.0.0-dev.20260403.1",
+    "@typescript/native-preview": "7.0.0-dev.20260405.1",
     "babel-loader": "^10.1.1",
     "cross-env": "^10.1.0",
     "typescript": "^6.0.2",

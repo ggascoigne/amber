@@ -51,6 +51,8 @@ export type RecalculateRoomAssignmentsInput = RouterInputs['roomAssignments']['r
 export type RecalculateRoomAssignmentsResult = RouterOutputs['roomAssignments']['recalculateRoomAssignments']
 
 export type StripeEntry = RouterOutputs['stripe']['getStripe'][0]
+export type PaymentIntentRecord = RouterOutputs['payments']['createPaymentIntent']
+export type StripeConfig = RouterOutputs['payments']['getConfig']
 
 export type Transaction = RouterOutputs['transactions']['getTransactions'][0]
 

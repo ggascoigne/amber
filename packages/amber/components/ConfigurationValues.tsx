@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import type React from 'react'
 
-import type { ConfigurationNonDates, ConfigurationDates } from '@amber/api'
+import type { ConfigurationDates, ConfigurationNonDates } from '@amber/shared'
 import type { DateTimeFormatOptions } from 'luxon'
 import { DateTime } from 'luxon'
 
