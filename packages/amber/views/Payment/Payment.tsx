@@ -23,19 +23,37 @@ export const Payment = () => {
   const paymentStateRef = useRef<'empty' | 'created' | 'submitted'>('empty')
   const createPaymentIntentMutation = useMutation(trpc.payments.createPaymentIntent.mutationOptions())
   const cancelPaymentIntentMutation = useMutation(trpc.payments.cancelPaymentIntent.mutationOptions())
+  const createPaymentIntentMutationRef = useRef(createPaymentIntentMutation)
+  const cancelPaymentIntentMutationRef = useRef(cancelPaymentIntentMutation)
+  const notifyRef = useRef(notify)
   const userData = useQuery(trpc.users.getUser.queryOptions({ id: user?.userId ?? -1 }))
   const balance = userData?.data?.balance ?? 0
+
+  useEffect(() => {
+    createPaymentIntentMutationRef.current = createPaymentIntentMutation
+  }, [createPaymentIntentMutation])
+
+  useEffect(() => {
+    cancelPaymentIntentMutationRef.current = cancelPaymentIntentMutation
+  }, [cancelPaymentIntentMutation])
+
+  useEffect(() => {
+    notifyRef.current = notify
+  }, [notify])
 
   useEffect(() => {
     if (paymentStateRef.current === 'empty') {
       let isCancelled = false
       paymentStateRef.current = 'created'
-      createPaymentIntentMutation
+      createPaymentIntentMutationRef.current
         .mutateAsync({
           amount: 10,
         })
         .then((result) => {
           if (isCancelled) {
+            cancelPaymentIntentMutationRef.current.mutate({
+              paymentIntentId: result.id,
+            })
             return
           }
 
@@ -44,7 +62,7 @@ export const Payment = () => {
         })
         .catch((error) => {
           paymentStateRef.current = 'empty'
-          notify({
+          notifyRef.current({
             text: error.message,
             variant: 'error',
           })
@@ -53,14 +71,16 @@ export const Payment = () => {
       return () => {
         isCancelled = true
         if (paymentStateRef.current === 'created' && paymentIntentRef.current) {
-          cancelPaymentIntentMutation.mutate({
+          cancelPaymentIntentMutationRef.current.mutate({
             paymentIntentId: paymentIntentRef.current.id,
           })
+        } else {
+          paymentStateRef.current = 'empty'
         }
       }
     }
     return undefined
-  }, [cancelPaymentIntentMutation, createPaymentIntentMutation, notify])
+  }, [])
 
   // console.log('Payment', { paymentIntent })
 
