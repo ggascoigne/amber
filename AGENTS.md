@@ -25,20 +25,14 @@ ambercon (root)
 │           └── @amber/environment
 │
 ├── Service Layer
-│   ├── @amber/api ────────────────────── Server-side API implementations
-│   │   └── depends on:
-│   │       ├── @amber/environment
-│   │       └── @amber/server
 │   └── @amber/client ─────────────────── tRPC hooks & client utilities
 │       └── depends on:
-│           ├── @amber/api
 │           └── @amber/server
 │
 ├── UI Layer
 │   ├── @amber/ui ─────────────────────── Reusable UI components library
 │   └── @amber/amber ──────────────────── Main component aggregator
 │       └── depends on:
-│           ├── @amber/api
 │           ├── @amber/client
 │           ├── @amber/shared
 │           ├── @amber/server
@@ -56,7 +50,6 @@ ambercon (root)
     ├── acnw ──────────────────────────── AmberCon NW (Next.js :30000)
     │   └── depends on:
     │       ├── @amber/amber
-    │       ├── @amber/api
     │       ├── @amber/client
     │       ├── @amber/environment
     │       ├── @amber/playwright
@@ -66,7 +59,6 @@ ambercon (root)
     └── acus ──────────────────────────── AmberCon US (Next.js :30001)
         └── depends on:
             ├── @amber/amber
-            ├── @amber/api
             ├── @amber/client
             ├── @amber/environment
             ├── @amber/playwright

@@ -1,4 +1,4 @@
-import { webhookHandler } from '@amber/api'
+import { stripeWebhookHandler } from '@amber/server/src/api/services/payments/webhook'
 import Cors from 'micro-cors'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
@@ -13,4 +13,4 @@ const cors = Cors({
   allowMethods: ['POST', 'HEAD'],
 })
 
-export default cors(webhookHandler as any) as (req: NextApiRequest, res: NextApiResponse) => Promise<void>
+export default cors(stripeWebhookHandler as any) as (req: NextApiRequest, res: NextApiResponse) => Promise<void>

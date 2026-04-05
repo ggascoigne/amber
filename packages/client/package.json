@@ -14,7 +14,6 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/api": "workspace:*",
     "@amber/server": "workspace:*",
     "@stripe/react-stripe-js": "^6.1.0",
     "@stripe/stripe-js": "^9.0.1",

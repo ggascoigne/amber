@@ -16,7 +16,6 @@
     "tsgo": "tsgo -p ./tsconfig.json"
   },
   "dependencies": {
-    "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
     "@amber/environment": "workspace:*",
     "@amber/server": "workspace:*",

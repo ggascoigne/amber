@@ -27,7 +27,6 @@
   },
   "dependencies": {
     "@amber/amber": "workspace:*",
-    "@amber/api": "workspace:*",
     "@amber/client": "workspace:*",
     "@amber/environment": "workspace:*",
     "@amber/playwright": "workspace:*",
