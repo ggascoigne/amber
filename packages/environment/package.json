@@ -51,7 +51,7 @@
     "@types/debug": "~4.1.13",
     "@types/node": "^25.5.2",
     "@types/pg": "^8.20.0",
-    "@typescript/native-preview": "7.0.0-dev.20260403.1",
+    "@typescript/native-preview": "7.0.0-dev.20260405.1",
     "dotenv": "^17.4.0",
     "prisma": "^7.6.0",
     "typescript": "^6.0.2"
