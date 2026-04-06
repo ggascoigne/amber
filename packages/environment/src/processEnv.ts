@@ -2,8 +2,8 @@ import { vercel } from '@t3-oss/env-core/presets-zod'
 import { createEnv } from '@t3-oss/env-nextjs'
 import { z } from 'zod'
 
-export const processEnv = (src = process.env) =>
-  createEnv({
+export const processEnv = (src = process.env) => {
+  const env = createEnv({
     extends: [vercel()],
     /**
      * Specify your server-side environment variables schema here. This way you can ensure the app
@@ -98,5 +98,12 @@ export const processEnv = (src = process.env) =>
      */
     emptyStringAsUndefined: true,
   })
+
+  if (src.NODE_ENV === 'production' && env.USE_FAKE_AUTH === 'true') {
+    throw new Error('USE_FAKE_AUTH cannot be true when NODE_ENV is production')
+  }
+
+  return env
+}
 
 export type EnvType = ReturnType<typeof processEnv>
