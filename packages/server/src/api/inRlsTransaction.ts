@@ -15,11 +15,14 @@ const log = debug('amber:server:rls')
 export const inRlsTransaction = async <T>(ctx: Context, fn: (tx: TransactionClient) => T | Promise<T>) =>
   ctx.db.$transaction(async (tx: TransactionClient) => {
     if (ctx.userId) {
-      await tx.$executeRawUnsafe(`SET LOCAL "user.id" = '${ctx.userId}'`)
-      await tx.$executeRawUnsafe(`SET LOCAL "user.admin" = '${ctx.isAdmin ? 'true' : 'false'}'`)
+      await tx.$executeRaw`SELECT set_config('user.id', ${String(ctx.userId)}, true)`
+      await tx.$executeRaw`SELECT set_config('user.admin', ${ctx.isAdmin ? 'true' : 'false'}, true)`
       // console.log(`prisma: userId(${ctx.userId}) is ${ctx.isAdmin ? 'admin' : 'not-admin'}`)
-      log('prisma2: user.admin after SET LOCAL', await tx.$queryRawUnsafe(`SHOW "user.admin"`))
-      log('prisma2:current_user_is_admin', await tx.$queryRawUnsafe('select current_user_is_admin()'))
+      log(
+        'prisma2: user.admin after SET LOCAL',
+        await tx.$queryRaw`SELECT current_setting('user.admin', true) AS user_admin`,
+      )
+      log('prisma2:current_user_is_admin', await tx.$queryRaw`SELECT current_user_is_admin()`)
     }
     return fn(tx)
   })
