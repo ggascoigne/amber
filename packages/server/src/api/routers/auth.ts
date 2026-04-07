@@ -11,7 +11,6 @@ import { createTRPCRouter, protectedProcedure, publicProcedure } from '../trpc'
 const normalizeIssuerBase = (issuerBase: string) => issuerBase.replace(/\/$/, '')
 
 const verifyIdToken = async (rawToken: string) => {
-  console.log('Verifying ID token', rawToken)
   const token = rawToken.startsWith('Bearer ') ? rawToken.slice('Bearer '.length) : rawToken
   if (!token) {
     throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Missing token' })
