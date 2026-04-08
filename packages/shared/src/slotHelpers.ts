@@ -42,6 +42,118 @@ export enum SlotFormat {
 
 const mapping = { AM: 'am', PM: 'pm' }
 
+type SlotTimeOffset = {
+  days?: number
+  hours?: number
+}
+
+type SlotTimeSet = {
+  hour: number
+  minute?: number
+}
+
+type SlotTimeOperation = {
+  plus?: SlotTimeOffset
+  set?: SlotTimeSet
+}
+
+type SlotTimeTemplate = {
+  start: SlotTimeOperation
+  end: SlotTimeOperation
+}
+
+const regularSevenSlotTemplates: Array<SlotTimeTemplate> = [
+  { start: { plus: { hours: 19 } }, end: { plus: { hours: 24 } } },
+  { start: { plus: { days: 1 }, set: { hour: 9 } }, end: { plus: { days: 1 }, set: { hour: 13 } } },
+  {
+    start: { plus: { days: 1 }, set: { hour: 14 } },
+    end: { plus: { days: 1 }, set: { hour: 18, minute: 30 } },
+  },
+  { start: { plus: { days: 1 }, set: { hour: 20 } }, end: { plus: { days: 1 }, set: { hour: 24 } } },
+  {
+    start: { plus: { days: 2 }, set: { hour: 9 } },
+    end: { plus: { days: 2 }, set: { hour: 16, minute: 30 } },
+  },
+  { start: { plus: { days: 2 }, set: { hour: 19 } }, end: { plus: { days: 2 }, set: { hour: 24 } } },
+  {
+    start: { plus: { days: 3 }, set: { hour: 10 } },
+    end: { plus: { days: 3 }, set: { hour: 16, minute: 30 } },
+  },
+]
+
+const regularEightSlotTemplates: Array<SlotTimeTemplate> = [
+  { start: { plus: { hours: 19 } }, end: { plus: { hours: 24 } } },
+  { start: { plus: { days: 1 }, set: { hour: 9 } }, end: { plus: { days: 1 }, set: { hour: 13 } } },
+  {
+    start: { plus: { days: 1 }, set: { hour: 14 } },
+    end: { plus: { days: 1 }, set: { hour: 18, minute: 30 } },
+  },
+  { start: { plus: { days: 1 }, set: { hour: 20 } }, end: { plus: { days: 1 }, set: { hour: 24 } } },
+  { start: { plus: { days: 2 }, set: { hour: 10 } }, end: { plus: { days: 2 }, set: { hour: 17 } } },
+  { start: { plus: { days: 2 }, set: { hour: 19 } }, end: { plus: { days: 2 }, set: { hour: 24 } } },
+  { start: { plus: { days: 3 }, set: { hour: 11 } }, end: { plus: { days: 3 }, set: { hour: 17 } } },
+  { start: { plus: { days: 3 }, set: { hour: 19 } }, end: { plus: { days: 3 }, set: { hour: 24 } } },
+]
+
+const virtualSevenSlotTemplates: Array<SlotTimeTemplate> = [
+  { start: { plus: { hours: 11 } }, end: { plus: { hours: 15 } } },
+  { start: { plus: { days: 1 }, set: { hour: 9 } }, end: { plus: { days: 1 }, set: { hour: 13 } } },
+  {
+    start: { plus: { days: 1 }, set: { hour: 14, minute: 30 } },
+    end: { plus: { days: 1 }, set: { hour: 18, minute: 30 } },
+  },
+  { start: { plus: { days: 2 }, set: { hour: 9 } }, end: { plus: { days: 2 }, set: { hour: 13 } } },
+  {
+    start: { plus: { days: 2 }, set: { hour: 14, minute: 30 } },
+    end: { plus: { days: 2 }, set: { hour: 18, minute: 30 } },
+  },
+  { start: { plus: { days: 3 }, set: { hour: 9 } }, end: { plus: { days: 3 }, set: { hour: 13 } } },
+  {
+    start: { plus: { days: 3 }, set: { hour: 14, minute: 30 } },
+    end: { plus: { days: 3 }, set: { hour: 18, minute: 30 } },
+  },
+]
+
+const virtualEightSlotTemplates: Array<SlotTimeTemplate> = [
+  { start: { plus: { hours: 19 } }, end: { plus: { hours: 24 } } },
+  { start: { plus: { days: 1 }, set: { hour: 10 } }, end: { plus: { days: 1 }, set: { hour: 14 } } },
+  { start: { plus: { days: 1 }, set: { hour: 15 } }, end: { plus: { days: 1 }, set: { hour: 19 } } },
+  { start: { plus: { days: 1 }, set: { hour: 20 } }, end: { plus: { days: 1 }, set: { hour: 24 } } },
+  { start: { plus: { days: 2 }, set: { hour: 12 } }, end: { plus: { days: 2 }, set: { hour: 18 } } },
+  { start: { plus: { days: 2 }, set: { hour: 19 } }, end: { plus: { days: 2 }, set: { hour: 24 } } },
+  { start: { plus: { days: 3 }, set: { hour: 12 } }, end: { plus: { days: 3 }, set: { hour: 18 } } },
+  { start: { plus: { days: 3 }, set: { hour: 19 } }, end: { plus: { days: 3 }, set: { hour: 23 } } },
+]
+
+const applySlotTimeOperation = (start: DateTime, operation: SlotTimeOperation) => {
+  let result = start
+
+  if (operation.plus) {
+    result = result.plus(operation.plus)
+  }
+
+  if (operation.set) {
+    result = result.set(operation.set)
+  }
+
+  return result
+}
+
+const buildSlotTimes = (start: DateTime, templates: Array<SlotTimeTemplate>) =>
+  templates.map(
+    (template) => [applySlotTimeOperation(start, template.start), applySlotTimeOperation(start, template.end)] as const,
+  )
+
+const getSlotTemplates = ({
+  numberOfSlots,
+  sevenSlotTemplates,
+  eightSlotTemplates,
+}: {
+  numberOfSlots: number
+  sevenSlotTemplates: Array<SlotTimeTemplate>
+  eightSlotTemplates: Array<SlotTimeTemplate>
+}) => (numberOfSlots === 7 ? sevenSlotTemplates : eightSlotTemplates)
+
 export const assertEntryIsValid: (
   entry: SlotConventionInfo | undefined,
   year: number,
@@ -57,28 +169,14 @@ export const getRegularSlotTimes = ({ startDates, numberOfSlots }: SlotConfigura
 
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
-  if (numberOfSlots === 7) {
-    return [
-      [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
-      [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
-      [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
-      [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
-      [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 16, minute: 30 })],
-      [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
-      [start.plus({ days: 3 }).set({ hour: 10 }), start.plus({ days: 3 }).set({ hour: 16, minute: 30 })],
-    ] as const
-  }
-
-  return [
-    [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
-    [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
-    [start.plus({ days: 1 }).set({ hour: 14 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
-    [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
-    [start.plus({ days: 2 }).set({ hour: 10 }), start.plus({ days: 2 }).set({ hour: 17 })],
-    [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
-    [start.plus({ days: 3 }).set({ hour: 11 }), start.plus({ days: 3 }).set({ hour: 17 })],
-    [start.plus({ days: 3 }).set({ hour: 19 }), start.plus({ days: 3 }).set({ hour: 24 })],
-  ] as const
+  return buildSlotTimes(
+    start,
+    getSlotTemplates({
+      numberOfSlots,
+      sevenSlotTemplates: regularSevenSlotTemplates,
+      eightSlotTemplates: regularEightSlotTemplates,
+    }),
+  )
 }
 
 // ACNW
@@ -111,28 +209,14 @@ export const getVirtualSlotTimes = ({ startDates, numberOfSlots }: SlotConfigura
 
   // note that the convolutions here using both plus and set are because the DST change often happens over this date range
   // and just adding hours to the start date breaks
-  if (numberOfSlots === 7) {
-    return [
-      [start.plus({ hours: 11 }), start.plus({ hours: 15 })],
-      [start.plus({ days: 1 }).set({ hour: 9 }), start.plus({ days: 1 }).set({ hour: 13 })],
-      [start.plus({ days: 1 }).set({ hour: 14, minute: 30 }), start.plus({ days: 1 }).set({ hour: 18, minute: 30 })],
-      [start.plus({ days: 2 }).set({ hour: 9 }), start.plus({ days: 2 }).set({ hour: 13 })],
-      [start.plus({ days: 2 }).set({ hour: 14, minute: 30 }), start.plus({ days: 2 }).set({ hour: 18, minute: 30 })],
-      [start.plus({ days: 3 }).set({ hour: 9 }), start.plus({ days: 3 }).set({ hour: 13 })],
-      [start.plus({ days: 3 }).set({ hour: 14, minute: 30 }), start.plus({ days: 3 }).set({ hour: 18, minute: 30 })],
-    ] as const
-  }
-
-  return [
-    [start.plus({ hours: 19 }), start.plus({ hours: 24 })],
-    [start.plus({ days: 1 }).set({ hour: 10 }), start.plus({ days: 1 }).set({ hour: 14 })],
-    [start.plus({ days: 1 }).set({ hour: 15 }), start.plus({ days: 1 }).set({ hour: 19 })],
-    [start.plus({ days: 1 }).set({ hour: 20 }), start.plus({ days: 1 }).set({ hour: 24 })],
-    [start.plus({ days: 2 }).set({ hour: 12 }), start.plus({ days: 2 }).set({ hour: 18 })],
-    [start.plus({ days: 2 }).set({ hour: 19 }), start.plus({ days: 2 }).set({ hour: 24 })],
-    [start.plus({ days: 3 }).set({ hour: 12 }), start.plus({ days: 3 }).set({ hour: 18 })],
-    [start.plus({ days: 3 }).set({ hour: 19 }), start.plus({ days: 3 }).set({ hour: 23 })],
-  ] as const
+  return buildSlotTimes(
+    start,
+    getSlotTemplates({
+      numberOfSlots,
+      sevenSlotTemplates: virtualSevenSlotTemplates,
+      eightSlotTemplates: virtualEightSlotTemplates,
+    }),
+  )
 }
 
 export const slotDateTimePairsByCount = (start: DateTime, numberOfSlots: number, isVirtual: boolean) => {

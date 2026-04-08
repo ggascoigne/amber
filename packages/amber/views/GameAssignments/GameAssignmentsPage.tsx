@@ -1,763 +1,40 @@
 import type { MouseEvent } from 'react'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import type {
-  GameAssignmentDashboardData,
-  UpdateGameAssignmentsInput,
-  UpsertGameChoiceBySlotInput,
-} from '@amber/client'
+import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
 import { useInvalidateGameAssignmentDashboardQueries, useTRPC } from '@amber/client'
 import { Loader, useLocalStorage } from '@amber/ui'
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  GlobalStyles,
-  Stack,
-  Table as MuiTable,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material'
+import { Box, GlobalStyles } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { createPortal } from 'react-dom'
-import { Group, Panel, Separator } from 'react-resizable-panels'
 
-import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
-import { GameAssignmentsByGamePanel } from './GameAssignmentsByGamePanel'
-import { GameAssignmentsByMemberPanel } from './GameAssignmentsByMemberPanel'
-import { GameChoicesPanel } from './GameChoicesPanel'
-import { GameInterestPanel } from './GameInterestPanel'
-import { SlotFilterSelect } from './SlotFilterSelect'
-import { buildAssignmentKeyFromInput, buildAssignmentKeyFromRecord, buildChoiceKey } from './utils'
+import { AssignmentSummaryDialog } from './AssignmentSummaryDialog'
+import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardData } from './dashboardData'
+import type { DashboardAssignmentUpdatePayload } from './dashboardData'
+import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
+import { GameAssignmentsTitleBar } from './GameAssignmentsTitleBar'
+import type { GameAssignmentsLayoutMode, GameAssignmentsPaneId, GameAssignmentsPaneSlotFilters } from './pageState'
+import {
+  buildDefaultPaneSlotFilters,
+  buildGameAssignmentsSlotFilterOptions,
+  buildUniformPaneSlotFilters,
+  buildUpdatedPaneSlotFilters,
+  doPaneSlotFiltersMatchStoredValue,
+  getTopSlotFilterId,
+  sanitizeGameAssignmentsLayoutMode,
+  sanitizeGameAssignmentsPaneId,
+  sanitizeGameAssignmentsPaneSlotFilters,
+} from './pageState'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
 import { useSendEmail } from '../../utils/useSendEmail'
 
-type AssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
-
-type AssignmentUpdatePayload = {
-  adds: Array<AssignmentUpdate>
-  removes: Array<AssignmentUpdate>
-}
-
-type ResizeHandleProps = {
-  direction: 'horizontal' | 'vertical'
-}
-
-const ResizeHandle = ({ direction }: ResizeHandleProps) => (
-  <Separator
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: direction === 'vertical' ? 'col-resize' : 'row-resize',
-      width: direction === 'vertical' ? '10px' : '100%',
-      height: direction === 'horizontal' ? '10px' : '100%',
-    }}
-    aria-label={direction === 'vertical' ? 'Resize panels horizontally' : 'Resize panels vertically'}
-  >
-    <Box
-      sx={{
-        width: direction === 'vertical' ? 2 : '100%',
-        height: direction === 'horizontal' ? 2 : '100%',
-        borderRadius: 999,
-        backgroundColor: 'divider',
-      }}
-    />
-  </Separator>
-)
-
-type GameAssignmentsPaneId = 'byGame' | 'byMember' | 'choices' | 'interest'
-
-type LayoutMode = 'grid' | 'columns'
-
 const GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY = 'amber.gameAssignments.layoutMode'
 const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlotFilters'
 const GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY = 'amber.gameAssignments.expandedPaneId'
-
-const buildDefaultPaneSlotFilters = (): Record<GameAssignmentsPaneId, number | null> => ({
-  byGame: null,
-  byMember: null,
-  choices: null,
-  interest: null,
-})
-
-const isLayoutMode = (value: unknown): value is LayoutMode => value === 'grid' || value === 'columns'
-const isGameAssignmentsPaneId = (value: unknown): value is GameAssignmentsPaneId =>
-  value === 'byGame' || value === 'byMember' || value === 'choices' || value === 'interest'
-
-const sanitizeExpandedPaneId = (value: unknown): GameAssignmentsPaneId | null =>
-  isGameAssignmentsPaneId(value) ? value : null
-
-const sanitizeSlotFilterId = (value: unknown, slotFilterOptions: Array<number>): number | null => {
-  if (value === null) return null
-  if (typeof value !== 'number' || !Number.isInteger(value)) return null
-  return slotFilterOptions.includes(value) ? value : null
-}
-
-const sanitizePaneSlotFilters = (
-  value: unknown,
-  slotFilterOptions: Array<number>,
-): Record<GameAssignmentsPaneId, number | null> => {
-  const defaultFilters = buildDefaultPaneSlotFilters()
-  if (!value || typeof value !== 'object') return defaultFilters
-  const typedValue = value as Partial<Record<GameAssignmentsPaneId, unknown>>
-  return {
-    byGame: sanitizeSlotFilterId(typedValue.byGame, slotFilterOptions),
-    byMember: sanitizeSlotFilterId(typedValue.byMember, slotFilterOptions),
-    choices: sanitizeSlotFilterId(typedValue.choices, slotFilterOptions),
-    interest: sanitizeSlotFilterId(typedValue.interest, slotFilterOptions),
-  }
-}
-
-const doesStoredPaneSlotFiltersMatch = (
-  value: unknown,
-  expected: Record<GameAssignmentsPaneId, number | null>,
-): boolean => {
-  if (!value || typeof value !== 'object') return false
-  const typedValue = value as Partial<Record<GameAssignmentsPaneId, unknown>>
-  return (
-    typedValue.byGame === expected.byGame &&
-    typedValue.byMember === expected.byMember &&
-    typedValue.choices === expected.choices &&
-    typedValue.interest === expected.interest
-  )
-}
-
-const legendItems = [
-  'Members with a * by their name have Signup notes',
-  'Red names have incomplete Signups or Assignments.',
-  'Priorities with a * by them are returning players.',
-  'Game names with a * by them are returning players only.',
-]
-
-type AssignmentSummaryData = {
-  missingAssignments: Array<{
-    memberId: number
-    memberName: string
-    missingSlots: Array<number>
-  }>
-  anyGameAssignments: Array<{
-    memberId: number
-    memberName: string
-    gameName: string
-    assignmentRole: string
-  }>
-  noGameRoleMismatches: Array<{
-    gameId: number
-    gameName: string
-    slotId: number
-    gmCount: number
-    playerCount: number
-  }>
-  belowMinimumGames: Array<{
-    gameId: number
-    gameName: string
-    slotId: number | null
-    playerCount: number
-    playerMin: number
-    playerMax: number
-  }>
-  overCapGames: Array<{
-    gameId: number
-    gameName: string
-    slotId: number | null
-    playerCount: number
-    playerMin: number
-    playerMax: number
-  }>
-}
-
-type AssignmentSummarySectionProps = {
-  title: string
-  emptyMessage: string
-  hasRows: boolean
-  children: React.ReactNode
-}
-
-const AssignmentSummarySection = ({ title, emptyMessage, hasRows, children }: AssignmentSummarySectionProps) => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25 }}>
-    <Typography variant='subtitle1' component='h3'>
-      {title}
-    </Typography>
-    {hasRows ? children : <Typography color='text.secondary'>{emptyMessage}</Typography>}
-  </Box>
-)
-
-type AssignmentSummaryDialogProps = {
-  open: boolean
-  onClose: () => void
-  isLoading: boolean
-  data: AssignmentSummaryData | undefined
-  errorMessage: string | null
-}
-
-const AssignmentSummaryDialog = ({ open, onClose, isLoading, data, errorMessage }: AssignmentSummaryDialogProps) => (
-  <Dialog open={open} onClose={onClose} maxWidth='lg' fullWidth>
-    <DialogTitle>Game Assignment Summary</DialogTitle>
-    <DialogContent dividers>
-      <Stack spacing={3}>
-        {isLoading ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', py: 4 }}>
-            <Loader />
-          </Box>
-        ) : null}
-        {!isLoading && errorMessage ? <Typography color='error.main'>{errorMessage}</Typography> : null}
-        {!isLoading && !errorMessage && data ? (
-          <>
-            <AssignmentSummarySection
-              title='Players Missing Assignments'
-              emptyMessage='No members are missing assignments.'
-              hasRows={data.missingAssignments.length > 0}
-            >
-              <TableContainer>
-                <MuiTable size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Member</TableCell>
-                      <TableCell>Missing Slots</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.missingAssignments.map((entry) => (
-                      <TableRow key={entry.memberId}>
-                        <TableCell>{entry.memberName}</TableCell>
-                        <TableCell>{entry.missingSlots.map((slotId) => `Slot ${slotId}`).join(', ')}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-            </AssignmentSummarySection>
-            <AssignmentSummarySection
-              title='Members Assigned To Any Game'
-              emptyMessage='No members are assigned to Any Game.'
-              hasRows={data.anyGameAssignments.length > 0}
-            >
-              <TableContainer>
-                <MuiTable size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Member</TableCell>
-                      <TableCell>Role</TableCell>
-                      <TableCell>Game</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.anyGameAssignments.map((entry, index) => (
-                      <TableRow key={`${entry.memberId}-${entry.assignmentRole}-${index}`}>
-                        <TableCell>{entry.memberName}</TableCell>
-                        <TableCell>{entry.assignmentRole}</TableCell>
-                        <TableCell>{entry.gameName}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-            </AssignmentSummarySection>
-            <AssignmentSummarySection
-              title='No Game GM/Player Mismatches'
-              emptyMessage='No No Game GM/player mismatches found.'
-              hasRows={data.noGameRoleMismatches.length > 0}
-            >
-              <TableContainer>
-                <MuiTable size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Game</TableCell>
-                      <TableCell>Slot</TableCell>
-                      <TableCell align='right'>GM Count</TableCell>
-                      <TableCell align='right'>Player Count</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.noGameRoleMismatches.map((entry) => (
-                      <TableRow key={entry.gameId}>
-                        <TableCell>{entry.gameName}</TableCell>
-                        <TableCell>{`Slot ${entry.slotId}`}</TableCell>
-                        <TableCell align='right'>{entry.gmCount}</TableCell>
-                        <TableCell align='right'>{entry.playerCount}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-            </AssignmentSummarySection>
-            <AssignmentSummarySection
-              title='Games Below Minimum Players'
-              emptyMessage='No games are below their player minimum.'
-              hasRows={data.belowMinimumGames.length > 0}
-            >
-              <TableContainer>
-                <MuiTable size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Game</TableCell>
-                      <TableCell>Slot</TableCell>
-                      <TableCell align='right'>Players</TableCell>
-                      <TableCell align='right'>Min</TableCell>
-                      <TableCell align='right'>Max</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.belowMinimumGames.map((entry) => (
-                      <TableRow key={entry.gameId}>
-                        <TableCell>{entry.gameName}</TableCell>
-                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
-                        <TableCell align='right'>{entry.playerCount}</TableCell>
-                        <TableCell align='right'>{entry.playerMin}</TableCell>
-                        <TableCell align='right'>{entry.playerMax}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-            </AssignmentSummarySection>
-            <AssignmentSummarySection
-              title='Games Over Player Cap'
-              emptyMessage='No games are above their player cap.'
-              hasRows={data.overCapGames.length > 0}
-            >
-              <TableContainer>
-                <MuiTable size='small'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Game</TableCell>
-                      <TableCell>Slot</TableCell>
-                      <TableCell align='right'>Players</TableCell>
-                      <TableCell align='right'>Min</TableCell>
-                      <TableCell align='right'>Max</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {data.overCapGames.map((entry) => (
-                      <TableRow key={entry.gameId}>
-                        <TableCell>{entry.gameName}</TableCell>
-                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
-                        <TableCell align='right'>{entry.playerCount}</TableCell>
-                        <TableCell align='right'>{entry.playerMin}</TableCell>
-                        <TableCell align='right'>{entry.playerMax}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </MuiTable>
-              </TableContainer>
-            </AssignmentSummarySection>
-          </>
-        ) : null}
-      </Stack>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={onClose}>Close</Button>
-    </DialogActions>
-  </Dialog>
-)
-
-type GameAssignmentsTitleBarProps = {
-  slotFilterOptions: Array<number>
-  slotFilterId: number | null | 'mixed'
-  onSlotFilterChange: (slotFilterId: number | null) => void
-  layoutMode: LayoutMode
-  onLayoutChange: (event: MouseEvent<HTMLElement>, nextLayout: LayoutMode | null) => void
-  onResetAssignments: () => void
-  onSetInitialAssignments: () => void
-  onShowSummary: () => void
-  isBusy: boolean
-  isSummaryBusy: boolean
-}
-
-const GameAssignmentsTitleBar = ({
-  slotFilterOptions,
-  slotFilterId,
-  onSlotFilterChange,
-  layoutMode,
-  onLayoutChange,
-  onResetAssignments,
-  onSetInitialAssignments,
-  onShowSummary,
-  isBusy,
-  isSummaryBusy,
-}: GameAssignmentsTitleBarProps) => (
-  <Box
-    sx={{
-      px: 3,
-      pt: 2.5,
-      pb: 1.25,
-      display: 'flex',
-      flexDirection: { xs: 'column', md: 'row' },
-      alignItems: { xs: 'flex-start', md: 'flex-start' },
-      justifyContent: 'space-between',
-      gap: 2,
-    }}
-  >
-    <Box
-      sx={{
-        fontSize: '2.25rem',
-        lineHeight: '1.5em',
-        fontWeight: 300,
-        color: 'inherit',
-        m: 0,
-      }}
-      component='h1'
-    >
-      Game Assignments
-    </Box>
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        gap: 2,
-        flexWrap: 'wrap',
-        justifyContent: 'flex-end',
-      }}
-    >
-      <SlotFilterSelect
-        slotFilterOptions={slotFilterOptions}
-        slotFilterId={slotFilterId}
-        onSlotFilterChange={onSlotFilterChange}
-        allowMixedState
-      />
-      <ToggleButtonGroup
-        value={layoutMode}
-        exclusive
-        onChange={onLayoutChange}
-        size='small'
-        aria-label='Layout'
-        sx={{
-          display: { xs: 'none', md: 'inline-flex' },
-          '& .MuiToggleButton-root': {
-            py: 0.25,
-            px: 1.25,
-            minHeight: 30,
-            lineHeight: 1.2,
-          },
-        }}
-      >
-        <ToggleButton value='grid' aria-label='Grid layout'>
-          Grid
-        </ToggleButton>
-        <ToggleButton value='columns' aria-label='Column layout'>
-          Columns
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
-        <Button variant='outlined' size='small' onClick={onShowSummary} disabled={isSummaryBusy}>
-          Show Summary
-        </Button>
-        <Button variant='outlined' size='small' onClick={onResetAssignments} disabled={isBusy}>
-          Reset Assignments
-        </Button>
-        <Button variant='outlined' size='small' onClick={onSetInitialAssignments} disabled={isBusy}>
-          Set Initial Assignments
-        </Button>
-      </Box>
-      <CollapsibleInfoPanel
-        defaultCollapsed={false}
-        expandAriaLabel='Expand legend'
-        collapseAriaLabel='Collapse legend'
-        rootSx={{
-          border: (styleTheme) => `1px solid ${styleTheme.palette.divider}`,
-          borderRadius: 1,
-          px: 2,
-          backgroundColor: 'background.default',
-          '& .MuiIconButton-root': {
-            p: 0.5,
-          },
-        }}
-        collapsedSx={{
-          py: 0.25,
-          minHeight: 30,
-          fontSize: '0.75rem',
-          lineHeight: 1.4,
-          maxWidth: { xs: '100%', md: 220 },
-        }}
-        expandedSx={{
-          py: 1,
-          maxWidth: { xs: '100%', md: 380 },
-        }}
-        collapsedContent={
-          <Box component='span' sx={{ whiteSpace: 'nowrap', fontSize: '0.75rem', lineHeight: 1.4 }}>
-            Legend
-          </Box>
-        }
-        expandedContent={
-          <Box
-            component='ul'
-            sx={{
-              m: 0,
-              pl: 2.25,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 0.5,
-              fontSize: '0.75rem',
-              lineHeight: 1.4,
-            }}
-          >
-            {legendItems.map((item) => (
-              <Box component='li' key={item}>
-                {item}
-              </Box>
-            ))}
-          </Box>
-        }
-      />
-    </Box>
-  </Box>
-)
-
-type GameAssignmentsPageProps = {
-  data: GameAssignmentDashboardData
-  year: number
-  slotFilterOptions: Array<number>
-  paneSlotFilters: Record<GameAssignmentsPaneId, number | null>
-  onPaneSlotFilterChange: (paneId: GameAssignmentsPaneId, slotFilterId: number | null) => void
-  onUpdateAssignments: (payload: AssignmentUpdatePayload) => Promise<void>
-  onUpsertChoice: (input: UpsertGameChoiceBySlotInput) => Promise<void>
-  scrollBehavior: 'none' | 'bounded'
-  layoutMode: LayoutMode
-  expandedPaneId: GameAssignmentsPaneId | null
-  onToggleExpand: (paneId: GameAssignmentsPaneId) => void
-}
-
-const GameAssignmentsDashboard = ({
-  data,
-  year,
-  slotFilterOptions,
-  paneSlotFilters,
-  onPaneSlotFilterChange,
-  onUpdateAssignments,
-  onUpsertChoice,
-  scrollBehavior,
-  layoutMode,
-  expandedPaneId,
-  onToggleExpand,
-}: GameAssignmentsPageProps) => {
-  const theme = useTheme()
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
-  const [portalReady, setPortalReady] = useState(false)
-  const hiddenHostRef = useRef<HTMLDivElement | null>(null)
-  const paneHostsRef = useRef<Record<GameAssignmentsPaneId, HTMLDivElement> | null>(null)
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return
-    if (paneHostsRef.current || !hiddenHostRef.current) return
-    const createHost = () => {
-      const host = document.createElement('div')
-      host.style.display = 'flex'
-      host.style.flexDirection = 'column'
-      host.style.flex = '1 1 auto'
-      host.style.minHeight = '0'
-      return host
-    }
-    const hosts = {
-      byGame: createHost(),
-      byMember: createHost(),
-      choices: createHost(),
-      interest: createHost(),
-    }
-    paneHostsRef.current = hosts
-    Object.values(hosts).forEach((host) => hiddenHostRef.current?.appendChild(host))
-    setPortalReady(true)
-  }, [])
-
-  const buildExpandProps = (paneId: GameAssignmentsPaneId) => ({
-    isExpanded: expandedPaneId === paneId,
-    onToggleExpand: () => onToggleExpand(paneId),
-  })
-
-  const renderPaneContent = (paneId: GameAssignmentsPaneId) => {
-    switch (paneId) {
-      case 'byGame':
-        return (
-          <GameAssignmentsByGamePanel
-            data={data}
-            year={year}
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={paneSlotFilters.byGame}
-            onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('byGame', nextSlotFilterId)}
-            onUpdateAssignments={onUpdateAssignments}
-            scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
-          />
-        )
-      case 'byMember':
-        return (
-          <GameAssignmentsByMemberPanel
-            data={data}
-            year={year}
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={paneSlotFilters.byMember}
-            onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('byMember', nextSlotFilterId)}
-            onUpdateAssignments={onUpdateAssignments}
-            scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
-          />
-        )
-      case 'choices':
-        return (
-          <GameChoicesPanel
-            data={data}
-            year={year}
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={paneSlotFilters.choices}
-            onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('choices', nextSlotFilterId)}
-            onUpsertChoice={onUpsertChoice}
-            scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
-          />
-        )
-      case 'interest':
-        return (
-          <GameInterestPanel
-            data={data}
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={paneSlotFilters.interest}
-            onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('interest', nextSlotFilterId)}
-            scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
-          />
-        )
-      default:
-        return null
-    }
-  }
-
-  const attachHost = useCallback(
-    (paneId: GameAssignmentsPaneId) => (node: HTMLDivElement | null) => {
-      const host = paneHostsRef.current?.[paneId]
-      const fallbackHost = hiddenHostRef.current
-      if (!host || !fallbackHost) return
-      const nextParent = node ?? fallbackHost
-      if (host.parentElement !== nextParent) {
-        nextParent.appendChild(host)
-      }
-    },
-    [],
-  )
-
-  const renderPaneSlot = (paneId: GameAssignmentsPaneId) => (
-    <Box
-      ref={attachHost(paneId)}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: 0,
-        flex: scrollBehavior === 'bounded' ? 1 : undefined,
-      }}
-    />
-  )
-
-  const renderPane = (paneId: GameAssignmentsPaneId) =>
-    portalReady ? renderPaneSlot(paneId) : renderPaneContent(paneId)
-
-  const portalContent = portalReady ? (
-    <>
-      {paneHostsRef.current?.byGame ? createPortal(renderPaneContent('byGame'), paneHostsRef.current.byGame) : null}
-      {paneHostsRef.current?.byMember
-        ? createPortal(renderPaneContent('byMember'), paneHostsRef.current.byMember)
-        : null}
-      {paneHostsRef.current?.choices ? createPortal(renderPaneContent('choices'), paneHostsRef.current.choices) : null}
-      {paneHostsRef.current?.interest
-        ? createPortal(renderPaneContent('interest'), paneHostsRef.current.interest)
-        : null}
-    </>
-  ) : null
-
-  const layout = (() => {
-    if (isSmallScreen) {
-      if (expandedPaneId) {
-        return <Box sx={{ flex: 1, minHeight: 0 }}>{renderPane(expandedPaneId)}</Box>
-      }
-      return (
-        <Stack spacing={2} sx={{ flex: 1, minHeight: 0 }}>
-          {renderPane('byGame')}
-          {renderPane('byMember')}
-          {renderPane('choices')}
-          {renderPane('interest')}
-        </Stack>
-      )
-    }
-
-    if (expandedPaneId) {
-      return (
-        <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          {renderPane(expandedPaneId)}
-        </Box>
-      )
-    }
-
-    if (layoutMode === 'columns') {
-      return (
-        <Group orientation='horizontal' style={{ flex: 1, minHeight: 0 }}>
-          <Panel defaultSize={25} minSize={15} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('byGame')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={25} minSize={15} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('byMember')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={25} minSize={15} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('choices')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={25} minSize={15} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('interest')}
-          </Panel>
-        </Group>
-      )
-    }
-
-    return (
-      <Group orientation='horizontal' style={{ flex: 1, minHeight: 0 }}>
-        <Panel defaultSize={50} minSize={30} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <Group orientation='vertical' style={{ flex: 1, minHeight: 0 }}>
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('byGame')}
-            </Panel>
-            <ResizeHandle direction='horizontal' />
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('byMember')}
-            </Panel>
-          </Group>
-        </Panel>
-        <ResizeHandle direction='vertical' />
-        <Panel defaultSize={50} minSize={30} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <Group orientation='vertical' style={{ flex: 1, minHeight: 0 }}>
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('choices')}
-            </Panel>
-            <ResizeHandle direction='horizontal' />
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('interest')}
-            </Panel>
-          </Group>
-        </Panel>
-      </Group>
-    )
-  })()
-
-  return (
-    <>
-      <Box ref={hiddenHostRef} sx={{ display: 'none' }} />
-      {portalContent}
-      {layout}
-    </>
-  )
-}
 
 const GameAssignmentsPage = () => {
   const trpc = useTRPC()
@@ -768,30 +45,21 @@ const GameAssignmentsPage = () => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
   const slotFilterOptions = useMemo<Array<number>>(
-    () =>
-      Array.from(
-        { length: configuration.numberOfSlots },
-        (_unusedValue: undefined, slotIndex: number) => slotIndex + 1,
-      ),
+    () => buildGameAssignmentsSlotFilterOptions(configuration.numberOfSlots),
     [configuration.numberOfSlots],
   )
   const [storedPaneSlotFilters, setStoredPaneSlotFilters] = useLocalStorage<unknown>(
     GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY,
     buildDefaultPaneSlotFilters(),
   )
-  const paneSlotFilters = useMemo(
-    () => sanitizePaneSlotFilters(storedPaneSlotFilters, slotFilterOptions),
+  const paneSlotFilters = useMemo<GameAssignmentsPaneSlotFilters>(
+    () => sanitizeGameAssignmentsPaneSlotFilters(storedPaneSlotFilters, slotFilterOptions),
     [slotFilterOptions, storedPaneSlotFilters],
   )
-  const topSlotFilterId = useMemo<number | null | 'mixed'>(() => {
-    const values = Object.values(paneSlotFilters)
-    const firstValue = values[0]
-    if (values.every((value) => value === firstValue)) return firstValue
-    return 'mixed'
-  }, [paneSlotFilters])
+  const topSlotFilterId = useMemo(() => getTopSlotFilterId(paneSlotFilters), [paneSlotFilters])
   const [storedLayoutMode, setStoredLayoutMode] = useLocalStorage<unknown>(GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY, 'grid')
-  const layoutMode = useMemo<LayoutMode>(
-    () => (isLayoutMode(storedLayoutMode) ? storedLayoutMode : 'grid'),
+  const layoutMode = useMemo<GameAssignmentsLayoutMode>(
+    () => sanitizeGameAssignmentsLayoutMode(storedLayoutMode),
     [storedLayoutMode],
   )
   const [storedExpandedPaneId, setStoredExpandedPaneId] = useLocalStorage<unknown>(
@@ -799,7 +67,7 @@ const GameAssignmentsPage = () => {
     null,
   )
   const expandedPaneId = useMemo<GameAssignmentsPaneId | null>(
-    () => sanitizeExpandedPaneId(storedExpandedPaneId),
+    () => sanitizeGameAssignmentsPaneId(storedExpandedPaneId),
     [storedExpandedPaneId],
   )
   const tableFontSize = '0.78125rem'
@@ -850,21 +118,21 @@ const GameAssignmentsPage = () => {
   }, [])
 
   useEffect(() => {
-    if (!isLayoutMode(storedLayoutMode)) {
-      setStoredLayoutMode('grid')
+    if (storedLayoutMode !== layoutMode) {
+      setStoredLayoutMode(layoutMode)
     }
-  }, [setStoredLayoutMode, storedLayoutMode])
+  }, [layoutMode, setStoredLayoutMode, storedLayoutMode])
 
   useEffect(() => {
-    if (doesStoredPaneSlotFiltersMatch(storedPaneSlotFilters, paneSlotFilters)) return
+    if (doPaneSlotFiltersMatchStoredValue(storedPaneSlotFilters, paneSlotFilters)) return
     setStoredPaneSlotFilters(paneSlotFilters)
   }, [paneSlotFilters, setStoredPaneSlotFilters, storedPaneSlotFilters])
 
   useEffect(() => {
-    if (storedExpandedPaneId !== null && !isGameAssignmentsPaneId(storedExpandedPaneId)) {
-      setStoredExpandedPaneId(null)
+    if (storedExpandedPaneId !== expandedPaneId) {
+      setStoredExpandedPaneId(expandedPaneId)
     }
-  }, [setStoredExpandedPaneId, storedExpandedPaneId])
+  }, [expandedPaneId, setStoredExpandedPaneId, storedExpandedPaneId])
 
   useEffect(() => {
     if (!isSummaryDialogOpen) return
@@ -872,7 +140,7 @@ const GameAssignmentsPage = () => {
   }, [isSummaryDialogOpen, refetchAssignmentSummary, year])
 
   const handleUpdateAssignments = useCallback(
-    async (payload: AssignmentUpdatePayload) => {
+    async (payload: DashboardAssignmentUpdatePayload) => {
       if (payload.adds.length === 0 && payload.removes.length === 0) return
 
       try {
@@ -896,50 +164,7 @@ const GameAssignmentsPage = () => {
         },
       })
 
-      setDashboardData((previous) => {
-        if (!previous) return previous
-
-        const removeKeys = new Set(payload.removes.map((assignment) => buildAssignmentKeyFromInput(assignment)))
-        const nextAssignments = previous.assignments.filter(
-          (assignment) => !removeKeys.has(buildAssignmentKeyFromRecord(assignment)),
-        )
-
-        const assignmentMap = new Map(
-          nextAssignments.map((assignment) => [buildAssignmentKeyFromRecord(assignment), assignment]),
-        )
-
-        payload.adds.forEach((assignment) => {
-          const game = previous.games.find((entry) => entry.id === assignment.gameId)
-          const membership = previous.memberships.find((entry) => entry.id === assignment.memberId)
-          if (!membership) return
-          const resolvedGame = game ?? null
-          if (!resolvedGame) return
-
-          assignmentMap.set(buildAssignmentKeyFromInput(assignment), {
-            memberId: assignment.memberId,
-            gameId: assignment.gameId,
-            gm: assignment.gm,
-            year: assignment.year,
-            membership: {
-              id: membership.id,
-              user: {
-                fullName: membership.user.fullName,
-              },
-            },
-            game: {
-              category: resolvedGame.category,
-              id: resolvedGame.id,
-              name: resolvedGame.name,
-              slotId: resolvedGame.slotId,
-            },
-          })
-        })
-
-        return {
-          ...previous,
-          assignments: Array.from(assignmentMap.values()),
-        }
-      })
+      setDashboardData((previous) => applyAssignmentUpdatesToDashboardData({ previous, payload }))
     },
     [invalidateDashboardQueries, sendEmail, updateAssignmentsMutation, year],
   )
@@ -954,43 +179,7 @@ const GameAssignmentsPage = () => {
         throw err
       }
 
-      setDashboardData((previous) => {
-        if (!previous) return previous
-
-        const membership = previous.memberships.find((entry) => entry.id === result.gameChoice.memberId)
-        if (!membership) return previous
-
-        const game = result.gameChoice.gameId
-          ? previous.games.find((entry) => entry.id === result.gameChoice.gameId)
-          : null
-
-        const nextChoice = {
-          ...result.gameChoice,
-          membership: {
-            id: membership.id,
-            user: {
-              fullName: membership.user.fullName,
-            },
-          },
-          game: game
-            ? {
-                category: game.category,
-                id: game.id,
-                name: game.name,
-                slotId: game.slotId,
-              }
-            : null,
-        }
-
-        const filteredChoices = previous.choices.filter(
-          (choice) => buildChoiceKey(choice) !== buildChoiceKey(result.gameChoice),
-        )
-
-        return {
-          ...previous,
-          choices: [...filteredChoices, nextChoice],
-        }
-      })
+      setDashboardData((previous) => applyUpsertedChoiceToDashboardData({ previous, gameChoice: result.gameChoice }))
     },
     [invalidateDashboardQueries, upsertChoiceMutation],
   )
@@ -1029,7 +218,7 @@ const GameAssignmentsPage = () => {
 
   const scrollBehavior = isSmallScreen ? 'none' : 'bounded'
   const handleLayoutChange = useCallback(
-    (_event: MouseEvent<HTMLElement>, nextLayout: LayoutMode | null) => {
+    (_event: MouseEvent<HTMLElement>, nextLayout: GameAssignmentsLayoutMode | null) => {
       if (nextLayout) {
         setStoredLayoutMode(nextLayout)
       }
@@ -1045,21 +234,13 @@ const GameAssignmentsPage = () => {
   )
   const handlePaneSlotFilterChange = useCallback(
     (paneId: GameAssignmentsPaneId, slotFilterId: number | null) => {
-      setStoredPaneSlotFilters({
-        ...paneSlotFilters,
-        [paneId]: slotFilterId,
-      })
+      setStoredPaneSlotFilters(buildUpdatedPaneSlotFilters({ paneSlotFilters, paneId, slotFilterId }))
     },
     [paneSlotFilters, setStoredPaneSlotFilters],
   )
   const handleTopSlotFilterChange = useCallback(
     (slotFilterId: number | null) => {
-      setStoredPaneSlotFilters({
-        byGame: slotFilterId,
-        byMember: slotFilterId,
-        choices: slotFilterId,
-        interest: slotFilterId,
-      })
+      setStoredPaneSlotFilters(buildUniformPaneSlotFilters(slotFilterId))
     },
     [setStoredPaneSlotFilters],
   )
