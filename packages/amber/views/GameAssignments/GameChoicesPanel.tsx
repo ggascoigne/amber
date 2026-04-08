@@ -3,34 +3,28 @@ import { useCallback, useMemo, useState } from 'react'
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
-import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
-import { ShowExpandedToggle } from './ShowExpandedToggle'
-import { SlotFilterSelect } from './SlotFilterSelect'
-import type { MemberChoiceRow } from './utils'
+import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
+import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
+import type { MemberChoiceRow, MemberChoiceSummaryRow } from './utils'
 import {
   buildAssignedSlotCountsByMemberId,
-  buildChoiceRowsForMember,
+  buildChoiceEditorStateForMember,
+  buildUpdatedChoiceRowGameSelection,
+  buildChoiceUpsertsFromUpdates,
   buildChoicesByMemberId,
   buildGameChoiceOptionsForRow,
+  buildMemberChoiceSummaryRows,
+  buildSlotAssignmentScope,
   buildSubmissionsByMemberId,
-  filterGamesWithSlots,
+  canEditChoiceRowGameSelection,
   getGameLabel,
-  getPriorityLabel,
   getPrioritySortValue,
-  isScheduledAssignment,
 } from './utils'
 
-import {
-  buildGameCategoryByGameId,
-  isAnyGameCategory,
-  isNoGameCategory,
-  isUserGameCategory,
-  useConfiguration,
-} from '../../utils'
+import { buildGameCategoryByGameId, useConfiguration } from '../../utils'
 
 type GameChoicesPanelProps = {
   data: GameAssignmentDashboardData
@@ -42,13 +36,6 @@ type GameChoicesPanelProps = {
   isExpanded?: boolean
   onToggleExpand?: () => void
   scrollBehavior?: 'none' | 'bounded'
-}
-
-type MemberChoiceSummaryRow = {
-  memberId: number
-  memberName: string
-  assignments: number
-  requiresAttention: boolean
 }
 
 export const GameChoicesPanel = ({
@@ -64,18 +51,14 @@ export const GameChoicesPanel = ({
 }: GameChoicesPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
-  const slotGames = useMemo(() => filterGamesWithSlots(data.games), [data.games])
-  const filteredSlotGames = useMemo(
-    () => (slotFilterId === null ? slotGames : slotGames.filter((game) => game.slotId === slotFilterId)),
-    [slotFilterId, slotGames],
-  )
-  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
-  const scheduledAssignments = useMemo(
+  const { slotGameIdSet, scheduledAssignments } = useMemo(
     () =>
-      data.assignments.filter(
-        (assignment) => isScheduledAssignment(assignment) && slotGameIdSet.has(assignment.gameId),
-      ),
-    [data.assignments, slotGameIdSet],
+      buildSlotAssignmentScope({
+        games: data.games,
+        assignments: data.assignments,
+        slotFilterId,
+      }),
+    [data.assignments, data.games, slotFilterId],
   )
   const assignedSlotCountsByMemberId = useMemo(
     () => buildAssignedSlotCountsByMemberId(scheduledAssignments),
@@ -88,22 +71,13 @@ export const GameChoicesPanel = ({
 
   const memberRows = useMemo<Array<MemberChoiceSummaryRow>>(
     () =>
-      data.memberships
-        .filter((membership) => membership.attending)
-        .map((membership) => {
-          const memberChoices = choicesByMemberId.get(membership.id) ?? []
-          const slotIdsWithChoices = new Set(memberChoices.map((choice) => choice.slotId))
-          const hasChoicesForAllSlots = slotIdsWithChoices.size >= configuration.numberOfSlots
-          const submission = submissionsByMemberId.get(membership.id)
-          const hasSubmissionEntry = Boolean(submission)
-          const hasNotes = Boolean(submission?.message?.trim())
-          return {
-            memberId: membership.id,
-            memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
-            assignments: assignedSlotCountsByMemberId.get(membership.id) ?? 0,
-            requiresAttention: !hasChoicesForAllSlots || !hasSubmissionEntry,
-          }
-        }),
+      buildMemberChoiceSummaryRows({
+        memberships: data.memberships,
+        choicesByMemberId,
+        submissionsByMemberId,
+        assignedSlotCountsByMemberId,
+        numberOfSlots: configuration.numberOfSlots,
+      }),
     [
       assignedSlotCountsByMemberId,
       choicesByMemberId,
@@ -151,46 +125,16 @@ export const GameChoicesPanel = ({
     (row: Row<MemberChoiceSummaryRow>) => {
       const { memberId } = row.original
       const choices = choicesByMemberId.get(memberId) ?? []
-      const gmGameIdBySlotId = new Map<number, number>()
-      data.assignments.forEach((assignment) => {
-        if (assignment.memberId !== memberId || assignment.gm === 0) return
-        const assignmentGame = assignment.game
-        const assignmentGameSlotId = assignmentGame?.slotId ?? 0
-        if (!assignmentGame || assignmentGameSlotId <= 0 || !isUserGameCategory(assignmentGame.category)) return
-        if (gmGameIdBySlotId.has(assignmentGameSlotId)) return
-        gmGameIdBySlotId.set(assignmentGameSlotId, assignment.gameId)
-      })
-      const filteredChoices = choices.filter((choice) => {
-        if (!choice.gameId) return true
-        const category = gameCategoryByGameId.get(choice.gameId)
-        if (isNoGameCategory(category) || isAnyGameCategory(category)) return true
-        return slotGameIdSet.has(choice.gameId)
-      })
       const submission = submissionsByMemberId.get(memberId)
-      const choiceRows = buildChoiceRowsForMember({
+      const { choiceRows, gmGameIdBySlotId, previousRowIdByRowId } = buildChoiceEditorStateForMember({
         memberId,
-        choices: filteredChoices,
+        assignments: data.assignments,
+        choices,
         configuration,
-        gmGameIdBySlotId,
-        slotIds: slotFilterId ? [slotFilterId] : undefined,
+        gameCategoryByGameId,
+        slotGameIdSet,
+        slotFilterId,
       })
-      const slotRowsBySlotId = choiceRows.reduce((rowsBySlotId: Map<number, Array<MemberChoiceRow>>, choiceRow) => {
-        const slotRows = rowsBySlotId.get(choiceRow.slotId) ?? []
-        slotRows.push(choiceRow)
-        rowsBySlotId.set(choiceRow.slotId, slotRows)
-        return rowsBySlotId
-      }, new Map<number, Array<MemberChoiceRow>>())
-      const previousRowIdByRowId = Array.from(slotRowsBySlotId.values()).reduce(
-        (result: Map<string, string>, slotRows) => {
-          slotRows.forEach((slotRow, rowIndex) => {
-            if (rowIndex <= 0) return
-            const previousRow = slotRows[rowIndex - 1]
-            result.set(slotRow.rowId, previousRow.rowId)
-          })
-          return result
-        },
-        new Map<string, string>(),
-      )
       const choiceColumns: Array<ColumnDef<MemberChoiceRow>> = [
         {
           accessorKey: 'slotLabel',
@@ -218,11 +162,10 @@ export const GameChoicesPanel = ({
                 if (!previousRowId) return true
                 const previousRow = context.table.getRowModel().rowsById[previousRowId]
                 if (!previousRow) return false
-                const previousGameId = context.getValue(previousRow, 'gameId')
-                if (previousGameId === null) return false
-                const previousGameCategory = gameCategoryByGameId.get(Number(previousGameId))
-                if (isNoGameCategory(previousGameCategory) || isAnyGameCategory(previousGameCategory)) return false
-                return true
+                return canEditChoiceRowGameSelection({
+                  previousGameId: context.getValue(previousRow, 'gameId') as number | null,
+                  gameCategoryByGameId,
+                })
               },
               getOptions: (choiceRow) => {
                 const options = buildGameChoiceOptionsForRow({
@@ -236,21 +179,11 @@ export const GameChoicesPanel = ({
               parseValue: (value) => (value === '' ? null : Number(value)),
               setValue: (choiceRow, value) => {
                 const gameId = value === null || value === undefined || value === '' ? null : Number(value)
-                const isFirstChoice = choiceRow.rank === 0 || choiceRow.rank === 1
-                if (!isFirstChoice) {
-                  return {
-                    ...choiceRow,
-                    gameId,
-                  }
-                }
-                const gmGameId = gmGameIdBySlotId.get(choiceRow.slotId) ?? null
-                const nextRank = gameId !== null && gmGameId !== null && gameId === gmGameId ? 0 : 1
-                return {
-                  ...choiceRow,
+                return buildUpdatedChoiceRowGameSelection({
+                  choiceRow,
                   gameId,
-                  rank: nextRank,
-                  rankLabel: getPriorityLabel(nextRank, choiceRow.returningPlayer),
-                }
+                  gmGameId: gmGameIdBySlotId.get(choiceRow.slotId) ?? null,
+                })
               },
             },
           },
@@ -258,34 +191,7 @@ export const GameChoicesPanel = ({
       ]
 
       const handleSave = async (updates: Array<TableEditRowUpdate<MemberChoiceRow>>) => {
-        await Promise.all(
-          updates.flatMap((update) => {
-            const { memberId: updatedMemberId, slotId, rank, gameId, returningPlayer } = update.updated
-            const upserts: Array<Promise<void>> = [
-              onUpsertChoice({
-                memberId: updatedMemberId,
-                year,
-                slotId,
-                rank,
-                gameId,
-                returningPlayer,
-              }),
-            ]
-            if (update.original.rank !== rank) {
-              upserts.push(
-                onUpsertChoice({
-                  memberId: updatedMemberId,
-                  year,
-                  slotId,
-                  rank: update.original.rank,
-                  gameId: null,
-                  returningPlayer: update.original.returningPlayer,
-                }),
-              )
-            }
-            return upserts
-          }),
-        )
+        await Promise.all(buildChoiceUpsertsFromUpdates({ updates, year }).map(onUpsertChoice))
       }
 
       const editingConfig = {
@@ -296,15 +202,8 @@ export const GameChoicesPanel = ({
       const message = submission?.message
 
       return (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: 2,
-            alignItems: 'stretch',
-          }}
-        >
-          <Box sx={{ flex: 1, minWidth: 0 }}>
+        <MemberSubmissionDetailLayout submissionMessage={message}>
+          <Box sx={{ minWidth: 0 }}>
             <Table<MemberChoiceRow>
               name={`member-choices-${memberId}`}
               data={choiceRows}
@@ -329,23 +228,7 @@ export const GameChoicesPanel = ({
               useVirtualRows={false}
             />
           </Box>
-          <Box
-            sx={{
-              width: { xs: '100%', md: 260 },
-              flexShrink: 0,
-              border: (theme) => `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-              p: 2,
-            }}
-          >
-            <Typography variant='subtitle2' component='h3'>
-              Signup Notes
-            </Typography>
-            <Typography variant='body2' color='text.secondary'>
-              {message ?? 'No submission message.'}
-            </Typography>
-          </Box>
-        </Box>
+        </MemberSubmissionDetailLayout>
       )
     },
     [
@@ -355,10 +238,10 @@ export const GameChoicesPanel = ({
       data.games,
       gameCategoryByGameId,
       gameById,
+      submissionsByMemberId,
       onUpsertChoice,
       slotFilterId,
       slotGameIdSet,
-      submissionsByMemberId,
       year,
     ],
   )
@@ -375,28 +258,17 @@ export const GameChoicesPanel = ({
         flex: scrollBehavior === 'bounded' ? 1 : undefined,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography id='game-choices-panel-title' variant='h6' component='h2'>
-          Member Choices
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <SlotFilterSelect
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={slotFilterId}
-            onSlotFilterChange={onSlotFilterChange}
-          />
-          <ShowExpandedToggle checked={showExpandedOnly} onChange={setShowExpandedOnly} />
-          {onToggleExpand ? (
-            <IconButton
-              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
-              onClick={onToggleExpand}
-              size='small'
-            >
-              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-            </IconButton>
-          ) : null}
-        </Box>
-      </Box>
+      <GameAssignmentsPanelHeader
+        title='Member Choices'
+        titleId='game-choices-panel-title'
+        slotFilterOptions={slotFilterOptions}
+        slotFilterId={slotFilterId}
+        onSlotFilterChange={onSlotFilterChange}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
+        isExpanded={isExpanded}
+        onToggleExpand={onToggleExpand}
+      />
       <Table<MemberChoiceSummaryRow>
         name='game-choices-by-member'
         data={memberRows}

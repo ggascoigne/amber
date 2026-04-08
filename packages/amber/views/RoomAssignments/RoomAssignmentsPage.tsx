@@ -1,111 +1,39 @@
-import type { MouseEvent, SyntheticEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import type { RecalculateRoomAssignmentsResult } from '@amber/client'
+import type { RecalculateRoomAssignmentsResult, RoomAssignmentDashboardData } from '@amber/client'
 import { useInvalidateRoomAssignmentQueries, useTRPC } from '@amber/client'
 import { Loader, useLocalStorage } from '@amber/ui'
-import {
-  Box,
-  Button,
-  FormControl,
-  GlobalStyles,
-  MenuItem,
-  Tab,
-  Tabs,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-} from '@mui/material'
+import { Box, GlobalStyles } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Group, Panel, Separator } from 'react-resizable-panels'
 
+import { buildRoomAssignmentsDashboardViewModel } from './dashboardViewModel'
 import { downloadInitialPlannerResult } from './initialPlannerExport'
-import AssignMembersToRoomsPane from './panes/AssignMembersToRoomsPane'
-import CurrentSlotRoomAvailabilityPane from './panes/CurrentSlotRoomAvailabilityPane'
-import ManualGameRoomAssignmentPane from './panes/ManualGameRoomAssignmentPane'
-import MemberRoomAssignmentsPane from './panes/MemberRoomAssignmentsPane'
-import RoomAssignmentConflictSummaryPane from './panes/RoomAssignmentConflictSummaryPane'
-import RoomSlotAvailabilityPane from './panes/RoomSlotAvailabilityPane'
-import RoomUsageSummaryPane from './panes/RoomUsageSummaryPane'
+import type { RoomAssignmentsLayoutPlan } from './layoutPlan'
+import { buildRoomAssignmentsLayoutPlan } from './layoutPlan'
 import type {
-  CurrentSlotRoomAvailabilityRow,
-  ManualGameRoomAssignmentRow,
-  ManualRoomSelectOption,
-  MemberRoomAssignmentRow,
-  RoomAssignmentConflictRow,
-  RoomMemberAssignmentRow,
-  RoomSlotAvailabilityRow,
-  RoomUsageSummaryRow,
-  SizedRoomSelectOption,
-} from './types'
+  RoomAssignmentsAssignmentLayoutMode,
+  RoomAssignmentsPaneId,
+  RoomAssignmentsSetupLayoutMode,
+  RoomAssignmentsTabId,
+} from './pageState'
 import {
-  buildAssignedMemberNamesByRoomId,
-  buildAssignmentCountsByGameId,
-  buildCurrentSlotAvailableRooms,
-  buildDefaultRoomAssignmentByGameId,
-  buildEnabledManualRoomOptions,
-  buildGameMembersByGameId,
-  buildGmNamesByGameId,
-  buildManualGameRows,
-  buildMemberRoomIdByMemberId,
-  buildMemberRoomRows,
-  buildOverrideAssignmentsByGameId,
-  buildRequiredAccessibilityByGameId,
-  buildRoomAssignmentConflictRows,
-  buildRoomMemberRows,
-  buildRoomSelectOptions,
-  buildRoomSlotAvailabilityMap,
-  buildRoomUsageSummaryRows,
-  buildSlotIds,
-  isRoomAvailableInSlot,
-  sortGamesForRoomAssignment,
-} from './utils'
+  buildSlotFilterOptions,
+  getActiveExpandedPaneId,
+  sanitizeRequiredSlotFilterId,
+  sanitizeRoomAssignmentsAssignmentLayoutMode,
+  sanitizeRoomAssignmentsPaneId,
+  sanitizeRoomAssignmentsSetupLayoutMode,
+  sanitizeRoomAssignmentsTabId,
+} from './pageState'
+import RoomAssignmentsDashboard from './RoomAssignmentsDashboard'
+import RoomAssignmentsPageChrome from './RoomAssignmentsPageChrome'
+import { buildRoomMemberAssignmentUpdates, buildFullAvailabilityUpdates } from './utils'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration, useYearFilter } from '../../utils'
-import { CollapsibleInfoPanel } from '../GameAssignments/CollapsibleInfoPanel'
-
-type ResizeHandleProps = {
-  direction: 'horizontal' | 'vertical'
-}
-
-const ResizeHandle = ({ direction }: ResizeHandleProps) => (
-  <Separator
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: direction === 'vertical' ? 'col-resize' : 'row-resize',
-      width: direction === 'vertical' ? '10px' : '100%',
-      height: direction === 'horizontal' ? '10px' : '100%',
-    }}
-    aria-label={direction === 'vertical' ? 'Resize panels horizontally' : 'Resize panels vertically'}
-  >
-    <Box
-      sx={{
-        width: direction === 'vertical' ? 2 : '100%',
-        height: direction === 'horizontal' ? 2 : '100%',
-        borderRadius: 999,
-        backgroundColor: 'divider',
-      }}
-    />
-  </Separator>
-)
-
-type RoomAssignmentsTabId = 'setup' | 'assignment'
-type RoomAssignmentsSetupLayoutMode = 'rows' | 'columns'
-type RoomAssignmentsAssignmentLayoutMode = 'grid' | 'columns'
-type RoomAssignmentsPaneId =
-  | 'slotAvailability'
-  | 'memberRoomAssignments'
-  | 'roomMemberAssignments'
-  | 'manualGameRoomAssignment'
-  | 'roomAvailability'
-  | 'conflictSummary'
-  | 'roomUsageSummary'
 
 const ROOM_ASSIGNMENTS_SETUP_LAYOUT_STORAGE_KEY = 'amber.roomAssignments.setupLayoutMode'
 const ROOM_ASSIGNMENTS_ASSIGNMENT_LAYOUT_STORAGE_KEY = 'amber.roomAssignments.assignmentLayoutMode'
@@ -115,197 +43,15 @@ const ROOM_ASSIGNMENTS_ASSIGNMENT_SLOT_FILTER_STORAGE_KEY = 'amber.roomAssignmen
 const ROOM_ASSIGNMENTS_SHOW_MEMBER_ROOMS_STORAGE_KEY = 'amber.roomAssignments.showMemberRooms'
 const ROOM_ASSIGNMENTS_CONFLICT_SHOW_ALL_SLOTS_STORAGE_KEY = 'amber.roomAssignments.conflictShowAllSlots'
 
-const workflowLegendItems = [
-  'Calculate replaces non-override room assignments across the schedule and keeps override rows fixed.',
-  'Calculate for This Slot only recalculates the visible slot and leaves override rows fixed.',
-  'Reset Room Assignments clears both default and override room assignments for the year.',
-  'Override rooms now take priority when syncing the display/report room into game.room_id.',
-  'Download Details exports the latest calculation result from this page session.',
-]
-
-const isSetupLayoutMode = (value: unknown): value is RoomAssignmentsSetupLayoutMode =>
-  value === 'rows' || value === 'columns'
-
-const isAssignmentLayoutMode = (value: unknown): value is RoomAssignmentsAssignmentLayoutMode =>
-  value === 'grid' || value === 'columns'
-
-const isTabId = (value: unknown): value is RoomAssignmentsTabId => value === 'setup' || value === 'assignment'
-
-const isPaneId = (value: unknown): value is RoomAssignmentsPaneId =>
-  value === 'slotAvailability' ||
-  value === 'memberRoomAssignments' ||
-  value === 'roomMemberAssignments' ||
-  value === 'manualGameRoomAssignment' ||
-  value === 'roomAvailability' ||
-  value === 'conflictSummary' ||
-  value === 'roomUsageSummary'
-
-const sanitizeRequiredSlotFilterId = (value: unknown, slotFilterOptions: Array<number>): number => {
-  const fallbackSlotId = slotFilterOptions[0] ?? 1
-
-  if (typeof value !== 'number' || !Number.isInteger(value)) {
-    return fallbackSlotId
-  }
-
-  return slotFilterOptions.includes(value) ? value : fallbackSlotId
-}
-
-type ExplicitSlotFilterSelectProps = {
-  slotFilterOptions: Array<number>
-  slotFilterId: number
-  onSlotFilterChange: (slotFilterId: number) => void
-}
-
-const ExplicitSlotFilterSelect = ({
-  slotFilterOptions,
-  slotFilterId,
-  onSlotFilterChange,
-}: ExplicitSlotFilterSelectProps) => (
-  <FormControl sx={{ minWidth: 110 }}>
-    <TextField
-      select
-      size='small'
-      variant='standard'
-      value={`${slotFilterId}`}
-      onChange={(event) => {
-        const nextValue = Number(event.target.value)
-        if (!Number.isInteger(nextValue)) {
-          return
-        }
-
-        onSlotFilterChange(nextValue)
-      }}
-      aria-label='Slot filter'
-    >
-      {slotFilterOptions.map((slotValue) => (
-        <MenuItem key={slotValue} value={`${slotValue}`}>
-          {`Slot ${slotValue}`}
-        </MenuItem>
-      ))}
-    </TextField>
-  </FormControl>
-)
-
-type RoomAssignmentsTitleBarProps = {
-  activeTab: RoomAssignmentsTabId
-  onTabChange: (nextTab: RoomAssignmentsTabId) => void
-}
-
-const RoomAssignmentsTitleBar = ({ activeTab, onTabChange }: RoomAssignmentsTitleBarProps) => (
-  <Box
-    sx={{
-      px: 3,
-      pt: 2.5,
-      pb: 1.25,
-      display: 'flex',
-      flexDirection: { xs: 'column', md: 'row' },
-      alignItems: { xs: 'flex-start', md: 'flex-start' },
-      justifyContent: 'space-between',
-      gap: 2,
-    }}
-  >
-    <Box
-      sx={{
-        display: 'flex',
-        flex: 1,
-        justifyContent: 'space-between',
-        alignItems: { xs: 'flex-start', md: 'flex-start' },
-        gap: 2,
-        flexDirection: { xs: 'column', md: 'row' },
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-        }}
-      >
-        <Box
-          sx={{
-            fontSize: '2.25rem',
-            lineHeight: '1.5em',
-            fontWeight: 300,
-            color: 'inherit',
-            m: 0,
-          }}
-          component='h1'
-        >
-          Room Assignments
-        </Box>
-        <Tabs
-          value={activeTab}
-          onChange={(_event: SyntheticEvent, nextTab: RoomAssignmentsTabId) => onTabChange(nextTab)}
-        >
-          <Tab label='Setup' value='setup' />
-          <Tab label='Assignment' value='assignment' />
-        </Tabs>
-      </Box>
-      <CollapsibleInfoPanel
-        defaultCollapsed={false}
-        expandAriaLabel='Expand legend'
-        collapseAriaLabel='Collapse legend'
-        rootSx={{
-          border: (styleTheme) => `1px solid ${styleTheme.palette.divider}`,
-          borderRadius: 1,
-          px: 2,
-          backgroundColor: 'background.default',
-          '& .MuiIconButton-root': {
-            p: 0.5,
-          },
-        }}
-        collapsedSx={{
-          py: 0.25,
-          minHeight: 30,
-          fontSize: '0.75rem',
-          lineHeight: 1.4,
-          maxWidth: { xs: '100%', md: 220 },
-        }}
-        expandedSx={{
-          py: 1,
-          maxWidth: { xs: '100%', md: 560 },
-        }}
-        collapsedContent={
-          <Box component='span' sx={{ whiteSpace: 'nowrap', fontSize: '0.75rem', lineHeight: 1.4 }}>
-            Legend
-          </Box>
-        }
-        expandedContent={
-          <Box
-            component='ul'
-            sx={{
-              m: 0,
-              pl: 2.25,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 0.5,
-              fontSize: '0.75rem',
-              lineHeight: 1.4,
-            }}
-          >
-            {workflowLegendItems.map((item) => (
-              <Box component='li' key={item}>
-                {item}
-              </Box>
-            ))}
-          </Box>
-        }
-      />
-    </Box>
-  </Box>
-)
-
-const setupPaneIds: Array<RoomAssignmentsPaneId> = [
-  'slotAvailability',
-  'memberRoomAssignments',
-  'roomMemberAssignments',
-]
-const assignmentPaneIds: Array<RoomAssignmentsPaneId> = [
-  'manualGameRoomAssignment',
-  'roomAvailability',
-  'conflictSummary',
-  'roomUsageSummary',
-]
+const emptyRoomAssignmentsDashboardData = {
+  rooms: [],
+  games: [],
+  roomAssignments: [],
+  roomSlotAvailability: [],
+  memberRoomAssignments: [],
+  memberships: [],
+  gameAssignments: [],
+} as RoomAssignmentDashboardData
 
 const RoomAssignmentsPage = () => {
   const trpc = useTRPC()
@@ -316,16 +62,12 @@ const RoomAssignmentsPage = () => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
 
   const slotFilterOptions = useMemo<Array<number>>(
-    () =>
-      Array.from(
-        { length: configuration.numberOfSlots },
-        (_unusedValue: undefined, slotIndex: number) => slotIndex + 1,
-      ),
+    () => buildSlotFilterOptions(configuration.numberOfSlots),
     [configuration.numberOfSlots],
   )
 
   const [storedTab, setStoredTab] = useLocalStorage<unknown>(ROOM_ASSIGNMENTS_TAB_STORAGE_KEY, 'assignment')
-  const activeTab = useMemo<RoomAssignmentsTabId>(() => (isTabId(storedTab) ? storedTab : 'assignment'), [storedTab])
+  const activeTab = useMemo<RoomAssignmentsTabId>(() => sanitizeRoomAssignmentsTabId(storedTab), [storedTab])
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
 
@@ -334,7 +76,7 @@ const RoomAssignmentsPage = () => {
     'rows',
   )
   const setupLayoutMode = useMemo<RoomAssignmentsSetupLayoutMode>(
-    () => (isSetupLayoutMode(storedSetupLayoutMode) ? storedSetupLayoutMode : 'rows'),
+    () => sanitizeRoomAssignmentsSetupLayoutMode(storedSetupLayoutMode),
     [storedSetupLayoutMode],
   )
 
@@ -343,7 +85,7 @@ const RoomAssignmentsPage = () => {
     'grid',
   )
   const assignmentLayoutMode = useMemo<RoomAssignmentsAssignmentLayoutMode>(
-    () => (isAssignmentLayoutMode(storedAssignmentLayoutMode) ? storedAssignmentLayoutMode : 'grid'),
+    () => sanitizeRoomAssignmentsAssignmentLayoutMode(storedAssignmentLayoutMode),
     [storedAssignmentLayoutMode],
   )
 
@@ -352,7 +94,7 @@ const RoomAssignmentsPage = () => {
     null,
   )
   const expandedPaneId = useMemo<RoomAssignmentsPaneId | null>(
-    () => (isPaneId(storedExpandedPaneId) ? storedExpandedPaneId : null),
+    () => sanitizeRoomAssignmentsPaneId(storedExpandedPaneId),
     [storedExpandedPaneId],
   )
 
@@ -376,8 +118,25 @@ const RoomAssignmentsPage = () => {
   const conflictShowAllSlots = storedConflictShowAllSlots === true
   const [plannerResult, setPlannerResult] = useState<RecalculateRoomAssignmentsResult | null>(null)
 
-  const activePaneIds = activeTab === 'setup' ? setupPaneIds : assignmentPaneIds
-  const activeExpandedPaneId = expandedPaneId && activePaneIds.includes(expandedPaneId) ? expandedPaneId : null
+  const activeExpandedPaneId = useMemo<RoomAssignmentsPaneId | null>(
+    () =>
+      getActiveExpandedPaneId({
+        activeTab,
+        expandedPaneId,
+      }),
+    [activeTab, expandedPaneId],
+  )
+  const layoutPlan = useMemo<RoomAssignmentsLayoutPlan>(
+    () =>
+      buildRoomAssignmentsLayoutPlan({
+        activeExpandedPaneId,
+        activeTab,
+        assignmentLayoutMode,
+        isSmallScreen,
+        setupLayoutMode,
+      }),
+    [activeExpandedPaneId, activeTab, assignmentLayoutMode, isSmallScreen, setupLayoutMode],
+  )
 
   useEffect(() => {
     if (typeof document === 'undefined') return undefined
@@ -412,46 +171,21 @@ const RoomAssignmentsPage = () => {
     trpc.roomAssignments.recalculateRoomAssignments.mutationOptions(),
   )
 
-  const slotIds = useMemo(() => buildSlotIds(configuration.numberOfSlots), [configuration.numberOfSlots])
-  const sortedGames = useMemo(() => sortGamesForRoomAssignment(data?.games ?? []), [data?.games])
-  const defaultAssignmentByGameId = useMemo(
-    () => buildDefaultRoomAssignmentByGameId(data?.roomAssignments ?? []),
-    [data?.roomAssignments],
-  )
-  const availabilityByKey = useMemo(
-    () => buildRoomSlotAvailabilityMap(data?.roomSlotAvailability ?? []),
-    [data?.roomSlotAvailability],
-  )
-  const memberRoomIdByMemberId = useMemo(
-    () => buildMemberRoomIdByMemberId(data?.memberRoomAssignments ?? []),
-    [data?.memberRoomAssignments],
-  )
-  const rooms = useMemo(() => data?.rooms ?? [], [data?.rooms])
-  const memberships = useMemo(() => data?.memberships ?? [], [data?.memberships])
-  const roomAssignments = useMemo(() => data?.roomAssignments ?? [], [data?.roomAssignments])
-  const gameAssignments = useMemo(() => data?.gameAssignments ?? [], [data?.gameAssignments])
-
-  const assignedMemberNamesByRoomId = useMemo(
-    () => buildAssignedMemberNamesByRoomId(memberships, memberRoomIdByMemberId),
-    [memberRoomIdByMemberId, memberships],
-  )
-
-  const gmNamesByGameId = useMemo(() => buildGmNamesByGameId(gameAssignments), [gameAssignments])
-  const assignmentCountsByGameId = useMemo(() => buildAssignmentCountsByGameId(gameAssignments), [gameAssignments])
-  const gameMembersByGameId = useMemo(() => buildGameMembersByGameId(gameAssignments), [gameAssignments])
-  const requiredAccessibilityByGameId = useMemo(
-    () => buildRequiredAccessibilityByGameId(gameAssignments),
-    [gameAssignments],
-  )
-  const overrideAssignmentsByGameId = useMemo(
+  const dashboardData = data ?? emptyRoomAssignmentsDashboardData
+  const { memberships } = dashboardData
+  const dashboardViewModel = useMemo(
     () =>
-      buildOverrideAssignmentsByGameId({
-        roomAssignments,
-        rooms,
-        assignedMemberNamesByRoomId,
+      buildRoomAssignmentsDashboardViewModel({
+        data: dashboardData,
+        numberOfSlots: configuration.numberOfSlots,
+        assignmentSlotFilterId,
+        showMemberRooms,
+        conflictShowAllSlots,
+        year,
       }),
-    [assignedMemberNamesByRoomId, roomAssignments, rooms],
+    [assignmentSlotFilterId, configuration.numberOfSlots, conflictShowAllSlots, dashboardData, showMemberRooms, year],
   )
+  const { slotIds, defaultAssignmentByGameId, memberRoomIdByMemberId, roomSlotAvailabilityRows } = dashboardViewModel
 
   const isMutationPending =
     assignGameRoomMutation.isPending ||
@@ -461,36 +195,6 @@ const RoomAssignmentsPage = () => {
     updateGameRoomMutation.isPending ||
     resetRoomAssignmentsMutation.isPending ||
     recalculateRoomAssignmentsMutation.isPending
-
-  const roomOptions = useMemo<Array<SizedRoomSelectOption>>(
-    () => buildRoomSelectOptions(rooms, assignedMemberNamesByRoomId),
-    [assignedMemberNamesByRoomId, rooms],
-  )
-  const enabledManualRoomOptions = useMemo<Array<ManualRoomSelectOption>>(
-    () =>
-      buildEnabledManualRoomOptions({
-        roomOptions,
-        rooms,
-        roomAssignments,
-        availabilityByKey,
-        slotId: assignmentSlotFilterId,
-        year,
-      }),
-    [assignmentSlotFilterId, availabilityByKey, roomAssignments, roomOptions, rooms, year],
-  )
-
-  const memberOptions = useMemo(
-    () =>
-      memberships
-        .filter((membership) => membership.attending)
-        .map((membership) => ({
-          id: membership.id,
-          fullName: membership.user.fullName ?? '',
-        }))
-        .filter((memberOption) => memberOption.fullName)
-        .sort((left, right) => left.fullName.localeCompare(right.fullName)),
-    [memberships],
-  )
 
   const handleGameRoomChange = useCallback(
     async ({ gameId, slotId, roomId }: { gameId: number; slotId: number; roomId: number | null }) => {
@@ -578,38 +282,26 @@ const RoomAssignmentsPage = () => {
 
   const handleRoomMembersChange = useCallback(
     async ({ roomId, memberIds }: { roomId: number; memberIds: Array<number> }) => {
-      const nextMemberIds = [...new Set(memberIds)]
-      const currentMemberIdsForRoom = memberships
-        .filter((membership) => membership.attending)
-        .filter((membership) => memberRoomIdByMemberId.get(membership.id) === roomId)
-        .map((membership) => membership.id)
+      const assignmentUpdates = buildRoomMemberAssignmentUpdates({
+        roomId,
+        memberships,
+        memberRoomIdByMemberId,
+        nextMemberIds: memberIds,
+      })
 
-      const currentMemberIdsForRoomSet = new Set(currentMemberIdsForRoom)
-      const nextMemberIdsSet = new Set(nextMemberIds)
-
-      const memberIdsToAssign = nextMemberIds.filter((memberId) => !currentMemberIdsForRoomSet.has(memberId))
-      const memberIdsToUnassign = currentMemberIdsForRoom.filter((memberId) => !nextMemberIdsSet.has(memberId))
-
-      if (memberIdsToAssign.length === 0 && memberIdsToUnassign.length === 0) {
+      if (assignmentUpdates.length === 0) {
         return
       }
 
-      await Promise.all([
-        ...memberIdsToAssign.map((memberId) =>
+      await Promise.all(
+        assignmentUpdates.map((assignmentUpdate) =>
           upsertMemberRoomAssignmentMutation.mutateAsync({
-            memberId,
-            roomId,
+            memberId: assignmentUpdate.memberId,
+            roomId: assignmentUpdate.roomId,
             year,
           }),
         ),
-        ...memberIdsToUnassign.map((memberId) =>
-          upsertMemberRoomAssignmentMutation.mutateAsync({
-            memberId,
-            roomId: null,
-            year,
-          }),
-        ),
-      ])
+      )
       await invalidateRoomAssignmentQueries()
     },
     [invalidateRoomAssignmentQueries, memberRoomIdByMemberId, memberships, upsertMemberRoomAssignmentMutation, year],
@@ -704,74 +396,17 @@ const RoomAssignmentsPage = () => {
     await invalidateRoomAssignmentQueries()
   }, [invalidateRoomAssignmentQueries, resetRoomAssignmentsMutation, year])
 
-  const manualGameRows = useMemo<Array<ManualGameRoomAssignmentRow>>(
-    () =>
-      buildManualGameRows({
-        games: sortedGames,
-        defaultAssignmentByGameId,
-        gmNamesByGameId,
-        assignmentCountsByGameId,
-        gameMembersByGameId,
-        overrideAssignmentsByGameId,
-      }),
-    [
-      assignmentCountsByGameId,
-      defaultAssignmentByGameId,
-      gameMembersByGameId,
-      gmNamesByGameId,
-      overrideAssignmentsByGameId,
-      sortedGames,
-    ],
-  )
-
-  const filteredManualGameRows = useMemo<Array<ManualGameRoomAssignmentRow>>(
-    () => manualGameRows.filter((row) => row.slotId === assignmentSlotFilterId),
-    [assignmentSlotFilterId, manualGameRows],
-  )
-
-  const roomSlotAvailabilityRows = useMemo<Array<RoomSlotAvailabilityRow>>(
-    () =>
-      rooms.map((room) => {
-        const slotAvailabilityBySlotId = Object.fromEntries(
-          slotIds.map((slotId) => [
-            slotId,
-            isRoomAvailableInSlot({
-              availabilityByKey,
-              roomId: room.id,
-              slotId,
-              year,
-            }),
-          ]),
-        )
-
-        return {
-          id: room.id,
-          roomId: room.id,
-          roomDescription: room.description,
-          roomType: room.type,
-          slotAvailabilityBySlotId,
-        }
-      }),
-    [availabilityByKey, rooms, slotIds, year],
-  )
-
   const handleSetAllRoomsFullAvailability = useCallback(
     async (roomIds: Array<number>) => {
       if (roomIds.length === 0) {
         return
       }
 
-      const selectedRoomIds = new Set(roomIds)
-      const availabilityUpdates = roomSlotAvailabilityRows.flatMap((roomRow) =>
-        selectedRoomIds.has(roomRow.roomId)
-          ? slotIds
-              .filter((slotId) => !(roomRow.slotAvailabilityBySlotId[slotId] ?? true))
-              .map((slotId) => ({
-                roomId: roomRow.roomId,
-                slotId,
-              }))
-          : [],
-      )
+      const availabilityUpdates = buildFullAvailabilityUpdates({
+        roomIds,
+        rows: roomSlotAvailabilityRows,
+        slotIds,
+      })
 
       if (availabilityUpdates.length === 0) {
         return
@@ -792,85 +427,11 @@ const RoomAssignmentsPage = () => {
     [invalidateRoomAssignmentQueries, roomSlotAvailabilityRows, slotIds, upsertRoomSlotAvailabilityMutation, year],
   )
 
-  const memberRoomRows = useMemo<Array<MemberRoomAssignmentRow>>(
-    () =>
-      buildMemberRoomRows({
-        memberships,
-        memberRoomIdByMemberId,
-      }),
-    [memberRoomIdByMemberId, memberships],
-  )
-
-  const roomMemberRows = useMemo<Array<RoomMemberAssignmentRow>>(
-    () =>
-      buildRoomMemberRows({
-        rooms,
-        memberships,
-        memberRoomIdByMemberId,
-      }),
-    [memberRoomIdByMemberId, memberships, rooms],
-  )
-
-  const currentSlotAvailableRooms = useMemo<Array<CurrentSlotRoomAvailabilityRow>>(
-    () =>
-      buildCurrentSlotAvailableRooms({
-        rooms,
-        roomAssignments,
-        assignedMemberNamesByRoomId,
-        availabilityByKey,
-        slotId: assignmentSlotFilterId,
-        year,
-      }),
-    [assignedMemberNamesByRoomId, assignmentSlotFilterId, availabilityByKey, roomAssignments, rooms, year],
-  )
-
-  const roomUsageSummaryRows = useMemo<Array<RoomUsageSummaryRow>>(
-    () =>
-      buildRoomUsageSummaryRows({
-        rooms,
-        roomAssignments,
-        assignedMemberNamesByRoomId,
-      }),
-    [assignedMemberNamesByRoomId, roomAssignments, rooms],
-  )
-  const filteredRoomUsageSummaryRows = useMemo<Array<RoomUsageSummaryRow>>(
-    () =>
-      showMemberRooms ? roomUsageSummaryRows.filter((row) => row.assignedMemberNames.length > 0) : roomUsageSummaryRows,
-    [roomUsageSummaryRows, showMemberRooms],
-  )
-
-  const roomAssignmentConflictRows = useMemo<Array<RoomAssignmentConflictRow>>(
-    () =>
-      buildRoomAssignmentConflictRows({
-        games: sortedGames,
-        rooms,
-        roomAssignments,
-        assignmentCountsByGameId,
-        gmNamesByGameId,
-        requiredAccessibilityByGameId,
-        assignedMemberNamesByRoomId,
-        availabilityByKey,
-        year,
-      }),
-    [
-      assignmentCountsByGameId,
-      assignedMemberNamesByRoomId,
-      availabilityByKey,
-      gmNamesByGameId,
-      requiredAccessibilityByGameId,
-      roomAssignments,
-      rooms,
-      sortedGames,
-      year,
-    ],
-  )
-
-  const filteredRoomAssignmentConflictRows = useMemo<Array<RoomAssignmentConflictRow>>(
-    () =>
-      conflictShowAllSlots
-        ? roomAssignmentConflictRows
-        : roomAssignmentConflictRows.filter((row) => row.slotId === assignmentSlotFilterId),
-    [assignmentSlotFilterId, conflictShowAllSlots, roomAssignmentConflictRows],
+  const handleToggleExpand = useCallback(
+    (paneId: RoomAssignmentsPaneId) => {
+      setStoredExpandedPaneId(activeExpandedPaneId === paneId ? null : paneId)
+    },
+    [activeExpandedPaneId, setStoredExpandedPaneId],
   )
 
   if (isLoading) {
@@ -883,219 +444,6 @@ const RoomAssignmentsPage = () => {
 
   if (!data) {
     return <Loader />
-  }
-
-  const renderPane = (paneId: RoomAssignmentsPaneId) => {
-    const isPaneExpanded = activeExpandedPaneId === paneId
-
-    switch (paneId) {
-      case 'slotAvailability':
-        return (
-          <RoomSlotAvailabilityPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            rows={roomSlotAvailabilityRows}
-            slotIds={slotIds}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            onRoomSlotAvailabilityChange={handleRoomSlotAvailabilityChange}
-            onSetAllRoomsFullAvailability={handleSetAllRoomsFullAvailability}
-          />
-        )
-      case 'memberRoomAssignments':
-        return (
-          <MemberRoomAssignmentsPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            rows={memberRoomRows}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            isMutationPending={isMutationPending}
-            roomOptions={roomOptions}
-            onMemberRoomChange={handleMemberRoomChange}
-          />
-        )
-      case 'roomMemberAssignments':
-        return (
-          <AssignMembersToRoomsPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            rows={roomMemberRows}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            isMutationPending={isMutationPending}
-            memberOptions={memberOptions}
-            onRoomEnabledChange={handleRoomEnabledChange}
-            onRoomMembersChange={handleRoomMembersChange}
-          />
-        )
-      case 'manualGameRoomAssignment':
-        return (
-          <ManualGameRoomAssignmentPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            slotId={assignmentSlotFilterId}
-            rows={filteredManualGameRows}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            isMutationPending={isMutationPending}
-            roomOptions={enabledManualRoomOptions}
-            onGameRoomChange={handleGameRoomChange}
-            onAddOverrideRoom={handleOverrideGameRoomAdd}
-            onRemoveRoomAssignment={handleRemoveRoomAssignment}
-          />
-        )
-      case 'roomAvailability':
-        return (
-          <CurrentSlotRoomAvailabilityPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            slotId={assignmentSlotFilterId}
-            rows={currentSlotAvailableRooms}
-            isLoading={isLoading}
-            isFetching={isFetching}
-          />
-        )
-      case 'conflictSummary':
-        return (
-          <RoomAssignmentConflictSummaryPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            slotId={assignmentSlotFilterId}
-            rows={filteredRoomAssignmentConflictRows}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            showAllSlots={conflictShowAllSlots}
-            onShowAllSlotsChange={setStoredConflictShowAllSlots}
-          />
-        )
-      case 'roomUsageSummary':
-        return (
-          <RoomUsageSummaryPane
-            isExpanded={isPaneExpanded}
-            onToggleExpand={() => setStoredExpandedPaneId(isPaneExpanded ? null : paneId)}
-            rows={filteredRoomUsageSummaryRows}
-            isLoading={isLoading}
-            isFetching={isFetching}
-            showMemberRooms={showMemberRooms}
-            onShowMemberRoomsChange={setStoredShowMemberRooms}
-          />
-        )
-      default:
-        return null
-    }
-  }
-
-  const renderLayout = () => {
-    if (isSmallScreen) {
-      if (activeExpandedPaneId) {
-        return <Box sx={{ flex: 1, minHeight: 0 }}>{renderPane(activeExpandedPaneId)}</Box>
-      }
-
-      return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, minHeight: 0 }}>
-          {activePaneIds.map((paneId) => (
-            <Box key={paneId} sx={{ minHeight: 0, flex: 1 }}>
-              {renderPane(paneId)}
-            </Box>
-          ))}
-        </Box>
-      )
-    }
-
-    if (activeExpandedPaneId) {
-      return (
-        <Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          {renderPane(activeExpandedPaneId)}
-        </Box>
-      )
-    }
-
-    if (activeTab === 'setup') {
-      if (setupLayoutMode === 'columns') {
-        return (
-          <Group orientation='horizontal' style={{ flex: 1, minHeight: 0 }}>
-            <Panel defaultSize={34} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('slotAvailability')}
-            </Panel>
-            <ResizeHandle direction='vertical' />
-            <Panel defaultSize={33} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('memberRoomAssignments')}
-            </Panel>
-            <ResizeHandle direction='vertical' />
-            <Panel defaultSize={33} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('roomMemberAssignments')}
-            </Panel>
-          </Group>
-        )
-      }
-
-      return (
-        <Group orientation='vertical' style={{ flex: 1, minHeight: 0 }}>
-          <Panel defaultSize={34} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('slotAvailability')}
-          </Panel>
-          <ResizeHandle direction='horizontal' />
-          <Panel defaultSize={33} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('memberRoomAssignments')}
-          </Panel>
-          <ResizeHandle direction='horizontal' />
-          <Panel defaultSize={33} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('roomMemberAssignments')}
-          </Panel>
-        </Group>
-      )
-    }
-
-    if (assignmentLayoutMode === 'columns') {
-      return (
-        <Group orientation='horizontal' style={{ flex: 1, minHeight: 0 }}>
-          <Panel defaultSize={40} minSize={24} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('manualGameRoomAssignment')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={20} minSize={14} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('roomAvailability')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={20} minSize={14} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('conflictSummary')}
-          </Panel>
-          <ResizeHandle direction='vertical' />
-          <Panel defaultSize={20} minSize={14} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-            {renderPane('roomUsageSummary')}
-          </Panel>
-        </Group>
-      )
-    }
-
-    return (
-      <Group orientation='horizontal' style={{ flex: 1, minHeight: 0 }}>
-        <Panel defaultSize={60} minSize={30} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          {renderPane('manualGameRoomAssignment')}
-        </Panel>
-        <ResizeHandle direction='vertical' />
-        <Panel defaultSize={40} minSize={30} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-          <Group orientation='vertical' style={{ flex: 1, minHeight: 0 }}>
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              {renderPane('roomAvailability')}
-            </Panel>
-            <ResizeHandle direction='horizontal' />
-            <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-              <Group orientation='vertical' style={{ flex: 1, minHeight: 0 }}>
-                <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                  {renderPane('conflictSummary')}
-                </Panel>
-                <ResizeHandle direction='horizontal' />
-                <Panel defaultSize={50} minSize={20} style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-                  {renderPane('roomUsageSummary')}
-                </Panel>
-              </Group>
-            </Panel>
-          </Group>
-        </Panel>
-      </Group>
-    )
   }
 
   return (
@@ -1131,129 +479,61 @@ const RoomAssignmentsPage = () => {
             backgroundColor: 'background.paper',
           }}
         >
-          <RoomAssignmentsTitleBar
+          <RoomAssignmentsPageChrome
             activeTab={activeTab}
             onTabChange={(nextTab) => {
               setStoredTab(nextTab)
               setStoredExpandedPaneId(null)
             }}
+            assignmentSlotFilterId={assignmentSlotFilterId}
+            slotFilterOptions={slotFilterOptions}
+            onAssignmentSlotFilterChange={setStoredAssignmentSlotFilterId}
+            assignmentLayoutMode={assignmentLayoutMode}
+            onAssignmentLayoutModeChange={setStoredAssignmentLayoutMode}
+            setupLayoutMode={setupLayoutMode}
+            onSetupLayoutModeChange={setStoredSetupLayoutMode}
+            onResetRoomAssignments={handleResetRoomAssignments}
+            onRecalculateRoomAssignments={handleRecalculateRoomAssignments}
+            onRecalculateSlotRoomAssignments={handleRecalculateSlotRoomAssignments}
+            onDownloadPlannerResult={() => {
+              if (!plannerResult) {
+                return
+              }
+
+              downloadInitialPlannerResult({
+                result: plannerResult,
+                year,
+              })
+            }}
+            canDownloadPlannerResult={plannerResult !== null}
+            isResetPending={resetRoomAssignmentsMutation.isPending}
+            isRecalculatePending={recalculateRoomAssignmentsMutation.isPending}
           />
 
-          <Box
-            sx={{
-              px: 2,
-              pb: 1,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 2,
-              flexWrap: 'wrap',
-            }}
-          >
-            {activeTab === 'assignment' ? (
-              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-                  <Button
-                    variant='outlined'
-                    color='error'
-                    onClick={handleResetRoomAssignments}
-                    disabled={resetRoomAssignmentsMutation.isPending}
-                  >
-                    Reset Room Assignments
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    onClick={handleRecalculateRoomAssignments}
-                    disabled={recalculateRoomAssignmentsMutation.isPending}
-                  >
-                    Calculate
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    onClick={handleRecalculateSlotRoomAssignments}
-                    disabled={recalculateRoomAssignmentsMutation.isPending}
-                  >
-                    Calculate for This Slot
-                  </Button>
-                  <Button
-                    variant='outlined'
-                    onClick={() => {
-                      if (!plannerResult) {
-                        return
-                      }
-
-                      downloadInitialPlannerResult({
-                        result: plannerResult,
-                        year,
-                      })
-                    }}
-                    disabled={!plannerResult}
-                  >
-                    Download Details
-                  </Button>
-                </Box>
-              </Box>
-            ) : (
-              <Box />
-            )}
-            {activeTab === 'assignment' ? (
-              <>
-                <ExplicitSlotFilterSelect
-                  slotFilterOptions={slotFilterOptions}
-                  slotFilterId={assignmentSlotFilterId}
-                  onSlotFilterChange={(nextSlotFilterId) => {
-                    setStoredAssignmentSlotFilterId(nextSlotFilterId)
-                  }}
-                />
-                <ToggleButtonGroup
-                  value={assignmentLayoutMode}
-                  exclusive
-                  onChange={(
-                    _event: MouseEvent<HTMLElement>,
-                    nextLayoutMode: RoomAssignmentsAssignmentLayoutMode | null,
-                  ) => {
-                    if (!nextLayoutMode) {
-                      return
-                    }
-
-                    setStoredAssignmentLayoutMode(nextLayoutMode)
-                  }}
-                  size='small'
-                  aria-label='Assignment layout'
-                >
-                  <ToggleButton value='grid' aria-label='Grid layout'>
-                    Grid
-                  </ToggleButton>
-                  <ToggleButton value='columns' aria-label='Column layout'>
-                    Columns
-                  </ToggleButton>
-                </ToggleButtonGroup>
-              </>
-            ) : (
-              <ToggleButtonGroup
-                value={setupLayoutMode}
-                exclusive
-                onChange={(_event: MouseEvent<HTMLElement>, nextLayoutMode: RoomAssignmentsSetupLayoutMode | null) => {
-                  if (!nextLayoutMode) {
-                    return
-                  }
-
-                  setStoredSetupLayoutMode(nextLayoutMode)
-                }}
-                size='small'
-                aria-label='Setup layout'
-              >
-                <ToggleButton value='rows' aria-label='Rows layout'>
-                  Rows
-                </ToggleButton>
-                <ToggleButton value='columns' aria-label='Columns layout'>
-                  Columns
-                </ToggleButton>
-              </ToggleButtonGroup>
-            )}
+          <Box sx={{ px: 2, pb: 2, minHeight: 0, flex: 1, display: 'flex', overflow: 'hidden' }}>
+            <RoomAssignmentsDashboard
+              layoutPlan={layoutPlan}
+              activeExpandedPaneId={activeExpandedPaneId}
+              assignmentSlotFilterId={assignmentSlotFilterId}
+              isLoading={isLoading}
+              isFetching={isFetching}
+              isMutationPending={isMutationPending}
+              showMemberRooms={showMemberRooms}
+              conflictShowAllSlots={conflictShowAllSlots}
+              viewModel={dashboardViewModel}
+              onToggleExpand={handleToggleExpand}
+              onGameRoomChange={handleGameRoomChange}
+              onOverrideGameRoomAdd={handleOverrideGameRoomAdd}
+              onRemoveRoomAssignment={handleRemoveRoomAssignment}
+              onRoomSlotAvailabilityChange={handleRoomSlotAvailabilityChange}
+              onSetAllRoomsFullAvailability={handleSetAllRoomsFullAvailability}
+              onMemberRoomChange={handleMemberRoomChange}
+              onRoomMembersChange={handleRoomMembersChange}
+              onRoomEnabledChange={handleRoomEnabledChange}
+              onShowMemberRoomsChange={setStoredShowMemberRooms}
+              onConflictShowAllSlotsChange={setStoredConflictShowAllSlots}
+            />
           </Box>
-
-          <Box sx={{ px: 2, pb: 2, minHeight: 0, flex: 1, display: 'flex', overflow: 'hidden' }}>{renderLayout()}</Box>
         </Box>
       </Box>
     </Page>

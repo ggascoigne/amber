@@ -1,67 +1,33 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import type { GameAssignmentDashboardData, UpdateGameAssignmentsInput } from '@amber/client'
+import type { GameAssignmentDashboardData } from '@amber/client'
 import type { TableAutocompleteOption, TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
-import OpenInFullIcon from '@mui/icons-material/OpenInFull'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
-import { ShowExpandedToggle } from './ShowExpandedToggle'
-import { SlotFilterSelect } from './SlotFilterSelect'
-import type { GameAssignmentSummaryRow } from './utils'
+import type { DashboardAssignmentUpdatePayload } from './dashboardData'
+import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
+import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './utils'
 import {
   buildAssignmentCountsByGameId,
   buildAssignmentsByGameId,
   buildChoicesByMemberSlot,
+  buildGameAssignmentAddPayload,
+  buildEmptyMemberAssignmentCounts,
+  buildGameAssignmentEditorRows,
+  buildGameAssignmentPayloadFromUpdates,
+  buildGameAssignmentSummaryRows,
+  buildMemberAssignmentCountsByMemberId,
   buildMoveOptions,
-  filterGamesWithSlotsOrAny,
+  buildMoveSelectOptions,
+  buildUpdatedGameAssignmentRowMemberSelection,
   formatGameName,
-  getChoiceForGame,
-  getChoiceRankForGame,
-  getPriorityLabel,
-  getPrioritySortValue,
-  isScheduledAssignment,
+  buildSlotAssignmentScope,
 } from './utils'
 
 import { PlayerPreference } from '../../utils/selectValues'
-
-type AssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
-
-type AssignmentUpdatePayload = {
-  adds: Array<AssignmentUpdate>
-  removes: Array<AssignmentUpdate>
-}
-
-type MemberAssignmentCounts = {
-  gmOrFirst: number
-  second: number
-  third: number
-  fourth: number
-  other: number
-}
-
-const buildEmptyMemberAssignmentCounts = (): MemberAssignmentCounts => ({
-  gmOrFirst: 0,
-  second: 0,
-  third: 0,
-  fourth: 0,
-  other: 0,
-})
-
-type GameAssignmentRow = {
-  rowId: string
-  memberId: number | null
-  gameId: number
-  slotId: number
-  gm: number
-  moveToGameId: number
-  priorityLabel: string
-  prioritySortValue: number
-  counts: MemberAssignmentCounts
-}
 
 type GameAssignmentsByGamePanelProps = {
   data: GameAssignmentDashboardData
@@ -69,7 +35,7 @@ type GameAssignmentsByGamePanelProps = {
   slotFilterOptions: Array<number>
   slotFilterId: number | null
   onSlotFilterChange: (slotFilterId: number | null) => void
-  onUpdateAssignments: (payload: AssignmentUpdatePayload) => Promise<void>
+  onUpdateAssignments: (payload: DashboardAssignmentUpdatePayload) => Promise<void>
   isExpanded?: boolean
   onToggleExpand?: () => void
   scrollBehavior?: 'none' | 'bounded'
@@ -88,21 +54,15 @@ export const GameAssignmentsByGamePanel = ({
 }: GameAssignmentsByGamePanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const draftIdRef = useRef(0)
-  const slotGames = useMemo(() => filterGamesWithSlotsOrAny(data.games), [data.games])
-  const filteredSlotGames = useMemo(
+  const { filteredSlotGames, scheduledAssignments } = useMemo(
     () =>
-      slotFilterId === null
-        ? slotGames
-        : slotGames.filter((game) => game.slotId === slotFilterId || game.category === 'any_game'),
-    [slotFilterId, slotGames],
-  )
-  const slotGameIdSet = useMemo(() => new Set(filteredSlotGames.map((game) => game.id)), [filteredSlotGames])
-  const scheduledAssignments = useMemo(
-    () =>
-      data.assignments.filter(
-        (assignment) => isScheduledAssignment(assignment) && slotGameIdSet.has(assignment.gameId),
-      ),
-    [data.assignments, slotGameIdSet],
+      buildSlotAssignmentScope({
+        games: data.games,
+        assignments: data.assignments,
+        slotFilterId,
+        includeAnyGame: true,
+      }),
+    [data.assignments, data.games, slotFilterId],
   )
   const assignmentsByGameId = useMemo(() => buildAssignmentsByGameId(scheduledAssignments), [scheduledAssignments])
   const assignmentCountsByGameId = useMemo(
@@ -110,31 +70,10 @@ export const GameAssignmentsByGamePanel = ({
     [filteredSlotGames, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
-  const memberAssignmentCountsByMemberId = useMemo(() => {
-    const countsByMemberId = new Map<number, MemberAssignmentCounts>()
-    scheduledAssignments.forEach((assignment) => {
-      const counts = countsByMemberId.get(assignment.memberId) ?? buildEmptyMemberAssignmentCounts()
-      const rank = getChoiceRankForGame(
-        choicesByMemberSlot,
-        assignment.memberId,
-        assignment.game?.slotId ?? 0,
-        assignment.gameId,
-      )
-      if (rank === 0 || rank === 1) {
-        counts.gmOrFirst += 1
-      } else if (rank === 2) {
-        counts.second += 1
-      } else if (rank === 3) {
-        counts.third += 1
-      } else if (rank === 4) {
-        counts.fourth += 1
-      } else {
-        counts.other += 1
-      }
-      countsByMemberId.set(assignment.memberId, counts)
-    })
-    return countsByMemberId
-  }, [choicesByMemberSlot, scheduledAssignments])
+  const memberAssignmentCountsByMemberId = useMemo(
+    () => buildMemberAssignmentCountsByMemberId(scheduledAssignments, choicesByMemberSlot),
+    [choicesByMemberSlot, scheduledAssignments],
+  )
 
   const memberOptions = useMemo<Array<TableAutocompleteOption>>(
     () =>
@@ -160,21 +99,7 @@ export const GameAssignmentsByGamePanel = ({
   )
 
   const gameRows = useMemo<Array<GameAssignmentSummaryRow>>(
-    () =>
-      filteredSlotGames.map((game) => {
-        const counts = assignmentCountsByGameId.get(game.id)
-        return {
-          gameId: game.id,
-          slotId: game.slotId ?? 0,
-          name: formatGameName(game),
-          playerMin: game.playerMin,
-          playerMax: game.playerMax,
-          assignedCount: counts?.assignedCount ?? 0,
-          overrun: counts?.overrun ?? 0,
-          shortfall: counts?.shortfall ?? game.playerMin,
-          spaces: counts?.spaces ?? Math.max(0, game.playerMax),
-        }
-      }),
+    () => buildGameAssignmentSummaryRows(filteredSlotGames, assignmentCountsByGameId),
     [assignmentCountsByGameId, filteredSlotGames],
   )
 
@@ -281,7 +206,7 @@ export const GameAssignmentsByGamePanel = ({
     [filteredSlotGames],
   )
 
-  const assignmentColumns = useMemo<Array<ColumnDef<GameAssignmentRow>>>(
+  const assignmentColumns = useMemo<Array<ColumnDef<GameAssignmentEditorRow>>>(
     () => [
       {
         accessorKey: 'memberId',
@@ -299,22 +224,14 @@ export const GameAssignmentsByGamePanel = ({
             autocomplete: {
               options: memberOptions,
             },
-            setValue: (row: GameAssignmentRow, value: unknown) => {
+            setValue: (row: GameAssignmentEditorRow, value: unknown) => {
               const nextMemberId = value === null || value === undefined || value === '' ? null : Number(value)
-              const choice = nextMemberId
-                ? getChoiceForGame(choicesByMemberSlot, nextMemberId, row.slotId, row.gameId)
-                : null
-              const rank = choice?.rank ?? null
-              const returningPlayer = choice?.returningPlayer ?? false
-              return {
-                ...row,
+              return buildUpdatedGameAssignmentRowMemberSelection({
+                assignmentRow: row,
                 memberId: nextMemberId,
-                priorityLabel: getPriorityLabel(rank, returningPlayer),
-                prioritySortValue: getPrioritySortValue(rank, returningPlayer),
-                counts: nextMemberId
-                  ? (memberAssignmentCountsByMemberId.get(nextMemberId) ?? buildEmptyMemberAssignmentCounts())
-                  : buildEmptyMemberAssignmentCounts(),
-              }
+                choicesByMemberSlot,
+                memberAssignmentCountsByMemberId,
+              })
             },
           },
         },
@@ -345,30 +262,7 @@ export const GameAssignmentsByGamePanel = ({
                 memberId: row.original.memberId,
                 slotId: row.original.slotId,
               })
-              const headerOption = {
-                label: 'Headers',
-                value: '__header__',
-                isHeader: true,
-                columns: [
-                  { value: 'Game' },
-                  { value: 'Priority', width: 90, align: 'right' as const },
-                  { value: 'Overrun', width: 85, align: 'right' as const },
-                  { value: 'Shortfall', width: 90, align: 'right' as const },
-                  { value: 'Spaces', width: 90, align: 'right' as const },
-                ],
-              }
-              const selectOptions = options.map((option) => ({
-                value: option.gameId,
-                label: option.name,
-                columns: [
-                  { value: option.name },
-                  { value: option.priorityLabel, width: 90 },
-                  { value: option.overrunLabel, width: 85, align: 'right' as const },
-                  { value: option.shortfallLabel, width: 90, align: 'right' as const },
-                  { value: option.spacesLabel, width: 90, align: 'right' as const },
-                ],
-              }))
-              return [headerOption, ...selectOptions]
+              return buildMoveSelectOptions(options)
             },
             parseValue: (value) => (value === '' ? null : Number(value)),
           },
@@ -426,7 +320,7 @@ export const GameAssignmentsByGamePanel = ({
     ],
   )
 
-  const validateAssignmentRow = useCallback(({ updatedRow }: TableRowValidationParams<GameAssignmentRow>) => {
+  const validateAssignmentRow = useCallback(({ updatedRow }: TableRowValidationParams<GameAssignmentEditorRow>) => {
     if (!updatedRow.memberId) return 'Member is required.'
     return null
   }, [])
@@ -442,72 +336,24 @@ export const GameAssignmentsByGamePanel = ({
       const assignments = assignmentsByGameId.get(gameId) ?? []
       const expandedGame = gameById.get(gameId)
       const organizerMessage = expandedGame?.message?.trim()
-      const assignmentRows = assignments.map((assignment) => {
-        const { memberId, gameId: assignedGameId, gm, game } = assignment
-        const choice = getChoiceForGame(choicesByMemberSlot, memberId, game?.slotId ?? slotId, assignedGameId)
-        const rank = choice?.rank ?? null
-        const returningPlayer = choice?.returningPlayer ?? false
-
-        return {
-          rowId: `${memberId}-${assignedGameId}-${gm}`,
-          memberId,
-          gameId: assignedGameId,
-          slotId: game?.slotId ?? slotId,
-          gm,
-          moveToGameId: assignedGameId,
-          priorityLabel: getPriorityLabel(rank, returningPlayer),
-          prioritySortValue: getPrioritySortValue(rank, returningPlayer),
-          counts: memberAssignmentCountsByMemberId.get(memberId) ?? buildEmptyMemberAssignmentCounts(),
-        }
+      const assignmentRows = buildGameAssignmentEditorRows({
+        assignments,
+        choicesByMemberSlot,
+        memberAssignmentCountsByMemberId,
+        fallbackSlotId: slotId,
       })
 
-      const handleSave = async (updates: Array<TableEditRowUpdate<GameAssignmentRow>>) => {
-        const adds: Array<AssignmentUpdate> = []
-        const removes: Array<AssignmentUpdate> = []
+      const handleSave = async (updates: Array<TableEditRowUpdate<GameAssignmentEditorRow>>) => {
+        const payload = buildGameAssignmentPayloadFromUpdates({ updates, year })
 
-        updates.forEach((update) => {
-          const { original, updated } = update
-          const { memberId: originalMemberId, gameId: originalGameId, gm: originalGm } = original
-          const { memberId: nextMemberId, moveToGameId: nextGameId } = updated
-
-          if (!nextMemberId || !nextGameId) return
-
-          if (originalMemberId !== nextMemberId || originalGameId !== nextGameId) {
-            if (originalMemberId) {
-              removes.push({
-                memberId: originalMemberId,
-                gameId: originalGameId,
-                gm: originalGm,
-                year,
-              })
-            }
-            adds.push({
-              memberId: nextMemberId,
-              gameId: nextGameId,
-              gm: originalGm,
-              year,
-            })
-          }
-        })
-
-        if (adds.length === 0 && removes.length === 0) return
-        await onUpdateAssignments({ adds, removes })
+        if (payload.adds.length === 0 && payload.removes.length === 0) return
+        await onUpdateAssignments(payload)
       }
 
-      const handleAddRow = async (assignment: GameAssignmentRow) => {
-        const { memberId, moveToGameId, gm } = assignment
-        if (!memberId) return
-        await onUpdateAssignments({
-          adds: [
-            {
-              memberId,
-              gameId: moveToGameId,
-              gm,
-              year,
-            },
-          ],
-          removes: [],
-        })
+      const handleAddRow = async (assignment: GameAssignmentEditorRow) => {
+        const payload = buildGameAssignmentAddPayload({ assignment, year })
+        if (payload.adds.length === 0) return
+        await onUpdateAssignments(payload)
       }
 
       const editingConfig = {
@@ -528,7 +374,7 @@ export const GameAssignmentsByGamePanel = ({
             counts: buildEmptyMemberAssignmentCounts(),
           }),
           onAddRow: handleAddRow,
-          isNewRow: (assignment: GameAssignmentRow) => assignment.rowId.startsWith('new-'),
+          isNewRow: (assignment: GameAssignmentEditorRow) => assignment.rowId.startsWith('new-'),
         },
       }
 
@@ -568,7 +414,7 @@ export const GameAssignmentsByGamePanel = ({
               }
             />
           ) : null}
-          <Table<GameAssignmentRow>
+          <Table<GameAssignmentEditorRow>
             name={`game-assignments-${gameId}`}
             data={assignmentRows}
             columns={assignmentColumns}
@@ -620,28 +466,17 @@ export const GameAssignmentsByGamePanel = ({
         flex: scrollBehavior === 'bounded' ? 1 : undefined,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography id='game-assignments-by-game-title' variant='h6' component='h2'>
-          Assignments by Game
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <SlotFilterSelect
-            slotFilterOptions={slotFilterOptions}
-            slotFilterId={slotFilterId}
-            onSlotFilterChange={onSlotFilterChange}
-          />
-          <ShowExpandedToggle checked={showExpandedOnly} onChange={setShowExpandedOnly} />
-          {onToggleExpand ? (
-            <IconButton
-              aria-label={isExpanded ? 'Exit full view' : 'Expand panel'}
-              onClick={onToggleExpand}
-              size='small'
-            >
-              {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}
-            </IconButton>
-          ) : null}
-        </Box>
-      </Box>
+      <GameAssignmentsPanelHeader
+        title='Assignments by Game'
+        titleId='game-assignments-by-game-title'
+        slotFilterOptions={slotFilterOptions}
+        slotFilterId={slotFilterId}
+        onSlotFilterChange={onSlotFilterChange}
+        showExpandedOnly={showExpandedOnly}
+        onShowExpandedOnlyChange={setShowExpandedOnly}
+        isExpanded={isExpanded}
+        onToggleExpand={onToggleExpand}
+      />
       <Table<GameAssignmentSummaryRow>
         name='game-assignments-by-game'
         data={gameRows}

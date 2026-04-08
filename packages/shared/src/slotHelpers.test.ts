@@ -22,6 +22,30 @@ const configuration: SlotConfiguration = {
   numberOfSlots: 7,
 }
 
+const regularEightSlotConfiguration: SlotConfiguration = {
+  startDates: {
+    2021: {
+      date: pdxDate({ year: 2021, month: 11, day: 4 }),
+      virtual: false,
+    },
+  },
+  year: 2021,
+  virtual: false,
+  numberOfSlots: 8,
+}
+
+const virtualEightSlotConfiguration: SlotConfiguration = {
+  startDates: {
+    2022: {
+      date: pdxDate({ year: 2022, month: 11, day: 3 }),
+      virtual: true,
+    },
+  },
+  year: 2022,
+  virtual: true,
+  numberOfSlots: 8,
+}
+
 describe('slot helpers', () => {
   const data = [
     {
@@ -103,5 +127,33 @@ describe('slot helpers', () => {
 
   test('slotDateTimePairsByCount matches configured slot times', () => {
     expect(slotDateTimePairsByCount(startDates[2020]!.date, 7, true)).toEqual(getSlotTimes(configuration, 2020))
+  })
+
+  test('regular 8-slot schedule preserves ACUS weekend timing', () => {
+    expect(
+      getSlotDescription(regularEightSlotConfiguration, {
+        year: 2021,
+        slot: 5,
+        local: true,
+      }),
+    ).toBe('Slot 5 Sat, Nov 6, 10:00 am to 5:00 pm PDT')
+
+    expect(slotDateTimePairsByCount(regularEightSlotConfiguration.startDates[2021]!.date, 8, false)).toEqual(
+      getSlotTimes(regularEightSlotConfiguration, 2021),
+    )
+  })
+
+  test('virtual 8-slot schedule preserves ACUS timing blocks', () => {
+    expect(
+      getSlotDescription(virtualEightSlotConfiguration, {
+        year: 2022,
+        slot: 5,
+        local: true,
+      }),
+    ).toBe('Slot 5 Sat, Nov 5, 12:00 pm to 6:00 pm PDT')
+
+    expect(slotDateTimePairsByCount(virtualEightSlotConfiguration.startDates[2022]!.date, 8, true)).toEqual(
+      getSlotTimes(virtualEightSlotConfiguration, 2022),
+    )
   })
 })

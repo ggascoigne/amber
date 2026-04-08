@@ -59,6 +59,31 @@ describe('planInitialRoomAssignments', () => {
     ])
   })
 
+  test('falls back from Black Rabbit Bar when that room is unavailable in the slot', () => {
+    const result = planInitialRoomAssignments(
+      buildInput({
+        rooms: [
+          buildRoom({ id: 1, description: 'Shared Hall', type: 'Shared Space', size: 14 }),
+          buildRoom({ id: 2, description: 'Black Rabbit Bar', type: 'Shared Space', size: 12 }),
+        ],
+        games: [{ id: 10, name: 'Pub Theory & Game Crawl', slotId: 1, year, category: 'user' }],
+        participants: [
+          { memberId: 1, gameId: 10, isGm: true, fullName: 'GM One', roomAccessibilityPreference: 'many_stairs' },
+          { memberId: 2, gameId: 10, isGm: false, fullName: 'Player One', roomAccessibilityPreference: 'many_stairs' },
+        ],
+        roomSlotAvailability: [{ roomId: 2, slotId: 1, year, isAvailable: false }],
+      }),
+    )
+
+    expect(result.assignments).toEqual([
+      expect.objectContaining({
+        gameId: 10,
+        roomDescription: 'Shared Hall',
+        reason: 'Shared room priority',
+      }),
+    ])
+  })
+
   test('prefers GM-owned rooms before shared spaces', () => {
     const result = planInitialRoomAssignments(
       buildInput({
@@ -185,6 +210,28 @@ describe('planInitialRoomAssignments', () => {
     ])
   })
 
+  test('counts existing fixed assignments toward later shared-room balancing', () => {
+    const result = planInitialRoomAssignments(
+      buildInput({
+        rooms: [
+          buildRoom({ id: 1, description: 'Boardroom I', type: 'Shared Space', size: 10 }),
+          buildRoom({ id: 2, description: 'Boardroom II', type: 'Shared Space', size: 10 }),
+        ],
+        games: [
+          { id: 10, name: 'Locked First Slot Game', slotId: 1, year, category: 'user' },
+          { id: 11, name: 'Second Slot Game', slotId: 2, year, category: 'user' },
+        ],
+        participants: [
+          { memberId: 1, gameId: 10, isGm: true, fullName: 'GM One', roomAccessibilityPreference: 'many_stairs' },
+          { memberId: 2, gameId: 11, isGm: true, fullName: 'GM Two', roomAccessibilityPreference: 'many_stairs' },
+        ],
+        existingAssignments: [{ gameId: 10, roomId: 1, slotId: 1, year, isOverride: true, source: 'manual' }],
+      }),
+    )
+
+    expect(result.assignments).toEqual([expect.objectContaining({ gameId: 11, roomDescription: 'Boardroom II' })])
+  })
+
   test('respects slot availability and reports unused non-member rooms', () => {
     const result = planInitialRoomAssignments(
       buildInput({
@@ -238,6 +285,53 @@ describe('planInitialRoomAssignments', () => {
         detail: 'Unused non-member rooms in Slot 1: Spare Hall, Small Hall.',
       }),
     ])
+  })
+
+  test('reports when higher-priority assignments consume the only eligible room', () => {
+    const result = planInitialRoomAssignments(
+      buildInput({
+        rooms: [buildRoom({ id: 1, description: 'Only Hall', type: 'Shared Space', size: 4 })],
+        games: [
+          { id: 10, name: 'Large First Game', slotId: 1, year, category: 'user' },
+          { id: 11, name: 'Smaller Second Game', slotId: 1, year, category: 'user' },
+        ],
+        participants: [
+          { memberId: 1, gameId: 10, isGm: true, fullName: 'GM One', roomAccessibilityPreference: 'many_stairs' },
+          { memberId: 2, gameId: 10, isGm: false, fullName: 'P1', roomAccessibilityPreference: 'many_stairs' },
+          { memberId: 3, gameId: 11, isGm: true, fullName: 'GM Two', roomAccessibilityPreference: 'many_stairs' },
+        ],
+      }),
+    )
+
+    expect(result.assignments).toEqual([expect.objectContaining({ gameId: 10, roomDescription: 'Only Hall' })])
+    expect(result.skippedGames).toEqual([
+      expect.objectContaining({
+        gameId: 11,
+        reason: 'No eligible room remained after higher-priority assignments or slot availability constraints.',
+      }),
+    ])
+  })
+
+  test('reports when slot availability removes the only otherwise fitting room', () => {
+    const result = planInitialRoomAssignments(
+      buildInput({
+        rooms: [buildRoom({ id: 1, description: 'Only Hall', type: 'Shared Space', size: 4 })],
+        games: [{ id: 10, name: 'Unavailable Room Game', slotId: 1, year, category: 'user' }],
+        participants: [
+          { memberId: 1, gameId: 10, isGm: true, fullName: 'GM One', roomAccessibilityPreference: 'many_stairs' },
+        ],
+        roomSlotAvailability: [{ roomId: 1, slotId: 1, year, isAvailable: false }],
+      }),
+    )
+
+    expect(result.assignments).toEqual([])
+    expect(result.skippedGames).toEqual([
+      expect.objectContaining({
+        gameId: 10,
+        reason: 'No eligible room remained after higher-priority assignments or slot availability constraints.',
+      }),
+    ])
+    expect(result.unmetConstraints).toEqual([])
   })
 
   test('prefers non-sharing player-owned rooms before shared player-owned rooms', () => {
