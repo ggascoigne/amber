@@ -1,6 +1,6 @@
 import type { GameAssignmentDashboardData, UpdateGameAssignmentsInput } from '@amber/client'
 
-import { buildAssignmentKeyFromInput, buildAssignmentKeyFromRecord, buildChoiceKey } from './utils'
+import { buildAssignmentKeyFromInput, buildAssignmentKeyFromRecord, buildChoiceKey } from './domain/keys'
 
 export type DashboardAssignmentUpdate = UpdateGameAssignmentsInput['adds'][number]
 

@@ -6,16 +6,11 @@ import { Box } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
+import { buildSlotAssignmentScope } from './domain/assignmentScope'
+import { buildAssignmentCountsByGameId, buildGameInterestSummaryRows } from './domain/assignmentSummaries'
+import { buildInterestChoicesByGameId, buildInterestCountsByGameId, buildInterestRowsForGame } from './domain/interest'
+import type { GameInterestRow, GameInterestSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-import type { GameInterestRow, GameInterestSummaryRow } from './utils'
-import {
-  buildAssignmentCountsByGameId,
-  buildGameInterestSummaryRows,
-  buildInterestChoicesByGameId,
-  buildInterestCountsByGameId,
-  buildInterestRowsForGame,
-  buildSlotAssignmentScope,
-} from './utils'
 
 import { buildGameCategoryByGameId } from '../../utils'
 

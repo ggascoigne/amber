@@ -6,23 +6,24 @@ import { Table } from '@amber/ui/components/Table'
 import { Box } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
-import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
-import type { MemberChoiceRow, MemberChoiceSummaryRow } from './utils'
+import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignedSlotCountsByMemberId,
-  buildChoiceEditorStateForMember,
-  buildUpdatedChoiceRowGameSelection,
-  buildChoiceUpsertsFromUpdates,
   buildChoicesByMemberId,
-  buildGameChoiceOptionsForRow,
   buildMemberChoiceSummaryRows,
-  buildSlotAssignmentScope,
   buildSubmissionsByMemberId,
+} from './domain/assignmentSummaries'
+import { getPrioritySortValue } from './domain/labels'
+import {
+  buildChoiceEditorStateForMember,
+  buildChoiceUpsertsFromUpdates,
+  buildUpdatedChoiceRowGameSelection,
   canEditChoiceRowGameSelection,
-  getGameLabel,
-  getPrioritySortValue,
-} from './utils'
+} from './domain/memberChoices'
+import { buildGameChoiceOptionsForRow, getGameLabel } from './domain/moveOptions'
+import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
+import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
+import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 
 import { buildGameCategoryByGameId, useConfiguration } from '../../utils'
 

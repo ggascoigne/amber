@@ -7,25 +7,26 @@ import { Box } from '@mui/material'
 import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
-import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
-import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './utils'
+import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignedSlotCountsByMemberId,
   buildAssignmentCountsByGameId,
   buildAssignmentsByMemberId,
   buildChoicesByMemberSlot,
-  buildMemberAssignmentPayloadFromUpdates,
   buildMemberAssignmentCountsByMemberId,
-  buildMemberAssignmentEditorRows,
   buildMemberAssignmentSummaryRows,
-  buildMoveOptions,
-  buildMoveSelectOptions,
   buildSubmissionsByMemberId,
-  buildSlotAssignmentScope,
+} from './domain/assignmentSummaries'
+import { formatGameName } from './domain/labels'
+import {
+  buildMemberAssignmentEditorRows,
+  buildMemberAssignmentPayloadFromUpdates,
   buildUpdatedMemberAssignmentRowGameSelection,
-  formatGameName,
-} from './utils'
+} from './domain/memberAssignments'
+import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
+import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './domain/types'
+import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
+import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 
 import { useConfiguration } from '../../utils'
 

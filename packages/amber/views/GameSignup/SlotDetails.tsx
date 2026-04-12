@@ -7,9 +7,10 @@ import { getSlotDescription } from '@amber/shared'
 import { Loader, notEmpty, range } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
-import { Rank, rankString, RankStyle } from './GameChoiceSelector'
+import { Rank, RankStyle } from './GameChoiceSelector'
 
 import { useConfiguration } from '../../utils'
+import { rankString } from '../../utils/gameChoiceRank'
 import { getGms } from '../Games'
 
 export interface SlotSummary {

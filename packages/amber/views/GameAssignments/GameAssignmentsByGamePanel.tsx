@@ -8,24 +8,25 @@ import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
-import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './utils'
+import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignmentCountsByGameId,
   buildAssignmentsByGameId,
   buildChoicesByMemberSlot,
-  buildGameAssignmentAddPayload,
   buildEmptyMemberAssignmentCounts,
-  buildGameAssignmentEditorRows,
-  buildGameAssignmentPayloadFromUpdates,
   buildGameAssignmentSummaryRows,
   buildMemberAssignmentCountsByMemberId,
-  buildMoveOptions,
-  buildMoveSelectOptions,
+} from './domain/assignmentSummaries'
+import { formatGameName } from './domain/labels'
+import {
+  buildGameAssignmentAddPayload,
+  buildGameAssignmentEditorRows,
+  buildGameAssignmentPayloadFromUpdates,
   buildUpdatedGameAssignmentRowMemberSelection,
-  formatGameName,
-  buildSlotAssignmentScope,
-} from './utils'
+} from './domain/memberAssignments'
+import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
+import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './domain/types'
+import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 
 import { PlayerPreference } from '../../utils/selectValues'
 
