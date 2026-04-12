@@ -4,16 +4,16 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
-import { Box } from '@mui/material'
 import type { AccessorKeyColumnDefBase, ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
 import { dequal as deepEqual } from 'dequal'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
 import { Empty } from './components/Empty'
-import { RowExpansionButton } from './components/RowExpansionButton'
-import { DEFAULT_TABLE_PAGE_SIZE, EXPAND_COLUMN_ID, EXPAND_COLUMN_SIZE } from './constants'
+import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
 import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
+import { usePendingNewRow } from './editing/usePendingNewRow'
+import { buildExpansionColumn } from './expansion/buildExpansionColumn'
 import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
@@ -136,7 +136,6 @@ export const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const [stateLoaded, setStateLoaded] = useState(false)
-  const [pendingNewRow, setPendingNewRow] = useState<T | null>(null)
   const [uncontrolledShowExpandedOnly, setUncontrolledShowExpandedOnly] = useState(false)
   const hasExpandedContent = !!renderExpandedContent
   const isShowExpandedOnlyControlled = typeof controlledShowExpandedOnly === 'boolean'
@@ -145,14 +144,10 @@ export const Table = <T,>({
     : uncontrolledShowExpandedOnly
   const resolvedShowExpandedOnlyChange = onShowExpandedOnlyChange ?? setUncontrolledShowExpandedOnly
   const resolvedUseVirtualRows = hasExpandedContent ? (useVirtualRows ?? false) : useVirtualRows
-
-  const addRowConfig = cellEditing?.addRow
-  const canAddRow = !!cellEditing?.enabled && !!addRowConfig?.enabled && !pendingNewRow
-
-  const handleAddRow = useCallback(() => {
-    if (!cellEditing?.enabled || !addRowConfig?.enabled || pendingNewRow) return
-    setPendingNewRow(addRowConfig.createRow())
-  }, [addRowConfig, cellEditing?.enabled, pendingNewRow])
+  const { canAddRow, handleAddRow, resolvedData, resolvedEditingConfig } = usePendingNewRow({
+    cellEditing,
+    data,
+  })
 
   const initial = { ...initialState }
   initial.sorting ??= [
@@ -223,33 +218,7 @@ export const Table = <T,>({
   )
 
   const expansionColumn = useMemo<ColumnDef<T> | null>(
-    () =>
-      hasExpandedContent
-        ? {
-            id: EXPAND_COLUMN_ID,
-            header: '',
-            enableResizing: false,
-            enableGrouping: false,
-            enableSorting: false,
-            enableGlobalFilter: false,
-            enableColumnFilter: false,
-            size: EXPAND_COLUMN_SIZE,
-            minSize: EXPAND_COLUMN_SIZE,
-            maxSize: EXPAND_COLUMN_SIZE,
-            cell: ({ row }) => (
-              <Box
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <RowExpansionButton row={row} />
-              </Box>
-            ),
-          }
-        : null,
+    () => buildExpansionColumn<T>(hasExpandedContent),
     [hasExpandedContent],
   )
 
@@ -257,27 +226,6 @@ export const Table = <T,>({
     () => (expansionColumn ? [expansionColumn, ...columns] : columns),
     [columns, expansionColumn],
   )
-
-  const resolvedData = useMemo(() => (pendingNewRow ? [...data, pendingNewRow] : data), [data, pendingNewRow])
-
-  const resolvedEditingConfig = useMemo(() => {
-    if (!cellEditing) return undefined
-    if (!cellEditing.addRow?.enabled) return cellEditing
-    return {
-      ...cellEditing,
-      addRow: {
-        ...cellEditing.addRow,
-        onAddRow: async (row: T) => {
-          await cellEditing.addRow?.onAddRow(row)
-          setPendingNewRow(null)
-        },
-      },
-      onDiscard: () => {
-        cellEditing.onDiscard?.()
-        setPendingNewRow(null)
-      },
-    }
-  }, [cellEditing, setPendingNewRow])
 
   const table = useTable<T>({
     name,

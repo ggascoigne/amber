@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useLayoutEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import { Button, FormControlLabel, Paper, Stack, Switch, Typography, useTheme } from '@mui/material'
@@ -15,8 +15,10 @@ import { match } from 'ts-pattern'
 import type { Action } from './actions'
 import { TableContentSkeleton } from './components/TableContentSkeleton'
 import { TableContextProvider } from './components/TableContext'
+import { TableScrollContainerProvider } from './components/TableScrollContainerContext'
 import { TableTable, tableDecorationZIndex } from './components/TableStyles'
 import { TableToolbar } from './components/TableToolbar'
+import { useVisibleTableRows } from './content/useVisibleTableRows'
 import type { DataTableEditingConfig } from './editing/types'
 import type { TableEditingState } from './editing/useTableEditing'
 import { useTableEditing } from './editing/useTableEditing'
@@ -164,11 +166,7 @@ export const DataTable = <T extends RowData>({
   const { pageIndex } = tableInstance.getState().pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
   const hasExpandedContent = !!renderExpandedContent
-  const allRows = tableInstance.getRowModel().rows
-  const displayedRows = useMemo(
-    () => (showExpandedOnly ? allRows.filter((row) => row.getIsExpanded()) : allRows),
-    [allRows, showExpandedOnly],
-  )
+  const displayedRows = useVisibleTableRows({ table: tableInstance, showExpandedOnly })
 
   // The virtualizer needs to know the scrollable container element
   const tableContainerRef = useRef<HTMLDivElement>(null)
@@ -248,8 +246,9 @@ export const DataTable = <T extends RowData>({
   ) : displayedRows.length === 0 && emptyDataComponent ? (
     emptyDataComponent
   ) : (
-    <TableContent
+    <TableContent<T>
       table={tableInstance}
+      rows={displayedRows}
       onRowClick={editing.enabled ? undefined : onRowClick}
       rowActions={rowActions}
       tableContainerRef={tableContainerRef}
@@ -263,7 +262,6 @@ export const DataTable = <T extends RowData>({
       editing={editing}
       renderExpandedContent={renderExpandedContent}
       expandedContentSx={expandedContentSx}
-      showExpandedOnly={showExpandedOnly}
     />
   )
 
@@ -290,124 +288,126 @@ export const DataTable = <T extends RowData>({
       ]}
     >
       <TableContextProvider trace={debugLogging}>
-        <TableContainer
-          ref={tableContainerRef}
-          sx={{
-            borderTopRightRadius: '4px',
-            borderTopLeftRadius: '4px',
-            borderBottomRightRadius: '4px',
-            borderBottomLeftRadius: '4px',
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            minHeight: 0,
-            overflow: scrollBehavior === 'bounded' ? 'auto' : undefined,
-          }}
-          data-testid={dataTestid}
-        >
-          <Box
-            ref={headingRef}
-            sx={[
-              {
-                position: 'sticky',
-                top: 0,
-                left: 0,
-                zIndex: tableDecorationZIndex,
-                backgroundColor: 'background.paper',
-              },
-              tableInstance.options.enableGlobalFilter || tableInstance.options.enableColumnFilters ? { pt: 1 } : {},
-            ]}
-            data-testid='TableHeading'
-          >
-            {title && (
-              <Typography
-                variant='h4'
-                component='h1'
-                color='textPrimary'
-                sx={{
-                  px: displayGutter ? 3 : 2,
-                  pt: 2,
-                  pb:
-                    displayToolbar ||
-                    tableInstance.options.enableColumnFilters ||
-                    tableInstance.options.enableGlobalFilter
-                      ? 0
-                      : 2,
-                }}
-                data-testid={`TableHeading-Title:${title}`}
-              >
-                {title}
-              </Typography>
-            )}
-            {(tableInstance.options.enableColumnFilters || tableInstance.options.enableGlobalFilter) && (
-              <TableFilterBar<T> table={tableInstance} displayGutter={displayGutter} />
-            )}
-            {displayToolbar ? (
-              <TableToolbar
-                table={tableInstance}
-                toolbarActions={toolbarActions}
-                systemActions={systemActions}
-                displayGutter={displayGutter}
-                sx={{
-                  borderRadius: 0,
-                }}
-              />
-            ) : null}
-            {hasExpandedContent && showExpandedSwitch && onToggleShowExpandedOnly ? (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  px: displayGutter ? 3 : 2,
-                  pb: 0.5,
-                }}
-              >
-                <FormControlLabel
-                  control={
-                    <Switch
-                      size='small'
-                      checked={showExpandedOnly}
-                      onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
-                    />
-                  }
-                  label='Show Expanded'
-                  sx={{ m: 0 }}
-                />
-              </Box>
-            ) : null}
-          </Box>
-          {hideHeader ? null : (
-            <TableHeader
-              table={tableInstance}
-              sx={{
-                width: '100%',
-                position: 'sticky',
-                top: headingHeight,
-              }}
-              displayLoading
-              isLoading={isLoading}
-              isFetching={isFetching}
-              compact={compact}
-              displayGutter={displayGutter}
-              rowStyle={rowStyle}
-            />
-          )}
-          <TableTable data-testid='MainTable'>{tableContent}</TableTable>
-          <TableFooter
-            table={tableInstance}
-            rowCount={rowCount}
+        <TableScrollContainerProvider tableContainerRef={tableContainerRef}>
+          <TableContainer
+            ref={tableContainerRef}
             sx={{
-              bottom: 0,
-              borderRadius: '0 0 4px 4px',
+              borderTopRightRadius: '4px',
+              borderTopLeftRadius: '4px',
+              borderBottomRightRadius: '4px',
+              borderBottomLeftRadius: '4px',
+              display: 'flex',
+              flexDirection: 'column',
+              flexGrow: 1,
+              minHeight: 0,
+              overflow: scrollBehavior === 'bounded' ? 'auto' : undefined,
             }}
-            debug={tableDebug}
-            displayPagination={shouldDisplayPagination && !paginationBlocked}
-            pagination={paginationStyle}
-            paginationPageSizes={paginationPageSizes}
-            compact={compact}
-            footerContent={footerContent}
-          />
-        </TableContainer>
+            data-testid={dataTestid}
+          >
+            <Box
+              ref={headingRef}
+              sx={[
+                {
+                  position: 'sticky',
+                  top: 0,
+                  left: 0,
+                  zIndex: tableDecorationZIndex,
+                  backgroundColor: 'background.paper',
+                },
+                tableInstance.options.enableGlobalFilter || tableInstance.options.enableColumnFilters ? { pt: 1 } : {},
+              ]}
+              data-testid='TableHeading'
+            >
+              {title && (
+                <Typography
+                  variant='h4'
+                  component='h1'
+                  color='textPrimary'
+                  sx={{
+                    px: displayGutter ? 3 : 2,
+                    pt: 2,
+                    pb:
+                      displayToolbar ||
+                      tableInstance.options.enableColumnFilters ||
+                      tableInstance.options.enableGlobalFilter
+                        ? 0
+                        : 2,
+                  }}
+                  data-testid={`TableHeading-Title:${title}`}
+                >
+                  {title}
+                </Typography>
+              )}
+              {(tableInstance.options.enableColumnFilters || tableInstance.options.enableGlobalFilter) && (
+                <TableFilterBar<T> table={tableInstance} displayGutter={displayGutter} />
+              )}
+              {displayToolbar ? (
+                <TableToolbar
+                  table={tableInstance}
+                  toolbarActions={toolbarActions}
+                  systemActions={systemActions}
+                  displayGutter={displayGutter}
+                  sx={{
+                    borderRadius: 0,
+                  }}
+                />
+              ) : null}
+              {hasExpandedContent && showExpandedSwitch && onToggleShowExpandedOnly ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    px: displayGutter ? 3 : 2,
+                    pb: 0.5,
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        size='small'
+                        checked={showExpandedOnly}
+                        onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
+                      />
+                    }
+                    label='Show Expanded'
+                    sx={{ m: 0 }}
+                  />
+                </Box>
+              ) : null}
+            </Box>
+            {hideHeader ? null : (
+              <TableHeader
+                table={tableInstance}
+                sx={{
+                  width: '100%',
+                  position: 'sticky',
+                  top: headingHeight,
+                }}
+                displayLoading
+                isLoading={isLoading}
+                isFetching={isFetching}
+                compact={compact}
+                displayGutter={displayGutter}
+                rowStyle={rowStyle}
+              />
+            )}
+            <TableTable data-testid='MainTable'>{tableContent}</TableTable>
+            <TableFooter
+              table={tableInstance}
+              rowCount={rowCount}
+              sx={{
+                bottom: 0,
+                borderRadius: '0 0 4px 4px',
+              }}
+              debug={tableDebug}
+              displayPagination={shouldDisplayPagination && !paginationBlocked}
+              pagination={paginationStyle}
+              paginationPageSizes={paginationPageSizes}
+              compact={compact}
+              footerContent={footerContent}
+            />
+          </TableContainer>
+        </TableScrollContainerProvider>
       </TableContextProvider>
     </Paper>
   )
