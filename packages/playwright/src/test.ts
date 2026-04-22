@@ -46,7 +46,7 @@ const stopCoverageSafely = async <CoverageEntriesType extends Array<unknown>>(
 }
 
 export const test = base.extend({
-  page: async ({ page }, use, testInfo) => {
+  page: async ({ page }, fnUse, testInfo) => {
     // Hide Next.js development overlay
     await page.addInitScript(() => {
       // Hide Next.js compilation overlay
@@ -62,9 +62,7 @@ export const test = base.extend({
     })
 
     if (!coverageEnabled) {
-      // this isn't the react hook 'use'
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      await use(page)
+      await fnUse(page)
       return
     }
 
@@ -72,9 +70,7 @@ export const test = base.extend({
     await page.coverage.startCSSCoverage({ resetOnNavigation: false })
 
     try {
-      // this isn't the react hook 'use'
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      await use(page)
+      await fnUse(page)
     } finally {
       const jsCoverage = await stopCoverageSafely(() => page.coverage.stopJSCoverage())
       const cssCoverage = await stopCoverageSafely(() => page.coverage.stopCSSCoverage())

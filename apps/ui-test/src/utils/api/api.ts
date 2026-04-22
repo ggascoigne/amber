@@ -164,7 +164,7 @@ export const getResponse = async <ApiRequest>(
   params: RequestTypes<ApiRequest> & AppApiTypes<ApiRequest>,
 ): Promise<Response> => {
   const { method, path, requestSchema, requestData, options, prefixUrl } = params
-  let request = requestData
+  let request
   try {
     request = process.env.NODE_ENV === 'production' ? requestData : requestSchema.parse(requestData)
   } catch (error) {

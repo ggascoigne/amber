@@ -332,10 +332,10 @@
       {
         "allowAnonymousClass": false,
         "allowAnonymousFunction": false,
-        "allowArray": false,
+        "allowArray": true,
         "allowArrowFunction": false,
         "allowLiteral": false,
-        "allowObject": false
+        "allowObject": true
       }
     ],
     "react/no-danger": ["warn"],
