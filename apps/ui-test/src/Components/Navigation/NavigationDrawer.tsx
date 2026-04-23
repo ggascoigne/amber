@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
+import type { Theme } from '@mui/material/styles'
 
 import { MenuContent } from './MenuContent'
 import type { MenuEntry } from './MenuTypes'
@@ -23,7 +24,7 @@ type NavigationDrawerProps = {
   onMenuChange: (expanded: boolean) => void
 }
 
-function NavigationDrawer({ menu, expanded = false, onMenuChange }: NavigationDrawerProps) {
+const NavigationDrawer = ({ menu, expanded = false, onMenuChange }: NavigationDrawerProps) => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   const handleIconClick = () => {
@@ -46,27 +47,29 @@ function NavigationDrawer({ menu, expanded = false, onMenuChange }: NavigationDr
         flexShrink: 0,
         whiteSpace: 'nowrap',
       }}
-      PaperProps={{
-        sx: {
-          ...(expanded && {
-            pt: 8,
-            width: expandedWidth,
-            transition: (theme) =>
-              theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-              }),
-          }),
-          ...(!expanded && {
-            pt: 8,
-            width: shrunkenWidth,
-            overflowX: 'hidden',
-            transition: (theme) =>
-              theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-              }),
-          }),
+      slotProps={{
+        paper: {
+          sx: {
+            ...(expanded && {
+              pt: 8,
+              width: expandedWidth,
+              transition: (theme: Theme) =>
+                theme.transitions.create(['width', 'margin'], {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.enteringScreen,
+                }),
+            }),
+            ...(!expanded && {
+              pt: 8,
+              width: shrunkenWidth,
+              overflowX: 'hidden',
+              transition: (theme: Theme) =>
+                theme.transitions.create(['width', 'margin'], {
+                  easing: theme.transitions.easing.sharp,
+                  duration: theme.transitions.duration.leavingScreen,
+                }),
+            }),
+          },
         },
       }}
     >

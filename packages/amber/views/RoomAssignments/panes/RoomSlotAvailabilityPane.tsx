@@ -33,8 +33,10 @@ const RoomSlotAvailabilityCheckboxCell = ({
         isAvailable: nextChecked,
       }).catch(() => undefined)
     }}
-    inputProps={{
-      'aria-label': `Room ${roomDescription} slot ${slotId} availability`,
+    slotProps={{
+      input: {
+        'aria-label': `Room ${roomDescription} slot ${slotId} availability`,
+      },
     }}
     sx={{ py: 0 }}
   />

@@ -90,7 +90,7 @@ const TableEditingFooter = <T extends RowData>({ editing, addRowAction }: TableE
   const message = hasChanges ? `You have unsaved changes (${rowLabel})` : null
 
   return (
-    <Stack direction='row' alignItems='center' spacing={2} sx={{ py: 1, pr: 1 }}>
+    <Stack direction='row' spacing={2} sx={{ py: 1, pr: 1, alignItems: 'center' }}>
       {addRowAction ? (
         <Button
           variant='text'

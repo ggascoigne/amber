@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { useTRPC } from '@amber/client'
-import { GridContainer, GridItem, Loader, range } from '@amber/ui'
+import { Loader, range } from '@amber/ui'
+import { Grid } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
 import { Page } from '../../components'
@@ -36,13 +37,13 @@ const GameBookPage = () => {
   const years = range(configuration.firstDataYear - 1, configuration.year - 1, -1)
   return (
     <Page title='Game Book' hideTitle>
-      <GridContainer spacing={2} justifyContent='center'>
+      <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
         {years.map((year) => (
-          <GridItem key={year} size={{ xl: 3, lg: 4, md: 4, sm: 6 }}>
+          <Grid key={year} size={{ xl: 3, lg: 4, md: 4, sm: 6 }}>
             <GameByYear year={year} to={`/game-book/${year}/1`} />
-          </GridItem>
+          </Grid>
         ))}
-      </GridContainer>
+      </Grid>
     </Page>
   )
 }

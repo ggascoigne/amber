@@ -15,8 +15,8 @@ import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
 import type { UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
-import { Card, CardBody, Field, GridContainer, GridItem, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
-import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Switch } from '@mui/material'
+import { Card, CardBody, Field, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
+import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Grid, Switch } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -33,9 +33,9 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
   const [showPT, setShowPT] = useState(false)
   const slotsAttendingData = fromSlotsAttending(configuration, membership)
   return (
-    <GridContainer direction='column'>
+    <Grid container sx={{ flexDirection: 'column' }}>
       <h1>Your Membership for {configuration.year}</h1>
-      <GridContainer>
+      <Grid container>
         <Field label='Slots you intend to play'>
           <Box
             sx={{
@@ -81,15 +81,15 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
             <MultiLine text={membership.message} />
           </Field>
         )}{' '}
-      </GridContainer>
-    </GridContainer>
+      </Grid>
+    </Grid>
   )
 }
 
 const VerticalGap = () => (
-  <GridItem size={{ xs: 12 }}>
+  <Grid size={{ xs: 12 }}>
     <Box sx={{ height: 8 }} />
-  </GridItem>
+  </Grid>
 )
 
 interface DetailsProps {
@@ -115,7 +115,7 @@ const Details = ({ membership, profile }: DetailsProps) => {
     <Card>
       <HeaderContent name={`${year} Membership for ${profile.fullName!}`} />
       <CardBody>
-        <GridContainer>
+        <Grid container>
           <Field label='Email'>{profile.email}</Field>
           <VerticalGap />
           <Field label='Attendance'>{cost}</Field>
@@ -125,7 +125,7 @@ const Details = ({ membership, profile }: DetailsProps) => {
           <Field label='Phone Number'>{profile?.profile?.[0]?.phoneNumber}</Field>
           <VerticalGap />
           <Field label='Any other Message'>{membership.message}</Field>
-        </GridContainer>
+        </Grid>
       </CardBody>
     </Card>
   )
@@ -180,13 +180,13 @@ const MembershipSummary = () => {
 
       <br />
       {isVirtual ? <VirtualDetails membership={membership} /> : <Details membership={membership} profile={profile!} />}
-      <GridContainer>
-        <GridItem size={{ xs: 12, sm: 5 }} sx={{ pb: '10px' }}>
+      <Grid container>
+        <Grid size={{ xs: 12, sm: 5 }} sx={{ pb: '10px' }}>
           <Button component={Link} href='/membership/edit' variant='outlined' disabled={!profile}>
             Edit
           </Button>
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
     </Page>
   )
 }

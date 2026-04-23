@@ -4,8 +4,9 @@ import { useMemo } from 'react'
 import type { HotelRoomDetailsEditorType } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import type { OnCloseHandler } from '@amber/ui'
-import { CheckboxWithLabel, EditDialog, GridContainer, GridItem, pick, TextField, useNotification } from '@amber/ui'
+import { CheckboxWithLabel, EditDialog, pick, TextField, useNotification } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
+import { Grid } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 
@@ -145,20 +146,20 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
       validationSchema={validationSchema}
       isEditing={!!values?.id}
     >
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name='name' label='Name' margin='normal' fullWidth required autoFocus />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <LookupField realm='roomType' name='roomType' label='Room Type' margin='normal' fullWidth required />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name='comment' label='Comment' margin='normal' fullWidth />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name='reservedFor' label='Reserved For' margin='normal' fullWidth />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <LookupField
             realm='bathroomType'
             name='bathroomType'
@@ -167,23 +168,23 @@ export const HotelRoomDetailDialog: React.FC<HotelRoomDetailsDialogProps> = ({ o
             fullWidth
             required
           />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Gaming Room?' name='gamingRoom' />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Enabled?' name='enabled' />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name='formattedRoomType' label='Formatted Room Type' margin='normal' fullWidth />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name='internalRoomType' label='Internal Room Type' margin='normal' fullWidth />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }}>
           <CheckboxWithLabel label='Reserved?' name='reserved' />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
     </EditDialog>
   )
 }

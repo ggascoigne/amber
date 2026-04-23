@@ -18,7 +18,7 @@ const Quote: React.FC<{
       borderLeft: '5px solid #eee',
     }}
   >
-    <Typography paragraph sx={{ margin: '0 0 10px', fontStyle: 'italic' }}>
+    <Typography component='p' sx={{ margin: '0 0 10px', fontStyle: 'italic' }}>
       {children}
     </Typography>
   </Typography>

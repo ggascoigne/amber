@@ -22,7 +22,31 @@ const DrawerContents = ({ small = false, rootRoutes, banner }: DrawerContentsPro
   <>
     {!small && (
       <>
-        <Box sx={(theme) => ({ ...theme.mixins.toolbar })}>{banner}</Box>
+        <Box
+          sx={(theme) => ({
+            ...theme.mixins.toolbar,
+            width: '100%',
+            minWidth: 0,
+            p: '0 0 14px 0',
+            gap: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            '& a': {
+              display: 'block',
+              width: '100%',
+            },
+            '& svg, & img': {
+              display: 'block',
+              width: '224px',
+              maxWidth: '100%',
+              height: '58px',
+            },
+          })}
+        >
+          {banner}
+        </Box>
         <Divider />
       </>
     )}
@@ -91,10 +115,12 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
             anchor='left'
             open={mobileOpen}
             onClose={handleDrawerToggle}
-            PaperProps={{
-              sx: {
-                width: drawerWidth,
-                overflowX: 'hidden',
+            slotProps={{
+              paper: {
+                sx: {
+                  width: drawerWidth,
+                  overflowX: 'hidden',
+                },
               },
             }}
             ModalProps={{
@@ -108,10 +134,12 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ children, rootRoutes,
         </Box>
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <Drawer
-            PaperProps={{
-              sx: {
-                width: drawerWidth,
-                overflowX: 'hidden',
+            slotProps={{
+              paper: {
+                sx: {
+                  width: drawerWidth,
+                  overflowX: 'hidden',
+                },
               },
             }}
             variant='permanent'

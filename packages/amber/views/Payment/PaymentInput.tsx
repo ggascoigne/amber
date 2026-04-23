@@ -192,13 +192,13 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
     <OutlinedBox label={membership ? `${year} Membership for ${user.fullName}` : null}>
       <DialogClose onClose={onClose} />
       <FormControl>
-        <Grid container spacing={2} sx={{ py: 1 }} flexDirection='column'>
+        <Grid container spacing={2} sx={{ py: 1, flexDirection: 'column' }}>
           <Grid>
             <Typography sx={{ pt: 1 }}>
               {user.fullName} has a balance of {user.balance < 0 ? formatAmountForDisplay(0 - user.balance) : 0}
             </Typography>
           </Grid>
-          <Grid container flexDirection='row'>
+          <Grid container>
             <Grid>
               <RadioGroup
                 row
@@ -255,8 +255,10 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
               variant='outlined'
               value={state.donation}
               onChange={handleDonationChange}
-              InputProps={{
-                startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+              slotProps={{
+                input: {
+                  startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                },
               }}
             />
           </>
@@ -347,7 +349,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
       <Typography id='input-slider' gutterBottom>
         Payment
       </Typography>
-      <Grid container spacing={2} alignItems='flex-start' flexDirection='column'>
+      <Grid container spacing={2} sx={{ alignItems: 'flex-start', flexDirection: 'column' }}>
         {userIds.map((id) => (
           <Grid sx={{ width: '100%' }} key={id} size='grow'>
             <UserPayment

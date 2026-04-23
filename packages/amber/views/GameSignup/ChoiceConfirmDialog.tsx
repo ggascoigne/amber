@@ -3,18 +3,9 @@ import React, { useCallback, useMemo, useState } from 'react'
 import type { UserAndProfile, GameChoice } from '@amber/client'
 import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import type { OnCloseHandler } from '@amber/ui'
-import {
-  DialogTitle,
-  GridContainer,
-  GridItem,
-  pick,
-  range,
-  TextField,
-  useDisableBackdropClick,
-  useNotification,
-} from '@amber/ui'
+import { DialogTitle, pick, range, TextField, useDisableBackdropClick, useNotification } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
-import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, Grid, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useMutation } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
@@ -250,11 +241,11 @@ export const ChoiceConfirmDialog = ({
         {({ isSubmitting }) => (
           <Form>
             <DialogContent>
-              <GridContainer spacing={2}>
-                <GridItem size={{ xs: 12, md: 12 }}>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, md: 12 }}>
                   <TextField name='message' label='Message for the organizers' margin='normal' fullWidth autoFocus />
-                </GridItem>
-              </GridContainer>
+                </Grid>
+              </Grid>
             </DialogContent>
             <DialogActions className='modalFooterButtons'>
               <Button onClick={onClose} variant='outlined'>

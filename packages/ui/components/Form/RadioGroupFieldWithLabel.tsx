@@ -1,4 +1,4 @@
-import { FormControl, FormControlLabel, FormLabel, MenuItem, Radio } from '@mui/material'
+import { Box, FormControl, FormControlLabel, FormLabel, Radio } from '@mui/material'
 import type { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
 import MuiRadioGroup from '@mui/material/RadioGroup'
 import debug from 'debug'
@@ -33,13 +33,14 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
       </FormLabel>
       <MuiRadioGroup {...fullProps}>
         {selectValues?.map((s) => (
-          <MenuItem
-            id={fullProps.name}
+          <Box
+            component='div'
             key={getSelectValue(s)}
-            value={getSelectValue(s)}
             sx={{
               whiteSpace: 'normal',
-              height: 35,
+              minHeight: 35,
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
             <FormControlLabel
@@ -47,7 +48,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
               control={<Radio onChange={onChange} />}
               label={getSelectLabel(s)}
             />
-          </MenuItem>
+          </Box>
         ))}
         {children}
       </MuiRadioGroup>

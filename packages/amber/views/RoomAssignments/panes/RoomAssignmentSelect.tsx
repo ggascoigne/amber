@@ -87,15 +87,17 @@ const RoomAssignmentSelect = ({
           const nextRoomId = typeof nextValue === 'string' && nextValue ? parseInt(nextValue, 10) : null
           onChange(Number.isInteger(nextRoomId) ? nextRoomId : null).catch(() => undefined)
         }}
-        inputProps={{
-          'aria-label': ariaLabel,
-        }}
-        InputProps={{
-          disableUnderline: true,
-        }}
-        SelectProps={{
-          displayEmpty: true,
-          renderValue: renderSelectedValue,
+        slotProps={{
+          htmlInput: {
+            'aria-label': ariaLabel,
+          },
+          input: {
+            disableUnderline: true,
+          },
+          select: {
+            displayEmpty: true,
+            renderValue: renderSelectedValue,
+          },
         }}
         sx={{
           '& .MuiInputBase-root': {

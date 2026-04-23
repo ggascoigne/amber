@@ -3,20 +3,9 @@ import React, { useCallback, useMemo } from 'react'
 import type { GameRoom } from '@amber/client'
 import { useInvalidateGameRoomQueries, useInvalidateGameQueries, useTRPC } from '@amber/client'
 import type { OnCloseHandler, ToFormValues } from '@amber/ui'
-import {
-  CheckboxWithLabel,
-  EditDialog,
-  GridContainer,
-  GridItem,
-  Loader,
-  notEmpty,
-  pick,
-  range,
-  TextField,
-  useNotification,
-} from '@amber/ui'
+import { CheckboxWithLabel, EditDialog, Loader, notEmpty, pick, range, TextField, useNotification } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
-import { Autocomplete, Dialog, Divider, MenuItem, TextField as MuiTextField } from '@mui/material'
+import { Autocomplete, Dialog, Divider, Grid, MenuItem, TextField as MuiTextField } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 
@@ -207,38 +196,38 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
       isEditing={!!workingValues?.id}
     >
       {({ values, setFieldValue }) => (
-        <GridContainer spacing={2}>
-          <GridItem size={{ xs: 12, md: 12 }}>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField name='description' label='Description' margin='normal' fullWidth required autoFocus />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField name='size' label='Size' margin='normal' fullWidth type='number' />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField name='type' label='Type' margin='normal' fullWidth />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField name='accessibility' label='Accessibility' margin='normal' fullWidth select>
               <MenuItem value='accessible'>Accessible</MenuItem>
               <MenuItem value='some_stairs'>Some Stairs</MenuItem>
               <MenuItem value='many_stairs'>Many Stairs</MenuItem>
             </TextField>
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Enabled?' name='enabled' />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Updated?' name='updated' />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <Divider orientation='horizontal' />
-          </GridItem>
+          </Grid>
           {values?.id
             ? range(configuration.numberOfSlots + 1, 1).map((slotId) => {
                 const options = gamesBySlot(slotId)
                 const value = options.find((game) => game.id === values.games?.[slotId - 1]?.current) ?? null
                 return (
-                  <GridItem size={{ xs: 12, md: 12 }} key={`item${slotId}`}>
+                  <Grid size={{ xs: 12, md: 12 }} key={`item${slotId}`}>
                     <Autocomplete
                       id={`slot-game-${slotId}`}
                       options={options}
@@ -262,11 +251,11 @@ export const GameRoomsDialog = ({ open, onClose, initialValues }: GameRoomDialog
                         setFieldValue(`games[${slotId - 1}].current`, v?.id ?? null)
                       }}
                     />
-                  </GridItem>
+                  </Grid>
                 )
               })
             : null}
-        </GridContainer>
+        </Grid>
       )}
     </EditDialog>
   )

@@ -5,10 +5,17 @@ import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextFiel
 import MuiTextField from '@mui/material/TextField'
 import { useField, useFormikContext } from 'formik'
 
-export interface TextFieldProps extends Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> {
+export type TextFieldProps = Omit<MuiTextFieldProps, 'onChange' | 'value' | 'error'> & {
   name: string
   overrideFormik?: boolean
   parse?: (value: string) => any
+}
+
+const isMultiSelect = (slotProps: MuiTextFieldProps['slotProps']) => {
+  const selectSlotProps = slotProps?.select
+  return typeof selectSlotProps === 'object' && selectSlotProps !== null && 'multiple' in selectSlotProps
+    ? !!selectSlotProps.multiple
+    : false
 }
 
 export const TextField: React.ComponentType<TextFieldProps> = (props) => {
@@ -16,7 +23,7 @@ export const TextField: React.ComponentType<TextFieldProps> = (props) => {
   const [field, meta, helpers] = useField(rest.name)
   const { isSubmitting } = useFormikContext()
   const { touched, error } = meta
-  const multiSelect = !!rest.SelectProps?.multiple
+  const multiSelect = isMultiSelect(rest.slotProps)
 
   const showError = touched && !!error
 

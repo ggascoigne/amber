@@ -8,7 +8,7 @@ import { notEmpty } from '@amber/ui'
 import { BlankNoCell, DateCell, YesBlankCell } from '@amber/ui/components/CellFormatters'
 import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
 import { Table, getSelectedRows } from '@amber/ui/components/Table'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import MailOutlineIcon from '@mui/icons-material/MailOutlined'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import type { ColumnDef, TableState } from '@tanstack/react-table'
 

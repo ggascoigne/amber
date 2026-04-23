@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { ConfigDate, ContactEmail, Link, useConfiguration } from '@amber/amber'
-import { CheckboxWithLabel, GridContainer, GridItem } from '@amber/ui'
-import { DialogContentText } from '@mui/material'
+import { CheckboxWithLabel } from '@amber/ui'
+import { DialogContentText, Grid } from '@mui/material'
 
 export const IntroStep = ({ prefix = '' }: { prefix?: string }) => {
   const configuration = useConfiguration()
@@ -29,14 +29,14 @@ export const IntroStep = ({ prefix = '' }: { prefix?: string }) => {
           ' You will be asked to agree to abide by these policy, along with some adaptations specific to on-line interactions, when you first join the Discord server.'}
       </DialogContentText>
       {!configuration.virtual && (
-        <GridContainer spacing={2}>
-          <GridItem size={{ xs: 12, md: 12 }}>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel
               label='Click here to indicate acceptance of these policies'
               name={`${prefix}acceptedPolicies`}
             />
-          </GridItem>
-        </GridContainer>
+          </Grid>
+        </Grid>
       )}
     </>
   )

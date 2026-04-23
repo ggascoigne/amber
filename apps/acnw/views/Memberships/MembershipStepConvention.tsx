@@ -11,15 +11,8 @@ import {
 } from '@amber/amber'
 import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
-import {
-  CheckboxWithLabel,
-  getSafeFloat,
-  GridContainer,
-  GridItem,
-  RadioGroupFieldWithLabel,
-  TextField,
-} from '@amber/ui'
-import { Box, Card, CardContent, DialogContentText, FormLabel, InputAdornment } from '@mui/material'
+import { CheckboxWithLabel, getSafeFloat, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
+import { Box, Card, CardContent, DialogContentText, FormLabel, Grid, InputAdornment } from '@mui/material'
 import type { FormikErrors, FormikValues } from 'formik'
 import { useField, useFormikContext } from 'formik'
 
@@ -70,8 +63,8 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
         reserved until I have paid my membership fee in full and received confirmation from the organizers.
       </DialogContentText>
       <h3>Convention Registration</h3>
-      <GridContainer spacing={2} sx={{ mb: 2 }}>
-        <GridItem size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={2} sx={{ mb: 2 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card elevation={3}>
             <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
               <strong>Full Membership - ${configuration.fourDayMembership}</strong> includes
@@ -82,8 +75,8 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
               </ul>
             </CardContent>
           </Card>
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Card elevation={3}>
             <CardContent sx={{ mb: 0, '&&:last-child': { pb: 1 } }}>
               <strong>Short Membership - ${configuration.threeDayMembership}</strong> includes
@@ -94,15 +87,15 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
               </ul>
             </CardContent>
           </Card>
-        </GridItem>
-      </GridContainer>
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+        </Grid>
+      </Grid>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <DialogContentText sx={{ pt: 1 }}>
             Through the extraordinary generosity of our members, {configuration.title} can offer subsidized memberships.
           </DialogContentText>
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'
@@ -110,7 +103,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
             selectValues={subsidizedAttendanceOptions}
             onChange={onChangeMembership}
           />
-        </GridItem>
+        </Grid>
         {showSubsidizedOptions && (
           <Card
             sx={{
@@ -123,7 +116,7 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
             }}
             elevation={3}
           >
-            <GridItem size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
+            <Grid size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
               <RadioGroupFieldWithLabel
                 aria-label='Select Attendance'
                 label='Select Attendance'
@@ -132,25 +125,24 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
                 row
                 onChange={onChangeAttendance}
               />
-            </GridItem>
-            <GridItem
+            </Grid>
+            <Grid
               container
               size={{ xs: 12, md: 12 }}
-              sx={{ mb: 2, mt: -1 }}
-              alignItems='flex-start'
-              flexDirection='column'
-              flexWrap='nowrap'
+              sx={{ mb: 2, mt: -1, alignItems: 'flex-start', flexDirection: 'column', flexWrap: 'nowrap' }}
             >
               <FormLabel sx={{ pr: 2, pb: 1 }}>Amount: enter a value you are comfortable paying, minimum $20</FormLabel>
               <TextField
                 name={`${prefix}subsidizedAmount`}
                 parse={getSafeFloat}
-                InputProps={{
-                  startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                slotProps={{
+                  input: {
+                    startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                  },
                 }}
                 variant='outlined'
               />
-            </GridItem>
+            </Grid>
             <DialogContentText>
               A subsidized membership is the same as the equivalent full priced membership, just at a discount.
             </DialogContentText>
@@ -174,18 +166,18 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
             <DialogContentText>
               If you would like to contribute to help others, please check the appropriate box below.
             </DialogContentText>
-            <GridContainer spacing={2} sx={{ mb: 2, ml: 1 }}>
-              <GridItem size={{ xs: 12, md: 12 }}>
+            <Grid container spacing={2} sx={{ mb: 2, ml: 1 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
                 <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
-              </GridItem>
-            </GridContainer>
+              </Grid>
+            </Grid>
             <DialogContentText>
               While this selection will show to you on your registration page and to us for administration, it will be
               otherwise anonymous.
             </DialogContentText>
           </Card>
         )}
-      </GridContainer>
+      </Grid>
     </>
   )
 }

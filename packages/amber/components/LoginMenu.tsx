@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Button, Menu, MenuItem } from '@mui/material'
+import { Button, Menu, MenuItem, MenuList } from '@mui/material'
 
 interface LoginMenuProps {
   buttonText: React.ReactNode
@@ -39,37 +39,41 @@ export const LoginMenu: React.FC<LoginMenuProps> = ({ buttonText, dropdownList, 
         open={Boolean(anchorEl)}
         onClose={handleClose}
         onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 0.5,
-            '& .MuiMenuItem-root': {
-              fontSize: '13px',
-              padding: '10px 20px',
-              margin: '0 5px',
-              borderRadius: '2px',
-              position: 'relative',
-              transition: 'all 150ms linear',
-              display: 'block',
-              clear: 'both',
-              fontWeight: 400,
-              height: 'fit-content',
-              color: '#333',
-              whiteSpace: 'nowrap',
-              minHeight: 'unset',
+        slotProps={{
+          paper: {
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 0.5,
+              '& .MuiMenuItem-root': {
+                fontSize: '13px',
+                padding: '10px 20px',
+                margin: '0 5px',
+                borderRadius: '2px',
+                position: 'relative',
+                transition: 'all 150ms linear',
+                display: 'block',
+                clear: 'both',
+                fontWeight: 400,
+                height: 'fit-content',
+                color: '#333',
+                whiteSpace: 'nowrap',
+                minHeight: 'unset',
+              },
             },
           },
         }}
         transformOrigin={{ horizontal: 'center', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
       >
-        {dropdownList.map((prop, key) => (
-          <MenuItem key={key} onClick={() => onClick?.(prop)}>
-            {prop}
-          </MenuItem>
-        ))}
+        <MenuList disablePadding>
+          {dropdownList.map((prop, key) => (
+            <MenuItem key={key} onClick={() => onClick?.(prop)}>
+              {prop}
+            </MenuItem>
+          ))}
+        </MenuList>
       </Menu>
     </div>
   )

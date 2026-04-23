@@ -27,10 +27,17 @@ export const getSelectValue = (value: SelectFieldValue): any => (typeof value ==
 
 export const getSelectLabel = (value: SelectFieldValue): string => (typeof value === 'string' ? value : value.text)
 
+const isMultiSelect = (slotProps: TextFieldProps['slotProps']) => {
+  const selectSlotProps = slotProps?.select
+  return typeof selectSlotProps === 'object' && selectSlotProps !== null && 'multiple' in selectSlotProps
+    ? !!selectSlotProps.multiple
+    : false
+}
+
 export const SelectField: React.ComponentType<SelectFieldProps> = (props) => {
   const [field] = useField(props.name)
   const { select: _select, selectValues, children, ...rest } = props
-  const multiSelect = !!props.SelectProps?.multiple
+  const multiSelect = isMultiSelect(props.slotProps)
   return (
     <TextField select {...rest}>
       {selectValues &&

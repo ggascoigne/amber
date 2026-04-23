@@ -1,6 +1,7 @@
 import type React from 'react'
 
-import { CheckboxWithLabel, GridContainer, GridItem, Important } from '@amber/ui'
+import { CheckboxWithLabel, Important } from '@amber/ui'
+import { Grid } from '@mui/material'
 import type { FormikErrors, FormikValues } from 'formik'
 
 import { HasPermission, Perms } from '../../components/Auth'
@@ -13,13 +14,13 @@ export const hasAdminStepErrors = (errors: FormikErrors<FormikValues>) =>
 export const MembershipStepAdmin: React.FC<MembershipFormContent> = ({ prefix = '' }) => (
   <HasPermission permission={Perms.IsAdmin}>
     <Important sx={{ mb: '12px' }}>Admin Mode</Important>
-    <GridContainer spacing={2}>
-      <GridItem size={{ xs: 12, md: 12 }}>
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, md: 12 }}>
         <CheckboxWithLabel label='Attending' name={`${prefix}attending`} />
-      </GridItem>
-      <GridItem size={{ xs: 12, md: 12 }}>
+      </Grid>
+      <Grid size={{ xs: 12, md: 12 }}>
         <CheckboxWithLabel label='Volunteer' name={`${prefix}volunteer`} />
-      </GridItem>
-    </GridContainer>
+      </Grid>
+    </Grid>
   </HasPermission>
 )
