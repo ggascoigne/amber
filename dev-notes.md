@@ -94,7 +94,7 @@ https://amberconnw-git-ggp-stripe-payments-wyrdrune.vercel.app/api/stripe/webhoo
 
 ## Testing Stripe locally
 
-Update the stripe cli tools, on mac that's `brew upgrade stripe`, or download from https://github.com/stripe/stripe-cli/releases/latest
+Update the stripe cli tools, on mac that's `brew upgrade stripe`, or download from https://github.com/stripe/stripe-cli/releases/latest.  On an rpm based linux, the install is something like `sudo dnf install https://github.com/stripe/stripe-cli/releases/download/v1.40.7/stripe_1.40.7_linux_amd64.rpm`.
 
 login - `stripe login`, make sure that the webhook signing secret matches what's in your .env file
 
