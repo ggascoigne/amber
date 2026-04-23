@@ -28,20 +28,18 @@ export const setInitialGameAssignments = async ({
   tx: TransactionClient
   input: SetInitialGameAssignmentsInput
 }) => {
-  const [games, assignments, choices] = await Promise.all([
-    tx.game.findMany({
-      where: { year: input.year },
-      select: initialAssignmentGameSelect,
-    }),
-    tx.gameAssignment.findMany({
-      where: { year: input.year },
-      select: initialAssignmentSelect,
-    }),
-    tx.gameChoice.findMany({
-      where: { year: input.year, rank: 1, gameId: { not: null } },
-      select: initialChoiceSelect,
-    }),
-  ])
+  const games = await tx.game.findMany({
+    where: { year: input.year },
+    select: initialAssignmentGameSelect,
+  })
+  const assignments = await tx.gameAssignment.findMany({
+    where: { year: input.year },
+    select: initialAssignmentSelect,
+  })
+  const choices = await tx.gameChoice.findMany({
+    where: { year: input.year, rank: 1, gameId: { not: null } },
+    select: initialChoiceSelect,
+  })
 
   const adds = buildInitialGameAssignments({
     assignments,

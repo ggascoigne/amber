@@ -7,7 +7,7 @@ import type { TransactionClient } from '../../inRlsTransaction'
 
 const createScheduleRoomAssignmentTx = ({
   game = { id: 10, name: 'Midnight Market', slotId: 3, year: 2026, roomId: 20, category: 'user' },
-  rooms = [
+  roomRows = [
     {
       id: 20,
       description: 'Ballroom A',
@@ -16,6 +16,11 @@ const createScheduleRoomAssignmentTx = ({
       enabled: true,
       updated: new Date('2026-01-01T00:00:00.000Z'),
       accessibility: 'accessible' as const,
+      assignmentId: 1n,
+      occupiedByGameId: 10,
+      assignmentSlotId: 3,
+      assignmentYear: 2026,
+      isAvailable: false,
     },
     {
       id: 21,
@@ -25,13 +30,13 @@ const createScheduleRoomAssignmentTx = ({
       enabled: true,
       updated: new Date('2026-01-01T00:00:00.000Z'),
       accessibility: 'many_stairs' as const,
+      assignmentId: 2n,
+      occupiedByGameId: 11,
+      assignmentSlotId: 3,
+      assignmentYear: 2026,
+      isAvailable: true,
     },
   ],
-  slotAssignments = [
-    { id: BigInt(1), gameId: 10, roomId: 20, slotId: 3, year: 2026 },
-    { id: BigInt(2), gameId: 11, roomId: 21, slotId: 3, year: 2026 },
-  ],
-  slotAvailability = [{ roomId: 20, slotId: 3, isAvailable: false }],
 }: {
   game?: {
     id: number
@@ -41,7 +46,7 @@ const createScheduleRoomAssignmentTx = ({
     roomId: number | null
     category: string
   } | null
-  rooms?: Array<{
+  roomRows?: Array<{
     id: number
     description: string
     size: number
@@ -49,38 +54,28 @@ const createScheduleRoomAssignmentTx = ({
     enabled: boolean
     updated: Date
     accessibility: 'accessible' | 'some_stairs' | 'many_stairs'
+    assignmentId: bigint | string | null
+    occupiedByGameId: number | null
+    assignmentSlotId: number | null
+    assignmentYear: number | null
+    isAvailable: boolean
   }>
-  slotAssignments?: Array<{ id: bigint; gameId: number; roomId: number; slotId: number; year: number }>
-  slotAvailability?: Array<{ roomId: number; slotId: number; isAvailable: boolean }>
 } = {}) => {
   const gameFindFirst = vi.fn().mockResolvedValue(game)
-  const roomFindMany = vi.fn().mockResolvedValue(rooms)
-  const gameRoomAssignmentFindMany = vi.fn().mockResolvedValue(slotAssignments)
-  const roomSlotAvailabilityFindMany = vi.fn().mockResolvedValue(slotAvailability)
+  const queryRaw = vi.fn().mockResolvedValue(roomRows)
 
   const tx = {
+    $queryRaw: queryRaw,
     game: {
       findFirst: gameFindFirst,
-    },
-    room: {
-      findMany: roomFindMany,
-    },
-    gameRoomAssignment: {
-      findMany: gameRoomAssignmentFindMany,
-    },
-    roomSlotAvailability: {
-      findMany: roomSlotAvailabilityFindMany,
     },
   } as unknown as TransactionClient
 
   return {
     tx,
     gameFindFirst,
-    roomFindMany,
-    gameRoomAssignmentFindMany,
-    roomSlotAvailabilityFindMany,
-    rooms,
-    slotAssignments,
+    queryRaw,
+    roomRows,
   }
 }
 
@@ -121,8 +116,8 @@ describe('getScheduleRoomAssignmentData', () => {
       message: 'Game not found for year',
     } satisfies Partial<TRPCError>)
 
-    expect(missingGame.roomFindMany).not.toHaveBeenCalled()
-    expect(unslottedGame.gameRoomAssignmentFindMany).not.toHaveBeenCalled()
+    expect(missingGame.queryRaw).not.toHaveBeenCalled()
+    expect(unslottedGame.queryRaw).not.toHaveBeenCalled()
   })
 
   test('returns slot occupancy and defaults missing room availability rows to available', async () => {
@@ -151,31 +146,7 @@ describe('getScheduleRoomAssignmentData', () => {
         category: true,
       },
     })
-    expect(fixture.gameRoomAssignmentFindMany).toHaveBeenCalledWith({
-      where: {
-        year: 2026,
-        slotId: 3,
-        isOverride: false,
-      },
-      select: {
-        id: true,
-        gameId: true,
-        roomId: true,
-        slotId: true,
-        year: true,
-      },
-    })
-    expect(fixture.roomSlotAvailabilityFindMany).toHaveBeenCalledWith({
-      where: {
-        year: 2026,
-        slotId: 3,
-      },
-      select: {
-        roomId: true,
-        slotId: true,
-        isAvailable: true,
-      },
-    })
+    expect(fixture.queryRaw).toHaveBeenCalledTimes(1)
     expect(result).toEqual({
       convention: 'acus',
       game: {
@@ -186,15 +157,33 @@ describe('getScheduleRoomAssignmentData', () => {
         roomId: 20,
         category: 'user',
       },
-      currentAssignment: fixture.slotAssignments[0],
+      currentAssignment: {
+        id: 1n,
+        gameId: 10,
+        roomId: 20,
+        slotId: 3,
+        year: 2026,
+      },
       rooms: [
         {
-          ...fixture.rooms[0],
+          id: 20,
+          description: 'Ballroom A',
+          size: 12,
+          type: 'ballroom',
+          enabled: true,
+          updated: new Date('2026-01-01T00:00:00.000Z'),
+          accessibility: 'accessible',
           occupiedByGameId: 10,
           isAvailable: false,
         },
         {
-          ...fixture.rooms[1],
+          id: 21,
+          description: 'Ballroom B',
+          size: 10,
+          type: 'ballroom',
+          enabled: true,
+          updated: new Date('2026-01-01T00:00:00.000Z'),
+          accessibility: 'many_stairs',
           occupiedByGameId: 11,
           isAvailable: true,
         },

@@ -177,6 +177,7 @@ const HotelRoomTypes = () => {
       <Table<HotelRoom>
         title='Hotel Room Types'
         name='hotelRooms'
+        keyField='id'
         data={data}
         columns={columns}
         isLoading={isLoading}

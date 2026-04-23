@@ -4,7 +4,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutline'
-import type { AccessorKeyColumnDefBase, ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
+import type { ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
 import { dequal as deepEqual } from 'dequal'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
@@ -18,6 +18,7 @@ import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
 import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
+import { getDefaultSort } from './utils/tableUtils'
 
 import { notEmpty } from '../../utils'
 
@@ -150,12 +151,7 @@ export const Table = <T,>({
   })
 
   const initial = { ...initialState }
-  initial.sorting ??= [
-    {
-      id: columns[0].id ?? ((columns[0] as AccessorKeyColumnDefBase<T>).accessorKey as string),
-      desc: false,
-    },
-  ]
+  initial.sorting ??= getDefaultSort(columns)
   const resolvedTableName = name ?? 'table'
   const [persistedTableState, setPersistedTableState] = useTableState(
     resolvedTableName,

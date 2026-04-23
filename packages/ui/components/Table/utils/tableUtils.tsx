@@ -1,4 +1,4 @@
-import type { AccessorKeyColumnDef, Column, ColumnDefBase } from '@tanstack/react-table'
+import type { Column, ColumnDef, RowData } from '@tanstack/react-table'
 
 import { camelToWords } from '../../../utils'
 import { EXPAND_COLUMN_ID, SELECTION_COLUMN_ID } from '../constants'
@@ -14,14 +14,33 @@ export const isUserColumn = (column: { id?: string }) => isUserColumnId(column.i
 
 export type RowStyleType = 'flex' | 'fixed'
 
-export const getDefaultSort = <T, P>(cols: ColumnDefBase<T, P>[]) => {
-  const relevantColumn =
-    // eslint-disable-next-line no-prototype-builtins
-    cols?.[0]?.hasOwnProperty('columns') && (cols as any)[0].columns ? (cols as any)[0].columns[0] : cols[0]
-  return [
-    {
-      desc: false,
-      id: (relevantColumn as AccessorKeyColumnDef<T, T>).accessorKey,
-    },
-  ]
+export const getColumnDefId = <T extends RowData>(columnDef: ColumnDef<T>): string | undefined => {
+  if (typeof columnDef.id === 'string') {
+    return columnDef.id
+  }
+
+  return 'accessorKey' in columnDef && typeof columnDef.accessorKey === 'string' ? columnDef.accessorKey : undefined
+}
+
+export const getLeafColumnIds = <T extends RowData>(columns: Array<ColumnDef<T>>): Array<string> =>
+  columns.flatMap((column) => {
+    if ('columns' in column && Array.isArray(column.columns)) {
+      return getLeafColumnIds(column.columns as Array<ColumnDef<T>>)
+    }
+
+    const columnId = getColumnDefId(column)
+    return columnId && isUserColumnId(columnId) ? [columnId] : []
+  })
+
+export const getDefaultSort = <T extends RowData>(columns: Array<ColumnDef<T>>) => {
+  const [columnId] = getLeafColumnIds(columns)
+
+  return columnId
+    ? [
+        {
+          desc: false,
+          id: columnId,
+        },
+      ]
+    : []
 }

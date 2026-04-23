@@ -1,24 +1,31 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { createTransactionRecord, deleteTransactionRecord, updateTransactionRecord } from './mutations'
+import { transactionScalarSelect } from './queries'
 
 import type { TransactionClient } from '../../inRlsTransaction'
 
-const expectedTransactionInclude = {
+const transactionSqlResult = {
+  id: 19n,
+  userId: 10,
+  memberId: 14,
+  year: 2026,
+  timestamp: new Date('2026-01-01T10:00:00.000Z'),
+  amount: 55,
+  origin: 3,
+  stripe: true,
+  notes: 'manual adjustment',
+  data: { source: 'import' },
+  membership: {
+    year: 2026,
+  },
   user: {
-    select: {
-      fullName: true,
-    },
+    id: 10,
+    fullName: 'Alex Member',
   },
   userByOrigin: {
-    select: {
-      fullName: true,
-    },
-  },
-  membership: {
-    select: {
-      year: true,
-    },
+    id: 3,
+    fullName: 'Pat Admin',
   },
 }
 
@@ -36,8 +43,28 @@ const createTransactionMutationsTx = () => {
     amount: 55,
     userId: 10,
   })
+  const queryRawTyped = vi.fn().mockResolvedValue([
+    {
+      id: 19n,
+      userId: 10,
+      memberId: 14,
+      year: 2026,
+      timestamp: new Date('2026-01-01T10:00:00.000Z'),
+      amount: 55,
+      origin: 3,
+      stripe: true,
+      notes: 'manual adjustment',
+      data: { source: 'import' },
+      user_id: 10,
+      user_full_name: 'Alex Member',
+      origin_user_id: 3,
+      origin_user_full_name: 'Pat Admin',
+      membership_year: 2026,
+    },
+  ])
 
   const tx = {
+    $queryRawTyped: queryRawTyped,
     transactions: {
       create: transactionCreate,
       delete: transactionDelete,
@@ -49,6 +76,7 @@ const createTransactionMutationsTx = () => {
     transactionCreate,
     transactionDelete,
     transactionUpdate,
+    queryRawTyped,
     tx,
   }
 }
@@ -84,15 +112,11 @@ describe('transaction mutation helpers', () => {
         notes: 'badge purchase',
         data: { source: 'import' },
       },
-      include: expectedTransactionInclude,
+      select: transactionScalarSelect,
     })
+    expect(fixture.queryRawTyped).toHaveBeenCalledTimes(1)
     expect(result).toEqual({
-      transaction: {
-        id: 17n,
-        year: 2026,
-        amount: 45,
-        userId: 9,
-      },
+      transaction: transactionSqlResult,
     })
   })
 
@@ -116,15 +140,11 @@ describe('transaction mutation helpers', () => {
         amount: 55,
         notes: 'manual adjustment',
       },
-      include: expectedTransactionInclude,
+      select: transactionScalarSelect,
     })
+    expect(fixture.queryRawTyped).toHaveBeenCalledTimes(1)
     expect(result).toEqual({
-      transaction: {
-        id: 19n,
-        year: 2026,
-        amount: 55,
-        userId: 10,
-      },
+      transaction: transactionSqlResult,
     })
   })
 

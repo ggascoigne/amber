@@ -117,30 +117,28 @@ export const getGameAssignmentDashboardData = async ({
   tx: TransactionClient
   input: GetAssignmentDashboardDataInput
 }) => {
-  const [games, assignments, choices, submissions, memberships] = await Promise.all([
-    tx.game.findMany({
-      where: { year: input.year },
-      select: dashboardGameSelect,
-      orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
-    }),
-    tx.gameAssignment.findMany({
-      where: { year: input.year },
-      select: dashboardAssignmentSelect,
-    }),
-    tx.gameChoice.findMany({
-      where: { year: input.year },
-      select: dashboardChoiceSelect,
-    }),
-    tx.gameSubmission.findMany({
-      where: { year: input.year },
-      select: dashboardSubmissionSelect,
-    }),
-    tx.membership.findMany({
-      where: { year: input.year },
-      select: dashboardMembershipSelect,
-      orderBy: membershipNameOrderBy,
-    }),
-  ])
+  const games = await tx.game.findMany({
+    where: { year: input.year },
+    select: dashboardGameSelect,
+    orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
+  })
+  const assignments = await tx.gameAssignment.findMany({
+    where: { year: input.year },
+    select: dashboardAssignmentSelect,
+  })
+  const choices = await tx.gameChoice.findMany({
+    where: { year: input.year },
+    select: dashboardChoiceSelect,
+  })
+  const submissions = await tx.gameSubmission.findMany({
+    where: { year: input.year },
+    select: dashboardSubmissionSelect,
+  })
+  const memberships = await tx.membership.findMany({
+    where: { year: input.year },
+    select: dashboardMembershipSelect,
+    orderBy: membershipNameOrderBy,
+  })
 
   return {
     games,

@@ -64,15 +64,14 @@ export const assignGameRoom = async ({
   })
 
   if (displacedGameIds.length > 0) {
-    await Promise.all(
-      displacedGameIds.map((displacedGameId) =>
-        syncLegacyGameRoomId({
-          tx,
-          gameId: displacedGameId,
-          year: target.game.year,
-        }),
-      ),
-    )
+    await displacedGameIds.reduce(async (previousSync, displacedGameId) => {
+      await previousSync
+      await syncLegacyGameRoomId({
+        tx,
+        gameId: displacedGameId,
+        year: target.game.year,
+      })
+    }, Promise.resolve())
   }
 
   return {

@@ -72,16 +72,14 @@ export const getAllUsersAndProfilesWithQuery = async ({
   const skip = pagination ? pagination.pageIndex * pagination.pageSize : undefined
   const whereClause = where as any
 
-  const [rowCount, data] = await Promise.all([
-    tx.user.count({ where: whereClause }),
-    tx.user.findMany({
-      include: userWithProfileInclude,
-      orderBy,
-      where: whereClause,
-      skip,
-      take,
-    }),
-  ])
+  const rowCount = await tx.user.count({ where: whereClause })
+  const data = await tx.user.findMany({
+    include: userWithProfileInclude,
+    orderBy,
+    where: whereClause,
+    skip,
+    take,
+  })
 
   return {
     data,

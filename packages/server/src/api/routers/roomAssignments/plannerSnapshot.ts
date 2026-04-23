@@ -47,67 +47,64 @@ const plannerParticipantSelect = {
 }
 
 export const getRoomAssignmentPlannerSnapshot = async ({ tx, year }: { tx: TransactionClient; year: number }) => {
-  const [games, rooms, roomAssignments, roomSlotAvailability, memberRoomAssignments, gameAssignments] =
-    await Promise.all([
-      tx.game.findMany({
-        where: {
-          year,
-        },
-        select: plannerGameSelect,
-        orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
-      }),
-      tx.room.findMany({
-        select: plannerRoomSelect,
-        orderBy: [{ description: 'asc' }],
-      }),
-      tx.gameRoomAssignment.findMany({
-        where: {
-          year,
-        },
-        select: plannerAssignmentSelect,
-        orderBy: [{ slotId: 'asc' }, { gameId: 'asc' }],
-      }),
-      tx.roomSlotAvailability.findMany({
-        where: {
-          year,
-        },
+  const games = await tx.game.findMany({
+    where: {
+      year,
+    },
+    select: plannerGameSelect,
+    orderBy: [{ slotId: 'asc' }, { name: 'asc' }],
+  })
+  const rooms = await tx.room.findMany({
+    select: plannerRoomSelect,
+    orderBy: [{ description: 'asc' }],
+  })
+  const roomAssignments = await tx.gameRoomAssignment.findMany({
+    where: {
+      year,
+    },
+    select: plannerAssignmentSelect,
+    orderBy: [{ slotId: 'asc' }, { gameId: 'asc' }],
+  })
+  const roomSlotAvailability = await tx.roomSlotAvailability.findMany({
+    where: {
+      year,
+    },
+    select: {
+      roomId: true,
+      slotId: true,
+      year: true,
+      isAvailable: true,
+    },
+    orderBy: [{ slotId: 'asc' }, { roomId: 'asc' }],
+  })
+  const memberRoomAssignments = await tx.memberRoomAssignment.findMany({
+    where: {
+      year,
+    },
+    select: {
+      memberId: true,
+      roomId: true,
+      membership: {
         select: {
-          roomId: true,
-          slotId: true,
-          year: true,
-          isAvailable: true,
-        },
-        orderBy: [{ slotId: 'asc' }, { roomId: 'asc' }],
-      }),
-      tx.memberRoomAssignment.findMany({
-        where: {
-          year,
-        },
-        select: {
-          memberId: true,
-          roomId: true,
-          membership: {
+          user: {
             select: {
-              user: {
-                select: {
-                  fullName: true,
-                },
-              },
+              fullName: true,
             },
           },
         },
-        orderBy: [{ roomId: 'asc' }, { memberId: 'asc' }],
-      }),
-      tx.gameAssignment.findMany({
-        where: {
-          year,
-          gm: {
-            gte: 0,
-          },
-        },
-        select: plannerParticipantSelect,
-      }),
-    ])
+      },
+    },
+    orderBy: [{ roomId: 'asc' }, { memberId: 'asc' }],
+  })
+  const gameAssignments = await tx.gameAssignment.findMany({
+    where: {
+      year,
+      gm: {
+        gte: 0,
+      },
+    },
+    select: plannerParticipantSelect,
+  })
 
   return {
     games,

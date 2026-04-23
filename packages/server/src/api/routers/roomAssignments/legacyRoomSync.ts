@@ -99,13 +99,12 @@ export const syncLegacyGameRoomIdsForYear = async ({ tx, year }: { tx: LegacyRoo
     },
   })
 
-  await Promise.all(
-    games.map((game) =>
-      syncLegacyGameRoomId({
-        tx,
-        gameId: game.id,
-        year,
-      }),
-    ),
-  )
+  await games.reduce(async (previousSync, game) => {
+    await previousSync
+    await syncLegacyGameRoomId({
+      tx,
+      gameId: game.id,
+      year,
+    })
+  }, Promise.resolve())
 }

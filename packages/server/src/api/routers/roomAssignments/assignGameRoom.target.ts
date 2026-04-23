@@ -24,26 +24,24 @@ export const getAssignGameRoomTarget = async ({
   tx: AssignGameRoomTargetTx
   input: AssignGameRoomInput
 }): Promise<AssignGameRoomTarget> => {
-  const [game, room] = await Promise.all([
-    tx.game.findUnique({
-      where: {
-        id: input.gameId,
-      },
-      select: {
-        id: true,
-        year: true,
-        slotId: true,
-      },
-    }),
-    tx.room.findUnique({
-      where: {
-        id: input.roomId,
-      },
-      select: {
-        id: true,
-      },
-    }),
-  ])
+  const game = await tx.game.findUnique({
+    where: {
+      id: input.gameId,
+    },
+    select: {
+      id: true,
+      year: true,
+      slotId: true,
+    },
+  })
+  const room = await tx.room.findUnique({
+    where: {
+      id: input.roomId,
+    },
+    select: {
+      id: true,
+    },
+  })
 
   if (!game || !game.slotId || game.year !== input.year || game.slotId !== input.slotId) {
     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Room assignment input did not match game year/slot' })
