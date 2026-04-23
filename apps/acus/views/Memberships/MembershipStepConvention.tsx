@@ -3,8 +3,8 @@ import React from 'react'
 import { useGetAttendanceOptions } from '@amber/amber'
 import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
-import { GridContainer, GridItem, RadioGroupFieldWithLabel } from '@amber/ui'
-import { DialogContentText } from '@mui/material'
+import { RadioGroupFieldWithLabel } from '@amber/ui'
+import { DialogContentText, Grid } from '@mui/material'
 import type { FormikErrors, FormikValues } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
@@ -21,16 +21,16 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
   return (
     <>
       <h3>Convention Registration</h3>
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
             label='Select Membership'
             name={`${prefix}attendance`}
             selectValues={attendanceOptions}
           />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
       <DialogContentText component='div'>
         If you require a hotel room, please see{' '}
         <a href='/hotel' target='_new'>

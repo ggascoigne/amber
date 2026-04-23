@@ -3,11 +3,11 @@ import { DatePicker as MuiDatePicker } from '@mui/x-date-pickers'
 
 import { useDatePickerProps } from './datePickerUtils'
 
-export interface DatePickerProps extends Omit<MuiDatePickerProps<true>, 'onChange' | 'value' | 'error'> {
+export type DatePickerProps = Omit<MuiDatePickerProps, 'onChange' | 'value' | 'error'> & {
   name: string
 }
 
-export function DatePicker({ ...props }: DatePickerProps) {
+export const DatePicker = ({ ...props }: DatePickerProps) => {
   const newProps = useDatePickerProps(props)
   return <MuiDatePicker {...newProps} />
 }

@@ -3,8 +3,8 @@ import React, { useState } from 'react'
 import { AdminCard, ConfigDate, Perms, useConfiguration } from '@amber/amber'
 import type { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
-import { CheckboxWithLabel, GridContainer, GridItem, range, TextField } from '@amber/ui'
-import { Box, DialogContentText, FormControlLabel, FormGroup, Switch } from '@mui/material'
+import { CheckboxWithLabel, range, TextField } from '@amber/ui'
+import { Box, DialogContentText, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material'
 
 export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
@@ -59,19 +59,19 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
           ))}
         </FormGroup>
       </Box>
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Messages' margin='normal' fullWidth multiline />
-        </GridItem>
+        </Grid>
         <AdminCard permission={Perms.IsAdmin}>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Attending' name='attending' />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <CheckboxWithLabel label='Volunteer' name='volunteer' />
-          </GridItem>
+          </Grid>
         </AdminCard>
-      </GridContainer>
+      </Grid>
     </>
   )
 }

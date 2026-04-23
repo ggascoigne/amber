@@ -49,7 +49,6 @@ export const TextFilterEditor = ({ id, value: originalValue, applyChange, closeE
         inputRef={setInputRef}
         name={id}
         size='small'
-        InputLabelProps={{ htmlFor: id }}
         value={value}
         onChange={handleChange}
         autoFocus

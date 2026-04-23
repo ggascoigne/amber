@@ -3,7 +3,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
-import DeleteIcon from '@mui/icons-material/DeleteOutline'
+import DeleteIcon from '@mui/icons-material/DeleteOutlined'
 import type { ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
 import { dequal as deepEqual } from 'dequal'
 

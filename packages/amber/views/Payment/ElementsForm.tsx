@@ -171,9 +171,11 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
             variant='outlined'
             type='number'
             value={input.total}
-            InputProps={{
-              startAdornment: <InputAdornment position='start'>$</InputAdornment>,
-              readOnly: true,
+            slotProps={{
+              input: {
+                startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                readOnly: true,
+              },
             }}
             sx={{
               pb: 4,

@@ -3,9 +3,9 @@ import React from 'react'
 
 import type { Game } from '@amber/client'
 import { isEveningSlot, isMorningSlot } from '@amber/shared'
-import { Card, CardBody, Field, HeaderContent, MultiLine, GridContainer } from '@amber/ui'
+import { Card, CardBody, Field, HeaderContent, MultiLine } from '@amber/ui'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
+import { Accordion, AccordionDetails, AccordionSummary, Grid } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 
 import { isNoGameCategory, isUserGameCategory, maskEmail } from '../../utils'
@@ -66,7 +66,7 @@ const GameCardDetails = React.memo(
 
     const content = (
       <CardBody sx={{ p: { xs: 0, sm: '0.9375rem 1.875rem' } }}>
-        <GridContainer sx={tiny ? { overflow: 'hidden', height: 200 } : undefined}>
+        <Grid container sx={tiny ? { overflow: 'hidden', height: 200 } : undefined}>
           <Field label={tiny ? 'GM' : 'Game Master'} tiny={tiny}>
             {gms.length
               ? gms.map((a) => <PlayerDetails key={a.fullName} player={a} />)
@@ -119,7 +119,7 @@ const GameCardDetails = React.memo(
               <b>Evening Game: Game may run late into the evening</b>
             </Field>
           )}
-        </GridContainer>
+        </Grid>
       </CardBody>
     )
     return (
@@ -207,7 +207,8 @@ export const GameCard = React.memo(
     if (!isUserGameCategory(game.category)) {
       const content = (
         <CardBody>
-          <GridContainer
+          <Grid
+            container
             sx={[
               tiny && {
                 height: 279,
@@ -220,7 +221,7 @@ export const GameCard = React.memo(
             <Field label={tiny ? 'Desc' : 'Description'} tiny={tiny}>
               <MultiLine text={isNoGameCategory(game.category) ? "I'm taking this slot off" : description} />
             </Field>
-          </GridContainer>
+          </Grid>
         </CardBody>
       )
       return tiny ? (

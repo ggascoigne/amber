@@ -59,7 +59,7 @@ const RoomMemberMultiSelectCell = ({
           memberIds: nextMemberIds,
         }).catch(() => undefined)
       }}
-      renderTags={() => (
+      renderValue={() => (
         <Box
           component='span'
           sx={{
@@ -77,13 +77,16 @@ const RoomMemberMultiSelectCell = ({
           variant='standard'
           size='small'
           placeholder={selectedMemberOptions.length === 0 ? 'Unassigned' : ''}
-          inputProps={{
-            ...params.inputProps,
-            'aria-label': `Assign members to room ${roomId}`,
-          }}
-          InputProps={{
-            ...params.InputProps,
-            disableUnderline: true,
+          slotProps={{
+            ...params.slotProps,
+            htmlInput: {
+              ...params.slotProps.htmlInput,
+              'aria-label': `Assign members to room ${roomId}`,
+            },
+            input: {
+              ...params.slotProps.input,
+              disableUnderline: true,
+            },
           }}
           sx={{
             '& .MuiInputBase-root': {
@@ -191,8 +194,10 @@ const AssignMembersToRoomsPane = ({
                 enabled: nextChecked,
               }).catch(() => undefined)
             }}
-            inputProps={{
-              'aria-label': `Enable room ${row.original.roomDescription}`,
+            slotProps={{
+              input: {
+                'aria-label': `Enable room ${row.original.roomDescription}`,
+              },
             }}
             sx={{ py: 0 }}
           />

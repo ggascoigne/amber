@@ -1,8 +1,9 @@
 import type { PropsWithChildren } from 'react'
 import React from 'react'
 
+import { Grid } from '@mui/material'
+
 import { CardHeader } from './Card'
-import { GridItem } from './Grid'
 
 export const linkRenderer = (string: string) => {
   const linkExp = /^https?:\/\/[a-z0-9_./-]*$/i
@@ -62,8 +63,8 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
       }),
     ]}
   >
-    <GridItem container spacing={2} size={12} sx={{ pr: 0 }}>
-      <GridItem container size={{ xs: 12, sm: children ? 7 : 12 }}>
+    <Grid container spacing={2} size={12} sx={{ pr: 0 }}>
+      <Grid container size={{ xs: 12, sm: children ? 7 : 12 }}>
         <h4
           style={
             tiny
@@ -78,13 +79,13 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
         >
           {name}
         </h4>
-      </GridItem>
+      </Grid>
       {children && (
-        <GridItem container size={{ xs: 12, sm: 5 }}>
+        <Grid container size={{ xs: 12, sm: 5 }}>
           {children}
-        </GridItem>
+        </Grid>
       )}
-    </GridItem>
+    </Grid>
   </CardHeader>
 )
 
@@ -95,11 +96,11 @@ export const Field: React.FC<PropsWithChildren<{ label: string; small?: boolean;
   tiny = false,
 }) => (
   <>
-    <GridItem size={{ xs: 12, sm: 2 }} sx={{ pb: '10px', fontWeight: 500, minWidth: 80 }}>
+    <Grid size={{ xs: 12, sm: 2 }} sx={{ pb: '10px', fontWeight: 500, minWidth: 80 }}>
       {label}
-    </GridItem>
-    <GridItem size={{ xs: 12, sm: small ? 4 : tiny ? 8 : 10 }} sx={{ pb: '10px' }}>
+    </Grid>
+    <Grid size={{ xs: 12, sm: small ? 4 : tiny ? 8 : 10 }} sx={{ pb: '10px' }}>
       {children}
-    </GridItem>
+    </Grid>
   </>
 )

@@ -4,7 +4,8 @@ import { useMemo } from 'react'
 import type { Setting } from '@amber/client'
 import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
 import type { OnCloseHandler } from '@amber/ui'
-import { EditDialog, GridContainer, GridItem, pick, SelectField, TextField, useNotification } from '@amber/ui'
+import { EditDialog, pick, SelectField, TextField, useNotification } from '@amber/ui'
+import { Grid } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 import { z } from 'zod'
@@ -91,17 +92,17 @@ export const SettingDialog: React.FC<SettingDialogProps> = ({ open, onClose, ini
       isEditing={!!startingValues.id}
     >
       {({ values }) => (
-        <GridContainer spacing={2}>
-          <GridItem size={{ xs: 12, md: 12 }}>
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 12 }}>
             <TextField name='code' label='Code' margin='normal' fullWidth required autoFocus />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <SelectField name='type' label='Type' margin='normal' fullWidth selectValues={typeValues} />
-          </GridItem>
-          <GridItem size={{ xs: 12, md: 12 }}>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12 }}>
             <SettingValue name='value' value={values} />
-          </GridItem>
-        </GridContainer>
+          </Grid>
+        </Grid>
       )}
     </EditDialog>
   )

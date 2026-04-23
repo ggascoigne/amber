@@ -4,8 +4,8 @@ import { useCallback } from 'react'
 import { ConfigDate, ContactEmail, RoomFieldTable, RoomPref, roomPrefOptions, useConfiguration } from '@amber/amber'
 import type { MembershipFormContent, MembershipErrorType } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
-import { DatePickerField, GridContainer, GridItem, Important, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
-import { DialogContentText, FormControl, RadioGroup } from '@mui/material'
+import { DatePickerField, Important, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
+import { DialogContentText, FormControl, Grid, RadioGroup } from '@mui/material'
 import type { FormikErrors, FormikValues } from 'formik'
 import { Field, useField, useFormikContext } from 'formik'
 import { DateTime } from 'luxon'
@@ -72,8 +72,8 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
       </Important>
 */}
 
-      <GridContainer spacing={2} direction='row'>
-        <GridItem size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={2} direction='row'>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
@@ -86,8 +86,8 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
           />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Field
             component={DatePickerField}
             required
@@ -99,8 +99,8 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
           />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
       <DialogContentText>
         <br />
         The hotel rooms reserved by the convention are subject to a 48 hour cancellation policy. If you must change your
@@ -129,8 +129,8 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
         <b>Thursday</b> until <b>Monday</b>.
       </Important>
 
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField
             name={`${prefix}roomPreferenceAndNotes`}
             label='Room Preference And Notes'
@@ -138,20 +138,20 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             fullWidth
             multiline
           />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
 
       <h3>Roommates</h3>
-      <GridContainer spacing={2} direction='row'>
-        <GridItem size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={2} direction='row'>
+        <Grid size={{ xs: 12, md: 6 }}>
           <RadioGroupFieldWithLabel
             aria-label='Rooming Preferences'
             label='Rooming Preferences'
             name={`${prefix}roomingPreferences`}
             selectValues={roomPrefOptions}
           />
-        </GridItem>
-        <GridItem size={{ xs: 12, md: 6 }}>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
           <TextField
             name={`${prefix}roomingWith`}
             label='Rooming with'
@@ -160,14 +160,14 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             multiline
             disabled={values.membership.roomingPreferences !== RoomPref.RoomWith}
           />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
 
-      <GridContainer spacing={2}>
-        <GridItem size={{ xs: 12, md: 12 }}>
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <TextField name={`${prefix}message`} label='Any other Message' margin='normal' fullWidth multiline />
-        </GridItem>
-      </GridContainer>
+        </Grid>
+      </Grid>
     </>
   )
 }

@@ -1,9 +1,8 @@
 import React from 'react'
 
 import { Link, useConfiguration } from '@amber/amber'
-import { GridContainer, GridItem } from '@amber/ui'
 import type { SxProps, Theme } from '@mui/material'
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 
 const Logo = ({ dates, sx, virtual = false }: { dates: string; sx?: SxProps<Theme>; virtual?: boolean }) => {
   // const background = '#ffffff'
@@ -441,9 +440,9 @@ const WrappedLogo = ({ to }: BannerProps) => {
 }
 
 export const Banner = ({ to }: BannerProps) => (
-  <GridContainer justifyContent='center'>
-    <GridItem size={{ xs: 12 }}>
+  <Grid container sx={{ justifyContent: 'center' }}>
+    <Grid size={{ xs: 12 }}>
       <WrappedLogo to={to} />
-    </GridItem>
-  </GridContainer>
+    </Grid>
+  </Grid>
 )

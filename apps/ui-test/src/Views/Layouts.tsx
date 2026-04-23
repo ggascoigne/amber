@@ -207,7 +207,7 @@ export const Layouts = ({ title }: { title: string }) => {
           <Toggle label='Hide Header' value={hideHeader} setter={setHideHeader} />
           <Toggle label='Compact Pagination' value={compactPagination} setter={setCompactPagination} />
           <Toggle label='Debug' value={debug} setter={setDebug} />
-          <Stack spacing={2} direction='row' sx={{ minWidth: 380, py: 1, px: 3 }} alignItems='center'>
+          <Stack spacing={2} direction='row' sx={{ minWidth: 380, py: 1, px: 3, alignItems: 'center' }}>
             <Typography gutterBottom sx={{ minWidth: 80 }}>
               Elevation
             </Typography>

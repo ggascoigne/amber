@@ -63,12 +63,7 @@ export const SelectFilterEditor = ({
               }}
             >
               <Checkbox checked={isSelected(s)} color='primary' />
-              <ListItemText
-                primaryTypographyProps={{
-                  sx: { fontSize: '0.875rem' },
-                }}
-                primary={getLabel(s)}
-              />
+              <ListItemText slotProps={{ primary: { sx: { fontSize: '0.875rem' } } }} primary={getLabel(s)} />
             </MenuItem>
           ))
         : options.map((s) => (

@@ -2,11 +2,11 @@ import type React from 'react'
 
 import { useInvalidateLookupQueries, useTRPC, type Lookup } from '@amber/client'
 import type { ToFormValues } from '@amber/ui'
-import { Card, CardBody, CardHeader, EditDialog, GridContainer, GridItem, TextField } from '@amber/ui'
+import { Card, CardBody, CardHeader, EditDialog, TextField } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import AddIcon from '@mui/icons-material/Add'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import { Grid, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 import { FieldArray } from 'formik'
@@ -132,11 +132,11 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
       isEditing={initialValues !== defaultValues}
     >
       {(formikProps) => (
-        <GridContainer spacing={5}>
-          <GridItem size={{ xs: 12, md: 6 }}>
+        <Grid container spacing={5}>
+          <Grid size={{ xs: 12, md: 6 }}>
             <TextField name='realm' label='Realm' margin='normal' />
-          </GridItem>
-          <GridItem>
+          </Grid>
+          <Grid>
             <FieldArray
               name='lookupValue'
               render={(arrayHelpers) => (
@@ -220,8 +220,8 @@ export const LookupsDialog: React.FC<LookupsDialogProps> = ({ open, onClose, ini
                 </Card>
               )}
             />
-          </GridItem>
-        </GridContainer>
+          </Grid>
+        </Grid>
       )}
     </EditDialog>
   )

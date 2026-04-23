@@ -1,19 +1,19 @@
 import type React from 'react'
 
-import { getSafeFloat, GridContainer, GridItem, TextField } from '@amber/ui'
-import { InputAdornment, Typography } from '@mui/material'
+import { getSafeFloat, TextField } from '@amber/ui'
+import { Grid, InputAdornment, Typography } from '@mui/material'
 
 interface TransactionFormContentProps {
   prefix?: string
 }
 
 export const TransactionFormContent: React.FC<TransactionFormContentProps> = ({ prefix = '' }) => (
-  <GridContainer spacing={2} direction='column' sx={{ pt: 2 }}>
-    <GridItem size={{ xs: 12, md: 12 }}>
+  <Grid container spacing={2} sx={{ pt: 2, flexDirection: 'column' }}>
+    <Grid size={{ xs: 12, md: 12 }}>
       <Typography variant='body1'>Note that costs are negative values, and payments are positive ones.</Typography>
-    </GridItem>
-    <GridItem container spacing={2} size={{ xs: 12, md: 12 }} style={{ marginLeft: 0, paddingRight: 0 }}>
-      <GridItem size={{ xs: 6, md: 6 }} style={{ paddingLeft: 0, paddingRight: 8 }}>
+    </Grid>
+    <Grid container spacing={2} size={{ xs: 12, md: 12 }} style={{ marginLeft: 0, paddingRight: 0 }}>
+      <Grid size={{ xs: 6, md: 6 }} style={{ paddingLeft: 0, paddingRight: 8 }}>
         <TextField
           name={`${prefix}amount`}
           label='Amount'
@@ -21,31 +21,35 @@ export const TransactionFormContent: React.FC<TransactionFormContentProps> = ({ 
           required
           autoFocus
           parse={getSafeFloat}
-          InputProps={{
-            startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+          slotProps={{
+            input: {
+              startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+            },
           }}
         />
-      </GridItem>
-      <GridItem size={{ xs: 6, md: 6 }} style={{ paddingLeft: 8, paddingRight: 0 }}>
+      </Grid>
+      <Grid size={{ xs: 6, md: 6 }} style={{ paddingLeft: 8, paddingRight: 0 }}>
         <TextField name={`${prefix}year`} label='year' fullWidth required />
-      </GridItem>
-    </GridItem>
-    <GridItem size={{ xs: 12, md: 12 }}>
+      </Grid>
+    </Grid>
+    <Grid size={{ xs: 12, md: 12 }}>
       <TextField name={`${prefix}notes`} label='Notes' fullWidth multiline />
-    </GridItem>
-    <GridItem size={{ xs: 12, md: 12 }}>
+    </Grid>
+    <Grid size={{ xs: 12, md: 12 }}>
       <TextField
         name={`${prefix}stringData`}
         label='Data (read-only)'
         fullWidth
         multiline
-        InputProps={{
-          readOnly: true,
-          sx: {
-            fontFamily: 'monospace',
+        slotProps={{
+          input: {
+            readOnly: true,
+            sx: {
+              fontFamily: 'monospace',
+            },
           },
         }}
       />
-    </GridItem>
-  </GridContainer>
+    </Grid>
+  </Grid>
 )

@@ -246,7 +246,7 @@ export const TablePlayground = ({ title }: { title: string }) => {
           <Toggle label='Force isLoading' value={fakeIsLoading} setter={setFakeIsLoading} />
           <Toggle label='Force isFetching' value={fakeIsFetching} setter={setFakeIsFetching} />
           <Toggle label='Group Columns' value={showColumnGroups} setter={setShowColumnGroups} />
-          <Stack spacing={2} direction='row' sx={{ minWidth: 380, py: 1, px: 3 }} alignItems='center'>
+          <Stack spacing={2} direction='row' sx={{ minWidth: 380, py: 1, px: 3, alignItems: 'center' }}>
             <Typography gutterBottom sx={{ minWidth: 80 }}>
               Max Rows
             </Typography>

@@ -4,8 +4,8 @@ import { useMemo, useCallback } from 'react'
 import type { Setting } from '@amber/client'
 import { useTRPC, useInvalidateSettingsQueries } from '@amber/client'
 import type { OnCloseHandler } from '@amber/ui'
-import { EditDialog, GridContainer, GridItem, Loader, notEmpty, useNotification } from '@amber/ui'
-import { Typography } from '@mui/material'
+import { EditDialog, Loader, notEmpty, useNotification } from '@amber/ui'
+import { Grid, Typography } from '@mui/material'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import debug from 'debug'
 import type { FormikHelpers } from 'formik'
@@ -24,11 +24,11 @@ interface AddNewYearDialogProps {
 type FormValues = Setting[]
 
 const SettingInput: React.FC<{ value: Setting; index: number }> = ({ value, index }) => (
-  <GridContainer spacing={2} sx={{ width: '100%' }}>
-    <GridItem size={{ xs: 6, md: 6 }}>
+  <Grid container spacing={2} sx={{ width: '100%' }}>
+    <Grid size={{ xs: 6, md: 6 }}>
       <SettingValue label={value.code} name={`[${index}].value`} value={value} />
-    </GridItem>
-  </GridContainer>
+    </Grid>
+  </Grid>
 )
 
 const dateFields = ['config.conventionStartDate', 'config.conventionEndDate']
@@ -226,11 +226,11 @@ export const AddNewYearDialog: React.FC<AddNewYearDialogProps> = ({ open, onClos
         changed by adding a new year, and guarantees that all the required settings are created, after this point the
         items can be safely edited individually.
       </Typography>
-      <GridContainer spacing={2} sx={{ pt: 2 }}>
+      <Grid container spacing={2} sx={{ pt: 2 }}>
         {newList.map((s, index) => (
           <SettingInput key={s.code} value={s} index={index} />
         ))}
-      </GridContainer>
+      </Grid>
     </EditDialog>
   )
 }

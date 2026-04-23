@@ -178,13 +178,16 @@ export const TableCellEditor = <TData extends RowData>({
               size='small'
               placeholder={editConfig.placeholder}
               error={hasError}
-              inputProps={{
-                ...params.inputProps,
-                'aria-label': inputLabel,
-              }}
-              InputProps={{
-                ...params.InputProps,
-                disableUnderline: true,
+              slotProps={{
+                ...params.slotProps,
+                htmlInput: {
+                  ...params.slotProps.htmlInput,
+                  'aria-label': inputLabel,
+                },
+                input: {
+                  ...params.slotProps.input,
+                  disableUnderline: true,
+                },
               }}
               onKeyDown={handleKeyDown}
               onBlur={onCommit}
@@ -233,20 +236,21 @@ export const TableCellEditor = <TData extends RowData>({
         select={editConfig.type === 'select'}
         placeholder={editConfig.placeholder}
         error={hasError}
-        inputProps={{
-          'aria-label': inputLabel,
-          inputMode: editConfig.type === 'number' ? 'numeric' : undefined,
+        slotProps={{
+          htmlInput: {
+            'aria-label': inputLabel,
+            inputMode: editConfig.type === 'number' ? 'numeric' : undefined,
+          },
+          input: {
+            disableUnderline: true,
+          },
+          select:
+            editConfig.type === 'select'
+              ? {
+                  renderValue: () => selectedOptionLabel,
+                }
+              : undefined,
         }}
-        InputProps={{
-          disableUnderline: true,
-        }}
-        SelectProps={
-          editConfig.type === 'select'
-            ? {
-                renderValue: () => selectedOptionLabel,
-              }
-            : undefined
-        }
         sx={{
           '& .MuiInputBase-root': {
             fontSize: 'inherit',
