@@ -307,6 +307,7 @@ export const fetchSingleItem = async (db: PGliteInterface, queryString: string):
   } catch (error) {
     console.warn('sqlTools:error', { error, query: queryString })
     throw new Error('SQLite error', {
+      // eslint-disable-next-line preserve-caught-error
       cause: { error, lastQuery: queryString },
     })
   }
@@ -382,6 +383,7 @@ export const fetchArrayData = async (
     }
   } catch (error) {
     console.warn('error', { tableName, error, lastQuery })
+    // eslint-disable-next-line preserve-caught-error
     throw new Error('pglite error', { cause: { tableName, error, lastQuery } })
   }
 }

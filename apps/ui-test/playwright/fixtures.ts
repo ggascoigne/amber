@@ -26,7 +26,7 @@ const warmupDatabase = async (page: Page) => {
  * in each worker. This prevents timeouts due to slow PGlite initialization.
  */
 export const test = base.extend({
-  page: async ({ page }, use) => {
+  page: async ({ page }, fnUse) => {
     // Warmup database on first navigation in this worker
     const originalGoto = page.goto.bind(page)
     // eslint-disable-next-line no-param-reassign
@@ -37,10 +37,7 @@ export const test = base.extend({
       }
       return result
     }
-
-    // this isn't the react hook 'use'
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    await use(page)
+    await fnUse(page)
   },
 })
 
