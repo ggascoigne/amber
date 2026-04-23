@@ -49,7 +49,7 @@
     "@types/node": "^25.6.0",
     "@types/react": "~19.2.14",
     "@types/react-dom": "~19.2.3",
-    "@typescript/native-preview": "7.0.0-dev.20260422.1",
+    "@typescript/native-preview": "7.0.0-dev.20260423.1",
     "dotenv-cli": "11.0.0",
     "eslint": "^10.2.1",
     "eslint-plugin-oxlint": "^1.61.0",
