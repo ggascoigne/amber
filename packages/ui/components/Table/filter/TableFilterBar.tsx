@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
 
 import { Add as AddIcon, Clear as ClearIcon } from '@mui/icons-material'
-import { Box, MenuItem, Typography, Button } from '@mui/material'
+import { Box, MenuItem, MenuList, Typography, Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'
 import type { RowData, Column, Table as TableInstance } from '@tanstack/react-table'
 
@@ -56,20 +56,22 @@ const FilterSelect = <T extends RowData>(props: FilterSelectProps<T>) => (
         </Typography>
       </>
     }
-    renderChildren={({ closePopup }) =>
-      props.filters.map((f) => (
-        <MenuItem
-          key={f.name}
-          onClick={() => {
-            props.onClick(f.name)
-            closePopup()
-          }}
-          sx={{ fontSize: '0.875rem' }}
-        >
-          {f.name}
-        </MenuItem>
-      ))
-    }
+    renderChildren={({ closePopup }) => (
+      <MenuList>
+        {props.filters.map((f) => (
+          <MenuItem
+            key={f.name}
+            onClick={() => {
+              props.onClick(f.name)
+              closePopup()
+            }}
+            sx={{ fontSize: '0.875rem' }}
+          >
+            {f.name}
+          </MenuItem>
+        ))}
+      </MenuList>
+    )}
   />
 )
 
