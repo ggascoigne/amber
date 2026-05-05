@@ -18,6 +18,7 @@ export type RuntimeSettings = {
   contactEmail: string
   deposit: number
   flags: Record<string, string>
+  fourDayMembership: number
   gameEmail: string
   numberOfSlots: number
   paymentDeadline: DateTime
@@ -95,6 +96,7 @@ export const getRuntimeSettingsTx = async (tx: TransactionClient): Promise<Runti
     contactEmail: typeof config.contactEmail === 'string' ? config.contactEmail : '',
     deposit: toNumber(config.deposit),
     flags,
+    fourDayMembership: toNumber(config.fourDayMembership),
     gameEmail: typeof config.gameEmail === 'string' ? config.gameEmail : '',
     numberOfSlots: toNumber(config.numberOfSlots),
     paymentDeadline: DateTime.fromISO(typeof config.paymentDeadline === 'string' ? config.paymentDeadline : ''),

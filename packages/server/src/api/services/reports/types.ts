@@ -9,6 +9,7 @@ export type ReportQueryOptions = {
 }
 
 export type ReportTransformOptions = {
+  fourDayMembership: number
   numberOfSlots: number
   start: DateTime | null
   virtual: boolean

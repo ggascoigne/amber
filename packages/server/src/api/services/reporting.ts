@@ -28,6 +28,7 @@ export const getReportWorkbookData = async (ctx: Context, input: ReportWorkbookI
 
     const startDateConfig = settings.startDates[year]
     return definition.transform(rows, {
+      fourDayMembership: settings.fourDayMembership,
       numberOfSlots: settings.numberOfSlots,
       start: startDateConfig?.date ?? null,
       virtual: startDateConfig?.virtual ?? settings.virtual,
