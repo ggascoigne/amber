@@ -6,6 +6,7 @@ import { gameReport } from './gameReport'
 import { gamesForPlayerSchedulerReport } from './gamesForPlayerSchedulerReport'
 import { gamesSchedulerReport } from './gamesSchedulerReport'
 import { gmReport } from './gmReport'
+import { memberPaymentDetailsReport } from './memberPaymentDetailsReport'
 import { membersForPlayerSchedulerReport } from './membersForPlayerSchedulerReport'
 import { membershipReport } from './membershipReport'
 import { membersWithoutGameChoicesReport } from './membersWithoutGameChoicesReport'
@@ -34,4 +35,5 @@ export const reportDefinitions: ReportDefinitions = {
   roomsByGameReport,
   gameAssignmentsReport,
   voucherReport,
+  memberPaymentDetailsReport,
 }

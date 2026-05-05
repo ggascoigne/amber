@@ -16,6 +16,7 @@ export const reportIdSchema = z.enum([
   'roomsByGameReport',
   'gameAssignmentsReport',
   'voucherReport',
+  'memberPaymentDetailsReport',
 ])
 
 export const reportWorkbookInputSchema = z.object({

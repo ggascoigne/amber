@@ -44,7 +44,7 @@
     "superjson": "^2.2.6",
     "tsconfig-paths": "^4.2.0",
     "tsx": "^4.21.0",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
