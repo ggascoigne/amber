@@ -26,5 +26,6 @@
     "Zelazny's"
   ],
   "editor.formatOnSave": true,
-  "oxc.enable": false
+  "oxc.enable": false,
+  "typescript.native-preview.tsdk": "/Users/ggp/dev/git/amber/node_modules/@typescript/native-preview"
 }
