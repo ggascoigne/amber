@@ -53,6 +53,13 @@ export default [
     rules: { 'import/no-extraneous-dependencies': 'off' },
   },
   {
+    files: ['packages/server/src/api/services/reports/memberLabelsPdfReport.ts'],
+    rules: {
+      // eslint-plugin-import 2.32.0 crashes under ESLint 10 while fixing import/order in this file.
+      'import/order': 'off',
+    },
+  },
+  {
     name: 'browser-safe-shared-boundary',
     files: ['packages/amber/**/*.{ts,tsx}', 'apps/acnw/**/*.{ts,tsx}', 'apps/acus/**/*.{ts,tsx}'],
     rules: {
