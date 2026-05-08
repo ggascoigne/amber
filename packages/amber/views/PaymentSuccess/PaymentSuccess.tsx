@@ -6,7 +6,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 
 import { Page } from '../../components'
-import { formatAmountFromStripe, useGetStripe, useInitializeStripe, formatAmountForDisplay, useUser } from '../../utils'
+import {
+  formatAmountFromStripe,
+  useGetStripe,
+  useInitializeStripe,
+  formatAmountForDisplay,
+} from '../../utils/useStripe'
+import { useUser } from '../../utils/useUserFilterState'
 
 export const PaymentSuccess = () => {
   const trpc = useTRPC()

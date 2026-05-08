@@ -15,10 +15,12 @@ import type { ColumnDef, TableState } from '@tanstack/react-table'
 import { Page } from '../../components'
 import { useProfile } from '../../components/Profile'
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration, useSendEmail, useYearFilter } from '../../utils'
 import type { MembershipConfirmationItem, MembershipType } from '../../utils/apiTypes'
+import { useConfiguration } from '../../utils/configContext'
 import { toLegacyApiMembership } from '../../utils/membershipUtils'
+import { useSendEmail } from '../../utils/useSendEmail'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 export interface MembershipWizardProps {
   open: boolean

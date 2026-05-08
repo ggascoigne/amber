@@ -10,7 +10,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ElementsForm } from './ElementsForm'
 
 import { Page, ContactEmail } from '../../components'
-import { useGetStripe, useConfiguration, useInitializeStripe, useUser } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useGetStripe, useInitializeStripe } from '../../utils/useStripe'
+import { useUser } from '../../utils/useUserFilterState'
 
 export const Payment = () => {
   const trpc = useTRPC()

@@ -4,7 +4,7 @@ import type { GameArray } from '@amber/client'
 import { Typography } from '@mui/material'
 import List from '@mui/material/List'
 
-import { useUrlSource } from '../../utils'
+import { useUrlSource } from '../../utils/useUrlSourceState'
 import { ListItemLink } from '../Navigation'
 import type { GameDecorator, GameDecoratorParams } from '../types'
 

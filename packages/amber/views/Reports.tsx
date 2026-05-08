@@ -12,7 +12,8 @@ import { downloadReportWorkbook } from './Reports/downloadReportWorkbook'
 import { Page } from '../components'
 import type { Perms } from '../components/Auth'
 import { useAuth } from '../components/Auth'
-import { useConfiguration, useYearFilter } from '../utils'
+import { useConfiguration } from '../utils/configContext'
+import { useYearFilter } from '../utils/useYearFilterState'
 
 export type ReportRecord = {
   fileLabel?: string

@@ -1,4 +1,5 @@
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material'
+import ClearIcon from '@mui/icons-material/Clear'
+import SearchIcon from '@mui/icons-material/Search'
 import { IconButton, InputAdornment } from '@mui/material'
 import TextField from '@mui/material/TextField'
 

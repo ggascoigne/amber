@@ -9,7 +9,9 @@ import { ChoiceSummary } from './SlotDetails'
 import { Page, ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
-import { useGameUrl, useGetMemberShip, useUser } from '../../utils'
+import { useGetMemberShip } from '../../utils/membership'
+import { useGameUrl } from '../../utils/useGameUrl'
+import { useUser } from '../../utils/useUserFilterState'
 
 const GameChoiceSummary = () => {
   const trpc = useTRPC()

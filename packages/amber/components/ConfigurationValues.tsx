@@ -5,7 +5,8 @@ import type { ConfigurationDates, ConfigurationNonDates } from '@amber/shared'
 import type { DateTimeFormatOptions } from 'luxon'
 import { DateTime } from 'luxon'
 
-import { getOrdinalWord, useConfiguration } from '../utils'
+import { useConfiguration } from '../utils/configContext'
+import { getOrdinalWord } from '../utils/ordinal'
 
 interface SpacingProps {
   skipSpace?: 'before' | 'after' | 'both' | 'neither'

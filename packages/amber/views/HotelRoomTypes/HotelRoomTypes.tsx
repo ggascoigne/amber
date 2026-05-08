@@ -14,8 +14,8 @@ import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
 import { useInvalidateHotelRoomsQueries } from '../../../client/src/invalidate'
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useYearFilter } from '../../utils'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
+import { useYearFilter } from '../../utils/useYearFilterState'
 import { useAvailableHotelRooms } from '../HotelRoomDetails/HotelRoomDetails'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

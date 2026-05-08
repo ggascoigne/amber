@@ -14,8 +14,9 @@ import { GamesDialog } from './GamesDialog'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useFlag, useYearFilter } from '../../utils'
+import { useFlag } from '../../utils/settings'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 export const getGms = (row: Game) => {
   const playersOrEmpty = row.gameAssignment

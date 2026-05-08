@@ -88,6 +88,12 @@ The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 - I prefer the pattern where if a component is called Foo, then it's properties
   are called props and their type is FooProps, and FooProps will be defined
   directly before the component.
+- Avoid barrel imports in pure/domain code and tests when the barrel exports
+  mixed runtime concerns. Prefer direct module imports such as
+  `../../utils/gameCategory` over `../../utils`, and direct MUI icon imports
+  such as `@mui/icons-material/Add` over `@mui/icons-material`. Barrel imports
+  are acceptable for public app ergonomics only when they do not pull in heavy
+  UI/client/server dependency graphs or slow test startup.
 
 ## Testing Instructions
 

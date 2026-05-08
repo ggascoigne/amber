@@ -4,7 +4,8 @@ import { Field } from 'formik'
 import { DateTime } from 'luxon'
 import { match } from 'ts-pattern'
 
-import { permissionGateValues, booleanValues, useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { permissionGateValues, booleanValues } from '../../utils/settings'
 
 export const typeValues = ['perm-gate', 'string', 'date', 'number', 'boolean']
 

@@ -20,7 +20,7 @@ import { useTableState } from './useTableState'
 import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
 import { getDefaultSort } from './utils/tableUtils'
 
-import { notEmpty } from '../../utils'
+import { notEmpty } from '../../utils/ts-utils'
 
 /**
 Simple, Table wrapper, you just pass it the data and it'll do the rest

@@ -10,8 +10,8 @@ import { TransactionDialog } from './TransactionDialog'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { formatAmountForDisplay } from '../../utils'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
+import { formatAmountForDisplay } from '../../utils/useStripe'
 
 const columns: ColumnDef<Transaction>[] = [
   { id: 'user', header: 'User', accessorFn: (row) => row?.user?.fullName },

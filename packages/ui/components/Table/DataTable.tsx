@@ -27,7 +27,7 @@ import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
 
-import { isDev } from '../../utils'
+import { isDev } from '../../utils/globals'
 
 const log = debug('amber:ui:table:DTable')
 

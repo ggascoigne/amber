@@ -1,7 +1,7 @@
 import type React from 'react'
 import { Suspense, useMemo } from 'react'
 
-import { BugReportTwoTone as BugReportTwoToneIcon } from '@mui/icons-material'
+import BugReportTwoToneIcon from '@mui/icons-material/BugReportTwoTone'
 import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material'
 import superjson from 'superjson'
 

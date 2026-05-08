@@ -8,7 +8,7 @@ import { DateTime } from 'luxon'
 
 import { HasPermission, Perms, useAuth } from './Auth'
 
-import { useConfiguration } from '../utils'
+import { useConfiguration } from '../utils/configContext'
 import { gitHash } from '../version'
 
 const containerFluid = {

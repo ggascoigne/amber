@@ -4,7 +4,6 @@ import type { PDFEmbeddedPage, PDFFont, PDFPage } from 'pdf-lib'
 import type { Context } from '../../context'
 import type { ReportPdfData, ReportPdfInput } from '../../contracts/reports'
 import { inRlsTransaction } from '../../inRlsTransaction'
-
 import { getRuntimeSettingsTx } from '../runtimeSettings'
 
 export type MemberLabelRow = {

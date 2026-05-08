@@ -7,7 +7,8 @@ import { Card, CardHeader, range } from '@amber/ui'
 import { Tab, Tabs } from '@mui/material'
 import { useRouter } from 'next/router'
 
-import { useConfiguration, useGameUrl } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useGameUrl } from '../../utils/useGameUrl'
 import type { SlotDecorator, SlotDecoratorParams } from '../types'
 
 // styles inlined via sx

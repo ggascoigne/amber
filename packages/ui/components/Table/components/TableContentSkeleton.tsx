@@ -8,7 +8,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { TableBody, TableCell, TableRow } from './TableStyles'
 
-import { range } from '../../../utils'
+import { range } from '../../../utils/range'
 import type { RowStyleType } from '../utils/tableUtils'
 
 const measureElement = (element: Element) => element?.getBoundingClientRect().height

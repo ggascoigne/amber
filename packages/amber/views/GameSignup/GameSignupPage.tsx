@@ -19,15 +19,13 @@ import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { Link, Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
-import {
-  buildGameCategoryByGameId,
-  useConfiguration,
-  useConfirmDialogOpen,
-  useGameScroll,
-  useGameUrl,
-  useGetMemberShip,
-  useUser,
-} from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { buildGameCategoryByGameId } from '../../utils/gameCategory'
+import { useGetMemberShip } from '../../utils/membership'
+import { useConfirmDialogOpen } from '../../utils/useConfirmDialogOpenState'
+import { useGameScroll } from '../../utils/useGameScroll'
+import { useGameUrl } from '../../utils/useGameUrl'
+import { useUser } from '../../utils/useUserFilterState'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debugGameChoices = (gameChoices: ChoiceType[] | undefined) => {

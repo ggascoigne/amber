@@ -25,7 +25,8 @@ import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 
-import { buildGameCategoryByGameId, useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 
 type GameChoicesPanelProps = {
   data: GameAssignmentDashboardData

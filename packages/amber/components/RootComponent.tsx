@@ -25,8 +25,8 @@ import { Layout } from './Layout'
 import type { RootRoutes } from './Navigation'
 import { TRPCReactProvider } from './TRPCReactProvider'
 
-import type { Configuration } from '../utils'
-import { ConfigProvider, getSettingsObject, useConfiguration } from '../utils'
+import type { Configuration } from '../utils/configContext'
+import { ConfigProvider, getSettingsObject, useConfiguration } from '../utils/configContext'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()

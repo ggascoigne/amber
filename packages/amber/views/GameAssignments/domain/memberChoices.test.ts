@@ -8,7 +8,7 @@ import {
 } from './memberChoices'
 import { buildAssignment, buildChoice, buildConfiguration } from './testHelpers'
 
-import type { GameCategoryByGameId } from '../../../utils'
+import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 describe('buildChoiceEditorStateForMember', () => {
   test('builds slot-scoped choice rows while preserving gm-first fallback and previous-row links', () => {

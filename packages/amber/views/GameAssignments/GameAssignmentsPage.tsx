@@ -29,8 +29,9 @@ import {
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration, useYearFilter } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
 import { useSendEmail } from '../../utils/useSendEmail'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 const GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY = 'amber.gameAssignments.layoutMode'
 const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlotFilters'

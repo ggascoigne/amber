@@ -20,18 +20,15 @@ import { GameCard } from '../../components/GameCard'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import type { GameDecorator } from '../../components/types'
-import type { Configuration, ICalEvent } from '../../utils'
-import {
-  buildUrl,
-  getGameAssignments,
-  isUserGameCategory,
-  SettingValue,
-  useConfiguration,
-  useGetMemberShip,
-  useGetSettingValue,
-  useUser,
-} from '../../utils'
-import { useFlag } from '../../utils/settings'
+import type { Configuration } from '../../utils/configContext'
+import { useConfiguration } from '../../utils/configContext'
+import { getGameAssignments } from '../../utils/gameAssignment'
+import { isUserGameCategory } from '../../utils/gameCategory'
+import type { ICalEvent } from '../../utils/ical'
+import { buildUrl } from '../../utils/ical'
+import { useGetMemberShip } from '../../utils/membership'
+import { SettingValue, useGetSettingValue, useFlag } from '../../utils/settings'
+import { useUser } from '../../utils/useUserFilterState'
 
 const getGmsAndPlayers = (game: Game) => {
   const details = game.gameAssignment.map((g) => ({

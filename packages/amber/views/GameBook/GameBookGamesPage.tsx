@@ -5,7 +5,8 @@ import NavigationIcon from '@mui/icons-material/Navigation'
 
 import { Page } from '../../components'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
-import { useGameScroll, useGameUrl } from '../../utils'
+import { useGameScroll } from '../../utils/useGameScroll'
+import { useGameUrl } from '../../utils/useGameUrl'
 
 const gotoTop = () => {
   window.scrollTo(0, 0)

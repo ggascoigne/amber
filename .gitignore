@@ -78,4 +78,4 @@ scripts/backup_private.sh
 **/test-results
 .codex/environments/environment.toml
 
-
+PrintAssets/labels-2025.pdf

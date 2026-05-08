@@ -2,7 +2,7 @@ import { CardBody } from '@amber/ui'
 import { Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import { useFlag } from '../utils'
+import { useFlag } from '../utils/settings'
 
 export const BetaWarning = () => {
   const isBeta = useFlag('is_beta')

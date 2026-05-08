@@ -9,7 +9,11 @@ import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelecto
 
 import { GameMenu } from '../../components/GameList'
 import { TransportError } from '../../components/TransportError'
-import { buildGameCategoryByGameId, useConfirmDialogOpen, useGameUrl, useGetMemberShip, useUser } from '../../utils'
+import { buildGameCategoryByGameId } from '../../utils/gameCategory'
+import { useGetMemberShip } from '../../utils/membership'
+import { useConfirmDialogOpen } from '../../utils/useConfirmDialogOpenState'
+import { useGameUrl } from '../../utils/useGameUrl'
+import { useUser } from '../../utils/useUserFilterState'
 
 export const GameSignupMenu = () => {
   const trpc = useTRPC()

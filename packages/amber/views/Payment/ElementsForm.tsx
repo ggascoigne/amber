@@ -13,7 +13,8 @@ import Router from 'next/router'
 import type { UserPaymentDetails } from './PaymentInput'
 import { PaymentInput } from './PaymentInput'
 
-import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe, useYearFilter } from '../../utils'
+import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe } from '../../utils/useStripe'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 type ElementsFormProps = {
   paymentIntent?: PaymentIntentRecord | null

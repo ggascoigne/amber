@@ -27,7 +27,7 @@
     "eslint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "vitest watch",
     "test:e2e": "pnpm -r --sequential test:e2e",
     "tsc": "pnpm -r tsc",
@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
-    "@ggascoigne/eslint-config": "^3.0.0",
+    "@ggascoigne/eslint-config": "^3.1.0",
     "@playwright/test": "^1.59.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

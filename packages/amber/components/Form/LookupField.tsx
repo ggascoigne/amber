@@ -5,7 +5,7 @@ import type { TextFieldProps } from '@amber/ui'
 import { Loader, SelectField } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
-import { useRealmOptions } from '../../utils'
+import { useRealmOptions } from '../../utils/selectValues'
 import { TransportError } from '../TransportError'
 
 export interface LookupFieldProps extends TextFieldProps {

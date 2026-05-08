@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
 
-import { Add as AddIcon, Clear as ClearIcon } from '@mui/icons-material'
+import AddIcon from '@mui/icons-material/Add'
+import ClearIcon from '@mui/icons-material/Clear'
 import { Box, MenuItem, MenuList, Typography, Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'
 import type { RowData, Column, Table as TableInstance } from '@tanstack/react-table'

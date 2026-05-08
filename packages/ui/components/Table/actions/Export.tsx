@@ -3,7 +3,7 @@ import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import { TableIconButton } from './ToolbarButtons'
 
-import { camelToWords } from '../../../utils'
+import { camelToWords } from '../../../utils/object'
 import { isUserColumnId } from '../utils/tableUtils'
 
 type ExportProps<T extends RowData> = {
