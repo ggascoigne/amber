@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Perms } from '@amber/amber/components/Auth'
 import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
-import type { ReportRecord } from '@amber/amber/views/Reports'
+import type { PdfReportRecord, ReportRecord } from '@amber/amber/views/Reports'
 import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
 
@@ -26,8 +26,10 @@ const reports: ReportRecord[] = [
   { name: 'Voucher', reportId: 'voucherReport' },
 ]
 
+const pdfReports: Array<PdfReportRecord> = [{ name: 'Member Labels', pdfReportId: 'memberLabels' }]
+
 export const getServerSideProps = configGetServerSideProps
 
-const Page: NextPage = () => <Reports reports={reports} />
+const Page: NextPage = () => <Reports pdfReports={pdfReports} reports={reports} />
 
 export default Page
