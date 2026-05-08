@@ -1,6 +1,3 @@
-import { readFile } from 'fs/promises'
-import path from 'path'
-
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import type { PDFEmbeddedPage, PDFFont, PDFPage } from 'pdf-lib'
 
@@ -140,27 +137,14 @@ const fitText = ({ font, maxWidth, minSize, size, text }: FitTextOptions): { siz
   }
 }
 
-const templatePathCandidates = (): Array<string> => [
-  path.join(/* turbopackIgnore: true */ process.cwd(), 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
-  path.join(/* turbopackIgnore: true */ process.cwd(), '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
-  path.join(/* turbopackIgnore: true */ process.cwd(), '..', '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
-]
-
 const loadTemplateBytes = async (): Promise<ArrayBuffer | null> => {
-  const results = await Promise.allSettled(templatePathCandidates().map((candidate) => readFile(candidate)))
-
-  for (const result of results) {
-    if (result.status === 'fulfilled') {
-      const bytes = result.value
-      return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
-    }
-
-    if ((result.reason as { code?: string } | null)?.code !== 'ENOENT') {
-      throw result.reason
-    }
+  if (!drawAveryTemplate) {
+    return null
   }
 
-  return null
+  const { avery5163ShippingLabelsTemplateBase64 } = await import('./avery5163ShippingLabelsTemplate')
+  const bytes = Buffer.from(avery5163ShippingLabelsTemplateBase64, 'base64')
+  return bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength)
 }
 
 const loadTemplatePage = async (pdf: PDFDocument): Promise<PDFEmbeddedPage | null> => {
