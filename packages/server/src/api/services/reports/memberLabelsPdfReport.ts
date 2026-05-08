@@ -55,6 +55,7 @@ const slotColumnWidth = 13
 const roomColumnWidth = 72
 const columnGap = 4
 const ellipsis = '...'
+
 const drawAveryTemplate = false
 
 const rowHeightForSlotCount = (numberOfSlots?: number): number => (numberOfSlots === 8 ? 11 : 12.5)
