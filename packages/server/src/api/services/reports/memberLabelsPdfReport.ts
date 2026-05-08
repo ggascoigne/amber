@@ -141,9 +141,9 @@ const fitText = ({ font, maxWidth, minSize, size, text }: FitTextOptions): { siz
 }
 
 const templatePathCandidates = (): Array<string> => [
-  path.join(process.cwd(), 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
-  path.join(process.cwd(), '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
-  path.join(process.cwd(), '..', '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
+  path.join(/* turbopackIgnore: true */ process.cwd(), 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
+  path.join(/* turbopackIgnore: true */ process.cwd(), '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
+  path.join(/* turbopackIgnore: true */ process.cwd(), '..', '..', 'PrintAssets', 'Avery5163ShippingLabels.pdf'),
 ]
 
 const loadTemplateBytes = async (): Promise<ArrayBuffer | null> => {

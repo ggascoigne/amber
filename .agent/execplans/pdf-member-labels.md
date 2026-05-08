@@ -86,6 +86,9 @@ The implementation uses `pdf-lib`, generates the PDF on the server through the e
 - Decision: Gate drawing the Avery template behind a file-level debug constant defaulting to false.
   Rationale: The production report should print only label content. The template is useful for alignment debugging, so it can be enabled by changing `drawAveryTemplate` in the renderer file.
   Date/Author: 2026-05-07 / Codex
+- Decision: Write `.next/package.json` and `.next/server/package.json` with `"type":"commonjs"` after each deployed app build.
+  Rationale: The ACNW and ACUS app source packages remain ESM so Turbopack can compile their TypeScript and MDX source correctly, but Vercel's CommonJS launcher requires generated `.next/server/pages/*.js` files. If Vercel omits Next's generated `.next/package.json`, Node falls back to the app package `"type":"module"` and throws `ERR_REQUIRE_ESM`. Adding the package markers under `.next`, especially `.next/server`, makes the generated server output CommonJS at runtime.
+  Date/Author: 2026-05-07 / Codex
 
 ## Outcomes & Retrospective
 
@@ -431,3 +434,5 @@ Plan revision note: Updated on 2026-05-07 to draw the member name box with a gre
 Plan revision note: Updated on 2026-05-07 to set row height to 11 for seven-slot schedules and 12.5 otherwise.
 
 Plan revision note: Updated on 2026-05-07 to make Avery template drawing an opt-in debug setting that defaults to false.
+
+Plan revision note: Updated on 2026-05-07 after Vercel deployment failed with `ERR_REQUIRE_ESM`; app build scripts now write CommonJS package markers into `.next` output after `next build`.
