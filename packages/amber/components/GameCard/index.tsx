@@ -8,7 +8,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Grid } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 
-import { isNoGameCategory, isUserGameCategory, maskEmail } from '../../utils'
+import { isNoGameCategory, isUserGameCategory } from '../../utils/gameCategory'
+import { maskEmail } from '../../utils/maskEmail'
 import { LookupValue } from '../Lookup'
 import type { GameDecorator, GameDecoratorParams } from '../types'
 

@@ -50,7 +50,7 @@ export default [
   },
   {
     files: ['**/*.test.ts'],
-    rules: { 'import/no-extraneous-dependencies': 'off' },
+    rules: { 'import-x/no-extraneous-dependencies': 'off' },
   },
   {
     files: ['packages/server/src/api/services/reports/memberLabelsPdfReport.ts'],

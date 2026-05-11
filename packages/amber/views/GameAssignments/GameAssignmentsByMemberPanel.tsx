@@ -28,7 +28,7 @@ import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './do
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 
-import { useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
 
 type GameAssignmentsByMemberPanelProps = {
   data: GameAssignmentDashboardData

@@ -5,8 +5,8 @@ import CheckIcon from '@mui/icons-material/Check'
 import { ToggleButton, ToggleButtonGroup } from '@mui/material'
 
 import { Perms, useAuth } from '../../components/Auth'
-import type { GameCategoryByGameId } from '../../utils'
-import { isAnyGameCategory, isAnyGameId, isNoGameCategory, isNoGameId } from '../../utils'
+import type { GameCategoryByGameId } from '../../utils/gameCategory'
+import { isAnyGameCategory, isAnyGameId, isNoGameCategory, isNoGameId } from '../../utils/gameCategory'
 import { rankString } from '../../utils/gameChoiceRank'
 
 export const isNoGame = (gameCategoryByGameId: GameCategoryByGameId, id: number | null | undefined) =>

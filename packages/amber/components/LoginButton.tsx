@@ -18,7 +18,7 @@ import { Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { ProfileDialog, useProfile } from './Profile'
 
-import { useIsGm } from '../utils'
+import { useIsGm } from '../utils/membership'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
 const MENU_ITEM_RESET_PASSWORD = 'Password Reset'

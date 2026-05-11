@@ -19,8 +19,9 @@ import { ChoiceSummary } from './SlotDetails'
 
 import { ContactEmail } from '../../components'
 import { useProfile } from '../../components/Profile'
-import type { GameCategoryByGameId } from '../../utils'
-import { useConfiguration, useSendEmail } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import type { GameCategoryByGameId } from '../../utils/gameCategory'
+import { useSendEmail } from '../../utils/useSendEmail'
 
 interface FormValues {
   year: number

@@ -1,6 +1,6 @@
 import type { DashboardAssignment, DashboardGame, SlotAssignmentScope } from './types'
 
-import { isAnyGameCategory, isUserGameCategory } from '../../../utils'
+import { isAnyGameCategory, isUserGameCategory } from '../../../utils/gameCategory'
 
 export const hasValidSlotId = (game: DashboardGame) => (game.slotId ?? 0) > 0
 

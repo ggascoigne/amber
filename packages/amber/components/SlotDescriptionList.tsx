@@ -3,7 +3,7 @@ import React from 'react'
 import { getSlotDescription, isNotPacificTime, SlotFormat } from '@amber/shared'
 import { range } from '@amber/ui'
 
-import { useConfiguration } from '../utils'
+import { useConfiguration } from '../utils/configContext'
 
 export const SlotDescriptionList = () => {
   const configuration = useConfiguration()

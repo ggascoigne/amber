@@ -17,7 +17,7 @@ import { SettingDialog } from './SettingDialog'
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
 
 export type Setting = RouterOutputs['settings']['getSettings'][0]

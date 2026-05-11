@@ -1,7 +1,8 @@
 import React from 'react'
 
 import { GameMenu } from '../../components/GameList'
-import { useConfiguration, useGameUrl } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useGameUrl } from '../../utils/useGameUrl'
 
 export const GameBookMenu = () => {
   const { year } = useGameUrl()

@@ -1,4 +1,4 @@
-import type { TableEditRowUpdate } from '@amber/ui/components/Table'
+import type { TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
 
 import { getChoiceForGame, buildEmptyMemberAssignmentCounts } from './assignmentSummaries'
 import { buildAssignmentKeyFromInput } from './keys'

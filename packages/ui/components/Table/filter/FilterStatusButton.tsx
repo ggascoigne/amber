@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Clear as ClearIcon } from '@mui/icons-material'
+import ClearIcon from '@mui/icons-material/Clear'
 import type { Theme } from '@mui/material'
 import { Box, Button, Typography } from '@mui/material'
 

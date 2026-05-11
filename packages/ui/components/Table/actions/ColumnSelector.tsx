@@ -1,7 +1,8 @@
 import type { ReactElement, MouseEvent } from 'react'
 import { useState, useCallback } from 'react'
 
-import { ViewColumn as ViewColumnsIcon, Close as CloseIcon } from '@mui/icons-material'
+import CloseIcon from '@mui/icons-material/Close'
+import ViewColumnsIcon from '@mui/icons-material/ViewColumn'
 import {
   Box,
   Checkbox,

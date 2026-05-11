@@ -1,7 +1,7 @@
 import type { ReactNode, MouseEvent, ForwardedRef } from 'react'
 import { useCallback, useState, useRef, forwardRef, useEffect } from 'react'
 
-import { ArrowDropDown as ArrowDropDownIcon } from '@mui/icons-material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { Button, Popover } from '@mui/material'
 import type { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'

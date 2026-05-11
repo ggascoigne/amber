@@ -1,6 +1,6 @@
 import type { Column, ColumnDef, RowData } from '@tanstack/react-table'
 
-import { camelToWords } from '../../../utils'
+import { camelToWords } from '../../../utils/object'
 import { EXPAND_COLUMN_ID, SELECTION_COLUMN_ID } from '../constants'
 
 export const columnName = <T,>(column: Column<T>) =>

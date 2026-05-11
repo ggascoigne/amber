@@ -10,7 +10,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import type { FormikHelpers } from 'formik'
 
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration, useYearFilter } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 const validationSchema = Yup.object().shape({
   description: Yup.string().min(2).max(100).required('Required'),

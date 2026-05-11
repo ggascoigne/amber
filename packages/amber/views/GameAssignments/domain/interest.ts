@@ -1,8 +1,8 @@
 import { getPriorityLabel, getPrioritySortValue } from './labels'
 import type { DashboardChoice, GameInterestRow, InterestChoicesByGameId } from './types'
 
-import { isAnyGameCategory, isNoGameCategory } from '../../../utils'
-import type { GameCategoryByGameId } from '../../../utils'
+import type { GameCategoryByGameId } from '../../../utils/gameCategory'
+import { isAnyGameCategory, isNoGameCategory } from '../../../utils/gameCategory'
 
 export const buildInterestChoicesByGameId = ({
   choices,

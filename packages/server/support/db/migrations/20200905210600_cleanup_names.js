@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-relative-packages
+// eslint-disable-next-line import-x/no-relative-packages
 import { toFix } from '../../../../../name_cleanup.js'
 
 /**

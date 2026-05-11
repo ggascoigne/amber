@@ -16,7 +16,11 @@ import { useRouter } from 'next/router'
 import { Page, ConfigDate, MDY } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration, useGetMemberShip, useFlag, useUser, useYearFilter } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useGetMemberShip } from '../../utils/membership'
+import { useFlag } from '../../utils/settings'
+import { useUser } from '../../utils/useUserFilterState'
+import { useYearFilter } from '../../utils/useYearFilterState'
 import { GamesDialog, GamesDialogEdit } from '../Games/GamesDialog'
 
 // type Game = GameFieldsFragment & GameGmsFragment

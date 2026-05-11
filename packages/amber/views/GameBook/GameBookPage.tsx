@@ -9,7 +9,7 @@ import { Page } from '../../components'
 import { Link } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
 import { YearTile } from '../../components/YearTile'
-import { useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
 
 type GameByYearProps = { year: number; to: string }
 

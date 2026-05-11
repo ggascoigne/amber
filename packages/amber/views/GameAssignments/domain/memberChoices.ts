@@ -1,4 +1,4 @@
-import type { TableEditRowUpdate } from '@amber/ui/components/Table'
+import type { TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
 
 import { getPriorityLabel } from './labels'
 import type {
@@ -9,8 +9,9 @@ import type {
   MemberChoiceRow,
 } from './types'
 
-import type { Configuration, GameCategoryByGameId } from '../../../utils'
-import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../../utils'
+import type { Configuration } from '../../../utils/configContext'
+import type { GameCategoryByGameId } from '../../../utils/gameCategory'
+import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../../utils/gameCategory'
 
 const isFirstChoiceRank = (rank: number) => rank === 0 || rank === 1
 

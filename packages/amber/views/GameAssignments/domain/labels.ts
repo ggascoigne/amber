@@ -1,6 +1,6 @@
 import type { DashboardGame } from './types'
 
-import { isAnyGameCategory, isNoGameCategory } from '../../../utils'
+import { isAnyGameCategory, isNoGameCategory } from '../../../utils/gameCategory'
 import { rankString } from '../../../utils/gameChoiceRank'
 import { PlayerPreference } from '../../../utils/selectValues'
 

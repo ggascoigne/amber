@@ -12,7 +12,11 @@ import { Page } from '../../components'
 import { Perms, useAuth } from '../../components/Auth'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'
-import { getGameAssignments, isUserGameCategory, useConfiguration, useGetMemberShip, useUser } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { getGameAssignments } from '../../utils/gameAssignment'
+import { isUserGameCategory } from '../../utils/gameCategory'
+import { useGetMemberShip } from '../../utils/membership'
+import { useUser } from '../../utils/useUserFilterState'
 
 type ScheduleRoomAssignmentRow = {
   id: number

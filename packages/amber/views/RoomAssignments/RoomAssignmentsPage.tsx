@@ -33,7 +33,8 @@ import { buildRoomMemberAssignmentUpdates, buildFullAvailabilityUpdates } from '
 
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useConfiguration, useYearFilter } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 const ROOM_ASSIGNMENTS_SETUP_LAYOUT_STORAGE_KEY = 'amber.roomAssignments.setupLayoutMode'
 const ROOM_ASSIGNMENTS_ASSIGNMENT_LAYOUT_STORAGE_KEY = 'amber.roomAssignments.assignmentLayoutMode'

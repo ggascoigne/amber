@@ -12,7 +12,7 @@ import { buildInterestChoicesByGameId, buildInterestCountsByGameId, buildInteres
 import type { GameInterestRow, GameInterestSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 
-import { buildGameCategoryByGameId } from '../../utils'
+import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 
 type GameInterestPanelProps = {
   data: GameAssignmentDashboardData

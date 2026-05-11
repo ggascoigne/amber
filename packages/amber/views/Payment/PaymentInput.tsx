@@ -18,16 +18,13 @@ import { match } from 'ts-pattern'
 
 import { MemberSelector } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
-import type { Configuration } from '../../utils'
-import {
-  deleteArrayEntry,
-  formatAmountForDisplay,
-  InterestLevel,
-  updateArray,
-  useConfiguration,
-  useYearFilter,
-} from '../../utils'
+import { deleteArrayEntry, updateArray } from '../../utils/array'
+import type { Configuration } from '../../utils/configContext'
+import { useConfiguration } from '../../utils/configContext'
+import { InterestLevel } from '../../utils/selectValues'
 import { getMembershipCost, getMembershipString } from '../../utils/transactionUtils'
+import { formatAmountForDisplay } from '../../utils/useStripe'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 export type UserPaymentDetails = {
   userId: number

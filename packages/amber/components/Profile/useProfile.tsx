@@ -5,7 +5,7 @@ import { useTRPC } from '@amber/client'
 import { useNotification } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
-import { useUser } from '../../utils'
+import { useUser } from '../../utils/useUserFilterState'
 
 export const useProfile = (): UserAndProfile | null => {
   const trpc = useTRPC()

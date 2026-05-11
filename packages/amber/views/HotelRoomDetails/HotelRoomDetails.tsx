@@ -13,8 +13,9 @@ import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 import { useInvalidateHotelRoomDetailsQueries } from '../../../client/src/invalidate'
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
-import { useFlag, useYearFilter } from '../../utils'
+import { useFlag } from '../../utils/settings'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 export const useAvailableHotelRooms = () => {
   const trpc = useTRPC()

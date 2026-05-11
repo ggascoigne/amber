@@ -1,11 +1,11 @@
-import type { TableEditOption } from '@amber/ui/components/Table'
+import type { TableEditOption } from '@amber/ui/components/Table/editing/types'
 
 import { hasValidSlotId } from './assignmentScope'
 import { getChoiceForGame } from './assignmentSummaries'
 import { formatGameName, getGameLabel, getPriorityLabel, getPrioritySortValue } from './labels'
 import type { ChoicesByMemberSlot, DashboardGame, MoveOption } from './types'
 
-import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../../utils'
+import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../../utils/gameCategory'
 
 export const buildMoveOptions = ({
   games,

@@ -8,7 +8,11 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { Perms, useAuth } from '../../components/Auth'
 import { useProfile } from '../../components/Profile'
-import { useConfiguration, useSendEmail, useFlag, useUser, useYearFilter } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
+import { useFlag } from '../../utils/settings'
+import { useSendEmail } from '../../utils/useSendEmail'
+import { useUser } from '../../utils/useUserFilterState'
+import { useYearFilter } from '../../utils/useYearFilterState'
 
 type Membership = MembershipAndUserAndRoom
 

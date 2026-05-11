@@ -8,7 +8,9 @@ import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
 import type { RootRoutes } from './types'
 
-import { useIsMember, useSettings, useUser } from '../../utils'
+import { useIsMember } from '../../utils/membership'
+import { useSettings } from '../../utils/settings'
+import { useUser } from '../../utils/useUserFilterState'
 import { HasPermission } from '../Auth'
 
 interface MenuItemsProps {

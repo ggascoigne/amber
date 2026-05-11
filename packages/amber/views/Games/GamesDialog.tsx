@@ -26,8 +26,10 @@ import { useEditGame } from './gameHooks'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { TransportError } from '../../components/TransportError'
-import type { Configuration } from '../../utils'
-import { playerPreferenceOptions, useConfiguration, useUser } from '../../utils'
+import type { Configuration } from '../../utils/configContext'
+import { useConfiguration } from '../../utils/configContext'
+import { playerPreferenceOptions } from '../../utils/selectValues'
+import { useUser } from '../../utils/useUserFilterState'
 
 interface GamesDialogProps {
   open: boolean

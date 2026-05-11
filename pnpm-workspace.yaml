@@ -10,11 +10,12 @@ onlyBuiltDependencies:
   - msw
   - prisma
   - sharp
+  - unrs-resolver
   - utf-8-validate
 
 overrides:
+  '@hono/node-server': '>=1.19.10'
   '@prisma/generator-helper@4.16.2>cross-spawn': 7.0.6
   hono: '>=4.11.4'
-  '@hono/node-server': '>=1.19.10'
-  valibot: '>=1.2.0'
   nodemailer: '>=8.0.2'
+  valibot: '>=1.2.0'

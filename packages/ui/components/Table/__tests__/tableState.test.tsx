@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable import-x/no-extraneous-dependencies */
 
 import type { ColumnDef } from '@tanstack/react-table'
 import { describe, expect, test } from 'vitest'

@@ -4,6 +4,7 @@ import { useTRPC } from '@amber/client'
 import { Loader } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
+import { useConfiguration } from '../../utils/configContext'
 import {
   getAttendance,
   getBathroomType,
@@ -11,8 +12,7 @@ import {
   getPlayerPreference,
   getRoomPref,
   getRoomType,
-  useConfiguration,
-} from '../../utils'
+} from '../../utils/selectValues'
 import { TransportError } from '../TransportError'
 
 interface LookupValueProps {

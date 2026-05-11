@@ -1,4 +1,8 @@
-/* eslint-disable import/no-extraneous-dependencies */
+/**
+ * @vitest-environment jsdom
+ */
+
+/* eslint-disable import-x/no-extraneous-dependencies */
 
 import { screen, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'

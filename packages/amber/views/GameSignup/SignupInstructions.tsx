@@ -5,7 +5,7 @@ import { Card } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
 import { ConfigDate } from '../../components'
-import { useConfiguration } from '../../utils'
+import { useConfiguration } from '../../utils/configContext'
 
 interface SignupInstructionsProps {
   year: number

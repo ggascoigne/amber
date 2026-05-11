@@ -6,7 +6,7 @@ import Router from 'next/router'
 
 import { useProfile } from './Profile'
 
-import { formatAmountForDisplay } from '../utils'
+import { formatAmountForDisplay } from '../utils/useStripe'
 
 const BalanceInner = () => {
   const data = useProfile()

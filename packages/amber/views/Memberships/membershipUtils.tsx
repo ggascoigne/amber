@@ -1,9 +1,9 @@
 import Yup from '@amber/ui/utils/Yup'
 import {} from 'yup'
 
-import type { Configuration } from '../../utils'
-import { Attendance } from '../../utils'
+import type { Configuration } from '../../utils/configContext'
 import type { MembershipFormType } from '../../utils/membershipUtils'
+import { Attendance } from '../../utils/selectValues'
 
 export const membershipValidationSchemaNW = Yup.object().shape({
   arrivalDate: Yup.date().required(),

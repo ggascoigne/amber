@@ -7,7 +7,8 @@ import { notEmpty, useNotification } from '@amber/ui'
 import { Autocomplete, TextField } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
-import { useUserFilter, useYearFilter } from '../utils'
+import { useUserFilter } from '../utils/useUserFilterState'
+import { useYearFilter } from '../utils/useYearFilterState'
 
 // styles inlined via sx
 

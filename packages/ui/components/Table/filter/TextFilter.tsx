@@ -7,7 +7,7 @@ import type { RowData, FilterRenderProps } from '@tanstack/react-table'
 import { useFilterContext } from './FilterContext'
 import { FilterStatusButton } from './FilterStatusButton'
 
-import { useFocusableInput } from '../../../utils'
+import { useFocusableInput } from '../../../utils/useFocusableInput'
 import { columnName } from '../utils/tableUtils'
 
 type TextFilterEditorProps = {

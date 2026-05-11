@@ -21,7 +21,7 @@ import MuiTableRow from '@mui/material/TableRow'
 import useResizeObserver from '@react-hook/resize-observer'
 import clsx from 'clsx'
 
-import { fixedForwardRef } from '../../../utils'
+import { fixedForwardRef } from '../../../utils/ts-utils'
 
 export const tableDecorationZIndex = (theme: Theme) => theme.zIndex.fab - 1
 
