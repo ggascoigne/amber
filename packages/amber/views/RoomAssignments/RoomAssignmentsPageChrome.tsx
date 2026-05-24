@@ -53,7 +53,11 @@ const ExplicitSlotFilterSelect = ({
 
         onSlotFilterChange(nextValue)
       }}
-      aria-label='Slot filter'
+      slotProps={{
+        htmlInput: {
+          'aria-label': 'Slot filter',
+        },
+      }}
     >
       {slotFilterOptions.map((slotValue) => (
         <MenuItem key={slotValue} value={`${slotValue}`}>

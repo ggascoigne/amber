@@ -35,37 +35,37 @@
   },
   "dependencies": {
     "dotenv": "17.4.2",
-    "next": "16.2.4",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "next": "16.2.6",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@ggascoigne/eslint-config": "^3.1.0",
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "^1.60.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/jsdom": "~28.0.1",
-    "@types/node": "^25.6.0",
-    "@types/react": "~19.2.14",
+    "@types/jsdom": "~28.0.3",
+    "@types/node": "^25.9.1",
+    "@types/react": "~19.2.15",
     "@types/react-dom": "~19.2.3",
-    "@typescript/native-preview": "7.0.0-dev.20260423.1",
+    "@typescript/native-preview": "7.0.0-dev.20260523.1",
     "dotenv-cli": "11.0.0",
-    "eslint": "^10.3.0",
-    "eslint-plugin-oxlint": "^1.63.0",
+    "eslint": "^10.4.0",
+    "eslint-plugin-oxlint": "^1.66.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
-    "lint-staged": "^16.4.0",
-    "oxfmt": "^0.46.0",
-    "oxlint": "^1.63.0",
-    "oxlint-tsgolint": "^0.21.1",
-    "playwright": "^1.59.1",
+    "lint-staged": "^17.0.5",
+    "oxfmt": "^0.51.0",
+    "oxlint": "^1.66.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "playwright": "^1.60.0",
     "prettier": "^3.8.3",
     "supports-color": "10.2.2",
-    "tsx": "^4.21.0",
-    "turbo": "^2.9.9",
+    "tsx": "^4.22.3",
+    "turbo": "^2.9.14",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.7"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -96,5 +96,5 @@
     "node": ">=24",
     "pnpm": ">=10"
   },
-  "packageManager": "pnpm@11.1.2"
+  "packageManager": "pnpm@11.3.0"
 }

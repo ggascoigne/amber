@@ -17,7 +17,7 @@ test.describe.serial('Room assignments manual workspace', () => {
 
     const manualPane = page.getByRole('region', { name: 'Room Assignment' })
     const debriefRow = manualPane.getByRole('row', { name: /Patternfall Debrief/ })
-    await page.getByRole('combobox', { name: 'Slot 1' }).click()
+    await page.getByRole('combobox', { name: 'Slot filter' }).click()
     await page.getByRole('option', { name: 'Slot 4' }).click()
     await expect(debriefRow).toBeVisible()
 
