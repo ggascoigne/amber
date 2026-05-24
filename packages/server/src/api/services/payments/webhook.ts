@@ -9,7 +9,7 @@ import type { UserPaymentDetails } from './types'
 import { authenticatedCaller } from '../../ssr'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
+  apiVersion: '2026-04-22.dahlia',
 })
 
 const readRequestBuffer = async (req: NextApiRequest) => {

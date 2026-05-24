@@ -170,11 +170,11 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0(prisma@7.8.0(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)
       '@stripe/react-stripe-js':
-        specifier: ^6.2.0
-        version: 6.2.0(@stripe/stripe-js@9.3.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^6.4.0
+        version: 6.4.0(@stripe/stripe-js@9.6.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@stripe/stripe-js':
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^9.6.0
+        version: 9.6.0
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.100.14(react@19.2.6)
@@ -227,8 +227,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       stripe:
-        specifier: ^22.0.2
-        version: 22.0.2(@types/node@25.9.1)
+        specifier: ^22.1.1
+        version: 22.1.1(@types/node@25.9.1)
       yup:
         specifier: ^1.7.1
         version: 1.7.1
@@ -369,11 +369,11 @@ importers:
         specifier: ^7.8.0
         version: 7.8.0(prisma@7.8.0(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)
       '@stripe/react-stripe-js':
-        specifier: ^6.2.0
-        version: 6.2.0(@stripe/stripe-js@9.3.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^6.4.0
+        version: 6.4.0(@stripe/stripe-js@9.6.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@stripe/stripe-js':
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^9.6.0
+        version: 9.6.0
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.100.14(react@19.2.6)
@@ -426,8 +426,8 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0
       stripe:
-        specifier: ^22.0.2
-        version: 22.0.2(@types/node@25.9.1)
+        specifier: ^22.1.1
+        version: 22.1.1(@types/node@25.9.1)
       yup:
         specifier: ^1.7.1
         version: 1.7.1
@@ -737,11 +737,11 @@ importers:
         specifier: ^16.2.6
         version: 16.2.6(@mdx-js/loader@3.1.1(supports-color@10.2.2)(webpack@5.107.1))(@mdx-js/react@3.1.1(@types/react@19.2.15)(react@19.2.6))
       '@stripe/react-stripe-js':
-        specifier: ^6.2.0
-        version: 6.2.0(@stripe/stripe-js@9.3.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^6.4.0
+        version: 6.4.0(@stripe/stripe-js@9.6.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@stripe/stripe-js':
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^9.6.0
+        version: 9.6.0
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.100.14(react@19.2.6)
@@ -894,11 +894,11 @@ importers:
         specifier: workspace:*
         version: link:../server
       '@stripe/react-stripe-js':
-        specifier: ^6.2.0
-        version: 6.2.0(@stripe/stripe-js@9.3.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+        specifier: ^6.4.0
+        version: 6.4.0(@stripe/stripe-js@9.6.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@stripe/stripe-js':
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^9.6.0
+        version: 9.6.0
       '@tanstack/react-query':
         specifier: ^5.100.14
         version: 5.100.14(react@19.2.6)
@@ -1077,8 +1077,8 @@ importers:
         specifier: 16.2.6
         version: 16.2.6(@babel/core@7.29.0(supports-color@10.2.2))(@opentelemetry/api@1.4.1)(@playwright/test@1.60.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       nodemailer:
-        specifier: '>=8.0.2'
-        version: 8.0.7
+        specifier: ^8.0.8
+        version: 8.0.8
       pdf-lib:
         specifier: ^1.17.1
         version: 1.17.1
@@ -1092,8 +1092,8 @@ importers:
         specifier: ^3.0.4
         version: 3.0.4
       stripe:
-        specifier: ^22.0.2
-        version: 22.0.2(@types/node@25.9.1)
+        specifier: ^22.1.1
+        version: 22.1.1(@types/node@25.9.1)
       superjson:
         specifier: ^2.2.6
         version: 2.2.6
@@ -3353,15 +3353,15 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@stripe/react-stripe-js@6.2.0':
-    resolution: {integrity: sha512-GSCErjljZEQv9LaxP30xGOwstcMyyUzb5JyihXwvjOU95yrfhbiPG4K2KkwxYxn+WY0/AyHsRhPPoGRw7urBzg==}
+  '@stripe/react-stripe-js@6.4.0':
+    resolution: {integrity: sha512-5cAf7GAqf8VHPoPLVnJQ2MHtDWLdiEPs5GW/loU7iDEue3xf620v11skrk5HICUraDOhODPYpttgFC5N579NxA==}
     peerDependencies:
-      '@stripe/stripe-js': '>=9.2.0 <10.0.0'
+      '@stripe/stripe-js': '>=9.5.0 <10.0.0'
       react: '>=16.8.0 <20.0.0'
       react-dom: '>=16.8.0 <20.0.0'
 
-  '@stripe/stripe-js@9.3.1':
-    resolution: {integrity: sha512-oWpAEENuVg8aw4W2OUAM9WxRDtIV2YTLr2nr6qHT+D8tHPW7bya61ufinPpUespyRNUVXqesnHo+jQdUNsGywA==}
+  '@stripe/stripe-js@9.6.0':
+    resolution: {integrity: sha512-v5MebYvJbddSRn15fknxTVwypJPzjeIXI1Q2HBxCBrQieWna8PC+RXEVUZ3F4ANAeILEj97HzFlr0r7CXvG7ZA==}
     engines: {node: '>=12.16'}
 
   '@swc/helpers@0.5.15':
@@ -6391,8 +6391,8 @@ packages:
     resolution: {integrity: sha512-0PF8Yb1yZuQfQbq+5/pZJrtF6WQcjTd5/S4JOHs9PGFxuTqoB/icwuB44pOdURHJbRKX1PPoJZtY7R4VUoCC8w==}
     engines: {node: '>=6.0.0'}
 
-  nodemailer@8.0.7:
-    resolution: {integrity: sha512-pkjE4mkBzQjdJT4/UmlKl3pX0rC9fZmjh7c6C9o7lv66Ac6w9WCnzPzhbPNxwZAzlF4mdq4CSWB5+FbK6FWCow==}
+  nodemailer@8.0.8:
+    resolution: {integrity: sha512-p+XsnzXGdtIHXUu2ugxdfG+eX2nehsGhMjW9h0CWj1BhE30hrFz0kh0yIM0/VjUgVsRrDj+80ZO+I1nSkGE4tA==}
     engines: {node: '>=6.0.0'}
 
   normalize-package-data@2.5.0:
@@ -7466,8 +7466,8 @@ packages:
     resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
     engines: {node: '>=0.10.0'}
 
-  stripe@22.0.2:
-    resolution: {integrity: sha512-2/BLrQ3oB1zlNfeL/LfHFjTGx6EQn0j+ztrrTJHuDjV5VVIpk92oSDaxyKLUr3pG3dnee2LZqhFUv2Bf0G1/3g==}
+  stripe@22.1.1:
+    resolution: {integrity: sha512-cmodIYP27tBkJ8G7DuGgWw0PFuemlFZbuF3Wwr1TrjFjUa3T7NIgCe6TVwX8BO2ynu+xtTuDGfHafNDCPt9lXA==}
     engines: {node: '>=18'}
     peerDependencies:
       '@types/node': '>=18'
@@ -9892,14 +9892,14 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stripe/react-stripe-js@6.2.0(@stripe/stripe-js@9.3.1)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
+  '@stripe/react-stripe-js@6.4.0(@stripe/stripe-js@9.6.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
-      '@stripe/stripe-js': 9.3.1
+      '@stripe/stripe-js': 9.6.0
       prop-types: 15.8.1
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
 
-  '@stripe/stripe-js@9.3.1': {}
+  '@stripe/stripe-js@9.6.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
@@ -12912,7 +12912,7 @@ snapshots:
       libmime: 5.3.6
       linkify-it: 5.0.0
       mailsplit: 5.4.3
-      nodemailer: 8.0.7
+      nodemailer: 8.0.5
       punycode.js: 2.3.1
       tlds: 1.259.0
     optional: true
@@ -13467,7 +13467,7 @@ snapshots:
 
   nodemailer@8.0.5: {}
 
-  nodemailer@8.0.7: {}
+  nodemailer@8.0.8: {}
 
   normalize-package-data@2.5.0:
     dependencies:
@@ -13923,7 +13923,7 @@ snapshots:
       fixpack: 4.0.0
       get-port: 5.1.1
       mailparser: 3.7.3
-      nodemailer: 8.0.7
+      nodemailer: 8.0.5
       open: 7.4.2
       p-event: 4.2.0
       p-wait-for: 3.2.0
@@ -14774,7 +14774,7 @@ snapshots:
   strip-json-comments@2.0.1:
     optional: true
 
-  stripe@22.0.2(@types/node@25.9.1):
+  stripe@22.1.1(@types/node@25.9.1):
     optionalDependencies:
       '@types/node': 25.9.1
 
