@@ -22,6 +22,44 @@ export type TransactionFormValue = Expand<
   ToFormValues<Omit<Transaction, 'membership' | 'user' | 'user' | 'userByOrigin'>>
 >
 
+const membershipChargeTransactionType = 'membership charge'
+const membershipDonationTransactionType = 'membership donation'
+
+const getTransactionType = ({ data }: Pick<Transaction, 'data'>): string | null => {
+  if (typeof data !== 'object' || data === null || !('type' in data)) {
+    return null
+  }
+
+  return typeof data.type === 'string' ? data.type : null
+}
+
+const isManualMembershipTransaction = (transaction: Transaction, membershipId: number) =>
+  transaction.memberId === membershipId && transaction.stripe === false
+
+const findMembershipChargeTransaction = (transactions: Array<Transaction>, membershipId: number) => {
+  const typedChargeTransaction = transactions.find(
+    (transaction) =>
+      isManualMembershipTransaction(transaction, membershipId) &&
+      getTransactionType(transaction) === membershipChargeTransactionType,
+  )
+
+  if (typedChargeTransaction) {
+    return typedChargeTransaction
+  }
+
+  return transactions.find(
+    (transaction) =>
+      isManualMembershipTransaction(transaction, membershipId) && getTransactionType(transaction) === null,
+  )
+}
+
+const findMembershipDonationTransaction = (transactions: Array<Transaction>, membershipId: number) =>
+  transactions.find(
+    (transaction) =>
+      isManualMembershipTransaction(transaction, membershipId) &&
+      getTransactionType(transaction) === membershipDonationTransactionType,
+  )
+
 export const getMembershipCost = (configuration: Configuration, values: CreateMembershipType): number => {
   if (configuration.virtual) {
     return parseInt(configuration.virtualCost, 10) || 0
@@ -38,6 +76,11 @@ export const getMembershipCost = (configuration: Configuration, values: CreateMe
     return values.cost ?? 0
   }
 }
+
+export const getMembershipDonation = (values: Pick<CreateMembershipType, 'donation'>): number => values.donation ?? 0
+
+export const getMembershipTotal = (configuration: Configuration, values: CreateMembershipType): number =>
+  getMembershipCost(configuration, values) + getMembershipDonation(values)
 
 export const getMembershipString = (configuration: Configuration, values: CreateMembershipType): string => {
   if (configuration.virtual) {
@@ -146,60 +189,122 @@ export const useEditMembershipTransaction = (onClose: OnCloseHandler) => {
   const invalidatePaymentQueries = useInvalidatePaymentQueries()
   const createTransaction = useMutation(trpc.transactions.createTransaction.mutationOptions())
   const updateTransaction = useMutation(trpc.transactions.updateTransaction.mutationOptions())
+  const deleteTransaction = useMutation(trpc.transactions.deleteTransaction.mutationOptions())
   const notify = useNotification()
   const { userId } = useUser()
 
   return async (membershipValues: CreateMembershipType, membershipId: number, transactions?: Transaction[]) => {
-    const membershipTransactionId = transactions?.find((t) => t?.memberId === membershipId && t?.stripe === false)?.id
+    const existingTransactions = transactions ?? []
+    const membershipChargeAmount = getMembershipCost(configuration, membershipValues)
+    const membershipDonationAmount = getMembershipDonation(membershipValues)
+    const membershipChargeTransaction = findMembershipChargeTransaction(existingTransactions, membershipId)
+    const membershipDonationTransaction = findMembershipDonationTransaction(existingTransactions, membershipId)
 
-    if (membershipTransactionId) {
-      await updateTransaction
-        .mutateAsync(
-          {
-            id: membershipTransactionId,
-            data: {
-              amount: 0 - getMembershipCost(configuration, membershipValues),
-              memberId: membershipId,
-              year: membershipValues.year,
-              notes: getMembershipString(configuration, membershipValues),
-              origin: userId,
-              stripe: false,
-              userId: membershipValues.userId,
+    const sharedTransactionData = {
+      memberId: membershipId,
+      year: membershipValues.year,
+      origin: userId!,
+      stripe: false,
+      userId: membershipValues.userId,
+    }
+
+    const runMutation = async (mutation: Promise<unknown>) =>
+      mutation.catch((error: any) => {
+        notify({ text: error.message, variant: 'error' })
+        throw error
+      })
+
+    try {
+      if (membershipChargeTransaction) {
+        await runMutation(
+          updateTransaction.mutateAsync(
+            {
+              id: membershipChargeTransaction.id,
+              data: {
+                amount: 0 - membershipChargeAmount,
+                notes: getMembershipString(configuration, membershipValues),
+                data: {
+                  type: membershipChargeTransactionType,
+                },
+                ...sharedTransactionData,
+              },
             },
-          },
-          {
-            onSuccess: invalidatePaymentQueries,
-          },
+            {
+              onSuccess: invalidatePaymentQueries,
+            },
+          ),
         )
-        .then(() => {
-          onClose()
-        })
-        .catch((error: any) => {
-          notify({ text: error.message, variant: 'error' })
-        })
-    } else {
-      await createTransaction
-        .mutateAsync(
-          {
-            amount: 0 - getMembershipCost(configuration, membershipValues),
-            memberId: membershipId,
-            year: membershipValues.year,
-            notes: getMembershipString(configuration, membershipValues),
-            origin: userId!,
-            stripe: false,
-            userId: membershipValues.userId,
-            data: {},
-          },
-          {
-            onSuccess: invalidatePaymentQueries,
-          },
+      } else {
+        await runMutation(
+          createTransaction.mutateAsync(
+            {
+              amount: 0 - membershipChargeAmount,
+              notes: getMembershipString(configuration, membershipValues),
+              data: {
+                type: membershipChargeTransactionType,
+              },
+              ...sharedTransactionData,
+            },
+            {
+              onSuccess: invalidatePaymentQueries,
+            },
+          ),
         )
-        .then(() => {
-          onClose()
-        })
-        .catch((error: any) => {
-          notify({ text: error.message, variant: 'error' })
-        })
+      }
+
+      if (membershipDonationAmount > 0) {
+        if (membershipDonationTransaction) {
+          await runMutation(
+            updateTransaction.mutateAsync(
+              {
+                id: membershipDonationTransaction.id,
+                data: {
+                  amount: 0 - membershipDonationAmount,
+                  notes: 'Donation',
+                  data: {
+                    type: membershipDonationTransactionType,
+                  },
+                  ...sharedTransactionData,
+                },
+              },
+              {
+                onSuccess: invalidatePaymentQueries,
+              },
+            ),
+          )
+        } else {
+          await runMutation(
+            createTransaction.mutateAsync(
+              {
+                amount: 0 - membershipDonationAmount,
+                notes: 'Donation',
+                data: {
+                  type: membershipDonationTransactionType,
+                },
+                ...sharedTransactionData,
+              },
+              {
+                onSuccess: invalidatePaymentQueries,
+              },
+            ),
+          )
+        }
+      } else if (membershipDonationTransaction) {
+        await runMutation(
+          deleteTransaction.mutateAsync(
+            {
+              id: membershipDonationTransaction.id,
+            },
+            {
+              onSuccess: invalidatePaymentQueries,
+            },
+          ),
+        )
+      }
+
+      onClose()
+    } catch {
+      // Error notifications are handled by runMutation.
     }
   }
 }

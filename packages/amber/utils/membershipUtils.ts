@@ -12,7 +12,7 @@ import { useConfiguration } from './configContext'
 import { toDateTime } from './dateUtils'
 import { extractErrors } from './extractErrors'
 import { useFlag } from './settings'
-import { useEditMembershipTransaction, getMembershipCost } from './transactionUtils'
+import { getMembershipTotal, useEditMembershipTransaction } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
 
 import { Perms, useAuth } from '../components'
@@ -88,6 +88,7 @@ export const fromMembershipValues = (membershipValues: MembershipType) =>
     'year',
     'slotsAttending',
     'cost',
+    'donation',
   )
 
 export const useEditMembership = (onClose: OnCloseHandler) => {
@@ -139,7 +140,7 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
           membership: toLegacyApiMembership(membershipForPersistence),
           slotDescriptions,
           // for new registrations don't rely on the profile value, it's out of date
-          owed: update === 'new' ? getMembershipCost(configuration, membershipForPersistence) : profile.balance,
+          owed: update === 'new' ? getMembershipTotal(configuration, membershipForPersistence) : profile.balance,
           room,
         },
       ],

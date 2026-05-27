@@ -22,6 +22,7 @@ describe('membership schemas', () => {
       volunteer: true,
       slotsAttending: '1,2,3',
       cost: 225,
+      donation: 30,
     })
 
     expect(result.arrivalDate).toBeInstanceOf(Date)

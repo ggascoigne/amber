@@ -30,7 +30,11 @@ export const SlotFilterSelect = ({
           if (nextValue === '') return
           onSlotFilterChange(nextValue === 'all' ? null : Number(nextValue))
         }}
-        aria-label='Slot filter'
+        slotProps={{
+          htmlInput: {
+            'aria-label': 'Slot filter',
+          },
+        }}
       >
         {allowMixedState || isMixed ? (
           <MenuItem value='' disabled>

@@ -24,6 +24,7 @@ const createMembershipsMutationsTx = () => {
     volunteer: true,
     slotsAttending: '1,2,3',
     cost: 225,
+    donation: 30,
   }
   const updatedMembership = {
     id: 22,
@@ -84,6 +85,7 @@ describe('membership mutation helpers', () => {
         volunteer: true,
         slotsAttending: '1,2,3',
         cost: 225,
+        donation: 30,
       },
     })
 
@@ -106,6 +108,7 @@ describe('membership mutation helpers', () => {
         volunteer: true,
         slotsAttending: '1,2,3',
         cost: 225,
+        donation: 30,
       },
     })
     expect(result).toEqual({ membership: fixture.createdMembership })

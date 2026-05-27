@@ -9,7 +9,7 @@ import type { UserPaymentDetails } from './types'
 import { authenticatedCaller } from '../../ssr'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-03-25.dahlia',
+  apiVersion: '2026-04-22.dahlia',
 })
 
 const readRequestBuffer = async (req: NextApiRequest) => {
@@ -120,6 +120,9 @@ const createDonationTransactionRecord = async (charge: Stripe.Charge, payment: U
   return authenticatedCaller(payment.userId).transactions.createTransaction(transaction)
 }
 
+const shouldCreatePaymentDonationTransaction = (payment: UserPaymentDetails) =>
+  payment.donation > 0 && payment.donationSource !== 'membership' && payment.donationSource !== 'none'
+
 const handleSuccessfulCharge = async (charge: Stripe.Charge) => {
   const {
     amount,
@@ -137,7 +140,7 @@ const handleSuccessfulCharge = async (charge: Stripe.Charge) => {
   }
 
   const transactionPromises = paymentInfo.flatMap((payment) =>
-    payment.donation > 0
+    shouldCreatePaymentDonationTransaction(payment)
       ? [createPaymentTransactionRecord(charge, payment), createDonationTransactionRecord(charge, payment)]
       : [createPaymentTransactionRecord(charge, payment)],
   )

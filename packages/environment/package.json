@@ -40,18 +40,18 @@
     "@t3-oss/env-core": "^0.13.11",
     "@t3-oss/env-nextjs": "^0.13.11",
     "debug": "^4.4.3",
-    "next": "16.2.4",
+    "next": "16.2.6",
     "superjson": "^2.2.6",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.21.0",
+    "tsx": "^4.22.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.13",
-    "@types/node": "^25.6.0",
+    "@types/node": "^25.9.1",
     "@types/pg": "^8.20.0",
-    "@typescript/native-preview": "7.0.0-dev.20260423.1",
+    "@typescript/native-preview": "7.0.0-dev.20260523.1",
     "dotenv": "^17.4.2",
     "prisma": "^7.8.0",
     "typescript": "^6.0.3"

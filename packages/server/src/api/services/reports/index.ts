@@ -1,4 +1,5 @@
 import { discordGameReport } from './discordGameReport'
+import { donorReport } from './donorReport'
 import { gameAndPlayersReport } from './gameAndPlayersReport'
 import { gameAssignmentsReport } from './gameAssignmentsReport'
 import { gameChoicesForPlayerSchedulerReport } from './gameChoicesForPlayerSchedulerReport'
@@ -21,6 +22,7 @@ export { defaultWorkbook }
 
 export const reportDefinitions: ReportDefinitions = {
   membershipReport,
+  donorReport,
   gameReport,
   discordGameReport,
   gmReport,

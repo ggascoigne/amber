@@ -64,6 +64,7 @@ const membershipTypeSchema = z.object({
     .optional()
     .nullable(),
   cost: z.number().optional().nullable(),
+  donation: z.number(),
 })
 
 export type UserType = UserAndProfile

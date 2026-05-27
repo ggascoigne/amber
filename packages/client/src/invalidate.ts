@@ -40,6 +40,7 @@ const useQueryLists = () => {
       trpc.memberships.getMembershipsById.queryKey(),
       trpc.memberships.getMembershipByYearAndRoom.queryKey(),
       trpc.users.getUser.queryKey(),
+      trpc.users.getUserAndProfile.queryKey(),
     ],
     [
       trpc.memberships.getMembershipByYearAndId,
@@ -47,12 +48,17 @@ const useQueryLists = () => {
       trpc.memberships.getMembershipsById,
       trpc.memberships.getMembershipsByYear,
       trpc.users.getUser,
+      trpc.users.getUserAndProfile,
     ],
   )
 
   const allProfileQueries = useMemo(
-    () => [trpc.users.getUserByEmail.queryKey(), trpc.users.getAllUsersAndProfiles.queryKey()],
-    [trpc.users.getAllUsersAndProfiles, trpc.users.getUserByEmail],
+    () => [
+      trpc.users.getUserByEmail.queryKey(),
+      trpc.users.getUserAndProfile.queryKey(),
+      trpc.users.getAllUsersAndProfiles.queryKey(),
+    ],
+    [trpc.users.getAllUsersAndProfiles, trpc.users.getUserAndProfile, trpc.users.getUserByEmail],
   )
 
   const allLookupQueries = useMemo(
@@ -122,6 +128,7 @@ const useQueryLists = () => {
       trpc.transactions.getTransactionsByUser.queryKey(),
       trpc.transactions.getTransactionsByYearAndUser.queryKey(),
       trpc.users.getUser.queryKey(),
+      trpc.users.getUserAndProfile.queryKey(),
     ],
     [
       trpc.transactions.getTransactions,
@@ -129,6 +136,7 @@ const useQueryLists = () => {
       trpc.transactions.getTransactionsByUser,
       trpc.transactions.getTransactionsByYearAndUser,
       trpc.users.getUser,
+      trpc.users.getUserAndProfile,
     ],
   )
 

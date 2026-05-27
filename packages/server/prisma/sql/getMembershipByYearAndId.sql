@@ -19,6 +19,7 @@ SELECT
   m.request_old_price AS "requestOldPrice",
   m.slots_attending AS "slotsAttending",
   m.cost,
+  m.donation,
   u.id user_id,
   u.email user_email,
   u.full_name user_full_name,

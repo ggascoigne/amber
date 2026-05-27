@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const reportIdSchema = z.enum([
   'membershipReport',
+  'donorReport',
   'gameReport',
   'discordGameReport',
   'gmReport',

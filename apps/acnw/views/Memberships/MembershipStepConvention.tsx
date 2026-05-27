@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import {
   Attendance,
@@ -12,7 +12,18 @@ import {
 import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { CheckboxWithLabel, getSafeFloat, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
-import { Box, Card, CardContent, DialogContentText, FormLabel, Grid, InputAdornment } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  DialogContentText,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  InputAdornment,
+  Radio,
+  RadioGroup,
+} from '@mui/material'
 import type { FormikErrors, FormikValues } from 'formik'
 import { useField, useFormikContext } from 'formik'
 
@@ -24,7 +35,51 @@ export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
     'interestLevel',
     'offerSubsidy',
     'subsidizedAmount',
+    'donation',
   )
+
+type DonationChoiceValue = 'full' | 'short' | '100' | '30' | 'other'
+
+const defaultDonationChoice: DonationChoiceValue = '30'
+
+const getDonationChoice = (
+  donation: number,
+  fullMembershipAmount: number,
+  shortMembershipAmount: number,
+): DonationChoiceValue => {
+  if (donation === fullMembershipAmount) {
+    return 'full'
+  }
+  if (donation === shortMembershipAmount) {
+    return 'short'
+  }
+  if (donation === 100) {
+    return '100'
+  }
+  if (donation === 30) {
+    return '30'
+  }
+  return 'other'
+}
+
+const getDonationAmount = (
+  choice: Exclude<DonationChoiceValue, 'other'>,
+  fullMembershipAmount: number,
+  shortMembershipAmount: number,
+) => {
+  switch (choice) {
+    case 'full':
+      return fullMembershipAmount
+    case 'short':
+      return shortMembershipAmount
+    case '100':
+      return 100
+    case '30':
+      return 30
+    default:
+      throw new Error('Unsupported donation choice')
+  }
+}
 
 export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent) => {
   const configuration = useConfiguration()
@@ -32,8 +87,14 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
   const subsidizedAttendanceOptions = useGetSubsidizedAttendanceOptions()
   const { setFieldValue } = useFormikContext<FormikValues>()
   const [field] = useField(`${prefix}membership`)
+  const [offerSubsidyField] = useField<boolean>(`${prefix}offerSubsidy`)
+  const [donationField] = useField<number>(`${prefix}donation`)
+  const previousOfferSubsidy = useRef(offerSubsidyField.value)
 
   const [showSubsidizedOptions, setShowSubsidizedOptions] = useState(field.value === Attendance.Subsidized)
+  const [donationChoice, setDonationChoice] = useState<DonationChoiceValue>(() =>
+    getDonationChoice(donationField.value ?? 0, configuration.fourDayMembership, configuration.threeDayMembership),
+  )
 
   const onChangeAttendance = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>, _checked: boolean): void => {
@@ -51,17 +112,77 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
     setShowSubsidizedOptions(event.target.value === Attendance.Subsidized)
   }, [])
 
+  useEffect(() => {
+    if (previousOfferSubsidy.current === offerSubsidyField.value) {
+      return
+    }
+
+    previousOfferSubsidy.current = offerSubsidyField.value
+
+    if (offerSubsidyField.value) {
+      const nextDonation = donationField.value && donationField.value > 0 ? donationField.value : 30
+      setFieldValue(`${prefix}donation`, nextDonation)
+      setDonationChoice(
+        getDonationChoice(nextDonation, configuration.fourDayMembership, configuration.threeDayMembership),
+      )
+      return
+    }
+
+    setFieldValue(`${prefix}donation`, 0)
+    setDonationChoice(defaultDonationChoice)
+  }, [
+    configuration.fourDayMembership,
+    configuration.threeDayMembership,
+    donationField.value,
+    offerSubsidyField.value,
+    prefix,
+    setFieldValue,
+  ])
+
+  useEffect(() => {
+    if (offerSubsidyField.value) {
+      setDonationChoice(
+        getDonationChoice(donationField.value ?? 0, configuration.fourDayMembership, configuration.threeDayMembership),
+      )
+      return
+    }
+
+    setDonationChoice(defaultDonationChoice)
+  }, [configuration.fourDayMembership, configuration.threeDayMembership, donationField.value, offerSubsidyField.value])
+
+  const onChangeDonationChoice = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const nextChoice = event.target.value as DonationChoiceValue
+      setDonationChoice(nextChoice)
+
+      if (nextChoice === 'other') {
+        if (
+          getDonationChoice(
+            donationField.value ?? 0,
+            configuration.fourDayMembership,
+            configuration.threeDayMembership,
+          ) !== 'other'
+        ) {
+          setFieldValue(`${prefix}donation`, 0)
+        }
+        return
+      }
+
+      setFieldValue(
+        `${prefix}donation`,
+        getDonationAmount(nextChoice, configuration.fourDayMembership, configuration.threeDayMembership),
+      )
+    },
+    [configuration.fourDayMembership, configuration.threeDayMembership, donationField.value, prefix, setFieldValue],
+  )
+
   return (
     <>
       <DialogContentText>
         Per Edgefield&apos;s room policy, you must be at least 18 or older to register. If you are younger and wish to
         attend, please contact the organizers at <ContactEmail />.
       </DialogContentText>
-      <DialogContentText>
-        I plan to attend {configuration.title}, <ConventionsDatesFull pre='from' intra='through' post=',' /> at
-        McMenamin&apos;s Edgefield Bed & Breakfast in Troutdale, Oregon. I understand that my hotel room is held but not
-        reserved until I have paid my membership fee in full and received confirmation from the organizers.
-      </DialogContentText>
+
       <h3>Convention Registration</h3>
       <Grid container spacing={2} sx={{ mb: 2 }}>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -90,11 +211,6 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 12 }}>
-          <DialogContentText sx={{ pt: 1 }}>
-            Through the extraordinary generosity of our members, {configuration.title} can offer subsidized memberships.
-          </DialogContentText>
-        </Grid>
         <Grid size={{ xs: 12, md: 12 }} sx={{ mb: 2 }}>
           <RadioGroupFieldWithLabel
             aria-label='Select Membership'
@@ -164,19 +280,61 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
               Support Subsidized Memberships
             </Box>
             <DialogContentText>
-              If you would like to contribute to help others, please check the appropriate box below.
+              Through the extraordinary generosity of our attendees, AmberCon Northwest is able to offer subsidized
+              memberships. Your contribution helps more players join us at the convention, and any amount keeps AmberCon
+              accessible to everyone.
             </DialogContentText>
             <Grid container spacing={2} sx={{ mb: 2, ml: 1 }}>
               <Grid size={{ xs: 12, md: 12 }}>
-                <CheckboxWithLabel label='To contribute to the fund, check this box' name={`${prefix}offerSubsidy`} />
+                <CheckboxWithLabel label='Yes, I&#39;d like to contribute.' name={`${prefix}offerSubsidy`} />
               </Grid>
+              {offerSubsidyField.value ? (
+                <Grid size={{ xs: 12, md: 12 }}>
+                  <RadioGroup name={`${prefix}donationChoice`} value={donationChoice} onChange={onChangeDonationChoice}>
+                    <FormControlLabel
+                      value='full'
+                      control={<Radio />}
+                      label={`$${configuration.fourDayMembership}, sponsor a Full Membership`}
+                    />
+                    <FormControlLabel
+                      value='short'
+                      control={<Radio />}
+                      label={`$${configuration.threeDayMembership}, sponsor a Short Membership`}
+                    />
+                    <FormControlLabel value='100' control={<Radio />} label='$100' />
+                    <FormControlLabel value='30' control={<Radio />} label='$30' />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, pl: 0 }}>
+                      <FormControlLabel value='other' control={<Radio />} label='Other' />
+                      <TextField
+                        name={`${prefix}donation`}
+                        parse={getSafeFloat}
+                        disabled={donationChoice !== 'other'}
+                        slotProps={{
+                          input: {
+                            startAdornment: <InputAdornment position='start'>$</InputAdornment>,
+                          },
+                        }}
+                        variant='outlined'
+                      />
+                    </Box>
+                  </RadioGroup>
+                </Grid>
+              ) : null}
             </Grid>
             <DialogContentText>
-              While this selection will show to you on your registration page and to us for administration, it will be
-              otherwise anonymous.
+              Your contribution will appear on your registration confirmation and is visible to our administrators, but
+              will otherwise remain anonymous.
             </DialogContentText>
           </Card>
         )}
+        <DialogContentText>
+          <b>
+            By confirming my membership, I plan to attend {configuration.title},{' '}
+            <ConventionsDatesFull pre='from' intra='through' post=', ' /> at McMenamins Edgefield Bed & Breakfast in
+            Troutdale, Oregon. I understand that my hotel room is held but not reserved until I have paid my membership
+            fee in full and received confirmation from the organizers.
+          </b>
+        </DialogContentText>
       </Grid>
     </>
   )

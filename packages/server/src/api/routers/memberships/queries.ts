@@ -67,6 +67,7 @@ type MembershipResult = Prisma.MembershipGetPayload<{
     requestOldPrice: true
     slotsAttending: true
     cost: true
+    donation: true
   }
 }> & {
   hotelRoom: MembershipHotelRoomResult
@@ -114,6 +115,7 @@ const buildMembershipResults = (rows: Array<MembershipJoinRow>): Array<Membershi
         requestOldPrice: row.requestOldPrice,
         slotsAttending: row.slotsAttending,
         cost: row.cost,
+        donation: row.donation,
         hotelRoom: {
           id: row.hotel_room_id,
           description: row.hotel_room_description,
@@ -252,6 +254,7 @@ export const getAllMembersBy = ({ tx, input }: { tx: TransactionClient; input: G
           requestOldPrice: true,
           slotsAttending: true,
           cost: true,
+          donation: true,
         },
       })
       const profilesByUserId = new Map<number, Array<(typeof profiles)[number]>>()

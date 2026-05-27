@@ -12,6 +12,7 @@ const reports: ReportRecord[] = [
   { name: 'GM', reportId: 'gmReport' },
   { name: 'Game And Players', reportId: 'gameAndPlayersReport' },
   { fileLabel: 'room', name: 'Room Usage', reportId: 'roomReport' },
+  { name: 'Donor', reportId: 'donorReport' },
   { fileLabel: 'memberPayments', name: 'Member Payment Details', reportId: 'memberPaymentDetailsReport' },
 ]
 
