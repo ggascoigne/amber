@@ -246,6 +246,7 @@ model Membership {
   requestOldPrice        Boolean          @map("request_old_price")
   slotsAttending         String?          @map("slots_attending") @db.VarChar(20)
   cost                   Float?
+  donation               Float            @default(0)
   gameAssignment         GameAssignment[]
   gameChoice             GameChoice[]
   gameSubmission         GameSubmission[]

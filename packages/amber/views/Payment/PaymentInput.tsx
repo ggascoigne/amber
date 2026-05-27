@@ -1,5 +1,5 @@
 import type * as React from 'react'
-import { useReducer, useEffect, useState, useCallback } from 'react'
+import { useCallback, useEffect, useReducer, useState } from 'react'
 
 import type { CreateMembershipType, User, UserMembership } from '@amber/client'
 import { useTRPC } from '@amber/client'
@@ -22,7 +22,7 @@ import { deleteArrayEntry, updateArray } from '../../utils/array'
 import type { Configuration } from '../../utils/configContext'
 import { useConfiguration } from '../../utils/configContext'
 import { InterestLevel } from '../../utils/selectValues'
-import { getMembershipCost, getMembershipString } from '../../utils/transactionUtils'
+import { getMembershipString, getMembershipTotal } from '../../utils/transactionUtils'
 import { formatAmountForDisplay } from '../../utils/useStripe'
 import { useYearFilter } from '../../utils/useYearFilterState'
 
@@ -32,6 +32,11 @@ export type UserPaymentDetails = {
   total: number
   membership: number
   donation: number
+  donationSource?: 'payment' | 'membership' | 'none'
+}
+
+export type PaymentInputOptions = {
+  hideDonationForOwnMembership?: boolean
 }
 
 type ButtonState = 'deposit' | 'full' | 'other'
@@ -52,22 +57,43 @@ type ReducerAction = {
   value: any
 }
 
-const calculateState = (state: ReducerState) => {
-  const result = {
-    ...state,
-    membershipPayment: match(state.buttonState)
-      .with('deposit', () => state.deposit)
-      .with('full', () => state.balance)
-      .with('other', () => state.customValue)
-      .exhaustive(),
-  }
-  // console.log('calculateState', result)
-  return result
+type MemberOrUserPaymentProps = {
+  loggedInUserId: number
+  membership: CreateMembershipType | undefined
+  year: number
+  balance: number
+  user: User
+  onChange: (info: UserPaymentDetails) => void
+  onRemoveUserPayment: (userId: number) => void
+  hideDonationForOwnMembership: boolean
 }
 
-const reducer = (state: ReducerState, action: ReducerAction) => {
-  // console.log('reducer state', state)
+type UserPaymentProps = {
+  year: number
+  userId: number
+  loggedInUserId: number
+  handlePaymentChange: (info: UserPaymentDetails) => void
+  onRemoveUserPayment: (userId: number) => void
+  hideDonationForOwnMembership: boolean
+}
 
+type PaymentInputProps = {
+  userId: number
+  name: string
+  setPayments: React.Dispatch<React.SetStateAction<UserPaymentDetails[]>>
+  options?: PaymentInputOptions
+}
+
+const calculateState = (state: ReducerState) => ({
+  ...state,
+  membershipPayment: match(state.buttonState)
+    .with('deposit', () => state.deposit)
+    .with('full', () => state.balance)
+    .with('other', () => state.customValue)
+    .exhaustive(),
+})
+
+const reducer = (state: ReducerState, action: ReducerAction) => {
   switch (action.type) {
     case 'setButtonState': {
       return calculateState({
@@ -95,21 +121,11 @@ const reducer = (state: ReducerState, action: ReducerAction) => {
 const getSafeEventFloat = (event: React.ChangeEvent<HTMLInputElement>) =>
   getSafeFloat((event.target as HTMLInputElement).value)
 
-type MemberOrUserPaymentProps = {
-  loggedInUserId: number
-  membership: CreateMembershipType | undefined
-  year: number
-  balance: number
-  user: User
-  onChange: (info: UserPaymentDetails) => void
-  onRemoveUserPayment: (userId: number) => void
-}
-
 const canDoFullMembershipPayment = (
   membership: CreateMembershipType | undefined,
   balance: number,
   configuration: Configuration,
-) => (membership ? balance === getMembershipCost(configuration, membership) : false)
+) => (membership ? balance === getMembershipTotal(configuration, membership) : false)
 
 const defaultButtonState = (
   membership: CreateMembershipType | undefined,
@@ -124,7 +140,24 @@ const defaultButtonState = (
         ? 'full'
         : 'other'
 
-const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
+const shouldShowDonationField = ({
+  hideDonationForOwnMembership,
+  loggedInUserId,
+  membership,
+  user,
+}: Pick<MemberOrUserPaymentProps, 'hideDonationForOwnMembership' | 'loggedInUserId' | 'membership' | 'user'>) => {
+  if (loggedInUserId !== user.id) {
+    return false
+  }
+
+  if (!hideDonationForOwnMembership) {
+    return true
+  }
+
+  return membership?.offerSubsidy === true && (membership.donation ?? 0) === 0
+}
+
+const MemberOrUserPayment = ({
   membership,
   user,
   year,
@@ -132,9 +165,16 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
   onChange,
   loggedInUserId,
   onRemoveUserPayment,
-}) => {
+  hideDonationForOwnMembership,
+}: MemberOrUserPaymentProps) => {
   const configuration = useConfiguration()
   const displayFullMembershipPayment = canDoFullMembershipPayment(membership, balance, configuration)
+  const showDonationField = shouldShowDonationField({
+    hideDonationForOwnMembership,
+    loggedInUserId,
+    membership,
+    user,
+  })
 
   const [state, dispatch] = useReducer(
     reducer,
@@ -142,7 +182,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       deposit: configuration.deposit,
       balance,
       buttonState: defaultButtonState(membership, balance, displayFullMembershipPayment),
-      donation: membership ? (loggedInUserId === user.id && membership.offerSubsidy ? 70 : 0) : 0,
+      donation: showDonationField ? (membership && membership.offerSubsidy ? 80 : 0) : 0,
       customValue: Math.max(membership && displayFullMembershipPayment ? 0 : 0 - user.balance, 0),
       membershipPayment: 0,
     },
@@ -154,7 +194,13 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       type: 'setButtonState',
       value: defaultButtonState(membership, balance, displayFullMembershipPayment),
     })
-  }, [balance, configuration, displayFullMembershipPayment, membership, year])
+  }, [balance, displayFullMembershipPayment, membership])
+
+  useEffect(() => {
+    if (!showDonationField && state.donation !== 0) {
+      dispatch({ type: 'setDonation', value: 0 })
+    }
+  }, [showDonationField, state.donation])
 
   useEffect(() => {
     onChange({
@@ -163,8 +209,9 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
       total: state.membershipPayment + state.donation,
       membership: state.membershipPayment,
       donation: state.donation,
+      donationSource: showDonationField ? 'payment' : 'none',
     })
-  }, [membership?.id, onChange, state, user.id])
+  }, [membership?.id, onChange, showDonationField, state, user.id])
 
   const handleMembershipPaymentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({
@@ -204,7 +251,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                 value={state.buttonState}
                 onChange={handleMembershipPaymentChange}
               >
-                {displayFullMembershipPayment && (
+                {displayFullMembershipPayment ? (
                   <>
                     <FormControlLabel
                       value='full'
@@ -221,7 +268,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
                       label={`Deposit: ${formatAmountForDisplay(configuration.deposit)}`}
                     />
                   </>
-                )}
+                ) : null}
                 <FormControlLabel
                   value='other'
                   control={<Radio />}
@@ -240,7 +287,7 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
             </Grid>
           </Grid>
         </Grid>
-        {loggedInUserId === user.id && (
+        {showDonationField ? (
           <>
             <Typography sx={{ pb: 2 }}>
               If you would like to contribute to assist other members coming to the convention, please enter an amount
@@ -259,27 +306,20 @@ const MemberOrUserPayment: React.FC<MemberOrUserPaymentProps> = ({
               }}
             />
           </>
-        )}
+        ) : null}
       </FormControl>
     </OutlinedBox>
   )
 }
 
-type UserPaymentProps = {
-  year: number
-  userId: number
-  loggedInUserId: number
-  handlePaymentChange: (info: UserPaymentDetails) => void
-  onRemoveUserPayment: (userId: number) => void
-}
-
-const UserPayment: React.FC<UserPaymentProps> = ({
+const UserPayment = ({
   year,
   userId,
   handlePaymentChange,
   loggedInUserId,
   onRemoveUserPayment,
-}) => {
+  hideDonationForOwnMembership,
+}: UserPaymentProps) => {
   const trpc = useTRPC()
   const { data: user } = useQuery(trpc.users.getUser.queryOptions({ id: userId }))
   const { data: membership } = useQuery(
@@ -291,7 +331,9 @@ const UserPayment: React.FC<UserPaymentProps> = ({
 
   const balance = (user?.balance ?? 0) > 0 ? 0 - user!.balance : 0
 
-  if (!user) return <Loader />
+  if (!user) {
+    return <Loader />
+  }
 
   return (
     <MemberOrUserPayment
@@ -302,19 +344,15 @@ const UserPayment: React.FC<UserPaymentProps> = ({
       loggedInUserId={loggedInUserId}
       onChange={handlePaymentChange}
       onRemoveUserPayment={onRemoveUserPayment}
+      hideDonationForOwnMembership={hideDonationForOwnMembership}
     />
   )
 }
 
-type PaymentInputProps = {
-  userId: number
-  name: string
-  setPayments: React.Dispatch<React.SetStateAction<UserPaymentDetails[]>>
-}
-
-export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments }) => {
+export const PaymentInput = ({ userId, setPayments, options }: PaymentInputProps) => {
   const [year] = useYearFilter()
   const [userIds, setUserIds] = useState([userId])
+  const hideDonationForOwnMembership = options?.hideDonationForOwnMembership ?? false
 
   const handlePaymentChange = useCallback(
     (info: UserPaymentDetails) => {
@@ -325,7 +363,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
 
   const onAddAnotherMember = useCallback((newValue: UserMembership | null) => {
     if (newValue) {
-      setUserIds((ids) => Array.from(new Set(ids).add(newValue?.id)))
+      setUserIds((ids) => Array.from(new Set(ids).add(newValue.id)))
     }
   }, [])
 
@@ -333,9 +371,9 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
     (id: number) => {
       setPayments((old) => deleteArrayEntry(old, 'userId', id))
       setUserIds((ids) => {
-        const vals = new Set(ids)
-        vals.delete(id)
-        return Array.from(vals)
+        const values = new Set(ids)
+        values.delete(id)
+        return Array.from(values)
       })
     },
     [setPayments],
@@ -355,6 +393,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ userId, setPayments 
               year={year}
               handlePaymentChange={handlePaymentChange}
               onRemoveUserPayment={onRemoveUserPayment}
+              hideDonationForOwnMembership={hideDonationForOwnMembership}
             />
           </Grid>
         ))}

@@ -4,6 +4,7 @@ export type UserPaymentDetails = {
   total: number
   membership: number
   donation: number
+  donationSource?: 'payment' | 'membership' | 'none'
 }
 
 export type PaymentIntentRecord = {

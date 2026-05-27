@@ -96,9 +96,18 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
           opacity: 1,
         },
         '& input::-moz-placeholder, & input:-moz-placeholder': { opacity: 1 },
-        backgroundColor: 'primary.main',
-        color: 'primary.contrastText',
-        borderRadius: '4px',
+        '& .MuiOutlinedInput-root': {
+          borderRadius: '4px',
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'primary.main',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'primary.main',
+          },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'primary.main',
+          },
+        },
       }}
       value={null}
       slotProps={{

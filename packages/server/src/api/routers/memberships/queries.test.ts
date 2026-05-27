@@ -29,6 +29,7 @@ const createMembershipJoinRow = (overrides: Partial<Record<string, unknown>> = {
   requestOldPrice: false,
   slotsAttending: 4,
   cost: 180,
+  donation: 30,
   hotel_room_id: 8,
   hotel_room_description: 'Ballroom Suite',
   hotel_room_gaming_room: true,
@@ -107,6 +108,7 @@ const createMembershipsQueriesTx = () => {
       requestOldPrice: false,
       slotsAttending: 4,
       cost: 180,
+      donation: 30,
     },
   ]
 
@@ -173,6 +175,7 @@ describe('membership query helpers', () => {
         requestOldPrice: false,
         slotsAttending: 4,
         cost: 180,
+        donation: 30,
         hotelRoom: {
           id: 8,
           description: 'Ballroom Suite',
@@ -312,6 +315,7 @@ describe('membership query helpers', () => {
         requestOldPrice: true,
         slotsAttending: true,
         cost: true,
+        donation: true,
       },
     })
     expect(result).toEqual([

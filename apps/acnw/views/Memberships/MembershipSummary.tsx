@@ -14,6 +14,7 @@ import {
   useYearFilter,
 } from '@amber/amber'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
+import { formatAmountForDisplay } from '@amber/amber/utils/useStripe'
 import type { CreateMembershipType, UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
@@ -127,9 +128,11 @@ const Details = ({ membership, profile }: DetailsProps) => {
           <VerticalGap />
           <Field label='Attendance'>{cost}</Field>
           <Field label='Payment'>{getInterestLevel(configuration, membership.interestLevel)}</Field>
-          {membership.offerSubsidy && (
+          {membership.donation > 0 ? (
+            <Field label='Contribution'>{formatAmountForDisplay(membership.donation)}</Field>
+          ) : membership.offerSubsidy ? (
             <Field label=''>You have offered to contribute to the ACNW assistance fund, thank you.</Field>
-          )}
+          ) : null}
           {membership.requestOldPrice && <Field label=''>You are receiving a subsidized membership rate.</Field>}
           <Field label='Arrival Date'>{formatDate(membership.arrivalDate)}</Field>
           <Field label='Departure Date'>{formatDate(membership.departureDate)}</Field>

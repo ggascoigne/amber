@@ -10,7 +10,7 @@ import { PaymentElement, useElements } from '@stripe/react-stripe-js'
 import { useMutation } from '@tanstack/react-query'
 import Router from 'next/router'
 
-import type { UserPaymentDetails } from './PaymentInput'
+import type { PaymentInputOptions, UserPaymentDetails } from './PaymentInput'
 import { PaymentInput } from './PaymentInput'
 
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe } from '../../utils/useStripe'
@@ -20,9 +20,10 @@ type ElementsFormProps = {
   paymentIntent?: PaymentIntentRecord | null
   userId: number
   onSubmit: () => void
+  paymentInputOptions?: PaymentInputOptions
 }
 
-export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null, userId, onSubmit }) => {
+export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentInputOptions }: ElementsFormProps) => {
   const trpc = useTRPC()
   const defaultAmount = paymentIntent ? formatAmountFromStripe(paymentIntent.amount, paymentIntent.currency) : 100 // TODO change me
   const [input, setInput] = useState({
@@ -160,7 +161,7 @@ export const ElementsForm: React.FC<ElementsFormProps> = ({ paymentIntent = null
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <PaymentInput userId={userId} name='payment' setPayments={setPayments} />
+        <PaymentInput userId={userId} name='payment' setPayments={setPayments} options={paymentInputOptions} />
         <Box
           sx={{
             pb: 2,

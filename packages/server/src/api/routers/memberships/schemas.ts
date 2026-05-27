@@ -47,6 +47,7 @@ export const createMembershipDataInput = z.object({
   volunteer: z.boolean(),
   slotsAttending: z.string().nullable(),
   cost: z.number().optional().nullable(),
+  donation: z.number().optional(),
 })
 
 export const updateMembershipDataInput = z.object({
@@ -66,6 +67,7 @@ export const updateMembershipDataInput = z.object({
   year: z.number().optional(),
   slotsAttending: z.string().nullable().optional(),
   cost: z.number().optional().nullable(),
+  donation: z.number().optional(),
 })
 
 export const createMembershipInput = createMembershipDataInput

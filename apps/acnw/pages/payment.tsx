@@ -5,6 +5,6 @@ import { Payment } from '@amber/amber/views/Payment'
 import type { NextPage } from 'next'
 
 export const getServerSideProps = configGetServerSideProps
-const Page: NextPage = () => <Payment />
+const Page: NextPage = () => <Payment paymentInputOptions={{ hideDonationForOwnMembership: true }} />
 
 export default Page

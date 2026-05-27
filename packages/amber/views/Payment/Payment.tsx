@@ -8,13 +8,18 @@ import { Elements } from '@stripe/react-stripe-js'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { ElementsForm } from './ElementsForm'
+import type { PaymentInputOptions } from './PaymentInput'
 
 import { Page, ContactEmail } from '../../components'
 import { useConfiguration } from '../../utils/configContext'
 import { useGetStripe, useInitializeStripe } from '../../utils/useStripe'
 import { useUser } from '../../utils/useUserFilterState'
 
-export const Payment = () => {
+type PaymentProps = {
+  paymentInputOptions?: PaymentInputOptions
+}
+
+export const Payment = ({ paymentInputOptions }: PaymentProps) => {
   const trpc = useTRPC()
   useInitializeStripe()
   const notify = useNotification()
@@ -107,7 +112,12 @@ export const Payment = () => {
             clientSecret: paymentIntent.clientSecret,
           }}
         >
-          <ElementsForm paymentIntent={paymentIntent} userId={user.userId} onSubmit={onSubmit} />
+          <ElementsForm
+            paymentIntent={paymentIntent}
+            userId={user.userId}
+            onSubmit={onSubmit}
+            paymentInputOptions={paymentInputOptions}
+          />
         </Elements>
       ) : (
         <Loader />

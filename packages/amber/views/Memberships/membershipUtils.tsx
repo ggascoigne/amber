@@ -21,6 +21,11 @@ export const membershipValidationSchemaNW = Yup.object().shape({
     then: (schema) => schema.required('Required for subsidized membership').min(20, 'Must be at least $20'),
     otherwise: (schema) => schema.notRequired(),
   }),
+  donation: Yup.number().when('offerSubsidy', {
+    is: true,
+    then: (schema) => schema.required('Required when contributing').min(1, 'Must be at least $1'),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 })
 
 export const membershipValidationSchemaUS = Yup.object().shape({
@@ -62,4 +67,5 @@ export const getDefaultMembership = (
     year: configuration.year,
     slotsAttending: '',
     cost: 0,
+    donation: 0,
   }) as const
