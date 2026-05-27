@@ -29,7 +29,7 @@
     "prisma:generate": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma generate --no-hints --schema ./prisma/schema.prisma --sql",
     "prisma:db:pull": "dotenv -e ../../apps/${DB_ENV}/.env -- pnpm dlx prisma db pull && pnpm prisma:format",
     "prisma:format": "dotenv -e ../../apps/${DB_ENV}/.env -- prisma-case-format -f ./prisma/schema.prisma",
-    "postinstall": "DB_ENV=acnw pnpm prisma:generate",
+    "postinstall": "node ./scripts/postinstall-prisma.mjs",
     "prisma-repl": "DB_ENV=acnw dotenv -e ../../apps/${DB_ENV}/.env -- node --import=tsx ./src/utils/prisma-repl.ts",
     "tsc": "tsc -p ./tsconfig.json",
     "tsgo": "tsgo -p ./tsconfig.json"

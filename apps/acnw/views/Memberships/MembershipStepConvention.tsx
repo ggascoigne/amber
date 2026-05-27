@@ -330,9 +330,9 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
         <DialogContentText>
           <b>
             By confirming my membership, I plan to attend {configuration.title},{' '}
-            <ConventionsDatesFull pre='from' intra='through' post=', ' /> at McMenamins Edgefield Bed & Breakfast
-            in Troutdale, Oregon. I understand that my hotel room is held but not reserved until I have paid my
-            membership fee in full and received confirmation from the organizers.
+            <ConventionsDatesFull pre='from' intra='through' post=', ' /> at McMenamins Edgefield Bed & Breakfast in
+            Troutdale, Oregon. I understand that my hotel room is held but not reserved until I have paid my membership
+            fee in full and received confirmation from the organizers.
           </b>
         </DialogContentText>
       </Grid>
