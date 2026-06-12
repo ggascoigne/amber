@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { PaymentIntentRecord } from '@amber/client'
 import { useTRPC } from '@amber/client'
@@ -34,6 +34,7 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
   const [paymentStatus, setPaymentStatus] = useState({ status: 'initial' })
   const [errorMessage, setErrorMessage] = useState('')
   const [payments, setPayments] = useState<UserPaymentDetails[]>([])
+  const isSubmittingRef = useRef(false)
   const [baseUrl] = useGetBaseUrl()
   const [year] = useYearFilter()
 
@@ -41,7 +42,7 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
   const [stripe] = useGetStripe()
   const elements = useElements()
 
-  const PaymentStatus = ({ status, paymentIntentSecret }: { status: string; paymentIntentSecret?: string | null }) => {
+  const PaymentStatus = ({ status }: { status: string }) => {
     switch (status) {
       case 'processing':
       case 'requires_payment_method':
@@ -52,10 +53,6 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
         return <h2>Authenticating...</h2>
 
       case 'succeeded':
-        Router.push({
-          pathname: '/payment-success',
-          query: { paymentIntentSecret: paymentIntentSecret! },
-        })
         return <h2>Success</h2>
 
       case 'error':
@@ -84,6 +81,17 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
     // console.log({ payments })
   }, [setTotal, payments])
 
+  useEffect(() => {
+    if (paymentStatus.status !== 'succeeded' || !paymentIntent?.clientSecret) {
+      return
+    }
+
+    Router.push({
+      pathname: '/payment-success',
+      query: { paymentIntentSecret: paymentIntent.clientSecret },
+    }).catch(() => undefined)
+  }, [paymentIntent?.clientSecret, paymentStatus.status])
+
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const targetName = e?.currentTarget?.name
     const targetValue = e?.currentTarget?.value
@@ -97,11 +105,14 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
 
   const handleSubmit = useCallback(
     async (e: React.ChangeEvent<HTMLFormElement>) => {
-      onSubmit()
       e.preventDefault()
       // Abort if form isn't valid
       if (!e.currentTarget.reportValidity()) return
       if (!elements) return
+      if (isSubmittingRef.current) return
+
+      isSubmittingRef.current = true
+      onSubmit()
       setPaymentStatus({ status: 'processing' })
 
       // Create a PaymentIntent with the specified amount.
@@ -116,6 +127,7 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
           paymentIntentId: paymentIntent?.id ?? '',
         })
       } catch (error) {
+        isSubmittingRef.current = false
         setPaymentStatus({ status: 'error' })
         setErrorMessage(error instanceof Error ? error.message : 'An unknown error occurred')
         return
@@ -137,9 +149,13 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
       // console.log({ confirmResult })
 
       if (confirmResult.error) {
+        isSubmittingRef.current = false
         setPaymentStatus({ status: 'error' })
         setErrorMessage(confirmResult.error.message ?? 'An unknown error occurred')
       } else if (confirmResult && paymentIntent) {
+        if (confirmResult.paymentIntent.status !== 'succeeded') {
+          isSubmittingRef.current = false
+        }
         setPaymentStatus(confirmResult.paymentIntent)
       }
     },
@@ -208,12 +224,12 @@ export const ElementsForm = ({ paymentIntent = null, userId, onSubmit, paymentIn
         <Button
           variant='contained'
           type='submit'
-          disabled={!['initial', 'succeeded', 'error'].includes(paymentStatus.status) || !stripe}
+          disabled={!['initial', 'error'].includes(paymentStatus.status) || !stripe}
         >
           Pay {formatAmountForDisplay(input.total)}
         </Button>
       </form>
-      <PaymentStatus status={paymentStatus.status} paymentIntentSecret={paymentIntent?.clientSecret} />
+      <PaymentStatus status={paymentStatus.status} />
     </>
   )
 }
