@@ -1,9 +1,10 @@
-import type { CSSProperties, ReactNode, ForwardedRef } from 'react'
+import type { CSSProperties, ReactNode, ForwardedRef, MouseEvent } from 'react'
 import { useRef, useState, memo, useMemo } from 'react'
 
 import type { Theme } from '@mui/material'
 import { Checkbox, styled } from '@mui/material'
 import Box from '@mui/material/Box'
+import type { CheckboxProps } from '@mui/material/Checkbox'
 import Paper from '@mui/material/Paper'
 import type { SxProps } from '@mui/material/styles'
 import { alpha, lighten, darken } from '@mui/material/styles'
@@ -113,7 +114,7 @@ export const TableHead = ({ children, sx, ...rest }: Partial<TableHeadProps> & C
   )
 }
 
-export const rowShared = {
+export const rowShared = (offset = 0) => ({
   outline: 0,
   verticalAlign: 'middle',
   flexDirection: 'row',
@@ -121,10 +122,18 @@ export const rowShared = {
   width: '100%',
   minWidth: 'fit-content',
   position: 'relative',
-  // borderBottomWidth: '1px',
-  // borderBottomStyle: 'solid',
-  // borderBottomColor: 'divider',
-}
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    left: `${offset}px`,
+    right: 0,
+    bottom: 0,
+    borderBottomWidth: '1px',
+    borderBottomStyle: 'solid',
+    borderBottomColor: 'divider',
+    pointerEvents: 'none',
+  },
+})
 
 const getActionButtonSx =
   (pageElevation: number | undefined) =>
@@ -189,12 +198,18 @@ const getActionButtonSx =
 
 export const TableRow = fixedForwardRef(
   (
-    { children, sx, pageElevation, ...rest }: Partial<TableRowProps> & CN & { pageElevation?: number; offset?: number },
+    {
+      children,
+      sx,
+      pageElevation,
+      offset = 0,
+      ...rest
+    }: Partial<TableRowProps> & CN & { pageElevation?: number; offset?: number },
     ref: ForwardedRef<any>,
   ) => {
     const componentSx = useMemo(
-      () => [rowShared, getActionButtonSx(pageElevation), ...(Array.isArray(sx) ? sx : [sx])],
-      [pageElevation, sx],
+      () => [rowShared(offset), getActionButtonSx(pageElevation), ...(Array.isArray(sx) ? sx : [sx])],
+      [offset, pageElevation, sx],
     )
 
     return (
@@ -299,13 +314,9 @@ const cellShared = {
   '&:last-of-type': {
     borderRight: 'none',
   },
-  // borderBottom: 'none',
+  borderBottom: 'none',
   minWidth: 0,
   color: 'text.primary',
-
-  borderBottomWidth: '1px',
-  borderBottomStyle: 'solid',
-  borderBottomColor: 'divider',
   borderRightWidth: '1px',
   borderRightStyle: 'solid',
   borderRightColor: 'divider',
@@ -341,7 +352,7 @@ export const TableCell = ({ children, sx, ...rest }: Partial<TableCellProps> & C
   )
 }
 
-const areCheckboxesEqual = (prevProps: any, nextProps: any) =>
+const areCheckboxesEqual = (prevProps: CheckboxProps, nextProps: CheckboxProps) =>
   prevProps.checked === nextProps.checked && prevProps.indeterminate === nextProps.indeterminate
 
 const RowCheckboxImpl = styled(Checkbox)(({ theme }) => ({
@@ -361,13 +372,19 @@ const RowCheckboxImpl = styled(Checkbox)(({ theme }) => ({
 }))
 
 export const RowCheckbox = memo(
-  (props) => (
+  (props: CheckboxProps) => (
     <Box
       sx={{
         pl: 2,
       }}
     >
-      <RowCheckboxImpl {...props} />
+      <RowCheckboxImpl
+        {...props}
+        onClick={(event: MouseEvent<HTMLButtonElement>) => {
+          props.onClick?.(event)
+          event.stopPropagation()
+        }}
+      />
     </Box>
   ),
   areCheckboxesEqual,

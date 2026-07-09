@@ -24,13 +24,17 @@ const groupSvgSx = {
   },
 }
 
-export const GroupExpansionButton = <T extends RowData>({ row }: { row: Row<T> }) => (
-  <TableSortLabel
-    classes={tableExpandClasses}
-    active
-    direction={row.getIsExpanded() ? 'desc' : 'asc'}
-    IconComponent={KeyboardArrowUpIcon}
-    onClick={row.getToggleExpandedHandler()}
-    sx={groupSvgSx}
-  />
-)
+export const GroupExpansionButton = <T extends RowData>({ row }: { row: Row<T> }) => {
+  const isExpanded = row.getIsExpanded()
+
+  return (
+    <TableSortLabel
+      classes={tableExpandClasses}
+      active
+      direction={isExpanded ? 'desc' : 'asc'}
+      IconComponent={KeyboardArrowUpIcon}
+      onClick={() => row.toggleExpanded(!isExpanded)}
+      sx={groupSvgSx}
+    />
+  )
+}

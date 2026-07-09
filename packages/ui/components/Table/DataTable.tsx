@@ -18,6 +18,7 @@ import { TableContextProvider } from './components/TableContext'
 import { TableScrollContainerProvider } from './components/TableScrollContainerContext'
 import { TableTable, tableDecorationZIndex } from './components/TableStyles'
 import { TableToolbar } from './components/TableToolbar'
+import { treeIndentLevel } from './content/TreeLines'
 import { useVisibleTableRows } from './content/useVisibleTableRows'
 import type { DataTableEditingConfig } from './editing/types'
 import type { TableEditingState } from './editing/useTableEditing'
@@ -275,6 +276,7 @@ export const DataTable = <T extends RowData>({
           flexDirection: 'column',
           borderRadius: '4px',
           '--table-compact-spacing': compact ? theme.spacing(1) : theme.spacing(2),
+          '--table-tree-indent-level': `${treeIndentLevel}px`,
         },
         scrollBehavior === 'bounded' && {
           flexGrow: 1,

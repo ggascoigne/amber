@@ -64,6 +64,7 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     columnResizeMode = 'onChange',
     sortDescFirst = false,
     enableExpanding = true,
+    enableTreeBehavior = false,
     defaultColumnDisableGlobalFilter = false,
     enableGrouping = true,
     enableColumnFilters,
@@ -94,13 +95,15 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     [selectionColumnSize],
   )
 
+  const useInlineTreeSelection = !!(enableRowSelection && enableExpanding && enableTreeBehavior)
   const columns = useMemo(() => {
-    const tmpColumns: ColumnDef<T>[] = enableRowSelection ? [selectionColumn, ...userColumns] : userColumns
+    const tmpColumns: ColumnDef<T>[] =
+      enableRowSelection && !useInlineTreeSelection ? [selectionColumn, ...userColumns] : userColumns
     return applyDefaultMetaToColumns({
       defaultMeta: defaultColumnMeta as any,
       columns: tmpColumns,
     })
-  }, [enableRowSelection, selectionColumn, userColumns])
+  }, [enableRowSelection, selectionColumn, useInlineTreeSelection, userColumns])
 
   const defaultColumn = useMemo<Partial<ColumnDef<T>>>(
     () => ({
@@ -150,6 +153,7 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     enableFilters,
     enableSorting,
     enablePagination,
+    enableTreeBehavior,
     ...rest,
   })
 }

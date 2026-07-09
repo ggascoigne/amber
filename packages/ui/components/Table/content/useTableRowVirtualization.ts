@@ -7,6 +7,9 @@ import type { VirtualItem } from '@tanstack/react-virtual'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { oneLine } from 'common-tags'
 
+const estimatedRowHeight = 50.1875
+const estimatedCompactRowHeight = 34.1875
+
 const measureElement = (element: Element) => element?.getBoundingClientRect().height
 
 export type TableRowListItem<TData extends RowData> = Row<TData> | VirtualItem
@@ -30,7 +33,7 @@ export const useTableRowVirtualization = <TData extends RowData>({
 }: UseTableRowVirtualizationProps<TData>) => {
   const [warnOnRows, setWarnOnRows] = useState(true)
   const enableVirtualRows = rows.length > 20 && useVirtualRows && !hasExpandedContent
-  const estimateRowHeight = compact ? 34.2 : 50.2
+  const estimateRowHeight = compact ? estimatedCompactRowHeight : estimatedRowHeight
   const getVirtualRowKey = useCallback((virtualIndex: number) => rows[virtualIndex]?.id ?? virtualIndex, [rows])
 
   if (rows.length > 500 && table.options.manualPagination && warnOnRows) {

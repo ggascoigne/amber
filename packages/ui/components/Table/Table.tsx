@@ -117,6 +117,7 @@ export const Table = <T,>({
   defaultColumnDisableGlobalFilter = false,
   enableRowSelection = true,
   enableGrouping = true,
+  enableTreeBehavior = false,
   scrollBehavior = 'bounded',
   renderExpandedContent,
   getRowCanExpand,
@@ -137,6 +138,7 @@ export const Table = <T,>({
   ...rest
 }: TableProps<T>) => {
   const [stateLoaded, setStateLoaded] = useState(false)
+  const [, setTableStateRevision] = useState(0)
   const [uncontrolledShowExpandedOnly, setUncontrolledShowExpandedOnly] = useState(false)
   const hasExpandedContent = !!renderExpandedContent
   const isShowExpandedOnlyControlled = typeof controlledShowExpandedOnly === 'boolean'
@@ -217,6 +219,7 @@ export const Table = <T,>({
     () => buildExpansionColumn<T>(hasExpandedContent),
     [hasExpandedContent],
   )
+  const resolvedGetRowCanExpand = hasExpandedContent ? (getRowCanExpand ?? (() => true)) : getRowCanExpand
 
   const resolvedColumns = useMemo(
     () => (expansionColumn ? [expansionColumn, ...columns] : columns),
@@ -230,11 +233,13 @@ export const Table = <T,>({
     data: resolvedData ?? [],
     state: stateRef.current,
     onStateChange: (updater: Updater<TableState>) => {
-      const next = typeof updater === 'function' ? updater(stateRef.current) : updater
-      if (shouldTriggerPageChange(stateRef.current, next)) {
+      const previous = stateRef.current
+      const next = typeof updater === 'function' ? updater(previous) : updater
+      if (shouldTriggerPageChange(previous, next)) {
         next.pagination.pageIndex = 0
       }
       stateRef.current = next
+      setTableStateRevision((revision) => revision + 1)
       queueStateChangeResponse(next)
     },
     autoResetExpanded: false,
@@ -254,7 +259,8 @@ export const Table = <T,>({
     defaultColumnDisableGlobalFilter,
     rowCount: rowCount ?? resolvedData.length,
     displayGutter,
-    getRowCanExpand: hasExpandedContent ? (getRowCanExpand ?? (() => true)) : undefined,
+    enableTreeBehavior,
+    getRowCanExpand: resolvedGetRowCanExpand,
     ...rest,
   })
 
