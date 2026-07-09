@@ -54,7 +54,7 @@ const ResizeHandleRoot = styled(Box, {
 export const TableHeadRow = ({ children, sx, ...rest }: Partial<TableRowProps> & CN) => {
   const componentSx = useMemo(
     () => [
-      rowShared,
+      rowShared(),
       {
         [`&:hover .${tableClasses.resizeHandle}`]: {
           opacity: 1,

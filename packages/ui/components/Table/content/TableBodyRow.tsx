@@ -9,10 +9,14 @@ import { flexRender } from '@tanstack/react-table'
 import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
 import { clsx } from 'clsx'
 
+import { getExpansionDetails } from './expansionDetails'
+import { TreeLines } from './TreeLines'
+import type { TreeLineType } from './TreeLines'
+
 import type { Action } from '../actions'
 import { GroupExpansionButton } from '../components/GroupExpansionButton'
 import { RowHoverButtons } from '../components/RowHoverButtons'
-import { TableCell, TableRow } from '../components/TableStyles'
+import { RowCheckbox, TableCell, TableRow } from '../components/TableStyles'
 import { TableCellEditor } from '../editing/TableCellEditor'
 import type { TableCellEditState, TableEditingState } from '../editing/useTableEditing'
 import type { RowStyleType } from '../utils/tableUtils'
@@ -25,9 +29,12 @@ type TableCellContentProps<TData extends RowData> = {
   editing: TableEditingState<TData>
   isActiveCell: boolean
   isEditable: boolean
+  isTreeLineCell: boolean
+  hasInlineSelectionBox: boolean
   navigateCell?: (cell: Cell<TData, unknown>, direction: 'next' | 'previous') => boolean
   row: Row<TData>
   rowStyle: RowStyleType
+  treeLineDetails: Array<TreeLineType>
 }
 
 const TableCellContent = <TData extends RowData>({
@@ -37,9 +44,12 @@ const TableCellContent = <TData extends RowData>({
   editing,
   isActiveCell,
   isEditable,
+  isTreeLineCell,
+  hasInlineSelectionBox,
   navigateCell,
   row,
   rowStyle,
+  treeLineDetails,
 }: TableCellContentProps<TData>) => {
   const align = cell.getIsGrouped() ? 'left' : cell.column.columnDef?.meta?.align === 'right' ? 'right' : 'left'
   const width = cell.column.getSize()
@@ -95,6 +105,15 @@ const TableCellContent = <TData extends RowData>({
         },
       } as CellContext<TData, unknown>)
     : cellContext
+  const treeLineContent = isTreeLineCell ? <TreeLines row={row} expansionDetails={treeLineDetails} /> : null
+  const selectionContent = hasInlineSelectionBox ? (
+    <RowCheckbox
+      checked={row.getIsSelected()}
+      indeterminate={row.getIsSomeSelected()}
+      disabled={!row.getCanSelect()}
+      onChange={row.getToggleSelectedHandler()}
+    />
+  ) : null
 
   const regularCellContent = cell.getIsGrouped() ? (
     <>
@@ -102,10 +121,20 @@ const TableCellContent = <TData extends RowData>({
       {flexRender(cell.column.columnDef.cell, renderContext)}
       <span>({row.subRows.length})</span>
     </>
+  ) : isTreeLineCell && row.getCanExpand() ? (
+    <>
+      {treeLineContent}
+      {selectionContent}
+      {flexRender(cell.column.columnDef.cell, renderContext)}
+    </>
   ) : cell.getIsAggregated() ? (
     flexRender(cell.column.columnDef.aggregatedCell ?? cell.column.columnDef.cell, renderContext)
   ) : cell.getIsPlaceholder() ? null : (
-    <>{flexRender(cell.column.columnDef.cell, renderContext)}</>
+    <>
+      {treeLineContent}
+      {selectionContent}
+      {flexRender(cell.column.columnDef.cell, renderContext)}
+    </>
   )
 
   const editingCellContent = (
@@ -204,11 +233,13 @@ type TableBodyRowProps<TData extends RowData> = {
   pageElevation?: number
   row: Row<TData>
   rowActions?: ReadonlyArray<Action<TData>>
+  rowsById: ReadonlyMap<string, Row<TData>>
   rowStyle: RowStyleType
   rowVirtualizer: Virtualizer<HTMLDivElement, Element>
   scrollBehavior?: 'none' | 'bounded'
   showButtons: boolean
   table: TableInstance<TData>
+  enableInlineTreeLines: boolean
   virtualRow?: VirtualItem
 }
 
@@ -225,11 +256,13 @@ export const TableBodyRow = <TData extends RowData>({
   pageElevation,
   row,
   rowActions,
+  rowsById,
   rowStyle,
   rowVirtualizer,
   scrollBehavior,
   showButtons,
   table,
+  enableInlineTreeLines,
   virtualRow,
 }: TableBodyRowProps<TData>): ReactElement => {
   const cellClickHandler = useCallback(
@@ -282,6 +315,19 @@ export const TableBodyRow = <TData extends RowData>({
   )
 
   const cells = row.getVisibleCells()
+  const firstUserCellId = cells.find((cell) => isUserColumnId(cell.column.id))?.id
+  const expansionDetails = enableInlineTreeLines
+    ? getExpansionDetails(
+        !!table.options.enableExpanding,
+        row.parentId ? rowsById.get(row.parentId) : undefined,
+        row,
+        (rowId) => rowsById.get(rowId),
+      )
+    : []
+  const hasInlineSelectionBox = !!(table.options.enableRowSelection && enableInlineTreeLines)
+  const rowBorderOffset = enableInlineTreeLines
+    ? 24 + 32 * expansionDetails.length + (hasInlineSelectionBox ? 32 : 0)
+    : 0
   const tableSx = useMemo(
     () =>
       ({
@@ -334,27 +380,36 @@ export const TableBodyRow = <TData extends RowData>({
           : {}
       }
       className={rowClasses}
+      offset={rowBorderOffset}
+      data-depth={enableInlineTreeLines ? row.depth : undefined}
     >
-      {cells.map((cell) => (
-        <TableCellContent
-          key={cell.id}
-          cell={cell}
-          row={row}
-          cellClickHandler={cellClickHandler}
-          rowStyle={rowStyle}
-          editing={editing}
-          navigateCell={navigateCell}
-          cellState={editing.getCellState(cell)}
-          isActiveCell={editing.activeCell?.rowId === row.id && editing.activeCell?.columnId === cell.column.id}
-          isEditable={
-            editing.enabled &&
-            editing.isCellEditable(cell) &&
-            !cell.column.getIsGrouped() &&
-            !cell.row.getIsGrouped() &&
-            isUserColumnId(cell.column.id)
-          }
-        />
-      ))}
+      {cells.map((cell) => {
+        const isTreeLineCell = enableInlineTreeLines && cell.id === firstUserCellId
+
+        return (
+          <TableCellContent
+            key={cell.id}
+            cell={cell}
+            row={row}
+            cellClickHandler={cellClickHandler}
+            rowStyle={rowStyle}
+            editing={editing}
+            navigateCell={navigateCell}
+            cellState={editing.getCellState(cell)}
+            isActiveCell={editing.activeCell?.rowId === row.id && editing.activeCell?.columnId === cell.column.id}
+            isEditable={
+              editing.enabled &&
+              editing.isCellEditable(cell) &&
+              !cell.column.getIsGrouped() &&
+              !cell.row.getIsGrouped() &&
+              isUserColumnId(cell.column.id)
+            }
+            isTreeLineCell={isTreeLineCell}
+            hasInlineSelectionBox={isTreeLineCell && hasInlineSelectionBox}
+            treeLineDetails={isTreeLineCell ? expansionDetails : []}
+          />
+        )
+      })}
 
       {rowActions && !row.getIsGrouped() ? (
         <RowHoverButtonWrapper

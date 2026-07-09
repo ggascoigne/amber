@@ -53,6 +53,12 @@ export const TableContent = <T extends RowData>({
   expandedContentSx?: SxProps<Theme>
 }): ReactElement => {
   const hasExpandedContent = !!renderExpandedContent
+  const enableInlineTreeLines = !!(
+    table.options.enableExpanding &&
+    table.options.enableTreeBehavior &&
+    table.options.getSubRows &&
+    !hasExpandedContent
+  )
   const { enableVirtualRows, rowList, rowVirtualizer, tableHeight } = useTableRowVirtualization({
     compact,
     hasExpandedContent,
@@ -62,6 +68,7 @@ export const TableContent = <T extends RowData>({
     useVirtualRows,
   })
   const [showButtons, setShowButtons] = useState<string | undefined>(undefined)
+  const rowsById = useMemo(() => new Map(rows.map((row) => [row.id, row])), [rows])
 
   const handleRowHover = useCallback((rowId: string) => {
     setShowButtons(rowId)
@@ -137,6 +144,7 @@ export const TableContent = <T extends RowData>({
             <TableBodyRow<T>
               table={table}
               row={row}
+              rowsById={rowsById}
               virtualRow={virtualRow ?? undefined}
               onRowClick={onRowClick}
               rowActions={rowActions}
@@ -153,6 +161,7 @@ export const TableContent = <T extends RowData>({
               navigateCell={navigateCell}
               showButtons={showButtons === row.id}
               editing={editing}
+              enableInlineTreeLines={enableInlineTreeLines}
             />
             {expandedContent ? (
               <TableExpandedRow

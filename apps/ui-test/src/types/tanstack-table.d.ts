@@ -36,6 +36,7 @@ declare module '@tanstack/table-core' {
     keyField?: keyof TData
     enablePagination?: boolean
     defaultColumnDisableGlobalFilter?: boolean
+    enableTreeBehavior?: boolean
   }
 
   interface FilterRenderProps<T extends RowData> {

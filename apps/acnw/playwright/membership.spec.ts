@@ -8,6 +8,7 @@ type MembershipDateInput = {
   day: string
   year: string
   display: string
+  selectedDate: string
 }
 
 const registrationUserEmail = 'frankie.fable@example.com'
@@ -22,6 +23,7 @@ const membershipDates: { checkIn: MembershipDateInput; departure: MembershipDate
     day: '07',
     year: '2025',
     display: 'Fri, Nov 7, 2025',
+    selectedDate: 'Nov 7, 2025',
   },
   departure: {
     label: 'Departure Date',
@@ -29,6 +31,7 @@ const membershipDates: { checkIn: MembershipDateInput; departure: MembershipDate
     day: '10',
     year: '2025',
     display: 'Mon, Nov 10, 2025',
+    selectedDate: 'Nov 10, 2025',
   },
 }
 
@@ -42,10 +45,24 @@ const membershipDetails = {
 
 const setMembershipDate = async (page: Page, input: MembershipDateInput) => {
   const group = page.getByRole('group', { name: input.label })
-  await group.getByRole('spinbutton', { name: 'Month' }).fill(input.month)
-  await group.getByRole('spinbutton', { name: 'Day' }).fill(input.day)
-  await group.getByRole('spinbutton', { name: 'Year' }).fill(input.year)
-  await group.getByRole('spinbutton', { name: 'Year' }).blur()
+
+  await expect(async () => {
+    await group.getByRole('spinbutton', { name: 'Month' }).fill(input.month)
+    await group.getByRole('spinbutton', { name: 'Day' }).fill(input.day)
+    await group.getByRole('spinbutton', { name: 'Year' }).fill(input.year)
+    await group.getByRole('spinbutton', { name: 'Year' }).blur()
+    await expect(
+      group.getByRole('button', { name: `Choose date, selected date is ${input.selectedDate}` }),
+    ).toBeVisible({ timeout: 1_000 })
+  }).toPass()
+}
+
+const expectMembershipDate = async (page: Page, input: MembershipDateInput) => {
+  await expect(
+    page
+      .getByRole('group', { name: input.label })
+      .getByRole('button', { name: `Choose date, selected date is ${input.selectedDate}` }),
+  ).toBeVisible()
 }
 
 const chooseRoom = async (page: Page) => {
@@ -74,6 +91,8 @@ const completeMembershipWizard = async (page: Page) => {
 
   await setMembershipDate(page, membershipDates.checkIn)
   await setMembershipDate(page, membershipDates.departure)
+  await expectMembershipDate(page, membershipDates.checkIn)
+  await expectMembershipDate(page, membershipDates.departure)
   const selectedRoom = await chooseRoom(page)
   await page.getByRole('textbox', { name: 'Room Preference And Notes' }).fill(membershipDetails.roomPreference)
   await page.getByRole('radio', { name: 'I will be rooming with (list names)' }).click()

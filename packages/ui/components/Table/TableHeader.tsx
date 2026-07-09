@@ -8,6 +8,7 @@ import { css } from '@mui/material/styles'
 import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 
+import { HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
 import { isUserColumnId } from './utils/tableUtils'
@@ -85,6 +86,14 @@ export const TableHeader = <T extends RowData>({
 
               const isSystemColumn =
                 !isUserColumnId(header.id) || header.subHeaders?.some((sub) => !isUserColumnId(sub.id))
+              const hasInlineSelectionBox = !!(
+                table.options.enableRowSelection &&
+                table.options.enableExpanding &&
+                table.options.enableTreeBehavior &&
+                table.options.getSubRows &&
+                isLastHeaderGroup &&
+                headerIndex === 0
+              )
 
               return (
                 <TableHeadCell
@@ -115,6 +124,8 @@ export const TableHeader = <T extends RowData>({
                     },
                     isLastHeaderGroup && {
                       borderBottomWidth: '2px',
+                      borderBottomStyle: 'solid',
+                      borderBottomColor: 'divider',
                     },
                   ]}
                 >
@@ -126,6 +137,7 @@ export const TableHeader = <T extends RowData>({
                         gap: 2,
                       }}
                     >
+                      {hasInlineSelectionBox ? <HeaderCheckbox table={table} /> : null}
                       {/* I only want the leaves of columns to show grouping */}
                       {header.column.getCanGroup() && headerGroup.depth + 1 === headerGroups.length && (
                         <Tooltip title='Toggle Grouping'>

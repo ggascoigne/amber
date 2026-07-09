@@ -26,6 +26,10 @@ export const routes: MenuEntry[] = [
     path: '/table-nested',
   },
   {
+    name: 'Table - Tree',
+    path: '/table-tree',
+  },
+  {
     name: 'Menu',
     children: [
       {
