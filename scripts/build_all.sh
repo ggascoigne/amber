@@ -7,6 +7,8 @@ rm -rf apps/*/.next
 
 pnpm i
 
+pnpm -F amber boot
+
 if ! pnpm tsgo ; then 
   retVal=$?
   echo "exiting due to build error"

@@ -3,27 +3,26 @@ import type { Page } from '@playwright/test'
 
 let workerDatabaseWarmedUp = false
 
-// The PostgresLite database used in UI tests takes some time to initialize
-// in the browser. To avoid timeouts during the first test navigation, we
-// warm up the database once per worker before running tests.
+// The mock data layer initializes on first request. Wait for it once per worker
+// so visual tests do not race initial API responses.
 const warmupDatabase = async (page: Page) => {
   if (workerDatabaseWarmedUp) return
 
-  console.log('Warming up browser pgLite database for worker...')
+  console.log('Warming up browser mock data for worker...')
   try {
-    // Wait for database initialization to complete (indicated by data-db-ready attribute)
+    // Wait for mock data initialization to complete (indicated by data-db-ready attribute).
     await page.waitForSelector('body[data-db-ready="true"]', { timeout: 20_000 })
     workerDatabaseWarmedUp = true
-    console.log('Database warmed up for worker')
+    console.log('Mock data warmed up for worker')
   } catch (error) {
-    console.warn('Database warmup warning:', error)
+    console.warn('Mock data warmup warning:', error)
     // Don't fail the test if warmup has issues
   }
 }
 
 /**
- * Extended test fixture that includes database warmup for the first navigation
- * in each worker. This prevents timeouts due to slow PGlite initialization.
+ * Extended test fixture that includes mock data warmup for the first navigation
+ * in each worker.
  */
 export const test = base.extend({
   page: async ({ page }, fnUse) => {

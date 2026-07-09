@@ -1,12 +1,23 @@
-import type { PGliteInterface } from '@electric-sql/pglite'
-
 import users from '../data/users.json'
 
-import { createTableFor } from '@/mocks/sqlTools'
+import { createTableFor, type TableRow } from '@/mocks/sqlTools'
 
-export const setupUserDataPg = async (db: PGliteInterface) =>
-  createTableFor(db, {
+export type UserRecord = TableRow & {
+  firstName: string
+  lastName: string
+  fullName: string
+  email: string
+  address: string
+  city: string
+  state: string
+  zipCode: string
+  phone: string
+  gender: 'male' | 'female' | 'non-binary'
+  subscriptionTier: 'free' | 'basic' | 'pro' | 'enterprise'
+}
+
+export const setupUserData = () =>
+  createTableFor<UserRecord>({
     tableName: 'users',
     data: users,
-    dataCount: users.length,
   })

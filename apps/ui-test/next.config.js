@@ -4,7 +4,7 @@ const isPlaywright = process.env.PLAYWRIGHT === '1' || process.env.NODE_ENV === 
 
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@electric-sql/pglite', '@amber/ui'],
+  transpilePackages: ['@amber/ui'],
   modularizeImports: {
     '@mui/icons-material': {
       transform: '@mui/icons-material/{{member}}',

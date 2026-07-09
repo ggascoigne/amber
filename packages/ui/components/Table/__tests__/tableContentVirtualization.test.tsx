@@ -28,14 +28,11 @@ describe('table virtualization', () => {
   test('uses the virtual-row path for large tables without expanded content', async () => {
     renderWithProviders(
       <DataTableHarness
-        data={Array.from(
-          { length: 30 },
-          (_value, index): PersonRow => ({
-            id: `${index + 1}`,
-            name: `Person ${index + 1}`,
-            age: index + 1,
-          }),
-        )}
+        data={Array.from({ length: 30 }, (_value, index): PersonRow => ({
+          id: `${index + 1}`,
+          name: `Person ${index + 1}`,
+          age: index + 1,
+        }))}
         columns={personColumns}
         useVirtualRows
         title='Virtual People'
@@ -52,15 +49,12 @@ describe('table virtualization', () => {
   test('disables the virtual-row path when expanded content is enabled', async () => {
     renderWithProviders(
       <DataTableHarness
-        data={Array.from(
-          { length: 30 },
-          (_value, index): PersonRow => ({
-            id: `${index + 1}`,
-            name: `Person ${index + 1}`,
-            age: index + 1,
-            note: `note ${index + 1}`,
-          }),
-        )}
+        data={Array.from({ length: 30 }, (_value, index): PersonRow => ({
+          id: `${index + 1}`,
+          name: `Person ${index + 1}`,
+          age: index + 1,
+          note: `note ${index + 1}`,
+        }))}
         columns={personColumns}
         useVirtualRows
         renderExpandedContent={(row) => <div>{row.original.note}</div>}
