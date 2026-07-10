@@ -169,4 +169,4 @@ This project is a pnpm monorepo with packages in the apps and packages folders. 
 
 The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 
-Much of the build can be tested by running `pnpm tsgo` that runs tsgo on every relevant package.
+Much of the build can be tested by running `pnpm tsc` that runs tsc on every relevant package.

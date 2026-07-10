@@ -10,8 +10,7 @@
   "types": "./index.ts",
   "scripts": {
     "gitHash": "../../scripts/getGitHash.sh",
-    "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@date-io/luxon": "^3.2.0",

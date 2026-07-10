@@ -97,7 +97,7 @@ The project uses Auth0 as an auth system using @auth0/nextjs-auth0.
 
 ## Testing Instructions
 
-- run `pnpm tsgo` to run the native typescript compiler and validate the
+- run `pnpm tsc` to run the native typescript compiler and validate the
   typescript.
 - run `pnpm test` to run the sadly small set of tests
 - run `pnpm lint` to run the lint rules.

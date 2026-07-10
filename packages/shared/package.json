@@ -11,8 +11,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
-    "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "luxon": "^3.7.2",

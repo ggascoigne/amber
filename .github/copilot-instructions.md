@@ -52,7 +52,7 @@ DB_ENV=acnw pnpm -F server prisma:db:pull
 
 ```bash
 pnpm test        # Runs vitest suite
-pnpm tsgo        # Type-check all packages (preferred over tsc)
+pnpm tsc         # Type-check all packages
 pnpm lint        # ESLint (oxlint exists, but isn't generally run since it lacks thorough coverage)
 pnpm format      # Prettier (auto-fixes)
 ```

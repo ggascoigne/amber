@@ -19,7 +19,6 @@
     "dev:test": "pnpm test:setup && NODE_ENV=test NODE_OPTIONS=--max_old_space_size=4096 next dev -p 30002",
     "start": "next start -p 30000",
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsc -p ./tsconfig.json",
     "test:setup": "DB_ENV=acnw dotenv -e .env.test -- pnpm -F server db:cleanTestSeed",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",

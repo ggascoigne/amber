@@ -12,8 +12,7 @@
   "scripts": {
     "boot": "pnpm gitHash",
     "gitHash": "../../scripts/getGitHash.sh",
-    "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsc -p ./tsconfig.json"
+    "tsc": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/client": "workspace:*",

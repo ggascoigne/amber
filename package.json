@@ -30,8 +30,7 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:e2e": "pnpm -r --sequential test:e2e",
-    "tsc": "pnpm -r tsc",
-    "tsgo": "pnpm -r tsc"
+    "tsc": "pnpm -r tsc"
   },
   "dependencies": {
     "dotenv": "17.4.2",

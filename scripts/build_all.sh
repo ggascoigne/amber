@@ -9,7 +9,7 @@ pnpm i
 
 pnpm -F amber boot
 
-if ! pnpm tsgo ; then 
+if ! pnpm tsc ; then 
   retVal=$?
   echo "exiting due to build error"
   exit $retVal
