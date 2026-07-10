@@ -19,7 +19,7 @@
   },
   "scripts": {
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json"
+    "tsgo": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@playwright/test": "^1.61.1",
@@ -29,6 +29,7 @@
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.13",
     "@types/node": "^25.9.5",
-    "typescript": "~6.0.3"
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }
