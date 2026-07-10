@@ -139,24 +139,22 @@ const RoomSlotAvailabilityPane = ({
       },
     ]
 
-    const slotColumns = slotIds.map(
-      (slotId): ColumnDef<RoomSlotAvailabilityRow> => ({
-        id: `slot_${slotId}`,
-        header: `Slot ${slotId}`,
-        size: 80,
-        enableColumnFilter: false,
-        enableGlobalFilter: false,
-        cell: ({ row }) => (
-          <RoomSlotAvailabilityCheckboxCell
-            roomId={row.original.roomId}
-            roomDescription={row.original.roomDescription}
-            slotId={slotId}
-            checked={row.original.slotAvailabilityBySlotId[slotId] ?? true}
-            onChange={onRoomSlotAvailabilityChange}
-          />
-        ),
-      }),
-    )
+    const slotColumns = slotIds.map((slotId): ColumnDef<RoomSlotAvailabilityRow> => ({
+      id: `slot_${slotId}`,
+      header: `Slot ${slotId}`,
+      size: 80,
+      enableColumnFilter: false,
+      enableGlobalFilter: false,
+      cell: ({ row }) => (
+        <RoomSlotAvailabilityCheckboxCell
+          roomId={row.original.roomId}
+          roomDescription={row.original.roomDescription}
+          slotId={slotId}
+          checked={row.original.slotAvailabilityBySlotId[slotId] ?? true}
+          onChange={onRoomSlotAvailabilityChange}
+        />
+      ),
+    }))
 
     return [...baseColumns, ...slotColumns]
   }, [onRoomSlotAvailabilityChange, rows, slotIds])

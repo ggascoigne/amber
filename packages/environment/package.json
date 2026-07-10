@@ -43,13 +43,13 @@
     "next": "16.2.6",
     "superjson": "^2.2.6",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.22.3",
+    "tsx": "^4.23.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@amber/tsconfig": "workspace:*",
     "@types/debug": "~4.1.13",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.5",
     "@types/pg": "^8.20.0",
     "@typescript/native-preview": "7.0.0-dev.20260523.1",
     "dotenv": "^17.4.2",

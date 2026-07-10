@@ -1,18 +1,12 @@
-import type { PGliteInterface } from '@electric-sql/pglite'
 import debug from 'debug'
 import { http, HttpResponse } from 'msw'
 import { z } from 'zod'
 
-import { setupUserDataPg } from './loaders'
+import { setupUserData } from './loaders'
+import type { UserRecord } from './loaders/users'
 import { getQueryParamsBySchema } from './utils'
 
-import { fetchArrayData, fetchSingleItem, getDatabase as getPgliteDatabase } from '@/mocks/sqlTools'
-
-declare global {
-  interface Window {
-    pglite: PGliteInterface
-  }
-}
+import { fetchArrayData, fetchSingleItem, updateSingleItem } from '@/mocks/sqlTools'
 
 const log = debug('handlers')
 
@@ -20,30 +14,25 @@ const publicUrl = (url: string) => `${process.env.NEXT_PUBLIC_BASE_URL ?? ''}${u
 
 log('publicUrl', publicUrl('/api/users'))
 
-// Initialize database lazily when first needed
-let dbInitPromise: Promise<PGliteInterface> | null = null
+// Initialize mock data lazily when first needed
+let dataInitPromise: Promise<void> | null = null
 
-const initializeDatabase = async (): Promise<PGliteInterface> => {
-  dbInitPromise ??= (async () => {
-    console.time(`Initializing database`)
-    const db = await getPgliteDatabase()
-    if (typeof window !== 'undefined') {
-      window.pglite = db
-    }
+const initializeData = async () => {
+  dataInitPromise ??= (async () => {
+    console.time(`Initializing mock data`)
     try {
-      await setupUserDataPg(db)
-      console.log('handlers:', 'setup Postgres data complete')
+      setupUserData()
+      console.log('handlers:', 'setup in-memory data complete')
     } catch (error) {
       console.log('handlers:', error)
     }
-    console.timeEnd(`Initializing database`)
-    // Signal that database is ready for Playwright tests
+    console.timeEnd(`Initializing mock data`)
+    // Signal that mock data is ready for Playwright tests.
     if (typeof document !== 'undefined') {
       document.body.setAttribute('data-db-ready', 'true')
     }
-    return db
   })()
-  return dbInitPromise
+  return dataInitPromise
 }
 
 const requestSchema = z.object({
@@ -68,29 +57,23 @@ const requestSchema = z.object({
 })
 
 const handleError = (error: any) => {
-  if (error?.message === 'PGlite error') {
-    console.error(`PGlite error: '${error?.cause?.error}' executing:\n${error?.cause?.lastQuery}`)
-  } else {
-    console.error(error)
-  }
+  console.error(error)
   return HttpResponse.json(error.cause, { status: 500 })
 }
 
 export const handlers = [
   http.get(publicUrl('/api/users'), async ({ request }) => {
     try {
-      const db = await initializeDatabase()
+      await initializeData()
       const url = new URL(request.url)
       const { searchParams } = url
       const queryParams = getQueryParamsBySchema(searchParams, requestSchema)
       const { pageIndex, pageSize, sorting, globalFilter, filters } = queryParams
 
       // return res(ctx.status(500), ctx.body('internal server error'));
-      const data = await fetchArrayData(
-        db,
+      const data = await fetchArrayData<UserRecord>(
         {
           tableName: 'users',
-          fts: false,
           globalFilterFields: ['firstName', 'lastName'],
         },
         {
@@ -109,11 +92,10 @@ export const handlers = [
 
   http.get(publicUrl('/api/all-users'), async () => {
     try {
-      const db = await initializeDatabase()
+      await initializeData()
       // return res(ctx.status(500), ctx.body('internal server error'));
-      const data = await fetchArrayData(db, {
+      const data = await fetchArrayData<UserRecord>({
         tableName: 'users',
-        fts: false,
         globalFilterFields: ['firstName', 'lastName'],
       })
       return HttpResponse.json(data, { status: 200 })
@@ -124,9 +106,9 @@ export const handlers = [
 
   http.get(publicUrl('/api/users/:id'), async ({ request: _request, params }) => {
     try {
-      const db = await initializeDatabase()
-      const { id } = params
-      const data = await fetchSingleItem(db, `SELECT * FROM users WHERE id = '${id}'`)
+      await initializeData()
+      const id = Number(params.id)
+      const data = await fetchSingleItem<UserRecord>('users', id)
       return HttpResponse.json(data, { status: 200 })
     } catch (error: any) {
       return handleError(error)
@@ -135,7 +117,7 @@ export const handlers = [
 
   http.put(publicUrl('/api/users/:id'), async ({ request, params }) => {
     try {
-      const db = await initializeDatabase()
+      await initializeData()
       const payload = (await request.json()) as Record<string, unknown>
       const id = Number(params.id ?? payload.id)
       const updatableColumns = [
@@ -154,15 +136,9 @@ export const handlers = [
       const updates = Object.fromEntries(
         Object.entries(payload).filter(([key]) => updatableColumns.includes(key)),
       ) as Record<string, unknown>
-      const columns = Object.keys(updates)
 
-      if (columns.length > 0) {
-        const assignments = columns.map((column, index) => `"${column}" = $${index + 1}`).join(', ')
-        const values = columns.map((column) => updates[column])
-        await db.query(`UPDATE users SET ${assignments} WHERE id = $${columns.length + 1}`, [...values, id])
-      }
-
-      const data = await fetchSingleItem(db, `SELECT * FROM users WHERE id = '${id}'`)
+      await updateSingleItem<UserRecord>('users', id, updates)
+      const data = await fetchSingleItem<UserRecord>('users', id)
       return HttpResponse.json(data, { status: 200 })
     } catch (error: any) {
       return handleError(error)
