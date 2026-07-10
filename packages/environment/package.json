@@ -34,7 +34,7 @@
   },
   "scripts": {
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json"
+    "tsgo": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.13.11",
@@ -51,9 +51,9 @@
     "@types/debug": "~4.1.13",
     "@types/node": "^25.9.5",
     "@types/pg": "^8.20.0",
-    "@typescript/native-preview": "7.0.0-dev.20260523.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "dotenv": "^17.4.2",
     "prisma": "^7.8.0",
-    "typescript": "^6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   }
 }

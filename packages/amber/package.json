@@ -13,7 +13,7 @@
     "boot": "pnpm gitHash",
     "gitHash": "../../scripts/getGitHash.sh",
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json"
+    "tsgo": "tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "@amber/client": "workspace:*",
@@ -80,10 +80,10 @@
     "@types/luxon": "^3.7.2",
     "@types/node": "^25.9.5",
     "@types/sha.js": "^2.4.4",
-    "@typescript/native-preview": "7.0.0-dev.20260523.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "babel-loader": "^10.1.1",
     "cross-env": "^10.1.0",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "webpack": "^5.108.4"
   },
   "peerDependencies": {

@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start -p 30005",
     "tsc": "tsc -p ./tsconfig.json",
-    "tsgo": "tsgo -p ./tsconfig.json",
+    "tsgo": "tsc -p ./tsconfig.json",
     "test:e2e": "playwright test",
     "test:e2e:update": "playwright test --update-snapshots",
     "createData": "tsx ./scripts/createData.ts"
@@ -63,14 +63,14 @@
     "@types/qs": "6.15.1",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
-    "@typescript/native-preview": "7.0.0-dev.20260523.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^10.6.0",
     "fs-extra": "^11.3.6",
     "pixelmatch": "^7.2.0",
     "pngjs": "^7.0.0",
     "source-map-explorer": "^2.5.3",
     "tsx": "4.22.3",
-    "typescript": "~6.0.3"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "browserslist": {
     "production": [
