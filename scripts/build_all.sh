@@ -34,6 +34,13 @@ if ! CI=true pnpm run test ; then
 fi
 
 
+if ! pnpm exec playwright install ; then
+  retVal=$?
+  echo "exiting due to build error"
+  exit $retVal
+fi
+
+
 if ! pnpm -r --sequential test:e2e ; then
   retVal=$?
   echo "exiting due to build error"
