@@ -23,7 +23,7 @@ export interface WizardPage {
   enabled?: boolean
 }
 
-const setAdd = (input: Set<number>, value: number) => input.union(new Set([value]))
+const setAdd = (input: Set<number>, value: number) => new Set(input).add(value)
 
 const setDelete = (input: Set<number>, value: number) => input.difference(new Set([value]))
 
