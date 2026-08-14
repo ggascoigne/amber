@@ -20,7 +20,7 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
 - [x] (2026-08-14 18:54Z) Moved selection, pagination, filtering, expansion, visibility, resizing, header, row, and debug reads to TanStack v9 subscription boundaries and validated all table interactions.
 - [x] (2026-08-14 19:01Z) Added selected-state generics to Amber's adapter, opted the high-level `Table` root out of state re-renders, narrowed callback-facing table instances to the state-free API, and proved that selection rerenders only its affected row.
 - [x] (2026-08-14 19:06Z) Added `useServerTableState`, migrated all three server-driven UI-test examples from callback mirroring to externally owned query atoms, and validated direct table-to-query updates.
-- [ ] Run formatting, type checking, unit tests, lint, and all available table browser tests; record final evidence and complete the retrospective.
+- [x] (2026-08-14 19:09Z) Completed formatting, all workspace typechecks, the full unit suite, lint without warnings, and all 44 browser scenarios across ui-test, ACNW, and ACUS (one transient ACUS dev-overlay failure passed both isolated and on its full-suite rerun).
 
 ## Surprises & Discoveries
 
@@ -38,8 +38,8 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
   Evidence: unit tests caught `cell.getIsGrouped is not a function` in the editing adapter; Playwright then caught a detached `getFilterValue` call. Preserving the cell prototype and calling methods on their instances fixed both classes of failure.
 - Observation: TanStack's v9 pagination feature defaults to 10 rows, while Amber's high-level `Table` wrapper historically initialized 100 rows per page.
   Evidence: the first visual browser run rendered 10 rows and differed from the checked-in 100-row snapshots; explicitly retaining `DEFAULT_TABLE_PAGE_SIZE` restored every snapshot.
-- Observation: the full application E2E and production-build entry points cannot complete in the current environment because both applications require PostgreSQL at `127.0.0.1:54320` during setup.
-  Evidence: `pnpm test:e2e`, `pnpm build:nw`, and `pnpm build:us` all failed in database migration/seed or Prisma calls with `ECONNREFUSED`/`P1001` before application validation could run. The independent ui-test DataTable suite passed all 22 tests.
+- Observation: during the initial migration, the full application E2E and production-build entry points could not complete because both applications required PostgreSQL at `127.0.0.1:54320` during setup; the database became available for the final follow-on validation.
+  Evidence: the earlier attempts failed in migration/seed or Prisma calls with `ECONNREFUSED`/`P1001`. The final E2E pass successfully seeded both databases and ran ui-test, ACNW, and ACUS browser suites.
 - Observation: Amber's default sort applies to the first user column before the first query-state notification.
   Evidence: the new state-bridge test initially expected an empty sorting array but received `[{ id: 'name', desc: false }]`; the assertion now records the established default-sort behavior.
 - Observation: isolated row test doubles created before v9 did not provide the row's table reference, which atomic subscriptions require.
@@ -92,7 +92,7 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
 
 The native v9 migration is implemented across the monorepo. Amber now constructs a tree-shakeable explicit feature set, uses v9 row-model factories, observes the v9 store for persistence and server-query callbacks, uses v9 filter/sort APIs, and preserves receiver-bound instances in rendering and filters. The high-level `Table`/`DataTable` props and the 100-row default remain intact. The intentional authoring changes are `columnHelper.columns([...])`, `sortFn`, feature-bound exported types, and static custom-filter registration.
 
-Validation completed successfully for formatting, every workspace typecheck, lint, 100 Vitest files / 355 tests, and all 22 ui-test Playwright scenarios including snapshots, sorting/filter surfaces, grouping, pagination, editing, nested rows, and layout variants. The final React pass confirmed that the feature registry and empty-data fallback are module-stable, subscriptions clean up, the debounced callback reads current handlers through refs without resubscribing on each table update, and no new suppressions or unsafe `any` casts were introduced. Application E2E and builds remain environmentally unverified past setup because the required local PostgreSQL service is not running; their failures were database connection failures rather than table regressions.
+Final validation completed successfully for formatting, every workspace typecheck, lint without warnings, and 100 Vitest files / 358 tests. Browser validation covered all 22 ui-test DataTable scenarios, all 16 ACNW scenarios, and all 6 ACUS scenarios. The first complete E2E command encountered one transient ACUS Next.js development overlay (`Invalid or unexpected token`) after the other 43 scenarios passed; that scenario passed immediately in isolation, and the complete 6-test ACUS suite then passed on rerun. The final React pass confirmed that state selection is explicit, subscription boundaries clean up, query and persistence observers are independent, external atoms have one owner, and no new suppressions or unsafe casts were introduced.
 
 The follow-on atomic-state milestones below are in progress. This section must be updated after each milestone with its behavior and validation evidence.
 
@@ -211,3 +211,5 @@ Revision note, 2026-08-14 18:54Z: recorded the completed subscription-boundary m
 Revision note, 2026-08-14 19:01Z: recorded the selected-state generic and root-selector milestone, including the explicit state-free callback contract and pagination-reset discovery.
 
 Revision note, 2026-08-14 19:06Z: recorded completion of external query-state atoms, the server-driven example migrations, and their static, unit, and browser validation.
+
+Revision note, 2026-08-14 19:09Z: completed the final repository validation and retrospective, including the transient ACUS dev-overlay retry evidence.

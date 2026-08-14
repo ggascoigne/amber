@@ -4,14 +4,10 @@
 
 /* eslint-disable import-x/no-extraneous-dependencies */
 
+import Box from '@mui/material/Box'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
-import Box from '@mui/material/Box'
-
-import { Table } from '../Table'
-import type { ColumnDef, TableQueryState, TableState } from '../tableTypes'
-import { useServerTableState } from '../useServerTableState'
 import {
   installDomMeasurementMocks,
   personColumns,
@@ -19,6 +15,10 @@ import {
   TableHarness,
   type PersonRow,
 } from './testUtils'
+
+import { Table } from '../Table'
+import type { ColumnDef, TableQueryState, TableState } from '../tableTypes'
+import { useServerTableState } from '../useServerTableState'
 
 const ServerTableHarness = () => {
   const { atoms, initialState, state } = useServerTableState({
