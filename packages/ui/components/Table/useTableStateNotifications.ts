@@ -14,7 +14,7 @@ const shouldResetPageIndex = (previousState: AmberTableState, nextState: AmberTa
 
 type UseTableStateNotificationsProps<TData extends RowData> = {
   table: AmberTableApi<TData>
-  onPersistedStateChange: (state: AmberTableState) => void
+  onPersistedStateChange?: (state: AmberTableState) => void
   onQueryStateChange?: (state: TableQueryState) => void
   /** @deprecated Prefer `onQueryStateChange` when state drives a server query. */
   onStateChange?: (state: AmberTableState) => void
@@ -59,7 +59,7 @@ export const useTableStateNotifications = <TData extends RowData>({
   useLayoutEffect(() => {
     const initialState = tableStore.state
     previousStateRef.current = initialState
-    onPersistedStateChangeRef.current(initialState)
+    onPersistedStateChangeRef.current?.(initialState)
     onQueryStateChangeRef.current?.(selectTableQueryState(initialState))
     onStateChangeRef.current?.(initialState)
     onStateLoadedRef.current()
@@ -80,10 +80,13 @@ export const useTableStateNotifications = <TData extends RowData>({
       }
       previousStateRef.current = resolvedNextState
 
-      if (!deepEqual(selectPersistedTableState(previousState), selectPersistedTableState(resolvedNextState))) {
+      if (
+        onPersistedStateChangeRef.current &&
+        !deepEqual(selectPersistedTableState(previousState), selectPersistedTableState(resolvedNextState))
+      ) {
         if (persistenceTimerRef.current) window.clearTimeout(persistenceTimerRef.current)
         persistenceTimerRef.current = window.setTimeout(() => {
-          onPersistedStateChangeRef.current(resolvedNextState)
+          onPersistedStateChangeRef.current?.(resolvedNextState)
         }, STATE_NOTIFICATION_DELAY_MS)
       }
 

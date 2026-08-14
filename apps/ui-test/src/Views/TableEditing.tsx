@@ -6,9 +6,8 @@ import type {
   TableEditRowUpdate,
   TableRowValidationParams,
 } from '@amber/ui/components/Table'
-import { Table } from '@amber/ui/components/Table'
+import { getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
-import type { TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
 
 import { Page, Toggle } from '@/Components'
@@ -80,18 +79,17 @@ export const TableEditing = () => {
   const [debug, setDebug] = useState(false)
   const [virtual, setVirtual] = useState(true)
 
-  const [state, setState] = useState<TableQueryState | undefined>(undefined)
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: { sorting: getDefaultSort(columns) },
+  })
 
-  const { data, isLoading, isFetching, refetch } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
-    },
-    { enabled: !!state },
-  )
+  const { data, isLoading, isFetching, refetch } = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter ?? '',
+    filters: state.columnFilters,
+  })
 
   const updateUser = useUpdateUserMutation()
 
@@ -157,6 +155,9 @@ export const TableEditing = () => {
         Click a cell to edit. Changes show a left-hand marker and must be saved or discarded before paging.
       </Typography>
       <Table
+        disableStatePersistence
+        atoms={atoms}
+        initialState={initialState}
         title='Table - Editable Cells'
         name='table-editing-demo'
         columns={columns}
@@ -167,7 +168,6 @@ export const TableEditing = () => {
         scrollBehavior='bounded'
         cellEditing={editingConfig}
         displayGutter={false}
-        onQueryStateChange={setState}
         rowCount={data?.rowCount ?? 0}
         refetch={refetch}
         debug={debug}

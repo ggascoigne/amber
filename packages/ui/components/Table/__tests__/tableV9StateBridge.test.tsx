@@ -7,10 +7,49 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
-import { installDomMeasurementMocks, renderWithProviders, TableHarness } from './testUtils'
+import Box from '@mui/material/Box'
 
+import { Table } from '../Table'
 import type { ColumnDef, TableQueryState, TableState } from '../tableTypes'
-import type { PersonRow } from './testUtils'
+import { useServerTableState } from '../useServerTableState'
+import {
+  installDomMeasurementMocks,
+  personColumns,
+  renderWithProviders,
+  TableHarness,
+  type PersonRow,
+} from './testUtils'
+
+const ServerTableHarness = () => {
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: {
+      pagination: { pageIndex: 1, pageSize: 1 },
+      sorting: [{ id: 'name', desc: false }],
+    },
+  })
+
+  return (
+    <>
+      <output data-testid='server-query-state'>{JSON.stringify(state)}</output>
+      <Box sx={{ height: 400, width: 1000 }}>
+        <Table<PersonRow>
+          disableStatePersistence
+          atoms={atoms}
+          initialState={initialState}
+          data={[
+            { id: '1', name: 'Alpha', age: 10 },
+            { id: '2', name: 'Beta', age: 20 },
+            { id: '3', name: 'Gamma', age: 30 },
+          ]}
+          columns={personColumns}
+          keyField='id'
+          title='Server people'
+          scrollBehavior='bounded'
+        />
+      </Box>
+    </>
+  )
+}
 
 describe('TanStack Table v9 state bridge', () => {
   beforeEach(() => {
@@ -126,5 +165,19 @@ describe('TanStack Table v9 state bridge', () => {
       expect(renderCountByRowId.get('1')).toBeGreaterThan(alphaRenderCount)
     })
     expect(renderCountByRowId.get('2')).toBe(betaRenderCount)
+  })
+
+  test('shares query state directly through external atoms', async () => {
+    renderWithProviders(<ServerTableHarness />)
+
+    expect(screen.getByTestId('server-query-state')).toHaveTextContent('"pageIndex":1')
+
+    fireEvent.change(screen.getByPlaceholderText('Search'), { target: { value: 'Beta' } })
+
+    await waitFor(() => {
+      const queryState = screen.getByTestId('server-query-state')
+      expect(queryState).toHaveTextContent('"pageIndex":0')
+      expect(queryState).toHaveTextContent('"globalFilter":"Beta"')
+    })
   })
 })

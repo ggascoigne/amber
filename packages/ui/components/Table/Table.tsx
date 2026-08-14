@@ -38,31 +38,21 @@ const TableEmpty = <TData extends RowData>({ table }: TableEmptyProps<TData>) =>
 /**
 Simple, Table wrapper, you just pass it the data and it'll do the rest
 
-Note that it's setup for client side sorting, filtering etc, if you want to manage that
-on the server then you need access to the table state for query params etc.  You can 
-do that with something like this:
+The default setup performs sorting and filtering on the client. For a server-driven
+table, share the query-relevant slices directly through external atoms:
 
 ```ts
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
+  const { atoms, initialState, state } = useServerTableState()
 
-  const { data, isLoading, isFetching, refetch } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
-    },
-    { enabled: !!state },
-  )
+  const query = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter,
+    filters: state.columnFilters,
+  })
+
+  return <Table disableStatePersistence atoms={atoms} initialState={initialState} {...props} />
 ```
   */
 
@@ -215,7 +205,7 @@ export const Table = <T extends RowData>({
 
   useTableStateNotifications({
     table,
-    onPersistedStateChange: setPersistedTableState,
+    onPersistedStateChange: disableStatePersistence ? undefined : setPersistedTableState,
     onQueryStateChange,
     onStateChange: handleStateChange,
     onStateLoaded: useCallback(() => setStateLoaded(true), []),

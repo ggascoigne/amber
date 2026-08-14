@@ -1,8 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
-import { someSelected, zeroSelected, getDefaultSort, Table } from '@amber/ui/components/Table'
-import type { Row, TableApi as TableInstance, TableQueryState } from '@amber/ui/components/Table/tableTypes'
+import { someSelected, zeroSelected, getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
+import type { Row, TableApi as TableInstance } from '@amber/ui/components/Table/tableTypes'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'
@@ -56,18 +56,24 @@ const ExampleTable = ({
   debug,
   variant,
 }: ExampleTableProps) => {
-  const [state, setState] = useState<TableQueryState | undefined>(undefined)
-
-  const { data } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: {
+      pagination: {
+        pageSize: 2,
+        pageIndex: 0,
+      },
+      sorting: getDefaultSort(columns),
+      globalFilter: '',
     },
-    { enabled: !!state },
-  )
+  })
+
+  const { data } = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter ?? '',
+    filters: state.columnFilters,
+  })
 
   const dummy = useCallback(
     (commandName: string) =>
@@ -117,6 +123,8 @@ const ExampleTable = ({
 
   return (
     <Table
+      disableStatePersistence
+      atoms={atoms}
       sx={{ width: '600px' }}
       name={`Users Table ${index}`}
       keyField='id'
@@ -133,18 +141,10 @@ const ExampleTable = ({
       hideHeader={hideHeader}
       paginationStyle={compactPagination ? 'compact' : 'default'}
       variant={variant}
-      onQueryStateChange={setState}
       enableRowSelection={enableRowSelection}
       enableGlobalFilter={withSearch}
       enableColumnFilters={withFilters}
-      initialState={{
-        pagination: {
-          pageSize: 2,
-          pageIndex: 0,
-        },
-        sorting: getDefaultSort(columns),
-        globalFilter: '',
-      }}
+      initialState={initialState}
       rowCount={data?.rowCount ?? 0}
     />
   )

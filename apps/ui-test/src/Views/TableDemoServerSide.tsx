@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
-import { Table } from '@amber/ui/components/Table'
+import { getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
-import type { Row, TableQueryState } from '@amber/ui/components/Table/tableTypes'
+import type { Row } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
 
 import { Page } from '@/Components'
@@ -34,18 +34,17 @@ const columns = columnHelper.columns([
   }),
 ])
 export const TableDemoServerSide = () => {
-  const [state, setState] = useState<TableQueryState | undefined>(undefined)
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: { sorting: getDefaultSort(columns) },
+  })
 
-  const { data, isLoading, isFetching, refetch } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
-    },
-    { enabled: !!state },
-  )
+  const { data, isLoading, isFetching, refetch } = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter ?? '',
+    filters: state.columnFilters,
+  })
 
   const dummy = useCallback((instance: any, selectedKeys: string[]) => {
     console.log('Toolbar Action Clicked', instance, selectedKeys)
@@ -71,7 +70,9 @@ export const TableDemoServerSide = () => {
       >
         <Table
           title='Table - Server search'
-          name='table-test-server'
+          disableStatePersistence
+          atoms={atoms}
+          initialState={initialState}
           keyField='id'
           columns={columns}
           data={data?.rows ?? []}
@@ -84,7 +85,6 @@ export const TableDemoServerSide = () => {
           scrollBehavior='bounded'
           refetch={refetch}
           debug
-          onQueryStateChange={setState}
           rowCount={data?.rowCount ?? 0}
           displayGutter={false}
         />
