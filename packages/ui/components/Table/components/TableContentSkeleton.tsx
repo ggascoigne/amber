@@ -15,6 +15,7 @@ const measureElement = (element: Element) => element?.getBoundingClientRect().he
 
 export const TableContentSkeleton = <T extends RowData>({
   table,
+  pageSize,
   sx,
   rowStyle,
   compact,
@@ -22,13 +23,13 @@ export const TableContentSkeleton = <T extends RowData>({
   tableContainerRef,
 }: {
   table: TableInstance<T>
+  pageSize: number
   sx?: SxProps<Theme>
   rowStyle: RowStyleType
   compact: boolean
   useVirtualRows?: boolean
   tableContainerRef: RefObject<HTMLDivElement | null>
 }): ReactElement => {
-  const { pageSize } = table.state.pagination
   const headerGroup = table.getHeaderGroups()[table.getHeaderGroups().length - 1]
 
   const estimateRowHeight = compact ? 34.2 : 50.2

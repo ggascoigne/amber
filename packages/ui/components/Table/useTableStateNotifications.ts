@@ -2,17 +2,11 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 
 import { dequal as deepEqual } from 'dequal'
 
+import { selectTableQueryState } from './tableStateSelectors'
 import type { AmberTable, AmberTableState, RowData, TableQueryState } from './tableTypes'
 import { selectPersistedTableState } from './useTableState'
 
 const STATE_NOTIFICATION_DELAY_MS = 250
-
-export const selectTableQueryState = (state: AmberTableState): TableQueryState => ({
-  pagination: state.pagination,
-  sorting: state.sorting,
-  columnFilters: state.columnFilters,
-  globalFilter: state.globalFilter,
-})
 
 const shouldResetPageIndex = (previousState: AmberTableState, nextState: AmberTableState) =>
   !deepEqual(previousState.columnFilters, nextState.columnFilters) ||

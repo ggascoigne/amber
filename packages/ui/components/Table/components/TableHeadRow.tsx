@@ -6,6 +6,7 @@ import { styled, generateUtilityClasses } from '@mui/material'
 import Box from '@mui/material/Box'
 import type { TableRowProps } from '@mui/material/TableRow'
 import MuiTableRow from '@mui/material/TableRow'
+import { Subscribe } from '@tanstack/react-table'
 import clsx from 'clsx'
 
 import type { CN } from './TableStyles'
@@ -79,17 +80,22 @@ export const ResizeHandle = <T extends RowData>({
 }: {
   header: Header<T, unknown>
   isLast?: boolean
-}): ReactElement => {
-  const className = clsx({
-    [tableClasses.resizeHandle]: true,
-    [tableClasses.resizeHandleActive]: header.column.getIsResizing(),
-    [tableClasses.resizeHandleLast]: isLast,
-  })
-  return (
-    <ResizeHandleRoot
-      onMouseDown={header.getResizeHandler()}
-      onTouchStart={header.getResizeHandler()}
-      className={className}
-    />
-  )
-}
+}): ReactElement => (
+  <Subscribe source={header.getContext().table.atoms.columnResizing} selector={() => header.column.getIsResizing()}>
+    {(isResizing) => {
+      const className = clsx({
+        [tableClasses.resizeHandle]: true,
+        [tableClasses.resizeHandleActive]: isResizing,
+        [tableClasses.resizeHandleLast]: isLast,
+      })
+
+      return (
+        <ResizeHandleRoot
+          onMouseDown={header.getResizeHandler()}
+          onTouchStart={header.getResizeHandler()}
+          className={className}
+        />
+      )
+    }}
+  </Subscribe>
+)

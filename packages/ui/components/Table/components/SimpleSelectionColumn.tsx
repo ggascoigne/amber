@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { Subscribe } from '@tanstack/react-table'
+
 import { RowCheckbox } from './TableStyles'
 
 import type { AmberCoreTable, CellContext, RowData } from '../tableTypes'
@@ -8,7 +10,7 @@ type HeaderCheckboxProps<T extends RowData> = {
   table: AmberCoreTable<T>
 }
 
-export const HeaderCheckbox = <T extends RowData>({ table }: HeaderCheckboxProps<T>) => {
+const HeaderCheckboxView = <T extends RowData>({ table }: HeaderCheckboxProps<T>) => {
   const areAllOnPageSelected = !!(
     table.getPaginatedRowModel().rows.length && table.getPaginatedRowModel().rows.every((row) => row.getIsSelected())
   )
@@ -31,13 +33,25 @@ export const HeaderCheckbox = <T extends RowData>({ table }: HeaderCheckboxProps
   )
 }
 
-export const CheckboxCellRenderer = <T extends RowData>({ row }: CellContext<T, any>) => (
-  <RowCheckbox
-    {...{
-      checked: row.getIsSelected(),
-      indeterminate: row.getIsSomeSelected(),
-      disabled: !row.getCanSelect(),
-      onChange: row.getToggleSelectedHandler(),
-    }}
-  />
+export const HeaderCheckbox = <T extends RowData>(props: HeaderCheckboxProps<T>) => (
+  <Subscribe source={props.table.atoms.rowSelection}>{() => <HeaderCheckboxView {...props} />}</Subscribe>
+)
+
+export const CheckboxCellRenderer = <T extends RowData>({ row, table }: CellContext<T, unknown>) => (
+  <Subscribe
+    source={table.atoms.rowSelection}
+    selector={() => ({
+      isSelected: row.getIsSelected(),
+      isSomeSelected: row.getIsSomeSelected(),
+    })}
+  >
+    {({ isSelected, isSomeSelected }) => (
+      <RowCheckbox
+        checked={isSelected}
+        indeterminate={isSomeSelected}
+        disabled={!row.getCanSelect()}
+        onChange={row.getToggleSelectedHandler()}
+      />
+    )}
+  </Subscribe>
 )

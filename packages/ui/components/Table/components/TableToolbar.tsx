@@ -18,9 +18,13 @@ type TableToolbarProps<T extends RowData> = {
   displayGutter: boolean
 }
 
-export const TableToolbar = <T extends RowData>(props: TableToolbarProps<T>) => {
+type TableToolbarViewProps<T extends RowData> = TableToolbarProps<T> & {
+  rowSelection: Record<string, boolean>
+}
+
+const TableToolbarView = <T extends RowData>(props: TableToolbarViewProps<T>) => {
   const { sx, table, toolbarActions, systemActions, displayGutter } = props
-  const { rowSelection } = table.state
+  const { rowSelection } = props
 
   const selectedKeys = useMemo(() => Object.keys(rowSelection), [rowSelection])
 
@@ -73,5 +77,15 @@ export const TableToolbar = <T extends RowData>(props: TableToolbarProps<T>) => 
         />
       </Box>
     </Toolbar>
+  )
+}
+
+export const TableToolbar = <T extends RowData>(props: TableToolbarProps<T>) => {
+  const { table } = props
+
+  return (
+    <table.Subscribe source={table.atoms.rowSelection}>
+      {(rowSelection) => <TableToolbarView {...props} rowSelection={rowSelection} />}
+    </table.Subscribe>
   )
 }

@@ -12,7 +12,7 @@ import { CLEAR_FILTERS_MESSAGE, clearSearch, emitter } from './filterEmitter'
 import { SearchInput } from './SearchInput'
 
 import { notEmpty } from '../../../utils/ts-utils'
-import type { RowData, Column, Table as TableInstance } from '../tableTypes'
+import type { AmberTableState, RowData, Column, Table as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 export type Filter<T extends RowData> = {
@@ -108,6 +108,8 @@ const columnToGenericFilter =
 
 export const useFilterValues = <T extends RowData>(
   table: TableInstance<T>,
+  columnFilters: AmberTableState['columnFilters'],
+  globalFilter: AmberTableState['globalFilter'],
 ): {
   hasFiltersToDisplay: boolean
   removeFilter: (name: string) => void
@@ -134,9 +136,9 @@ export const useFilterValues = <T extends RowData>(
   }, [table])
 
   const alreadySetFilterNames = useMemo(() => {
-    const existingFilterIds = table.state.columnFilters?.map((f) => f.id)
+    const existingFilterIds = columnFilters.map((filter) => filter.id)
     return allFilters.map((f) => (existingFilterIds.includes(f.id) ? f.name : undefined)).filter(notEmpty)
-  }, [table, allFilters])
+  }, [allFilters, columnFilters])
 
   const [selectedFilterNames, setSelectedFilterNames] = useState<string[]>(alreadySetFilterNames)
 
@@ -193,7 +195,6 @@ export const useFilterValues = <T extends RowData>(
 
   const hasSomethingToClear = requiredFilters.reduce((previous, filter) => previous || !!filter.canBeCleared?.(), false)
 
-  const { globalFilter } = table.state
   const globalFilterValue = typeof globalFilter === 'object' ? globalFilter.value : globalFilter
 
   const showClearButton =
@@ -213,9 +214,20 @@ export const useFilterValues = <T extends RowData>(
   }
 }
 
-export const TableFilterBar = <T extends RowData>({ table, sx, displayGutter }: TableFilterBarProps<T>) => {
+type TableFilterBarViewProps<T extends RowData> = TableFilterBarProps<T> & {
+  columnFilters: AmberTableState['columnFilters']
+  globalFilter: AmberTableState['globalFilter']
+}
+
+const TableFilterBarView = <T extends RowData>({
+  table,
+  sx,
+  displayGutter,
+  columnFilters,
+  globalFilter,
+}: TableFilterBarViewProps<T>) => {
   const searchEnabled = (table.options.enableGlobalFilter ?? true) && (table.options.enableFilters ?? true)
-  const searchValue = table.state.globalFilter
+  const searchValue = globalFilter
   const searchValueChange = useCallback((value: string) => table.setGlobalFilter(value), [table])
 
   const {
@@ -227,7 +239,7 @@ export const TableFilterBar = <T extends RowData>({ table, sx, displayGutter }: 
     clearAllFilters,
     visibleFilters,
     showClearButton,
-  } = useFilterValues(table)
+  } = useFilterValues(table, columnFilters, globalFilter)
 
   return (
     <>
@@ -276,5 +288,22 @@ export const TableFilterBar = <T extends RowData>({ table, sx, displayGutter }: 
         </Box>
       )}
     </>
+  )
+}
+
+export const TableFilterBar = <T extends RowData>(props: TableFilterBarProps<T>) => {
+  const { table } = props
+
+  return (
+    <table.Subscribe
+      selector={(state) => ({
+        columnFilters: state.columnFilters,
+        globalFilter: state.globalFilter,
+      })}
+    >
+      {({ columnFilters, globalFilter }) => (
+        <TableFilterBarView {...props} columnFilters={columnFilters} globalFilter={globalFilter} />
+      )}
+    </table.Subscribe>
   )
 }

@@ -12,7 +12,7 @@ import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import { usePendingNewRow } from './editing/usePendingNewRow'
 import { buildExpansionColumn } from './expansion/buildExpansionColumn'
-import type { AmberColumnDef, AmberRow, AmberTableState, RowData, TableQueryState } from './tableTypes'
+import type { AmberColumnDef, AmberRow, AmberTable, AmberTableState, RowData, TableQueryState } from './tableTypes'
 import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
@@ -24,6 +24,16 @@ import { notEmpty } from '../../utils/ts-utils'
 
 const EMPTY_TABLE_DATA: Array<never> = []
 const rowCanAlwaysExpand = () => true
+
+type TableEmptyProps<TData extends RowData> = {
+  table: AmberTable<TData>
+}
+
+const TableEmpty = <TData extends RowData>({ table }: TableEmptyProps<TData>) => (
+  <table.Subscribe source={table.atoms.globalFilter}>
+    {(globalFilter) => <Empty hasSearch={globalFilter} />}
+  </table.Subscribe>
+)
 
 /**
 Simple, Table wrapper, you just pass it the data and it'll do the rest
@@ -281,7 +291,7 @@ export const Table = <T extends RowData>({
     return null
   }
 
-  const empty = <Empty hasSearch={table.state.globalFilter} />
+  const empty = <TableEmpty table={table} />
 
   return (
     <DataTable

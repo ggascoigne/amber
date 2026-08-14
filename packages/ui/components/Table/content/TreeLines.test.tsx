@@ -25,6 +25,14 @@ const renderTreeLines = ({
   const row = {
     getCanExpand: () => true,
     getIsExpanded: () => false,
+    table: {
+      atoms: {
+        expanded: {
+          get: () => false,
+          subscribe: () => ({ unsubscribe: () => undefined }),
+        },
+      },
+    },
     toggleExpanded: onToggle,
   } as unknown as Row<TestRowData>
 

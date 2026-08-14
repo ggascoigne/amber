@@ -8,6 +8,7 @@ import superjson from 'superjson'
 import { useTableContext } from './TableContext'
 
 import { ObjectView } from '../../ObjectView'
+import type { AmberTableState, RowData, Table as TableInstance } from '../tableTypes'
 
 interface LoaderProps {
   error?: boolean
@@ -61,15 +62,20 @@ export const TableDebugButton = ({ enabled }: { enabled: boolean }) => {
   ) : null
 }
 
-type TableDebugProps = {
+type TableDebugProps<TData extends RowData> = {
   enabled: boolean
-  instance: any
+  instance: TableInstance<TData>
 }
 
-export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
-  const [{ tableIndex, debugIsOpen }] = useTableContext()
+type TableDebugViewProps<TData extends RowData> = {
+  instance: TableInstance<TData>
+  state: AmberTableState
+  tableIndex: number
+}
+
+const TableDebugView = <TData extends RowData>({ instance, state, tableIndex }: TableDebugViewProps<TData>) => {
   const { rows } = instance.getRowModel()
-  const originalRows = useMemo(() => rows.map((row: any) => row.original), [rows])
+  const originalRows = useMemo(() => rows.map((row) => row.original), [rows])
 
   const filteredOptions = useMemo(() => {
     const filtered: Record<string, any> = {}
@@ -83,7 +89,7 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
 
   const obj = {
     tableIndex,
-    state: instance.state,
+    state,
     headerGroups: instance.getHeaderGroups(),
     columns: instance.getAllLeafColumns(),
     rows: instance.getRowModel().rows,
@@ -91,7 +97,7 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
     options: filteredOptions,
   }
 
-  return enabled && debugIsOpen ? (
+  return (
     <Box>
       <hr />
       <Box sx={{ pl: 3 }}>
@@ -107,5 +113,15 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
         </Suspense>
       </Box>
     </Box>
+  )
+}
+
+export const TableDebug = <TData extends RowData>({ enabled, instance }: TableDebugProps<TData>) => {
+  const [{ tableIndex, debugIsOpen }] = useTableContext()
+
+  return enabled && debugIsOpen ? (
+    <instance.Subscribe selector={(state) => state}>
+      {(state) => <TableDebugView instance={instance} state={state} tableIndex={tableIndex} />}
+    </instance.Subscribe>
   ) : null
 }

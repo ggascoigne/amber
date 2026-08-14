@@ -27,16 +27,7 @@ const tableSortClasses = {
   ),
 }
 
-export const TableHeader = <T extends RowData>({
-  table,
-  sx,
-  displayLoading,
-  isLoading,
-  isFetching,
-  displayGutter,
-  rowStyle = 'flex',
-  compact,
-}: {
+type TableHeaderProps<T extends RowData> = {
   table: TableInstance<T>
   sx?: SxProps<Theme>
   isLoading?: boolean
@@ -45,7 +36,18 @@ export const TableHeader = <T extends RowData>({
   compact: boolean
   displayGutter: boolean
   rowStyle: RowStyleType
-}): ReactElement => {
+}
+
+const TableHeaderView = <T extends RowData>({
+  table,
+  sx,
+  displayLoading,
+  isLoading,
+  isFetching,
+  displayGutter,
+  rowStyle = 'flex',
+  compact,
+}: TableHeaderProps<T>): ReactElement => {
   const headerGroups = table.getHeaderGroups()
   const showProgress = displayLoading && isFetching && !isLoading
 
@@ -212,5 +214,24 @@ export const TableHeader = <T extends RowData>({
         />
       )}
     </TableHead>
+  )
+}
+
+export const TableHeader = <T extends RowData>(props: TableHeaderProps<T>) => {
+  const { table } = props
+
+  return (
+    <table.Subscribe
+      selector={(state) => ({
+        columnOrder: state.columnOrder,
+        columnResizing: state.columnResizing,
+        columnSizing: state.columnSizing,
+        columnVisibility: state.columnVisibility,
+        grouping: state.grouping,
+        sorting: state.sorting,
+      })}
+    >
+      {() => <TableHeaderView {...props} />}
+    </table.Subscribe>
   )
 }

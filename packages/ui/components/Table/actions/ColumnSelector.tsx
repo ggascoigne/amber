@@ -28,13 +28,13 @@ type ColumnSelectorPopupProps<T extends RowData> = {
 
 const id = 'popover-column-hide'
 
-export function ColumnSelectorPopup<T extends RowData>({
+const ColumnSelectorPopupView = <T extends RowData>({
   table,
   anchorEl,
   onClose,
   show,
   anchorDirection,
-}: ColumnSelectorPopupProps<T>): ReactElement | null {
+}: ColumnSelectorPopupProps<T>): ReactElement | null => {
   const relevantColumns = table.getAllLeafColumns().filter((column) => isUserColumnId(column.id))
   const checkedCount = relevantColumns.reduce((acc, val) => acc + (val.getIsVisible() ? 0 : 1), 0)
   const onlyOneOptionLeft = checkedCount + 1 >= relevantColumns.length
@@ -115,6 +115,12 @@ export function ColumnSelectorPopup<T extends RowData>({
     </Popover>
   ) : null
 }
+
+export const ColumnSelectorPopup = <T extends RowData>(props: ColumnSelectorPopupProps<T>) => (
+  <props.table.Subscribe source={props.table.atoms.columnVisibility}>
+    {() => <ColumnSelectorPopupView {...props} />}
+  </props.table.Subscribe>
+)
 
 type ColumnSelectorProps<T extends RowData> = {
   table: TableInstance<T>

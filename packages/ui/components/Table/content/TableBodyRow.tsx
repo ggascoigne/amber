@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import type { Theme } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
-import { flexRender } from '@tanstack/react-table'
+import { flexRender, Subscribe } from '@tanstack/react-table'
 import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
 import { clsx } from 'clsx'
 
@@ -31,6 +31,8 @@ type TableCellContentProps<TData extends RowData> = {
   isEditable: boolean
   isTreeLineCell: boolean
   hasInlineSelectionBox: boolean
+  isRowSelected: boolean
+  isRowSelectionIndeterminate: boolean
   navigateCell?: (cell: Cell<TData, unknown>, direction: 'next' | 'previous') => boolean
   row: Row<TData>
   rowStyle: RowStyleType
@@ -46,6 +48,8 @@ const TableCellContent = <TData extends RowData>({
   isEditable,
   isTreeLineCell,
   hasInlineSelectionBox,
+  isRowSelected,
+  isRowSelectionIndeterminate,
   navigateCell,
   row,
   rowStyle,
@@ -109,8 +113,8 @@ const TableCellContent = <TData extends RowData>({
   const treeLineContent = isTreeLineCell ? <TreeLines row={row} expansionDetails={treeLineDetails} /> : null
   const selectionContent = hasInlineSelectionBox ? (
     <RowCheckbox
-      checked={row.getIsSelected()}
-      indeterminate={row.getIsSomeSelected()}
+      checked={isRowSelected}
+      indeterminate={isRowSelectionIndeterminate}
       disabled={!row.getCanSelect()}
       onChange={row.getToggleSelectedHandler()}
     />
@@ -244,7 +248,12 @@ type TableBodyRowProps<TData extends RowData> = {
   virtualRow?: VirtualItem
 }
 
-export const TableBodyRow = <TData extends RowData>({
+type TableBodyRowViewProps<TData extends RowData> = TableBodyRowProps<TData> & {
+  isSelected: boolean
+  isSelectionIndeterminate: boolean
+}
+
+const TableBodyRowView = <TData extends RowData>({
   compact,
   displayGutter,
   editing,
@@ -265,7 +274,9 @@ export const TableBodyRow = <TData extends RowData>({
   table,
   enableInlineTreeLines,
   virtualRow,
-}: TableBodyRowProps<TData>): ReactElement => {
+  isSelected,
+  isSelectionIndeterminate,
+}: TableBodyRowViewProps<TData>): ReactElement => {
   const cellClickHandler = useCallback(
     (cell: Cell<TData, unknown>) => () => {
       const isEditable = editing.enabled && editing.isCellEditable(cell)
@@ -302,7 +313,6 @@ export const TableBodyRow = <TData extends RowData>({
     [editing.enabled, onRowClick, row],
   )
 
-  const isSelected = row.getIsSelected()
   const isHighlighted = highlightRow(row)
   const rowState = editing.getRowState(row)
   const rowClasses = useMemo(
@@ -407,6 +417,8 @@ export const TableBodyRow = <TData extends RowData>({
             }
             isTreeLineCell={isTreeLineCell}
             hasInlineSelectionBox={isTreeLineCell && hasInlineSelectionBox}
+            isRowSelected={isSelected}
+            isRowSelectionIndeterminate={isSelectionIndeterminate}
             treeLineDetails={isTreeLineCell ? expansionDetails : []}
           />
         )
@@ -424,5 +436,21 @@ export const TableBodyRow = <TData extends RowData>({
         />
       ) : null}
     </TableRow>
+  )
+}
+
+export const TableBodyRow = <TData extends RowData>(props: TableBodyRowProps<TData>): ReactElement => {
+  const { row, table } = props
+
+  return (
+    <Subscribe
+      source={table.atoms.rowSelection}
+      selector={() => ({
+        isSelected: row.getIsSelected(),
+        isSelectionIndeterminate: row.getIsSomeSelected(),
+      })}
+    >
+      {(selectionState) => <TableBodyRowView {...props} {...selectionState} />}
+    </Subscribe>
   )
 }

@@ -2,6 +2,7 @@ import { css as emotionCss } from '@emotion/css'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { TableSortLabel } from '@mui/material'
 import { css } from '@mui/material/styles'
+import { Subscribe } from '@tanstack/react-table'
 
 import type { Row, RowData } from '../tableTypes'
 
@@ -25,7 +26,7 @@ const groupSvgSx = {
   },
 }
 
-export const GroupExpansionButton = <T extends RowData>({ row }: { row: Row<T> }) => {
+const GroupExpansionButtonView = <T extends RowData>({ row }: { row: Row<T> }) => {
   const isExpanded = row.getIsExpanded()
 
   return (
@@ -39,3 +40,9 @@ export const GroupExpansionButton = <T extends RowData>({ row }: { row: Row<T> }
     />
   )
 }
+
+export const GroupExpansionButton = <T extends RowData>({ row }: { row: Row<T> }) => (
+  <Subscribe source={row.table.atoms.expanded} selector={() => row.getIsExpanded()}>
+    {() => <GroupExpansionButtonView row={row} />}
+  </Subscribe>
+)

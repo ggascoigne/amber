@@ -12,13 +12,14 @@ import { TableExpandedRow } from './content/TableExpandedRow'
 import { useEditableCellNavigation } from './content/useEditableCellNavigation'
 import { useTableRowVirtualization } from './content/useTableRowVirtualization'
 import type { TableEditingState } from './editing/useTableEditing'
-import type { Row, RowData, Table as TableInstance } from './tableTypes'
+import type { AmberTableState, Row, RowData, Table as TableInstance } from './tableTypes'
 import type { RowStyleType } from './utils/tableUtils'
 
 const log = debug('amber:ui:table:TableContent')
 
 export const TableContent = <T extends RowData>({
   table,
+  pagination,
   rows,
   onRowClick,
   sx,
@@ -36,6 +37,7 @@ export const TableContent = <T extends RowData>({
   expandedContentSx,
 }: {
   table: TableInstance<T>
+  pagination: AmberTableState['pagination']
   rows: Array<Row<T>>
   onRowClick?: (row: Row<T>) => void
   sx?: SxProps<Theme>
@@ -81,7 +83,6 @@ export const TableContent = <T extends RowData>({
   }, [])
 
   const navigateCell = useEditableCellNavigation({ editing, rows })
-  const { pagination } = table.state
   const emptyRows = table.options.meta?.enablePagination ? Math.max(0, pagination.pageSize - rows.length) : 0
   const tableSx = useMemo(
     () =>

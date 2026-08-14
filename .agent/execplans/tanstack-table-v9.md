@@ -17,7 +17,7 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
 - [x] (2026-08-14) Formatted and validated with `pnpm tsc`, `pnpm test`, `pnpm lint`, and the complete 22-test UI DataTable Playwright suite. The app E2E and build entry points were also attempted and recorded below.
 - [x] (2026-08-14) Completed the React maintainability/performance and dependency-diff pass, documented interface decisions, and verified a clean final diff.
 - [x] (2026-08-14 18:46Z) Separated persisted-state observation from query-state and legacy full-state notifications, migrated consumers to `onQueryStateChange`, and validated that selection does not notify query consumers.
-- [ ] Move selection, pagination, filter, and other reactive reads to TanStack v9 subscription boundaries, then validate each affected interaction.
+- [x] (2026-08-14 18:54Z) Moved selection, pagination, filtering, expansion, visibility, resizing, header, row, and debug reads to TanStack v9 subscription boundaries and validated all table interactions.
 - [ ] Add selected-state generics to Amber's table adapter and opt the high-level `Table` root out of broad state re-renders while preserving low-level `DataTable` compatibility.
 - [ ] Add a `useServerTableState` external-atom integration, migrate server-driven UI-test examples, and validate direct table-to-query state flow.
 - [ ] Run formatting, type checking, unit tests, lint, and all available table browser tests; record final evidence and complete the retrospective.
@@ -42,6 +42,8 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
   Evidence: `pnpm test:e2e`, `pnpm build:nw`, and `pnpm build:us` all failed in database migration/seed or Prisma calls with `ECONNREFUSED`/`P1001` before application validation could run. The independent ui-test DataTable suite passed all 22 tests.
 - Observation: Amber's default sort applies to the first user column before the first query-state notification.
   Evidence: the new state-bridge test initially expected an empty sorting array but received `[{ id: 'name', desc: false }]`; the assertion now records the established default-sort behavior.
+- Observation: isolated row test doubles created before v9 did not provide the row's table reference, which atomic subscriptions require.
+  Evidence: the first table suite run failed two `TreeLines` tests at `row.table.atoms.expanded`; adding a minimal readonly expanded atom to the test double restored the intended isolated test contract.
 
 ## Decision Log
 
@@ -85,6 +87,8 @@ Validation completed successfully for formatting, every workspace typecheck, lin
 The follow-on atomic-state milestones below are in progress. This section must be updated after each milestone with its behavior and validation evidence.
 
 Milestone one is complete. `useTableStateNotifications` now owns the v9 store subscription and independently compares persisted state, query state, and the deprecated full state. `pnpm tsc` passed all eleven checked workspaces, and `pnpm test -- packages/ui/components/Table` passed 100 files and 356 tests. The focused bridge test proves that initial query state is emitted, row selection is ignored, and global filtering is emitted after the debounce.
+
+Milestone two is complete. `DataTable` now owns an explicit render-state subscription that excludes row selection, while toolbar, row, checkbox, pagination, filter, expansion, column-visibility, header-resizing, and debug components subscribe to the exact atom or store projection they render. No shared table component reads `table.state` directly. `pnpm -F @amber/ui tsc` passed, the 100-file/356-test Vitest run passed, and all 22 Chromium UI table Playwright scenarios passed in 15.2 seconds.
 
 ## Context and Orientation
 
@@ -187,3 +191,5 @@ At the end of the follow-on work, `Table` also exposes `onQueryStateChange?: (ne
 Revision note, 2026-08-14: expanded the completed migration plan with four ordered atomic-state milestones requested after the v9 validation succeeded. The additions preserve the prior migration record while making the follow-on work restartable from this document alone.
 
 Revision note, 2026-08-14 18:46Z: recorded completion and validation of the notification-projection milestone, including the discovered default-sort behavior.
+
+Revision note, 2026-08-14 18:54Z: recorded the completed subscription-boundary milestone, its isolated-test adjustment, and full browser evidence.
