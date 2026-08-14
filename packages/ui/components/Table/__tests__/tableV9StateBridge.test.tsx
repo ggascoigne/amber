@@ -9,7 +9,8 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { installDomMeasurementMocks, renderWithProviders, TableHarness } from './testUtils'
 
-import type { TableQueryState, TableState } from '../tableTypes'
+import type { ColumnDef, TableQueryState, TableState } from '../tableTypes'
+import type { PersonRow } from './testUtils'
 
 describe('TanStack Table v9 state bridge', () => {
   beforeEach(() => {
@@ -96,5 +97,34 @@ describe('TanStack Table v9 state bridge', () => {
         }),
       )
     })
+  })
+
+  test('rerenders only the selected row when row selection changes', async () => {
+    const renderCountByRowId = new Map<string, number>()
+    const columns: Array<ColumnDef<PersonRow>> = [
+      {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: ({ row, getValue }) => {
+          renderCountByRowId.set(row.id, (renderCountByRowId.get(row.id) ?? 0) + 1)
+          return String(getValue())
+        },
+      },
+    ]
+
+    renderWithProviders(<TableHarness columns={columns} />)
+
+    await screen.findByText('Alpha')
+    const alphaRenderCount = renderCountByRowId.get('1') ?? 0
+    const betaRenderCount = renderCountByRowId.get('2') ?? 0
+    const alphaCheckbox = screen.getAllByRole('checkbox')[1]
+
+    fireEvent.click(alphaCheckbox)
+
+    await waitFor(() => {
+      expect(alphaCheckbox).toBeChecked()
+      expect(renderCountByRowId.get('1')).toBeGreaterThan(alphaRenderCount)
+    })
+    expect(renderCountByRowId.get('2')).toBe(betaRenderCount)
   })
 })

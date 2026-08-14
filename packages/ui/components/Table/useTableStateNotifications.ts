@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 import { dequal as deepEqual } from 'dequal'
 
 import { selectTableQueryState } from './tableStateSelectors'
-import type { AmberTable, AmberTableState, RowData, TableQueryState } from './tableTypes'
+import type { AmberTableApi, AmberTableState, RowData, TableQueryState } from './tableTypes'
 import { selectPersistedTableState } from './useTableState'
 
 const STATE_NOTIFICATION_DELAY_MS = 250
@@ -13,7 +13,7 @@ const shouldResetPageIndex = (previousState: AmberTableState, nextState: AmberTa
   !deepEqual(previousState.globalFilter, nextState.globalFilter)
 
 type UseTableStateNotificationsProps<TData extends RowData> = {
-  table: AmberTable<TData>
+  table: AmberTableApi<TData>
   onPersistedStateChange: (state: AmberTableState) => void
   onQueryStateChange?: (state: TableQueryState) => void
   /** @deprecated Prefer `onQueryStateChange` when state drives a server query. */
@@ -66,31 +66,38 @@ export const useTableStateNotifications = <TData extends RowData>({
 
     const subscription = tableStore.subscribe((nextState) => {
       const previousState = previousStateRef.current
-      previousStateRef.current = nextState
+      let resolvedNextState = nextState
 
       if (shouldResetPageIndex(previousState, nextState) && nextState.pagination.pageIndex !== 0) {
         tableRef.current.setPageIndex(0)
-        return
+        resolvedNextState = {
+          ...nextState,
+          pagination: {
+            ...nextState.pagination,
+            pageIndex: 0,
+          },
+        }
       }
+      previousStateRef.current = resolvedNextState
 
-      if (!deepEqual(selectPersistedTableState(previousState), selectPersistedTableState(nextState))) {
+      if (!deepEqual(selectPersistedTableState(previousState), selectPersistedTableState(resolvedNextState))) {
         if (persistenceTimerRef.current) window.clearTimeout(persistenceTimerRef.current)
         persistenceTimerRef.current = window.setTimeout(() => {
-          onPersistedStateChangeRef.current(nextState)
+          onPersistedStateChangeRef.current(resolvedNextState)
         }, STATE_NOTIFICATION_DELAY_MS)
       }
 
-      if (!deepEqual(selectTableQueryState(previousState), selectTableQueryState(nextState))) {
+      if (!deepEqual(selectTableQueryState(previousState), selectTableQueryState(resolvedNextState))) {
         if (queryTimerRef.current) window.clearTimeout(queryTimerRef.current)
         queryTimerRef.current = window.setTimeout(() => {
-          onQueryStateChangeRef.current?.(selectTableQueryState(nextState))
+          onQueryStateChangeRef.current?.(selectTableQueryState(resolvedNextState))
         }, STATE_NOTIFICATION_DELAY_MS)
       }
 
       if (onStateChangeRef.current) {
         if (legacyTimerRef.current) window.clearTimeout(legacyTimerRef.current)
         legacyTimerRef.current = window.setTimeout(() => {
-          onStateChangeRef.current?.(nextState)
+          onStateChangeRef.current?.(resolvedNextState)
         }, STATE_NOTIFICATION_DELAY_MS)
       }
     })

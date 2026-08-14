@@ -12,7 +12,7 @@ import { CLEAR_FILTERS_MESSAGE, clearSearch, emitter } from './filterEmitter'
 import { SearchInput } from './SearchInput'
 
 import { notEmpty } from '../../../utils/ts-utils'
-import type { AmberTableState, RowData, Column, Table as TableInstance } from '../tableTypes'
+import type { AmberTableState, RowData, Column, TableApi as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 export type Filter<T extends RowData> = {

@@ -6,7 +6,7 @@ import type { Theme, SxProps } from '@mui/material/styles'
 import { TableDebug, TableDebugButton } from './components/TableDebug'
 import { TablePagination } from './components/TablePagination'
 import { tableDecorationZIndex } from './components/TableStyles'
-import type { RowData, Table as TableInstance } from './tableTypes'
+import type { RowData, TableApi as TableInstance } from './tableTypes'
 
 type TableFooterInternalProps<T extends RowData> = {
   table: TableInstance<T>

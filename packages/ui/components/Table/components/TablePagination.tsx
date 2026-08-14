@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react'
 
 import { TablePagination as MuiTablePagination } from '@mui/material'
 
-import type { AmberTableState, RowData, Table as TableInstance } from '../tableTypes'
+import type { AmberTableState, RowData, TableApi as TableInstance } from '../tableTypes'
 
 export const rowsPerPageOptions = [10, 25, 50, 100, 250]
 

@@ -1,4 +1,4 @@
-import type { RowData, Table as TableInstance } from '../tableTypes'
+import type { RowData, TableApi as TableInstance } from '../tableTypes'
 
 export const zeroSelected = <T extends RowData>(_table: TableInstance<T>, selectedKeys: string[]) =>
   selectedKeys.length < 1

@@ -13,6 +13,7 @@ import type {
   AmberColumnDef,
   AmberHeaderContext,
   AmberRow,
+  AmberTable,
   AmberTableOptions,
   AmberTableState,
 } from './tableTypes'
@@ -45,7 +46,10 @@ export type UseTableProps<T extends RowData> = Omit<Partial<AmberTableOptions<T>
     enableTreeBehavior?: boolean
   }
 
-export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
+export const useTable = <T extends RowData, TSelected = AmberTableState>(
+  props: UseTableProps<T>,
+  selector?: (state: AmberTableState) => TSelected,
+): AmberTable<T, TSelected> => {
   const {
     columns: userColumns,
     name,
@@ -119,34 +123,37 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     [defaultColumnDisableGlobalFilter, enableGrouping],
   )
 
-  return useTanStackTable({
-    features: amberTableFeatures,
-    columns,
-    defaultColumn,
-    autoResetExpanded,
-    enableColumnResizing,
-    enableSortingRemoval,
-    enableRowSelection,
-    columnResizeMode,
-    sortDescFirst,
-    getRowId,
-    enableExpanding,
-    enableGrouping,
-    enableColumnFilters,
-    enableGlobalFilter,
-    enableFilters,
-    enableSorting,
-    manualExpanding: manualExpanding ?? !(enableExpanding || enableGrouping),
-    manualFiltering: manualFiltering ?? !(enableFilters !== false && (enableColumnFilters || enableGlobalFilter)),
-    manualGrouping: manualGrouping ?? !enableGrouping,
-    manualPagination: manualPagination ?? !enablePagination,
-    manualSorting: manualSorting ?? !enableSorting,
-    meta: {
-      ...userMeta,
-      name,
-      enablePagination,
-      enableTreeBehavior,
+  return useTanStackTable(
+    {
+      features: amberTableFeatures,
+      columns,
+      defaultColumn,
+      autoResetExpanded,
+      enableColumnResizing,
+      enableSortingRemoval,
+      enableRowSelection,
+      columnResizeMode,
+      sortDescFirst,
+      getRowId,
+      enableExpanding,
+      enableGrouping,
+      enableColumnFilters,
+      enableGlobalFilter,
+      enableFilters,
+      enableSorting,
+      manualExpanding: manualExpanding ?? !(enableExpanding || enableGrouping),
+      manualFiltering: manualFiltering ?? !(enableFilters !== false && (enableColumnFilters || enableGlobalFilter)),
+      manualGrouping: manualGrouping ?? !enableGrouping,
+      manualPagination: manualPagination ?? !enablePagination,
+      manualSorting: manualSorting ?? !enableSorting,
+      meta: {
+        ...userMeta,
+        name,
+        enablePagination,
+        enableTreeBehavior,
+      },
+      ...rest,
     },
-    ...rest,
-  })
+    selector,
+  )
 }

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
 import { someSelected, zeroSelected, getDefaultSort, Table } from '@amber/ui/components/Table'
-import type { Table as TableInstance, Row, TableQueryState } from '@amber/ui/components/Table/tableTypes'
+import type { Row, TableApi as TableInstance, TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'

@@ -23,6 +23,7 @@ export type {
   AmberHeaderContext,
   AmberRow,
   AmberTable,
+  AmberTableApi,
   AmberTableOptions,
   AmberTableState,
   TableQueryState,

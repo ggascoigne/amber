@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 
 import { match, P } from 'ts-pattern'
 
-import type { RowData, Table as TableInstance } from '../tableTypes'
+import type { RowData, TableApi as TableInstance } from '../tableTypes'
 
 const HIDE_DISABLED_ACTIONS = false
 

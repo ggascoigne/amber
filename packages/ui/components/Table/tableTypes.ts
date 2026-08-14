@@ -61,9 +61,14 @@ export type AmberHeaderContext<TData extends RowData, TValue extends CellData = 
   TValue
 >
 export type AmberRow<TData extends RowData> = TanStackRow<AmberTableFeatures, TData>
-export type AmberTable<TData extends RowData> = ReactTable<AmberTableFeatures, TData>
-export type AmberTableOptions<TData extends RowData> = TanStackTableOptions<AmberTableFeatures, TData>
 export type AmberTableState = TanStackTableState<AmberTableFeatures>
+export type AmberTable<TData extends RowData, TSelected = AmberTableState> = ReactTable<
+  AmberTableFeatures,
+  TData,
+  TSelected
+>
+export type AmberTableApi<TData extends RowData> = Omit<AmberTable<TData, null>, 'state'>
+export type AmberTableOptions<TData extends RowData> = TanStackTableOptions<AmberTableFeatures, TData>
 export type TableQueryState = Pick<AmberTableState, 'pagination' | 'sorting' | 'columnFilters' | 'globalFilter'>
 
 export const createAmberColumnHelper = <TData extends RowData>(): AmberColumnHelper<TData> =>
@@ -78,7 +83,8 @@ export type ColumnDef<TData extends RowData, TValue extends CellData = CellData>
 export type Header<TData extends RowData, TValue extends CellData = CellData> = AmberHeader<TData, TValue>
 export type HeaderContext<TData extends RowData, TValue extends CellData = CellData> = AmberHeaderContext<TData, TValue>
 export type Row<TData extends RowData> = AmberRow<TData>
-export type Table<TData extends RowData> = AmberTable<TData>
+export type Table<TData extends RowData, TSelected = AmberTableState> = AmberTable<TData, TSelected>
+export type TableApi<TData extends RowData> = AmberTableApi<TData>
 export type TableOptions<TData extends RowData> = AmberTableOptions<TData>
 export type TableState = AmberTableState
 export const createColumnHelper = createAmberColumnHelper

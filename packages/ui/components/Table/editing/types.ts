@@ -1,4 +1,4 @@
-import type { Column, Row, RowData, Table } from '../tableTypes'
+import type { Column, Row, RowData, TableApi } from '../tableTypes'
 
 export type TableEditColumnType = 'text' | 'number' | 'select' | 'autocomplete'
 
@@ -34,7 +34,7 @@ export type TableEditAutocompleteConfig<TData extends RowData> = {
 }
 
 export type TableEditCellContext<TData extends RowData> = {
-  table: Table<TData>
+  table: TableApi<TData>
   getValue: (row: Row<TData>, columnId: string) => unknown
 }
 
@@ -53,7 +53,7 @@ export type TableEditColumnConfig<TData extends RowData> = {
 export type TableValidationResult = Array<string> | string | null | undefined
 
 export type TableCellValidationParams<TData extends RowData> = {
-  table: Table<TData>
+  table: TableApi<TData>
   row: Row<TData>
   column: Column<TData, unknown>
   value: unknown
@@ -62,7 +62,7 @@ export type TableCellValidationParams<TData extends RowData> = {
 }
 
 export type TableRowValidationParams<TData extends RowData> = {
-  table: Table<TData>
+  table: TableApi<TData>
   row: Row<TData>
   changes: Record<string, unknown>
   updatedRow: TData

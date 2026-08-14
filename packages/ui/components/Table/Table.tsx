@@ -12,7 +12,7 @@ import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import { usePendingNewRow } from './editing/usePendingNewRow'
 import { buildExpansionColumn } from './expansion/buildExpansionColumn'
-import type { AmberColumnDef, AmberRow, AmberTable, AmberTableState, RowData, TableQueryState } from './tableTypes'
+import type { AmberColumnDef, AmberRow, AmberTableApi, AmberTableState, RowData, TableQueryState } from './tableTypes'
 import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
@@ -26,7 +26,7 @@ const EMPTY_TABLE_DATA: Array<never> = []
 const rowCanAlwaysExpand = () => true
 
 type TableEmptyProps<TData extends RowData> = {
-  table: AmberTable<TData>
+  table: AmberTableApi<TData>
 }
 
 const TableEmpty = <TData extends RowData>({ table }: TableEmptyProps<TData>) => (
@@ -182,33 +182,36 @@ export const Table = <T extends RowData>({
     [columns, expansionColumn],
   )
 
-  const table = useTable<T>({
-    name,
-    columns: resolvedColumns,
-    keyField,
-    data: resolvedData ?? EMPTY_TABLE_DATA,
-    initialState: persistedTableState,
-    autoResetExpanded: false,
-    enableColumnResizing: true,
-    enableSortingRemoval: false,
-    columnResizeMode: 'onChange',
-    manualSorting: false,
-    enableSorting: true,
-    enablePagination: true,
-    manualPagination: typeof rowCount === 'number',
-    enableRowSelection,
-    enableGlobalFilter,
-    enableColumnFilters,
-    enableGrouping,
-    sortDescFirst: false,
-    autoResetPageIndex: false,
-    defaultColumnDisableGlobalFilter,
-    rowCount: rowCount ?? resolvedData.length,
-    displayGutter,
-    enableTreeBehavior,
-    getRowCanExpand: resolvedGetRowCanExpand,
-    ...rest,
-  })
+  const table = useTable<T, null>(
+    {
+      name,
+      columns: resolvedColumns,
+      keyField,
+      data: resolvedData ?? EMPTY_TABLE_DATA,
+      initialState: persistedTableState,
+      autoResetExpanded: false,
+      enableColumnResizing: true,
+      enableSortingRemoval: false,
+      columnResizeMode: 'onChange',
+      manualSorting: false,
+      enableSorting: true,
+      enablePagination: true,
+      manualPagination: typeof rowCount === 'number',
+      enableRowSelection,
+      enableGlobalFilter,
+      enableColumnFilters,
+      enableGrouping,
+      sortDescFirst: false,
+      autoResetPageIndex: false,
+      defaultColumnDisableGlobalFilter,
+      rowCount: rowCount ?? resolvedData.length,
+      displayGutter,
+      enableTreeBehavior,
+      getRowCanExpand: resolvedGetRowCanExpand,
+      ...rest,
+    },
+    () => null,
+  )
 
   useTableStateNotifications({
     table,

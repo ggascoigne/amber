@@ -12,7 +12,7 @@ import { Export } from './Export'
 import { ActionButton, TableIconButton, ActionIconButton, RefreshButton } from './ToolbarButtons'
 
 import { ButtonMenu } from '../../ButtonMenu'
-import type { RowData, Table as TableInstance } from '../tableTypes'
+import type { RowData, TableApi as TableInstance } from '../tableTypes'
 
 type ToolbarButtonGroupProps<T extends RowData> = {
   actions: ReadonlyArray<Action<T>> | undefined

@@ -10,7 +10,7 @@ import { flexRender } from '@tanstack/react-table'
 import { HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
-import type { RowData, Table as TableInstance } from './tableTypes'
+import type { RowData, TableApi as TableInstance } from './tableTypes'
 import { isUserColumnId } from './utils/tableUtils'
 import type { RowStyleType } from './utils/tableUtils'
 

@@ -28,7 +28,7 @@ import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
 import { selectTableRenderState } from './tableStateSelectors'
 import type { TableRenderState } from './tableStateSelectors'
-import type { Row, RowData, Table as TableInstance } from './tableTypes'
+import type { Row, RowData, TableApi as TableInstance } from './tableTypes'
 
 import { isDev } from '../../utils/globals'
 

@@ -18,7 +18,7 @@ import { RowHoverButtons } from '../components/RowHoverButtons'
 import { RowCheckbox, TableCell, TableRow } from '../components/TableStyles'
 import { TableCellEditor } from '../editing/TableCellEditor'
 import type { TableCellEditState, TableEditingState } from '../editing/useTableEditing'
-import type { Cell, Row, RowData, Table as TableInstance } from '../tableTypes'
+import type { Cell, Row, RowData, TableApi as TableInstance } from '../tableTypes'
 import type { RowStyleType } from '../utils/tableUtils'
 import { isUserColumnId } from '../utils/tableUtils'
 

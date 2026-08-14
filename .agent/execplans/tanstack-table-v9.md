@@ -18,7 +18,7 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
 - [x] (2026-08-14) Completed the React maintainability/performance and dependency-diff pass, documented interface decisions, and verified a clean final diff.
 - [x] (2026-08-14 18:46Z) Separated persisted-state observation from query-state and legacy full-state notifications, migrated consumers to `onQueryStateChange`, and validated that selection does not notify query consumers.
 - [x] (2026-08-14 18:54Z) Moved selection, pagination, filtering, expansion, visibility, resizing, header, row, and debug reads to TanStack v9 subscription boundaries and validated all table interactions.
-- [ ] Add selected-state generics to Amber's table adapter and opt the high-level `Table` root out of broad state re-renders while preserving low-level `DataTable` compatibility.
+- [x] (2026-08-14 19:01Z) Added selected-state generics to Amber's adapter, opted the high-level `Table` root out of state re-renders, narrowed callback-facing table instances to the state-free API, and proved that selection rerenders only its affected row.
 - [ ] Add a `useServerTableState` external-atom integration, migrate server-driven UI-test examples, and validate direct table-to-query state flow.
 - [ ] Run formatting, type checking, unit tests, lint, and all available table browser tests; record final evidence and complete the retrospective.
 
@@ -44,6 +44,8 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
   Evidence: the new state-bridge test initially expected an empty sorting array but received `[{ id: 'name', desc: false }]`; the assertion now records the established default-sort behavior.
 - Observation: isolated row test doubles created before v9 did not provide the row's table reference, which atomic subscriptions require.
   Evidence: the first table suite run failed two `TreeLines` tests at `row.table.atoms.expanded`; adding a minimal readonly expanded atom to the test double restored the intended isolated test contract.
+- Observation: after the high-level root stopped subscribing, a filter-triggered pagination reset no longer produced a second nested store notification.
+  Evidence: the legacy full-state bridge test retained page index 1 after entering a global filter. Normalizing the observed state to page index 0 in the same subscription pass preserves both the table update and all debounced notifications without relying on a root render.
 
 ## Decision Log
 
@@ -77,6 +79,9 @@ Amber's shared `Table` and `DataTable` components originally depended on TanStac
 - Decision: optimize from leaf subscription boundaries upward, and only then narrow the high-level root selector.
   Rationale: a root `() => null` selector is only correct after every render-dependent state read is covered by `table.Subscribe`, the standalone `Subscribe`, or a lower-level adapter that still selects full state.
   Date/Author: 2026-08-14 / Codex
+- Decision: expose a state-free `TableApi<TData>` to high-level action, editing, rendering, and notification callbacks while retaining the full selected `Table<TData, TSelected>` for low-level hook consumers.
+  Rationale: v9 makes the selected `state` shape part of the table's invariant type. High-level callbacks are imperative users of the stable API and should read one-off snapshots from `table.store.state`; reactive UI should use atoms or `Subscribe`. This makes the root `null` selection type-honest and avoids promising stale render-selected state.
+  Date/Author: 2026-08-14 / Codex
 
 ## Outcomes & Retrospective
 
@@ -89,6 +94,8 @@ The follow-on atomic-state milestones below are in progress. This section must b
 Milestone one is complete. `useTableStateNotifications` now owns the v9 store subscription and independently compares persisted state, query state, and the deprecated full state. `pnpm tsc` passed all eleven checked workspaces, and `pnpm test -- packages/ui/components/Table` passed 100 files and 356 tests. The focused bridge test proves that initial query state is emitted, row selection is ignored, and global filtering is emitted after the debounce.
 
 Milestone two is complete. `DataTable` now owns an explicit render-state subscription that excludes row selection, while toolbar, row, checkbox, pagination, filter, expansion, column-visibility, header-resizing, and debug components subscribe to the exact atom or store projection they render. No shared table component reads `table.state` directly. `pnpm -F @amber/ui tsc` passed, the 100-file/356-test Vitest run passed, and all 22 Chromium UI table Playwright scenarios passed in 15.2 seconds.
+
+Milestone three is complete. `AmberTable` and `useTable` now preserve the selected state type, the high-level wrapper selects `null`, and internal imperative consumers use `TableApi` without a misleading `state` property. The focused render-count test proves that selecting Alpha rerenders Alpha's cell but not Beta's. All eleven workspaces type-checked, including the two UI-test callback annotations migrated to `TableApi`; 100 Vitest files / 357 tests passed, and all 22 Chromium UI table Playwright scenarios passed in 16.8 seconds.
 
 ## Context and Orientation
 
@@ -193,3 +200,5 @@ Revision note, 2026-08-14: expanded the completed migration plan with four order
 Revision note, 2026-08-14 18:46Z: recorded completion and validation of the notification-projection milestone, including the discovered default-sort behavior.
 
 Revision note, 2026-08-14 18:54Z: recorded the completed subscription-boundary milestone, its isolated-test adjustment, and full browser evidence.
+
+Revision note, 2026-08-14 19:01Z: recorded the selected-state generic and root-selector milestone, including the explicit state-free callback contract and pagination-reset discovery.

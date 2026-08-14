@@ -8,7 +8,7 @@ import superjson from 'superjson'
 import { useTableContext } from './TableContext'
 
 import { ObjectView } from '../../ObjectView'
-import type { AmberTableState, RowData, Table as TableInstance } from '../tableTypes'
+import type { AmberTableState, RowData, TableApi as TableInstance } from '../tableTypes'
 
 interface LoaderProps {
   error?: boolean

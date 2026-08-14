@@ -12,7 +12,7 @@ import { TableExpandedRow } from './content/TableExpandedRow'
 import { useEditableCellNavigation } from './content/useEditableCellNavigation'
 import { useTableRowVirtualization } from './content/useTableRowVirtualization'
 import type { TableEditingState } from './editing/useTableEditing'
-import type { AmberTableState, Row, RowData, Table as TableInstance } from './tableTypes'
+import type { AmberTableState, Row, RowData, TableApi as TableInstance } from './tableTypes'
 import type { RowStyleType } from './utils/tableUtils'
 
 const log = debug('amber:ui:table:TableContent')

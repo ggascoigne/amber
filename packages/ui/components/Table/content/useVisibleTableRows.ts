@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { Row, RowData, Table as TableInstance } from '../tableTypes'
+import type { Row, RowData, TableApi as TableInstance } from '../tableTypes'
 
 export const getVisibleTableRows = <TData extends RowData>(rows: Array<Row<TData>>, showExpandedOnly = false) =>
   showExpandedOnly ? rows.filter((row) => row.getIsExpanded()) : rows

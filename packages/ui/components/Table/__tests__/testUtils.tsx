@@ -182,6 +182,7 @@ export const DataTableHarness = <TData extends RowData>({
 
 type TableHarnessProps = {
   data?: Array<PersonRow>
+  columns?: Array<ColumnDef<PersonRow>>
   handleStateChange?: (state: TableState) => void
   onQueryStateChange?: (state: TableQueryState) => void
   initialState?: Partial<TableState>
@@ -197,6 +198,7 @@ export const TableHarness = ({
     { id: '1', name: 'Alpha', age: 10, note: 'alpha details' },
     { id: '2', name: 'Beta', age: 20, note: 'beta details' },
   ],
+  columns = personColumns,
   handleStateChange,
   onQueryStateChange,
   initialState,
@@ -210,7 +212,7 @@ export const TableHarness = ({
     <Table<PersonRow>
       disableStatePersistence
       data={data}
-      columns={personColumns}
+      columns={columns}
       keyField='id'
       title='People'
       handleStateChange={handleStateChange}
