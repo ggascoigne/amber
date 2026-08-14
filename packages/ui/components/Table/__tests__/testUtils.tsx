@@ -12,7 +12,7 @@ import { theme } from '../../../components/Theme'
 import { DataTable } from '../DataTable'
 import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
 import { Table } from '../Table'
-import type { ColumnDef, Row, RowData, TableState } from '../tableTypes'
+import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { useTable } from '../useTable'
 
 export type PersonRow = {
@@ -183,6 +183,7 @@ export const DataTableHarness = <TData extends RowData>({
 type TableHarnessProps = {
   data?: Array<PersonRow>
   handleStateChange?: (state: TableState) => void
+  onQueryStateChange?: (state: TableQueryState) => void
   initialState?: Partial<TableState>
   renderExpandedContent?: (row: Row<PersonRow>) => ReactNode
   cellEditing?: DataTableEditingConfig<PersonRow>
@@ -197,6 +198,7 @@ export const TableHarness = ({
     { id: '2', name: 'Beta', age: 20, note: 'beta details' },
   ],
   handleStateChange,
+  onQueryStateChange,
   initialState,
   renderExpandedContent,
   cellEditing,
@@ -212,6 +214,7 @@ export const TableHarness = ({
       keyField='id'
       title='People'
       handleStateChange={handleStateChange}
+      onQueryStateChange={onQueryStateChange}
       initialState={initialState}
       enableRowSelection
       useVirtualRows

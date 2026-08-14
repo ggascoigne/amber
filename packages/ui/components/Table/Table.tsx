@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
-import { dequal as deepEqual } from 'dequal'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
 import { Empty } from './components/Empty'
@@ -13,10 +12,11 @@ import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import { usePendingNewRow } from './editing/usePendingNewRow'
 import { buildExpansionColumn } from './expansion/buildExpansionColumn'
-import type { AmberColumnDef, AmberRow, AmberTableState, RowData } from './tableTypes'
+import type { AmberColumnDef, AmberRow, AmberTableState, RowData, TableQueryState } from './tableTypes'
 import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
+import { useTableStateNotifications } from './useTableStateNotifications'
 import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
 import { getDefaultSort } from './utils/tableUtils'
 
@@ -66,7 +66,9 @@ type TablePropsBase<T extends RowData> = Omit<UseTableProps<T>, 'keyField' | 'na
     isFetching?: boolean
     rowCount?: number
     onRowClick?: (row: AmberRow<T>) => void
+    /** @deprecated Prefer `onQueryStateChange` when state drives a server query. */
     handleStateChange?: (newState: AmberTableState) => void
+    onQueryStateChange?: (newState: TableQueryState) => void
     onAdd?: TableSelectionMouseEventHandler<T>
     onDelete?: TableSelectionMouseEventHandler<T>
     onEdit?: TableSelectionMouseEventHandler<T>
@@ -92,13 +94,6 @@ type TableProps<T extends RowData> =
   | (TablePropsBase<T> & { disableStatePersistence: true; name?: string })
   | (TablePropsBase<T> & { disableStatePersistence?: false; name: string })
 
-const shouldTriggerPageChange = (oldState: AmberTableState, newState: AmberTableState) => {
-  if (!deepEqual(oldState.columnFilters, newState.columnFilters)) return true
-  if (!deepEqual(oldState.globalFilter, newState.globalFilter)) return true
-  // if (oldState.sorting !== newState.sorting) return true
-  return false
-}
-
 export const Table = <T extends RowData>({
   name,
   data,
@@ -113,6 +108,7 @@ export const Table = <T extends RowData>({
   onEdit,
   refetch,
   handleStateChange,
+  onQueryStateChange,
   title,
   additionalToolbarActions,
   additionalRowActions,
@@ -165,28 +161,6 @@ export const Table = <T extends RowData>({
     !disableStatePersistence,
   )
 
-  const debounceRef = useRef<number | null>(null)
-
-  const emit = useCallback(
-    (s: AmberTableState) => {
-      // console.log('Persisting table state', s)
-      setPersistedTableState(s)
-      handleStateChange?.(s)
-      setStateLoaded(true)
-    },
-    [setPersistedTableState, handleStateChange],
-  )
-
-  const queueStateChangeResponse = useCallback(
-    (s: AmberTableState) => {
-      if (debounceRef.current) window.clearTimeout(debounceRef.current)
-      debounceRef.current = window.setTimeout(() => {
-        emit(s)
-      }, 250)
-    },
-    [emit],
-  )
-
   const expansionColumn = useMemo<AmberColumnDef<T> | null>(
     () => buildExpansionColumn<T>(hasExpandedContent),
     [hasExpandedContent],
@@ -226,47 +200,13 @@ export const Table = <T extends RowData>({
     ...rest,
   })
 
-  const tableStore = table.store
-  const previousStateRef = useRef(tableStore.state)
-  const emitRef = useRef(emit)
-  const queueStateChangeResponseRef = useRef(queueStateChangeResponse)
-  const tableRef = useRef(table)
-
-  useLayoutEffect(() => {
-    emitRef.current = emit
-    queueStateChangeResponseRef.current = queueStateChangeResponse
-    tableRef.current = table
-  }, [emit, queueStateChangeResponse, table])
-
-  useEffect(
-    () => () => {
-      if (debounceRef.current) {
-        window.clearTimeout(debounceRef.current)
-      }
-    },
-    [],
-  )
-
-  // Persist and publish the complete v9 state without taking ownership of each slice.
-  useLayoutEffect(() => {
-    const currentState = tableStore.state
-    previousStateRef.current = currentState
-    emitRef.current(currentState)
-
-    const subscription = tableStore.subscribe((nextState) => {
-      const previousState = previousStateRef.current
-      previousStateRef.current = nextState
-
-      if (shouldTriggerPageChange(previousState, nextState) && nextState.pagination.pageIndex !== 0) {
-        tableRef.current.setPageIndex(0)
-        return
-      }
-
-      queueStateChangeResponseRef.current(nextState)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [tableStore])
+  useTableStateNotifications({
+    table,
+    onPersistedStateChange: setPersistedTableState,
+    onQueryStateChange,
+    onStateChange: handleStateChange,
+    onStateLoaded: useCallback(() => setStateLoaded(true), []),
+  })
 
   const [toolbarActions, rowActions] = useMemo(() => {
     const defined = <U,>(value: U | undefined): value is U => value !== undefined

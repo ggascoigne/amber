@@ -8,7 +8,7 @@ import type {
 } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
-import type { TableState } from '@amber/ui/components/Table/tableTypes'
+import type { TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
 
 import { Page, Toggle } from '@/Components'
@@ -80,15 +80,7 @@ export const TableEditing = () => {
   const [debug, setDebug] = useState(false)
   const [virtual, setVirtual] = useState(true)
 
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
+  const [state, setState] = useState<TableQueryState | undefined>(undefined)
 
   const { data, isLoading, isFetching, refetch } = useUsersQuery(
     {
@@ -175,7 +167,7 @@ export const TableEditing = () => {
         scrollBehavior='bounded'
         cellEditing={editingConfig}
         displayGutter={false}
-        handleStateChange={handleStateChange}
+        onQueryStateChange={setState}
         rowCount={data?.rowCount ?? 0}
         refetch={refetch}
         debug={debug}

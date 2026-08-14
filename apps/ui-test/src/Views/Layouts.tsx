@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
 import { someSelected, zeroSelected, getDefaultSort, Table } from '@amber/ui/components/Table'
-import type { Table as TableInstance, Row, TableState } from '@amber/ui/components/Table/tableTypes'
+import type { Table as TableInstance, Row, TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'
@@ -56,15 +56,7 @@ const ExampleTable = ({
   debug,
   variant,
 }: ExampleTableProps) => {
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
+  const [state, setState] = useState<TableQueryState | undefined>(undefined)
 
   const { data } = useUsersQuery(
     {
@@ -141,7 +133,7 @@ const ExampleTable = ({
       hideHeader={hideHeader}
       paginationStyle={compactPagination ? 'compact' : 'default'}
       variant={variant}
-      handleStateChange={handleStateChange}
+      onQueryStateChange={setState}
       enableRowSelection={enableRowSelection}
       enableGlobalFilter={withSearch}
       enableColumnFilters={withFilters}

@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { installDomMeasurementMocks, renderWithProviders, TableHarness } from './testUtils'
 
-import type { TableState } from '../tableTypes'
+import type { TableQueryState, TableState } from '../tableTypes'
 
 describe('TanStack Table v9 state bridge', () => {
   beforeEach(() => {
@@ -57,6 +57,41 @@ describe('TanStack Table v9 state bridge', () => {
       expect(handleStateChange).toHaveBeenLastCalledWith(
         expect.objectContaining({
           pagination: { pageIndex: 0, pageSize: 1 },
+          globalFilter: 'Beta',
+        }),
+      )
+    })
+  })
+
+  test('publishes query state only when a query-relevant slice changes', async () => {
+    const onQueryStateChange = vi.fn<(state: TableQueryState) => void>()
+
+    renderWithProviders(<TableHarness onQueryStateChange={onQueryStateChange} />)
+
+    await waitFor(() => {
+      expect(onQueryStateChange).toHaveBeenCalledTimes(1)
+      expect(onQueryStateChange).toHaveBeenLastCalledWith({
+        pagination: { pageIndex: 0, pageSize: 100 },
+        sorting: [{ id: 'name', desc: false }],
+        columnFilters: [],
+        globalFilter: undefined,
+      })
+    })
+
+    const queryNotificationCount = onQueryStateChange.mock.calls.length
+    fireEvent.click(screen.getAllByRole('checkbox')[1])
+
+    await new Promise<void>((resolve) => {
+      window.setTimeout(resolve, 300)
+    })
+    expect(onQueryStateChange).toHaveBeenCalledTimes(queryNotificationCount)
+
+    fireEvent.change(screen.getByPlaceholderText('Search'), { target: { value: 'Beta' } })
+
+    await waitFor(() => {
+      expect(onQueryStateChange).toHaveBeenCalledTimes(queryNotificationCount + 1)
+      expect(onQueryStateChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({
           globalFilter: 'Beta',
         }),
       )

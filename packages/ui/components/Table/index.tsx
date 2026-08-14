@@ -25,6 +25,7 @@ export type {
   AmberTable,
   AmberTableOptions,
   AmberTableState,
+  TableQueryState,
   FilterFlags,
   FilterRenderProps,
 } from './tableTypes'

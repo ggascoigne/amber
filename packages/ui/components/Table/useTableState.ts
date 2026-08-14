@@ -17,6 +17,17 @@ export type PersistedTableState = Pick<
   | 'globalFilter'
 >
 
+export const selectPersistedTableState = (state: AmberTableState): PersistedTableState => ({
+  sorting: state.sorting,
+  columnFilters: state.columnFilters,
+  pagination: state.pagination,
+  columnSizing: state.columnSizing,
+  columnVisibility: state.columnVisibility,
+  columnOrder: state.columnOrder,
+  grouping: state.grouping,
+  globalFilter: state.globalFilter,
+})
+
 export const getColumnsNames = <T extends RowData>(columns: Array<AmberColumnDef<T>>) =>
   getLeafColumnIds(columns).join(',')
 

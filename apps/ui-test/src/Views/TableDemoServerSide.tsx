@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
-import type { Row, TableState } from '@amber/ui/components/Table/tableTypes'
+import type { Row, TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
 
 import { Page } from '@/Components'
@@ -34,15 +34,7 @@ const columns = columnHelper.columns([
   }),
 ])
 export const TableDemoServerSide = () => {
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
+  const [state, setState] = useState<TableQueryState | undefined>(undefined)
 
   const { data, isLoading, isFetching, refetch } = useUsersQuery(
     {
@@ -92,7 +84,7 @@ export const TableDemoServerSide = () => {
           scrollBehavior='bounded'
           refetch={refetch}
           debug
-          handleStateChange={handleStateChange}
+          onQueryStateChange={setState}
           rowCount={data?.rowCount ?? 0}
           displayGutter={false}
         />

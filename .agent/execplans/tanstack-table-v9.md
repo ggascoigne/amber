@@ -1,10 +1,10 @@
-# Upgrade the shared DataTable system to TanStack Table v9
+# Upgrade the shared DataTable system and adopt TanStack Table v9 reactivity
 
 This ExecPlan is a living document. The sections `Progress`, `Surprises & Discoveries`, `Decision Log`, and `Outcomes & Retrospective` must be kept up to date as work proceeds. This document is maintained in accordance with `.agent/PLANS.md`.
 
 ## Purpose / Big Picture
 
-Amber's shared `Table` and `DataTable` components currently depend on TanStack Table 8.21.3. After this work, every Amber workspace that builds or consumes those components will use the stable TanStack Table 9.1.2 API while preserving the existing Amber-facing table props and behavior wherever v9 permits it. Users should still be able to sort, filter, group, resize, paginate, select, expand, virtualize, edit, and persist table state. The upgrade is visible by running the existing table unit and Playwright suites successfully against v9 and by exercising the UI test application's table views.
+Amber's shared `Table` and `DataTable` components originally depended on TanStack Table 8.21.3. The native 9.1.2 migration is complete. This follow-on work adopts v9's atomic state model so that consumers can observe only query-relevant state, selection controls can update without making unrelated table cells reactive, and server-driven tables can share pagination, sorting, and filtering state directly through TanStack Store atoms. Users should still be able to sort, filter, group, resize, paginate, select, expand, virtualize, edit, and persist table state. The result is visible through focused state-notification tests, render-subscription tests, the existing table unit suite, and the UI test application's browser coverage.
 
 ## Progress
 
@@ -16,6 +16,11 @@ Amber's shared `Table` and `DataTable` components currently depend on TanStack T
 - [x] (2026-08-14) Repaired v9 type and behavior changes throughout shared components, app consumers, tests, and module augmentation declarations.
 - [x] (2026-08-14) Formatted and validated with `pnpm tsc`, `pnpm test`, `pnpm lint`, and the complete 22-test UI DataTable Playwright suite. The app E2E and build entry points were also attempted and recorded below.
 - [x] (2026-08-14) Completed the React maintainability/performance and dependency-diff pass, documented interface decisions, and verified a clean final diff.
+- [x] (2026-08-14 18:46Z) Separated persisted-state observation from query-state and legacy full-state notifications, migrated consumers to `onQueryStateChange`, and validated that selection does not notify query consumers.
+- [ ] Move selection, pagination, filter, and other reactive reads to TanStack v9 subscription boundaries, then validate each affected interaction.
+- [ ] Add selected-state generics to Amber's table adapter and opt the high-level `Table` root out of broad state re-renders while preserving low-level `DataTable` compatibility.
+- [ ] Add a `useServerTableState` external-atom integration, migrate server-driven UI-test examples, and validate direct table-to-query state flow.
+- [ ] Run formatting, type checking, unit tests, lint, and all available table browser tests; record final evidence and complete the retrospective.
 
 ## Surprises & Discoveries
 
@@ -35,6 +40,8 @@ Amber's shared `Table` and `DataTable` components currently depend on TanStack T
   Evidence: the first visual browser run rendered 10 rows and differed from the checked-in 100-row snapshots; explicitly retaining `DEFAULT_TABLE_PAGE_SIZE` restored every snapshot.
 - Observation: the full application E2E and production-build entry points cannot complete in the current environment because both applications require PostgreSQL at `127.0.0.1:54320` during setup.
   Evidence: `pnpm test:e2e`, `pnpm build:nw`, and `pnpm build:us` all failed in database migration/seed or Prisma calls with `ECONNREFUSED`/`P1001` before application validation could run. The independent ui-test DataTable suite passed all 22 tests.
+- Observation: Amber's default sort applies to the first user column before the first query-state notification.
+  Evidence: the new state-bridge test initially expected an empty sorting array but received `[{ id: 'name', desc: false }]`; the assertion now records the established default-sort behavior.
 
 ## Decision Log
 
@@ -59,12 +66,25 @@ Amber's shared `Table` and `DataTable` components currently depend on TanStack T
 - Decision: custom filter functions are registered centrally in `amberTableFeatures` rather than passed dynamically through `UseTableProps.filterFns`.
   Rationale: v9 makes row-model function registries part of the static feature definition so their keys are type-safe and tree-shakeable. Amber had no consumers supplying dynamic registries; `numericText` is now registered once.
   Date/Author: 2026-08-14 / Codex
+- Decision: keep table state internally owned unless a consumer truly shares a slice with another subsystem.
+  Rationale: v9's internal atoms are the simplest owner for ordinary tables. Store subscriptions are observation, while external atoms are reserved for server-query tables where the query and table genuinely share pagination, sorting, and filter state.
+  Date/Author: 2026-08-14 / Codex
+- Decision: preserve `handleStateChange` temporarily as a deprecated full-state notification and add `onQueryStateChange` as the preferred semantic callback.
+  Rationale: the old callback remains source-compatible, while the new callback prevents transient UI state such as selection and column resizing from causing query consumers to update.
+  Date/Author: 2026-08-14 / Codex
+- Decision: optimize from leaf subscription boundaries upward, and only then narrow the high-level root selector.
+  Rationale: a root `() => null` selector is only correct after every render-dependent state read is covered by `table.Subscribe`, the standalone `Subscribe`, or a lower-level adapter that still selects full state.
+  Date/Author: 2026-08-14 / Codex
 
 ## Outcomes & Retrospective
 
 The native v9 migration is implemented across the monorepo. Amber now constructs a tree-shakeable explicit feature set, uses v9 row-model factories, observes the v9 store for persistence and server-query callbacks, uses v9 filter/sort APIs, and preserves receiver-bound instances in rendering and filters. The high-level `Table`/`DataTable` props and the 100-row default remain intact. The intentional authoring changes are `columnHelper.columns([...])`, `sortFn`, feature-bound exported types, and static custom-filter registration.
 
 Validation completed successfully for formatting, every workspace typecheck, lint, 100 Vitest files / 355 tests, and all 22 ui-test Playwright scenarios including snapshots, sorting/filter surfaces, grouping, pagination, editing, nested rows, and layout variants. The final React pass confirmed that the feature registry and empty-data fallback are module-stable, subscriptions clean up, the debounced callback reads current handlers through refs without resubscribing on each table update, and no new suppressions or unsafe `any` casts were introduced. Application E2E and builds remain environmentally unverified past setup because the required local PostgreSQL service is not running; their failures were database connection failures rather than table regressions.
+
+The follow-on atomic-state milestones below are in progress. This section must be updated after each milestone with its behavior and validation evidence.
+
+Milestone one is complete. `useTableStateNotifications` now owns the v9 store subscription and independently compares persisted state, query state, and the deprecated full state. `pnpm tsc` passed all eleven checked workspaces, and `pnpm test -- packages/ui/components/Table` passed 100 files and 356 tests. The focused bridge test proves that initial query state is emitted, row selection is ignored, and global filtering is emitted after the debounce.
 
 ## Context and Orientation
 
@@ -85,6 +105,14 @@ Then replace the removed full-state callback in `packages/ui/components/Table/Ta
 Compile after the central migration and follow errors outward. Update renamed v9 state fields and methods, generic signatures, helper imports, column definitions, test harnesses, and declaration merging in the smallest coherent edits. Treat compile errors as migration evidence rather than suppressing them; remove existing unsafe suppressions in touched code when the v9 types make a precise replacement practical.
 
 Finally run formatting and the full repository validation. Inspect the migrated React modules against the maintainability catalog and the relevant Vercel guidance, particularly controlled state, direct imports, derived state, render churn, and conditional rendering. Run browser tests after static and unit checks pass, and record exact outcomes here.
+
+For the atomic-state follow-on, first extract state observation from `packages/ui/components/Table/Table.tsx`. Define a query-state projection containing pagination, sorting, column filters, and global filter. Persisted state, query notification state, and the deprecated full-state callback must each be compared and debounced independently so unrelated state changes do not wake query consumers. Migrate existing consumers that manually projected those four fields to `onQueryStateChange` and add tests proving that row selection does not notify it.
+
+Next replace render-time full-state reads at clear component boundaries with v9 subscriptions. Pagination subscribes to the pagination atom, the toolbar and row checkboxes subscribe to row selection, and filter UI subscribes only to column and global filters. Builder-method reads in extracted row and header components use the standalone `Subscribe` component so React Compiler can see their hidden state dependency. Validate selection, pagination, filtering, sorting, grouping, expansion, and resizing before narrowing the root.
+
+Then make `AmberTable` and Amber's `useTable` generic over the selector result. The high-level `Table` should invoke `useTable` with a selector that does not subscribe its root to table state and should render `DataTable` beneath an explicit state boundary covering the row-model and layout slices it needs. Direct low-level `DataTable` consumers continue to omit the selector and therefore retain the full-state behavior.
+
+Finally add `useServerTableState`, backed by stable writable atoms from `@tanstack/react-store`. It returns the atoms to pass through `Table` and a reactively selected query-state object for query keys. Migrate the UI-test server-driven examples away from callback-to-React-state mirroring. External-atom examples disable `Table` persistence unless they explicitly initialize their atoms from the same persistence owner; this preserves the rule that every slice has exactly one owner.
 
 ## Concrete Steps
 
@@ -118,6 +146,13 @@ At completion run the repository-required validation:
 
 If the complete browser suite requires unavailable services or secrets, run every locally available table-focused Playwright project, preserve its artifacts, and document the exact environmental blocker for the remainder.
 
+After each follow-on milestone, run from `/Users/ggp/dev/git/amber`:
+
+    pnpm -F @amber/ui tsc
+    pnpm test -- packages/ui/components/Table
+
+Run the smallest relevant Playwright interaction set after the subscription and root-selector milestones, then run the complete repository validation at the end.
+
 ## Validation and Acceptance
 
 The dependency migration is accepted when `pnpm-lock.yaml` resolves one compatible 9.1.2 TanStack Table core for the React adapter and all five workspace manifests request v9. The source must not import the deprecated `/legacy` entry point or `useLegacyTable`.
@@ -146,3 +181,9 @@ At completion, all relevant manifests must use:
 Existing exact-versus-caret conventions may be normalized if doing so guarantees one type version across the monorepo; record that choice in the Decision Log.
 
 `packages/ui/components/Table/useTable.tsx` must continue exporting `UseTableProps<TData>` and `useTable(props)` for Amber code. Internally it must call TanStack v9's native `useTable` with a v9 `features` configuration and v9 row-model factories. `packages/ui/components/Table/Table.tsx` must continue exporting `Table` with `handleStateChange?: (newState: TableState) => void`, unless implementation proves a narrower public type is materially safer and all consumers are migrated with a recorded rationale.
+
+At the end of the follow-on work, `Table` also exposes `onQueryStateChange?: (newState: TableQueryState) => void`, while `handleStateChange` remains deprecated and behavior-compatible. `AmberTable<TData, TSelected>` and `useTable(props, selector)` preserve the selector's result type. `useServerTableState` returns stable writable atoms for `pagination`, `sorting`, `columnFilters`, and `globalFilter`, plus a reactive `state` containing those same slices.
+
+Revision note, 2026-08-14: expanded the completed migration plan with four ordered atomic-state milestones requested after the v9 validation succeeded. The additions preserve the prior migration record while making the follow-on work restartable from this document alone.
+
+Revision note, 2026-08-14 18:46Z: recorded completion and validation of the notification-projection milestone, including the discovered default-sort behavior.

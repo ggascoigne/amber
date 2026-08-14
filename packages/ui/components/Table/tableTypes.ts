@@ -64,6 +64,7 @@ export type AmberRow<TData extends RowData> = TanStackRow<AmberTableFeatures, TD
 export type AmberTable<TData extends RowData> = ReactTable<AmberTableFeatures, TData>
 export type AmberTableOptions<TData extends RowData> = TanStackTableOptions<AmberTableFeatures, TData>
 export type AmberTableState = TanStackTableState<AmberTableFeatures>
+export type TableQueryState = Pick<AmberTableState, 'pagination' | 'sorting' | 'columnFilters' | 'globalFilter'>
 
 export const createAmberColumnHelper = <TData extends RowData>(): AmberColumnHelper<TData> =>
   createTanStackColumnHelper<AmberTableFeatures, TData>()
