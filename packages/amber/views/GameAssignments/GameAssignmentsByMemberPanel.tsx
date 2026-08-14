@@ -3,8 +3,8 @@ import { useCallback, useMemo, useState } from 'react'
 import type { GameAssignmentDashboardData } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import { Box } from '@mui/material'
-import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
@@ -217,7 +217,7 @@ export const GameAssignmentsByMemberPanel = ({
         accessorKey: 'priorityLabel',
         header: 'Priority',
         size: 120,
-        sortingFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
+        sortFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
       },
     ],
     [assignmentCountsByGameId, choicesByMemberSlot, filteredSlotGames, gameById],

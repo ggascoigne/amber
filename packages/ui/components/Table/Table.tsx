@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react'
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import AddIcon from '@mui/icons-material/Add'
 import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
-import type { ColumnDef, Row, TableState, Updater } from '@tanstack/react-table'
 import { dequal as deepEqual } from 'dequal'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
@@ -14,6 +13,7 @@ import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import { usePendingNewRow } from './editing/usePendingNewRow'
 import { buildExpansionColumn } from './expansion/buildExpansionColumn'
+import type { AmberColumnDef, AmberRow, AmberTableState, RowData } from './tableTypes'
 import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
@@ -21,6 +21,9 @@ import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
 import { getDefaultSort } from './utils/tableUtils'
 
 import { notEmpty } from '../../utils/ts-utils'
+
+const EMPTY_TABLE_DATA: Array<never> = []
+const rowCanAlwaysExpand = () => true
 
 /**
 Simple, Table wrapper, you just pass it the data and it'll do the rest
@@ -53,17 +56,17 @@ do that with something like this:
 ```
   */
 
-type TablePropsBase<T> = Omit<UseTableProps<T>, 'keyField' | 'name'> &
+type TablePropsBase<T extends RowData> = Omit<UseTableProps<T>, 'keyField' | 'name'> &
   Omit<DataTableProps<T>, 'tableInstance'> & {
-    data: T[]
+    data: Array<T>
     keyField?: keyof T
-    columns: ColumnDef<T, any>[]
-    initialState?: Partial<TableState>
+    columns: Array<AmberColumnDef<T>>
+    initialState?: Partial<AmberTableState>
     isLoading?: boolean
     isFetching?: boolean
     rowCount?: number
-    onRowClick?: (row: Row<T>) => void
-    handleStateChange?: (newState: TableState) => void
+    onRowClick?: (row: AmberRow<T>) => void
+    handleStateChange?: (newState: AmberTableState) => void
     onAdd?: TableSelectionMouseEventHandler<T>
     onDelete?: TableSelectionMouseEventHandler<T>
     onEdit?: TableSelectionMouseEventHandler<T>
@@ -77,26 +80,26 @@ type TablePropsBase<T> = Omit<UseTableProps<T>, 'keyField' | 'name'> &
     scrollBehavior?: 'none' | 'bounded'
     systemActions?: Action<T>[]
     toolbarActions?: Action<T>[]
-    renderExpandedContent?: (row: Row<T>) => ReactNode
-    getRowCanExpand?: (row: Row<T>) => boolean
+    renderExpandedContent?: (row: AmberRow<T>) => ReactNode
+    getRowCanExpand?: (row: AmberRow<T>) => boolean
     expandedContentSx?: DataTableProps<T>['expandedContentSx']
     showExpandedSwitch?: boolean
     showExpandedOnly?: boolean
     onShowExpandedOnlyChange?: (nextValue: boolean) => void
   }
 
-type TableProps<T> =
+type TableProps<T extends RowData> =
   | (TablePropsBase<T> & { disableStatePersistence: true; name?: string })
   | (TablePropsBase<T> & { disableStatePersistence?: false; name: string })
 
-const shouldTriggerPageChange = (oldState: TableState, newState: TableState) => {
+const shouldTriggerPageChange = (oldState: AmberTableState, newState: AmberTableState) => {
   if (!deepEqual(oldState.columnFilters, newState.columnFilters)) return true
   if (!deepEqual(oldState.globalFilter, newState.globalFilter)) return true
   // if (oldState.sorting !== newState.sorting) return true
   return false
 }
 
-export const Table = <T,>({
+export const Table = <T extends RowData>({
   name,
   data,
   columns,
@@ -132,13 +135,11 @@ export const Table = <T,>({
   enableColumnFilters = true,
   displayGutter,
   disableStatePersistence = false,
-  // @ts-ignore
-  keyField = 'id',
+  keyField: userKeyField,
   useVirtualRows,
   ...rest
 }: TableProps<T>) => {
   const [stateLoaded, setStateLoaded] = useState(false)
-  const [, setTableStateRevision] = useState(0)
   const [uncontrolledShowExpandedOnly, setUncontrolledShowExpandedOnly] = useState(false)
   const hasExpandedContent = !!renderExpandedContent
   const isShowExpandedOnlyControlled = typeof controlledShowExpandedOnly === 'boolean'
@@ -147,6 +148,7 @@ export const Table = <T,>({
     : uncontrolledShowExpandedOnly
   const resolvedShowExpandedOnlyChange = onShowExpandedOnlyChange ?? setUncontrolledShowExpandedOnly
   const resolvedUseVirtualRows = hasExpandedContent ? (useVirtualRows ?? false) : useVirtualRows
+  const keyField = (userKeyField ?? 'id') as keyof T
   const { canAddRow, handleAddRow, resolvedData, resolvedEditingConfig } = usePendingNewRow({
     cellEditing,
     data,
@@ -154,6 +156,7 @@ export const Table = <T,>({
 
   const initial = { ...initialState }
   initial.sorting ??= getDefaultSort(columns)
+  initial.pagination ??= { pageIndex: 0, pageSize: DEFAULT_TABLE_PAGE_SIZE }
   const resolvedTableName = name ?? 'table'
   const [persistedTableState, setPersistedTableState] = useTableState(
     resolvedTableName,
@@ -162,41 +165,10 @@ export const Table = <T,>({
     !disableStatePersistence,
   )
 
-  const stateRef = useRef<TableState>({
-    sorting: [],
-    columnFilters: [],
-    globalFilter: '',
-    columnOrder: [],
-    columnPinning: {},
-    rowPinning: {},
-    columnVisibility: {},
-    columnSizing: {},
-    columnSizingInfo: {
-      columnSizingStart: [],
-      deltaOffset: null,
-      deltaPercentage: null,
-      isResizingColumn: false,
-      startOffset: null,
-      startSize: null,
-    },
-    grouping: [],
-    pagination: { pageIndex: 0, pageSize: DEFAULT_TABLE_PAGE_SIZE },
-    rowSelection: {},
-    expanded: {},
-  })
-
-  useLayoutEffect(() => {
-    if (!persistedTableState) return
-    stateRef.current = {
-      ...stateRef.current,
-      ...persistedTableState,
-    }
-  }, [persistedTableState])
-
   const debounceRef = useRef<number | null>(null)
 
   const emit = useCallback(
-    (s: TableState) => {
+    (s: AmberTableState) => {
       // console.log('Persisting table state', s)
       setPersistedTableState(s)
       handleStateChange?.(s)
@@ -206,7 +178,7 @@ export const Table = <T,>({
   )
 
   const queueStateChangeResponse = useCallback(
-    (s: TableState) => {
+    (s: AmberTableState) => {
       if (debounceRef.current) window.clearTimeout(debounceRef.current)
       debounceRef.current = window.setTimeout(() => {
         emit(s)
@@ -215,11 +187,11 @@ export const Table = <T,>({
     [emit],
   )
 
-  const expansionColumn = useMemo<ColumnDef<T> | null>(
+  const expansionColumn = useMemo<AmberColumnDef<T> | null>(
     () => buildExpansionColumn<T>(hasExpandedContent),
     [hasExpandedContent],
   )
-  const resolvedGetRowCanExpand = hasExpandedContent ? (getRowCanExpand ?? (() => true)) : getRowCanExpand
+  const resolvedGetRowCanExpand = hasExpandedContent ? (getRowCanExpand ?? rowCanAlwaysExpand) : getRowCanExpand
 
   const resolvedColumns = useMemo(
     () => (expansionColumn ? [expansionColumn, ...columns] : columns),
@@ -230,18 +202,8 @@ export const Table = <T,>({
     name,
     columns: resolvedColumns,
     keyField,
-    data: resolvedData ?? [],
-    state: stateRef.current,
-    onStateChange: (updater: Updater<TableState>) => {
-      const previous = stateRef.current
-      const next = typeof updater === 'function' ? updater(previous) : updater
-      if (shouldTriggerPageChange(previous, next)) {
-        next.pagination.pageIndex = 0
-      }
-      stateRef.current = next
-      setTableStateRevision((revision) => revision + 1)
-      queueStateChangeResponse(next)
-    },
+    data: resolvedData ?? EMPTY_TABLE_DATA,
+    initialState: persistedTableState,
     autoResetExpanded: false,
     enableColumnResizing: true,
     enableSortingRemoval: false,
@@ -264,10 +226,47 @@ export const Table = <T,>({
     ...rest,
   })
 
-  // kick initial fetch of table state to parent
+  const tableStore = table.store
+  const previousStateRef = useRef(tableStore.state)
+  const emitRef = useRef(emit)
+  const queueStateChangeResponseRef = useRef(queueStateChangeResponse)
+  const tableRef = useRef(table)
+
   useLayoutEffect(() => {
-    emit(stateRef.current)
-  }, [emit])
+    emitRef.current = emit
+    queueStateChangeResponseRef.current = queueStateChangeResponse
+    tableRef.current = table
+  }, [emit, queueStateChangeResponse, table])
+
+  useEffect(
+    () => () => {
+      if (debounceRef.current) {
+        window.clearTimeout(debounceRef.current)
+      }
+    },
+    [],
+  )
+
+  // Persist and publish the complete v9 state without taking ownership of each slice.
+  useLayoutEffect(() => {
+    const currentState = tableStore.state
+    previousStateRef.current = currentState
+    emitRef.current(currentState)
+
+    const subscription = tableStore.subscribe((nextState) => {
+      const previousState = previousStateRef.current
+      previousStateRef.current = nextState
+
+      if (shouldTriggerPageChange(previousState, nextState) && nextState.pagination.pageIndex !== 0) {
+        tableRef.current.setPageIndex(0)
+        return
+      }
+
+      queueStateChangeResponseRef.current(nextState)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [tableStore])
 
   const [toolbarActions, rowActions] = useMemo(() => {
     const defined = <U,>(value: U | undefined): value is U => value !== undefined
@@ -342,7 +341,7 @@ export const Table = <T,>({
     return null
   }
 
-  const empty = <Empty hasSearch={stateRef.current?.globalFilter} />
+  const empty = <Empty hasSearch={table.state.globalFilter} />
 
   return (
     <DataTable

@@ -4,7 +4,6 @@ import { useCallback, useMemo } from 'react'
 import Box from '@mui/material/Box'
 import type { Theme } from '@mui/material/styles'
 import { alpha } from '@mui/material/styles'
-import type { Cell, CellContext, Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
 import { clsx } from 'clsx'
@@ -19,6 +18,7 @@ import { RowHoverButtons } from '../components/RowHoverButtons'
 import { RowCheckbox, TableCell, TableRow } from '../components/TableStyles'
 import { TableCellEditor } from '../editing/TableCellEditor'
 import type { TableCellEditState, TableEditingState } from '../editing/useTableEditing'
+import type { Cell, Row, RowData, Table as TableInstance } from '../tableTypes'
 import type { RowStyleType } from '../utils/tableUtils'
 import { isUserColumnId } from '../utils/tableUtils'
 
@@ -94,16 +94,17 @@ const TableCellContent = <TData extends RowData>({
   const shouldRenderEditor = editing.enabled && isActiveCell
   const displayValue = editing.getCellDisplayValue(cell)
   const cellContext = cell.getContext()
+  const getEditingValue = <TValue = unknown,>() => displayValue as TValue
+  const editingCell = Object.create(cell) as Cell<TData, unknown>
+  editingCell.getValue = getEditingValue
+  editingCell.renderValue = getEditingValue
   const renderContext = editing.enabled
-    ? ({
+    ? {
         ...cellContext,
-        getValue: () => displayValue,
-        cell: {
-          ...cell,
-          getValue: () => displayValue,
-          renderValue: () => displayValue,
-        },
-      } as CellContext<TData, unknown>)
+        getValue: getEditingValue,
+        renderValue: getEditingValue,
+        cell: editingCell,
+      }
     : cellContext
   const treeLineContent = isTreeLineCell ? <TreeLines row={row} expansionDetails={treeLineDetails} /> : null
   const selectionContent = hasInlineSelectionBox ? (

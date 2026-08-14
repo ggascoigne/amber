@@ -1,5 +1,5 @@
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'

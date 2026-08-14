@@ -1,9 +1,9 @@
 import React from 'react'
 
-import type { CellContext, RowData } from '@tanstack/react-table'
 import { DateTime } from 'luxon'
 
 import { TooltipCell, getCellSx } from './Table'
+import type { CellContext, RowData } from './Table/tableTypes'
 
 const getDateFormat = <T extends RowData>({ column }: CellContext<T, unknown>): string =>
   column.columnDef.meta?.dateFormat ?? 'EEE, MMM d'

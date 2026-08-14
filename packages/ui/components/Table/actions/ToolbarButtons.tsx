@@ -5,9 +5,10 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import { Button } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import type { UserAction } from './actions'
+
+import type { RowData, Table as TableInstance } from '../tableTypes'
 
 type TableIconButtonProps = {
   icon?: ReactElement

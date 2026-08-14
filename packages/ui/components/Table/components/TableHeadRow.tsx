@@ -6,11 +6,12 @@ import { styled, generateUtilityClasses } from '@mui/material'
 import Box from '@mui/material/Box'
 import type { TableRowProps } from '@mui/material/TableRow'
 import MuiTableRow from '@mui/material/TableRow'
-import type { Header, RowData } from '@tanstack/react-table'
 import clsx from 'clsx'
 
 import type { CN } from './TableStyles'
 import { rowShared } from './TableStyles'
+
+import type { Header, RowData } from '../tableTypes'
 
 export const tableDecorationZIndex = (theme: Theme) => theme.zIndex.fab - 1
 

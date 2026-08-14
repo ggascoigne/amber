@@ -2,7 +2,8 @@ import { css as emotionCss } from '@emotion/css'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import { TableSortLabel } from '@mui/material'
 import { css } from '@mui/material/styles'
-import type { Row, RowData } from '@tanstack/react-table'
+
+import type { Row, RowData } from '../tableTypes'
 
 const tableExpandClasses = {
   iconDirectionAsc: emotionCss(

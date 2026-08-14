@@ -1,8 +1,8 @@
 import type { UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useQuery } from '@tanstack/react-query'
-import type { ColumnDef } from '@tanstack/react-table'
 
 import { Page } from '../../components'
 import { ProfileDialog } from '../../components/Profile'

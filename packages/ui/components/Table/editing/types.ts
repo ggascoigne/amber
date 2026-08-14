@@ -1,4 +1,4 @@
-import type { Column, Row, RowData, Table } from '@tanstack/react-table'
+import type { Column, Row, RowData, Table } from '../tableTypes'
 
 export type TableEditColumnType = 'text' | 'number' | 'select' | 'autocomplete'
 

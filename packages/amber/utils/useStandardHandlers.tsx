@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 
 import type { TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
 import { getSelectedRows } from '@amber/ui/components/Table'
-import type { Row, RowData } from '@tanstack/react-table'
+import type { Row, RowData } from '@amber/ui/components/Table/tableTypes'
 
 export const useStandardHandlers = <T extends RowData>({
   deleteHandler,

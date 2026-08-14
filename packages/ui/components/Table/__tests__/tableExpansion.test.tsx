@@ -4,7 +4,6 @@
 
 /* eslint-disable import-x/no-extraneous-dependencies */
 
-import type { ColumnDef } from '@tanstack/react-table'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
@@ -12,6 +11,7 @@ import { TableHarness, installDomMeasurementMocks, renderWithProviders, type Per
 
 import { treeLineTypes } from '../content/TreeLines'
 import { Table } from '../Table'
+import type { ColumnDef } from '../tableTypes'
 
 type TreePersonRow = PersonRow & {
   children?: Array<TreePersonRow>

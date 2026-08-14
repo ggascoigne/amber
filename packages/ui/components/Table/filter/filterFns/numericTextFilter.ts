@@ -1,4 +1,4 @@
-import type { FilterFn, RowData } from '@tanstack/react-table'
+import { constructFilterFn } from '@tanstack/react-table'
 
 const comparatorRegex = /^\s*([=<>!]{0,2})\s*(-?\d+(?:\.\d+)?)\s*$/
 
@@ -63,24 +63,25 @@ const createComparator = (rawFilter: string): Comparator => {
   }
 }
 
-export const numericTextFilter: FilterFn<RowData> = (row, columnId, filterValue) => {
-  if (filterValue === undefined || filterValue === null) {
-    return true
-  }
+export const numericTextFilter = constructFilterFn({
+  filter: (dataValue, filterValue) => {
+    if (filterValue === undefined || filterValue === null) {
+      return true
+    }
 
-  const filterText = String(filterValue).trim()
-  if (!filterText.length) {
-    return true
-  }
+    const filterText = String(filterValue).trim()
+    if (!filterText.length) {
+      return true
+    }
 
-  const comparator = createComparator(filterText)
-  return comparator(row.getValue(columnId))
-}
-
-numericTextFilter.autoRemove = (value: unknown) => {
-  if (value === undefined || value === null) return true
-  if (typeof value === 'string') {
-    return value.trim().length === 0
-  }
-  return false
-}
+    const comparator = createComparator(filterText)
+    return comparator(dataValue)
+  },
+  autoRemove: (value: unknown) => {
+    if (value === undefined || value === null) return true
+    if (typeof value === 'string') {
+      return value.trim().length === 0
+    }
+    return false
+  },
+})

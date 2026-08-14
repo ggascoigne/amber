@@ -2,7 +2,8 @@ import type { ReactElement, MouseEvent, ChangeEvent } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { TablePagination as MuiTablePagination } from '@mui/material'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
+
+import type { RowData, Table as TableInstance } from '../tableTypes'
 
 export const rowsPerPageOptions = [10, 25, 50, 100, 250]
 
@@ -19,8 +20,7 @@ export function TablePagination<T extends RowData>({
   paginationPageSizes?: Array<number>
   compact: boolean
 }): ReactElement | null {
-  const { setPageSize } = table
-  const { pageSize, pageIndex } = table.getState().pagination
+  const { pageSize, pageIndex } = table.state.pagination
   const pageCount = table.getPageCount()
   const { count, page, pageSizes } = useMemo(() => {
     const onLastPage = pageIndex === pageCount - 1
@@ -47,7 +47,7 @@ export function TablePagination<T extends RowData>({
       page={page}
       onPageChange={handleChangePage}
       onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setPageSize(Number(e.target.value))
+        table.setPageSize(Number(e.target.value))
       }}
       data-testid='TablePagination'
       slotProps={{

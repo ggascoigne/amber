@@ -1,7 +1,7 @@
-import type { Row, RowData } from '@tanstack/react-table'
-
 import { treeLineTypes } from './TreeLines'
 import type { TreeLineType } from './TreeLines'
+
+import type { Row, RowData } from '../tableTypes'
 
 type GetRowById<TData extends RowData> = (rowId: string) => Row<TData> | undefined
 

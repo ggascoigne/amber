@@ -1,9 +1,9 @@
 import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import { TableIconButton } from './ToolbarButtons'
 
 import { camelToWords } from '../../../utils/object'
+import type { RowData, Table as TableInstance } from '../tableTypes'
 import { isUserColumnId } from '../utils/tableUtils'
 
 type ExportProps<T extends RowData> = {
@@ -20,7 +20,7 @@ export const Export = <T extends RowData>({ table }: ExportProps<T>) => {
     const visibleColumns = table
       .getAllLeafColumns()
       .filter((column) => isUserColumnId(column.id) && column.getIsVisible())
-    const { rows } = table.getPrePaginationRowModel()
+    const { rows } = table.getPrePaginatedRowModel()
     const columnSeparator = ','
     const rowSeparator = '\n'
     const timestamp = new Date().toISOString().replaceAll(/[-.]/g, '_')

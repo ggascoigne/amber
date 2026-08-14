@@ -1,6 +1,6 @@
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
-import type { ColumnDef } from '@tanstack/react-table'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'

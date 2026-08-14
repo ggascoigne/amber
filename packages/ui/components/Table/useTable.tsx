@@ -1,61 +1,54 @@
 import { useCallback, useMemo } from 'react'
 
-import type {
-  CellContext,
-  ColumnDef,
-  HeaderContext,
-  Row,
-  RowData,
-  TableState,
-  TableOptions,
-  ColumnMeta,
-} from '@tanstack/react-table'
-import {
-  getCoreRowModel,
-  useReactTable,
-  getExpandedRowModel,
-  getFilteredRowModel,
-  getGroupedRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-} from '@tanstack/react-table'
+import type { CellData, ColumnMeta, RowData } from '@tanstack/react-table'
+import { useTable as useTanStackTable } from '@tanstack/react-table'
 
 import { CheckboxCellRenderer, HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { TooltipCellRenderer } from './components/TooltipCell'
 import { SELECTION_COLUMN_ID } from './constants'
 import { TextColumnFilter } from './filter'
-import { numericTextFilter } from './filter/filterFns/numericTextFilter'
+import { amberTableFeatures } from './tableFeatures'
+import type {
+  AmberCellContext,
+  AmberColumnDef,
+  AmberHeaderContext,
+  AmberRow,
+  AmberTableOptions,
+  AmberTableState,
+} from './tableTypes'
 import { applyDefaultMetaToColumns } from './utils/deepMergeMeta'
 import { columnName } from './utils/tableUtils'
 
-const DefaultHeader = <T extends RowData>({ column }: HeaderContext<T, any>) => (
+const DefaultHeader = <T extends RowData>({ column }: AmberHeaderContext<T>) => (
   <>{column.id.startsWith('_') ? null : columnName(column)}</>
 )
 
 // note that we are defining this here since the default handling of the default column does
 // a shallow merge which means that any definition of meta would completely override
 // the default meta
-const defaultColumnMeta: ColumnMeta<any, any> = {
+const defaultColumnMeta: ColumnMeta<typeof amberTableFeatures, RowData> = {
   filterFlags: {
     filterRender: TextColumnFilter,
   },
 }
 
-export type UseTableProps<T extends RowData> = Partial<TableOptions<T>> &
-  Pick<TableOptions<T>, 'columns' | 'data'> & {
+export type UseTableProps<T extends RowData> = Omit<Partial<AmberTableOptions<T>>, 'columns' | 'data' | 'features'> &
+  Pick<AmberTableOptions<T>, 'columns' | 'data'> & {
     name?: string
     keyField: keyof T
-    initialState?: Partial<TableState>
+    initialState?: Partial<AmberTableState>
     enablePagination?: boolean
-    enableRowSelection?: boolean | ((row: Row<T>) => boolean) | undefined
+    enableRowSelection?: boolean | ((row: AmberRow<T>) => boolean)
     enableSelectAll?: boolean
     defaultColumnDisableGlobalFilter?: boolean
     displayGutter?: boolean
+    enableTreeBehavior?: boolean
   }
 
 export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
   const {
     columns: userColumns,
+    name,
     keyField,
     enableRowSelection = true,
     autoResetExpanded = false,
@@ -73,14 +66,19 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     enableSorting,
     enablePagination,
     displayGutter = true,
-    filterFns: userFilterFns,
+    manualExpanding,
+    manualFiltering,
+    manualGrouping,
+    manualPagination,
+    manualSorting,
+    meta: userMeta,
     ...rest
   } = props
 
-  const getRowId = useCallback((originalRow: T): string => (originalRow[keyField] as any).toString(), [keyField])
+  const getRowId = useCallback((originalRow: T): string => String(originalRow[keyField]), [keyField])
 
   const selectionColumnSize = displayGutter ? 74 : 64
-  const selectionColumn = useMemo<ColumnDef<T>>(
+  const selectionColumn = useMemo<AmberColumnDef<T>>(
     () => ({
       id: SELECTION_COLUMN_ID,
       enableResizing: false,
@@ -89,7 +87,7 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
       size: selectionColumnSize,
       maxSize: selectionColumnSize,
       aggregatedCell: undefined,
-      header: ({ table }: HeaderContext<T, any>) => <HeaderCheckbox table={table} />,
+      header: ({ table }: AmberHeaderContext<T>) => <HeaderCheckbox table={table} />,
       cell: CheckboxCellRenderer,
     }),
     [selectionColumnSize],
@@ -97,22 +95,22 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
 
   const useInlineTreeSelection = !!(enableRowSelection && enableExpanding && enableTreeBehavior)
   const columns = useMemo(() => {
-    const tmpColumns: ColumnDef<T>[] =
-      enableRowSelection && !useInlineTreeSelection ? [selectionColumn, ...userColumns] : userColumns
+    const tmpColumns: Array<AmberColumnDef<T>> =
+      enableRowSelection && !useInlineTreeSelection ? [selectionColumn, ...userColumns] : [...userColumns]
     return applyDefaultMetaToColumns({
-      defaultMeta: defaultColumnMeta as any,
+      defaultMeta: defaultColumnMeta,
       columns: tmpColumns,
     })
   }, [enableRowSelection, selectionColumn, useInlineTreeSelection, userColumns])
 
-  const defaultColumn = useMemo<Partial<ColumnDef<T>>>(
+  const defaultColumn = useMemo<Partial<AmberColumnDef<T>>>(
     () => ({
       enableResizing: true,
       enableGrouping,
       cell: TooltipCellRenderer,
       header: DefaultHeader,
       aggregationFn: 'uniqueCount',
-      aggregatedCell: ({ getValue }: CellContext<T, any>) => <>{getValue()} Unique Values</>,
+      aggregatedCell: ({ getValue }: AmberCellContext<T, CellData>) => <>{getValue()} Unique Values</>,
       minSize: 50,
       size: 150,
       maxSize: 200,
@@ -121,24 +119,10 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     [defaultColumnDisableGlobalFilter, enableGrouping],
   )
 
-  const filterFns = useMemo(
-    () => ({
-      numericText: numericTextFilter,
-      ...(userFilterFns ?? {}),
-    }),
-    [userFilterFns],
-  )
-
-  return useReactTable<T>({
+  return useTanStackTable({
+    features: amberTableFeatures,
     columns,
     defaultColumn,
-    filterFns,
-    getCoreRowModel: getCoreRowModel(),
-    getExpandedRowModel: enableExpanding || enableGrouping ? getExpandedRowModel() : undefined,
-    getFilteredRowModel: enableColumnFilters || enableGlobalFilter || enableFilters ? getFilteredRowModel() : undefined,
-    getGroupedRowModel: enableGrouping ? getGroupedRowModel() : undefined,
-    getPaginationRowModel: enablePagination ? getPaginationRowModel() : undefined,
-    getSortedRowModel: enableSorting ? getSortedRowModel() : undefined,
     autoResetExpanded,
     enableColumnResizing,
     enableSortingRemoval,
@@ -152,8 +136,17 @@ export const useTable = <T extends RowData>(props: UseTableProps<T>) => {
     enableGlobalFilter,
     enableFilters,
     enableSorting,
-    enablePagination,
-    enableTreeBehavior,
+    manualExpanding: manualExpanding ?? !(enableExpanding || enableGrouping),
+    manualFiltering: manualFiltering ?? !(enableFilters !== false && (enableColumnFilters || enableGlobalFilter)),
+    manualGrouping: manualGrouping ?? !enableGrouping,
+    manualPagination: manualPagination ?? !enablePagination,
+    manualSorting: manualSorting ?? !enableSorting,
+    meta: {
+      ...userMeta,
+      name,
+      enablePagination,
+      enableTreeBehavior,
+    },
     ...rest,
   })
 }

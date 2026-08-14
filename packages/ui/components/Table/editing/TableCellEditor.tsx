@@ -1,7 +1,6 @@
 import type { KeyboardEvent, ReactElement } from 'react'
 
 import { Autocomplete, Box, MenuItem, TextField } from '@mui/material'
-import type { Cell, RowData } from '@tanstack/react-table'
 
 import type {
   TableAutocompleteOption,
@@ -10,6 +9,7 @@ import type {
   TableOptionColumn,
 } from './types'
 
+import type { Cell, RowData } from '../tableTypes'
 import { columnName } from '../utils/tableUtils'
 
 export type TableCellEditorProps<TData extends RowData> = {

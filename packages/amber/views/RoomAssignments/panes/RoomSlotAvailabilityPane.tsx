@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 
 import { SelectColumnFilter, Table } from '@amber/ui/components/Table'
+import type { ColumnDef, TableState } from '@amber/ui/components/Table/tableTypes'
 import { Box, Button, Checkbox } from '@mui/material'
-import type { ColumnDef, TableState } from '@tanstack/react-table'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 

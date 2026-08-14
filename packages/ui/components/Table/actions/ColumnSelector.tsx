@@ -12,10 +12,10 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import { TableIconButton } from './ToolbarButtons'
 
+import type { RowData, Table as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 type ColumnSelectorPopupProps<T extends RowData> = {

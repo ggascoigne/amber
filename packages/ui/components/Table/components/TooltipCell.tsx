@@ -5,9 +5,10 @@ import { memo, useMemo, useRef, useState } from 'react'
 import type { SxProps, Theme } from '@mui/material'
 import { Box } from '@mui/material'
 import useResizeObserver from '@react-hook/resize-observer'
-import type { CellContext, RowData } from '@tanstack/react-table'
 
 import { getTooltipId, useTableContext } from './TableContext'
+
+import type { CellContext, RowData } from '../tableTypes'
 
 type TooltipSharedCellProps = {
   alwaysShowTooltip?: boolean

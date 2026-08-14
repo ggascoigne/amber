@@ -5,7 +5,6 @@ import AddIcon from '@mui/icons-material/Add'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Box, MenuItem, MenuList, Typography, Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'
-import type { RowData, Column, Table as TableInstance } from '@tanstack/react-table'
 
 import { FilterButtonMenu } from './FilterButtonMenu'
 import { FilterContextProvider } from './FilterContext'
@@ -13,6 +12,7 @@ import { CLEAR_FILTERS_MESSAGE, clearSearch, emitter } from './filterEmitter'
 import { SearchInput } from './SearchInput'
 
 import { notEmpty } from '../../../utils/ts-utils'
+import type { RowData, Column, Table as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 export type Filter<T extends RowData> = {
@@ -118,23 +118,23 @@ export const useFilterValues = <T extends RowData>(
   showClearButton: boolean
   justAddedFilter: string | undefined
 } => {
-  const { getAllLeafColumns } = table
   const filtersEnabled = (table.options.enableColumnFilters ?? true) && (table.options.enableFilters ?? true)
 
   const [justAddedFilter, setJustAddedFilter] = useState<undefined | string>()
 
   const allFilters: GenericFilter<T>[] = useMemo(() => {
-    const allColumns = getAllLeafColumns()
+    const allColumns = table
+      .getAllLeafColumns()
       .filter((column) => isUserColumnId(column.id))
       .filter((column) => column.getCanFilter())
 
     const tableFilters = allColumns.map(columnToGenericFilter(table)).filter(notEmpty)
 
     return tableFilters.sort((a, b) => a.name.localeCompare(b.name))
-  }, [getAllLeafColumns, table])
+  }, [table])
 
   const alreadySetFilterNames = useMemo(() => {
-    const existingFilterIds = table.getState().columnFilters?.map((f) => f.id)
+    const existingFilterIds = table.state.columnFilters?.map((f) => f.id)
     return allFilters.map((f) => (existingFilterIds.includes(f.id) ? f.name : undefined)).filter(notEmpty)
   }, [table, allFilters])
 
@@ -193,7 +193,7 @@ export const useFilterValues = <T extends RowData>(
 
   const hasSomethingToClear = requiredFilters.reduce((previous, filter) => previous || !!filter.canBeCleared?.(), false)
 
-  const { globalFilter } = table.getState()
+  const { globalFilter } = table.state
   const globalFilterValue = typeof globalFilter === 'object' ? globalFilter.value : globalFilter
 
   const showClearButton =
@@ -215,8 +215,8 @@ export const useFilterValues = <T extends RowData>(
 
 export const TableFilterBar = <T extends RowData>({ table, sx, displayGutter }: TableFilterBarProps<T>) => {
   const searchEnabled = (table.options.enableGlobalFilter ?? true) && (table.options.enableFilters ?? true)
-  const searchValue = table.getState().globalFilter
-  const searchValueChange = table.setGlobalFilter
+  const searchValue = table.state.globalFilter
+  const searchValueChange = useCallback((value: string) => table.setGlobalFilter(value), [table])
 
   const {
     hasFiltersToDisplay,

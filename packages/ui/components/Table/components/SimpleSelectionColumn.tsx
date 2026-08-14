@@ -1,18 +1,18 @@
 import { useCallback } from 'react'
 
-import type { CellContext, RowData, Table as TableInstance } from '@tanstack/react-table'
-
 import { RowCheckbox } from './TableStyles'
 
+import type { AmberCoreTable, CellContext, RowData } from '../tableTypes'
+
 type HeaderCheckboxProps<T extends RowData> = {
-  table: TableInstance<T>
+  table: AmberCoreTable<T>
 }
 
 export const HeaderCheckbox = <T extends RowData>({ table }: HeaderCheckboxProps<T>) => {
   const areAllOnPageSelected = !!(
-    table.getPaginationRowModel().rows.length && table.getPaginationRowModel().rows.every((r) => r.getIsSelected())
+    table.getPaginatedRowModel().rows.length && table.getPaginatedRowModel().rows.every((row) => row.getIsSelected())
   )
-  const isIndeterminate = !areAllOnPageSelected && table.getPaginationRowModel().rows.some((r) => r.getIsSelected())
+  const isIndeterminate = !areAllOnPageSelected && table.getPaginatedRowModel().rows.some((row) => row.getIsSelected())
   const onChange = useCallback(
     () => () => {
       table.toggleAllPageRowsSelected(undefined)

@@ -2,10 +2,10 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
 import { someSelected, zeroSelected, getDefaultSort, Table } from '@amber/ui/components/Table'
+import type { Table as TableInstance, Row, TableState } from '@amber/ui/components/Table/tableTypes'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'
-import type { Table as TableInstance, Row, TableState } from '@tanstack/react-table'
-import { createColumnHelper } from '@tanstack/react-table'
 
 import { Toggle, Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -13,7 +13,7 @@ import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('firstName', {
     enableColumnFilter: true,
   }),
@@ -21,7 +21,7 @@ const columns = [
     enableColumnFilter: true,
   }),
   columnHelper.accessor('email', {}),
-]
+])
 
 type ExampleTableProps = {
   enableRowSelection: boolean

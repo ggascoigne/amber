@@ -1,8 +1,8 @@
-import type { Cell, Row, RowData, Table } from '@tanstack/react-table'
-
 import { coerceInputValue, normalizeValidationResult } from './editingValidation'
 import type { TableEditingRowState } from './internalTypes'
 import type { DataTableEditingConfig, TableEditColumnConfig } from './types'
+
+import type { Cell, Row, RowData, Table } from '../tableTypes'
 
 type ApplyRowChangesParams<TData extends RowData> = {
   changes: Record<string, unknown>

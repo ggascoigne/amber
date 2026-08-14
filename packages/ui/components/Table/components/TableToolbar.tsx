@@ -3,12 +3,12 @@ import { useMemo } from 'react'
 import { Box } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 
 import { tableDecorationZIndex } from './TableStyles'
 
 import type { Action } from '../actions'
 import { getEnabledActions, ToolbarButtonGroup } from '../actions'
+import type { RowData, Table as TableInstance } from '../tableTypes'
 
 type TableToolbarProps<T extends RowData> = {
   table: TableInstance<T>
@@ -20,7 +20,7 @@ type TableToolbarProps<T extends RowData> = {
 
 export const TableToolbar = <T extends RowData>(props: TableToolbarProps<T>) => {
   const { sx, table, toolbarActions, systemActions, displayGutter } = props
-  const { rowSelection } = table.getState()
+  const { rowSelection } = table.state
 
   const selectedKeys = useMemo(() => Object.keys(rowSelection), [rowSelection])
 

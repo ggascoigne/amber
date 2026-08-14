@@ -9,3 +9,22 @@ export * from './filter'
 export * from './components/TooltipCell'
 export * from './components/Empty'
 export * from './editing/types'
+export * from './tableFeatures'
+export { createAmberColumnHelper } from './tableTypes'
+export type {
+  AmberCell,
+  AmberCellContext,
+  AmberColumn,
+  AmberColumnDef,
+  AmberColumnHelper,
+  AmberCoreTable,
+  AmberFilterFn,
+  AmberHeader,
+  AmberHeaderContext,
+  AmberRow,
+  AmberTable,
+  AmberTableOptions,
+  AmberTableState,
+  FilterFlags,
+  FilterRenderProps,
+} from './tableTypes'

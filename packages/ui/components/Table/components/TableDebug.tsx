@@ -83,7 +83,7 @@ export const TableDebug = ({ enabled, instance }: TableDebugProps) => {
 
   const obj = {
     tableIndex,
-    state: instance.getState(),
+    state: instance.state,
     headerGroups: instance.getHeaderGroups(),
     columns: instance.getAllLeafColumns(),
     rows: instance.getRowModel().rows,

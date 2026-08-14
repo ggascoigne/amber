@@ -7,7 +7,6 @@ import Box from '@mui/material/Box'
 import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import useResizeObserver from '@react-hook/resize-observer'
-import type { Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import debug from 'debug'
 import { dequal as deepEqual } from 'dequal'
 import { match } from 'ts-pattern'
@@ -27,6 +26,7 @@ import { TableFilterBar } from './filter/TableFilterBar'
 import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
+import type { Row, RowData, Table as TableInstance } from './tableTypes'
 
 import { isDev } from '../../utils/globals'
 
@@ -162,9 +162,9 @@ export const DataTable = <T extends RowData>({
   const [headingHeight, setHeadingHeight] = useState(0)
   const headingRef = useRef<HTMLDivElement>(null)
   const scrollPositionRef = useRef({ top: 0, left: 0 })
-  const expandedState = tableInstance.getState().expanded
+  const expandedState = tableInstance.state.expanded
   const previousExpandedRef = useRef(expandedState)
-  const { pageIndex } = tableInstance.getState().pagination
+  const { pageIndex } = tableInstance.state.pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
   const hasExpandedContent = !!renderExpandedContent
   const displayedRows = useVisibleTableRows({ table: tableInstance, showExpandedOnly })
@@ -214,7 +214,7 @@ export const DataTable = <T extends RowData>({
 
   const shouldDisplayPagination = match(displayPagination)
     .with('always', () => true)
-    .with('asNeeded', () => tableInstance.options.data.length > tableInstance.getState()?.pagination?.pageSize)
+    .with('asNeeded', () => tableInstance.options.data.length > tableInstance.state?.pagination?.pageSize)
     .with('never', () => false)
     .exhaustive()
 

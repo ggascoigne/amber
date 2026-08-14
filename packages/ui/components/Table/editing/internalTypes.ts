@@ -1,4 +1,4 @@
-import type { Cell, Row, RowData } from '@tanstack/react-table'
+import type { Cell, Row, RowData } from '../tableTypes'
 
 export type TableEditingCell = {
   rowId: string

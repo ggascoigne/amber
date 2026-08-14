@@ -3,8 +3,8 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import type { GameAssignmentDashboardData } from '@amber/client'
 import type { TableAutocompleteOption, TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
-import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
@@ -241,7 +241,7 @@ export const GameAssignmentsByGamePanel = ({
         accessorKey: 'priorityLabel',
         header: 'Priority',
         size: 110,
-        sortingFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
+        sortFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
       },
       {
         accessorKey: 'moveToGameId',

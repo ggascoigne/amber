@@ -4,9 +4,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { IconButton } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'
-import type { Row, RowData } from '@tanstack/react-table'
 
 import { useTableScrollContainerRef } from './TableScrollContainerContext'
+
+import type { Row, RowData } from '../tableTypes'
 
 type RowExpansionButtonProps<TData extends RowData> = {
   row: Row<TData>

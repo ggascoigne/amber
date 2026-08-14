@@ -7,9 +7,9 @@ import type {
   TableRowValidationParams,
 } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
+import type { TableState } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
-import { createColumnHelper } from '@tanstack/react-table'
-import type { TableState } from '@tanstack/react-table'
 
 import { Page, Toggle } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -31,7 +31,7 @@ const subscriptionLabels: Record<UserType['subscriptionTier'], string> = {
 
 const columnHelper = createColumnHelper<UserType>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('id', {
     meta: {
       align: 'right',
@@ -73,7 +73,7 @@ const columns = [
       },
     },
   }),
-]
+])
 
 export const TableEditing = () => {
   const [compact, setCompact] = useState(true)

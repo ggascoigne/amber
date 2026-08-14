@@ -1,4 +1,5 @@
 import type { TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
+import type { RowData } from '@amber/ui/components/Table/tableTypes'
 
 import { getChoiceForGame, buildEmptyMemberAssignmentCounts } from './assignmentSummaries'
 import { buildAssignmentKeyFromInput } from './keys'
@@ -150,14 +151,14 @@ export const buildGameAssignmentEditorRows = ({
     }
   })
 
-export const buildAssignmentUpdatePayload = <RowData>({
+export const buildAssignmentUpdatePayload = <TData extends RowData>({
   updates,
   buildOriginalAssignment,
   buildUpdatedAssignment,
 }: {
-  updates: Array<TableEditRowUpdate<RowData>>
-  buildOriginalAssignment: (row: RowData) => AssignmentUpdate | null
-  buildUpdatedAssignment: (row: RowData) => AssignmentUpdate | null
+  updates: Array<TableEditRowUpdate<TData>>
+  buildOriginalAssignment: (row: TData) => AssignmentUpdate | null
+  buildUpdatedAssignment: (row: TData) => AssignmentUpdate | null
 }) => {
   const adds: Array<AssignmentUpdate> = []
   const removes: Array<AssignmentUpdate> = []

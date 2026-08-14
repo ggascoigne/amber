@@ -2,12 +2,12 @@ import type { MouseEvent } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { Checkbox, ListItemText, MenuItem, MenuList } from '@mui/material'
-import type { RowData, FilterRenderProps } from '@tanstack/react-table'
 
 import { useFilterContext } from './FilterContext'
 import { FilterStatusButton } from './FilterStatusButton'
 import type { OptionsValue } from './types'
 
+import type { RowData, FilterRenderProps } from '../tableTypes'
 import { columnName } from '../utils/tableUtils'
 
 export const getValue = (value: OptionsValue): any => (typeof value === 'string' ? value : value.value)
@@ -148,8 +148,8 @@ export const SelectFilter = ({
 }
 
 export const SelectColumnFilter = <T extends RowData>({ column, clear }: FilterRenderProps<T>) => {
-  const { id, getFilterValue, setFilterValue, columnDef } = column
-  const originalValue = (getFilterValue() as string[] | string) || ''
+  const { id, columnDef } = column
+  const originalValue = (column.getFilterValue() as string[] | string) || ''
   const { options, multiple = false } = columnDef.meta?.filterFlags ?? {}
 
   return (
@@ -157,7 +157,7 @@ export const SelectColumnFilter = <T extends RowData>({ column, clear }: FilterR
       id={id}
       filterName={columnName(column)}
       value={originalValue}
-      setValue={setFilterValue}
+      setValue={(value) => column.setFilterValue(value)}
       options={options}
       multiple={multiple}
       clear={clear}

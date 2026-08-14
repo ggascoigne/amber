@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
+import type { Row, TableState } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
-import { createColumnHelper } from '@tanstack/react-table'
-import type { Row, TableState } from '@tanstack/react-table'
 
 import { Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -11,7 +11,7 @@ import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('firstName', {
     enableColumnFilter: true,
   }),
@@ -32,7 +32,7 @@ const columns = [
     header: 'Subscription',
     enableColumnFilter: true,
   }),
-]
+])
 export const TableDemoServerSide = () => {
   const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
   const handleStateChange = useCallback((newState: TableState) => {

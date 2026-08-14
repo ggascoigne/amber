@@ -5,13 +5,13 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
 
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import type { Row } from '@tanstack/react-table'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { TreeLines, treeLineTypes } from './TreeLines'
 
 import { theme } from '../../Theme'
+import type { Row } from '../tableTypes'
 
 type TestRowData = { id: string }
 

@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
 
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { match, P } from 'ts-pattern'
+
+import type { RowData, Table as TableInstance } from '../tableTypes'
 
 const HIDE_DISABLED_ACTIONS = false
 

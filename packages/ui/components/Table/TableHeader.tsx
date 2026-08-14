@@ -5,12 +5,12 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { Box, LinearProgress, TableSortLabel, Tooltip } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
 import { css } from '@mui/material/styles'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 
 import { HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
+import type { RowData, Table as TableInstance } from './tableTypes'
 import { isUserColumnId } from './utils/tableUtils'
 import type { RowStyleType } from './utils/tableUtils'
 
@@ -89,7 +89,7 @@ export const TableHeader = <T extends RowData>({
               const hasInlineSelectionBox = !!(
                 table.options.enableRowSelection &&
                 table.options.enableExpanding &&
-                table.options.enableTreeBehavior &&
+                table.options.meta?.enableTreeBehavior &&
                 table.options.getSubRows &&
                 isLastHeaderGroup &&
                 headerIndex === 0

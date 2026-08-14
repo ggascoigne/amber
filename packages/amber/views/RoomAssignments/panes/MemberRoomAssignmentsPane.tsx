@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 
 import RoomAssignmentSelect from './RoomAssignmentSelect'
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'

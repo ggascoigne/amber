@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
-import { createColumnHelper } from '@tanstack/react-table'
 
 import { Page, Toggle } from '@/Components'
 
@@ -166,7 +166,7 @@ const expandedRows = {
 
 const columnHelper = createColumnHelper<TreeDemoRow>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('name', {
     header: 'Area',
     size: 260,
@@ -187,7 +187,7 @@ const columns = [
       align: 'right' as const,
     },
   }),
-]
+])
 
 export const TableTree = () => {
   const [compact, setCompact] = useState(false)

@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from 'react'
 
-import type { Cell, RowData } from '@tanstack/react-table'
-
 import { normalizeValueForInput } from './editingValidation'
 import type { TableEditingCell } from './internalTypes'
+
+import type { Cell, RowData } from '../tableTypes'
 
 type UseActiveTableCellProps<TData extends RowData> = {
   commitPendingValue: (cell: {
