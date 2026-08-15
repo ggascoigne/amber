@@ -30,7 +30,7 @@ export const SettingValue: React.FC<{
         label={label}
         name={name}
         defaultCalendarMonth={DateTime.now()}
-        timeZone={configuration.baseTimeZone}
+        timezone={configuration.baseTimeZone}
       />
     ))
     .otherwise(() => <TextField name={name} label={label} margin='normal' fullWidth required />)

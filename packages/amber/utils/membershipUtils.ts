@@ -11,6 +11,7 @@ import type { Configuration } from './configContext'
 import { useConfiguration } from './configContext'
 import { toDateTime } from './dateUtils'
 import { extractErrors } from './extractErrors'
+import { normalizeMembershipDatesForPersistence } from './membershipDates'
 import { useFlag } from './settings'
 import { getMembershipTotal, useEditMembershipTransaction } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
@@ -152,7 +153,10 @@ export const useEditMembership = (onClose: OnCloseHandler) => {
     profile: UserAndProfile,
     usersTransactions: Transaction[] | undefined,
   ) => {
-    const membershipForPersistence = ensureMembershipDates(membershipValues)
+    const membershipForPersistence = normalizeMembershipDatesForPersistence(
+      ensureMembershipDates(membershipValues),
+      configuration.baseTimeZone,
+    )
     if (membershipValues.id) {
       await updateMembership
         .mutateAsync(

@@ -85,6 +85,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             })}
             minDate={configuration.mondayBeforeCon}
             maxDate={configuration.conventionEndDate}
+            timezone={configuration.baseTimeZone}
           />
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -98,6 +99,7 @@ export const MembershipStepRooms = ({ prefix = '' }: MembershipFormContent) => {
             })}
             minDate={configuration.conventionStartDate}
             maxDate={configuration.wednesdayAfterCon}
+            timezone={configuration.baseTimeZone}
           />
         </Grid>
       </Grid>

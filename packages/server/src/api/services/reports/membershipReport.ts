@@ -1,4 +1,13 @@
+import { toExcelCalendarDateSerial } from '@amber/shared/src/calendarDate'
+
 import type { ReportDefinition } from './types'
+
+import type { ReportCellValue } from '../../contracts/reports'
+
+const calendarDateColumns = ['Arriving', 'Departing'] as const
+
+const toExcelCalendarDateCell = (value: ReportCellValue): ReportCellValue =>
+  value instanceof Date || typeof value === 'string' ? toExcelCalendarDateSerial(value) : value
 
 export const membershipReport: ReportDefinition = {
   buildQuery: ({ abbr, virtual, year }) => {
@@ -149,4 +158,20 @@ export const membershipReport: ReportDefinition = {
     `
   },
   supportsSite: () => true,
+  transform: (rows) => {
+    const columns = rows[0] ? Object.keys(rows[0]) : []
+    const includedCalendarDateColumns = calendarDateColumns.filter((column) => columns.includes(column))
+
+    return {
+      columns,
+      columnFormats: includedCalendarDateColumns.map((column) => ({ column, format: 'yyyy-mm-dd' })),
+      rows: rows.map((row) => ({
+        ...row,
+        ...Object.fromEntries(
+          includedCalendarDateColumns.map((column) => [column, toExcelCalendarDateCell(row[column] ?? null)]),
+        ),
+      })),
+      sheetName: 'Sheet1',
+    }
+  },
 }
