@@ -1,4 +1,21 @@
+import { toExcelCalendarDateSerial } from '@amber/shared/src/calendarDate'
+
 import type { ReportDefinition } from './types'
+
+import type { ReportCellValue } from '../../contracts/reports'
+
+const calendarDateColumns = ['Arriving', 'Departing'] as const
+const timesAttendingColumn = 'Times Attending'
+
+const toExcelCalendarDateCell = (value: ReportCellValue): ReportCellValue =>
+  value instanceof Date || typeof value === 'string' ? toExcelCalendarDateSerial(value) : value
+
+const toTimesAttendingCell = (value: unknown): ReportCellValue => {
+  if (typeof value === 'bigint') {
+    return Number(value)
+  }
+  return typeof value === 'number' ? value : null
+}
 
 export const membershipReport: ReportDefinition = {
   buildQuery: ({ abbr, virtual, year }) => {
@@ -74,7 +91,7 @@ export const membershipReport: ReportDefinition = {
           LEFT JOIN (
             SELECT
               m.user_id,
-              COUNT(m.user_id) AS times_attending
+              COUNT(m.user_id) FILTER (WHERE m.attending) AS times_attending
             FROM
               membership m
             GROUP BY
@@ -119,7 +136,7 @@ export const membershipReport: ReportDefinition = {
         LEFT JOIN (
           SELECT
             m.user_id,
-            COUNT(m.user_id) AS times_attending
+            COUNT(m.user_id) FILTER (WHERE m.attending) AS times_attending
           FROM
             membership m
           GROUP BY
@@ -149,4 +166,24 @@ export const membershipReport: ReportDefinition = {
     `
   },
   supportsSite: () => true,
+  transform: (rows) => {
+    const columns = rows[0] ? Object.keys(rows[0]) : []
+    const includedCalendarDateColumns = calendarDateColumns.filter((column) => columns.includes(column))
+    const includesTimesAttending = columns.includes(timesAttendingColumn)
+
+    return {
+      columns,
+      columnFormats: includedCalendarDateColumns.map((column) => ({ column, format: 'yyyy-mm-dd' })),
+      rows: rows.map((row) => ({
+        ...row,
+        ...Object.fromEntries(
+          includedCalendarDateColumns.map((column) => [column, toExcelCalendarDateCell(row[column] ?? null)]),
+        ),
+        ...(includesTimesAttending
+          ? { [timesAttendingColumn]: toTimesAttendingCell(row[timesAttendingColumn] as unknown) }
+          : {}),
+      })),
+      sheetName: 'Sheet1',
+    }
+  },
 }
