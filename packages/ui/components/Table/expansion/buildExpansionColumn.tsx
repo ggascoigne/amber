@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box'
-import type { ColumnDef, RowData } from '@tanstack/react-table'
 
 import { RowExpansionButton } from '../components/RowExpansionButton'
 import { EXPAND_COLUMN_ID, EXPAND_COLUMN_SIZE } from '../constants'
+import type { ColumnDef, RowData } from '../tableTypes'
 
 export const buildExpansionColumn = <TData extends RowData>(hasExpandedContent: boolean): ColumnDef<TData> | null =>
   hasExpandedContent

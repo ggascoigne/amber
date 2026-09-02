@@ -2,25 +2,29 @@ import type { ReactElement, MouseEvent, ChangeEvent } from 'react'
 import { useCallback, useMemo } from 'react'
 
 import { TablePagination as MuiTablePagination } from '@mui/material'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
+
+import type { AmberTableState, RowData, TableApi as TableInstance } from '../tableTypes'
 
 export const rowsPerPageOptions = [10, 25, 50, 100, 250]
 
-export function TablePagination<T extends RowData>({
-  table,
-  rowCount: userRowCount,
-  displayRowsPerPage,
-  paginationPageSizes = rowsPerPageOptions,
-  compact = false,
-}: {
+type TablePaginationViewProps<T extends RowData> = {
   table: TableInstance<T>
+  pagination: AmberTableState['pagination']
   rowCount?: number
   displayRowsPerPage?: boolean
   paginationPageSizes?: Array<number>
   compact: boolean
-}): ReactElement | null {
-  const { setPageSize } = table
-  const { pageSize, pageIndex } = table.getState().pagination
+}
+
+const TablePaginationView = <T extends RowData>({
+  table,
+  pagination,
+  rowCount: userRowCount,
+  displayRowsPerPage,
+  paginationPageSizes = rowsPerPageOptions,
+  compact = false,
+}: TablePaginationViewProps<T>): ReactElement | null => {
+  const { pageSize, pageIndex } = pagination
   const pageCount = table.getPageCount()
   const { count, page, pageSizes } = useMemo(() => {
     const onLastPage = pageIndex === pageCount - 1
@@ -47,7 +51,7 @@ export function TablePagination<T extends RowData>({
       page={page}
       onPageChange={handleChangePage}
       onRowsPerPageChange={(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setPageSize(Number(e.target.value))
+        table.setPageSize(Number(e.target.value))
       }}
       data-testid='TablePagination'
       slotProps={{
@@ -58,4 +62,16 @@ export function TablePagination<T extends RowData>({
       sx={{ flexShrink: 0, '& p': { margin: 0 } }}
     />
   ) : null
+}
+
+type TablePaginationProps<T extends RowData> = Omit<TablePaginationViewProps<T>, 'pagination'>
+
+export const TablePagination = <T extends RowData>(props: TablePaginationProps<T>): ReactElement => {
+  const { table } = props
+
+  return (
+    <table.Subscribe source={table.atoms.pagination}>
+      {(pagination) => <TablePaginationView {...props} pagination={pagination} />}
+    </table.Subscribe>
+  )
 }

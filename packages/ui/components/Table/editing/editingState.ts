@@ -1,13 +1,13 @@
-import type { Cell, Row, RowData, Table } from '@tanstack/react-table'
-
 import { coerceInputValue, normalizeValidationResult } from './editingValidation'
 import type { TableEditingRowState } from './internalTypes'
 import type { DataTableEditingConfig, TableEditColumnConfig } from './types'
 
+import type { Cell, Row, RowData, TableApi } from '../tableTypes'
+
 type ApplyRowChangesParams<TData extends RowData> = {
   changes: Record<string, unknown>
   row: TData
-  table: Table<TData>
+  table: TableApi<TData>
 }
 
 export const applyRowChanges = <TData extends RowData>({ changes, row, table }: ApplyRowChangesParams<TData>) => {
@@ -45,7 +45,7 @@ type BuildNextEditsParams<TData extends RowData> = {
   rawValue: unknown
   row: Row<TData>
   column: Cell<TData, unknown>['column']
-  table: Table<TData>
+  table: TableApi<TData>
 }
 
 export const buildNextEdits = <TData extends RowData>({
@@ -138,7 +138,7 @@ type ValidateAllEditsParams<TData extends RowData> = {
   config?: DataTableEditingConfig<TData>
   currentEdits: Record<string, TableEditingRowState<TData>>
   getCoreRowById: (rowId: string) => Row<TData> | null
-  table: Table<TData>
+  table: TableApi<TData>
 }
 
 export const validateAllEdits = <TData extends RowData>({

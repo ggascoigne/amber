@@ -7,7 +7,6 @@ import Box from '@mui/material/Box'
 import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import useResizeObserver from '@react-hook/resize-observer'
-import type { Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import debug from 'debug'
 import { dequal as deepEqual } from 'dequal'
 import { match } from 'ts-pattern'
@@ -27,6 +26,9 @@ import { TableFilterBar } from './filter/TableFilterBar'
 import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
+import { selectTableRenderState } from './tableStateSelectors'
+import type { TableRenderState } from './tableStateSelectors'
+import type { Row, RowData, TableApi as TableInstance } from './tableTypes'
 
 import { isDev } from '../../utils/globals'
 
@@ -123,8 +125,13 @@ const TableEditingFooter = <T extends RowData>({ editing, addRowAction }: TableE
   )
 }
 
-export const DataTable = <T extends RowData>({
+type DataTableViewProps<T extends RowData> = DataTableProps<T> & {
+  tableState: TableRenderState
+}
+
+const DataTableView = <T extends RowData>({
   tableInstance,
+  tableState,
   title,
   isLoading,
   isFetching,
@@ -157,14 +164,14 @@ export const DataTable = <T extends RowData>({
   showExpandedSwitch = false,
   showExpandedOnly = false,
   onToggleShowExpandedOnly,
-}: DataTableProps<T>) => {
+}: DataTableViewProps<T>) => {
   const theme = useTheme()
   const [headingHeight, setHeadingHeight] = useState(0)
   const headingRef = useRef<HTMLDivElement>(null)
   const scrollPositionRef = useRef({ top: 0, left: 0 })
-  const expandedState = tableInstance.getState().expanded
+  const expandedState = tableState.expanded
   const previousExpandedRef = useRef(expandedState)
-  const { pageIndex } = tableInstance.getState().pagination
+  const { pageIndex } = tableState.pagination
   const editing = useTableEditing({ table: tableInstance, config: cellEditing })
   const hasExpandedContent = !!renderExpandedContent
   const displayedRows = useVisibleTableRows({ table: tableInstance, showExpandedOnly })
@@ -214,7 +221,7 @@ export const DataTable = <T extends RowData>({
 
   const shouldDisplayPagination = match(displayPagination)
     .with('always', () => true)
-    .with('asNeeded', () => tableInstance.options.data.length > tableInstance.getState()?.pagination?.pageSize)
+    .with('asNeeded', () => tableInstance.options.data.length > tableState.pagination.pageSize)
     .with('never', () => false)
     .exhaustive()
 
@@ -239,6 +246,7 @@ export const DataTable = <T extends RowData>({
   const tableContent = isLoading ? (
     <TableContentSkeleton
       table={tableInstance}
+      pageSize={tableState.pagination.pageSize}
       rowStyle={rowStyle}
       tableContainerRef={tableContainerRef}
       compact={compact}
@@ -249,6 +257,7 @@ export const DataTable = <T extends RowData>({
   ) : (
     <TableContent<T>
       table={tableInstance}
+      pagination={tableState.pagination}
       rows={displayedRows}
       onRowClick={editing.enabled ? undefined : onRowClick}
       rowActions={rowActions}
@@ -412,5 +421,15 @@ export const DataTable = <T extends RowData>({
         </TableScrollContainerProvider>
       </TableContextProvider>
     </Paper>
+  )
+}
+
+export const DataTable = <T extends RowData>(props: DataTableProps<T>) => {
+  const { tableInstance } = props
+
+  return (
+    <tableInstance.Subscribe selector={selectTableRenderState}>
+      {(tableState) => <DataTableView {...props} tableState={tableState} />}
+    </tableInstance.Subscribe>
   )
 }

@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import type { Cell, Row, RowData, Table } from '@tanstack/react-table'
-
 import { applyRowChanges, buildNextEdits, validateAllEdits } from './editingState'
 import type { TableCellEditState, TableEditingRowState, TableEditingState, TableRowEditState } from './internalTypes'
 import type { DataTableEditingConfig, TableEditColumnConfig, TableEditRowUpdate } from './types'
 import { useActiveTableCell } from './useActiveTableCell'
+
+import type { Cell, Row, RowData, TableApi } from '../tableTypes'
 
 export type {
   TableCellEditState,
@@ -15,7 +15,7 @@ export type {
   TableRowEditState,
 } from './internalTypes'
 type UseTableEditingProps<TData extends RowData> = {
-  table: Table<TData>
+  table: TableApi<TData>
   config?: DataTableEditingConfig<TData>
 }
 

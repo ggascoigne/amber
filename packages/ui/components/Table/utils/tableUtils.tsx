@@ -1,9 +1,8 @@
-import type { Column, ColumnDef, RowData } from '@tanstack/react-table'
-
 import { camelToWords } from '../../../utils/object'
 import { EXPAND_COLUMN_ID, SELECTION_COLUMN_ID } from '../constants'
+import type { Column, ColumnDef, RowData } from '../tableTypes'
 
-export const columnName = <T,>(column: Column<T>) =>
+export const columnName = <T extends RowData>(column: Column<T>) =>
   typeof column.columnDef.header === 'function'
     ? (column?.columnDef?.meta?.name ?? camelToWords(column.id))
     : (column.columnDef.header as string)

@@ -2,9 +2,9 @@ import type { ReactElement } from 'react'
 import { useMemo } from 'react'
 
 import Box from '@mui/material/Box'
-import type { Row, RowData } from '@tanstack/react-table'
 
 import { RowExpansionButton } from '../components/RowExpansionButton'
+import type { Row, RowData } from '../tableTypes'
 
 export const treeLineTypes = {
   vertical: '|',

@@ -4,16 +4,18 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { IconButton } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material/styles'
-import type { Row, RowData } from '@tanstack/react-table'
+import { Subscribe } from '@tanstack/react-table'
 
 import { useTableScrollContainerRef } from './TableScrollContainerContext'
+
+import type { Row, RowData } from '../tableTypes'
 
 type RowExpansionButtonProps<TData extends RowData> = {
   row: Row<TData>
   sx?: SxProps<Theme>
 }
 
-export const RowExpansionButton = <TData extends RowData>({ row, sx }: RowExpansionButtonProps<TData>) => {
+const RowExpansionButtonView = <TData extends RowData>({ row, sx }: RowExpansionButtonProps<TData>) => {
   const tableContainerRef = useTableScrollContainerRef()
 
   if (!row.getCanExpand()) return null
@@ -47,3 +49,9 @@ export const RowExpansionButton = <TData extends RowData>({ row, sx }: RowExpans
     </IconButton>
   )
 }
+
+export const RowExpansionButton = <TData extends RowData>(props: RowExpansionButtonProps<TData>) => (
+  <Subscribe source={props.row.table.atoms.expanded} selector={() => props.row.getIsExpanded()}>
+    {() => <RowExpansionButtonView {...props} />}
+  </Subscribe>
+)

@@ -5,8 +5,8 @@ import { useTRPC } from '@amber/client'
 import { notEmpty } from '@amber/ui'
 import { YesBlankCell } from '@amber/ui/components/CellFormatters'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import type { ColumnDef } from '@tanstack/react-table'
 
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
 

@@ -3,7 +3,6 @@
 import { useMemo } from 'react'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { match, P } from 'ts-pattern'
 
 import type { Action, UserAction } from './actions'
@@ -13,6 +12,7 @@ import { Export } from './Export'
 import { ActionButton, TableIconButton, ActionIconButton, RefreshButton } from './ToolbarButtons'
 
 import { ButtonMenu } from '../../ButtonMenu'
+import type { RowData, TableApi as TableInstance } from '../tableTypes'
 
 type ToolbarButtonGroupProps<T extends RowData> = {
   actions: ReadonlyArray<Action<T>> | undefined

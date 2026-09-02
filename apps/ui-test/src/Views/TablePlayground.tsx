@@ -2,10 +2,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
 import { zeroSelected, getSelectedRows, someSelected, Table, SelectColumnFilter } from '@amber/ui/components/Table'
+import type { Row, TableApi as TableInstance } from '@amber/ui/components/Table/tableTypes'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Typography, Stack } from '@mui/material'
-import type { Row, Table as TableInstance } from '@tanstack/react-table'
-import { createColumnHelper } from '@tanstack/react-table'
 
 import { Page, Toggle } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -46,7 +46,7 @@ const getDesiredRows = (value: number) => (value === sliderValues.length - 1 ? 1
 
 const columnHelper = createColumnHelper<UserType>()
 
-const flatColumns = [
+const flatColumns = columnHelper.columns([
   columnHelper.accessor('firstName', {
     enableColumnFilter: true,
   }),
@@ -80,12 +80,12 @@ const flatColumns = [
       },
     },
   }),
-]
+])
 
-const groupedColumns = [
-  {
+const groupedColumns = columnHelper.columns([
+  columnHelper.group({
     header: 'User',
-    columns: [
+    columns: columnHelper.columns([
       columnHelper.accessor('firstName', {
         enableColumnFilter: true,
       }),
@@ -103,22 +103,22 @@ const groupedColumns = [
           },
         },
       }),
-    ],
-  },
-  {
+    ]),
+  }),
+  columnHelper.group({
     header: 'Address',
-    columns: [
+    columns: columnHelper.columns([
       columnHelper.accessor('email', {}),
       columnHelper.accessor('address', {}),
       columnHelper.accessor('city', {}),
       columnHelper.accessor('state', {}),
       columnHelper.accessor('zipCode', {}),
       columnHelper.accessor('phone', {}),
-    ],
-  },
-  {
+    ]),
+  }),
+  columnHelper.group({
     header: 'Subscription',
-    columns: [
+    columns: columnHelper.columns([
       columnHelper.accessor('subscriptionTier', {
         header: 'Subscription',
         meta: {
@@ -129,9 +129,9 @@ const groupedColumns = [
           },
         },
       }),
-    ],
-  },
-]
+    ]),
+  }),
+])
 export const TablePlayground = ({ title }: { title: string }) => {
   const { data, isLoading, isFetching, refetch } = useAllUsersQuery()
 

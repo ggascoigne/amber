@@ -3,8 +3,8 @@ import React, { useCallback } from 'react'
 import type { Transaction } from '@amber/client'
 import { useTRPC, useInvalidatePaymentQueries } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useQuery, useMutation } from '@tanstack/react-query'
-import type { ColumnDef } from '@tanstack/react-table'
 
 import { TransactionDialog } from './TransactionDialog'
 

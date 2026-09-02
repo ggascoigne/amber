@@ -1,8 +1,7 @@
 import { useCallback } from 'react'
 
-import type { Cell, Row, RowData } from '@tanstack/react-table'
-
 import type { TableEditingState } from '../editing/useTableEditing'
+import type { Cell, Row, RowData } from '../tableTypes'
 import { isUserColumnId } from '../utils/tableUtils'
 
 type UseEditableCellNavigationProps<TData extends RowData> = {

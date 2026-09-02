@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
-import { someSelected, zeroSelected, getDefaultSort, Table } from '@amber/ui/components/Table'
+import { someSelected, zeroSelected, getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
+import type { Row, TableApi as TableInstance } from '@amber/ui/components/Table/tableTypes'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'
-import type { Table as TableInstance, Row, TableState } from '@tanstack/react-table'
-import { createColumnHelper } from '@tanstack/react-table'
 
 import { Toggle, Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -13,7 +13,7 @@ import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('firstName', {
     enableColumnFilter: true,
   }),
@@ -21,7 +21,7 @@ const columns = [
     enableColumnFilter: true,
   }),
   columnHelper.accessor('email', {}),
-]
+])
 
 type ExampleTableProps = {
   enableRowSelection: boolean
@@ -56,26 +56,24 @@ const ExampleTable = ({
   debug,
   variant,
 }: ExampleTableProps) => {
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
-
-  const { data } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: {
+      pagination: {
+        pageSize: 2,
+        pageIndex: 0,
+      },
+      sorting: getDefaultSort(columns),
+      globalFilter: '',
     },
-    { enabled: !!state },
-  )
+  })
+
+  const { data } = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter ?? '',
+    filters: state.columnFilters,
+  })
 
   const dummy = useCallback(
     (commandName: string) =>
@@ -125,6 +123,8 @@ const ExampleTable = ({
 
   return (
     <Table
+      disableStatePersistence
+      atoms={atoms}
       sx={{ width: '600px' }}
       name={`Users Table ${index}`}
       keyField='id'
@@ -141,18 +141,10 @@ const ExampleTable = ({
       hideHeader={hideHeader}
       paginationStyle={compactPagination ? 'compact' : 'default'}
       variant={variant}
-      handleStateChange={handleStateChange}
       enableRowSelection={enableRowSelection}
       enableGlobalFilter={withSearch}
       enableColumnFilters={withFilters}
-      initialState={{
-        pagination: {
-          pageSize: 2,
-          pageIndex: 0,
-        },
-        sorting: getDefaultSort(columns),
-        globalFilter: '',
-      }}
+      initialState={initialState}
       rowCount={data?.rowCount ?? 0}
     />
   )

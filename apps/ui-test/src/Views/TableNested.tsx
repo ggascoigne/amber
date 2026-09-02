@@ -2,9 +2,9 @@ import { useCallback, useRef, useState } from 'react'
 
 import type { TableAutocompleteOption, TableEditOption, TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
+import type { Row } from '@amber/ui/components/Table/tableTypes'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import { Typography } from '@mui/material'
-import type { Row } from '@tanstack/react-table'
-import { createColumnHelper } from '@tanstack/react-table'
 
 import { Page } from '@/Components'
 
@@ -38,7 +38,7 @@ const roleOptions: Array<TableEditOption> = [
 const columnHelper = createColumnHelper<GameRow>()
 const assignmentColumnHelper = createColumnHelper<AssignmentRow>()
 
-const gameColumns = [
+const gameColumns = columnHelper.columns([
   columnHelper.accessor('slot', {
     header: 'Slot',
     size: 80,
@@ -53,9 +53,9 @@ const gameColumns = [
     size: 100,
     meta: { align: 'right' as const },
   }),
-]
+])
 
-const assignmentColumns = [
+const assignmentColumns = assignmentColumnHelper.columns([
   assignmentColumnHelper.accessor('memberId', {
     header: 'Member',
     cell: ({ getValue }) => memberNameById.get(Number(getValue())) ?? 'Unassigned',
@@ -82,7 +82,7 @@ const assignmentColumns = [
       },
     },
   }),
-]
+])
 
 const initialGames: Array<GameRow> = [
   {

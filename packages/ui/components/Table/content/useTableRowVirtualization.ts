@@ -2,10 +2,11 @@ import type { RefObject } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
 import useResizeObserver from '@react-hook/resize-observer'
-import type { Row, RowData, Table as TableInstance } from '@tanstack/react-table'
 import type { VirtualItem } from '@tanstack/react-virtual'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { oneLine } from 'common-tags'
+
+import type { Row, RowData, TableApi as TableInstance } from '../tableTypes'
 
 const estimatedRowHeight = 50.1875
 const estimatedCompactRowHeight = 34.1875

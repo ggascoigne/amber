@@ -5,12 +5,12 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { Box, LinearProgress, TableSortLabel, Tooltip } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
 import { css } from '@mui/material/styles'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { flexRender } from '@tanstack/react-table'
 
 import { HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
+import type { RowData, TableApi as TableInstance } from './tableTypes'
 import { isUserColumnId } from './utils/tableUtils'
 import type { RowStyleType } from './utils/tableUtils'
 
@@ -27,16 +27,7 @@ const tableSortClasses = {
   ),
 }
 
-export const TableHeader = <T extends RowData>({
-  table,
-  sx,
-  displayLoading,
-  isLoading,
-  isFetching,
-  displayGutter,
-  rowStyle = 'flex',
-  compact,
-}: {
+type TableHeaderProps<T extends RowData> = {
   table: TableInstance<T>
   sx?: SxProps<Theme>
   isLoading?: boolean
@@ -45,7 +36,18 @@ export const TableHeader = <T extends RowData>({
   compact: boolean
   displayGutter: boolean
   rowStyle: RowStyleType
-}): ReactElement => {
+}
+
+const TableHeaderView = <T extends RowData>({
+  table,
+  sx,
+  displayLoading,
+  isLoading,
+  isFetching,
+  displayGutter,
+  rowStyle = 'flex',
+  compact,
+}: TableHeaderProps<T>): ReactElement => {
   const headerGroups = table.getHeaderGroups()
   const showProgress = displayLoading && isFetching && !isLoading
 
@@ -89,7 +91,7 @@ export const TableHeader = <T extends RowData>({
               const hasInlineSelectionBox = !!(
                 table.options.enableRowSelection &&
                 table.options.enableExpanding &&
-                table.options.enableTreeBehavior &&
+                table.options.meta?.enableTreeBehavior &&
                 table.options.getSubRows &&
                 isLastHeaderGroup &&
                 headerIndex === 0
@@ -212,5 +214,24 @@ export const TableHeader = <T extends RowData>({
         />
       )}
     </TableHead>
+  )
+}
+
+export const TableHeader = <T extends RowData>(props: TableHeaderProps<T>) => {
+  const { table } = props
+
+  return (
+    <table.Subscribe
+      selector={(state) => ({
+        columnOrder: state.columnOrder,
+        columnResizing: state.columnResizing,
+        columnSizing: state.columnSizing,
+        columnVisibility: state.columnVisibility,
+        grouping: state.grouping,
+        sorting: state.sorting,
+      })}
+    >
+      {() => <TableHeaderView {...props} />}
+    </table.Subscribe>
   )
 }

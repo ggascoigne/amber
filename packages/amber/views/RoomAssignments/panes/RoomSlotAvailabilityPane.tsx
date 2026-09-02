@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 
 import { SelectColumnFilter, Table } from '@amber/ui/components/Table'
+import type { ColumnDef, TableQueryState } from '@amber/ui/components/Table/tableTypes'
 import { Box, Button, Checkbox } from '@mui/material'
-import type { ColumnDef, TableState } from '@tanstack/react-table'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 
@@ -63,7 +63,7 @@ const RoomSlotAvailabilityPane = ({
   onRoomSlotAvailabilityChange,
   onSetAllRoomsFullAvailability,
 }: RoomSlotAvailabilityPaneProps) => {
-  const [tableState, setTableState] = useState<TableState | undefined>(undefined)
+  const [tableState, setTableState] = useState<TableQueryState | undefined>(undefined)
 
   const globalFilterSearch = useMemo(() => {
     const globalFilterValue = tableState?.globalFilter
@@ -184,7 +184,7 @@ const RoomSlotAvailabilityPane = ({
         columns={columns}
         isLoading={isLoading}
         isFetching={isFetching}
-        handleStateChange={setTableState}
+        onQueryStateChange={setTableState}
         enableRowSelection={false}
         enableGrouping={false}
         enableGlobalFilter

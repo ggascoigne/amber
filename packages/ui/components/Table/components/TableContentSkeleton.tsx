@@ -3,18 +3,19 @@ import { useCallback } from 'react'
 
 import { Skeleton } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
-import type { RowData, Table as TableInstance } from '@tanstack/react-table'
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { TableBody, TableCell, TableRow } from './TableStyles'
 
 import { range } from '../../../utils/range'
+import type { RowData, TableApi as TableInstance } from '../tableTypes'
 import type { RowStyleType } from '../utils/tableUtils'
 
 const measureElement = (element: Element) => element?.getBoundingClientRect().height
 
 export const TableContentSkeleton = <T extends RowData>({
   table,
+  pageSize,
   sx,
   rowStyle,
   compact,
@@ -22,13 +23,13 @@ export const TableContentSkeleton = <T extends RowData>({
   tableContainerRef,
 }: {
   table: TableInstance<T>
+  pageSize: number
   sx?: SxProps<Theme>
   rowStyle: RowStyleType
   compact: boolean
   useVirtualRows?: boolean
   tableContainerRef: RefObject<HTMLDivElement | null>
 }): ReactElement => {
-  const { pageSize } = table.getState().pagination
   const headerGroup = table.getHeaderGroups()[table.getHeaderGroups().length - 1]
 
   const estimateRowHeight = compact ? 34.2 : 50.2

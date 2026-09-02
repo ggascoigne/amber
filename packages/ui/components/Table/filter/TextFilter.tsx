@@ -2,12 +2,12 @@ import type { ChangeEvent, KeyboardEvent } from 'react'
 import { useCallback, useState, useMemo } from 'react'
 
 import { Box, Button, TextField } from '@mui/material'
-import type { RowData, FilterRenderProps } from '@tanstack/react-table'
 
 import { useFilterContext } from './FilterContext'
 import { FilterStatusButton } from './FilterStatusButton'
 
 import { useFocusableInput } from '../../../utils/useFocusableInput'
+import type { RowData, FilterRenderProps } from '../tableTypes'
 import { columnName } from '../utils/tableUtils'
 
 type TextFilterEditorProps = {
@@ -118,10 +118,16 @@ export const TextFilter = ({
 }
 
 export const TextColumnFilter = <T extends RowData>({ column, clear }: FilterRenderProps<T>) => {
-  const { id, getFilterValue, setFilterValue } = column
-  const originalValue = (getFilterValue() as string) || ''
+  const { id } = column
+  const originalValue = (column.getFilterValue() as string) || ''
 
   return (
-    <TextFilter id={id} filterName={columnName(column)} value={originalValue} setValue={setFilterValue} clear={clear} />
+    <TextFilter
+      id={id}
+      filterName={columnName(column)}
+      value={originalValue}
+      setValue={(value) => column.setFilterValue(value)}
+      clear={clear}
+    />
   )
 }

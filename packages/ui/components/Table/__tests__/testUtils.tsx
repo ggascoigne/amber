@@ -5,7 +5,6 @@ import { useState } from 'react'
 
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import Box from '@mui/material/Box'
-import type { ColumnDef, Row, RowData } from '@tanstack/react-table'
 import { render } from '@testing-library/react'
 import { vi } from 'vitest'
 
@@ -13,6 +12,7 @@ import { theme } from '../../../components/Theme'
 import { DataTable } from '../DataTable'
 import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
 import { Table } from '../Table'
+import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { useTable } from '../useTable'
 
 export type PersonRow = {
@@ -182,6 +182,10 @@ export const DataTableHarness = <TData extends RowData>({
 
 type TableHarnessProps = {
   data?: Array<PersonRow>
+  columns?: Array<ColumnDef<PersonRow>>
+  handleStateChange?: (state: TableState) => void
+  onQueryStateChange?: (state: TableQueryState) => void
+  initialState?: Partial<TableState>
   renderExpandedContent?: (row: Row<PersonRow>) => ReactNode
   cellEditing?: DataTableEditingConfig<PersonRow>
   showExpandedSwitch?: boolean
@@ -194,6 +198,10 @@ export const TableHarness = ({
     { id: '1', name: 'Alpha', age: 10, note: 'alpha details' },
     { id: '2', name: 'Beta', age: 20, note: 'beta details' },
   ],
+  columns = personColumns,
+  handleStateChange,
+  onQueryStateChange,
+  initialState,
   renderExpandedContent,
   cellEditing,
   showExpandedSwitch,
@@ -204,9 +212,12 @@ export const TableHarness = ({
     <Table<PersonRow>
       disableStatePersistence
       data={data}
-      columns={personColumns}
+      columns={columns}
       keyField='id'
       title='People'
+      handleStateChange={handleStateChange}
+      onQueryStateChange={onQueryStateChange}
+      initialState={initialState}
       enableRowSelection
       useVirtualRows
       cellEditing={cellEditing}

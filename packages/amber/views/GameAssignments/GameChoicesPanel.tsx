@@ -3,8 +3,8 @@ import { useCallback, useMemo, useState } from 'react'
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import { Box } from '@mui/material'
-import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
@@ -147,7 +147,7 @@ export const GameChoicesPanel = ({
           accessorKey: 'rankLabel',
           header: 'Priority',
           size: 110,
-          sortingFn: (rowA, rowB) =>
+          sortFn: (rowA, rowB) =>
             getPrioritySortValue(rowA.original.rank, rowA.original.returningPlayer) -
             getPrioritySortValue(rowB.original.rank, rowB.original.returningPlayer),
         },

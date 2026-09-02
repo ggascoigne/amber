@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 
-import { Table } from '@amber/ui/components/Table'
+import { getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
+import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
+import type { Row } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
-import { createColumnHelper } from '@tanstack/react-table'
-import type { Row, TableState } from '@tanstack/react-table'
 
 import { Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
@@ -11,7 +11,7 @@ import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()
 
-const columns = [
+const columns = columnHelper.columns([
   columnHelper.accessor('firstName', {
     enableColumnFilter: true,
   }),
@@ -32,28 +32,19 @@ const columns = [
     header: 'Subscription',
     enableColumnFilter: true,
   }),
-]
+])
 export const TableDemoServerSide = () => {
-  const [state, setState] = useState<Partial<TableState> | undefined>(undefined)
-  const handleStateChange = useCallback((newState: TableState) => {
-    setState({
-      pagination: newState?.pagination,
-      sorting: newState?.sorting ?? [],
-      globalFilter: newState?.globalFilter,
-      columnFilters: newState?.columnFilters,
-    })
-  }, [])
+  const { atoms, initialState, state } = useServerTableState({
+    initialState: { sorting: getDefaultSort(columns) },
+  })
 
-  const { data, isLoading, isFetching, refetch } = useUsersQuery(
-    {
-      pageIndex: state?.pagination?.pageIndex ?? 0,
-      pageSize: state?.pagination?.pageSize ?? 10,
-      sorting: state?.sorting ?? [],
-      globalFilter: state?.globalFilter ?? '',
-      filters: state?.columnFilters,
-    },
-    { enabled: !!state },
-  )
+  const { data, isLoading, isFetching, refetch } = useUsersQuery({
+    pageIndex: state.pagination.pageIndex,
+    pageSize: state.pagination.pageSize,
+    sorting: state.sorting,
+    globalFilter: state.globalFilter ?? '',
+    filters: state.columnFilters,
+  })
 
   const dummy = useCallback((instance: any, selectedKeys: string[]) => {
     console.log('Toolbar Action Clicked', instance, selectedKeys)
@@ -79,7 +70,9 @@ export const TableDemoServerSide = () => {
       >
         <Table
           title='Table - Server search'
-          name='table-test-server'
+          disableStatePersistence
+          atoms={atoms}
+          initialState={initialState}
           keyField='id'
           columns={columns}
           data={data?.rows ?? []}
@@ -92,7 +85,6 @@ export const TableDemoServerSide = () => {
           scrollBehavior='bounded'
           refetch={refetch}
           debug
-          handleStateChange={handleStateChange}
           rowCount={data?.rowCount ?? 0}
           displayGutter={false}
         />

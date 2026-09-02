@@ -2,9 +2,9 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import { Box } from '@mui/material'
 import { alpha } from '@mui/material/styles'
-import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import { buildAssignmentCountsByGameId, buildGameInterestSummaryRows } from './domain/assignmentSummaries'
@@ -175,7 +175,7 @@ export const GameInterestPanel = ({
         accessorKey: 'priorityLabel',
         header: 'Priority',
         size: 110,
-        sortingFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
+        sortFn: (rowA, rowB) => rowA.original.prioritySortValue - rowB.original.prioritySortValue,
       },
     ],
     [],

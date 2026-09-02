@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 
 import { Table } from '@amber/ui/components/Table'
+import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton, Typography } from '@mui/material'
-import type { ColumnDef, Row } from '@tanstack/react-table'
 
 import RoomAssignmentSelect from './RoomAssignmentSelect'
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'

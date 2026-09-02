@@ -1,8 +1,8 @@
 /* eslint-disable import-x/no-extraneous-dependencies */
 
-import type { ColumnDef } from '@tanstack/react-table'
 import { describe, expect, test } from 'vitest'
 
+import type { ColumnDef } from '../tableTypes'
 import { sanitizePersistedTableState } from '../useTableState'
 import { getDefaultSort, getLeafColumnIds } from '../utils/tableUtils'
 

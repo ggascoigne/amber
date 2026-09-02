@@ -1,13 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
-import type { ColumnDef, TableState, RowData } from '@tanstack/react-table'
-
+import type { AmberColumnDef, AmberTableState, RowData } from './tableTypes'
 import { getLeafColumnIds } from './utils/tableUtils'
 
 import { useLocalStorage } from '../../utils/useLocalStorage'
 
 export type PersistedTableState = Pick<
-  TableState,
+  AmberTableState,
   | 'sorting'
   | 'columnFilters'
   | 'pagination'
@@ -18,7 +17,19 @@ export type PersistedTableState = Pick<
   | 'globalFilter'
 >
 
-export const getColumnsNames = <T extends RowData>(columns: ColumnDef<T>[]) => getLeafColumnIds(columns).join(',')
+export const selectPersistedTableState = (state: AmberTableState): PersistedTableState => ({
+  sorting: state.sorting,
+  columnFilters: state.columnFilters,
+  pagination: state.pagination,
+  columnSizing: state.columnSizing,
+  columnVisibility: state.columnVisibility,
+  columnOrder: state.columnOrder,
+  grouping: state.grouping,
+  globalFilter: state.globalFilter,
+})
+
+export const getColumnsNames = <T extends RowData>(columns: Array<AmberColumnDef<T>>) =>
+  getLeafColumnIds(columns).join(',')
 
 export type PersistedState = {
   createdFor: {
@@ -66,7 +77,7 @@ export const sanitizePersistedTableState = (
 
 export const buildPersistableState = (
   createdFor: PersistedState['createdFor'],
-  nextState: TableState,
+  nextState: AmberTableState,
 ): PersistedState => ({
   createdFor,
   value: {
@@ -83,8 +94,8 @@ export const buildPersistableState = (
 
 export const useTableState = <T extends RowData>(
   name: string,
-  columns: ColumnDef<T>[],
-  initialState?: Partial<TableState>,
+  columns: Array<AmberColumnDef<T>>,
+  initialState?: Partial<AmberTableState>,
   enabled = true,
 ) => {
   const leafColumnIds = useMemo(() => getLeafColumnIds(columns), [columns])
@@ -109,7 +120,7 @@ export const useTableState = <T extends RowData>(
   )
 
   const updateState = useCallback(
-    (s: TableState) => {
+    (s: AmberTableState) => {
       setPersistedTableState(buildPersistableState(createdFor, s))
     },
     [createdFor, setPersistedTableState],
