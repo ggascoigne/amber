@@ -7,7 +7,13 @@
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 
-import { TableHarness, installDomMeasurementMocks, renderWithProviders, type PersonRow } from './testUtils'
+import {
+  TableHarness,
+  installDomMeasurementMocks,
+  personColumns,
+  renderWithProviders,
+  type PersonRow,
+} from './testUtils'
 
 import { treeLineTypes } from '../content/TreeLines'
 import { Table } from '../Table'
@@ -43,6 +49,31 @@ describe('table expansion', () => {
   afterEach(() => {
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
+  })
+
+  test('renders every row when pagination is disabled', async () => {
+    const rows = Array.from({ length: 101 }, (_, index): PersonRow => ({
+      id: String(index),
+      name: `Person ${index + 1}`,
+      age: index,
+    }))
+
+    renderWithProviders(
+      <Table<PersonRow>
+        disableStatePersistence
+        data={rows}
+        columns={personColumns}
+        keyField='id'
+        enablePagination={false}
+        enableRowSelection={false}
+        enableGrouping={false}
+        displayPagination='never'
+        debug={false}
+        useVirtualRows={false}
+      />,
+    )
+
+    expect(await screen.findByText('Person 101')).toBeInTheDocument()
   })
 
   test('renders expanded content and filters to expanded rows only', async () => {

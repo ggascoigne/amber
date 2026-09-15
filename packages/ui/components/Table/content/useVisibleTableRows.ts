@@ -14,7 +14,10 @@ export const useVisibleTableRows = <TData extends RowData>({
   table,
   showExpandedOnly = false,
 }: UseVisibleTableRowsProps<TData>) => {
-  const allRows = table.getRowModel().rows
+  // The table feature set always supplies a paginated row model. When pagination
+  // is disabled, use the model immediately before that step so callers do not
+  // silently receive only the default 100 rows.
+  const allRows = table.options.meta?.enablePagination ? table.getRowModel().rows : table.getPrePaginatedRowModel().rows
 
   return useMemo(() => getVisibleTableRows(allRows, showExpandedOnly), [allRows, showExpandedOnly])
 }
