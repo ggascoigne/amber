@@ -226,6 +226,7 @@ export const GameAssignmentsByGamePanel = ({
                 choicesByMemberSlot,
                 gameCategoryByGameId,
                 gmMemberIdsBySlotId,
+                assignments: scheduledAssignments,
                 gameId: row.original.gameId,
                 slotId: row.original.slotId,
               }),
@@ -324,6 +325,7 @@ export const GameAssignmentsByGamePanel = ({
       gameCategoryByGameId,
       gmMemberIdsBySlotId,
       data.memberships,
+      scheduledAssignments,
       filteredSlotGames,
     ],
   )

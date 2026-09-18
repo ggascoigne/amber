@@ -128,6 +128,7 @@ export const buildMemberSelectOptionsForGame = ({
   choicesByMemberSlot,
   gameCategoryByGameId,
   gmMemberIdsBySlotId,
+  assignments,
   gameId,
   slotId,
 }: {
@@ -135,10 +136,19 @@ export const buildMemberSelectOptionsForGame = ({
   choicesByMemberSlot: ChoicesByMemberSlot
   gameCategoryByGameId: GameCategoryByGameId
   gmMemberIdsBySlotId: Map<number, Set<number>>
+  assignments: Array<DashboardAssignment>
   gameId: number
   slotId: number
 }): Array<TableEditOption> => {
   const gmMemberIds = gmMemberIdsBySlotId.get(slotId) ?? new Set<number>()
+  const assignedGameNamesByMemberId = new Map<number, Array<string>>()
+
+  assignments.forEach((assignment) => {
+    if (assignment.game?.slotId !== slotId) return
+    const gameNames = assignedGameNamesByMemberId.get(assignment.memberId) ?? []
+    gameNames.push(formatGameName(assignment.game))
+    assignedGameNamesByMemberId.set(assignment.memberId, gameNames)
+  })
 
   const options = memberships
     .filter((membership) => membership.attending && !gmMemberIds.has(membership.id))
@@ -156,6 +166,7 @@ export const buildMemberSelectOptionsForGame = ({
         value: membership.id,
         label: membership.user.fullName ?? 'Unknown member',
         priorityLabel,
+        assignedToLabel: (assignedGameNamesByMemberId.get(membership.id) ?? []).join(', '),
         prioritySortValue: choice
           ? getPrioritySortValue(choice.rank, choice.returningPlayer)
           : Number.POSITIVE_INFINITY,
@@ -172,11 +183,19 @@ export const buildMemberSelectOptionsForGame = ({
       value: '__header__',
       disabled: true,
       isHeader: true,
-      columns: [{ value: 'Member' }, { value: 'Priority', width: 120, align: 'right' }],
+      columns: [
+        { value: 'Member' },
+        { value: 'Priority', width: 120, align: 'right' },
+        { value: 'Assigned To', width: 180 },
+      ],
     },
-    ...options.map(({ priorityLabel, prioritySortValue: _prioritySortValue, ...option }) => ({
+    ...options.map(({ assignedToLabel, priorityLabel, prioritySortValue: _prioritySortValue, ...option }) => ({
       ...option,
-      columns: [{ value: option.label }, { value: priorityLabel, width: 120, align: 'right' as const }],
+      columns: [
+        { value: option.label },
+        { value: priorityLabel, width: 120, align: 'right' as const },
+        { value: assignedToLabel, width: 180 },
+      ],
     })),
   ]
 }

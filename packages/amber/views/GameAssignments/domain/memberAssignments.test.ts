@@ -36,6 +36,7 @@ describe('buildMemberSelectOptionsForGame', () => {
           [900, 'any_game'],
         ]),
         gmMemberIdsBySlotId: new Map([[1, new Set([3])]]),
+        assignments: [buildAssignment({ memberId: 4, gameId: 102, gm: 0, slotId: 1 })],
         gameId: 101,
         slotId: 1,
       }),
@@ -45,22 +46,26 @@ describe('buildMemberSelectOptionsForGame', () => {
         value: '__header__',
         disabled: true,
         isHeader: true,
-        columns: [{ value: 'Member' }, { value: 'Priority', width: 120, align: 'right' }],
+        columns: [
+          { value: 'Member' },
+          { value: 'Priority', width: 120, align: 'right' },
+          { value: 'Assigned To', width: 180 },
+        ],
       },
       {
         label: 'Bea',
         value: 2,
-        columns: [{ value: 'Bea' }, { value: '1st (Any Game)', width: 120, align: 'right' }],
+        columns: [{ value: 'Bea' }, { value: '1st (Any Game)', width: 120, align: 'right' }, { value: '', width: 180 }],
       },
       {
         label: 'Ada',
         value: 1,
-        columns: [{ value: 'Ada' }, { value: '2nd', width: 120, align: 'right' }],
+        columns: [{ value: 'Ada' }, { value: '2nd', width: 120, align: 'right' }, { value: '', width: 180 }],
       },
       {
         label: 'Dee',
         value: 4,
-        columns: [{ value: 'Dee' }, { value: '', width: 120, align: 'right' }],
+        columns: [{ value: 'Dee' }, { value: '', width: 120, align: 'right' }, { value: 'Game 102', width: 180 }],
       },
     ])
   })
