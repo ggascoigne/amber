@@ -24,6 +24,7 @@ import { buildGameChoiceOptionsForRow, getGameLabel } from './domain/moveOptions
 import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
+import { SignupNoteIndicator } from './SignupNoteIndicator'
 
 import { useConfiguration } from '../../utils/configContext'
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
@@ -40,6 +41,8 @@ type GameChoicesPanelProps = {
   onToggleExpand?: () => void
   onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
+  hiddenSignupNoteMemberIdSet: Set<number>
+  onSignupNoteHiddenChange: (memberId: number, hidden: boolean) => void
 }
 
 export const GameChoicesPanel = ({
@@ -54,6 +57,8 @@ export const GameChoicesPanel = ({
   onToggleExpand,
   onToggleMinimize,
   scrollBehavior = 'bounded',
+  hiddenSignupNoteMemberIdSet,
+  onSignupNoteHiddenChange,
 }: GameChoicesPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
@@ -107,6 +112,14 @@ export const GameChoicesPanel = ({
             }}
           >
             {row.original.memberName}
+            {submissionsByMemberId.get(row.original.memberId)?.message?.trim() &&
+            !hiddenSignupNoteMemberIdSet.has(row.original.memberId) ? (
+              <SignupNoteIndicator
+                memberName={row.original.memberName}
+                message={submissionsByMemberId.get(row.original.memberId)?.message.trim() ?? ''}
+                onHide={() => onSignupNoteHiddenChange(row.original.memberId, true)}
+              />
+            ) : null}
           </Box>
         ),
       },
@@ -119,7 +132,7 @@ export const GameChoicesPanel = ({
         },
       },
     ],
-    [],
+    [hiddenSignupNoteMemberIdSet, onSignupNoteHiddenChange, submissionsByMemberId],
   )
 
   const handleSummaryRowClick = useCallback((row: Row<MemberChoiceSummaryRow>) => {
@@ -210,7 +223,11 @@ export const GameChoicesPanel = ({
       const message = submission?.message
 
       return (
-        <MemberSubmissionDetailLayout submissionMessage={message}>
+        <MemberSubmissionDetailLayout
+          submissionMessage={message}
+          isSubmissionHidden={hiddenSignupNoteMemberIdSet.has(memberId)}
+          onSubmissionHiddenChange={(hidden) => onSignupNoteHiddenChange(memberId, hidden)}
+        >
           <Box sx={{ minWidth: 0 }}>
             <Table<MemberChoiceRow>
               name={`member-choices-${memberId}`}
@@ -247,6 +264,8 @@ export const GameChoicesPanel = ({
       gameCategoryByGameId,
       gameById,
       submissionsByMemberId,
+      hiddenSignupNoteMemberIdSet,
+      onSignupNoteHiddenChange,
       onUpsertChoice,
       slotFilterId,
       slotGameIdSet,

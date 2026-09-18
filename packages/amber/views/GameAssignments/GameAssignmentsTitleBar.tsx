@@ -7,7 +7,7 @@ import type { GameAssignmentsLayoutMode } from './pageState'
 import { SlotFilterSelect } from './SlotFilterSelect'
 
 const legendItems = [
-  'Members with a * by their name have Signup notes',
+  'A document icon beside a member name indicates a Signup note.',
   'Red names have incomplete Signups or Assignments.',
   'Priorities with a * by them are returning players.',
   'Game names with a * by them are returning players only.',

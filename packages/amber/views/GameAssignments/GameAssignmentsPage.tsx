@@ -48,6 +48,7 @@ const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlo
 const GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY = 'amber.gameAssignments.expandedPaneId'
 const GAME_ASSIGNMENTS_MINIMIZED_PANES_STORAGE_KEY = 'amber.gameAssignments.minimizedPaneIds'
 const GAME_ASSIGNMENTS_INTEREST_MODE_STORAGE_KEY = 'amber.gameAssignments.interestMode'
+const GAME_ASSIGNMENTS_HIDDEN_SIGNUP_NOTE_MEMBER_IDS_STORAGE_KEY = 'amber.gameAssignments.hiddenSignupNoteMemberIds'
 
 const GameAssignmentsPage = () => {
   const trpc = useTRPC()
@@ -98,6 +99,33 @@ const GameAssignmentsPage = () => {
   const interestMode = useMemo<GameInterestMode>(
     () => sanitizeGameInterestMode(storedInterestMode),
     [storedInterestMode],
+  )
+  const [storedHiddenSignupNoteMemberIds, setStoredHiddenSignupNoteMemberIds] = useLocalStorage<unknown>(
+    GAME_ASSIGNMENTS_HIDDEN_SIGNUP_NOTE_MEMBER_IDS_STORAGE_KEY,
+    {},
+  )
+  const hiddenSignupNoteMemberIdSet = useMemo<Set<number>>(
+    () =>
+      new Set(
+        Object.keys(storedHiddenSignupNoteMemberIds ?? {})
+          .map(Number)
+          .filter(Number.isInteger),
+      ),
+    [storedHiddenSignupNoteMemberIds],
+  )
+  const handleSignupNoteHiddenChange = useCallback(
+    (memberId: number, hidden: boolean) => {
+      const hiddenMemberIds =
+        storedHiddenSignupNoteMemberIds &&
+        typeof storedHiddenSignupNoteMemberIds === 'object' &&
+        !Array.isArray(storedHiddenSignupNoteMemberIds)
+          ? { ...(storedHiddenSignupNoteMemberIds as Record<string, unknown>) }
+          : {}
+      if (hidden) hiddenMemberIds[memberId] = true
+      else delete hiddenMemberIds[memberId]
+      setStoredHiddenSignupNoteMemberIds(hiddenMemberIds)
+    },
+    [setStoredHiddenSignupNoteMemberIds, storedHiddenSignupNoteMemberIds],
   )
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
@@ -370,6 +398,8 @@ const GameAssignmentsPage = () => {
           onToggleMinimize={handleToggleMinimize}
           interestMode={interestMode}
           onInterestModeChange={setStoredInterestMode}
+          hiddenSignupNoteMemberIdSet={hiddenSignupNoteMemberIdSet}
+          onSignupNoteHiddenChange={handleSignupNoteHiddenChange}
         />
       </Box>
       <AssignmentSummaryDialog

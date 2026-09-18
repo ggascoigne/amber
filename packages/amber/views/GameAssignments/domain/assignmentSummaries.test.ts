@@ -198,7 +198,7 @@ describe('buildMemberChoiceSummaryRows', () => {
     expect(summaryRows).toEqual([
       {
         memberId: 1,
-        memberName: 'Ada *',
+        memberName: 'Ada',
         assignments: 2,
         requiresAttention: false,
       },
@@ -220,7 +220,6 @@ describe('buildMemberAssignmentSummaryRows', () => {
         buildMembership({ id: 2, fullName: null }),
         buildMembership({ id: 3, attending: false }),
       ],
-      submissionsByMemberId: new Map([[1, buildSubmission({ memberId: 1, message: 'Can do late night only' })]]),
       assignedSlotCountsByMemberId: new Map([
         [1, 2],
         [2, 1],
@@ -243,7 +242,7 @@ describe('buildMemberAssignmentSummaryRows', () => {
     expect(summaryRows).toEqual([
       {
         memberId: 1,
-        memberName: 'Ada *',
+        memberName: 'Ada',
         assignments: 2,
         requiresAttention: false,
         counts: {

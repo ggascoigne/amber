@@ -73,6 +73,8 @@ export type GameAssignmentsDashboardProps = {
   onToggleMinimize: (paneId: GameAssignmentsPaneId) => void
   interestMode: GameInterestMode
   onInterestModeChange: (interestMode: GameInterestMode) => void
+  hiddenSignupNoteMemberIdSet: Set<number>
+  onSignupNoteHiddenChange: (memberId: number, hidden: boolean) => void
 }
 
 export const GameAssignmentsDashboard = ({
@@ -91,6 +93,8 @@ export const GameAssignmentsDashboard = ({
   onToggleMinimize,
   interestMode,
   onInterestModeChange,
+  hiddenSignupNoteMemberIdSet,
+  onSignupNoteHiddenChange,
 }: GameAssignmentsDashboardProps) => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -163,6 +167,8 @@ export const GameAssignmentsDashboard = ({
             slotFilterId={paneSlotFilters.byMember}
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('byMember', nextSlotFilterId)}
             onUpdateAssignments={onUpdateAssignments}
+            hiddenSignupNoteMemberIdSet={hiddenSignupNoteMemberIdSet}
+            onSignupNoteHiddenChange={onSignupNoteHiddenChange}
             scrollBehavior={scrollBehavior}
             {...buildPaneControlProps(paneId)}
           />
@@ -176,6 +182,8 @@ export const GameAssignmentsDashboard = ({
             slotFilterId={paneSlotFilters.choices}
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('choices', nextSlotFilterId)}
             onUpsertChoice={onUpsertChoice}
+            hiddenSignupNoteMemberIdSet={hiddenSignupNoteMemberIdSet}
+            onSignupNoteHiddenChange={onSignupNoteHiddenChange}
             scrollBehavior={scrollBehavior}
             {...buildPaneControlProps(paneId)}
           />
