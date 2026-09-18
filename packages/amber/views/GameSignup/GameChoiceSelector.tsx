@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 
 import type { Game, GameChoice } from '@amber/client'
 import CheckIcon from '@mui/icons-material/Check'
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import StarIcon from '@mui/icons-material/Star'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
 
 import { Perms, useAuth } from '../../components/Auth'
 import type { GameCategoryByGameId } from '../../utils/gameCategory'
@@ -92,6 +94,8 @@ export interface SelectorParams {
   updateChoice?: (params: SelectorUpdate) => void
   gmSlots?: GameChoice[]
   gameCategoryByGameId?: GameCategoryByGameId
+  favoriteGameIds?: Set<number>
+  onToggleFavorite?: (gameId: number) => void
 }
 
 export type GameChoiceSelectorProps = {
@@ -99,6 +103,32 @@ export type GameChoiceSelectorProps = {
   slot: number
   game: Game
 } & SelectorParams
+
+export const GameFavoriteToggle = ({
+  game,
+  favoriteGameIds,
+  onToggleFavorite,
+}: Pick<GameChoiceSelectorProps, 'game' | 'favoriteGameIds' | 'onToggleFavorite'>) => (
+  <Box
+    component='span'
+    role='button'
+    tabIndex={0}
+    aria-label={favoriteGameIds?.has(game.id) ? 'Remove game from favorites' : 'Add game to favorites'}
+    sx={{ display: 'inline-flex', color: 'white', cursor: 'pointer' }}
+    onClick={(event) => {
+      event.stopPropagation()
+      onToggleFavorite?.(game.id)
+    }}
+    onKeyDown={(event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return
+      event.preventDefault()
+      event.stopPropagation()
+      onToggleFavorite?.(game.id)
+    }}
+  >
+    {favoriteGameIds?.has(game.id) ? <StarIcon fontSize='small' /> : <StarBorderIcon fontSize='small' />}
+  </Box>
+)
 
 const toggleButtonSx = {
   textTransform: 'inherit',

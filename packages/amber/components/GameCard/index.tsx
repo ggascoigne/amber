@@ -37,6 +37,7 @@ interface GameCardProps {
   // these next two are required together
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
+  headerDecorator?: (props: GameDecorator) => React.ReactNode
 }
 
 type GameCardDetailsProps = GameCardProps & {
@@ -146,7 +147,11 @@ const GameCardDetails = React.memo(
           </>
         ) : (
           <Accordion defaultExpanded>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+            <AccordionSummary
+              component='div'
+              expandIcon={<ExpandMoreIcon />}
+              id={`accordion-game/${year}/${slot}/${id}`}
+            >
               {header}
             </AccordionSummary>
             <AccordionDetails>{content}</AccordionDetails>
@@ -172,6 +177,7 @@ export const GameCard = React.memo(
     tiny = false,
     decorator,
     decoratorParams = {},
+    headerDecorator,
     schedule = false,
     gms,
     players,
@@ -183,11 +189,19 @@ export const GameCard = React.memo(
     const headerContent = (
       <>
         {decorator ? (
-          <HeaderContent name={headerText} tiny={tiny}>
+          <HeaderContent
+            name={headerText}
+            tiny={tiny}
+            afterTitle={headerDecorator?.({ year, slot, game, ...decoratorParams })}
+          >
             {decorator({ year, slot, game, ...decoratorParams })}
           </HeaderContent>
         ) : (
-          <HeaderContent name={headerText} tiny={tiny} />
+          <HeaderContent
+            name={headerText}
+            tiny={tiny}
+            afterTitle={headerDecorator?.({ year, slot, game, ...decoratorParams })}
+          />
         )}
       </>
     )
@@ -246,7 +260,7 @@ export const GameCard = React.memo(
         </Card>
       ) : (
         <Accordion defaultExpanded={!schedule} style={{ marginTop: 30 }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+          <AccordionSummary component='div' expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
             {header}
           </AccordionSummary>
           <AccordionDetails>{content}</AccordionDetails>

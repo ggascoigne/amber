@@ -3,15 +3,22 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import type { ContentsOf } from '@amber/ui'
-import { pick, ExpandingFab, Loader, notEmpty, pickAndConvertNull } from '@amber/ui'
+import { pick, ExpandingFab, Loader, notEmpty, pickAndConvertNull, useLocalStorage } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
-import { Button } from '@mui/material'
+import { Box, Button, ToggleButton } from '@mui/material'
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
 
 import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import type { SelectorUpdate } from './GameChoiceSelector'
-import { GameChoiceSelector, isAnyGame, isNoGame, orderChoices, SlotDecoratorCheckMark } from './GameChoiceSelector'
+import {
+  GameChoiceSelector,
+  GameFavoriteToggle,
+  isAnyGame,
+  isNoGame,
+  orderChoices,
+  SlotDecoratorCheckMark,
+} from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
 
 import { Page } from '../../components'
@@ -131,6 +138,22 @@ const GameSignupPage = () => {
   const [createOrEditGameChoice, createAllGameChoices] = useEditGameChoice()
   const [created, setCreated] = useState(false)
   const [showConfirmDialog, setShowConfirmDialog] = useConfirmDialogOpen()
+  const [showFavoritesOnly, setShowFavoritesOnly] = useState(false)
+  const [storedFavoriteGameIds, setStoredFavoriteGameIds] = useLocalStorage<Array<number>>(
+    `amber.gameSignup.favoriteGameIds.${membership?.id ?? 'anonymous'}.${year}`,
+    [],
+  )
+  const favoriteGameIds = useMemo(() => new Set(storedFavoriteGameIds), [storedFavoriteGameIds])
+  const handleToggleFavorite = useCallback(
+    (gameId: number) => {
+      setStoredFavoriteGameIds(
+        favoriteGameIds.has(gameId)
+          ? storedFavoriteGameIds.filter((favoriteGameId) => favoriteGameId !== gameId)
+          : [...storedFavoriteGameIds, gameId],
+      )
+    },
+    [favoriteGameIds, setStoredFavoriteGameIds, storedFavoriteGameIds],
+  )
 
   const [showFab, setShowFab] = useState(false)
   const { hasPermissions } = useAuth()
@@ -282,6 +305,8 @@ const GameSignupPage = () => {
     updateChoice,
     gmSlots,
     gameCategoryByGameId,
+    favoriteGameIds,
+    onToggleFavorite: handleToggleFavorite,
   }
 
   if (gameSubmission?.[0] && !isAdmin) {
@@ -298,15 +323,18 @@ const GameSignupPage = () => {
       {gameSubmission?.[0] && isAdmin ? <Link href='/game-choices'>See completed Summary</Link> : null}
 
       {slot === 1 && <SignupInstructions year={year} />}
-      <Button
-        variant='contained'
-        color='primary'
-        size='large'
-        onClick={() => setShowConfirmDialog(true)}
-        style={{ marginBottom: 20 }}
-      >
-        Confirm your Game Choices
-      </Button>
+      <Box sx={{ display: 'flex', alignItems: 'stretch', gap: 2, pt: 2.5, pb: 2.5 }}>
+        <Button variant='contained' color='primary' onClick={() => setShowConfirmDialog(true)}>
+          Confirm your Game Choices
+        </Button>
+        <ToggleButton
+          selected={showFavoritesOnly}
+          value='favorites'
+          onChange={() => setShowFavoritesOnly((previous) => !previous)}
+        >
+          Display favorites
+        </ToggleButton>
+      </Box>
       {showConfirmDialog && (
         <ChoiceConfirmDialog
           year={year}
@@ -325,10 +353,17 @@ const GameSignupPage = () => {
             <GameListFull
               year={y}
               slot={s}
-              games={games!}
+              games={showFavoritesOnly ? games!.filter((game) => favoriteGameIds.has(game.id)) : games!}
               onEnterGame={setNewUrl}
               decorator={GameChoiceSelector}
               decoratorParams={selectorParams}
+              headerDecorator={({ game }) => (
+                <GameFavoriteToggle
+                  game={game}
+                  favoriteGameIds={favoriteGameIds}
+                  onToggleFavorite={handleToggleFavorite}
+                />
+              )}
             />
           )}
         </GameListNavigator>

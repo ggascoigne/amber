@@ -19,6 +19,7 @@ interface GameListFullProps {
   onEnterGame: any
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
+  headerDecorator?: (props: GameDecorator) => React.ReactNode
 }
 
 export const GameListFull = ({
@@ -28,6 +29,7 @@ export const GameListFull = ({
   onEnterGame,
   decorator,
   decoratorParams,
+  headerDecorator,
 }: GameListFullProps) => {
   const [, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
@@ -59,6 +61,7 @@ export const GameListFull = ({
             onEnter={onEnterGame}
             decorator={decorator}
             decoratorParams={decoratorParams}
+            headerDecorator={headerDecorator}
           />
         ) : null,
       )}
