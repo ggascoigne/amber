@@ -32,6 +32,8 @@ export type GameAssignmentSummaryRow = {
 }
 
 export type GameInterestSummaryRow = GameAssignmentSummaryRow & {
+  focusedInterest: number
+  moreInterest: number
   overallInterest: number
 }
 

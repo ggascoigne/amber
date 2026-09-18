@@ -19,6 +19,7 @@ import type {
   GameAssignmentsMinimizedPaneIds,
   GameAssignmentsPaneId,
   GameAssignmentsPaneSlotFilters,
+  GameInterestMode,
 } from './pageState'
 import {
   buildDefaultPaneSlotFilters,
@@ -32,6 +33,7 @@ import {
   sanitizeGameAssignmentsMinimizedPaneIds,
   sanitizeGameAssignmentsPaneId,
   sanitizeGameAssignmentsPaneSlotFilters,
+  sanitizeGameInterestMode,
   toggleGameAssignmentsPaneMinimized,
 } from './pageState'
 
@@ -45,6 +47,7 @@ const GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY = 'amber.gameAssignments.layoutMode'
 const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlotFilters'
 const GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY = 'amber.gameAssignments.expandedPaneId'
 const GAME_ASSIGNMENTS_MINIMIZED_PANES_STORAGE_KEY = 'amber.gameAssignments.minimizedPaneIds'
+const GAME_ASSIGNMENTS_INTEREST_MODE_STORAGE_KEY = 'amber.gameAssignments.interestMode'
 
 const GameAssignmentsPage = () => {
   const trpc = useTRPC()
@@ -87,6 +90,14 @@ const GameAssignmentsPage = () => {
   const minimizedPaneIds = useMemo<GameAssignmentsMinimizedPaneIds>(
     () => sanitizeGameAssignmentsMinimizedPaneIds(storedMinimizedPaneIds),
     [storedMinimizedPaneIds],
+  )
+  const [storedInterestMode, setStoredInterestMode] = useLocalStorage<unknown>(
+    GAME_ASSIGNMENTS_INTEREST_MODE_STORAGE_KEY,
+    'interest',
+  )
+  const interestMode = useMemo<GameInterestMode>(
+    () => sanitizeGameInterestMode(storedInterestMode),
+    [storedInterestMode],
   )
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
@@ -357,6 +368,8 @@ const GameAssignmentsPage = () => {
           onToggleExpand={handleToggleExpand}
           minimizedPaneIds={minimizedPaneIds}
           onToggleMinimize={handleToggleMinimize}
+          interestMode={interestMode}
+          onInterestModeChange={setStoredInterestMode}
         />
       </Box>
       <AssignmentSummaryDialog

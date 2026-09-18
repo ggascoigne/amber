@@ -20,6 +20,7 @@ import type {
   GameAssignmentsMinimizedPaneIds,
   GameAssignmentsPaneId,
   GameAssignmentsPaneSlotFilters,
+  GameInterestMode,
 } from './pageState'
 
 const paneTitleById: Record<GameAssignmentsPaneId, string> = {
@@ -70,6 +71,8 @@ export type GameAssignmentsDashboardProps = {
   onToggleExpand: (paneId: GameAssignmentsPaneId) => void
   minimizedPaneIds: GameAssignmentsMinimizedPaneIds
   onToggleMinimize: (paneId: GameAssignmentsPaneId) => void
+  interestMode: GameInterestMode
+  onInterestModeChange: (interestMode: GameInterestMode) => void
 }
 
 export const GameAssignmentsDashboard = ({
@@ -86,6 +89,8 @@ export const GameAssignmentsDashboard = ({
   onToggleExpand,
   minimizedPaneIds,
   onToggleMinimize,
+  interestMode,
+  onInterestModeChange,
 }: GameAssignmentsDashboardProps) => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -182,6 +187,8 @@ export const GameAssignmentsDashboard = ({
             slotFilterOptions={slotFilterOptions}
             slotFilterId={paneSlotFilters.interest}
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('interest', nextSlotFilterId)}
+            interestMode={interestMode}
+            onInterestModeChange={onInterestModeChange}
             scrollBehavior={scrollBehavior}
             {...buildPaneControlProps(paneId)}
           />

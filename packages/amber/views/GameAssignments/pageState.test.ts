@@ -12,6 +12,7 @@ import {
   sanitizeGameAssignmentsMinimizedPaneIds,
   sanitizeGameAssignmentsPaneId,
   sanitizeGameAssignmentsPaneSlotFilters,
+  sanitizeGameInterestMode,
   toggleGameAssignmentsPaneMinimized,
 } from './pageState'
 
@@ -54,6 +55,9 @@ describe('game assignments page state helpers', () => {
     expect(sanitizeGameAssignmentsLayoutMode('other')).toBe('grid')
     expect(sanitizeGameAssignmentsPaneId('choices')).toBe('choices')
     expect(sanitizeGameAssignmentsPaneId('other')).toBeNull()
+    expect(sanitizeGameInterestMode('moreInterest')).toBe('moreInterest')
+    expect(sanitizeGameInterestMode('allInterest')).toBe('allInterest')
+    expect(sanitizeGameInterestMode('other')).toBe('interest')
   })
 
   test('sanitizes minimized panes and preserves one visible pane', () => {

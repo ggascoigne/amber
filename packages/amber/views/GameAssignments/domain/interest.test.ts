@@ -1,7 +1,17 @@
 import { describe, expect, test } from 'vitest'
 
-import { buildInterestChoicesByGameId, buildInterestCountsByGameId, buildInterestRowsForGame } from './interest'
-import { buildChoice } from './testHelpers'
+import {
+  buildFocusedInterestCountsByGameId,
+  buildFocusedInterestChoicesByGameId,
+  buildGmMemberIdsBySlotId,
+  buildInterestChoicesByGameId,
+  buildInterestCountsByGameId,
+  buildInterestRowsForGame,
+  buildMemberIdsBySlotIdForGameCategory,
+} from './interest'
+import { buildAssignment, buildChoice } from './testHelpers'
+
+import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 describe('buildInterestChoicesByGameId', () => {
   test('expands any-game choices onto in-scope games while filtering out unattending, no-game, and out-of-scope entries', () => {
@@ -54,6 +64,61 @@ describe('buildInterestCountsByGameId', () => {
     )
 
     expect(countsByGameId).toEqual(new Map([[101, 2]]))
+  })
+})
+
+describe('buildFocusedInterestCountsByGameId', () => {
+  test('counts direct first and second choices, with an option to include third and fourth choices, from non-GMs who did not choose any game', () => {
+    const choices = [
+      buildChoice({ memberId: 1, slotId: 1, gameId: 101, rank: 1 }),
+      buildChoice({ memberId: 2, slotId: 1, gameId: 101, rank: 2 }),
+      buildChoice({ memberId: 2, slotId: 1, gameId: 900, rank: 3 }),
+      buildChoice({ memberId: 3, slotId: 1, gameId: 101, rank: 1 }),
+      buildChoice({ memberId: 4, slotId: 1, gameId: 101, rank: 3 }),
+      buildChoice({ memberId: 5, slotId: 1, gameId: 900, rank: 1 }),
+    ]
+    const gameCategoryByGameId: GameCategoryByGameId = new Map([
+      [101, 'user'],
+      [900, 'any_game'],
+    ])
+    const attendingMemberIdSet = new Set([1, 2, 3, 4, 5])
+
+    const anyGameMemberIdsBySlotId = buildMemberIdsBySlotIdForGameCategory({
+      choices,
+      attendingMemberIdSet,
+      gameCategoryByGameId,
+      category: 'any_game',
+    })
+    const gmMemberIdsBySlotId = buildGmMemberIdsBySlotId([
+      buildAssignment({ memberId: 3, gameId: 201, gm: 1, slotId: 1 }),
+      buildAssignment({ memberId: 4, gameId: 202, gm: 0, slotId: 1 }),
+    ])
+
+    const focusedChoicesByGameId = buildFocusedInterestChoicesByGameId({
+      choicesByGameId: new Map([[101, choices]]),
+      anyGameMemberIdsBySlotId,
+      gmMemberIdsBySlotId,
+      gameCategoryByGameId,
+    })
+
+    expect(focusedChoicesByGameId).toEqual(new Map([[101, [choices[0]]]]))
+    expect(
+      buildFocusedInterestChoicesByGameId({
+        choicesByGameId: new Map([[101, choices]]),
+        anyGameMemberIdsBySlotId,
+        gmMemberIdsBySlotId,
+        gameCategoryByGameId,
+        includeRanksThreeAndFour: true,
+      }),
+    ).toEqual(new Map([[101, [choices[0], choices[4]]]]))
+    expect(
+      buildFocusedInterestCountsByGameId({
+        choicesByGameId: new Map([[101, choices]]),
+        anyGameMemberIdsBySlotId,
+        gmMemberIdsBySlotId,
+        gameCategoryByGameId,
+      }),
+    ).toEqual(new Map([[101, 1]]))
   })
 })
 

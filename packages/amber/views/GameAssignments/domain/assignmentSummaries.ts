@@ -274,13 +274,19 @@ export const buildGameAssignmentSummaryRows = (
 export const buildGameInterestSummaryRows = ({
   games,
   assignmentCountsByGameId,
+  focusedInterestCountsByGameId,
+  moreInterestCountsByGameId,
   interestCountsByGameId,
 }: {
   games: Array<DashboardGame>
   assignmentCountsByGameId: Map<number, AssignmentCounts>
+  focusedInterestCountsByGameId: Map<number, number>
+  moreInterestCountsByGameId: Map<number, number>
   interestCountsByGameId: Map<number, number>
 }): Array<GameInterestSummaryRow> =>
   buildGameAssignmentSummaryRows(games, assignmentCountsByGameId).map((row) => ({
     ...row,
+    focusedInterest: focusedInterestCountsByGameId.get(row.gameId) ?? 0,
+    moreInterest: moreInterestCountsByGameId.get(row.gameId) ?? 0,
     overallInterest: interestCountsByGameId.get(row.gameId) ?? 0,
   }))

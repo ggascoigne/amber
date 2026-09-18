@@ -125,6 +125,8 @@ describe('buildGameInterestSummaryRows', () => {
           },
         ],
       ]),
+      focusedInterestCountsByGameId: new Map([[2, 3]]),
+      moreInterestCountsByGameId: new Map([[2, 5]]),
       interestCountsByGameId: new Map([[2, 7]]),
     })
 
@@ -139,6 +141,8 @@ describe('buildGameInterestSummaryRows', () => {
         overrun: 2,
         shortfall: -2,
         spaces: 0,
+        focusedInterest: 0,
+        moreInterest: 0,
         overallInterest: 0,
       },
       {
@@ -151,6 +155,8 @@ describe('buildGameInterestSummaryRows', () => {
         overrun: 0,
         shortfall: 1,
         spaces: 3,
+        focusedInterest: 3,
+        moreInterest: 5,
         overallInterest: 7,
       },
     ])
