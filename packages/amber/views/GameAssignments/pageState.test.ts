@@ -47,6 +47,7 @@ describe('game assignments page state helpers', () => {
 
   test('sanitizes layout mode and expanded pane id values', () => {
     expect(sanitizeGameAssignmentsLayoutMode('columns')).toBe('columns')
+    expect(sanitizeGameAssignmentsLayoutMode('rows')).toBe('rows')
     expect(sanitizeGameAssignmentsLayoutMode('other')).toBe('grid')
     expect(sanitizeGameAssignmentsPaneId('choices')).toBe('choices')
     expect(sanitizeGameAssignmentsPaneId('other')).toBeNull()

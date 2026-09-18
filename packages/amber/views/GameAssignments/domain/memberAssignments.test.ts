@@ -374,11 +374,12 @@ describe('buildGameAssignmentAddPayload', () => {
             other: 0,
           },
         },
+        assignments: [buildAssignment({ memberId: 3, gameId: 101, gm: 1, slotId: 1 })],
         year: 2026,
       }),
     ).toEqual({
       adds: [{ memberId: 3, gameId: 202, gm: 0, year: 2026 }],
-      removes: [],
+      removes: [{ memberId: 3, gameId: 101, gm: 1, year: 2026 }],
     })
 
     expect(
@@ -400,6 +401,7 @@ describe('buildGameAssignmentAddPayload', () => {
             other: 0,
           },
         },
+        assignments: [],
         year: 2026,
       }),
     ).toEqual({

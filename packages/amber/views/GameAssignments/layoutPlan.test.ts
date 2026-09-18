@@ -64,6 +64,25 @@ describe('game assignments layout plan helpers', () => {
     })
   })
 
+  test('rows mode keeps four equal-height desktop panels', () => {
+    expect(
+      buildGameAssignmentsLayoutPlan({
+        expandedPaneId: null,
+        isSmallScreen: false,
+        layoutMode: 'rows',
+      }),
+    ).toEqual({
+      type: 'group',
+      orientation: 'vertical',
+      panels: [
+        { defaultSize: 25, minSize: 15, plan: { type: 'pane', paneId: 'byGame' } },
+        { defaultSize: 25, minSize: 15, plan: { type: 'pane', paneId: 'byMember' } },
+        { defaultSize: 25, minSize: 15, plan: { type: 'pane', paneId: 'choices' } },
+        { defaultSize: 25, minSize: 15, plan: { type: 'pane', paneId: 'interest' } },
+      ],
+    })
+  })
+
   test('grid mode preserves the two-column nested desktop layout', () => {
     expect(
       buildGameAssignmentsLayoutPlan({

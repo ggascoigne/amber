@@ -251,20 +251,35 @@ export const buildGameAssignmentPayloadFromUpdates = ({
 
 export const buildGameAssignmentAddPayload = ({
   assignment,
+  assignments,
   year,
 }: {
   assignment: GameAssignmentEditorRow
+  assignments: Array<DashboardAssignment>
   year: number
-}) => ({
-  adds: assignment.memberId
-    ? [
-        {
-          memberId: assignment.memberId,
-          gameId: assignment.moveToGameId,
-          gm: assignment.gm,
-          year,
-        },
-      ]
-    : [],
-  removes: [],
-})
+}) => {
+  if (!assignment.memberId) {
+    return { adds: [], removes: [] }
+  }
+
+  const removes = assignments
+    .filter(
+      (existingAssignment) =>
+        existingAssignment.memberId === assignment.memberId &&
+        existingAssignment.gameId !== assignment.moveToGameId &&
+        existingAssignment.game?.slotId === assignment.slotId,
+    )
+    .map(({ memberId, gameId, gm }) => ({ memberId, gameId, gm, year }))
+
+  return {
+    adds: [
+      {
+        memberId: assignment.memberId,
+        gameId: assignment.moveToGameId,
+        gm: assignment.gm,
+        year,
+      },
+    ],
+    removes,
+  }
+}

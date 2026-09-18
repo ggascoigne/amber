@@ -134,6 +134,7 @@ export const GameChoicesPanel = ({
         choices,
         configuration,
         gameCategoryByGameId,
+        gameById,
         slotGameIdSet,
         slotFilterId,
       })
@@ -155,7 +156,8 @@ export const GameChoicesPanel = ({
           accessorKey: 'gameId',
           header: 'Game',
           size: 260,
-          cell: ({ getValue }) => getGameLabel(getValue<number | null>(), gameById),
+          cell: ({ getValue, row: choiceRow }) =>
+            getGameLabel(getValue<number | null>(), gameById, 'Unknown game', choiceRow.original.game),
           meta: {
             edit: {
               type: 'select',

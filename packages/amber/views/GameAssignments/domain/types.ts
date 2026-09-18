@@ -100,6 +100,7 @@ export type MemberChoiceRow = {
   rank: number
   rankLabel: string
   gameId: number | null
+  game?: DashboardChoice['game'] | null
   returningPlayer: boolean
 }
 

@@ -99,6 +99,9 @@ export const GameAssignmentsTitleBar = ({
         <ToggleButton value='columns' aria-label='Column layout'>
           Columns
         </ToggleButton>
+        <ToggleButton value='rows' aria-label='Row layout'>
+          Rows
+        </ToggleButton>
       </ToggleButtonGroup>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
         <Button variant='outlined' size='small' onClick={onShowSummary} disabled={isSummaryBusy}>

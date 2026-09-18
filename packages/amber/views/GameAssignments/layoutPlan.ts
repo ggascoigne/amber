@@ -83,6 +83,20 @@ export const buildGameAssignmentsLayoutPlan = ({
     }
   }
 
+  if (layoutMode === 'rows') {
+    return {
+      type: 'group',
+      orientation: 'vertical',
+      panels: gameAssignmentsPaneIds.map((paneId) =>
+        buildPanePanel({
+          defaultSize: 25,
+          minSize: 15,
+          paneId,
+        }),
+      ),
+    }
+  }
+
   return {
     type: 'group',
     orientation: 'horizontal',

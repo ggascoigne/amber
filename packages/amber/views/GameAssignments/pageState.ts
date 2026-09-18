@@ -1,5 +1,5 @@
 export type GameAssignmentsPaneId = 'byGame' | 'byMember' | 'choices' | 'interest'
-export type GameAssignmentsLayoutMode = 'grid' | 'columns'
+export type GameAssignmentsLayoutMode = 'grid' | 'columns' | 'rows'
 export type GameAssignmentsPaneSlotFilters = Record<GameAssignmentsPaneId, number | null>
 export type GameAssignmentsTopSlotFilterId = number | null | 'mixed'
 
@@ -37,7 +37,7 @@ export const buildUpdatedPaneSlotFilters = ({
   buildPaneSlotFilters((currentPaneId) => (currentPaneId === paneId ? slotFilterId : paneSlotFilters[currentPaneId]))
 
 export const sanitizeGameAssignmentsLayoutMode = (value: unknown): GameAssignmentsLayoutMode =>
-  value === 'grid' || value === 'columns' ? value : 'grid'
+  value === 'grid' || value === 'columns' || value === 'rows' ? value : 'grid'
 
 export const sanitizeGameAssignmentsPaneId = (value: unknown): GameAssignmentsPaneId | null =>
   typeof value === 'string' && gameAssignmentsPaneIds.includes(value as GameAssignmentsPaneId)

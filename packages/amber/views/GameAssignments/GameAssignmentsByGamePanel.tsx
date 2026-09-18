@@ -352,7 +352,7 @@ export const GameAssignmentsByGamePanel = ({
       }
 
       const handleAddRow = async (assignment: GameAssignmentEditorRow) => {
-        const payload = buildGameAssignmentAddPayload({ assignment, year })
+        const payload = buildGameAssignmentAddPayload({ assignment, assignments: scheduledAssignments, year })
         if (payload.adds.length === 0) return
         await onUpdateAssignments(payload)
       }
@@ -450,6 +450,7 @@ export const GameAssignmentsByGamePanel = ({
       gameById,
       memberAssignmentCountsByMemberId,
       onUpdateAssignments,
+      scheduledAssignments,
       validateAssignmentRow,
       year,
     ],
