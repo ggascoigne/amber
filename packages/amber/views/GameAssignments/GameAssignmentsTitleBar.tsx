@@ -7,7 +7,7 @@ import type { GameAssignmentsLayoutMode } from './pageState'
 import { SlotFilterSelect } from './SlotFilterSelect'
 
 const legendItems = [
-  'Members with a * by their name have Signup notes',
+  'A document icon beside a member name indicates a Signup note.',
   'Red names have incomplete Signups or Assignments.',
   'Priorities with a * by them are returning players.',
   'Game names with a * by them are returning players only.',
@@ -98,6 +98,9 @@ export const GameAssignmentsTitleBar = ({
         </ToggleButton>
         <ToggleButton value='columns' aria-label='Column layout'>
           Columns
+        </ToggleButton>
+        <ToggleButton value='rows' aria-label='Row layout'>
+          Rows
         </ToggleButton>
       </ToggleButtonGroup>
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>

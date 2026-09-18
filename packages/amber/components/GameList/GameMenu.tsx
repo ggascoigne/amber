@@ -24,6 +24,7 @@ interface GameMenuProps {
   navDecoratorParams?: SlotDecoratorParams
   itemDecorator?: (props: GameDecorator) => React.ReactNode
   itemDecoratorParams?: GameDecoratorParams
+  isItemTitleEmphasized?: (props: GameDecorator) => boolean
 }
 
 export const GameMenu = ({
@@ -34,6 +35,7 @@ export const GameMenu = ({
   selectQuery,
   itemDecorator,
   itemDecoratorParams,
+  isItemTitleEmphasized,
   navDecorator,
   navDecoratorParams,
   children,
@@ -61,6 +63,7 @@ export const GameMenu = ({
           slugPrefix={slugPrefix}
           decorator={itemDecorator}
           decoratorParams={itemDecoratorParams}
+          isTitleEmphasized={isItemTitleEmphasized}
         />
       )}
     </GameListNavigator>

@@ -5,7 +5,7 @@ import { Loader } from '@amber/ui'
 import { Button } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
-import { GameChoiceDecorator, SlotDecoratorCheckMark } from './GameChoiceSelector'
+import { GameChoiceDecorator, isGmForGame, SlotDecoratorCheckMark } from './GameChoiceSelector'
 
 import { GameMenu } from '../../components/GameList'
 import { TransportError } from '../../components/TransportError'
@@ -56,6 +56,7 @@ export const GameSignupMenu = () => {
   }
 
   const gameChoices = data?.gameChoices?.filter((c) => c?.gameId)
+  const gmSlots = gameChoices?.filter((choice) => choice.rank === 0)
   const gameCategoryByGameId = buildGameCategoryByGameId(gamesByYear)
 
   const decoratorParams = {
@@ -72,6 +73,7 @@ export const GameSignupMenu = () => {
       selectQuery
       itemDecorator={GameChoiceDecorator}
       itemDecoratorParams={decoratorParams}
+      isItemTitleEmphasized={({ slot, game }) => isGmForGame(gmSlots, slot, game.id)}
       navDecorator={SlotDecoratorCheckMark}
       navDecoratorParams={decoratorParams}
     >

@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import React from 'react'
 
-import { Grid } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 
 import { CardHeader } from './Card'
 
@@ -39,11 +39,9 @@ export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
   </>
 )
 
-export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: boolean }>> = ({
-  name,
-  tiny = false,
-  children,
-}) => (
+export const HeaderContent: React.FC<
+  PropsWithChildren<{ name: string; tiny?: boolean; afterTitle?: React.ReactNode; boldTitle?: boolean }>
+> = ({ name, tiny = false, afterTitle, boldTitle = false, children }) => (
   <CardHeader
     color='info'
     sx={[
@@ -63,29 +61,38 @@ export const HeaderContent: React.FC<PropsWithChildren<{ name: string; tiny?: bo
       }),
     ]}
   >
-    <Grid container spacing={2} size={12} sx={{ pr: 0 }}>
-      <Grid container size={{ xs: 12, sm: children ? 7 : 12 }}>
-        <h4
-          style={
-            tiny
-              ? {
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  margin: 0,
-                }
-              : { margin: 0 }
-          }
-        >
-          {name}
-        </h4>
-      </Grid>
-      {children && (
-        <Grid container size={{ xs: 12, sm: 5 }}>
-          {children}
-        </Grid>
-      )}
-    </Grid>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { xs: 'stretch', sm: 'center' },
+        width: '100%',
+        gap: 1,
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, minWidth: 0 }}>
+        <Box sx={{ minWidth: 0 }}>
+          <h4
+            style={
+              tiny
+                ? {
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    margin: 0,
+                    fontWeight: boldTitle ? 700 : undefined,
+                  }
+                : { margin: 0, fontWeight: boldTitle ? 700 : undefined }
+            }
+          >
+            {name}
+          </h4>
+        </Box>
+        {afterTitle}
+      </Box>
+      <Box sx={{ display: { xs: 'none', sm: 'block' }, flex: 1 }} />
+      {children ? <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>{children}</Box> : null}
+    </Box>
   </CardHeader>
 )
 

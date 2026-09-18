@@ -1,13 +1,22 @@
 import type { ReactNode } from 'react'
 
-import { Box, Typography } from '@mui/material'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
+import { Box, IconButton, Typography } from '@mui/material'
 
 type MemberSubmissionDetailLayoutProps = {
   children: ReactNode
   submissionMessage?: string | null
+  isSubmissionHidden?: boolean
+  onSubmissionHiddenChange?: (hidden: boolean) => void
 }
 
-export const MemberSubmissionDetailLayout = ({ children, submissionMessage }: MemberSubmissionDetailLayoutProps) => (
+export const MemberSubmissionDetailLayout = ({
+  children,
+  submissionMessage,
+  isSubmissionHidden = false,
+  onSubmissionHiddenChange,
+}: MemberSubmissionDetailLayoutProps) => (
   <Box
     sx={{
       display: 'flex',
@@ -26,12 +35,29 @@ export const MemberSubmissionDetailLayout = ({ children, submissionMessage }: Me
         p: 2,
       }}
     >
-      <Typography variant='subtitle2' component='h3'>
-        Signup Notes
-      </Typography>
-      <Typography variant='body2' color='text.secondary'>
-        {submissionMessage ?? 'No submission message.'}
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant='subtitle2' component='h3'>
+          Signup Notes
+        </Typography>
+        {submissionMessage?.trim() ? (
+          <IconButton
+            aria-label={isSubmissionHidden ? 'Show signup note' : 'Hide signup note'}
+            size='small'
+            onClick={() => onSubmissionHiddenChange?.(!isSubmissionHidden)}
+          >
+            {isSubmissionHidden ? (
+              <VisibilityOutlinedIcon fontSize='small' />
+            ) : (
+              <VisibilityOffOutlinedIcon fontSize='small' />
+            )}
+          </IconButton>
+        ) : null}
+      </Box>
+      {isSubmissionHidden ? null : (
+        <Typography variant='body2' color='text.secondary'>
+          {submissionMessage ?? 'No submission message.'}
+        </Typography>
+      )}
     </Box>
   </Box>
 )

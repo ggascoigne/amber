@@ -1,5 +1,5 @@
 import { gameAssignmentsPaneIds } from './pageState'
-import type { GameAssignmentsLayoutMode, GameAssignmentsPaneId } from './pageState'
+import type { GameAssignmentsLayoutMode, GameAssignmentsMinimizedPaneIds, GameAssignmentsPaneId } from './pageState'
 
 export type GameAssignmentsLayoutPlan =
   | {
@@ -26,6 +26,7 @@ type BuildGameAssignmentsLayoutPlanArgs = {
   expandedPaneId: GameAssignmentsPaneId | null
   isSmallScreen: boolean
   layoutMode: GameAssignmentsLayoutMode
+  minimizedPaneIds?: GameAssignmentsMinimizedPaneIds
 }
 
 const buildPanePanel = ({
@@ -49,6 +50,7 @@ export const buildGameAssignmentsLayoutPlan = ({
   expandedPaneId,
   isSmallScreen,
   layoutMode,
+  minimizedPaneIds = [],
 }: BuildGameAssignmentsLayoutPlanArgs): GameAssignmentsLayoutPlan => {
   if (isSmallScreen) {
     return expandedPaneId
@@ -62,20 +64,37 @@ export const buildGameAssignmentsLayoutPlan = ({
         }
   }
 
-  if (expandedPaneId) {
+  if (expandedPaneId && !minimizedPaneIds.includes(expandedPaneId)) {
     return {
       type: 'pane',
       paneId: expandedPaneId,
     }
   }
 
+  const visiblePaneIds = gameAssignmentsPaneIds.filter((paneId) => !minimizedPaneIds.includes(paneId))
+  const equalPaneSize = 100 / visiblePaneIds.length
+
   if (layoutMode === 'columns') {
     return {
       type: 'group',
       orientation: 'horizontal',
-      panels: gameAssignmentsPaneIds.map((paneId) =>
+      panels: visiblePaneIds.map((paneId) =>
         buildPanePanel({
-          defaultSize: 25,
+          defaultSize: equalPaneSize,
+          minSize: 15,
+          paneId,
+        }),
+      ),
+    }
+  }
+
+  if (layoutMode === 'rows') {
+    return {
+      type: 'group',
+      orientation: 'vertical',
+      panels: visiblePaneIds.map((paneId) =>
+        buildPanePanel({
+          defaultSize: equalPaneSize,
           minSize: 15,
           paneId,
         }),

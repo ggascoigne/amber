@@ -109,4 +109,12 @@ describe('game choice options and labels', () => {
     expect(getGameLabel(900, gameById)).toBe('Any Game')
     expect(getGameLabel(101, gameById)).toBe('Main Event')
   })
+
+  test('labels a cancelled game with its title', () => {
+    const gameById = new Map([
+      [101, buildGame({ id: 101, slotId: null, playerMin: 2, playerMax: 4, name: 'Main Event' })],
+    ])
+
+    expect(getGameLabel(101, gameById)).toBe('Main Event (cancelled)')
+  })
 })

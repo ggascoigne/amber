@@ -32,6 +32,8 @@ export type GameAssignmentSummaryRow = {
 }
 
 export type GameInterestSummaryRow = GameAssignmentSummaryRow & {
+  focusedInterest: number
+  moreInterest: number
   overallInterest: number
 }
 
@@ -100,6 +102,7 @@ export type MemberChoiceRow = {
   rank: number
   rankLabel: string
   gameId: number | null
+  game?: DashboardChoice['game'] | null
   returningPlayer: boolean
 }
 

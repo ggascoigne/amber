@@ -3,14 +3,23 @@ import { useCallback, useMemo, useState } from 'react'
 import type { GameAssignmentDashboardData } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
-import { Box } from '@mui/material'
+import { Box, MenuItem, Select } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import { buildAssignmentCountsByGameId, buildGameInterestSummaryRows } from './domain/assignmentSummaries'
-import { buildInterestChoicesByGameId, buildInterestCountsByGameId, buildInterestRowsForGame } from './domain/interest'
+import {
+  buildFocusedInterestCountsByGameId,
+  buildFocusedInterestChoicesByGameId,
+  buildGmMemberIdsBySlotId,
+  buildInterestChoicesByGameId,
+  buildInterestCountsByGameId,
+  buildInterestRowsForGame,
+  buildMemberIdsBySlotIdForGameCategory,
+} from './domain/interest'
 import type { GameInterestRow, GameInterestSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
+import type { GameInterestMode } from './pageState'
 
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 
@@ -20,8 +29,12 @@ type GameInterestPanelProps = {
   slotFilterId: number | null
   onSlotFilterChange: (slotFilterId: number | null) => void
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
+  interestMode: GameInterestMode
+  onInterestModeChange: (interestMode: GameInterestMode) => void
 }
 
 export const GameInterestPanel = ({
@@ -30,8 +43,12 @@ export const GameInterestPanel = ({
   slotFilterId,
   onSlotFilterChange,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
+  interestMode,
+  onInterestModeChange,
 }: GameInterestPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const attendingMemberIdSet = useMemo(
@@ -77,15 +94,69 @@ export const GameInterestPanel = ({
   )
 
   const interestCountsByGameId = useMemo(() => buildInterestCountsByGameId(choicesByGameId), [choicesByGameId])
+  const anyGameMemberIdsBySlotId = useMemo(
+    () =>
+      buildMemberIdsBySlotIdForGameCategory({
+        choices: data.choices,
+        attendingMemberIdSet,
+        gameCategoryByGameId,
+        category: 'any_game',
+      }),
+    [attendingMemberIdSet, data.choices, gameCategoryByGameId],
+  )
+  const gmMemberIdsBySlotId = useMemo(() => buildGmMemberIdsBySlotId(scheduledAssignments), [scheduledAssignments])
+  const focusedInterestCountsByGameId = useMemo(
+    () =>
+      buildFocusedInterestCountsByGameId({
+        choicesByGameId,
+        anyGameMemberIdsBySlotId,
+        gmMemberIdsBySlotId,
+        gameCategoryByGameId,
+      }),
+    [anyGameMemberIdsBySlotId, choicesByGameId, gameCategoryByGameId, gmMemberIdsBySlotId],
+  )
+  const focusedChoicesByGameId = useMemo(
+    () =>
+      buildFocusedInterestChoicesByGameId({
+        choicesByGameId,
+        anyGameMemberIdsBySlotId,
+        gmMemberIdsBySlotId,
+        gameCategoryByGameId,
+      }),
+    [anyGameMemberIdsBySlotId, choicesByGameId, gameCategoryByGameId, gmMemberIdsBySlotId],
+  )
+  const moreInterestChoicesByGameId = useMemo(
+    () =>
+      buildFocusedInterestChoicesByGameId({
+        choicesByGameId,
+        anyGameMemberIdsBySlotId,
+        gmMemberIdsBySlotId,
+        gameCategoryByGameId,
+        includeRanksThreeAndFour: true,
+      }),
+    [anyGameMemberIdsBySlotId, choicesByGameId, gameCategoryByGameId, gmMemberIdsBySlotId],
+  )
+  const moreInterestCountsByGameId = useMemo(
+    () => buildInterestCountsByGameId(moreInterestChoicesByGameId),
+    [moreInterestChoicesByGameId],
+  )
 
   const gameRows = useMemo<Array<GameInterestSummaryRow>>(
     () =>
       buildGameInterestSummaryRows({
         games: filteredSlotGames,
         assignmentCountsByGameId,
+        focusedInterestCountsByGameId,
+        moreInterestCountsByGameId,
         interestCountsByGameId,
       }),
-    [assignmentCountsByGameId, filteredSlotGames, interestCountsByGameId],
+    [
+      assignmentCountsByGameId,
+      filteredSlotGames,
+      focusedInterestCountsByGameId,
+      interestCountsByGameId,
+      moreInterestCountsByGameId,
+    ],
   )
 
   const gameColumns = useMemo<Array<ColumnDef<GameInterestSummaryRow>>>(
@@ -153,15 +224,25 @@ export const GameInterestPanel = ({
         },
       },
       {
-        accessorKey: 'overallInterest',
-        header: 'Interest',
-        size: 90,
+        accessorKey:
+          interestMode === 'allInterest'
+            ? 'overallInterest'
+            : interestMode === 'moreInterest'
+              ? 'moreInterest'
+              : 'focusedInterest',
+        header:
+          interestMode === 'allInterest'
+            ? 'All Interest'
+            : interestMode === 'moreInterest'
+              ? 'More Interest'
+              : 'Interest',
+        size: 120,
         meta: {
           align: 'right',
         },
       },
     ],
-    [],
+    [interestMode],
   )
 
   const interestColumns = useMemo<Array<ColumnDef<GameInterestRow>>>(
@@ -191,7 +272,13 @@ export const GameInterestPanel = ({
       const { gameId } = row.original
       const interestRows = buildInterestRowsForGame({
         gameId,
-        choices: choicesByGameId.get(gameId) ?? [],
+        choices:
+          (interestMode === 'allInterest'
+            ? choicesByGameId
+            : interestMode === 'moreInterest'
+              ? moreInterestChoicesByGameId
+              : focusedChoicesByGameId
+          ).get(gameId) ?? [],
         gameCategoryByGameId,
       })
 
@@ -221,7 +308,14 @@ export const GameInterestPanel = ({
         />
       )
     },
-    [choicesByGameId, gameCategoryByGameId, interestColumns],
+    [
+      choicesByGameId,
+      focusedChoicesByGameId,
+      gameCategoryByGameId,
+      interestColumns,
+      interestMode,
+      moreInterestChoicesByGameId,
+    ],
   )
 
   return (
@@ -244,8 +338,22 @@ export const GameInterestPanel = ({
         onSlotFilterChange={onSlotFilterChange}
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
+        additionalAction={
+          <Select<GameInterestMode>
+            aria-label='Interest level'
+            size='small'
+            value={interestMode}
+            onChange={(event) => onInterestModeChange(event.target.value as GameInterestMode)}
+          >
+            <MenuItem value='interest'>Interest</MenuItem>
+            <MenuItem value='moreInterest'>More Interest</MenuItem>
+            <MenuItem value='allInterest'>All Interest</MenuItem>
+          </Select>
+        }
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<GameInterestSummaryRow>
         name='game-interest-reference'
@@ -261,7 +369,13 @@ export const GameInterestPanel = ({
         enableFilters={false}
         displayPagination='never'
         renderExpandedContent={renderExpandedContent}
-        highlightRow={(row) => row.original.overallInterest < row.original.playerMin}
+        highlightRow={(row) =>
+          (interestMode === 'allInterest'
+            ? row.original.overallInterest
+            : interestMode === 'moreInterest'
+              ? row.original.moreInterest
+              : row.original.focusedInterest) < row.original.playerMin
+        }
         expandedContentSx={{
           backgroundColor: 'transparent',
           borderBottom: 'none',

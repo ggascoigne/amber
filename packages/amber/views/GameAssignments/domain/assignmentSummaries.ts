@@ -212,11 +212,9 @@ export const buildMemberChoiceSummaryRows = ({
       const slotIdsWithChoices = new Set(memberChoices.map((choice) => choice.slotId))
       const submission = submissionsByMemberId.get(membership.id)
       const hasSubmissionEntry = Boolean(submission)
-      const hasNotes = Boolean(submission?.message?.trim())
-
       return {
         memberId: membership.id,
-        memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
+        memberName: membership.user.fullName ?? 'Unknown member',
         assignments: assignedSlotCountsByMemberId.get(membership.id) ?? 0,
         requiresAttention: slotIdsWithChoices.size < numberOfSlots || !hasSubmissionEntry,
       }
@@ -224,13 +222,11 @@ export const buildMemberChoiceSummaryRows = ({
 
 export const buildMemberAssignmentSummaryRows = ({
   memberships,
-  submissionsByMemberId,
   assignedSlotCountsByMemberId,
   memberAssignmentCountsByMemberId,
   expectedAssignmentCount,
 }: {
   memberships: Array<DashboardMembership>
-  submissionsByMemberId: Map<number, DashboardSubmission>
   assignedSlotCountsByMemberId: Map<number, number>
   memberAssignmentCountsByMemberId: Map<number, MemberAssignmentCounts>
   expectedAssignmentCount: number
@@ -238,13 +234,11 @@ export const buildMemberAssignmentSummaryRows = ({
   memberships
     .filter((membership) => membership.attending)
     .map((membership) => {
-      const submission = submissionsByMemberId.get(membership.id)
-      const hasNotes = Boolean(submission?.message?.trim())
       const assignmentCount = assignedSlotCountsByMemberId.get(membership.id) ?? 0
 
       return {
         memberId: membership.id,
-        memberName: `${membership.user.fullName ?? 'Unknown member'}${hasNotes ? ' *' : ''}`,
+        memberName: membership.user.fullName ?? 'Unknown member',
         assignments: assignmentCount,
         requiresAttention: assignmentCount !== expectedAssignmentCount,
         counts: memberAssignmentCountsByMemberId.get(membership.id) ?? buildEmptyMemberAssignmentCounts(),
@@ -274,13 +268,19 @@ export const buildGameAssignmentSummaryRows = (
 export const buildGameInterestSummaryRows = ({
   games,
   assignmentCountsByGameId,
+  focusedInterestCountsByGameId,
+  moreInterestCountsByGameId,
   interestCountsByGameId,
 }: {
   games: Array<DashboardGame>
   assignmentCountsByGameId: Map<number, AssignmentCounts>
+  focusedInterestCountsByGameId: Map<number, number>
+  moreInterestCountsByGameId: Map<number, number>
   interestCountsByGameId: Map<number, number>
 }): Array<GameInterestSummaryRow> =>
   buildGameAssignmentSummaryRows(games, assignmentCountsByGameId).map((row) => ({
     ...row,
+    focusedInterest: focusedInterestCountsByGameId.get(row.gameId) ?? 0,
+    moreInterest: moreInterestCountsByGameId.get(row.gameId) ?? 0,
     overallInterest: interestCountsByGameId.get(row.gameId) ?? 0,
   }))

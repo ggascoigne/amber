@@ -1,4 +1,7 @@
+import type { ReactNode } from 'react'
+
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
+import MinimizeIcon from '@mui/icons-material/Minimize'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { Box, IconButton, Typography } from '@mui/material'
 
@@ -15,6 +18,9 @@ type GameAssignmentsPanelHeaderProps = {
   onShowExpandedOnlyChange: (showExpandedOnly: boolean) => void
   isExpanded?: boolean
   onToggleExpand?: () => void
+  isMinimizeDisabled?: boolean
+  onToggleMinimize?: () => void
+  additionalAction?: ReactNode
 }
 
 export const GameAssignmentsPanelHeader = ({
@@ -27,6 +33,9 @@ export const GameAssignmentsPanelHeader = ({
   onShowExpandedOnlyChange,
   isExpanded = false,
   onToggleExpand,
+  isMinimizeDisabled = false,
+  onToggleMinimize,
+  additionalAction,
 }: GameAssignmentsPanelHeaderProps) => (
   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
     <Typography id={titleId} variant='h6' component='h2'>
@@ -39,6 +48,12 @@ export const GameAssignmentsPanelHeader = ({
         onSlotFilterChange={onSlotFilterChange}
       />
       <ShowExpandedToggle checked={showExpandedOnly} onChange={onShowExpandedOnlyChange} />
+      {additionalAction}
+      {onToggleMinimize ? (
+        <IconButton aria-label='Minimize panel' disabled={isMinimizeDisabled} onClick={onToggleMinimize} size='small'>
+          <MinimizeIcon fontSize='small' />
+        </IconButton>
+      ) : null}
       {onToggleExpand ? (
         <IconButton aria-label={isExpanded ? 'Exit full view' : 'Expand panel'} onClick={onToggleExpand} size='small'>
           {isExpanded ? <CloseFullscreenIcon fontSize='small' /> : <OpenInFullIcon fontSize='small' />}

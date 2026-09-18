@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
-import type { TableAutocompleteOption, TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
+import type { TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
 import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
@@ -17,10 +17,12 @@ import {
   buildGameAssignmentSummaryRows,
   buildMemberAssignmentCountsByMemberId,
 } from './domain/assignmentSummaries'
+import { buildGmMemberIdsBySlotId } from './domain/interest'
 import { formatGameName } from './domain/labels'
 import {
   buildGameAssignmentAddPayload,
   buildGameAssignmentEditorRows,
+  buildMemberSelectOptionsForGame,
   buildGameAssignmentPayloadFromUpdates,
   buildUpdatedGameAssignmentRowMemberSelection,
 } from './domain/memberAssignments'
@@ -28,6 +30,7 @@ import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
 import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 
+import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 import { PlayerPreference } from '../../utils/selectValues'
 
 type GameAssignmentsByGamePanelProps = {
@@ -38,7 +41,9 @@ type GameAssignmentsByGamePanelProps = {
   onSlotFilterChange: (slotFilterId: number | null) => void
   onUpdateAssignments: (payload: DashboardAssignmentUpdatePayload) => Promise<void>
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
 }
 
@@ -50,7 +55,9 @@ export const GameAssignmentsByGamePanel = ({
   onSlotFilterChange,
   onUpdateAssignments,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByGamePanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
@@ -71,20 +78,11 @@ export const GameAssignmentsByGamePanel = ({
     [filteredSlotGames, scheduledAssignments],
   )
   const choicesByMemberSlot = useMemo(() => buildChoicesByMemberSlot(data.choices), [data.choices])
+  const gameCategoryByGameId = useMemo(() => buildGameCategoryByGameId(data.games), [data.games])
+  const gmMemberIdsBySlotId = useMemo(() => buildGmMemberIdsBySlotId(scheduledAssignments), [scheduledAssignments])
   const memberAssignmentCountsByMemberId = useMemo(
     () => buildMemberAssignmentCountsByMemberId(scheduledAssignments, choicesByMemberSlot),
     [choicesByMemberSlot, scheduledAssignments],
-  )
-
-  const memberOptions = useMemo<Array<TableAutocompleteOption>>(
-    () =>
-      data.memberships
-        .filter((membership) => membership.attending)
-        .map((membership) => ({
-          value: membership.id,
-          label: membership.user.fullName ?? 'Unknown member',
-        })),
-    [data.memberships],
   )
 
   const memberNameById = useMemo(
@@ -219,12 +217,20 @@ export const GameAssignmentsByGamePanel = ({
         },
         meta: {
           edit: {
-            type: 'autocomplete',
+            type: 'select',
             placeholder: 'Member',
             isEditable: (row) => row.original.rowId.startsWith('new-'),
-            autocomplete: {
-              options: memberOptions,
-            },
+            getOptions: (row) =>
+              buildMemberSelectOptionsForGame({
+                memberships: data.memberships,
+                choicesByMemberSlot,
+                gameCategoryByGameId,
+                gmMemberIdsBySlotId,
+                assignments: scheduledAssignments,
+                gameId: row.original.gameId,
+                slotId: row.original.slotId,
+              }),
+            parseValue: (value) => (value === '' ? null : Number(value)),
             setValue: (row: GameAssignmentEditorRow, value: unknown) => {
               const nextMemberId = value === null || value === undefined || value === '' ? null : Number(value)
               return buildUpdatedGameAssignmentRowMemberSelection({
@@ -316,7 +322,10 @@ export const GameAssignmentsByGamePanel = ({
       gameNameById,
       memberAssignmentCountsByMemberId,
       memberNameById,
-      memberOptions,
+      gameCategoryByGameId,
+      gmMemberIdsBySlotId,
+      data.memberships,
+      scheduledAssignments,
       filteredSlotGames,
     ],
   )
@@ -352,7 +361,7 @@ export const GameAssignmentsByGamePanel = ({
       }
 
       const handleAddRow = async (assignment: GameAssignmentEditorRow) => {
-        const payload = buildGameAssignmentAddPayload({ assignment, year })
+        const payload = buildGameAssignmentAddPayload({ assignment, assignments: scheduledAssignments, year })
         if (payload.adds.length === 0) return
         await onUpdateAssignments(payload)
       }
@@ -450,6 +459,7 @@ export const GameAssignmentsByGamePanel = ({
       gameById,
       memberAssignmentCountsByMemberId,
       onUpdateAssignments,
+      scheduledAssignments,
       validateAssignmentRow,
       year,
     ],
@@ -476,7 +486,9 @@ export const GameAssignmentsByGamePanel = ({
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<GameAssignmentSummaryRow>
         name='game-assignments-by-game'

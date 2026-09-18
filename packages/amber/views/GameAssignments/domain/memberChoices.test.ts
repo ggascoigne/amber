@@ -6,7 +6,8 @@ import {
   buildUpdatedChoiceRowGameSelection,
   canEditChoiceRowGameSelection,
 } from './memberChoices'
-import { buildAssignment, buildChoice, buildConfiguration } from './testHelpers'
+import { getGameLabel } from './moveOptions'
+import { buildAssignment, buildChoice, buildConfiguration, buildGame } from './testHelpers'
 
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
@@ -37,6 +38,13 @@ describe('buildChoiceEditorStateForMember', () => {
         [900, 'any_game'],
         [901, 'no_game'],
       ]),
+      gameById: new Map([
+        [101, buildGame({ id: 101, slotId: 1, playerMin: 2, playerMax: 4 })],
+        [102, buildGame({ id: 102, slotId: 1, playerMin: 2, playerMax: 4 })],
+        [201, buildGame({ id: 201, slotId: 2, playerMin: 2, playerMax: 4 })],
+        [900, buildGame({ id: 900, slotId: null, playerMin: 0, playerMax: 99, category: 'any_game' })],
+        [901, buildGame({ id: 901, slotId: 1, playerMin: 0, playerMax: 99, category: 'no_game' })],
+      ]),
       slotGameIdSet: new Set([101]),
       slotFilterId: 1,
     })
@@ -58,15 +66,39 @@ describe('buildChoiceEditorStateForMember', () => {
       { rowId: 'member-1-slot-1-rank-0', slotId: 1, rank: 0, gameId: 101 },
       { rowId: 'member-1-slot-1-rank-2', slotId: 1, rank: 2, gameId: null },
       { rowId: 'member-1-slot-1-rank-3', slotId: 1, rank: 3, gameId: 900 },
-      { rowId: 'member-1-slot-1-rank-4', slotId: 1, rank: 4, gameId: 901 },
     ])
     expect(editorState.previousRowIdByRowId).toEqual(
       new Map([
         ['member-1-slot-1-rank-2', 'member-1-slot-1-rank-0'],
         ['member-1-slot-1-rank-3', 'member-1-slot-1-rank-2'],
-        ['member-1-slot-1-rank-4', 'member-1-slot-1-rank-3'],
       ]),
     )
+  })
+})
+
+describe('cancelled choices', () => {
+  test('keeps a choice for a game moved to the cancelled slot', () => {
+    const editorState = buildChoiceEditorStateForMember({
+      memberId: 1,
+      assignments: [],
+      choices: [
+        {
+          ...buildChoice({ memberId: 1, slotId: 1, gameId: 101, rank: 1 }),
+          game: buildGame({ id: 101, slotId: null, playerMin: 2, playerMax: 4, name: 'Cancelled Event' }),
+        },
+      ],
+      configuration: buildConfiguration(1),
+      gameCategoryByGameId: new Map([[101, 'user']]),
+      gameById: new Map(),
+      slotGameIdSet: new Set(),
+      slotFilterId: null,
+    })
+
+    expect(editorState.choiceRows[0].gameId).toBe(101)
+    expect(editorState.choiceRows[0].game?.name).toBe('Cancelled Event')
+    expect(
+      getGameLabel(editorState.choiceRows[0].gameId, new Map(), 'Unknown game', editorState.choiceRows[0].game),
+    ).toBe('Cancelled Event (cancelled)')
   })
 })
 

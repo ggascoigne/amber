@@ -24,6 +24,7 @@ import { buildGameChoiceOptionsForRow, getGameLabel } from './domain/moveOptions
 import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
+import { SignupNoteIndicator } from './SignupNoteIndicator'
 
 import { useConfiguration } from '../../utils/configContext'
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
@@ -36,8 +37,12 @@ type GameChoicesPanelProps = {
   slotFilterId: number | null
   onSlotFilterChange: (slotFilterId: number | null) => void
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
+  hiddenSignupNoteMemberIdSet: Set<number>
+  onSignupNoteHiddenChange: (memberId: number, hidden: boolean) => void
 }
 
 export const GameChoicesPanel = ({
@@ -48,8 +53,12 @@ export const GameChoicesPanel = ({
   slotFilterId,
   onSlotFilterChange,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
+  hiddenSignupNoteMemberIdSet,
+  onSignupNoteHiddenChange,
 }: GameChoicesPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
@@ -103,6 +112,14 @@ export const GameChoicesPanel = ({
             }}
           >
             {row.original.memberName}
+            {submissionsByMemberId.get(row.original.memberId)?.message?.trim() &&
+            !hiddenSignupNoteMemberIdSet.has(row.original.memberId) ? (
+              <SignupNoteIndicator
+                memberName={row.original.memberName}
+                message={submissionsByMemberId.get(row.original.memberId)?.message.trim() ?? ''}
+                onHide={() => onSignupNoteHiddenChange(row.original.memberId, true)}
+              />
+            ) : null}
           </Box>
         ),
       },
@@ -115,7 +132,7 @@ export const GameChoicesPanel = ({
         },
       },
     ],
-    [],
+    [hiddenSignupNoteMemberIdSet, onSignupNoteHiddenChange, submissionsByMemberId],
   )
 
   const handleSummaryRowClick = useCallback((row: Row<MemberChoiceSummaryRow>) => {
@@ -134,6 +151,7 @@ export const GameChoicesPanel = ({
         choices,
         configuration,
         gameCategoryByGameId,
+        gameById,
         slotGameIdSet,
         slotFilterId,
       })
@@ -155,7 +173,8 @@ export const GameChoicesPanel = ({
           accessorKey: 'gameId',
           header: 'Game',
           size: 260,
-          cell: ({ getValue }) => getGameLabel(getValue<number | null>(), gameById),
+          cell: ({ getValue, row: choiceRow }) =>
+            getGameLabel(getValue<number | null>(), gameById, 'Unknown game', choiceRow.original.game),
           meta: {
             edit: {
               type: 'select',
@@ -204,7 +223,11 @@ export const GameChoicesPanel = ({
       const message = submission?.message
 
       return (
-        <MemberSubmissionDetailLayout submissionMessage={message}>
+        <MemberSubmissionDetailLayout
+          submissionMessage={message}
+          isSubmissionHidden={hiddenSignupNoteMemberIdSet.has(memberId)}
+          onSubmissionHiddenChange={(hidden) => onSignupNoteHiddenChange(memberId, hidden)}
+        >
           <Box sx={{ minWidth: 0 }}>
             <Table<MemberChoiceRow>
               name={`member-choices-${memberId}`}
@@ -241,6 +264,8 @@ export const GameChoicesPanel = ({
       gameCategoryByGameId,
       gameById,
       submissionsByMemberId,
+      hiddenSignupNoteMemberIdSet,
+      onSignupNoteHiddenChange,
       onUpsertChoice,
       slotFilterId,
       slotGameIdSet,
@@ -269,7 +294,9 @@ export const GameChoicesPanel = ({
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<MemberChoiceSummaryRow>
         name='game-choices-by-member'

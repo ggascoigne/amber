@@ -108,7 +108,7 @@ test.describe.serial('Game assignments dashboard', () => {
     const memberRow = memberTable.getByRole('row', { name: /Indigo Ivy/ })
 
     await expect(memberRow).toBeVisible()
-    await expect(memberRow.getByRole('cell', { name: 'Indigo Ivy *' })).toBeVisible()
+    await expect(memberRow.getByRole('button', { name: 'View signup note for Indigo Ivy' })).toBeVisible()
 
     await memberRow.getByRole('button', { name: 'Expand row' }).click()
 
@@ -259,7 +259,7 @@ test.describe.serial('Game assignments dashboard', () => {
     const memberChoicesTable = memberChoicesSection.getByRole('table').first()
 
     await expect(memberChoicesTable).toBeVisible()
-    await expect(memberChoicesTable.getByRole('cell', { name: 'Indigo Ivy *' })).toBeVisible()
+    await expect(memberChoicesTable.getByRole('button', { name: 'View signup note for Indigo Ivy' })).toBeVisible()
   })
 
   test('set initial assignments does not create scheduled Any Game assignments', async ({ page }) => {

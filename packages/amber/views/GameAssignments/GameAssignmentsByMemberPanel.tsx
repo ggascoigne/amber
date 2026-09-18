@@ -27,6 +27,7 @@ import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
 import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
+import { SignupNoteIndicator } from './SignupNoteIndicator'
 
 import { useConfiguration } from '../../utils/configContext'
 
@@ -38,8 +39,12 @@ type GameAssignmentsByMemberPanelProps = {
   onSlotFilterChange: (slotFilterId: number | null) => void
   onUpdateAssignments: (payload: DashboardAssignmentUpdatePayload) => Promise<void>
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
+  hiddenSignupNoteMemberIdSet: Set<number>
+  onSignupNoteHiddenChange: (memberId: number, hidden: boolean) => void
 }
 
 export const GameAssignmentsByMemberPanel = ({
@@ -50,8 +55,12 @@ export const GameAssignmentsByMemberPanel = ({
   onSlotFilterChange,
   onUpdateAssignments,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
+  hiddenSignupNoteMemberIdSet,
+  onSignupNoteHiddenChange,
 }: GameAssignmentsByMemberPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
   const configuration = useConfiguration()
@@ -88,18 +97,11 @@ export const GameAssignmentsByMemberPanel = ({
     () =>
       buildMemberAssignmentSummaryRows({
         memberships: data.memberships,
-        submissionsByMemberId,
         assignedSlotCountsByMemberId,
         memberAssignmentCountsByMemberId,
         expectedAssignmentCount,
       }),
-    [
-      assignedSlotCountsByMemberId,
-      data.memberships,
-      expectedAssignmentCount,
-      memberAssignmentCountsByMemberId,
-      submissionsByMemberId,
-    ],
+    [assignedSlotCountsByMemberId, data.memberships, expectedAssignmentCount, memberAssignmentCountsByMemberId],
   )
 
   const memberColumns = useMemo<Array<ColumnDef<MemberAssignmentSummaryRow>>>(
@@ -116,6 +118,14 @@ export const GameAssignmentsByMemberPanel = ({
             }}
           >
             {row.original.memberName}
+            {submissionsByMemberId.get(row.original.memberId)?.message?.trim() &&
+            !hiddenSignupNoteMemberIdSet.has(row.original.memberId) ? (
+              <SignupNoteIndicator
+                memberName={row.original.memberName}
+                message={submissionsByMemberId.get(row.original.memberId)?.message.trim() ?? ''}
+                onHide={() => onSignupNoteHiddenChange(row.original.memberId, true)}
+              />
+            ) : null}
           </Box>
         ),
       },
@@ -168,7 +178,7 @@ export const GameAssignmentsByMemberPanel = ({
         },
       },
     ],
-    [],
+    [hiddenSignupNoteMemberIdSet, onSignupNoteHiddenChange, submissionsByMemberId],
   )
 
   const slotColumns = useMemo<Array<ColumnDef<MemberAssignmentEditorRow>>>(
@@ -257,7 +267,11 @@ export const GameAssignmentsByMemberPanel = ({
       const message = submission?.message
 
       return (
-        <MemberSubmissionDetailLayout submissionMessage={message}>
+        <MemberSubmissionDetailLayout
+          submissionMessage={message}
+          isSubmissionHidden={hiddenSignupNoteMemberIdSet.has(memberId)}
+          onSubmissionHiddenChange={(hidden) => onSignupNoteHiddenChange(memberId, hidden)}
+        >
           <Box sx={{ minWidth: 0 }}>
             <Table<MemberAssignmentEditorRow>
               name={`member-assignments-${memberId}`}
@@ -295,6 +309,8 @@ export const GameAssignmentsByMemberPanel = ({
       slotFilterId,
       submissionsByMemberId,
       year,
+      hiddenSignupNoteMemberIdSet,
+      onSignupNoteHiddenChange,
       slotColumns,
     ],
   )
@@ -320,7 +336,9 @@ export const GameAssignmentsByMemberPanel = ({
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<MemberAssignmentSummaryRow>
         name='game-assignments-by-member'

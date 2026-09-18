@@ -16,9 +16,18 @@ interface GameListIndexProps {
   onEnterGame?: any
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
+  isTitleEmphasized?: (props: GameDecorator) => boolean
 }
 
-export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decoratorParams }: GameListIndexProps) => {
+export const GameListIndex = ({
+  year,
+  slot,
+  games,
+  slugPrefix,
+  decorator,
+  decoratorParams,
+  isTitleEmphasized,
+}: GameListIndexProps) => {
   const [urlSource] = useUrlSource()
   return (
     <List>
@@ -36,7 +45,11 @@ export const GameListIndex = ({ year, slot, games, slugPrefix, decorator, decora
             selected={selectionKey === urlSource.url}
             href={{ pathname: slug, hash: `#${game.id}` }}
           >
-            <Typography variant='body1' noWrap>
+            <Typography
+              variant='body1'
+              noWrap
+              sx={{ fontWeight: isTitleEmphasized?.({ year, slot, game, ...decoratorParams }) ? 700 : 400 }}
+            >
               {game.name}
             </Typography>
             <div style={{ flex: 1 }} />

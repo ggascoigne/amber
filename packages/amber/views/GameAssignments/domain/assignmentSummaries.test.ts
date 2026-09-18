@@ -125,6 +125,8 @@ describe('buildGameInterestSummaryRows', () => {
           },
         ],
       ]),
+      focusedInterestCountsByGameId: new Map([[2, 3]]),
+      moreInterestCountsByGameId: new Map([[2, 5]]),
       interestCountsByGameId: new Map([[2, 7]]),
     })
 
@@ -139,6 +141,8 @@ describe('buildGameInterestSummaryRows', () => {
         overrun: 2,
         shortfall: -2,
         spaces: 0,
+        focusedInterest: 0,
+        moreInterest: 0,
         overallInterest: 0,
       },
       {
@@ -151,6 +155,8 @@ describe('buildGameInterestSummaryRows', () => {
         overrun: 0,
         shortfall: 1,
         spaces: 3,
+        focusedInterest: 3,
+        moreInterest: 5,
         overallInterest: 7,
       },
     ])
@@ -192,7 +198,7 @@ describe('buildMemberChoiceSummaryRows', () => {
     expect(summaryRows).toEqual([
       {
         memberId: 1,
-        memberName: 'Ada *',
+        memberName: 'Ada',
         assignments: 2,
         requiresAttention: false,
       },
@@ -214,7 +220,6 @@ describe('buildMemberAssignmentSummaryRows', () => {
         buildMembership({ id: 2, fullName: null }),
         buildMembership({ id: 3, attending: false }),
       ],
-      submissionsByMemberId: new Map([[1, buildSubmission({ memberId: 1, message: 'Can do late night only' })]]),
       assignedSlotCountsByMemberId: new Map([
         [1, 2],
         [2, 1],
@@ -237,7 +242,7 @@ describe('buildMemberAssignmentSummaryRows', () => {
     expect(summaryRows).toEqual([
       {
         memberId: 1,
-        memberName: 'Ada *',
+        memberName: 'Ada',
         assignments: 2,
         requiresAttention: false,
         counts: {

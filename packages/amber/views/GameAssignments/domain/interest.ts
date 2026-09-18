@@ -1,5 +1,5 @@
 import { getPriorityLabel, getPrioritySortValue } from './labels'
-import type { DashboardChoice, GameInterestRow, InterestChoicesByGameId } from './types'
+import type { DashboardAssignment, DashboardChoice, GameInterestRow, InterestChoicesByGameId } from './types'
 
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 import { isAnyGameCategory, isNoGameCategory } from '../../../utils/gameCategory'
@@ -70,6 +70,103 @@ export const buildInterestCountsByGameId = (choicesByGameId: InterestChoicesByGa
 
   return countsByGameId
 }
+
+export const buildMemberIdsBySlotIdForGameCategory = ({
+  choices,
+  attendingMemberIdSet,
+  gameCategoryByGameId,
+  category,
+}: {
+  choices: Array<DashboardChoice>
+  attendingMemberIdSet: Set<number>
+  gameCategoryByGameId: GameCategoryByGameId
+  category: 'any_game'
+}) => {
+  const memberIdsBySlotId = new Map<number, Set<number>>()
+
+  choices.forEach((choice) => {
+    if (!attendingMemberIdSet.has(choice.memberId) || gameCategoryByGameId.get(choice.gameId ?? 0) !== category) return
+
+    const memberIds = memberIdsBySlotId.get(choice.slotId) ?? new Set<number>()
+    memberIds.add(choice.memberId)
+    memberIdsBySlotId.set(choice.slotId, memberIds)
+  })
+
+  return memberIdsBySlotId
+}
+
+export const buildGmMemberIdsBySlotId = (assignments: Array<DashboardAssignment>) => {
+  const memberIdsBySlotId = new Map<number, Set<number>>()
+
+  assignments.forEach((assignment) => {
+    const slotId = assignment.game?.slotId ?? 0
+    if (assignment.gm <= 0 || slotId <= 0) return
+
+    const memberIds = memberIdsBySlotId.get(slotId) ?? new Set<number>()
+    memberIds.add(assignment.memberId)
+    memberIdsBySlotId.set(slotId, memberIds)
+  })
+
+  return memberIdsBySlotId
+}
+
+export const buildFocusedInterestChoicesByGameId = ({
+  choicesByGameId,
+  anyGameMemberIdsBySlotId,
+  gmMemberIdsBySlotId,
+  gameCategoryByGameId,
+  includeRanksThreeAndFour = false,
+}: {
+  choicesByGameId: InterestChoicesByGameId
+  anyGameMemberIdsBySlotId: Map<number, Set<number>>
+  gmMemberIdsBySlotId: Map<number, Set<number>>
+  gameCategoryByGameId: GameCategoryByGameId
+  includeRanksThreeAndFour?: boolean
+}) => {
+  const focusedChoicesByGameId: InterestChoicesByGameId = new Map()
+
+  choicesByGameId.forEach((choices, gameId) => {
+    choices.forEach((choice) => {
+      const isIncludedRank =
+        choice.rank === 1 || choice.rank === 2 || (includeRanksThreeAndFour && choice.rank >= 3 && choice.rank <= 4)
+      if (!isIncludedRank) {
+        return
+      }
+      if (isAnyGameCategory(gameCategoryByGameId.get(choice.gameId ?? 0))) return
+      if (anyGameMemberIdsBySlotId.get(choice.slotId)?.has(choice.memberId)) return
+      if (gmMemberIdsBySlotId.get(choice.slotId)?.has(choice.memberId)) return
+
+      const focusedChoices = focusedChoicesByGameId.get(gameId) ?? []
+      focusedChoices.push(choice)
+      focusedChoicesByGameId.set(gameId, focusedChoices)
+    })
+  })
+
+  return focusedChoicesByGameId
+}
+
+export const buildFocusedInterestCountsByGameId = ({
+  choicesByGameId,
+  anyGameMemberIdsBySlotId,
+  gmMemberIdsBySlotId,
+  gameCategoryByGameId,
+  includeRanksThreeAndFour = false,
+}: {
+  choicesByGameId: InterestChoicesByGameId
+  anyGameMemberIdsBySlotId: Map<number, Set<number>>
+  gmMemberIdsBySlotId: Map<number, Set<number>>
+  gameCategoryByGameId: GameCategoryByGameId
+  includeRanksThreeAndFour?: boolean
+}) =>
+  buildInterestCountsByGameId(
+    buildFocusedInterestChoicesByGameId({
+      choicesByGameId,
+      anyGameMemberIdsBySlotId,
+      gmMemberIdsBySlotId,
+      gameCategoryByGameId,
+      includeRanksThreeAndFour,
+    }),
+  )
 
 export const buildInterestRowsForGame = ({
   gameId,

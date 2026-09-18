@@ -5,6 +5,7 @@ import type {
   ChoiceUpsert,
   DashboardAssignment,
   DashboardChoice,
+  DashboardGame,
   MemberChoiceEditorState,
   MemberChoiceRow,
 } from './types'
@@ -58,12 +59,14 @@ export const buildChoiceRowsForMember = ({
   memberId,
   choices,
   configuration,
+  gameCategoryByGameId,
   gmGameIdBySlotId,
   slotIds,
 }: {
   memberId: number
   choices: Array<DashboardChoice>
   configuration: Configuration
+  gameCategoryByGameId?: GameCategoryByGameId
   gmGameIdBySlotId?: Map<number, number>
   slotIds?: Array<number>
 }): Array<MemberChoiceRow> => {
@@ -86,7 +89,7 @@ export const buildChoiceRowsForMember = ({
     const firstRank = isGmFirstChoice ? 0 : 1
     const ranks = [firstRank, 2, 3, 4]
 
-    ranks.forEach((rank) => {
+    ranks.some((rank) => {
       const choice =
         rank === firstRank
           ? (firstChoice ?? slotChoices.find((entry) => entry.rank === rank))
@@ -101,8 +104,12 @@ export const buildChoiceRowsForMember = ({
         rank,
         rankLabel: getPriorityLabel(rank, choice?.returningPlayer ?? false),
         gameId: choice?.gameId ?? fallbackGameId,
+        game: choice?.game ?? null,
         returningPlayer: choice?.returningPlayer ?? false,
       })
+
+      const gameCategory = gameCategoryByGameId?.get(choice?.gameId ?? -1)
+      return isNoGameCategory(gameCategory) || isAnyGameCategory(gameCategory)
     })
   })
 
@@ -115,6 +122,7 @@ export const buildChoiceEditorStateForMember = ({
   choices,
   configuration,
   gameCategoryByGameId,
+  gameById,
   slotGameIdSet,
   slotFilterId,
 }: {
@@ -123,6 +131,7 @@ export const buildChoiceEditorStateForMember = ({
   choices: Array<DashboardChoice>
   configuration: Configuration
   gameCategoryByGameId: GameCategoryByGameId
+  gameById: Map<number, DashboardGame>
   slotGameIdSet: Set<number>
   slotFilterId: number | null
 }): MemberChoiceEditorState => {
@@ -146,13 +155,15 @@ export const buildChoiceEditorStateForMember = ({
     const category = gameCategoryByGameId.get(choice.gameId)
     if (isNoGameCategory(category) || isAnyGameCategory(category)) return true
 
-    return slotGameIdSet.has(choice.gameId)
+    const choiceGame = choice.game ?? gameById.get(choice.gameId)
+    return slotGameIdSet.has(choice.gameId) || (choiceGame ? (choiceGame.slotId ?? 0) <= 0 : false)
   })
 
   const choiceRows = buildChoiceRowsForMember({
     memberId,
     choices: filteredChoices,
     configuration,
+    gameCategoryByGameId,
     gmGameIdBySlotId,
     slotIds: slotFilterId ? [slotFilterId] : undefined,
   })
