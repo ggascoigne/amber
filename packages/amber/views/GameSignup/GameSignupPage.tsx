@@ -14,6 +14,7 @@ import type { SelectorUpdate } from './GameChoiceSelector'
 import {
   GameChoiceSelector,
   GameFavoriteToggle,
+  isGmForGame,
   isAnyGame,
   isNoGame,
   orderChoices,
@@ -364,6 +365,7 @@ const GameSignupPage = () => {
                   onToggleFavorite={handleToggleFavorite}
                 />
               )}
+              isTitleEmphasized={({ slot: currentSlot, game }) => isGmForGame(gmSlots, currentSlot, game.id)}
             />
           )}
         </GameListNavigator>

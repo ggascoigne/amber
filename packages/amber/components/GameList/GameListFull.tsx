@@ -20,6 +20,7 @@ interface GameListFullProps {
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
   headerDecorator?: (props: GameDecorator) => React.ReactNode
+  isTitleEmphasized?: (props: GameDecorator) => boolean
 }
 
 export const GameListFull = ({
@@ -30,6 +31,7 @@ export const GameListFull = ({
   decorator,
   decoratorParams,
   headerDecorator,
+  isTitleEmphasized,
 }: GameListFullProps) => {
   const [, setUrlSource] = useUrlSource()
   const hasEnterGame = !!onEnterGame
@@ -62,6 +64,7 @@ export const GameListFull = ({
             decorator={decorator}
             decoratorParams={decoratorParams}
             headerDecorator={headerDecorator}
+            isTitleEmphasized={isTitleEmphasized}
           />
         ) : null,
       )}

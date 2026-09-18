@@ -40,8 +40,8 @@ export const MultiLine: React.FC<{ text: string }> = ({ text }) => (
 )
 
 export const HeaderContent: React.FC<
-  PropsWithChildren<{ name: string; tiny?: boolean; afterTitle?: React.ReactNode }>
-> = ({ name, tiny = false, afterTitle, children }) => (
+  PropsWithChildren<{ name: string; tiny?: boolean; afterTitle?: React.ReactNode; boldTitle?: boolean }>
+> = ({ name, tiny = false, afterTitle, boldTitle = false, children }) => (
   <CardHeader
     color='info'
     sx={[
@@ -80,8 +80,9 @@ export const HeaderContent: React.FC<
                     whiteSpace: 'nowrap',
                     textOverflow: 'ellipsis',
                     margin: 0,
+                    fontWeight: boldTitle ? 700 : undefined,
                   }
-                : { margin: 0 }
+                : { margin: 0, fontWeight: boldTitle ? 700 : undefined }
             }
           >
             {name}

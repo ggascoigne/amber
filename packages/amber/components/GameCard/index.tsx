@@ -38,6 +38,7 @@ interface GameCardProps {
   decorator?: (props: GameDecorator) => React.ReactNode
   decoratorParams?: GameDecoratorParams
   headerDecorator?: (props: GameDecorator) => React.ReactNode
+  isTitleEmphasized?: (props: GameDecorator) => boolean
 }
 
 type GameCardDetailsProps = GameCardProps & {
@@ -178,6 +179,7 @@ export const GameCard = React.memo(
     decorator,
     decoratorParams = {},
     headerDecorator,
+    isTitleEmphasized,
     schedule = false,
     gms,
     players,
@@ -192,6 +194,7 @@ export const GameCard = React.memo(
           <HeaderContent
             name={headerText}
             tiny={tiny}
+            boldTitle={isTitleEmphasized?.({ year, slot, game, ...decoratorParams })}
             afterTitle={headerDecorator?.({ year, slot, game, ...decoratorParams })}
           >
             {decorator({ year, slot, game, ...decoratorParams })}
@@ -200,6 +203,7 @@ export const GameCard = React.memo(
           <HeaderContent
             name={headerText}
             tiny={tiny}
+            boldTitle={isTitleEmphasized?.({ year, slot, game, ...decoratorParams })}
             afterTitle={headerDecorator?.({ year, slot, game, ...decoratorParams })}
           />
         )}
