@@ -36,7 +36,9 @@ type GameChoicesPanelProps = {
   slotFilterId: number | null
   onSlotFilterChange: (slotFilterId: number | null) => void
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
 }
 
@@ -48,7 +50,9 @@ export const GameChoicesPanel = ({
   slotFilterId,
   onSlotFilterChange,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
 }: GameChoicesPanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
@@ -271,7 +275,9 @@ export const GameChoicesPanel = ({
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<MemberChoiceSummaryRow>
         name='game-choices-by-member'

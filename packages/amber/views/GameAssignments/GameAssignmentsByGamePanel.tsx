@@ -38,7 +38,9 @@ type GameAssignmentsByGamePanelProps = {
   onSlotFilterChange: (slotFilterId: number | null) => void
   onUpdateAssignments: (payload: DashboardAssignmentUpdatePayload) => Promise<void>
   isExpanded?: boolean
+  isMinimizeDisabled?: boolean
   onToggleExpand?: () => void
+  onToggleMinimize?: () => void
   scrollBehavior?: 'none' | 'bounded'
 }
 
@@ -50,7 +52,9 @@ export const GameAssignmentsByGamePanel = ({
   onSlotFilterChange,
   onUpdateAssignments,
   isExpanded = false,
+  isMinimizeDisabled = false,
   onToggleExpand,
+  onToggleMinimize,
   scrollBehavior = 'bounded',
 }: GameAssignmentsByGamePanelProps) => {
   const [showExpandedOnly, setShowExpandedOnly] = useState(false)
@@ -477,7 +481,9 @@ export const GameAssignmentsByGamePanel = ({
         showExpandedOnly={showExpandedOnly}
         onShowExpandedOnlyChange={setShowExpandedOnly}
         isExpanded={isExpanded}
+        isMinimizeDisabled={isMinimizeDisabled}
         onToggleExpand={onToggleExpand}
+        onToggleMinimize={onToggleMinimize}
       />
       <Table<GameAssignmentSummaryRow>
         name='game-assignments-by-game'

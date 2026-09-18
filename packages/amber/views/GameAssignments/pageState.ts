@@ -2,6 +2,7 @@ export type GameAssignmentsPaneId = 'byGame' | 'byMember' | 'choices' | 'interes
 export type GameAssignmentsLayoutMode = 'grid' | 'columns' | 'rows'
 export type GameAssignmentsPaneSlotFilters = Record<GameAssignmentsPaneId, number | null>
 export type GameAssignmentsTopSlotFilterId = number | null | 'mixed'
+export type GameAssignmentsMinimizedPaneIds = Array<GameAssignmentsPaneId>
 
 export const gameAssignmentsPaneIds = [
   'byGame',
@@ -24,6 +25,38 @@ export const buildUniformPaneSlotFilters = (slotFilterId: number | null): GameAs
   buildPaneSlotFilters(() => slotFilterId)
 
 export const buildDefaultPaneSlotFilters = (): GameAssignmentsPaneSlotFilters => buildUniformPaneSlotFilters(null)
+
+export const sanitizeGameAssignmentsMinimizedPaneIds = (value: unknown): GameAssignmentsMinimizedPaneIds => {
+  if (!Array.isArray(value)) return []
+
+  const paneIdSet = new Set(
+    value.filter(
+      (paneId): paneId is GameAssignmentsPaneId =>
+        typeof paneId === 'string' && gameAssignmentsPaneIds.includes(paneId as GameAssignmentsPaneId),
+    ),
+  )
+
+  return gameAssignmentsPaneIds.filter((paneId) => paneIdSet.has(paneId)).slice(0, gameAssignmentsPaneIds.length - 1)
+}
+
+export const doMinimizedPaneIdsMatchStoredValue = (value: unknown, expected: GameAssignmentsMinimizedPaneIds) =>
+  Array.isArray(value) && value.length === expected.length && value.every((paneId, index) => paneId === expected[index])
+
+export const toggleGameAssignmentsPaneMinimized = ({
+  minimizedPaneIds,
+  paneId,
+}: {
+  minimizedPaneIds: GameAssignmentsMinimizedPaneIds
+  paneId: GameAssignmentsPaneId
+}): GameAssignmentsMinimizedPaneIds => {
+  if (minimizedPaneIds.includes(paneId)) {
+    return minimizedPaneIds.filter((minimizedPaneId) => minimizedPaneId !== paneId)
+  }
+
+  if (minimizedPaneIds.length >= gameAssignmentsPaneIds.length - 1) return minimizedPaneIds
+
+  return sanitizeGameAssignmentsMinimizedPaneIds([...minimizedPaneIds, paneId])
+}
 
 export const buildUpdatedPaneSlotFilters = ({
   paneSlotFilters,

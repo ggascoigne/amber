@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
-import { Box, Stack } from '@mui/material'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { createPortal } from 'react-dom'
@@ -15,7 +15,19 @@ import { GameInterestPanel } from './GameInterestPanel'
 import type { GameAssignmentsLayoutPlan } from './layoutPlan'
 import { buildGameAssignmentsLayoutPlan } from './layoutPlan'
 import { gameAssignmentsPaneIds } from './pageState'
-import type { GameAssignmentsLayoutMode, GameAssignmentsPaneId, GameAssignmentsPaneSlotFilters } from './pageState'
+import type {
+  GameAssignmentsLayoutMode,
+  GameAssignmentsMinimizedPaneIds,
+  GameAssignmentsPaneId,
+  GameAssignmentsPaneSlotFilters,
+} from './pageState'
+
+const paneTitleById: Record<GameAssignmentsPaneId, string> = {
+  byGame: 'Assignments by Game',
+  byMember: 'Assignments by Member',
+  choices: 'Member Choices',
+  interest: 'Game Interest',
+}
 
 type ResizeHandleProps = {
   direction: 'horizontal' | 'vertical'
@@ -56,6 +68,8 @@ export type GameAssignmentsDashboardProps = {
   layoutMode: GameAssignmentsLayoutMode
   expandedPaneId: GameAssignmentsPaneId | null
   onToggleExpand: (paneId: GameAssignmentsPaneId) => void
+  minimizedPaneIds: GameAssignmentsMinimizedPaneIds
+  onToggleMinimize: (paneId: GameAssignmentsPaneId) => void
 }
 
 export const GameAssignmentsDashboard = ({
@@ -70,6 +84,8 @@ export const GameAssignmentsDashboard = ({
   layoutMode,
   expandedPaneId,
   onToggleExpand,
+  minimizedPaneIds,
+  onToggleMinimize,
 }: GameAssignmentsDashboardProps) => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
@@ -82,8 +98,9 @@ export const GameAssignmentsDashboard = ({
         expandedPaneId,
         isSmallScreen,
         layoutMode,
+        minimizedPaneIds,
       }),
-    [expandedPaneId, isSmallScreen, layoutMode],
+    [expandedPaneId, isSmallScreen, layoutMode, minimizedPaneIds],
   )
 
   useEffect(() => {
@@ -107,9 +124,14 @@ export const GameAssignmentsDashboard = ({
     setPortalReady(true)
   }, [])
 
-  const buildExpandProps = (paneId: GameAssignmentsPaneId) => ({
+  const buildPaneControlProps = (paneId: GameAssignmentsPaneId) => ({
     isExpanded: expandedPaneId === paneId,
     onToggleExpand: () => onToggleExpand(paneId),
+    isMinimizeDisabled: minimizedPaneIds.length >= gameAssignmentsPaneIds.length - 1,
+    onToggleMinimize:
+      !isSmallScreen && (layoutMode === 'columns' || layoutMode === 'rows')
+        ? () => onToggleMinimize(paneId)
+        : undefined,
   })
 
   const renderPaneContent = (paneId: GameAssignmentsPaneId) => {
@@ -124,7 +146,7 @@ export const GameAssignmentsDashboard = ({
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('byGame', nextSlotFilterId)}
             onUpdateAssignments={onUpdateAssignments}
             scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
+            {...buildPaneControlProps(paneId)}
           />
         )
       case 'byMember':
@@ -137,7 +159,7 @@ export const GameAssignmentsDashboard = ({
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('byMember', nextSlotFilterId)}
             onUpdateAssignments={onUpdateAssignments}
             scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
+            {...buildPaneControlProps(paneId)}
           />
         )
       case 'choices':
@@ -150,7 +172,7 @@ export const GameAssignmentsDashboard = ({
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('choices', nextSlotFilterId)}
             onUpsertChoice={onUpsertChoice}
             scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
+            {...buildPaneControlProps(paneId)}
           />
         )
       case 'interest':
@@ -161,7 +183,7 @@ export const GameAssignmentsDashboard = ({
             slotFilterId={paneSlotFilters.interest}
             onSlotFilterChange={(nextSlotFilterId) => onPaneSlotFilterChange('interest', nextSlotFilterId)}
             scrollBehavior={scrollBehavior}
-            {...buildExpandProps(paneId)}
+            {...buildPaneControlProps(paneId)}
           />
         )
       default:
@@ -261,6 +283,33 @@ export const GameAssignmentsDashboard = ({
       <Box ref={hiddenHostRef} sx={{ display: 'none' }} />
       {portalContent}
       {renderLayoutPlan(layoutPlan)}
+      {minimizedPaneIds.length > 0 && !isSmallScreen && (layoutMode === 'columns' || layoutMode === 'rows') ? (
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, pt: 1 }}>
+          {minimizedPaneIds.map((paneId) => (
+            <Box
+              key={paneId}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flex: '1 1 220px',
+                maxWidth: 320,
+                minHeight: 40,
+                px: 1,
+                border: 1,
+                borderColor: 'divider',
+                borderRadius: 1,
+                backgroundColor: 'background.paper',
+              }}
+            >
+              <Typography variant='body2'>{paneTitleById[paneId]}</Typography>
+              <Button size='small' onClick={() => onToggleMinimize(paneId)}>
+                Restore
+              </Button>
+            </Box>
+          ))}
+        </Box>
+      ) : null}
     </>
   )
 }

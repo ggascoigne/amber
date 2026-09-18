@@ -14,17 +14,25 @@ import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardDa
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
 import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
 import { GameAssignmentsTitleBar } from './GameAssignmentsTitleBar'
-import type { GameAssignmentsLayoutMode, GameAssignmentsPaneId, GameAssignmentsPaneSlotFilters } from './pageState'
+import type {
+  GameAssignmentsLayoutMode,
+  GameAssignmentsMinimizedPaneIds,
+  GameAssignmentsPaneId,
+  GameAssignmentsPaneSlotFilters,
+} from './pageState'
 import {
   buildDefaultPaneSlotFilters,
   buildGameAssignmentsSlotFilterOptions,
   buildUniformPaneSlotFilters,
   buildUpdatedPaneSlotFilters,
   doPaneSlotFiltersMatchStoredValue,
+  doMinimizedPaneIdsMatchStoredValue,
   getTopSlotFilterId,
   sanitizeGameAssignmentsLayoutMode,
+  sanitizeGameAssignmentsMinimizedPaneIds,
   sanitizeGameAssignmentsPaneId,
   sanitizeGameAssignmentsPaneSlotFilters,
+  toggleGameAssignmentsPaneMinimized,
 } from './pageState'
 
 import { Page } from '../../components'
@@ -36,6 +44,7 @@ import { useYearFilter } from '../../utils/useYearFilterState'
 const GAME_ASSIGNMENTS_LAYOUT_STORAGE_KEY = 'amber.gameAssignments.layoutMode'
 const GAME_ASSIGNMENTS_SLOT_FILTERS_STORAGE_KEY = 'amber.gameAssignments.paneSlotFilters'
 const GAME_ASSIGNMENTS_EXPANDED_PANE_STORAGE_KEY = 'amber.gameAssignments.expandedPaneId'
+const GAME_ASSIGNMENTS_MINIMIZED_PANES_STORAGE_KEY = 'amber.gameAssignments.minimizedPaneIds'
 
 const GameAssignmentsPage = () => {
   const trpc = useTRPC()
@@ -70,6 +79,14 @@ const GameAssignmentsPage = () => {
   const expandedPaneId = useMemo<GameAssignmentsPaneId | null>(
     () => sanitizeGameAssignmentsPaneId(storedExpandedPaneId),
     [storedExpandedPaneId],
+  )
+  const [storedMinimizedPaneIds, setStoredMinimizedPaneIds] = useLocalStorage<unknown>(
+    GAME_ASSIGNMENTS_MINIMIZED_PANES_STORAGE_KEY,
+    [],
+  )
+  const minimizedPaneIds = useMemo<GameAssignmentsMinimizedPaneIds>(
+    () => sanitizeGameAssignmentsMinimizedPaneIds(storedMinimizedPaneIds),
+    [storedMinimizedPaneIds],
   )
   const tableFontSize = '0.78125rem'
   const tableFontVar = 'var(--amber-table-font-size, 0.875rem)'
@@ -134,6 +151,11 @@ const GameAssignmentsPage = () => {
       setStoredExpandedPaneId(expandedPaneId)
     }
   }, [expandedPaneId, setStoredExpandedPaneId, storedExpandedPaneId])
+
+  useEffect(() => {
+    if (doMinimizedPaneIdsMatchStoredValue(storedMinimizedPaneIds, minimizedPaneIds)) return
+    setStoredMinimizedPaneIds(minimizedPaneIds)
+  }, [minimizedPaneIds, setStoredMinimizedPaneIds, storedMinimizedPaneIds])
 
   useEffect(() => {
     if (!isSummaryDialogOpen) return
@@ -233,6 +255,16 @@ const GameAssignmentsPage = () => {
     },
     [expandedPaneId, setStoredExpandedPaneId],
   )
+  const handleToggleMinimize = useCallback(
+    (paneId: GameAssignmentsPaneId) => {
+      const nextMinimizedPaneIds = toggleGameAssignmentsPaneMinimized({ minimizedPaneIds, paneId })
+      if (nextMinimizedPaneIds.includes(paneId) && expandedPaneId === paneId) {
+        setStoredExpandedPaneId(null)
+      }
+      setStoredMinimizedPaneIds(nextMinimizedPaneIds)
+    },
+    [expandedPaneId, minimizedPaneIds, setStoredExpandedPaneId, setStoredMinimizedPaneIds],
+  )
   const handlePaneSlotFilterChange = useCallback(
     (paneId: GameAssignmentsPaneId, slotFilterId: number | null) => {
       setStoredPaneSlotFilters(buildUpdatedPaneSlotFilters({ paneSlotFilters, paneId, slotFilterId }))
@@ -323,6 +355,8 @@ const GameAssignmentsPage = () => {
           layoutMode={layoutMode}
           expandedPaneId={expandedPaneId}
           onToggleExpand={handleToggleExpand}
+          minimizedPaneIds={minimizedPaneIds}
+          onToggleMinimize={handleToggleMinimize}
         />
       </Box>
       <AssignmentSummaryDialog

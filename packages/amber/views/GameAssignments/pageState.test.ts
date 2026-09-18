@@ -5,11 +5,14 @@ import {
   buildGameAssignmentsSlotFilterOptions,
   buildUniformPaneSlotFilters,
   buildUpdatedPaneSlotFilters,
+  doMinimizedPaneIdsMatchStoredValue,
   doPaneSlotFiltersMatchStoredValue,
   getTopSlotFilterId,
   sanitizeGameAssignmentsLayoutMode,
+  sanitizeGameAssignmentsMinimizedPaneIds,
   sanitizeGameAssignmentsPaneId,
   sanitizeGameAssignmentsPaneSlotFilters,
+  toggleGameAssignmentsPaneMinimized,
 } from './pageState'
 
 describe('game assignments page state helpers', () => {
@@ -51,6 +54,32 @@ describe('game assignments page state helpers', () => {
     expect(sanitizeGameAssignmentsLayoutMode('other')).toBe('grid')
     expect(sanitizeGameAssignmentsPaneId('choices')).toBe('choices')
     expect(sanitizeGameAssignmentsPaneId('other')).toBeNull()
+  })
+
+  test('sanitizes minimized panes and preserves one visible pane', () => {
+    expect(
+      sanitizeGameAssignmentsMinimizedPaneIds(['choices', 'choices', 'invalid', 'byGame', 'interest', 'byMember']),
+    ).toEqual(['byGame', 'byMember', 'choices'])
+    expect(sanitizeGameAssignmentsMinimizedPaneIds('choices')).toEqual([])
+    expect(doMinimizedPaneIdsMatchStoredValue(['byGame'], ['byGame'])).toBe(true)
+    expect(doMinimizedPaneIdsMatchStoredValue(['byGame', 'choices'], ['byGame'])).toBe(false)
+  })
+
+  test('does not minimize the final visible pane and restores minimized panes', () => {
+    const threeMinimizedPanes = ['byGame', 'byMember', 'choices'] as const
+
+    expect(
+      toggleGameAssignmentsPaneMinimized({
+        minimizedPaneIds: Array.from(threeMinimizedPanes),
+        paneId: 'interest',
+      }),
+    ).toEqual(threeMinimizedPanes)
+    expect(
+      toggleGameAssignmentsPaneMinimized({
+        minimizedPaneIds: Array.from(threeMinimizedPanes),
+        paneId: 'choices',
+      }),
+    ).toEqual(['byGame', 'byMember'])
   })
 
   test('sanitizes pane slot filters with per-pane fallbacks', () => {

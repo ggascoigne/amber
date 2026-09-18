@@ -83,6 +83,25 @@ describe('game assignments layout plan helpers', () => {
     })
   })
 
+  test('rows and columns omit minimized panes and resize remaining panes equally', () => {
+    expect(
+      buildGameAssignmentsLayoutPlan({
+        expandedPaneId: null,
+        isSmallScreen: false,
+        layoutMode: 'columns',
+        minimizedPaneIds: ['byMember'],
+      }),
+    ).toEqual({
+      type: 'group',
+      orientation: 'horizontal',
+      panels: [
+        { defaultSize: 100 / 3, minSize: 15, plan: { type: 'pane', paneId: 'byGame' } },
+        { defaultSize: 100 / 3, minSize: 15, plan: { type: 'pane', paneId: 'choices' } },
+        { defaultSize: 100 / 3, minSize: 15, plan: { type: 'pane', paneId: 'interest' } },
+      ],
+    })
+  })
+
   test('grid mode preserves the two-column nested desktop layout', () => {
     expect(
       buildGameAssignmentsLayoutPlan({
