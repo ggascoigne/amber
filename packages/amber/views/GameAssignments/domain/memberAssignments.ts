@@ -1,4 +1,4 @@
-import type { TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
+import type { TableEditOption, TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
 import type { RowData } from '@amber/ui/components/Table/tableTypes'
 
 import { getChoiceForGame, buildEmptyMemberAssignmentCounts } from './assignmentSummaries'
@@ -9,10 +9,13 @@ import type {
   ChoicesByMemberSlot,
   DashboardAssignment,
   DashboardGame,
+  DashboardMembership,
   GameAssignmentEditorRow,
   MemberAssignmentCounts,
   MemberAssignmentEditorRow,
 } from './types'
+
+import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 export const buildMemberAssignmentEditorRows = ({
   memberId,
@@ -118,6 +121,64 @@ export const buildUpdatedGameAssignmentRowMemberSelection = ({
         ? buildEmptyMemberAssignmentCounts()
         : (memberAssignmentCountsByMemberId.get(memberId) ?? buildEmptyMemberAssignmentCounts()),
   }
+}
+
+export const buildMemberSelectOptionsForGame = ({
+  memberships,
+  choicesByMemberSlot,
+  gameCategoryByGameId,
+  gmMemberIdsBySlotId,
+  gameId,
+  slotId,
+}: {
+  memberships: Array<DashboardMembership>
+  choicesByMemberSlot: ChoicesByMemberSlot
+  gameCategoryByGameId: GameCategoryByGameId
+  gmMemberIdsBySlotId: Map<number, Set<number>>
+  gameId: number
+  slotId: number
+}): Array<TableEditOption> => {
+  const gmMemberIds = gmMemberIdsBySlotId.get(slotId) ?? new Set<number>()
+
+  const options = memberships
+    .filter((membership) => membership.attending && !gmMemberIds.has(membership.id))
+    .map((membership) => {
+      const choices = choicesByMemberSlot.get(membership.id)?.get(slotId) ?? []
+      const directChoice = choices.find((choice) => choice.gameId === gameId)
+      const anyGameChoice = choices.find((choice) => gameCategoryByGameId.get(choice.gameId ?? 0) === 'any_game')
+      const choice = directChoice ?? anyGameChoice
+      const isAnyGameChoice = choice === anyGameChoice && anyGameChoice !== undefined
+      const priorityLabel = choice
+        ? `${getPriorityLabel(choice.rank, choice.returningPlayer)}${isAnyGameChoice ? ' (Any Game)' : ''}`
+        : ''
+
+      return {
+        value: membership.id,
+        label: membership.user.fullName ?? 'Unknown member',
+        priorityLabel,
+        prioritySortValue: choice
+          ? getPrioritySortValue(choice.rank, choice.returningPlayer)
+          : Number.POSITIVE_INFINITY,
+      }
+    })
+    .sort((left, right) => {
+      if (left.prioritySortValue !== right.prioritySortValue) return left.prioritySortValue - right.prioritySortValue
+      return left.label.localeCompare(right.label)
+    })
+
+  return [
+    {
+      label: 'Headers',
+      value: '__header__',
+      disabled: true,
+      isHeader: true,
+      columns: [{ value: 'Member' }, { value: 'Priority', width: 120, align: 'right' }],
+    },
+    ...options.map(({ priorityLabel, prioritySortValue: _prioritySortValue, ...option }) => ({
+      ...option,
+      columns: [{ value: option.label }, { value: priorityLabel, width: 120, align: 'right' as const }],
+    })),
+  ]
 }
 
 export const buildGameAssignmentEditorRows = ({

@@ -5,15 +5,66 @@ import {
   buildAssignmentUpdatePayload,
   buildGameAssignmentAddPayload,
   buildGameAssignmentEditorRows,
+  buildMemberSelectOptionsForGame,
   buildGameAssignmentPayloadFromUpdates,
   buildMemberAssignmentEditorRows,
   buildMemberAssignmentPayloadFromUpdates,
   buildUpdatedGameAssignmentRowMemberSelection,
   buildUpdatedMemberAssignmentRowGameSelection,
 } from './memberAssignments'
-import { buildAssignment, buildChoice, buildGame } from './testHelpers'
+import { buildAssignment, buildChoice, buildGame, buildMembership } from './testHelpers'
 
 import { PlayerPreference } from '../../../utils/selectValues'
+
+describe('buildMemberSelectOptionsForGame', () => {
+  test('puts interested players first, shows any-game priorities, and excludes GMs in the slot', () => {
+    expect(
+      buildMemberSelectOptionsForGame({
+        memberships: [
+          buildMembership({ id: 1, fullName: 'Ada' }),
+          buildMembership({ id: 2, fullName: 'Bea' }),
+          buildMembership({ id: 3, fullName: 'Cy' }),
+          buildMembership({ id: 4, fullName: 'Dee' }),
+        ],
+        choicesByMemberSlot: buildChoicesByMemberSlot([
+          buildChoice({ memberId: 1, slotId: 1, gameId: 101, rank: 2 }),
+          buildChoice({ memberId: 2, slotId: 1, gameId: 900, rank: 1 }),
+          buildChoice({ memberId: 3, slotId: 1, gameId: 101, rank: 1 }),
+        ]),
+        gameCategoryByGameId: new Map([
+          [101, 'user'],
+          [900, 'any_game'],
+        ]),
+        gmMemberIdsBySlotId: new Map([[1, new Set([3])]]),
+        gameId: 101,
+        slotId: 1,
+      }),
+    ).toEqual([
+      {
+        label: 'Headers',
+        value: '__header__',
+        disabled: true,
+        isHeader: true,
+        columns: [{ value: 'Member' }, { value: 'Priority', width: 120, align: 'right' }],
+      },
+      {
+        label: 'Bea',
+        value: 2,
+        columns: [{ value: 'Bea' }, { value: '1st (Any Game)', width: 120, align: 'right' }],
+      },
+      {
+        label: 'Ada',
+        value: 1,
+        columns: [{ value: 'Ada' }, { value: '2nd', width: 120, align: 'right' }],
+      },
+      {
+        label: 'Dee',
+        value: 4,
+        columns: [{ value: 'Dee' }, { value: '', width: 120, align: 'right' }],
+      },
+    ])
+  })
+})
 
 describe('buildGameAssignmentEditorRows', () => {
   test('builds expanded game assignment rows while preserving slot fallback, priority labels, and count defaults', () => {
