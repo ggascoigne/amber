@@ -17,6 +17,12 @@ export const isAnyGame = (gameCategoryByGameId: GameCategoryByGameId, id: number
 
 const EMPTY_GAME_CATEGORY_BY_GAME_ID: GameCategoryByGameId = new Map()
 
+export const isGmInSlot = (gmSlots: Array<GameChoice> | undefined, slot: number) =>
+  !!gmSlots?.some((choice) => choice.slotId === slot)
+
+export const isGmForGame = (gmSlots: Array<GameChoice> | undefined, slot: number, gameId: number) =>
+  !!gmSlots?.some((choice) => choice.slotId === slot && choice.gameId === gameId)
+
 export enum RankStyle {
   small,
   superscript,
@@ -106,7 +112,20 @@ const toggleButtonSx = {
     borderLeftColor: 'white',
     '&:hover': { backgroundColor: 'rgba(102, 8, 22, .6)' },
   },
+  '&.Mui-disabled': {
+    color: 'grey.400',
+    borderColor: 'white',
+  },
 }
+
+const lockedGmToggleButtonSx = {
+  ...toggleButtonSx,
+  '&.Mui-disabled': {
+    color: 'white',
+    borderColor: 'white',
+  },
+}
+
 export const GameChoiceSelector = ({
   year,
   slot,
@@ -122,7 +141,8 @@ export const GameChoiceSelector = ({
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
-  const isGmThisSlot = !!gmSlots?.filter((c) => c?.slotId === slot)?.length
+  const isGmThisSlot = isGmInSlot(gmSlots, slot)
+  const isGmThisGame = isGmForGame(gmSlots, slot, game.id)
 
   useEffect(() => {
     setRank(thisOne?.rank ?? null)
@@ -215,31 +235,36 @@ export const GameChoiceSelector = ({
           </div>
           <ToggleButtonGroup size='small' value={rank} exclusive onChange={handlePriority} aria-label='game priority'>
             {isAdmin && !isNoOrAnyGame && (
-              <ToggleButton sx={toggleButtonSx} value={0} aria-label='GM'>
+              <ToggleButton
+                disabled={isGmThisSlot}
+                sx={isGmThisGame ? lockedGmToggleButtonSx : toggleButtonSx}
+                value={0}
+                aria-label='GM'
+              >
                 <Rank rank={0} />
               </ToggleButton>
             )}
             {isAdmin ? (
-              <ToggleButton sx={toggleButtonSx} value={1} aria-label='first'>
+              <ToggleButton disabled={isGmThisSlot} sx={toggleButtonSx} value={1} aria-label='first'>
                 <Rank rank={1} />
               </ToggleButton>
             ) : (
               <ToggleButton
-                disabled={isGmThisSlot && !isAdmin}
-                sx={toggleButtonSx}
+                disabled={isGmThisSlot}
+                sx={rank === 0 && isGmThisGame ? lockedGmToggleButtonSx : toggleButtonSx}
                 value={rank === 0 ? 0 : 1}
                 aria-label='first'
               >
                 {rank === 0 ? <Rank rank={0} /> : <Rank rank={1} />}
               </ToggleButton>
             )}
-            <ToggleButton sx={toggleButtonSx} value={2} aria-label='second'>
+            <ToggleButton disabled={isGmThisGame} sx={toggleButtonSx} value={2} aria-label='second'>
               <Rank rank={2} />
             </ToggleButton>
-            <ToggleButton sx={toggleButtonSx} value={3} aria-label='third'>
+            <ToggleButton disabled={isGmThisGame} sx={toggleButtonSx} value={3} aria-label='third'>
               <Rank rank={3} />
             </ToggleButton>
-            <ToggleButton sx={toggleButtonSx} value={4} aria-label='fourth'>
+            <ToggleButton disabled={isGmThisGame} sx={toggleButtonSx} value={4} aria-label='fourth'>
               <Rank rank={4} />
             </ToggleButton>
           </ToggleButtonGroup>
