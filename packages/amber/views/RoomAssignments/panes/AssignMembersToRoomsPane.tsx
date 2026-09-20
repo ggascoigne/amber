@@ -1,12 +1,11 @@
 import { useMemo } from 'react'
 
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Autocomplete, Box, Checkbox, TextField } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { RoomMemberAssignmentRow } from '../types'
 
 type RoomMemberMultiSelectCellProps = {

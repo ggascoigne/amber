@@ -1,9 +1,9 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import type { SelectProps as MuiSelectProps } from '@mui/material/Select'
 import { getSelectLabel, getSelectValue, range } from '@amber/ui'
 import { FormControl, MenuItem, TextField } from '@mui/material'
-import type { SelectProps as MuiSelectProps } from '@mui/material/Select'
 
 import { useConfiguration } from '../utils/configContext'
 import { useYearFilter } from '../utils/useYearFilterState'

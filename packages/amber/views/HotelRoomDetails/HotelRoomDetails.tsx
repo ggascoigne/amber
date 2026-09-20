@@ -1,15 +1,14 @@
 import { useCallback, useMemo } from 'react'
 
 import type { HotelRoomDetails as HotelRoomDetailsType, HotelRoom } from '@amber/client'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useTRPC } from '@amber/client'
 import { notEmpty } from '@amber/ui'
 import { YesBlankCell } from '@amber/ui/components/CellFormatters'
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { HotelRoomDetailDialog } from './HotelRoomDetailDialog'
-
 import { useInvalidateHotelRoomDetailsQueries } from '../../../client/src/invalidate'
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'

@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server'
 
 import type { GetScheduleRoomAssignmentDataInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const scheduleGameSelect = {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import {
   Page,
   TransportError,
@@ -11,7 +12,6 @@ import {
   useYearFilter,
 } from '@amber/amber'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
-import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { Card, CardBody, Field, HeaderContent, Loader, MultiLine, range } from '@amber/ui'

@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from 'react'
 
-import Box from '@mui/material/Box'
 import type { Theme, SxProps } from '@mui/material/styles'
+import Box from '@mui/material/Box'
 
 import { TableCell, TableRow } from '../components/TableStyles'
 import { EXPAND_COLUMN_SIZE } from '../constants'

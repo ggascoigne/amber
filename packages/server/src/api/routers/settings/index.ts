@@ -1,7 +1,6 @@
 import { createSettingRecord, deleteSettingRecord, updateSettingRecord } from './mutations'
 import { getSettings } from './queries'
 import { createSettingInput, deleteSettingInput, updateSettingInput } from './schemas'
-
 import { inRlsTransaction } from '../../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../../trpc'
 

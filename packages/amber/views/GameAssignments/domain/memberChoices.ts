@@ -1,6 +1,5 @@
 import type { TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
 
-import { getPriorityLabel } from './labels'
 import type {
   ChoiceUpsert,
   DashboardAssignment,
@@ -9,7 +8,7 @@ import type {
   MemberChoiceEditorState,
   MemberChoiceRow,
 } from './types'
-
+import { getPriorityLabel } from './labels'
 import type { Configuration } from '../../../utils/configContext'
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 import { isAnyGameCategory, isNoGameCategory, isUserGameCategory } from '../../../utils/gameCategory'

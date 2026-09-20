@@ -1,6 +1,5 @@
-import { gameRoomSummarySelect } from './queries'
 import type { CreateGameRoomInput, DeleteGameRoomInput, UpdateGameRoomInput } from './schemas'
-
+import { gameRoomSummarySelect } from './queries'
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const updateGameRoomRecord = ({ tx, input }: { tx: TransactionClient; input: UpdateGameRoomInput }) =>

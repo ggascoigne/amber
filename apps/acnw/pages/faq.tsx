@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
 import type { NextPage } from 'next'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
 
 import Faq from '../views/Faq'
 

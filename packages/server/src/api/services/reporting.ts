@@ -1,6 +1,5 @@
 import { defaultWorkbook, reportDefinitions } from './reports'
 import { getRuntimeSettingsTx } from './runtimeSettings'
-
 import type { Context } from '../context'
 import type { ReportRow, ReportWorkbookData, ReportWorkbookInput } from '../contracts/reports'
 import { inRlsTransaction } from '../inRlsTransaction'

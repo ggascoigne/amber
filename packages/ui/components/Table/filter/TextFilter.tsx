@@ -5,9 +5,8 @@ import { Box, Button, TextField } from '@mui/material'
 
 import { useFilterContext } from './FilterContext'
 import { FilterStatusButton } from './FilterStatusButton'
-
-import { useFocusableInput } from '../../../utils/useFocusableInput'
 import type { RowData, FilterRenderProps } from '../tableTypes'
+import { useFocusableInput } from '../../../utils/useFocusableInput'
 import { columnName } from '../utils/tableUtils'
 
 type TextFilterEditorProps = {

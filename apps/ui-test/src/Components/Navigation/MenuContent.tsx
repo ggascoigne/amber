@@ -1,13 +1,13 @@
 import type { MouseEvent } from 'react'
 import { useEffect, useState } from 'react'
 
+import type { SxProps, Theme } from '@mui/material/styles'
 import { Collapse, Divider } from '@mui/material'
 import MenuList from '@mui/material/MenuList'
-import type { SxProps, Theme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 
-import { ExpandIcon, MenuGroupStyled, MenuItemStyled, MenuListStyled, MenuTitle, NavLink } from './MenuComponents'
 import type { MenuEntry } from './MenuTypes'
+import { ExpandIcon, MenuGroupStyled, MenuItemStyled, MenuListStyled, MenuTitle, NavLink } from './MenuComponents'
 import { isMenuCollection, isMenuLink } from './MenuTypes'
 
 const normalizePath = (path: string) => {

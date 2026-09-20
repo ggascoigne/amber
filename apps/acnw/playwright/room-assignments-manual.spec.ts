@@ -1,7 +1,7 @@
+import type { Page } from '@playwright/test'
 import { loginAsUser } from '@amber/playwright/auth'
 import { expect, test } from '@amber/playwright/test'
 import { seededTestUsers } from '@amber/playwright/users'
-import type { Page } from '@playwright/test'
 
 const openRoomAssignments = async (page: Page) => {
   await loginAsUser(page, seededTestUsers.admin, { returnTo: '/room-assignments' })

@@ -4,9 +4,9 @@ import type { GameArray } from '@amber/client'
 import { Typography } from '@mui/material'
 import List from '@mui/material/List'
 
+import type { GameDecorator, GameDecoratorParams } from '../types'
 import { useUrlSource } from '../../utils/useUrlSourceState'
 import { ListItemLink } from '../Navigation'
-import type { GameDecorator, GameDecoratorParams } from '../types'
 
 interface GameListIndexProps {
   year: number

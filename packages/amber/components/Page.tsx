@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import type React from 'react'
 
+import type { SxProps, Theme, Breakpoint } from '@mui/material/styles'
 import { fixedForwardRef } from '@amber/ui'
 import { Box, Container } from '@mui/material'
-import type { SxProps, Theme, Breakpoint } from '@mui/material/styles'
 import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Head from 'next/head'

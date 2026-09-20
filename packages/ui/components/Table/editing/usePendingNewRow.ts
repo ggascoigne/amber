@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import type { DataTableEditingConfig } from './types'
-
 import type { RowData } from '../tableTypes'
 
 type UsePendingNewRowProps<TData extends RowData> = {

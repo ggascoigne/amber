@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { resetGameAssignments } from './reset'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createResetGameAssignmentsTx = ({ deletedCount = 0 }: { deletedCount?: number } = {}) => {

@@ -1,9 +1,9 @@
 import * as React from 'react'
 
-import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
 import type { PdfReportRecord, ReportRecord } from '@amber/amber/views/Reports'
-import { Reports } from '@amber/amber/views/Reports'
 import type { NextPage } from 'next'
+import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
+import { Reports } from '@amber/amber/views/Reports'
 
 const reports: ReportRecord[] = [
   { name: 'Membership', reportId: 'membershipReport' },

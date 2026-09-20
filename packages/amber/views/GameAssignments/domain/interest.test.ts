@@ -10,7 +10,6 @@ import {
   buildMemberIdsBySlotIdForGameCategory,
 } from './interest'
 import { buildAssignment, buildChoice } from './testHelpers'
-
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 describe('buildInterestChoicesByGameId', () => {

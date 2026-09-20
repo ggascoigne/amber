@@ -3,7 +3,6 @@ import { useState } from 'react'
 import { Table } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
-
 import { Page, Toggle } from '@/Components'
 
 type TreeDemoRow = {

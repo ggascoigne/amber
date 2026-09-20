@@ -4,7 +4,6 @@ import type {
   GetGameAssignmentsByYearInput,
   IsGameMasterInput,
 } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const getGameAssignmentsByYear = ({

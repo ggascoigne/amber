@@ -1,5 +1,5 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import type { PDFEmbeddedPage, PDFFont, PDFPage } from 'pdf-lib'
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 
 import type { Context } from '../../context'
 import type { ReportPdfData, ReportPdfInput } from '../../contracts/reports'

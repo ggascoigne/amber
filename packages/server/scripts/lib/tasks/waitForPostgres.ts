@@ -1,7 +1,6 @@
 import { spawnSync } from 'child_process'
-
-import { parsePostgresConnectionString, processEnv } from '@amber/environment/dotenv'
 import type { ListrTask, ListrTaskWrapper } from 'listr2'
+import { parsePostgresConnectionString, processEnv } from '@amber/environment/dotenv'
 
 import type { TaskContext } from '../taskContext'
 

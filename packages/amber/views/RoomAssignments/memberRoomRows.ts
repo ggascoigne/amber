@@ -1,7 +1,7 @@
-import { buildAssignedMemberNamesByRoomId } from './dashboardIndexes'
-import { sortNames } from './dashboardShared'
 import type { DashboardMembership, DashboardRoom } from './dashboardShared'
 import type { MemberRoomAssignmentRow, RoomMemberAssignmentRow } from './types'
+import { buildAssignedMemberNamesByRoomId } from './dashboardIndexes'
+import { sortNames } from './dashboardShared'
 
 type AssignedMember = {
   id: number

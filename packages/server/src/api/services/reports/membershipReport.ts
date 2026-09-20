@@ -1,7 +1,6 @@
 import { toExcelCalendarDateSerial } from '@amber/shared/src/calendarDate'
 
 import type { ReportDefinition } from './types'
-
 import type { ReportCellValue } from '../../contracts/reports'
 
 const calendarDateColumns = ['Arriving', 'Departing'] as const

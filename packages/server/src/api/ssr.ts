@@ -2,7 +2,6 @@ import type { SessionData } from '@auth0/nextjs-auth0/types'
 import { createServerSideHelpers } from '@trpc/react-query/server'
 
 import { appRouter } from './appRouter'
-
 import { db } from '../db'
 import transformer from '../utils/trpc-transformer'
 

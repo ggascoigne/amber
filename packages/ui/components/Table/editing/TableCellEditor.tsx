@@ -8,7 +8,6 @@ import type {
   TableEditColumnConfig,
   TableOptionColumn,
 } from './types'
-
 import type { Cell, RowData } from '../tableTypes'
 import { columnName } from '../utils/tableUtils'
 

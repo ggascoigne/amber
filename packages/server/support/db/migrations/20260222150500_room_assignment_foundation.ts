@@ -1,5 +1,5 @@
-import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 import type { Knex } from 'knex'
+import { processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 
 import { adminUpdatePolicy, anyUserUpdatePolicy, dropPolicies, enableRls, fixGrants } from '../utils/policyUtils'
 

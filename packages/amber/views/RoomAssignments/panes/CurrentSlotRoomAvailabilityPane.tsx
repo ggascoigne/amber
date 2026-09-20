@@ -1,9 +1,8 @@
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { CurrentSlotRoomAvailabilityRow } from '../types'
 
 const currentSlotAvailableRoomsColumns: Array<ColumnDef<CurrentSlotRoomAvailabilityRow>> = [

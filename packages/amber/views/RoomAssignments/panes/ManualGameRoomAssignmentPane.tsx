@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
 
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton, Typography } from '@mui/material'
 
 import RoomAssignmentSelect from './RoomAssignmentSelect'
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { ManualGameRoomAssignmentRow, ManualRoomSelectOption } from '../types'
 
 type ManualGameRoomAssignmentPaneProps = {

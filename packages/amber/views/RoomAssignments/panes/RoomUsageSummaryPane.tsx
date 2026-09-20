@@ -1,10 +1,9 @@
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { FormControlLabel, Switch } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { RoomUsageSummaryRow } from '../types'
 
 const roomUsageSummaryColumns: Array<ColumnDef<RoomUsageSummaryRow>> = [

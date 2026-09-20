@@ -10,7 +10,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { HasPermission, Perms } from './Auth'
 import { TransportError } from './TransportError'
-
 import { BathroomType } from '../utils/selectValues'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
 

@@ -8,7 +8,6 @@ import { IsMember } from '@amber/amber/utils'
 import { Box, Button } from '@mui/material'
 
 import { BecomeAMember } from './Memberships'
-
 import { Banner } from '../components'
 import WelcomeContent from '../content/WelcomeContent.mdx'
 

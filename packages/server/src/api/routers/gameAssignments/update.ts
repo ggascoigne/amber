@@ -1,5 +1,4 @@
 import type { GameAssignmentDataInput, UpdateGameAssignmentsInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const buildGameAssignmentTarget = ({ assignment, year }: { assignment: GameAssignmentDataInput; year: number }) => ({

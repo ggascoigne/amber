@@ -39,6 +39,7 @@ export default [
     rules: {
       'no-console': ['off'],
       '@typescript-eslint/no-empty-function': 'off',
+      'import-x/order': 'off'
     },
   },
   {

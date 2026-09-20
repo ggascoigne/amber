@@ -1,5 +1,4 @@
 import type { ResetGameAssignmentsInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const resetGameAssignments = async ({

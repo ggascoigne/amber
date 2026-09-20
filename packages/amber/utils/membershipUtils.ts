@@ -1,7 +1,7 @@
 import type { UserAndProfile, Transaction } from '@amber/client'
+import type { OnCloseHandler } from '@amber/ui'
 import { useInvalidateMembershipQueries, useTRPC } from '@amber/client'
 import { getSlotDescription } from '@amber/shared'
-import type { OnCloseHandler } from '@amber/ui'
 import { notEmpty, pick, useNotification } from '@amber/ui'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {} from 'yup'
@@ -15,7 +15,6 @@ import { normalizeMembershipDatesForPersistence } from './membershipDates'
 import { useFlag } from './settings'
 import { getMembershipTotal, useEditMembershipTransaction } from './transactionUtils'
 import { useSendEmail } from './useSendEmail'
-
 import { Perms, useAuth } from '../components'
 
 // NOTE that this isn't exported directly from '@amber/amber/utils' since that causes

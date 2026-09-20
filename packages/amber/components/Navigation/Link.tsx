@@ -1,10 +1,10 @@
 import * as React from 'react'
 
 import type { LinkProps as MuiLinkProps } from '@mui/material/Link'
+import type { LinkProps as NextLinkProps } from 'next/link'
 import MuiLink from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
 import clsx from 'clsx'
-import type { LinkProps as NextLinkProps } from 'next/link'
 import NextLink from 'next/link'
 import { useRouter } from 'next/router'
 

@@ -1,5 +1,5 @@
-import { isRoomAvailableInSlot, type DashboardRoom } from './dashboardShared'
 import type { RoomSlotAvailabilityRow } from './types'
+import { isRoomAvailableInSlot, type DashboardRoom } from './dashboardShared'
 
 export type FullAvailabilityUpdate = {
   roomId: number

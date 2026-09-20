@@ -1,7 +1,7 @@
 import type { Game } from '@amber/client'
+import type { Page } from '@playwright/test'
 import { loginAsUser } from '@amber/playwright/auth'
 import { expect, test } from '@amber/playwright/test'
-import type { Page } from '@playwright/test'
 
 const adminUserEmail = 'alex.admin@example.com'
 

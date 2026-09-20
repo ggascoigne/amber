@@ -161,4 +161,7 @@ export interface GameAssignmentChangeConfirmation {
 }
 
 export type EmailConfirmation =
-  MembershipConfirmation | GameConfirmation | GameChoiceConfirmation | GameAssignmentChangeConfirmation
+  | MembershipConfirmation
+  | GameConfirmation
+  | GameChoiceConfirmation
+  | GameAssignmentChangeConfirmation

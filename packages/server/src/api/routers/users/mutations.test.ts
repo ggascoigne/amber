@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { createProfileRecord, updateProfileRecord, updateUserRecord } from './mutations'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createUsersMutationsTx = () => {

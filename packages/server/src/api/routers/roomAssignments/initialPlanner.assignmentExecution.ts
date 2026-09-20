@@ -1,4 +1,5 @@
 import type { InitialPlannerInput, InitialPlannerRoom } from './initialPlanner'
+import type { PlannedGameContext } from './initialPlanner.seed'
 import {
   assignPubTheoryException,
   buildSlotAssignmentPasses,
@@ -6,7 +7,6 @@ import {
   type SlotRoomSelection,
 } from './initialPlanner.assignmentPasses'
 import { type SlotRoomPlanner, type SlotRoomSelectionContext } from './initialPlanner.roomSelection'
-import type { PlannedGameContext } from './initialPlanner.seed'
 
 type SlotAssignmentExecutionInput = {
   input: InitialPlannerInput

@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
 
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 
 import RoomAssignmentSelect from './RoomAssignmentSelect'
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
-
 import type { MemberRoomAssignmentRow, RoomSelectOption } from '../types'
 
 type MemberRoomAssignmentsPaneProps = {

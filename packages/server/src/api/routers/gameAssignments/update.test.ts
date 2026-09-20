@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { updateGameAssignments } from './update'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createUpdateGameAssignmentsTx = ({

@@ -1,9 +1,8 @@
 import FileDownloadSharpIcon from '@mui/icons-material/FileDownloadSharp'
 
 import { TableIconButton } from './ToolbarButtons'
-
-import { camelToWords } from '../../../utils/object'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
+import { camelToWords } from '../../../utils/object'
 import { isUserColumnId } from '../utils/tableUtils'
 
 type ExportProps<T extends RowData> = {

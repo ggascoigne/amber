@@ -4,10 +4,9 @@ import type {
   GetTransactionsByYearAndUserInput,
   GetTransactionsByYearInput,
 } from './schemas'
-
 import type { Prisma } from '../../../generated/prisma/client'
-import * as transactionSql from '../../../generated/prisma/sql'
 import type { TransactionClient } from '../../inRlsTransaction'
+import * as transactionSql from '../../../generated/prisma/sql'
 
 export const transactionScalarSelect = {
   id: true,

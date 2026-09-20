@@ -6,20 +6,19 @@ import CreateIcon from '@mui/icons-material/CreateOutlined'
 import DeleteIcon from '@mui/icons-material/DeleteOutlined'
 
 import type { Action, TableSelectionMouseEventHandler } from './actions'
+import type { DataTableProps } from './DataTable'
+import type { AmberColumnDef, AmberRow, AmberTableApi, AmberTableState, RowData, TableQueryState } from './tableTypes'
+import type { UseTableProps } from './useTable'
 import { Empty } from './components/Empty'
 import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
-import type { DataTableProps } from './DataTable'
 import { DataTable } from './DataTable'
 import { usePendingNewRow } from './editing/usePendingNewRow'
 import { buildExpansionColumn } from './expansion/buildExpansionColumn'
-import type { AmberColumnDef, AmberRow, AmberTableApi, AmberTableState, RowData, TableQueryState } from './tableTypes'
-import type { UseTableProps } from './useTable'
 import { useTable } from './useTable'
 import { useTableState } from './useTableState'
 import { useTableStateNotifications } from './useTableStateNotifications'
 import { oneSelected, someSelected, zeroSelected } from './utils/selectionUtils'
 import { getDefaultSort } from './utils/tableUtils'
-
 import { notEmpty } from '../../utils/ts-utils'
 
 const EMPTY_TABLE_DATA: Array<never> = []

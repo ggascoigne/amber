@@ -9,9 +9,8 @@ import type {
 import { getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import { Box, Typography } from '@mui/material'
-
-import { Page, Toggle } from '@/Components'
 import type { UserType } from '@/utils/queries'
+import { Page, Toggle } from '@/Components'
 import { useUpdateUserMutation, useUsersQuery } from '@/utils/queries'
 
 const subscriptionOptions: Array<TableEditOption> = [

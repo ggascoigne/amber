@@ -9,13 +9,9 @@ import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { AssignmentSummaryDialog } from './AssignmentSummaryDialog'
 import { CancelPlayerSummaryDialog } from './CancelPlayerSummaryDialog'
 import { CancelPlayerWizard } from './CancelPlayerWizard'
-import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardData } from './dashboardData'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
-import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
-import { GameAssignmentsTitleBar } from './GameAssignmentsTitleBar'
 import type {
   GameAssignmentsLayoutMode,
   GameAssignmentsMinimizedPaneIds,
@@ -23,6 +19,10 @@ import type {
   GameAssignmentsPaneSlotFilters,
   GameInterestMode,
 } from './pageState'
+import { AssignmentSummaryDialog } from './AssignmentSummaryDialog'
+import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardData } from './dashboardData'
+import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
+import { GameAssignmentsTitleBar } from './GameAssignmentsTitleBar'
 import {
   buildDefaultPaneSlotFilters,
   buildGameAssignmentsSlotFilterOptions,
@@ -38,7 +38,6 @@ import {
   sanitizeGameInterestMode,
   toggleGameAssignmentsPaneMinimized,
 } from './pageState'
-
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useConfiguration } from '../../utils/configContext'

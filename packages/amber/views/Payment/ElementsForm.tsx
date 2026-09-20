@@ -12,7 +12,6 @@ import Router from 'next/router'
 
 import type { PaymentInputOptions, UserPaymentDetails } from './PaymentInput'
 import { PaymentInput } from './PaymentInput'
-
 import { formatAmountForDisplay, formatAmountFromStripe, useGetBaseUrl, useGetStripe } from '../../utils/useStripe'
 import { useYearFilter } from '../../utils/useYearFilterState'
 

@@ -1,11 +1,10 @@
-import { buildUserOrderBy, buildUserWhere } from './query'
 import type {
   GetAllUsersAndProfilesWithQueryInput,
   GetAllUsersByInput,
   GetUserByEmailInput,
   GetUserByIdInput,
 } from './schemas'
-
+import { buildUserOrderBy, buildUserWhere } from './query'
 import type { Prisma } from '../../../generated/prisma/client'
 import type { TransactionClient } from '../../inRlsTransaction'
 

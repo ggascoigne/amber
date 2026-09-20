@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import { AdminCard, ConfigDate, Perms, useConfiguration } from '@amber/amber'
 import type { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { AdminCard, ConfigDate, Perms, useConfiguration } from '@amber/amber'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { CheckboxWithLabel, range, TextField } from '@amber/ui'
 import { Box, DialogContentText, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material'

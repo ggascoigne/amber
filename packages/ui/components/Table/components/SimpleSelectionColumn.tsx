@@ -3,7 +3,6 @@ import { useCallback } from 'react'
 import { Subscribe } from '@tanstack/react-table'
 
 import { RowCheckbox } from './TableStyles'
-
 import type { AmberCoreTable, CellContext, RowData } from '../tableTypes'
 
 type HeaderCheckboxProps<T extends RowData> = {

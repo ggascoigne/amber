@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react'
 import * as React from 'react'
 
-import { theme, createEmotionCache } from '@amber/ui'
 import type { EmotionCache } from '@emotion/react'
+import type { AppProps } from 'next/app'
+import { theme, createEmotionCache } from '@amber/ui'
+import { AppCacheProvider } from '@mui/material-nextjs/v16-pagesRouter'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
-import { AppCacheProvider } from '@mui/material-nextjs/v16-pagesRouter'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import debug from 'debug'
-import type { AppProps } from 'next/app'
-
 import Layout from '@/Components/Layout'
 import '@/index.css'
 

@@ -1,7 +1,6 @@
 import type { SpawnSyncReturns } from 'child_process'
 import { spawnSync } from 'child_process'
 import fs from 'fs'
-
 import { parsePostgresConnectionString, recreatePostgresConnectionString } from '@amber/environment/dotenv'
 import chalk from 'chalk'
 import { stripIndent } from 'common-tags'

@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 
 import { TableIconButton } from './ToolbarButtons'
-
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 

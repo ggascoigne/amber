@@ -6,7 +6,6 @@ import { Button } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
 import { GameChoiceDecorator, isGmForGame, SlotDecoratorCheckMark } from './GameChoiceSelector'
-
 import { GameMenu } from '../../components/GameList'
 import { TransportError } from '../../components/TransportError'
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'

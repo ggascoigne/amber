@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { SvgIcon } from '@mui/material'
 import type { SvgIconProps } from '@mui/material/SvgIcon'
+import { SvgIcon } from '@mui/material'
 
 export const CrownIcon = (props: SvgIconProps) => (
   // Made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>

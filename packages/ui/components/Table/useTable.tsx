@@ -3,11 +3,6 @@ import { useCallback, useMemo } from 'react'
 import type { CellData, ColumnMeta, RowData } from '@tanstack/react-table'
 import { useTable as useTanStackTable } from '@tanstack/react-table'
 
-import { CheckboxCellRenderer, HeaderCheckbox } from './components/SimpleSelectionColumn'
-import { TooltipCellRenderer } from './components/TooltipCell'
-import { SELECTION_COLUMN_ID } from './constants'
-import { TextColumnFilter } from './filter'
-import { amberTableFeatures } from './tableFeatures'
 import type {
   AmberCellContext,
   AmberColumnDef,
@@ -17,6 +12,11 @@ import type {
   AmberTableOptions,
   AmberTableState,
 } from './tableTypes'
+import { CheckboxCellRenderer, HeaderCheckbox } from './components/SimpleSelectionColumn'
+import { TooltipCellRenderer } from './components/TooltipCell'
+import { SELECTION_COLUMN_ID } from './constants'
+import { TextColumnFilter } from './filter'
+import { amberTableFeatures } from './tableFeatures'
 import { applyDefaultMetaToColumns } from './utils/deepMergeMeta'
 import { columnName } from './utils/tableUtils'
 

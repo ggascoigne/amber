@@ -1,5 +1,4 @@
 import type { CreateSettingInput, DeleteSettingInput, UpdateSettingInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const createSettingRecord = ({ tx, input }: { tx: TransactionClient; input: CreateSettingInput }) =>

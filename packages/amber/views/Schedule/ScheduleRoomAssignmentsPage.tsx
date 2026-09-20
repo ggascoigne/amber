@@ -1,9 +1,9 @@
 import { useCallback, useMemo } from 'react'
 
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useInvalidateGameAssignmentQueries, useInvalidateRoomAssignmentQueries, useTRPC } from '@amber/client'
 import { Loader } from '@amber/ui'
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { Box, Button, FormControl, MenuItem, Select, Typography } from '@mui/material'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/router'

@@ -1,7 +1,7 @@
 import type { ForwardedRef, ReactNode } from 'react'
 
-import { Container, Typography } from '@mui/material'
 import type { Breakpoint, SxProps, Theme } from '@mui/material/styles'
+import { Container, Typography } from '@mui/material'
 
 import { fixedForwardRef } from '../../utils'
 

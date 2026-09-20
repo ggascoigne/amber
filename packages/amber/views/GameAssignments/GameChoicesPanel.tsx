@@ -2,10 +2,11 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box } from '@mui/material'
 
+import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignedSlotCountsByMemberId,
@@ -21,11 +22,9 @@ import {
   canEditChoiceRowGameSelection,
 } from './domain/memberChoices'
 import { buildGameChoiceOptionsForRow, getGameLabel } from './domain/moveOptions'
-import type { MemberChoiceRow, MemberChoiceSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 import { SignupNoteIndicator } from './SignupNoteIndicator'
-
 import { useConfiguration } from '../../utils/configContext'
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 

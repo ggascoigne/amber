@@ -12,7 +12,6 @@ import {
   getGamesByYearAndAuthor,
   getSmallGamesByYear,
 } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGamesQueryTx = () => {

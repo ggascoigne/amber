@@ -1,8 +1,7 @@
 import { describe, expect, test, vi } from 'vitest'
 
-import { ensureSpecialGamesForYear } from './ensureSpecial'
 import type { SpecialGameTemplate } from './special'
-
+import { ensureSpecialGamesForYear } from './ensureSpecial'
 import type { TransactionClient } from '../../inRlsTransaction'
 
 type NoGameTemplateRecord = SpecialGameTemplate & {

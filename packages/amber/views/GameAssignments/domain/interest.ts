@@ -1,6 +1,5 @@
-import { getPriorityLabel, getPrioritySortValue } from './labels'
 import type { DashboardAssignment, DashboardChoice, GameInterestRow, InterestChoicesByGameId } from './types'
-
+import { getPriorityLabel, getPrioritySortValue } from './labels'
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 import { isAnyGameCategory, isNoGameCategory } from '../../../utils/gameCategory'
 

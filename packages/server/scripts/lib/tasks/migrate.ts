@@ -1,5 +1,5 @@
-import { safeConnectionString, processEnv } from '@amber/environment/dotenv'
 import type { ListrTask, ListrTaskWrapper } from 'listr2'
+import { safeConnectionString, processEnv } from '@amber/environment/dotenv'
 import { $ } from 'zx'
 
 import type { TaskContext } from '../taskContext'

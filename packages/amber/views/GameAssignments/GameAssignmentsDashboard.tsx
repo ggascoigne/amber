@@ -8,13 +8,7 @@ import { createPortal } from 'react-dom'
 import { Group, Panel, Separator } from 'react-resizable-panels'
 
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
-import { GameAssignmentsByGamePanel } from './GameAssignmentsByGamePanel'
-import { GameAssignmentsByMemberPanel } from './GameAssignmentsByMemberPanel'
-import { GameChoicesPanel } from './GameChoicesPanel'
-import { GameInterestPanel } from './GameInterestPanel'
 import type { GameAssignmentsLayoutPlan } from './layoutPlan'
-import { buildGameAssignmentsLayoutPlan } from './layoutPlan'
-import { gameAssignmentsPaneIds } from './pageState'
 import type {
   GameAssignmentsLayoutMode,
   GameAssignmentsMinimizedPaneIds,
@@ -22,6 +16,12 @@ import type {
   GameAssignmentsPaneSlotFilters,
   GameInterestMode,
 } from './pageState'
+import { GameAssignmentsByGamePanel } from './GameAssignmentsByGamePanel'
+import { GameAssignmentsByMemberPanel } from './GameAssignmentsByMemberPanel'
+import { GameChoicesPanel } from './GameChoicesPanel'
+import { GameInterestPanel } from './GameInterestPanel'
+import { buildGameAssignmentsLayoutPlan } from './layoutPlan'
+import { gameAssignmentsPaneIds } from './pageState'
 
 const paneTitleById: Record<GameAssignmentsPaneId, string> = {
   byGame: 'Assignments by Game',

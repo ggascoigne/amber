@@ -1,9 +1,8 @@
+import type { ApplyRoomAssignmentPlannerInput } from './schemas'
 import { planInitialRoomAssignments } from './initialPlanner'
 import { syncLegacyGameRoomIdsForYear } from './legacyRoomSync'
 import { buildPlannerInputFromSnapshot } from './plannerInput'
 import { getRoomAssignmentPlannerSnapshot } from './plannerSnapshot'
-import type { ApplyRoomAssignmentPlannerInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const applyRoomAssignmentPlanner = async ({

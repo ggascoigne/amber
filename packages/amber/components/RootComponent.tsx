@@ -1,30 +1,29 @@
 import * as React from 'react'
 import { useMemo } from 'react'
 
+import type { EmotionCache } from '@emotion/react'
+// see https://github.com/mui/mui-x/issues/12640
+// oxlint-disable-next-line no-duplicates
+import type {} from '@mui/x-date-pickers/AdapterLuxon'
+import type { AppProps } from 'next/app'
 import { useTRPC } from '@amber/client'
 import { isDev } from '@amber/environment'
 import { createEmotionCache, NotificationProvider, theme } from '@amber/ui'
 import { Auth0Provider } from '@auth0/nextjs-auth0'
-import type { EmotionCache } from '@emotion/react'
 import { CacheProvider } from '@emotion/react'
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from '@mui/x-date-pickers'
-// see https://github.com/mui/mui-x/issues/12640
-// oxlint-disable-next-line no-duplicates
-import type {} from '@mui/x-date-pickers/AdapterLuxon'
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
 import { useQuery } from '@tanstack/react-query'
 import { Provider as JotaiProvider } from 'jotai'
-import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 
+import type { RootRoutes } from './Navigation'
 import { RouteGuard } from './Auth'
 import { Layout } from './Layout'
-import type { RootRoutes } from './Navigation'
 import { TRPCReactProvider } from './TRPCReactProvider'
-
 import type { Configuration } from '../utils/configContext'
 import { ConfigProvider, getSettingsObject, useConfiguration } from '../utils/configContext'
 

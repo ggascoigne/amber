@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { setInitialGameAssignments } from './setInitial'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createSetInitialGameAssignmentsTx = ({

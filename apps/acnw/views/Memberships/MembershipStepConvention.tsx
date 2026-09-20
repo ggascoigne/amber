@@ -1,6 +1,8 @@
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import type { FormikErrors, FormikValues } from 'formik'
 import {
   Attendance,
   ContactEmail,
@@ -9,7 +11,6 @@ import {
   useGetAttendanceOptions,
   useGetSubsidizedAttendanceOptions,
 } from '@amber/amber'
-import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { CheckboxWithLabel, getSafeFloat, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
 import {
@@ -24,7 +25,6 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material'
-import type { FormikErrors, FormikValues } from 'formik'
 import { useField, useFormikContext } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>

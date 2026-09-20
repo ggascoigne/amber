@@ -2,8 +2,8 @@ import { useEffect, useLayoutEffect, useRef } from 'react'
 
 import { dequal as deepEqual } from 'dequal'
 
-import { selectTableQueryState } from './tableStateSelectors'
 import type { AmberTableApi, AmberTableState, RowData, TableQueryState } from './tableTypes'
+import { selectTableQueryState } from './tableStateSelectors'
 import { selectPersistedTableState } from './useTableState'
 
 const STATE_NOTIFICATION_DELAY_MS = 250

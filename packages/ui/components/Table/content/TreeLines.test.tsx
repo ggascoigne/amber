@@ -9,9 +9,8 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { TreeLines, treeLineTypes } from './TreeLines'
-
-import { theme } from '../../Theme'
 import type { Row } from '../tableTypes'
+import { theme } from '../../Theme'
 
 type TestRowData = { id: string }
 

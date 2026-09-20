@@ -1,10 +1,10 @@
 import * as React from 'react'
 
+import type { PdfReportRecord, ReportRecord } from '@amber/amber/views/Reports'
+import type { NextPage } from 'next'
 import { Perms } from '@amber/amber/components/Auth'
 import { configGetServerSideProps } from '@amber/amber/utils/getServerSideProps'
-import type { PdfReportRecord, ReportRecord } from '@amber/amber/views/Reports'
 import { Reports } from '@amber/amber/views/Reports'
-import type { NextPage } from 'next'
 
 const reports: ReportRecord[] = [
   { name: 'Membership', reportId: 'membershipReport' },

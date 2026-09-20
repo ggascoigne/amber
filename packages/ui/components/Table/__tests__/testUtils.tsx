@@ -8,11 +8,11 @@ import Box from '@mui/material/Box'
 import { render } from '@testing-library/react'
 import { vi } from 'vitest'
 
+import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
+import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { theme } from '../../../components/Theme'
 import { DataTable } from '../DataTable'
-import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
 import { Table } from '../Table'
-import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { useTable } from '../useTable'
 
 export type PersonRow = {
@@ -83,27 +83,27 @@ export const installDomMeasurementMocks = () => {
     })
   }
 
-  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect(
-    this: HTMLElement,
-  ) {
-    const element = this as HTMLElement
-    const explicitHeight = element.dataset.testHeight ? Number(element.dataset.testHeight) : undefined
-    const height =
-      explicitHeight ??
-      (element.dataset.testid === 'table-scroll-container' ? 320 : element.dataset.testid === 'TableRow' ? 34 : 40)
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+    function getBoundingClientRect(this: HTMLElement) {
+      const element = this as HTMLElement
+      const explicitHeight = element.dataset.testHeight ? Number(element.dataset.testHeight) : undefined
+      const height =
+        explicitHeight ??
+        (element.dataset.testid === 'table-scroll-container' ? 320 : element.dataset.testid === 'TableRow' ? 34 : 40)
 
-    return {
-      width: 1200,
-      height,
-      top: 0,
-      left: 0,
-      right: 1200,
-      bottom: height,
-      x: 0,
-      y: 0,
-      toJSON: () => ({}),
-    } as DOMRect
-  })
+      return {
+        width: 1200,
+        height,
+        top: 0,
+        left: 0,
+        right: 1200,
+        bottom: height,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      } as DOMRect
+    },
+  )
 }
 
 type DataTableHarnessProps<TData extends RowData> = {

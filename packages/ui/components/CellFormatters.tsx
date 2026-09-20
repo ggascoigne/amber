@@ -2,8 +2,8 @@ import React from 'react'
 
 import { DateTime } from 'luxon'
 
-import { TooltipCell, getCellSx } from './Table'
 import type { CellContext, RowData } from './Table/tableTypes'
+import { TooltipCell, getCellSx } from './Table'
 
 const getDateFormat = <T extends RowData>({ column }: CellContext<T, unknown>): string =>
   column.columnDef.meta?.dateFormat ?? 'EEE, MMM d'

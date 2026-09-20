@@ -3,8 +3,8 @@ import { useMemo, useRef } from 'react'
 import type { Atom } from '@tanstack/react-store'
 import { useCreateAtom, useSelector } from '@tanstack/react-store'
 
-import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
 import type { TableQueryState } from './tableTypes'
+import { DEFAULT_TABLE_PAGE_SIZE } from './constants'
 
 export type ServerTableStateAtoms = {
   [TableStateKey in keyof TableQueryState]: Atom<TableQueryState[TableStateKey]>

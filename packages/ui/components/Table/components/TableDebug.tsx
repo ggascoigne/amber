@@ -6,9 +6,8 @@ import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material'
 import superjson from 'superjson'
 
 import { useTableContext } from './TableContext'
-
-import { ObjectView } from '../../ObjectView'
 import type { AmberTableState, RowData, TableApi as TableInstance } from '../tableTypes'
+import { ObjectView } from '../../ObjectView'
 
 interface LoaderProps {
   error?: boolean

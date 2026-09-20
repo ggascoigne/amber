@@ -1,11 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 /* eslint-disable @typescript-eslint/naming-convention */
 import { env } from '@amber/environment'
-import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe'
 
-import { sendPaymentConfirmation } from './paymentConfirmation'
 import type { UserPaymentDetails } from './types'
-
+import { sendPaymentConfirmation } from './paymentConfirmation'
 import { authenticatedCaller } from '../../ssr'
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {

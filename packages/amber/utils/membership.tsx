@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useUser } from './useUserFilterState'
 import { useYearFilter } from './useYearFilterState'
-
 import { useAuth } from '../components/Auth'
 
 export const useGetMemberShip = (userId: number | undefined | null) => {

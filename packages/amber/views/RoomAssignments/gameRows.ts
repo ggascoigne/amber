@@ -1,4 +1,3 @@
-import { sortNames } from './dashboardShared'
 import type {
   DashboardGame,
   DashboardGameAssignment,
@@ -7,6 +6,7 @@ import type {
   DashboardRoomAssignment,
 } from './dashboardShared'
 import type { ManualGameMember, ManualGameRoomAssignmentRow, ManualGameRoomOverrideAssignment } from './types'
+import { sortNames } from './dashboardShared'
 
 export const buildDefaultRoomAssignmentByGameId = (rows: Array<DashboardRoomAssignment>) => {
   const defaultAssignmentByGameId = new Map<number, DashboardRoomAssignment>()

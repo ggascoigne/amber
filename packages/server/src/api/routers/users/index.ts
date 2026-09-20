@@ -17,7 +17,6 @@ import {
   updateProfileInput,
   updateUserInput,
 } from './schemas'
-
 import { inRlsTransaction } from '../../inRlsTransaction'
 import { createTRPCRouter, protectedProcedure } from '../../trpc'
 

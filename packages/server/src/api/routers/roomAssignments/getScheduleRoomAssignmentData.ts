@@ -1,8 +1,7 @@
-import { getScheduleRoomAssignmentGame } from './getScheduleRoomAssignmentGame'
 import type { GetScheduleRoomAssignmentDataInput } from './schemas'
-
-import { Prisma } from '../../../generated/prisma/client'
+import { getScheduleRoomAssignmentGame } from './getScheduleRoomAssignmentGame'
 import type { TransactionClient } from '../../inRlsTransaction'
+import { Prisma } from '../../../generated/prisma/client'
 
 export type ConventionCode = 'acus' | 'acnw'
 

@@ -1,8 +1,8 @@
 import type React from 'react'
 
+import type { TRPCClientErrorLike } from '@trpc/client'
 import { type AppRouter } from '@amber/server/src/api/appRouter' // Assuming AppRouter is your TRPC router type
 import Typography from '@mui/material/Typography'
-import type { TRPCClientErrorLike } from '@trpc/client'
 
 const Quote: React.FC<{
   children: React.ReactNode

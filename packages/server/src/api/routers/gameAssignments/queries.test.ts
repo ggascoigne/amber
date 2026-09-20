@@ -6,7 +6,6 @@ import {
   getGameAssignmentsByYear,
   isGameMaster,
 } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameAssignmentsQueriesTx = () => {

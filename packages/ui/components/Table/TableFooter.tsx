@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 
-import { Box } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
+import { Box } from '@mui/material'
 
+import type { RowData, TableApi as TableInstance } from './tableTypes'
 import { TableDebug, TableDebugButton } from './components/TableDebug'
 import { TablePagination } from './components/TablePagination'
 import { tableDecorationZIndex } from './components/TableStyles'
-import type { RowData, TableApi as TableInstance } from './tableTypes'
 
 type TableFooterInternalProps<T extends RowData> = {
   table: TableInstance<T>

@@ -1,17 +1,16 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import type { Game } from '@amber/client'
+import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
+import type { ColumnDef, TableState } from '@amber/ui/components/Table/tableTypes'
 import { useTRPC } from '@amber/client'
 import { notEmpty } from '@amber/ui'
-import type { Action, TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
 import { Table, someSelected, getSelectedRows } from '@amber/ui/components/Table'
-import type { ColumnDef, TableState } from '@amber/ui/components/Table/tableTypes'
 import CachedIcon from '@mui/icons-material/Cached'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { useUpdateGameAssignment } from './gameHooks'
 import { GamesDialog } from './GamesDialog'
-
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useFlag } from '../../utils/settings'

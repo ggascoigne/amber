@@ -1,6 +1,6 @@
-import users from '../data/users.json'
-
 import { createTableFor, type TableRow } from '@/mocks/sqlTools'
+
+import users from '../data/users.json'
 
 export type UserRecord = TableRow & {
   firstName: string

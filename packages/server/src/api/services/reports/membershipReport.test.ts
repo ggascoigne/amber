@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
 import { membershipReport } from './membershipReport'
-
 import type { ReportRow } from '../../contracts/reports'
 
 describe('membershipReport', () => {

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { buildPlannerInputFromSnapshot } from './plannerInput'
 import type { RoomAssignmentPlannerSnapshot } from './plannerInput'
+import { buildPlannerInputFromSnapshot } from './plannerInput'
 
 const plannerData: RoomAssignmentPlannerSnapshot = {
   games: [

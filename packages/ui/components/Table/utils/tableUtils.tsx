@@ -1,6 +1,6 @@
+import type { Column, ColumnDef, RowData } from '../tableTypes'
 import { camelToWords } from '../../../utils/object'
 import { EXPAND_COLUMN_ID, SELECTION_COLUMN_ID } from '../constants'
-import type { Column, ColumnDef, RowData } from '../tableTypes'
 
 export const columnName = <T extends RowData>(column: Column<T>) =>
   typeof column.columnDef.header === 'function'

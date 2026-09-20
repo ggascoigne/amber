@@ -1,5 +1,4 @@
 import type { GetGameChoicesByYearInput, GetGameChoicesInput, ReadGameChoiceInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const gameSubmissionFields = {

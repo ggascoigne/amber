@@ -1,10 +1,9 @@
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { RoomAssignmentConflictRow } from '../types'
 
 type ConflictIssueCellProps = {

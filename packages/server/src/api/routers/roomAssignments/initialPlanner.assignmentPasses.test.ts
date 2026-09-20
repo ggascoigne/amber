@@ -1,13 +1,13 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import type { InitialPlannerInput, InitialPlannerRoom } from './initialPlanner'
+import type { SlotRoomPlanner, SlotRoomSelectionContext } from './initialPlanner.roomSelection'
+import type { PlannedGameContext } from './initialPlanner.seed'
 import {
   assignPubTheoryException,
   buildSlotAssignmentPasses,
   type SlotAssignmentPass,
 } from './initialPlanner.assignmentPasses'
-import type { SlotRoomPlanner, SlotRoomSelectionContext } from './initialPlanner.roomSelection'
-import type { PlannedGameContext } from './initialPlanner.seed'
 
 const year = 2026
 

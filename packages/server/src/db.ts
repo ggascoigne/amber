@@ -1,13 +1,11 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-
 import { processEnv, isDev } from '@amber/environment/dotenv'
 import { PrismaPg } from '@prisma/adapter-pg'
 import Debug from 'debug'
 
 import { PrismaClient } from './generated/prisma/client'
-
 import { certs } from '../shared/dbCerts'
 
 const env = processEnv()

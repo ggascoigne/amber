@@ -1,9 +1,9 @@
 import { forwardRef } from 'react'
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import type { MenuItemProps } from '@mui/material/MenuItem'
-import MenuItem from '@mui/material/MenuItem'
 import type { MenuListProps } from '@mui/material/MenuList'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
 import { styled } from '@mui/material/styles'
 import Link from 'next/link'

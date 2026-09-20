@@ -1,14 +1,13 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { Action } from '@amber/ui/components/Table'
-import { someSelected, zeroSelected, getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import type { Row, TableApi as TableInstance } from '@amber/ui/components/Table/tableTypes'
+import { someSelected, zeroSelected, getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import AddIcon from '@mui/icons-material/Add'
 import { Box, Slider, Stack, Typography } from '@mui/material'
-
-import { Toggle, Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
+import { Toggle, Page } from '@/Components'
 import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()

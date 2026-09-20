@@ -2,7 +2,6 @@ import type { TRPCError } from '@trpc/server'
 import { describe, expect, test, vi } from 'vitest'
 
 import { getScheduleRoomAssignmentData } from './getScheduleRoomAssignmentData'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createScheduleRoomAssignmentTx = ({

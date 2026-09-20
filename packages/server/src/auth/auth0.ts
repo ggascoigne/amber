@@ -1,8 +1,8 @@
 import { env } from '@amber/environment'
 import { Auth0Client } from '@auth0/nextjs-auth0/server'
 
-import { fakeAuth } from './fakeAuth'
 import type { AuthLike } from './types'
+import { fakeAuth } from './fakeAuth'
 
 const toHttpsUrl = (base?: string) =>
   base ? (base.startsWith('http://') || base.startsWith('https://') ? base : `https://${base}`) : undefined

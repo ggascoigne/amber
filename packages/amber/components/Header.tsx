@@ -3,9 +3,9 @@ import type React from 'react'
 import { useEffect, useState } from 'react'
 
 import type { Config } from '@amber/client'
+import type { Theme } from '@mui/material'
 import { useGetConfigQuery } from '@amber/client'
 import MenuIcon from '@mui/icons-material/Menu'
-import type { Theme } from '@mui/material'
 import { AppBar, IconButton, Toolbar, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 

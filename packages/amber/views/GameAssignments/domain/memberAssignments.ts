@@ -1,9 +1,6 @@
 import type { TableEditOption, TableEditRowUpdate } from '@amber/ui/components/Table/editing/types'
 import type { RowData } from '@amber/ui/components/Table/tableTypes'
 
-import { getChoiceForGame, buildEmptyMemberAssignmentCounts } from './assignmentSummaries'
-import { buildAssignmentKeyFromInput } from './keys'
-import { formatGameName, getPriorityLabel, getPrioritySortValue } from './labels'
 import type {
   AssignmentUpdate,
   ChoicesByMemberSlot,
@@ -14,7 +11,9 @@ import type {
   MemberAssignmentCounts,
   MemberAssignmentEditorRow,
 } from './types'
-
+import { getChoiceForGame, buildEmptyMemberAssignmentCounts } from './assignmentSummaries'
+import { buildAssignmentKeyFromInput } from './keys'
+import { formatGameName, getPriorityLabel, getPrioritySortValue } from './labels'
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 export const buildMemberAssignmentEditorRows = ({

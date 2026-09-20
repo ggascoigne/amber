@@ -1,7 +1,7 @@
+import type { GetServerSidePropsContext } from 'next'
 import { ssrAuthenticatedHelpers } from '@amber/server/src/api/ssr'
 import { auth0 } from '@amber/server/src/auth/auth0'
 import debug from 'debug'
-import type { GetServerSidePropsContext } from 'next'
 
 import transformer from '../../server/src/utils/trpc-transformer'
 

@@ -8,7 +8,6 @@ import { Loader, notEmpty, range } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { Rank, RankStyle } from './GameChoiceSelector'
-
 import { useConfiguration } from '../../utils/configContext'
 import { rankString } from '../../utils/gameChoiceRank'
 import { getGms } from '../Games'

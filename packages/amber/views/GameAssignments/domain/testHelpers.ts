@@ -5,7 +5,6 @@ import type {
   DashboardMembership,
   DashboardSubmission,
 } from './types'
-
 import type { Configuration } from '../../../utils/configContext'
 
 export const buildGame = ({

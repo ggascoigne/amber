@@ -10,9 +10,8 @@ import { getEnabledActions, isUserAction } from './actions'
 import { ColumnSelector } from './ColumnSelector'
 import { Export } from './Export'
 import { ActionButton, TableIconButton, ActionIconButton, RefreshButton } from './ToolbarButtons'
-
-import { ButtonMenu } from '../../ButtonMenu'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
+import { ButtonMenu } from '../../ButtonMenu'
 
 type ToolbarButtonGroupProps<T extends RowData> = {
   actions: ReadonlyArray<Action<T>> | undefined

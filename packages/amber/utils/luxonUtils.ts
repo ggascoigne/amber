@@ -1,6 +1,6 @@
+import type { DateTime } from 'luxon'
 /* eslint-disable max-classes-per-file */
 import LuxonUtils from '@date-io/luxon'
-import type { DateTime } from 'luxon'
 
 interface DayDefault {
   index: number

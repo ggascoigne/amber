@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest'
 
+import type { DashboardMemberRoomAssignment, DashboardMembership } from './dashboardShared'
 import {
   buildAssignedMemberNamesByRoomId,
   buildMemberRoomIdByMemberId,
   buildRoomMemberCounts,
   buildSlotIds,
 } from './dashboardIndexes'
-import type { DashboardMemberRoomAssignment, DashboardMembership } from './dashboardShared'
 
 const createMembership = ({ id, fullName }: { id: number; fullName: string | null }) =>
   ({

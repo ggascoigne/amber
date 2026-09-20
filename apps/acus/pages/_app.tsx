@@ -1,6 +1,6 @@
-import RootComponent from '@amber/amber/components/RootComponent'
 import type { EmotionCache } from '@emotion/react'
 import type { AppProps } from 'next/app'
+import RootComponent from '@amber/amber/components/RootComponent'
 
 import { Banner } from '../components'
 import { rootRoutes } from '../views/Routes'

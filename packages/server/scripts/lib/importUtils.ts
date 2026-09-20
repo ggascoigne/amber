@@ -1,17 +1,16 @@
 import fs from 'fs'
 import { mkdir } from 'node:fs/promises'
 import path from 'path'
-
+import type { ListrTaskWrapper, ListrTask } from 'listr2'
 import { type EnvType, processEnv, parsePostgresConnectionString } from '@amber/environment/dotenv'
 import debug from 'debug'
 import { config as dotenvConfig } from 'dotenv'
-import type { ListrTaskWrapper, ListrTask } from 'listr2'
 import { temporaryFile } from 'tempy'
 import { $ } from 'zx'
 
+import type { TaskContext } from './taskContext'
 import { getPaths } from './filePaths'
 import { ensurePostgresToolVersion, getPostgresArgs } from './scriptUtils'
-import type { TaskContext } from './taskContext'
 
 const { dirname } = getPaths(import.meta.url)
 const repoRoot = path.resolve(dirname, '../../../..')

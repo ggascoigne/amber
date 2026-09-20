@@ -7,7 +7,6 @@ import { Box, Popover } from '@mui/material'
 import { DateTime } from 'luxon'
 
 import { HasPermission, Perms, useAuth } from './Auth'
-
 import { useConfiguration } from '../utils/configContext'
 import { gitHash } from '../version'
 

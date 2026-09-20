@@ -1,5 +1,4 @@
 import type { CreateHotelRoomDetailInput, DeleteHotelRoomDetailInput, UpdateHotelRoomDetailInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const createHotelRoomDetailRecord = ({

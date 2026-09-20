@@ -1,10 +1,9 @@
 import { memo, useMemo } from 'react'
 
 import { TableRowHoverArea } from './TableStyles'
-
 import type { Action, UserAction } from '../actions'
-import { getEnabledActions, ToolbarButtonGroup } from '../actions'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
+import { getEnabledActions, ToolbarButtonGroup } from '../actions'
 
 const InternalRowHoverButtons = <T extends RowData>({
   table,

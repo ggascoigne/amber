@@ -9,7 +9,6 @@ import {
   getUserAndProfile,
   getUserByEmail,
 } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createUsersQueriesTx = () => {

@@ -1,5 +1,4 @@
 import type { CreateProfileInput, UpdateProfileInput, UpdateUserInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const updateUserRecord = ({ tx, input }: { tx: TransactionClient; input: UpdateUserInput }) =>

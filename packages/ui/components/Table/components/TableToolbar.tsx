@@ -1,14 +1,13 @@
 import { useMemo } from 'react'
 
-import { Box } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
+import { Box } from '@mui/material'
 import Toolbar from '@mui/material/Toolbar'
 
 import { tableDecorationZIndex } from './TableStyles'
-
 import type { Action } from '../actions'
-import { getEnabledActions, ToolbarButtonGroup } from '../actions'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
+import { getEnabledActions, ToolbarButtonGroup } from '../actions'
 
 type TableToolbarProps<T extends RowData> = {
   table: TableInstance<T>

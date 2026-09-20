@@ -1,8 +1,7 @@
 import { TRPCError } from '@trpc/server'
 
-import { checkGamePermissionGate } from './permissions'
 import type { CreateGameInput, DeleteGameInput, UpdateGameInput } from './schemas'
-
+import { checkGamePermissionGate } from './permissions'
 import type { TransactionClient } from '../../inRlsTransaction'
 
 type GameMutationPermission = {

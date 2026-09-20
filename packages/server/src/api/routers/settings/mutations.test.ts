@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { createSettingRecord, deleteSettingRecord, updateSettingRecord } from './mutations'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createSettingsMutationsTx = () => {

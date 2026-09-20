@@ -1,6 +1,7 @@
 import type { MouseEvent } from 'react'
 import { useState } from 'react'
 
+import type { Theme } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -10,10 +11,9 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import MenuList from '@mui/material/MenuList'
-import type { Theme } from '@mui/material/styles'
 
-import { MenuContent } from './MenuContent'
 import type { MenuEntry } from './MenuTypes'
+import { MenuContent } from './MenuContent'
 
 const expandedWidth = 250
 const shrunkenWidth = 60

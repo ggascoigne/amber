@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Link, useConfiguration } from '@amber/amber'
 import type { SxProps, Theme } from '@mui/material'
+import { Link, useConfiguration } from '@amber/amber'
 import { Box, Grid } from '@mui/material'
 
 const Logo = ({ dates, sx, virtual = false }: { dates: string; sx?: SxProps<Theme>; virtual?: boolean }) => {

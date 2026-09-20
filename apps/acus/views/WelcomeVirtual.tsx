@@ -6,7 +6,6 @@ import { BetaWarning } from '@amber/amber/components/BetaWarning'
 import { Box } from '@mui/material'
 
 import { DynamicMemberContent } from './Welcome'
-
 import { Banner } from '../components'
 import WelcomeContentVirtual from '../content/WelcomeContentVirtual.mdx'
 

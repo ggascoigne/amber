@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 
+import type { CustomContentProps, OptionsObject, VariantType } from 'notistack'
 import CloseIcon from '@mui/icons-material/Close'
 import { Box, IconButton } from '@mui/material'
 import { amber, green } from '@mui/material/colors'
 import { useTheme } from '@mui/material/styles'
-import type { CustomContentProps, OptionsObject, VariantType } from 'notistack'
 import { SnackbarContent, SnackbarProvider, useSnackbar } from 'notistack'
 
 import type { Children } from '../utils'

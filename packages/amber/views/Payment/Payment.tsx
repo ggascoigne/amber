@@ -7,9 +7,8 @@ import { DialogContentText } from '@mui/material'
 import { Elements } from '@stripe/react-stripe-js'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { ElementsForm } from './ElementsForm'
 import type { PaymentInputOptions } from './PaymentInput'
-
+import { ElementsForm } from './ElementsForm'
 import { Page, ContactEmail } from '../../components'
 import { useConfiguration } from '../../utils/configContext'
 import { useGetStripe, useInitializeStripe } from '../../utils/useStripe'

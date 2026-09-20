@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { useTRPC } from '@amber/client'
 import type { SendEmailInput } from '@amber/server/src/api/contracts/email'
+import { useTRPC } from '@amber/client'
 import { isDev, useNotification } from '@amber/ui'
 import { useMutation } from '@tanstack/react-query'
 

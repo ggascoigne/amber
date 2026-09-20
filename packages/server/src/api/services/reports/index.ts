@@ -1,3 +1,4 @@
+import type { ReportDefinitions } from './types'
 import { discordGameReport } from './discordGameReport'
 import { donorReport } from './donorReport'
 import { gameAndPlayersReport } from './gameAndPlayersReport'
@@ -14,7 +15,6 @@ import { membersWithoutGameChoicesReport } from './membersWithoutGameChoicesRepo
 import { roomReport } from './roomReport'
 import { roomsByGameReport } from './roomsByGameReport'
 import { roomsByRoomReport } from './roomsByRoomReport'
-import type { ReportDefinitions } from './types'
 import { voucherReport } from './voucherReport'
 import { defaultWorkbook } from './workbook'
 

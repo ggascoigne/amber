@@ -1,7 +1,7 @@
 import { processEnv, parsePostgresConnectionString, safeConnectionString } from '@amber/environment/dotenv'
 
-import { resetOwner } from '../scriptUtils'
 import type { TaskContext } from '../taskContext'
+import { resetOwner } from '../scriptUtils'
 
 const env = processEnv()
 

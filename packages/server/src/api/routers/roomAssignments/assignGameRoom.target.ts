@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server'
 
 import type { AssignGameRoomInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 type AssignGameRoomTargetTx = Pick<TransactionClient, 'game' | 'room'>

@@ -1,5 +1,3 @@
-import { isScheduledAssignment } from './assignmentScope'
-import { formatGameName } from './labels'
 import type {
   DashboardSubmission,
   AssignmentCounts,
@@ -14,6 +12,8 @@ import type {
   MemberAssignmentSummaryRow,
   MemberChoiceSummaryRow,
 } from './types'
+import { isScheduledAssignment } from './assignmentScope'
+import { formatGameName } from './labels'
 
 export const buildEmptyMemberAssignmentCounts = (): MemberAssignmentCounts => ({
   gmOrFirst: 0,

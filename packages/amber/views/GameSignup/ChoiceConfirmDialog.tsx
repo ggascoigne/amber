@@ -1,26 +1,25 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import type { UserAndProfile, GameChoice } from '@amber/client'
-import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import type { OnCloseHandler } from '@amber/ui'
+import type { FormikHelpers } from 'formik'
+import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import { DialogTitle, pick, range, TextField, useDisableBackdropClick, useNotification } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import { Button, Dialog, DialogActions, DialogContent, Grid, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useMutation } from '@tanstack/react-query'
-import type { FormikHelpers } from 'formik'
 import { Form, Formik } from 'formik'
 
-import { isSlotComplete, orderChoices } from './GameChoiceSelector'
 import type { ChoiceType } from './GameSignupPage'
-import { useEditGameChoice } from './GameSignupPage'
 import type { SlotSummary } from './SlotDetails'
+import { isSlotComplete, orderChoices } from './GameChoiceSelector'
+import { useEditGameChoice } from './GameSignupPage'
 import { ChoiceSummary } from './SlotDetails'
-
+import type { GameCategoryByGameId } from '../../utils/gameCategory'
 import { ContactEmail } from '../../components'
 import { useProfile } from '../../components/Profile'
 import { useConfiguration } from '../../utils/configContext'
-import type { GameCategoryByGameId } from '../../utils/gameCategory'
 import { useSendEmail } from '../../utils/useSendEmail'
 
 interface FormValues {

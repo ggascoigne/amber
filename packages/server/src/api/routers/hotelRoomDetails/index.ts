@@ -1,7 +1,6 @@
 import { createHotelRoomDetailRecord, deleteHotelRoomDetailRecord, updateHotelRoomDetailRecord } from './mutations'
 import { getHotelRoomDetails } from './queries'
 import { createHotelRoomDetailInput, deleteHotelRoomDetailInput, updateHotelRoomDetailInput } from './schemas'
-
 import { inRlsTransaction } from '../../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../../trpc'
 

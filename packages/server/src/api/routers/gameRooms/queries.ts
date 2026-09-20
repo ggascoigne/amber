@@ -1,5 +1,4 @@
 import type { GetGameRoomAndGamesInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const gameRoomSummarySelect = {

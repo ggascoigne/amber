@@ -1,6 +1,5 @@
-import { buildInitialGameAssignments } from './initial'
 import type { SetInitialGameAssignmentsInput } from './schemas'
-
+import { buildInitialGameAssignments } from './initial'
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const initialAssignmentGameSelect = {

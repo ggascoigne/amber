@@ -14,7 +14,6 @@ import {
   renderWithProviders,
   type PersonRow,
 } from './testUtils'
-
 import type { TableEditRowUpdate } from '../editing/types'
 
 describe('table editing', () => {

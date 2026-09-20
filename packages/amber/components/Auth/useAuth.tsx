@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 
-import { useUser } from '@auth0/nextjs-auth0'
 import type { User as Auth0LibUser } from '@auth0/nextjs-auth0/types'
+import { useUser } from '@auth0/nextjs-auth0'
 
-import { checkMany } from './authUtils'
 import type { Perms } from './PermissionRules'
+import { checkMany } from './authUtils'
 import rules from './PermissionRules'
 import { useRoleOverride } from './useRoleOverride'
 

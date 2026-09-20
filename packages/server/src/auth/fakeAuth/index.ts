@@ -1,4 +1,3 @@
-import { env } from '@amber/environment'
 import type { SessionData } from '@auth0/nextjs-auth0/types'
 import type {
   GetServerSidePropsContext,
@@ -7,13 +6,13 @@ import type {
   NextApiRequest,
   NextApiResponse,
 } from 'next'
+import { env } from '@amber/environment'
 import { NextResponse, type NextRequest } from 'next/server'
 
 import { handleLogin } from './login'
 import { handleLogout } from './logout'
 import { handleProfile } from './profile'
 import { buildSession } from './session'
-
 import type { AuthLike } from '../types'
 
 type AnyPropsResult = GetServerSidePropsResult<Record<string, unknown>>
