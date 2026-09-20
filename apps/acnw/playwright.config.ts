@@ -11,5 +11,6 @@ export default createAppConfig({
   baseURL,
   devServerCommand: 'PLAYWRIGHT=1 pnpm -F acnw dev:test',
   testDir: './playwright',
+  workers: 1,
   workspaceRoot,
 })

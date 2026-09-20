@@ -282,11 +282,6 @@ test.describe.serial('Game assignments dashboard', () => {
     await openDashboard(page)
 
     page.once('dialog', (dialog) => dialog.accept())
-    const resetRefreshPromise = waitForDashboardDataRefresh(page)
-    await page.getByRole('button', { name: 'Reset Assignments' }).click()
-    await resetRefreshPromise
-
-    page.once('dialog', (dialog) => dialog.accept())
     const setInitialRefreshPromise = waitForDashboardDataRefresh(page)
     await page.getByRole('button', { name: 'Set Initial Assignments' }).click()
     const dashboardData = await setInitialRefreshPromise

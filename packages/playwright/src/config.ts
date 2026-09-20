@@ -5,6 +5,7 @@ export type AppPlaywrightConfigOptions = {
   devServerCommand: string
   reuseExistingServer?: boolean
   testDir: string
+  workers?: number
   workspaceRoot: string
 }
 
@@ -15,6 +16,7 @@ export const createAppConfig = (options: AppPlaywrightConfigOptions) =>
   defineConfig({
     testDir: options.testDir,
     fullyParallel: true,
+    workers: options.workers,
     timeout: 30_000,
     expect: {
       timeout: 10_000,
