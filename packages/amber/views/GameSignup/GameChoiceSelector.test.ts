@@ -2,7 +2,6 @@ import type { GameChoice } from '@amber/client'
 import { describe, expect, test } from 'vitest'
 
 import { isGmForGame, isGmInSlot, requiresReturningPlayerConfirmation } from './GameChoiceSelector'
-
 import { PlayerPreference } from '../../utils/selectValues'
 
 describe('isGmInSlot', () => {

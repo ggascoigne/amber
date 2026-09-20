@@ -1,4 +1,4 @@
-import type { Perms } from '../Auth'
+import type { PermsType } from '../Auth'
 
 interface UserCondition {
   userId: number | null | undefined
@@ -13,7 +13,7 @@ export interface RouteInfo {
   link?: string
   subText?: string
   exact: boolean
-  permission?: Perms
+  permission?: PermsType
   condition?: boolean
   userCondition?: (params: UserCondition) => boolean
 }

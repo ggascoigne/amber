@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai/react'
 import { atom } from 'jotai/vanilla'
 
-import type { Roles } from './PermissionRules'
+import type { RolesType } from './PermissionRules'
 
-const roleOverrideAtom = atom<Roles | undefined>(undefined)
+const roleOverrideAtom = atom<RolesType | undefined>(undefined)
 
 export const useRoleOverride = () => useAtom(roleOverrideAtom)

@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import type { User as Auth0LibUser } from '@auth0/nextjs-auth0/types'
 import { useUser } from '@auth0/nextjs-auth0'
 
-import type { Perms } from './PermissionRules'
+import type { PermsType } from './PermissionRules'
 import { checkMany } from './authUtils'
 import rules from './PermissionRules'
 import { useRoleOverride } from './useRoleOverride'
@@ -23,7 +23,7 @@ export type UserContext = {
 }
 
 export type UseAuth = UserContext & {
-  hasPermissions: (perm: Perms, d?: any) => boolean
+  hasPermissions: (perm: PermsType, d?: any) => boolean
 }
 
 export const useAuth = (): UseAuth => {
@@ -33,7 +33,7 @@ export const useAuth = (): UseAuth => {
   }
   const { user } = userContext
   const hasPermissions = useCallback(
-    (perm: Perms, d?: any) => !!user && checkMany(rules, user.roles, perm, roleOverride, d),
+    (perm: PermsType, d?: any) => !!user && checkMany(rules, user.roles, perm, roleOverride, d),
     [roleOverride, user],
   )
   return {

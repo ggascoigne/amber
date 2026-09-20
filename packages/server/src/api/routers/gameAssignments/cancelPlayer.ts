@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server'
 
 import type { CancelPlayerInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const cancelPlayer = async ({ tx, input }: { tx: TransactionClient; input: CancelPlayerInput }) => {

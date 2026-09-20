@@ -9,8 +9,6 @@ import { useTheme } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { CancelPlayerSummaryDialog } from './CancelPlayerSummaryDialog'
-import { CancelPlayerWizard } from './CancelPlayerWizard'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
 import type {
   GameAssignmentsLayoutMode,
@@ -20,6 +18,8 @@ import type {
   GameInterestMode,
 } from './pageState'
 import { AssignmentSummaryDialog } from './AssignmentSummaryDialog'
+import { CancelPlayerSummaryDialog } from './CancelPlayerSummaryDialog'
+import { CancelPlayerWizard } from './CancelPlayerWizard'
 import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardData } from './dashboardData'
 import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
 import { GameAssignmentsTitleBar } from './GameAssignmentsTitleBar'

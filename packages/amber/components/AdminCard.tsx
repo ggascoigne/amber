@@ -5,10 +5,10 @@ import { Card } from '@amber/ui'
 import { CardContent, DialogContentText } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import type { Perms } from './Auth'
+import type { PermsType } from './Auth'
 import { HasPermission } from './Auth'
 
-export const AdminCard: React.FC<PropsWithChildren<{ permission: Perms }>> = ({ permission, children }) => {
+export const AdminCard: React.FC<PropsWithChildren<{ permission: PermsType }>> = ({ permission, children }) => {
   const theme = useTheme()
 
   return (

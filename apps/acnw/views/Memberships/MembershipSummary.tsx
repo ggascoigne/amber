@@ -16,7 +16,7 @@ import {
 } from '@amber/amber'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
 import { formatAmountForDisplay } from '@amber/amber/utils/useStripe'
-
+import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { Card, CardBody, Field, HeaderContent, Loader, MultiLine, notEmpty, range } from '@amber/ui'
 import { Box, Button, Checkbox as MuiCheckbox, FormControlLabel, Grid, Switch } from '@mui/material'
