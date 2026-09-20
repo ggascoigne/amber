@@ -1,5 +1,5 @@
-import type { DateTime } from 'luxon'
 /* eslint-disable max-classes-per-file */
+import type { DateTime } from 'luxon'
 import LuxonUtils from '@date-io/luxon'
 
 interface DayDefault {

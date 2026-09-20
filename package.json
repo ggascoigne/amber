@@ -65,7 +65,8 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
-      "oxfmt"
+      "oxfmt",
+      "eslint"
     ],
     "*.{css,scss,json}": [
       "oxfmt"
