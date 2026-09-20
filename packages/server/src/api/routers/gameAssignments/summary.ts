@@ -37,6 +37,13 @@ type MissingAssignmentSummary = {
   missingSlots: Array<number>
 }
 
+type DuplicateAssignmentSummary = {
+  gameNames: Array<string>
+  memberId: number
+  memberName: string
+  slotId: number
+}
+
 type AnyGameAssignmentSummary = {
   assignmentRole: 'GM' | 'Player'
   gameName: string
@@ -64,6 +71,7 @@ type CapacityIssueSummary = {
 type GameAssignmentSummary = {
   anyGameAssignments: Array<AnyGameAssignmentSummary>
   belowMinimumGames: Array<CapacityIssueSummary>
+  duplicateAssignments: Array<DuplicateAssignmentSummary>
   missingAssignments: Array<MissingAssignmentSummary>
   noGameRoleMismatches: Array<NoGameRoleMismatchSummary>
   overCapGames: Array<CapacityIssueSummary>
@@ -99,6 +107,41 @@ const buildAssignedSlotIdsByMemberId = (assignments: Array<AssignmentSummaryAssi
   })
 
   return assignedSlotIdsByMemberId
+}
+
+const buildDuplicateAssignments = (assignments: Array<AssignmentSummaryAssignment>) => {
+  const assignmentsByMemberAndSlot = new Map<string, Array<AssignmentSummaryAssignment>>()
+
+  assignments.forEach((assignment) => {
+    const { slotId } = assignment.game
+    if (slotId === null) {
+      return
+    }
+
+    const key = `${assignment.memberId}-${slotId}`
+    const assignmentsForMemberAndSlot = assignmentsByMemberAndSlot.get(key) ?? []
+    assignmentsForMemberAndSlot.push(assignment)
+    assignmentsByMemberAndSlot.set(key, assignmentsForMemberAndSlot)
+  })
+
+  return [...assignmentsByMemberAndSlot.values()]
+    .filter((assignmentsForMemberAndSlot) => assignmentsForMemberAndSlot.length > 1)
+    .map<DuplicateAssignmentSummary>((assignmentsForMemberAndSlot) => {
+      const firstAssignment = assignmentsForMemberAndSlot[0]
+
+      return {
+        gameNames: assignmentsForMemberAndSlot
+          .map((assignment) => assignment.game.name)
+          .sort((left, right) => left.localeCompare(right)),
+        memberId: firstAssignment.memberId,
+        memberName: getMemberName(firstAssignment.membership.user.fullName),
+        slotId: firstAssignment.game.slotId as number,
+      }
+    })
+    .sort((left, right) => {
+      const memberNameComparison = left.memberName.localeCompare(right.memberName)
+      return memberNameComparison !== 0 ? memberNameComparison : left.slotId - right.slotId
+    })
 }
 
 const buildScheduledCountsByGameId = (assignments: Array<AssignmentSummaryAssignment>) => {
@@ -172,6 +215,7 @@ export const buildGameAssignmentSummary = ({
       }
     })
     .filter((entry) => entry.missingSlots.length > 0)
+  const duplicateAssignments = buildDuplicateAssignments(assignments)
 
   const anyGameAssignments = assignments
     .filter((assignment) => assignment.game.category === 'any_game')
@@ -216,6 +260,7 @@ export const buildGameAssignmentSummary = ({
   return {
     anyGameAssignments,
     belowMinimumGames,
+    duplicateAssignments,
     missingAssignments,
     noGameRoleMismatches,
     overCapGames,

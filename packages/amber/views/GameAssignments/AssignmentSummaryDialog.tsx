@@ -19,6 +19,12 @@ import {
 } from '@mui/material'
 
 export type AssignmentSummaryData = {
+  duplicateAssignments: Array<{
+    gameNames: Array<string>
+    memberId: number
+    memberName: string
+    slotId: number
+  }>
   missingAssignments: Array<{
     memberId: number
     memberName: string
@@ -116,6 +122,32 @@ export const AssignmentSummaryDialog = ({
                       <TableRow key={entry.memberId}>
                         <TableCell>{entry.memberName}</TableCell>
                         <TableCell>{entry.missingSlots.map((slotId) => `Slot ${slotId}`).join(', ')}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Members Assigned To Multiple Games In A Slot'
+              emptyMessage='No members are assigned to multiple games in the same slot.'
+              hasRows={data.duplicateAssignments.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Member</TableCell>
+                      <TableCell>Slot</TableCell>
+                      <TableCell>Games</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.duplicateAssignments.map((entry) => (
+                      <TableRow key={`${entry.memberId}-${entry.slotId}`}>
+                        <TableCell>{entry.memberName}</TableCell>
+                        <TableCell>{`Slot ${entry.slotId}`}</TableCell>
+                        <TableCell>{entry.gameNames.join(', ')}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

@@ -193,6 +193,7 @@ describe('getGameAssignmentSummary', () => {
         },
       ],
       belowMinimumGames: [],
+      duplicateAssignments: [],
       missingAssignments: [
         {
           memberId: 41,
