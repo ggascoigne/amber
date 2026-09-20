@@ -205,6 +205,14 @@ describe('game assignment summary helper', () => {
           slotId: 2,
         },
       ],
+      duplicateAssignments: [
+        {
+          gameNames: ['Mystery Manor', 'Volunteer Host'],
+          memberId: 10,
+          memberName: 'Alice Example',
+          slotId: 2,
+        },
+      ],
       missingAssignments: [
         {
           memberId: 10,
@@ -379,6 +387,8 @@ describe('game assignment summary helper', () => {
       },
     ])
 
+    expect(summary.duplicateAssignments).toEqual([])
+
     expect(summary.belowMinimumGames).toEqual([
       {
         gameId: 13,
@@ -405,5 +415,45 @@ describe('game assignment summary helper', () => {
         slotId: null,
       },
     ])
+  })
+
+  test.each([7, 8])('recognizes a complete schedule with one assignment in each of %i slots', (slotCount) => {
+    const slots = Array.from({ length: slotCount }, (_unusedValue, slotIndex) => ({ id: slotIndex + 1 }))
+    const games = slots.map((slot) => ({
+      category: 'user',
+      id: slot.id,
+      name: `Game ${slot.id}`,
+      playerMax: 4,
+      playerMin: 0,
+      slotId: slot.id,
+    }))
+    const assignments = games.map((game) => ({
+      game,
+      gameId: game.id,
+      gm: 0,
+      memberId: 1,
+      membership: {
+        user: {
+          fullName: 'Complete Member',
+        },
+      },
+    }))
+
+    const summary = buildGameAssignmentSummary({
+      assignments,
+      games,
+      memberships: [
+        {
+          id: 1,
+          user: {
+            fullName: 'Complete Member',
+          },
+        },
+      ],
+      slots,
+    })
+
+    expect(summary.missingAssignments).toEqual([])
+    expect(summary.duplicateAssignments).toEqual([])
   })
 })

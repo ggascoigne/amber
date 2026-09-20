@@ -8,8 +8,10 @@ const adminUserEmail = 'alex.admin@example.com'
 type DashboardAssignment = {
   gameId: number
   gm: number
+  memberId: number
   game?: {
     category: Game['category']
+    slotId: number | null
   }
 }
 
@@ -41,6 +43,20 @@ const extractDashboardDataFromTrpcPayload = (payload: unknown): DashboardDataRes
   }
 
   return dashboardData
+}
+
+const expectNonConflictingAssignments = (dashboardData: DashboardDataResponse) => {
+  const scheduledAssignments = dashboardData.assignments.filter(
+    (assignment): assignment is DashboardAssignment & { game: { category: Game['category']; slotId: number } } =>
+      assignment.gm >= 0 && typeof assignment.game?.slotId === 'number',
+  )
+  const assignmentCountByMemberAndSlot = new Map<string, number>()
+  scheduledAssignments.forEach((assignment) => {
+    const key = `${assignment.memberId}-${assignment.game.slotId}`
+    assignmentCountByMemberAndSlot.set(key, (assignmentCountByMemberAndSlot.get(key) ?? 0) + 1)
+  })
+
+  expect([...assignmentCountByMemberAndSlot.values()].every((count) => count === 1)).toBe(true)
 }
 
 const waitForDashboardDataRefresh = async (page: Page) => {
@@ -262,7 +278,7 @@ test.describe.serial('Game assignments dashboard', () => {
     await expect(memberChoicesTable.getByRole('button', { name: 'View signup note for Indigo Ivy' })).toBeVisible()
   })
 
-  test('set initial assignments does not create scheduled Any Game assignments', async ({ page }) => {
+  test('set initial assignments avoids same-slot conflicts and reports incomplete schedules', async ({ page }) => {
     await openDashboard(page)
 
     page.once('dialog', (dialog) => dialog.accept())
@@ -279,5 +295,11 @@ test.describe.serial('Game assignments dashboard', () => {
       (assignment) => assignment.gm >= 0 && assignment.game?.category === 'any_game',
     )
     expect(scheduledAnyGameAssignments).toHaveLength(0)
+    expectNonConflictingAssignments(dashboardData)
+
+    await page.getByRole('button', { name: 'Show Summary' }).click()
+    const summaryDialog = page.getByRole('dialog', { name: 'Game Assignment Summary' })
+    await expect(summaryDialog.getByText('No members are assigned to multiple games in the same slot.')).toBeVisible()
+    await expect(summaryDialog.getByText('No members are missing assignments.')).not.toBeVisible()
   })
 })
