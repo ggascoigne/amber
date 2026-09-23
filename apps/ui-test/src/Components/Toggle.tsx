@@ -11,15 +11,13 @@ type ToggleProps = {
 
 export const Toggle = ({ label, setter, value, disabled }: ToggleProps) => (
   <FormControlLabel
-    control={
-      <Switch
-        checked={value}
-        disabled={disabled}
-        value={value}
-        onChange={() => setter((old) => !old)}
-        data-testid={`toggle-${label}`}
-      />
-    }
+    control=<Switch
+      checked={value}
+      disabled={disabled}
+      value={value}
+      onChange={() => setter((old) => !old)}
+      data-testid={`toggle-${label}`}
+    />
     label={label}
   />
 )

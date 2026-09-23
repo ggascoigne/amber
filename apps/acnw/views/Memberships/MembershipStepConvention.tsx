@@ -293,18 +293,18 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
                   <RadioGroup name={`${prefix}donationChoice`} value={donationChoice} onChange={onChangeDonationChoice}>
                     <FormControlLabel
                       value='full'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`$${configuration.fourDayMembership}, sponsor a Full Membership`}
                     />
                     <FormControlLabel
                       value='short'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`$${configuration.threeDayMembership}, sponsor a Short Membership`}
                     />
-                    <FormControlLabel value='100' control={<Radio />} label='$100' />
-                    <FormControlLabel value='30' control={<Radio />} label='$30' />
+                    <FormControlLabel value='100' control=<Radio /> label='$100' />
+                    <FormControlLabel value='30' control=<Radio /> label='$30' />
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, pl: 0 }}>
-                      <FormControlLabel value='other' control={<Radio />} label='Other' />
+                      <FormControlLabel value='other' control=<Radio /> label='Other' />
                       <TextField
                         name={`${prefix}donation`}
                         parse={getSafeFloat}

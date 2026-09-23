@@ -280,7 +280,7 @@ const TableFilterBarView = <T extends RowData>({
           ) : null}
           {searchEnabled && <SearchInput value={searchValue} onChange={searchValueChange!} />}
           {showClearButton ? (
-            <Button startIcon={<ClearIcon />} size='small' onClick={clearAllFilters}>
+            <Button startIcon=<ClearIcon /> size='small' onClick={clearAllFilters}>
               Clear All
             </Button>
           ) : null}

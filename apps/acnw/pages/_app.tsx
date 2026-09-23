@@ -11,7 +11,7 @@ interface MyAppProps extends AppProps {
 }
 
 const MyApp = (props: MyAppProps) => (
-  <RootComponent title='AmberCon Northwest' banner={<Banner to='/' />} rootRoutes={rootRoutes} {...props} />
+  <RootComponent title='AmberCon Northwest' banner=<Banner to='/' /> rootRoutes={rootRoutes} {...props} />
 )
 
 export default MyApp

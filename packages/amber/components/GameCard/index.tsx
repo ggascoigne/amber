@@ -148,11 +148,7 @@ const GameCardDetails = React.memo(
           </>
         ) : (
           <Accordion defaultExpanded>
-            <AccordionSummary
-              component='div'
-              expandIcon={<ExpandMoreIcon />}
-              id={`accordion-game/${year}/${slot}/${id}`}
-            >
+            <AccordionSummary component='div' expandIcon=<ExpandMoreIcon /> id={`accordion-game/${year}/${slot}/${id}`}>
               {header}
             </AccordionSummary>
             <AccordionDetails>{content}</AccordionDetails>
@@ -264,7 +260,7 @@ export const GameCard = React.memo(
         </Card>
       ) : (
         <Accordion defaultExpanded={!schedule} style={{ marginTop: 30 }}>
-          <AccordionSummary component='div' expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+          <AccordionSummary component='div' expandIcon=<ExpandMoreIcon /> id={`accordion-game/${year}/${slot}/${id}`}>
             {header}
           </AccordionSummary>
           <AccordionDetails>{content}</AccordionDetails>

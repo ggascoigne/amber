@@ -90,5 +90,5 @@ type RefreshButtonProps = {
 }
 
 export const RefreshButton = ({ onClick }: RefreshButtonProps) => (
-  <TableIconButton icon={<RefreshIcon />} onClick={onClick} label='Refresh' data-testid='refresh-button' />
+  <TableIconButton icon=<RefreshIcon /> onClick={onClick} label='Refresh' data-testid='refresh-button' />
 )

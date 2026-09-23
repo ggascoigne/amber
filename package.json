@@ -20,9 +20,7 @@
     "build:us": "pnpm -F acus build",
     "db:generate": "DB_ENV=acnw pnpm -F server db:migrate:generate",
     "format": "oxfmt",
-    "lint": "pnpm run eslint",
-    "oxlint": "oxlint --type-aware --fix",
-    "eslint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
+    "lint": "oxlint --fix",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "vitest run",
@@ -66,7 +64,7 @@
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
       "oxfmt",
-      "eslint"
+      "oxlint"
     ],
     "*.{css,scss,json}": [
       "oxfmt"

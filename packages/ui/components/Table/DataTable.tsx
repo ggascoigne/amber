@@ -97,7 +97,7 @@ const TableEditingFooter = <T extends RowData>({ editing, addRowAction }: TableE
         <Button
           variant='text'
           size='small'
-          startIcon={<AddIcon fontSize='small' />}
+          startIcon=<AddIcon fontSize='small' />
           onClick={addRowAction.onAddRow}
           disabled={isSaving}
         >
@@ -372,13 +372,11 @@ const DataTableView = <T extends RowData>({
                   }}
                 >
                   <FormControlLabel
-                    control={
-                      <Switch
-                        size='small'
-                        checked={showExpandedOnly}
-                        onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
-                      />
-                    }
+                    control=<Switch
+                      size='small'
+                      checked={showExpandedOnly}
+                      onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
+                    />
                     label='Show Expanded'
                     sx={{ m: 0 }}
                   />

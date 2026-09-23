@@ -87,13 +87,11 @@ export const ThemeToggleMenu1 = (_props: ThemeToggleMenu1Props) => {
     <Box>
       <FormControlLabel
         value='Dark mode'
-        control={
-          <Switch
-            color='primary'
-            checked={mode === 'dark'}
-            onChange={(event) => setMode(event.target.checked ? 'dark' : 'light')}
-          />
-        }
+        control=<Switch
+          color='primary'
+          checked={mode === 'dark'}
+          onChange={(event) => setMode(event.target.checked ? 'dark' : 'light')}
+        />
         label='Dark mode'
         labelPlacement='start'
       />

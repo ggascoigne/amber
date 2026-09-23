@@ -54,7 +54,7 @@ const AdminBadge: React.FC<Children> = ({ children }) => (
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      badgeContent={<VerifiedUserIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+      badgeContent=<VerifiedUserIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />
     >
       {children}
     </Badge>
@@ -69,7 +69,7 @@ const GmBadge: React.FC<Children> = ({ children }) => (
         vertical: 'top',
         horizontal: 'right',
       }}
-      badgeContent={<StarIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+      badgeContent=<StarIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />
     >
       {children}
     </Badge>
@@ -209,7 +209,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
     <>
       <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
       <LoginMenu
-        buttonText={<MenuButton small={small} user={user!} />}
+        buttonText=<MenuButton small={small} user={user!} />
         buttonProps={{
           /*  @ts-ignore */
           sx: (theme: Theme) => ({

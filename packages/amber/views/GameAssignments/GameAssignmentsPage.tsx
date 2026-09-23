@@ -373,25 +373,23 @@ const GameAssignmentsPage = () => {
     <Page
       title='Game Assignments'
       variant='fill'
-      titleElement={
-        <GameAssignmentsTitleBar
-          slotFilterOptions={slotFilterOptions}
-          slotFilterId={topSlotFilterId}
-          onSlotFilterChange={handleTopSlotFilterChange}
-          layoutMode={layoutMode}
-          onLayoutChange={handleLayoutChange}
-          onShowSummary={handleShowSummary}
-          onCancelPlayer={handleCancelPlayer}
-          onResetAssignments={handleResetAssignments}
-          onSetInitialAssignments={handleSetInitialAssignments}
-          isBusy={
-            updateAssignmentsMutation.isPending ||
-            resetAssignmentsMutation.isPending ||
-            setInitialAssignmentsMutation.isPending
-          }
-          isSummaryBusy={isSummaryLoading}
-        />
-      }
+      titleElement=<GameAssignmentsTitleBar
+        slotFilterOptions={slotFilterOptions}
+        slotFilterId={topSlotFilterId}
+        onSlotFilterChange={handleTopSlotFilterChange}
+        layoutMode={layoutMode}
+        onLayoutChange={handleLayoutChange}
+        onShowSummary={handleShowSummary}
+        onCancelPlayer={handleCancelPlayer}
+        onResetAssignments={handleResetAssignments}
+        onSetInitialAssignments={handleSetInitialAssignments}
+        isBusy={
+          updateAssignmentsMutation.isPending ||
+          resetAssignmentsMutation.isPending ||
+          setInitialAssignmentsMutation.isPending
+        }
+        isSummaryBusy={isSummaryLoading}
+      />
     >
       <GlobalStyles
         styles={{

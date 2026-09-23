@@ -255,7 +255,7 @@ const MemberOrUserPayment = ({
                   <>
                     <FormControlLabel
                       value='full'
-                      control={<Radio />}
+                      control=<Radio />
                       label={
                         membership
                           ? `${getMembershipString(configuration, membership)}: ${formatAmountForDisplay(balance)}`
@@ -264,14 +264,14 @@ const MemberOrUserPayment = ({
                     />
                     <FormControlLabel
                       value='deposit'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`Deposit: ${formatAmountForDisplay(configuration.deposit)}`}
                     />
                   </>
                 ) : null}
                 <FormControlLabel
                   value='other'
-                  control={<Radio />}
+                  control=<Radio />
                   label={displayFullMembershipPayment ? 'Partial Payment' : 'Payment'}
                 />
               </RadioGroup>

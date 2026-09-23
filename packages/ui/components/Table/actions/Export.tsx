@@ -53,5 +53,5 @@ export const Export = <T extends RowData>({ table }: ExportProps<T>) => {
     }
   }
 
-  return <TableIconButton icon={<FileDownloadSharpIcon />} onClick={handleFileDownloadClick} label='Export to CSV' />
+  return <TableIconButton icon=<FileDownloadSharpIcon /> onClick={handleFileDownloadClick} label='Export to CSV' />
 }

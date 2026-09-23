@@ -91,15 +91,13 @@ export const FilterButtonMenu = ({
       <FilterButton
         ref={ref}
         variant='outlined'
-        endIcon={
-          <ArrowDropDownIcon
-            sx={{
-              transform: anchorEl ? 'rotate(180deg)' : undefined,
-              transition: (theme) =>
-                `transform ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut} 0ms`,
-            }}
-          />
-        }
+        endIcon=<ArrowDropDownIcon
+          sx={{
+            transform: anchorEl ? 'rotate(180deg)' : undefined,
+            transition: (theme) =>
+              `transform ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut} 0ms`,
+          }}
+        />
         disableRipple
         onClick={handleButtonClick}
         className={clsx({ open: !!anchorEl })}

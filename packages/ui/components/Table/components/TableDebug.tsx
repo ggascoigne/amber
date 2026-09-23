@@ -100,7 +100,7 @@ const TableDebugView = <TData extends RowData>({ instance, state, tableIndex }: 
     <Box>
       <hr />
       <Box sx={{ pl: 3 }}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback=<Loader />>
           <Box
             sx={{
               maxHeight: '400px',

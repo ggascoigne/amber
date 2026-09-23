@@ -107,15 +107,16 @@ const RoomAssignmentConflictSummaryPane = ({
     }
     isExpanded={isExpanded}
     onToggleExpand={onToggleExpand}
-    controls={
-      <FormControlLabel
-        control={
-          <Switch size='small' checked={showAllSlots} onChange={(_event, checked) => onShowAllSlotsChange(checked)} />
-        }
-        label='All Slots'
-        sx={{ m: 0 }}
+    controls=<FormControlLabel
+      control=<Switch
+        size='small'
+        checked={showAllSlots}
+        onChange={(_event, checked) => onShowAllSlotsChange(checked)}
       />
-    }
+
+      label='All Slots'
+      sx={{ m: 0 }}
+    />
   >
     <Table<RoomAssignmentConflictRow>
       name='room-assignment-conflict-summary'

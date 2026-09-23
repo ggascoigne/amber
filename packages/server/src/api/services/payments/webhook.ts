@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-/* eslint-disable @typescript-eslint/naming-convention */
+// oxlint-disable naming-convention/naming-convention
 import { env } from '@amber/environment'
 import Stripe from 'stripe'
 

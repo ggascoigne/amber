@@ -57,19 +57,15 @@ const RoomUsageSummaryPane = ({
     subtitle='Total room assignment count across the convention year.'
     isExpanded={isExpanded}
     onToggleExpand={onToggleExpand}
-    controls={
-      <FormControlLabel
-        control={
-          <Switch
-            size='small'
-            checked={showMemberRooms}
-            onChange={(_event, checked) => onShowMemberRoomsChange(checked)}
-          />
-        }
-        label='Show member rooms'
-        sx={{ m: 0 }}
+    controls=<FormControlLabel
+      control=<Switch
+        size='small'
+        checked={showMemberRooms}
+        onChange={(_event, checked) => onShowMemberRoomsChange(checked)}
       />
-    }
+      label='Show member rooms'
+      sx={{ m: 0 }}
+    />
   >
     <Table<RoomUsageSummaryRow>
       name='room-assignment-room-usage-summary'

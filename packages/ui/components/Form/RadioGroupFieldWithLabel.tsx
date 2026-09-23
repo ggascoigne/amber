@@ -45,7 +45,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
           >
             <FormControlLabel
               value={getSelectValue(s)}
-              control={<Radio onChange={onChange} />}
+              control=<Radio onChange={onChange} />
               label={getSelectLabel(s)}
             />
           </Box>

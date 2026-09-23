@@ -12,7 +12,7 @@ export type ExpandRecursively<T> =
   T extends Record<string, unknown> ? (T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never) : T
 
 // Cool trick
-// eslint-disable-next-line @typescript-eslint/naming-convention
+// oxlint-disable-next-line naming-convention/naming-convention
 type _<T> = T
 export type FlattenTypes<T> = _<{ [k in keyof T]: T[k] }>
 

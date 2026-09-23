@@ -143,7 +143,7 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
                 }}
                 scope='row'
               >
-                <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={soldOut} />
+                <FormControlLabel value={room.id} control=<Radio /> label={label} disabled={soldOut} />
               </TableCell>
               <TableCell
                 sx={{

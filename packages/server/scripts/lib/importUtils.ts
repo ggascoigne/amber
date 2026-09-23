@@ -1,3 +1,4 @@
+// oxlint-disable naming-convention/naming-convention
 import fs from 'fs'
 import { mkdir } from 'node:fs/promises'
 import path from 'path'

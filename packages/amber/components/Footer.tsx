@@ -100,7 +100,7 @@ export const Footer = () => {
                 <Box component='h3' sx={{ marginTop: 0 }}>
                   Site configuration
                 </Box>
-                <Suspense fallback={<Loader />}>
+                <Suspense fallback=<Loader />>
                   <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
                     <ObjectView valueGetter={() => obj} name='root' expandLevel={3} />
                   </Box>

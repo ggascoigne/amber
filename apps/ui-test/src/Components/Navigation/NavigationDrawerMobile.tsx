@@ -24,7 +24,7 @@ export default function NavigationDrawerMobile({ appExpand, onMenuChange, menu }
 
   return (
     <>
-      <Button sx={{ py: 0.5, px: 2 }} startIcon={<MenuIcon />} onClick={toggleDrawer}>
+      <Button sx={{ py: 0.5, px: 2 }} startIcon=<MenuIcon /> onClick={toggleDrawer}>
         Menu
       </Button>
       <SwipeableDrawer

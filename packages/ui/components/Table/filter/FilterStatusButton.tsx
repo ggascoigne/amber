@@ -82,7 +82,7 @@ export const FilterStatusButton = ({
               onClear()
               closePopup()
             }}
-            startIcon={<ClearIcon />}
+            startIcon=<ClearIcon />
           >
             Clear
           </Button>

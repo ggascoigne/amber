@@ -32,14 +32,12 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
         {isNotPacificTime(configuration) && (
           <div>
             <FormControlLabel
-              control={
-                <Switch
-                  checked={showPT}
-                  onChange={() => setShowPT((old) => !old)}
-                  name={`${prefix}showLocal`}
-                  color='primary'
-                />
-              }
+              control=<Switch
+                checked={showPT}
+                onChange={() => setShowPT((old) => !old)}
+                name={`${prefix}showLocal`}
+                color='primary'
+              />
               label='Show slot times in Pacific time'
             />
           </div>
