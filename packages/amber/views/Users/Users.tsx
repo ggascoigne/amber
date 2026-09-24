@@ -38,7 +38,7 @@ const Users = () => {
   }
 
   return (
-    <Page variant='fill' title='Users 2' hideTitle>
+    <Page variant='fill' title='Users' hideTitle>
       {showEdit && <ProfileDialog open={showEdit} onClose={handleCloseEdit} initialValues={selection[0]} />}
       <Table
         title='Users'
