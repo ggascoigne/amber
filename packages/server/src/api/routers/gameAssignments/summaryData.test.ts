@@ -70,11 +70,34 @@ const createGameAssignmentSummaryTx = () => {
       },
     },
   ]
+  const choices = [
+    {
+      memberId: 41,
+      gameId: 11,
+      rank: 1,
+      returningPlayer: true,
+      slotId: 1,
+      membership: {
+        user: {
+          fullName: 'Alex Morgan',
+        },
+      },
+      game: {
+        id: 11,
+        name: 'Goblin Market',
+        slotId: 1,
+        category: 'user',
+        playerMin: 1,
+        playerMax: 4,
+      },
+    },
+  ]
 
   const slotFindMany = vi.fn().mockResolvedValue(slots)
   const membershipFindMany = vi.fn().mockResolvedValue(memberships)
   const gameFindMany = vi.fn().mockResolvedValue(games)
   const gameAssignmentFindMany = vi.fn().mockResolvedValue(assignments)
+  const gameChoiceFindMany = vi.fn().mockResolvedValue(choices)
 
   const tx = {
     slot: {
@@ -89,10 +112,15 @@ const createGameAssignmentSummaryTx = () => {
     gameAssignment: {
       findMany: gameAssignmentFindMany,
     },
+    gameChoice: {
+      findMany: gameChoiceFindMany,
+    },
   } as unknown as TransactionClient
 
   return {
     assignments,
+    choices,
+    gameChoiceFindMany,
     gameAssignmentFindMany,
     gameFindMany,
     games,
@@ -183,6 +211,35 @@ describe('getGameAssignmentSummary', () => {
         },
       },
     })
+    expect(fixture.gameChoiceFindMany).toHaveBeenCalledWith({
+      where: { year: 2026, rank: 1, returningPlayer: true, gameId: { not: null } },
+      select: {
+        memberId: true,
+        gameId: true,
+        rank: true,
+        returningPlayer: true,
+        slotId: true,
+        membership: {
+          select: {
+            user: {
+              select: {
+                fullName: true,
+              },
+            },
+          },
+        },
+        game: {
+          select: {
+            id: true,
+            name: true,
+            slotId: true,
+            category: true,
+            playerMin: true,
+            playerMax: true,
+          },
+        },
+      },
+    })
     expect(result).toEqual({
       anyGameAssignments: [
         {
@@ -203,6 +260,7 @@ describe('getGameAssignmentSummary', () => {
       ],
       noGameRoleMismatches: [],
       overCapGames: [],
+      unassignedReturningFirstChoices: [],
     })
   })
 })

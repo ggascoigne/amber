@@ -115,6 +115,40 @@ describe('game assignment summary helper', () => {
           },
         },
       ],
+      choices: [
+        {
+          game: {
+            category: 'user',
+            id: 3,
+            name: 'Mystery Manor',
+            playerMax: 4,
+            playerMin: 2,
+            slotId: 2,
+          },
+          gameId: 3,
+          memberId: 20,
+          membership: { user: { fullName: 'Bob Example' } },
+          rank: 1,
+          returningPlayer: true,
+          slotId: 2,
+        },
+        {
+          game: {
+            category: 'user',
+            id: 4,
+            name: 'Zebra Quest',
+            playerMax: 1,
+            playerMin: 1,
+            slotId: 3,
+          },
+          gameId: 4,
+          memberId: 30,
+          membership: { user: { fullName: null } },
+          rank: 1,
+          returningPlayer: true,
+          slotId: 3,
+        },
+      ],
       games: [
         {
           category: 'any_game',
@@ -249,6 +283,15 @@ describe('game assignment summary helper', () => {
           slotId: 3,
         },
       ],
+      unassignedReturningFirstChoices: [
+        {
+          gameId: 3,
+          gameName: 'Mystery Manor',
+          memberId: 20,
+          memberName: 'Bob Example',
+          slotId: 2,
+        },
+      ],
     })
   })
 
@@ -328,6 +371,7 @@ describe('game assignment summary helper', () => {
           },
         },
       ],
+      choices: [],
       games: [
         {
           category: 'user',
@@ -441,6 +485,7 @@ describe('game assignment summary helper', () => {
 
     const summary = buildGameAssignmentSummary({
       assignments,
+      choices: [],
       games,
       memberships: [
         {

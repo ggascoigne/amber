@@ -26,6 +26,20 @@ type AssignmentSummaryAssignment = {
   }
 }
 
+type AssignmentSummaryChoice = {
+  game: AssignmentSummaryGame | null
+  gameId: number | null
+  memberId: number
+  membership: {
+    user: {
+      fullName: string | null
+    }
+  }
+  rank: number
+  returningPlayer: boolean
+  slotId: number
+}
+
 type ScheduledCounts = {
   gmCount: number
   playerCount: number
@@ -49,6 +63,14 @@ type AnyGameAssignmentSummary = {
   gameName: string
   memberId: number
   memberName: string
+}
+
+type UnassignedReturningFirstChoiceSummary = {
+  gameId: number
+  gameName: string
+  memberId: number
+  memberName: string
+  slotId: number
 }
 
 type NoGameRoleMismatchSummary = {
@@ -75,6 +97,7 @@ type GameAssignmentSummary = {
   missingAssignments: Array<MissingAssignmentSummary>
   noGameRoleMismatches: Array<NoGameRoleMismatchSummary>
   overCapGames: Array<CapacityIssueSummary>
+  unassignedReturningFirstChoices: Array<UnassignedReturningFirstChoiceSummary>
 }
 
 const unknownMemberName = 'Unknown member'
@@ -162,6 +185,39 @@ const buildScheduledCountsByGameId = (assignments: Array<AssignmentSummaryAssign
   return scheduledCountsByGameId
 }
 
+const buildAssignmentKeys = (assignments: Array<AssignmentSummaryAssignment>) =>
+  new Set(assignments.map((assignment) => `${assignment.memberId}-${assignment.gameId}`))
+
+const buildUnassignedReturningFirstChoices = ({
+  assignmentKeys,
+  choices,
+}: {
+  assignmentKeys: Set<string>
+  choices: Array<AssignmentSummaryChoice>
+}) =>
+  choices
+    .filter(
+      (choice): choice is AssignmentSummaryChoice & { game: AssignmentSummaryGame; gameId: number } =>
+        choice.rank === 1 &&
+        choice.returningPlayer &&
+        choice.game !== null &&
+        choice.gameId !== null &&
+        choice.game.category === 'user' &&
+        (choice.game.slotId ?? 0) > 0 &&
+        !assignmentKeys.has(`${choice.memberId}-${choice.gameId}`),
+    )
+    .map<UnassignedReturningFirstChoiceSummary>((choice) => ({
+      gameId: choice.gameId,
+      gameName: choice.game.name,
+      memberId: choice.memberId,
+      memberName: getMemberName(choice.membership.user.fullName),
+      slotId: choice.slotId,
+    }))
+    .sort((left, right) => {
+      const memberNameComparison = left.memberName.localeCompare(right.memberName)
+      return memberNameComparison !== 0 ? memberNameComparison : left.slotId - right.slotId
+    })
+
 const buildCapacityIssues = ({
   games,
   predicate,
@@ -190,17 +246,20 @@ const buildCapacityIssues = ({
 
 export const buildGameAssignmentSummary = ({
   assignments,
+  choices,
   games,
   memberships,
   slots,
 }: {
   assignments: Array<AssignmentSummaryAssignment>
+  choices: Array<AssignmentSummaryChoice>
   games: Array<AssignmentSummaryGame>
   memberships: Array<AssignmentSummaryMembership>
   slots: Array<{ id: number }>
 }): GameAssignmentSummary => {
   const slotIds = slots.map((slot) => slot.id)
   const assignedSlotIdsByMemberId = buildAssignedSlotIdsByMemberId(assignments)
+  const assignmentKeys = buildAssignmentKeys(assignments)
   const scheduledCountsByGameId = buildScheduledCountsByGameId(assignments)
 
   const missingAssignments = memberships
@@ -256,6 +315,7 @@ export const buildGameAssignmentSummary = ({
     predicate: (entry) => entry.playerCount > entry.playerMax,
     scheduledCountsByGameId,
   })
+  const unassignedReturningFirstChoices = buildUnassignedReturningFirstChoices({ assignmentKeys, choices })
 
   return {
     anyGameAssignments,
@@ -264,5 +324,6 @@ export const buildGameAssignmentSummary = ({
     missingAssignments,
     noGameRoleMismatches,
     overCapGames,
+    unassignedReturningFirstChoices,
   }
 }
