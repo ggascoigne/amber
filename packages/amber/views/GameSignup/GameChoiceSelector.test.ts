@@ -1,7 +1,9 @@
 import type { GameChoice } from '@amber/client'
 import { describe, expect, test } from 'vitest'
 
-import { isGmForGame, isGmInSlot } from './GameChoiceSelector'
+import { isGmForGame, isGmInSlot, requiresReturningPlayerConfirmation } from './GameChoiceSelector'
+
+import { PlayerPreference } from '../../utils/selectValues'
 
 describe('isGmInSlot', () => {
   test('locks first-choice controls only for a slot where the member is a GM', () => {
@@ -17,5 +19,38 @@ describe('isGmInSlot', () => {
 
     expect(isGmForGame([gmSlot], 1, 101)).toBe(true)
     expect(isGmForGame([gmSlot], 1, 102)).toBe(false)
+  })
+})
+
+describe('requiresReturningPlayerConfirmation', () => {
+  test('only confirms newly selected, unmarked returning-player-only games', () => {
+    expect(
+      requiresReturningPlayerConfirmation({
+        isReturningPlayer: false,
+        isSelected: true,
+        playerPreference: PlayerPreference.RetOnly,
+      }),
+    ).toBe(true)
+    expect(
+      requiresReturningPlayerConfirmation({
+        isReturningPlayer: true,
+        isSelected: true,
+        playerPreference: PlayerPreference.RetOnly,
+      }),
+    ).toBe(false)
+    expect(
+      requiresReturningPlayerConfirmation({
+        isReturningPlayer: false,
+        isSelected: false,
+        playerPreference: PlayerPreference.RetOnly,
+      }),
+    ).toBe(false)
+    expect(
+      requiresReturningPlayerConfirmation({
+        isReturningPlayer: false,
+        isSelected: true,
+        playerPreference: PlayerPreference.RetPref,
+      }),
+    ).toBe(false)
   })
 })

@@ -4,18 +4,39 @@ import type { Game, GameChoice } from '@amber/client'
 import CheckIcon from '@mui/icons-material/Check'
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material'
 
 import { Perms, useAuth } from '../../components/Auth'
 import type { GameCategoryByGameId } from '../../utils/gameCategory'
 import { isAnyGameCategory, isAnyGameId, isNoGameCategory, isNoGameId } from '../../utils/gameCategory'
 import { rankString } from '../../utils/gameChoiceRank'
+import { PlayerPreference } from '../../utils/selectValues'
 
 export const isNoGame = (gameCategoryByGameId: GameCategoryByGameId, id: number | null | undefined) =>
   isNoGameId(gameCategoryByGameId, id)
 
 export const isAnyGame = (gameCategoryByGameId: GameCategoryByGameId, id: number | null | undefined) =>
   isAnyGameId(gameCategoryByGameId, id)
+
+export const requiresReturningPlayerConfirmation = ({
+  isReturningPlayer,
+  isSelected,
+  playerPreference,
+}: {
+  isReturningPlayer: boolean
+  isSelected: boolean
+  playerPreference: string
+}) => isSelected && !isReturningPlayer && playerPreference === PlayerPreference.RetOnly
 
 const EMPTY_GAME_CATEGORY_BY_GAME_ID: GameCategoryByGameId = new Map()
 
@@ -168,6 +189,7 @@ export const GameChoiceSelector = ({
   const thisOne = gameChoices?.filter((c) => c?.year === year && c.gameId === game.id && c.slotId === slot)?.[0]
   const [rank, setRank] = React.useState<number | null>(thisOne?.rank ?? null)
   const [returning, setReturning] = React.useState(thisOne?.returningPlayer ?? false)
+  const [pendingRank, setPendingRank] = React.useState<number | null>(null)
   const { hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
 
@@ -176,19 +198,47 @@ export const GameChoiceSelector = ({
 
   useEffect(() => {
     setRank(thisOne?.rank ?? null)
+    setReturning(thisOne?.returningPlayer ?? false)
   }, [thisOne])
 
-  const handlePriority = (event: React.MouseEvent<HTMLElement>, newRank: number | null) => {
+  const updatePriority = (newRank: number | null, returningPlayer: boolean) => {
     setRank(newRank)
     updateChoice?.({
       gameChoices,
       gameId: game.id,
       rank: newRank,
       oldRank: rank,
-      returningPlayer: returning,
+      returningPlayer,
       slotId: slot,
       year,
     })
+  }
+
+  const handlePriority = (_event: React.MouseEvent<HTMLElement>, newRank: number | null) => {
+    if (
+      requiresReturningPlayerConfirmation({
+        isReturningPlayer: returning,
+        isSelected: rank === null && newRank !== null,
+        playerPreference: game.playerPreference,
+      })
+    ) {
+      setPendingRank(newRank)
+      return
+    }
+
+    updatePriority(newRank, returning)
+  }
+
+  const handleReturningPlayerConfirmation = () => {
+    if (pendingRank === null) return
+
+    updatePriority(pendingRank, true)
+    setReturning(true)
+    setPendingRank(null)
+  }
+
+  const handleReturningPlayerDecline = () => {
+    setPendingRank(null)
   }
 
   const handleReturning = () => {
@@ -235,6 +285,24 @@ export const GameChoiceSelector = ({
 
   return (
     <>
+      <Dialog
+        open={pendingRank !== null}
+        onClose={handleReturningPlayerDecline}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <DialogTitle>Returning Player Confirmation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            The GM of this game has asked that only returning players sign up to this game. Are you a returning player?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleReturningPlayerDecline}>No</Button>
+          <Button onClick={handleReturningPlayerConfirmation} variant='contained' autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* <div style={{ flex: '1 0 auto', display: 'flex', flexDirection: 'row' }} /> */}
       <div
         style={{
