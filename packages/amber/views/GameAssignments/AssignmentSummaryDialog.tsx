@@ -59,6 +59,13 @@ export type AssignmentSummaryData = {
     playerMin: number
     playerMax: number
   }>
+  unassignedReturningFirstChoices: Array<{
+    gameId: number
+    gameName: string
+    memberId: number
+    memberName: string
+    slotId: number
+  }>
 }
 
 type AssignmentSummarySectionProps = {
@@ -173,6 +180,32 @@ export const AssignmentSummaryDialog = ({
                       <TableRow key={`${entry.memberId}-${entry.assignmentRole}-${index}`}>
                         <TableCell>{entry.memberName}</TableCell>
                         <TableCell>{entry.assignmentRole}</TableCell>
+                        <TableCell>{entry.gameName}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Returning Players Not Assigned To Their First Choice'
+              emptyMessage='All returning players are assigned to their first-choice scheduled game.'
+              hasRows={data.unassignedReturningFirstChoices.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Member</TableCell>
+                      <TableCell>Slot</TableCell>
+                      <TableCell>First-Choice Game</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.unassignedReturningFirstChoices.map((entry) => (
+                      <TableRow key={`${entry.memberId}-${entry.gameId}`}>
+                        <TableCell>{entry.memberName}</TableCell>
+                        <TableCell>{`Slot ${entry.slotId}`}</TableCell>
                         <TableCell>{entry.gameName}</TableCell>
                       </TableRow>
                     ))}

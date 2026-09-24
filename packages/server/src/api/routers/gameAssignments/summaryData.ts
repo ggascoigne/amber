@@ -75,9 +75,32 @@ export const getGameAssignmentSummary = async ({
       },
     },
   })
+  const choices = await tx.gameChoice.findMany({
+    where: { year: input.year, rank: 1, returningPlayer: true, gameId: { not: null } },
+    select: {
+      memberId: true,
+      gameId: true,
+      rank: true,
+      returningPlayer: true,
+      slotId: true,
+      membership: {
+        select: {
+          user: {
+            select: {
+              fullName: true,
+            },
+          },
+        },
+      },
+      game: {
+        select: assignmentSummaryGameSelect,
+      },
+    },
+  })
 
   return buildGameAssignmentSummary({
     assignments,
+    choices,
     games,
     memberships,
     slots,
