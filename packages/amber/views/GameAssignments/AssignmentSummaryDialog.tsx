@@ -59,6 +59,11 @@ export type AssignmentSummaryData = {
     playerMin: number
     playerMax: number
   }>
+  cancelledGamesWithPlayers: Array<{
+    gameId: number
+    gameName: string
+    playerCount: number
+  }>
   unassignedReturningFirstChoices: Array<{
     gameId: number
     gameName: string
@@ -261,7 +266,7 @@ export const AssignmentSummaryDialog = ({
                     {data.belowMinimumGames.map((entry) => (
                       <TableRow key={entry.gameId}>
                         <TableCell>{entry.gameName}</TableCell>
-                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
+                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Cancelled'}</TableCell>
                         <TableCell align='right'>{entry.playerCount}</TableCell>
                         <TableCell align='right'>{entry.playerMin}</TableCell>
                         <TableCell align='right'>{entry.playerMax}</TableCell>
@@ -291,10 +296,34 @@ export const AssignmentSummaryDialog = ({
                     {data.overCapGames.map((entry) => (
                       <TableRow key={entry.gameId}>
                         <TableCell>{entry.gameName}</TableCell>
-                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Unslotted'}</TableCell>
+                        <TableCell>{entry.slotId ? `Slot ${entry.slotId}` : 'Cancelled'}</TableCell>
                         <TableCell align='right'>{entry.playerCount}</TableCell>
                         <TableCell align='right'>{entry.playerMin}</TableCell>
                         <TableCell align='right'>{entry.playerMax}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </MuiTable>
+              </TableContainer>
+            </AssignmentSummarySection>
+            <AssignmentSummarySection
+              title='Cancelled Games With Players Assigned'
+              emptyMessage='No cancelled games have players assigned.'
+              hasRows={data.cancelledGamesWithPlayers.length > 0}
+            >
+              <TableContainer>
+                <MuiTable size='small'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Game</TableCell>
+                      <TableCell align='right'>Players</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {data.cancelledGamesWithPlayers.map((entry) => (
+                      <TableRow key={entry.gameId}>
+                        <TableCell>{entry.gameName}</TableCell>
+                        <TableCell align='right'>{entry.playerCount}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>

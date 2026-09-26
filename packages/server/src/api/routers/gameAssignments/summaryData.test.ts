@@ -260,6 +260,7 @@ describe('getGameAssignmentSummary', () => {
       ],
       noGameRoleMismatches: [],
       overCapGames: [],
+      cancelledGamesWithPlayers: [],
       unassignedReturningFirstChoices: [],
     })
   })

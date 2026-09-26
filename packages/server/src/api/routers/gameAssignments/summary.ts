@@ -97,6 +97,7 @@ type GameAssignmentSummary = {
   missingAssignments: Array<MissingAssignmentSummary>
   noGameRoleMismatches: Array<NoGameRoleMismatchSummary>
   overCapGames: Array<CapacityIssueSummary>
+  cancelledGamesWithPlayers: Array<CapacityIssueSummary>
   unassignedReturningFirstChoices: Array<UnassignedReturningFirstChoiceSummary>
 }
 
@@ -220,15 +221,17 @@ const buildUnassignedReturningFirstChoices = ({
 
 const buildCapacityIssues = ({
   games,
+  includeCancelledGames = true,
   predicate,
   scheduledCountsByGameId,
 }: {
   games: Array<AssignmentSummaryGame>
+  includeCancelledGames?: boolean
   predicate: (capacityIssue: CapacityIssueSummary) => boolean
   scheduledCountsByGameId: Map<number, ScheduledCounts>
 }) =>
   games
-    .filter((game) => game.category === 'user')
+    .filter((game) => game.category === 'user' && (includeCancelledGames || game.slotId !== null))
     .map((game) => {
       const scheduledCounts = scheduledCountsByGameId.get(game.id) ?? { gmCount: 0, playerCount: 0 }
 
@@ -306,6 +309,7 @@ export const buildGameAssignmentSummary = ({
 
   const belowMinimumGames = buildCapacityIssues({
     games,
+    includeCancelledGames: false,
     predicate: (entry) => entry.playerCount < entry.playerMin,
     scheduledCountsByGameId,
   })
@@ -313,6 +317,11 @@ export const buildGameAssignmentSummary = ({
   const overCapGames = buildCapacityIssues({
     games,
     predicate: (entry) => entry.playerCount > entry.playerMax,
+    scheduledCountsByGameId,
+  })
+  const cancelledGamesWithPlayers = buildCapacityIssues({
+    games,
+    predicate: (entry) => entry.slotId === null && entry.playerCount > 0,
     scheduledCountsByGameId,
   })
   const unassignedReturningFirstChoices = buildUnassignedReturningFirstChoices({ assignmentKeys, choices })
@@ -324,6 +333,7 @@ export const buildGameAssignmentSummary = ({
     missingAssignments,
     noGameRoleMismatches,
     overCapGames,
+    cancelledGamesWithPlayers,
     unassignedReturningFirstChoices,
   }
 }

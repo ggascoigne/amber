@@ -283,6 +283,7 @@ describe('game assignment summary helper', () => {
           slotId: 3,
         },
       ],
+      cancelledGamesWithPlayers: [],
       unassignedReturningFirstChoices: [
         {
           gameId: 3,
@@ -450,6 +451,8 @@ describe('game assignment summary helper', () => {
         playerMin: 2,
         slotId: 2,
       },
+    ])
+    expect(summary.cancelledGamesWithPlayers).toEqual([
       {
         gameId: 12,
         gameName: 'Alpha',
