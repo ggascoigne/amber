@@ -2,7 +2,7 @@ import type { MouseEvent } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData, UpsertGameChoiceBySlotInput } from '@amber/client'
-import { useInvalidateGameAssignmentDashboardQueries, useTRPC } from '@amber/client'
+import { useInvalidateGameAssignmentDashboardQueries, useInvalidateMembershipQueries, useTRPC } from '@amber/client'
 import { Loader, useLocalStorage } from '@amber/ui'
 import { Box, GlobalStyles } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
@@ -10,6 +10,8 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { AssignmentSummaryDialog } from './AssignmentSummaryDialog'
+import { CancelPlayerSummaryDialog } from './CancelPlayerSummaryDialog'
+import { CancelPlayerWizard } from './CancelPlayerWizard'
 import { applyAssignmentUpdatesToDashboardData, applyUpsertedChoiceToDashboardData } from './dashboardData'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
 import { GameAssignmentsDashboard } from './GameAssignmentsDashboard'
@@ -55,7 +57,17 @@ const GameAssignmentsPage = () => {
   const configuration = useConfiguration()
   const [year] = useYearFilter()
   const [isSummaryDialogOpen, setIsSummaryDialogOpen] = useState(false)
+  const [isCancelPlayerWizardOpen, setIsCancelPlayerWizardOpen] = useState(false)
+  const [cancelPlayerSummary, setCancelPlayerSummary] = useState<{
+    affectedGameMasters: Array<{
+      email: string
+      gameName: string
+      gmName: string
+      slotId: number
+    }>
+  } | null>(null)
   const invalidateDashboardQueries = useInvalidateGameAssignmentDashboardQueries()
+  const invalidateMembershipQueries = useInvalidateMembershipQueries()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'))
   const slotFilterOptions = useMemo<Array<number>>(
@@ -157,6 +169,7 @@ const GameAssignmentsPage = () => {
   const resetAssignmentsMutation = useMutation(trpc.gameAssignments.resetAssignments.mutationOptions())
   const setInitialAssignmentsMutation = useMutation(trpc.gameAssignments.setInitialAssignments.mutationOptions())
   const upsertChoiceMutation = useMutation(trpc.gameChoices.upsertGameChoiceBySlot.mutationOptions())
+  const cancelPlayerMutation = useMutation(trpc.gameAssignments.cancelPlayer.mutationOptions())
 
   const [dashboardData, setDashboardData] = useState<GameAssignmentDashboardData | null>(null)
 
@@ -322,6 +335,25 @@ const GameAssignmentsPage = () => {
   const handleCloseSummary = useCallback(() => {
     setIsSummaryDialogOpen(false)
   }, [])
+  const handleCancelPlayer = useCallback(() => {
+    setIsCancelPlayerWizardOpen(true)
+  }, [])
+  const handleCloseCancelPlayerWizard = useCallback(() => {
+    setIsCancelPlayerWizardOpen(false)
+  }, [])
+  const handleSubmitCancelPlayer = useCallback(
+    async ({ memberId }: { memberId: number | null }) => {
+      if (memberId === null) return
+      const cancellationResult = await cancelPlayerMutation.mutateAsync({ memberId, year })
+      await Promise.all([invalidateDashboardQueries(), invalidateMembershipQueries()])
+      setIsCancelPlayerWizardOpen(false)
+      setCancelPlayerSummary({ affectedGameMasters: cancellationResult.affectedGameMasters })
+    },
+    [cancelPlayerMutation, invalidateDashboardQueries, invalidateMembershipQueries, year],
+  )
+  const handleCloseCancelPlayerSummary = useCallback(() => {
+    setCancelPlayerSummary(null)
+  }, [])
   const summaryErrorMessage = assignmentSummaryError ? assignmentSummaryError.message : null
 
   if (error) {
@@ -350,6 +382,7 @@ const GameAssignmentsPage = () => {
           layoutMode={layoutMode}
           onLayoutChange={handleLayoutChange}
           onShowSummary={handleShowSummary}
+          onCancelPlayer={handleCancelPlayer}
           onResetAssignments={handleResetAssignments}
           onSetInitialAssignments={handleSetInitialAssignments}
           isBusy={
@@ -409,6 +442,15 @@ const GameAssignmentsPage = () => {
         data={assignmentSummaryData}
         errorMessage={summaryErrorMessage}
       />
+      {isCancelPlayerWizardOpen ? (
+        <CancelPlayerWizard
+          open
+          onClose={handleCloseCancelPlayerWizard}
+          data={dashboardData}
+          onSubmit={handleSubmitCancelPlayer}
+        />
+      ) : null}
+      <CancelPlayerSummaryDialog summary={cancelPlayerSummary} onClose={handleCloseCancelPlayerSummary} />
     </Page>
   )
 }

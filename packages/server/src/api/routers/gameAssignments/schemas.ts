@@ -13,6 +13,10 @@ export const getGameAssignmentsByYearInput = z.object({
 
 export const getAssignmentDashboardDataInput = getGameAssignmentsByYearInput
 export const getAssignmentSummaryInput = getGameAssignmentsByYearInput
+export const cancelPlayerInput = z.object({
+  memberId: z.number(),
+  year: z.number(),
+})
 export const resetGameAssignmentsInput = getGameAssignmentsByYearInput
 export const setInitialGameAssignmentsInput = getGameAssignmentsByYearInput
 
@@ -44,6 +48,7 @@ export type GameAssignmentDataInput = z.infer<typeof gameAssignmentDataInput>
 export type GetGameAssignmentsByYearInput = z.infer<typeof getGameAssignmentsByYearInput>
 export type GetAssignmentDashboardDataInput = z.infer<typeof getAssignmentDashboardDataInput>
 export type GetAssignmentSummaryInput = z.infer<typeof getAssignmentSummaryInput>
+export type CancelPlayerInput = z.infer<typeof cancelPlayerInput>
 export type ResetGameAssignmentsInput = z.infer<typeof resetGameAssignmentsInput>
 export type SetInitialGameAssignmentsInput = z.infer<typeof setInitialGameAssignmentsInput>
 export type GetGameAssignmentsByGameIdInput = z.infer<typeof getGameAssignmentsByGameIdInput>

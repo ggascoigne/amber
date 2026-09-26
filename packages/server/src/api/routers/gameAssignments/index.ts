@@ -1,3 +1,4 @@
+import { cancelPlayer } from './cancelPlayer'
 import { getGameAssignmentDashboardData } from './dashboard'
 import { createGameAssignmentRecord, deleteGameAssignmentRecord } from './mutations'
 import {
@@ -10,6 +11,7 @@ import { resetGameAssignments } from './reset'
 import { getGameAssignmentSchedule } from './schedule'
 import {
   createGameAssignmentInput,
+  cancelPlayerInput,
   deleteGameAssignmentInput,
   getAssignmentDashboardDataInput,
   getAssignmentSummaryInput,
@@ -63,6 +65,10 @@ export const gameAssignmentsRouter = createTRPCRouter({
       }),
     ),
   ),
+
+  cancelPlayer: protectedProcedure
+    .input(cancelPlayerInput)
+    .mutation(async ({ input, ctx }) => inRlsTransaction(ctx, async (tx) => cancelPlayer({ tx, input }))),
 
   createGameAssignment: protectedProcedure
     .input(createGameAssignmentInput)

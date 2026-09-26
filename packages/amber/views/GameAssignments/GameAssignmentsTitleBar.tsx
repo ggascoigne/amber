@@ -22,6 +22,7 @@ type GameAssignmentsTitleBarProps = {
   onResetAssignments: () => void
   onSetInitialAssignments: () => void
   onShowSummary: () => void
+  onCancelPlayer: () => void
   isBusy: boolean
   isSummaryBusy: boolean
 }
@@ -35,6 +36,7 @@ export const GameAssignmentsTitleBar = ({
   onResetAssignments,
   onSetInitialAssignments,
   onShowSummary,
+  onCancelPlayer,
   isBusy,
   isSummaryBusy,
 }: GameAssignmentsTitleBarProps) => (
@@ -106,6 +108,9 @@ export const GameAssignmentsTitleBar = ({
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, flexWrap: 'wrap' }}>
         <Button variant='outlined' size='small' onClick={onShowSummary} disabled={isSummaryBusy}>
           Show Summary
+        </Button>
+        <Button variant='outlined' size='small' onClick={onCancelPlayer} disabled={isBusy}>
+          Cancel Player
         </Button>
         <Button variant='outlined' size='small' onClick={onResetAssignments} disabled={isBusy}>
           Reset Assignments
