@@ -88,11 +88,11 @@ export const Welcome = () => {
             Game Selections due: <ConfigDate name='gameChoicesDue' format={MDY} />
           </span>
         </li>
-        {/* <li> */}
-        {/*  <span className={classes.deadline}> */}
-        {/*    Last date for cancellation with full refund: <ConfigDate name='gameSubmissionDeadline' format={MDY}/> */}
-        {/*  </span> */}
-        {/* </li> */}
+        <li>
+          <span>
+            Last date for cancellation with full refund: <ConfigDate name='gameChoicesDue' format={MDY} />
+          </span>
+        </li>
         <li>
           <span>
             Schedule previews to GMs: <ConfigDate name='gmPreview' format={MDY} />
