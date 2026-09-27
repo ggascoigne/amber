@@ -4,6 +4,8 @@ import type React from 'react'
 import type { SxProps, Theme } from '@mui/material'
 import { Box } from '@mui/material'
 
+import type {} from '../../types/material-ui'
+
 type ColorTypes = 'warning' | 'success' | 'error' | 'info' | 'primary'
 
 interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {

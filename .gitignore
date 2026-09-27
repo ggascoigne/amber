@@ -79,3 +79,4 @@ scripts/backup_private.sh
 .codex/environments/environment.toml
 
 PrintAssets/labels-2025.pdf
+apps/*/next-env.d.ts

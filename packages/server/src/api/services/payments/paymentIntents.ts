@@ -15,7 +15,7 @@ const cancelableStatuses: Array<Stripe.PaymentIntent.Status> = [
 ]
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
+  apiVersion: '2026-08-26.dahlia',
 })
 
 const formatAmountForStripe = (amount: number, currency: string): number => {

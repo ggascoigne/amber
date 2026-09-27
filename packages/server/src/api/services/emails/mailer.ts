@@ -16,26 +16,21 @@ let emailerPromise: Promise<Emailer> | null = null
 
 export const getEmailer = () => {
   emailerPromise ??= (async () => {
-    const [{ default: Email }, { default: nodemailer }] = await Promise.all([
-      import('email-templates'),
-      import('nodemailer'),
-    ])
-
-    const transport = nodemailer.createTransport({
-      auth: {
-        pass: config.email.password,
-        user: config.email.user,
-      },
-      host: config.email.host,
-      port: config.email.port,
-      secure: true,
-    })
+    const { default: Email } = await import('email-templates')
 
     return new Email({
       message: {
         from: config.email.fromAddress,
       },
-      transport,
+      transport: {
+        auth: {
+          pass: config.email.password,
+          user: config.email.user,
+        },
+        host: config.email.host,
+        port: config.email.port,
+        secure: true,
+      },
       views: {
         root: path.resolve(process.cwd(), 'content', 'email'),
       },

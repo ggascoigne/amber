@@ -2,6 +2,8 @@ import { cyan, green, indigo, orange, purple, red } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
 import hexRgb from 'hex-rgb'
 
+import type {} from '../types/material-ui'
+
 const primaryColor = indigo[500]
 const secondaryColor = purple[500]
 const dangerColor = red[500]
