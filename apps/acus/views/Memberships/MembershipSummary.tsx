@@ -10,9 +10,8 @@ import {
   useUser,
   useYearFilter,
 } from '@amber/amber'
-import type { MembershipType } from '@amber/amber/utils/apiTypes'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
-import type { UserAndProfile } from '@amber/client'
+import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { Card, CardBody, Field, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
@@ -25,7 +24,7 @@ import { BecomeAMember } from './BecomeAMember'
 import { MembershipWizard } from './MembershipWizard'
 
 interface VirtualDetailsProps {
-  membership: MembershipType
+  membership: MembershipAndUserAndRoom
 }
 
 const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
@@ -93,7 +92,7 @@ const VerticalGap = () => (
 )
 
 interface DetailsProps {
-  membership: MembershipType
+  membership: MembershipAndUserAndRoom
   profile: UserAndProfile
 }
 
