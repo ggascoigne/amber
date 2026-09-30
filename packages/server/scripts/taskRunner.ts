@@ -1,4 +1,4 @@
-#!/usr/bin/env node_modules/.bin/tsx
+#!/usr/bin/env tsx
 import path from 'path'
 import type { ListrTask } from 'listr2'
 import { processEnv } from '@amber/environment/dotenv'

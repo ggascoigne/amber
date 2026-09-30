@@ -41,7 +41,7 @@ if ! pnpm exec playwright install ; then
 fi
 
 
-if ! pnpm -r --sequential test:e2e ; then
+if ! pnpm -r --workspace-concurrency=1 test:e2e ; then
   retVal=$?
   echo "exiting due to build error"
   exit $retVal
