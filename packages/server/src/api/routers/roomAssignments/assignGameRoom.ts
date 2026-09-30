@@ -1,8 +1,7 @@
+import type { AssignGameRoomInput } from './schemas'
 import { prepareDefaultRoomAssignment } from './assignGameRoom.defaults'
 import { getAssignGameRoomTarget } from './assignGameRoom.target'
 import { syncLegacyGameRoomId } from './legacyRoomSync'
-import type { AssignGameRoomInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const assignGameRoom = async ({

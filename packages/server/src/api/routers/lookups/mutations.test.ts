@@ -8,7 +8,6 @@ import {
   updateLookupRecord,
   updateLookupValueRecord,
 } from './mutations'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createLookupsMutationsTx = () => {

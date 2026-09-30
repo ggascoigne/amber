@@ -1,5 +1,4 @@
 import path from 'node:path'
-
 import { faker } from '@faker-js/faker/locale/en'
 import fs from 'fs-extra'
 

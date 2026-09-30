@@ -2,7 +2,6 @@ import { describe, expect, test, vi } from 'vitest'
 
 import { createTransactionRecord, deleteTransactionRecord, updateTransactionRecord } from './mutations'
 import { transactionScalarSelect } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const transactionSqlResult = {

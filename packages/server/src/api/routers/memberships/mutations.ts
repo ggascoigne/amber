@@ -1,5 +1,4 @@
 import type { CreateMembershipInput, DeleteMembershipInput, UpdateMembershipInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const createMembershipRecord = ({ tx, input }: { tx: TransactionClient; input: CreateMembershipInput }) =>

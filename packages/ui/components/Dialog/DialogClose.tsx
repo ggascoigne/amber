@@ -1,8 +1,8 @@
 import type { MouseEventHandler } from 'react'
 import type React from 'react'
 
-import CloseIcon from '@mui/icons-material/Close'
 import type { SxProps, Theme } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close'
 import IconButton from '@mui/material/IconButton'
 
 interface DialogCloseProps {

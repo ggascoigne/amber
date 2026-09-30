@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
+import type { SxProps, Theme } from '@mui/material/styles'
 import UnfoldLessIcon from '@mui/icons-material/UnfoldLess'
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
 import { Box, IconButton } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material/styles'
 
 type CollapsibleInfoPanelProps = {
   collapsedContent: ReactNode

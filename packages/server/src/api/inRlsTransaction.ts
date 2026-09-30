@@ -1,7 +1,6 @@
 import debug from 'debug'
 
 import type { Context } from './context'
-
 import type { Prisma } from '../generated/prisma/client'
 
 export type TransactionClient = Prisma.TransactionClient

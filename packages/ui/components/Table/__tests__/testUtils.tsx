@@ -8,11 +8,11 @@ import Box from '@mui/material/Box'
 import { render } from '@testing-library/react'
 import { vi } from 'vitest'
 
+import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
+import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { theme } from '../../../components/Theme'
 import { DataTable } from '../DataTable'
-import type { DataTableEditingConfig, TableEditRowUpdate } from '../editing/types'
 import { Table } from '../Table'
-import type { ColumnDef, Row, RowData, TableQueryState, TableState } from '../tableTypes'
 import { useTable } from '../useTable'
 
 export type PersonRow = {

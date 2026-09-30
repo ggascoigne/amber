@@ -1,7 +1,7 @@
-import { env } from '@amber/environment'
 import type { SessionData } from '@auth0/nextjs-auth0/types'
 import type { NextApiRequest } from 'next'
 import type { NextRequest } from 'next/server'
+import { env } from '@amber/environment'
 
 import { queryUserRoles } from '../apiAuthUtils'
 

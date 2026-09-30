@@ -1,10 +1,9 @@
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box, FormControlLabel, Switch, Typography } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { RoomAssignmentConflictRow } from '../types'
 
 type ConflictIssueCellProps = {
@@ -108,15 +107,16 @@ const RoomAssignmentConflictSummaryPane = ({
     }
     isExpanded={isExpanded}
     onToggleExpand={onToggleExpand}
-    controls={
-      <FormControlLabel
-        control={
-          <Switch size='small' checked={showAllSlots} onChange={(_event, checked) => onShowAllSlotsChange(checked)} />
-        }
-        label='All Slots'
-        sx={{ m: 0 }}
+    controls=<FormControlLabel
+      control=<Switch
+        size='small'
+        checked={showAllSlots}
+        onChange={(_event, checked) => onShowAllSlotsChange(checked)}
       />
-    }
+
+      label='All Slots'
+      sx={{ m: 0 }}
+    />
   >
     <Table<RoomAssignmentConflictRow>
       name='room-assignment-conflict-summary'

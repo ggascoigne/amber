@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 
 import Box from '@mui/material/Box'
 
-import { RowExpansionButton } from '../components/RowExpansionButton'
 import type { Row, RowData } from '../tableTypes'
+import { RowExpansionButton } from '../components/RowExpansionButton'
 
 export const treeLineTypes = {
   vertical: '|',

@@ -2,12 +2,13 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
 import type { TableEditRowUpdate, TableRowValidationParams } from '@amber/ui/components/Table'
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box, Typography } from '@mui/material'
 
-import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
+import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './domain/types'
+import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignmentCountsByGameId,
@@ -27,9 +28,7 @@ import {
   buildUpdatedGameAssignmentRowMemberSelection,
 } from './domain/memberAssignments'
 import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
-import type { GameAssignmentEditorRow, GameAssignmentSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 import { PlayerPreference } from '../../utils/selectValues'
 

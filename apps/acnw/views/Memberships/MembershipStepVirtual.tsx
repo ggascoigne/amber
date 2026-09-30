@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-import { AdminCard, ConfigDate, Perms, useConfiguration } from '@amber/amber'
 import type { MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import { AdminCard, ConfigDate, Perms, useConfiguration } from '@amber/amber'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { CheckboxWithLabel, range, TextField } from '@amber/ui'
 import { Box, DialogContentText, FormControlLabel, FormGroup, Grid, Switch } from '@mui/material'
@@ -32,14 +32,12 @@ export const MembershipStepVirtual = ({ prefix = '' }: MembershipFormContent) =>
         {isNotPacificTime(configuration) && (
           <div>
             <FormControlLabel
-              control={
-                <Switch
-                  checked={showPT}
-                  onChange={() => setShowPT((old) => !old)}
-                  name={`${prefix}showLocal`}
-                  color='primary'
-                />
-              }
+              control=<Switch
+                checked={showPT}
+                onChange={() => setShowPT((old) => !old)}
+                name={`${prefix}showLocal`}
+                color='primary'
+              />
               label='Show slot times in Pacific time'
             />
           </div>

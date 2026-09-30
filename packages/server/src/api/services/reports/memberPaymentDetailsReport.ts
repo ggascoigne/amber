@@ -1,5 +1,4 @@
 import type { ReportDefinition } from './types'
-
 import type { ReportRow } from '../../contracts/reports'
 
 const columns = [

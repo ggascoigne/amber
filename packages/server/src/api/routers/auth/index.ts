@@ -1,10 +1,9 @@
-import { env, isTest } from '@amber/environment'
 import type { SessionData } from '@auth0/nextjs-auth0/types'
+import { env, isTest } from '@amber/environment'
 import { TRPCError } from '@trpc/server'
 import * as jose from 'jose'
 
 import { getRolesInput } from './schemas'
-
 import { getUserRoles } from '../../../auth/apiAuthUtils'
 import { requestChangePasswordEmail } from '../../../auth/password'
 import { createTRPCRouter, protectedProcedure, publicProcedure } from '../../trpc'

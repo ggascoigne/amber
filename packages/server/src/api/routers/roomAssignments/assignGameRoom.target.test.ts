@@ -2,7 +2,6 @@ import type { TRPCError } from '@trpc/server'
 import { describe, expect, test, vi } from 'vitest'
 
 import { getAssignGameRoomTarget } from './assignGameRoom.target'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createAssignGameRoomTargetTx = ({

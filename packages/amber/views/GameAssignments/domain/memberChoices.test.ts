@@ -8,7 +8,6 @@ import {
 } from './memberChoices'
 import { getGameLabel } from './moveOptions'
 import { buildAssignment, buildChoice, buildConfiguration, buildGame } from './testHelpers'
-
 import type { GameCategoryByGameId } from '../../../utils/gameCategory'
 
 describe('buildChoiceEditorStateForMember', () => {

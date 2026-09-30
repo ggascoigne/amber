@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 
 import { TableIconButton } from './ToolbarButtons'
-
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
@@ -100,7 +99,7 @@ const ColumnSelectorPopupView = <T extends RowData>({
           {relevantColumns.map((column) => (
             <FormControlLabel
               key={column.id}
-              control={<Checkbox value={`${column.id}`} disabled={column.getIsVisible() && onlyOneOptionLeft} />}
+              control=<Checkbox value={`${column.id}`} disabled={column.getIsVisible() && onlyOneOptionLeft} />
               // note that this isn't really correct, but react-table removes invisible
               // headers, as such there's no way to get a valid context for a hidden column
               // faking it leaves a header context that is still missing information needed to provide a valid
@@ -147,7 +146,7 @@ export const ColumnSelector = <T extends RowData>({ table, anchorDirection }: Co
 
   return relevantColumns.length > 1 ? (
     <>
-      <TableIconButton icon={<ViewColumnsIcon />} onClick={handleButtonClick} label='Settings' />
+      <TableIconButton icon=<ViewColumnsIcon /> onClick={handleButtonClick} label='Settings' />
       <ColumnSelectorPopup
         table={table}
         onClose={handleClose}

@@ -16,10 +16,10 @@ import Typography from '@mui/material/Typography'
 import { useQuery } from '@tanstack/react-query'
 import { match } from 'ts-pattern'
 
+import type { Configuration } from '../../utils/configContext'
 import { MemberSelector } from '../../components'
 import { OutlinedBox } from '../../components/OutlinedBox'
 import { deleteArrayEntry, updateArray } from '../../utils/array'
-import type { Configuration } from '../../utils/configContext'
 import { useConfiguration } from '../../utils/configContext'
 import { InterestLevel } from '../../utils/selectValues'
 import { getMembershipString, getMembershipTotal } from '../../utils/transactionUtils'
@@ -255,7 +255,7 @@ const MemberOrUserPayment = ({
                   <>
                     <FormControlLabel
                       value='full'
-                      control={<Radio />}
+                      control=<Radio />
                       label={
                         membership
                           ? `${getMembershipString(configuration, membership)}: ${formatAmountForDisplay(balance)}`
@@ -264,14 +264,14 @@ const MemberOrUserPayment = ({
                     />
                     <FormControlLabel
                       value='deposit'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`Deposit: ${formatAmountForDisplay(configuration.deposit)}`}
                     />
                   </>
                 ) : null}
                 <FormControlLabel
                   value='other'
-                  control={<Radio />}
+                  control=<Radio />
                   label={displayFullMembershipPayment ? 'Partial Payment' : 'Payment'}
                 />
               </RadioGroup>

@@ -1,12 +1,11 @@
 import debug from 'debug'
 import { http, HttpResponse } from 'msw'
 import { z } from 'zod'
-
-import { setupUserData } from './loaders'
-import type { UserRecord } from './loaders/users'
-import { getQueryParamsBySchema } from './utils'
-
 import { fetchArrayData, fetchSingleItem, updateSingleItem } from '@/mocks/sqlTools'
+
+import type { UserRecord } from './loaders/users'
+import { setupUserData } from './loaders'
+import { getQueryParamsBySchema } from './utils'
 
 const log = debug('handlers')
 

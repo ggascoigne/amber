@@ -1,18 +1,18 @@
 import type { ReactElement } from 'react'
 
+import type { Theme, SxProps } from '@mui/material/styles'
 import { css as emotionCss } from '@emotion/css'
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
 import { Box, LinearProgress, TableSortLabel, Tooltip } from '@mui/material'
-import type { Theme, SxProps } from '@mui/material/styles'
 import { css } from '@mui/material/styles'
 import { flexRender } from '@tanstack/react-table'
 
+import type { RowData, TableApi as TableInstance } from './tableTypes'
+import type { RowStyleType } from './utils/tableUtils'
 import { HeaderCheckbox } from './components/SimpleSelectionColumn'
 import { ResizeHandle, TableHeadRow } from './components/TableHeadRow'
 import { TableHead, TableHeadCell } from './components/TableStyles'
-import type { RowData, TableApi as TableInstance } from './tableTypes'
 import { isUserColumnId } from './utils/tableUtils'
-import type { RowStyleType } from './utils/tableUtils'
 
 const tableSortClasses = {
   iconDirectionAsc: emotionCss(

@@ -5,7 +5,6 @@ import { Field, Loader, MultiLine } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { ChoiceSummary } from './SlotDetails'
-
 import { Page, ContactEmail } from '../../components'
 import { Redirect } from '../../components/Navigation'
 import { TransportError } from '../../components/TransportError'

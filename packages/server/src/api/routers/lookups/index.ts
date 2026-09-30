@@ -17,7 +17,6 @@ import {
   updateLookupInput,
   updateLookupValueInput,
 } from './schemas'
-
 import { inRlsTransaction } from '../../inRlsTransaction'
 import { createTRPCRouter, publicProcedure, protectedProcedure } from '../../trpc'
 

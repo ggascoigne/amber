@@ -1,8 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-
-import { expect, test as base } from '@playwright/test'
 import type { Page, TestInfo } from '@playwright/test'
+import { expect, test as base } from '@playwright/test'
 
 type JsCoverageEntries = Awaited<ReturnType<Page['coverage']['stopJSCoverage']>>
 type CssCoverageEntries = Awaited<ReturnType<Page['coverage']['stopCSSCoverage']>>

@@ -1,16 +1,15 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { useTRPC } from '@amber/client'
 import type { PdfReportId, ReportId } from '@amber/server/src/api/contracts/reports'
+import { useTRPC } from '@amber/client'
 import { useNotification } from '@amber/ui'
 import { Button, List, ListItem, Typography } from '@mui/material'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { downloadReportPdf } from './Reports/downloadReportPdf'
 import { downloadReportWorkbook } from './Reports/downloadReportWorkbook'
-
+import type { PermsType } from '../components/Auth'
 import { Page } from '../components'
-import type { Perms } from '../components/Auth'
 import { useAuth } from '../components/Auth'
 import { useConfiguration } from '../utils/configContext'
 import { useYearFilter } from '../utils/useYearFilterState'
@@ -18,7 +17,7 @@ import { useYearFilter } from '../utils/useYearFilterState'
 export type ReportRecord = {
   fileLabel?: string
   name: string
-  perm?: Perms
+  perm?: PermsType
   reportId: ReportId
   virtual?: boolean
 }
@@ -27,7 +26,7 @@ export type PdfReportRecord = {
   fileLabel?: string
   name: string
   pdfReportId: PdfReportId
-  perm?: Perms
+  perm?: PermsType
   virtual?: boolean
 }
 

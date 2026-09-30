@@ -1,13 +1,12 @@
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-
+import type { ListrTask, ListrTaskWrapper } from 'listr2'
 import { processEnv } from '@amber/environment/dotenv'
 import debug from 'debug'
-import type { ListrTask, ListrTaskWrapper } from 'listr2'
 
-import { certs } from '../../../shared/dbCerts'
 import type { TaskContext } from '../taskContext'
+import { certs } from '../../../shared/dbCerts'
 
 const env = processEnv()
 

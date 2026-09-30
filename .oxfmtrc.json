@@ -2,5 +2,44 @@
   "printWidth": 120,
   "singleQuote": true,
   "semi": false,
-  "jsxSingleQuote": true
+  "jsxSingleQuote": true,
+  "ignorePatterns": ["packages/server/src/generated/**", "apps/*/next-env.d.ts", "apps/ui-test/playwright-report/**"],
+  "sortImports": {
+    "ignoreCase": true,
+    "order": "asc",
+    "newlinesBetween": false,
+    "customGroups": [
+      {
+        "groupName": "react-type",
+        "elementNamePattern": ["react"],
+        "selector": "external",
+        "modifiers": ["type"]
+      },
+      {
+        "groupName": "react-value",
+        "elementNamePattern": ["react"],
+        "selector": "external",
+        "modifiers": ["value"]
+      }
+    ],
+    "groups": [
+      "react-type",
+      "react-value",
+      { "newlinesBetween": true },
+      "type-builtin",
+      "value-builtin",
+      "type-external",
+      "value-external",
+      "type-internal",
+      "value-internal",
+      { "newlinesBetween": true },
+      "type-sibling",
+      "value-sibling",
+      "type-parent",
+      "value-parent",
+      "type-index",
+      "value-index",
+      "unknown"
+    ]
+  }
 }

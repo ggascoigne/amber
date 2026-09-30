@@ -1,8 +1,8 @@
-import { processEnv, parsePostgresConnectionString, safeConnectionString } from '@amber/environment/dotenv'
 import type { ListrTask, ListrTaskWrapper } from 'listr2'
+import { processEnv, parsePostgresConnectionString, safeConnectionString } from '@amber/environment/dotenv'
 
-import { createCleanDb } from '../scriptUtils'
 import type { TaskContext } from '../taskContext'
+import { createCleanDb } from '../scriptUtils'
 
 const env = processEnv()
 

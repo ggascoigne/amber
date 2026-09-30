@@ -1,8 +1,8 @@
 import type { InitialPlannerRoom } from './initialPlanner'
+import type { PlannedGameContext } from './initialPlanner.seed'
 import { chooseOwnedRoomForSlotGame, type OwnedRoomSelectionContext } from './initialPlanner.ownedRoomSelection'
 import { choosePreferredRoomForSlotGame, type RoomCandidate } from './initialPlanner.preferredRoomSelection'
 import { buildSlotGameSkipReason, hasLargerOpenSharedRoomForGame } from './initialPlanner.roomPools'
-import type { PlannedGameContext } from './initialPlanner.seed'
 
 export type { RoomCandidate } from './initialPlanner.preferredRoomSelection'
 

@@ -4,7 +4,6 @@ import { ExpandingFab } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
 
 import { GameMasterSlotDecorator, useGameMasterChoiceIds } from './GameBookSlotDecorator'
-
 import { Page } from '../../components'
 import { GameListFull, GameListNavigator } from '../../components/GameList'
 import { useGameScroll } from '../../utils/useGameScroll'

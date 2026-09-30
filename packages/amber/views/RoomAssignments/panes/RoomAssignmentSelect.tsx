@@ -3,7 +3,6 @@ import { useMemo } from 'react'
 import { Box, MenuItem, TextField, Typography } from '@mui/material'
 
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { ManualRoomSelectOption, RoomSelectOption } from '../types'
 
 type RoomAssignmentSelectProps = {

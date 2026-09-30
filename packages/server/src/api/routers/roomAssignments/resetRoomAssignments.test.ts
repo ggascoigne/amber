@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { syncLegacyGameRoomIdsForYear } from './legacyRoomSync'
 import { resetRoomAssignments } from './resetRoomAssignments'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 vi.mock('./legacyRoomSync', () => ({

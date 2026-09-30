@@ -15,9 +15,8 @@ import {
   TableHarness,
   type PersonRow,
 } from './testUtils'
-
-import { Table } from '../Table'
 import type { ColumnDef, TableQueryState, TableState } from '../tableTypes'
+import { Table } from '../Table'
 import { useServerTableState } from '../useServerTableState'
 
 const ServerTableHarness = () => {

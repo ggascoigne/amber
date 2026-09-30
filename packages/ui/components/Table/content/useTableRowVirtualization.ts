@@ -1,8 +1,8 @@
 import type { RefObject } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 
-import useResizeObserver from '@react-hook/resize-observer'
 import type { VirtualItem } from '@tanstack/react-virtual'
+import useResizeObserver from '@react-hook/resize-observer'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { oneLine } from 'common-tags'
 

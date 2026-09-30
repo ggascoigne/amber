@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-import { useTRPC } from '@amber/client'
 import type { Stripe } from '@stripe/stripe-js'
+import { useTRPC } from '@amber/client'
 import { loadStripe } from '@stripe/stripe-js'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useAtom } from 'jotai'

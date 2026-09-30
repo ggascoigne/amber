@@ -1,10 +1,9 @@
+import type { Theme } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
-import type { Theme } from '@mui/material/styles'
 import { styled } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-
 import { ThemeToggle } from '@/Components/ThemeToggle'
 
 // This Offsets the height of the AppBar to allow no overlap in content below

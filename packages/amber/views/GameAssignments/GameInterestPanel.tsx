@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box, MenuItem, Select } from '@mui/material'
 import { alpha } from '@mui/material/styles'
 
+import type { GameInterestRow, GameInterestSummaryRow } from './domain/types'
+import type { GameInterestMode } from './pageState'
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import { buildAssignmentCountsByGameId, buildGameInterestSummaryRows } from './domain/assignmentSummaries'
 import {
@@ -17,10 +19,7 @@ import {
   buildInterestRowsForGame,
   buildMemberIdsBySlotIdForGameCategory,
 } from './domain/interest'
-import type { GameInterestRow, GameInterestSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
-import type { GameInterestMode } from './pageState'
-
 import { buildGameCategoryByGameId } from '../../utils/gameCategory'
 
 type GameInterestPanelProps = {

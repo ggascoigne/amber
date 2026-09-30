@@ -6,12 +6,12 @@ import type {
   PlannerUnmetConstraint,
   SkippedPlannedGame,
 } from './initialPlanner'
+import type { PlannedGameContext } from './initialPlanner.seed'
 import {
   buildSlotRoomPlanner,
   type SlotRoomPlanner,
   type SlotRoomSelectionContext,
 } from './initialPlanner.roomSelection'
-import type { PlannedGameContext } from './initialPlanner.seed'
 
 export type SlotPlanningResult = {
   assignments: Array<PlannedRoomAssignment>

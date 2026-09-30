@@ -1,5 +1,5 @@
 // note that we're disabling this rule since functions are explicitly hoisted so this is safe
-/* eslint @typescript-eslint/no-use-before-define: ["error", { "functions": false }] */
+/* oxlint-disable no-use-before-define */
 import { useMemo } from 'react'
 
 import MoreVertIcon from '@mui/icons-material/MoreVert'
@@ -10,9 +10,8 @@ import { getEnabledActions, isUserAction } from './actions'
 import { ColumnSelector } from './ColumnSelector'
 import { Export } from './Export'
 import { ActionButton, TableIconButton, ActionIconButton, RefreshButton } from './ToolbarButtons'
-
-import { ButtonMenu } from '../../ButtonMenu'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
+import { ButtonMenu } from '../../ButtonMenu'
 
 type ToolbarButtonGroupProps<T extends RowData> = {
   actions: ReadonlyArray<Action<T>> | undefined
@@ -117,7 +116,7 @@ export function MenuButton<T extends RowData>({
       items={buttonActions}
       menuAnchorPosition='bottom'
       anchorDirection='top-right'
-      icon={<MoreVertIcon />}
+      icon=<MoreVertIcon />
       label='Actions'
       aria-label='Actions'
       showLabel

@@ -1,13 +1,12 @@
 import React from 'react'
 
 import type { Lookup } from '@amber/client'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useInvalidateLookupQueries, useTRPC } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { LookupsDialog } from './LookupsDialog'
-
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'

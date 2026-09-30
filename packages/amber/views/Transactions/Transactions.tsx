@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
 
 import type { Transaction } from '@amber/client'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useTRPC, useInvalidatePaymentQueries } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useQuery, useMutation } from '@tanstack/react-query'
 
 import { TransactionDialog } from './TransactionDialog'
-
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'

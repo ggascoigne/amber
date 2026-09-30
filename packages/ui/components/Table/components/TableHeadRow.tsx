@@ -2,16 +2,15 @@ import type { ReactElement } from 'react'
 import { useMemo } from 'react'
 
 import type { Theme } from '@mui/material'
+import type { TableRowProps } from '@mui/material/TableRow'
 import { styled, generateUtilityClasses } from '@mui/material'
 import Box from '@mui/material/Box'
-import type { TableRowProps } from '@mui/material/TableRow'
 import MuiTableRow from '@mui/material/TableRow'
 import { Subscribe } from '@tanstack/react-table'
 import clsx from 'clsx'
 
 import type { CN } from './TableStyles'
 import { rowShared } from './TableStyles'
-
 import type { Header, RowData } from '../tableTypes'
 
 export const tableDecorationZIndex = (theme: Theme) => theme.zIndex.fab - 1

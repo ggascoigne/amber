@@ -4,10 +4,9 @@ import { List, ListItemText } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 
+import type { RootRoutes } from './types'
 import { contextRoutes } from './ContextRoutes'
 import { ListItemLink } from './ListItemLink'
-import type { RootRoutes } from './types'
-
 import { useIsMember } from '../../utils/membership'
 import { useSettings } from '../../utils/settings'
 import { useUser } from '../../utils/useUserFilterState'

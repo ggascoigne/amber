@@ -4,9 +4,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { Button } from '@mui/material'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 
-import { MenuContent } from './MenuContent'
 import type { MenuEntry } from './MenuTypes'
-
+import { MenuContent } from './MenuContent'
 import { isKeyboardEvent } from '../../utils/event'
 
 type NavigationDrawerMobileProps = {
@@ -25,7 +24,7 @@ export default function NavigationDrawerMobile({ appExpand, onMenuChange, menu }
 
   return (
     <>
-      <Button sx={{ py: 0.5, px: 2 }} startIcon={<MenuIcon />} onClick={toggleDrawer}>
+      <Button sx={{ py: 0.5, px: 2 }} startIcon=<MenuIcon /> onClick={toggleDrawer}>
         Menu
       </Button>
       <SwipeableDrawer

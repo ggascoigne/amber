@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { upsertRoomSlotAvailability } from './upsertRoomSlotAvailability'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createUpsertRoomSlotAvailabilityTx = ({

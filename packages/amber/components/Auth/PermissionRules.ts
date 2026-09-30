@@ -13,13 +13,12 @@ export const Perms = asEnumLike([
 
 export type PermissionDeclaration = AtLeastOne<{
   dynamic?: Record<string, (data: any) => boolean>
-  static?: Perms[]
+  static?: PermsType[]
 }>
 
 export type Rules = Record<string, PermissionDeclaration>
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Perms = keyof typeof Perms
+export type PermsType = keyof typeof Perms
 
 const rules = {
   ROLE_ADMIN: {
@@ -44,7 +43,6 @@ const rules = {
 
 export const Roles = asEnumLike(keys(rules))
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type Roles = keyof typeof Roles
+export type RolesType = keyof typeof Roles
 
 export default rules

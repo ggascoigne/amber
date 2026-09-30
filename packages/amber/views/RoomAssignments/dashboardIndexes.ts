@@ -1,5 +1,5 @@
-import { sortNames } from './dashboardShared'
 import type { DashboardMemberRoomAssignment, DashboardMembership } from './dashboardShared'
+import { sortNames } from './dashboardShared'
 
 export const buildSlotIds = (numberOfSlots: number) =>
   Array.from({ length: numberOfSlots }, (_value: undefined, index: number) => index + 1)

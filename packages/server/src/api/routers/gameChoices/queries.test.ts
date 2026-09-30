@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { getGameChoiceById, getGameChoices, getGameChoicesByYear } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameChoicesQueriesTx = () => {

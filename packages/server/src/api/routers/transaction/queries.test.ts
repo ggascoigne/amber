@@ -7,7 +7,6 @@ import {
   getTransactionsByYearAndMember,
   getTransactionsByYearAndUser,
 } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createTransactionSqlRow = (overrides: Partial<Record<string, unknown>> = {}) => ({

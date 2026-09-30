@@ -1,12 +1,12 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { useTRPC } from '@amber/client'
 import type { Children } from '@amber/ui'
+import type { Theme } from '@mui/material'
+import { useTRPC } from '@amber/client'
 import { useNotification } from '@amber/ui'
 import StarIcon from '@mui/icons-material/Star'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
-import type { Theme } from '@mui/material'
 import { Avatar, Badge, Button, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
@@ -17,7 +17,6 @@ import type { Auth0User } from './Auth'
 import { Perms, Roles, useAuth, useRoleOverride } from './Auth'
 import { LoginMenu } from './LoginMenu'
 import { ProfileDialog, useProfile } from './Profile'
-
 import { useIsGm } from '../utils/membership'
 
 const MENU_ITEM_EDIT_PROFILE = 'Edit Profile'
@@ -55,7 +54,7 @@ const AdminBadge: React.FC<Children> = ({ children }) => (
         vertical: 'bottom',
         horizontal: 'right',
       }}
-      badgeContent={<VerifiedUserIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+      badgeContent=<VerifiedUserIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />
     >
       {children}
     </Badge>
@@ -70,7 +69,7 @@ const GmBadge: React.FC<Children> = ({ children }) => (
         vertical: 'top',
         horizontal: 'right',
       }}
-      badgeContent={<StarIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />}
+      badgeContent=<StarIcon sx={{ color: '#fcc60a', width: '18px', height: '18px' }} />
     >
       {children}
     </Badge>
@@ -210,7 +209,7 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ small = false }) => {
     <>
       <ProfileDialog open={profileOpen} onClose={closeProfile} initialValues={profile} />
       <LoginMenu
-        buttonText={<MenuButton small={small} user={user!} />}
+        buttonText=<MenuButton small={small} user={user!} />
         buttonProps={{
           /*  @ts-ignore */
           sx: (theme: Theme) => ({

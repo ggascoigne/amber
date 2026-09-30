@@ -1,4 +1,3 @@
-import { gameChoiceFields, gameSubmissionFields } from './queries'
 import type {
   CreateGameChoiceInput,
   CreateGameChoicesInput,
@@ -7,9 +6,9 @@ import type {
   UpdateGameSubmissionInput,
   UpsertGameChoiceBySlotInput,
 } from './schemas'
-
-import { Prisma } from '../../../generated/prisma/client'
+import { gameChoiceFields, gameSubmissionFields } from './queries'
 import type { TransactionClient } from '../../inRlsTransaction'
+import { Prisma } from '../../../generated/prisma/client'
 
 type GameChoicesAdminClient = {
   $executeRaw: (query: Prisma.Sql) => Promise<number>

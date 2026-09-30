@@ -4,10 +4,10 @@ import React, { useCallback, useState } from 'react'
 import type { Children } from '@amber/ui'
 import { Box, Divider, Drawer, List, ListItem } from '@mui/material'
 
+import type { RootRoutes } from './Navigation'
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { LoginButton } from './LoginButton'
-import type { RootRoutes } from './Navigation'
 import { MenuItems } from './Navigation'
 
 const drawerWidth = 240

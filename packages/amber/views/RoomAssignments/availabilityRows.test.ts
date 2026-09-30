@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest'
 
+import type { DashboardRoom, DashboardRoomSlotAvailability } from './dashboardShared'
 import { buildFullAvailabilityUpdates, buildRoomSlotAvailabilityRows } from './availabilityRows'
 import { buildRoomSlotAvailabilityMap } from './dashboardShared'
-import type { DashboardRoom, DashboardRoomSlotAvailability } from './dashboardShared'
 
 const createRoom = ({ id, description, enabled = true }: { id: number; description: string; enabled?: boolean }) =>
   ({

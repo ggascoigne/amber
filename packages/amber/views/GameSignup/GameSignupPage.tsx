@@ -1,16 +1,16 @@
 import type { MouseEventHandler } from 'react'
 import React, { useCallback, useMemo, useState } from 'react'
 
-import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import type { ContentsOf } from '@amber/ui'
+import { useTRPC, useInvalidateGameChoiceQueries } from '@amber/client'
 import { pick, ExpandingFab, Loader, notEmpty, pickAndConvertNull, useLocalStorage } from '@amber/ui'
 import NavigationIcon from '@mui/icons-material/Navigation'
 import { Box, Button, ToggleButton } from '@mui/material'
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { InView } from 'react-intersection-observer'
 
-import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import type { SelectorUpdate } from './GameChoiceSelector'
+import { ChoiceConfirmDialog } from './ChoiceConfirmDialog'
 import {
   GameChoiceSelector,
   GameFavoriteToggle,
@@ -21,7 +21,6 @@ import {
   SlotDecoratorCheckMark,
 } from './GameChoiceSelector'
 import { SignupInstructions } from './SignupInstructions'
-
 import { Page } from '../../components'
 import { Perms, useAuth } from '../../components/Auth'
 import { GameListFull, GameListNavigator } from '../../components/GameList'

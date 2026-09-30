@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { GameMasterSlotDecorator, useGameMasterChoiceIds } from './GameBookSlotDecorator'
-
 import { GameMenu } from '../../components/GameList'
 import { useConfiguration } from '../../utils/configContext'
 import { useGameUrl } from '../../utils/useGameUrl'

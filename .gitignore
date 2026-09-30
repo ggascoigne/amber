@@ -80,3 +80,4 @@ scripts/backup_private.sh
 
 PrintAssets/labels-2025.pdf
 apps/*/next-env.d.ts
+private_notes.md

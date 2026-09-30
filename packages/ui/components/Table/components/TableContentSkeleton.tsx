@@ -1,15 +1,14 @@
 import type { ReactElement, RefObject } from 'react'
 import { useCallback } from 'react'
 
-import { Skeleton } from '@mui/material'
 import type { Theme, SxProps } from '@mui/material/styles'
+import { Skeleton } from '@mui/material'
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 import { TableBody, TableCell, TableRow } from './TableStyles'
-
-import { range } from '../../../utils/range'
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
 import type { RowStyleType } from '../utils/tableUtils'
+import { range } from '../../../utils/range'
 
 const measureElement = (element: Element) => element?.getBoundingClientRect().height
 

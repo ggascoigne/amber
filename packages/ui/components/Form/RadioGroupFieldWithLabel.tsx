@@ -1,5 +1,5 @@
-import { Box, FormControl, FormControlLabel, FormLabel, Radio } from '@mui/material'
 import type { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
+import { Box, FormControl, FormControlLabel, FormLabel, Radio } from '@mui/material'
 import MuiRadioGroup from '@mui/material/RadioGroup'
 import debug from 'debug'
 import { useField } from 'formik'
@@ -45,7 +45,7 @@ export function RadioGroupFieldWithLabel(props: RadioGroupProps) {
           >
             <FormControlLabel
               value={getSelectValue(s)}
-              control={<Radio onChange={onChange} />}
+              control=<Radio onChange={onChange} />
               label={getSelectLabel(s)}
             />
           </Box>

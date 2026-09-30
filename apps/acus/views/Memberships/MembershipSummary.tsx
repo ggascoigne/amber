@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import {
   Page,
   TransportError,
@@ -11,7 +12,6 @@ import {
   useYearFilter,
 } from '@amber/amber'
 import { fromSlotsAttending } from '@amber/amber/utils/membershipUtils'
-import type { MembershipAndUserAndRoom, UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription, isNotPacificTime } from '@amber/shared'
 import { Card, CardBody, Field, HeaderContent, Loader, MultiLine, range } from '@amber/ui'
@@ -47,14 +47,12 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
             {isNotPacificTime(configuration) && (
               <div>
                 <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showPT}
-                      onChange={() => setShowPT((old) => !old)}
-                      name='showLocal'
-                      color='primary'
-                    />
-                  }
+                  control=<Switch
+                    checked={showPT}
+                    onChange={() => setShowPT((old) => !old)}
+                    name='showLocal'
+                    color='primary'
+                  />
                   label='Show slot times in Pacific time'
                 />
               </div>
@@ -63,7 +61,7 @@ const VirtualDetails = ({ membership }: VirtualDetailsProps) => {
               <FormControlLabel
                 key={i}
                 name={`slotsAttendingData[${i}]`}
-                control={<MuiCheckbox {...{ disabled: true, checked: slotsAttendingData[i] }} />}
+                control=<MuiCheckbox {...{ disabled: true, checked: slotsAttendingData[i] }} />
                 {...{
                   label: getSlotDescription(configuration, {
                     year: configuration.year,

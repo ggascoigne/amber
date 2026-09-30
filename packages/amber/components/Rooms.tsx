@@ -10,7 +10,6 @@ import { useQuery } from '@tanstack/react-query'
 
 import { HasPermission, Perms } from './Auth'
 import { TransportError } from './TransportError'
-
 import { BathroomType } from '../utils/selectValues'
 import { useAvailableHotelRooms } from '../views/HotelRoomDetails/HotelRoomDetails'
 
@@ -144,7 +143,7 @@ const RoomsFields: React.FC<RoomsFieldProps> = ({ rooms, type, currentValue }) =
                 }}
                 scope='row'
               >
-                <FormControlLabel value={room.id} control={<Radio />} label={label} disabled={soldOut} />
+                <FormControlLabel value={room.id} control=<Radio /> label={label} disabled={soldOut} />
               </TableCell>
               <TableCell
                 sx={{

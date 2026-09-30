@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
-import ClearIcon from '@mui/icons-material/Clear'
 import type { Theme } from '@mui/material'
+import ClearIcon from '@mui/icons-material/Clear'
 import { Box, Button, Typography } from '@mui/material'
 
 import { FilterButtonMenu } from './FilterButtonMenu'
@@ -82,7 +82,7 @@ export const FilterStatusButton = ({
               onClear()
               closePopup()
             }}
-            startIcon={<ClearIcon />}
+            startIcon=<ClearIcon />
           >
             Clear
           </Button>

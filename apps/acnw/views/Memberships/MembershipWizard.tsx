@@ -3,6 +3,10 @@ import type React from 'react'
 import { createContext, useContext, useMemo, useState } from 'react'
 
 import type { Configuration } from '@amber/amber'
+import type { MembershipFormType } from '@amber/amber/utils/membershipUtils'
+import type { UserAndProfile } from '@amber/client'
+import type { WizardPage } from '@amber/ui'
+import type { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import {
   Perms,
   ProfileFormContent,
@@ -14,22 +18,18 @@ import {
   useYearFilter,
   Attendance,
 } from '@amber/amber'
-import type { MembershipFormType } from '@amber/amber/utils/membershipUtils'
 import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
 import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
 import {
   getDefaultMembership,
   membershipValidationSchemaNW as membershipValidationSchema,
 } from '@amber/amber/views/Memberships/membershipUtils'
-import type { UserAndProfile } from '@amber/client'
 import { useTRPC } from '@amber/client'
-import type { WizardPage } from '@amber/ui'
 import { Wizard } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
 import Button from '@mui/material/Button'
 import { useQuery } from '@tanstack/react-query'
 import debug from 'debug'
-import type { FormikErrors, FormikHelpers, FormikValues } from 'formik'
 import { useRouter } from 'next/router'
 
 import { IntroStep } from './IntroStep'

@@ -1,12 +1,18 @@
 // this started off based on https://auth0.com/blog/role-based-access-control-rbac-and-react-apps/
 // changes are all my fault
 
-import type { PermissionDeclaration, Perms, Roles, Rules } from './PermissionRules'
+import type { PermissionDeclaration, PermsType, RolesType, Rules } from './PermissionRules'
 
 // note that incoming roles are defined as strings rather than Roles as they come from an external source
 // and so aren't constrained to the values in RoleType
 
-const check = (rules: Rules, role: string | null, action: Perms, roleOverride: Roles | undefined, data?: any) => {
+const check = (
+  rules: Rules,
+  role: string | null,
+  action: PermsType,
+  roleOverride: RolesType | undefined,
+  data?: any,
+) => {
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const roleToTest = (data?.ignoreOverride ? role : roleOverride) || role
 
@@ -38,7 +44,7 @@ const check = (rules: Rules, role: string | null, action: Perms, roleOverride: R
 export const checkMany = (
   rules: Rules,
   roles: string[] | undefined,
-  action: Perms,
-  roleOverride: Roles | undefined,
+  action: PermsType,
+  roleOverride: RolesType | undefined,
   data?: any,
 ) => !!roles?.find((role) => check(rules, role, action, roleOverride, data))

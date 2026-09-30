@@ -1,5 +1,4 @@
 import Typography from '@mui/material/Typography'
-
 import { Page } from '@/Components'
 
 type ErrorPageProps = {

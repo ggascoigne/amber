@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { getGameAssignmentSchedule } from './schedule'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameAssignmentScheduleTx = () => {

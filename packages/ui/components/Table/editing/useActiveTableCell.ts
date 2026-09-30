@@ -1,8 +1,7 @@
 import { useCallback, useRef, useState } from 'react'
 
-import { normalizeValueForInput } from './editingValidation'
 import type { TableEditingCell } from './internalTypes'
-
+import { normalizeValueForInput } from './editingValidation'
 import type { Cell, RowData } from '../tableTypes'
 
 type UseActiveTableCellProps<TData extends RowData> = {

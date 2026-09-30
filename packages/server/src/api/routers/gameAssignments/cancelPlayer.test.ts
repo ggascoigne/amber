@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { cancelPlayer } from './cancelPlayer'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createCancelPlayerTx = () => {

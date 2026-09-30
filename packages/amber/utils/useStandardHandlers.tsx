@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import type { TableSelectionMouseEventHandler } from '@amber/ui/components/Table'
-import { getSelectedRows } from '@amber/ui/components/Table'
 import type { Row, RowData } from '@amber/ui/components/Table/tableTypes'
+import { getSelectedRows } from '@amber/ui/components/Table'
 
 export const useStandardHandlers = <T extends RowData>({
   deleteHandler,

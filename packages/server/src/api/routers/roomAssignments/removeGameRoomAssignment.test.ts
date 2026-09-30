@@ -3,7 +3,6 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 
 import { syncLegacyGameRoomId } from './legacyRoomSync'
 import { removeGameRoomAssignment } from './removeGameRoomAssignment'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 vi.mock('./legacyRoomSync', () => ({

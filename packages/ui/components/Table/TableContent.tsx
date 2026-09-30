@@ -6,14 +6,14 @@ import type { VirtualItem } from '@tanstack/react-virtual'
 import debug from 'debug'
 
 import type { Action } from './actions'
+import type { TableEditingState } from './editing/useTableEditing'
+import type { AmberTableState, Row, RowData, TableApi as TableInstance } from './tableTypes'
+import type { RowStyleType } from './utils/tableUtils'
 import { TableBody } from './components/TableStyles'
 import { TableBodyRow } from './content/TableBodyRow'
 import { TableExpandedRow } from './content/TableExpandedRow'
 import { useEditableCellNavigation } from './content/useEditableCellNavigation'
 import { useTableRowVirtualization } from './content/useTableRowVirtualization'
-import type { TableEditingState } from './editing/useTableEditing'
-import type { AmberTableState, Row, RowData, TableApi as TableInstance } from './tableTypes'
-import type { RowStyleType } from './utils/tableUtils'
 
 const log = debug('amber:ui:table:TableContent')
 

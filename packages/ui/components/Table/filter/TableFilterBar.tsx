@@ -1,18 +1,17 @@
 import type { ReactElement } from 'react'
 import { useCallback, useMemo, useState, useEffect } from 'react'
 
+import type { SxProps, Theme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import ClearIcon from '@mui/icons-material/Clear'
 import { Box, MenuItem, MenuList, Typography, Button } from '@mui/material'
-import type { SxProps, Theme } from '@mui/material/styles'
 
 import { FilterButtonMenu } from './FilterButtonMenu'
 import { FilterContextProvider } from './FilterContext'
 import { CLEAR_FILTERS_MESSAGE, clearSearch, emitter } from './filterEmitter'
 import { SearchInput } from './SearchInput'
-
-import { notEmpty } from '../../../utils/ts-utils'
 import type { AmberTableState, RowData, Column, TableApi as TableInstance } from '../tableTypes'
+import { notEmpty } from '../../../utils/ts-utils'
 import { columnName, isUserColumnId } from '../utils/tableUtils'
 
 export type Filter<T extends RowData> = {
@@ -281,7 +280,7 @@ const TableFilterBarView = <T extends RowData>({
           ) : null}
           {searchEnabled && <SearchInput value={searchValue} onChange={searchValueChange!} />}
           {showClearButton ? (
-            <Button startIcon={<ClearIcon />} size='small' onClick={clearAllFilters}>
+            <Button startIcon=<ClearIcon /> size='small' onClick={clearAllFilters}>
               Clear All
             </Button>
           ) : null}

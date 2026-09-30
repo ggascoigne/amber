@@ -1,5 +1,4 @@
 import type { GetLookupValuesInput, GetSingleLookupValueInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const getLookups = ({ tx }: { tx: TransactionClient }) =>

@@ -4,12 +4,12 @@ import type React from 'react'
 import type { Children } from '@amber/ui'
 import { asEnumLike } from '@amber/ui'
 
-import type { Perms } from './PermissionRules'
+import type { PermsType } from './PermissionRules'
 import type { Auth0User } from './useAuth'
 import { useAuth } from './useAuth'
 
 interface PermissionProps {
-  permission: Perms
+  permission: PermsType
   data?: any
   denied?: () => React.ReactElement | null
 }
@@ -29,10 +29,9 @@ export const HasPermission = ({
 
 export const LoginStates = asEnumLike(['NOT_LOGGED_IN', 'UNVERIFIED', 'INCOMPLETE', 'LOGGED_IN'])
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type LoginStates = keyof typeof LoginStates
+export type LoginStatesType = keyof typeof LoginStates
 
-const getLoginState = (user?: Auth0User): LoginStates => {
+const getLoginState = (user?: Auth0User): LoginStatesType => {
   if (!user) {
     return LoginStates.NOT_LOGGED_IN
   }

@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { getGameAssignmentDashboardData } from './dashboard'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameAssignmentDashboardTx = () => {

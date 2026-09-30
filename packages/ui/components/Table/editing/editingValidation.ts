@@ -1,5 +1,4 @@
 import type { TableEditColumnConfig, TableValidationResult } from './types'
-
 import type { Row, RowData } from '../tableTypes'
 
 export const normalizeValidationResult = (result: TableValidationResult): Array<string> => {

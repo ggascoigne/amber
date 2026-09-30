@@ -1,7 +1,7 @@
 import type { InitialPlannerInput, PlannerUnmetConstraint, SkippedPlannedGame } from './initialPlanner'
-import { isRoomAvailableForSlot } from './initialPlanner.availability'
 import type { SlotRoomPlanner } from './initialPlanner.roomSelection'
 import type { PlannedGameContext } from './initialPlanner.seed'
+import { isRoomAvailableForSlot } from './initialPlanner.availability'
 
 const buildUnassignedGames = ({
   games,

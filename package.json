@@ -19,12 +19,8 @@
     "dev:us": "pnpm -F acus dev",
     "build:us": "pnpm -F acus build",
     "db:generate": "DB_ENV=acnw pnpm -F server db:migrate:generate",
-    "format": "pnpm format:all --cache",
-    "format:ox": "oxfmt && prettier --write '{apps,packages}/**/*.{css,scss,json}'",
-    "format:all": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,json,md}' --log-level warn",
-    "lint": "pnpm run eslint",
-    "oxlint": "oxlint --type-aware --fix",
-    "eslint": "eslint --cache --color '**/*.{[mc]js,[mc]ts,[jt]s,tsx}'",
+    "format": "oxfmt",
+    "lint": "oxlint --fix",
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm format:all && pnpm lint && pnpm tsc",
     "test": "vitest run",
@@ -58,7 +54,6 @@
     "oxlint": "^1.85.0",
     "oxlint-tsgolint": "^7.0.2003",
     "playwright": "^1.63.0",
-    "prettier": "^3.9.9",
     "supports-color": "11.0.0",
     "tsx": "^4.23.15",
     "turbo": "^2.11.4",
@@ -68,14 +63,11 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "./scripts/noForbiddenCode.sh",
-      "prettier --no-color --write",
-      "eslint"
+      "oxfmt",
+      "oxlint"
     ],
-    "*.json": [
-      "prettier --no-color --write"
-    ],
-    "*.{css,scss}": [
-      "prettier --no-color --write"
+    "*.{css,scss,json}": [
+      "oxfmt"
     ]
   },
   "browserslist": [

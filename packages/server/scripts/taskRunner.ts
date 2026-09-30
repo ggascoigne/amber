@@ -1,9 +1,8 @@
 #!/usr/bin/env node_modules/.bin/tsx
 import path from 'path'
-
+import type { ListrTask } from 'listr2'
 import { processEnv } from '@amber/environment/dotenv'
 import chalk from 'chalk'
-import type { ListrTask } from 'listr2'
 import { Listr } from 'listr2'
 
 import type { TaskContext } from './lib/taskContext'

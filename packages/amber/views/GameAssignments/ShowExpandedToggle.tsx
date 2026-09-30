@@ -8,7 +8,7 @@ type ShowExpandedToggleProps = {
 
 export const ShowExpandedToggle = ({ checked, onChange, label = 'showExpanded' }: ShowExpandedToggleProps) => (
   <FormControlLabel
-    control={<Switch size='small' checked={checked} onChange={(_event, nextChecked) => onChange(nextChecked)} />}
+    control=<Switch size='small' checked={checked} onChange={(_event, nextChecked) => onChange(nextChecked)} />
     label={label}
     sx={{ m: 0 }}
   />

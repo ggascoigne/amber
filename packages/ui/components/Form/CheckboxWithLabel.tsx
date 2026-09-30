@@ -1,7 +1,7 @@
 import type React from 'react'
 
-import MuiCheckbox from '@mui/material/Checkbox'
 import type { FormControlLabelProps as MuiFormControlLabelProps } from '@mui/material/FormControlLabel'
+import MuiCheckbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { useField, useFormikContext } from 'formik'
 
@@ -36,7 +36,7 @@ export const CheckboxWithLabel: React.ComponentType<CheckboxWithLabelProps> = ({
     ...Label,
   } as const
 
-  return <FormControlLabel control={<MuiCheckbox {...fullProps} />} {...labelProps} />
+  return <FormControlLabel control=<MuiCheckbox {...fullProps} /> {...labelProps} />
 }
 
 CheckboxWithLabel.displayName = 'FormikMaterialUICheckboxWithLabel'

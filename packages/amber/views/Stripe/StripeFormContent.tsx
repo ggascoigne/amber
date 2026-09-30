@@ -14,7 +14,7 @@ export const StripeFormContent: React.FC<StripeFormContentProps> = () => {
   return (
     <Grid container spacing={2} sx={{ pt: 2, flexDirection: 'column' }}>
       <Grid size={{ xs: 12, md: 12 }}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback=<Loader />>
           <ObjectView valueGetter={() => values.data} name='root' expandLevel={3} />
         </Suspense>
       </Grid>

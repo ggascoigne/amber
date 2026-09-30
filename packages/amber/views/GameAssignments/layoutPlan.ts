@@ -1,5 +1,5 @@
-import { gameAssignmentsPaneIds } from './pageState'
 import type { GameAssignmentsLayoutMode, GameAssignmentsMinimizedPaneIds, GameAssignmentsPaneId } from './pageState'
+import { gameAssignmentsPaneIds } from './pageState'
 
 export type GameAssignmentsLayoutPlan =
   | {

@@ -1,11 +1,10 @@
 import { useCallback, useRef, useState } from 'react'
 
 import type { TableAutocompleteOption, TableEditOption, TableEditRowUpdate } from '@amber/ui/components/Table'
-import { Table } from '@amber/ui/components/Table'
 import type { Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
 import { Typography } from '@mui/material'
-
 import { Page } from '@/Components'
 
 type AssignmentRow = {

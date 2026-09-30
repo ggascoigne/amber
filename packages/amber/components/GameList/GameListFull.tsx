@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 
 import type { GameArray } from '@amber/client'
 
+import type { GameDecorator, GameDecoratorParams } from '../types'
 import { useScrollToHash } from '../../utils/useGameScroll'
 import { useUrlSource } from '../../utils/useUrlSourceState'
 import { GameCard } from '../GameCard'
-import type { GameDecorator, GameDecoratorParams } from '../types'
 
 export interface MatchParams {
   year: string

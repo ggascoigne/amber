@@ -1,6 +1,5 @@
-import { getEmailer, sendTemplateEmail } from './mailer'
 import type { EmailSendResult, RuntimeSettings } from './types'
-
+import { getEmailer, sendTemplateEmail } from './mailer'
 import type { GameConfirmationBody } from '../../contracts/email'
 
 const playerPreferenceLabels: Record<string, string> = {

@@ -17,7 +17,6 @@ import type {
   RoomAssignmentsSetupLayoutMode,
   RoomAssignmentsTabId,
 } from './pageState'
-
 import { CollapsibleInfoPanel } from '../GameAssignments/CollapsibleInfoPanel'
 
 const workflowLegendItems = [

@@ -1,6 +1,5 @@
 import type { GetAssignmentSummaryInput } from './schemas'
 import { buildGameAssignmentSummary } from './summary'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const assignmentSummaryGameSelect = {

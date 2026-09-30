@@ -1,5 +1,4 @@
 import type { UserPaymentDetails } from './types'
-
 import { db } from '../../../db'
 import { ssrAuthenticatedHelpers } from '../../ssr'
 import { getEmailer, sendTemplateEmail } from '../emails/mailer'

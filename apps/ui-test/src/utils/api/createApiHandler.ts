@@ -1,6 +1,6 @@
 import type { ApiTypes } from './api'
-import { apiHandler } from './api'
 import type { EmptyRequest } from './constants'
+import { apiHandler } from './api'
 
 const getPath = (p: string) => p.replace(/^\//, '')
 

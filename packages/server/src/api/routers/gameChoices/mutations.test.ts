@@ -8,9 +8,8 @@ import {
   updateGameSubmissionRecord,
   upsertGameChoiceBySlotRecord,
 } from './mutations'
-
-import { Prisma } from '../../../generated/prisma/client'
 import type { TransactionClient } from '../../inRlsTransaction'
+import { Prisma } from '../../../generated/prisma/client'
 
 const createGameChoicesMutationsTx = ({
   existingGameChoice = null,

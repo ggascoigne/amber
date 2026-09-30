@@ -5,7 +5,6 @@ import type {
   GetGamesByYearAndAuthorInput,
   GetGamesByYearInput,
 } from './schemas'
-
 import type { Prisma } from '../../../generated/prisma/client'
 import type { TransactionClient } from '../../inRlsTransaction'
 

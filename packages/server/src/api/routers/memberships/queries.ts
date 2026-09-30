@@ -5,10 +5,9 @@ import type {
   GetMembershipsByIdInput,
   GetMembershipsByYearInput,
 } from './schemas'
-
 import type { Prisma } from '../../../generated/prisma/client'
-import * as membershipSql from '../../../generated/prisma/sql'
 import type { TransactionClient } from '../../inRlsTransaction'
+import * as membershipSql from '../../../generated/prisma/sql'
 
 type MembershipProfileResult = Prisma.ProfileGetPayload<{
   select: {

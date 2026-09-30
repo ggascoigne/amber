@@ -1,8 +1,7 @@
 import { TRPCError } from '@trpc/server'
 
-import { syncLegacyGameRoomId } from './legacyRoomSync'
 import type { RemoveGameRoomAssignmentInput } from './schemas'
-
+import { syncLegacyGameRoomId } from './legacyRoomSync'
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const removeGameRoomAssignment = async ({

@@ -7,7 +7,6 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 
 import type { UserAction } from './actions'
-
 import type { RowData, TableApi as TableInstance } from '../tableTypes'
 
 type TableIconButtonProps = {
@@ -91,5 +90,5 @@ type RefreshButtonProps = {
 }
 
 export const RefreshButton = ({ onClick }: RefreshButtonProps) => (
-  <TableIconButton icon={<RefreshIcon />} onClick={onClick} label='Refresh' data-testid='refresh-button' />
+  <TableIconButton icon=<RefreshIcon /> onClick={onClick} label='Refresh' data-testid='refresh-button' />
 )

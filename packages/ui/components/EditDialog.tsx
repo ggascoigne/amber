@@ -1,15 +1,14 @@
 import type { ReactElement, ReactNode } from 'react'
 import { useCallback } from 'react'
 
+import type { FormikHelpers, FormikValues } from 'formik'
+import type { FormikProps } from 'formik/dist/types'
 import { Button, Dialog, DialogActions, DialogContent, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
-import type { FormikHelpers, FormikValues } from 'formik'
 import { Form, Formik } from 'formik'
-import type { FormikProps } from 'formik/dist/types'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 import { DialogTitle } from './Dialog'
-
 import type { OnCloseHandler } from '../utils'
 import { formatDebugValue, isDev } from '../utils'
 

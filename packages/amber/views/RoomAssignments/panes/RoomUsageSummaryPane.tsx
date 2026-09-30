@@ -1,10 +1,9 @@
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { FormControlLabel, Switch } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
 import RoomNameWithMembersCell from './RoomNameWithMembersCell'
-
 import type { RoomUsageSummaryRow } from '../types'
 
 const roomUsageSummaryColumns: Array<ColumnDef<RoomUsageSummaryRow>> = [
@@ -58,19 +57,15 @@ const RoomUsageSummaryPane = ({
     subtitle='Total room assignment count across the convention year.'
     isExpanded={isExpanded}
     onToggleExpand={onToggleExpand}
-    controls={
-      <FormControlLabel
-        control={
-          <Switch
-            size='small'
-            checked={showMemberRooms}
-            onChange={(_event, checked) => onShowMemberRoomsChange(checked)}
-          />
-        }
-        label='Show member rooms'
-        sx={{ m: 0 }}
+    controls=<FormControlLabel
+      control=<Switch
+        size='small'
+        checked={showMemberRooms}
+        onChange={(_event, checked) => onShowMemberRoomsChange(checked)}
       />
-    }
+      label='Show member rooms'
+      sx={{ m: 0 }}
+    />
   >
     <Table<RoomUsageSummaryRow>
       name='room-assignment-room-usage-summary'

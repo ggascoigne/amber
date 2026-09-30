@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { createHotelRoomDetailRecord, deleteHotelRoomDetailRecord, updateHotelRoomDetailRecord } from './mutations'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createHotelRoomDetailsMutationsTx = () => {

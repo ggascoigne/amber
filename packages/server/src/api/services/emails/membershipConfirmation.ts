@@ -1,6 +1,5 @@
-import { getEmailer, sendTemplateEmail } from './mailer'
 import type { EmailSendResult, RuntimeSettings } from './types'
-
+import { getEmailer, sendTemplateEmail } from './mailer'
 import type { MembershipConfirmationBody } from '../../contracts/email'
 
 const roomPreferenceLabels: Record<string, string> = {

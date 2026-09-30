@@ -7,7 +7,6 @@ import { Box } from '@mui/material'
 import useResizeObserver from '@react-hook/resize-observer'
 
 import { getTooltipId, useTableContext } from './TableContext'
-
 import type { CellContext, RowData } from '../tableTypes'
 
 type TooltipSharedCellProps = {

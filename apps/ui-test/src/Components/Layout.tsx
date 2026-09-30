@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
 import Divider from '@mui/material/Divider'
 import { useTheme } from '@mui/material/styles'
-
 import type { MenuEntry } from '@/Components/Navigation/MenuTypes'
 import NavigationAppBar from '@/Components/Navigation/NavigationAppBar'
 import NavigationDrawer from '@/Components/Navigation/NavigationDrawer'

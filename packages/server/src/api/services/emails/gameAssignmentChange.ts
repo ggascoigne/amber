@@ -1,6 +1,5 @@
-import { getEmailer, sendTemplateEmail } from './mailer'
 import type { EmailSendResult, RuntimeSettings } from './types'
-
+import { getEmailer, sendTemplateEmail } from './mailer'
 import type { Context } from '../../context'
 import type { GameAssignmentChangeBody } from '../../contracts/email'
 

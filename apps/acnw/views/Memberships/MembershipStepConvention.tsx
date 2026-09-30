@@ -1,6 +1,8 @@
 import type React from 'react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
+import type { FormikErrors, FormikValues } from 'formik'
 import {
   Attendance,
   ContactEmail,
@@ -9,7 +11,6 @@ import {
   useGetAttendanceOptions,
   useGetSubsidizedAttendanceOptions,
 } from '@amber/amber'
-import type { MembershipErrorType, MembershipFormContent } from '@amber/amber/utils/membershipUtils'
 import { hasMembershipStepErrors } from '@amber/amber/utils/membershipUtils'
 import { CheckboxWithLabel, getSafeFloat, RadioGroupFieldWithLabel, TextField } from '@amber/ui'
 import {
@@ -24,7 +25,6 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/material'
-import type { FormikErrors, FormikValues } from 'formik'
 import { useField, useFormikContext } from 'formik'
 
 export const hasConventionStepErrors = (errors: FormikErrors<FormikValues>) =>
@@ -293,18 +293,18 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
                   <RadioGroup name={`${prefix}donationChoice`} value={donationChoice} onChange={onChangeDonationChoice}>
                     <FormControlLabel
                       value='full'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`$${configuration.fourDayMembership}, sponsor a Full Membership`}
                     />
                     <FormControlLabel
                       value='short'
-                      control={<Radio />}
+                      control=<Radio />
                       label={`$${configuration.threeDayMembership}, sponsor a Short Membership`}
                     />
-                    <FormControlLabel value='100' control={<Radio />} label='$100' />
-                    <FormControlLabel value='30' control={<Radio />} label='$30' />
+                    <FormControlLabel value='100' control=<Radio /> label='$100' />
+                    <FormControlLabel value='30' control=<Radio /> label='$30' />
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, pl: 0 }}>
-                      <FormControlLabel value='other' control={<Radio />} label='Other' />
+                      <FormControlLabel value='other' control=<Radio /> label='Other' />
                       <TextField
                         name={`${prefix}donation`}
                         parse={getSafeFloat}

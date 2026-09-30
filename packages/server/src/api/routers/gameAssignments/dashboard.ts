@@ -1,5 +1,4 @@
 import type { GetAssignmentDashboardDataInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const dashboardGameSelect = {

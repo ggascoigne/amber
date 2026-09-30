@@ -1,5 +1,5 @@
-import { isDev } from '@amber/environment'
 import type { SessionData } from '@auth0/nextjs-auth0/types'
+import { isDev } from '@amber/environment'
 
 import { dbAdmin } from '../db'
 import { getUserWithRoles, createUser } from '../generated/prisma/sql'

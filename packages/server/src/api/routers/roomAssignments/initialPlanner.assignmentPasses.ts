@@ -1,7 +1,7 @@
 import type { InitialPlannerInput, InitialPlannerRoom } from './initialPlanner'
+import type { PlannedGameContext } from './initialPlanner.seed'
 import { isBallroomRoom, isRoomEligibleForGame } from './initialPlanner.roomPools'
 import { type RoomCandidate, type SlotRoomPlanner, type SlotRoomSelectionContext } from './initialPlanner.roomSelection'
-import type { PlannedGameContext } from './initialPlanner.seed'
 
 export type SlotRoomSelection = {
   game: PlannedGameContext

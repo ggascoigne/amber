@@ -1,7 +1,7 @@
+import type { z } from 'zod'
 import debug from 'debug'
 import { compile, pathToRegexp } from 'path-to-regexp'
 import qs from 'qs'
-import type { z } from 'zod'
 import { ZodError } from 'zod'
 
 import type { HTTPMethod } from './constants'

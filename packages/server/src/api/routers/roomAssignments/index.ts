@@ -17,7 +17,6 @@ import {
 } from './schemas'
 import { upsertMemberRoomAssignment } from './upsertMemberRoomAssignment'
 import { upsertRoomSlotAvailability } from './upsertRoomSlotAvailability'
-
 import { inRlsTransaction } from '../../inRlsTransaction'
 import { createTRPCRouter, protectedProcedure } from '../../trpc'
 

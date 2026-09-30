@@ -1,10 +1,9 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
-import { applyRowChanges, buildNextEdits, validateAllEdits } from './editingState'
 import type { TableCellEditState, TableEditingRowState, TableEditingState, TableRowEditState } from './internalTypes'
 import type { DataTableEditingConfig, TableEditColumnConfig, TableEditRowUpdate } from './types'
+import { applyRowChanges, buildNextEdits, validateAllEdits } from './editingState'
 import { useActiveTableCell } from './useActiveTableCell'
-
 import type { Cell, Row, RowData, TableApi } from '../tableTypes'
 
 export type {

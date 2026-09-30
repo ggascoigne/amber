@@ -1,4 +1,3 @@
-import { isRoomAvailableInSlot } from './dashboardShared'
 import type { DashboardRoom, DashboardRoomAssignment } from './dashboardShared'
 import type {
   CurrentSlotRoomAvailabilityRow,
@@ -6,6 +5,7 @@ import type {
   RoomUsageSummaryRow,
   SizedRoomSelectOption,
 } from './types'
+import { isRoomAvailableInSlot } from './dashboardShared'
 
 type RoomSizeDescriptor = {
   description: string

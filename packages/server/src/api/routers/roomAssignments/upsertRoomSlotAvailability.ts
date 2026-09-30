@@ -1,5 +1,4 @@
 import type { UpsertRoomSlotAvailabilityInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const upsertRoomSlotAvailability = async ({

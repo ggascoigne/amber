@@ -13,7 +13,6 @@ import {
   buildUpdatedMemberAssignmentRowGameSelection,
 } from './memberAssignments'
 import { buildAssignment, buildChoice, buildGame, buildMembership } from './testHelpers'
-
 import { PlayerPreference } from '../../../utils/selectValues'
 
 describe('buildMemberSelectOptionsForGame', () => {

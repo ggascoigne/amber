@@ -8,7 +8,6 @@ import type {
   UpdateLookupInput,
   UpdateLookupValueInput,
 } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const log = debug('amber:server:api:routers:lookups')

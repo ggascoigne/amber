@@ -1,10 +1,3 @@
-import {
-  buildRoomSlotAvailabilityKey,
-  doesRoomMeetAccessibilityRequirement,
-  getMostRestrictiveAccessibility,
-  isRoomAvailableInSlot,
-  sortNames,
-} from './dashboardShared'
 import type {
   DashboardGame,
   DashboardRoom,
@@ -12,6 +5,13 @@ import type {
   DashboardRoomAssignment,
 } from './dashboardShared'
 import type { RoomAssignmentConflictRow } from './types'
+import {
+  buildRoomSlotAvailabilityKey,
+  doesRoomMeetAccessibilityRequirement,
+  getMostRestrictiveAccessibility,
+  isRoomAvailableInSlot,
+  sortNames,
+} from './dashboardShared'
 
 type BuildRoomAssignmentConflictRowsInput = {
   games: Array<DashboardGame>

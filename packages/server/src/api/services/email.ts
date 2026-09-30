@@ -3,7 +3,6 @@ import { sendGameChoiceConfirmation } from './emails/gameChoiceConfirmation'
 import { sendGameConfirmation } from './emails/gameConfirmation'
 import { sendMembershipConfirmation } from './emails/membershipConfirmation'
 import { getRuntimeSettingsTx } from './runtimeSettings'
-
 import type { Context } from '../context'
 import type { SendEmailInput } from '../contracts/email'
 import { inRlsTransaction } from '../inRlsTransaction'

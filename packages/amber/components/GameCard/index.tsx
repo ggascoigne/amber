@@ -8,10 +8,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { Accordion, AccordionDetails, AccordionSummary, Grid } from '@mui/material'
 import { InView } from 'react-intersection-observer'
 
+import type { GameDecorator, GameDecoratorParams } from '../types'
 import { isNoGameCategory, isUserGameCategory } from '../../utils/gameCategory'
 import { maskEmail } from '../../utils/maskEmail'
 import { LookupValue } from '../Lookup'
-import type { GameDecorator, GameDecoratorParams } from '../types'
 
 interface Player {
   gm: number
@@ -148,11 +148,7 @@ const GameCardDetails = React.memo(
           </>
         ) : (
           <Accordion defaultExpanded>
-            <AccordionSummary
-              component='div'
-              expandIcon={<ExpandMoreIcon />}
-              id={`accordion-game/${year}/${slot}/${id}`}
-            >
+            <AccordionSummary component='div' expandIcon=<ExpandMoreIcon /> id={`accordion-game/${year}/${slot}/${id}`}>
               {header}
             </AccordionSummary>
             <AccordionDetails>{content}</AccordionDetails>
@@ -264,7 +260,7 @@ export const GameCard = React.memo(
         </Card>
       ) : (
         <Accordion defaultExpanded={!schedule} style={{ marginTop: 30 }}>
-          <AccordionSummary component='div' expandIcon={<ExpandMoreIcon />} id={`accordion-game/${year}/${slot}/${id}`}>
+          <AccordionSummary component='div' expandIcon=<ExpandMoreIcon /> id={`accordion-game/${year}/${slot}/${id}`}>
             {header}
           </AccordionSummary>
           <AccordionDetails>{content}</AccordionDetails>

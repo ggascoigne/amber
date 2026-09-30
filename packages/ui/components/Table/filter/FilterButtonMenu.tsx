@@ -1,9 +1,9 @@
 import type { ReactNode, MouseEvent, ForwardedRef } from 'react'
 import { useCallback, useState, useRef, forwardRef, useEffect } from 'react'
 
+import type { ButtonProps } from '@mui/material/Button'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { Button, Popover } from '@mui/material'
-import type { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import clsx from 'clsx'
 
@@ -91,15 +91,13 @@ export const FilterButtonMenu = ({
       <FilterButton
         ref={ref}
         variant='outlined'
-        endIcon={
-          <ArrowDropDownIcon
-            sx={{
-              transform: anchorEl ? 'rotate(180deg)' : undefined,
-              transition: (theme) =>
-                `transform ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut} 0ms`,
-            }}
-          />
-        }
+        endIcon=<ArrowDropDownIcon
+          sx={{
+            transform: anchorEl ? 'rotate(180deg)' : undefined,
+            transition: (theme) =>
+              `transform ${theme.transitions.duration.shorter}ms ${theme.transitions.easing.easeInOut} 0ms`,
+          }}
+        />
         disableRipple
         onClick={handleButtonClick}
         className={clsx({ open: !!anchorEl })}

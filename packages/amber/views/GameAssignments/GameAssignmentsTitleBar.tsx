@@ -2,8 +2,8 @@ import type { MouseEvent } from 'react'
 
 import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material'
 
-import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import type { GameAssignmentsLayoutMode } from './pageState'
+import { CollapsibleInfoPanel } from './CollapsibleInfoPanel'
 import { SlotFilterSelect } from './SlotFilterSelect'
 
 const legendItems = [

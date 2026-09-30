@@ -1,25 +1,24 @@
 import type { KeyboardEvent, ReactElement } from 'react'
 import { useCallback, useMemo } from 'react'
 
-import Box from '@mui/material/Box'
 import type { Theme } from '@mui/material/styles'
+import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
+import Box from '@mui/material/Box'
 import { alpha } from '@mui/material/styles'
 import { flexRender, Subscribe } from '@tanstack/react-table'
-import type { VirtualItem, Virtualizer } from '@tanstack/react-virtual'
 import { clsx } from 'clsx'
 
+import type { TreeLineType } from './TreeLines'
 import { getExpansionDetails } from './expansionDetails'
 import { TreeLines } from './TreeLines'
-import type { TreeLineType } from './TreeLines'
-
 import type { Action } from '../actions'
+import type { TableCellEditState, TableEditingState } from '../editing/useTableEditing'
+import type { Cell, Row, RowData, TableApi as TableInstance } from '../tableTypes'
+import type { RowStyleType } from '../utils/tableUtils'
 import { GroupExpansionButton } from '../components/GroupExpansionButton'
 import { RowHoverButtons } from '../components/RowHoverButtons'
 import { RowCheckbox, TableCell, TableRow } from '../components/TableStyles'
 import { TableCellEditor } from '../editing/TableCellEditor'
-import type { TableCellEditState, TableEditingState } from '../editing/useTableEditing'
-import type { Cell, Row, RowData, TableApi as TableInstance } from '../tableTypes'
-import type { RowStyleType } from '../utils/tableUtils'
 import { isUserColumnId } from '../utils/tableUtils'
 
 type TableCellContentProps<TData extends RowData> = {

@@ -6,9 +6,8 @@ import { Box, CircularProgress, IconButton, Tooltip } from '@mui/material'
 import superjson from 'superjson'
 
 import { useTableContext } from './TableContext'
-
-import { ObjectView } from '../../ObjectView'
 import type { AmberTableState, RowData, TableApi as TableInstance } from '../tableTypes'
+import { ObjectView } from '../../ObjectView'
 
 interface LoaderProps {
   error?: boolean
@@ -101,7 +100,7 @@ const TableDebugView = <TData extends RowData>({ instance, state, tableIndex }: 
     <Box>
       <hr />
       <Box sx={{ pl: 3 }}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback=<Loader />>
           <Box
             sx={{
               maxHeight: '400px',

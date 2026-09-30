@@ -1,13 +1,12 @@
-import { type EnvType } from '@amber/environment/dotenv'
 import type { Listr, ListrTask, ListrTaskWrapper } from 'listr2'
+import { type EnvType } from '@amber/environment/dotenv'
 
 import { createCleanDbTask } from './createCleanDb'
 import { resetOwnerTask } from './resetOwner'
 import { writeCertsTask } from './writeCerts'
-
+import type { TaskContext } from '../taskContext'
 import { loadEnv } from '../../lib'
 import { dumpDatabaseTask, restoreDatabaseTask } from '../importUtils'
-import type { TaskContext } from '../taskContext'
 
 export const copyDatabaseTaskFactory =
   (source: () => EnvType, dest: () => EnvType) =>

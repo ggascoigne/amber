@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography'
 import Router from 'next/router'
 
 import { useProfile } from './Profile'
-
 import { formatAmountForDisplay } from '../utils/useStripe'
 
 const BalanceInner = () => {

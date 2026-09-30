@@ -1,7 +1,7 @@
-import { doesRoomFitGame } from './domain'
 import type { InitialPlannerInput, InitialPlannerRoom } from './initialPlanner'
-import { isRoomAvailableForSlot } from './initialPlanner.availability'
 import type { PlannedGameContext } from './initialPlanner.seed'
+import { doesRoomFitGame } from './domain'
+import { isRoomAvailableForSlot } from './initialPlanner.availability'
 
 export type SlotGameRoomPoolContext = {
   input: InitialPlannerInput

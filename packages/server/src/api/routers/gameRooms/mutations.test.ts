@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { createGameRoomRecord, deleteGameRoomRecord, updateGameRoomRecord } from './mutations'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameRoomsMutationsTx = () => {

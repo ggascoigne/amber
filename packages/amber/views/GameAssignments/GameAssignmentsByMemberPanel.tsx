@@ -2,11 +2,12 @@ import { useCallback, useMemo, useState } from 'react'
 
 import type { GameAssignmentDashboardData } from '@amber/client'
 import type { TableEditRowUpdate } from '@amber/ui/components/Table'
-import { Table } from '@amber/ui/components/Table'
 import type { ColumnDef, Row } from '@amber/ui/components/Table/tableTypes'
+import { Table } from '@amber/ui/components/Table'
 import { Box } from '@mui/material'
 
 import type { DashboardAssignmentUpdatePayload } from './dashboardData'
+import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './domain/types'
 import { buildSlotAssignmentScope } from './domain/assignmentScope'
 import {
   buildAssignedSlotCountsByMemberId,
@@ -24,11 +25,9 @@ import {
   buildUpdatedMemberAssignmentRowGameSelection,
 } from './domain/memberAssignments'
 import { buildMoveOptions, buildMoveSelectOptions } from './domain/moveOptions'
-import type { MemberAssignmentEditorRow, MemberAssignmentSummaryRow } from './domain/types'
 import { GameAssignmentsPanelHeader } from './GameAssignmentsPanelHeader'
 import { MemberSubmissionDetailLayout } from './MemberSubmissionDetailLayout'
 import { SignupNoteIndicator } from './SignupNoteIndicator'
-
 import { useConfiguration } from '../../utils/configContext'
 
 type GameAssignmentsByMemberPanelProps = {

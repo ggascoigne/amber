@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
 import { describe, expect, test } from 'vitest'
 
-import { getSlotDescription, getSlotTimes, SlotFormat, slotDateTimePairsByCount } from './slotHelpers'
 import type { SlotConfiguration } from './slotHelpers'
+import { getSlotDescription, getSlotTimes, SlotFormat, slotDateTimePairsByCount } from './slotHelpers'
 
 const pdxDate = ({ year, month, day }: { year: number; month: number; day: number }) =>
   DateTime.fromObject({ year, month, day }, { zone: 'America/Los_Angeles' })

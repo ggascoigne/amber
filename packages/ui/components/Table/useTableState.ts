@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react'
 
 import type { AmberColumnDef, AmberTableState, RowData } from './tableTypes'
 import { getLeafColumnIds } from './utils/tableUtils'
-
 import { useLocalStorage } from '../../utils/useLocalStorage'
 
 export type PersistedTableState = Pick<

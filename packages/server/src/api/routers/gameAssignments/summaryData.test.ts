@@ -1,7 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 
 import { getGameAssignmentSummary } from './summaryData'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createGameAssignmentSummaryTx = () => {

@@ -7,7 +7,6 @@ import {
   getMembershipsById,
   getMembershipsByYear,
 } from './queries'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const createMembershipJoinRow = (overrides: Partial<Record<string, unknown>> = {}) => ({

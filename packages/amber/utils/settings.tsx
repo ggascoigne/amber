@@ -6,7 +6,6 @@ import { notEmpty } from '@amber/ui'
 import { useQuery } from '@tanstack/react-query'
 
 import { useIsGm, useIsMember } from './membership'
-
 import { Perms, useAuth } from '../components/Auth'
 
 export enum SettingValue {

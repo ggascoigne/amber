@@ -1,7 +1,6 @@
-import { coerceInputValue, normalizeValidationResult } from './editingValidation'
 import type { TableEditingRowState } from './internalTypes'
 import type { DataTableEditingConfig, TableEditColumnConfig } from './types'
-
+import { coerceInputValue, normalizeValidationResult } from './editingValidation'
 import type { Cell, Row, RowData, TableApi } from '../tableTypes'
 
 type ApplyRowChangesParams<TData extends RowData> = {

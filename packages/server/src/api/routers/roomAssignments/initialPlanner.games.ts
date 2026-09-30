@@ -1,5 +1,5 @@
-import { getMostRestrictiveAccessibility, type RoomAccessibility } from './domain'
 import type { InitialPlannerGame, InitialPlannerParticipant } from './initialPlanner'
+import { getMostRestrictiveAccessibility, type RoomAccessibility } from './domain'
 
 export type PlannedGameContext = {
   game: InitialPlannerGame

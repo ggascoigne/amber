@@ -1,6 +1,5 @@
-import { getEmailer, sendTemplateEmail } from './mailer'
 import type { EmailSendResult, RuntimeSettings } from './types'
-
+import { getEmailer, sendTemplateEmail } from './mailer'
 import type { GameChoiceConfirmationBody } from '../../contracts/email'
 
 export const sendGameChoiceConfirmation = async (

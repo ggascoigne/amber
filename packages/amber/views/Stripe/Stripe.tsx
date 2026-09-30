@@ -1,13 +1,12 @@
 import React, { useCallback } from 'react'
 
 import type { StripeRecord } from '@amber/client'
+import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useTRPC } from '@amber/client'
 import { Table } from '@amber/ui/components/Table'
-import type { ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useQuery } from '@tanstack/react-query'
 
 import { StripeDialog } from './StripeDialog'
-
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'
 import { useStandardHandlers } from '../../utils/useStandardHandlers'

@@ -1,12 +1,11 @@
 import { useCallback } from 'react'
 
+import type { Row } from '@amber/ui/components/Table/tableTypes'
 import { getDefaultSort, Table, useServerTableState } from '@amber/ui/components/Table'
 import { createColumnHelper } from '@amber/ui/components/Table/tableTypes'
-import type { Row } from '@amber/ui/components/Table/tableTypes'
 import Box from '@mui/material/Box'
-
-import { Page } from '@/Components'
 import type { UserType } from '@/utils/queries'
+import { Page } from '@/Components'
 import { useUsersQuery } from '@/utils/queries'
 
 const columnHelper = createColumnHelper<UserType>()

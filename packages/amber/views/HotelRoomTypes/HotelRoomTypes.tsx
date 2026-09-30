@@ -2,15 +2,14 @@ import type React from 'react'
 import { useMemo } from 'react'
 
 import type { HotelRoom } from '@amber/client'
+import type { CellContext, ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useTRPC } from '@amber/client'
 import { notEmpty } from '@amber/ui'
 import { YesBlankCell } from '@amber/ui/components/CellFormatters'
 import { Table, TooltipCell, getCellSx } from '@amber/ui/components/Table'
-import type { CellContext, ColumnDef } from '@amber/ui/components/Table/tableTypes'
 import { useMutation, useQuery } from '@tanstack/react-query'
 
 import { HotelRoomTypeDialog } from './HotelRoomTypeDialog'
-
 import { useInvalidateHotelRoomsQueries } from '../../../client/src/invalidate'
 import { Page } from '../../components'
 import { TransportError } from '../../components/TransportError'

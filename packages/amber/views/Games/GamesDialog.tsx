@@ -2,9 +2,10 @@ import type React from 'react'
 import { useMemo } from 'react'
 
 import type { Game } from '@amber/client'
+import type { TextFieldProps } from '@amber/ui'
+import type { FormikHelpers } from 'formik'
 import { useTRPC } from '@amber/client'
 import { getSlotDescription } from '@amber/shared'
-import type { TextFieldProps } from '@amber/ui'
 import {
   CheckboxWithLabel,
   EditDialog,
@@ -18,15 +19,13 @@ import {
 import Yup from '@amber/ui/utils/Yup'
 import { Autocomplete, Dialog, Grid, TextField as MuiTextField, Typography } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
-import type { FormikHelpers } from 'formik'
 
 import type { GameDialogFormValues } from './gameHooks'
 import { useEditGame } from './gameHooks'
-
+import type { Configuration } from '../../utils/configContext'
 import { AdminCard } from '../../components/AdminCard'
 import { Perms } from '../../components/Auth'
 import { TransportError } from '../../components/TransportError'
-import type { Configuration } from '../../utils/configContext'
 import { useConfiguration } from '../../utils/configContext'
 import { playerPreferenceOptions } from '../../utils/selectValues'
 import { useUser } from '../../utils/useUserFilterState'

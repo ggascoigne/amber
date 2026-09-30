@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
+import type { SxProps, Theme } from '@mui/material/styles'
 import AddIcon from '@mui/icons-material/Add'
 import { Button, FormControlLabel, Paper, Stack, Switch, Typography, useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
-import type { SxProps, Theme } from '@mui/material/styles'
 import TableContainer from '@mui/material/TableContainer'
 import useResizeObserver from '@react-hook/resize-observer'
 import debug from 'debug'
@@ -12,6 +12,10 @@ import { dequal as deepEqual } from 'dequal'
 import { match } from 'ts-pattern'
 
 import type { Action } from './actions'
+import type { DataTableEditingConfig } from './editing/types'
+import type { TableEditingState } from './editing/useTableEditing'
+import type { TableRenderState } from './tableStateSelectors'
+import type { Row, RowData, TableApi as TableInstance } from './tableTypes'
 import { TableContentSkeleton } from './components/TableContentSkeleton'
 import { TableContextProvider } from './components/TableContext'
 import { TableScrollContainerProvider } from './components/TableScrollContainerContext'
@@ -19,17 +23,12 @@ import { TableTable, tableDecorationZIndex } from './components/TableStyles'
 import { TableToolbar } from './components/TableToolbar'
 import { treeIndentLevel } from './content/TreeLines'
 import { useVisibleTableRows } from './content/useVisibleTableRows'
-import type { DataTableEditingConfig } from './editing/types'
-import type { TableEditingState } from './editing/useTableEditing'
 import { useTableEditing } from './editing/useTableEditing'
 import { TableFilterBar } from './filter/TableFilterBar'
 import { TableContent } from './TableContent'
 import { TableFooter } from './TableFooter'
 import { TableHeader } from './TableHeader'
 import { selectTableRenderState } from './tableStateSelectors'
-import type { TableRenderState } from './tableStateSelectors'
-import type { Row, RowData, TableApi as TableInstance } from './tableTypes'
-
 import { isDev } from '../../utils/globals'
 
 const log = debug('amber:ui:table:DTable')
@@ -98,7 +97,7 @@ const TableEditingFooter = <T extends RowData>({ editing, addRowAction }: TableE
         <Button
           variant='text'
           size='small'
-          startIcon={<AddIcon fontSize='small' />}
+          startIcon=<AddIcon fontSize='small' />
           onClick={addRowAction.onAddRow}
           disabled={isSaving}
         >
@@ -373,13 +372,11 @@ const DataTableView = <T extends RowData>({
                   }}
                 >
                   <FormControlLabel
-                    control={
-                      <Switch
-                        size='small'
-                        checked={showExpandedOnly}
-                        onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
-                      />
-                    }
+                    control=<Switch
+                      size='small'
+                      checked={showExpandedOnly}
+                      onChange={(_event, checked) => onToggleShowExpandedOnly(checked)}
+                    />
                     label='Show Expanded'
                     sx={{ m: 0 }}
                   />

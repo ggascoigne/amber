@@ -16,8 +16,8 @@ import {
   ToggleButtonGroup,
 } from '@mui/material'
 
-import { Perms, useAuth } from '../../components/Auth'
 import type { GameCategoryByGameId } from '../../utils/gameCategory'
+import { Perms, useAuth } from '../../components/Auth'
 import { isAnyGameCategory, isAnyGameId, isNoGameCategory, isNoGameId } from '../../utils/gameCategory'
 import { rankString } from '../../utils/gameChoiceRank'
 import { PlayerPreference } from '../../utils/selectValues'

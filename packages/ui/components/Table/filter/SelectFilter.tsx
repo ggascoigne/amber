@@ -3,10 +3,9 @@ import { useCallback, useMemo } from 'react'
 
 import { Checkbox, ListItemText, MenuItem, MenuList } from '@mui/material'
 
+import type { OptionsValue } from './types'
 import { useFilterContext } from './FilterContext'
 import { FilterStatusButton } from './FilterStatusButton'
-import type { OptionsValue } from './types'
-
 import type { RowData, FilterRenderProps } from '../tableTypes'
 import { columnName } from '../utils/tableUtils'
 

@@ -14,10 +14,9 @@ import {
   renderWithProviders,
   type PersonRow,
 } from './testUtils'
-
+import type { ColumnDef } from '../tableTypes'
 import { treeLineTypes } from '../content/TreeLines'
 import { Table } from '../Table'
-import type { ColumnDef } from '../tableTypes'
 
 type TreePersonRow = PersonRow & {
   children?: Array<TreePersonRow>

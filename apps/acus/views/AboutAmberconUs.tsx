@@ -25,7 +25,7 @@ const AboutAmberconUs = () => {
       <AboutAmberconNwContentVirtual />
     </Page>
   ) : (
-    <MdxPage frontMatter={acusFm} component={<AboutAmberconNwContent />} />
+    <MdxPage frontMatter={acusFm} component=<AboutAmberconNwContent /> />
   )
 }
 

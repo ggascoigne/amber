@@ -11,7 +11,6 @@ import {
   buildMemberChoiceSummaryRows,
 } from './assignmentSummaries'
 import { buildAssignment, buildChoice, buildGame, buildMembership, buildSubmission } from './testHelpers'
-
 import { PlayerPreference } from '../../../utils/selectValues'
 
 describe('buildAssignmentCountsByGameId', () => {

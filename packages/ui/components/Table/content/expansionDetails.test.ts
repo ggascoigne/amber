@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 
 import { getExpansionDetails } from './expansionDetails'
 import { treeLineTypes } from './TreeLines'
-
 import type { Row } from '../tableTypes'
 
 type TestRowData = { id: string }

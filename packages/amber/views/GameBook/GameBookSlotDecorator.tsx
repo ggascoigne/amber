@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import { useTRPC } from '@amber/client'
 import type { GameChoice } from '@amber/client'
+import { useTRPC } from '@amber/client'
 import { Box } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 

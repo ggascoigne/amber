@@ -1,5 +1,4 @@
 import type { CreateGameAssignmentInput, DeleteGameAssignmentInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 export const createGameAssignmentRecord = ({

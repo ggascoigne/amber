@@ -1,5 +1,4 @@
 import type { GetGameAssignmentScheduleInput } from './schemas'
-
 import type { TransactionClient } from '../../inRlsTransaction'
 
 const scheduleGameAssignmentInclude = {

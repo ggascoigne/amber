@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react'
 
-import { SelectColumnFilter, Table } from '@amber/ui/components/Table'
 import type { ColumnDef, TableQueryState } from '@amber/ui/components/Table/tableTypes'
+import { SelectColumnFilter, Table } from '@amber/ui/components/Table'
 import { Box, Button, Checkbox } from '@mui/material'
 
 import RoomAssignmentsPaneShell from './RoomAssignmentsPaneShell'
-
 import type { RoomSlotAvailabilityRow } from '../types'
 
 type RoomSlotAvailabilityCheckboxCellProps = {

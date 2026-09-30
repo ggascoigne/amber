@@ -1,5 +1,4 @@
 import { cancelPaymentIntentInput, createPaymentIntentInput, updatePaymentIntentInput } from './schemas'
-
 import {
   cancelPaymentIntent,
   createPaymentIntent,

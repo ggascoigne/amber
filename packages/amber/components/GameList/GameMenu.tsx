@@ -10,9 +10,8 @@ import Typography from '@mui/material/Typography'
 
 import { GameListIndex } from './GameListIndex'
 import { GameListNavigator } from './GameListNavigator'
-
-import { ListItemLink } from '../Navigation'
 import type { GameDecorator, GameDecoratorParams, SlotDecorator, SlotDecoratorParams } from '../types'
+import { ListItemLink } from '../Navigation'
 
 interface GameMenuProps {
   to: string
