@@ -1,4 +1,4 @@
-#!/usr/bin/env node_modules/.bin/tsx
+#!/usr/bin/env tsx
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import Table from 'cli-table3'
