@@ -6,13 +6,14 @@ import { useMemo, useState } from 'react'
 import type { AppRouter } from '@amber/server/src/api/appRouter'
 import type { DehydratedState, QueryClient } from '@tanstack/react-query'
 import { TRPCProvider } from '@amber/client'
-import { getBaseUrl } from '@amber/server/src/utils'
 import { makeQueryClient } from '@amber/server/src/utils/query-client'
 import transformer from '@amber/server/src/utils/trpc-transformer'
 import { QueryClientProvider, HydrationBoundary } from '@tanstack/react-query'
 import { createTRPCClient, httpBatchLink, httpLink, splitLink } from '@trpc/client'
 import debug from 'debug'
 import SuperJSON from 'superjson'
+
+import { getBaseUrl } from '../utils/getBaseUrl'
 
 const log = debug('amber:amber:TRPCReactProvider')
 
