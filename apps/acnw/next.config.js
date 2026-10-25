@@ -1,10 +1,5 @@
 import { headers } from '@amber/amber/utils/next-headers.js'
-import bundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})
 
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
@@ -30,6 +25,7 @@ const nextConfig = {
   // Next 16.3's CLI check cannot resolve the workspace's TS6/TS7 package-alias setup.
   experimental: {
     useTypeScriptCli: false,
+    optimizePackageImports: ['zod/mini'],
   },
   transpilePackages: ['@amber/ui', '@amber/amber', '@mui/material', '@amber/api', '@auth0/nextjs-auth0'],
   modularizeImports: {
@@ -58,4 +54,4 @@ const nextConfig = {
       }),
 }
 
-export default withBundleAnalyzer(withMDX(nextConfig))
+export default withMDX(nextConfig)

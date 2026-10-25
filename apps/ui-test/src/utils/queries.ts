@@ -1,19 +1,20 @@
+import type { output } from 'zod/mini'
 import { useMutation, useQuery, keepPreviousData } from '@tanstack/react-query'
-import { z } from 'zod'
+import { any, array, boolean, enum as zEnum, number, object, optional, string } from 'zod/mini'
 import { createApiHandler } from '@/utils/api'
 
-const requestSchema = z.object({
-  pageIndex: z.number(),
-  pageSize: z.number(),
-  sorting: z.array(z.object({ id: z.string(), desc: z.boolean() })),
-  globalFilter: z.string(),
-  globalFilterCriteria: z.string().optional(),
-  filters: z.optional(
-    z.array(
-      z.object({
-        id: z.string(),
-        value: z.any(),
-        operator: z.optional(z.string()),
+const requestSchema = object({
+  pageIndex: number(),
+  pageSize: number(),
+  sorting: array(object({ id: string(), desc: boolean() })),
+  globalFilter: string(),
+  globalFilterCriteria: optional(string()),
+  filters: optional(
+    array(
+      object({
+        id: string(),
+        value: any(),
+        operator: optional(string()),
       }),
     ),
   ),
@@ -22,30 +23,30 @@ const requestSchema = z.object({
 // ----------------------------------------------------------------------------
 // /api/users
 
-const userSchema = z.object({
-  id: z.number(),
-  firstName: z.string(),
-  lastName: z.string(),
-  fullName: z.string(),
-  email: z.string(),
-  address: z.string(),
-  city: z.string(),
-  state: z.string(),
-  zipCode: z.string(),
-  phone: z.string(),
-  gender: z.enum(['male', 'female', 'non-binary']),
-  subscriptionTier: z.enum(['free', 'basic', 'pro', 'enterprise']),
+const userSchema = object({
+  id: number(),
+  firstName: string(),
+  lastName: string(),
+  fullName: string(),
+  email: string(),
+  address: string(),
+  city: string(),
+  state: string(),
+  zipCode: string(),
+  phone: string(),
+  gender: zEnum(['male', 'female', 'non-binary']),
+  subscriptionTier: zEnum(['free', 'basic', 'pro', 'enterprise']),
 })
 
-export type UserType = z.infer<typeof userSchema>
+export type UserType = output<typeof userSchema>
 
 // schema for the expected return data
-const usersResponseSchema = z.object({
-  rows: z.array(userSchema),
-  rowCount: z.number(),
+const usersResponseSchema = object({
+  rows: array(userSchema),
+  rowCount: number(),
 })
 
-export type UsersResponseType = z.infer<typeof usersResponseSchema>
+export type UsersResponseType = output<typeof usersResponseSchema>
 
 export const getUsers = createApiHandler({
   method: 'GET',
@@ -54,7 +55,7 @@ export const getUsers = createApiHandler({
   responseSchema: usersResponseSchema,
 })
 
-export const useUsersQuery = (queryOptions: z.infer<typeof requestSchema>, options?: { enabled?: boolean }) => {
+export const useUsersQuery = (queryOptions: output<typeof requestSchema>, options?: { enabled?: boolean }) => {
   const { enabled = true } = options ?? {}
   return useQuery({
     queryKey: ['usersData', queryOptions],
@@ -67,7 +68,7 @@ export const useUsersQuery = (queryOptions: z.infer<typeof requestSchema>, optio
 export const getAllUsers = createApiHandler({
   method: 'GET',
   path: '/api/all-users',
-  requestSchema: z.object({}),
+  requestSchema: object({}),
   responseSchema: usersResponseSchema,
 })
 
@@ -83,8 +84,8 @@ export const useAllUsersQuery = (options?: { enabled?: boolean }) => {
 
 const userResponseSchema = userSchema
 
-export const userRequestSchema = z.object({
-  guid: z.string(),
+export const userRequestSchema = object({
+  guid: string(),
 })
 
 export const getUser = createApiHandler({
@@ -94,7 +95,7 @@ export const getUser = createApiHandler({
   responseSchema: userResponseSchema,
 })
 
-export const useUserQuery = (queryOptions: z.infer<typeof userRequestSchema>, options?: { enabled?: boolean }) => {
+export const useUserQuery = (queryOptions: output<typeof userRequestSchema>, options?: { enabled?: boolean }) => {
   const { enabled = true } = options ?? {}
   return useQuery({
     queryKey: ['userData', queryOptions],
@@ -113,5 +114,5 @@ export const updateUser = createApiHandler({
 
 export const useUpdateUserMutation = () =>
   useMutation({
-    mutationFn: (data: z.infer<typeof userSchema>) => updateUser(data),
+    mutationFn: (data: output<typeof userSchema>) => updateUser(data),
   })

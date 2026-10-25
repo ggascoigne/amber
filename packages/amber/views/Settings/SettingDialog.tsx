@@ -6,20 +6,17 @@ import type { OnCloseHandler } from '@amber/ui'
 import type { FormikHelpers } from 'formik'
 import { useInvalidateSettingsQueries, useTRPC } from '@amber/client'
 import { EditDialog, pick, SelectField, TextField, useNotification } from '@amber/ui'
+import Yup from '@amber/ui/utils/Yup'
 import { Grid } from '@mui/material'
 import { useMutation } from '@tanstack/react-query'
-import { z } from 'zod'
-import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 import { SettingValue, typeValues } from './shared'
 
-const validationSchema = toFormikValidationSchema(
-  z.object({
-    code: z.string().min(2, 'Required').max(100, 'Required'),
-    type: z.string().min(2, 'Required').max(15, 'Required'),
-    value: z.string().max(100, 'Required'),
-  }),
-)
+const validationSchema = Yup.object().shape({
+  code: Yup.string().min(2, 'Required').max(100, 'Required'),
+  type: Yup.string().min(2, 'Required').max(15, 'Required'),
+  value: Yup.string().max(100, 'Required'),
+})
 
 type FormValues = Setting
 

@@ -8,6 +8,7 @@ const nextConfig = {
   // Next 16.3's CLI check cannot resolve the workspace's TS6/TS7 package-alias setup.
   experimental: {
     useTypeScriptCli: false,
+    optimizePackageImports: ['zod/mini'],
   },
   transpilePackages: ['@amber/ui'],
   modularizeImports: {

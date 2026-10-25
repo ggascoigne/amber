@@ -1,8 +1,8 @@
-import type { z } from 'zod'
+import type { ZodMiniType } from 'zod/mini'
 import debug from 'debug'
 import { compile, pathToRegexp } from 'path-to-regexp'
 import qs from 'qs'
-import { ZodError } from 'zod'
+import { parse, safeParseAsync } from 'zod/mini'
 
 import type { HTTPMethod } from './constants'
 import { HTTPError } from './HTTPError'
@@ -13,11 +13,11 @@ const log = debug('api')
 export type RequestTypes<ApiRequest> = {
   method: HTTPMethod
   path: string
-  requestSchema: z.ZodType<ApiRequest>
+  requestSchema: ZodMiniType<ApiRequest>
 }
 
 export type ApiTypes<ApiResponse, ApiRequest, ResponseInput> = RequestTypes<ApiRequest> & {
-  responseSchema: z.ZodType<ApiResponse, ResponseInput>
+  responseSchema: ZodMiniType<ApiResponse, ResponseInput>
 }
 
 export type AppApiTypes<ApiRequest> = {
@@ -166,7 +166,7 @@ export const getResponse = async <ApiRequest>(
   const { method, path, requestSchema, requestData, options, prefixUrl } = params
   let request
   try {
-    request = process.env.NODE_ENV === 'production' ? requestData : requestSchema.parse(requestData)
+    request = process.env.NODE_ENV === 'production' ? requestData : parse(requestSchema, requestData)
   } catch (error) {
     console.error('Error validating request for', path, requestData, error)
     return Promise.reject(error)
@@ -218,7 +218,7 @@ export const apiHandler = async <ApiResponse, ApiRequest, ResponseInput>(
       })
 
     if (process.env.NODE_ENV === 'production') {
-      responseSchema?.safeParseAsync(json).then((res) => {
+      safeParseAsync(responseSchema, json).then((res) => {
         if (!res.success) {
           const err = new Error('API validation error')
           err.stack = res.error.message
@@ -229,11 +229,9 @@ export const apiHandler = async <ApiResponse, ApiRequest, ResponseInput>(
       return json as ApiResponse
     }
     try {
-      return responseSchema.parse(json) as ApiResponse
+      return parse(responseSchema, json)
     } catch (error) {
-      if (error instanceof ZodError) {
-        console.error('Error validating the response for', path, json, error)
-      }
+      console.error('Error validating the response for', path, json, error)
       return await Promise.reject(error)
     }
   } catch (error) {

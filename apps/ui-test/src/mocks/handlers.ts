@@ -1,6 +1,6 @@
 import debug from 'debug'
 import { http, HttpResponse } from 'msw'
-import { z } from 'zod'
+import { any, array, object, optional, pipe, prefault, string, transform } from 'zod/mini'
 import { fetchArrayData, fetchSingleItem, updateSingleItem } from '@/mocks/sqlTools'
 
 import type { UserRecord } from './loaders/users'
@@ -34,22 +34,31 @@ const initializeData = async () => {
   return dataInitPromise
 }
 
-const requestSchema = z.object({
-  pageIndex: z.string().transform((val) => (val ? parseInt(val, 10) : 0)),
-  pageSize: z.string().transform((val) => (val ? parseInt(val, 10) : 10)),
-  sorting: z.array(
-    z.object({
-      id: z.string(),
-      desc: z.string().transform((val) => val === 'true'),
+const requestSchema = object({
+  pageIndex: pipe(
+    string(),
+    transform((value) => (value ? parseInt(value, 10) : 0)),
+  ),
+  pageSize: pipe(
+    string(),
+    transform((value) => (value ? parseInt(value, 10) : 10)),
+  ),
+  sorting: array(
+    object({
+      id: string(),
+      desc: pipe(
+        string(),
+        transform((value) => value === 'true'),
+      ),
     }),
   ),
-  globalFilter: z.string().default(''),
-  filters: z.optional(
-    z.array(
-      z.object({
-        id: z.string(),
-        value: z.any(),
-        operator: z.optional(z.string()),
+  globalFilter: prefault(string(), ''),
+  filters: optional(
+    array(
+      object({
+        id: string(),
+        value: any(),
+        operator: optional(string()),
       }),
     ),
   ),

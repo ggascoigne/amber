@@ -1,5 +1,6 @@
+import type { output } from 'zod/mini'
 import { DateTime } from 'luxon'
-import { z } from 'zod'
+import { enum as zEnum, iso, object, parse, pipe, record, string, transform } from 'zod/mini'
 
 import { setVal } from './dot2val'
 
@@ -12,33 +13,42 @@ const notEmpty = <T>(value: T): value is NonNullable<T> => value !== null && val
 const pick = <T, D extends keyof T = keyof T>(o: T, ...props: D[]): Pick<T, D> =>
   Object.assign({}, ...props.map((prop) => ({ [prop]: o[prop] })))
 
-const toNumber = () => z.string().transform((val) => (val ? parseInt(val, 10) : 0))
+const toNumber = () =>
+  pipe(
+    string(),
+    transform((value) => (value ? parseInt(value, 10) : 0)),
+  )
 
-const toBoolean = () => z.string().transform((val) => (val ? val === 'true' : false))
+const toBoolean = () =>
+  pipe(
+    string(),
+    transform((value) => (value ? value === 'true' : false)),
+  )
 
 const toDateTime = () =>
-  z.iso
-    .datetime({ offset: true })
-    .transform((val) => (baseTimeZone ? DateTime.fromISO(val).setZone(baseTimeZone) : DateTime.fromISO(val)))
+  pipe(
+    iso.datetime({ offset: true }),
+    transform((value) => (baseTimeZone ? DateTime.fromISO(value).setZone(baseTimeZone) : DateTime.fromISO(value))),
+  )
 
-export const conventionInfoSchema = z.object({
+export const conventionInfoSchema = object({
   date: toDateTime(),
   virtual: toBoolean(),
   slots: toNumber(),
 })
 
-export const configurationSchema = z
-  .object({
-    title: z.string(),
-    name: z.string(),
-    abbr: z.enum(['acnw', 'acus']),
-    copyright: z.string(),
-    contactEmail: z.string(),
-    gameEmail: z.string(),
-    webEmail: z.string(),
+export const configurationSchema = pipe(
+  object({
+    title: string(),
+    name: string(),
+    abbr: zEnum(['acnw', 'acus']),
+    copyright: string(),
+    contactEmail: string(),
+    gameEmail: string(),
+    webEmail: string(),
     startYear: toNumber(),
     firstDataYear: toNumber(),
-    baseTimeZone: z.string(),
+    baseTimeZone: string(),
     year: toNumber(),
 
     conventionStartDate: toDateTime(),
@@ -75,31 +85,32 @@ export const configurationSchema = z
     maxPlayersFloor: toNumber(),
     maxPlayersCeiling: toNumber(),
 
-    oregonHotelTax: z.string(),
-    virtualCost: z.string(),
-    moreThanDoubleOccupancySurcharge: z.string(),
-    gameRoomCredit: z.string(),
+    oregonHotelTax: string(),
+    virtualCost: string(),
+    moreThanDoubleOccupancySurcharge: string(),
+    gameRoomCredit: string(),
 
     // not used by ACNW - but stubbed out in the database to avoid type issues here that I can't be bothered to deal with :)
-    hotelBookingCode: z.string(),
-    hotelBookingUrl: z.string(),
+    hotelBookingCode: string(),
+    hotelBookingUrl: string(),
     hotelBookingLastdate: toDateTime(),
 
     useUsAttendanceOptions: toBoolean(),
 
-    startDates: z.record(toNumber(), conventionInfoSchema),
-  })
-  .transform((data) => ({
+    startDates: record(toNumber(), conventionInfoSchema),
+  }),
+  transform((data) => ({
     ...data,
     isAcnw: data.abbr === 'acnw',
     isAcus: data.abbr === 'acus',
-  }))
+  })),
+)
 
-export const flagSchema = z.record(z.string(), z.string())
-export const urlSchema = z.record(z.string(), z.string())
+export const flagSchema = record(string(), string())
+export const urlSchema = record(string(), string())
 
-export type ConventionInfo = z.infer<typeof conventionInfoSchema>
-export type Configuration = z.infer<typeof configurationSchema>
+export type ConventionInfo = output<typeof conventionInfoSchema>
+export type Configuration = output<typeof configurationSchema>
 
 export type ConfigurationType = Configuration
 type DateFields<T> = {
@@ -115,9 +126,9 @@ export const getSettingsObject = (data: SettingsQueryResult | undefined) => {
   // set global so we can use it in the transform
   baseTimeZone = obj?.config?.baseTimeZone
 
-  const config = obj?.config ? configurationSchema.parse(obj.config) : undefined
-  const flags = obj?.flag ? flagSchema.parse(obj.flag) : undefined
-  const urls = obj?.url ? urlSchema.parse(obj.url) : undefined
+  const config = obj?.config ? parse(configurationSchema, obj.config) : undefined
+  const flags = obj?.flag ? parse(flagSchema, obj.flag) : undefined
+  const urls = obj?.url ? parse(urlSchema, obj.url) : undefined
   // console.log('getSettingsObject', { data, settings, obj, config, flags, urls })
   return { config, flags, urls }
 }

@@ -1,7 +1,10 @@
 import { createContext, useContext } from 'react'
 
-import type { Configuration as _Configuration, ConventionInfo as _ConventionInfo } from '@amber/shared'
-import { getSettingsObject as _getSettingsObject } from '@amber/shared'
+import type {
+  Configuration as _Configuration,
+  ConventionInfo as _ConventionInfo,
+} from '@amber/shared/src/configuration'
+import { getSettingsObject as _getSettingsObject } from '@amber/shared/src/configuration'
 
 export type Configuration = _Configuration
 export type ConventionInfo = _ConventionInfo
