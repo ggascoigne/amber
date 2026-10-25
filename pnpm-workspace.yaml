@@ -25,3 +25,19 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   utf-8-validate: true
+
+permissions:
+  '@tanstack/match-sorter-utils':
+    skills: true
+  '@tanstack/react-table':
+    skills: true
+  '@tanstack/table-core':
+    skills: true
+  '@trpc/client':
+    skills: true
+  '@trpc/next':
+    skills: true
+  '@trpc/server':
+    skills: true
+  '@trpc/tanstack-react-query':
+    skills: true

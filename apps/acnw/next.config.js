@@ -1,10 +1,5 @@
 import { headers } from '@amber/amber/utils/next-headers.js'
-import bundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-})
 
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
@@ -58,4 +53,4 @@ const nextConfig = {
       }),
 }
 
-export default withBundleAnalyzer(withMDX(nextConfig))
+export default withMDX(nextConfig)
