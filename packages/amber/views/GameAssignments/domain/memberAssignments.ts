@@ -237,14 +237,14 @@ export const buildAssignmentUpdatePayload = <TData extends RowData>({
 }: {
   updates: Array<TableEditRowUpdate<TData>>
   buildOriginalAssignment: (row: TData) => AssignmentUpdate | null
-  buildUpdatedAssignment: (row: TData) => AssignmentUpdate | null
+  buildUpdatedAssignment: (updatedRow: TData, originalRow: TData) => AssignmentUpdate | null
 }) => {
   const adds: Array<AssignmentUpdate> = []
   const removes: Array<AssignmentUpdate> = []
 
   updates.forEach((update) => {
     const originalAssignment = buildOriginalAssignment(update.original)
-    const updatedAssignment = buildUpdatedAssignment(update.updated)
+    const updatedAssignment = buildUpdatedAssignment(update.updated, update.original)
 
     if (!originalAssignment && !updatedAssignment) {
       return
@@ -288,12 +288,12 @@ export const buildMemberAssignmentPayloadFromUpdates = ({
             year,
           }
         : null,
-    buildUpdatedAssignment: ({ memberId, gameId, gm }) =>
+    buildUpdatedAssignment: ({ memberId, gameId, gm }, { gameId: originalGameId }) =>
       gameId
         ? {
             memberId,
             gameId,
-            gm,
+            gm: gameId === originalGameId ? gm : 0,
             year,
           }
         : null,
@@ -317,12 +317,12 @@ export const buildGameAssignmentPayloadFromUpdates = ({
             year,
           }
         : null,
-    buildUpdatedAssignment: ({ memberId, moveToGameId, gm }) =>
+    buildUpdatedAssignment: ({ memberId, moveToGameId, gm }, { gameId: originalGameId }) =>
       memberId && moveToGameId
         ? {
             memberId,
             gameId: moveToGameId,
-            gm,
+            gm: moveToGameId === originalGameId ? gm : 0,
             year,
           }
         : null,
