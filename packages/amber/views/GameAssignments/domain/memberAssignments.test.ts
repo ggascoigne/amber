@@ -353,6 +353,45 @@ describe('buildMemberAssignmentPayloadFromUpdates', () => {
       removes: [{ memberId: 1, gameId: 101, gm: 1, year: 2026 }],
     })
   })
+
+  test('moves a GM to a different game as a player', () => {
+    const payload = buildMemberAssignmentPayloadFromUpdates({
+      updates: [
+        {
+          rowId: 'member-1-slot-2',
+          original: {
+            rowId: 'member-1-slot-2',
+            memberId: 1,
+            slotId: 2,
+            slotLabel: 'Slot 2',
+            gameId: 101,
+            gameName: 'Cancelled GM Game',
+            gm: 1,
+            priorityLabel: 'GM',
+            prioritySortValue: 0,
+          },
+          updated: {
+            rowId: 'member-1-slot-2',
+            memberId: 1,
+            slotId: 2,
+            slotLabel: 'Slot 2',
+            gameId: 202,
+            gameName: 'Player Game',
+            gm: 1,
+            priorityLabel: 'Other',
+            prioritySortValue: Number.POSITIVE_INFINITY,
+          },
+          changes: {},
+        },
+      ],
+      year: 2026,
+    })
+
+    expect(payload).toEqual({
+      adds: [{ memberId: 1, gameId: 202, gm: 0, year: 2026 }],
+      removes: [{ memberId: 1, gameId: 101, gm: 1, year: 2026 }],
+    })
+  })
 })
 
 describe('buildGameAssignmentPayloadFromUpdates', () => {
@@ -404,6 +443,57 @@ describe('buildGameAssignmentPayloadFromUpdates', () => {
     expect(payload).toEqual({
       adds: [{ memberId: 2, gameId: 202, gm: 0, year: 2026 }],
       removes: [{ memberId: 1, gameId: 101, gm: 0, year: 2026 }],
+    })
+  })
+
+  test('moves a GM to a different game as a player', () => {
+    const payload = buildGameAssignmentPayloadFromUpdates({
+      updates: [
+        {
+          rowId: '1-101-1',
+          original: {
+            rowId: '1-101-1',
+            memberId: 1,
+            gameId: 101,
+            slotId: 1,
+            gm: 1,
+            moveToGameId: 101,
+            priorityLabel: 'GM',
+            prioritySortValue: 0,
+            counts: {
+              gmOrFirst: 1,
+              second: 0,
+              third: 0,
+              fourth: 0,
+              other: 0,
+            },
+          },
+          updated: {
+            rowId: '1-101-1',
+            memberId: 1,
+            gameId: 101,
+            slotId: 1,
+            gm: 1,
+            moveToGameId: 202,
+            priorityLabel: 'Other',
+            prioritySortValue: Number.POSITIVE_INFINITY,
+            counts: {
+              gmOrFirst: 0,
+              second: 0,
+              third: 0,
+              fourth: 0,
+              other: 1,
+            },
+          },
+          changes: {},
+        },
+      ],
+      year: 2026,
+    })
+
+    expect(payload).toEqual({
+      adds: [{ memberId: 1, gameId: 202, gm: 0, year: 2026 }],
+      removes: [{ memberId: 1, gameId: 101, gm: 1, year: 2026 }],
     })
   })
 })
