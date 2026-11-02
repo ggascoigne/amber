@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest'
 
 import {
   groupMemberLabelRows,
+  lateStartTimeForLabel,
   renderMemberLabelsPdf,
   type MemberLabel,
   type MemberLabelRow,
@@ -145,5 +146,16 @@ describe('renderMemberLabelsPdf', () => {
     const pdf = await PDFDocument.load(await renderMemberLabelsPdf(labels))
 
     expect(pdf.getPageCount()).toBe(2)
+  })
+})
+
+describe('lateStartTimeForLabel', () => {
+  test('includes only the start time for a delayed morning slot', () => {
+    expect(lateStartTimeForLabel({ lateStart: 'Starts at 10.30 am', slot: 2 })).toBe('10.30 am')
+  })
+
+  test('excludes on-time and non-morning slots', () => {
+    expect(lateStartTimeForLabel({ lateStart: 'Starts on time', slot: 5 })).toBe('')
+    expect(lateStartTimeForLabel({ lateStart: 'Starts at 10.30 am', slot: 4 })).toBe('')
   })
 })
