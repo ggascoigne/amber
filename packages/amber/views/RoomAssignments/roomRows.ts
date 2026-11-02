@@ -38,11 +38,7 @@ const buildOccupiedRoomIds = ({
   roomAssignments: Array<DashboardRoomAssignment>
   slotId: number
 }) =>
-  new Set(
-    roomAssignments
-      .filter((assignment) => assignment.slotId === slotId && !assignment.isOverride)
-      .map((assignment) => assignment.roomId),
-  )
+  new Set(roomAssignments.filter((assignment) => assignment.slotId === slotId).map((assignment) => assignment.roomId))
 
 export const buildRoomSelectOptions = (
   rooms: Array<DashboardRoom>,

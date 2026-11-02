@@ -157,7 +157,7 @@ describe('room assignment room rows', () => {
     ])
   })
 
-  test('current slot available rooms exclude disabled, unavailable, and non-override occupied rooms', () => {
+  test('current slot available rooms exclude disabled, unavailable, default-assigned, and override-assigned rooms', () => {
     const availableRooms = buildCurrentSlotAvailableRooms({
       rooms: [
         createRoom({ id: 1, description: 'Cascade Ballroom', size: 16 }),
@@ -185,15 +185,7 @@ describe('room assignment room rows', () => {
       year: 2025,
     })
 
-    expect(availableRooms).toEqual([
-      {
-        id: 2,
-        roomId: 2,
-        roomDescription: 'Bravo Suite',
-        assignedMemberNames: ['Alex Admin'],
-        size: 8,
-      },
-    ])
+    expect(availableRooms).toEqual([])
   })
 
   test('room usage summary rows count assignments and sort by usage then size', () => {

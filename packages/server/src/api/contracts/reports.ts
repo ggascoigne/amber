@@ -25,7 +25,17 @@ export const reportWorkbookInputSchema = z.object({
   year: z.number().int().optional(),
 })
 
-export const pdfReportIdSchema = z.enum(['memberLabels'])
+export const pdfReportIdSchema = z.enum([
+  'badgeBacks',
+  'gamesBySlot',
+  'gameRoomUse',
+  'memberLabels',
+  'packInsert',
+  'playersBySlot',
+  'roomsAndChairs',
+  'scheduleByPlayer',
+  'whereIsEleanor',
+])
 
 export const reportPdfInputSchema = z.object({
   pdfReportId: pdfReportIdSchema,

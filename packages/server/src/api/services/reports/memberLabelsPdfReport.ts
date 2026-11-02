@@ -9,6 +9,7 @@ import { getRuntimeSettingsTx } from '../runtimeSettings'
 export type MemberLabelRow = {
   gameName: string
   isGm: boolean
+  lateStart?: string | null
   memberId: number
   memberName: string
   room: string | null
@@ -18,6 +19,7 @@ export type MemberLabelRow = {
 export type MemberLabelAssignment = {
   gameName: string
   isGm: boolean
+  lateStart?: string | null
   room: string
   slot: number
 }
@@ -87,6 +89,7 @@ export const groupMemberLabelRows = (rows: Array<MemberLabelRow>, numberOfSlots?
     currentLabel.assignments.push({
       gameName: row.gameName,
       isGm: row.isGm,
+      ...(row.lateStart ? { lateStart: row.lateStart } : {}),
       room: row.room ?? '',
       slot: row.slot,
     })
@@ -114,6 +117,13 @@ export const groupMemberLabelRows = (rows: Array<MemberLabelRow>, numberOfSlots?
       }),
     }
   })
+}
+
+export const lateStartTimeForLabel = ({ lateStart, slot }: Pick<MemberLabelAssignment, 'lateStart' | 'slot'>) => {
+  if (![2, 5, 7].includes(slot) || !lateStart || lateStart === 'Starts on time') {
+    return ''
+  }
+  return lateStart.replace(/^Starts at\s+/i, '')
 }
 
 const fitText = ({ font, maxWidth, minSize, size, text }: FitTextOptions): { size: number; text: string } => {
@@ -225,9 +235,12 @@ const drawLabel = ({
     })
 
     const gameFont = assignment.isGm ? boldFont : font
+    const lateStartTime = lateStartTimeForLabel(assignment)
+    const lateStartText = lateStartTime ? ` (${lateStartTime})` : ''
+    const lateStartWidth = gameFont.widthOfTextAtSize(lateStartText, rowFontSize)
     const fittedGame = fitText({
       font: gameFont,
-      maxWidth: gameRight - gameLeft,
+      maxWidth: gameRight - gameLeft - lateStartWidth,
       minSize: minimumRowFontSize,
       size: rowFontSize,
       text: assignment.gameName,
@@ -238,6 +251,14 @@ const drawLabel = ({
       x: gameLeft,
       y: rowY,
     })
+    if (lateStartText) {
+      page.drawText(lateStartText, {
+        font: gameFont,
+        size: fittedGame.size,
+        x: gameLeft + gameFont.widthOfTextAtSize(fittedGame.text, fittedGame.size),
+        y: rowY,
+      })
+    }
 
     const fittedRoom = fitText({
       font,
@@ -305,6 +326,7 @@ export const getMemberLabelsPdfData = async (ctx: Context, input: ReportPdfInput
           COALESCE(NULLIF(u.full_name, ''), u.display_name, u.email) AS "memberName",
           g.slot_id AS "slot",
           g.name AS "gameName",
+          g.late_start AS "lateStart",
           CASE WHEN ga.gm > 0 THEN TRUE ELSE FALSE END AS "isGm",
           COALESCE(gra_rooms.description, game_room.description, '') AS "room"
         FROM
