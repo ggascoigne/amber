@@ -9,6 +9,32 @@ const openRoomAssignments = async (page: Page) => {
 }
 
 test.describe.serial('Room assignments manual workspace', () => {
+  test('expanded setup panes retain a scrollable table viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 700 })
+    await openRoomAssignments(page)
+
+    await page.getByRole('tab', { name: 'Setup' }).click()
+
+    const expectExpandedPaneScrollable = async (paneTitle: string) => {
+      const pane = page.getByRole('region', { name: paneTitle })
+      await pane.getByRole('button', { name: 'Expand panel' }).click()
+
+      const scrollMetrics = await pane.locator('.MuiTableContainer-root').evaluate((element) => ({
+        clientHeight: element.clientHeight,
+        overflowY: window.getComputedStyle(element).overflowY,
+      }))
+
+      expect(scrollMetrics.overflowY).toBe('auto')
+      expect(scrollMetrics.clientHeight).toBeGreaterThan(300)
+
+      await pane.getByRole('button', { name: 'Exit full view' }).click()
+    }
+
+    await expectExpandedPaneScrollable('Room Slot Availability')
+    await expectExpandedPaneScrollable('Member Room Assignments')
+    await expectExpandedPaneScrollable('Assign Members to Rooms')
+  })
+
   test('admin can manage manual assignments, overrides, member rooms, and availability conflicts', async ({ page }) => {
     await openRoomAssignments(page)
 

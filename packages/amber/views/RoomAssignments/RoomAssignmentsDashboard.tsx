@@ -190,7 +190,19 @@ const RoomAssignmentsDashboard = ({
   const renderLayoutPlan = (plan: RoomAssignmentsLayoutPlan) => {
     switch (plan.type) {
       case 'pane':
-        return <Box sx={{ flex: 1, minHeight: 0 }}>{renderPane(plan.paneId)}</Box>
+        return (
+          <Box
+            sx={{
+              display: 'flex',
+              flex: 1,
+              flexDirection: 'column',
+              minHeight: 0,
+              overflow: 'hidden',
+            }}
+          >
+            {renderPane(plan.paneId)}
+          </Box>
+        )
       case 'stack':
         return (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, minHeight: 0 }}>
