@@ -81,7 +81,11 @@ const getDonationAmount = (
   }
 }
 
-export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent) => {
+type MembershipStepConventionProps = MembershipFormContent & {
+  isAdmin: boolean
+}
+
+export const MembershipStepConvention = ({ prefix = '', isAdmin }: MembershipStepConventionProps) => {
   const configuration = useConfiguration()
   const attendanceOptions = useGetAttendanceOptions()
   const subsidizedAttendanceOptions = useGetSubsidizedAttendanceOptions()
@@ -247,7 +251,10 @@ export const MembershipStepConvention = ({ prefix = '' }: MembershipFormContent)
               size={{ xs: 12, md: 12 }}
               sx={{ mb: 2, mt: -1, alignItems: 'flex-start', flexDirection: 'column', flexWrap: 'nowrap' }}
             >
-              <FormLabel sx={{ pr: 2, pb: 1 }}>Amount: enter a value you are comfortable paying, minimum $20</FormLabel>
+              <FormLabel sx={{ pr: 2, pb: 1 }}>
+                Amount: enter a value you are comfortable paying, minimum $20
+                {isAdmin ? ' (limit disabled for admin)' : ''}
+              </FormLabel>
               <TextField
                 name={`${prefix}subsidizedAmount`}
                 parse={getSafeFloat}

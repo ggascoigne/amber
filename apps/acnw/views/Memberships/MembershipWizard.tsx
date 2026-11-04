@@ -20,10 +20,7 @@ import {
 } from '@amber/amber'
 import { toSlotsAttending, fromSlotsAttending, useEditMembership } from '@amber/amber/utils/membershipUtils'
 import { hasAdminStepErrors, MembershipStepAdmin } from '@amber/amber/views/Memberships/MembershipAdmin'
-import {
-  getDefaultMembership,
-  membershipValidationSchemaNW as membershipValidationSchema,
-} from '@amber/amber/views/Memberships/membershipUtils'
+import { getDefaultMembership, getMembershipValidationSchemaNW } from '@amber/amber/views/Memberships/membershipUtils'
 import { useTRPC } from '@amber/client'
 import { Wizard } from '@amber/ui'
 import Yup from '@amber/ui/utils/Yup'
@@ -57,14 +54,6 @@ interface MembershipWizardProps {
   profile: UserAndProfile
   short?: boolean
 }
-
-const validationSchema = Yup.object().shape({
-  intro: Yup.object().shape({
-    acceptedPolicies: Yup.bool().required().oneOf([true], 'Policies must be accepted'),
-  }),
-  membership: membershipValidationSchema,
-  profile: profileValidationSchema,
-})
 
 type RedirectInfo = {
   shouldRedirect: boolean
@@ -179,6 +168,17 @@ export const MembershipWizard = ({ open, onClose, profile, initialValues, short 
   const configuration = useConfiguration()
   const { user, hasPermissions } = useAuth()
   const isAdmin = hasPermissions(Perms.IsAdmin)
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        intro: Yup.object().shape({
+          acceptedPolicies: Yup.bool().required().oneOf([true], 'Policies must be accepted'),
+        }),
+        membership: getMembershipValidationSchemaNW(isAdmin),
+        profile: profileValidationSchema,
+      }),
+    [isAdmin],
+  )
   const trpc = useTRPC()
 
   const { userId } = useUser()
@@ -255,7 +255,7 @@ export const MembershipWizard = ({ open, onClose, profile, initialValues, short 
         name: 'Convention',
         optional: false,
         hasForm: true,
-        render: <MembershipStepConvention prefix='membership.' />,
+        render: <MembershipStepConvention prefix='membership.' isAdmin={isAdmin} />,
         hasErrors: hasConventionStepErrors,
       },
       {

@@ -5,28 +5,32 @@ import type { Configuration } from '../../utils/configContext'
 import type { MembershipFormType } from '../../utils/membershipUtils'
 import { Attendance } from '../../utils/selectValues'
 
-export const membershipValidationSchemaNW = Yup.object().shape({
-  arrivalDate: Yup.date().required(),
-  attendance: Yup.string().max(255).required(),
-  membership: Yup.string().max(255).required(),
-  departureDate: Yup.date().required(),
-  interestLevel: Yup.string().max(255).required(),
-  message: Yup.string().max(1024),
-  roomPreferenceAndNotes: Yup.string().max(1024),
-  roomingPreferences: Yup.string().max(255),
-  roomingWith: Yup.string().max(250), // yeah, really - schema is super inconsistent here
-  skipSlots: Yup.string().max(20),
-  subsidizedAmount: Yup.number().when('membership', {
-    is: Attendance.Subsidized,
-    then: (schema) => schema.required('Required for subsidized membership').min(20, 'Must be at least $20'),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  donation: Yup.number().when('offerSubsidy', {
-    is: true,
-    then: (schema) => schema.required('Required when contributing').min(1, 'Must be at least $1'),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-})
+export const getMembershipValidationSchemaNW = (isAdmin: boolean) =>
+  Yup.object().shape({
+    arrivalDate: Yup.date().required(),
+    attendance: Yup.string().max(255).required(),
+    membership: Yup.string().max(255).required(),
+    departureDate: Yup.date().required(),
+    interestLevel: Yup.string().max(255).required(),
+    message: Yup.string().max(1024),
+    roomPreferenceAndNotes: Yup.string().max(1024),
+    roomingPreferences: Yup.string().max(255),
+    roomingWith: Yup.string().max(250), // yeah, really - schema is super inconsistent here
+    skipSlots: Yup.string().max(20),
+    subsidizedAmount: Yup.number().when('membership', {
+      is: Attendance.Subsidized,
+      then: (schema) =>
+        isAdmin
+          ? schema.required('Required for subsidized membership')
+          : schema.required('Required for subsidized membership').min(20, 'Must be at least $20'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    donation: Yup.number().when('offerSubsidy', {
+      is: true,
+      then: (schema) => schema.required('Required when contributing').min(1, 'Must be at least $1'),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+  })
 
 export const membershipValidationSchemaUS = Yup.object().shape({
   attendance: Yup.string().max(255).required(),
