@@ -26,6 +26,7 @@ const pdfReports: Array<PdfReportRecord> = [
   { fileLabel: 'schedule-by-player', name: 'Schedule By Player', pdfReportId: 'scheduleByPlayer' },
   { fileLabel: 'where-is-eleanor', name: 'Where Is Eleanor?', pdfReportId: 'whereIsEleanor' },
   { name: 'Member Labels', pdfReportId: 'memberLabels' },
+  { fileLabel: 'member-signup-sheet', name: 'Member Sign-in Sheet', pdfReportId: 'memberSignup' },
 ]
 
 export const getServerSideProps = configGetServerSideProps

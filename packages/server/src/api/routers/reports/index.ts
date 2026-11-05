@@ -4,6 +4,7 @@ import { getBadgeBacksPdfData } from '../../services/reports/badgeBackPdfReport'
 import { getGameRoomUsePdfData } from '../../services/reports/gameRoomUsePdfReport'
 import { getGamesBySlotPdfData } from '../../services/reports/gamesBySlotPdfReport'
 import { getMemberLabelsPdfData } from '../../services/reports/memberLabelsPdfReport'
+import { getMemberSignupPdfData } from '../../services/reports/memberSignupPdfReport'
 import { getPackInsertPdfData } from '../../services/reports/packInsertPdfReport'
 import { getPlayersBySlotPdfData } from '../../services/reports/playersBySlotPdfReport'
 import { getRoomsAndChairsPdfData } from '../../services/reports/roomsAndChairsPdfReport'
@@ -18,6 +19,9 @@ export const reportsRouter = createTRPCRouter({
     }
     if (input.pdfReportId === 'gamesBySlot') {
       return getGamesBySlotPdfData(ctx, input)
+    }
+    if (input.pdfReportId === 'memberSignup') {
+      return getMemberSignupPdfData(ctx, input)
     }
     if (input.pdfReportId === 'gameRoomUse') {
       return getGameRoomUsePdfData(ctx, input)
