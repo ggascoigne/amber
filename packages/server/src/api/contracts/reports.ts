@@ -30,6 +30,7 @@ export const pdfReportIdSchema = z.enum([
   'gamesBySlot',
   'gameRoomUse',
   'memberLabels',
+  'memberSignup',
   'packInsert',
   'playersBySlot',
   'roomsAndChairs',
